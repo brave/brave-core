@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Pārlūkprogrammā Brave varat sākt privātu zvanu.</translation>
 <translation id="4903286433687221248">Sāciet izmantot neierobežotu zvanu apjomu ar draugiem un kolēģiem lietotnē Brave Talk.</translation>
 <translation id="7115051913071512405">Izmēģiniet</translation>
-<translation id="1447534717041828517">Rīkjoslā parādiet pogu Brave News</translation>
 <translation id="370665806235115550">Notiek ielāde...</translation>
 <translation id="4634933166298842522">Pārvaldīt abonementus</translation>
 <translation id="4108314971463891922">Sekot</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">Apmeklē creators.brave.com un reģistrējies šodien, lai sāktu pelnīt BAT no saviem faniem un sekotājiem.</translation>
 <translation id="4816455138209470435">Brave atbalsta YouTube, Vimeo un citus!</translation>
 <translation id="3656941797339037856">Saistiet Rewards ar Gemini!</translation>
-<translation id="31532096120351460">Tirgoties ar 50+ kriptovalūtu, tostarp BAT, platformā Gemini. Tā ir droša platforma jūsu kriptovalūtas glabāšanai. Turklāt jūs varat nopelnīt procentus US, HK un SG.</translation>
+<translation id="2888702144235098855">Tirgojieties ar 50+ kriptovalūtu, tostarp BAT, platformā Gemini. Tā ir droša platforma jūsu kriptovalūtas glabāšanai.</translation>
 <translation id="7404779623219601861">Izpirkt BAT, iegādājoties dāvanu kartes</translation>
 <translation id="6215565499749144110">Izmantojot TAP Network, jūs varat izpirkt savus BAT, iegādājoties populāru zīmolu dāvanu kartes.</translation>
 <translation id="6915065518766963119">* Nepieciešama Uphold verifikācija.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">Izrakstījies</translation>
 <translation id="6080167751812750226">Atvienoties no <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Aptuvenā peļņa</translation>
-<translation id="4244985009709452836">Ielogojieties savā <ph name="PROVIDER"/> kontā</translation>
+<translation id="7934950257968365573">Piesakieties savā <ph name="PROVIDER"/> kontā</translation>
 <translation id="2613359062756190460">Vienreizējās dzeramnaudas</translation>
 <translation id="590733288489975971">Peļņa no reklāmām</translation>
 <translation id="6181762795539107980">Neapstiprināts</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Pirkt ar Wyre</translation>
 <translation id="5522073372365069684">Pirkt ar Ramp</translation>
 <translation id="7902920577183739843">Pirkt ar Sardine</translation>
-<translation id="6534275647567011533">Pirkt ar Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Pirkt kripto ar Visa vai Mastercard.</translation>
 <translation id="3101839349578102016">Tūlītēja pirkšana ar savu bankas kontu. Zemākas maksas.</translation>
 <translation id="8528916244724490964">Visi tīkli</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">Auto</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="3706423975342040244">Izklaide</translation>
+<translation id="3284069358246729581">Izklaides ziņas</translation>
 <translation id="1432147735538902155">Mode</translation>
+<translation id="3350377832708834609">Filmas un TV</translation>
 <translation id="736592699917579616">Ēdiens</translation>
 <translation id="5104499318017527547">Smieklīgi</translation>
 <translation id="2228584369802328636">Spēles</translation>
 <translation id="6941852195052765076">Veselība</translation>
 <translation id="932327136139879170">Sākums</translation>
+<translation id="5178222043222938163">Mūzika</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Reģionālās ziņas</translation>
 <translation id="3872834068356954457">Zinātne</translation>
 <translation id="1264974993859112054">Sports</translation>
 <translation id="2283599456633275070">Ceļošana</translation>
 <translation id="7487067081878637334">Tehnoloģijas</translation>
+<translation id="151743034625508713">Tehnoloģiju ziņas</translation>
+<translation id="2388279876296929435">Tehnoloģiju apskati</translation>
 <translation id="5030268312472358928">Ziņu tops</translation>
 <translation id="5510475084662028636">Avotu tops</translation>
+<translation id="1297570508541015874">ASV ziņas</translation>
 <translation id="1459693405370120464">Laikapstākļi</translation>
 <translation id="8366057325711477500">Pasaules ziņas</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
@@ -1613,13 +1617,17 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="2453860139492968684">Pabeigt</translation>
 <translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="5037676449506322593">Atlasīt visus</translation>
-<translation id="8330804319517911603">Palīdzi uzlabot Brave</translation>
-<translation id="2867964979837593892">Produkta pieslīpēšana. Tava privātuma aizsardzība. Katru dienu.</translation>
-<translation id="7661940959332108190">Sūtīt diagnostiskos ziņojumus, ja Brave avarē vai sastingst.</translation>
-<translation id="6358373266071757311">Dalies anonīmos, privātos ieskatos par produktu. Tas mums palīdz saprast, kuras Brave funkcijas tiek lietotas visbiežāk.</translation>
+<translation id="5148943178722443958">Palīdziet uzlabot Brave.</translation>
+<translation id="1097073572755862978">Sūtiet diagnostikas ziņojumus, ja programma avarē vai sastingst. <ph name="LINK_BEFORE"/>Uzziniet vairāk.<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Kopīgojiet pilnīgi privātus un anonīmus produktu ieskatus, lai mēs zinātu, kādas funkcijas izmanto Brave lietotāji. <ph name="LINK_BEFORE"/>Uzziniet vairāk.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Iestatīšana pabeigta</translation>
 <translation id="3141206739023333979">Maini šīs izvēles jebkurā laikā savā Brave zem <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Iepazīsties ar visu mūsu <ph name="LINK_BEFORE"/>Privātuma politiku<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Izvēlieties savu dizainu</translation>
+<translation id="6262510489122516114">Varat to mainīt jebkurā laikā Brave iestatījumos.</translation>
+<translation id="546481172717459539">Saskaņot sistēmas iestatījumu</translation>
+<translation id="7799817062559422778">Gaišais režīms</translation>
+<translation id="4117637339509843559">Tumšais režīms</translation>
 <translation id="7821773512278295352">Brave ugunsmūris + VPN: pieslēgts</translation>
 <translation id="6019088868713395120">Brave ugunsmūris + VPN: atslēgts</translation>
 <translation id="3541307549916475335">Brave VPN paneļa lietotāja saskarne</translation>
@@ -1665,7 +1673,12 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="3307461350293459700">VPN savienojums neizdevās. Mēģiniet pievienoties vēlreiz un pārliecinieties, ka noklikšķiniet "Atļaut", lai iespējotu Brave VPN konfigurāciju.</translation>
 <translation id="7261518280726313829">Drošā DNS izslēgšana vai noklusējuma serveru izmantošana Windows vidē var atklāt jūsu apmeklētās vietnes jūsu interneta pakalpojumu sniedzējam. Brave to neiesaka darīt. Vai vēlaties tomēr to darīt?</translation>
 <translation id="888284761945060750">Atbilstoši jūsu organizācijas noteikumiem drošais DNS ir atspējots. Brave VPN izmantošana bez droša DNS var atklāt jūsu apmeklētās vietnes jūsu interneta pakalpojumu sniedzējam vai organizācijai.</translation>
+<translation id="6593224083874259773">Brave VPN operētājsistēmā Windows</translation>
+<translation id="3153983908111684619">Iestatījumu bloķē Brave VPN, kamēr ar to ir izveidots savienojums</translation>
+<translation id="6507543978646831931">Operētājsistēmai Windows ir funkcija Smart Multi-Homed Name Resolution, kas var atklāt informāciju par jūsu atrašanās vietu un apmeklētajām vietnēm. Kad iespējojāt Brave VPN, mēs nomainījām DNS iestatījumus pārlūkprogrammā, lai jūs pasargātu no šādas informācijas atklāšanas. Iestatījumi paliks spēkā un būs bloķēti, kamēr būs izveidots savienojums ar VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Vairs nebrīdināt mani par to.</translation>
+<translation id="2740531572673183784">Labi</translation>
+<translation id="9061845622728745852">Laika zona:</translation>
 <translation id="7586151660465233733">Vairāk tirgu vietnē <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Skatīt tirgus un pārdot kriptovalūtu FTX</translation>
 <translation id="5963745988819586370">Tirgi</translation>

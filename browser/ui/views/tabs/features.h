@@ -11,10 +11,6 @@
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 
-namespace base {
-struct LOGICALLY_CONST Feature;
-}  // namespace base
-
 class Browser;
 class BrowserFrame;
 
@@ -22,6 +18,12 @@ namespace tabs {
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabs);
+
+#if BUILDFLAG(IS_LINUX)
+// This flag controls the behavior of browser_default::kScrollEventChangesTab,
+// which is true only when it's Linux.
+BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
+#endif  // BUILDFLAG(IS_LINUX)
 
 // Returns true if the current |browser| might ever support vertical tabs.
 bool SupportsVerticalTabs(const Browser* browser);

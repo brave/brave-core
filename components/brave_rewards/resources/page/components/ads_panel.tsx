@@ -220,10 +220,6 @@ export function AdsPanel () {
       <>
         {renderTerms()}
         {renderDescription()}
-        <style.disabled>
-          {getString('adsDisabledTextOne')}&nbsp;
-          {getString('adsDisabledTextTwo')}
-        </style.disabled>
       </>
     )
   }
@@ -301,7 +297,7 @@ export function AdsPanel () {
           }
           <style.connectAction>
             <button onClick={onConnect}>
-              {getString('connectAccount')}<ArrowNextIcon />
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
             </button>
           </style.connectAction>
         </style.connect>

@@ -6,56 +6,83 @@
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/common/importer/importer_data_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
-const char kTestExtensionsPreferencesFile[] =
-    "Secure_Preferences_for_extension_import";
-base::FilePath GetTestProfilePath() {
-  base::FilePath test_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
-  return test_dir.AppendASCII("import").AppendASCII("chrome").AppendASCII(
-      "default");
-}
-// This sample prefs file is fetched after installing two extensions and one
-// theme from webstore with fresh profile.
-base::FilePath GetTestPreferencesPath() {
-  base::FilePath test_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
-  return test_dir.AppendASCII("import")
-      .AppendASCII("chrome")
-      .AppendASCII("default")
-      .AppendASCII(kTestExtensionsPreferencesFile);
-}
-}  // namespace
+class BraveChromeImporterUtilsTest : public testing::Test {
+ public:
+  BraveChromeImporterUtilsTest() {}
 
-TEST(ChromeImporterUtilsTest, ExtensionImportTest) {
-  base::FilePath data_path;
-  ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &data_path));
-  base::FilePath secured_preference_path = GetTestPreferencesPath();
+  void SetUp() override {
+    EXPECT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
+    base::CreateDirectory(GetTestProfilePath());
+  }
+  base::FilePath GetTestProfilePath() {
+    return brave_profile_dir_.GetPath().AppendASCII("Chrome").AppendASCII(
+        "Default");
+  }
+  void CopyTestFileToProfile(const std::string& source,
+                             const std::string& target) {
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::CopyFile(test_data_dir.AppendASCII("import")
+                       .AppendASCII("chrome")
+                       .AppendASCII("default")
+                       .AppendASCII(source),
+                   GetTestProfilePath().AppendASCII(target));
+  }
 
-  std::string secured_preference_content;
-  base::ReadFileToString(secured_preference_path, &secured_preference_content);
-  absl::optional<base::Value> secured_preference =
-      base::JSONReader::Read(secured_preference_content);
-  ASSERT_TRUE(secured_preference);
-  ASSERT_TRUE(secured_preference->is_dict());
-  auto* extensions = secured_preference->GetDict().FindDictByDottedPath(
-      kChromeExtensionsListPath);
-  ASSERT_TRUE(extensions);
+ private:
+  base::ScopedTempDir brave_profile_dir_;
+};
+
+TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListPreferences) {
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   auto extensions_list =
-      GetImportableListFromChromeExtensionsList(*extensions);
-  // Only 1 extension installed from webstore is importing target extension.
-  // We don't import theme, pre-installed extensions, disabled extensions and
-  // installed by default.
-  EXPECT_EQ(1UL, extensions_list.size());
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  EXPECT_EQ(extensions_list->size(), 2u);
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"jldhpllghnbhlbpcmnajkpdmadaolakh",
+                                      "mefhakmgclhhfbdadeojlkbllmecialg"}));
 }
 
-TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
+TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListSecurePreferences) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  auto extensions_list =
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  EXPECT_EQ(extensions_list->size(), 1u);
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa"}));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, ExtensionImportTest) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("Preferences", "Preferences");
+  auto extensions_list =
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  // Only 3 extension installed from webstore is importing target extension.
+  // We don't import theme, pre-installed extensions, disabled extensions and
+  // installed by default (1 from Secure Preferences, 1 from Preferences)
+  EXPECT_EQ(3u, extensions_list->size());
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa",
+                                      "jldhpllghnbhlbpcmnajkpdmadaolakh",
+                                      "mefhakmgclhhfbdadeojlkbllmecialg"}));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, GetChromeUserDataFolder) {
+  CopyTestFileToProfile("Local State", "Local State");
+
   EXPECT_EQ(
       GetChromeSourceProfiles(base::FilePath(FILE_PATH_LITERAL("fake"))),
       base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
@@ -64,16 +91,17 @@ TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
                 base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
             base::JSONReader::Read(R"([
         {"id": "Default", "name": "Profile 1"},
-        {"id": "Profile 2",  "name": "Profile 2"}
+        {"id": "Profile 2", "name": "Profile 2"}
       ])")
                 ->GetList());
-
+  CopyTestFileToProfile("No Profile Local State", "No Profile Local State");
   EXPECT_EQ(
       GetChromeSourceProfiles(
           GetTestProfilePath().Append(base::FilePath::StringType(
               FILE_PATH_LITERAL("No Profile Local State")))),
       base::JSONReader::Read(R"([{"id": "", "name": "Default" }])")->GetList());
 
+  CopyTestFileToProfile("Local State With Avatar", "Local State With Avatar");
   EXPECT_EQ(GetChromeSourceProfiles(
                 GetTestProfilePath().Append(base::FilePath::StringType(
                     FILE_PATH_LITERAL("Local State With Avatar")))),
@@ -92,4 +120,14 @@ TEST(ChromeImporterUtilsTest, GetChromeUserDataFolder) {
         }
       ])")
                 ->GetList());
+}
+
+TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  uint16_t services_supported = importer::NONE;
+  EXPECT_TRUE(
+      ChromeImporterCanImport(GetTestProfilePath(), &services_supported));
+  EXPECT_EQ(services_supported, importer::EXTENSIONS);
 }

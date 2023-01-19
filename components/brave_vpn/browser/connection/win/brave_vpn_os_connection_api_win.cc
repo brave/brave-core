@@ -9,6 +9,8 @@
 
 #include <ras.h>
 
+#include <memory>
+
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
@@ -39,13 +41,17 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 
 }  // namespace
 
-// static
-BraveVPNOSConnectionAPI* BraveVPNOSConnectionAPI::GetInstance() {
-  static base::NoDestructor<BraveVPNOSConnectionAPIWin> s_manager;
-  return s_manager.get();
+std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs) {
+  return std::make_unique<BraveVPNOSConnectionAPIWin>(url_loader_factory,
+                                                      local_prefs);
 }
 
-BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin() {
+BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* local_prefs)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
   StartVPNConnectionChangeMonitoring();
 }
 

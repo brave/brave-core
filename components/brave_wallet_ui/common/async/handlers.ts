@@ -463,7 +463,7 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
   const { txService, braveWalletP3A } = getAPIProxy()
   const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
   const result = await txService.approveTransaction(coin, txInfo.id)
-  const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError
+  const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError ?? result.errorUnion.filecoinProviderError
   if (error !== BraveWallet.ProviderError.kSuccess) {
     await store.dispatch(WalletActions.setTransactionProviderError({
       transaction: txInfo,

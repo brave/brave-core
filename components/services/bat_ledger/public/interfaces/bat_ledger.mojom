@@ -7,6 +7,7 @@ module bat_ledger.mojom;
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom";
+import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
 interface BatLedgerService {
@@ -211,6 +212,10 @@ interface BatLedgerClient {
   GetValueState(string name) => (mojo_base.mojom.Value value);
   [Sync]
   SetValueState(string name, mojo_base.mojom.Value value) => ();
+  [Sync]
+  GetTimeState(string name) => (mojo_base.mojom.Time time);
+  [Sync]
+  SetTimeState(string name, mojo_base.mojom.Time time) => ();
   [Sync]
   ClearState(string name) => ();
 

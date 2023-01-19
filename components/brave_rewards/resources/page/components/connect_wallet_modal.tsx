@@ -84,7 +84,7 @@ export function ConnectWalletModal (props: Props) {
               data-test-id='connect-continue-button'
               onClick={onContinueClick}
             >
-              {getString('connectAccount')}<ArrowNextIcon />
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
             </button>
           </style.continueButton>
           <style.infoNote>

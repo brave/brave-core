@@ -231,16 +231,6 @@ export async function getBuyAssetUrl (args: {
     console.log(`Failed to get buy URL: ${error}`)
   }
 
-  // adjust Wyre on-ramp url for multichain
-  if (args.onRampProvider === BraveWallet.OnRampProvider.kWyre) {
-    if (args.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) {
-      return url.replace('dest=ethereum:', 'dest=avalanche:')
-    }
-    if (args.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) {
-      return url.replace('dest=ethereum:', 'dest=matic:')
-    }
-  }
-
   return url
 }
 
@@ -258,19 +248,15 @@ export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, 
 
 export const getAllBuyAssets = async (): Promise<{
   rampAssetOptions: BraveWallet.BlockchainToken[]
-  wyreAssetOptions: BraveWallet.BlockchainToken[]
   sardineAssetOptions: BraveWallet.BlockchainToken[]
   transakAssetOptions: BraveWallet.BlockchainToken[]
   allAssetOptions: BraveWallet.BlockchainToken[]
 }> => {
   const { blockchainRegistry } = getAPIProxy()
-  const { kRamp, kWyre, kSardine, kTransak } = BraveWallet.OnRampProvider
+  const { kRamp, kSardine, kTransak } = BraveWallet.OnRampProvider
 
   const rampAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kRamp, chainId))
-  )
-  const wyreAssetsPromises = await Promise.all(
-    SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kWyre, chainId))
   )
   const sardineAssetsPromises = await Promise.all(
     SupportedOnRampNetworks.map(chainId => blockchainRegistry.getBuyTokens(kSardine, chainId))
@@ -282,10 +268,6 @@ export const getAllBuyAssets = async (): Promise<{
 
   // add token logos
   const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
-
-  const wyreAssetOptions: BraveWallet.BlockchainToken[] = wyreAssetsPromises
     .flatMap(p => p.tokens)
     .map(addLogoToToken)
 
@@ -304,11 +286,6 @@ export const getAllBuyAssets = async (): Promise<{
   } = getNativeTokensFromList(rampAssetOptions)
 
   const {
-    tokens: wyreTokenOptions,
-    nativeAssets: wyreNativeAssetOptions
-  } = getNativeTokensFromList(wyreAssetOptions)
-
-  const {
     tokens: sardineTokenOptions,
     nativeAssets: sardineNativeAssetOptions
   } = getNativeTokensFromList(sardineAssetOptions)
@@ -325,11 +302,6 @@ export const getAllBuyAssets = async (): Promise<{
   } = getBatTokensFromList(rampTokenOptions)
 
   const {
-    bat: wyreBatTokens,
-    nonBat: wyreNonBatTokens
-  } = getBatTokensFromList(wyreTokenOptions)
-
-  const {
     bat: sardineBatTokens,
     nonBat: sardineNonBatTokens
   } = getBatTokensFromList(sardineTokenOptions)
@@ -342,18 +314,15 @@ export const getAllBuyAssets = async (): Promise<{
   // sort lists
   // Move Gas coins and BAT to front of list
   const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
-  const sortedWyreOptions = [...wyreNativeAssetOptions, ...wyreBatTokens, ...wyreNonBatTokens]
   const sortedSardineOptions = [...sardineNativeAssetOptions, ...sardineBatTokens, ...sardineNonBatTokens]
   const sortedTransakOptions = [...transakNativeAssetOptions, ...transakBatTokens, ...transakNonBatTokens]
 
   const results = {
     rampAssetOptions: sortedRampOptions,
-    wyreAssetOptions: sortedWyreOptions,
     sardineAssetOptions: sortedSardineOptions,
     transakAssetOptions: sortedTransakOptions,
     allAssetOptions: getUniqueAssets([
       ...sortedRampOptions,
-      ...sortedWyreOptions,
       ...sortedSardineOptions,
       ...sortedTransakOptions
     ])

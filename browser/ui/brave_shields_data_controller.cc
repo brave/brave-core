@@ -154,10 +154,9 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
   if (map->GetDefaultContentSetting(ContentSettingsType::BRAVE_SHIELDS,
                                     nullptr) == is_enabled) {
     brave_shields::ResetBraveShieldsEnabled(map, GetCurrentSiteURL());
-    return;
+  } else {
+    brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
   }
-
-  brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
   ReloadWebContents();
 }
 

@@ -73,7 +73,7 @@ program
   .option('--target_os <target_os_type>', 'target OS type', /^(host_os|ios|android)$/i)
   .option('--target_arch <target_arch>', 'target architecture', /^(host_cpu|x64|arm64|x86)$/i)
   .arguments('[build_config]')
-  .action((buildConfig = config.defaultBuildConfig, options) => {
+  .action((buildConfig = config.defaultBuildConfig, options = {}) => {
     config.buildConfig = buildConfig
     if (options.target_os == 'host_os')
       delete options.target_os

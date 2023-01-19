@@ -7,8 +7,17 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class AssetUtils {
     public static String AURORA_SUPPORTED_CONTRACT_ADDRESSES[] = {
@@ -41,6 +50,20 @@ public class AssetUtils {
             "0x4691937a7508860f876c9c0a2a617e7d9e945d4b", // WOO
             "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e" // YFI
     };
+
+    public static class Filters {
+        public static boolean isSameToken(BlockchainToken token1, BlockchainToken token2) {
+            return token1.symbol.equals(token2.symbol)
+                    && token1.contractAddress.equals(token2.contractAddress)
+                    && token1.chainId.equals(token2.chainId);
+        }
+
+        public static boolean isSameToken(
+                BlockchainToken token, String symbol, String contractAddress, String chainId) {
+            return token.symbol.equals(symbol) && token.contractAddress.equals(contractAddress)
+                    && token.chainId.equals(chainId);
+        }
+    }
 
     public static boolean isAuroraAddress(String contractAddress, String chainId) {
         boolean isEthereumBridgeAddress = false;
@@ -93,5 +116,80 @@ public class AssetUtils {
                 // Do nothing
         }
         return coin;
+    }
+
+    public static String mapToRampNetworkSymbol(@NonNull BlockchainToken asset) {
+        String assetChainId = asset.chainId;
+        if (asset.symbol.equalsIgnoreCase("bat")
+                && assetChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
+            // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
+            return "ETH_BAT";
+        } else if (assetChainId.equals(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID)
+                && TextUtils.isEmpty(asset.contractAddress)) {
+            // AVAX native token has no prefix
+            return asset.symbol;
+        } else {
+            String rampNetworkPrefix = getRampNetworkPrefix(asset.chainId);
+            return TextUtils.isEmpty(rampNetworkPrefix)
+                    ? asset.symbol.toUpperCase(Locale.ENGLISH)
+                    : rampNetworkPrefix + "_" + asset.symbol.toUpperCase(Locale.ENGLISH);
+        }
+    }
+
+    public static String getRampNetworkPrefix(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                return "AVAXC";
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                return "BSC";
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                return "MATIC";
+            case BraveWalletConstants.SOLANA_MAINNET:
+                return "SOLANA";
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                return "OPTIMISM";
+            //            case BraveWalletConstants.FILECOIN_MAINNET: return "FILECOIN"; /*not
+            //            supported yet*/
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+            default:
+                return "";
+        }
+    }
+
+    public static boolean isNativeToken(BlockchainToken token) {
+        List<String> nativeTokens = NATIVE_TOKENS_PER_CHAIN.get(token.chainId);
+        if (nativeTokens != null) {
+            return nativeTokens.contains(token.symbol.toLowerCase(Locale.ENGLISH));
+        }
+        return false;
+    }
+
+    public static boolean isBatToken(BlockchainToken token) {
+        String symbol = token.symbol;
+        return symbol.equalsIgnoreCase("bat") || symbol.equalsIgnoreCase("wbat")
+                || symbol.equalsIgnoreCase("bat.e");
+    }
+
+    private static final Map<String, List<String>> NATIVE_TOKENS_PER_CHAIN = new HashMap<>() {
+        {
+            put(BraveWalletConstants.MAINNET_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.AURORA_MAINNET_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID, Arrays.asList("matic"));
+            put(BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, Arrays.asList("ftm"));
+            put(BraveWalletConstants.CELO_MAINNET_CHAIN_ID, Arrays.asList("celo"));
+            put(BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID, Arrays.asList("bnb"));
+            put(BraveWalletConstants.SOLANA_MAINNET, Arrays.asList("sol"));
+            put(BraveWalletConstants.FILECOIN_MAINNET, Arrays.asList("fil"));
+            put(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID, Arrays.asList("avax", "avaxc"));
+        }
+    };
+    public static String httpifyIpfsUrl(String url) {
+        if (TextUtils.isEmpty(url)) return "";
+        String trimedUrl = url.trim();
+        return trimedUrl.startsWith("ipfs://")
+                ? trimedUrl.replace("ipfs://", "https://ipfs.io/ipfs/")
+                : trimedUrl;
     }
 }

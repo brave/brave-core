@@ -260,6 +260,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView"));
         Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl"));
+        Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));
@@ -315,8 +319,6 @@ public class BytecodeTest {
                 "insertSiteSectionView", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
                 "isScrollableMvtEnabled", true, boolean.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout",
-                "hasLoadCompleted", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/query_tiles/QueryTileSection",
                 "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(
@@ -454,6 +456,12 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "wrapDialogDismissalCallback", true, Callback.class, Callback.class));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
+                        "isVisibleToUser", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl",
+                "isVisibleToUser", false, null));
     }
 
     @Test
@@ -960,6 +968,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/infobar/TranslateCompactInfoBar",
                         "org/chromium/chrome/browser/infobar/BraveTranslateCompactInfoBarBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
+                "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl"));
         Assert.assertTrue(checkSuperName(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator"));

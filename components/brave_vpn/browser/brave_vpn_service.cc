@@ -9,36 +9,29 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/bind.h"
+#include "base/check_is_test.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/url_util.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "base/bind.h"
-#include "base/check_is_test.h"
-#include "base/command_line.h"
-#include "base/logging.h"
-#include "base/notreached.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
-#include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/version_info/version_info.h"
-#include "components/prefs/scoped_user_pref_update.h"
-#include "components/version_info/version_info.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
 
@@ -46,6 +39,7 @@ using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
 BraveVpnService::BraveVpnService(
+    BraveVPNOSConnectionAPI* connection_api,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs,
     PrefService* profile_prefs,
@@ -57,6 +51,7 @@ BraveVpnService::BraveVpnService(
       api_request_(url_loader_factory) {
   DCHECK(IsBraveVPNEnabled());
 #if !BUILDFLAG(IS_ANDROID)
+  connection_api_ = connection_api;
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->SetTargetVpnEntryName(kBraveVPNEntryName);
@@ -475,12 +470,8 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
 }
 
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {
-  if (mock_connection_api_) {
-    CHECK_IS_TEST();
-    return mock_connection_api_;
-  }
-
-  return BraveVPNOSConnectionAPI::GetInstance();
+  DCHECK(connection_api_);
+  return connection_api_;
 }
 
 // NOTE(bsclifton): Desktop uses API to create a ticket.
@@ -501,19 +492,6 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 }
-
-void BraveVpnService::SetMockBraveVpnConnectionApi(
-    BraveVPNOSConnectionAPI* api) {
-  if (observed_.IsObserving()) {
-    observed_.Reset();
-  }
-  mock_connection_api_ = api;
-  if (mock_connection_api_) {
-    observed_.Observe(mock_connection_api_);
-    mock_connection_api_->SetLocalPrefs(local_prefs_);
-  }
-}
-
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)

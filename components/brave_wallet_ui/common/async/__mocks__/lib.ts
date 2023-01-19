@@ -58,13 +58,11 @@ export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((re
 })
 
 export const getAllBuyAssets = () => new Promise<{
-  wyreAssetOptions: BraveWallet.BlockchainToken[]
   rampAssetOptions: BraveWallet.BlockchainToken[]
   allAssetOptions: BraveWallet.BlockchainToken[]
   sardineAssetOptions: BraveWallet.BlockchainToken[]
 }>((resolve) => {
   resolve({
-    wyreAssetOptions: mockBuyAssetList,
     rampAssetOptions: mockBuyAssetList,
     sardineAssetOptions: mockBuyAssetList,
     allAssetOptions: mockBuyAssetList
@@ -125,8 +123,18 @@ export const getBuyAssetUrl = () => {
   return 'brave.com'
 }
 
-export const getBlockchainTokenInfo = async (contractAddress: string): Promise<GetBlockchainTokenInfoReturnInfo> => {
+export const getBlockchainTokenInfo = async (
+  contractAddress: string
+): Promise<GetBlockchainTokenInfoReturnInfo> => {
+  if (
+    contractAddress.toLowerCase() ===
+    mockBasicAttentionToken.contractAddress.toLowerCase()
+  ) {
+    return {
+      token: mockBasicAttentionToken
+    }
+  }
   return {
-    token: mockBasicAttentionToken
+    token: null
   }
 }

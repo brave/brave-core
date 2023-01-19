@@ -11,7 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class SnsSettingsFragment extends PreferenceFragmentCompat {
@@ -27,12 +28,12 @@ public class SnsSettingsFragment extends PreferenceFragmentCompat {
                         PREF_SNS_RESOLVE_METHOD);
 
         radioButtonGroupDDnsResolveMethodPreference.initialize(
-                BravePrefServiceBridge.getInstance().getSnsResolveMethod());
+                BraveLocalState.get().getInteger(BravePref.SNS_RESOLVE_METHOD));
 
         radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     int method = (int) newValue;
-                    BravePrefServiceBridge.getInstance().setSnsResolveMethod(method);
+                    BraveLocalState.get().setInteger(BravePref.SNS_RESOLVE_METHOD, method);
                     return true;
                 });
     }

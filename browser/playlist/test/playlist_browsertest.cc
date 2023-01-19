@@ -7,8 +7,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/features.h"
-#include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"

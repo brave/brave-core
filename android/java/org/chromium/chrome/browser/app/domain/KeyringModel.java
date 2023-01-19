@@ -225,7 +225,7 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public List<AccountInfo> stripNoBuySwapAccounts(List<AccountInfo> accountInfos) {
+    public List<AccountInfo> stripNoSwapSupportedAccounts(List<AccountInfo> accountInfos) {
         List<AccountInfo> accountInfosFiltered = new ArrayList<>();
         for (AccountInfo accountInfo : accountInfos) {
             if (accountInfo.coin != CoinType.SOL) {

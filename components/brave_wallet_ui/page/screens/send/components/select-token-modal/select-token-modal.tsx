@@ -16,9 +16,6 @@ import { WalletActions } from '../../../../../common/actions/'
 // Types
 import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '../../../../../constants/types'
 
-// Hooks
-import useSend from '../../../../../common/hooks/send'
-
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import { getFilecoinKeyringIdFromNetwork, getTokensNetwork } from '../../../../../utils/network-utils'
@@ -43,14 +40,12 @@ import { Wrapper, Modal, ScrollContainer, AccountSection } from './select-tokenm
 interface Props {
   onClose: () => void
   selectedSendOption: SendOptionTypes
+  selectSendAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
-    const { onClose, selectedSendOption } = props
-
-    // Hooks
-    const { selectSendAsset } = useSend(true)
+    const { onClose, selectedSendOption, selectSendAsset } = props
 
     // Redux
     const dispatch = useDispatch()

@@ -18,7 +18,6 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/p3a/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -32,10 +31,6 @@
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-#include "brave/components/p3a/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -350,13 +345,6 @@ jboolean JNI_BravePrefServiceBridge_GetSafetynetCheckFailed(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(kSafetynetCheckFailed);
 }
 
-void JNI_BravePrefServiceBridge_SetSafetynetStatus(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& status) {
-  g_browser_process->local_state()->SetString(
-      kSafetynetStatus, ConvertJavaStringToUTF8(env, status));
-}
-
 void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
   GetOriginalProfile()->GetPrefs()->SetUint64(
       brave_rewards::prefs::kPromotionLastFetchStamp, 0);
@@ -376,40 +364,6 @@ jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
   }
 }
 
-void JNI_BravePrefServiceBridge_SetReferralAndroidFirstRunTimestamp(
-    JNIEnv* env,
-    jlong time) {
-  return g_browser_process->local_state()->SetTime(
-      kReferralAndroidFirstRunTimestamp, base::Time::FromJavaTime(time));
-}
-
-void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
-    JNIEnv* env,
-    jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(
-      kReferralCheckedForPromoCodeFile, value);
-}
-
-void JNI_BravePrefServiceBridge_SetReferralInitialization(JNIEnv* env,
-                                                          jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(kReferralInitialization,
-                                                      value);
-}
-
-void JNI_BravePrefServiceBridge_SetReferralPromoCode(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& promoCode) {
-  return g_browser_process->local_state()->SetString(
-      kReferralPromoCode, ConvertJavaStringToUTF8(env, promoCode));
-}
-
-void JNI_BravePrefServiceBridge_SetReferralDownloadId(
-    JNIEnv* env,
-    const JavaParamRef<jstring>& downloadId) {
-  return g_browser_process->local_state()->SetString(
-      kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
-}
-
 jint JNI_BravePrefServiceBridge_GetWebrtcPolicy(JNIEnv* env) {
   return static_cast<int>(
       GetWebRTCIPHandlingPolicy(GetOriginalProfile()->GetPrefs()->GetString(
@@ -420,104 +374,6 @@ void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
   GetOriginalProfile()->GetPrefs()->SetString(
       prefs::kWebRTCIPHandlingPolicy,
       GetWebRTCIPHandlingPreference((WebRTCIPHandlingPolicy)policy));
-}
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {
-  /* Saving pref value to the disk as soon as the pref value
-   * is set to avoid delay in pref value update.*/
-  g_browser_process->local_state()->SetBoolean(brave::kP3AEnabled, value);
-  g_browser_process->local_state()->CommitPendingWrite();
-}
-
-static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(brave::kP3AEnabled);
-}
-
-jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->HasPrefPath(brave::kP3AEnabled);
-}
-
-void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
-                                                         jboolean value) {
-  return g_browser_process->local_state()->SetBoolean(
-      brave::kP3ANoticeAcknowledged, value);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(
-      brave::kP3ANoticeAcknowledged);
-}
-
-#else
-
-void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
-
-static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
-  return false;
-}
-
-jboolean JNI_BravePrefServiceBridge_HasPathP3AEnabled(JNIEnv* env) {}
-
-void JNI_BravePrefServiceBridge_SetP3ANoticeAcknowledged(JNIEnv* env,
-                                                         jboolean value) {}
-
-jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
-  return false;
-}
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
-
-void JNI_BravePrefServiceBridge_SetStatsReportingEnabled(JNIEnv* env,
-                                                         jboolean value) {
-  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, value);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetStatsReportingEnabled(JNIEnv* env) {
-  return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
-}
-
-void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
-    JNIEnv* env,
-    jint method) {
-  g_browser_process->local_state()->SetInteger(
-      decentralized_dns::kUnstoppableDomainsResolveMethod, method);
-}
-
-jint JNI_BravePrefServiceBridge_GetUnstoppableDomainsResolveMethod(
-    JNIEnv* env) {
-  return g_browser_process->local_state()->GetInteger(
-      decentralized_dns::kUnstoppableDomainsResolveMethod);
-}
-
-void JNI_BravePrefServiceBridge_SetENSResolveMethod(JNIEnv* env, jint method) {
-  g_browser_process->local_state()->SetInteger(
-      decentralized_dns::kENSResolveMethod, method);
-}
-
-jint JNI_BravePrefServiceBridge_GetENSResolveMethod(JNIEnv* env) {
-  return g_browser_process->local_state()->GetInteger(
-      decentralized_dns::kENSResolveMethod);
-}
-
-void JNI_BravePrefServiceBridge_SetENSOffchainResolveMethod(JNIEnv* env,
-                                                            jint method) {
-  g_browser_process->local_state()->SetInteger(
-      decentralized_dns::kEnsOffchainResolveMethod, method);
-}
-
-jint JNI_BravePrefServiceBridge_GetENSOffchainResolveMethod(JNIEnv* env) {
-  return g_browser_process->local_state()->GetInteger(
-      decentralized_dns::kEnsOffchainResolveMethod);
-}
-
-void JNI_BravePrefServiceBridge_SetSnsResolveMethod(JNIEnv* env, jint method) {
-  g_browser_process->local_state()->SetInteger(
-      decentralized_dns::kSnsResolveMethod, method);
-}
-
-jint JNI_BravePrefServiceBridge_GetSnsResolveMethod(JNIEnv* env) {
-  return g_browser_process->local_state()->GetInteger(
-      decentralized_dns::kSnsResolveMethod);
 }
 
 void JNI_BravePrefServiceBridge_SetNewsOptIn(JNIEnv* env, jboolean value) {

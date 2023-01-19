@@ -214,6 +214,18 @@ void LedgerClientMojoBridge::GetValueState(const std::string& name,
   std::move(callback).Run(ledger_client_->GetValueState(name));
 }
 
+void LedgerClientMojoBridge::SetTimeState(const std::string& name,
+                                          base::Time time,
+                                          SetTimeStateCallback callback) {
+  ledger_client_->SetTimeState(name, time);
+  std::move(callback).Run();
+}
+
+void LedgerClientMojoBridge::GetTimeState(const std::string& name,
+                                          GetTimeStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetTimeState(name));
+}
+
 void LedgerClientMojoBridge::ClearState(const std::string& name,
                                         ClearStateCallback callback) {
   ledger_client_->ClearState(name);

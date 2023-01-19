@@ -12,6 +12,8 @@ namespace prefs {
 extern const char kAdBlockCheckedDefaultRegion[];
 extern const char kAdBlockCookieListOptInShown[];
 extern const char kAdBlockCookieListSettingTouched[];
+extern const char kAdBlockMobileNotificationsListSettingTouched[];
+
 extern const char kAdBlockCustomFilters[];
 extern const char kAdBlockRegionalFilters[];
 extern const char kAdBlockListSubscriptions[];

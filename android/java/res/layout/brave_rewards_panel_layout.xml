@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView 
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardBackgroundColor="@color/rewards_panel_bg_color"
         android:layout_height="400dp"
@@ -34,6 +34,14 @@
                     <include
                         android:id="@+id/brave_rewards_onboarding_layout_id"
                         layout="@layout/brave_rewards_onboarding_layout"/>
+
+                    <FrameLayout
+                        android:id="@+id/panel_shadow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="@color/rewards_panel_foreground_color"
+                        android:elevation="6dp"
+                        android:visibility="gone"/>
 
                     <include
                         android:id="@+id/brave_rewards_panel_unverified_layout_id"

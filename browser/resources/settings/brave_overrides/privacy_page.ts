@@ -15,6 +15,25 @@ RegisterPolymerTemplateModifications({
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
+      const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+      if (isGoogleSignInFeatureEnabled) {
+        pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/content/googleSignIn" no-search>
+        <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn')}">
+        <category-default-setting
+        category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+        toggle-off-label="${I18nBehavior.i18n('siteSettingsGoogleSignInBlock')}"
+        toggle-on-label="${I18nBehavior.i18n('siteSettingsGoogleSignInAsk')}">
+        </category-default-setting>
+        <category-setting-exceptions
+        category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+        block-header="${I18nBehavior.i18n('siteSettingsGoogleSignInBlock')}"
+        allow-header="${I18nBehavior.i18n('siteSettingsGoogleSignInAllow')}">
+        </category-setting-exceptions>
+        </settings-subpage>
+        </template>
+      `)
+      }
       if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
         const idleDetection = templateContent.querySelector('[route-path="/content/idleDetection"]')
         if (!idleDetection) {

@@ -1,0 +1,43 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("web_state") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "web_state+private.h",
+    "web_state.h",
+    "web_state.mm",
+    "web_state_native.h",
+    "web_state_native.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/ios:ios",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/main:public",
+    "//ios/chrome/browser/sessions",
+    "//ios/chrome/browser/sync",
+    "//ios/chrome/browser/tabs",
+    "//ios/chrome/browser/web_state_list",
+    "//ios/web/common:user_agent",
+    "//ios/web/public/session:session",
+    "//ios/web/public/thread",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "WebKit.framework",
+  ]
+}

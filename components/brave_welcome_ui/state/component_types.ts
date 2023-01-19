@@ -24,7 +24,9 @@ export enum BrowserType {
   Mozilla_Firefox = 'Mozilla Firefox',
   Microsoft_Edge = 'Microsoft Edge',
   Vivaldi = 'Vivaldi',
-  Opera = 'Opera'
+  Opera = 'Opera',
+  Yandex = 'Yandex',
+  Whale = 'Whale'
 }
 
 export interface Scenes {

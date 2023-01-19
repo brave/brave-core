@@ -4,7 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/components/playlist/buildflags/buildflags.gni")
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 brave_chrome_renderer_sources = [
@@ -26,7 +26,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
-  "//brave/components/playlist/buildflags",
+  "//brave/components/playlist/common/buildflags",
   "//brave/components/safe_builtins/renderer",
   "//brave/components/skus/common",
   "//brave/components/skus/renderer",
@@ -45,10 +45,7 @@ if (enable_speedreader) {
 }
 
 if (enable_playlist) {
-  brave_chrome_renderer_deps += [
-    "//brave/components/playlist:playlist_features",
-    "//brave/components/playlist/renderer",
-  ]
+  brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
 
 if (enable_brave_vpn) {

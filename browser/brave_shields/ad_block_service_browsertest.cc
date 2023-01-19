@@ -35,7 +35,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/buildflags/buildflags.h"
+#include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -55,8 +55,8 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/features.h"
-#include "brave/components/playlist/playlist_service.h"
+#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 const char kAdBlockTestPage[] = "/blocking.html";
@@ -90,7 +90,6 @@ using brave_shields::features::kBraveAdblockCnameUncloaking;
 using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
@@ -1963,21 +1962,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   EXPECT_EQ(base::Value(true), result_third.value);
 }
 
-class CosmeticFilteringChildFramesFlagEnabledTest : public AdBlockServiceTest {
- public:
-  CosmeticFilteringChildFramesFlagEnabledTest() {
-    feature_list_.InitAndEnableFeature(
-        kBraveAdblockCosmeticFilteringChildFrames);
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
 // Test that cosmetic filtering is applied independently in a third-party child
 // frame
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringChildFramesFlagEnabledTest,
-                       CosmeticFilteringFrames) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringFrames) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("frame.com##.ad\n");
 
@@ -2009,6 +1996,57 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringChildFramesFlagEnabledTest,
       EvalJs(contents, R"(checkSelector('.ad', 'display', 'block'))");
   ASSERT_TRUE(main_result.error.empty());
   EXPECT_EQ(base::Value(true), main_result.value);
+}
+
+// Test cosmetic filtering ignores rules with the `:has` pseudoclass in standard
+// blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringHasPseudoclassStandard) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  DisableAggressiveMode();
+  UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('.container', 'display', 'block')"));
+}
+
+// Test cosmetic filtering applies rules with the `:has` pseudoclass in
+// aggressive blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringHasPseudoclassAggressive) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  UpdateAdBlockInstanceWithRules("b.com##.container:has(#promotion)\n");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // the `#promotion` element's container is hidden
+  EXPECT_EQ("none", EvalJs(contents,
+                           "window.getComputedStyle(document.getElementById('"
+                           "promotion').parentElement).display"));
+
+  // the `#real-user-content` element's container is not hidden
+  EXPECT_EQ("block", EvalJs(contents,
+                            "window.getComputedStyle(document.getElementById('"
+                            "real-user-content').parentElement).display"));
+
+  // both inner elements have no new styles applied
+  EXPECT_EQ(true, EvalJs(contents,
+                         "checkSelector('#promotion', 'display', 'block')"));
+  EXPECT_EQ(true,
+            EvalJs(contents,
+                   "checkSelector('#real-user-content', 'display', 'block')"));
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
@@ -2438,8 +2476,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
     feature_list_.InitWithFeaturesAndParameters(
-        {{kBraveAdblockCosmeticFilteringChildFrames, {}},
-         {kCosmeticFilteringJsPerformance,
+        {{kCosmeticFilteringJsPerformance,
           {{"subframes_first_query_delay_ms", "3000"},
            {"switch_to_polling_threshold", "500"},
            {"fetch_throttling_ms", "500"}}}},

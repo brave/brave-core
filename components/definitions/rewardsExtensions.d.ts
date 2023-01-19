@@ -126,6 +126,8 @@ declare namespace RewardsExtension {
     autoContributeChoices: number[]
     payoutStatus: Record<string, ProviderPayoutStatus>
     walletProviderRegions: Record<string, { allow: string[], block: string[] } | undefined>
+    vbatDeadline: number | undefined
+    vbatExpired: boolean
   }
 
   export interface BalanceReport {

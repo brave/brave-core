@@ -104,7 +104,8 @@ class AdBlockService {
       const GURL& url,
       blink::mojom::ResourceType resource_type,
       const std::string& tab_host);
-  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
+  base::Value::Dict UrlCosmeticResources(const std::string& url,
+                                         bool aggressive_blocking);
   base::Value::Dict HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,

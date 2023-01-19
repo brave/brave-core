@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_MOCK_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_MOCK_ADS_SERVICE_H_
@@ -43,11 +43,9 @@ class MockAdsService : public AdsService {
 
   MOCK_CONST_METHOD0(NeedsBrowserUpgradeToServeAds, bool());
 
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   MOCK_METHOD2(ShowScheduledCaptcha,
                void(const std::string&, const std::string&));
   MOCK_METHOD0(SnoozeScheduledCaptcha, void());
-#endif
 
   MOCK_METHOD1(OnNotificationAdShown, void(const std::string&));
   MOCK_METHOD2(OnNotificationAdClosed, void(const std::string&, bool));

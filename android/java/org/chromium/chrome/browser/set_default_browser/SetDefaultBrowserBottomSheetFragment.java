@@ -20,8 +20,8 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {

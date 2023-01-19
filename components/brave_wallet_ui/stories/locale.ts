@@ -68,6 +68,7 @@ provideStrings({
   braveWalletAccounts: 'Accounts',
   braveWalletAccount: 'Account',
   braveWalletOwner: 'Owner',
+  braveWalletActivity: 'Activity',
   braveWalletTransactions: 'Transactions',
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
@@ -130,7 +131,7 @@ provideStrings({
   braveWalletButtonNext: 'Next',
   braveWalletButtonGotIt: 'Got it',
   braveWalletButtonCopy: 'Copy',
-  braveWalletButtonCopied: 'Copied',
+  braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
   braveWalletButtonClose: 'Close',
   braveWalletButtonMore: 'More',
@@ -241,7 +242,7 @@ provideStrings({
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',
-  braveWalletWalletPopupLock: 'Lock Wallet',
+  braveWalletWalletPopupLock: 'Lock wallet',
   braveWalletWalletPopupBackup: 'Backup Wallet',
   braveWalletWalletPopupConnectedSites: 'Connected sites',
 
@@ -328,7 +329,7 @@ provideStrings({
   braveWalletWatchListTokenName: 'Token name',
   braveWalletWatchListTokenAddress: 'Token address',
   braveWalletWatchListTokenSymbol: 'Token symbol',
-  braveWalletWatchListTokenDecimals: 'Decimals of percision',
+  braveWalletWatchListTokenDecimals: 'Decimals of precision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
   braveWalletWatchListSuggestion: 'Add $1 as a custom token',
@@ -689,7 +690,7 @@ provideStrings({
   braveWalletAssetFilterZToA: 'Name ↑',
 
   // Account Filter
-  braveWalletAccountFilterAllAccounts: 'All Accounts',
+  braveWalletAccountFilterAllAccounts: 'All accounts',
 
   // Transaction post-confirmation
 
@@ -799,5 +800,17 @@ provideStrings({
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
   braveWalletAddAssetNftTabTitle: 'NFT',
-  braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.'
+  braveWalletNftFetchingError:
+    'Something went wrong when fetching NFT details. Please try again later.',
+
+  // Add Custom Asset Form
+  braveWalletNetworkIsRequiredError: 'Network is required',
+  braveWalletTokenNameIsRequiredError: 'Token name is required',
+  braveWalletInvalidTokenContractAddressError:
+    'Invalid or empty token contract address',
+  braveWalletTokenSymbolIsRequiredError: 'Token symbol is required',
+  braveWalletTokenDecimalsIsRequiredError:
+    'Token decimals of precision value is required',
+  braveWalletTokenContractAddress: 'Token Contract Address',
+  braveWalletTokenDecimal: 'Token Decimal'
 })

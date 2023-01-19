@@ -111,6 +111,10 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.getAdDiagnostics()
   }
 
+  setAdDiagnosticId = (adDiagnosticId: string) => {
+    this.actions.setAdDiagnosticId(adDiagnosticId)
+  }
+
   render () {
     const {
       contributions,
@@ -153,7 +157,10 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
             <EventLogs items={eventLogs} />
           </div>
           <div data-key='adDiagnostics' data-title={getLocale('tabAdDiagnostics')}>
-            <AdDiagnostics entries={adDiagnostics} onGet={this.getAdDiagnostics}/>
+            <AdDiagnostics
+              adDiagnostics={adDiagnostics}
+              onGet={this.getAdDiagnostics}
+              setAdDiagnosticId={this.setAdDiagnosticId} />
           </div>
         </Tabs>
       </Wrapper>)

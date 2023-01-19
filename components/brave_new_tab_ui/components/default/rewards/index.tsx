@@ -135,6 +135,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     <RewardsCard
       rewardsEnabled={props.rewardsEnabled}
       userType={userTypeFromString(props.userType)}
+      vbatDeadline={props.parameters.vbatDeadline}
       isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
       adsEnabled={props.enabledAds}

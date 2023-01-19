@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Brave 브라우저 개발 앱</translation>
 <translation id="8292967014767479012">Brave 브라우저 앱</translation>
 <translation id="4743468424889072281">Brave 브라우저 개발 앱</translation>
-<translation id="732814027519296280">Brave Search 개선에 도움을 주고 싶으십니까?</translation>
-<translation id="2677865600861971449">웹 디스커버리 프로젝트에 참여하면 검색 및 인터넷 사용 기록 데이터 일부를 익명으로 보내 모두를 위해 Brave Search 결과 개선에 힘을 보탤 수 있습니다. 프라이버시는 철저히 보호되며, 번거롭지 않습니다. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">자세히 알아보기</translation>
-<translation id="5860491529813859533">사용</translation>
-<translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="5039804452771397117">허용</translation>
 <translation id="7053983685419859001">차단</translation>
 <translation id="1679356339067548863">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">다시 표시하지 않음</translation>
 <translation id="5234764350956374838">숨기기</translation>
 <translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
+<translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave 검색</translation>
+<translation id="8184318863960255706">추가 정보</translation>
+<translation id="6965382102122355670">좋습니다</translation>
+<translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
+<translation id="2245286910966863912">주소 표시줄에 Brave News 버튼 표시</translation>
 <translation id="1811404036171336214">새 탭 페이지에 책갈피 항상 표시</translation>
 <translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
@@ -334,6 +335,7 @@
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="8792121506918889955">WebRTC IP 처리 방침</translation>
+<translation id="6165508094623778733">더 알아보기</translation>
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>

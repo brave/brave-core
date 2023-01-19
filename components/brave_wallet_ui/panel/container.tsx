@@ -641,7 +641,8 @@ function Container () {
     )
   }
 
-  if (selectedPanel === 'transactions') {
+  // Transactions
+  if (selectedPanel === 'activity') {
     return (
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>

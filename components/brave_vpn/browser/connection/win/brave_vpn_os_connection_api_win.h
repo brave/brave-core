@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "base/no_destructor.h"
 #include "base/win/object_watcher.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
@@ -24,14 +23,12 @@ enum class CheckConnectionResult;
 class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
                                    public base::win::ObjectWatcher::Delegate {
  public:
+  BraveVPNOSConnectionAPIWin(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs);
   BraveVPNOSConnectionAPIWin(const BraveVPNOSConnectionAPIWin&) = delete;
   BraveVPNOSConnectionAPIWin& operator=(const BraveVPNOSConnectionAPIWin&) =
       delete;
-
- protected:
-  friend class base::NoDestructor<BraveVPNOSConnectionAPIWin>;
-
-  BraveVPNOSConnectionAPIWin();
   ~BraveVPNOSConnectionAPIWin() override;
 
  private:

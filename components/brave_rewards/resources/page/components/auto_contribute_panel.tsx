@@ -54,8 +54,10 @@ export function AutoContributePanel () {
   const [publisherCountText, setPublisherCountText] = React.useState('')
 
   React.useEffect(() => {
+    let active = true
     getPluralString('publisherCountText', data.autoContributeList.length)
-      .then(setPublisherCountText)
+      .then((value) => { active && setPublisherCountText(value) })
+    return () => { active = false }
   }, [data.autoContributeList.length])
 
   const activityList = data.autoContributeList.sort(
@@ -238,12 +240,18 @@ export function AutoContributePanel () {
           }
         </style.terms>
         <style.description>
-          {getString('contributionDesc')}
+          {
+            formatMessage(getString('contributionDesc'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink key='link' href={urls.creatorsURL}>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
         </style.description>
-        <style.disabled>
-          {getString('contributionDisabledText1')}&nbsp;
-          {getString('contributionDisabledText2')}
-        </style.disabled>
       </>
     )
   }
@@ -252,7 +260,17 @@ export function AutoContributePanel () {
     return (
       <>
         <style.description>
-          {getString('contributionDesc')}
+          {
+            formatMessage(getString('contributionDesc'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink key='link' href={urls.creatorsURL}>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
         </style.description>
         {
           activityList.length > 0 &&
@@ -279,7 +297,17 @@ export function AutoContributePanel () {
     return (
       <>
         <style.description>
-          {getString('contributionDesc')}
+          {
+            formatMessage(getString('contributionDesc'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink key='link' href={urls.creatorsURL}>
+                    {content}
+                  </NewTabLink>
+                )
+              }
+            })
+          }
         </style.description>
         <PanelItem label={getString('contributionMonthly')}>
           {renderMonthlyAmountSelect()}

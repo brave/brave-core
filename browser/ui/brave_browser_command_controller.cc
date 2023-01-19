@@ -131,9 +131,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (!is_guest_session) {
     // If Rewards is not supported due to OFAC sanctions we still want to show
     // the menu item.
-    if (brave_rewards::IsSupported(
-            browser_->profile()->GetPrefs(),
-            brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
+    if (brave_rewards::IsSupported(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveRewards();
     }
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
@@ -172,6 +170,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
+  UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {

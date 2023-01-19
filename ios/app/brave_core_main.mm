@@ -91,7 +91,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<const char*[]> _raw_args;
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
+  std::unique_ptr<Browser> _otr_browser;
   BrowserList* _browserList;
+  BrowserList* _otr_browserList;
   ChromeBrowserState* _mainBrowserState;
   scoped_refptr<brave::BraveP3AService> _p3a_service;
   scoped_refptr<brave::HistogramsBraveizer> _histogram_braveizer;
@@ -198,9 +200,18 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         browserStateManager->GetLastUsedBrowserState();
     _mainBrowserState = chromeBrowserState;
 
+    // Setup main browser
     _browserList = BrowserListFactory::GetForBrowserState(_mainBrowserState);
     _browser = Browser::Create(_mainBrowserState);
     _browserList->AddBrowser(_browser.get());
+
+    // Setup otr browser
+    ChromeBrowserState* otrChromeBrowserState =
+        chromeBrowserState->GetOffTheRecordChromeBrowserState();
+    _otr_browserList =
+        BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
+    _otr_browser = Browser::Create(otrChromeBrowserState);
+    _otr_browserList->AddIncognitoBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
@@ -229,6 +240,14 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncProfileService = nil;
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
+
+  _otr_browserList =
+      BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
+  [_otr_browser->GetCommandDispatcher() prepareForShutdown];
+  _otr_browserList->RemoveBrowser(_otr_browser.get());
+  _otr_browser->GetWebStateList()->CloseAllWebStates(
+      WebStateList::CLOSE_NO_FLAGS);
+  _otr_browser.reset();
 
   _browserList =
       BrowserListFactory::GetForBrowserState(_browser->GetBrowserState());

@@ -42,6 +42,17 @@ constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletActivity", IDS_BRAVE_WALLET_ACTIVITY},
+    {"braveWalletTokenDecimalsIsRequiredError",
+     IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR},
+    {"braveWalletTokenSymbolIsRequiredError",
+     IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR},
+    {"braveWalletInvalidTokenContractAddressError",
+     IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR},
+    {"braveWalletTokenNameIsRequiredError",
+     IDS_BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR},
+    {"braveWalletNetworkIsRequiredError",
+     IDS_BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR},
     {"braveWalletEnterYourPasswordToStartBackup",
      IDS_BRAVE_WALLET_ENTER_YOUR_PASSWORD_TO_START_BACKUP},
     {"braveWalletEnterAPassswordToContinue",
@@ -971,6 +982,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPortfolioHideTokenMenuLabel",
      IDS_BRAVE_WALLET_PORTFOLIO_VIEW_HIDE_TOKEN_LABEL},
     {"braveWalletHideTokenModalTitle", IDS_BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE},
+    {"braveWalletTokenContractAddress",
+     IDS_BRAVE_WALLET_TOKEN_CONTRACT_ADDRESS},
+    {"braveWalletTokenDecimal", IDS_BRAVE_WALLET_TOKEN_DECIMAL},
     {"braveWalletMakeTokenVisibleInstructions",
      IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS},
     {"braveWalletConfirmHidingToken", IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN},
@@ -1086,6 +1100,7 @@ constexpr char kSolanaFeeRecipient[] =
     "3NUW8hWoCnLgJwWCVnwdFo2Dsz8bKwLac9A3VgS2jLUQ";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
+constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
 
 constexpr char kPolygonMainnetEndpoint[] = "https://mainnet-polygon.brave.com/";
 

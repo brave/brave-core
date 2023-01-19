@@ -103,7 +103,7 @@ export const reduxState: Rewards.ApplicationState = {
       }
     ],
     adsData: {
-      adsEnabled: true,
+      adsEnabled: false,
       adsPerHour: 0,
       adsSubdivisionTargeting: '',
       automaticallyDetectedAdsSubdivisionTargeting: '',
@@ -203,7 +203,9 @@ export const reduxState: Rewards.ApplicationState = {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: [] },
         uphold: { allow: [], block: [] }
-      }
+      },
+      vbatDeadline: undefined,
+      vbatExpired: false
     },
     initializing: false,
     showOnboarding: false,

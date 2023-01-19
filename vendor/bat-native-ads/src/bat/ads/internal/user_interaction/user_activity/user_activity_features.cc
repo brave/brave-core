@@ -1,13 +1,13 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_features.h"
 
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/base/metrics/field_trial_params_util.h"
+#include "bat/ads/internal/common/metrics/field_trial_params_util.h"
 
 namespace ads::user_activity::features {
 

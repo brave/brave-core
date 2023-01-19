@@ -40,7 +40,6 @@
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
     *** isScrollableMvtEnabled(...);
-    *** hasLoadCompleted(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -460,6 +459,14 @@
 
 -keep class org.chromium.chrome.browser.autofill.BraveAutofillPopupBridge {
     public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.download.BraveDownloadMessageUiControllerImpl {
+    *** isVisibleToUser(...);
+}
+
+-keep class org.chromium.chrome.browser.download.DownloadMessageUiControllerImpl {
+    *** isVisibleToUser(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {

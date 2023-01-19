@@ -1,3 +1,0 @@
-declare_args() {
-  brave_adaptive_captcha_enabled = true
-}

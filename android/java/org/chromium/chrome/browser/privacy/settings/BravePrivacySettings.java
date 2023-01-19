@@ -19,6 +19,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -428,11 +429,12 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
         } else if (PREF_SEND_P3A.equals(key)) {
-            BravePrefServiceBridge.getInstance().setP3AEnabled((boolean) newValue);
+            BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, (boolean) newValue);
+            BraveLocalState.commitPendingWrite();
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
             UmaSessionStats.changeMetricsReportingConsent((boolean) newValue);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
-            BravePrefServiceBridge.getInstance().setStatsReportingEnabled((boolean) newValue);
+            BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         } else if (PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR.equals(key)) {
@@ -565,7 +567,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 getActivity().getResources().getString(R.string.send_p3a_analytics_summary));
 
         if (BraveConfig.P3A_ENABLED) {
-            mSendP3A.setChecked(BravePrefServiceBridge.getInstance().getP3AEnabled());
+            mSendP3A.setChecked(BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED));
         } else {
             getPreferenceScreen().removePreference(mSendP3A);
         }
@@ -573,7 +575,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
 
         mBraveStatsUsagePing.setChecked(
-                BravePrefServiceBridge.getInstance().getStatsReportingEnabled());
+                BraveLocalState.get().getBoolean(BravePref.STATS_REPORTING_ENABLED));
 
         mWebrtcPolicy.setSummary(
                 webrtcPolicyToString(BravePrefServiceBridge.getInstance().getWebrtcPolicy()));

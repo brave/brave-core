@@ -23,6 +23,7 @@
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
 #include "base/threading/sequence_bound.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -489,6 +490,8 @@ class RewardsServiceImpl : public RewardsService,
   uint64_t GetUint64State(const std::string& name) const override;
   void SetValueState(const std::string& name, base::Value value) override;
   base::Value GetValueState(const std::string& name) const override;
+  void SetTimeState(const std::string& name, base::Time time) override;
+  base::Time GetTimeState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
 
   bool GetBooleanOption(const std::string& name) const override;

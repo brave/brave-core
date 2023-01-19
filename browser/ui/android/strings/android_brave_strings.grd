@@ -207,7 +207,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Turn notifications back on if you'd like to keep earning BAT
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
-        Turn notifications back on if you\'d like to keep receiving weekly privacy reports.
+        Turn notifications back on if you'd like to keep receiving weekly privacy reports.
       </message>
      <message name="IDS_NOTIFICATION_OS_DIALOG_HEADER_BOTH_REWARDS_PRIVACY" desc="Text header for When BOTH Brave Rewards and Privacy Report are TURNED ON.">
         You're not earning Rewards or receiving Privacy Reports
@@ -606,13 +606,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Clear browsing data
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
-        Background video playback
+        Background play
       </message>
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
         Closing all tabs closes Brave
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Allows audio to continue playing when you switch to another tab in Brave, switch to another app, or your device screen is off.
+        Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
       <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
         Enabled
@@ -1079,8 +1079,17 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
         This will delete your Brave Rewards and reset all of your Brave Rewards data
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BOOKMARK" desc="Content description for the bookmark button.">
-        Create a bookmark
+      <message name="IDS_ADD_BOOKMARK_MENU" desc="Add Bookmark menu item text for the bookmark button.">
+        Add Bookmark
+      </message>
+      <message name="IDS_DELETE_BOOKMARK_MENU" desc="Delete Bookmark menu item text for the bookmark button.">
+        Delete Bookmark
+      </message>
+      <message name="IDS_EDIT_BOOKMARK_MENU" desc="Edit Bookmark menu item text for the bookmark button.">
+        Edit Bookmark
+      </message>
+      <message name="IDS_VIEW_BOOKMARKS_MENU" desc="View Bookmarks menu item text for the bookmark button.">
+        View Bookmarks
       </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
@@ -1643,6 +1652,12 @@ Are you sure you want to do this?
       <message name="IDS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE_TITLE" desc="Title for preference that allows the user to open downloads automatically.">
         Automatically open when possible
       </message>
+      <message name="IDS_DOWNLOAD_PROGRESS_NOTIFICATION_TITLE" desc="Title for preference that allows the user to enable disable download progress notifications bubble.">
+        Show download progress notifications
+      </message>
+      <message name="IDS_BRAVE_DOWNLOAD_LOCATION_PROMPT_ENABLED_TITLE" desc="Title for preference that allows the user to indicate whether they want to show a change downloads location prompt every time they download.">
+        Ask where to save files (if SD card is detected)
+      </message>
       <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
         View full Privacy Report
       </message>
@@ -2014,7 +2029,7 @@ Are you sure you want to do this?
       Balance:
     </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
-      Continue to Wyre
+      Continue to Ramp
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
@@ -3439,6 +3454,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Searching for wallet domain progress message.">
       Searching for domain...
+    </message>
+    <message name="IDS_REWARDS_TIPPING_SELECT_AMOUNT" desc="Select tipping amount text">
+      Please select amount to tip
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
+      NFTs
     </message>
   </messages>
   </release>

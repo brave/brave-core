@@ -259,7 +259,8 @@ public class BraveToolbarManager extends ToolbarManager {
                     mActivity, mWindowAndroid, mLayoutManager,
                     mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
                     mFullscreenManager, mBottomControls, mTabGroupUi, mTabObscuringHandler,
-                    mOverlayPanelVisibilitySupplier, getConstraintsProxy()));
+                    mOverlayPanelVisibilitySupplier, getConstraintsProxy(), mBookmarkModelSupplier,
+                    mLocationBarModel));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
             updateBottomToolbarVisibility();

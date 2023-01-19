@@ -1,11 +1,13 @@
-// Copyright 2018 The Brave Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 #define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
   private: \
@@ -52,6 +54,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   bool IsIPFSCommandIdEnabled(int command) const;
 
   ui::SimpleMenuModel ipfs_submenu_model_;
+#endif
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  void CopyTextFromImage();
 #endif
 };
 

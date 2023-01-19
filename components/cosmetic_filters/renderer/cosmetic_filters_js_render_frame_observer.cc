@@ -124,11 +124,7 @@ void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {
 void CosmeticFiltersJsRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (world_id != isolated_world_id_ ||
-      (!base::FeatureList::IsEnabled(
-           brave_shields::features::
-               kBraveAdblockCosmeticFilteringChildFrames) &&
-       !render_frame()->IsMainFrame()))
+  if (world_id != isolated_world_id_)
     return;
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);

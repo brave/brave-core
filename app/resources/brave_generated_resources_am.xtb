@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
 <translation id="8292967014767479012">የ Brave መዳሰሻ መተግበሪያዎች</translation>
 <translation id="4743468424889072281">የ Brave አሳሽ ማጎልበቻ መተግበሪያዎች</translation>
-<translation id="732814027519296280">Brave Searchን በይበልጥ ማሻሻል ይፈልጋሉ?</translation>
-<translation id="2677865600861971449">ስም አልባ በሆነ መንገድ &amp; የአሰሳ ውሂብ ኣስተዋጾ ለማድረግ እና ለሁሉም Brave Searchን ለማሻሻል ወደ የድር ግኝት ፕሮጄክት ለመግባት ይምረጡ። ግላዊነት ይጠበቃል፣ እናም ያለምንም ስራ። <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">የበለጠ ለመረዳት</translation>
-<translation id="5860491529813859533">አብራ</translation>
-<translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="1679356339067548863">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
@@ -119,6 +114,11 @@
 <translation id="5026874946691314267">ይህንን እንደገና አታሳይ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
 <translation id="5100490448228945668">የ Brave ፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ Enter የሚለውን ተጫን</translation>
+<translation id="9194637241566114638">ስም-አልባ የአጠቃቀም ዳታዎችን በመላክ <ph name="MORE_INFO"/><ph name="SEARCH_NAME"/> በማሻሻል ላይ ድጋፍ ያድርጉ።</translation>
+<translation id="7404610376221341525">የ Brave ፍለጋ</translation>
+<translation id="8184318863960255706">ተጨማሪ መረጃ</translation>
+<translation id="6965382102122355670">እሺ</translation>
+<translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
@@ -244,6 +244,7 @@
 <translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
+<translation id="2245286910966863912">የ Brave ዜናዎች አዝራርን በአድራሻ አሞሌ ላይ አሳይ</translation>
 <translation id="1811404036171336214">ምንጊዜም በአዲስ የ ትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
 <translation id="3416468988018290825">ሁልጊዜ ሙሉ URLs አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
@@ -338,6 +339,7 @@
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
+<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
 <translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>

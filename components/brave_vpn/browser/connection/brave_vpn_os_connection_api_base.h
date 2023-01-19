@@ -41,9 +41,6 @@ class BraveVPNOSConnectionAPIBase
   bool IsInProgress() const;
 
   // BraveVPNOSConnectionAPI
-  void SetLocalPrefs(PrefService* prefs) override;
-  void SetSharedUrlLoaderFactory(scoped_refptr<network::SharedURLLoaderFactory>
-                                     url_loader_factory) override;
   void SetTargetVpnEntryName(const std::string& name) override;
   mojom::ConnectionState GetConnectionState() const override;
   void Connect() override;
@@ -59,7 +56,9 @@ class BraveVPNOSConnectionAPIBase
   std::string GetLastConnectionError() const override;
 
  protected:
-  BraveVPNOSConnectionAPIBase();
+  BraveVPNOSConnectionAPIBase(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs);
   ~BraveVPNOSConnectionAPIBase() override;
 
   // Subclass should add platform dependent impls.
@@ -119,9 +118,9 @@ class BraveVPNOSConnectionAPIBase
                                bool success);
   void UpdateAndNotifyConnectionStateChange(mojom::ConnectionState state);
   BraveVpnAPIRequest* GetAPIRequest();
+
   // True when do quick cancel.
   bool QuickCancelIfPossible();
-
   void SetPreventCreationForTesting(bool value);
 
   bool cancel_connecting_ = false;

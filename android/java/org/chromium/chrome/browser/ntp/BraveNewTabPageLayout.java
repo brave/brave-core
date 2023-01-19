@@ -23,7 +23,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -50,6 +49,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -98,7 +98,6 @@ import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.query_tiles.BraveQueryTileSection;
@@ -195,8 +194,6 @@ public class BraveNewTabPageLayout
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNews;
     private boolean mIsDisplayNewsOptin;
-    private Pair<Boolean, Integer> mDeferredSetSearchProviderTopMargin;
-    private Pair<Boolean, Integer> mDeferredSetSearchProviderBottomMargin;
 
     private Supplier<Tab> mTabProvider;
 
@@ -210,8 +207,6 @@ public class BraveNewTabPageLayout
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
-        mDeferredSetSearchProviderTopMargin = new Pair<>(false, 0);
-        mDeferredSetSearchProviderBottomMargin = new Pair<>(false, 0);
     }
 
     @Override
@@ -307,20 +302,21 @@ public class BraveNewTabPageLayout
         }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             initBraveNewsController();
-            if (BraveActivity.getBraveActivity() != null
-                    && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
+            if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-                    if (tab != null && tab.getUrl().getSpec() != null
-                            && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
-                        // purges display ads on tab change
-                        if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
-                            if (mBraveNewsController != null) {
-                                mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                    if (BraveActivity.getBraveActivity() != null) {
+                        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                        if (tab != null && tab.getUrl().getSpec() != null
+                                && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
+                            // purges display ads on tab change
+                            if (BraveActivity.getBraveActivity().getLastTabId() != tab.getId()) {
+                                if (mBraveNewsController != null) {
+                                    mBraveNewsController.onDisplayAdPurgeOrphanedEvents();
+                                }
                             }
-                        }
 
-                        BraveActivity.getBraveActivity().setLastTabId(tab.getId());
+                            BraveActivity.getBraveActivity().setLastTabId(tab.getId());
+                        }
                     }
                 });
             }
@@ -333,8 +329,6 @@ public class BraveNewTabPageLayout
                 SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
             }
         }
-
-        runDeferredSetMargins();
         setNtpViews();
     }
 
@@ -515,18 +509,23 @@ public class BraveNewTabPageLayout
 
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                        if (lastVisibleItemPosition >= newsFeedPosition
+                        if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0
+                                && lastVisibleItemPosition >= newsFeedPosition
                                 && lastVisibleItemPosition > mPrevVisibleNewsCardPosition) {
                             for (int i = mPrevVisibleNewsCardPosition + 1;
                                     i <= lastVisibleItemPosition; i++) {
-                                FeedItemsCard itemsCard =
-                                        mNewsItemsFeedCard.get(i - newsFeedPosition);
-                                if (itemsCard != null) {
-                                    List<FeedItemCard> feedItems = itemsCard.getFeedItems();
-                                    // Two items are shown as two cards side by side,
-                                    // and three or more items is shown as one card as a list
-                                    mNewsSessionCardViews +=
-                                            feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                int itemCardPosition = i - newsFeedPosition;
+                                if (itemCardPosition >= 0
+                                        && itemCardPosition < mNewsItemsFeedCard.size()) {
+                                    FeedItemsCard itemsCard =
+                                            mNewsItemsFeedCard.get(itemCardPosition);
+                                    if (itemsCard != null) {
+                                        List<FeedItemCard> feedItems = itemsCard.getFeedItems();
+                                        // Two items are shown as two cards side by side,
+                                        // and three or more items is shown as one card as a list
+                                        mNewsSessionCardViews +=
+                                                feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                    }
                                 }
                             }
                             if (mBraveNewsController != null) {
@@ -988,8 +987,10 @@ public class BraveNewTabPageLayout
                     } // end page loop
 
                     processFeed(isNewContent);
-                    BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
-                    BraveActivity.getBraveActivity().setLoadedFeed(true);
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
+                        BraveActivity.getBraveActivity().setLoadedFeed(true);
+                    }
                 });
             }
         };
@@ -1408,42 +1409,11 @@ public class BraveNewTabPageLayout
 
     @Override
     void setSearchProviderTopMargin(int topMargin) {
-        if (hasLoadCompleted()) {
-            mLogoCoordinator.setTopMargin(topMargin);
-        } else {
-            mDeferredSetSearchProviderTopMargin = new Pair<>(true, topMargin);
-        }
+        if (mLogoCoordinator != null) mLogoCoordinator.setTopMargin(topMargin);
     }
 
     @Override
     void setSearchProviderBottomMargin(int bottomMargin) {
-        if (hasLoadCompleted()) {
-            mLogoCoordinator.setBottomMargin(bottomMargin);
-        } else {
-            mDeferredSetSearchProviderBottomMargin = new Pair<>(true, bottomMargin);
-        }
-    }
-
-    @Override
-    public void onTilesLoaded() {
-        super.onTilesLoaded();
-        runDeferredSetMargins();
-    }
-
-    private void runDeferredSetMargins() {
-        if (mDeferredSetSearchProviderTopMargin != null
-                && mDeferredSetSearchProviderTopMargin.first) {
-            mLogoCoordinator.setTopMargin(mDeferredSetSearchProviderTopMargin.second);
-            mDeferredSetSearchProviderTopMargin = new Pair<>(false, 0);
-        }
-        if (mDeferredSetSearchProviderBottomMargin != null
-                && mDeferredSetSearchProviderBottomMargin.first) {
-            mLogoCoordinator.setBottomMargin(mDeferredSetSearchProviderBottomMargin.second);
-            mDeferredSetSearchProviderBottomMargin = new Pair<>(false, 0);
-        }
-    }
-
-    private boolean hasLoadCompleted() {
-        return false;
+        if (mLogoCoordinator != null) mLogoCoordinator.setBottomMargin(bottomMargin);
     }
 }

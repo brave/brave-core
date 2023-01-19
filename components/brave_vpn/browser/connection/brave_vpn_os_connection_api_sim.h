@@ -17,7 +17,9 @@ namespace brave_vpn {
 
 class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
  public:
-  BraveVPNOSConnectionAPISim();
+  BraveVPNOSConnectionAPISim(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PrefService* local_prefs);
   ~BraveVPNOSConnectionAPISim() override;
 
   BraveVPNOSConnectionAPISim(const BraveVPNOSConnectionAPISim&) = delete;

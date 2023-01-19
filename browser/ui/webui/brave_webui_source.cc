@@ -342,6 +342,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsUnsupportedRegionNoticeLearnMore", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE},  // NOLINT
         { "rewardsUnsupportedRegionNoticeText1", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1},  // NOLINT
         { "rewardsUnsupportedRegionNoticeText2", IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2},  // NOLINT
+        {"rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1},
+        {"rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2},
+        {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
+        {"rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2},
 
         // Brave Talk  Widget
         { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
@@ -364,8 +368,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       std::string("rewards"), {
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
-        { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
-        { "adsDisabledTextTwo",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO },                // NOLINT
         { "adsNotificationsReceived",  IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },     // NOLINT
         { "adsNotSupportedRegion", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },           // NOLINT
         { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },           // NOLINT
@@ -394,8 +396,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "contributionMonthly",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY },
         { "contributionNextDate",  IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE },
         { "contributionSites",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES },
-        { "contributionDisabledText1",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1 },          // NOLINT
-        { "contributionDisabledText2",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2 },          // NOLINT
         { "contributionVisitSome",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME },
         { "contributionMinTime",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME },
         { "contributionMinVisits",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS },
@@ -587,6 +587,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsBackupNoticeText2", IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2 },                // NOLINT
         { "rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS },
         { "rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS },
+        { "rewardsConnectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
         { "rewardsContribute", IDS_BRAVE_UI_REWARDS_CONTRIBUTE },
         { "rewardsContributeAttention", IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION },             // NOLINT
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
@@ -602,6 +603,10 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsResetTextFunds", IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS },
         { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
         { "rewardsSummary", IDS_BRAVE_UI_REWARDS_SUMMARY },
+        { "rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1 },
+        { "rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2 },
+        { "rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1 },
+        { "rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2 },
         { "saved", IDS_BRAVE_UI_ADS_SAVED },
         { "saveAd", IDS_BRAVE_UI_ADS_SAVE_AD },
         { "seeAllItems", IDS_BRAVE_UI_SEE_ALL_ITEMS },
@@ -655,9 +660,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE },
         { "upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO },
 
-        { "upholdPromoEquitiesTitle",IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_TITLE },                 // NOLINT
-        { "upholdPromoEquitiesInfo", IDS_BRAVE_UI_UPHOLD_PROMO_EQUITIES_INFO },
-        { "connectAccount", IDS_REWARDS_CONNECT_ACCOUNT },
         { "connectAccountNoProviders", IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS },  // NOLINT
         { "connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT },
         { "learnMore", IDS_REWARDS_LEARN_MORE },
@@ -802,6 +804,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
       }
     }, {
       std::string("rewards-internals"), {
+        { "adDiagnosticId", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID },
+        { "adDiagnosticInfo", IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO },                  // NOLINT
         { "adsNotInitialized", IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED },                // NOLINT
         { "amount", IDS_BRAVE_REWARDS_INTERNALS_AMOUNT },
         { "autoRefresh", IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH },

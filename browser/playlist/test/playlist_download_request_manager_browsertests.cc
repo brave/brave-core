@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/playlist_download_request_manager.h"
+#include "brave/components/playlist/browser/playlist_download_request_manager.h"
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/playlist/media_detector_component_manager.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -19,30 +20,32 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
-// Usage of this matcher:
-//   std::vector<PlaylistItemInfo> actual = { ... };
-//   std::vector<PlaylistItemInfo> expected = { ... };
-//   EXPECT_THAT(actual, IsSamePlaylistItems(expected));
-MATCHER_P(IsSamePlaylistItems, expected, "") {
-  auto equal = [](const auto& a, const auto& b) {
-    // id is not compared because it is generated for actual items.
-    return a.media_file_path == b.media_file_path && a.title == b.title &&
-           a.thumbnail_path == b.thumbnail_path;
-  };
-  return base::ranges::equal(arg, expected, equal);
-}
-
 class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
  public:
+  struct ExpectedData {
+    std::string name;
+    std::string thumbnail_source;
+    std::string media_source;
+  };
+
   PlaylistDownloadRequestManagerBrowserTest() {
     playlist::PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
         ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
   ~PlaylistDownloadRequestManagerBrowserTest() override = default;
 
-  void LoadHTMLAndCheckResult(
-      const std::string& html,
-      const std::vector<playlist::PlaylistItemInfo>& items) {
+  playlist::mojom::PlaylistItemPtr CreateItem(const ExpectedData& data) {
+    auto item = playlist::mojom::PlaylistItem::New();
+    item->name = data.name;
+    item->thumbnail_source = GURL(data.thumbnail_source);
+    item->thumbnail_path = GURL(data.thumbnail_source);
+    item->media_source = GURL(data.media_source);
+    item->media_path = GURL(data.media_source);
+    return item;
+  }
+
+  void LoadHTMLAndCheckResult(const std::string& html,
+                              const std::vector<ExpectedData>& items) {
     const auto* test_info =
         testing::UnitTest::GetInstance()->current_test_info();
     VLOG(2) << test_info->name() << ": " << __func__;
@@ -64,9 +67,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     ASSERT_FALSE(component_manager_->GetMediaDetectorScript().empty());
     playlist::PlaylistDownloadRequestManager::Request request;
     request.url_or_contents = active_web_contents->GetWeakPtr();
-    request.callback =
-        base::BindOnce(&PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
-                       base::Unretained(this), test_info->name(), items);
+    request.callback = base::BindOnce(
+        &PlaylistDownloadRequestManagerBrowserTest::OnGetMedia,
+        base::Unretained(this), test_info->name(), std::move(items));
     request_manager_->GetMediaFilesFromPage(std::move(request));
 
     // Block until result is received from OnGetMedia().
@@ -113,33 +116,32 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
 
   void OnGetMedia(const char* test_name,
-                  const std::vector<playlist::PlaylistItemInfo>& expected_items,
-                  const std::vector<playlist::PlaylistItemInfo>& actual_items) {
+                  std::vector<ExpectedData> expected_data,
+                  std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
     VLOG(2) << test_name << ": " << __func__;
+
+    std::vector<playlist::mojom::PlaylistItemPtr> expected_items;
+    base::ranges::for_each(expected_data, [&](auto& item) {
+      if (!item.thumbnail_source.empty()) {
+        item.thumbnail_source =
+            embedded_test_server()->GetURL(item.thumbnail_source).spec();
+      }
+
+      if (!item.media_source.empty()) {
+        item.media_source =
+            embedded_test_server()->GetURL(item.media_source).spec();
+      }
+      expected_items.push_back(CreateItem(item));
+    });
 
     EXPECT_EQ(actual_items.size(), expected_items.size());
 
-    auto path_fixer = [this](auto& item) {
-      if (!item.media_file_path.empty()) {
-        item.media_file_path =
-            embedded_test_server()->GetURL(item.media_file_path).spec();
-      }
-
-      if (!item.thumbnail_path.empty()) {
-        item.thumbnail_path =
-            embedded_test_server()->GetURL(item.thumbnail_path).spec();
-      }
+    auto equal = [](const auto& a, const auto& b) {
+      // id is not compared because it is generated for actual items.
+      return a->media_path == b->media_path && a->name == b->name &&
+             a->thumbnail_path == b->thumbnail_path;
     };
-    auto comparer = [](const auto& a, const auto& b) {
-      return a.media_file_path < b.media_file_path;
-    };
-    std::vector sorted_expected(expected_items.begin(), expected_items.end());
-    base::ranges::for_each(sorted_expected, path_fixer);
-    base::ranges::sort(sorted_expected, comparer);
-
-    std::vector sorted_actual(actual_items.begin(), actual_items.end());
-    base::ranges::sort(sorted_actual, comparer);
-    EXPECT_THAT(sorted_actual, IsSamePlaylistItems(sorted_expected));
+    EXPECT_TRUE(base::ranges::equal(actual_items, expected_items, equal));
 
     ASSERT_TRUE(run_loop_);
     run_loop_->Quit();
@@ -152,7 +154,6 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest, NoMedia) {
-  using playlist::PlaylistItemInfo;
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>
@@ -163,22 +164,17 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest, NoMedia) {
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                        SrcAttributeTest) {
-  using playlist::PlaylistItemInfo;
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>
           <video src="test.mp4"/>
         </body></html>
       )html",
-      {
-          {PlaylistItemInfo::Title(""), PlaylistItemInfo::ThumbnailPath(""),
-           PlaylistItemInfo::MediaFilePath("/test.mp4")},
-      });
+      {{.name = "", .thumbnail_source = "", .media_source = "/test.mp4"}});
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                        SrcElementTest) {
-  using playlist::PlaylistItemInfo;
   LoadHTMLAndCheckResult(
       R"html(
         <html><body>
@@ -188,10 +184,6 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
           </video>
         </body></html>
       )html",
-      {
-          {PlaylistItemInfo::Title(""), PlaylistItemInfo::ThumbnailPath(""),
-           PlaylistItemInfo::MediaFilePath("/test1.mp4")},
-          {PlaylistItemInfo::Title(""), PlaylistItemInfo::ThumbnailPath(""),
-           PlaylistItemInfo::MediaFilePath("/test2.mp4")},
-      });
+      {{.name = "", .thumbnail_source = "", .media_source = "/test1.mp4"},
+       {.name = "", .thumbnail_source = "", .media_source = "/test2.mp4"}});
 }

@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Naršyklėje „Brave“ galite pradėti privatų pokalbį.</translation>
 <translation id="4903286433687221248">Pradėkite neribotai skambinti draugams ir bendradarbiams per „Brave Talk“.</translation>
 <translation id="7115051913071512405">Išbandykite</translation>
-<translation id="1447534717041828517">Rodyti „Brave“ naujienų mygtuką įrankių juostoje</translation>
 <translation id="370665806235115550">Įkeliama...</translation>
 <translation id="4634933166298842522">Tvarkyti prenumeratas</translation>
 <translation id="4108314971463891922">Prenumeruoti</translation>
@@ -548,7 +547,7 @@
 <translation id="4639659520811817892">Apsilankykite creators.brave.com, užsiregistruokite ir uždirbkite BAT žetonų kurdami turinį savo gerbėjams.</translation>
 <translation id="4816455138209470435">„Brave“ palaiko „YouTube“, „Twitch“, „Vimeo“ ir kitas platformas!</translation>
 <translation id="3656941797339037856">Susiekite „Rewards“ su „Gemini“!</translation>
-<translation id="31532096120351460">„Gemini“ prekiaukite daugiau nei 50 kriptovaliutų, įskaitant BAT. Tai saugi platforma kriptovaliutoms laikyti. Be to, US, HK ir  SG galite gauti palūkanų.</translation>
+<translation id="2888702144235098855">„Gemini“ prekiaukite daugiau nei 50 kriptovaliutų, įskaitant BAT. Tai saugi platforma kriptovaliutoms laikyti.</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
@@ -751,7 +750,7 @@
 <translation id="2394961582378297792">Atsijungta</translation>
 <translation id="6080167751812750226">Atsijungti nuo <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Numatomas uždarbis</translation>
-<translation id="4244985009709452836">Prisijungti prie savo <ph name="PROVIDER"/> paskyros</translation>
+<translation id="7934950257968365573">Prisijungti prie savo <ph name="PROVIDER"/> paskyros</translation>
 <translation id="2613359062756190460">Vienkartiniai arbatpinigiai</translation>
 <translation id="590733288489975971">Atlygis už reklamą</translation>
 <translation id="6181762795539107980">Nepatvirtinta</translation>
@@ -1294,11 +1293,9 @@
 <translation id="3898731124813934210">Pirkti naudojant Wyre</translation>
 <translation id="5522073372365069684">Pirkti naudojant Ramp</translation>
 <translation id="7902920577183739843">Pirkti naudojant „Sardine“</translation>
-<translation id="6534275647567011533">Pirkti naudojant „Transak“</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">„Sardine“</translation>
-<translation id="503018546142690471">„Transak“</translation>
 <translation id="7667423728712601865">Įsigykite kriptovaliutų, naudodami „Visa“ arba „Mastercard“.</translation>
 <translation id="3101839349578102016">Greitas pirkimas naudojantis banko sąskaita. Mažesni mokesčiai.</translation>
 <translation id="8528916244724490964">Visi tinklai</translation>
@@ -1554,19 +1551,26 @@
 <translation id="8265589281845759879">Automobiliai</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="3706423975342040244">Pramogos</translation>
+<translation id="3284069358246729581">Pramogų naujienos</translation>
 <translation id="1432147735538902155">Mada</translation>
+<translation id="3350377832708834609">Filmai ir televizija</translation>
 <translation id="736592699917579616">Maistas</translation>
 <translation id="5104499318017527547">Linksmybės</translation>
 <translation id="2228584369802328636">Žaidimai</translation>
 <translation id="6941852195052765076">Sveikata</translation>
 <translation id="932327136139879170">Kontaktinė namų informacija</translation>
+<translation id="5178222043222938163">Muzika</translation>
 <translation id="1322083935398004629">Politika</translation>
+<translation id="8739620487574841501">Regiono naujienos</translation>
 <translation id="3872834068356954457">Mokslas</translation>
 <translation id="1264974993859112054">Sportas</translation>
 <translation id="2283599456633275070">Kelionės</translation>
 <translation id="7487067081878637334">Technologija</translation>
+<translation id="151743034625508713">Technikos naujienos</translation>
+<translation id="2388279876296929435">Technikos apžvalgos</translation>
 <translation id="5030268312472358928">Svarbiausios naujienos</translation>
 <translation id="5510475084662028636">Svarbiausi šaltiniai</translation>
+<translation id="1297570508541015874">JAV naujienos</translation>
 <translation id="1459693405370120464">Orai</translation>
 <translation id="8366057325711477500">Pasaulio naujienos</translation>
 <translation id="6303294677342628402">Skydai</translation>
@@ -1617,13 +1621,17 @@
 <translation id="2453860139492968684">Užbaigti</translation>
 <translation id="2273851479262317744">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
 <translation id="5037676449506322593">Pasirinkti viską</translation>
-<translation id="8330804319517911603">Padėkite mums tobulinti „Brave“</translation>
-<translation id="2867964979837593892">Tobuliname savo produktą. Saugome jūsų privatumą. Kasdien.</translation>
-<translation id="7661940959332108190">Siųsti diagnostikos duomenis sutrikus „Brave“ naršyklės veikimui.</translation>
-<translation id="6358373266071757311">Dalinkitės anoniminėmis, privačiomis įžvalgomis apie mūsų produktus. Tai padeda mums sužinoti, kokios „Brave“ funkcijos naudojamos dažniausiai.</translation>
+<translation id="5148943178722443958">Padėkite tobulinti „Brave“.</translation>
+<translation id="1097073572755862978">Siųskite diagnostikos ataskaitas įvykus strigčiai. <ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Dalinkitės visiškai privačiomis ir anoniminėmis įžvalgomis apie tai, kokiomis produktų funkcijomis naudojasi „Brave“ naudotojai. <ph name="LINK_BEFORE"/>Sužinoti daugiau.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Naršyklės sąranka baigta</translation>
 <translation id="3141206739023333979">Galite bet kada pakeisti šias parinktis, atvėrę <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Perskaitykite mūsų <ph name="LINK_BEFORE"/>privatumo politiką<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Rinktis temą</translation>
+<translation id="6262510489122516114">Tai galite bet kada keisti „Brave“ nustatymuose.</translation>
+<translation id="546481172717459539">Taikyti pagal sistemos nustatymus</translation>
+<translation id="7799817062559422778">Šviesus režimas</translation>
+<translation id="4117637339509843559">Tamsusis režimas</translation>
 <translation id="7821773512278295352">„Brave Firewall + VPN“: prisijungta</translation>
 <translation id="6019088868713395120">„Brave Firewall + VPN“: atsijungta</translation>
 <translation id="3541307549916475335">„Brave“ VPN skydelio UI</translation>
@@ -1669,7 +1677,12 @@
 <translation id="3307461350293459700">Ryšio su VPN užmegzti nepavyko. Pabandykite prisijungti dar kartą ir būtinai spustelėkite „Leisti“, kad įgalintumėte „Brave“ VPN konfigūraciją.</translation>
 <translation id="7261518280726313829">Išjungus saugų DNS arba naudojant numatytuosius „Windows“ serverius, jūsų interneto paslaugų teikėjui gali būti atskleisti svetainių, kuriose lankotės, pavadinimai. „Brave“ to daryti nerekomenduoja. Ar vis tiek norite tai daryti?</translation>
 <translation id="888284761945060750">Saugus DNS yra išjungtas pagal jūsų organizacijos politiką. Naudojant „Brave“ VPN be saugaus DNS jūsų interneto paslaugų teikėjui arba organizacijai gali būti atskleisti svetainių, kuriose lankotės, pavadinimai.</translation>
+<translation id="6593224083874259773">„Brave“ VPN sistemoje „Windows“</translation>
+<translation id="3153983908111684619">Prijungtas „BraveVPN“ šį nustatymą užrakina</translation>
+<translation id="6507543978646831931">„Windows“ yra funkcija „Smart Multi-Homed Name Resolution“, kuri gali atskleisti informaciją apie jūsų buvimo vietą ir lankomas svetaines. Kai įgalinate „Brave“ VPN, mes pakeičiame DNS nustatymus naršyklėje, kad apsaugotume nuo tokio atskleidimo. Nustatymai liks galioti ir užrakinti, kol bus prijungtas VPN. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Daugiau manęs apie tai neįspėti.</translation>
+<translation id="2740531572673183784">Gerai</translation>
+<translation id="9061845622728745852">Laiko juosta:</translation>
 <translation id="7586151660465233733">Daugiau rinkų svetainėje <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">FTX galite peržiūrėti rinkas ir prekiauti kriptovaliutomis</translation>
 <translation id="5963745988819586370">Rinkos</translation>

@@ -116,6 +116,7 @@ class BraveBrowserView : public BrowserView {
   sidebar::Sidebar* InitSidebar() override;
   void UpdateSideBarHorizontalAlignment();
 
+  bool closing_confirm_dialog_activated_ = false;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;

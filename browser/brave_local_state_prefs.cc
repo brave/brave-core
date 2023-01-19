@@ -13,15 +13,16 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/core_metrics/core_metrics_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/misc_metrics/menu_metrics.h"
+#include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -33,10 +34,6 @@
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "third_party/widevine/cdm/buildflags.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_profile_service.h"
@@ -76,9 +73,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
   ntp_background_images::ViewCounterService::RegisterLocalStatePrefs(registry);
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
-#endif
 #if BUILDFLAG(IS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
@@ -134,9 +129,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 
-  core_metrics::CoreMetricsService::RegisterPrefs(registry);
-
   brave_wallet::RegisterLocalStatePrefs(registry);
+
+  misc_metrics::MenuMetrics::RegisterPrefs(registry);
+  misc_metrics::PageMetricsService::RegisterPrefs(registry);
 }
 
 }  // namespace brave

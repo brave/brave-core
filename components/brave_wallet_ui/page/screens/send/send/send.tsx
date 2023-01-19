@@ -24,7 +24,6 @@ import Amount from '../../../../utils/amount'
 import { getBalance, formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getTokensNetwork } from '../../../../utils/network-utils'
-import { reduceAddress } from '../../../../utils/reduce-address'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
@@ -37,9 +36,9 @@ import {
   AddressInput,
   AmountInput,
   Background,
-  FoundAddress,
   DIVForWidth,
-  InputRow
+  InputRow,
+  DomainLoadIcon
 } from './send.style'
 import { Column, Text, Row, HorizontalDivider } from '../shared.styles'
 
@@ -50,17 +49,27 @@ import { SelectTokenButton } from '../components/select-token-button/select-toke
 import { PresetButton } from '../components/preset-button/preset-button'
 import { AccountSelector } from '../components/account-selector/account-selector'
 import { AddressMessage } from '../components/address-message/address-message'
+import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
+import { CopyAddress } from '../components/copy-address/copy-address'
 
 interface Props {
   onShowSelectTokenModal: () => void
+  onHideSelectTokenModal: () => void
   selectedSendOption: SendOptionTypes
   setSelectedSendOption: (sendOption: SendOptionTypes) => void
+  selectTokenModalRef: React.RefObject<HTMLDivElement>
+  showSelectTokenModal: boolean
 }
 
-const INPUT_WIDTH_ID = 'input-width'
-
 export const Send = (props: Props) => {
-  const { onShowSelectTokenModal, setSelectedSendOption, selectedSendOption } = props
+  const {
+    onShowSelectTokenModal,
+    setSelectedSendOption,
+    selectedSendOption,
+    onHideSelectTokenModal,
+    selectTokenModalRef,
+    showSelectTokenModal
+  } = props
 
   // Wallet Selectors
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
@@ -83,10 +92,11 @@ export const Send = (props: Props) => {
     selectedSendAsset,
     sendAmountValidationError,
     setSendAmount,
-    setToAddressOrUrl,
+    updateToAddressOrUrl,
     submitSend,
     selectSendAsset,
-    searchingForDomain
+    searchingForDomain,
+    processAddressOrUrl
   } = useSend(true)
 
   // Hooks
@@ -103,7 +113,7 @@ export const Send = (props: Props) => {
   // State
   const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
   const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
-  const [foundAddressPosition, setFoundAddressPosition] = React.useState<number>(0)
+  const [domainPosition, setDomainPosition] = React.useState<number>(0)
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -115,9 +125,9 @@ export const Send = (props: Props) => {
 
   const handleInputAddressChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setToAddressOrUrl(event.target.value)
+      updateToAddressOrUrl(event.target.value)
     },
-    []
+    [updateToAddressOrUrl]
   )
 
   const setPresetAmountValue = React.useCallback((percent: number) => {
@@ -133,10 +143,23 @@ export const Send = (props: Props) => {
     if (showEnsOffchainWarning) {
       enableEnsOffchainLookup()
       setShowEnsOffchainWarning(false)
+      processAddressOrUrl(toAddressOrUrl)
       return
     }
     submitSend()
-  }, [showEnsOffchainWarning, setShowEnsOffchainWarning, submitSend, enableEnsOffchainLookup])
+  }, [
+    showEnsOffchainWarning,
+    setShowEnsOffchainWarning,
+    submitSend,
+    enableEnsOffchainLookup,
+    processAddressOrUrl,
+    toAddressOrUrl
+  ])
+
+  const updateLoadingIconPosition = React.useCallback((ref: HTMLDivElement | null) => {
+    const position = ref?.clientWidth
+    setDomainPosition(position ? position + 22 : 0)
+  }, [])
 
   // Memos
   const sendAssetBalance = React.useMemo(() => {
@@ -230,18 +253,6 @@ export const Send = (props: Props) => {
       : !!addressError || !!addressWarning
   }, [searchingForDomain, addressError, addressWarning])
 
-  const showResolvedDomainAddress = React.useMemo(() => {
-    if (
-      (addressError === undefined || addressError === '' || addressError === getLocale('braveWalletSameAddressError')) &&
-      toAddress &&
-      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
-    ) {
-      setFoundAddressPosition(document.getElementById(INPUT_WIDTH_ID)?.clientWidth ?? 0)
-      return true
-    }
-    return false
-  }, [addressError, toAddress, toAddressOrUrl])
-
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
     // ToDo: Implement Invalid Checksum warning and other longer warnings here in the future.
     // https://github.com/brave/brave-browser/issues/26957
@@ -250,6 +261,19 @@ export const Send = (props: Props) => {
     }
     return undefined
   }, [showEnsOffchainWarning])
+
+  const showResolvedDomain = React.useMemo(() => {
+    return (addressError === undefined ||
+      addressError === '' ||
+      addressError === getLocale('braveWalletSameAddressError')) &&
+      toAddress &&
+      endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase())
+  }, [addressError, toAddress, toAddressOrUrl])
+
+  const showSearchingForDomainIcon = React.useMemo(() => {
+    return (endsWithAny(allSupportedExtensions, toAddressOrUrl.toLowerCase()) && searchingForDomain) ||
+      showEnsOffchainWarning
+  }, [toAddressOrUrl, searchingForDomain, showEnsOffchainWarning])
 
   // Effects
   React.useEffect(() => {
@@ -372,20 +396,14 @@ export const Send = (props: Props) => {
           <InputRow
             rowWidth='full'
             verticalAlign='center'
-            verticalPadding={16}
+            paddingTop={16}
+            paddingBottom={showResolvedDomain ? 4 : 16}
             horizontalPadding={16}
           >
-            {showResolvedDomainAddress && foundAddressPosition !== 0 &&
-              <FoundAddress
-                textSize='16px'
-                textColor='text03'
-                isBold={false}
-                position={foundAddressPosition + 22}
-              >
-                {reduceAddress(toAddress)}
-              </FoundAddress>
+            {showSearchingForDomainIcon &&
+              <DomainLoadIcon position={domainPosition} />
             }
-            <DIVForWidth id={INPUT_WIDTH_ID}>{toAddressOrUrl}</DIVForWidth>
+            <DIVForWidth ref={(ref) => updateLoadingIconPosition(ref)}>{toAddressOrUrl}</DIVForWidth>
             <AddressInput
               placeholder={getLocale('braveWalletEnterRecipientAddress')}
               hasError={hasAddressError}
@@ -393,8 +411,11 @@ export const Send = (props: Props) => {
               onChange={handleInputAddressChange}
               spellCheck={false}
             />
-            <AccountSelector onSelectAddress={setToAddressOrUrl} />
+            <AccountSelector onSelectAddress={updateToAddressOrUrl} />
           </InputRow>
+          {showResolvedDomain &&
+            <CopyAddress address={toAddress} />
+          }
           {addressMessageInformation &&
             <AddressMessage addressMessageInfo={addressMessageInformation} />
           }
@@ -421,6 +442,14 @@ export const Send = (props: Props) => {
             : selectedTokensNetwork?.chainId ?? ''
         }
       />
+      {showSelectTokenModal &&
+        <SelectTokenModal
+          onClose={onHideSelectTokenModal}
+          selectedSendOption={selectedSendOption}
+          ref={selectTokenModalRef}
+          selectSendAsset={selectSendAsset}
+        />
+      }
     </>
   )
 }

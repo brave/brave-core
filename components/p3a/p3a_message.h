@@ -26,7 +26,6 @@ struct MessageMetainfo {
   int woi;  // Week of install. Remove this occasionally and extract from above.
   int wos;  // Week of survey.
   std::string country_code;
-  std::string refcode;
 };
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
@@ -34,9 +33,9 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-// Ensures that country/refcode represent the big enough cohort that will not
-// let anybody identify the sender.
-void MaybeStripRefcodeAndCountry(MessageMetainfo* meta);
+// Ensures that country code represents a big enough cohort that
+// no one can identify the sender.
+void MaybeStripCountry(MessageMetainfo* meta);
 
 }  // namespace brave
 

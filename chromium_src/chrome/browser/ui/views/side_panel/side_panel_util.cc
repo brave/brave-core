@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "brave/components/playlist/features.h"
+#include "brave/components/playlist/common/features.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
 

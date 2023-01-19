@@ -55,3 +55,8 @@ base::FilePath GetYandexUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
   return result.Append("Application Support/Yandex/YandexBrowser");
 }
+
+base::FilePath GetWhaleUserDataFolder() {
+  base::FilePath result = base::mac::GetUserLibraryPath();
+  return result.Append("Application Support").Append("Naver").Append("Whale");
+}

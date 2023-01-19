@@ -10,8 +10,11 @@
 #include "base/json/json_reader.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
 
 namespace brave_wallet {
 
@@ -55,10 +58,11 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse) {
       R"(7468726565000000000000000000000000000000000000000000000000000000"})";
   EXPECT_EQ(expected, json);
 
-  std::vector<std::string> decoded;
-  EXPECT_TRUE(
-      DecodeStringArray(DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
-  EXPECT_THAT(decoded, testing::ElementsAreArray({"one", "two", "three"}));
+  auto decoded =
+      eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
+
+  ASSERT_TRUE(decoded);
+  EXPECT_THAT(*decoded, testing::ElementsAreArray({"one", "two", "three"}));
 }
 
 TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse_Empty) {
@@ -71,10 +75,11 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse_Empty) {
       R"(0000000000000000000000000000000000000000000000000000000000000000"})";
   EXPECT_EQ(expected, json);
 
-  std::vector<std::string> decoded;
-  EXPECT_TRUE(
-      DecodeStringArray(DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
-  EXPECT_THAT(decoded, testing::IsEmpty());
+  auto decoded =
+      eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
+
+  ASSERT_TRUE(decoded);
+  EXPECT_THAT(*decoded, testing::IsEmpty());
 }
 
 TEST(JsonRpcServiceTestUtils,
@@ -127,10 +132,11 @@ TEST(JsonRpcServiceTestUtils,
 
   EXPECT_EQ(expected, json);
 
-  std::vector<std::string> decoded;
-  EXPECT_TRUE(
-      DecodeStringArray(DecodeTuple1(ParseRpcJsonResult(json)), &decoded));
-  EXPECT_THAT(decoded, testing::ElementsAreArray(records));
+  auto decoded =
+      eth::ParseUnstoppableDomainsProxyReaderGetMany(ParseJson(json));
+
+  ASSERT_TRUE(decoded);
+  EXPECT_THAT(*decoded, testing::ElementsAreArray(records));
 }
 
 TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringResponse) {

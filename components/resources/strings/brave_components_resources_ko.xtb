@@ -82,7 +82,6 @@
 <translation id="9024104284526126630">Brave에서 프라이빗 통화를 걸 수 있습니다.</translation>
 <translation id="4903286433687221248">Brave Talk로 친구 및 동료와 무제한 통화를 즐기세요.</translation>
 <translation id="7115051913071512405">시도해 보기</translation>
-<translation id="1447534717041828517">툴바에 Brave News 버튼 표시</translation>
 <translation id="370665806235115550">로딩중...</translation>
 <translation id="4634933166298842522">구독 관리</translation>
 <translation id="4108314971463891922">팔로우</translation>
@@ -547,7 +546,7 @@
 <translation id="4639659520811817892">지금 creators.brave.com을 방문하여 등록하고 팬과 팔로워로부터 BAT를 받아 수익을 창출하세요.</translation>
 <translation id="4816455138209470435">Brave는 YouTube, Twitch, Vimeo 등 많은 서비스를 지원합니다!</translation>
 <translation id="3656941797339037856">Rewards를 Gemini에 연결하세요!</translation>
-<translation id="31532096120351460">암호화폐를 안전하게 보관 가능한 플랫폼인 Gemini에서 BAT 등 50여 종의 암호화폐를 거래하고 US, HK, SG로 이자도 벌 수 있습니다.</translation>
+<translation id="2888702144235098855">BAT 등 50여 종의 암호화폐를 거래합니다. 암호화폐를 보관할 수 있는 안전한 플랫폼입니다.</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
@@ -749,7 +748,7 @@
 <translation id="2394961582378297792">로그아웃됨</translation>
 <translation id="6080167751812750226"><ph name="PROVIDER"/>에서 연결 해제</translation>
 <translation id="3600355176618429948">예상 수익</translation>
-<translation id="4244985009709452836"><ph name="PROVIDER"/> 계정에 로그인</translation>
+<translation id="7934950257968365573"><ph name="PROVIDER"/> 계정에 로그인</translation>
 <translation id="2613359062756190460">일회성 팁</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
 <translation id="6181762795539107980">미검증</translation>
@@ -1291,11 +1290,9 @@
 <translation id="3898731124813934210">Wyre로 구매</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="7902920577183739843">Sardine으로 구매</translation>
-<translation id="6534275647567011533">Transak으로 구매</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
-<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
@@ -1550,19 +1547,26 @@
 <translation id="8265589281845759879">자동차</translation>
 <translation id="7577010593836079522">문화</translation>
 <translation id="3706423975342040244">엔터테인먼트</translation>
+<translation id="3284069358246729581">엔터테인먼트 뉴스</translation>
 <translation id="1432147735538902155">패션</translation>
+<translation id="3350377832708834609">영화/TV</translation>
 <translation id="736592699917579616">푸드</translation>
 <translation id="5104499318017527547">재미</translation>
 <translation id="2228584369802328636">게임</translation>
 <translation id="6941852195052765076">건강</translation>
 <translation id="932327136139879170">홈</translation>
+<translation id="5178222043222938163">음악</translation>
 <translation id="1322083935398004629">정치</translation>
+<translation id="8739620487574841501">현지 뉴스</translation>
 <translation id="3872834068356954457">과학</translation>
 <translation id="1264974993859112054">스포츠</translation>
 <translation id="2283599456633275070">여행</translation>
 <translation id="7487067081878637334">테크놀로지</translation>
+<translation id="151743034625508713">테크 뉴스</translation>
+<translation id="2388279876296929435">테크 리뷰</translation>
 <translation id="5030268312472358928">인기 뉴스</translation>
 <translation id="5510475084662028636">인기 소스</translation>
+<translation id="1297570508541015874">미국 뉴스</translation>
 <translation id="1459693405370120464">날씨</translation>
 <translation id="8366057325711477500">월드 뉴스</translation>
 <translation id="6303294677342628402">보호</translation>
@@ -1613,13 +1617,17 @@
 <translation id="2453860139492968684">완료</translation>
 <translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
 <translation id="5037676449506322593">모두 선택</translation>
-<translation id="8330804319517911603">Brave 개선에 참여하기</translation>
-<translation id="2867964979837593892">여러분의 프라이버시를 보호하고자 매일 제품을 가다듬습니다.</translation>
-<translation id="7661940959332108190">Brave에 충돌이나 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
-<translation id="6358373266071757311">익명으로 프라이버시를 보호하며 제품 인사이트를 공유합니다. 어떤 Brave 기능이 가장 자주 사용되는지 학습할 수 있습니다.</translation>
+<translation id="5148943178722443958">Brave 개선에 참여.</translation>
+<translation id="1097073572755862978">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5099408825243658796">Brave 사용자가 사용 중인 기능에 대한 제품 인사이트를 프라이버시를 완전히 보호하며 익명으로 공유합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">설정 완료</translation>
 <translation id="3141206739023333979">선택 여부는 언제든 Brave에서 <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> 페이지로 이동하여 변경할 수 있습니다.</translation>
 <translation id="8321985064212130832"><ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/> 전문 읽기</translation>
+<translation id="2801098717523961746">테마 선택</translation>
+<translation id="6262510489122516114">Brave 설정에서 언제든지 변경할 수 있습니다.</translation>
+<translation id="546481172717459539">일치 시스템 설정</translation>
+<translation id="7799817062559422778">라이트 모드</translation>
+<translation id="4117637339509843559">다크 모드</translation>
 <translation id="7821773512278295352">Brave Firewall + VPN: 연결됨</translation>
 <translation id="6019088868713395120">Brave Firewall + VPN: 연결 해제됨</translation>
 <translation id="3541307549916475335">Brave VPN 패널 UI</translation>
@@ -1665,7 +1673,12 @@
 <translation id="3307461350293459700">VPN 연결 실패. 다시 연결을 시도해보거나 허용을 클릭하여 Brave의 VPN 구성을 활성화하세요.</translation>
 <translation id="7261518280726313829">보안 DNS를 끄거나 Windows상의 기본 서버를 사용하면 방문하신 사이트의 이름이 인터넷 서비스 제공자에게 공개될 수 있습니다. Brave는 이를 권장하지 않습니다. 그래도 계속하시겠습니까?</translation>
 <translation id="888284761945060750">조직 정책에 의해 보안 DNS가 비활성화되어 있습니다. 보안 DNS 없이 Brave VPN을 사용하면 방문하신 사이트의 이름이 인터넷 서비스 제공자 또는 귀하의 조직에게 공개될 수 있습니다.</translation>
+<translation id="6593224083874259773">Brave VPN - Windows</translation>
+<translation id="3153983908111684619">BraveVPN이 연결된 동안에는 변경할 수 없는 설정</translation>
+<translation id="6507543978646831931">Windows에는 위치 및 방문한 사이트에 대한 정보를 노출시킬 수 있는 '스마트 멀티홈 이름 확인'이라는 기능이 있습니다. Brave VPN 활성화와 동시에 브라우저의 DNS 설정을 변경하여 이러한 정보가 노출되지 않도록 조치했습니다. VPN이 연결된 동안에는 이 설정이 적용되며 변경할 수 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">이 경고를 다시 표시하지 않습니다.</translation>
+<translation id="2740531572673183784">확인</translation>
+<translation id="9061845622728745852">시간대:</translation>
 <translation id="7586151660465233733"><ph name="SITE_NAME"/>에서 시장 더 보기</translation>
 <translation id="952067063131306699">FTX에서 시장 보기 및 암호화폐 거래</translation>
 <translation id="5963745988819586370">시장</translation>

@@ -239,6 +239,8 @@ declare namespace NewTab {
     monthlyTipChoices: number[]
     payoutStatus?: Record<string, ProviderPayoutStatus>
     walletProviderRegions?: Record<string, { allow: string[], block: string[] } | undefined>
+    vbatDeadline: number | undefined
+    vbatExpired: boolean
   }
 
   export interface DefaultSuperReferralTopSite {

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
 
@@ -13,6 +13,7 @@
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 #include "bat/ads/internal/account/user_data/created_at_timestamp_user_data.h"
+#include "bat/ads/internal/account/user_data/diagnostic_id_user_data.h"
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
 #include "bat/ads/internal/account/user_data/mutated_user_data.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
@@ -43,6 +44,7 @@ void ConfirmationUserDataBuilder::Build(
         user_data.Merge(user_data::GetBuildChannel());
         user_data.Merge(user_data::GetCatalog());
         user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
+        user_data.Merge(user_data::GetDiagnosticId());
         user_data.Merge(user_data::GetLocale());
         user_data.Merge(user_data::GetMutated());
         user_data.Merge(user_data::GetOdyssey());

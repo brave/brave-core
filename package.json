@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.48.110",
+  "version": "1.49.41",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -262,7 +262,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "109.0.5414.61",
+        "tag": "109.0.5414.87",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -279,11 +279,11 @@
     "@storybook/react": "6.4.13",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
-    "@types/chrome": "0.0.147",
-    "@types/enzyme": "3.10.10",
+    "@types/chrome": "0.0.208",
+    "@types/enzyme": "3.10.12",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.24",
-    "@types/qr-image": "3.2.3",
+    "@types/qr-image": "3.2.5",
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.1",
     "@types/react-redux": "7.1.16",
@@ -335,9 +335,9 @@
     "styled-components": "5.3.0",
     "trezor-connect": "8.2.6-extended",
     "ts-jest": "26.5.6",
-    "ts-loader": "6.2.2",
+    "ts-loader": "8.4.0",
     "typesafe-actions": "2.2.0",
-    "typescript": "4.4.4",
+    "typescript": "4.9.4",
     "typescript-plugin-css-modules": "3.4.0",
     "typescript-plugin-styled-components": "2.0.0",
     "url-loader": "1.0.0",
@@ -346,6 +346,7 @@
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
+    "@brave/wallet-standard-brave": "~0.0.5",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",

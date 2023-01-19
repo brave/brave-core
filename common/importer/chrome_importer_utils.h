@@ -33,6 +33,7 @@ base::FilePath GetEdgeUserDataFolder();
 base::FilePath GetVivaldiUserDataFolder();
 base::FilePath GetOperaUserDataFolder();
 base::FilePath GetYandexUserDataFolder();
+base::FilePath GetWhaleUserDataFolder();
 
 #if BUILDFLAG(IS_LINUX)
 base::FilePath GetOperaSnapUserDataFolder();
@@ -42,8 +43,8 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
                              uint16_t* services_supported);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-std::vector<std::string> GetImportableListFromChromeExtensionsList(
-    const base::Value::Dict& extension_list);
+absl::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
+    const base::FilePath& profile_path);
 #endif
 
 #endif  // BRAVE_COMMON_IMPORTER_CHROME_IMPORTER_UTILS_H_

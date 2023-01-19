@@ -46,7 +46,6 @@ source_set("tor") {
   # headers. That header includes some buildflags but sometimes they are
   # not generated before evaluating tor target.
   deps += [
-    "//brave/components/brave_referrals/buildflags",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/speedreader/common/buildflags",
   ]

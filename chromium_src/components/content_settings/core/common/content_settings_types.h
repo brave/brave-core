@@ -7,19 +7,20 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_TYPES_H_
 
 // clang-format off
-#define NUM_TYPES                   \
-  BRAVE_START,                      \
-  BRAVE_ADS = BRAVE_START,          \
-  BRAVE_COSMETIC_FILTERING,         \
-  BRAVE_TRACKERS,                   \
-  BRAVE_HTTP_UPGRADABLE_RESOURCES,  \
-  BRAVE_FINGERPRINTING_V2,          \
-  BRAVE_SHIELDS,                    \
-  BRAVE_REFERRERS,                  \
-  BRAVE_COOKIES,                    \
-  BRAVE_SPEEDREADER,                \
-  BRAVE_ETHEREUM,                   \
-  BRAVE_SOLANA,                     \
+#define NUM_TYPES                                                              \
+  BRAVE_START,                                                                 \
+  BRAVE_ADS = BRAVE_START,                                                     \
+  BRAVE_COSMETIC_FILTERING,                                                    \
+  BRAVE_TRACKERS,                                                              \
+  BRAVE_HTTP_UPGRADABLE_RESOURCES,                                             \
+  BRAVE_FINGERPRINTING_V2,                                                     \
+  BRAVE_SHIELDS,                                                               \
+  BRAVE_REFERRERS,                                                             \
+  BRAVE_COOKIES,                                                               \
+  BRAVE_SPEEDREADER,                                                           \
+  BRAVE_ETHEREUM,                                                              \
+  BRAVE_SOLANA,                                                                \
+  BRAVE_GOOGLE_SIGN_IN,                                                        \
   NUM_TYPES
 // clang-format on
 

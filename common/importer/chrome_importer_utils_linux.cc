@@ -48,10 +48,7 @@ base::FilePath GetVivaldiUserDataFolder() {
   if (!base::PathService::Get(base::DIR_HOME, &result))
     return base::FilePath();
 
-  result = result.Append(".config");
-  result = result.Append("vivaldi");
-
-  return result;
+  return result.Append(".config").Append("vivaldi");
 }
 
 base::FilePath GetChromiumUserDataFolder() {
@@ -108,6 +105,17 @@ base::FilePath GetYandexUserDataFolder() {
 
   result = result.Append(".config");
   result = result.Append("yandex-browser");
+
+  return result;
+}
+
+base::FilePath GetWhaleUserDataFolder() {
+  base::FilePath result;
+  if (!base::PathService::Get(base::DIR_HOME, &result))
+    return base::FilePath();
+
+  result = result.Append(".config");
+  result = result.Append("naver-whale");
 
   return result;
 }

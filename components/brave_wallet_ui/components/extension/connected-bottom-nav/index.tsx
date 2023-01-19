@@ -85,7 +85,7 @@ function ConnectedBottomNav (props: Props) {
 
         <NavDivider />
 
-        <TransactionsButton onClick={navigate('transactions')}>
+        <TransactionsButton onClick={navigate('activity')}>
           <TransactionsIcon />
         </TransactionsButton>
 

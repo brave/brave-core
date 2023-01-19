@@ -20,7 +20,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -122,7 +121,6 @@ void NTPBackgroundImagesService::Init() {
     RegisterSponsoredImagesComponent();
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Flag override for testing or demo purposes
     base::FilePath forced_local_path_super_referral(
@@ -138,7 +136,6 @@ void NTPBackgroundImagesService::Init() {
       CheckSuperReferralComponent();
     }
   }
-#endif
 }
 
 void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
@@ -238,10 +235,13 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     // If referral code is non empty, that means browser is shutdown after
     // getting referal code. In this case, we should start downloading mapping
     // table.
-    if ((local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
-         local_pref_->GetBoolean(kReferralInitialization)) &&
+    const bool referral_checked =
+        local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) ||
+        local_pref_->GetBoolean(kReferralInitialization);
+
+    if (referral_checked &&
         !local_pref_->GetBoolean(
-             prefs::kNewTabPageGetInitialSRComponentInProgress)) {
+            prefs::kNewTabPageGetInitialSRComponentInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
       DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
                            << " is not in initial state."
@@ -271,7 +271,6 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
       // mapping table.
       DownloadSuperReferralMappingTable();
     }
-    return;
   }
 
   DVLOG(2) << __func__ << ": This has invalid component info.";

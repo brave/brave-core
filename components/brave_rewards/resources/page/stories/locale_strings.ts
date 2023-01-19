@@ -47,7 +47,7 @@ export const localeStrings = {
   contributionVisitSome: 'Sites will appear as you browse',
   tosAndPp: 'By turning on $1, you agree to the $2Terms of Service$3 and $4Privacy Policy$5.',
   contributionTitle: 'Auto-Contribute',
-  contributionDesc: 'An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.',
+  contributionDesc: 'An automatic way to support sites and content creators. Set a monthly contribution amount and browse normally. $1Verified sites and creators$2 you visit will receive contributions from you each month based on the amount of time you spend on their content.',
   contributionDisabledText1: 'Reward creators for the content you love.',
   contributionDisabledText2: 'Your monthly payment gets distributed across the sites you visit.',
   contributionMonthly: 'Monthly payment',
@@ -84,8 +84,6 @@ export const localeStrings = {
   adsPerHour5: 'Up to 5 ads per hour',
   adsPerHour10: 'Up to 10 ads per hour',
   adsTitle: 'Brave Private Ads',
-  adsDisabledTextOne: 'Earnings are paid every month.',
-  adsDisabledTextTwo: 'Set your desired frequency to increase or decrease earnings.',
   adsCurrentEarnings: 'Current earnings this month (estimated)',
   adsPaymentDate: 'Next payment date',
   adsNotificationsReceived: 'Ads received this month',
@@ -95,7 +93,12 @@ export const localeStrings = {
   rewardsBrowserNeedsUpdateToSeeAds: 'Your browser needs to be updated to continue seeing ads.',
   adsNotSupportedRegion: 'Sorry! Ads are not yet available in your region.',
   connectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
-  connectAccount: 'Connect account',
   connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available at this time. However, you\'ll still be automatically supporting creators by using Rewards.',
-  learnMore: 'Learn more'
+  learnMore: 'Learn more',
+
+  rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
+  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
+  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.',
+  rewardsConnectAccount: 'Connect account'
 }

@@ -14,7 +14,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -51,7 +50,6 @@ class P3AServiceTest : public testing::Test {
     }
 
     BraveP3AService::RegisterPrefs(local_state_.registry(), true);
-    RegisterPrefsForBraveReferralsService(local_state_.registry());
 
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {

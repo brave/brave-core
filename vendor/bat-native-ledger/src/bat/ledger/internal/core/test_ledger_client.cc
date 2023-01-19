@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/ranges/algorithm.h"
@@ -203,6 +204,22 @@ void TestLedgerClient::SetValueState(const std::string& name,
 base::Value TestLedgerClient::GetValueState(const std::string& name) const {
   const auto* value = state_store_.FindByDottedPath(name);
   return value ? value->Clone() : base::Value();
+}
+
+void TestLedgerClient::SetTimeState(const std::string& name, base::Time time) {
+  state_store_.SetByDottedPath(name, base::TimeToValue(time));
+}
+
+base::Time TestLedgerClient::GetTimeState(const std::string& name) const {
+  const auto* value = state_store_.FindByDottedPath(name);
+  DCHECK(value);
+  if (!value) {
+    return base::Time();
+  }
+
+  auto time = base::ValueToTime(*value);
+  DCHECK(time);
+  return time.value_or(base::Time());
 }
 
 void TestLedgerClient::ClearState(const std::string& name) {

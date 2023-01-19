@@ -19,7 +19,9 @@ export function getInitialState (): HostState {
     },
     options: {
       autoContributeAmounts: [],
-      externalWalletRegions: new Map()
+      externalWalletRegions: new Map(),
+      vbatDeadline: undefined,
+      vbatExpired: false
     },
     grantCaptchaInfo: null,
     adaptiveCaptchaInfo: null,

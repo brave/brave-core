@@ -14,7 +14,6 @@ import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 
 // reducers
 import { walletApi } from '../common/slices/api.slice'
-import sendCryptoReducer from '../common/reducers/send_crypto_reducer'
 import walletReducer from '../common/slices/wallet.slice'
 import { panelReducer } from './reducers/panel_reducer'
 
@@ -22,8 +21,7 @@ const store = configureStore({
   reducer: {
     panel: panelReducer,
     wallet: walletReducer,
-    [walletApi.reducerPath]: walletApi.reducer,
-    sendCrypto: sendCryptoReducer
+    [walletApi.reducerPath]: walletApi.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false

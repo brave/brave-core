@@ -367,7 +367,7 @@ bool CosmeticFiltersJSHandler::ProcessURL(
         "Brave.CosmeticFilters.UrlCosmeticResources");
     TRACE_EVENT1("brave.adblock", "UrlCosmeticResources", "url", url_.spec());
     cosmetic_filters_resources_->UrlCosmeticResources(
-        url_.spec(),
+        url_.spec(), enabled_1st_party_cf_,
         base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
                        base::Unretained(this), std::move(callback.value())));
   } else {
@@ -376,7 +376,8 @@ bool CosmeticFiltersJSHandler::ProcessURL(
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
         "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
     base::Value result;
-    cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
+    cosmetic_filters_resources_->UrlCosmeticResources(
+        url_.spec(), enabled_1st_party_cf_, &result);
 
     auto* dict = result.GetIfDict();
     if (dict)
@@ -420,12 +421,6 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         isolated_world_id_,
         blink::WebScriptSource(blink::WebString::FromUTF8(scriptlet_script)),
         blink::BackForwardCacheAware::kAllow);
-  }
-
-  if (!base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveAdblockCosmeticFilteringChildFrames) &&
-      !render_frame_->IsMainFrame()) {
-    return;
   }
 
   // Working on css rules

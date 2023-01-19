@@ -53,6 +53,7 @@
 <translation id="7798069806040634998">Brave necesita acceder al almacenamiento para descargar archivos</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7291143854620707672">El administrador del perfil de trabajo puede quitar cualquier dato de Brave que se genere durante el uso de este perfil (como la creación de favoritos, un historial, contraseñas y otras opciones de configuración). <ph name="LEARN_MORE"/></translation>
+<translation id="6252796827759111076">Seguir usando Brave</translation>
 <translation id="7387051847644272380">Se produjo un error del sistema operativo durante la instalación. Descarga Brave nuevamente.</translation>
 <translation id="2648689842065142443">Si compartes un dispositivo, tus amigos y familiares podrán navegar de forma independiente y configurar Brave según sus preferencias.</translation>
 <translation id="5926459996518749366">Brave bloqueó este archivo porque es posible que ocultara software malicioso</translation>
@@ -91,6 +92,7 @@
 <translation id="2645435784669275700">Brave OS</translation>
 <translation id="2297290224191497273">¿Deseas cambiar a un perfil existente de Brave?</translation>
 <translation id="3412460710772753638">En el Administrador de contraseñas en este dispositivo</translation>
+<translation id="616005907576404509">{COUNT,plural, =1{Tu administrador configuró que Brave se cierre si está inactivo durante más de 1 minuto.}other{Tu administrador configuró que Brave se cierre si está inactivo durante más de # minutos.}}</translation>
 <translation id="2450003541323895471">Con los perfiles de Brave, puedes separar todo lo que tienes en Brave. Crea perfiles para amigos y familiares o diferencia el trabajo de la diversión.</translation>
 <translation id="9216183508558772570">Brave te notificará cuando accedas con una contraseña hackeada</translation>
 <translation id="5853262807109651878">Esta acción borrará <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
@@ -168,6 +170,7 @@
 <translation id="7021823858304886493">Permitir el acceso a Brave</translation>
 <translation id="5536657158619734169">Hay una nueva versión de Brave disponible.</translation>
 <translation id="5267531627648004734">Eliminar de Brave</translation>
+<translation id="2783637305317815247">{0,plural, =0{Brave se cerrará ahora.}=1{Brave se cerrará en 1 segundo.}other{Brave se cerrará en # segundos.}}</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Versión Beta de Brave</translation>
 <translation id="894936507076470937">Es posible que Brave no funcione correctamente porque ya no es compatible con esta distribución de Linux</translation>
@@ -253,6 +256,7 @@
 <translation id="126871877963043118">Cuando comienzan las pruebas, la medición de anuncios les permite a los sitios que visitas solicitar información a Brave a fin de medir el rendimiento de los anuncios. La medición de anuncios restringe el seguimiento entre sitios web, ya que se transfiere la menor cantidad de información posible entre sitios.</translation>
 <translation id="4392161457256085190">Luego, los sitios que visites pueden consultar tus intereses con Brave para personalizar los anuncios que te muestran. Brave puede compartir hasta 3 intereses.</translation>
 <translation id="6418340404893954563">Las contraseñas poco seguras son fáciles de adivinar. Permite que Brave <ph name="BEGIN_LINK"/>cree y recuerde contraseñas seguras para ti<ph name="END_LINK"/>.</translation>
+<translation id="196626648343945705">Brave está inactivo</translation>
 <translation id="3453763134178591239">Condiciones de Brave OS</translation>
 <translation id="3335606533094650083">Brave necesita permiso para acceder a tu micrófono para este sitio</translation>
 <translation id="7025789849649390912">Se detuvo la instalación.</translation>

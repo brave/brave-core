@@ -11,7 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class ENSSettingsFragment extends PreferenceFragmentCompat {
@@ -27,10 +28,10 @@ public class ENSSettingsFragment extends PreferenceFragmentCompat {
                 (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
                         PREF_ENS_RESOLVE_METHOD);
         radioButtonGroupDDnsResolveMethodPreference.initialize(
-                BravePrefServiceBridge.getInstance().getENSResolveMethod());
+                BraveLocalState.get().getInteger(BravePref.ENS_RESOLVE_METHOD));
         radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-                    BravePrefServiceBridge.getInstance().setENSResolveMethod((int) newValue);
+                    BraveLocalState.get().setInteger(BravePref.ENS_RESOLVE_METHOD, (int) newValue);
                     return true;
                 });
 
@@ -39,11 +40,11 @@ public class ENSSettingsFragment extends PreferenceFragmentCompat {
                         (RadioButtonGroupEnsOffchainResolveMethodPreference) findPreference(
                                 PREF_ENS_OFFCHAIN_LOOKUP_METHOD);
         radioButtonGroupEnsOffchainResolveMethodPreference.initialize(
-                BravePrefServiceBridge.getInstance().getENSOffchainResolveMethod());
+                BraveLocalState.get().getInteger(BravePref.ENS_OFFCHAIN_RESOLVE_METHOD));
         radioButtonGroupEnsOffchainResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-                    BravePrefServiceBridge.getInstance().setENSOffchainResolveMethod(
-                            (int) newValue);
+                    BraveLocalState.get().setInteger(
+                            BravePref.ENS_OFFCHAIN_RESOLVE_METHOD, (int) newValue);
                     return true;
                 });
     }

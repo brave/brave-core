@@ -48,7 +48,9 @@ function createHost (): Host {
       externalWalletRegions: new Map([
         ['uphold', { allow: ['US'], block: [] }],
         ['gemini', { allow: [], block: ['US'] }]
-      ])
+      ]),
+      vbatDeadline: Date.parse('2023-01-01T00:00:00-05:00'),
+      vbatExpired: false
     },
     grantCaptchaInfo: null && {
       id: '123',
@@ -270,7 +272,7 @@ function createHost (): Host {
 export function MainPanel () {
   const [host] = React.useState(() => createHost())
   return (
-    <div className='brave-theme-dark'>
+    <div className='brave-theme-light'>
       <LocaleContext.Provider value={locale}>
         <App host={host} />
       </LocaleContext.Provider>

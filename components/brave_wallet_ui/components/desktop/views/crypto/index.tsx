@@ -248,7 +248,7 @@ const CryptoView = (props: Props) => {
         </Route>
 
         {/* Transactions */}
-        <Route path={WalletRoutes.Transactions} exact={true}>
+        <Route path={WalletRoutes.Activity} exact={true}>
           {nav}
           <TransactionsScreen />
         </Route>

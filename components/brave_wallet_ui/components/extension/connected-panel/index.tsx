@@ -284,7 +284,7 @@ export const ConnectedPanel = (props: Props) => {
           <AccountCircle orb={orb} onClick={navigate('accounts')}>
             <SwitchIcon />
           </AccountCircle>
-          <AccountNameText>{reduceAccountDisplayName(selectedAccountName, 14)}</AccountNameText>
+          <AccountNameText>{reduceAccountDisplayName(selectedAccountName, 24)}</AccountNameText>
           <CopyTooltip text={selectedAccountAddress}>
             <AccountAddressText>{reduceAddress(selectedAccountAddress)}</AccountAddressText>
           </CopyTooltip>

@@ -347,6 +347,7 @@ export const DepositFundsScreen = () => {
                     hideAddButton
                     hideAssetFilter
                     hideAccountFilter
+                    hideAutoDiscovery
                     estimatedItemSize={100}
                     renderToken={({
                       item: { asset }

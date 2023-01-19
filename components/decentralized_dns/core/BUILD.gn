@@ -6,6 +6,7 @@
 static_library("core") {
   sources = [
     "constants.h",
+    "pref_names.cc",
     "pref_names.h",
     "utils.cc",
     "utils.h",

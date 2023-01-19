@@ -1698,21 +1698,14 @@ void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
     return;
   }
 
-  auto bytes_result = ParseDecodedBytesResult(api_request_result.value_body());
-  if (!bytes_result) {
+  auto array_result = eth::ParseUnstoppableDomainsProxyReaderGetMany(
+      api_request_result.value_body());
+  if (!array_result) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
                                            &error, &error_message);
     ud_get_eth_addr_calls_.SetError(key, chain_id, error, error_message);
-    return;
-  }
-
-  auto array_result = eth_abi::ExtractStringArrayFromTuple(*bytes_result, 0);
-  if (!array_result) {
-    ud_get_eth_addr_calls_.SetError(
-        key, chain_id, mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
@@ -2187,7 +2180,7 @@ void JsonRpcService::EthGetLogs(const std::string& chain_id,
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        std::vector<Log>(), mojom::ProviderError::kInternalError,
+        std::vector<Log>(), {}, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -2206,18 +2199,19 @@ void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,
   std::vector<Log> logs;
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(
-        logs, mojom::ProviderError::kInternalError,
+        logs, {}, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   if (!eth::ParseEthGetLogs(api_request_result.value_body(), &logs)) {
-    std::move(callback).Run(logs, mojom::ProviderError::kParsingError,
+    std::move(callback).Run(logs, {}, mojom::ProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  std::move(callback).Run(logs, mojom::ProviderError::kSuccess, "");
+  std::move(callback).Run(logs, api_request_result.value_body().Clone(),
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetSupportsInterface(

@@ -188,7 +188,7 @@ public class PortfolioHelper {
             priceHistoryContext.userAsset = userAsset;
             pricesHistoryContexts.add(priceHistoryContext);
 
-            if (mActivity != null)
+            if (mActivity.get() != null)
                 mActivity.get().getAssetRatioService().getPriceHistory(
                         userAsset.symbol.toLowerCase(Locale.getDefault()), "usd",
                         mFiatHistoryTimeframe, priceHistoryContext);

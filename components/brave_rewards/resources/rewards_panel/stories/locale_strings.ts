@@ -83,5 +83,11 @@ export const localeStrings = {
   notificationMonthlyTipCompletedTitle: 'Contributions and tips',
   notificationMonthlyTipCompletedText: 'Your monthly contributions have been processed.',
   notificationPublisherVerifiedTitle: 'Pending contribution',
-  notificationPublisherVerifiedText: 'Creator $1 recently verified.'
+  notificationPublisherVerifiedText: 'Creator $1 recently verified.',
+
+  rewardsConnectAccount: 'Connect account',
+  rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
+  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
+  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.'
 }

@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 
@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
@@ -32,7 +33,7 @@ const base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("resources.json");
 
 std::string GetIndex(const std::string& id, int version) {
-  return id + std::to_string(version);
+  return id + base::NumberToString(version);
 }
 
 }  // namespace

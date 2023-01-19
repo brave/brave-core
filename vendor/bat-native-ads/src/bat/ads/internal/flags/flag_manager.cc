@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/flags/flag_manager.h"
 
@@ -9,8 +9,9 @@
 #include "base/check_op.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/flags/debug/debug_command_line_switch_parser_util.h"
+#include "bat/ads/internal/flags/did_override/did_override_command_line_switch_values_util.h"
+#include "bat/ads/internal/flags/did_override/did_override_command_line_switches_util.h"
 #include "bat/ads/internal/flags/did_override/did_override_features_from_command_line_util.h"
-#include "bat/ads/internal/flags/did_override/did_override_variations_command_line_switch_util.h"
 #include "bat/ads/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "bat/ads/internal/flags/flag_manager_constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -66,8 +67,9 @@ bool FlagManager::HasInstance() {
 void FlagManager::Initialize() {
   should_debug_ = ParseDebugCommandLineSwitch();
 
-  did_override_from_command_line_ = DidOverrideVariationsCommandLineSwitch() ||
-                                    DidOverrideFeaturesFromCommandLine();
+  did_override_from_command_line_ = DidOverrideFeaturesFromCommandLine() ||
+                                    DidOverrideCommandLineSwitchValues() ||
+                                    DidOverrideCommandLineSwitches();
 
   environment_type_ = ChooseEnvironmentType();
 }

@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_KEYS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_STATE_STATE_KEYS_H_
 
-#include <string>
-
 namespace ledger {
 namespace state {
 
@@ -41,6 +39,8 @@ const char kParametersMonthlyTipChoices[] =
 const char kParametersPayoutStatus[] = "parameters.payout_status";
 const char kParametersWalletProviderRegions[] =
     "parameters.wallet_provider_regions";
+const char kParametersVBatDeadline[] = "parameters.vbat_deadline";
+const char kParametersVBatExpired[] = "parameters.vbat_expired";
 const char kEmptyBalanceChecked[] = "empty_balance_checked";
 const char kExternalWalletType[] = "external_wallet_type";
 const char kWalletBrave[]  ="wallets.brave";

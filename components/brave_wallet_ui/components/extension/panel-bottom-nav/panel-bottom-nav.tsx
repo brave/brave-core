@@ -31,8 +31,8 @@ export const PanelBottomNav = (props: Props) => {
   const { onNavigate } = props
 
   const handleOnClick = React.useCallback((option: NavOption) => {
-    if (option.id === 'transactions') {
-      onNavigate('transactions')
+    if (option.id === 'activity') {
+      onNavigate('activity')
       return
     }
     const url = `brave://wallet${option.route}`

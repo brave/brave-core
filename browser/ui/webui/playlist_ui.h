@@ -10,8 +10,9 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/playlist/mojom/playlist.mojom.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
@@ -20,7 +21,6 @@ class BrowserContext;
 }  // namespace content
 
 class GURL;
-class PlaylistPageHandler;
 
 namespace playlist {
 
@@ -47,17 +47,17 @@ class PlaylistUI : public ui::UntrustedWebUIController,
 
   // playlist::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<playlist::mojom::Page> pending_page,
-      mojo::PendingReceiver<playlist::mojom::PageHandler> pending_page_handler)
-      override;
+      mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
+          service_observer,
+      mojo::PendingReceiver<playlist::mojom::PlaylistService> service) override;
 
  private:
-  std::unique_ptr<PlaylistPageHandler> page_handler_;
-
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
 
-  mojo::Receiver<playlist::mojom::PageHandlerFactory> page_factory_receiver_{
-      this};
+  mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
+
+  mojo::Receiver<playlist::mojom::PageHandlerFactory>
+      page_handler_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

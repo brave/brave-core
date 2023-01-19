@@ -23,8 +23,32 @@
 #include "content/public/browser/browser_thread.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
+using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
 
 namespace brave_shields {
+
+namespace {
+
+typedef struct ListDefaultOverrideConstants {
+  const base::Feature& feature;
+  const char* local_override_pref;
+  const char* list_uuid;
+} ListDefaultOverrideConstants;
+
+const ListDefaultOverrideConstants kCookieListConstants{
+    .feature = kBraveAdblockCookieListDefault,
+    .local_override_pref = prefs::kAdBlockCookieListSettingTouched,
+    .list_uuid = kCookieListUuid};
+
+const ListDefaultOverrideConstants kMobileNotificationsListConstants{
+    .feature = kBraveAdblockMobileNotificationsListDefault,
+    .local_override_pref = prefs::kAdBlockMobileNotificationsListSettingTouched,
+    .list_uuid = kMobileNotificationsListUuid};
+
+const ListDefaultOverrideConstants kOverrideConstants[2] = {
+    kCookieListConstants, kMobileNotificationsListConstants};
+
+}  // namespace
 
 AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
     PrefService* local_state,
@@ -68,27 +92,28 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     EnableFilterList(it->uuid, true);
   }
 
-  const bool cookie_list_touched =
-      local_state_->GetBoolean(prefs::kAdBlockCookieListSettingTouched);
-
   // Start all regional services associated with enabled filter lists
   const auto& regional_filters_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
 
-  auto regional_filters_dict_with_cookielist = regional_filters_dict.Clone();
-  if (base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
-      !cookie_list_touched) {
-    base::Value::Dict cookie_list_entry;
-    cookie_list_entry.Set("enabled", true);
-    regional_filters_dict_with_cookielist.Set(kCookieListUuid,
-                                              std::move(cookie_list_entry));
+  auto regional_filters_dict_with_overrides = regional_filters_dict.Clone();
+  for (const auto& constants : kOverrideConstants) {
+    const bool list_touched =
+        local_state_->GetBoolean(constants.local_override_pref);
+
+    if (base::FeatureList::IsEnabled(constants.feature) && !list_touched) {
+      base::Value::Dict list_entry;
+      list_entry.Set("enabled", true);
+      regional_filters_dict_with_overrides.Set(constants.list_uuid,
+                                               std::move(list_entry));
+    }
   }
 
-  for (const auto kv : regional_filters_dict_with_cookielist) {
+  for (const auto kv : regional_filters_dict_with_overrides) {
     const std::string uuid = kv.first;
     bool enabled = false;
     const auto* regional_filter_dict =
-        regional_filters_dict_with_cookielist.FindDict(uuid);
+        regional_filters_dict_with_overrides.FindDict(uuid);
     if (regional_filter_dict) {
       enabled = regional_filter_dict->FindBool("enabled").value_or(false);
     }
@@ -125,8 +150,10 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   regional_filter_dict.Set("enabled", enabled);
   regional_filters_dict->GetDict().Set(uuid, std::move(regional_filter_dict));
 
-  if (uuid == kCookieListUuid) {
-    local_state_->SetBoolean(prefs::kAdBlockCookieListSettingTouched, true);
+  for (const auto& constants : kOverrideConstants) {
+    if (uuid == constants.list_uuid) {
+      local_state_->SetBoolean(constants.local_override_pref, true);
+    }
   }
 
   RecordP3ACookieListEnabled();
@@ -153,10 +180,12 @@ bool AdBlockRegionalServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
-  if (uuid == kCookieListUuid &&
-      base::FeatureList::IsEnabled(kBraveAdblockCookieListDefault) &&
-      !local_state_->GetBoolean(prefs::kAdBlockCookieListSettingTouched)) {
-    return true;
+  for (const auto& constants : kOverrideConstants) {
+    if (uuid == constants.list_uuid &&
+        base::FeatureList::IsEnabled(constants.feature) &&
+        !local_state_->GetBoolean(constants.local_override_pref)) {
+      return true;
+    }
   }
 
   const auto& regional_filters_dict =
@@ -192,6 +221,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     DCHECK(it != regional_filters_providers_.end());
     AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
         it->second.get());
+    it->second->UnregisterComponent();
     regional_filters_providers_.erase(it);
   }
 

@@ -21,11 +21,6 @@
   label="$i18n{showFullUrls}">
 </settings-toggle-button>
 <settings-toggle-button
-  pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
-  class="cr-row"
-  label="$i18n{braveDisableClickableMuteIndicators}">
-</settings-toggle-button>
-<settings-toggle-button
   class="cr-row"
   pref="{{prefs.brave.autocomplete_enabled}}"
   label="$i18n{appearanceSettingsShowAutocompleteInAddressBar}">
@@ -65,14 +60,19 @@
   </template>
 </if>
 <settings-toggle-button
-  pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
+  pref="{{prefs.omnibox.prevent_url_elisions}}"
   class="cr-row"
-  label="$i18n{appearanceSettingsAlwaysShowBookmarkBarOnNTP}">
+  label="$i18n{showFullUrls}">
 </settings-toggle-button>
 <settings-toggle-button
   pref="{{prefs.brave.tabs_search_show}}"
   class="cr-row"
   label="$i18n{showSearchTabsBtn}">
+</settings-toggle-button>
+<settings-toggle-button
+  pref="{{prefs.brave.tabs.mute_indicator_not_clickable}}"
+  class="cr-row"
+  label="$i18n{braveDisableClickableMuteIndicators}">
 </settings-toggle-button>
 <div class="settings-box">
   <div class="flex">

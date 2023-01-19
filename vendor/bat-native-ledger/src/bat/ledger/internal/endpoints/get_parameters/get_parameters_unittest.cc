@@ -124,7 +124,9 @@ INSTANTIATE_TEST_SUITE_P(
           "tips": {
             "defaultMonthlyChoices": ["0", 1.25, 5, 10.5, "15"],
             "defaultTipChoices": ["0", 1.25, 5, 10.5, "15"]
-          }
+          },
+          "vbatDeadline": "2022-12-24T15:04:45.352584Z",
+          "vbatExpired": true
         }
       )",
       std::make_shared<Result>(mojom::RewardsParameters::New(
@@ -161,7 +163,13 @@ INSTANTIATE_TEST_SUITE_P(
                               std::vector<std::string>{}));
 
             return wallet_provider_regions;
-          }()))
+          }(),
+          [] {
+            base::Time time;
+            static_cast<void>(base::Time::FromUTCString("2022-12-24T15:04:45.352584Z", &time));
+            return time;
+          }(),
+          true))
     },
     GetParametersParamType{
       "1_HTTP_500_failed_to_get_parameters",

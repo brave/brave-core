@@ -27,6 +27,7 @@ import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -35,8 +36,11 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SelectedAccountResponsesCollector;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -73,7 +77,7 @@ public class CryptoModel {
     private SendModel mSendModel;
 
     private NetworkModel mNetworkModel;
-    // Todo: create a models for portfolio
+    private PortfolioModel mPortfolioModel;
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation, SwapModel, AssetModel, SendModel
 
@@ -100,6 +104,9 @@ public class CryptoModel {
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel =
                 new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
+        mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
+                mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
+                mBraveWalletService, mAssetRatioService, mSharedData);
         _mIsSwapEnabled = new MediatorLiveData<>();
         mIsSwapEnabled = _mIsSwapEnabled;
         _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {
@@ -124,6 +131,9 @@ public class CryptoModel {
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mJsonRpcService);
+            mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
+                    mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
+                    mAssetRatioService);
         }
         init();
     }
@@ -263,6 +273,10 @@ public class CryptoModel {
         return mNetworkModel;
     }
 
+    public PortfolioModel getPortfolioModel() {
+        return mPortfolioModel;
+    }
+
     public SendModel createSendModel() {
         if (mSendModel != null) return mSendModel;
         mSendModel =
@@ -308,6 +322,18 @@ public class CryptoModel {
         this.mAccountInfosFromKeyRingModel = accountInfosFromKeyRingModel;
         // pass on the observer to other object
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
+    }
+
+    // TODO: Move to BuyModel class
+    public void isBuySupported(NetworkInfo selectedNetwork, String assetSymbol,
+            String contractAddress, String chainId, Callback1<Boolean> callback) {
+        TokenUtils.getBuyTokensFiltered(
+                mBlockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
+                    callback.call(JavaUtils.includes(tokens,
+                            iToken
+                            -> AssetUtils.Filters.isSameToken(
+                                    iToken, assetSymbol, contractAddress, chainId)));
+                });
     }
 
     // Clear buy send swap model

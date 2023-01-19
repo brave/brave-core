@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/containers/flat_set.h"
 #include "base/memory/singleton.h"
 #include "base/observer_list.h"
 #include "base/task/cancelable_task_tracker.h"
@@ -48,7 +49,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void FinishCombinating(
       base::OnceCallback<void(bool, const DATFileDataBuffer&)> cb,
       const std::vector<DATFileDataBuffer>& results);
-  std::vector<AdBlockFiltersProvider*> filters_providers_;
+  base::flat_set<AdBlockFiltersProvider*> filters_providers_;
 
   base::CancelableTaskTracker task_tracker_;
 

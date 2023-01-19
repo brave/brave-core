@@ -65,26 +65,36 @@ echo "%_signature gpg
 %_gpgbin /usr/bin/gpg" > ~/.rpmmacros
 
 rm -rf "$TMP_REPO"
-mkdir -pv "$TMP_REPO/x86_64"
-for package in dist/*.rpm; do
-    if ! (rpm --checksig "$package" | grep "signatures OK$"); then
-        rpmsign --delsign "$package"
-	rpmsign --addsign --key-id="$GPG_KEY_ID!" "$package"
+for arch in "x86_64" "aarch64"
+do
+    mkdir -pv "$TMP_REPO/$arch"
+    if ls dist/*.$arch.rpm 1> /dev/null 2>&1; then
+        cp dist/*.$arch.rpm "$TMP_REPO/$arch/"
+    fi
+
+    if ls dist/*.noarch.rpm 1> /dev/null 2>&1; then
+        cp dist/*.noarch.rpm "$TMP_REPO/$arch/"
+    fi
+
+    if ls $TMP_REPO/$arch/*.rpm 1> /dev/null 2>&1; then
+        for package in $TMP_REPO/$arch/*.rpm; do
+            if ! (rpm --checksig "$package" | grep "signatures OK$"); then
+                rpmsign --delsign "$package"
+                rpmsign --addsign --key-id="$GPG_KEY_ID!" "$package"
+            fi
+        done
+
+        # Ensure the rpm has the correct signature before continuing
+        # NOTE: rpm displays the short key id, all lower case
+        rpm -v -K $TMP_REPO/$arch/*.rpm | grep "key ID ${GPG_KEY_SHORT_ID,,}: OK"
+
+        createrepo -v --deltas "$TMP_REPO/$arch/"
+        createrepo -v --update --deltas "$TMP_REPO/$arch/"
+
+        gpg --detach-sign --armor --local-user "${GPG_KEY_ID}!" ${TMP_REPO}/${arch}/repodata/repomd.xml
     fi
 done
 
-# Ensure the rpm has the correct signature before continuing
-# NOTE: rpm displays the short key id, all lower case
-rpm -v -K dist/*.rpm | grep "key ID ${GPG_KEY_SHORT_ID,,}: OK"
-
-cp dist/*.rpm "$TMP_REPO/x86_64/"
-
-for arch in $TMP_REPO/x86_64 ; do
-	createrepo -v --deltas "$arch/"
-	createrepo -v --update --deltas "$arch/"
-done
-
-gpg --detach-sign --armor --local-user "${GPG_KEY_ID}!" ${TMP_REPO}/x86_64/repodata/repomd.xml
 gpg --export --armor "${GPG_KEY_ID}!" | aws s3 cp --acl public-read - "s3://${S3_BUCKET}/${KEY_NAME}"
 aws s3 sync --acl public-read "$TMP_REPO/" "s3://${S3_BUCKET}/"
 

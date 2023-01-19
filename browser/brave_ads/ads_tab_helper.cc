@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_ads/ads_tab_helper.h"
 
@@ -44,6 +44,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   if (!ads_service_) {
     return;
   }
+
   search_result_ad_service_ =
       SearchResultAdServiceFactory::GetForProfile(profile);
 
@@ -61,12 +62,10 @@ AdsTabHelper::~AdsTabHelper() {
 }
 
 void AdsTabHelper::TabUpdated() {
-  if (!ads_service_) {
-    return;
+  if (ads_service_) {
+    ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
+                                 is_browser_active_);
   }
-
-  ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
-                               is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -92,6 +91,7 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
   if (!value.is_string()) {
     return;
   }
+
   const std::string& html = value.GetString();
   ads_service_->OnTabHtmlContentDidChange(tab_id_, redirect_chain_, html);
 }
@@ -104,6 +104,7 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
   if (!value.is_string()) {
     return;
   }
+
   const std::string& text = value.GetString();
   ads_service_->OnTabTextContentDidChange(tab_id_, redirect_chain_, text);
 }
@@ -112,7 +113,7 @@ void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
 
-  if (!ads_service_ || !navigation_handle->IsInMainFrame() ||
+  if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
     return;
   }
@@ -130,14 +131,15 @@ void AdsTabHelper::DidFinishNavigation(
     if (search_result_ad_service_) {
       search_result_ad_service_->OnDidFinishNavigation(tab_id_);
     }
+
     should_process_ = navigation_handle->GetRestoreType() ==
                       content::RestoreType::kNotRestored;
+
     return;
   }
 
   content::RenderFrameHost* render_frame_host =
       navigation_handle->GetRenderFrameHost();
-
   RunIsolatedJavaScript(render_frame_host);
 }
 
@@ -149,11 +151,9 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
         render_frame_host, tab_id_, should_process_);
   }
 
-  if (!should_process_) {
-    return;
+  if (should_process_) {
+    RunIsolatedJavaScript(render_frame_host);
   }
-
-  RunIsolatedJavaScript(render_frame_host);
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -169,22 +169,18 @@ void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  if (!ads_service_) {
-    return;
+  if (ads_service_) {
+    ads_service_->OnTabDidStartPlayingMedia(tab_id_);
   }
-
-  ads_service_->OnTabDidStartPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (!ads_service_) {
-    return;
+  if (ads_service_) {
+    ads_service_->OnTabDidStopPlayingMedia(tab_id_);
   }
-
-  ads_service_->OnTabDidStopPlayingMedia(tab_id_);
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {

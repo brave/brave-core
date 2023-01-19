@@ -541,7 +541,6 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
         const hasParts = serializedTransactions.length > 1
         const groupId = hasParts
-          // @ts-expect-error
           ? crypto.randomUUID()
           : undefined
 

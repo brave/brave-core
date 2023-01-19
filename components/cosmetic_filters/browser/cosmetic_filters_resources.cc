@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 3.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 
@@ -68,11 +68,12 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
 
 void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
+    bool aggressive_blocking,
     UrlCosmeticResourcesCallback callback) {
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
-  auto resources = ad_block_service_->UrlCosmeticResources(url);
-  std::move(callback).Run(resources ? std::move(resources.value())
-                                    : base::Value());
+  auto resources =
+      ad_block_service_->UrlCosmeticResources(url, aggressive_blocking);
+  std::move(callback).Run(base::Value(std::move(resources)));
 }
 
 }  // namespace cosmetic_filters

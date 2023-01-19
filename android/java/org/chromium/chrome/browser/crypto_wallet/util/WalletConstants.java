@@ -4,6 +4,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TransactionType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class WalletConstants {
@@ -52,20 +53,17 @@ public final class WalletConstants {
     public static List<String> SUPPORTED_TOP_LEVEL_CHAIN_IDS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.SOLANA_MAINNET);
 
-    public static List<String> BUY_SUPPORTED_NETWORKS =
-            Arrays.asList(BraveWalletConstants.MAINNET_CHAIN_ID);
-    //            BraveWalletConstants.RINKEBY_CHAIN_ID,
-    //            BraveWalletConstants.ROPSTEN_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID,
-    //            BraveWalletConstants.KOVAN_CHAIN_ID, BraveWalletConstants.LOCALHOST_CHAIN_ID
-    //            BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID, /* not yet supported */
-    //            BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID, /* not yet supported */
-    //            BraveWalletConstants.AURORA_MAINNET_CHAIN_ID, /* not yet supported */
-    //            BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID, /* disabled until Ramp support */
-    //            BraveWalletConstants.CELO_MAINNET_CHAIN_ID, /* disabled until Ramp support */
-    //            BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID, /* disabled until Ramp
-    //            support */ BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, /* not yet supported */
-    //            BraveWalletConstants.SOLANA_MAINNET, /* not yet supported */
-    //            BraveWalletConstants.FILECOIN_MAINNET); , /* not yet supported */
+    public static List<String> BUY_SUPPORTED_ONRAMP_NETWORKS = Arrays.asList(
+            BraveWalletConstants.SOLANA_MAINNET, BraveWalletConstants.MAINNET_CHAIN_ID,
+            BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID,
+            BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+            BraveWalletConstants.CELO_MAINNET_CHAIN_ID,
+            BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID,
+            //            BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID, /* not yet supported */
+            //            BraveWalletConstants.AURORA_MAINNET_CHAIN_ID, /* not yet supported */
+            //            BraveWalletConstants.FILECOIN_MAINNET, /* not yet supported */
+            BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID,
+            BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID);
 
     public static List<String> SWAP_SUPPORTED_NETWORKS = Arrays.asList(
             BraveWalletConstants.MAINNET_CHAIN_ID, BraveWalletConstants.GOERLI_CHAIN_ID);

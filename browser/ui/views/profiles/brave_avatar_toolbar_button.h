@@ -15,6 +15,9 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
   explicit BraveAvatarToolbarButton(BrowserView* browser_view);
   BraveAvatarToolbarButton(const BraveAvatarToolbarButton&) = delete;
   BraveAvatarToolbarButton& operator=(const BraveAvatarToolbarButton&) = delete;
+  ~BraveAvatarToolbarButton() override;
+
+  AvatarToolbarButton::State GetAvatarButtonState() const;
 
   // ToolbarButton:
   void SetHighlight(const std::u16string& highlight_text,
@@ -28,6 +31,8 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
       const gfx::Image& profile_identity_image) const override;
   std::u16string GetAvatarTooltipText() const override;
   int GetWindowCount() const;
+
+  base::WeakPtrFactory<BraveAvatarToolbarButton> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_AVATAR_TOOLBAR_BUTTON_H_

@@ -96,7 +96,7 @@ export const AccountFilterSelector = ({
     <StyledWrapper>
       <DropDownButton onClick={onClick}>
         <SelectorLeftSide>
-          {selectedAccount.address !== '' &&
+          {selectedAccount.address !== AllAccountsOption.address &&
             <AccountCircle orb={orb} />
           }
           {selectedAccount.name}

@@ -17,8 +17,9 @@ import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocalStorageScope } from '../../shared/lib/local_storage_scope'
-import * as apiAdapter from './extension_api_adapter'
 import { RewardsPanelProxy } from './rewards_panel_proxy'
+
+import * as apiAdapter from './extension_api_adapter'
 
 type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
 

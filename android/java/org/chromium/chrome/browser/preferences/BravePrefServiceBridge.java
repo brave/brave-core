@@ -15,11 +15,11 @@ import org.chromium.chrome.browser.profiles.Profile;
 
 /**
  * Please don't add anything in that file. We are going to refactor it soon.
- * The only exceptions are preferences that are stored in a local_state
- * g_browser_process->local_state().
  * Check this PRs on how to handle preferences correctly:
  * https://github.com/brave/brave-core/pull/16356
  * https://github.com/brave/brave-core/pull/15905
+ * For the local_state based prefs please look on the PR:
+ * https://github.com/brave/brave-core/pull/16486
  * Contact code owners if you have additional questions.
  */
 
@@ -142,10 +142,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
     }
 
-    public void setSafetynetStatus(String status) {
-        BravePrefServiceBridgeJni.get().setSafetynetStatus(status);
-    }
-
     public void resetPromotionLastFetchStamp() {
         BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
     }
@@ -164,86 +160,6 @@ public class BravePrefServiceBridge {
 
     public boolean GetBooleanForContentSetting(int content_type) {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
-    }
-
-    public void setReferralAndroidFirstRunTimestamp(long time) {
-        BravePrefServiceBridgeJni.get().setReferralAndroidFirstRunTimestamp(time);
-    }
-
-    public void setReferralCheckedForPromoCodeFile(boolean value) {
-        BravePrefServiceBridgeJni.get().setReferralCheckedForPromoCodeFile(value);
-    }
-
-    public void setReferralInitialization(boolean value) {
-        BravePrefServiceBridgeJni.get().setReferralInitialization(value);
-    }
-
-    public void setReferralPromoCode(String promoCode) {
-        BravePrefServiceBridgeJni.get().setReferralPromoCode(promoCode);
-    }
-
-    public void setReferralDownloadId(String downloadId) {
-        BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
-    }
-
-    public void setP3AEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3AEnabled(value);
-    }
-
-    public boolean getP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().getP3AEnabled();
-    }
-
-    public void setStatsReportingEnabled(boolean value) {
-        BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
-    }
-
-    public boolean getStatsReportingEnabled() {
-        return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
-    }
-
-    public boolean hasPathP3AEnabled() {
-        return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
-    }
-
-    public void setP3ANoticeAcknowledged(boolean value) {
-        BravePrefServiceBridgeJni.get().setP3ANoticeAcknowledged(value);
-    }
-
-    public boolean getP3ANoticeAcknowledged() {
-        return BravePrefServiceBridgeJni.get().getP3ANoticeAcknowledged();
-    }
-
-    public void setUnstoppableDomainsResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setUnstoppableDomainsResolveMethod(method);
-    }
-
-    public int getUnstoppableDomainsResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getUnstoppableDomainsResolveMethod();
-    }
-
-    public void setENSResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setENSResolveMethod(method);
-    }
-
-    public int getENSResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getENSResolveMethod();
-    }
-
-    public void setENSOffchainResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setENSOffchainResolveMethod(method);
-    }
-
-    public int getENSOffchainResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getENSOffchainResolveMethod();
-    }
-
-    public void setSnsResolveMethod(int method) {
-        BravePrefServiceBridgeJni.get().setSnsResolveMethod(method);
-    }
-
-    public int getSnsResolveMethod() {
-        return BravePrefServiceBridgeJni.get().getSnsResolveMethod();
     }
 
     public void setWebrtcPolicy(int policy) {
@@ -310,34 +226,8 @@ public class BravePrefServiceBridge {
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();
 
-        void setSafetynetStatus(String status);
-
         void resetPromotionLastFetchStamp();
         boolean getBooleanForContentSetting(int content_type);
-
-        void setReferralAndroidFirstRunTimestamp(long time);
-        void setReferralCheckedForPromoCodeFile(boolean value);
-        void setReferralInitialization(boolean value);
-        void setReferralPromoCode(String promoCode);
-        void setReferralDownloadId(String downloadId);
-
-        void setP3AEnabled(boolean value);
-        boolean getP3AEnabled();
-        boolean hasPathP3AEnabled();
-        void setP3ANoticeAcknowledged(boolean value);
-        boolean getP3ANoticeAcknowledged();
-
-        void setStatsReportingEnabled(boolean value);
-        boolean getStatsReportingEnabled();
-
-        void setUnstoppableDomainsResolveMethod(int method);
-        int getUnstoppableDomainsResolveMethod();
-        void setENSResolveMethod(int method);
-        int getENSResolveMethod();
-        void setENSOffchainResolveMethod(int method);
-        int getENSOffchainResolveMethod();
-        void setSnsResolveMethod(int method);
-        int getSnsResolveMethod();
 
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();

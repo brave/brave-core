@@ -178,10 +178,17 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
   return base::Contains(tags_, tag);
 }
 
-absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(
-    const std::string& url) {
+base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
+  absl::optional<base::Value> result =
+      base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
+
+  if (!result) {
+    return base::Value::Dict();
+  } else {
+    DCHECK(result->is_dict());
+    return std::move(result->GetDict());
+  }
 }
 
 base::Value::List AdBlockEngine::HiddenClassIdSelectors(

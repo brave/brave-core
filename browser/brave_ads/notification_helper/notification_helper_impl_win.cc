@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_ads/notification_helper/notification_helper_impl_win.h"
 
@@ -64,7 +64,7 @@ NotificationHelperImplWin::~NotificationHelperImplWin() = default;
 
 bool NotificationHelperImplWin::CanShowNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
-    LOG(WARNING) << "Native notifications feature is disabled";
+    VLOG(1) << "Native notifications feature is disabled";
     return false;
   }
 
@@ -74,8 +74,8 @@ bool NotificationHelperImplWin::CanShowNotifications() {
     // notifications. It significantly amplified the memory and CPU usage.
     // Therefore, Windows 10 native notifications in Chromium are only enabled
     // for version 1803, build 17134 and later
-    LOG(WARNING) << "Native notifications are not supported prior to Windows "
-                    "10 build 17134";
+    VLOG(1) << "Native notifications are not supported prior to Windows 10 "
+               "build 17134";
     return false;
   }
 
@@ -109,7 +109,7 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
       PNTQUERYWNFSTATEDATA(nt_query_wnf_state_data_func);
 
   if (!nt_query_wnf_state_data) {
-    LOG(ERROR) << "Failed to get pointer to NtQueryWnfStateData function";
+    VLOG(0) << "Failed to get pointer to NtQueryWnfStateData function";
     return false;
   }
 
@@ -126,7 +126,7 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
   if (!NT_SUCCESS(nt_query_wnf_state_data(
           &WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, nullptr, nullptr,
           &change_stamp, &buffer, &buffer_size))) {
-    LOG(ERROR) << "Failed to get status of Focus Assist";
+    VLOG(0) << "Failed to get status of Focus Assist";
     return false;
   }
 
@@ -134,27 +134,27 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
 
   switch (result) {
     case NOT_SUPPORTED: {
-      LOG(WARNING) << "Focus Assist is unsupported";
+      VLOG(1) << "Focus Assist is unsupported";
       return false;
     }
 
     case FAILED: {
-      LOG(WARNING) << "Failed to determine Focus Assist status";
+      VLOG(1) << "Failed to determine Focus Assist status";
       return false;
     }
 
     case OFF: {
-      LOG(INFO) << "Focus Assist is disabled";
+      VLOG(1) << "Focus Assist is disabled";
       return false;
     }
 
     case PRIORITY_ONLY: {
-      LOG(INFO) << "Focus Assist is set to priority only";
+      VLOG(1) << "Focus Assist is set to priority only";
       return true;
     }
 
     case ALARMS_ONLY: {
-      LOG(INFO) << "Focus Assist is set to alarms only";
+      VLOG(1) << "Focus Assist is set to alarms only";
       return true;
     }
   }
@@ -162,45 +162,45 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
 
 bool NotificationHelperImplWin::IsNotificationsEnabled() {
   HRESULT hr = InitializeToastNotifier();
-  auto* notifier = notifier_.Get();
-  if (!notifier || FAILED(hr)) {
-    LOG(ERROR) << "Failed to initialize toast notifier";
+  auto* toast_notifier = toast_notifier_.Get();
+  if (!toast_notifier || FAILED(hr)) {
+    VLOG(0) << "Failed to initialize toast notifier";
     return true;
   }
 
-  ABI::Windows::UI::Notifications::NotificationSetting setting;
-  hr = notifier->get_Setting(&setting);
+  ABI::Windows::UI::Notifications::NotificationSetting notification_setting;
+  hr = toast_notifier->get_Setting(&notification_setting);
   if (FAILED(hr)) {
-    LOG(ERROR) << "Failed to get notification settings from toast notifier";
+    VLOG(0) << "Failed to get notification settings from toast notifier";
     return true;
   }
 
-  switch (setting) {
+  switch (notification_setting) {
     case ABI::Windows::UI::Notifications::NotificationSetting_Enabled: {
-      LOG(INFO) << "Notifications are enabled";
+      VLOG(1) << "Notifications are enabled";
       return true;
     }
 
     case ABI::Windows::UI::Notifications::NotificationSetting_DisabledForUser: {
-      LOG(WARNING) << "Notifications disabled for user";
+      VLOG(1) << "Notifications disabled for user";
       return false;
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledForApplication: {
-      LOG(WARNING) << "Notifications disabled for application";
+      VLOG(1) << "Notifications disabled for application";
       return false;
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledByGroupPolicy: {
-      LOG(WARNING) << "Notifications disabled by group policy";
+      VLOG(1) << "Notifications disabled by group policy";
       return false;
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledByManifest: {
-      LOG(WARNING) << "Notifications disabled by manifest";
+      VLOG(1) << "Notifications disabled by manifest";
       return false;
     }
   }
@@ -213,21 +213,22 @@ std::wstring NotificationHelperImplWin::GetAppId() const {
 HRESULT NotificationHelperImplWin::InitializeToastNotifier() {
   Microsoft::WRL::ComPtr<
       ABI::Windows::UI::Notifications::IToastNotificationManagerStatics>
-      manager;
+      toast_notification_manager;
 
   HRESULT hr = CreateActivationFactory(
       RuntimeClass_Windows_UI_Notifications_ToastNotificationManager,
-      manager.GetAddressOf());
+      IID_PPV_ARGS(&toast_notification_manager));
 
   if (FAILED(hr)) {
-    LOG(ERROR) << "Failed to create activation factory";
+    VLOG(0) << "Failed to create activation factory";
     return hr;
   }
 
   auto application_id = base::win::ScopedHString::Create(GetAppId());
-  hr = manager->CreateToastNotifierWithId(application_id.get(), &notifier_);
+  hr = toast_notification_manager->CreateToastNotifierWithId(
+      application_id.get(), &toast_notifier_);
   if (FAILED(hr)) {
-    LOG(ERROR) << "Failed to create toast notifier";
+    VLOG(0) << "Failed to create toast notifier";
     return hr;
   }
 
@@ -235,15 +236,15 @@ HRESULT NotificationHelperImplWin::InitializeToastNotifier() {
 }
 
 // Templated wrapper for ABI::Windows::Foundation::GetActivationFactory()
-template <unsigned int size, typename T>
+template <unsigned int size>
 HRESULT NotificationHelperImplWin::CreateActivationFactory(
     wchar_t const (&class_name)[size],
-    T** object) const {
+    const IID& iid,
+    void** factory) const {
   auto ref_class_name = base::win::ScopedHString::Create(
       base::WStringPiece(class_name, size - 1));
 
-  return base::win::RoGetActivationFactory(ref_class_name.get(),
-                                           IID_PPV_ARGS(object));
+  return base::win::RoGetActivationFactory(ref_class_name.get(), iid, factory);
 }
 
 }  // namespace brave_ads

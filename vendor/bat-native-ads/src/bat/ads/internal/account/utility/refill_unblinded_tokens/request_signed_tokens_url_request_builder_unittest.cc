@@ -1,13 +1,13 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
 #include "base/check.h"
-#include "bat/ads/internal/base/unittest/unittest_base.h"
-#include "bat/ads/internal/flags/flag_manager_util.h"
+#include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "bat/ads/sys_info.h"
@@ -68,7 +68,8 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Arrange
   SysInfo().is_uncertain_future = true;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
@@ -108,7 +109,8 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Arrange
   SysInfo().is_uncertain_future = false;
 
-  SetEnvironmentTypeForTesting(EnvironmentType::kStaging);
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kStaging);
 
   WalletInfo wallet;
   wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";

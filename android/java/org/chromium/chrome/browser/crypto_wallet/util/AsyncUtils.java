@@ -389,4 +389,24 @@ public class AsyncUtils {
             super.fireResponseCompleteCallback();
         }
     }
+
+    public static class GetNftMetaDataContext
+            extends SingleResponseBaseContext implements JsonRpcService.GetErc721Metadata_Response {
+        public BlockchainToken asset;
+        public String erc721Metadata;
+        public Integer errorCode;
+        public String errorMessage;
+
+        public GetNftMetaDataContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(String erc721Metadata, Integer errorCode, String errorMessage) {
+            this.erc721Metadata = erc721Metadata;
+            this.errorCode = errorCode;
+            this.errorMessage = errorMessage;
+            super.fireResponseCompleteCallback();
+        }
+    }
 }

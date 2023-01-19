@@ -1,8 +1,6 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@7f5d63711561bbc6b89dfa1c18f4d8d51df8c6d8",
-  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
@@ -11,7 +9,7 @@ deps = {
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
-    "url": "https://github.com/brave/Sparkle.git@f69ba7b7fae7dda475ba6cda12fba8d72270478d",
+    "url": "https://github.com/brave/Sparkle.git@8721f93f694244f9ff41fe975a92617ac5f63f9a",
     "condition": "checkout_mac",
   },
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
@@ -50,7 +48,7 @@ hooks = [
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.2'],
+    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
   },
   {
     'name': 'download_rust_deps',

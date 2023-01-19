@@ -32,6 +32,7 @@ include_rules = [
   "+brave/components/privacy_sandbox",
   "+brave/components/sidebar",
   "+brave/components/sync",
+  "+brave/components/text_recognition",
   "+brave/components/tor",
   "+brave/components/translate",
   "+brave/components/url_sanitizer",

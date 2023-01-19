@@ -335,10 +335,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       )
     }
 
-    const text = getLocale('braveWalletTransactionSent')
     return (
       <>
-        {displayAccountName ? text : toProperCase(text)}{' '}
+        {toProperCase(getLocale('braveWalletTransactionSent'))}{' '}
         <AddressOrAsset
           // Disabled for ERC721 tokens until we have NFT meta data
           disabled={
@@ -383,9 +382,10 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         <DetailColumn>
           <DetailRow>
 
-            {displayAccountName && // Display account name only if rendered under Portfolio view
+            {/* Display account name only if rendered under Portfolio view */}
+            {displayAccountName && account?.name &&
               <DetailTextLight>
-                {account?.name}
+                {account.name}
               </DetailTextLight>
             }
 

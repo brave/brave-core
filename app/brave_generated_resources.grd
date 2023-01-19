@@ -168,12 +168,21 @@
       <message name="IDS_SHOW_BRAVE_REWARDS" desc="The show Brave Rewards menu in the app menu">
         Brave Rewards
       </message>
+      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_ALWAYS" desc="The name of the context menu item to always show bookmark bar">
+        Always
+      </message>
+      <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NEVER" desc="The name of the context menu item to never show bookmark bar">
+        Never
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
           Report a Broken Site
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy Clean Link
+        </message>
+        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
+          Only On the New Tab Page
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -182,6 +191,9 @@
         </message>
         <message name="IDS_COPY_CLEAN_LINK" desc="The name of the context menu item to copy clean link">
           Copy clean link
+        </message>
+        <message name="IDS_BOOKMAR_BAR_MENU_SHOW_NTP" desc="The name of the context menu item to show bookmark bar on ntp only">
+           Only on the new tab page
         </message>
       </if>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
@@ -260,9 +272,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
-      </message>
-      <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
-        <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
       </message>
 
       <!-- Tor -->
@@ -604,9 +613,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           No thanks
         </message>
         <!-- obsolete system InfoBar -->
-        <message name="IDS_OBSOLERE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
-          Don't show again
-        </message>
+        <if expr="is_win">
+          <message name="IDS_OBSOLETE_SYSTEM_INFOBAR_DONT_SHOW_BUTTON" desc="The text for don't show again button">
+            Don't show again
+          </message>
+          <message name="IDS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_CONTENT" desc="The text for obsolete system confirm dialog">
+            By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
+          </message>
+        </if>
       </if>
 
       <!-- Brave Ads -->
@@ -891,6 +905,25 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
+        </message>
+      </if>
+
+      <!-- Text recognition dialog-->
+      <if expr="enable_text_recognition">
+        <message name="IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE" desc="The name of the context menu item to get text from image">
+          Copy Text From Image
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_CLOSE_BUTTON" desc="The text for the close button of text recognition dialog">
+          Close
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_IN_PROGRESS" desc="The text for the header of text recognition dialog">
+          Copying text from image...
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_COMPLETE" desc="The text for the header of text recognition dialog">
+          Text copied from image
+        </message>
+        <message name="IDS_TEXT_RECOGNITION_DIALOG_HEADER_FAILED" desc="The text for the header of text recognition dialog">
+          Text copy failed
         </message>
       </if>
 

@@ -169,6 +169,13 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="BookmarkTabPopupMenu" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColor">@color/bookmark_menu_text_color</item>
+        <item name="android:popupBackground">@drawable/bookmark_menu_bg</item>
+        <item name="android:popupElevation">20dp</item>
+        <item name="android:popupMenuStyle">@drawable/bookmark_menu_bg</item>
+    </style>
+
     <style name="NewTabPopupMenuLight" parent="Widget.AppCompat.PopupMenu">
       <item name="android:textColor">@android:color/black</item>
       <item name="android:itemBackground">@android:color/white</item>

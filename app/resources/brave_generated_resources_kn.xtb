@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Brave ಬ್ರೌಸರ್ ಡೆವ್ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="8292967014767479012">Brave ಬ್ರೌಸರ್ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="4743468424889072281">Brave ಬ್ರೌಸರ್ ಡೆವಲಪ್‌ಮೆಂಟ್‌ ಆ್ಯಪ್‌‌ಗಳು</translation>
-<translation id="732814027519296280">Brave ಹುಡುಕಾಟವನ್ನು ಇನ್ನೂ ಉತ್ತಮಗೊಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="2677865600861971449">ಅನಾಮಧೇಯವಾಗಿ ಕೆಲವು ಹುಡುಕಾಟ ಮತ್ತು ಬ್ರೌಸಿಂಗ್ ಡೇಟಾ ಕೊಡುಗೆ ನೀಡುವುದಕ್ಕಾಗಿ &amp; ಎಲ್ಲರಿಗೂ Brave ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳನ್ನು ಸುಧಾರಿಸುವುದಕ್ಕಾಗಿ ವೆಬ್ ಅನ್ವೇಷಣೆ ಪ್ರಾಜೆಕ್ಟ್ ಅನ್ನು ಆಯ್ದುಕೊಳ್ಳಿ. ಗೌಪ್ಯತೆ-ಸಂರಕ್ಷಿಸುವಿಕೆ. ಮತ್ತು ಶೂನ್ಯ ಪ್ರಯತ್ನ. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
-<translation id="5860491529813859533">ಆನ್ ಮಾಡಿ</translation>
-<translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
 <translation id="5039804452771397117">ಅನುಮತಿಸಿ</translation>
 <translation id="7053983685419859001">ನಿರ್ಬಂಧಿಸು</translation>
 <translation id="1679356339067548863">Brave ಬ್ರೌಸರ್ ಕ್ರ್ಯಾಶ್ ಆದಾಗ ಅಥವಾ ಫ್ರೀಜ್ ಆದಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವ ಮೂಲಕ Brave ನ ಉತ್ಪನ್ನ ಸ್ಥಿರತೆಯನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">ಇದನ್ನು ಮತ್ತೆ ತೋರಿಸಬೇಡಿ</translation>
 <translation id="5234764350956374838">ವಜಾಗೊಳಿಸಿ</translation>
 <translation id="5100490448228945668">Brave ಹುಡುಕಾಟ ಪರಿವರ್ತನೆಯನ್ನು ವಜಾಗೊಳಿಸಿ, ಈ ಸಲಹೆಯನ್ನು ತೆಗೆದುಹಾಕಲು ಎಂಟರ್ ಒತ್ತಿ</translation>
+<translation id="9194637241566114638">ಅನಾಮಧೇಯ ಬಳಕೆಯ ಡೇಟಾ ಕಳುಹಿಸುವ ಮೂಲಕ <ph name="SEARCH_NAME"/> ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.  <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave ಹುಡುಕಾಟ</translation>
+<translation id="8184318863960255706">ಹೆಚ್ಚಿನ ಮಾಹಿತಿ</translation>
+<translation id="6965382102122355670">ಸರಿ</translation>
+<translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
 <translation id="6040143037577758943">ಮುಚ್ಚಿ</translation>
@@ -241,6 +241,7 @@
 <translation id="7859704718976024901">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸ</translation>
 <translation id="8820817407110198400">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
 <translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
+<translation id="2245286910966863912">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ನ್ಯೂಸ್ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="1811404036171336214">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="3416468988018290825">ಯಾವಾಗಲೂ ಪೂರ್ಣ URL ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5529693968082667490">ಟ್ಯಾಬ್ ಹುಡುಕಾಟ ಬಟನ್ ತೋರಿಸಿ</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="8792121506918889955">WebRTC IP ನಿರ್ವಹಣೆ ನೀತಿ</translation>
+<translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="1822560017823072927">ಡೀಫಾಲ್ಟ್ ಸಾರ್ವಜನಿಕ ಮತ್ತು ಖಾಸಗಿ ಇಂಟರ್ಫೇಸ್‌ಗಳು</translation>
 <translation id="5825943197137337319">ಡೀಫಾಲ್ಟ್ ಸಾರ್ವಜನಿಕ ಇಂಟರ್ಫೇಸ್ ಮಾತ್ರ</translation>
 <translation id="1689062823386843231">ಪ್ರಾಕ್ಸಿಡ್-ಅಲ್ಲದ UDP ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>

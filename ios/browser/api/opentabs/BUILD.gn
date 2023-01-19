@@ -29,6 +29,7 @@ source_set("opentabs") {
 
   deps = [
     "//base",
+    "//brave/ios/browser/api/web/web_state",
     "//components/keyed_service/ios:ios",
     "//components/send_tab_to_self",
     "//components/sync/driver",

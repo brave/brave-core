@@ -1,0 +1,25 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("misc_metrics") {
+  sources = [
+    "menu_metrics.cc",
+    "menu_metrics.h",
+    "page_metrics_service.cc",
+    "page_metrics_service.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//url",
+  ]
+}

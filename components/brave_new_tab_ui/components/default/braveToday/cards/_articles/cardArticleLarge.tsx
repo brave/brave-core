@@ -56,7 +56,6 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
 
   const uuid = React.useMemo<string | undefined>(function () {
     if (props.isPromoted) {
-      // @ts-expect-error
       const uuid: string = crypto.randomUUID()
       return uuid
     }

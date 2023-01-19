@@ -89,11 +89,6 @@
 <translation id="8303432794159193481">Brave Dev</translation>
 <translation id="8292967014767479012">Brave</translation>
 <translation id="4743468424889072281">Brave Development</translation>
-<translation id="732814027519296280">Brave Search を改善したいですか？</translation>
-<translation id="2677865600861971449">Web Discovery Project にオプトインして、検索ブラウジングデータを匿名で提供し、すべての人の Brave Search 結果を改善します。プライバシーは保護され、あなたになにか作業が求められることはありません。<ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="6165508094623778733">詳しくはこちら</translation>
-<translation id="5860491529813859533">オンにする</translation>
-<translation id="780301667611848630">利用しない</translation>
 <translation id="5039804452771397117">許可</translation>
 <translation id="7053983685419859001">ブロック</translation>
 <translation id="1679356339067548863">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
@@ -116,6 +111,11 @@
 <translation id="5026874946691314267">再度表示しない</translation>
 <translation id="5234764350956374838">閉じる</translation>
 <translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
+<translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave Search</translation>
+<translation id="8184318863960255706">詳細</translation>
+<translation id="6965382102122355670">はい</translation>
+<translation id="780301667611848630">いいえ</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -241,10 +241,11 @@
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
+<translation id="2245286910966863912">アドレスバーに「Braveニュース」ボタンを表示</translation>
 <translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
-<translation id="1643029991199044105">Ctrl-Tabを使用し、最近使用したタブを繰り替えす</translation>
+<translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
@@ -335,6 +336,7 @@
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
+<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>

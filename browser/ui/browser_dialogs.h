@@ -6,12 +6,29 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_
 #define BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_
 
+#include "base/callback_forward.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
+
 class Browser;
+class SkBitmap;
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace brave {
 
 // Tab restore dialog will be launched after ask dialog is closed.
 void ShowCrashReportPermissionAskDialog(Browser* browser);
+
+// Run |callback| when dialog closed.
+void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback);
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+// Show web modal dialog for showing text that recognized from |image|.
+void ShowTextRecognitionDialog(content::WebContents* web_contents,
+                               const SkBitmap& image);
+#endif
 
 }  // namespace brave
 

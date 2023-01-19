@@ -50,6 +50,8 @@
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)setValueState:(const std::string&)name value:(base::Value)value;
 - (base::Value)getValueState:(const std::string&)name;
+- (void)setTimeState:(const std::string&)name time:(base::Time)time;
+- (base::Time)getTimeState:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
 - (std::string)getLegacyWallet;
 - (void)showNotification:(const std::string&)type
