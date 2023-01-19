@@ -363,6 +363,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletWatchListSearchPlaceholder",
      IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER},
     {"braveWalletWatchListError", IDS_BRAVE_WALLET_WATCH_LIST_ERROR},
+    {"braveWalletCustomTokenExistsError",
+     IDS_BRAVE_WALLET_CUSTOM_TOKEN_EXISTS_ERROR},
     {"braveWalletWatchListTokenId", IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID},
     {"braveWalletWatchListTokenIdError",
      IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR},
