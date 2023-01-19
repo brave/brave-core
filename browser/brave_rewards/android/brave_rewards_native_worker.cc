@@ -128,6 +128,10 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
     ledger::mojom::RewardsParametersPtr parameters) {
   if (parameters) {
     parameters_ = std::move(parameters);
+    LOG(ERROR) << "NTP"
+               << "vbat_deadline : " << parameters_->vbat_deadline;
+    LOG(ERROR) << "NTP"
+               << "vbat_expired : " << parameters_->vbat_expired;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();

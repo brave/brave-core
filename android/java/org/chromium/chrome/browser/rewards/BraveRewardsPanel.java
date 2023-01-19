@@ -1066,6 +1066,7 @@ public class BraveRewardsPanel
 
     @Override
     public void OnGetExternalWallet(String externalWallet) {
+        Log.e("NTP", "OnGetExternalWallet : " + externalWallet);
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);

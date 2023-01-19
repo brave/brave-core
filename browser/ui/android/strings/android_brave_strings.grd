@@ -3494,6 +3494,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
     </message>
+    <message name="IDS_VBAT_TITLE" desc="Vbat modal title text">
+      You still have time to contribute your vBAT to your favorite creators
+    </message>
+    <message name="IDS_VBAT_TEXT" desc="Vbat modal text">
+      On [due date], we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (DE) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
+    </message>
   </messages>
   </release>
 </grit>
