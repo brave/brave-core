@@ -65,6 +65,8 @@ import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../components/brave_wallet_ui/common/selectors'
 
 export interface Props {
   transaction: ParsedTransaction
@@ -90,6 +92,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // redux
   const dispatch = useDispatch()
+  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
 
   // selectors
   const selectNetworkById = React.useMemo(makeSelectNetworkByIdFromQuery, [])
@@ -119,7 +122,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
   // custom hooks
-  const onClickViewOnBlockExplorer = useExplorer(txNetwork)
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   // methods
   const onShowTransactionPopup = React.useCallback(() => {

@@ -211,9 +211,9 @@ export const PortfolioAsset = (props: Props) => {
   }, [selectedNetwork, selectedAsset, networkList])
 
   // more custom hooks
-  const parseTransaction = useTransactionParser(selectedAssetsNetwork)
+  const parseTransaction = useTransactionParser(selectedNetwork)
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
-  const openExplorer = useExplorer(selectedAssetsNetwork)
+  const openExplorer = useExplorer(selectedNetwork)
 
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
@@ -294,30 +294,38 @@ export const PortfolioAsset = (props: Props) => {
   }, [portfolioPriceHistory, fullPortfolioFiatBalance])
 
   const accountsByNetwork = React.useMemo(() => {
-    if (selectedAssetsNetwork?.coin !== undefined) {
+    if (selectedAssetsNetwork?.coin === undefined) {
       return []
     }
     return accounts.filter((account) => account.coin === selectedAssetsNetwork?.coin)
   }, [selectedAssetsNetwork?.coin, accounts])
 
   const transactionsByNetwork = React.useMemo(() => {
-    return accountsByNetwork.map((account) => {
-      return transactions[account.address]
-    }).flat(1).map(parseTransaction)
+    if (selectedNetwork) {
+      const tx = accountsByNetwork.map((account) => {
+        return transactions[account.address]
+      }).flat(1)
+      if (tx.length > 0 && tx[0] !== undefined) {
+        return tx.map(parseTransaction)
+      }
+    }
+    return []
   }, [
     accountsByNetwork,
-    transactions
+    transactions,
+    selectedNetwork
   ])
 
   const selectedAssetTransactions: ParsedTransaction[] = React.useMemo(() => {
-    if (selectedAsset) {
+    if (selectedNetwork) {
       const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        return tx && tx?.symbol === selectedAsset?.symbol
+        return tx && tx?.symbol === selectedNetwork?.symbol &&
+              tx?.chainId === selectedNetwork.chainId
       })
       return sortTransactionByDate(filteredTransactions, 'descending')
     }
     return []
-  }, [selectedAsset, transactionsByNetwork, parseTransaction])
+  }, [selectedAsset, selectedNetwork, transactionsByNetwork, parseTransaction])
 
   const fullAssetBalances = React.useMemo(() => {
     if (selectedAsset?.contractAddress === '') {

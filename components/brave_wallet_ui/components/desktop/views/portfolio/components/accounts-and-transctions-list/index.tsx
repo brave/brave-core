@@ -78,10 +78,12 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAsset])
 
   const selectedAssetsNetwork = React.useMemo(() => {
-    if (!selectedAsset) {
+    if (selectedNetwork) {
       return selectedNetwork
+    } else if (selectedAsset) {
+      return getTokensNetwork(networkList, selectedAsset)
     }
-    return getTokensNetwork(networkList, selectedAsset)
+    return undefined
   }, [selectedNetwork, selectedAsset, networkList])
 
   const filteredAccountsByCoinType = React.useMemo(() => {
@@ -96,7 +98,7 @@ export const AccountsAndTransactionsList = ({
       return filteredAccountsByCoinType.filter((account) => Number(account.nativeBalanceRegistry[selectedAssetsNetwork.chainId] ?? 0) !== 0)
     }
     return filteredAccountsByCoinType
-  }, [selectedAsset, filteredAccountsByCoinType])
+  }, [selectedAsset, filteredAccountsByCoinType, selectedNetwork])
 
   const nonRejectedTransactions = React.useMemo(() => {
     return selectedAssetTransactions
