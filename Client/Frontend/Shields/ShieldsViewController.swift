@@ -236,7 +236,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       shieldsView.simpleShieldView.faviconImageView.isHidden = true
     }
     
-    let normalizedDisplayHost = URLFormatter.formatURL(url?.withoutWWW.absoluteString ?? "", formatTypes: [], unescapeOptions: []).removeSchemeFromURLString(url?.scheme)
+    // Follows the logic in `updateTextWithURL` for formatting
+    let normalizedDisplayHost = URLFormatter.formatURL(url?.withoutWWW.absoluteString ?? "", formatTypes: .omitDefaults, unescapeOptions: []).removeSchemeFromURLString(url?.scheme)
     
     shieldsView.simpleShieldView.hostLabel.text = normalizedDisplayHost
     shieldsView.reportBrokenSiteView.urlLabel.text = url?.domainURL.absoluteString
