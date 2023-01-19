@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -19,14 +19,9 @@ IpfsBasePinService::IpfsBasePinService(IpfsService* ipfs_service)
   ipfs_service_->AddObserver(this);
 }
 
-IpfsBasePinService::IpfsBasePinService() {}
+IpfsBasePinService::IpfsBasePinService() = default;
 
-IpfsBasePinService::~IpfsBasePinService() {}
-
-// For unit tests
-void IpfsBasePinService::RemovePrefListenersForTests() {
-  pref_change_registrar_.RemoveAll();
-}
+IpfsBasePinService::~IpfsBasePinService() = default;
 
 void IpfsBasePinService::OnIpfsShutdown() {
   daemon_ready_ = false;

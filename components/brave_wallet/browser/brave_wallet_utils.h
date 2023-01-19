@@ -152,7 +152,7 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
 // Converts string representation of CoinType to enum.
-absl::optional<mojom::CoinType> GetCoinFromPref(const std::string& pref);
+absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
 
 // Resolves chain_id from network_id.
 absl::optional<std::string> GetChainId(PrefService* prefs,

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -9,12 +9,13 @@
 
 namespace brave_wallet {
 
-IntentData::IntentData(const BlockchainTokenPtr& token,
-                       Operation operation,
-                       absl::optional<std::string> service)
+BraveWalletAutoPinService::IntentData::IntentData(
+    const BlockchainTokenPtr& token,
+    Operation operation,
+    absl::optional<std::string> service)
     : token(token.Clone()), operation(operation), service(std::move(service)) {}
 
-IntentData::~IntentData() {}
+BraveWalletAutoPinService::IntentData::~IntentData() = default;
 
 BraveWalletAutoPinService::BraveWalletAutoPinService(
     PrefService* prefs,
@@ -23,6 +24,7 @@ BraveWalletAutoPinService::BraveWalletAutoPinService(
     : pref_service_(prefs),
       brave_wallet_service_(brave_wallet_service),
       brave_wallet_pin_service_(brave_wallet_pin_service) {
+  DCHECK(brave_wallet_service);
   Restore();
   brave_wallet_service->AddTokenObserver(
       token_observer_.BindNewPipeAndPassRemote());
@@ -43,41 +45,44 @@ BraveWalletAutoPinService::MakeRemote() {
 }
 
 void BraveWalletAutoPinService::OnTokenAdded(BlockchainTokenPtr token) {
-  if (!token->is_nft) {
+  if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
   if (!IsAutoPinEnabled()) {
     return;
   }
-  PostPinToken(std::move(token), base::OnceCallback<void(bool)>());
+  PostPinToken(std::move(token));
 }
 
 void BraveWalletAutoPinService::OnTokenRemoved(BlockchainTokenPtr token) {
-  if (!token->is_nft) {
+  if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
   base::EraseIf(queue_, [&token](const std::unique_ptr<IntentData>& intent) {
     return intent->token == token;
   });
-  PostUnpinToken(std::move(token), base::OnceCallback<void(bool)>());
+  PostUnpinToken(std::move(token));
 }
 
 void BraveWalletAutoPinService::Restore() {
-  brave_wallet_service_->GetAllUserAssets(base::BindOnce(
-      &BraveWalletAutoPinService::OnTokenListResolved, base::Unretained(this)));
+  brave_wallet_service_->GetAllUserAssets(
+      base::BindOnce(&BraveWalletAutoPinService::OnTokenListResolved,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveWalletAutoPinService::OnTokenListResolved(
     std::vector<BlockchainTokenPtr> token_list) {
   bool autopin_enabled = IsAutoPinEnabled();
+  // Resolves list of user tokens.
+  // Check whether they are pinned or not and posts corresponding tasks.
   std::set<std::string> known_tokens =
       brave_wallet_pin_service_->GetTokens(absl::nullopt);
   for (const auto& token : token_list) {
-    if (!token->is_nft) {
+    if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
       continue;
     }
     auto current_token_path =
-        BraveWalletPinService::GetPath(absl::nullopt, token);
+        BraveWalletPinService::GetTokenPrefPath(absl::nullopt, token);
     if (!current_token_path) {
       continue;
     }
@@ -113,6 +118,8 @@ void BraveWalletAutoPinService::OnTokenListResolved(
       AddOrExecute(std::make_unique<IntentData>(token, Operation::kDelete,
                                                 absl::nullopt));
     } else if (status->code == mojom::TokenPinStatusCode::STATUS_PINNED) {
+      // Pinned tokens should be verified for entirety time to time.
+      // We should check that related CIDs are still pinned.
       auto t1 = status->validate_time;
       if ((base::Time::Now() - t1) > base::Days(1) || t1 > base::Time::Now()) {
         AddOrExecute(std::make_unique<IntentData>(token, Operation::kValidate,
@@ -121,8 +128,11 @@ void BraveWalletAutoPinService::OnTokenListResolved(
     }
   }
 
+  // Tokens that were previously pinned but not listed in the wallet should be
+  // unpinned.
   for (const auto& t : known_tokens) {
-    mojom::BlockchainTokenPtr token = BraveWalletPinService::TokenFromPath(t);
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(t);
     if (token) {
       AddOrExecute(std::make_unique<IntentData>(token, Operation::kDelete,
                                                 absl::nullopt));
@@ -132,15 +142,13 @@ void BraveWalletAutoPinService::OnTokenListResolved(
   CheckQueue();
 }
 
-void BraveWalletAutoPinService::PostPinToken(BlockchainTokenPtr token,
-                                             PostPinTokenCallback callback) {
+void BraveWalletAutoPinService::PostPinToken(BlockchainTokenPtr token) {
   queue_.push_back(
       std::make_unique<IntentData>(token, Operation::kAdd, absl::nullopt));
   CheckQueue();
 }
 
-void BraveWalletAutoPinService::PostUnpinToken(BlockchainTokenPtr token,
-                                               PostPinTokenCallback callback) {
+void BraveWalletAutoPinService::PostUnpinToken(BlockchainTokenPtr token) {
   queue_.push_back(
       std::make_unique<IntentData>(token, Operation::kDelete, absl::nullopt));
   CheckQueue();
@@ -151,7 +159,7 @@ void BraveWalletAutoPinService::ValidateToken(
   brave_wallet_pin_service_->Validate(
       data->token->Clone(), data->service,
       base::BindOnce(&BraveWalletAutoPinService::OnValidateTaskFinished,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveWalletAutoPinService::PinToken(
@@ -159,7 +167,7 @@ void BraveWalletAutoPinService::PinToken(
   brave_wallet_pin_service_->AddPin(
       data->token->Clone(), data->service,
       base::BindOnce(&BraveWalletAutoPinService::OnTaskFinished,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveWalletAutoPinService::UnpinToken(
@@ -167,7 +175,7 @@ void BraveWalletAutoPinService::UnpinToken(
   brave_wallet_pin_service_->RemovePin(
       data->token->Clone(), data->service,
       base::BindOnce(&BraveWalletAutoPinService::OnTaskFinished,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveWalletAutoPinService::AddOrExecute(std::unique_ptr<IntentData> data) {

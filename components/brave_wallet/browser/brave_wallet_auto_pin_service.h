@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -30,19 +30,6 @@ using brave_wallet::mojom::BlockchainTokenPtr;
 
 namespace brave_wallet {
 
-enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
-
-struct IntentData {
-  BlockchainTokenPtr token;
-  Operation operation;
-  absl::optional<std::string> service;
-  size_t attempt = 0;
-  IntentData(const BlockchainTokenPtr& token,
-             Operation operation,
-             absl::optional<std::string> service);
-  ~IntentData();
-};
-
 class BraveWalletAutoPinService
     : public KeyedService,
       public brave_wallet::mojom::WalletAutoPinService,
@@ -59,16 +46,28 @@ class BraveWalletAutoPinService
   void SetAutoPinEnabled(bool enabled) override;
   void IsAutoPinEnabled(IsAutoPinEnabledCallback callback) override;
 
-  void PostPinToken(BlockchainTokenPtr token,
-                    PostPinTokenCallback callback) override;
-  void PostUnpinToken(BlockchainTokenPtr token,
-                      PostUnpinTokenCallback callback) override;
-
   // BraveWalletServiceTokenObserver
   void OnTokenAdded(mojom::BlockchainTokenPtr token) override;
   void OnTokenRemoved(mojom::BlockchainTokenPtr token) override;
 
  private:
+  enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
+
+  struct IntentData {
+    BlockchainTokenPtr token;
+    Operation operation;
+    absl::optional<std::string> service;
+    size_t attempt = 0;
+    IntentData(const BlockchainTokenPtr& token,
+               Operation operation,
+               absl::optional<std::string> service);
+    ~IntentData();
+  };
+
+  void PostPinToken(BlockchainTokenPtr token);
+  void PostUnpinToken(BlockchainTokenPtr token);
+
+  // Iterates through user tokens and manages their pin statuses.
   void Restore();
   void OnTokenListResolved(std::vector<BlockchainTokenPtr>);
 

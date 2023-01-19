@@ -71,7 +71,12 @@ absl::optional<ipfs::AddPinResult> IPFSJSONParser::GetAddPinsResultFromJSON(
   }
 
   for (const base::Value& val : *pins_list) {
-    result.pins.push_back(val.GetString());
+    auto* val_as_str = val.GetIfString();
+    if (!val_as_str) {
+      VLOG(1) << "Invalid response, wrong format.";
+      return absl::nullopt;
+    }
+    result.pins.push_back(*val_as_str);
   }
   return result;
 }

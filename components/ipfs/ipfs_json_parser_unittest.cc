@@ -449,6 +449,13 @@ TEST_F(IPFSJSONParserTest, GetRemovePinsResultFromJSONTest) {
   }
 
   {
+    std::string json = R"({"Pins" : [{}, 123]})";
+    auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
+        base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
+  }
+
+  {
     std::string json = R"({"Pins" : ["QmA", "QmB"]})";
     auto result = IPFSJSONParser::GetRemovePinsResultFromJSON(
         base::test::ParseJson(json));
@@ -490,6 +497,13 @@ TEST_F(IPFSJSONParserTest, GetAddPinsResultFromJSONTest) {
     EXPECT_EQ(result->pins.at(0), "QmA");
     EXPECT_EQ(result->pins.at(1), "QmB");
     EXPECT_EQ(result->progress, -1);
+  }
+
+  {
+    std::string json = R"({"Pins" : [{}, 123]})";
+    auto result =
+        IPFSJSONParser::GetAddPinsResultFromJSON(base::test::ParseJson(json));
+    EXPECT_FALSE(result.has_value());
   }
 
   {

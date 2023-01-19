@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -21,16 +21,16 @@ const char kRecursiveMode[] = "recursive";
 
 AddLocalPinJob::AddLocalPinJob(PrefService* prefs_service,
                                IpfsService* ipfs_service,
-                               const std::string& prefix,
+                               const std::string& key,
                                const std::vector<std::string>& cids,
                                AddPinCallback callback)
     : prefs_service_(prefs_service),
       ipfs_service_(ipfs_service),
-      prefix_(prefix),
+      key_(key),
       cids_(cids),
       callback_(std::move(callback)) {}
 
-AddLocalPinJob::~AddLocalPinJob() {}
+AddLocalPinJob::~AddLocalPinJob() = default;
 
 void AddLocalPinJob::Start() {
   ipfs_service_->AddPin(cids_, true,
@@ -57,21 +57,21 @@ void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
 
     for (const auto& cid : cids_) {
       base::Value::List* list = update_dict.EnsureList(cid);
-      list->EraseValue(base::Value(prefix_));
-      list->Append(base::Value(prefix_));
+      list->EraseValue(base::Value(key_));
+      list->Append(base::Value(key_));
     }
   }
   std::move(callback_).Run(true);
 }
 
 RemoveLocalPinJob::RemoveLocalPinJob(PrefService* prefs_service,
-                                     const std::string& prefix,
+                                     const std::string& key,
                                      RemovePinCallback callback)
     : prefs_service_(prefs_service),
-      prefix_(prefix),
+      key_(key),
       callback_(std::move(callback)) {}
 
-RemoveLocalPinJob::~RemoveLocalPinJob() {}
+RemoveLocalPinJob::~RemoveLocalPinJob() = default;
 
 void RemoveLocalPinJob::Start() {
   {
@@ -82,7 +82,7 @@ void RemoveLocalPinJob::Start() {
     for (auto pair : update_dict) {
       base::Value::List* list = pair.second.GetIfList();
       if (list) {
-        list->EraseValue(base::Value(prefix_));
+        list->EraseValue(base::Value(key_));
         if (list->empty()) {
           remove_list.push_back(pair.first);
         }
@@ -97,16 +97,16 @@ void RemoveLocalPinJob::Start() {
 
 VerifyLocalPinJob::VerifyLocalPinJob(PrefService* prefs_service,
                                      IpfsService* ipfs_service,
-                                     const std::string& prefix,
+                                     const std::string& key,
                                      const std::vector<std::string>& cids,
                                      ValidatePinsCallback callback)
     : prefs_service_(prefs_service),
       ipfs_service_(ipfs_service),
-      prefix_(prefix),
+      key_(key),
       cids_(cids),
       callback_(std::move(callback)) {}
 
-VerifyLocalPinJob::~VerifyLocalPinJob() {}
+VerifyLocalPinJob::~VerifyLocalPinJob() = default;
 
 void VerifyLocalPinJob::Start() {
   ipfs_service_->GetPins(absl::nullopt, kRecursiveMode, true,
@@ -129,11 +129,11 @@ void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
       verification_passed = false;
     } else {
       if (result->find(cid) != result->end()) {
-        list->EraseValue(base::Value(prefix_));
-        list->Append(base::Value(prefix_));
+        list->EraseValue(base::Value(key_));
+        list->Append(base::Value(key_));
       } else {
         verification_passed = false;
-        list->EraseValue(base::Value(prefix_));
+        list->EraseValue(base::Value(key_));
       }
       if (list->empty()) {
         update_dict.Remove(cid);
@@ -149,7 +149,8 @@ GcJob::GcJob(PrefService* prefs_service,
     : prefs_service_(prefs_service),
       ipfs_service_(ipfs_service),
       callback_(std::move(callback)) {}
-GcJob::~GcJob() {}
+
+GcJob::~GcJob() = default;
 
 void GcJob::Start() {
   ipfs_service_->GetPins(
@@ -195,37 +196,37 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
       base::Minutes(1));
 }
 
-IpfsLocalPinService::IpfsLocalPinService() {}
+IpfsLocalPinService::IpfsLocalPinService() = default;
 
 void IpfsLocalPinService::SetIpfsBasePinServiceForTesting(
     std::unique_ptr<IpfsBasePinService> service) {
   ipfs_base_pin_service_ = std::move(service);
 }
 
-IpfsLocalPinService::~IpfsLocalPinService() {}
+IpfsLocalPinService::~IpfsLocalPinService() = default;
 
-void IpfsLocalPinService::AddPins(const std::string& prefix,
+void IpfsLocalPinService::AddPins(const std::string& key,
                                   const std::vector<std::string>& cids,
                                   AddPinCallback callback) {
   ipfs_base_pin_service_->AddJob(std::make_unique<AddLocalPinJob>(
-      prefs_service_, ipfs_service_, prefix, cids,
+      prefs_service_, ipfs_service_, key, cids,
       base::BindOnce(&IpfsLocalPinService::OnAddJobFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
-void IpfsLocalPinService::RemovePins(const std::string& prefix,
+void IpfsLocalPinService::RemovePins(const std::string& key,
                                      RemovePinCallback callback) {
   ipfs_base_pin_service_->AddJob(std::make_unique<RemoveLocalPinJob>(
-      prefs_service_, prefix,
+      prefs_service_, key,
       base::BindOnce(&IpfsLocalPinService::OnRemovePinsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
-void IpfsLocalPinService::ValidatePins(const std::string& prefix,
+void IpfsLocalPinService::ValidatePins(const std::string& key,
                                        const std::vector<std::string>& cids,
                                        ValidatePinsCallback callback) {
   ipfs_base_pin_service_->AddJob(std::make_unique<VerifyLocalPinJob>(
-      prefs_service_, ipfs_service_, prefix, cids,
+      prefs_service_, ipfs_service_, key, cids,
       base::BindOnce(&IpfsLocalPinService::OnValidateJobFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }

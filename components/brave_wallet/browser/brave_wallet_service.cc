@@ -283,7 +283,7 @@ std::vector<mojom::BlockchainTokenPtr> BraveWalletService::GetUserAssets(
   std::vector<mojom::BlockchainTokenPtr> result;
   const auto& user_assets_dict = profile_prefs->GetDict(kBraveWalletUserAssets);
   for (auto coin_it : user_assets_dict) {
-    auto coin = GetCoinFromPref(coin_it.first);
+    auto coin = GetCoinTypeFromPrefKey(coin_it.first);
     if (!coin)
       continue;
 

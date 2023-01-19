@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -111,7 +111,7 @@ class BraveWalletPinServiceTest : public testing::Test {
  protected:
   void SetUp() override {
     auto* registry = pref_service_.registry();
-    registry->RegisterDictionaryPref(kPinnedErc721Assets);
+    registry->RegisterDictionaryPref(kPinnedNFTAssets);
     brave_wallet_pin_service_ = std::make_unique<BraveWalletPinService>(
         GetPrefs(), GetJsonRpcService(), GetIpfsLocalPinService(),
         GetIpfsService());
@@ -169,8 +169,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
     auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(123u));
 
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     absl::optional<bool> call_status;
     service()->AddPin(
         std::move(token), absl::nullopt,
@@ -183,14 +183,15 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
 
     const base::Value::Dict* token_record =
         GetPrefs()
-            ->GetDict(kPinnedErc721Assets)
+            ->GetDict(kPinnedNFTAssets)
             .FindDictByDottedPath(kMonkey1Path);
 
     base::Value::List expected_cids;
     expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
     expected_cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
 
-    EXPECT_EQ(StatusToString(mojom::TokenPinStatusCode::STATUS_PINNED),
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_PINNED),
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
     EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
@@ -213,8 +214,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
             }));
 
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey2Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey2Path);
+    token->is_erc721 = true;
     absl::optional<bool> call_status;
     service()->AddPin(
         std::move(token), absl::nullopt,
@@ -228,12 +229,13 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
 
     const base::Value::Dict* token_record =
         GetPrefs()
-            ->GetDict(kPinnedErc721Assets)
+            ->GetDict(kPinnedNFTAssets)
             .FindDictByDottedPath(kMonkey2Path);
 
-    EXPECT_EQ(StatusToString(mojom::TokenPinStatusCode::STATUS_PINNING_FAILED),
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_PINNING_FAILED),
               *(token_record->FindString("status")));
-    EXPECT_EQ(ErrorCodeToString(
+    EXPECT_EQ(BraveWalletPinService::ErrorCodeToString(
                   mojom::WalletPinServiceErrorCode::ERR_FETCH_METADATA_FAILED),
               token_record->FindByDottedPath("error.error_code")->GetString());
   }
@@ -241,7 +243,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
 
 TEST_F(BraveWalletPinServiceTest, RemovePin) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -263,8 +265,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
             }));
 
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     absl::optional<bool> remove_status;
     service()->RemovePin(
         std::move(token), absl::nullopt,
@@ -273,12 +275,12 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
               remove_status = status;
             }));
     EXPECT_FALSE(remove_status.value());
-    EXPECT_EQ(
-        StatusToString(mojom::TokenPinStatusCode::STATUS_UNPINNING_FAILED),
-        *(GetPrefs()
-              ->GetDict(kPinnedErc721Assets)
-              .FindByDottedPath(kMonkey1Path)
-              ->FindStringKey("status")));
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_UNPINNING_FAILED),
+              *(GetPrefs()
+                    ->GetDict(kPinnedNFTAssets)
+                    .FindByDottedPath(kMonkey1Path)
+                    ->FindStringKey("status")));
   }
 
   {
@@ -290,8 +292,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
             }));
 
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     absl::optional<bool> remove_status;
     service()->RemovePin(
         std::move(token), absl::nullopt,
@@ -301,14 +303,14 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
             }));
     EXPECT_TRUE(remove_status.value());
     EXPECT_EQ(nullptr, GetPrefs()
-                           ->GetDict(kPinnedErc721Assets)
+                           ->GetDict(kPinnedNFTAssets)
                            .FindDictByDottedPath(kMonkey1Path));
   }
 }
 
 TEST_F(BraveWalletPinServiceTest, ValidatePin) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -326,8 +328,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
     auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(345u));
 
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     ON_CALL(*GetIpfsLocalPinService(), ValidatePins(_, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& prefix, const std::vector<std::string>& cids,
@@ -351,7 +353,7 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
     const base::Value::Dict* token_record =
         GetPrefs()
-            ->GetDict(kPinnedErc721Assets)
+            ->GetDict(kPinnedNFTAssets)
             .FindDictByDottedPath(kMonkey1Path);
     EXPECT_EQ(base::Time::FromTimeT(345u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
@@ -359,8 +361,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
   {
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     ON_CALL(*GetIpfsLocalPinService(), ValidatePins(_, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& prefix, const std::vector<std::string>& cids,
@@ -380,7 +382,7 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
     const base::Value::Dict* token_record =
         GetPrefs()
-            ->GetDict(kPinnedErc721Assets)
+            ->GetDict(kPinnedNFTAssets)
             .FindDictByDottedPath(kMonkey1Path);
     EXPECT_EQ(base::Time::FromTimeT(345u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
@@ -388,8 +390,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
   {
     mojom::BlockchainTokenPtr token =
-        BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
     ON_CALL(*GetIpfsLocalPinService(), ValidatePins(_, _, _))
         .WillByDefault(::testing::Invoke(
             [](const std::string& prefix, const std::vector<std::string>& cids,
@@ -409,7 +411,7 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
     const base::Value::Dict* token_record =
         GetPrefs()
-            ->GetDict(kPinnedErc721Assets)
+            ->GetDict(kPinnedNFTAssets)
             .FindDictByDottedPath(kMonkey1Path);
 
     EXPECT_EQ(nullptr, token_record->Find("validate_timestamp"));
@@ -418,7 +420,7 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
 TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -434,15 +436,15 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
-    item.Set("status",
-             StatusToString(mojom::TokenPinStatusCode::STATUS_PINNING_FAILED));
+    item.Set("status", BraveWalletPinService::StatusToString(
+                           mojom::TokenPinStatusCode::STATUS_PINNING_FAILED));
     base::Value::Dict error;
     error.Set("error_code",
-              ErrorCodeToString(
+              BraveWalletPinService::ErrorCodeToString(
                   mojom::WalletPinServiceErrorCode::ERR_FETCH_METADATA_FAILED));
     error.Set("error_message", "Fail to fetch metadata");
     item.Set("error", std::move(error));
@@ -451,8 +453,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   }
 
   mojom::BlockchainTokenPtr token1 =
-      BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+      BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+  token1->is_erc721 = true;
   {
     mojom::TokenPinStatusPtr status =
         service()->GetTokenStatus(absl::nullopt, token1);
@@ -468,8 +470,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   }
 
   mojom::BlockchainTokenPtr token2 =
-      BraveWalletPinService::TokenFromPath(kMonkey2Path);
-
+      BraveWalletPinService::TokenFromPrefPath(kMonkey2Path);
+  token2->is_erc721 = true;
   {
     mojom::TokenPinStatusPtr status =
         service()->GetTokenStatus(absl::nullopt, token2);
@@ -482,7 +484,7 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
 
 TEST_F(BraveWalletPinServiceTest, GetLastValidateTime) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -498,8 +500,8 @@ TEST_F(BraveWalletPinServiceTest, GetLastValidateTime) {
   }
 
   mojom::BlockchainTokenPtr token =
-      BraveWalletPinService::TokenFromPath(kMonkey1Path);
-
+      BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+  token->is_erc721 = true;
   {
     base::Time last_validate_time =
         service()->GetLastValidateTime(absl::nullopt, token).value();
@@ -512,10 +514,9 @@ TEST_F(BraveWalletPinServiceTest, GetLastValidateTime) {
   }
 }
 
-TEST_F(BraveWalletPinServiceTest, TokenFromPath) {
+TEST_F(BraveWalletPinServiceTest, TokenFromPrefPath) {
   mojom::BlockchainTokenPtr token =
-      BraveWalletPinService::TokenFromPath(kMonkey1Path);
-  EXPECT_TRUE(token->is_erc721);
+      BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
   EXPECT_EQ(mojom::CoinType::ETH, static_cast<mojom::CoinType>(token->coin));
   EXPECT_EQ("0x1", token->chain_id);
   EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
@@ -525,9 +526,9 @@ TEST_F(BraveWalletPinServiceTest, TokenFromPath) {
 
 TEST_F(BraveWalletPinServiceTest, ServiceFromPath) {
   EXPECT_FALSE(
-      BraveWalletPinService::ServiceFromPath(kMonkey1Path).has_value());
+      BraveWalletPinService::ServiceFromPrefPath(kMonkey1Path).has_value());
 
-  EXPECT_EQ("nftstorage", BraveWalletPinService::ServiceFromPath(
+  EXPECT_EQ("nftstorage", BraveWalletPinService::ServiceFromPrefPath(
                               "nft.nftstorage.60.0x1."
                               "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1")
                               .value());
@@ -540,7 +541,7 @@ TEST_F(BraveWalletPinServiceTest, GetPath) {
     token->contract_address = "abc";
     token->token_id = "0x2";
     token->chain_id = "mainnet";
-    auto path = BraveWalletPinService::GetPath(absl::nullopt, token);
+    auto path = BraveWalletPinService::GetTokenPrefPath(absl::nullopt, token);
     EXPECT_EQ("nft.local.60.mainnet.abc.0x2", path.value());
   }
 
@@ -550,14 +551,14 @@ TEST_F(BraveWalletPinServiceTest, GetPath) {
     token->contract_address = "abc";
     token->token_id = "0x2";
     token->chain_id = "mainnet";
-    auto path = BraveWalletPinService::GetPath("nftstorage", token);
+    auto path = BraveWalletPinService::GetTokenPrefPath("nftstorage", token);
     EXPECT_EQ("nft.nftstorage.60.mainnet.abc.0x2", path.value());
   }
 }
 
 TEST_F(BraveWalletPinServiceTest, GetTokens) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -567,7 +568,7 @@ TEST_F(BraveWalletPinServiceTest, GetTokens) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;
@@ -577,7 +578,7 @@ TEST_F(BraveWalletPinServiceTest, GetTokens) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedErc721Assets);
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
     base::Value::Dict& update_dict = update->GetDict();
 
     base::Value::Dict item;

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -23,11 +23,28 @@ using RemovePinCallback = base::OnceCallback<void(bool)>;
 using ValidatePinsCallback = base::OnceCallback<void(absl::optional<bool>)>;
 using GcCallback = base::OnceCallback<void(bool)>;
 
+/**
+ * Pins provided cids and writes record to kIPFSPinnedCids:
+ * {
+ *   // List of all pinned CIDs
+ *   "Qme1": [
+ *     // List of tokens that contain this CID
+ *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
+ *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
+ *   ],
+ *   "Qme2": [
+ *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
+ *   ],
+ *   "Qme3": [
+ *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
+ *   ]
+ * }
+ */
 class AddLocalPinJob : public IpfsBaseJob {
  public:
   AddLocalPinJob(PrefService* prefs_service,
                  IpfsService* ipfs_service,
-                 const std::string& prefix,
+                 const std::string& key,
                  const std::vector<std::string>& cids,
                  AddPinCallback callback);
   ~AddLocalPinJob() override;
@@ -39,16 +56,17 @@ class AddLocalPinJob : public IpfsBaseJob {
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
-  std::string prefix_;
+  std::string key_;
   std::vector<std::string> cids_;
   AddPinCallback callback_;
   base::WeakPtrFactory<AddLocalPinJob> weak_ptr_factory_{this};
 };
 
+// Removes records related to the key and launches GC task.
 class RemoveLocalPinJob : public IpfsBaseJob {
  public:
   RemoveLocalPinJob(PrefService* prefs_service,
-                    const std::string& prefix,
+                    const std::string& key,
                     RemovePinCallback callback);
   ~RemoveLocalPinJob() override;
 
@@ -56,16 +74,17 @@ class RemoveLocalPinJob : public IpfsBaseJob {
 
  private:
   raw_ptr<PrefService> prefs_service_;
-  std::string prefix_;
+  std::string key_;
   RemovePinCallback callback_;
   base::WeakPtrFactory<RemoveLocalPinJob> weak_ptr_factory_{this};
 };
 
+// Verifies that cids are actually pinned
 class VerifyLocalPinJob : public IpfsBaseJob {
  public:
   VerifyLocalPinJob(PrefService* prefs_service,
                     IpfsService* ipfs_service,
-                    const std::string& prefix,
+                    const std::string& key,
                     const std::vector<std::string>& cids,
                     ValidatePinsCallback callback);
   ~VerifyLocalPinJob() override;
@@ -77,12 +96,13 @@ class VerifyLocalPinJob : public IpfsBaseJob {
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
-  std::string prefix_;
+  std::string key_;
   std::vector<std::string> cids_;
   ValidatePinsCallback callback_;
   base::WeakPtrFactory<VerifyLocalPinJob> weak_ptr_factory_{this};
 };
 
+// Unpins cids that don't have kIPFSPinnedCids record
 class GcJob : public IpfsBaseJob {
  public:
   GcJob(PrefService* prefs_service,
@@ -109,12 +129,14 @@ class IpfsLocalPinService : public KeyedService {
   IpfsLocalPinService();
   ~IpfsLocalPinService() override;
 
-  virtual void AddPins(const std::string& prefix,
+  // Pins provided cids and stores related record in the prefs.
+  virtual void AddPins(const std::string& key,
                        const std::vector<std::string>& cids,
                        AddPinCallback callback);
-  virtual void RemovePins(const std::string& prefix,
-                          RemovePinCallback callback);
-  virtual void ValidatePins(const std::string& prefix,
+  // Unpins all cids related to the key.
+  virtual void RemovePins(const std::string& key, RemovePinCallback callback);
+  // Checks that all cids related to the key are pinned.
+  virtual void ValidatePins(const std::string& key,
                             const std::vector<std::string>& cids,
                             ValidatePinsCallback callback);
 

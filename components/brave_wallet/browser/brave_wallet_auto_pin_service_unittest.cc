@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -30,6 +30,13 @@ using testing::_;
 namespace brave_wallet {
 
 namespace {
+
+mojom::BlockchainTokenPtr GetErc721Token(const std::string& pref_path) {
+  mojom::BlockchainTokenPtr token =
+      BraveWalletPinService::TokenFromPrefPath(pref_path);
+  token->is_erc721 = true;
+  return token;
+}
 
 class MockBraveWalletPinService : public BraveWalletPinService {
  public:
@@ -69,7 +76,10 @@ class MockBraveWalletService : public BraveWalletService {
 };
 
 MATCHER_P(TokenPathMatches, path, "") {
-  return arg == BraveWalletPinService::TokenFromPath(path);
+  auto token = GetErc721Token(path);
+  return token->coin == arg->coin && token->chain_id == arg->chain_id &&
+         token->contract_address == arg->contract_address &&
+         token->token_id == arg->token_id;
 }
 
 }  // namespace
@@ -125,20 +135,23 @@ TEST_F(BraveWalletAutoPinServiceTest, Autopin_WhenTokenAdded) {
   EXPECT_CALL(*GetBraveWalletPinService(), AddPin(_, _, _)).Times(3);
 
   {
-    mojom::BlockchainTokenPtr token = BraveWalletPinService::TokenFromPath(
+    mojom::BlockchainTokenPtr token = GetErc721Token(
         "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1");
+    token->is_erc721 = true;
     service()->OnTokenAdded(std::move(token));
   }
 
   {
-    mojom::BlockchainTokenPtr token = BraveWalletPinService::TokenFromPath(
+    mojom::BlockchainTokenPtr token = GetErc721Token(
         "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2");
+    token->is_erc721 = true;
     service()->OnTokenAdded(std::move(token));
   }
 
   {
-    mojom::BlockchainTokenPtr token = BraveWalletPinService::TokenFromPath(
+    mojom::BlockchainTokenPtr token = GetErc721Token(
         "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3");
+    token->is_erc721 = true;
     service()->OnTokenAdded(std::move(token));
   }
 }
@@ -180,9 +193,9 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinUnknownTokens_WhenRestore) {
       .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
         std::move(callback).Run(std::move(result));
       }));
@@ -236,13 +249,13 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
       .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"));
         std::move(callback).Run(std::move(result));
       }));
@@ -317,11 +330,11 @@ TEST_F(BraveWalletAutoPinServiceTest, PinContinue_WhenRestore) {
       .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
         std::move(callback).Run(std::move(result));
       }));
@@ -391,9 +404,9 @@ TEST_F(BraveWalletAutoPinServiceTest, UnpinContinue_WhenRestore) {
       .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
         std::move(callback).Run(std::move(result));
       }));
@@ -442,7 +455,7 @@ TEST_F(BraveWalletAutoPinServiceTest, DoNotAutoPin_WhenAutoPinDisabled) {
   EXPECT_CALL(*GetBraveWalletPinService(), AddPin(_, _, _)).Times(0);
 
   {
-    mojom::BlockchainTokenPtr token = BraveWalletPinService::TokenFromPath(
+    mojom::BlockchainTokenPtr token = GetErc721Token(
         "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1");
     service()->OnTokenAdded(std::move(token));
   }
@@ -476,9 +489,9 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
       .WillByDefault(::testing::Invoke([](BraveWalletService::
                                               GetUserAssetsCallback callback) {
         std::vector<mojom::BlockchainTokenPtr> result;
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
-        result.push_back(BraveWalletPinService::TokenFromPath(
+        result.push_back(GetErc721Token(
             "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
         std::move(callback).Run(std::move(result));
       }));

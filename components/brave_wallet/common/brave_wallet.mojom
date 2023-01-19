@@ -212,9 +212,13 @@ interface SolanaProvider {
         mojo_base.mojom.DictionaryValue result);
 
 };
+
 enum WalletPinServiceErrorCode {
+  // Token not supported for pinning
   ERR_WRONG_TOKEN = 1,
+  // Token metadata has non-ipfs url
   ERR_NON_IPFS_TOKEN_URL = 2,
+  // Fetching metadata has failed
   ERR_FETCH_METADATA_FAILED = 3,
   ERR_WRONG_METADATA_FORMAT = 4,
   ERR_ALREADY_PINNED = 5,
@@ -239,41 +243,57 @@ struct PinError {
 };
 
 struct TokenPinStatus {
+  // Actual token status
   TokenPinStatusCode code;
+  // Token error related to the pin status. May be null.
   PinError? error;
+  // Last time token was validated(checked that data is pinned correctly)
   mojo_base.mojom.Time validate_time;
 };
 
 struct TokenPinOverview {
+  // Token status for the local pin backend.
   TokenPinStatus? local;
+  // Token statuses for remote pin backends.
   map<string, TokenPinStatus> remotes;
 };
 
+// Observers state of the BraveWalletPinService
 interface BraveWalletPinServiceObserver {
   OnTokenStatusChanged(string? service, BlockchainToken token,
                        TokenPinStatus status);
   OnLocalNodeStatusChanged(bool running);
 };
 
+// Low-level interface for token pinning.
 interface WalletPinService {
   AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
 
+  // Launches pinning for provided token.
+  // At the moment only local pinning is supported so use null "service" argument.
   AddPin(BlockchainToken token, string? service) =>(bool result,
                                                     PinError? error);
+  // Unpins token.
   RemovePin(BlockchainToken token, string? service) => (bool result,
                                                         PinError? response);
+  // Returns overview for provided token.
   GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
                                             PinError? error);
+  // Checks whether token in pinned correctly.
   Validate(BlockchainToken token, string? service) => (bool result,
                                                        PinError? error);
+  // Returns whether IPFS localnode is currently running.
   IsLocalNodeRunning() => (bool result);
+
+  // Returns whether token is supported for pinning.
+  IsTokenSupported(BlockchainToken token) => (bool result);
 };
 
+// Listens for added user tokens and automatically pins them.
 interface WalletAutoPinService {
+  // Enables autopinning, so old and new user tokens may be pinned.
   SetAutoPinEnabled(bool enabled);
   IsAutoPinEnabled() => (bool enabled);
-  PostPinToken(BlockchainToken token) => (bool result);
-  PostUnpinToken(BlockchainToken token) => (bool result);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

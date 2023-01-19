@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -43,10 +43,6 @@ class IpfsBasePinServiceTest : public testing::Test {
   void SetUp() override {
     ipfs_base_pin_service_ =
         std::make_unique<IpfsBasePinService>(GetIpfsService());
-  }
-
-  void TearDown() override {
-    ipfs_base_pin_service_->RemovePrefListenersForTests();
   }
 
   testing::NiceMock<MockIpfsService>* GetIpfsService() {

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_service.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
 namespace ipfs {
@@ -25,6 +24,8 @@ class IpfsBaseJob {
   virtual void Start() = 0;
 };
 
+// Manages a queue of IpfsService-related tasks.
+// Launches IPFS daemon if needed.
 class IpfsBasePinService : public IpfsServiceObserver {
  public:
   explicit IpfsBasePinService(IpfsService* service);
@@ -36,8 +37,6 @@ class IpfsBasePinService : public IpfsServiceObserver {
   void OnIpfsShutdown() override;
   void OnGetConnectedPeers(bool succes,
                            const std::vector<std::string>& peers) override;
-
-  void RemovePrefListenersForTests();
 
  protected:
   // For testing
@@ -51,7 +50,6 @@ class IpfsBasePinService : public IpfsServiceObserver {
 
   bool daemon_ready_ = false;
   raw_ptr<IpfsService> ipfs_service_;
-  PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<IpfsBaseJob> current_job_;
   std::queue<std::unique_ptr<IpfsBaseJob>> jobs_;
 

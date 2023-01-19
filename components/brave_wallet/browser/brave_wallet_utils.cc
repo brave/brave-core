@@ -1389,12 +1389,12 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   return "";
 }
 
-absl::optional<mojom::CoinType> GetCoinFromPref(const std::string& pref) {
-  if (pref == kEthereumPrefKey) {
+absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key) {
+  if (key == kEthereumPrefKey) {
     return mojom::CoinType::ETH;
-  } else if (pref == kFilecoinPrefKey) {
+  } else if (key == kFilecoinPrefKey) {
     return mojom::CoinType::FIL;
-  } else if (pref == kSolanaPrefKey) {
+  } else if (key == kSolanaPrefKey) {
     return mojom::CoinType::SOL;
   }
   NOTREACHED();

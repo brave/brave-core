@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -12,6 +12,7 @@
 
 #include "base/containers/cxx20_erase_deque.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -24,13 +25,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-using brave_wallet::mojom::BlockchainTokenPtr;
-
 namespace brave_wallet {
-
-std::string StatusToString(const mojom::TokenPinStatusCode& status);
-std::string ErrorCodeToString(
-    const mojom::WalletPinServiceErrorCode& error_code);
 
 class BraveWalletPinService : public KeyedService,
                               public brave_wallet::mojom::WalletPinService,
@@ -45,27 +40,35 @@ class BraveWalletPinService : public KeyedService,
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletPinService> receiver);
 
-  static absl::optional<std::string> GetPath(
+  static absl::optional<std::string> GetTokenPrefPath(
       const absl::optional<std::string>& service,
-      const BlockchainTokenPtr& token);
-  static BlockchainTokenPtr TokenFromPath(const std::string& path);
-  static absl::optional<std::string> ServiceFromPath(const std::string& path);
+      const mojom::BlockchainTokenPtr& token);
+  static mojom::BlockchainTokenPtr TokenFromPrefPath(const std::string& path);
+  static absl::optional<std::string> ServiceFromPrefPath(
+      const std::string& path);
+  static std::string StatusToString(const mojom::TokenPinStatusCode& status);
+  static std::string ErrorCodeToString(
+      const mojom::WalletPinServiceErrorCode& error_code);
+  static bool IsTokenSupportedForPinning(
+      const mojom::BlockchainTokenPtr& token);
 
   // WalletPinService
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletPinServiceObserver>
                        observer) override;
-  void AddPin(BlockchainTokenPtr token,
+  void AddPin(mojom::BlockchainTokenPtr token,
               const absl::optional<std::string>& service,
               AddPinCallback callback) override;
-  void RemovePin(BlockchainTokenPtr token,
+  void RemovePin(mojom::BlockchainTokenPtr token,
                  const absl::optional<std::string>& service,
                  RemovePinCallback callback) override;
-  void GetTokenStatus(BlockchainTokenPtr token,
+  void GetTokenStatus(mojom::BlockchainTokenPtr token,
                       GetTokenStatusCallback callback) override;
-  void Validate(BlockchainTokenPtr token,
+  void Validate(mojom::BlockchainTokenPtr token,
                 const absl::optional<std::string>& service,
                 ValidateCallback callback) override;
   void IsLocalNodeRunning(IsLocalNodeRunningCallback callback) override;
+  void IsTokenSupported(mojom::BlockchainTokenPtr token,
+                        IsTokenSupportedCallback callback) override;
 
   virtual void MarkAsPendingForPinning(
       const mojom::BlockchainTokenPtr& token,
@@ -80,6 +83,9 @@ class BraveWalletPinService : public KeyedService,
   virtual absl::optional<base::Time> GetLastValidateTime(
       const absl::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
+  // Returns list of known tokens for the provided pinning service.
+  // Tokens are returned in the format of string path.
+  // See BraveWalletPinService::GetTokenPrefPath.
   virtual std::set<std::string> GetTokens(
       const absl::optional<std::string>& service);
 
@@ -88,9 +94,9 @@ class BraveWalletPinService : public KeyedService,
   BraveWalletPinService();
 
  private:
-  bool CreateToken(const absl::optional<std::string>& service,
-                   const mojom::BlockchainTokenPtr& token,
-                   const std::vector<std::string>& cids);
+  bool AddToken(const absl::optional<std::string>& service,
+                const mojom::BlockchainTokenPtr& token,
+                const std::vector<std::string>& cids);
   bool RemoveToken(const absl::optional<std::string>& service,
                    const mojom::BlockchainTokenPtr& token);
   bool SetTokenStatus(const absl::optional<std::string>& service,
@@ -98,15 +104,9 @@ class BraveWalletPinService : public KeyedService,
                       mojom::TokenPinStatusCode,
                       const mojom::PinErrorPtr& error);
 
-  void FinishAddingWithResult(const absl::optional<std::string>& service,
-                              const mojom::BlockchainTokenPtr& token,
-                              bool result,
-                              mojom::PinErrorPtr error,
-                              AddPinCallback callback);
-
   absl::optional<std::vector<std::string>> ResolvePinItems(
       const absl::optional<std::string>& service,
-      const BlockchainTokenPtr& token);
+      const mojom::BlockchainTokenPtr& token);
 
   void OnPinsRemoved(absl::optional<std::string> service,
                      RemovePinCallback callback,
@@ -143,6 +143,8 @@ class BraveWalletPinService : public KeyedService,
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_ = nullptr;
   raw_ptr<IpfsService> ipfs_service_ = nullptr;
+
+  base::WeakPtrFactory<BraveWalletPinService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
