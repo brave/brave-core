@@ -14,6 +14,7 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { checkIfTokensMatch } from '../../../../utils/asset-utils'
 
 // components
 import {
@@ -168,19 +169,11 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   }, [tokenList])
 
   const findUpdatedTokenInfo = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.find((t) =>
-      t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
-      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId)
+    return updatedTokensList.find((t) => checkIfTokensMatch(t, token))
   }, [updatedTokensList])
 
   const isUserToken = React.useCallback((token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.some(t =>
-    (
-      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.chainId === token.chainId &&
-      t.symbol.toLowerCase() === token.symbol.toLowerCase())
-    )
+    return updatedTokensList.some(t => checkIfTokensMatch(t, token))
   }, [updatedTokensList])
 
   const isAssetSelected = React.useCallback((token: BraveWallet.BlockchainToken): boolean => {
@@ -214,10 +207,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
   // to help the user get un-stuck.
   const findNonCustomTokenWithVisibleFalse = React.useCallback((token: BraveWallet.BlockchainToken) => {
     return userVisibleTokensInfo.some((t) =>
-      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-      t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
-      t.chainId === token.chainId &&
-      t.tokenId === token.tokenId &&
+      checkIfTokensMatch(t, token) &&
       !t.visible)
   }, [userVisibleTokensInfo])
 
@@ -225,10 +215,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
     if (isUserToken(token)) {
       if (isCustom || token.contractAddress === '' || (!isCustom && findNonCustomTokenWithVisibleFalse(token))) {
         const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
-        const tokenIndex = updatedTokensList.findIndex((t) =>
-          t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
-          t.symbol.toLowerCase() === token.symbol.toLowerCase() &&
-          t.chainId === token.chainId)
+        const tokenIndex = updatedTokensList.findIndex((t) => checkIfTokensMatch(t, token))
         let newList = [...updatedTokensList]
         newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
