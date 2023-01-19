@@ -408,7 +408,16 @@ class TabLocationView: UIView {
   
   fileprivate func updateTextWithURL() {
     (urlTextField as? DisplayTextField)?.hostString = url?.withoutWWW.host ?? ""
-    urlTextField.text = URLFormatter.formatURL(url?.withoutWWW.absoluteString ?? "", formatTypes: .omitDefaults, unescapeOptions: []).removeSchemeFromURLString(url?.scheme)
+    
+    // Note: Only use `URLFormatter.formatURLOrigin(forSecurityDisplay: url?.withoutWWW.absoluteString ?? "", schemeDisplay: .omitHttpAndHttps)`
+    // If displaying the host ONLY! This follows Google Chrome and Safari.
+    // However, for Brave as no decision has been made on what shows YET, we will display the entire URL (truncated!)
+    // Therefore we only omit defaults (username & password, http [not https], and trailing slash) + omit "www".
+    // We must NOT un-escape the URL!
+    // --
+    // The requirement to remove scheme comes from Desktop. Also we do not remove the path like in other browsers either.
+    // Therefore, we follow Brave Desktop instead of Chrome or Safari iOS
+    urlTextField.text = URLFormatter.formatURL(url?.withoutWWW.absoluteString ?? "", formatTypes: [.omitDefaults], unescapeOptions: []).removeSchemeFromURLString(url?.scheme)
   }
 }
 
