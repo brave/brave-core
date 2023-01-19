@@ -63,7 +63,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private TextView mNetworkNameView;
     private Button mBtnSend;
     private TextView mTokenStandardView;
-    private TextView mTokenIdView;
+    private TextView mTokenAddressLabelView;
+    private TextView mTokenAddressView;
     private TextView mDescriptionContentView;
     private TextView mNftDetailTitleView;
     private TextView mNftNameView;
@@ -125,7 +126,11 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
             mTokenStandardView.setText(R.string.brave_wallet_nft_sol_spl);
         }
 
-        mTokenIdView = findViewById(R.id.token_id_content);
+        mTokenAddressLabelView = findViewById(R.id.token_address_label);
+        if (!mIsErc721) {
+            mTokenAddressLabelView.setText(R.string.brave_wallet_nft_mint_address);
+        }
+        mTokenAddressView = findViewById(R.id.token_address_content);
 
         mNftDescriptionLayout = findViewById(R.id.nft_description);
 
@@ -155,8 +160,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                         spannable.setSpan(
                                 linkSpan, 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
-                    mTokenIdView.setText(spannable);
-                    mTokenIdView.setMovementMethod(LinkMovementMethod.getInstance());
+                    mTokenAddressView.setText(spannable);
+                    mTokenAddressView.setMovementMethod(LinkMovementMethod.getInstance());
 
                     onInitialLayoutInflationComplete();
                 });
