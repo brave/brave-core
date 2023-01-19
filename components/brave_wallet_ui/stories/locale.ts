@@ -810,5 +810,7 @@ provideStrings({
     'Invalid or empty token contract address',
   braveWalletTokenSymbolIsRequiredError: 'Token symbol is required',
   braveWalletTokenDecimalsIsRequiredError:
-    'Token decimals of precision value is required'
+    'Token decimals of precision value is required',
+  braveWalletTokenContractAddress: 'Token Contract Address',
+  braveWalletTokenDecimal: 'Token Decimal'
 })
