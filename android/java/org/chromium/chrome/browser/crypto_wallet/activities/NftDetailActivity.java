@@ -169,7 +169,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
                             // Blockchain explorer URLs may contain a cluster endpoint.
-                            // When present it must be appended at the end of the URL.
+                            // When present it must be appended at the end of the formatted URL.
                             String[] splitBlockExplorerUrl = blockExplorerUrl.split("/\\?cluster=");
                             String baseUrl = splitBlockExplorerUrl[0];
                             String url;
@@ -199,12 +199,12 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         spannable.setSpan(linkSpan, 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    private void setMetadata(PortfolioModel.NftMetadata nftMetaData) {
-        if (nftMetaData == null) return;
+    private void setMetadata(PortfolioModel.NftMetadata nftMetadata) {
+        if (nftMetadata == null) return;
         // In case of no errors proceed to assign description and fetch NFT image.
-        if (nftMetaData.mErrCode == 0) {
-            String description = nftMetaData.mDescription;
-            String imageUrl = nftMetaData.mImageUrl;
+        if (nftMetadata.mErrCode == 0) {
+            String description = nftMetadata.mDescription;
+            String imageUrl = nftMetadata.mImageUrl;
             if (!TextUtils.isEmpty(description)) {
                 mDescriptionContentView.setText(description);
             } else {
