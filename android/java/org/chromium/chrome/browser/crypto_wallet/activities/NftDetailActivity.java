@@ -168,6 +168,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                         spannable = new SpannableString(mintAddress);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
+                            // Blockchain explorer URLs may contain a cluster endpoint.
+                            // When present it must be appended at the end of the URL.
                             String[] splitBlockExplorerUrl = blockExplorerUrl.split("/\\?cluster=");
                             String baseUrl = splitBlockExplorerUrl[0];
                             String url;
