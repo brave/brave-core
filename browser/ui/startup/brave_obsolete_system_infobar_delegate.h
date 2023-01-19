@@ -8,16 +8,14 @@
 
 #include <string>
 
-#include "chrome/browser/ui/startup/obsolete_system_infobar_delegate.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 
 namespace infobars {
 class ContentInfoBarManager;
 }  // namespace infobars
 
-// Subclassed for showing "Don't show again" button.
-// W/o this button, user will see this infobar whenever launched.
-class BraveObsoleteSystemInfoBarDelegate
-    : public ObsoleteSystemInfoBarDelegate {
+class BraveObsoleteSystemInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   static void Create(infobars::ContentInfoBarManager* infobar_manager);
 
@@ -30,10 +28,23 @@ class BraveObsoleteSystemInfoBarDelegate
   BraveObsoleteSystemInfoBarDelegate();
   ~BraveObsoleteSystemInfoBarDelegate() override;
 
-  // ObsoleteSystemInfoBarDelegate overrides:
+  // BraveConfirmInfoBarDelegate overrides:
+  bool HasCheckbox() const override;
+  std::u16string GetCheckboxText() const override;
+  void SetCheckboxChecked(bool checked) override;
+  bool InterceptClosing() override;
+  infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
+  std::u16string GetLinkText() const override;
+  GURL GetLinkURL() const override;
+  std::u16string GetMessageText() const override;
   int GetButtons() const override;
-  std::u16string GetButtonLabel(InfoBarButton button) const override;
-  bool Accept() override;
+  bool ShouldExpire(const NavigationDetails& details) const override;
+
+  void OnConfirmDialogClosing(bool suppress);
+
+  bool launch_confirmation_dialog_ = false;
+
+  base::WeakPtrFactory<BraveObsoleteSystemInfoBarDelegate> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_STARTUP_BRAVE_OBSOLETE_SYSTEM_INFOBAR_DELEGATE_H_

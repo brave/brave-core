@@ -98,8 +98,6 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
-      "startup/brave_obsolete_system_infobar_delegate.cc",
-      "startup/brave_obsolete_system_infobar_delegate.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
@@ -337,6 +335,21 @@ source_set("ui") {
       "views/profiles/brave_profile_menu_view.cc",
       "views/profiles/brave_profile_menu_view.h",
     ]
+  }
+
+  # brave's obsolete infobar is only used on Windows now.
+  if (is_win) {
+    sources += [
+      "startup/brave_obsolete_system_infobar_delegate.cc",
+      "startup/brave_obsolete_system_infobar_delegate.h",
+    ]
+
+    if (toolkit_views) {
+      sources += [
+        "views/obsolete_system_confirm_dialog_view.cc",
+        "views/obsolete_system_confirm_dialog_view.h",
+      ]
+    }
   }
 
   if (is_linux) {
