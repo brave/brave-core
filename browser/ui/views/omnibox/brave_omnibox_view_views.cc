@@ -8,14 +8,23 @@
 #include <utility>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/omnibox_edit_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
-#include "ui/base/clipboard/scoped_clipboard_writer.h"
+
+namespace {
+void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
+  if (!url.SchemeIsHTTPOrHTTPS())
+    return;
+  absl::optional<size_t> copy_position =
+      menu_contents->GetIndexOfCommandId(views::Textfield::kCopy);
+  if (!copy_position)
+    return;
+  menu_contents->InsertItemWithStringIdAt(
+      copy_position.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+}
+}  // namespace
 
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
@@ -26,4 +35,59 @@ bool BraveOmniboxViewViews::SelectedTextIsURL() {
   model()->AdjustTextForCopy(GetSelectedRange().GetMin(), &selected_text, &url,
                              &write_url);
   return write_url;
+}
+
+#if BUILDFLAG(IS_WIN)
+bool BraveOmniboxViewViews::AcceleratorPressed(
+    const ui::Accelerator& accelerator) {
+  ui::KeyEvent event(
+      accelerator.key_state() == ui::Accelerator::KeyState::PRESSED
+          ? ui::ET_KEY_PRESSED
+          : ui::ET_KEY_RELEASED,
+      accelerator.key_code(), accelerator.modifiers());
+  auto command = GetCommandForKeyEvent(event);
+
+  if ((GetTextInputType() != ui::TEXT_INPUT_TYPE_PASSWORD) &&
+      (command != ui::TextEditCommand::COPY || !SelectedTextIsURL())) {
+    return OmniboxViewViews::AcceleratorPressed(accelerator);
+  }
+  ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
+  return true;
+}
+
+bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
+    int command_id,
+    ui::Accelerator* accelerator) const {
+  bool is_url = const_cast<BraveOmniboxViewViews*>(this)->SelectedTextIsURL();
+  if (is_url) {
+    if (command_id == kCopy) {
+      return false;
+    }
+    if (command_id == IDC_COPY_CLEAN_LINK) {
+      *accelerator = ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR);
+      return true;
+    }
+  }
+  return OmniboxViewViews::GetAcceleratorForCommandId(command_id, accelerator);
+}
+#endif  // BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+void BraveOmniboxViewViews::ExecuteTextEditCommand(
+    ui::TextEditCommand command) {
+  if (command == ui::TextEditCommand::COPY && SelectedTextIsURL()) {
+    ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
+    return;
+  }
+  OmniboxViewViews::ExecuteTextEditCommand(command);
+}
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+
+void BraveOmniboxViewViews::UpdateContextMenu(
+    ui::SimpleMenuModel* menu_contents) {
+  OmniboxViewViews::UpdateContextMenu(menu_contents);
+  if (SelectedTextIsURL()) {
+    BraveUpdateContextMenu(menu_contents,
+                           controller()->GetLocationBarModel()->GetURL());
+  }
 }

@@ -17,6 +17,20 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   ~BraveOmniboxViewViews() override;
 
   bool SelectedTextIsURL();
+
+ protected:
+#if BUILDFLAG(IS_WIN)
+  // View overrides:
+  bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
+  bool GetAcceleratorForCommandId(int command_id,
+                                  ui::Accelerator* accelerator) const override;
+#endif  // BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+  // ui::views::Textfield
+  void ExecuteTextEditCommand(ui::TextEditCommand command) override;
+#endif
+  // ui::views::TextfieldController:
+  void UpdateContextMenu(ui::SimpleMenuModel* menu_contents) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
