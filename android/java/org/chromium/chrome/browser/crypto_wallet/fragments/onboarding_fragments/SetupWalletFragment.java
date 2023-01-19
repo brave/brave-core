@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 public class SetupWalletFragment extends CryptoOnboardingFragment {
+    private boolean mRestartSetupAction;
+    private boolean mRestartRestoreAction;
+
+    public SetupWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
+        mRestartSetupAction = restartSetupAction;
+        mRestartRestoreAction = restartRestoreAction;
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,9 +42,40 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button setupCryptoButton = view.findViewById(R.id.btn_setup_crypto);
-        setupCryptoButton.setOnClickListener(v -> onNextPage.gotoOnboardingPage());
+        setupCryptoButton.setOnClickListener(v -> {
+            checkOnBraveActivity(true, false);
+            onNextPage.gotoOnboardingPage();
+        });
 
         TextView restoreButton = view.findViewById(R.id.btn_restore);
-        restoreButton.setOnClickListener(v -> onNextPage.gotoRestorePage(true));
+        restoreButton.setOnClickListener(v -> {
+            checkOnBraveActivity(false, true);
+            onNextPage.gotoRestorePage(true);
+        });
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+            if (mRestartSetupAction) {
+                setupCryptoButton.performClick();
+            } else if (mRestartRestoreAction) {
+                restoreButton.performClick();
+            }
+            mRestartSetupAction = false;
+            mRestartRestoreAction = false;
+        });
+    }
+
+    // We need to remove that check and restart once
+    // https://github.com/brave/brave-browser/issues/27887
+    // is done.
+    private void checkOnBraveActivity(boolean setupAction, boolean restoreAction) {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity == null) {
+            Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
+            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);
+            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+            intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 }
