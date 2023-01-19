@@ -1690,4 +1690,14 @@ public class Utils {
 
         return num.doubleValue();
     }
+
+    /**
+     * Gets truncated capitalized address from a full contract address.
+     * @param address full contract address
+     * @return truncated capitalized address
+     */
+    private static String getTruncatedCapitalizedAddress(String address) {
+        int prefixLength = address.startsWith("0x") ? 6 : 4;
+        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4)).toUpperCase(Locale.US);
+    }
 }

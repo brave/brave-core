@@ -164,7 +164,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                         }
 
                     } else {
-                        String mintAddress = getTruncatedCapitalizedAddress(mContractAddress);
+                        String mintAddress = Utils.getTruncatedCapitalizedAddress(mContractAddress);
                         spannable = new SpannableString(mintAddress);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
@@ -186,11 +186,6 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
                     onInitialLayoutInflationComplete();
                 });
-    }
-
-    private String getTruncatedCapitalizedAddress(String address) {
-        int prefixLength = address.startsWith("0x") ? 6 : 4;
-        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4)).toUpperCase(Locale.US);
     }
 
     private void createClickableLink(String blockExplorerUrl, String url, SpannableString spannable) {
