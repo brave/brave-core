@@ -58,20 +58,6 @@ brave_grit("resources") {
   ]
 }
 
-js_type_check("closure_compile") {
-  closure_flags = default_closure_args + mojom_js_args + [
-                    "js_module_root=" + rebase_path(".", root_build_dir),
-                    "js_module_root=" + rebase_path(
-                            "$root_gen_dir/mojom-webui/brave/browser/ui/webui/brave_federated",
-                            root_build_dir),
-                  ]
-
-  deps = [
-    ":federated_internals",
-    ":federated_internals_browser_proxy",
-  ]
-}
-
 js_library("federated_internals") {
   deps = [
     ":federated_internals_browser_proxy",
