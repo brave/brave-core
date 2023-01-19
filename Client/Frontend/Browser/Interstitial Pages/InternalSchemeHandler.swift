@@ -32,6 +32,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
     guard let url = urlSchemeTask.request.url else { return false }
 
     let allowedInternalResources = [
+      // interstitial
       "/interstitial-style/InterstitialStyles.css": "text/css",
       "/interstitial-style/NetworkError.css": "text/css",
       "/interstitial-style/CertificateError.css": "text/css",
@@ -44,7 +45,17 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       "/interstitial-icon/DarkWarning.svg": "image/svg+xml",
       "/interstitial-icon/Carret.png": "image/png",
 
-        // "/reader-mode/..."
+      // readermode
+      "/\(InternalURL.Path.readermode.rawValue)/styles/Reader.css": "text/css",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Bold.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-BoldItalic.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Book.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Italic.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Light.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Medium.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Regular.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-SemiBold.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-UltraLight.ttf": "application/x-font-ttf",
     ]
 
     // Handle resources from internal pages. For example 'internal://local/errorpage-resource/CertError.css'.

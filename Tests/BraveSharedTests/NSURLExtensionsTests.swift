@@ -302,15 +302,15 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisAboutHomeURL() {
     let goodurls = [
-      "http://localhost:\(AppConstants.webServerPort)/about/home/#panel=0",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//localhost%3A\(AppConstants.webServerPort)/about/home/%23panel%3D1",
+      "\(InternalURL.baseUrl)/about/home/#panel=0",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=internal%3A//local%3A/about/home/%23panel%3D1",
 
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:\(AppConstants.webServerPort)/sessionrestore.html",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
+      "http://localhost:6571/sessionrestore.html",
+      "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+      "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
     ]
 
     goodurls.forEach {
@@ -331,14 +331,14 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisAboutURL() {
     let goodurls = [
-      "http://localhost:\(AppConstants.webServerPort)/about/home/#panel=0",
-      "http://localhost:\(AppConstants.webServerPort)/about/firefox",
+      "\(InternalURL.baseUrl)/about/home/#panel=0",
+      "\(InternalURL.baseUrl)/about/firefox",
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:\(AppConstants.webServerPort)/sessionrestore.html",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
+      "http://localhost:6571/sessionrestore.html",
+      "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+      "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
     ]
 
     goodurls.forEach {
@@ -360,13 +360,13 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisErrorPage() {
     let goodurls = [
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=blah",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=blah",
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:\(AppConstants.webServerPort)/sessionrestore.html",
-      "http://localhost:\(AppConstants.webServerPort)/about/home/#panel=0",
+      "http://localhost:6571/sessionrestore.html",
+      "http://localhost:6571/about/home/#panel=0",
     ]
 
     goodurls.forEach {
@@ -390,14 +390,14 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testoriginalURLFromErrorURL() {
     let goodurls = [
-      ("http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com", URL(string: "http://mozilla.com")),
-      ("http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//localhost%3A\(AppConstants.webServerPort)/about/home/%23panel%3D1", URL(string: "http://localhost:\(AppConstants.webServerPort)/about/home/#panel=1")),
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", URL(string: "http://mozilla.com")),
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=internal%3A//local/about/home/%23panel%3D1", URL(string: "internal://local/about/home/#panel=1")),
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:\(AppConstants.webServerPort)/sessionrestore.html",
-      "http://localhost:\(AppConstants.webServerPort)/about/home/#panel=0",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html",
+      "http://localhost:6571/sessionrestore.html",
+      "http://localhost:6571/about/home/#panel=0",
+      "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html",
     ]
 
     goodurls.forEach {
@@ -421,13 +421,13 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisReaderModeURL() {
     let goodurls = [
-      "http://localhost:6571/reader-mode/page",
-      "http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fbrave%2Ecom",
     ]
     let badurls = [
       "http://google.com",
       "http://localhost:6571/sessionrestore.html",
       "http://localhost:1234/about/home/#panel=0",
+      "http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage",
     ]
 
     goodurls.forEach { XCTAssertTrue(URL(string: $0)!.isReaderModeURL, $0) }
@@ -436,7 +436,7 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testdecodeReaderModeURL() {
     let goodurls = [
-      ("http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage", URL(string: "https://en.m.wikipedia.org/wiki/Main_Page"))
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage", URL(string: "https://en.m.wikipedia.org/wiki/Main_Page"))
     ]
     let badurls = [
       "http://google.com",
@@ -450,9 +450,9 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testencodeReaderModeURL() {
-    let ReaderURL = "http://localhost:6571/reader-mode/page"
+    let ReaderURL = "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
     let goodurls = [
-      ("https://en.m.wikipedia.org/wiki/Main_Page", URL(string: "http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage"))
+      ("https://en.m.wikipedia.org/wiki/Main_Page", URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage"))
     ]
     goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.encodeReaderModeURL(ReaderURL), $0.1) }
   }
@@ -468,7 +468,7 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testschemeIsValid() {
     let goodurls = [
-      "http://localhost:6571/reader-mode/page",
+      "http://\(InternalURL.Path.readermode.rawValue)/page",
       "https://google.com",
       "tel:6044044004",
     ]
@@ -555,17 +555,14 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testdisplayURL() {
     let goodurls = [
-      ("http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F", "https://en.m.wikipedia.org/wiki/"),
-      ("http://user:pass@localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F", "https://en.m.wikipedia.org/wiki/"),
-      ("http://user:pass@localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
-      ("http://user:pass@localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
-      ("http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A%2F%2Flocalhost%3A6571%2Freader-mode%2Fpage%3Furl%3Dhttps%253A%252F%252Fen%252Em%252Ewikipedia%252Eorg%252Fwiki%252F", "https://en.m.wikipedia.org/wiki/"),
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F", "https://en.m.wikipedia.org/wiki/"),
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
       ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk/index.html"),
+      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=http%3A//mozilla.com", "http://mozilla.com"),
+      ("\(InternalURL.scheme)://user:pass@\(InternalURL.host)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
     ]
     let badurls = [
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html?url=http%3A//localhost%3A\(AppConstants.webServerPort)/about/home/%23panel%3D1",
-      "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/error.html",
-
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F",
     ]
 
     goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.displayURL?.absoluteString, $0.1) }
@@ -621,11 +618,10 @@ class NSURLExtensionsTests: XCTestCase {
     let urlA = URL(string: "http://brave.com?url=https://foo.com")
     let urlB = URL(string: "http://brave.com/?url=https://foo.com")
     let urlC = URL(string: "http://brave.com?url=https://foo.com/meh")
-    let urlD = URL(string: "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com")
-    let urlE = URL(string: "http://localhost:\(AppConstants.webServerPort)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com/meh")
-    let urlF = URL(string: "http://localhost\(InternalURL.Path.errorpage)/foo.html?url=https://foo.com/meh")
+    let urlD = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com")
+    let urlE = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com/meh")
 
-    for url in [urlA, urlB, urlC, urlD, urlE, urlF] {
+    for url in [urlA, urlB, urlC, urlD, urlE] {
       if url == nil {
         XCTAssertTrue(false, "Cannot parse URL")
         return
@@ -637,7 +633,6 @@ class NSURLExtensionsTests: XCTestCase {
     XCTAssertNotEqual(InternalURL(urlC!)?.originalURLFromErrorPage, urlC)
     XCTAssertEqual(InternalURL(urlD!)?.originalURLFromErrorPage?.absoluteString, "https://foo.com")
     XCTAssertEqual(InternalURL(urlE!)?.originalURLFromErrorPage?.absoluteString, "https://foo.com/meh")
-    XCTAssertNil(InternalURL(urlF!)?.originalURLFromErrorPage)
   }
 
   func testAppendPathComponentsHelper() {

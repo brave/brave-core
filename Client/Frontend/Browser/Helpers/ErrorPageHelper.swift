@@ -1,6 +1,5 @@
 import Foundation
 import WebKit
-import GCDWebServers
 import Shared
 import BraveShared
 import Storage

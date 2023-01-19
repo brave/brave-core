@@ -16,7 +16,7 @@ const HIGHLIGHT_COLOR = "#ffde49";
 const HIGHLIGHT_COLOR_ACTIVE = "#f19750";
 
 // IMPORTANT!!!: If this CSS is ever changed, the sha256-base64
-// hash in Client/Frontend/Reader/ReaderModeHandlers.swift will
+// hash in ReaderModeHandler.swift will
 // also need updated. The value of `ReaderModeStyleHash` in that
 // file represents the sha256-base64 hash of the `HIGHLIGHT_CSS`.
 const HIGHLIGHT_CSS =

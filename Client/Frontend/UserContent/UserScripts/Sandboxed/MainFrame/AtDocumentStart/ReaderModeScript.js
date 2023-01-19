@@ -10,7 +10,7 @@ const DEBUG = false;
 var readabilityResult = null;
 var currentStyle = null;
 
-const readerModeURL = /^http:\/\/localhost:\d+\/reader-mode\/page/;
+const readerModeURL = /^internal:\/\/local\/reader-mode/;
 
 const BLOCK_IMAGES_SELECTOR =
   ".content p > img:only-child, " +
