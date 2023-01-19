@@ -73,6 +73,7 @@ public class BraveSearchEngineUtils {
 
         initializeDSEPrefs(profile);
         updateActiveDSE(profile);
+        QuickActionSearchAndBookmarkWidgetProvider.initializeDelegate();
     }
 
     static public void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
