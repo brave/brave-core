@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index c48d1eb22d77165879862022a4154997f511be34..772bf618410aae6c14bd77cd2807730b0ec0921e 100644
+index 419814bfcd224bc4b601bf9108b48f197207786f..83071a61d46dd8a06009777a12e013c8ea7dfabb 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 @@ -686,7 +686,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {

@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 10e7c39de16604852956b2efccb0e8bc81bc7386..d1c7ec5742000a9090670870727e8f0662773376 100644
+index 1a9db87011fc059a57775a7ff68b262d2d12a44f..0a0ba25c2aba2f1a10e92e80872785459c06e75c 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -123,6 +123,7 @@ generate_grd("build_grd") {
+@@ -124,6 +124,7 @@ generate_grd("build_grd") {
        "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
      ]
    }
@@ -10,7 +10,7 @@ index 10e7c39de16604852956b2efccb0e8bc81bc7386..d1c7ec5742000a9090670870727e8f06
  }
  
  if (is_chromeos_ash) {
-@@ -188,6 +189,7 @@ ts_library("library") {
+@@ -182,6 +183,7 @@ ts_library("library") {
    if (is_ios) {
      extra_deps += [ ":generate_definitions" ]
    }

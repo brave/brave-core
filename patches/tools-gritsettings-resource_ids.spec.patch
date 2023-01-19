@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 47696ff6abefcd33954c15fdc522d787c724ea31..6691f60bcffdf577fdfdb50377da4e257833c4dd 100644
+index 2aee530cceefb9205435b9b624dc238ad129d7ac..af14d3bc2b83d3f311c190352dcad115c3369e70 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -41,6 +41,9 @@
@@ -12,7 +12,7 @@ index 47696ff6abefcd33954c15fdc522d787c724ea31..6691f60bcffdf577fdfdb50377da4e25
    "chrome/app/google_chrome_strings.grd": {
      "messages": [400],
    },
-@@ -213,7 +216,7 @@
+@@ -221,7 +224,7 @@
      "includes": [1600],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -21,7 +21,7 @@ index 47696ff6abefcd33954c15fdc522d787c724ea31..6691f60bcffdf577fdfdb50377da4e25
      "includes": [1620],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/identity_internals/resources.grd": {
-@@ -312,7 +315,7 @@
+@@ -328,7 +331,7 @@
      "includes": [1940],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -30,7 +30,7 @@ index 47696ff6abefcd33954c15fdc522d787c724ea31..6691f60bcffdf577fdfdb50377da4e25
      "includes": [1960],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/signin/profile_picker/resources.grd": {
-@@ -754,6 +757,9 @@
+@@ -778,6 +781,9 @@
    "components/components_chromium_strings.grd": {
      "messages": [3520],
    },
