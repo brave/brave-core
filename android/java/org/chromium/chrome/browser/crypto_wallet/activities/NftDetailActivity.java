@@ -28,6 +28,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -55,6 +56,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private static final String NFT_TOKEN_ID_HEX = "nftTokenIdHex";
     private static final String NFT_META_DATA = "nftMetadata";
     private static final String NFT_IS_ERC_721 = "nftIsErc721";
+    private static final String COIN_TYPE = "coinType";
 
     private String mNftName;
     private String mChainId;
@@ -63,6 +65,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private String mNftTokenHex;
 
     private boolean mIsErc721;
+
+    private int mCoinType;
 
     private ImageView mNftImageView;
     private TextView mImageNotAvailableText;
@@ -75,6 +79,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     private TextView mNftDetailTitleView;
     private TextView mNftNameView;
     private ViewGroup mNftDescriptionLayout;
+    private ViewGroup mNftTokenStandardLayout;
+    private ViewGroup mNftTokenAddressLayout;
     private Toolbar mToolbar;
 
     private PortfolioModel.NftMetadata mNftMetadata;
@@ -92,6 +98,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
             mNftTokenId = Utils.hexToIntString(mNftTokenHex);
             mNftMetadata = (PortfolioModel.NftMetadata) intent.getSerializableExtra(NFT_META_DATA);
             mIsErc721 = intent.getBooleanExtra(NFT_IS_ERC_721, false);
+            mCoinType = intent.getIntExtra(COIN_TYPE, -1);
         }
 
         // Calculate half screen height and assign it to NFT image view,
@@ -122,19 +129,23 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         mNftNameView.setText(mNftName);
 
         mNetworkNameView = findViewById(R.id.blockchain_content);
-
+        mNftTokenStandardLayout = findViewById(R.id.nft_token_standard);
+        mNftTokenAddressLayout = findViewById(R.id.nft_token_address);
         mTokenStandardView = findViewById(R.id.token_standard_content);
+        mTokenAddressLabelView = findViewById(R.id.token_address_label);
 
         if (mIsErc721) {
             mTokenStandardView.setText(R.string.brave_wallet_nft_erc_721);
-        } else {
+            mTokenAddressLabelView.setText(R.string.brave_wallet_nft_token_id);
+        } else if (mCoinType == CoinType.SOL) {
             mTokenStandardView.setText(R.string.brave_wallet_nft_sol_spl);
+            mTokenAddressLabelView.setText(R.string.brave_wallet_nft_mint_address);
+        } else {
+            // Not ERC 721, nor Solana NFT.
+            // Hiding incompatible lables.
+            AndroidUtils.gone(mNftTokenStandardLayout, mNftTokenAddressLayout);
         }
 
-        mTokenAddressLabelView = findViewById(R.id.token_address_label);
-        if (!mIsErc721) {
-            mTokenAddressLabelView.setText(R.string.brave_wallet_nft_mint_address);
-        }
         mTokenAddressView = findViewById(R.id.token_address_content);
 
         mNftDescriptionLayout = findViewById(R.id.nft_description);
@@ -257,6 +268,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         intent.putExtra(NFT_TOKEN_ID_HEX, asset.tokenId);
         intent.putExtra(NFT_META_DATA, nftDataModel.nftMetadata);
         intent.putExtra(NFT_IS_ERC_721, nftDataModel.token.isErc721);
+        intent.putExtra(COIN_TYPE, asset.coin);
         return intent;
     }
 }
