@@ -199,6 +199,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_shields/browser",
     "//chrome/test:test_support",
     "//content/test:test_support",
