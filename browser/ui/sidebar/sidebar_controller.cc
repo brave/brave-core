@@ -14,9 +14,11 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -56,8 +58,20 @@ bool SidebarController::IsActiveIndex(absl::optional<size_t> index) const {
 
 bool SidebarController::DoesBrowserHaveOpenedTabForItem(
     const SidebarItem& item) const {
+  // This method is only for builtin item's icon state updating.
+  DCHECK(sidebar::IsBuiltInType(item));
   DCHECK(!item.open_in_panel);
-  return !GetAllExistingTabIndexForHost(browser_, item.url.host()).empty();
+
+  const std::vector<Browser*> browsers =
+      chrome::FindAllTabbedBrowsersWithProfile(browser_->profile());
+  for (Browser* browser : browsers) {
+    const auto all_index =
+        GetAllExistingTabIndexForHost(browser, item.url.host());
+    if (!all_index.empty())
+      return true;
+  }
+
+  return false;
 }
 
 void SidebarController::ActivateItemAt(absl::optional<size_t> index,
@@ -96,11 +110,36 @@ void SidebarController::ActivateItemAt(absl::optional<size_t> index,
   LoadAtTab(item.url);
 }
 
+bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
+  const std::vector<Browser*> browsers =
+      chrome::FindAllTabbedBrowsersWithProfile(browser_->profile());
+  for (Browser* browser : browsers) {
+    // Skip current browser. we are here because current active browser doesn't
+    // have a tab that loads |url|.
+    if (browser == browser_)
+      continue;
+
+    const auto all_index = GetAllExistingTabIndexForHost(browser, url.host());
+    if (all_index.empty())
+      continue;
+
+    // Pick first tab for simplicity.
+    browser->tab_strip_model()->ActivateTabAt(all_index[0]);
+    browser->window()->Activate();
+    return true;
+  }
+
+  return false;
+}
+
 void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
   // Get target tab index
   const auto all_index = GetAllExistingTabIndexForHost(browser_, url.host());
-  // Load at current active tab if there is no tab that loaded |url|.
   if (all_index.empty()) {
+    if (ActiveTabFromOtherBrowsersForHost(url))
+      return;
+
+    // Load at current active tab if there is no tab that loaded |url|.
     auto params = GetSingletonTabNavigateParams(browser_, url);
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
     Navigate(&params);
