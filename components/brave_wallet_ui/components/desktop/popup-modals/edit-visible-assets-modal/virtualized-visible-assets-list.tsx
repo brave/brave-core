@@ -26,20 +26,19 @@ interface VirtualizedTokensListProps {
   onCheckWatchlistItem: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
 }
 
-interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'>{
+interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   index: number
-  data: BraveWallet.BlockchainToken[]
+  data: BraveWallet.BlockchainToken
   style: React.CSSProperties
 }
 
-const getListItemKey = (index: number, tokenList: BraveWallet.BlockchainToken) => {
+const getListItemKey = (index: number, tokenList: BraveWallet.BlockchainToken[]) => {
   const token = tokenList[index]
   return `${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`
 }
 
 const ListItem = (props: ListItemProps) => {
   const {
-    index,
     data,
     style,
     networkList,
@@ -48,16 +47,15 @@ const ListItem = (props: ListItemProps) => {
     onCheckWatchlistItem,
     onRemoveAsset
   } = props
-  const token = data[index]
 
   return (
     <div style={style}>
       <AssetWatchlistItem
-        isCustom={isCustomToken(token)}
-        token={token}
+        isCustom={isCustomToken(data)}
+        token={data}
         networkList={networkList}
         onRemoveAsset={onRemoveAsset}
-        isSelected={isAssetSelected(token)}
+        isSelected={isAssetSelected(data)}
         onSelectAsset={onCheckWatchlistItem}
       />
     </div>
@@ -86,6 +84,7 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
       children={(itemProps) => (
         <ListItem
           {...itemProps}
+          data={itemProps.data[itemProps.index]}
           isCustomToken={isCustomToken}
           networkList={networkList}
           onRemoveAsset={onRemoveAsset}
