@@ -815,4 +815,5 @@
   <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR" desc="Error explaining that an invalid or empty token contract address has been entered as a form value">Invalid or empty token contract address</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
 </grit-part>

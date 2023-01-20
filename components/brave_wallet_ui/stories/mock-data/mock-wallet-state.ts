@@ -18,6 +18,7 @@ import { mockMoonCatNFT } from './mock-asset-options'
 // mocks
 import { mockNetwork } from '../../common/constants/mocks'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
+import { mockNetworks } from './mock-networks'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
@@ -72,77 +73,6 @@ const mockAccount3: WalletAccountType = {
   },
   keyringId: undefined
 }
-
-const mockNetworkList: BraveWallet.NetworkInfo[] = [
-  {
-    'chainId': '0x1',
-    'chainName': 'Ethereum Mainnet',
-    'blockExplorerUrls': [
-      'https://etherscan.io'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'https://mainnet-infura.brave.com' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': true
-  },
-  {
-    'chainId': '0x5',
-    'chainName': 'Goerli Test Network',
-    'blockExplorerUrls': [
-      'https://goerli.etherscan.io'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'https://goerli-infura.brave.com' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': true
-  },
-  {
-    'chainId': '0xaa36a7',
-    'chainName': 'Sepolia Test Network',
-    'blockExplorerUrls': [
-      'https://sepolia.etherscan.io'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'https://sepolia-infura.brave.com' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': true
-  },
-  {
-    'chainId': '0x539',
-    'chainName': 'Localhost',
-    'blockExplorerUrls': [
-      'http://localhost:7545/'
-    ],
-    'iconUrls': [],
-    'activeRpcEndpointIndex': 0,
-    'rpcEndpoints': [
-      { url: 'http://localhost:7545/' }
-    ],
-    'symbol': 'ETH',
-    'symbolName': 'Ethereum',
-    'decimals': 18,
-    'coin': 60,
-    'isEip1559': false
-  }
-]
 
 const mockCurrency: BraveWallet.OnRampCurrency = {
   currencyCode: 'USD',
@@ -286,11 +216,11 @@ export const mockWalletState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: false,
   knownTransactions: [],
-  networkList: mockNetworkList,
+  networkList: mockNetworks,
   pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
-  selectedNetwork: mockNetworkList[0],
+  selectedNetwork: mockNetworks[0],
   selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   transactions: {
