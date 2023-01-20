@@ -802,6 +802,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },
         { "unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE },
         { "welcome", IDS_BRAVE_UI_WELCOME },
+        { "youAreCurrentlyLoggedOut", IDS_BRAVE_REWARDS_TIP_YOU_ARE_CURRENTLY_LOGGED_OUT},  // NOLINT
       }
     }, {
       std::string("rewards-internals"), {
