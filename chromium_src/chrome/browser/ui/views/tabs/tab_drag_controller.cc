@@ -26,6 +26,10 @@
   views::View::ConvertPointFromScreen(    \
       view->GetWidget()->GetTopLevelWidget()->GetRootView(), point)
 #define GetRestoredBounds GetTopLevelWidget()->GetRestoredBounds
+#define non_client_view()                                    \
+  non_client_view()                                          \
+      ? source->GetWidget()->non_client_view()->frame_view() \
+      : source->GetWidget()->GetTopLevelWidget()->non_client_view()
 
 // Remove drag threshold when it's vertical tab strip
 #define GetHorizontalDragThreshold()                          \
@@ -39,6 +43,7 @@
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.cc"
 
+#undef non_client_view
 #undef GetHorizontalDragThreshold
 #undef GetRestoredBounds
 #undef ConvertPointToWidget
@@ -242,7 +247,8 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     TabDragContext* source,
     const gfx::Point& point_in_screen,
     std::vector<gfx::Rect>* drag_bounds) {
-  // This method is called when creating new browser by detaching tabs.
+  // This method is called when creating new browser by detaching tabs and
+  // when dragging all tabs in maximized window.
   auto bounds = TabDragControllerChromium::CalculateDraggedBrowserBounds(
       source, point_in_screen, drag_bounds);
   if (is_showing_vertical_tabs_) {
