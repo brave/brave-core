@@ -10,6 +10,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/logging.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -102,6 +103,7 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
+      VLOG(1) << "QUERY FILTER: stripping " << key << " from " << spec;
       ++disallowed_count;
     } else {
       output_kv_strings.push_back(kv_string);

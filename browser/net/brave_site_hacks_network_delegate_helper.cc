@@ -28,16 +28,22 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
 
   if (!ctx->allow_brave_shields) {
     // Don't apply the filter if the destination URL has shields down.
+    VLOG(1) << "QUERY FILTER: shields down exemption (" << ctx->request_url
+            << ")";
     return;
   }
 
   if (ctx->method != "GET") {
+    VLOG(1) << "QUERY FILTER: non-GET exemption (" << ctx->method << " on "
+            << ctx->request_url << ")";
     return;
   }
 
   if (ctx->redirect_source.is_valid()) {
     if (ctx->internal_redirect) {
       // Ignore internal redirects since we trigger them.
+      VLOG(1) << "QUERY FILTER: internal redirect exemption ("
+              << ctx->request_url << ")";
       return;
     }
 
@@ -45,6 +51,8 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
             ctx->redirect_source, ctx->request_url,
             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
       // Same-site redirects are exempted.
+      VLOG(1) << "QUERY FILTER: same-site redirect exemption ("
+              << ctx->redirect_source << " -> " << ctx->request_url << ")";
       return;
     }
   } else if (ctx->initiator_url.is_valid() &&
@@ -53,6 +61,8 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.
+    VLOG(1) << "QUERY FILTER: same-site exemption (" << ctx->initiator_url
+            << " -> " << ctx->request_url << ")";
     return;
   }
   auto filtered_url = ApplyQueryFilter(ctx->request_url);
