@@ -20,6 +20,12 @@ BraveBrowserFrameMac::~BraveBrowserFrameMac() = default;
 void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
     bool* override_titlebar_height,
     float* titlebar_height) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
+                                                  titlebar_height);
+    return;
+  }
+
   if (tabs::features::ShouldShowVerticalTabs(browser_)) {
     if (!tabs::features::ShouldShowWindowTitleForVerticalTabs(browser_)) {
       // In this case, titlbar height should be the same as toolbar height.
@@ -33,6 +39,6 @@ void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
     return;
   }
 
-  return BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
-                                                       titlebar_height);
+  BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
+                                                titlebar_height);
 }

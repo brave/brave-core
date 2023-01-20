@@ -20,6 +20,9 @@ BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
     LocationBarView* location_bar)
     : RoundedOmniboxResultsFrame(contents, location_bar),
       browser_(location_bar->browser()) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   UpdateShadowBorder();
 
   show_vertical_tabs_.Init(
@@ -37,6 +40,8 @@ BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
 BraveRoundedOmniboxResultsFrame::~BraveRoundedOmniboxResultsFrame() = default;
 
 void BraveRoundedOmniboxResultsFrame::UpdateShadowBorder() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+
   int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kHigh);
 

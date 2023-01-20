@@ -25,8 +25,8 @@ struct TabLayoutConstants;
 
 namespace tabs {
 
-constexpr int kVerticalTabMinWidth = SidebarButtonView::kSidebarButtonSize;
-constexpr int kVerticalTabHeight = SidebarButtonView::kSidebarButtonSize;
+constexpr int kVerticalTabMinWidth = 48;
+constexpr int kVerticalTabHeight = 38;
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,

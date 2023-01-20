@@ -33,6 +33,9 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
 void BraveCompoundTabContainer::SetAvailableWidthCallback(
     base::RepeatingCallback<int()> available_width_callback) {
   CompoundTabContainer::SetAvailableWidthCallback(available_width_callback);
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   if (!available_width_callback || tabs::features::ShouldShowVerticalTabs(
                                        tab_slot_controller_->GetBrowser())) {
     // Unlike Chromium Impl, Just pass the `available_width_callback` to

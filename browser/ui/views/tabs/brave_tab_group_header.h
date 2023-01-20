@@ -8,17 +8,26 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 
+namespace tab_groups {
+class TabGroupId;
+}  // namespace tab_groups
+
 class BraveTabGroupHeader : public TabGroupHeader {
  public:
   METADATA_HEADER(BraveTabGroupHeader);
 
-  static int GetLeftPaddingForVerticalTabs();
+  constexpr static int kPaddingForGroup = 4;
 
   using TabGroupHeader::TabGroupHeader;
   ~BraveTabGroupHeader() override;
 
   // TabGroupHeader:
   void VisualsChanged() override;
+  void Layout() override;
+
+ private:
+  bool ShouldShowVerticalTabs() const;
+  void LayoutTitleChip();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_

@@ -15,7 +15,9 @@
 
 #define GetBorderPath virtual GetBorderPath
 #define GetCornerRadius virtual GetCornerRadius
+#define PaintFill virtual PaintFill
 #include "src/chrome/browser/ui/views/tabs/new_tab_button.h"
+#undef PaintFill
 #undef GetCornerRadius
 #undef GetBorderPath
 #undef BRAVE_NEW_TAB_BUTTON_H_

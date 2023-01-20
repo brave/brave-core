@@ -19,7 +19,8 @@ namespace views {
 class ScrollView;
 }
 
-class Browser;
+class BraveNewTabButton;
+class BrowserView;
 class TabStripScrollContainer;
 
 // Wraps TabStripRegion and show it vertically.
@@ -43,7 +44,8 @@ class VerticalTabStripRegionView : public views::View,
     kExpanded,
   };
 
-  VerticalTabStripRegionView(Browser* browser, TabStripRegionView* region_view);
+  VerticalTabStripRegionView(BrowserView* browser_view,
+                             TabStripRegionView* region_view);
   ~VerticalTabStripRegionView() override;
 
   State state() const { return state_; }
@@ -81,6 +83,8 @@ class VerticalTabStripRegionView : public views::View,
       const TabStripSelectionChange& selection) override;
 
  private:
+  class ScrollHeaderView;
+
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
 
   bool IsTabFullscreen() const;
@@ -97,12 +101,14 @@ class VerticalTabStripRegionView : public views::View,
   void ScheduleFloatingModeTimer();
 
   gfx::Size GetPreferredSizeForState(State state) const;
-  int GetPreferredWidthForState(State state) const;
+  int GetPreferredWidthForState(State state, bool include_border) const;
 
   // Returns valid object only when the related flag is enabled.
   TabStripScrollContainer* GetTabStripScrollContainer();
 
   void ScrollActiveTabToBeVisible();
+
+  std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
   raw_ptr<Browser> browser_ = nullptr;
 
@@ -112,10 +118,10 @@ class VerticalTabStripRegionView : public views::View,
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> scroll_contents_view_ = nullptr;
-  raw_ptr<views::View> scroll_view_header_ = nullptr;
+  raw_ptr<ScrollHeaderView> scroll_view_header_ = nullptr;
 
   // New tab button created for vertical tabs
-  raw_ptr<NewTabButton> new_tab_button_ = nullptr;
+  raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
   State state_ = State::kExpanded;
 

@@ -9,11 +9,15 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/canvas.h"
+#include "ui/views/view_utils.h"
 
 BraveTabContainer::BraveTabContainer(
     TabContainerController& controller,
@@ -27,15 +31,17 @@ BraveTabContainer::BraveTabContainer(
                        tab_slot_controller,
                        scroll_contents_view),
       drag_context_(static_cast<TabDragContext*>(drag_context)) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   auto* browser = tab_slot_controller_->GetBrowser();
   if (!browser) {
     CHECK_IS_TEST();
     return;
   }
 
-  if (!tabs::features::SupportsVerticalTabs(browser)) {
+  if (!tabs::features::SupportsVerticalTabs(browser))
     return;
-  }
 
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled,
@@ -47,6 +53,9 @@ BraveTabContainer::BraveTabContainer(
 }
 
 BraveTabContainer::~BraveTabContainer() {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   // When the last tab is closed and tab strip is being destructed, the
   // animation for the last removed tab could have been scheduled but not
   // finished yet. In this case, stop the animation before checking if all
@@ -58,6 +67,9 @@ BraveTabContainer::~BraveTabContainer() {
 }
 
 base::OnceClosure BraveTabContainer::LockLayout() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This method should be called only when the flag is on.";
+
   DCHECK(!layout_locked_) << "LockLayout() doesn't allow reentrance";
   layout_locked_ = true;
   return base::BindOnce(&BraveTabContainer::OnUnlockLayout,
@@ -65,6 +77,11 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return TabContainerImpl::CalculatePreferredSize();
+
+  // Note that we check this before checking currently we're in vertical tab
+  // strip mode. We might be in the middle of changing orientation.
   if (layout_locked_)
     return {};
 
@@ -96,11 +113,26 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
           : absl::optional<int>(available_width_callback_.Run()));
   height =
       std::max(height, slots_bounds.empty() ? 0 : slots_bounds.back().bottom());
+
+  if (tab_count) {
+    if (Tab* last_tab = tabs_view_model_.view_at(tab_count - 1);
+        last_tab->group().has_value() &&
+        !controller_->IsGroupCollapsed(*last_tab->group())) {
+      height += BraveTabGroupHeader::kPaddingForGroup;
+    }
+  }
+
   return gfx::Size(TabStyle::GetStandardWidth(), height);
 }
 
 void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
                                                       bool was_active) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::UpdateClosingModeOnRemovedTab(model_index, was_active);
+    return;
+  }
+
+  // Don't shrink vertical tab strip's width
   if (tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser()))
     return;
@@ -111,6 +143,11 @@ void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
 gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
     Tab* tab,
     int former_model_index) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return TabContainerImpl::GetTargetBoundsForClosingTab(tab,
+                                                          former_model_index);
+  }
+
   if (!tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser()))
     return TabContainerImpl::GetTargetBoundsForClosingTab(tab,
@@ -131,6 +168,11 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
 
 void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
                                             CloseTabSource source) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::EnterTabClosingMode(override_width, source);
+    return;
+  }
+
   // Don't shrink vertical tab strip's width
   if (tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
@@ -141,6 +183,9 @@ void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
 }
 
 bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return TabContainerImpl::ShouldTabBeVisible(tab);
+
   // We don't have to clip tabs out of bounds. Scroll view will handle it.
   if (tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser()))
@@ -150,6 +195,13 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
 }
 
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::StartInsertTabAnimation(model_index);
+    return;
+  }
+
+  // Note that we check this before checking currently we're in vertical tab
+  // strip mode. We might be in the middle of changing orientation.
   if (layout_locked_)
     return;
 
@@ -178,6 +230,11 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
 }
 
 void BraveTabContainer::RemoveTab(int index, bool was_active) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::RemoveTab(index, was_active);
+    return;
+  }
+
   if (tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser()))
     closing_tabs_.insert(tabs_view_model_.view_at(index));
@@ -186,6 +243,11 @@ void BraveTabContainer::RemoveTab(int index, bool was_active) {
 }
 
 void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::OnTabCloseAnimationCompleted(tab);
+    return;
+  }
+
   if (tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser()))
     closing_tabs_.erase(tab);
@@ -198,12 +260,18 @@ void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
 }
 
 void BraveTabContainer::UpdateLayoutOrientation() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This method should be called only when the flag is on.";
+
   layout_helper_->set_use_vertical_tabs(tabs::features::ShouldShowVerticalTabs(
       tab_slot_controller_->GetBrowser()));
   InvalidateLayout();
 }
 
 void BraveTabContainer::OnUnlockLayout() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This method should be called only when the flag is on.";
+
   layout_locked_ = false;
 
   InvalidateIdealBounds();
@@ -212,10 +280,32 @@ void BraveTabContainer::OnUnlockLayout() {
 }
 
 void BraveTabContainer::CompleteAnimationAndLayout() {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::CompleteAnimationAndLayout();
+    return;
+  }
+
+  // Note that we check this before checking currently we're in vertical tab
+  // strip mode. We might be in the middle of changing orientation.
   if (layout_locked_)
     return;
 
   TabContainerImpl::CompleteAnimationAndLayout();
+}
+
+void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::OnPaintBackground(canvas);
+    return;
+  }
+
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    TabContainerImpl::OnPaintBackground(canvas);
+    return;
+  }
+
+  canvas->DrawColor(GetColorProvider()->GetColor(kColorToolbar));
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)

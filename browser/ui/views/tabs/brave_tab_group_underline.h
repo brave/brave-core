@@ -8,9 +8,12 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 
+// In vertical tabs, TabGroupUnderline is not actually "underline'. It's an
+// enclosing rounded rect for views in the group.
 class BraveTabGroupUnderline : public TabGroupUnderline {
  public:
-  using TabGroupUnderline::TabGroupUnderline;
+  BraveTabGroupUnderline(TabGroupViews* tab_group_views,
+                         const tab_groups::TabGroupId& group);
   ~BraveTabGroupUnderline() override;
 
   // TabGroupUnderline:
@@ -18,6 +21,10 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
                     views::View* trailing_view) override;
   gfx::Insets GetInsetsForUnderline(views::View* sibling_view) const override;
   SkPath GetPath() const override;
+  void OnPaint(gfx::Canvas* canvas) override;
+
+ private:
+  bool ShouldShowVerticalTabs() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_UNDERLINE_H_
