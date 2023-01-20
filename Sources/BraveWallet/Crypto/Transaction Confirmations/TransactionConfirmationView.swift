@@ -18,7 +18,6 @@ struct TransactionConfirmationView: View {
   var onDismiss: () -> Void
 
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
 
   /// Blockie size for ERC 20 Approve transactions
@@ -375,7 +374,13 @@ struct TransactionConfirmationView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           }
           if confirmationStore.transactions.count > 1 {
-            Button(action: confirmationStore.rejectAllTransactions) {
+            Button(action: {
+              confirmationStore.rejectAllTransactions { success in
+                if success {
+                  onDismiss()
+                }
+              }
+            }) {
               Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(.braveBlurpleTint))

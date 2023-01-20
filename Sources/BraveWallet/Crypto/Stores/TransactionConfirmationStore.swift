@@ -147,9 +147,20 @@ public class TransactionConfirmationStore: ObservableObject {
     }
   }
 
-  func rejectAllTransactions() {
+  func rejectAllTransactions(completion: @escaping (Bool) -> Void) {
+    let dispatchGroup = DispatchGroup()
+    var allRejectsSucceeded = true
     for transaction in transactions {
-      reject(transaction: transaction, completion: { _ in })
+      dispatchGroup.enter()
+      reject(transaction: transaction, completion: { success in
+        defer { dispatchGroup.leave() }
+        if !success {
+          allRejectsSucceeded = false
+        }
+      })
+    }
+    dispatchGroup.notify(queue: .main) {
+      completion(allRejectsSucceeded)
     }
   }
   
