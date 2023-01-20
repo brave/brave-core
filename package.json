@@ -287,7 +287,7 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.1",
     "@types/react-redux": "7.1.16",
-    "@types/react-window": "1.8.2",
+    "@types/react-window": "1.8.5",
     "@types/recharts": "1.8.19",
     "@types/redux-logger": "3.0.8",
     "@types/styled-components": "5.1.9",
