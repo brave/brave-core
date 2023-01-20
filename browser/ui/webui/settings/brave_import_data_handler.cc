@@ -56,8 +56,8 @@ bool HasProperDiskAccessPermission(uint16_t imported_items) {
   return true;
 }
 #endif  // BUILDFLAG(IS_MAC)
-const char kImportStatusSucceeded[] = "succeeded";
-const char kImportStatusFailed[] = "failed";
+constexpr char kImportStatusSucceeded[] = "succeeded";
+constexpr char kImportStatusFailed[] = "failed";
 }  // namespace
 
 namespace settings {

@@ -107,13 +107,12 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
   const auto& list = args[0].GetList();
   // Bulk profiles import assumes new profiles will be created on our side if
   // they do not exist.
-  const base::Value& types = args[1];
   for (const auto& it : list) {
     int browser_index = it.GetInt();
     importing_profiles_.insert(browser_index);
     base::Value::List single_profile_args;
     single_profile_args.Append(base::Value(browser_index));
-    single_profile_args.Append(types.Clone());
+    single_profile_args.Append(args[1].Clone());
     BraveImportDataHandler::HandleImportData(single_profile_args);
   }
 }
@@ -132,14 +131,14 @@ absl::optional<int> BraveImportBulkDataHandler::GetProfileIndex(
 void BraveImportBulkDataHandler::StartImport(
     const importer::SourceProfile& source_profile,
     uint16_t imported_items) {
+  if (!imported_items)
+    return;
   // If profile is not from the bulk import request fallback to single profile
   // import.
   if (!GetProfileIndex(source_profile).has_value()) {
     BraveImportDataHandler::StartImport(source_profile, imported_items);
     return;
   }
-  if (!imported_items)
-    return;
   auto profile_name = source_profile.profile.empty()
                           ? source_profile.importer_name
                           : source_profile.profile;
@@ -168,7 +167,9 @@ void BraveImportBulkDataHandler::OnImportEnded(
   auto index = GetProfileIndex(source_profile);
   if (index.has_value()) {
     importing_profiles_.erase(index.value());
+    return;
   }
+  BraveImportDataHandler::OnImportEnded(source_profile);
 }
 
 }  // namespace settings
