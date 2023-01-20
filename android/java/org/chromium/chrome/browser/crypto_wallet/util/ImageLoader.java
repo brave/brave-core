@@ -45,6 +45,7 @@ public class ImageLoader {
     }
 
     private static boolean isValidImgUrl(String url) {
-        return URLUtil.isDataUrl(url) || URLUtil.isNetworkUrl(url);
+        // Only "data:" or HTTPS URLs.
+        return URLUtil.isDataUrl(url) || URLUtil.isHttpsUrl(url);
     }
 }
