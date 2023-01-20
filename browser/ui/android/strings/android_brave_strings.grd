@@ -2065,7 +2065,7 @@ Are you sure you want to do this?
       Token ID
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_MINT_ADDRESS" desc="Mint address text for brave wallet NFT asset detail.">
-      Mint address
+      Mint Address
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_IMAGE_NOT_AVAILABLE" desc="Text message for image not available when loading NFT image.">
       Image not available
