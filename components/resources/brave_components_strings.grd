@@ -642,6 +642,8 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT" desc="">Creation environment:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT" desc="">Current environment:</message>
 
       <!-- WebUI brave tip dialog resources -->
       <message name="IDS_BRAVE_REWARDS_TIP_BAT_FUNDS" desc="">BAT Funds</message>

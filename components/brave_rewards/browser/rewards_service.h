@@ -125,6 +125,9 @@ using GetRewardsWalletCallback =
 
 using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
+using GetEnvironmentCallback =
+    base::OnceCallback<void(ledger::mojom::Environment)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -371,6 +374,8 @@ class RewardsService : public KeyedService {
   virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
 
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
+
+  virtual void GetEnvironment(GetEnvironmentCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

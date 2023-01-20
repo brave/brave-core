@@ -895,6 +895,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletStatusNotConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED },    // NOLINT
         { "walletStatusVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED },    // NOLINT
         { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
+        { "walletCreationEnvironment", IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT },    // NOLINT
+        { "currentEnvironment", IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT},    // NOLINT
       }
     }, {
 #if BUILDFLAG(ENABLE_TOR)

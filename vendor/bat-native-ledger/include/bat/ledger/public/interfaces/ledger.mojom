@@ -316,12 +316,6 @@ struct ContributionQueuePublisher {
   double amount_percent;
 };
 
-enum Environment {
-  STAGING = 0,
-  PRODUCTION = 1,
-  DEVELOPMENT = 2
-};
-
 enum PromotionType {
   UGP = 0,
   ADS = 1
