@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -111,6 +112,10 @@ public class AssetDetailActivity
         }
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -432,10 +437,6 @@ public class AssetDetailActivity
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         getBlockchainToken(() -> setUpAccountList());
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            mWalletModel = activity.getWalletModel();
-        }
     }
 
     @Override
@@ -486,11 +487,7 @@ public class AssetDetailActivity
     }
 
     private void adjustButtonsVisibilities() {
-        if (Utils.allowBuy(mChainId)) {
-            mBtnBuy.setVisibility(View.VISIBLE);
-        } else {
-            mBtnBuy.setVisibility(View.GONE);
-        }
+        showHideBuyUi();
         if (Utils.allowSwap(mChainId)) {
             if (!AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
                 mBtnSwap.setVisibility(View.VISIBLE);
@@ -498,5 +495,25 @@ public class AssetDetailActivity
         } else {
             mBtnSwap.setVisibility(View.GONE);
         }
+    }
+
+    private void showHideBuyUi() {
+        if (!Utils.allowBuy(mChainId)) {
+            AndroidUtils.gone(mBtnBuy);
+            return;
+        }
+        if (mWalletModel == null) return;
+
+        LiveDataUtil.observeOnce(mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
+                selectedNetwork -> {
+                    mWalletModel.getCryptoModel().isBuySupported(selectedNetwork, mAssetSymbol,
+                            mContractAddress, mChainId, isBuyEnabled -> {
+                                if (isBuyEnabled) {
+                                    AndroidUtils.show(mBtnBuy);
+                                } else {
+                                    AndroidUtils.gone(mBtnBuy);
+                                }
+                            });
+                });
     }
 }
