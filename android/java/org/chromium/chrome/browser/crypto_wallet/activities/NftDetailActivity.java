@@ -32,10 +32,10 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -155,7 +155,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
                     SpannableString spannable;
                     if (mIsErc721) {
-                        String tokenStr = String.format(Locale.ENGLISH, TOKEN_ID_FORMAT, mNftTokenId);
+                        String tokenStr =
+                                String.format(Locale.ENGLISH, TOKEN_ID_FORMAT, mNftTokenId);
                         spannable = new SpannableString(tokenStr);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
@@ -179,8 +180,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                                 url = String.format(Locale.ENGLISH, NFT_SPL_URL_FORMAT_WITH_CLUSTER,
                                         baseUrl, mContractAddress, cluster);
                             } else {
-                                url = String.format(
-                                        Locale.ENGLISH, NFT_SPL_URL_FORMAT, baseUrl, mContractAddress);
+                                url = String.format(Locale.ENGLISH, NFT_SPL_URL_FORMAT, baseUrl,
+                                        mContractAddress);
                             }
                             createClickableLink(blockExplorerUrl, url, spannable);
                         }
