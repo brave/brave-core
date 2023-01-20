@@ -37,4 +37,30 @@ public class JavaUtils {
         }
         return filteredList;
     }
+
+    public static <T> T find(List<T> list, Predicate<T> predicate) {
+        for (T item : list) {
+            if (predicate.test(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public static <T> boolean includes(List<T> list, Predicate<T> predicate) {
+        return find(list, predicate) != null;
+    }
+
+    public static <T> T find(T[] items, Predicate<T> predicate) {
+        for (T item : items) {
+            if (predicate.test(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public static <T> boolean includes(T[] items, Predicate<T> predicate) {
+        return find(items, predicate) != null;
+    }
 }
