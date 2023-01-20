@@ -85,6 +85,9 @@ void PlaylistService::Shutdown() {
   thumbnail_downloader_.reset();
   download_request_manager_.reset();
   task_runner_.reset();
+#if BUILDFLAG(IS_ANDROID)
+  receivers_.Clear();
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 void PlaylistService::AddMediaFilesFromContentsToPlaylist(
@@ -688,6 +691,14 @@ void PlaylistService::RemoveLocalDataForItem(
     GetTaskRunner()->PostTask(FROM_HERE, std::move(delete_file));
   }
 }
+
+#if BUILDFLAG(IS_ANDROID)
+mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
+  mojo::PendingRemote<mojom::PlaylistService> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {

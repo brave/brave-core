@@ -22,6 +22,9 @@
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 namespace base {
 class SequencedTaskRunner;
@@ -94,6 +97,10 @@ class PlaylistService : public KeyedService,
   ~PlaylistService() override;
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
+
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
+#endif  // BUILDFLAG(IS_ANDROID)
 
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
@@ -271,6 +278,10 @@ class PlaylistService : public KeyedService,
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
+
+#if BUILDFLAG(IS_ANDROID)
+  mojo::ReceiverSet<mojom::PlaylistService> receivers_;
+#endif  // BUILDFLAG(IS_ANDROID)
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };

@@ -9,6 +9,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 assert(enable_playlist)
 
 mojom("mojom") {
+  generate_java = true
   sources = [ "playlist.mojom" ]
   public_deps = [
     "//mojo/public/mojom/base",
