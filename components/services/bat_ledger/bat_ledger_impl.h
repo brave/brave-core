@@ -62,12 +62,6 @@ class BatLedgerImpl :
   void OnHide(uint32_t tab_id, uint64_t current_time) override;
   void OnForeground(uint32_t tab_id, uint64_t current_time) override;
   void OnBackground(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnPostData(const std::string& url,
-                  const std::string& first_party_url,
-                  const std::string& referrer,
-                  const std::string& post_data,
-                  ledger::mojom::VisitDataPtr visit_data) override;
   void OnXHRLoad(uint32_t tab_id,
                  const std::string& url,
                  const base::flat_map<std::string, std::string>& parts,

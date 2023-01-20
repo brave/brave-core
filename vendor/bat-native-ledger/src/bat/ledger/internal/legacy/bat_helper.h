@@ -8,22 +8,12 @@
 
 #include <string>
 #include <vector>
-#include <functional>
-
-#include "base/containers/flat_map.h"
-#include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/constants.h"
-#include "bat/ledger/ledger.h"
 
 namespace braveledger_bat_helper {
 
 bool getJSONValue(const std::string& field_name,
                   const std::string& json,
                   std::string* value);
-
-bool getJSONTwitchProperties(
-    const std::string& json,
-    std::vector<base::flat_map<std::string, std::string>>* parts);
 
 std::string getBase64(const std::vector<uint8_t>& in);
 

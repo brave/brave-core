@@ -32,10 +32,6 @@ class NavigationHandle;
 
 namespace brave_rewards {
 
-bool IsMediaLink(const GURL& url,
-                 const GURL& first_party_url,
-                 const GURL& referrer);
-
 class RewardsNotificationService;
 class RewardsServiceObserver;
 
@@ -203,11 +199,6 @@ class RewardsService : public KeyedService {
                          const GURL& url,
                          const GURL& first_party_url,
                          const GURL& referrer) = 0;
-  virtual void OnPostData(SessionID tab_id,
-                          const GURL& url,
-                          const GURL& first_party_url,
-                          const GURL& referrer,
-                          const std::string& post_data) = 0;
 
   virtual void GetReconcileStamp(GetReconcileStampCallback callback) = 0;
   virtual void GetPublisherMinVisitTime(

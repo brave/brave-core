@@ -43,6 +43,7 @@
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
+#include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -53,7 +54,6 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -69,7 +69,6 @@
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
@@ -81,16 +80,8 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
-#include "url/origin.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
-
-using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace brave_rewards {
 
@@ -250,29 +241,6 @@ ledger::mojom::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
   return ledger::mojom::InlineTipsPlatforms::TWITTER;
 }
 
-bool ProcessPublisher(const GURL& url) {
-#if !BUILDFLAG(IS_ANDROID)
-  // we should always process publisher on desktop
-  return true;
-#else
-
-  const std::vector<GURL> excluded = {
-      GURL("https://twitter.com")
-  };
-
-  for (const auto& domain : excluded) {
-    if (net::registry_controlled_domains::SameDomainOrHost(
-        url,
-        domain,
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-      return false;
-    }
-  }
-
-  return true;
-#endif
-}
-
 bool IsAdsOrAutoContributeEnabled(Profile* profile) {
   DCHECK(profile);
   auto* prefs = profile->GetPrefs();
@@ -301,15 +269,6 @@ void DeferCallback(base::Location location, Callback callback, Args&&... args) {
 }
 
 }  // namespace
-
-bool IsMediaLink(const GURL& url,
-                 const GURL& first_party_url,
-                 const GURL& referrer) {
-  return ledger::Ledger::IsMediaLink(url.spec(),
-                                     first_party_url.spec(),
-                                     referrer.spec());
-}
-
 
 // read comment about file pathes at src\base\files\file_path.h
 #if BUILDFLAG(IS_WIN)
@@ -785,32 +744,21 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
   }
 
-  if (!ProcessPublisher(url)) {
+  if (IsAutoContributeHandledByContentScript(url)) {
     return;
   }
 
-  auto origin = url.host();
-  std::string baseDomain =
-      GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
-#if BUILDFLAG(ENABLE_IPFS)
-  if (baseDomain.empty()) {
-    baseDomain = ipfs::GetRegistryDomainFromIPNS(url);
-    if (!baseDomain.empty()) {
-      origin = baseDomain;
-    }
-  }
-#endif
-  if (baseDomain == "")
+  auto publisher_domain = GetPublisherDomainFromURL(url);
+  if (!publisher_domain) {
     return;
-
-  const std::string publisher_url = url.scheme() + "://" + baseDomain + "/";
+  }
 
   ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
-  data->tld = data->name = baseDomain;
-  data->domain = origin;
+  data->domain = *publisher_domain;
+  data->name = *publisher_domain;
   data->path = url.path();
   data->tab_id = tab_id.id();
-  data->url = publisher_url;
+  data->url = url.scheme() + "://" + *publisher_domain + "/";
   bat_ledger_->OnLoad(std::move(data), GetCurrentTimestamp());
 }
 
@@ -854,42 +802,6 @@ void RewardsServiceImpl::OnBackground(SessionID tab_id) {
   bat_ledger_->OnBackground(tab_id.id(), GetCurrentTimestamp());
 }
 
-void RewardsServiceImpl::OnPostData(SessionID tab_id,
-                                    const GURL& url,
-                                    const GURL& first_party_url,
-                                    const GURL& referrer,
-                                    const std::string& post_data) {
-  if (!Connected()) {
-    return;
-  }
-
-  if (!ProcessPublisher(url)) {
-    return;
-  }
-
-  std::string output;
-  url::RawCanonOutputW<1024> canonOutput;
-  url::DecodeURLEscapeSequences(post_data.c_str(),
-                                post_data.length(),
-                                url::DecodeURLMode::kUTF8OrIsomorphic,
-                                &canonOutput);
-  output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(),
-                                                 canonOutput.length()));
-
-  if (output.empty())
-    return;
-
-  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
-  data->path = url.spec(),
-  data->tab_id = tab_id.id();
-
-  bat_ledger_->OnPostData(url.spec(),
-                          first_party_url.spec(),
-                          referrer.spec(),
-                          output,
-                          std::move(data));
-}
-
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                                    const GURL& url,
                                    const GURL& first_party_url,
@@ -898,7 +810,8 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     return;
   }
 
-  if (!ProcessPublisher(url)) {
+  if (IsAutoContributeHandledByContentScript(url) ||
+      !GetPublisherDomainFromURL(url)) {
     return;
   }
 
@@ -1816,24 +1729,13 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     const std::string& favicon_url,
     const std::string& publisher_blob) {
   GURL parsed_url(url);
-
-  if (!parsed_url.is_valid() || !ProcessPublisher(parsed_url)) {
+  if (!parsed_url.is_valid() ||
+      IsAutoContributeHandledByContentScript(parsed_url)) {
     return;
   }
 
-  auto origin = url::Origin::Create(parsed_url).Serialize();
-  std::string baseDomain =
-      GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
-  std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
-#if BUILDFLAG(ENABLE_IPFS)
-  if (baseDomain.empty()) {
-    baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
-    if (!baseDomain.empty()) {
-      origin = parsed_url.scheme() + "://" + baseDomain + "/";
-    }
-  }
-#endif
-  if (baseDomain == "") {
+  auto publisher_domain = GetPublisherDomainFromURL(parsed_url);
+  if (!publisher_domain) {
     ledger::mojom::PublisherInfoPtr info;
     OnPanelPublisherInfo(ledger::mojom::Result::NOT_FOUND, std::move(info),
                          windowId);
@@ -1845,15 +1747,14 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   }
 
   ledger::mojom::VisitDataPtr visit_data = ledger::mojom::VisitData::New();
-  visit_data->domain = visit_data->name = baseDomain;
-  visit_data->path = path;
-  visit_data->url = origin;
+  visit_data->domain = *publisher_domain;
+  visit_data->name = *publisher_domain;
+  visit_data->path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
+  visit_data->url = parsed_url.scheme() + "://" + *publisher_domain + "/";
   visit_data->favicon_url = favicon_url;
 
-  bat_ledger_->GetPublisherActivityFromUrl(
-        windowId,
-        std::move(visit_data),
-        publisher_blob);
+  bat_ledger_->GetPublisherActivityFromUrl(windowId, std::move(visit_data),
+                                           publisher_blob);
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(

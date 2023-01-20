@@ -22,7 +22,6 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -77,9 +76,6 @@ void BraveRequestHandler::SetupCallbacks() {
 
   callback = base::BindRepeating(
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
-  before_url_request_callbacks_.push_back(callback);
-
-  callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 
 #if BUILDFLAG(ENABLE_IPFS)

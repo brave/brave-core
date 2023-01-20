@@ -322,7 +322,7 @@ std::string YouTube::GetUserFromUrl(const std::string& path) {
 
 void YouTube::OnMediaActivityError(const ledger::mojom::VisitData& visit_data,
                                    uint64_t window_id) {
-  std::string url = YOUTUBE_TLD;
+  std::string url = YOUTUBE_DOMAIN;
   std::string name = YOUTUBE_MEDIA_TYPE;
 
   if (!url.empty()) {

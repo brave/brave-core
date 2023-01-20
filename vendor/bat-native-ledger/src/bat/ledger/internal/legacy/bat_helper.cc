@@ -27,16 +27,6 @@
 
 namespace braveledger_bat_helper {
 
-namespace {
-constexpr char kFieldEvent[] = "event";
-constexpr char kFieldProperties[] = "properties";
-constexpr char kFieldChannel[] = "channel";
-constexpr char kFieldVod[] = "vod";
-constexpr char kFieldTime[] = "time";
-}  // namespace
-
-/////////////////////////////////////////////////////////////////////////////
-
 bool getJSONValue(const std::string& field_name,
                   const std::string& json,
                   std::string* value) {
@@ -52,39 +42,6 @@ bool getJSONValue(const std::string& field_name,
   }
 
   return false;
-}
-
-bool getJSONTwitchProperties(
-    const std::string& json,
-    std::vector<base::flat_map<std::string, std::string>>* parts) {
-  auto result =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!result || !result->is_list())
-    return false;
-
-  for (auto& item : result->GetList()) {
-    auto& dict = item.GetDict();
-    base::flat_map<std::string, std::string> event_map;
-    if (auto* value = dict.FindString(kFieldEvent)) {
-      event_map[kFieldEvent] = *value;
-    }
-
-    if (auto* properties = dict.FindDict(kFieldProperties)) {
-      event_map[kFieldProperties] = "";
-
-      if (auto* channel = properties->FindString(kFieldChannel))
-        event_map[kFieldChannel] = *channel;
-
-      if (auto* vod = properties->FindString(kFieldVod))
-        event_map[kFieldVod] = *vod;
-
-      if (auto time = properties->FindDouble(kFieldTime))
-        event_map[kFieldTime] = base::NumberToString(*time);
-    }
-    parts->push_back(std::move(event_map));
-  }
-  return true;
 }
 
 std::string getBase64(const std::vector<uint8_t>& in) {

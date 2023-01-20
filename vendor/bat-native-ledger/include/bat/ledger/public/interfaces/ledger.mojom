@@ -103,7 +103,6 @@ struct PendingContributionInfo {
 };
 
 struct VisitData {
-  string tld;
   string domain;
   string path;
   uint32 tab_id;
