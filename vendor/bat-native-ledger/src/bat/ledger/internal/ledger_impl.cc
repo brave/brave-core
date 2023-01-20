@@ -384,45 +384,13 @@ void LedgerImpl::OnXHRLoad(
   if (!IsReady())
     return;
 
+  LOG(ERROR) << "zenparsing OnXHRLoad! " << url;
+
   std::string type = media()->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
     return;
   }
   media()->ProcessMedia(parts, type, std::move(visit_data));
-}
-
-void LedgerImpl::OnPostData(const std::string& url,
-                            const std::string& first_party_url,
-                            const std::string& referrer,
-                            const std::string& post_data,
-                            mojom::VisitDataPtr visit_data) {
-  if (!IsReady())
-    return;
-
-  std::string type = media()->GetLinkType(url, first_party_url, referrer);
-
-  if (type.empty()) {
-    return;
-  }
-
-  if (type == TWITCH_MEDIA_TYPE) {
-    std::vector<base::flat_map<std::string, std::string>> twitch_parts;
-    braveledger_media::GetTwitchParts(post_data, &twitch_parts);
-    for (auto& twitch_part : twitch_parts) {
-      media()->ProcessMedia(twitch_part, type, visit_data.Clone());
-    }
-    return;
-  }
-
-  if (type == VIMEO_MEDIA_TYPE) {
-    std::vector<base::flat_map<std::string, std::string>> parts;
-    braveledger_media::GetVimeoParts(post_data, &parts);
-
-    for (auto& part : parts) {
-      media()->ProcessMedia(part, type, visit_data.Clone());
-    }
-    return;
-  }
 }
 
 void LedgerImpl::GetActivityInfoList(uint32_t start,

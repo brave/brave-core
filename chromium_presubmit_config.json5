@@ -119,8 +119,6 @@
       "browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_browsertest\\.cc",
       "chromium_src/chrome/install_static/brave_install_util_unittest\\.cc",
       "chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest\\.cc",
-      "components/brave_rewards/browser/net/network_delegate_helper\\.cc",
-      "components/brave_rewards/browser/net/network_delegate_helper\\.h",
       "components/brave_rewards/browser/test/rewards_state_browsertest\\.cc",
       "components/brave_shields/browser/ad_block_engine\\.cc",
       "components/brave_shields/browser/https_everywhere_service\\.cc",

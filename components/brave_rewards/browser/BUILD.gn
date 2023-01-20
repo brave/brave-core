@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -13,8 +18,6 @@ static_library("browser") {
     "diagnostic_log.cc",
     "diagnostic_log.h",
     "logging.h",
-    "net/network_delegate_helper.cc",
-    "net/network_delegate_helper.h",
     "publisher_utils.cc",
     "publisher_utils.h",
     "rewards_notification_service.cc",

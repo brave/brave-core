@@ -11,9 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/legacy/media/github.h"
-#include "bat/ledger/internal/legacy/media/reddit.h"
-#include "bat/ledger/internal/legacy/media/twitch.h"
-#include "bat/ledger/internal/legacy/media/vimeo.h"
 #include "bat/ledger/internal/legacy/media/youtube.h"
 #include "bat/ledger/ledger.h"
 
@@ -57,9 +54,6 @@ class Media {
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::YouTube> media_youtube_;
-  std::unique_ptr<braveledger_media::Twitch> media_twitch_;
-  std::unique_ptr<braveledger_media::Reddit> media_reddit_;
-  std::unique_ptr<braveledger_media::Vimeo> media_vimeo_;
   std::unique_ptr<braveledger_media::GitHub> media_github_;
 };
 

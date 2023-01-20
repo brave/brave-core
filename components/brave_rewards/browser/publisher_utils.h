@@ -19,6 +19,13 @@ namespace brave_rewards {
 // platform where multiple publishers can be registered.
 absl::optional<std::string> GetPublisherIdFromURL(const GURL& url);
 
+// Returns the publisher domain for the specified URL. For social media
+// platforms, the site domain will be returned (e.g "twitter.com").
+absl::optional<std::string> GetPublisherDomainFromURL(const GURL& url);
+
+// Returns a value indicating whether content scripting is used to measure AC.
+bool IsAutoContributeHandledByContentScript(const GURL& url);
+
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_UTILS_H_
