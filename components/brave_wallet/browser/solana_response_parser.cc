@@ -274,6 +274,41 @@ bool ParseGetBlockHeight(const base::Value& json_value,
   return base::StringToUint64(*block_height_string, block_height);
 }
 
+bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
+                                  std::vector<SolanaAccountInfo>* accounts) {
+  DCHECK(accounts);
+
+  auto result = ParseResultDict(json_value);
+  if (!result)
+    return false;
+
+  const auto* account_dicts_list = result->FindList("value");
+  if (!account_dicts_list)
+    return false;
+
+  // For each account dict, get the "account" key and parse the value as an
+  // SolanaAccountInfo
+  for (const auto& account_dict : *account_dicts_list) {
+    const auto* account_dict_value = account_dict.GetIfDict();
+    if (!account_dict_value)
+      return false;
+
+    const auto* account_value = account_dict_value->Find("account");
+    if (!account_value)
+      return false;
+
+    absl::optional<SolanaAccountInfo> account_info;
+    if (!ParseGetAccountInfoPayload(account_value->GetDict(), &account_info))
+      return false;
+
+    if (account_info.has_value()) {
+      accounts->push_back(std::move(*account_info));
+    }
+  }
+
+  return true;
+}
+
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo() {
   return base::BindOnce(&ConvertMultiUint64ToString,

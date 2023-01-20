@@ -237,16 +237,16 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
            {"key1":"18446744073709551615","key2":"18446744073709551615"}
            ]}})";
   EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
-                "/result/array", {"key1", "key2"}, json)),
+                "/result/array", "", {"key1", "key2"}, json)),
             ParseJson(expected_json));
 
   EXPECT_FALSE(
-      ConvertMultiUint64InObjectArrayToString("", {"key1", "key2"}, json));
-  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+      ConvertMultiUint64InObjectArrayToString("", "", {"key1", "key2"}, json));
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array", "",
                                                        {"key1", ""}, json));
   EXPECT_FALSE(
-      ConvertMultiUint64InObjectArrayToString("/result/array", {}, json));
-  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+      ConvertMultiUint64InObjectArrayToString("/result/array", "", {}, json));
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array", "",
                                                        {"key1", "key2"}, ""));
 
   // Fail all if one of the key fails.
@@ -254,8 +254,23 @@ TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
               {"key1":18446744073709551615,"key2":18446744073709551615},
               {"key1":-1,"key2":1}
               ]}})";
-  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array", "",
                                                        {"key1", "key2"}, json));
+
+  // Works for nested keys
+  json =
+      R"({"result":{"array":[
+           {"sub_path":{"key1":18446744073709551615,"key2":18446744073709551615}},
+           {"sub_path":{"key1":18446744073709551615,"key2":18446744073709551615}}
+           ]}})";
+  expected_json =
+      R"({"result":{"array":[
+           {"sub_path": {"key1":"18446744073709551615","key2":"18446744073709551615"}},
+           {"sub_path": {"key1":"18446744073709551615","key2":"18446744073709551615"}}
+           ]}})";
+  EXPECT_EQ(ParseJson(*ConvertMultiUint64InObjectArrayToString(
+                "/result/array", "/sub_path", {"key1", "key2"}, json)),
+            ParseJson(expected_json));
 }
 
 TEST(JsonRpcResponseParserUnitTest, ConvertInt64ToString) {
