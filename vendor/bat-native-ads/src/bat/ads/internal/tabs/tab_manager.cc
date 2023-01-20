@@ -34,7 +34,7 @@ TabManager* TabManager::GetInstance() {
 
 // static
 bool TabManager::HasInstance() {
-  return !!g_tab_manager_instance;
+  return g_tab_manager_instance != nullptr;
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {

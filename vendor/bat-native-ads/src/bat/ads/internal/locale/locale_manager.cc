@@ -35,7 +35,7 @@ LocaleManager* LocaleManager::GetInstance() {
 
 // static
 bool LocaleManager::HasInstance() {
-  return !!g_locale_manager_instance;
+  return g_locale_manager_instance != nullptr;
 }
 
 void LocaleManager::AddObserver(LocaleManagerObserver* observer) {

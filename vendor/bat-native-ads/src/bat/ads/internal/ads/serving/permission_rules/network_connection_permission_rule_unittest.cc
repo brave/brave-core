@@ -45,11 +45,11 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest, DoNotAllowAd) {
 TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
        AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams kParameters;
-  kParameters["should_only_serve_ads_with_valid_internet_connection"] = "false";
+  base::FieldTrialParams parameters;
+  parameters["should_only_serve_ads_with_valid_internet_connection"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(permission_rules::features::kFeature,
-                                kParameters);
+                                parameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

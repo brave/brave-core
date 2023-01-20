@@ -50,7 +50,7 @@ NotificationAdManager* NotificationAdManager::GetInstance() {
 
 // static
 bool NotificationAdManager::HasInstance() {
-  return !!g_notification_ad_manager_instance;
+  return g_notification_ad_manager_instance != nullptr;
 }
 
 absl::optional<NotificationAdInfo>

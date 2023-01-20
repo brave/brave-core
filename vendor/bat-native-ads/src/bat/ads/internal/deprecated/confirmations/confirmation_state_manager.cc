@@ -303,7 +303,7 @@ ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
 
 // static
 bool ConfirmationStateManager::HasInstance() {
-  return !!g_confirmation_state_manager_instance;
+  return g_confirmation_state_manager_instance != nullptr;
 }
 
 void ConfirmationStateManager::Initialize(InitializeCallback callback) {
