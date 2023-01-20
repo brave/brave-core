@@ -404,8 +404,62 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('I', 'N'),
            PREPOPULATED_ENGINE_ID_BRAVE},
       });
+  static constexpr auto content_v23 =
+      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
+          {country_codes::CountryCharsToCountryID('A', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'Y'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('C', 'A'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('D', 'E'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('F', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('G', 'B'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('K', 'G'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('K', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'D'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('R', 'U'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'J'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('U', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('U', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'T'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('E', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('M', 'X'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('A', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('B', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('I', 'N'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          // Added values in this version bellow
+          {country_codes::CountryCharsToCountryID('K', 'R'),
+           PREPOPULATED_ENGINE_ID_NAVER},
+      });
 
-  if (version > 21) {
+  if (version > 22) {
+    auto* it = content_v23.find(country_id);
+    if (it == content_v23.end()) {
+      return default_v6;
+    }
+    return it->second;
+  } else if (version > 21) {
     auto* it = content_v22.find(country_id);
     if (it == content_v22.end()) {
       return default_v6;
