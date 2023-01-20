@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -164,7 +165,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                         }
 
                     } else {
-                        String mintAddress = Utils.getTruncatedAddress(mContractAddress);
+                        String mintAddress = AddressUtils.getTruncatedAddress(mContractAddress);
                         spannable = new SpannableString(mintAddress);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {

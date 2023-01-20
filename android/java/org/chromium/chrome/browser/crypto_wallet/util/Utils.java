@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
@@ -1689,15 +1689,5 @@ public class Utils {
         }
 
         return num.doubleValue();
-    }
-
-    /**
-     * Gets truncated address from a full contract address.
-     * @param address full contract address
-     * @return truncated address
-     */
-    public static String getTruncatedAddress(String address) {
-        int prefixLength = address.startsWith("0x") ? 6 : 4;
-        return (address.substring(0, prefixLength) + "…" + address.substring(address.length() - 4));
     }
 }
