@@ -18,23 +18,26 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
+import org.chromium.mojo.system.MojoException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PortfolioModel {
+public class PortfolioModel implements BraveWalletServiceObserver {
     public final LiveData<List<NftDataModel>> mNftModels;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<List<NftDataModel>> _mNftModels;
@@ -49,6 +52,8 @@ public class PortfolioModel {
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
     private Context mContext;
+    private MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
+    public LiveData<Boolean> mIsDiscoveringUserAssets;
 
     public PortfolioModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -67,6 +72,9 @@ public class PortfolioModel {
         mSharedData = sharedData;
         _mNftModels = new MutableLiveData<>(Collections.emptyList());
         mNftModels = _mNftModels;
+        _mIsDiscoveringUserAssets = new MutableLiveData<>(false);
+        mIsDiscoveringUserAssets = _mIsDiscoveringUserAssets;
+        addServiceObservers();
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
@@ -101,6 +109,18 @@ public class PortfolioModel {
         });
     }
 
+    public void discoverAssetsOnAllSupportedChains() {
+        if (mBraveWalletService == null) return;
+        _mIsDiscoveringUserAssets.postValue(true);
+        mBraveWalletService.discoverAssetsOnAllSupportedChains();
+    }
+
+    private void addServiceObservers() {
+        if (mBraveWalletService != null) {
+            mBraveWalletService.addObserver(this);
+        }
+    }
+
     void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
             BlockchainRegistry mBlockchainRegistry, JsonRpcService mJsonRpcService,
             EthTxManagerProxy mEthTxManagerProxy, SolanaTxManagerProxy mSolanaTxManagerProxy,
@@ -115,6 +135,7 @@ public class PortfolioModel {
             this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
             this.mBraveWalletService = mBraveWalletService;
             this.mAssetRatioService = mAssetRatioService;
+            addServiceObservers();
         }
     }
 
@@ -164,4 +185,33 @@ public class PortfolioModel {
                 return AssetUtils.httpifyIpfsUrl(url);
         }
     }
+
+    @Override
+    public void onActiveOriginChanged(OriginInfo originInfo) {}
+
+    @Override
+    public void onDefaultEthereumWalletChanged(int wallet) {}
+
+    @Override
+    public void onDefaultSolanaWalletChanged(int wallet) {}
+
+    @Override
+    public void onDefaultBaseCurrencyChanged(String currency) {}
+
+    @Override
+    public void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {}
+
+    @Override
+    public void onNetworkListChanged() {}
+
+    @Override
+    public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
+        _mIsDiscoveringUserAssets.postValue(false);
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {}
+
+    @Override
+    public void close() {}
 }
