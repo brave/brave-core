@@ -54,6 +54,10 @@ class BraveRewardsNativeWorker
 
   void GetRewardsParameters(JNIEnv* env);
 
+  double GetVbatDeadline(JNIEnv* env);
+
+  void GetUserType(JNIEnv* env);
+
   void FetchBalance(JNIEnv* env);
 
   void GetPublisherInfo(JNIEnv* env,
@@ -258,6 +262,8 @@ class BraveRewardsNativeWorker
  private:
   std::string StdStrStrMapToJsonString(
       const base::flat_map<std::string, std::string>& args);
+
+  void OnGetUserType(const ledger::mojom::UserType user_type);
 
   void OnBalance(const ledger::mojom::Result result,
                  ledger::mojom::BalancePtr balance);

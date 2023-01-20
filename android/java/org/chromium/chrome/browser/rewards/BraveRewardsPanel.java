@@ -104,6 +104,7 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ledger.mojom.UserType;
 import org.chromium.ledger.mojom.WalletStatus;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.permissions.PermissionConstants;
@@ -1010,6 +1011,23 @@ public class BraveRewardsPanel
     }
 
     @Override
+    public void onGetUserType(int userType) {
+        switch (userType) {
+            case UserType.LEGACY_UNCONNECTED:
+                Log.e("NTP",
+                        "LEGACY_UNCONNECTED : "
+                                + "Deadline : " + mBraveRewardsNativeWorker.getVbatDeadline());
+                break;
+            case UserType.UNCONNECTED:
+                Log.e("NTP", "UNCONNECTED");
+                break;
+            case UserType.CONNECTED:
+                Log.e("NTP", "CONNECTED");
+                break;
+        }
+    }
+
+    @Override
     public void onBalance(int errorCode) {
         mWalletBalanceLayout.setAlpha(1.0f);
         mWalletBalanceProgress.setVisibility(View.GONE);
@@ -1048,6 +1066,7 @@ public class BraveRewardsPanel
             shouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
         } else if (mExternalWallet != null) {
+            mBraveRewardsNativeWorker.getUserType();
             showViewsBasedOnExternalWallet();
         }
     }

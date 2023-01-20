@@ -12,6 +12,7 @@
     	android:layout_gravity="center_horizontal"
     	app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     	app:cardElevation="10dp"
+    	android:visibility="gone"
     	app:cardUseCompatPadding="true"
     	app:cardCornerRadius="8dp">
 
