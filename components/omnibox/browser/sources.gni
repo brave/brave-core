@@ -33,5 +33,6 @@ brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
   "//brave/components/constants",
+  "//components/prefs",
   "//url",
 ]
