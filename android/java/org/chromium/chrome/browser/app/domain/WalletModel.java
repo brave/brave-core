@@ -194,14 +194,17 @@ public class WalletModel {
          */
         @Override
         public void updateCoinAccountNetworkInfo(@CoinType.EnumType int coin) {
-            // update coin
+            if (mBraveWalletService == null) {
+                return;
+            }
+            // Update coin
             mBraveWalletService.setSelectedCoin(coin);
             mCryptoModel.updateCoinType(coin, isCoinUpdated -> {
-                // update account per selected coin
+                // Update account per selected coin
                 mKeyringModel.update();
-                // update network per selected coin
+                // Update network per selected coin
                 mCryptoModel.getNetworkModel().init();
-                // update transactions
+                // Update transactions
                 mCryptoModel.refreshTransactions();
             });
         }

@@ -98,6 +98,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     private void setUpAccountList(View view) {
         RecyclerView rvAccounts = view.findViewById(R.id.rv_accounts);
         walletCoinAdapter = new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
+        if (mWalletModel == null) {
+            return;
+        }
         mWalletModel.getKeyringModel().mAccountInfos.observe(
                 getViewLifecycleOwner(), accountInfos -> {
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -121,6 +124,9 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     }
 
     private void setUpSecondaryAccountList(View view) {
+        if (mWalletModel == null) {
+            return;
+        }
         RecyclerView rvSecondaryAccounts = view.findViewById(R.id.rv_secondary_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
