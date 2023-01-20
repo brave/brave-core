@@ -273,6 +273,14 @@ GURL GetDefaultIPFSLocalGateway(version_info::Channel channel) {
   return AppendLocalPort(GetGatewayPort(channel));
 }
 
+void SetDefaultNFTIPFSGateway(PrefService* prefs, const GURL& url) {
+  if (!url.is_valid()) {
+    return;
+  }
+  DCHECK(prefs);
+  prefs->SetString(kIPFSPublicNFTGatewayAddress, url.spec());
+}
+
 GURL GetDefaultNFTIPFSGateway(PrefService* prefs) {
   if (!ipfs_default_gateway_for_test.is_empty()) {
     return GURL(ipfs_default_gateway_for_test);
