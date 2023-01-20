@@ -678,6 +678,7 @@ test("brave_browser_tests") {
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
     "//brave/browser/brave_ads/ads_service_browsertest.cc",
+    "//brave/browser/brave_ads/brave_stats_updater_helper_browsertest.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
