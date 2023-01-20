@@ -238,7 +238,8 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(transak_url, "fiatCurrency", currency_code);
     transak_url =
         net::AppendQueryParameter(transak_url, "defaultCryptoCurrency", symbol);
-    transak_url = net::AppendQueryParameter(transak_url, "defaultFiatAmount", amount);
+    transak_url =
+        net::AppendQueryParameter(transak_url, "defaultFiatAmount", amount);
     transak_url =
         net::AppendQueryParameter(transak_url, "walletAddress", address);
     transak_url = net::AppendQueryParameter(
