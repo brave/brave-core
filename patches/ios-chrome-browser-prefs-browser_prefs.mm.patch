@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index bad0a78118d7f153a4dc3a242ed07e0d88c1abfe..8097bf6521cc11fcc91f7436e1d89d0f94a95229 100644
+index 1f876a0519d600b552dda09d5b8f8f6b7178701d..88fe30c10fae61802e0e00779d09e2f58bc8f552 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -253,6 +253,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -255,6 +255,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
        prefs::kAutofillBrandingIconAnimationRemainingCountPrefName, 2);
  
    registry->RegisterDictionaryPref(kLocalConsentsDictionary);
@@ -10,7 +10,7 @@ index bad0a78118d7f153a4dc3a242ed07e0d88c1abfe..8097bf6521cc11fcc91f7436e1d89d0f
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -386,6 +387,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -388,6 +389,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
        base::to_underlying(
            prerender_prefs::NetworkPredictionSetting::kEnabledWifiOnly),
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
@@ -18,7 +18,7 @@ index bad0a78118d7f153a4dc3a242ed07e0d88c1abfe..8097bf6521cc11fcc91f7436e1d89d0f
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -528,4 +530,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -530,4 +532,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
    if (prefs->FindPreference(kUserClassifierLastTimeToUseSuggestions)) {
      prefs->ClearPref(kUserClassifierLastTimeToUseSuggestions);
    }
