@@ -97,7 +97,7 @@ void Serving::OnGetForUserModel(
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
-  const int rand = base::RandInt(0, creative_ads.size() - 1);
+  const int rand = base::RandInt(0, static_cast<int>(creative_ads.size()) - 1);
   const CreativeInlineContentAdInfo& creative_ad = creative_ads.at(rand);
 
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);

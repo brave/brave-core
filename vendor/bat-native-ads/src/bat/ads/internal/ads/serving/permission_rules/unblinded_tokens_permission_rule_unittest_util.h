@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceUnblindedTokensPermissionRule();
+void ForceUnblindedTokensPermissionRuleForTesting();
 
 }  // namespace ads
 

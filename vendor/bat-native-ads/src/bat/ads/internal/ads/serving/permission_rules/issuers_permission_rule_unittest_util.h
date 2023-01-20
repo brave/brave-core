@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceIssuersPermissionRule();
+void ForceIssuersPermissionRuleForTesting();
 
 }  // namespace ads
 

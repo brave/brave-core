@@ -512,6 +512,10 @@ void BraveNewsController::OnPromotedItemView(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
+        ads::mojom::PromotedContentAdEventType::kServed);
+
+    ads_service_->TriggerPromotedContentAdEvent(
+        item_id, creative_instance_id,
         ads::mojom::PromotedContentAdEventType::kViewed);
   }
 }

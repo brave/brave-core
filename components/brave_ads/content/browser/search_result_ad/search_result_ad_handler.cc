@@ -106,6 +106,11 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
   if (search_result_ads_ && should_trigger_viewed_event_) {
     for (const auto& [key, search_result_ad] : *search_result_ads_) {
       DCHECK(search_result_ad);
+
+      ads_service_->TriggerSearchResultAdEvent(
+          search_result_ad->Clone(),
+          ads::mojom::SearchResultAdEventType::kServed);
+
       ads_service_->TriggerSearchResultAdEvent(
           search_result_ad->Clone(),
           ads::mojom::SearchResultAdEventType::kViewed);

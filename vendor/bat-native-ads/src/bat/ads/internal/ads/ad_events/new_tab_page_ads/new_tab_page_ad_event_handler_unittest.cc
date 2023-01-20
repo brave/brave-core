@@ -118,7 +118,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BatAdsNewTabPageAdEventHandlerTest, DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
 
@@ -250,7 +250,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
 

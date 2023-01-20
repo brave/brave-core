@@ -114,18 +114,22 @@ ViewCounterService::ViewCounterService(
 ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
-    const std::string* wallpaper_id,
-    const std::string* creative_instance_id) {
+    const std::string& wallpaper_id,
+    const std::string& creative_instance_id) {
   if (ads_service_) {
+    if (!ads_service_->IsEnabled()) {
+      ads_service_->TriggerNewTabPageAdEvent(
+          wallpaper_id, creative_instance_id,
+          ads::mojom::NewTabPageAdEventType::kServed);
+    }
+
     ads_service_->TriggerNewTabPageAdEvent(
-        wallpaper_id ? *wallpaper_id : "",
-        creative_instance_id ? *creative_instance_id : "",
+        wallpaper_id, creative_instance_id,
         ads::mojom::NewTabPageAdEventType::kViewed);
 
     if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
       // Should only report to P3A if ads are disabled, as required by spec.
-      ntp_p3a_helper_->RecordView(creative_instance_id ? *creative_instance_id
-                                                       : "");
+      ntp_p3a_helper_->RecordView(creative_instance_id);
     }
   }
 

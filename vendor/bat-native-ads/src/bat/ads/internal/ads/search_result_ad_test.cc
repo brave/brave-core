@@ -24,7 +24,7 @@ class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
-    ForcePermissionRules();
+    ForcePermissionRulesForTesting();
 
     // Need to trigger several search result ad events.
     privacy::SetUnblindedTokens(11);
@@ -35,11 +35,23 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   // Arrange
 
   // Act
-  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
-                                       mojom::SearchResultAdEventType::kViewed);
+  {
+    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
 
-  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
-                                       mojom::SearchResultAdEventType::kViewed);
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
+  }
+
+  {
+    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
+  }
 
   // Assert
   EXPECT_EQ(
@@ -55,17 +67,30 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
   // Act
   SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
-  // This ad viewed event triggering will be deferred.
-  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
-                                       mojom::SearchResultAdEventType::kViewed);
 
-  // This ad viewed event will be queued as the previous ad viewed event has not
-  // completed.
-  GetAds()->TriggerSearchResultAdEvent(BuildSearchResultAd(),
-                                       mojom::SearchResultAdEventType::kViewed);
+  {
+    // This ad viewed event triggering will be deferred.
+    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
+  }
+
+  {
+    // This ad viewed event will be queued as the previous ad viewed event has
+    // not completed.
+    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
+    GetAds()->TriggerSearchResultAdEvent(
+        search_result_ad.Clone(), mojom::SearchResultAdEventType::kViewed);
+  }
 
   EXPECT_EQ(
-      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+      2, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(1, GetHistoryItemCount());
@@ -85,14 +110,16 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
 TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  const mojom::SearchResultAdInfoPtr ad_mojom = BuildSearchResultAd();
+  const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
 
-  GetAds()->TriggerSearchResultAdEvent(ad_mojom->Clone(),
+  GetAds()->TriggerSearchResultAdEvent(search_result_ad->Clone(),
+                                       mojom::SearchResultAdEventType::kServed);
+  GetAds()->TriggerSearchResultAdEvent(search_result_ad->Clone(),
                                        mojom::SearchResultAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerSearchResultAdEvent(
-      ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(
