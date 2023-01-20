@@ -154,11 +154,11 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
 
                     SpannableString spannable;
                     if (mIsErc721) {
-                        String tokenStr = String.format(Locale.US, TOKEN_ID_FORMAT, mNftTokenId);
+                        String tokenStr = String.format(Locale.ENGLISH, TOKEN_ID_FORMAT, mNftTokenId);
                         spannable = new SpannableString(tokenStr);
 
                         if (!TextUtils.isEmpty(blockExplorerUrl)) {
-                            String url = String.format(Locale.US, NFT_ERC721_URL_FORMAT,
+                            String url = String.format(Locale.ENGLISH, NFT_ERC721_URL_FORMAT,
                                     blockExplorerUrl, mContractAddress, mNftTokenId);
                             createClickableLink(blockExplorerUrl, url, spannable);
                         }
@@ -175,11 +175,11 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                             String url;
                             if (splitBlockExplorerUrl.length > 1) {
                                 String cluster = splitBlockExplorerUrl[1];
-                                url = String.format(Locale.US, NFT_SPL_URL_FORMAT_WITH_CLUSTER,
+                                url = String.format(Locale.ENGLISH, NFT_SPL_URL_FORMAT_WITH_CLUSTER,
                                         baseUrl, mContractAddress, cluster);
                             } else {
                                 url = String.format(
-                                        Locale.US, NFT_SPL_URL_FORMAT, baseUrl, mContractAddress);
+                                        Locale.ENGLISH, NFT_SPL_URL_FORMAT, baseUrl, mContractAddress);
                             }
                             createClickableLink(blockExplorerUrl, url, spannable);
                         }
