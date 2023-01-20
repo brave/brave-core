@@ -266,7 +266,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
                 "thumbnail": {
                   "thumbnails": [
                     {
-                      "url": "thumbnail.jpg",
+                      "url": "/thumbnail.jpg",
                       "width": 1920,
                       "height": 1080
                     }
