@@ -173,6 +173,50 @@ void filter_list_metadata_destroy(struct C_FilterListMetadata* metadata);
 void c_char_buffer_destroy(char* s);
 
 /**
+ * A structure to hold debug information of engine. Matches to rust
+ * EngineDebugInfo.
+ */
+typedef struct C_Engine_Debug_Info C_Engine_Debug_Info;
+
+/**
+ * Get EngineDebugInfo from the engine. Should be destoyed later by calling
+ * engine_debug_info_destroy(..).
+ */
+C_Engine_Debug_Info* get_engine_debug_info(struct C_Engine* engine);
+
+// Returns the field of EngineDebugInfo structure.
+void engine_debug_info_get_attr(struct C_Engine_Debug_Info* debug_info,
+                                size_t* compiled_regex_count,
+                                size_t* regex_data_size);
+
+// Returns the fields of EngineDebugInfo->regex_data[index].
+// |regex| stay untouched if it ==None in the original structure.
+// |index| must be in range [0, regex_data.len() - 1].
+void engine_debug_info_get_regex_entry(struct C_Engine_Debug_Info* debug_info,
+                                       size_t index,
+                                       uint64_t* id,
+                                       char** regex,
+                                       uint64_t* unused_sec,
+                                       size_t* usage_count);
+
+/**
+ * Destroy a `EngineDebugInfo` once you are done with it.
+ */
+void engine_debug_info_destroy(struct C_Engine_Debug_Info* debug_info);
+
+void discard_regex(struct C_Engine* engine, uint64_t regex_id);
+
+/**
+ * Setup discard policy for adblock regexps.
+ * |cleanup_interval_sec| how ofter the engine should check the policy.
+ * |discard_unused_sec| time in sec after unused regex will be discarded. Zero
+ * means disable discarding completely.
+ */
+void setup_discard_policy(struct C_Engine* engine,
+                          uint64_t cleanup_interval_sec,
+                          uint64_t discard_unused_sec);
+
+/**
  * Returns a set of cosmetic filtering resources specific to the given url, in
  * JSON format
  */
@@ -196,4 +240,4 @@ char* engine_hidden_class_id_selectors(struct C_Engine* engine,
 char* convert_rules_to_content_blocking(const char* rules);
 #endif
 
-#endif /* BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_ */
+#endif  // BRAVE_COMPONENTS_ADBLOCK_RUST_FFI_SRC_LIB_H_

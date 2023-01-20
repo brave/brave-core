@@ -178,6 +178,41 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
   return base::Contains(tags_, tag);
 }
 
+base::Value AdBlockEngine::GetDebugInfo() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  const auto debug_info_struct = ad_block_client_->getAdblockDebugInfo();
+  base::Value regex_list(base::Value::Type::LIST);
+  for (const auto& regex_entry : debug_info_struct.regex_data) {
+    base::Value regex_info(base::Value::Type::DICTIONARY);
+    regex_info.SetKey("id", base::Value(std::to_string(regex_entry.id)));
+    regex_info.SetKey("regex", base::Value(regex_entry.regex));
+    regex_info.SetKey("unused_sec",
+                      base::Value(static_cast<int>(regex_entry.unused_sec)));
+    regex_info.SetKey("usage_count",
+                      base::Value(static_cast<int>(regex_entry.usage_count)));
+    regex_list.Append(std::move(regex_info));
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey(
+      "compiled_regex_count",
+      base::Value(static_cast<int>(debug_info_struct.compiled_regex_count)));
+  result.SetKey("regex_data", std::move(regex_list));
+  return result;
+}
+
+void AdBlockEngine::DiscardRegex(uint64_t regex_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ad_block_client_->discardRegex(regex_id);
+}
+
+void AdBlockEngine::SetupDiscardPolicy(
+    const adblock::RegexManagerDiscardPolicy& policy) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  regex_discard_policy_ = policy;
+  ad_block_client_->setupDiscardPolicy(policy);
+}
+
 base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   absl::optional<base::Value> result =
@@ -222,6 +257,7 @@ void AdBlockEngine::UpdateAdBlockClient(
     const std::string& resources_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_ = std::move(ad_block_client);
+  ad_block_client_->setupDiscardPolicy(regex_discard_policy_);
   UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {

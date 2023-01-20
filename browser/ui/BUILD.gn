@@ -43,6 +43,8 @@ source_set("ui") {
   check_includes = false
   public_deps = []
   sources = [
+    "webui/brave_adblock_internals_ui.cc",
+    "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
     "webui/brave_federated/federated_internals_page_handler.cc",
@@ -391,6 +393,7 @@ source_set("ui") {
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
+    "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_federated",

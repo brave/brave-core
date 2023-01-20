@@ -62,6 +62,30 @@ typedef ADBLOCK_EXPORT struct FilterListMetadata {
   FilterListMetadata(const FilterListMetadata&) = delete;
 } FilterListMetadata;
 
+// C++ version of adblock-rust:RegexDebugEntry struct.
+struct ADBLOCK_EXPORT RegexDebugEntry {
+  uint64_t id;
+  std::string regex;
+  uint64_t unused_sec;
+  size_t usage_count;
+};
+
+// C++ version of adblock-rust:RegexManagerDiscardPolicy struct.
+struct ADBLOCK_EXPORT RegexManagerDiscardPolicy {
+  uint64_t cleanup_interval_sec;
+  uint64_t discard_unused_sec;
+};
+
+// C++ version of adblock-rust:EngineDebugInfo struct.
+struct ADBLOCK_EXPORT AdblockDebugInfo {
+  std::vector<RegexDebugEntry> regex_data;
+  size_t compiled_regex_count;
+
+  AdblockDebugInfo();
+  AdblockDebugInfo(const AdblockDebugInfo&);
+  ~AdblockDebugInfo();
+};
+
 class ADBLOCK_EXPORT Engine {
  public:
   Engine();
@@ -96,6 +120,10 @@ class ADBLOCK_EXPORT Engine {
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
+  AdblockDebugInfo getAdblockDebugInfo();
+  void discardRegex(u_int64_t regex_id);
+  void setupDiscardPolicy(const RegexManagerDiscardPolicy& policy);
+
   ~Engine();
 
   Engine(Engine&&) = default;

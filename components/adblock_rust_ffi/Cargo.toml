@@ -5,7 +5,8 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock = { version = "0.6.3", default-features = false, features = ["full-regex-handling", "object-pooling", "unsync-regex-caching"] }
+# TODO: Revert
+adblock = { git = "https://github.com/brave/adblock-rust", branch = "master", default-features = false, features = ["full-regex-handling", "object-pooling", "unsync-regex-caching", "debug-info"] }
 serde_json = "1.0"
 libc = "0.2"
 

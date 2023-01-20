@@ -35,6 +35,12 @@ extern const base::FeatureParam<std::string>
     kCosmeticFilteringswitchToSelectorsPollingThreshold;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringFetchNewClassIdRulesThrottlingMs;
+BASE_DECLARE_FEATURE(kAdblockOverrideRegexDiscardPolicy);
+extern const base::FeatureParam<int>
+    kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec;
+extern const base::FeatureParam<int>
+    kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec;
+
 }  // namespace features
 }  // namespace brave_shields
 

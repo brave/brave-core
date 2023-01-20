@@ -273,6 +273,16 @@ AdBlockService::AdBlockService(
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
+  if (base::FeatureList::IsEnabled(
+          features::kAdblockOverrideRegexDiscardPolicy)) {
+    adblock::RegexManagerDiscardPolicy policy;
+    policy.cleanup_interval_sec =
+        features::kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec.Get();
+    policy.discard_unused_sec =
+        features::kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec.Get();
+    SetupDiscardPolicy(policy);
+  }
+
   resource_provider_ = std::make_unique<AdBlockDefaultResourceProvider>(
       component_update_service_);
   filter_list_catalog_provider_ =
@@ -313,6 +323,42 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
                      base::Unretained(default_engine_.get()), tag, enabled));
 }
 
+void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // base::Unretained() is safe because |default_engine_| is deleted
+  // on the same sequence. See docs/threading_and_tasks_testing.md for
+  // explanations.
+  GetTaskRunner()->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::GetDebugInfo,
+                     base::Unretained(default_engine_.get())),
+      base::BindOnce(&AdBlockService::OnGetDebugInfoFromDefaultEngine,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdBlockService::DiscardRegex(uint64_t regex_id) {
+  // Dispath to both default & additional engines, ids are unique.
+  GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&AdBlockEngine::DiscardRegex,
+                                default_engine_->AsWeakPtr(), regex_id));
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::DiscardRegex,
+                     additional_filters_engine_->AsWeakPtr(), regex_id));
+}
+
+void AdBlockService::SetupDiscardPolicy(
+    const adblock::RegexManagerDiscardPolicy& policy) {
+  GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&AdBlockEngine::SetupDiscardPolicy,
+                                default_engine_->AsWeakPtr(), policy));
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::SetupDiscardPolicy,
+                     additional_filters_engine_->AsWeakPtr(), policy));
+}
+
 base::SequencedTaskRunner* AdBlockService::GetTaskRunner() {
   return task_runner_.get();
 }
@@ -350,6 +396,22 @@ void AdBlockService::UseCustomSourceProvidersForTest(
       std::make_unique<SourceProviderObserver>(
           additional_filters_engine_.get(), source_provider, resource_provider,
           GetTaskRunner());
+}
+
+void AdBlockService::OnGetDebugInfoFromDefaultEngine(
+    GetDebugInfoCallback callback,
+    base::Value default_engine_debug_info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // base::Unretained() is safe because |additional_filters_engine_| is deleted
+  // on the same sequence. See docs/threading_and_tasks_testing.md for
+  // explanations.
+  GetTaskRunner()->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngine::GetDebugInfo,
+                     base::Unretained(additional_filters_engine_.get())),
+      base::BindOnce(std::move(callback),
+                     std::move(default_engine_debug_info)));
 }
 
 void AdBlockService::TagExistsForTest(const std::string& tag,
