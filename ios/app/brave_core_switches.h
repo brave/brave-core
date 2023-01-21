@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_IOS_APP_BRAVE_CORE_SWITCHES_H_
 #define BRAVE_IOS_APP_BRAVE_CORE_SWITCHES_H_
@@ -52,6 +52,11 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// Expected value: A number (in seconds)
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds NS_SWIFT_NAME(p3aExpressRotationIntervalSeconds);  // NOLINT
+/// Interval between restarting the uploading process for all gathered values
+///
+/// Expected value: A number (in seconds)
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds NS_SWIFT_NAME(p3aSlowRotationIntervalSeconds);  // NOLINT
 /// Overrides the P3A cloud backend URL.
 ///
 /// Expected value: A URL string

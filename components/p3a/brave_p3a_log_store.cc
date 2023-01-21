@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/p3a/brave_p3a_log_store.h"
 
@@ -23,6 +23,7 @@ namespace brave {
 namespace {
 constexpr char kTypicalLogPrefName[] = "p3a.logs";
 constexpr char kExpressLogPrefName[] = "p3a.logs_express";
+constexpr char kSlowLogPrefName[] = "p3a.logs_slow";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
@@ -41,6 +42,8 @@ void RecordSentAnswersCount(uint64_t answers_count) {
 
 const char* GetPrefName(MetricLogType type) {
   switch (type) {
+    case MetricLogType::kSlow:
+      return kSlowLogPrefName;
     case MetricLogType::kTypical:
       return kTypicalLogPrefName;
     case MetricLogType::kExpress:
@@ -74,6 +77,7 @@ BraveP3ALogStore::~BraveP3ALogStore() = default;
 void BraveP3ALogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kExpressLogPrefName);
   registry->RegisterDictionaryPref(kTypicalLogPrefName);
+  registry->RegisterDictionaryPref(kSlowLogPrefName);
 }
 
 void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
@@ -190,7 +194,7 @@ void BraveP3ALogStore::StageNextLog() {
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
   staged_log_ = delegate_->Serialize(staged_entry_key_, staged_entry_value,
-                                     GetUploadType(staged_entry_key_));
+                                     type_, GetUploadType(staged_entry_key_));
 
   VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
 }

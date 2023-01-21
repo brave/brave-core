@@ -173,6 +173,13 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.P2A.AdImpressionsPerSegment.untargeted"
 });
 
+constexpr inline auto kCollectedSlowHistograms =
+  base::MakeFixedFlatSet<base::StringPiece>({
+    // Please remove following placeholder metric once
+    // static slow metrics are added
+    "Brave.P3A.ExampleSlowMetric"
+});
+
 constexpr inline auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     // Please remove following placeholder metric once

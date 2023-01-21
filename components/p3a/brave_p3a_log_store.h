@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
@@ -32,6 +32,7 @@ class BraveP3ALogStore : public metrics::LogStore {
     // Prepares a string representaion of an entry.
     virtual std::string Serialize(base::StringPiece histogram_name,
                                   uint64_t value,
+                                  MetricLogType log_type,
                                   const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
