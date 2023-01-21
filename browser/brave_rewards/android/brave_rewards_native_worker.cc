@@ -128,10 +128,6 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
     ledger::mojom::RewardsParametersPtr parameters) {
   if (parameters) {
     parameters_ = std::move(parameters);
-    LOG(ERROR) << "NTP"
-               << "vbat_deadline : " << parameters_->vbat_deadline;
-    LOG(ERROR) << "NTP"
-               << "vbat_expired : " << parameters_->vbat_expired;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
@@ -140,19 +136,9 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
 }
 
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
-  LOG(ERROR) << "NTP"
-             << "vbat_deadline 1 : " << parameters_->vbat_deadline;
   if (parameters_) {
     base::Time vbat_deadline = parameters_->vbat_deadline;
     if (!vbat_deadline.is_null()) {
-      LOG(ERROR) << "NTP"
-                 << "vbat_deadline 4 : " << !vbat_deadline.is_null();
-      LOG(ERROR) << "NTP"
-                 << "vbat_deadline 2 : " << parameters_->vbat_deadline;
-      LOG(ERROR) << "NTP"
-                 << "vbat_deadline 3 : "
-                 << floor(vbat_deadline.ToDoubleT() *
-                          base::Time::kMillisecondsPerSecond);
       return floor(parameters_->vbat_deadline.ToDoubleT() *
                    base::Time::kMillisecondsPerSecond);
     }
