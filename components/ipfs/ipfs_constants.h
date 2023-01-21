@@ -45,6 +45,7 @@ extern const char kIPFSImportTextMimeType[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js
+// GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.privacy.settings
 enum class IPFSResolveMethodTypes {
   IPFS_ASK,
   IPFS_GATEWAY,

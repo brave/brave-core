@@ -1247,11 +1247,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             boolean value = sharedPreferences.getBoolean(
                     BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
             if (value) {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.DEFAULT);
+                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                        BraveShieldsContentSettings.DEFAULT, false);
             } else {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.ALLOW_RESOURCE);
+                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                        BraveShieldsContentSettings.ALLOW_RESOURCE, false);
             }
         }
     }

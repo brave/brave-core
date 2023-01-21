@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -25,5 +25,11 @@ public class BraveConfig {
   public static final String SAFEBROWSING_API_KEY = BRAVE_SAFEBROWSING_API_KEY;
 #else
   public static final String SAFEBROWSING_API_KEY = "";
+#endif
+
+#if defined(ENABLE_IPFS)
+  public static final boolean IPFS_ENABLED = ENABLE_IPFS;
+#else
+  public static final boolean IPFS_ENABLED = false;
 #endif
 }

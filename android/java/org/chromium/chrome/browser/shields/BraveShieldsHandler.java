@@ -628,7 +628,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     titleStringId = R.string.block_cookies;
                     subtitleStringId = R.string.block_cookies_text;
                     option1StringId = R.string.block_cookies_option_1;
-                    option2StringId = R.string.block_cross_site_cookies;
+                    option2StringId = R.string.block_cookies_option_2;
                     option3StringId = R.string.block_cookies_option_3;
                     break;
             }
