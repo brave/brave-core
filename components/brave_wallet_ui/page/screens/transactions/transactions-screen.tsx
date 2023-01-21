@@ -19,24 +19,25 @@ import { AllAccountsOption } from '../../../options/account-filter-options'
 
 // utils
 import { getLocale } from 'brave-ui'
-import { WalletSelectors } from '../../../common/selectors'
 import {
-  ParsedTransactionWithoutFiatValues,
-  parseTransactionWithPrices
-} from '../../../common/hooks/transaction-parser'
-import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
-import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
-import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
+  AccountInfoEntity,
+  accountInfoEntityAdaptorInitialState,
+  selectAllAccountInfosFromQuery
+} from '../../../common/slices/entities/account-info.entity'
+import { networkEntityInitialState } from '../../../common/slices/entities/network.entity'
+import { ParsedTransactionWithoutFiatValues } from '../../../utils/tx-utils'
+import {
+  transactionEntityAdapter,
+  transactionEntityInitialState,
+  TransactionEntityState
+} from '../../../common/slices/entities/transaction.entity'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
-import { networkEntityInitalState } from '../../../common/slices/entities/network.entity'
 
 // hooks
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import {
   useGetAccountInfosRegistryQuery,
   useGetAllNetworksQuery,
-  useGetTokensRegistryQuery,
-  useGetUserTokensRegistryQuery
+  useLazyGetAllTransactionsForAddressCoinTypeQuery
 } from '../../../common/slices/api.slice'
 
 // components
@@ -47,6 +48,10 @@ import { SearchBar } from '../../../components/shared'
 
 // styles
 import { Column, LoadingIcon, Text, VerticalSpacer } from '../../../components/shared/style'
+import {
+  LoadingSkeletonStyleProps,
+  Skeleton
+} from '../../../components/shared/loading-skeleton/styles'
 import { SearchAndFiltersRow } from './transaction-screen.styles'
 
 interface Params {
@@ -55,55 +60,47 @@ interface Params {
   transactionId?: string | null
 }
 
+const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
+  width: '100%',
+  height: '60px',
+  enableAnimation: true
+}
+
 export const TransactionsScreen: React.FC = () => {
   // routing
   const history = useHistory()
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
-
-  // redux
-  const allTransactions = useUnsafeWalletSelector(WalletSelectors.transactions)
-  const solFeeEstimates = useUnsafeWalletSelector(WalletSelectors.solFeeEstimates)
-  const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
-  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const [
+    combinedTxEntityState,
+    setCombinedTxEntityState
+  ] = React.useState<TransactionEntityState>(transactionEntityInitialState)
+  const [isLoadingTxsList, setIsLoadingTxsList] = React.useState<boolean>(false)
 
   // queries
   const {
-    data: networksRegistry = networkEntityInitalState,
+    data: networksRegistry = networkEntityInitialState,
     isLoading: isLoadingNetworksRegistry
   } = useGetAllNetworksQuery(undefined)
+
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
-    isLoading: isLoadingAccountInfosRegistry
-  } = useGetAccountInfosRegistryQuery(undefined)
-
-  const {
-    fullTokenList,
-    isLoading: isLoadingFullTokenList
-  } = useGetTokensRegistryQuery(undefined, {
-    selectFromResult: (result) => ({
-      ...result,
-      fullTokenList: selectAllBlockchainTokensFromQueryResult(result)
+    isLoading: isLoadingAccounts,
+    accounts
+  } = useGetAccountInfosRegistryQuery(undefined, {
+    selectFromResult: res => ({
+      ...res,
+      accounts: selectAllAccountInfosFromQuery(res)
     })
   })
 
-  const {
-    userVisibleTokens,
-    isLoading: isLoadingUserVisibleTokens
-  } = useGetUserTokensRegistryQuery(undefined, {
-    selectFromResult: result => ({
-      ...result,
-      userVisibleTokens: selectAllUserAssetsFromQueryResult(result)
-    })
-  })
+  const [fetchAllTransactionsForAddressCoinType] = useLazyGetAllTransactionsForAddressCoinTypeQuery()
 
   // computed / memos
-  const isLoading =
-    isLoadingAccountInfosRegistry ||
-    isLoadingFullTokenList ||
-    isLoadingNetworksRegistry ||
-    isLoadingUserVisibleTokens
+  const isLoadingDeps =
+    isLoadingAccounts ||
+    isLoadingNetworksRegistry
 
   const {
     address,
@@ -118,61 +115,90 @@ export const TransactionsScreen: React.FC = () => {
     }
   }, [history.location.search])
 
-  const networkList = React.useMemo(() => {
-    return getEntitiesListFromEntityState(
-      networksRegistry,
-      networksRegistry?.ids
-    )
-  }, [networksRegistry])
-
   const foundAccountFromParam = address ? accountInfosRegistry.entities[address] : undefined
   const foundNetworkFromParam = chainId ? networksRegistry.entities[chainId] : undefined
 
-  const txsForAccountAllChains = React.useMemo(() => {
-    return foundAccountFromParam?.address
-      ? allTransactions?.[foundAccountFromParam.address] || []
-      : accounts.flatMap(a => allTransactions[a.address] || [])
-  }, [foundAccountFromParam?.address, allTransactions, accounts])
+  const fetchTxsForAccounts = React.useCallback((accounts: Array<Pick<AccountInfoEntity, 'address' | 'coin'>>) => {
+    setIsLoadingTxsList(true)
 
-  const nonRejectedTxs = React.useMemo(() => {
-    return txsForAccountAllChains.filter(tx => tx.txStatus !== BraveWallet.TransactionStatus.Rejected)
-  }, [txsForAccountAllChains])
-
-  const nonRejectedTxsForSelectedChain = React.useMemo(() => {
-    return chainId && chainId !== AllNetworksOption.chainId
-      ? nonRejectedTxs.filter(tx => getNetworkFromTXDataUnion(tx.txDataUnion, networkList)?.chainId === chainId)
-      : nonRejectedTxs
-  }, [nonRejectedTxs, chainId])
-
-  const parsedTransactions = React.useMemo(() => {
-    // wait for data before attempting parsing
-    if (isLoading) {
-      return []
-    }
-
-    return nonRejectedTxsForSelectedChain.map(tx => parseTransactionWithPrices({
-      accounts,
-      fullTokenList,
-      transactionNetwork: getNetworkFromTXDataUnion(tx.txDataUnion, networkList),
-      tx,
-      userVisibleTokensList: userVisibleTokens,
-      solFeeEstimates,
-      spotPrices
-    }))
+    Promise.all(
+      accounts.map(({ coin, address }) => {
+        return fetchAllTransactionsForAddressCoinType({
+          address: address.toLowerCase(),
+          coinType: coin
+        }).unwrap()
+      }
+    ))
+    .then(res => {
+      const combinedRegistry = res.reduce(
+        (combinedRegistry, registry) =>
+          transactionEntityAdapter.upsertMany(
+            combinedRegistry,
+            getEntitiesListFromEntityState(registry)
+          ),
+        transactionEntityInitialState
+      )
+      setCombinedTxEntityState(combinedRegistry)
+      setIsLoadingTxsList(false)
+    })
+    .catch(error => {
+      console.error(error)
+      // stop loading if a error other than empty tokens list was thrown
+      if (!error?.toString().includes('Unable to fetch Tokens Registry')) {
+        setIsLoadingTxsList(false)
+        return
+      }
+      // retry when browser is idle
+      requestIdleCallback(() => {
+        fetchTxsForAccounts(accounts)
+      })
+    })
   }, [
-    isLoading,
-    nonRejectedTxsForSelectedChain,
-    accounts,
-    fullTokenList,
-    networkList,
-    userVisibleTokens,
-    solFeeEstimates,
-    spotPrices
+    fetchAllTransactionsForAddressCoinType
   ])
 
+  React.useEffect(() => {
+    if (isLoadingDeps) {
+      return
+    }
+
+    if (
+      foundAccountFromParam?.address &&
+      foundAccountFromParam?.coin !== undefined
+    ) {
+      fetchTxsForAccounts([{
+        address: foundAccountFromParam.address,
+        coin: foundAccountFromParam.coin
+      }])
+      return
+    }
+
+    // get txs for all accounts
+    fetchTxsForAccounts(accounts)
+  }, [
+    isLoadingDeps,
+    accounts,
+    fetchTxsForAccounts,
+    foundAccountFromParam?.address,
+    foundAccountFromParam?.coin
+  ])
+
+  const txIdsForSelectedChain = React.useMemo(() => {
+    return chainId && chainId !== AllNetworksOption.chainId
+      ? combinedTxEntityState.idsByChainId[chainId] ?? []
+      : combinedTxEntityState.ids ?? []
+  }, [combinedTxEntityState.idsByChainId, combinedTxEntityState.ids, chainId])
+
+  const txsForSelectedChain = React.useMemo(() => {
+    return getEntitiesListFromEntityState(
+      combinedTxEntityState,
+      txIdsForSelectedChain
+    )
+  }, [combinedTxEntityState, txIdsForSelectedChain])
+
   const filteredTransactions = React.useMemo(() => {
-    return filterTransactionsBySearchValue(searchValue, parsedTransactions)
-  }, [searchValue, parsedTransactions])
+    return filterTransactionsBySearchValue(searchValue, txsForSelectedChain)
+  }, [searchValue, txsForSelectedChain])
 
   // methods
   const onSelectAccount = React.useCallback(({ address }: WalletAccountType): void => {
@@ -196,7 +222,7 @@ export const TransactionsScreen: React.FC = () => {
   }, [history, foundAccountFromParam?.address, transactionId])
 
   // render
-  if (isLoading) {
+  if (isLoadingDeps) {
     return <Column fullHeight>
       <LoadingIcon opacity={100} size='50px' color='interactive05' />
     </Column>
@@ -223,32 +249,47 @@ export const TransactionsScreen: React.FC = () => {
         />
       </SearchAndFiltersRow>
 
-      {parsedTransactions.length === 0 &&
-        <Column fullHeight gap={'24px'}>
-          <VerticalSpacer space={14} />
-          <Text textSize='18px' isBold>
-            {getLocale('braveWalletNoTransactionsYet')}
-          </Text>
-          <Text textSize='14px'>
-            {getLocale('braveWalletNoTransactionsYetDescription')}
-          </Text>
-        </Column>
-      }
+      {isLoadingTxsList
+        ? <Column fullHeight fullWidth>
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+          </Column>
+        : <>
+            {txsForSelectedChain?.length === 0 &&
+              <Column fullHeight gap={'24px'}>
+                <VerticalSpacer space={14} />
+                <Text textSize='18px' isBold>
+                  {getLocale('braveWalletNoTransactionsYet')}
+                </Text>
+                <Text textSize='14px'>
+                  {getLocale('braveWalletNoTransactionsYetDescription')}
+                </Text>
+              </Column>
+            }
 
-      {filteredTransactions.map(tx =>
-        <PortfolioTransactionItem
-          key={tx.id}
-          displayAccountName
-          transaction={tx}
-        />
-      )}
+            {filteredTransactions.map(tx =>
+              <PortfolioTransactionItem
+                key={tx.id}
+                displayAccountName
+                transaction={tx}
+              />
+            )}
 
-      {parsedTransactions.length !== 0 && filteredTransactions.length === 0 &&
-        <Column fullHeight>
-          <Text textSize='14px'>
-            {getLocale('braveWalletConnectHardwareSearchNothingFound')}
-          </Text>
-        </Column>
+            {txsForSelectedChain &&
+              txsForSelectedChain.length !== 0 &&
+              filteredTransactions.length === 0 &&
+              <Column fullHeight>
+                <Text textSize='14px'>
+                  {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+                </Text>
+              </Column>
+            }
+          </>
       }
     </>
   )

@@ -44,7 +44,6 @@ import {
 
 import getAPIProxy from './bridge'
 import {
-  hasEIP1559Support,
   refreshKeyringInfo,
   refreshNetworkInfo,
   refreshFullNetworkList,
@@ -62,7 +61,11 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  getNetworkInfo,
+  hasEIP1559Support
+} from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 import { walletApi } from '../slices/api.slice'
 import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
@@ -257,10 +260,10 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
   })
   const braveWalletService = getAPIProxy().braveWalletService
   const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
-  const defualtCrypo = await braveWalletService.getDefaultBaseCryptocurrency()
+  const defaultCrypto = await braveWalletService.getDefaultBaseCryptocurrency()
   const defaultCurrencies = {
     fiat: defaultFiat.currency,
-    crypto: defualtCrypo.cryptocurrency
+    crypto: defaultCrypto.cryptocurrency
   }
   store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
   // Fetch Balances and Prices
@@ -365,8 +368,13 @@ handler.on(WalletActions.sendTransaction.type, async (
   if (payload.coin === BraveWallet.CoinType.ETH) {
     addResult = await sendEthTransaction({
       ...payload,
-      hasEIP1559Support: !!walletState.selectedNetwork && !!walletState.selectedAccount &&
-        hasEIP1559Support(walletState.selectedAccount, walletState.selectedNetwork)
+      hasEIP1559Support:
+        !!walletState.selectedNetwork &&
+        !!walletState.selectedAccount &&
+        hasEIP1559Support(
+          walletState.selectedAccount.accountType,
+          walletState.selectedNetwork
+        )
     })
   } else if (payload.coin === BraveWallet.CoinType.FIL) {
     addResult = await sendFilTransaction(payload as SendFilTransactionParams)
@@ -513,7 +521,11 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     return
   }
 
-  if (selectedNetwork && selectedAccount && !hasEIP1559Support(selectedAccount, selectedNetwork)) {
+  if (
+    selectedNetwork &&
+    selectedAccount &&
+    !hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
+  ) {
     return
   }
 

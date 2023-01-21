@@ -89,11 +89,13 @@ export class MockedWalletApiProxy {
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
-    getAllTokens: async (chainId: string, coin: number) => ({
-      tokens: mockWalletState.fullTokenList.filter(
-        (t) => t.chainId === chainId && t.coin === coin
-      )
-    })
+    getAllTokens: async (chainId: string, coin: number) => {
+      return ({
+        tokens: mockWalletState.fullTokenList.filter(
+          (t) => t.chainId === chainId && t.coin === coin
+        )
+      })
+    }
   }
 
   braveWalletService: Partial<

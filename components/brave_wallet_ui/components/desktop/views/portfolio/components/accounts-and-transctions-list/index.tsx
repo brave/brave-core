@@ -17,6 +17,7 @@ import Amount from '../../../../../../utils/amount'
 import { getTokensNetwork } from '../../../../../../utils/network-utils'
 import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
+import { ParsedTransaction } from '../../../../../../utils/tx-utils'
 
 // Components
 import {
@@ -44,7 +45,6 @@ import {
   Row,
   ToggleVisibilityButton
 } from '../../../../../shared/style'
-import { ParsedTransaction } from '../../../../../../common/hooks/transaction-parser'
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined

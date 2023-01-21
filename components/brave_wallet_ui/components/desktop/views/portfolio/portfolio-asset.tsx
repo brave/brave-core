@@ -19,7 +19,10 @@ import {
 // Utils
 import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
-import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import {
+  ParsedTransaction,
+  sortTransactionByDate
+} from '../../../../utils/tx-utils'
 import { getTokensNetwork } from '../../../../utils/network-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import useExplorer from '../../../../common/hooks/explorer'
@@ -97,7 +100,6 @@ import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
-import { ParsedTransaction } from '../../../../common/hooks/transaction-parser'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
