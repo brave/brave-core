@@ -75,7 +75,7 @@ class TestWebPageConstructor final {
   }
 
   schema_org::mojom::EntityPtr CreateCreativeEntity() {
-    const char* kSearchResultAdStringAttributes[] = {
+    const char* search_result_ad_string_attributes[] = {
         "data-creative-instance-id",
         "data-placement-id",
         "data-creative-set-id",
@@ -97,8 +97,8 @@ class TestWebPageConstructor final {
                          "data-conversion-observation-window-value", 1);
 
     int index = 0;
-    for (const auto** it = std::begin(kSearchResultAdStringAttributes);
-         it != std::end(kSearchResultAdStringAttributes); ++it, ++index) {
+    for (const auto** it = std::begin(search_result_ad_string_attributes);
+         it != std::end(search_result_ad_string_attributes); ++it, ++index) {
       AddProperty<std::string>(
           &entity->properties, *it,
           std::string("value") + base::NumberToString(index));

@@ -36,7 +36,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   const base::Value::Dict* const dict = value.GetIfDict();
   ASSERT_TRUE(dict);
 
-  const std::vector<std::tuple<std::string, VectorData>> kSamples = {
+  const std::vector<std::tuple<std::string, VectorData>> samples = {
       {"quick", VectorData({0.7481F, 0.0493F, -0.5572F})},
       {"brown", VectorData({-0.0647F, 0.4511F, -0.7326F})},
       {"fox", VectorData({-0.9328F, -0.2578F, 0.0032F})},
@@ -48,7 +48,7 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   ASSERT_TRUE(pipeline);
   EmbeddingPipelineInfo embedding_pipeline = *pipeline;
 
-  for (const auto& [token, expected_embedding] : kSamples) {
+  for (const auto& [token, expected_embedding] : samples) {
     const auto iter = embedding_pipeline.embeddings.find(token);
     ASSERT_TRUE(iter != embedding_pipeline.embeddings.end());
     const VectorData& token_embedding_vector_data = iter->second;

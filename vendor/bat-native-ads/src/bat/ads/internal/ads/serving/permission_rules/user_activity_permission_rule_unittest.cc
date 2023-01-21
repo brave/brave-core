@@ -21,12 +21,12 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     base::FieldTrialParams parameters;
-    const char kTriggersParameter[] = "triggers";
-    parameters[kTriggersParameter] = "0D=1.0;0E=1.0;08=1.0";
-    const char kTimeWindowParameter[] = "time_window";
-    parameters[kTimeWindowParameter] = "1h";
-    const char kThresholdParameter[] = "threshold";
-    parameters[kThresholdParameter] = "2.0";
+    const char triggers_parameter[] = "triggers";
+    parameters[triggers_parameter] = "0D=1.0;0E=1.0;08=1.0";
+    const char time_window_parameter[] = "time_window";
+    parameters[time_window_parameter] = "1h";
+    const char threshold_parameter[] = "threshold";
+    parameters[threshold_parameter] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
     enabled_features.emplace_back(user_activity::features::kFeature,
                                   parameters);

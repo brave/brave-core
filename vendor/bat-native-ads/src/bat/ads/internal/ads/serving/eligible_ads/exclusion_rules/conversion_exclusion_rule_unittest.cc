@@ -64,11 +64,11 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
 TEST_F(BatAdsConversionExclusionRuleTest,
        AllowAdIfAlreadyConvertedAndExclusionRuleDisabled) {
   // Arrange
-  base::FieldTrialParams kParameters;
-  kParameters["should_exclude_ad_if_converted"] = "false";
+  base::FieldTrialParams parameters;
+  parameters["should_exclude_ad_if_converted"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                kParameters);
+                                parameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
