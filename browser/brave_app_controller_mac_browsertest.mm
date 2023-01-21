@@ -52,6 +52,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
       [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
       base::scoped_policy::RETAIN);
 
+  base::scoped_nsobject<NSMenuItem> copy_item(
+      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
+      base::scoped_policy::RETAIN);
+
   base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
       base::scoped_policy::RETAIN);
@@ -59,6 +63,13 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE([clean_link_menu_item isHidden]);
+
+  EXPECT_TRUE([[clean_link_menu_item keyEquivalent] isEqualToString:@"c"]);
+  EXPECT_EQ([clean_link_menu_item keyEquivalentModifierMask],
+            NSEventModifierFlagCommand);
+
+  EXPECT_TRUE([[copy_item keyEquivalent] isEqualToString:@""]);
+  EXPECT_EQ([copy_item keyEquivalentModifierMask], 0UL);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
@@ -75,6 +86,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
       [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
       base::scoped_policy::RETAIN);
 
+  base::scoped_nsobject<NSMenuItem> copy_item(
+      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
+      base::scoped_policy::RETAIN);
+
   base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
       base::scoped_policy::RETAIN);
@@ -82,6 +97,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
 
   EXPECT_TRUE([clean_link_menu_item isHidden]);
+
+  EXPECT_TRUE([[clean_link_menu_item keyEquivalent] isEqualToString:@""]);
+  EXPECT_EQ([clean_link_menu_item keyEquivalentModifierMask], 0UL);
+
+  EXPECT_TRUE([[copy_item keyEquivalent] isEqualToString:@"c"]);
+  EXPECT_EQ([copy_item keyEquivalentModifierMask], NSEventModifierFlagCommand);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
