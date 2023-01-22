@@ -57,7 +57,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
   ])");
   const std::string test_url(
       "https://dev-pages.bravesoftware.com/clean-urls/"
-      "exempted/"
       "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&"
       "d&utm_content=removethis&e=&f=g&=end");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
@@ -69,7 +68,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
                            /* data_dst = */ nullptr, &text_from_clipboard);
   EXPECT_EQ(text_from_clipboard,
-            "https://dev-pages.bravesoftware.com/clean-urls/exempted/"
+            "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
             "e=&f=g&=end");
 }
@@ -81,7 +80,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   ])");
   const std::string test_url(
       "https://dev-pages.bravesoftware.com/clean-urls/"
-      "exempted/"
       "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&"
       "d&utm_content=removethis&e=&f=g&=end");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
@@ -93,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
                            /* data_dst = */ nullptr, &text_from_clipboard);
   EXPECT_EQ(text_from_clipboard,
-            "https://dev-pages.bravesoftware.com/clean-urls/exempted/"
+            "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&d&"
             "utm_content=removethis&e=&f=g&=end");
 }
@@ -124,7 +122,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
   ])");
   const std::string test_url(
       "https://dev-pages.bravesoftware.com/clean-urls/"
-      "exempted/"
       "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&"
       "d&utm_content=removethis&e=&f=g&=end");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
@@ -139,7 +136,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
                            /* data_dst = */ nullptr, &text_from_clipboard);
   EXPECT_EQ(text_from_clipboard,
-            "https://dev-pages.bravesoftware.com/clean-urls/exempted/"
+            "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
             "e=&f=g&=end");
 }
@@ -150,7 +147,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyTextToClipboardByHotkey) {
     { "include": [ "*://*/*"], "params": ["utm_content"] }
   ])");
   const std::string test_text(
-      "exempted/"
       "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&"
       "d&utm_content=removethis&e=&f=g&=end");
   auto* textfield = static_cast<views::Textfield*>(omnibox_view());
