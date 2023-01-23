@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/net/brave_query_filter.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/net/query_filter/query_filter.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
@@ -65,7 +65,7 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
             << " -> " << ctx->request_url << ")";
     return;
   }
-  auto filtered_url = ApplyQueryFilter(ctx->request_url);
+  auto filtered_url = net::query_filter::ApplyQueryFilter(ctx->request_url);
   if (filtered_url.has_value()) {
     ctx->new_url_spec = filtered_url.value().spec();
   }
