@@ -5,4 +5,4 @@
 
 package org.chromium.chrome.browser.settings;
 
-enum BraveNewsPreferencesType { Channels, PopularSources, Suggested, Following, Search }
+enum BraveNewsPreferencesType { Channels, PopularSources, Suggestions, Following, Search }

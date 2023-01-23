@@ -45,7 +45,7 @@ public class BraveNewsUtils {
     private static List<Publisher> mPublisherList;
     private static List<Channel> mFollowingChannelList;
     private static List<Publisher> mFollowingPublisherList;
-    private static List<String> mSuggestedList;
+    private static List<String> mSuggestionsList;
     private static HashMap<String, Integer> mChannelIcons = new HashMap<>();
 
     public static String getPromotionIdItem(FeedItemsCard items) {
@@ -192,20 +192,20 @@ public class BraveNewsUtils {
         return mPublisherList;
     }
 
-    private static void setSuggestedIds(List<String> suggestedList) {
-        mSuggestedList = suggestedList;
+    private static void setSuggestionsIds(List<String> suggestionsList) {
+        mSuggestionsList = suggestionsList;
     }
 
-    public static List<Publisher> getSuggestedPublisherList() {
-        List<Publisher> suggestedPublisherList = new ArrayList<>();
-        if (mSuggestedList != null && mSuggestedList.size() > 0) {
+    public static List<Publisher> getSuggestionsPublisherList() {
+        List<Publisher> suggestionsPublisherList = new ArrayList<>();
+        if (mSuggestionsList != null && mSuggestionsList.size() > 0) {
             for (Publisher publisher : mPublisherList) {
-                if (mSuggestedList.contains(publisher.publisherId)) {
-                    suggestedPublisherList.add(publisher);
+                if (mSuggestionsList.contains(publisher.publisherId)) {
+                    suggestionsPublisherList.add(publisher);
                 }
             }
         }
-        return suggestedPublisherList;
+        return suggestionsPublisherList;
     }
 
     public static void updatePublishers(String publisherId, int userEnabled) {
@@ -293,7 +293,7 @@ public class BraveNewsUtils {
                     setLocale(locale);
                     getChannels(braveNewsController, braveNewsPreferencesDataListener);
                     getPublishers(braveNewsController, braveNewsPreferencesDataListener);
-                    getSuggestedSources(braveNewsController, braveNewsPreferencesDataListener);
+                    getSuggestionsSources(braveNewsController, braveNewsPreferencesDataListener);
                 });
             }
         });
@@ -365,10 +365,10 @@ public class BraveNewsUtils {
         setPopularSources(publisherList);
     }
 
-    public static void getSuggestedSources(BraveNewsController braveNewsController,
+    public static void getSuggestionsSources(BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
         braveNewsController.getSuggestedPublisherIds((publisherIds) -> {
-            setSuggestedIds(Arrays.asList(publisherIds));
+            setSuggestionsIds(Arrays.asList(publisherIds));
             if (braveNewsPreferencesDataListener != null) {
                 braveNewsPreferencesDataListener.onSuggestionsReceived();
             }

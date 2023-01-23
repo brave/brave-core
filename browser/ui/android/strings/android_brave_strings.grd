@@ -453,7 +453,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Turn on Brave News
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_SEARCH" desc="Text for Brave News settings search">
-        Search for site, topic or RSS feed
+        Search for site, topic, or RSS feed
       </message>
       <message name="IDS_POPULAR" desc="Text for Brave News settings popular sources">
         Popular
@@ -461,10 +461,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_POPULAR_SUBTITLE" desc="Text for Brave News settings popular sources subtitle">
         Ranked list of sources
       </message>
-      <message name="IDS_SUGGESTED" desc="Text for Brave News settings suggested">
-        Suggested
+      <message name="IDS_SUGGESTIONS" desc="Text for Brave News settings suggestions">
+        Suggestions
       </message>
-      <message name="IDS_SUGGESTED_SUBTITLE" desc="Text for Brave News settings suggested subtitle">
+      <message name="IDS_SUGGESTIONS_SUBTITLE" desc="Text for Brave News settings suggestions subtitle">
         Some sources you might like
       </message>
       <message name="IDS_CHANNELS" desc="Text for Brave News settings channels">
