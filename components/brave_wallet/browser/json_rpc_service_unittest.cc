@@ -1183,6 +1183,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetERC20TokenBalances(const std::string& balance_scanner_contract_address,
+                             const std::vector<std::string>& token_contract_addresses,
+                             const std::string& user_address,
+                             const std::string& chain_id,
+                             const std::vector<std::pair<std::string, uint256_t>>& expected_results,
+                             mojom::ProviderError expected_error,
+                             const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetERC20TokenBalances(
+        balance_scanner_contract_address, token_contract_addresses, user_address, chain_id,
+        base::BindLambdaForTesting(
+            [&](const std::vector<std::pair<std::string, uint256_t>>& results,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(results, expected_results);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+  }
+
   void TestGetSolanaBalance(uint64_t expected_balance,
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
@@ -2588,6 +2608,11 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
                      ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+// Add test for GetERC20TokenBalances
+TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalances) {
+  // TODO
 }
 
 class UDGetManyCallHandler : public EthCallHandler {

@@ -450,4 +450,17 @@ absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
 
 }  // namespace ens
 
+namespace asset_discovery {
+
+bool TokensBalance(const std::string& balance_scanner_address,
+                   const std::string& owner_address,
+                   const std::vector<std::string>& contract_addresses,
+                   std::string* data) {
+  const std::string function_hash = GetFunctionHash("tokensBalance(address,address[])");
+  VLOG(1) << "tokensBalance function hash: " << function_hash;
+  return false;
+}
+
+}  // namespace asset_discovery
+
 }  // namespace brave_wallet

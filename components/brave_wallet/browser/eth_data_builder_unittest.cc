@@ -522,4 +522,9 @@ TEST(EthCallDataBuilderTest, DnsEncode) {
 
 }  // namespace ens
 
+namespace asset_discovery {
+TEST(EthCallDataBuilderTest, TokensBalance) {
+
+}
+
 }  // namespace brave_wallet
