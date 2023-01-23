@@ -2041,7 +2041,7 @@ Are you sure you want to do this?
       Balance:
     </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
-      Continue to Ramp
+      Select purchase method
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
@@ -2091,6 +2091,18 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION_PHRASE" desc="The phrase users should type to reset Brave Wallet">
       Yes
     </message>
+    <message name="IDS_BRAVE_WALLET_SELECT_FOLLOWING_OPTIONS" desc="Brave Wallet text for selecting available options">
+      Select one of the following options
+    </message>
+    <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_VISA_MASTERCARD" desc="Brave Wallet text buying cryptocurrencies with Visa or Mastercard">
+      Buy crypto with Visa or Mastercard.
+    </message>    
+    <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_TITLE" desc="Brave Wallet title for Ramp.Network" translateable="false">
+      Ramp.Network
+    </message>
+    <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP_NETWORK" desc="Brave Wallet text for Ramp.Network button">
+      Buy with Ramp
+    </message>       
     <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_SETTING_TITLE" desc="The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0">
       Clear transaction &amp; nonce info
     </message>
