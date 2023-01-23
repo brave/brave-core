@@ -9,6 +9,524 @@
 #undef ParseCertificatesFile
 #undef ParseJSON
 
+namespace {
+constexpr base::StringPiece kBravePinsJson = R"brave_pins_json({
+  "pinsets": [
+    {
+      "name": "brave",
+      "static_spki_hashes": [
+        "AmazonRootCA1",
+        "AmazonRootCA2",
+        "AmazonRootCA3",
+        "AmazonRootCA4",
+        "StarfieldG2",
+        "GlobalSignRootCA_R1",
+        "GlobalSignRootCA_R3",
+        "GlobalSignRootCA_R6",
+        "GlobalSignRootCA_R46",
+        "GlobalSignRootCA_R5",
+        "GlobalSignRootCA_E46",
+        "DSTRootCA_X3",
+        "ISRGRootCA_X1",
+        "ISRGRootCA_X2"
+      ]
+    }
+  ],
+  "entries": [
+    // Brave
+    { "name": "adblock-data.s3.brave.com", "pins": "brave"},
+    { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
+    { "name": "brave-today-cdn.brave.com", "pins": "brave"},
+    { "name": "clients4.brave.com", "pins": "brave"},
+    { "name": "componentupdater.brave.com", "pins": "brave"},
+    { "name": "crxdownload.brave.com", "pins": "brave"},
+    { "name": "devtools.brave.com", "pins": "brave"},
+    { "name": "dict.brave.com", "pins": "brave"},
+    { "name": "extensionupdater.brave.com", "pins": "brave"},
+    { "name": "gaia.brave.com", "pins": "brave"},
+    { "name": "go-updater.brave.com", "pins": "brave"},
+    { "name": "mobile-data.s3.brave.com", "pins": "brave"},
+    { "name": "p2a.brave.com", "pins": "brave"},
+    { "name": "p2a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.brave.com", "pins": "brave"},
+    { "name": "p3a-creative.brave.com", "pins": "brave"},
+    { "name": "p3a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.bravesoftware.com", "pins": "brave"},
+    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
+    { "name": "pcdn.brave.com", "pins": "brave"},
+    { "name": "redirector.brave.com", "pins": "brave"},
+    { "name": "safebrowsing.brave.com", "pins": "brave"},
+    { "name": "safebrowsing2.brave.com", "pins": "brave"},
+    { "name": "sb-ssl.brave.com", "pins": "brave"},
+    { "name": "static.brave.com", "pins": "brave"},
+    { "name": "static1.brave.com", "pins": "brave"},
+    { "name": "sync-v2.brave.com", "pins": "brave"},
+    { "name": "sync-v2.brave.software", "pins": "brave"},
+    { "name": "sync-v2.bravesoftware.com", "pins": "brave"},
+    { "name": "tor.bravesoftware.com", "pins": "brave"},
+    { "name": "translate.brave.com", "pins": "brave"},
+    { "name": "translate-static.brave.com", "pins": "brave"},
+    { "name": "variations.brave.com", "pins": "brave"},
+
+    // Creators
+    { "name": "creators.basicattentiontoken.org", "pins": "brave"},
+    { "name": "creators.brave.com", "pins": "brave"},
+    { "name": "publishers.basicattentiontoken.org", "pins": "brave"},
+    { "name": "publishers.brave.com", "pins": "brave"},
+
+    // Wallet
+    { "name": "goerli-infura.brave.com", "pins": "brave"},
+    { "name": "sepolia-infura.brave.com", "pins": "brave"},
+    { "name": "mainnet-infura.brave.com", "pins": "brave"},
+    { "name": "mainnet-beta-solana.brave.com", "pins": "brave"},
+    { "name": "mainnet-polygon.brave.com", "pins": "brave"},
+
+    // Rewards
+    { "name": "anonymous.ads.brave.com", "pins": "brave"},
+    { "name": "anonymous.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "api.rewards.brave.com", "pins": "brave"},
+    { "name": "api.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "api.rewards.brave.software", "pins": "brave"},
+    { "name": "geo.ads.brave.com", "pins": "brave"},
+    { "name": "geo.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "grant.rewards.brave.com", "pins": "brave"},
+    { "name": "grant.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "grant.rewards.brave.software", "pins": "brave"},
+    { "name": "mywallet.ads.brave.com", "pins": "brave"},
+    { "name": "mywallet.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "payment.rewards.brave.com", "pins": "brave"},
+    { "name": "payment.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "payment.rewards.brave.software", "pins": "brave"},
+    { "name": "rewards.brave.com", "pins": "brave"},
+    { "name": "search.anonymous.brave.com", "pins": "brave"},
+    { "name": "search.anonymous.bravesoftware.com", "pins": "brave"},
+    { "name": "static.ads.brave.com", "pins": "brave"},
+    { "name": "static.ads.bravesoftware.com", "pins": "brave"},
+
+    // Search
+    { "name": "search.brave.com", "pins": "brave"},
+    { "name": "cdn.search.brave.com", "pins": "brave"},
+    { "name": "fg.search.brave.com", "pins": "brave"},
+    { "name": "imgs.search.brave.com", "pins": "brave"},
+    { "name": "tiles.search.brave.com", "pins": "brave"},
+    { "name": "collector.wdp.brave.com", "pins": "brave"},
+    { "name": "patterns.wdp.brave.com", "pins": "brave"},
+    { "name": "quorum.wdp.brave.com", "pins": "brave"},
+    { "name": "star.wdp.brave.com", "pins": "brave"},
+
+    // Premium
+    { "name": "account.brave.com", "pins": "brave"},
+    { "name": "account.bravesoftware.com", "pins": "brave"},
+    { "name": "account.brave.software", "pins": "brave"},
+
+    // Test page using a CA outside of the pinset (expected to be blocked)
+    { "name": "ssl-pinning.someblog.org", "pins" : "brave"}
+ ]})brave_pins_json";
+
+constexpr base::StringPiece kBraveHstsJson = R"brave_hsts_json({
+  "entries": [
+    // Critical endpoints that should remain unpinned so that they
+    // always work.
+    {
+      "name": "laptop-updates.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "updates.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "updates-cdn.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Brave
+    {
+      "name": "adblock-data.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "brave-core-ext.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "brave-today-cdn.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "clients4.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "componentupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "crxdownload.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "devtools.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "dict.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "extensionupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "gaia.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "go-updater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mobile-data.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "p2a.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "p2a-json.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "p3a.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "p3a-creative.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "p3a-json.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "p3a.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "p3a-dev.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "pcdn.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "redirector.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "safebrowsing.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "safebrowsing2.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sb-ssl.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static1.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sync-v2.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "sync-v2.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "sync-v2.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "tor.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "translate.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "translate-static.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "variations.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Creators
+    {
+      "name": "creators.basicattentiontoken.org",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "creators.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "publishers.basicattentiontoken.org",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "publishers.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Wallet
+    {
+      "name": "goerli-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sepolia-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-beta-solana.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-polygon.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Rewards
+    {
+      "name": "anonymous.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "anonymous.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "api.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "api.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "api.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "geo.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "geo.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "grant.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "grant.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "grant.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "mywallet.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mywallet.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "payment.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "payment.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "payment.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "rewards.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "search.anonymous.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "search.anonymous.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Search
+    {
+      "name": "search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "cdn.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "fg.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "imgs.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "tiles.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "collector.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "patterns.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "quorum.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "star.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Premium
+    {
+      "name": "account.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "account.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "account.brave.software",
+      "mode": "force-https",
+      "policy": "custom"
+    }
+ ]})brave_hsts_json";
+}  // namespace
+
 namespace net {
 
 namespace transport_security_state {
@@ -16,7 +534,7 @@ namespace transport_security_state {
 bool ParseCertificatesFile(base::StringPiece certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
-  base::StringPiece brave_certs = R"brave_certs(
+  constexpr base::StringPiece brave_certs = R"brave_certs(
 # Last updated: Thu Feb 16 20:45:21 UTC 2023
 PinsListTimestamp
 1676580321
@@ -358,13 +876,16 @@ tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
   return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets, timestamp);
 }
 
-bool ParseJSON(base::StringPiece json,
+bool ParseJSON(base::StringPiece hsts_json,
+               base::StringPiece pins_json,
                TransportSecurityStateEntries* entries,
                Pinsets* pinsets) {
   Pinsets chromium_pinsets;
   TransportSecurityStateEntries chromium_entries;
-  if (!ParseJSON_ChromiumImpl(json, &chromium_entries, &chromium_pinsets))
+  if (!ParseJSON_ChromiumImpl(hsts_json, pins_json, &chromium_entries,
+                              &chromium_pinsets)) {
     return false;
+  }
 
   for (auto& entry : chromium_entries) {
     // Google has asked us not to include the pins that ship with Chrome,
@@ -377,127 +898,8 @@ bool ParseJSON(base::StringPiece json,
     entries->push_back(std::move(entry));
   }
 
-  base::StringPiece brave_json = R"brave_json({
-    "pinsets": [
-      {
-        "name": "brave",
-        "static_spki_hashes": [
-          "AmazonRootCA1",
-          "AmazonRootCA2",
-          "AmazonRootCA3",
-          "AmazonRootCA4",
-          "StarfieldG2",
-          "GlobalSignRootCA_R1",
-          "GlobalSignRootCA_R3",
-          "GlobalSignRootCA_R6",
-          "GlobalSignRootCA_R46",
-          "GlobalSignRootCA_R5",
-          "GlobalSignRootCA_E46",
-          "DSTRootCA_X3",
-          "ISRGRootCA_X1",
-          "ISRGRootCA_X2"
-        ]
-      }
-    ],
-    "entries": [
-      // Critical endpoints that should remain unpinned so that they always work.
-      { "name": "laptop-updates.brave.com", "mode": "force-https", "policy": "custom"},
-      { "name": "updates.bravesoftware.com", "mode": "force-https", "policy": "custom"},
-      { "name": "updates-cdn.bravesoftware.com", "mode": "force-https", "policy": "custom"},
-
-      // =====BEGIN BRAVE HOSTS JSON=====
-      // Brave
-      { "name": "adblock-data.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "brave-core-ext.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "brave-today-cdn.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "clients4.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "componentupdater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "crxdownload.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "devtools.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "dict.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "extensionupdater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "gaia.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "go-updater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "mobile-data.s3.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "p2a.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "p2a-json.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "p3a.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "p3a-creative.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "p3a-json.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "p3a.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "p3a-dev.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "pcdn.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "redirector.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "safebrowsing.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "safebrowsing2.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "sb-ssl.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "static1.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "sync-v2.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "sync-v2.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "sync-v2.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "tor.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "translate.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "translate-static.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "variations.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Creators
-      { "name": "creators.basicattentiontoken.org", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "creators.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "publishers.basicattentiontoken.org", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "publishers.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Wallet
-      { "name": "goerli-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "sepolia-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "mainnet-infura.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "mainnet-beta-solana.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "mainnet-polygon.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Rewards
-      { "name": "anonymous.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "anonymous.ads.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "api.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "api.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "api.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "geo.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "geo.ads.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "grant.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "grant.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "grant.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "mywallet.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "mywallet.ads.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "payment.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "payment.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "payment.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "search.anonymous.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "search.anonymous.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "static.ads.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "static.ads.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Search
-      { "name": "search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "cdn.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "fg.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "imgs.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "tiles.search.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "collector.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "patterns.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "quorum.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "star.wdp.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Premium
-      { "name": "account.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "account.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "account.brave.software", "mode": "force-https", "policy": "custom", "pins": "brave"},
-
-      // Test page using a CA outside of the pinset (expected to be blocked)
-      { "name": "ssl-pinning.someblog.org", "policy": "custom", "mode": "force-https", "pins": "brave"}
-      // =====END BRAVE HOSTS JSON=====
-    ]})brave_json";
-
-  return ParseJSON_ChromiumImpl(brave_json, entries, pinsets);
+  return ParseJSON_ChromiumImpl(kBraveHstsJson, kBravePinsJson, entries,
+                                pinsets);
 }
 
 }  // namespace transport_security_state
