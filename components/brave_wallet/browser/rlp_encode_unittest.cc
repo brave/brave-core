@@ -53,20 +53,20 @@ base::Value RLPTestStringToValue(const std::string& s, std::string* remaining) {
     } else if (*p == ']' && list_depth != 1) {
       list_depth--;
     } else if (*p == ']' && state == InList && list_depth == 1) {
-      base::ListValue lv;
+      base::Value::List list;
       size_t len = p - start;
       std::string list_contents = s.substr(start - s.c_str(), len);
       while (list_contents.length() > 0) {
         base::Value v = RLPTestStringToValue(list_contents, remaining);
         list_contents = *remaining;
-        lv.Append(std::move(v));
+        list.Append(std::move(v));
       }
       if (start - s.c_str() + len + 1 < s.length()) {
         *remaining = s.substr(start - s.c_str() + len + 1, std::string::npos);
       } else {
         *remaining = "";
       }
-      return std::move(lv);
+      return base::Value(std::move(list));
     }
     ++p;
   }

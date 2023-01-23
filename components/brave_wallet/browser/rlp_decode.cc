@@ -96,7 +96,7 @@ bool RLPDecodeLength(const std::string& s,
   if (prefix <= 0xf7 && length > prefix - 0xc0) {
     *offset = 1;
     *data_len = prefix - 0xc0;
-    *value = base::ListValue();
+    *value = base::Value(base::Value::Type::LIST);
     return true;
   }
 
@@ -117,7 +117,7 @@ bool RLPDecodeLength(const std::string& s,
     if (*data_len <= 55 || !IsWithinBounds(*offset, *data_len, length)) {
       return false;
     }
-    *value = base::ListValue();
+    *value = base::Value(base::Value::Type::LIST);
     return true;
   }
 
