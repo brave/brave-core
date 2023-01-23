@@ -1263,9 +1263,8 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
          KnownChainExists(chain.chain_id, chain.coin));
 
   {  // Update needs to be done before GetNetworkId below.
-    DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::Value::Dict& dict = update.Get()->GetDict();
-    dict.EnsureList(GetPrefKeyForCoinType(chain.coin))
+    ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+    update->EnsureList(GetPrefKeyForCoinType(chain.coin))
         ->Append(NetworkInfoToValue(chain));
   }
 
@@ -1276,13 +1275,12 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
       GetNetworkId(prefs, mojom::CoinType::ETH, chain.chain_id);
   DCHECK(!network_id.empty());  // Not possible for a custom network.
 
-  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::Value::Dict& user_assets_pref = update.Get()->GetDict();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
   base::Value::List& asset_list =
-      user_assets_pref
-          .SetByDottedPath(base::StrCat({GetPrefKeyForCoinType(chain.coin), ".",
-                                         network_id}),
-                           base::Value::List())
+      update
+          ->SetByDottedPath(base::StrCat({GetPrefKeyForCoinType(chain.coin),
+                                          ".", network_id}),
+                            base::Value::List())
           ->GetList();
 
   base::Value::Dict native_asset;
@@ -1304,9 +1302,8 @@ void RemoveCustomNetwork(PrefService* prefs,
                          mojom::CoinType coin) {
   DCHECK(prefs);
 
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
   if (!list)
     return;
   list->EraseIf([&chain_id_to_remove](const base::Value& v) {
@@ -1341,9 +1338,8 @@ std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
 void AddHiddenNetwork(PrefService* prefs,
                       mojom::CoinType coin,
                       const std::string& chain_id) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  base::Value::List* list = dict.EnsureList(GetPrefKeyForCoinType(coin));
+  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (!base::Contains(*list, base::Value(chain_id_lower))) {
     list->Append(chain_id_lower);
@@ -1353,9 +1349,8 @@ void AddHiddenNetwork(PrefService* prefs,
 void RemoveHiddenNetwork(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  base::Value::List* list = dict.FindList(GetPrefKeyForCoinType(coin));
+  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
   if (!list)
     return;
   list->EraseIf([&](const base::Value& v) {

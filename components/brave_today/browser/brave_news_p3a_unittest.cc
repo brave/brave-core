@@ -221,10 +221,10 @@ TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 0, 1);
 
-  DictionaryPrefUpdate update1(prefs, prefs::kBraveTodayDirectFeeds);
-  update1->SetPath("id1", base::Value(base::Value::Type::DICTIONARY));
-  DictionaryPrefUpdate update2(prefs, prefs::kBraveTodayDirectFeeds);
-  update2->SetPath("id2", base::Value(base::Value::Type::DICTIONARY));
+  ScopedDictPrefUpdate update1(prefs, prefs::kBraveTodayDirectFeeds);
+  update1->Set("id1", base::Value::Dict());
+  ScopedDictPrefUpdate update2(prefs, prefs::kBraveTodayDirectFeeds);
+  update2->Set("id2", base::Value::Dict());
 
   RecordDirectFeedsTotal(prefs);
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 2);

@@ -435,8 +435,8 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   if (!local_state_)
     return;
 
-  DictionaryPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
-  base::Value* subscriptions_dict = update.Get();
+  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
+  base::Value::Dict& subscriptions = update.Get();
   base::Value::Dict subscription_dict;
   subscription_dict.Set("enabled", info.enabled);
   subscription_dict.Set("last_update_attempt",
@@ -449,11 +449,10 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
   if (info.title) {
     subscription_dict.Set("title", *info.title);
   }
-  subscriptions_dict->GetDict().Set(sub_url.spec(),
-                                    std::move(subscription_dict));
+  subscriptions.Set(sub_url.spec(), std::move(subscription_dict));
 
   // TODO(bridiver) - change to pref registrar
-  subscriptions_ = subscriptions_dict->GetDict().Clone();
+  subscriptions_ = subscriptions.Clone();
 }
 
 // Updates preferences to remove all state for the specified filter list
@@ -464,12 +463,12 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
   if (!local_state_)
     return;
 
-  DictionaryPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
-  base::Value::Dict& subscriptions_dict = update.Get()->GetDict();
-  subscriptions_dict.Remove(sub_url.spec());
+  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
+  base::Value::Dict& subscriptions = update.Get();
+  subscriptions.Remove(sub_url.spec());
 
   // TODO(bridiver) - change to pref registrar
-  subscriptions_ = subscriptions_dict.Clone();
+  subscriptions_ = subscriptions.Clone();
 }
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(

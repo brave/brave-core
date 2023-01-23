@@ -179,18 +179,11 @@ std::string GetFilStateSearchMsgLimitedResponse(int64_t value) {
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value::Dict>* values) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* dict = update.Get();
-  ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(kEthereumPrefKey);
-  if (!list) {
-    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
-  }
-  ASSERT_TRUE(list);
-  auto& list_value = list->GetList();
-  list_value.clear();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list = update->EnsureList(kEthereumPrefKey);
+  list->clear();
   for (auto& it : *values) {
-    list_value.Append(std::move(it));
+    list->Append(std::move(it));
   }
 }
 
@@ -1050,10 +1043,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void ValidateStartWithNetwork(const std::string& chain_id,
                                 const std::string& expected_id) {
-    DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
-    base::Value* dict = update.Get();
-    DCHECK(dict);
-    dict->SetStringKey(kEthereumPrefKey, chain_id);
+    ScopedDictPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+    update->Set(kEthereumPrefKey, chain_id);
     JsonRpcService service(shared_url_loader_factory(), prefs());
     bool callback_is_called = false;
     service.GetChainId(
@@ -3923,9 +3914,8 @@ TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
         prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
 
     // Set selected network to deprecated network and validate
-    DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
-    auto& selected_networks_pref = update.Get()->GetDict();
-    selected_networks_pref.Set(kEthereumPrefKey, deprecated_chain_id);
+    ScopedDictPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+    update->Set(kEthereumPrefKey, deprecated_chain_id);
     const auto& selected_networks =
         prefs()->GetDict(kBraveWalletSelectedNetworks);
     const std::string* selected_eth_network =
@@ -3952,9 +3942,8 @@ TEST_F(JsonRpcServiceUnitTest, MigrateDeprecatedEthereumTestnets) {
       prefs()->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated));
 
   // Set selected network to deprecated network and validate
-  DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
-  auto& selected_networks_pref = update.Get()->GetDict();
-  selected_networks_pref.Set(kEthereumPrefKey, mojom::kSepoliaChainId);
+  ScopedDictPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+  update->Set(kEthereumPrefKey, mojom::kSepoliaChainId);
   const auto& selected_networks =
       prefs()->GetDict(kBraveWalletSelectedNetworks);
   const std::string* selected_eth_network =

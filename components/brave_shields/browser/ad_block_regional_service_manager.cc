@@ -144,11 +144,10 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
-  DictionaryPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
-  base::Value* regional_filters_dict = update.Get();
+  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
   base::Value::Dict regional_filter_dict;
   regional_filter_dict.Set("enabled", enabled);
-  regional_filters_dict->GetDict().Set(uuid, std::move(regional_filter_dict));
+  update->Set(uuid, std::move(regional_filter_dict));
 
   for (const auto& constants : kOverrideConstants) {
     if (uuid == constants.list_uuid) {

@@ -93,21 +93,21 @@ class UnsupportedPublisherMigratorTest : public testing::Test {
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    DictionaryPrefUpdate update(profile_.GetPrefs(), prefs::kBraveTodaySources);
+    ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveTodaySources);
     for (const auto& id : publisher_ids)
-      update->SetBoolKey(id, true);
+      update->Set(id, true);
   }
 
   void SetDirectSources(const std::vector<std::string>& publisher_ids) {
-    DictionaryPrefUpdate update(profile_.GetPrefs(),
+    ScopedDictPrefUpdate update(profile_.GetPrefs(),
                                 prefs::kBraveTodayDirectFeeds);
     for (const auto& id : publisher_ids) {
-      base::Value direct_source(base::Value::Type::DICTIONARY);
-      direct_source.SetStringKey(prefs::kBraveTodayDirectFeedsKeySource,
-                                 "https://" + id + ".example.com/feed");
-      direct_source.SetStringKey(prefs::kBraveTodayDirectFeedsKeyTitle,
-                                 "Test Publisher " + id);
-      update->SetPath(id, std::move(direct_source));
+      base::Value::Dict direct_source;
+      direct_source.Set(prefs::kBraveTodayDirectFeedsKeySource,
+                        "https://" + id + ".example.com/feed");
+      direct_source.Set(prefs::kBraveTodayDirectFeedsKeyTitle,
+                        "Test Publisher " + id);
+      update->SetByDottedPath(id, std::move(direct_source));
     }
   }
 

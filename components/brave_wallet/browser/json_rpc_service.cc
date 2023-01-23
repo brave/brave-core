@@ -218,12 +218,9 @@ void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
   // selected networks
   if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
     const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
-    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    base::Value::Dict* selected_networks = update.Get()->GetIfDict();
-    if (selected_networks) {
-      selected_networks->Set(kEthereumPrefKey, chain_id);
-      prefs->ClearPref(kBraveWalletCurrentChainId);
-    }
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    update->Set(kEthereumPrefKey, chain_id);
+    prefs->ClearPref(kBraveWalletCurrentChainId);
   }
 }
 
@@ -233,8 +230,8 @@ void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
     return;
 
   if (prefs->HasPrefPath(kBraveWalletSelectedNetworks)) {
-    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    auto& selected_networks_pref = update.Get()->GetDict();
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    base::Value::Dict& selected_networks_pref = update.Get();
     const std::string* selected_eth_network =
         selected_networks_pref.FindString(kEthereumPrefKey);
     if (!selected_eth_network) {
@@ -264,8 +261,8 @@ void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
   // Show test networks toggle was explictily enabled. Go through coins and
   // remove all test networks from hidden lists.
 
-  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value::Dict& dict = update.Get();
 
   auto* eth_list = dict.EnsureList(kEthereumPrefKey);
   eth_list->EraseValue(base::Value(mojom::kGoerliChainId));
@@ -514,10 +511,8 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
 
   chain_ids_[coin] = chain_id;
   network_urls_[coin] = network_url;
-  DictionaryPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
-  base::Value* dict = update.Get();
-  DCHECK(dict);
-  dict->SetStringKey(GetPrefKeyForCoinType(coin), chain_id);
+  ScopedDictPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
+  update->Set(GetPrefKeyForCoinType(coin), chain_id);
 
   if (!silent) {
     FireNetworkChanged(coin);
@@ -570,9 +565,8 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
   } else {
     // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into one
     // file.
-    DictionaryPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& item :
-         *update.Get()->GetDict().FindList(kEthereumPrefKey)) {
+    ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    for (base::Value& item : *update->FindList(kEthereumPrefKey)) {
       base::Value::Dict* custom_network = item.GetIfDict();
       if (!custom_network)
         continue;

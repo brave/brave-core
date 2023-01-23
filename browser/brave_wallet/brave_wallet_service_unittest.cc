@@ -1230,9 +1230,8 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   // Remove network.
   observer_->Reset();
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::Value::List* list =
-        update.Get()->GetDict().FindList(kEthereumPrefKey);
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
+    base::Value::List* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
       auto* chain_id_value = v.FindStringKey("chainId");
       if (!chain_id_value)
@@ -1426,10 +1425,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    auto* user_assets_pref = update.Get()->GetIfDict();
-    base::Value::List user_assets_list;
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
 
+    base::Value::List user_assets_list;
     base::Value::Dict value;
     value.Set("contract_address", "eth");
     value.Set("name", "Ethereum");
@@ -1439,7 +1437,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
     value.Set("decimals", 18);
     value.Set("visible", true);
     user_assets_list.Append(std::move(value));
-    user_assets_pref->Set("goerli", std::move(user_assets_list));
+
+    update->Set("goerli", std::move(user_assets_list));
   }
 
   const auto& pref = GetPrefs()->GetDict(kBraveWalletUserAssetsDeprecated);
@@ -1462,8 +1461,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
   ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    auto& old_user_assets_pref = update.Get()->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
+    auto& old_user_assets_pref = update.Get();
 
     base::Value::Dict value;
     value.Set("contract_address", "");

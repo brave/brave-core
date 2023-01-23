@@ -319,12 +319,12 @@ void KeyringService::MigrateObsoleteProfilePrefs(PrefService* profile_prefs) {
   }
 
   // Moving hardware part under default keyring.
-  DictionaryPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
-  auto* obsolete = update->FindDictKey(kHardwareAccounts);
+  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
+  auto* obsolete = update->FindDict(kHardwareAccounts);
   if (obsolete) {
-    SetPrefForKeyring(profile_prefs, kHardwareAccounts, obsolete->Clone(),
-                      mojom::kDefaultKeyringId);
-    update->RemovePath(kHardwareAccounts);
+    SetPrefForKeyring(profile_prefs, kHardwareAccounts,
+                      base::Value(obsolete->Clone()), mojom::kDefaultKeyringId);
+    update->Remove(kHardwareAccounts);
   }
 }
 
@@ -366,10 +366,8 @@ base::Value::Dict& KeyringService::GetPrefForKeyringUpdate(
     const std::string& key,
     const std::string& id) {
   DCHECK(profile_prefs);
-  DictionaryPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
-  base::Value* keyrings_pref = update.Get();
-  DCHECK(keyrings_pref);
-  return *keyrings_pref->GetDict().EnsureDict(id)->EnsureDict(key);
+  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
+  return *update->EnsureDict(id)->EnsureDict(key);
 }
 
 // static
@@ -378,10 +376,8 @@ void KeyringService::SetPrefForKeyring(PrefService* profile_prefs,
                                        base::Value value,
                                        const std::string& id) {
   DCHECK(profile_prefs);
-  DictionaryPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
-  base::Value* keyrings_pref = update.Get();
-  DCHECK(keyrings_pref);
-  keyrings_pref->GetDict().EnsureDict(id)->Set(key, std::move(value));
+  ScopedDictPrefUpdate update(profile_prefs, kBraveWalletKeyrings);
+  update->EnsureDict(id)->Set(key, std::move(value));
 }
 
 // static
