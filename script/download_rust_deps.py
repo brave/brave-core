@@ -7,33 +7,33 @@
 """Script to download rust_deps."""
 
 import argparse
+import ast
 import os
 import subprocess
 import sys
 
 import deps
+from deps_config import DEPS_PACKAGES_URL
 
 try:
     from urllib2 import URLError
 except ImportError:  # For Py3 compatibility
     from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
 
-from deps_config import DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
-from lib.config import BRAVE_CORE_ROOT
+from lib.config import BRAVE_CORE_ROOT, CHROMIUM_ROOT
 
 RUSTUP_PATH = os.path.join(BRAVE_CORE_ROOT, 'build', 'rustup')
-RUSTUP_HOME = os.path.join(RUSTUP_PATH, RUST_DEPS_PACKAGE_VERSION)
 
 
-def get_url(platform):
+def get_url(platform, rust_version):
     if platform in ("win32", "cygwin"):
-        filename = "rust_deps_win_" + RUST_DEPS_PACKAGE_VERSION + ".zip"
+        filename = "rust_deps_win_" + rust_version + ".zip"
     elif platform == 'darwin':
-        filename = "rust_deps_mac_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
+        filename = "rust_deps_mac_" + rust_version + ".gz"
     elif platform == 'ios':
-        filename = "rust_deps_ios_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
+        filename = "rust_deps_ios_" + rust_version + ".gz"
     elif platform.startswith('linux'):
-        filename = "rust_deps_linux_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
+        filename = "rust_deps_linux_" + rust_version + ".gz"
     else:
         print('Invalid platform for Rust deps: %s' % platform)
         print('Exiting.')
@@ -42,18 +42,18 @@ def get_url(platform):
     return DEPS_PACKAGES_URL + "/rust-deps/" + filename
 
 
-def should_download():
-    if os.path.exists(RUSTUP_HOME):
+def should_download(rustup_home):
+    if os.path.exists(os.path.join(rustup_home, 'bin')):
         return False
 
     return True
 
 
-def download_and_unpack_rust_deps(platform):
-    if not should_download():
+def download_and_unpack_rust_deps(platform, rust_version, rustup_home):
+    if not should_download(rustup_home):
         return
 
-    url = get_url('ios' if platform == 'ios' else sys.platform)
+    url = get_url('ios' if platform == 'ios' else sys.platform, rust_version)
 
     try:
         deps.DownloadAndUnpack(url, RUSTUP_PATH)
@@ -85,58 +85,23 @@ def get_android_linker(target_arch):
     return get_android_target(target_arch) + "-clang"
 
 
-def make_standalone_toolchain_for_android():
-    ANDROID_NDK_PATH = os.path.join(os.path.dirname(
-        __file__), '..', '..', 'third_party', 'android_ndk')
-
-    make_standalone_toolchain = os.path.join(
-        ANDROID_NDK_PATH, 'build', 'tools', 'make_standalone_toolchain.py')
-
-    config_path = os.path.join(RUSTUP_HOME, 'config')
-    fp = open(config_path, "w+")
-
-    for target_arch in ['arm', 'arm64', 'x86', 'x86_64']:
-        toolchain_path = os.path.join(RUSTUP_PATH, 'toolchains', target_arch)
-
-        api_level = get_android_api_level(target_arch)
-
-        # Make standalone Android toolchain for target_arch
-        toolchain_args = []
-        toolchain_args.append(make_standalone_toolchain)
-        toolchain_args.append("--force")
-        toolchain_args.append("--install-dir=" + toolchain_path)
-        toolchain_args.append("--api=" + api_level)
-        toolchain_args.append("--arch=" + target_arch)
-
-        try:
-            subprocess.check_call(toolchain_args, env=None)
-        except subprocess.CalledProcessError as e:
-            print(e.output)
-            raise e
-
-        # Add target to rustup config
-        fp.write("[target." + get_android_target(target_arch) + "]\r\n")
-        fp.write("linker = \"" + get_android_linker(target_arch) + "\"\r\n")
-
-    fp.close()
-
-
 def parse_args():
     parser = argparse.ArgumentParser(description='Download rust deps')
 
+    parser.add_argument('rust_version')
     parser.add_argument('platform')
 
     args = parser.parse_args()
     return args
 
 
-def cargo_install(tool):
+def cargo_install(tool, rustup_home):
     cargo_args = ["install", tool["name"]]
     if "path" in tool:
         cargo_args.append("--path")
         cargo_args.append(tool["path"])
         cargo_args.append("--target-dir")
-        cargo_args.append(os.path.join(RUSTUP_HOME, ".build"))
+        cargo_args.append(os.path.join(rustup_home, ".build"))
     if "version" in tool:
         cargo_args.append("--version")
         cargo_args.append(tool["version"])
@@ -146,24 +111,24 @@ def cargo_install(tool):
         cargo_args.append("--features")
         cargo_args.append(tool["features"])
 
-    run_rust_tool('cargo', cargo_args)
+    run_rust_tool('cargo', cargo_args, rustup_home)
 
 
-def rustup_add_target(target):
-    run_rust_tool('rustup', ['target', 'add', target])
+def rustup_add_target(target, rustup_home):
+    run_rust_tool('rustup', ['target', 'add', target], rustup_home)
 
 
-def run_rust_tool(tool, args):
+def run_rust_tool(tool, tool_args, rustup_home):
     env = os.environ.copy()
-    env['RUSTUP_HOME'] = RUSTUP_HOME
-    env['CARGO_HOME'] = RUSTUP_HOME
+    env['RUSTUP_HOME'] = rustup_home
+    env['CARGO_HOME'] = rustup_home
 
-    rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
+    rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
     tool_path = os.path.join(
         rustup_bin, tool + (".exe" if sys.platform == "win32" else ""))
 
     try:
-        subprocess.check_call([tool_path] + args, env=env)
+        subprocess.check_call([tool_path] + tool_args, env=env)
     except subprocess.CalledProcessError as e:
         print(e.output)
         raise e
@@ -172,48 +137,62 @@ def run_rust_tool(tool, args):
 def main():
     args = parse_args()
 
-    if args.platform == 'android':
-        download_and_unpack_rust_deps(sys.platform)
-        make_standalone_toolchain_for_android()
-    else:
-        download_and_unpack_rust_deps(args.platform)
+    rust_version = ast.literal_eval(args.rust_version)
+    rustup_home = os.path.join(RUSTUP_PATH, rust_version)
 
-    if args.platform == 'darwin':
-        # It would be nice to conditionally only add the target we actually
-        # need for building. However, DEPS (which we are called from) does not
-        # seem to support making this distinction.
-        rustup_add_target('x86_64-apple-darwin')
-        rustup_add_target('aarch64-apple-darwin')
+    if args.platform == 'android':
+        download_and_unpack_rust_deps(sys.platform, rust_version, rustup_home)
+    else:
+        download_and_unpack_rust_deps(args.platform, rust_version, rustup_home)
+
+    if sys.platform == 'darwin':
+        rustup_add_target('x86_64-apple-darwin', rustup_home)
+        rustup_add_target('aarch64-apple-darwin', rustup_home)
+        # a separate directory is not created for aarch64-apple-darwin
+        toolchain = rust_version + '-x86_64-apple-darwin'
+        run_rust_tool(
+            'rustup',
+            ['component', 'add', 'rust-src', '--toolchain', toolchain],
+            rustup_home)
+        # patch gcc.rs.patch
+        # https://github.com/rust-lang/rust/issues/102754#issuecomment-1421438735
+        patch_file = os.path.join(BRAVE_CORE_ROOT, 'build', 'rust',
+                                  'gcc.rs.patch')
+        if not os.path.exists(patch_file + '.orig'):
+            try:
+                subprocess.check_call([
+                    'patch', '-b', '--no-backup-if-mismatch', '-i', patch_file
+                ],
+                                      env=os.environ)
+            except subprocess.CalledProcessError as e:
+                print(e.output)
+                raise e
 
     cxx_path = os.path.abspath(
-        os.path.join(BRAVE_CORE_ROOT, 'third_party', 'rust', 'cxx', 'v1'))
+        os.path.join(CHROMIUM_ROOT, 'third_party', 'rust', 'cxx', 'v1'))
 
-    with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
+    with open(os.path.join(cxx_path, "README.chromium"), "r",
+              encoding="utf8") as readme_file:
         _VERSION_PREFIX = "Version: "
         for line in readme_file:
             if not line.startswith(_VERSION_PREFIX):
                 continue
             cxx_version = line[len(_VERSION_PREFIX):].strip()
 
-    tools = [
-        {
-            "name": "cbindgen",
-            "version": "0.14.2",
-        },
-        {
-            "name": "cxxbridge-cmd",
-            "version": cxx_version,
-        },
-        {
-            "name": "cargo-audit",
-            # Pin to the v0.16.0 upstream Cargo.lock while our MSRV is 1.59.0.
-            "version": "0.16.0",
-            "locked": True,
-            "features": "vendored-openssl",
-        }
-    ]
+    tools = [{
+        "name": "cbindgen",
+        "version": "0.14.2",
+    }, {
+        "name": "cxxbridge-cmd",
+        "version": cxx_version,
+    }, {
+        "name": "cargo-audit",
+        "version": "0.17.4",
+        "locked": True,
+        "features": "vendored-openssl",
+    }]
     for tool in tools:
-        cargo_install(tool)
+        cargo_install(tool, rustup_home)
 
     return 0
 

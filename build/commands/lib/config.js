@@ -520,9 +520,6 @@ Config.prototype.buildArgs = function () {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
-    if (this.targetArch == 'x64' && this.isDebug()) {
-      args.use_lld = false
-    }
     args.enable_dsyms = true
     args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:

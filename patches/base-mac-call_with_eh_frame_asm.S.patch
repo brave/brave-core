@@ -1,0 +1,13 @@
+diff --git a/base/mac/call_with_eh_frame_asm.S b/base/mac/call_with_eh_frame_asm.S
+index 841a953a29ae1ae267f5047e5e6e7e2d9fc2190c..2836c63e71f33be407e141dd00155652463814fb 100644
+--- a/base/mac/call_with_eh_frame_asm.S
++++ b/base/mac/call_with_eh_frame_asm.S
+@@ -20,7 +20,7 @@ CALL_WITH_EH_FRAME:
+   // Configure the C++ exception handler personality routine. Normally the
+   // compiler would emit ___gxx_personality_v0 here. The purpose of this
+   // function is to use a custom personality routine.
+-  .cfi_personality 155, __ZN4base3mac21CxxPersonalityRoutineEi14_Unwind_ActionyP17_Unwind_ExceptionP15_Unwind_Context
++  .cfi_personality 155, _rust_eh_personality
+   .cfi_lsda 16, CallWithEHFrame_exception_table
+ 
+ #if defined(__x86_64__)

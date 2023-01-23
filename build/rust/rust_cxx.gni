@@ -1,8 +1,14 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 # Copyright 2021 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
 import("//brave/build/cargo.gni")
+import("//brave/build/rust/config.gni")
 
 set_defaults("rust_cxx") {
   native_header_deps = []
@@ -62,15 +68,23 @@ template("rust_cxx") {
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
     output_cc = "{{source_gen_dir}}/{{source_file_part}}.cc"
 
-    script = "//brave/build/rust/run_cxxbridge.py"
-    inputs = [ script ]
+    cxxbridge_executable = "${rustup_home}/bin/cxxbridge"
+    if (is_win) {
+      cxxbridge_executable = "${cxxbridge_executable}.exe"
+    }
+
+    script = "//third_party/rust/cxx/chromium_integration/run_cxxbridge.py"
+    inputs = [
+      cxxbridge_executable,
+      script,
+    ]
     outputs = [
       output_h,
       output_cc,
     ]
 
     args = [
-      "--cargo_path=" + rustup_path,
+      "--exe=" + rebase_path(cxxbridge_executable),
       "--header",
       output_h,
       "--cc",

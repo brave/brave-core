@@ -17,8 +17,6 @@ import sys
 
 import requests
 
-from deps_config import RUST_DEPS_PACKAGE_VERSION
-
 def get_remote_audit_config(
         url = "https://raw.githubusercontent.com/brave/audit-config/main/config.json",
         retry = 3):
@@ -135,26 +133,17 @@ def npm_audit_deps(path, args):
 
 def cargo_audit_deps(path, args):
     """Run `cargo audit' in the specified path."""
-
-    rustup_path = args.rustup_path
-    cargo_path = args.cargo_path
-
     env = os.environ.copy()
 
-    rustup_home = os.path.join(rustup_path, RUST_DEPS_PACKAGE_VERSION)
+    rustup_home = args.rustup_home
     env['RUSTUP_HOME'] = rustup_home
 
-    cargo_home = os.path.join(cargo_path, RUST_DEPS_PACKAGE_VERSION)
+    cargo_home = args.cargo_home
     env['CARGO_HOME'] = cargo_home
 
     rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
     rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
-
-    if args.toolchain:
-        toolchains_path = os.path.abspath(
-            os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
-        env['PATH'] = toolchains_path + os.pathsep + env['PATH']
 
     cargo_args = []
     cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
@@ -202,9 +191,8 @@ def parse_args():
     parser.add_argument('input_dir', nargs='?', help='Directory to check')
     parser.add_argument('--source_root', required=True,
                         help='Full path of the src/brave directory')
-    parser.add_argument('--rustup_path', required=True)
-    parser.add_argument('--cargo_path', required=True)
-    parser.add_argument('--toolchain')
+    parser.add_argument('--rustup_home', required=True)
+    parser.add_argument('--cargo_home', required=True)
     parser.add_argument('--audit_dev_deps',
                         action='store_true',
                         help='Audit dev dependencies')
