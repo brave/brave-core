@@ -133,6 +133,7 @@ public class BraveRewardsPanel
     private static final String NEW_SIGNUP_DISABLED_URL =
             "https://support.brave.com/hc/en-us/articles/9312922941069";
     private static final String BRAVE_REWARDS_PAGE = "https://brave.com/rewards";
+    private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
 
     private static final String TAG = "BraveRewards";
     private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
@@ -986,7 +987,7 @@ public class BraveRewardsPanel
                     .setOnClickListener((new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_PAGE);
+                            CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_CHANGES_PAGE);
                         }
                     }));
         } else {
