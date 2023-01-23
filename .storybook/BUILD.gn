@@ -21,7 +21,6 @@ group("storybook") {
     "//brave/components/brave_wallet/common:mojom_js",
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
-    "//ui/webui/resources/js:preprocess",
   ]
 
   if (enable_speedreader) {
