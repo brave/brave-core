@@ -121,7 +121,7 @@ class ADBLOCK_EXPORT Engine {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
   AdblockDebugInfo getAdblockDebugInfo();
-  void discardRegex(u_int64_t regex_id);
+  void discardRegex(uint64_t regex_id);
   void setupDiscardPolicy(const RegexManagerDiscardPolicy& policy);
 
   ~Engine();
