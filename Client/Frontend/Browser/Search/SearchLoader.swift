@@ -6,6 +6,7 @@ import Shared
 import Storage
 import Data
 import BraveCore
+import BraveShared
 
 /// Shared data source for the SearchViewController and the URLBar domain completion.
 /// Since both of these use the same query, we can perform the query once and dispatch the results.
@@ -47,6 +48,12 @@ class SearchLoader: Loader<[Site], SearchViewController> {
   }
 
   fileprivate func completionForURL(_ url: String) -> String? {
+    // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
+    // when search suggestions is not enabled
+    if Preferences.Privacy.privateBrowsingOnly.value, !Preferences.Search.showSuggestions.value {
+      return nil
+    }
+
     // Extract the pre-path substring from the URL. This should be more efficient than parsing via
     // NSURL since we need to only look at the beginning of the string.
     // Note that we won't match non-HTTP(S) URLs.
