@@ -358,13 +358,16 @@ tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
   return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets, timestamp);
 }
 
-bool ParseJSON(base::StringPiece json,
+bool ParseJSON(base::StringPiece hsts_json,
+               base::StringPiece pins_json,
                TransportSecurityStateEntries* entries,
                Pinsets* pinsets) {
   Pinsets chromium_pinsets;
   TransportSecurityStateEntries chromium_entries;
-  if (!ParseJSON_ChromiumImpl(json, &chromium_entries, &chromium_pinsets))
+  if (!ParseJSON_ChromiumImpl(hsts_json, pins_json, &chromium_entries,
+                              &chromium_pinsets)) {
     return false;
+  }
 
   for (auto& entry : chromium_entries) {
     // Google has asked us not to include the pins that ship with Chrome,
@@ -497,7 +500,7 @@ bool ParseJSON(base::StringPiece json,
       // =====END BRAVE HOSTS JSON=====
     ]})brave_json";
 
-  return ParseJSON_ChromiumImpl(brave_json, entries, pinsets);
+  return ParseJSON_ChromiumImpl(brave_json, brave_json, entries, pinsets);
 }
 
 }  // namespace transport_security_state
