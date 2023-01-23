@@ -32,9 +32,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/public/ledger_database.h"
@@ -295,7 +295,7 @@ std::vector<std::string> GetISOCountries() {
 
 template <typename Callback, typename... Args>
 void DeferCallback(base::Location location, Callback callback, Args&&... args) {
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       location,
       base::BindOnce(std::move(callback), std::forward<Args>(args)...));
 }
@@ -379,7 +379,7 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
-  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
                      AsWeakPtr()),

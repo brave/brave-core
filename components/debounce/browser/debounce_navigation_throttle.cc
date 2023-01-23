@@ -13,7 +13,7 @@
 #include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/memory/weak_ptr.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/debounce/browser/debounce_service.h"
 #include "brave/components/debounce/common/pref_names.h"
 #include "components/user_prefs/user_prefs.h"
@@ -152,7 +152,7 @@ DebounceNavigationThrottle::MaybeRedirect() {
   // technically this is a new navigation
   params.redirect_chain.clear();
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(
                      [](base::WeakPtr<content::WebContents> web_contents,
                         const content::OpenURLParams& params) {

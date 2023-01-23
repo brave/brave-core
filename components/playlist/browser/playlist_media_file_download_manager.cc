@@ -9,7 +9,7 @@
 
 #include "base/files/file_path.h"
 #include "base/logging.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 
@@ -121,7 +121,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
 
   current_item_.reset();
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&PlaylistMediaFileDownloadManager::TryStartingDownloadTask,
                      weak_factory_.GetWeakPtr()));
@@ -135,7 +135,7 @@ void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
 
   CancelCurrentDownloadingPlaylistItem();
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&PlaylistMediaFileDownloadManager::TryStartingDownloadTask,
                      weak_factory_.GetWeakPtr()));

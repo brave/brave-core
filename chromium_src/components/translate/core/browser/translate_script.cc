@@ -8,7 +8,7 @@
 #include "base/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
@@ -45,7 +45,7 @@ GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
 
 void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
   if (!IsBraveTranslateGoAvailable()) {
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), false));
     return;
   }

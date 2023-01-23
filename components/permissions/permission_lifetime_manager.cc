@@ -11,7 +11,7 @@
 #include "base/auto_reset.h"
 #include "base/containers/contains.h"
 #include "base/logging.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
@@ -113,7 +113,7 @@ void PermissionLifetimeManager::PermissionDecided(
       // There is no any active origin with this key, so reset the permission
       // right away. PostTask is required because at this point the permission
       // is not stored in HostContentSettingsMap yet.
-      base::SequencedTaskRunnerHandle::Get()->PostTask(
+      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
           base::BindOnce(&PermissionLifetimeManager::ResetPermission,
                          weak_ptr_factory_.GetWeakPtr(), content_type,

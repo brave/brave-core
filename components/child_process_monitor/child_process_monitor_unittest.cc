@@ -13,12 +13,12 @@
 
 #include "base/process/kill.h"
 #include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/multiprocess_test.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_timeouts.h"
 #include "base/threading/platform_thread.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/multiprocess_func_list.h"
@@ -38,7 +38,7 @@ void WaitForChildTermination(base::ProcessHandle handle) {
 class ChildProcessMonitorTest : public base::MultiProcessTest {
  protected:
   void SetUp() override {
-    callback_runner_ = base::SequencedTaskRunnerHandle::Get();
+    callback_runner_ = base::SequencedTaskRunner::GetCurrentDefault();
   }
 
   base::test::TaskEnvironment task_environment_;
