@@ -687,7 +687,6 @@ class NewTabPage extends React.Component<Props, State> {
           hasInteracted={this.props.todayData.hasInteracted}
           isPrompting={this.state.isPromptingBraveToday}
           isUpdateAvailable={this.props.todayData.isUpdateAvailable}
-          isOptedIn={this.props.newTabData.isBraveTodayOptedIn}
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
           onDisable={this.toggleShowToday}
@@ -697,7 +696,6 @@ class NewTabPage extends React.Component<Props, State> {
           onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
-          onOptIn={this.props.actions.today.optIn}
           onViewedDisplayAd={this.props.actions.today.displayAdViewed}
           onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
           getDisplayAd={this.props.getBraveNewsDisplayAd}

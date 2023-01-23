@@ -10,6 +10,7 @@ import * as TodayActions from '../../../actions/today_actions'
 import * as BraveTodayElement from './default'
 import CardOptIn from './cards/cardOptIn'
 import CardLoading from './cards/cardLoading'
+import { useNewTabPref } from '../../../hooks/usePref'
 const Content = React.lazy(() => import('./content'))
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
@@ -23,7 +24,6 @@ export type Props = {
   isFetching: boolean
   hasInteracted: boolean
   isUpdateAvailable: boolean
-  isOptedIn: boolean
   isPrompting: boolean
   feed?: BraveNews.Feed
   publishers?: BraveNews.Publishers
@@ -40,7 +40,6 @@ export type Props = {
   onCustomizeBraveToday: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
-  onOptIn: () => any
   onDisable: () => unknown
   getDisplayAd: GetDisplayAdContent
 }
@@ -51,6 +50,7 @@ const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
 export default function BraveTodaySection (props: Props) {
   const dispatch = useDispatch()
+  const [optedIn, setOptedIn] = useNewTabPref('isBraveTodayOptedIn')
 
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
@@ -80,7 +80,7 @@ export default function BraveTodaySection (props: Props) {
   React.useEffect(() => {
     // When we have an element to observe, set it as the target.
     // Don't do anything if we don't need data.
-    if (!loadDataTrigger.current || !props.isOptedIn || !!props.feed) {
+    if (!loadDataTrigger.current || !optedIn || !!props.feed) {
       return
     }
     loadDataObserver.observe(loadDataTrigger.current)
@@ -88,14 +88,14 @@ export default function BraveTodaySection (props: Props) {
       // Cleanup current observer if we get a new observer, or a new element to observe
       loadDataObserver.disconnect()
     }
-  }, [loadDataObserver, loadDataTrigger.current, props.isOptedIn, !!props.feed])
+  }, [loadDataObserver, loadDataTrigger.current, optedIn, !!props.feed])
 
   // Only load all the content DOM elements if we're
   // scrolled far down enough, otherwise it's too easy to scroll down
   // by accident and get all the elements added.
   // Also sanity check isOptedIn, but without it there shouldn't be any content
   // anyway.
-  const shouldDisplayContent = props.isOptedIn &&
+  const shouldDisplayContent = optedIn &&
     (props.hasInteracted || props.isPrompting)
 
   return (
@@ -104,9 +104,9 @@ export default function BraveTodaySection (props: Props) {
         ref={loadDataTrigger}
         style={{ position: 'sticky', top: '100px' }}
       />
-      { !props.isOptedIn &&
+      { !optedIn &&
       <>
-        <CardOptIn onOptIn={props.onOptIn} onDisable={props.onDisable} />
+        <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={props.onDisable} />
       </>
       }
       { shouldDisplayContent &&

@@ -46,10 +46,6 @@ export function saveIsBrandedWallpaperNotificationDismissed (value: boolean): vo
   sendSavePref('isBrandedWallpaperNotificationDismissed', value)
 }
 
-export function saveIsBraveTodayOptedIn (value: boolean): void {
-  sendSavePref('isBraveTodayOptedIn', value)
-}
-
 export function saveSetAllStackWidgets (visible: boolean): void {
   sendSavePref('hideAllWidgets', !visible)
 }
