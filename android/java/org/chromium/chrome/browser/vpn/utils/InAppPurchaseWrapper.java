@@ -44,7 +44,7 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
-    private int mRetryCount = 0;
+    private int mRetryCount;
 
     private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
 
