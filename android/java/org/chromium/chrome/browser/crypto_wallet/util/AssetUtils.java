@@ -54,13 +54,14 @@ public class AssetUtils {
     public static class Filters {
         public static boolean isSameToken(BlockchainToken token1, BlockchainToken token2) {
             return token1.symbol.equals(token2.symbol)
-                    && token1.contractAddress.equals(token2.contractAddress)
+                    && token1.contractAddress.equalsIgnoreCase(token2.contractAddress)
                     && token1.chainId.equals(token2.chainId);
         }
 
         public static boolean isSameToken(
                 BlockchainToken token, String symbol, String contractAddress, String chainId) {
-            return token.symbol.equals(symbol) && token.contractAddress.equals(contractAddress)
+            return token.symbol.equals(symbol)
+                    && token.contractAddress.equalsIgnoreCase(contractAddress)
                     && token.chainId.equals(chainId);
         }
     }
