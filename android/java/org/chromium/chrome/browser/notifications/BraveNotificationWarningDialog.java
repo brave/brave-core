@@ -90,14 +90,14 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         return false;
     }
 
-    private static boolean shouldShowRewardWarningDialog(Context context) {
-        return BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(context)
-                && isBraveRewardsEnabled();
+    public static boolean shouldShowRewardWarningDialog(Context context) {
+        return isBraveRewardsEnabled()
+                && BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(context);
     }
 
-    private static boolean shouldShowPrivacyWarningDialog(Context context) {
-        return BravePermissionUtils.isGeneralNotificationPermissionBlocked(context)
-                && isPrivacyReportsEnabled();
+    public static boolean shouldShowPrivacyWarningDialog(Context context) {
+        return isPrivacyReportsEnabled()
+                && BravePermissionUtils.isGeneralNotificationPermissionBlocked(context);
     }
 
     private static boolean shouldShowBothWarningDialog(Context context) {
