@@ -18,26 +18,25 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl.BraveWalletServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
-import org.chromium.mojo.system.MojoException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PortfolioModel implements BraveWalletServiceObserver {
+public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public final LiveData<List<NftDataModel>> mNftModels;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<List<NftDataModel>> _mNftModels;
@@ -117,7 +116,9 @@ public class PortfolioModel implements BraveWalletServiceObserver {
 
     private void addServiceObservers() {
         if (mBraveWalletService != null) {
-            mBraveWalletService.addObserver(this);
+            BraveWalletServiceObserverImpl walletServiceObserver =
+                    new BraveWalletServiceObserverImpl(this);
+            mBraveWalletService.addObserver(walletServiceObserver);
         }
     }
 
@@ -187,31 +188,7 @@ public class PortfolioModel implements BraveWalletServiceObserver {
     }
 
     @Override
-    public void onActiveOriginChanged(OriginInfo originInfo) {}
-
-    @Override
-    public void onDefaultEthereumWalletChanged(int wallet) {}
-
-    @Override
-    public void onDefaultSolanaWalletChanged(int wallet) {}
-
-    @Override
-    public void onDefaultBaseCurrencyChanged(String currency) {}
-
-    @Override
-    public void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {}
-
-    @Override
-    public void onNetworkListChanged() {}
-
-    @Override
     public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
         _mIsDiscoveringUserAssets.postValue(false);
     }
-
-    @Override
-    public void onConnectionError(MojoException e) {}
-
-    @Override
-    public void close() {}
 }
