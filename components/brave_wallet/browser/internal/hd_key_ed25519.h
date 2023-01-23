@@ -43,6 +43,7 @@ class HDKeyEd25519 : public HDKeyBase {
               const std::vector<uint8_t>& sig) override;
 
   std::string GetEncodedPrivateKey() const override;
+  std::vector<uint8_t> GetPrivateKeyBytes() const override;
 
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;

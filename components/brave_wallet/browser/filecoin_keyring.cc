@@ -114,9 +114,10 @@ std::string FilecoinKeyring::GetEncodedPrivateKey(const std::string& address) {
   if (!key) {
     return "";
   }
-  return GetExportEncodedJSON(
-      base::Base64Encode(static_cast<HDKey*>(key)->private_key()), address);
+  return GetExportEncodedJSON(base::Base64Encode(key->GetPrivateKeyBytes()),
+                              address);
 }
+
 // static
 std::string FilecoinKeyring::GetExportEncodedJSON(
     const std::string& base64_encoded_private_key,
@@ -193,10 +194,10 @@ absl::optional<std::string> FilecoinKeyring::SignTransaction(
   if (!tx)
     return absl::nullopt;
   auto address = tx->from().EncodeAsString();
-  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return absl::nullopt;
-  return tx->GetSignedTransaction(hd_key->private_key());
+  return tx->GetSignedTransaction(hd_key->GetPrivateKeyBytes());
 }
 
 }  // namespace brave_wallet

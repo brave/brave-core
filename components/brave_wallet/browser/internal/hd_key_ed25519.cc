@@ -92,6 +92,11 @@ std::string HDKeyEd25519::GetEncodedPrivateKey() const {
   return GetBase58EncodedKeypair();
 }
 
+std::vector<uint8_t> HDKeyEd25519::GetPrivateKeyBytes() const {
+  auto secret_key = private_key_->unwrap().secret_key_raw();
+  return {secret_key.begin(), secret_key.end()};
+}
+
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {
   auto public_key = private_key_->unwrap().public_key_raw();
   return EncodeBase58(public_key);

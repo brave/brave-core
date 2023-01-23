@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
@@ -19,11 +20,12 @@
 
 namespace brave_wallet {
 
+using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
+
 // This class implement basic functionality of bip32 spec
 class HDKey : public HDKeyBase {
  public:
   HDKey();
-  HDKey(uint8_t depth, uint32_t parent_fingerprint, uint32_t index);
   ~HDKey() override;
 
   static std::unique_ptr<HDKey> GenerateFromSeed(
@@ -36,18 +38,13 @@ class HDKey : public HDKeyBase {
   static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
                                                   const std::string& json);
 
-  // value must be 32 bytes
-  void SetPrivateKey(std::unique_ptr<std::vector<uint8_t>,
-                                     SecureZeroVectorDeleter<uint8_t>> key);
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
   std::string GetEncodedPrivateKey() const override;
-  const std::vector<uint8_t>& private_key() const { return *private_key_; }
+  std::vector<uint8_t> GetPrivateKeyBytes() const override;
   // TODO(darkdh): For exporting private key as keystore file
   // std::string GetPrivateKeyinV3UTC() const;
 
-  // value must be 33 bytes valid public key (compressed)
-  void SetPublicKey(const std::vector<uint8_t>& value);
   // base58 encoded of hash160 of public key
   std::string GetPublicExtendedKey() const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
@@ -58,8 +55,6 @@ class HDKey : public HDKeyBase {
       const std::vector<uint8_t>& nonce,
       const std::vector<uint8_t>& ephemeral_public_key,
       const std::vector<uint8_t>& ciphertext) const;
-
-  void SetChainCode(const std::vector<uint8_t>& value);
 
   // index should be 0 to 2^32
   // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
@@ -92,27 +87,35 @@ class HDKey : public HDKeyBase {
                                int recid);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(Eip1559TransactionUnitTest,
+                           GetSignedTransactionAndHash);
+  FRIEND_TEST_ALL_PREFIXES(Eip2930TransactionUnitTest,
+                           GetSignedTransactionAndHash);
+  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);
+  FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransactionAndHash);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, GenerateFromExtendedKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPrivateKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
 
+  // value must be 32 bytes
+  void SetPrivateKey(base::span<const uint8_t> value);
+  void SetChainCode(base::span<const uint8_t> value);
+  // value must be 33 bytes valid public key (compressed)
+  void SetPublicKey(const std::vector<uint8_t>& value);
+
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);
-  std::string Serialize(
-      uint32_t version,
-      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
-          key) const;
+  std::string Serialize(uint32_t version, base::span<const uint8_t> key) const;
 
-  uint8_t depth_;
-  uint32_t fingerprint_;
-  uint32_t parent_fingerprint_;
-  uint32_t index_;
+  uint8_t depth_ = 0;
+  uint32_t fingerprint_ = 0;
+  uint32_t parent_fingerprint_ = 0;
+  uint32_t index_ = 0;
   std::vector<uint8_t> identifier_;
-  std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>
-      private_key_;
+  SecureVector private_key_;
   std::vector<uint8_t> public_key_;
-  std::vector<uint8_t> chain_code_;
+  SecureVector chain_code_;
 
   raw_ptr<secp256k1_context> secp256k1_ctx_ = nullptr;
 

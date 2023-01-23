@@ -32,6 +32,7 @@ class HDKeyBase {
                       const std::vector<uint8_t>& sig) = 0;
 
   virtual std::string GetEncodedPrivateKey() const = 0;
+  virtual std::vector<uint8_t> GetPrivateKeyBytes() const = 0;
 };
 }  // namespace brave_wallet
 

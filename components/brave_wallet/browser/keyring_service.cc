@@ -26,8 +26,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -784,8 +783,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
 
   if (IsFilecoinEnabled()) {
     // Restore mainnet filecoin acc
-    auto* filecoin_keyring = RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic,
-                                            password, is_legacy_brave_wallet);
+    auto* filecoin_keyring =
+        RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic, password, false);
     if (filecoin_keyring && !filecoin_keyring->GetAccountsNumber()) {
       auto address =
           AddAccountForKeyring(mojom::kFilecoinKeyringId, GetAccountName(1));
@@ -796,9 +795,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
     }
 
     // Restore testnet filecoin acc
-    auto* testnet_filecoin_keyring =
-        RestoreKeyring(mojom::kFilecoinTestnetKeyringId, mnemonic, password,
-                       is_legacy_brave_wallet);
+    auto* testnet_filecoin_keyring = RestoreKeyring(
+        mojom::kFilecoinTestnetKeyringId, mnemonic, password, false);
     if (testnet_filecoin_keyring &&
         !testnet_filecoin_keyring->GetAccountsNumber()) {
       auto address = AddAccountForKeyring(mojom::kFilecoinTestnetKeyringId,
@@ -812,8 +810,8 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   }
 
   if (IsSolanaEnabled()) {
-    auto* solana_keyring = RestoreKeyring(mojom::kSolanaKeyringId, mnemonic,
-                                          password, is_legacy_brave_wallet);
+    auto* solana_keyring =
+        RestoreKeyring(mojom::kSolanaKeyringId, mnemonic, password, false);
     if (solana_keyring && !solana_keyring->GetAccountsNumber()) {
       auto address =
           AddAccountForKeyring(mojom::kSolanaKeyringId, GetAccountName(1));
@@ -1091,7 +1089,7 @@ void KeyringService::ImportAccountFromJson(const std::string& account_name,
   }
 
   auto address = ImportAccountForKeyring(mojom::kDefaultKeyringId, account_name,
-                                         hd_key->private_key());
+                                         hd_key->GetPrivateKeyBytes());
   if (!address) {
     std::move(callback).Run(false, "");
     return;

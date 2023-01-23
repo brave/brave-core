@@ -5,26 +5,35 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
+// https://github.com/satoshilabs/slips/blob/master/slip-0010.md#test-vector-1-for-ed25519
 TEST(HDKeyEd25519UnitTest, TestVector1) {
   std::vector<uint8_t> bytes;
   EXPECT_TRUE(
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
+
   // m
   auto master_key_base = HDKeyEd25519::GenerateFromSeed(bytes);
   HDKeyEd25519* master_key = static_cast<HDKeyEd25519*>(master_key_base.get());
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(master_key->GetPrivateKeyBytes())),
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7");
   EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),
             "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
   EXPECT_EQ(master_key->GetBase58EncodedKeypair(),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");
+
   // m/0'/1'/2'/2'/1000000000'
   auto child_base =
       master_key->DeriveChildFromPath("m/0'/1'/2'/2'/1000000000'");
   HDKeyEd25519* child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "53n47S4RT9ozx5KrpH6uYfdnAjrTBJri8qZJBvRfw1Bf");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -33,6 +42,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'
   child_base = master_key->DeriveChild(0);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "68e0fe46dfb67e368c75379acec591dad19df3cde26e63b93a8e704f1dade7a3");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "ATcCGRoY87cSJESCXbHXEX6CDWQxepAViUvVnNsELhRu");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -41,6 +52,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'/1'
   child_base = child->DeriveChild(1);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "b1d0bad404bf35da785a64ca1ac54b2617211d2777696fbffaf208f746ae84f2");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "2hMz2f8WbLw5m2icKR2WVrcizvnguw8xaAnXjaeohuHQ");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -49,6 +62,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'/1'/2'
   child_base = child->DeriveChild(2);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "92a5b23c0b8a99e37d07df3fb9966917f5d06e02ddbd909c7e184371463e9fc9");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "CkYmXLvWehLXBzUAJ3g3wsfc5QjoCtWtSydquF7HDxXS");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -57,6 +72,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'/1'/2'/2'
   child_base = child->DeriveChild(2);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "30d1dc7e5fc04c31219ab25a27ae00b50f6fd66622f6e9c913253d6511d1e662");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "ALYYdMp2jVV4HGsZZPfLy1BQLMHL2CQG5XHpzr2XiHCw");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -65,6 +82,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'/1'/2'/2'/1000000000'
   child_base = child->DeriveChild(1000000000);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "53n47S4RT9ozx5KrpH6uYfdnAjrTBJri8qZJBvRfw1Bf");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -72,15 +91,20 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "wwz55D49JUDFic5Fu2gDjX");
 }
 
+// https://github.com/satoshilabs/slips/blob/master/slip-0010.md#test-vector-2-for-ed25519
 TEST(HDKeyEd25519UnitTest, TestVector2) {
   std::vector<uint8_t> bytes;
   EXPECT_TRUE(base::HexStringToBytes(
       "fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c9996"
       "93908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542",
       &bytes));
+
   // m
   auto master_key_base = HDKeyEd25519::GenerateFromSeed(bytes);
   HDKeyEd25519* master_key = static_cast<HDKeyEd25519*>(master_key_base.get());
+  EXPECT_EQ(
+      base::ToLowerASCII(base::HexEncode(master_key->GetPrivateKeyBytes())),
+      "171cb88b1b3c1db25add599712e36245d75bc65a1a5c9e18d76f9f2b1eab4012");
   EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),
             "AgmjPHe5Qs4VakvXHGnd6NsYjaxt4suMUtf39TayrSfb");
   EXPECT_EQ(master_key->GetBase58EncodedKeypair(),
@@ -90,6 +114,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   auto child_base =
       master_key->DeriveChildFromPath("m/0'/2147483647'/1'/2147483646'/2'");
   HDKeyEd25519* child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "5nUZbtNefYa7tWHdpQApxsjPLtTZpKuZYnKDsd2dXADu");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -98,6 +124,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'
   child_base = master_key->DeriveChild(0);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "1559eb2bbec5790b0c65d8693e4d0875b1747f4970ae8b650486ed7470845635");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "A5uN5c31sqKK4x82gXeHzsBFpBTTusPDHBZT111V3u4i");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -106,6 +134,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'/2147483647'
   child_base = child->DeriveChild(2147483647);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "ea4f5bfe8694d8bb74b7b59404632fd5968b774ed545e810de9c32a4fb4192f4");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "7AiuCW2Mg2vRAHsrVmsM3uFky4XRaXHqqcemSp6Bract");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -114,6 +144,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'/2147483647'/1'
   child_base = child->DeriveChild(1);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "3757c7577170179c7868353ada796c839135b3d30554bbb74a4b1e4a5a58505c");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "488Z1Z7moahUL7Np2JMrApWbWwdUEBzSfEioz9vj7vCc");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -122,6 +154,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'/2147483647'/1'/2147483646'
   child_base = child->DeriveChild(2147483646);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "5837736c89570de861ebc173b1086da4f505d4adb387c6a1b1342d5e4ac9ec72");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "GJ2famWaTaWgT5oYvi1dqA7cvtoKMzyje1Pcx1bL9Nsc");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
@@ -130,6 +164,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'/2147483647'/1'/2147483646'/2'
   child_base = child->DeriveChild(2);
   child = static_cast<HDKeyEd25519*>(child_base.get());
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
+            "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d");
   EXPECT_EQ(child->GetBase58EncodedPublicKey(),
             "5nUZbtNefYa7tWHdpQApxsjPLtTZpKuZYnKDsd2dXADu");
   EXPECT_EQ(child->GetBase58EncodedKeypair(),
