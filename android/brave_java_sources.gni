@@ -142,6 +142,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletAccountCreationRequest.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletListItemModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/ApprovedTxObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/BraveWalletServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/KeyringServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/TxServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",

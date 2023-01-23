@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -92,6 +93,7 @@ public class PortfolioFragment
     private TextView mTvNftTitle;
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
+    private ProgressBar mPbAssetDiscovery;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -119,20 +121,22 @@ public class PortfolioFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
+            mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            mWalletModel = activity.getWalletModel();
-            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
-        }
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
         mRvCoins = view.findViewById(R.id.rvCoins);
         mChartES = view.findViewById(R.id.line_chart);
+        mPbAssetDiscovery = view.findViewById(R.id.frag_port_pb_asset_discovery);
         mRvCoins.addItemDecoration(
                 new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
@@ -209,6 +213,15 @@ public class PortfolioFragment
                         mCurrentPendingTx = mPendingTxs.get(0);
                     }
                     updatePendingTxNotification();
+                });
+        mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
+                getViewLifecycleOwner(), isDiscoveringUserAssets -> {
+                    if (isDiscoveringUserAssets) {
+                        AndroidUtils.show(mPbAssetDiscovery);
+                    } else {
+                        AndroidUtils.gone(mPbAssetDiscovery);
+                        updatePortfolioGetPendingTx();
+                    }
                 });
 
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
