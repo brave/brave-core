@@ -15,6 +15,7 @@ group("android_deps") {
     ":com_google_android_exoplayer_exoplayer_extractor_java",
     ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_google_android_exoplayer_extension_cast_java",
+    ":com_google_android_exoplayer_extension_mediasession_java",
     ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
@@ -89,9 +90,11 @@ android_aar_prebuilt("com_brave_playlist_java") {
   aar_path = "libs/com_brave_playlist/playlist_release.aar"
   info_path = "libs/com_brave_playlist/playlist_release.info"
   deps = [
+    ":com_github_bumptech_glide_java",
     ":com_google_android_exoplayer_exoplayer_core_java",
     ":com_google_android_exoplayer_exoplayer_ui_java",
     ":com_google_android_exoplayer_extension_cast_java",
+    ":com_google_android_exoplayer_extension_mediasession_java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_appcompat_appcompat_java",
     "//third_party/androidx:androidx_constraintlayout_constraintlayout_java",
@@ -178,13 +181,20 @@ android_aar_prebuilt("com_google_android_exoplayer_exoplayer_ui_java") {
 android_aar_prebuilt("com_google_android_exoplayer_extension_cast_java") {
   aar_path = "libs/com_google_android_exoplayer_extension_cast/extension-cast-2.17.1.aar"
   info_path = "libs/com_google_android_exoplayer_extension_cast/com_google_android_exoplayer_extension_cast.info"
-  deps =
-      [ "//third_party/android_deps:google_play_services_cast_framework_java" ]
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    "//third_party/android_deps:google_play_services_cast_framework_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_media_media_java",
+  ]
 }
 
 android_aar_prebuilt(
     "com_google_android_exoplayer_extension_mediasession_java") {
   aar_path = "libs/com_google_android_exoplayer_extension_mediasession/extension-mediasession-2.17.1.aar"
   info_path = "libs/com_google_android_exoplayer_extension_mediasession/com_google_android_exoplayer_extension_mediasession.info"
-  deps = [ "//third_party/androidx:androidx_media_media_java" ]
+  deps = [
+    ":com_google_android_exoplayer_exoplayer_common_java",
+    "//third_party/androidx:androidx_media_media_java",
+  ]
 }
