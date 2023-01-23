@@ -469,7 +469,15 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       return 0.0
     case .searchSuggestions:
       return dataSource.suggestions.isEmpty ? 0 : headerHeight * 2.0
-    case .openTabsAndHistoryAndBookmarks: return data.isEmpty ? 0 : 2.0 * headerHeight
+    case .openTabsAndHistoryAndBookmarks:
+      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
+      // when search suggestions is not enabled
+      if Preferences.Privacy.privateBrowsingOnly.value,
+        dataSource.searchEngines?.shouldShowSearchSuggestions == false {
+        return 0
+      }
+      
+      return data.isEmpty ? 0 : 2.0 * headerHeight
     case .findInPage:
       if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
         return headerHeight
