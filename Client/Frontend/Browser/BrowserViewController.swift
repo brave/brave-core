@@ -2394,7 +2394,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 
 extension BrowserViewController: TabDelegate {
   func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {
-    webView.scrollView.contentInsetAdjustmentBehavior = .never
     webView.frame = webViewContainer.frame
     
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
@@ -2464,7 +2463,6 @@ extension BrowserViewController: TabDelegate {
     KVOs.forEach { webView.removeObserver(self, forKeyPath: $0.rawValue) }
     toolbarVisibilityViewModel.endScrollViewObservation(webView.scrollView)
     webView.uiDelegate = nil
-    webView.scrollView.delegate = nil
     webView.removeFromSuperview()
   }
 
