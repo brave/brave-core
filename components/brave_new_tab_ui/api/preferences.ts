@@ -26,10 +26,6 @@ export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
 }
 
-export function saveShowToday (value: boolean): void {
-  sendSavePref('showToday', value)
-}
-
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }

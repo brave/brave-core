@@ -40,7 +40,6 @@ export type Props = {
   onCustomizeBraveToday: () => any
   onRefresh: () => any
   onCheckForUpdate: () => any
-  onDisable: () => unknown
   getDisplayAd: GetDisplayAdContent
 }
 
@@ -51,6 +50,7 @@ const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 export default function BraveTodaySection (props: Props) {
   const dispatch = useDispatch()
   const [optedIn, setOptedIn] = useNewTabPref('isBraveTodayOptedIn')
+  const [,setShowToday] = useNewTabPref('showToday')
 
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
@@ -106,7 +106,7 @@ export default function BraveTodaySection (props: Props) {
       />
       { !optedIn &&
       <>
-        <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={props.onDisable} />
+        <CardOptIn onOptIn={() => setOptedIn(true)} onDisable={() => setShowToday(false)} />
       </>
       }
       { shouldDisplayContent &&
