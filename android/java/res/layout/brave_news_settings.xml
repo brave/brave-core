@@ -187,7 +187,7 @@
           </androidx.constraintlayout.widget.ConstraintLayout>
 
           <androidx.constraintlayout.widget.ConstraintLayout
-               android:id="@+id/layout_suggested"
+               android:id="@+id/layout_suggestions"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="24dp"
@@ -195,39 +195,39 @@
                android:visibility="gone">
 
                <ImageView
-                    android:id="@+id/iv_suggested"
+                    android:id="@+id/iv_suggestions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:padding="8dp"
-                    app:srcCompat="@drawable/ic_suggested"
+                    app:srcCompat="@drawable/ic_suggestions"
                     android:background="@drawable/ic_circle_news_settings"
                     android:contentDescription="@null"/>
 
                <TextView
-                    android:id="@+id/tv_suggested"
+                    android:id="@+id/tv_suggestions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/suggested"
+                    android:text="@string/suggestions"
                     android:textSize="16sp"
                     android:textColor="@color/news_settings_title_color"
                     android:layout_marginStart="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_suggested"
+                    app:layout_constraintStart_toEndOf="@id/iv_suggestions"
                     app:layout_constraintTop_toTopOf="parent"/>
 
                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/suggested_subtitle"
+                    android:text="@string/suggestions_subtitle"
                     android:textSize="14sp"
                     android:textColor="@color/news_settings_subtitle_color"
                     android:layout_marginStart="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_suggested"
-                    app:layout_constraintTop_toBottomOf="@id/tv_suggested"/>
+                    app:layout_constraintStart_toEndOf="@id/iv_suggestions"
+                    app:layout_constraintTop_toBottomOf="@id/tv_suggestions"/>
 
           </androidx.constraintlayout.widget.ConstraintLayout>
 

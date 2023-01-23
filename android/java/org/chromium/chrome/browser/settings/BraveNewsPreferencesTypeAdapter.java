@@ -90,10 +90,11 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
 
         } else if (holder instanceof NewsPreferencesViewHolder) {
             NewsPreferencesViewHolder viewHolder = (NewsPreferencesViewHolder) holder;
+
             if ((mBraveNewsPreferencesType.equalsIgnoreCase(
                          BraveNewsPreferencesType.PopularSources.toString())
                         || mBraveNewsPreferencesType.equalsIgnoreCase(
-                                BraveNewsPreferencesType.Suggested.toString()))
+                                BraveNewsPreferencesType.Suggestions.toString()))
                     && position < mPublisherList.size()) {
                 setSource(position, viewHolder, mPublisherList.get(position));
 
@@ -389,7 +390,7 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
         if (mBraveNewsPreferencesType.equalsIgnoreCase(
                     BraveNewsPreferencesType.PopularSources.toString())
                 || mBraveNewsPreferencesType.equalsIgnoreCase(
-                        BraveNewsPreferencesType.Suggested.toString())) {
+                        BraveNewsPreferencesType.Suggestions.toString())) {
             return mPublisherList.size();
 
         } else if (mBraveNewsPreferencesType.equalsIgnoreCase(

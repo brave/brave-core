@@ -62,7 +62,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private View mLayoutSwitch;
     private View mDivider;
     private View mLayoutPopularSources;
-    private View mLayoutSuggested;
+    private View mLayoutSuggestions;
     private View mLayoutChannels;
     private View mLayoutFollowing;
 
@@ -102,7 +102,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mTvSearch = (TextView) view.findViewById(R.id.tv_search);
             mTvFollowingCount = (TextView) view.findViewById(R.id.tv_following_count);
             mLayoutPopularSources = (View) view.findViewById(R.id.layout_popular_sources);
-            mLayoutSuggested = (View) view.findViewById(R.id.layout_suggested);
+            mLayoutSuggestions = (View) view.findViewById(R.id.layout_suggestions);
             mLayoutChannels = (View) view.findViewById(R.id.layout_channels);
             mLayoutFollowing = (View) view.findViewById(R.id.layout_following);
 
@@ -130,7 +130,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         }
 
         if (BraveNewsUtils.getLocale() != null
-                && BraveNewsUtils.getSuggestedPublisherList().size() > 0) {
+                && BraveNewsUtils.getSuggestionsPublisherList().size() > 0) {
             mIsSuggestionAvailable = true;
         }
 
@@ -149,7 +149,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             if (!mIsSuggestionAvailable) {
                 PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
                     if (mBraveNewsController != null) {
-                        BraveNewsUtils.getSuggestedSources(mBraveNewsController, this);
+                        BraveNewsUtils.getSuggestionsSources(mBraveNewsController, this);
                     }
                 });
             }
@@ -172,8 +172,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             openBraveNewsPreferencesDetails(BraveNewsPreferencesType.PopularSources);
         });
 
-        mLayoutSuggested.setOnClickListener(
-                view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Suggested); });
+        mLayoutSuggestions.setOnClickListener(
+                view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Suggestions); });
 
         mLayoutChannels.setOnClickListener(
                 view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Channels); });
@@ -221,7 +221,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             sharedPreferencesEditor.apply();
 
             if (mIsSuggestionAvailable) {
-                mLayoutSuggested.setVisibility(View.VISIBLE);
+                mLayoutSuggestions.setVisibility(View.VISIBLE);
             }
 
         } else {
@@ -232,7 +232,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             mDivider.setVisibility(View.GONE);
             mTvSearch.setVisibility(View.GONE);
             mLayoutPopularSources.setVisibility(View.GONE);
-            mLayoutSuggested.setVisibility(View.GONE);
+            mLayoutSuggestions.setVisibility(View.GONE);
             mLayoutChannels.setVisibility(View.GONE);
             mLayoutFollowing.setVisibility(View.GONE);
         }
@@ -302,9 +302,9 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     @Override
     public void onSuggestionsReceived() {
         if (mSwitchShowNews != null && mSwitchShowNews.isChecked()
-                && BraveNewsUtils.getSuggestedPublisherList().size() > 0) {
-            if (mLayoutSuggested != null) {
-                mLayoutSuggested.setVisibility(View.VISIBLE);
+                && BraveNewsUtils.getSuggestionsPublisherList().size() > 0) {
+            if (mLayoutSuggestions != null) {
+                mLayoutSuggestions.setVisibility(View.VISIBLE);
             }
         }
     }
