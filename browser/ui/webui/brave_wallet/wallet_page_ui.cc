@@ -159,13 +159,6 @@ void WalletPageUI::CreatePageHandler(
   brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
       profile, std::move(brave_wallet_auto_pin_service_receiver));
 
-#if BUILDFLAG(ENABLE_IPFS)
-  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_pin_service_receiver));
-  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_auto_pin_service_receiver));
-#endif
-
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));

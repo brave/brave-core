@@ -128,7 +128,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 
   registry->RegisterDictionaryPref(kPinnedErc721Assets);
-  registry->RegisterBooleanPref(kAutoPinEnabled, true);
+  registry->RegisterBooleanPref(kAutoPinEnabled, false);
 }
 
 void RegisterProfilePrefsForMigration(

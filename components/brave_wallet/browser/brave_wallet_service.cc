@@ -1451,7 +1451,7 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
 
 
   asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(
-      account_addresses);
+      addresses);
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
