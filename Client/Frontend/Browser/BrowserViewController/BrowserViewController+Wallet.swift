@@ -370,6 +370,8 @@ extension Tab: BraveWalletProviderDelegate {
 
 extension Tab: BraveWalletEventsListener {
   func emitEthereumEvent(_ event: Web3ProviderEvent) {
+    guard !isPrivate else { return }
+    
     guard Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue else {
       return
     }
@@ -386,6 +388,8 @@ extension Tab: BraveWalletEventsListener {
   }
   
   func chainChangedEvent(_ chainId: String) {
+    guard !isPrivate else { return }
+    
     Task { @MainActor in
       /// Temporary fix for #5404
       /// Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
@@ -397,6 +401,8 @@ extension Tab: BraveWalletEventsListener {
   }
   
   func accountsChangedEvent(_ accounts: [String]) {
+    guard !isPrivate else { return }
+    
     /// Temporary fix for #5402.
     /// If we emit from one account directly to another we're not seeing dapp sites
     /// update our selected account. If we emit an undefined/empty string before
@@ -407,7 +413,8 @@ extension Tab: BraveWalletEventsListener {
   }
   
   func updateEthereumProperties() {
-    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
+    guard !isPrivate,
+          let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
           let walletService = BraveWallet.ServiceFactory.get(privateMode: false),
           Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue else {
       return

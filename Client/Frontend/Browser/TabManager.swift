@@ -489,28 +489,28 @@ class TabManager: NSObject {
       tab.id = UUID().uuidString
     } else {
       tab.id = id ?? TabMO.create()
-    }
-
-    if let (provider, js) = makeWalletEthProvider?(tab) {
-      let providerJS = """
-      window.__firefox__.execute(function($, $Object) {
-        if (window.isSecureContext) {
-          \(js)
-        }
-      });
-      """
       
-      tab.walletEthProvider = provider
-      tab.walletEthProvider?.`init`(tab)
-      tab.walletEthProviderScript = WKUserScript.create(source: providerJS,
-                                                        injectionTime: .atDocumentStart,
-                                                        forMainFrameOnly: true,
-                                                        in: EthereumProviderScriptHandler.scriptSandbox)
-    }
-    if let (provider, jsScripts) = makeWalletSolProvider?(tab) {
-      tab.walletSolProvider = provider
-      tab.walletSolProvider?.`init`(tab)
-      tab.walletSolProviderScripts = jsScripts
+      if let (provider, js) = makeWalletEthProvider?(tab) {
+        let providerJS = """
+        window.__firefox__.execute(function($, $Object) {
+          if (window.isSecureContext) {
+            \(js)
+          }
+        });
+        """
+        
+        tab.walletEthProvider = provider
+        tab.walletEthProvider?.`init`(tab)
+        tab.walletEthProviderScript = WKUserScript.create(source: providerJS,
+                                                          injectionTime: .atDocumentStart,
+                                                          forMainFrameOnly: true,
+                                                          in: EthereumProviderScriptHandler.scriptSandbox)
+      }
+      if let (provider, jsScripts) = makeWalletSolProvider?(tab) {
+        tab.walletSolProvider = provider
+        tab.walletSolProvider?.`init`(tab)
+        tab.walletSolProviderScripts = jsScripts
+      }
     }
     
     delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
