@@ -5499,17 +5499,18 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback,
-              Run(url_value(), mojom::SolanaProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(testing::Eq(url_value()),
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for url record account. Fail resolution.
   url_record_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5521,17 +5522,18 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
 
   // No url record. Will return ipfs record.
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback,
-              Run(ipfs_value(), mojom::SolanaProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(testing::Eq(ipfs_value()),
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for ipfs record account. Fail resolution.
   ipfs_record_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5539,9 +5541,10 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
 
   // No ipfs record account. Fail resolution.
   ipfs_record_address_handler_->Disable();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
