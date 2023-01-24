@@ -87,10 +87,7 @@ void BraveWalletAutoPinService::OnTokenListResolved(
       continue;
     }
 
-    auto it = known_tokens.find(current_token_path.value());
-    if (it != known_tokens.end()) {
-      known_tokens.erase(it);
-    }
+    known_tokens.erase(current_token_path.value());
 
     mojom::TokenPinStatusPtr status =
         brave_wallet_pin_service_->GetTokenStatus(absl::nullopt, token);

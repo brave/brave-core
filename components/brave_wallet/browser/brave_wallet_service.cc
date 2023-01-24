@@ -1450,7 +1450,8 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
   addresses[mojom::CoinType::SOL] = std::move(sol_account_addresses);
 
   // Discover assets owned by the SOL and ETH addresses on all supported chains
-  asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(addresses);
+  asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(
+      addresses);
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {

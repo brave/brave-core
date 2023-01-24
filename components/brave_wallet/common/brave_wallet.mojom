@@ -266,6 +266,9 @@ interface BraveWalletPinServiceObserver {
 };
 
 // Low-level interface for token pinning.
+// String service argument is used to select on which pinning
+// service operation should be performed.
+// At the moment we have only local pinning, so use null.
 interface WalletPinService {
   AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
 
@@ -279,13 +282,14 @@ interface WalletPinService {
   // Returns overview for provided token.
   GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
                                             PinError? error);
-  // Checks whether token in pinned correctly.
+  // Checks whether token is pinned correctly.
   Validate(BlockchainToken token, string? service) => (bool result,
                                                        PinError? error);
   // Returns whether IPFS localnode is currently running.
   IsLocalNodeRunning() => (bool result);
 
   // Returns whether token is supported for pinning.
+  // Note: You should manually check token metadata url to have ipfs:// url.
   IsTokenSupported(BlockchainToken token) => (bool result);
 };
 

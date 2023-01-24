@@ -423,7 +423,8 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(String tokenUrl, String erc721Metadata, Integer errorCode, String errorMessage) {
+        public void call(
+                String tokenUrl, String erc721Metadata, Integer errorCode, String errorMessage) {
             this.tokenMetadata = erc721Metadata;
             this.errorCode = errorCode;
             this.errorMessage = errorMessage;

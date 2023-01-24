@@ -33,6 +33,11 @@ const char kAssetUrlListKey[] = "cids";
 namespace {
 
 const char kNftPart[] = "nft";
+/**
+ * Service name used in prefs for local pinning service.
+ * Use absl::nullopt in methods to perform operations on
+ * the local pinning service.
+ */
 const char kLocalService[] = "local";
 
 absl::optional<mojom::TokenPinStatusCode> StringToStatus(

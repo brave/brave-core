@@ -27,6 +27,10 @@
 
 namespace brave_wallet {
 
+/**
+ * At the moment only local pinning is supported so use absl::nullopt
+ * for optional service argument.
+ */
 class BraveWalletPinService : public KeyedService,
                               public brave_wallet::mojom::WalletPinService,
                               public ipfs::IpfsServiceObserver {
