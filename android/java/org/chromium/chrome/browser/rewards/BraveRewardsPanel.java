@@ -1668,11 +1668,8 @@ public class BraveRewardsPanel
         String vbatModalTitleString = "";
         String vbatModalTextString = "";
         double dueDateInMillis = mBraveRewardsNativeWorker.getVbatDeadline();
-        SimpleDateFormat sdf =
-                new SimpleDateFormat("MMMM dd, yyyy 'at' h:mm a", Locale.getDefault());
-        String dueDate = sdf.format(new Date((long) dueDateInMillis))
-                                 .replace("a.m.", "AM")
-                                 .replace("p.m.", "PM");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy h:mm a", Locale.getDefault());
+        String dueDate = sdf.format(new Date((long) dueDateInMillis));
         if (mBraveRewardsNativeWorker.canConnectAccount()) {
             vbatModalTitleString = mActivity.getString(R.string.vbat_supported_region_title);
             vbatModalTextString = String.format(

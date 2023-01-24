@@ -70,11 +70,9 @@
                         android:id="@+id/vbat_modal_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_marginHorizontal="24dp"
                         android:layout_marginTop="24dp"
                         android:fontFamily="@font/poppins_400"
-                        android:gravity="center"
                         android:textAlignment="viewStart"
                         android:textColor="@color/rewards_panel_text_color"
                         android:textSize="14sp" />
@@ -88,7 +86,7 @@
                         android:background="@drawable/blue_48_rounded_bg">
 
                         <android.widget.Button
-                            android:layout_width="wrap_content	"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:background="@android:color/transparent"
