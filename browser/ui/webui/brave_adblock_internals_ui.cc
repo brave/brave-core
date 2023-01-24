@@ -32,7 +32,7 @@ struct MemoryMetric {
   const char* const dump_name;
   // The type of metric that is measured, usually size in bytes or object count.
   const char* const metric;
-} kCollectedMemoryMetrics[] = {
+} const kCollectedMemoryMetrics[] = {
     {"malloc", "size"},
 };
 

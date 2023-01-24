@@ -439,6 +439,7 @@ source_set("ui") {
     "//content/public/common",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
+    "//services/resource_coordinator/public/cpp/memory_instrumentation:browser",
     "//skia",
     "//third_party/abseil-cpp:absl",
     "//ui/accessibility",
