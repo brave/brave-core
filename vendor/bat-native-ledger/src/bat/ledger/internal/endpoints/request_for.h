@@ -6,17 +6,24 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_REQUEST_FOR_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINTS_REQUEST_FOR_H_
 
+#include <tuple>
 #include <type_traits>
 #include <utility>
 
 #include "base/callback.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/time.h"
 #include "bat/ledger/internal/endpoints/request_builder.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger::endpoints {
+
+void SendImpl(LedgerImpl*,
+              absl::optional<std::tuple<mojom::UrlRequestPtr,
+                                        client::LoadURLCallback,
+                                        base::TimeDelta>> params);
 
 template <typename, typename = void>
 inline constexpr bool enumerator_check = false;
@@ -60,8 +67,10 @@ class RequestFor {
       return;
     }
 
-    ledger_->LoadURL(std::move(*request_), base::BindOnce(&Endpoint::OnResponse,
-                                                          std::move(callback)));
+    SendImpl(ledger_, std::tuple(std::move(*request_),
+                                 base::BindOnce(&Endpoint::OnResponse,
+                                                std::move(callback)),
+                                 base::Seconds(0)));
   }
 
  private:
