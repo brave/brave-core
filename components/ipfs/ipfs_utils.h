@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
@@ -47,6 +47,7 @@ bool ResolveIPFSURI(PrefService* prefs,
                     GURL* resolved_url);
 void SetIPFSDefaultGatewayForTest(const GURL& url);
 GURL GetDefaultIPFSLocalGateway(version_info::Channel channel);
+void SetDefaultNFTIPFSGateway(PrefService* prefs, const GURL& url);
 GURL GetDefaultNFTIPFSGateway(PrefService* prefs);
 GURL GetDefaultIPFSGateway(PrefService* prefs);
 GURL GetAPIServer(version_info::Channel channel);
