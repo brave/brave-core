@@ -27,10 +27,10 @@ TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
       MnemonicToSeed(std::string(mnemonic), "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
-  EXPECT_EQ(keyring.master_key_->GetEncodedPrivateKey(),
+  EXPECT_EQ(keyring.master_key_->EncodePrivateKeyForExport(),
             "2ZVNHVyrLDCBa6qxWmzDDDQEC9ZGuBt9JTynUBq67FKFp7R5nb32X8d4UN9gKnbgnP"
             "U4RBmdugcfPxtBbSvJdbM7");
-  EXPECT_EQ(keyring.root_->GetEncodedPrivateKey(),
+  EXPECT_EQ(keyring.root_->EncodePrivateKeyForExport(),
             "XUPar98T8X5HyvSw4pKk2cFi2zCMxzNcm8CJoQgDa3CjFpFKQic2cAFJhvaMgQCAQj"
             "Rs4sHHjiTqhAZ8F3tVR8D");
 }
@@ -44,7 +44,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
   keyring.AddAccounts(1);
   EXPECT_EQ(keyring.GetAddress(0),
             "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
-  EXPECT_EQ(keyring.GetEncodedPrivateKey(
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(
                 "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu"),
             "3WoEqkmeTX4BRTS3KNJCsqy7LktvEwbFSoqwMhC7xNgCG3zhwUptkT6KkJcbTpVJGX"
             "Rw9pd8CYVxZ8wLt8cUoVZb");
@@ -55,7 +55,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
 
   EXPECT_EQ(keyring.GetAddress(1),
             "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu");
-  EXPECT_EQ(keyring.GetEncodedPrivateKey(
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(
                 "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu"),
             "4pNHX6ATNXad3KZTb2PXTosW5ceaxqx45M9NH9pjcZCH9qoQKx6RMzUjuzm6J9Y2uw"
             "jCxJc5JsjL1TrGr1X3nPFP");
@@ -85,12 +85,12 @@ TEST(SolanaKeyringUnitTest, Accounts) {
   EXPECT_EQ(keyring.GetAccounts().size(), 3u);
   EXPECT_EQ(keyring.GetAddress(2),
             "HEuGsnLvkzHxmmCrFAPJpfSsGvW1zK6bSQykmPRhLxmY");
-  EXPECT_EQ(keyring.GetEncodedPrivateKey(
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(
                 "HEuGsnLvkzHxmmCrFAPJpfSsGvW1zK6bSQykmPRhLxmY"),
             "47rewUeufUCmtmes3uAGAo7AyM3bBYTvJdD1jQs9MGwB4eYn8SAyQUMNc9b5wFRhQy"
             "CP9WwmP7JMPAA9U9Q5E8xr");
 
-  EXPECT_TRUE(keyring.GetEncodedPrivateKey("brave").empty());
+  EXPECT_TRUE(keyring.EncodePrivateKeyForExport("brave").empty());
 }
 
 TEST(SolanaKeyringUnitTest, SignMessage) {
@@ -124,7 +124,7 @@ TEST(SolanaKeyringUnitTest, ImportAccount) {
       &private_key));
   keyring.ImportAccount(private_key);
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), 1u);
-  EXPECT_EQ(keyring.GetEncodedPrivateKey(
+  EXPECT_EQ(keyring.EncodePrivateKeyForExport(
                 "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ"),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");

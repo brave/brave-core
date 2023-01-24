@@ -8,7 +8,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <vector>
 
 namespace brave_wallet {
 
@@ -33,16 +32,6 @@ struct SecureZeroAllocator {
   }
   void deallocate(T* p, size_t n) {
     SecureZeroData(p, n);
-    ::operator delete(p);
-  }
-};
-
-// Deleter for std::vector to zero out memory when destruct
-template <typename T>
-struct SecureZeroVectorDeleter {
-  SecureZeroVectorDeleter() = default;
-  void operator()(std::vector<T>* p) const {
-    SecureZeroData(p->data(), p->size());
     ::operator delete(p);
   }
 };

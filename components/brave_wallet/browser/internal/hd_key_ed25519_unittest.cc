@@ -192,12 +192,12 @@ TEST(HDKeyEd25519UnitTest, Errors) {
   EXPECT_FALSE(child3);
 }
 
-TEST(HDKeyEd25519UnitTest, GetEncodedPrivateKey) {
+TEST(HDKeyEd25519UnitTest, EncodePrivateKeyForExport) {
   std::vector<uint8_t> bytes;
   EXPECT_TRUE(
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
   auto master_key = HDKeyEd25519::GenerateFromSeed(bytes);
-  EXPECT_EQ(master_key->GetEncodedPrivateKey(),
+  EXPECT_EQ(master_key->EncodePrivateKeyForExport(),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");
 }
@@ -232,7 +232,7 @@ TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
       "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
       &private_key));
   auto master_key = HDKeyEd25519::GenerateFromPrivateKey(private_key);
-  EXPECT_EQ(master_key->GetEncodedPrivateKey(),
+  EXPECT_EQ(master_key->EncodePrivateKeyForExport(),
             "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
             "YbQtaJQKLXET9jVjepWXe");
   EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),

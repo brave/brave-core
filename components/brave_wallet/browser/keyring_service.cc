@@ -927,25 +927,24 @@ void KeyringService::AddAccount(const std::string& account_name,
   std::move(callback).Run(keyring);
 }
 
-void KeyringService::GetPrivateKeyForKeyringAccount(
+void KeyringService::EncodePrivateKeyForExport(
     const std::string& address,
     const std::string& password,
     mojom::CoinType coin,
-    GetPrivateKeyForKeyringAccountCallback callback) {
+    EncodePrivateKeyForExportCallback callback) {
   if (address.empty() || !ValidatePasswordInternal(password)) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run("");
     return;
   }
 
   std::string keyring_id = GetKeyringId(coin, address);
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
-    std::move(callback).Run(false, "");
+    std::move(callback).Run("");
     return;
   }
 
-  std::string private_key = keyring->GetEncodedPrivateKey(address);
-  std::move(callback).Run(!private_key.empty(), private_key);
+  std::move(callback).Run(keyring->EncodePrivateKeyForExport(address));
 }
 
 bool KeyringService::IsKeyringExist(const std::string& keyring_id) const {

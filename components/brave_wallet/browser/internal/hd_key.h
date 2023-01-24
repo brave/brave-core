@@ -40,7 +40,7 @@ class HDKey : public HDKeyBase {
 
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
-  std::string GetEncodedPrivateKey() const override;
+  std::string EncodePrivateKeyForExport() const override;
   std::vector<uint8_t> GetPrivateKeyBytes() const override;
   // TODO(darkdh): For exporting private key as keystore file
   // std::string GetPrivateKeyinV3UTC() const;
