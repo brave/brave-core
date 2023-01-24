@@ -64,7 +64,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  base::Value GetDebugInfo();
+  base::Value::Dict GetDebugInfo();
   void DiscardRegex(uint64_t regex_id);
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 

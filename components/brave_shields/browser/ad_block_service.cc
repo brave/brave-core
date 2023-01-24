@@ -400,7 +400,7 @@ void AdBlockService::UseCustomSourceProvidersForTest(
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(
     GetDebugInfoCallback callback,
-    base::Value default_engine_debug_info) {
+    base::Value::Dict default_engine_debug_info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // base::Unretained() is safe because |additional_filters_engine_| is deleted

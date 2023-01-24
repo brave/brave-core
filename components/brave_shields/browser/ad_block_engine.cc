@@ -16,7 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/utf_string_conversions.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -178,26 +178,23 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
   return base::Contains(tags_, tag);
 }
 
-base::Value AdBlockEngine::GetDebugInfo() {
+base::Value::Dict AdBlockEngine::GetDebugInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const auto debug_info_struct = ad_block_client_->getAdblockDebugInfo();
-  base::Value regex_list(base::Value::Type::LIST);
+  base::Value::List regex_list;
   for (const auto& regex_entry : debug_info_struct.regex_data) {
-    base::Value regex_info(base::Value::Type::DICTIONARY);
-    regex_info.SetKey("id", base::Value(std::to_string(regex_entry.id)));
-    regex_info.SetKey("regex", base::Value(regex_entry.regex));
-    regex_info.SetKey("unused_sec",
-                      base::Value(static_cast<int>(regex_entry.unused_sec)));
-    regex_info.SetKey("usage_count",
-                      base::Value(static_cast<int>(regex_entry.usage_count)));
+    base::Value::Dict regex_info;
+    regex_info.Set("id", base::NumberToString(regex_entry.id));
+    regex_info.Set("regex", regex_entry.regex);
+    regex_info.Set("unused_sec", static_cast<int>(regex_entry.unused_sec));
+    regex_info.Set("usage_count", static_cast<int>(regex_entry.usage_count));
     regex_list.Append(std::move(regex_info));
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey(
-      "compiled_regex_count",
-      base::Value(static_cast<int>(debug_info_struct.compiled_regex_count)));
-  result.SetKey("regex_data", std::move(regex_list));
+  base::Value::Dict result;
+  result.Set("compiled_regex_count",
+             static_cast<int>(debug_info_struct.compiled_regex_count));
+  result.Set("regex_data", std::move(regex_list));
   return result;
 }
 

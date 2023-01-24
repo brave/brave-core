@@ -81,7 +81,7 @@ class BraveAdblockInternalsMessageHandler
                                base::Value("failed to get dump"));
     }
 
-    base::Value mem_info(base::Value::Type::DICTIONARY);
+    base::Value::Dict mem_info;
     CHECK(!dump->process_dumps().empty());
     const auto& pmd = dump->process_dumps().front();
     for (const auto& metric : kCollectedMemoryMetrics) {
@@ -89,15 +89,14 @@ class BraveAdblockInternalsMessageHandler
           pmd.GetMetric(metric.dump_name, metric.metric);
 
       if (value) {
-        mem_info.SetKey(
+        mem_info.Set(
             std::string(metric.dump_name) + "/" + metric.metric + "_kb",
-            base::Value(base::NumberToString(*value / 1024)));
+            base::NumberToString(*value / 1024));
       }
     }
 
-    mem_info.SetKey(
-        "private_footprint_kb",
-        base::Value(static_cast<int>(pmd.os_dump().private_footprint_kb)));
+    mem_info.Set("private_footprint_kb",
+                 static_cast<int>(pmd.os_dump().private_footprint_kb));
 
     g_brave_browser_process->ad_block_service()->GetDebugInfoAsync(
         base::BindOnce(&BraveAdblockInternalsMessageHandler::OnGetDebugInfo,
@@ -114,13 +113,13 @@ class BraveAdblockInternalsMessageHandler
   }
 
   void OnGetDebugInfo(const std::string& callback_id,
-                      base::Value mem_info,
-                      base::Value default_engine_info,
-                      base::Value additional_engine_info) {
-    base::Value result(base::Value::Type::DICTIONARY);
-    result.SetKey("default_engine", std::move(default_engine_info));
-    result.SetKey("additional_engine", std::move(additional_engine_info));
-    result.SetKey("memory", std::move(mem_info));
+                      base::Value::Dict mem_info,
+                      base::Value::Dict default_engine_info,
+                      base::Value::Dict additional_engine_info) {
+    base::Value::Dict result;
+    result.Set("default_engine", std::move(default_engine_info));
+    result.Set("additional_engine", std::move(additional_engine_info));
+    result.Set("memory", std::move(mem_info));
     ResolveJavascriptCallback(base::Value(callback_id), std::move(result));
   }
 
