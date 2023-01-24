@@ -14,25 +14,12 @@ namespace speedreader {
 
 SpeedReader::SpeedReader() : raw_(speedreader_new()) {}
 
-bool SpeedReader::deserialize(const char* data, size_t data_size) {
-  // no-op
-  return true;
-}
-
 SpeedReader::~SpeedReader() {
   speedreader_free(raw_);
 }
 
 std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(const std::string& url) {
   return std::make_unique<Rewriter>(raw_, url);
-}
-
-std::unique_ptr<Rewriter> SpeedReader::MakeRewriter(
-    const std::string& url,
-    void (*output_sink)(const char*, size_t, void*),
-    void* output_sink_user_data) {
-  return std::make_unique<Rewriter>(raw_, url, output_sink,
-                                    output_sink_user_data);
 }
 
 Rewriter::Rewriter(C_SpeedReader* speedreader, const std::string& url)

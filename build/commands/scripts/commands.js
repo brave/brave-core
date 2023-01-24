@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 const program = require('commander');
 const path = require('path')
@@ -8,6 +9,7 @@ const fs = require('fs-extra')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const build = require('../lib/build')
+const { buildFuzzer, runFuzzer } = require('../lib/fuzzer')
 const versions = require('../lib/versions')
 const start = require('../lib/start')
 const applyPatches = require('../lib/applyPatches')
@@ -301,6 +303,17 @@ program
 program
   .command('mass_rename')
   .action(util.massRename)
+
+program
+  .command('build_fuzzer <fuzzer_test_target>')
+  .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
+  .option('--goma_offline', 'use offline mode for goma')
+  .action(buildFuzzer)
+
+program
+  .command('run_fuzzer <suite>')
+  .allowUnknownOption(true)
+  .action(runFuzzer.bind(null, parsedArgs.unknown))
 
 program
   .parse(process.argv)
