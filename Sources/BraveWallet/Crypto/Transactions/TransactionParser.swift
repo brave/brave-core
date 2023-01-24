@@ -124,12 +124,16 @@ enum TransactionParser {
     case .erc20Transfer:
       guard let toAddress = transaction.txArgs[safe: 0],
             let fromValue = transaction.txArgs[safe: 1],
-            let tokenContractAddress = transaction.erc20TransferTokenContractAddress,
-            let fromToken = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens) else {
+            let tokenContractAddress = transaction.erc20TransferTokenContractAddress else {
         return nil
       }
-      let fromAmount = formatter.decimalString(for: fromValue.removingHexPrefix, radix: .hex, decimals: Int(fromToken.decimals))?.trimmingTrailingZeros ?? ""
-      let fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[fromToken.assetRatioId.lowercased(), default: 0] * (Double(fromAmount) ?? 0))) ?? "$0.00"
+      let fromToken = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      var fromAmount = ""
+      var fromFiat = "$0.00"
+      if let token = fromToken {
+        fromAmount = formatter.decimalString(for: fromValue.removingHexPrefix, radix: .hex, decimals: Int(token.decimals))?.trimmingTrailingZeros ?? ""
+        fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[token.assetRatioId.lowercased(), default: 0] * (Double(fromAmount) ?? 0))) ?? "$0.00"
+      }
       /*
        fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
        toAddress="0x7c24aed73d82c9d98a1b86bc2c8d2452c40419f8"
@@ -181,7 +185,7 @@ enum TransactionParser {
       /* Example:
        USDC -> DAI
        Sell Amount: 1.5
-      
+       
        fillPath = "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d"
        fromTokenAddress = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
        fromToken.symbol = "USDC"
@@ -273,10 +277,11 @@ enum TransactionParser {
       guard let owner = transaction.txArgs[safe: 0],
             let toAddress = transaction.txArgs[safe: 1],
             let tokenId = transaction.txArgs[safe: 2],
-            let tokenContractAddress = transaction.erc721ContractAddress,
-            let token = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens) else {
+            let tokenContractAddress = transaction.erc721ContractAddress else {
         return nil
       }
+      let token = token(for: tokenContractAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
+      
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
@@ -344,17 +349,20 @@ enum TransactionParser {
         .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
       guard let amount = transaction.txDataUnion.solanaTxData?.amount,
             let toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress,
-            let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress,
-            let fromToken = token(for: splTokenMintAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens) else {
+            let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress else {
         return nil
       }
+      let fromToken = token(for: splTokenMintAddress, network: network, visibleTokens: visibleTokens, allTokens: allTokens)
       let fromValue = "\(amount)"
-      let fromValueFormatted = formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(fromToken.decimals))?.trimmingTrailingZeros ?? ""
-      let fromFiat: String
-      if fromToken.isNft {
-        fromFiat = "" // don't show fiat for NFTs
-      } else {
-        fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[fromToken.assetRatioId.lowercased(), default: 0] * (Double(fromValueFormatted) ?? 0))) ?? "$0.00"
+      var fromValueFormatted = ""
+      var fromFiat = "$0.00"
+      if let token = fromToken  {
+        fromValueFormatted = formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?.trimmingTrailingZeros ?? ""
+        if token.isNft {
+          fromFiat = "" // don't show fiat for NFTs
+        } else {
+          fromFiat = currencyFormatter.string(from: NSNumber(value: assetRatios[token.assetRatioId.lowercased(), default: 0] * (Double(fromValueFormatted) ?? 0))) ?? "$0.00"
+        }
       }
       /* Example:
        Send 0.1234 SMB
