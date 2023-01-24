@@ -13,9 +13,9 @@
 namespace ntp_background_images {
 
 struct SponsoredImagesComponentData {
-  std::string region;
-  std::string component_base64_public_key;
-  std::string component_id;
+  const char* region;
+  const char* component_base64_public_key;
+  const char* component_id;
 };
 
 absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(

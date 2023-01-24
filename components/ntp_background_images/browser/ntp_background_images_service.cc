@@ -166,7 +166,7 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const auto& data = GetSponsoredImagesComponentData(
+  const auto data = GetSponsoredImagesComponentData(
       brave_l10n::GetDefaultISOCountryCodeString());
   if (!data) {
     DVLOG(2) << __func__ << ": Not support NTP SI component for "
@@ -178,7 +178,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, data->component_base64_public_key,
       data->component_id,
-      base::StringPrintf("NTP Sponsored Images (%s)", data->region.c_str()),
+      base::StringPrintf("NTP Sponsored Images (%s)", data->region),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
