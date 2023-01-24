@@ -2055,11 +2055,17 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_NFT_TOKEN_STANDARD" desc="Token standard text for Brave wallet NFT asset detail.">
       Token Standard
     </message>
-    <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard. It does not need to be translated.">
+    <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard." translateable="false">
       ERC 721
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_SOL_SPL" desc="Type of NFT token standard adopted by Solana." translateable="false">
+      SPL
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_TOKEN_ID" desc="Token ID text for brave wallet NFT asset detail.">
       Token ID
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_MINT_ADDRESS" desc="Mint address text for brave wallet NFT asset detail.">
+      Mint Address
     </message>
     <message name="IDS_BRAVE_WALLET_NFT_IMAGE_NOT_AVAILABLE" desc="Text message for image not available when loading NFT image.">
       Image not available
