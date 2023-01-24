@@ -1153,18 +1153,58 @@ void JsonRpcService::OnGetERC20TokenAllowance(
 
 void JsonRpcService::GetERC20TokenBalances(
     const std::string& balance_scanner_contract_address,
-    const std::vector<std::string>& token_contract_addresses,
     const std::string& user_address,
+    const std::vector<std::string>& token_contract_addresses,
     const std::string& chain_id,
     GetERC20TokenBalancesCallback callback) {
+  if (token_contract_addresses.empty()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  absl::optional<std::string> calldata =
+      asset_discovery::TokensBalance(user_address, token_contract_addresses);
+  // TODO should we check the validity of all the eth addresses?
+  if (!calldata) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   // Makes the eth_call request to the balance scanner contract.
-  return;
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetERC20TokenBalances,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth::eth_call("", balance_scanner_contract_address, "", "",
+                                "", calldata.value(), kEthereumBlockTagLatest),
+                  true, network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetERC20TokenBalances(
     GetERC20TokenBalancesCallback callback,
     APIRequestResult api_request_result) {
-  // Parses the eth_call response and returns the balances
+  VLOG(0) << "JsonRpcService::OnGetERC20TokenBalances 0, "
+             "api_request_result.value_body() = "
+          << api_request_result.value_body();
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // TODO Parse the eth_call response and returns the balances
   // as a vector of pairs of (success, balance).
 }
 
