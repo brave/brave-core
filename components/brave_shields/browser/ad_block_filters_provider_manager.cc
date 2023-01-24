@@ -12,7 +12,7 @@
 #include "base/barrier_callback.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 
 namespace brave_shields {
 
@@ -75,7 +75,7 @@ void AdBlockFiltersProviderManager::LoadDATBuffer(
                      weak_factory_.GetWeakPtr(), std::move(cb)));
   for (auto* provider : filters_providers_) {
     task_tracker_.PostTask(
-        base::SequencedTaskRunnerHandle::Get().get(), FROM_HERE,
+        base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(
             &AdBlockFiltersProvider::LoadDAT, provider->AsWeakPtr(),
             base::BindOnce(OnDATLoaded, std::move(collect_and_merge))));

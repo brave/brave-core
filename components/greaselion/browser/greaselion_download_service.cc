@@ -17,9 +17,9 @@
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -217,7 +217,7 @@ GreaselionDownloadService::GreaselionDownloadService(
               main_sequence->PostTask(FROM_HERE,
                                       base::BindOnce(callback, error));
             },
-            base::SequencedTaskRunnerHandle::Get(),
+            base::SequencedTaskRunner::GetCurrentDefault(),
             base::BindRepeating(
                 &GreaselionDownloadService::OnDevModeLocalFileChanged,
                 weak_factory_.GetWeakPtr()));

@@ -11,7 +11,7 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/task/bind_post_task.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/tor/tor_file_watcher.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_utils.h"
@@ -219,7 +219,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   tor::TorFileWatcher* tor_file_watcher =
       new tor::TorFileWatcher(config_.tor_watch_path);
   tor_file_watcher->StartWatching(base::BindPostTask(
-      base::SequencedTaskRunnerHandle::Get(),
+      base::SequencedTaskRunner::GetCurrentDefault(),
       base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
                      weak_ptr_factory_.GetWeakPtr(), pid)));
 }
@@ -228,11 +228,11 @@ void TorLauncherFactory::OnTorControlReady() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << "TOR CONTROL: Ready!";
   control_->GetVersion(
-      base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
+      base::BindPostTask(base::SequencedTaskRunner::GetCurrentDefault(),
                          base::BindOnce(&TorLauncherFactory::GotVersion,
                                         weak_ptr_factory_.GetWeakPtr())));
   control_->GetSOCKSListeners(
-      base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
+      base::BindPostTask(base::SequencedTaskRunner::GetCurrentDefault(),
                          base::BindOnce(&TorLauncherFactory::GotSOCKSListeners,
                                         weak_ptr_factory_.GetWeakPtr())));
   // A Circuit might have been established when Tor control is ready, in that
@@ -240,7 +240,7 @@ void TorLauncherFactory::OnTorControlReady() {
   // directly as fail safe, otherwise Tor window might stuck in disconnected
   // state while Tor circuit is ready.
   control_->GetCircuitEstablished(base::BindPostTask(
-      base::SequencedTaskRunnerHandle::Get(),
+      base::SequencedTaskRunner::GetCurrentDefault(),
       base::BindOnce(&TorLauncherFactory::GotCircuitEstablished,
                      weak_ptr_factory_.GetWeakPtr())));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
@@ -311,7 +311,7 @@ void TorLauncherFactory::OnTorControlClosed(bool was_running) {
     tor::TorFileWatcher* tor_file_watcher =
         new tor::TorFileWatcher(config_.tor_watch_path);
     tor_file_watcher->StartWatching(base::BindPostTask(
-        base::SequencedTaskRunnerHandle::Get(),
+        base::SequencedTaskRunner::GetCurrentDefault(),
         base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
                        weak_ptr_factory_.GetWeakPtr(), tor_pid_)));
   }
@@ -333,7 +333,7 @@ void TorLauncherFactory::OnTorControlPrerequisitesReady(
     tor::TorFileWatcher* tor_file_watcher =
         new tor::TorFileWatcher(config_.tor_watch_path);
     tor_file_watcher->StartWatching(base::BindPostTask(
-        base::SequencedTaskRunnerHandle::Get(),
+        base::SequencedTaskRunner::GetCurrentDefault(),
         base::BindOnce(&TorLauncherFactory::OnTorControlPrerequisitesReady,
                        weak_ptr_factory_.GetWeakPtr(), pid)));
   }
@@ -351,7 +351,7 @@ void TorLauncherFactory::DelayedRelaunchTor() {
   is_connected_ = false;
   KillTorProcess();
   // Post delayed relaunch for control to stop
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&TorLauncherFactory::RelaunchTor,
                      weak_ptr_factory_.GetWeakPtr()),

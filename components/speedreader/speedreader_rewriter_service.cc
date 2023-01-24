@@ -18,9 +18,9 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/bind_post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/url_readable_hints.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
@@ -121,7 +121,7 @@ SpeedreaderRewriterService::SpeedreaderRewriterService()
         base::BindOnce(
             &CreateAndStartFilePathWatcher, stylesheet_override_path_,
             base::BindPostTask(
-                base::SequencedTaskRunnerHandle::Get(),
+                base::SequencedTaskRunner::GetCurrentDefault(),
                 base::BindRepeating(&SpeedreaderRewriterService::OnFileChanged,
                                     weak_factory_.GetWeakPtr()))),
         base::BindOnce(&SpeedreaderRewriterService::OnWatcherStarted,

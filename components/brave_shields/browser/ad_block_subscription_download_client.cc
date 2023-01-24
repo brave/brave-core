@@ -14,7 +14,7 @@
 
 #include "base/bind.h"
 #include "base/metrics/histogram_macros_local.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -114,7 +114,7 @@ bool AdBlockSubscriptionDownloadClient::CanServiceRemoveDownloadedFile(
 void AdBlockSubscriptionDownloadClient::GetUploadData(
     const std::string& guid,
     download::GetUploadDataCallback callback) {
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(callback), nullptr));
 }
 

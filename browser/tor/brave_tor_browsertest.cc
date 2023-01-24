@@ -12,9 +12,9 @@
 #include "base/process/process.h"
 #include "base/process/process_iterator.h"
 #include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/thread_test_helper.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -97,7 +97,7 @@ bool CheckComponentExists(const std::string& component_id) {
 
 void NonBlockingDelay(const base::TimeDelta& delay) {
   base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
   run_loop.Run();
 }

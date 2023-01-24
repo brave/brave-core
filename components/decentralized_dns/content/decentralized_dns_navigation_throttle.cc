@@ -9,7 +9,7 @@
 
 #include "base/bind.h"
 #include "base/features.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
@@ -65,7 +65,7 @@ DecentralizedDnsNavigationThrottle::WillStartRequest() {
       (base::FeatureList::IsEnabled(
            brave_wallet::features::kBraveWalletSnsFeature) &&
        IsSnsTLD(url.host_piece()) && IsSnsResolveMethodAsk(local_state_))) {
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,
                        weak_ptr_factory_.GetWeakPtr()));
@@ -80,7 +80,7 @@ DecentralizedDnsNavigationThrottle::WillFailRequest() {
   auto* handle = navigation_handle();
   if (handle &&
       handle->GetNetErrorCode() == net::ERR_ENS_OFFCHAIN_LOOKUP_NOT_SELECTED) {
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&DecentralizedDnsNavigationThrottle::
                                       ShowEnsOffchainLookupInterstitial,
                                   weak_ptr_factory_.GetWeakPtr()));
