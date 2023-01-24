@@ -43,6 +43,10 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     answer = SearchEngineP3A::kYandex;
   } else if (type == SEARCH_ENGINE_ECOSIA) {
     answer = SearchEngineP3A::kEcosia;
+  } else if (type == SEARCH_ENGINE_DAUM) {
+    answer = SearchEngineP3A::kDaum;
+  } else if (type == SEARCH_ENGINE_NAVER) {
+    answer = SearchEngineP3A::kNaver;
   } else if (type == SEARCH_ENGINE_OTHER) {
     if (base::EndsWith(search_engine_url.host(), "startpage.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
