@@ -1682,6 +1682,12 @@ Are you sure you want to do this?
       <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
         Plants trees, based in Berlin
       </message>
+      <message name="IDS_DAUM_DESC" desc="Onboarding SE text">
+        South Korean web portal &amp; search
+      </message>
+      <message name="IDS_NAVER_DESC" desc="Onboarding SE text">
+        South Korean web portal &amp; search
+      </message>
       <message name="IDS_BRAVE_DESC" desc="Onboarding SE text">
         Private, independent, user-first
       </message>

@@ -23,8 +23,9 @@ public enum SearchEngineEnum {
     YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.yandex_desc),
     STARTPAGE(R.drawable.search_engine_startpage, SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
             R.string.startpage_desc),
-    ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID,
-            R.string.ecosia_desc);
+    ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID, R.string.ecosia_desc),
+    DAUM(R.drawable.daum, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),
+    NAVER(R.drawable.naver, SearchEngineEnumConstants.SEARCH_NAVER_ID, R.string.naver_desc);
 
     private int icon;
     private int id;
@@ -57,5 +58,7 @@ public enum SearchEngineEnum {
         static final int SEARCH_STARTPAGE_ID = 5;
         static final int SEARCH_YANDEX_ID = 6;
         static final int SEARCH_ECOSIA_ID = 7;
+        static final int SEARCH_DAUM_ID = 8;
+        static final int SEARCH_NAVER_ID = 9;
     }
 }
