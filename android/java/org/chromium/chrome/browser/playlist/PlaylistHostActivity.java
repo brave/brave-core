@@ -58,11 +58,9 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                 playlist.name = newName;
                 playlist.items = new PlaylistItem[0];
                 Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
-                mPlaylistService.createPlaylist(playlist,
-                        createdPlaylist
-                        -> {
-
-                        });
+                mPlaylistService.createPlaylist(playlist, createdPlaylist -> {
+                    mPlaylistService.setDefaultPlaylistId(createdPlaylist.id);
+                });
                 Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
                 openAllPlaylists(false, null);
             }

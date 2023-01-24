@@ -158,6 +158,7 @@ class PlaylistService : public KeyedService,
                       CreatePlaylistCallback callback) override;
   void RemovePlaylist(const std::string& playlist_id) override;
   void GetDefaultPlaylistId(GetDefaultPlaylistIdCallback callback) override;
+  void SetDefaultPlaylistId(const std::string& playlist_id) override;
 
   void ResetAll() override;
 
