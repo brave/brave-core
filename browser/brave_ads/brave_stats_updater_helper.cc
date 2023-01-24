@@ -47,7 +47,7 @@ void BraveStatsUpdaterHelper::OnProfileAdded(Profile* profile) {
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
   if ((!last_used_path.empty() && profile->GetBaseName() == last_used_path) ||
       (last_used_path.empty() &&
-       profile == ProfileManager::GetPrimaryUserProfile())) {
+       profile == ProfileManager::GetLastUsedProfile())) {
 #endif
     OnLastUsedProfileChanged();
   }
@@ -86,7 +86,7 @@ PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
       local_state_->GetFilePath(::prefs::kProfileLastUsed);
   Profile* profile;
   if (last_used_profile_path.empty()) {
-    profile = profile_manager_->GetPrimaryUserProfile();
+    profile = profile_manager_->GetLastUsedProfile();
   } else {
     profile = profile_manager_->GetProfileByPath(
         profile_manager_->user_data_dir().Append(last_used_profile_path));
