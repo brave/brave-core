@@ -404,17 +404,17 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
-  static absl::optional<std::string> GetPrivateKeyForKeyringAccount(
+  static absl::optional<std::string> EncodePrivateKeyForExport(
       KeyringService* service,
       const std::string& address,
       mojom::CoinType coin,
       const std::string& password = kPasswordBrave) {
     absl::optional<std::string> private_key;
     base::RunLoop run_loop;
-    service->GetPrivateKeyForKeyringAccount(
+    service->EncodePrivateKeyForExport(
         address, password, coin,
-        base::BindLambdaForTesting([&](bool success, const std::string& key) {
-          if (success)
+        base::BindLambdaForTesting([&](const std::string& key) {
+          if (!key.empty())
             private_key = key;
           run_loop.Quit();
         }));
@@ -565,7 +565,7 @@ class KeyringServiceUnitTest : public testing::Test {
         EXPECT_FALSE(observer->IsKeyringCreated(keyring_id));
       }
 
-      auto payload = GetPrivateKeyForKeyringAccount(
+      auto payload = EncodePrivateKeyForExport(
           service, imported_accounts[i].address, mojom::CoinType::FIL);
       EXPECT_TRUE(payload);
       EXPECT_EQ(imported_accounts[i].import_payload, *payload);
@@ -1734,8 +1734,8 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
     ASSERT_TRUE(imported_account.has_value());
     EXPECT_EQ(account.address, *imported_account);
 
-    auto private_key = GetPrivateKeyForKeyringAccount(&service, account.address,
-                                                      mojom::CoinType::ETH);
+    auto private_key = EncodePrivateKeyForExport(&service, account.address,
+                                                 mojom::CoinType::ETH);
     EXPECT_TRUE(private_key);
     EXPECT_EQ(account.encoded_private_key, private_key);
   }
@@ -1797,7 +1797,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
 
   service.Lock();
   // cannot get private key when locked
-  auto private_key = GetPrivateKeyForKeyringAccount(
+  auto private_key = EncodePrivateKeyForExport(
       &service, imported_accounts[0].address, mojom::CoinType::ETH);
   EXPECT_FALSE(private_key);
 
@@ -1825,12 +1825,12 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   EXPECT_TRUE(callback_called);
 
   // Unlocked but with wrong password won't get private key.
-  EXPECT_FALSE(
-      GetPrivateKeyForKeyringAccount(&service, imported_accounts[0].address,
-                                     mojom::CoinType::ETH, kPasswordBrave123));
+  EXPECT_FALSE(EncodePrivateKeyForExport(&service, imported_accounts[0].address,
+                                         mojom::CoinType::ETH,
+                                         kPasswordBrave123));
 
   // private key should also be available now
-  private_key = GetPrivateKeyForKeyringAccount(
+  private_key = EncodePrivateKeyForExport(
       &service, imported_accounts[0].address, mojom::CoinType::ETH);
   EXPECT_TRUE(private_key);
   EXPECT_EQ(imported_accounts[0].private_key, *private_key);
@@ -1909,8 +1909,8 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   EXPECT_TRUE(Unlock(&service, "brave"));
 
   // check restore by getting private key
-  auto private_key = GetPrivateKeyForKeyringAccount(&service, expected_address,
-                                                    mojom::CoinType::ETH);
+  auto private_key = EncodePrivateKeyForExport(&service, expected_address,
+                                               mojom::CoinType::ETH);
   EXPECT_TRUE(private_key);
   EXPECT_EQ(expected_private_key, *private_key);
 
@@ -1930,7 +1930,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key_bytes));
 }
 
-TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
+TEST_F(KeyringServiceUnitTest, EncodePrivateKeyForExport) {
   base::test::ScopedFeatureList feature_list;
   base::FieldTrialParams parameters;
   parameters[features::kCreateDefaultSolanaAccount.name] = "false";
@@ -1945,11 +1945,11 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
   // Can't get private key with wrong password.
-  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+  EXPECT_FALSE(EncodePrivateKeyForExport(
       &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
       mojom::CoinType::ETH, kPasswordBrave123));
 
-  absl::optional<std::string> private_key = GetPrivateKeyForKeyringAccount(
+  absl::optional<std::string> private_key = EncodePrivateKeyForExport(
       &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
       mojom::CoinType::ETH);
   ASSERT_TRUE(private_key.has_value());
@@ -1957,34 +1957,33 @@ TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
             "919af8081ce2a02d9650bf3e10ffb6b7cbadbb1dca749122d7d982cdb6cbcc50");
 
   // account not added yet
-  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+  EXPECT_FALSE(EncodePrivateKeyForExport(
       &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
       mojom::CoinType::ETH));
   ASSERT_TRUE(AddAccount(&service, "Account 2", mojom::CoinType::ETH));
 
-  private_key = GetPrivateKeyForKeyringAccount(
+  private_key = EncodePrivateKeyForExport(
       &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
       mojom::CoinType::ETH);
   ASSERT_TRUE(private_key.has_value());
   EXPECT_EQ(*private_key,
             "17c31fdade7d84f22462f398df300405a76fc11b1fe5a9e286dc8c3b0913e31c");
 
+  EXPECT_FALSE(EncodePrivateKeyForExport(&service, "", mojom::CoinType::ETH));
   EXPECT_FALSE(
-      GetPrivateKeyForKeyringAccount(&service, "", mojom::CoinType::ETH));
-  EXPECT_FALSE(
-      GetPrivateKeyForKeyringAccount(&service, "0x123", mojom::CoinType::ETH));
+      EncodePrivateKeyForExport(&service, "0x123", mojom::CoinType::ETH));
 
   // Other keyrings
   // account not added yet
-  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+  EXPECT_FALSE(EncodePrivateKeyForExport(
       &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       mojom::CoinType::SOL));
   ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
   // Wrong password.
-  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+  EXPECT_FALSE(EncodePrivateKeyForExport(
       &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       mojom::CoinType::SOL, kPasswordBrave123));
-  private_key = GetPrivateKeyForKeyringAccount(
+  private_key = EncodePrivateKeyForExport(
       &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       mojom::CoinType::SOL);
   ASSERT_TRUE(private_key.has_value());
@@ -2140,7 +2139,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
 
   // Private key of imported accounts should not be changed.
   for (const auto& imported_account : imported_accounts) {
-    auto private_key = GetPrivateKeyForKeyringAccount(
+    auto private_key = EncodePrivateKeyForExport(
         &service, imported_account.address, mojom::CoinType::ETH);
     EXPECT_TRUE(private_key);
     EXPECT_EQ(imported_account.private_key, *private_key);
@@ -3457,7 +3456,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
             imported_testnet_accounts.size() - 1);
   service.Lock();
   // cannot get private key when locked
-  auto private_key = GetPrivateKeyForKeyringAccount(
+  auto private_key = EncodePrivateKeyForExport(
       &service, imported_testnet_accounts[0].address, mojom::CoinType::FIL);
   EXPECT_FALSE(private_key);
 
@@ -3509,7 +3508,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
       service.GetHDKeyringById(brave_wallet::mojom::kFilecoinTestnetKeyringId)
           ->GetImportedAccountsNumber(),
       imported_testnet_accounts.size() - 1);
-  auto payload = GetPrivateKeyForKeyringAccount(
+  auto payload = EncodePrivateKeyForExport(
       &service, imported_testnet_accounts[0].address, mojom::CoinType::FIL);
   EXPECT_TRUE(payload);
   EXPECT_EQ(imported_testnet_accounts[0].import_payload, *payload);
@@ -3753,7 +3752,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     // wait for observer
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(observer.IsKeyringCreated(mojom::kSolanaKeyringId));
-    auto private_key = GetPrivateKeyForKeyringAccount(
+    auto private_key = EncodePrivateKeyForExport(
         &service, "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
         mojom::CoinType::SOL);
     EXPECT_TRUE(private_key);
@@ -4169,14 +4168,14 @@ class KeyringServiceEncryptionKeysMigrationUnitTest
     // Imported accounts still work.
     EXPECT_EQ(
         "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
-        *GetPrivateKeyForKeyringAccount(
-            service, "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
-            mojom::CoinType::ETH));
+        *EncodePrivateKeyForExport(service,
+                                   "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
+                                   mojom::CoinType::ETH));
 
     EXPECT_EQ(
         "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
         "YbQtaJQKLXET9jVjepWXe",
-        *GetPrivateKeyForKeyringAccount(
+        *EncodePrivateKeyForExport(
             service, "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
             mojom::CoinType::SOL));
 
@@ -4184,17 +4183,17 @@ class KeyringServiceEncryptionKeysMigrationUnitTest
         "7b2254797065223a22736563703235366b31222c22507269766174"
         "654b6579223a224169776f6a344469323155316844776835735348"
         "434d7a37342b346c45303472376e5349454d706d6258493d227d",
-        *GetPrivateKeyForKeyringAccount(
-            service, "f1syhomjrwhjmavadwmrofjpiocb6r72h4qoy7ucq",
-            mojom::CoinType::FIL));
+        *EncodePrivateKeyForExport(service,
+                                   "f1syhomjrwhjmavadwmrofjpiocb6r72h4qoy7ucq",
+                                   mojom::CoinType::FIL));
 
     EXPECT_EQ(
         "7b2254797065223a22736563703235366b31222c22507269766174"
         "654b6579223a226376414367502f53344f3274796c4f42466a6348"
         "33583154373677696661456c6646435057612b6a474a453d227d",
-        *GetPrivateKeyForKeyringAccount(
-            service, "t17puhwpgtnjr54kw7dwnjiphgn6kxlsyzbizwdhy",
-            mojom::CoinType::FIL));
+        *EncodePrivateKeyForExport(service,
+                                   "t17puhwpgtnjr54kw7dwnjiphgn6kxlsyzbizwdhy",
+                                   mojom::CoinType::FIL));
   }
 
   void ValidateNoImportedAccountsForUnlockedKeyring(KeyringService* service) {
@@ -4205,22 +4204,22 @@ class KeyringServiceEncryptionKeysMigrationUnitTest
 
     // Imported accounts are missing.
     EXPECT_EQ(absl::nullopt,
-              GetPrivateKeyForKeyringAccount(
+              EncodePrivateKeyForExport(
                   service, "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
                   mojom::CoinType::ETH));
 
     EXPECT_EQ(absl::nullopt,
-              GetPrivateKeyForKeyringAccount(
+              EncodePrivateKeyForExport(
                   service, "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
                   mojom::CoinType::SOL));
 
     EXPECT_EQ(absl::nullopt,
-              GetPrivateKeyForKeyringAccount(
+              EncodePrivateKeyForExport(
                   service, "f1syhomjrwhjmavadwmrofjpiocb6r72h4qoy7ucq",
                   mojom::CoinType::FIL));
 
     EXPECT_EQ(absl::nullopt,
-              GetPrivateKeyForKeyringAccount(
+              EncodePrivateKeyForExport(
                   service, "t17puhwpgtnjr54kw7dwnjiphgn6kxlsyzbizwdhy",
                   mojom::CoinType::FIL));
   }

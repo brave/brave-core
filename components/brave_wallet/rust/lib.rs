@@ -82,6 +82,7 @@ mod ffi {
             index: u32,
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
         fn keypair_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 64];
+        fn secret_key_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 32];
         fn public_key_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 32];
         fn sign(
             self: &Ed25519DalekExtendedSecretKey,
@@ -211,6 +212,9 @@ impl Ed25519DalekExtendedSecretKey {
         bytes[..SECRET_KEY_LENGTH].copy_from_slice(&self.0.secret_key.to_bytes());
         bytes[SECRET_KEY_LENGTH..].copy_from_slice(&self.0.public_key().to_bytes());
         bytes
+    }
+    fn secret_key_raw(&self) -> [u8; SECRET_KEY_LENGTH] {
+        self.0.secret_key.to_bytes()
     }
     fn public_key_raw(&self) -> [u8; PUBLIC_KEY_LENGTH] {
         self.0.public_key().to_bytes()

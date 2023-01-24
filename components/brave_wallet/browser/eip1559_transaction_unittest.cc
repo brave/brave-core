@@ -129,10 +129,7 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
         &private_key));
 
     HDKey key;
-    key.SetPrivateKey(
-        std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
-            new std::vector<uint8_t>(private_key),
-            SecureZeroVectorDeleter<uint8_t>()));
+    key.SetPrivateKey(private_key);
     Eip1559Transaction tx =
         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
             mojom::TxData::New(entry.nonce, "0x00", entry.gas_limit,

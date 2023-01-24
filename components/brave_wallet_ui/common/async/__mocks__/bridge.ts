@@ -155,14 +155,14 @@ export class MockedWalletApiProxy {
       this.store.dispatch(WalletActions.locked())
       alert('wallet locked')
     },
-    getPrivateKeyForKeyringAccount: async (
+    encodePrivateKeyForExport: async (
       address: string,
       password: string,
       coin: number
     ) =>
       password === 'password'
-        ? { privateKey: 'secret-private-key', success: true }
-        : { privateKey: '', success: false },
+        ? { privateKey: 'secret-private-key' }
+        : { privateKey: '' },
     getMnemonicForDefaultKeyring: async (password) => {
       return password === 'password'
         ? { mnemonic: mockedMnemonic }

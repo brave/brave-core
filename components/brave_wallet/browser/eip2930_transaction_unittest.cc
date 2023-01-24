@@ -121,10 +121,7 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
       &private_key));
 
   HDKey key;
-  key.SetPrivateKey(
-      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
-          new std::vector<uint8_t>(private_key),
-          SecureZeroVectorDeleter<uint8_t>()));
+  key.SetPrivateKey(private_key);
   int recid;
   const std::vector<uint8_t> signature =
       key.Sign(tx.GetMessageToSign(), &recid);

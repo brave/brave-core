@@ -114,9 +114,9 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
                 String passwordToUse = mPasswordFromBiometric.isEmpty()
                         ? mWalletPassword.getText().toString()
                         : mPasswordFromBiometric;
-                mKeyringService.getPrivateKeyForKeyringAccount(
-                        mAddress, passwordToUse, mCoinType, (result, privateKey) -> {
-                            if (!result) {
+                mKeyringService.encodePrivateKeyForExport(
+                        mAddress, passwordToUse, mCoinType, (privateKey) -> {
+                            if (privateKey.isEmpty()) {
                                 showPasswordRelatedControls(true);
                                 mWalletPassword.setError(
                                         getString(R.string.incorrect_password_error));

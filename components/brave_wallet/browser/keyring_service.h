@@ -149,11 +149,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                           const std::string& network,
                           AddAccountCallback callback) override;
 
-  void GetPrivateKeyForKeyringAccount(
+  void EncodePrivateKeyForExport(
       const std::string& address,
       const std::string& password,
       mojom::CoinType coin,
-      GetPrivateKeyForKeyringAccountCallback callback) override;
+      EncodePrivateKeyForExportCallback callback) override;
   void ImportAccount(const std::string& account_name,
                      const std::string& private_key,
                      mojom::CoinType coin,
