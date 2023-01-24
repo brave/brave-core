@@ -811,14 +811,14 @@
   <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
   <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
 
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available?</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">By running IPFS on your computer you can:</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Ensure your NFT data stays online and it cannot be tempered with.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Get content back using content identifier(CID) from an incorrect data.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_THREE" desc="Nft Pinning 3rd benefit">Participate proof of authenticity and make IPFS network rich and healthy.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Keep my NFTs always online</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Run local node button text">Run my local IPFS Node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Enable NFt pinning button text">Enable NFT pinning</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">A big step toward becoming part of web3</message>

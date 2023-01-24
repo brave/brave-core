@@ -8,6 +8,9 @@ import * as React from 'react'
 // types
 import { BraveWallet } from '../../../constants/types'
 
+// hooks
+import { useNftPin } from '../../../common/hooks/nft-pin'
+
 // styles
 import { GifWrapper, Ipfs, IpfsUploading, StatusGif, StyledWrapper } from './nft-pinning-status-animation.style'
 import UploadingGif from '../../../assets/svg-icons/nft-ipfs/uploading.gif'
@@ -21,10 +24,12 @@ interface Props {
 
 export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {
   const { STATUS_PINNING_IN_PROGRESS, STATUS_PINNED } = BraveWallet.TokenPinStatusCode
+  const { pinnableNftsCount } = useNftPin()
 
+  console.log({ isAutopinEnabled, status })
   return (
     <StyledWrapper size={size || '30px'}>
-      {!isAutopinEnabled ? (
+      {(!isAutopinEnabled || pinnableNftsCount === 0) ? (
         <Ipfs size={size} />
       ) : status === STATUS_PINNING_IN_PROGRESS ? (
         <GifWrapper>

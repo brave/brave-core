@@ -10,13 +10,17 @@ import BannerBackground from '../../../assets/svg-icons/nft-ipfs/banner-backgrou
 
 import { BannerStatus } from './nft-ipfs-banner'
 
+const getSuccessBackground = () => {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? '#CBF1D2' : '#EEFBF0'
+}
+
 export const StyledWrapper = styled.div<{ status: BannerStatus }>` 
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: flex-start;
-  background: ${p => p.status === 'start' ? `url(${BannerBackground}) right 80px center/contain no-repeat, linear-gradient(110.74deg, #242464 -10.97%, #000027 173.98%)` : p.status === 'uploading' ? '#F0F7FC' : '#EEFBF0'};
+  background: ${p => p.status === 'start' ? `url(${BannerBackground}) right 80px center/contain no-repeat, linear-gradient(110.74deg, #242464 -10.97%, #000027 173.98%)` : p.status === 'uploading' ? '#F0F7FC' : getSuccessBackground()};
   border-radius: 8px;
   padding: 10px 25px;
   border-width: 0;

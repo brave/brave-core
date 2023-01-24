@@ -800,7 +800,7 @@ export enum WalletRoutes {
 
   // NFT Pining
   LocalIpfsNode = '/crypto/local-ipfs-node',
-  InspectNfts = '/crypto/inspect-nfs'
+  InspectNfts = '/crypto/inspect-nfts'
 }
 
 export const WalletOrigin = 'chrome://wallet'

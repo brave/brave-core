@@ -42,7 +42,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
 
   const bannerStatus: BannerStatus = React.useMemo(() => {
-    if (!isAutoPinEnabled) return 'start'
+    if (!isAutoPinEnabled || pinnableNftsCount === 0) return 'start'
 
     switch (status) {
       case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
@@ -52,7 +52,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
       default:
         return 'start'
     }
-  }, [status])
+  }, [status, pinnableNftsCount, isAutoPinEnabled])
 
   const onLearnMore = React.useCallback(() => {
     history.push(WalletRoutes.LocalIpfsNode)

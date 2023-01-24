@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
+import { Route, useHistory, useLocation, useParams, Switch, Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
@@ -89,6 +89,7 @@ const CryptoView = (props: Props) => {
 
   // routing
   const history = useHistory()
+  const location = useLocation()
   const { category } = useParams<ParamsType>()
 
   // methods
@@ -144,7 +145,15 @@ const CryptoView = (props: Props) => {
   )
 
   const onClose = React.useCallback(() => {
-    history.goBack()
+    history.push(WalletRoutes.Nfts)
+  }, [])
+
+  const onBack = React.useCallback(() => {
+    if (location.key) {
+      history.goBack()
+    } else {
+      history.push(WalletRoutes.Nfts)
+    }
   }, [])
 
   const showBanner = React.useMemo((): boolean => {
@@ -283,7 +292,7 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.InspectNfts} exact={true}>
-          <InspectNftsScreen onClose={onClose} onBack={onClose} />
+          <InspectNftsScreen onClose={onClose} onBack={onBack} />
         </Route>
 
         <Redirect to={sessionRoute || WalletRoutes.Portfolio} />

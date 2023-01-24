@@ -805,14 +805,14 @@ provideStrings({
   braveWalletNftFetchingError: 'Something went wrong when fetching NFT details. Please try again later.',
 
   // NFT Pinning
-  braveWalletNftPinningWhyNotAvailable: 'Why not available',
+  braveWalletNftPinningWhyNotAvailable: 'Why not available?',
   braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
   braveWalletNftPinningBenefitsHeading: 'By running IPFS on your computer you can:',
   braveWalletNftPinningBenefitOne: 'Ensure your NFT data stays online and it cannot be tempered with.',
   braveWalletNftPinningBenefitTwo: 'Get content back using content identifier(CID) from an incorrect data.',
   braveWalletNftPinningBenefitThree: 'Participate proof of authenticity and make IPFS network rich and healthy.',
   braveWalletNftPinningPinNftsButton: 'Keep my NFTs always online',
-  braveWalletNftPinningRunNodeButton: 'Run my local IPFS Node',
+  braveWalletNftPinningRunNodeButton: 'Enable NFT pinning',
   braveWalletNftPinningBackButton: 'Back',
   braveWalletNftPinningCloseButton: 'Close',
   braveWalletNftPinningHeading: 'A big step toward becoming part of web3',

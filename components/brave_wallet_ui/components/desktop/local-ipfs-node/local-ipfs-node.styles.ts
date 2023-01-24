@@ -203,9 +203,9 @@ export const ActionButton = styled(WalletButton)`
   border-radius: 48px;
   outline: none;
   border: none;
-  `
+`
 
-  export const CheckNftsButton = styled(WalletButton)`
+export const CheckNftsButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

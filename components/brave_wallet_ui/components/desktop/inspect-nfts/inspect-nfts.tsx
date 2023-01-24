@@ -11,9 +11,9 @@ import { useHistory } from 'react-router'
 import { NftList } from './components/nft-list/nft-list'
 import Illustration from '../../../assets/svg-icons/nft-ipfs/pinned-nft-illustration.svg'
 import { InfoTooltip } from './components/info-tooltip/info-tooltip'
-import { IpfsNodeStatus } from '../views/portfolio/components/ipfs-node-status/ipfs-node-status'
+
+// styled components
 import {
-  ActionButton,
   BenefitHeading,
   BenefitsList
 } from '../local-ipfs-node/local-ipfs-node.styles'
@@ -112,13 +112,10 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
             <li>{getLocale('braveWalletNftPinningBenefitThree')}</li>
           </BenefitsList>
         </Column>
-        <Row gap='16px' alignItems='center' justifyContent='flex-start'>
+        <Row gap='16px' alignItems='center' justifyContent='center'>
           {isAutoPinEnabled
-            ? <>
-              <PinNftsButton onClick={goToNftsTab}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
-              <IpfsNodeStatus />
-            </>
-            : <ActionButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningRunNodeButton')}</ActionButton>
+            ? <PinNftsButton onClick={goToNftsTab}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
+            : <PinNftsButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningRunNodeButton')}</PinNftsButton>
           }
         </Row>
         <PinnedNftIllustration src={Illustration} />
