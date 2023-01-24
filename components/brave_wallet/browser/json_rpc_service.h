@@ -186,12 +186,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void SnsGetSolAddr(const std::string& domain,
                      SnsGetSolAddrCallback callback) override;
 
-  using SnsResolveHostCallback =
-      base::OnceCallback<void(const GURL& url,
-                              mojom::SolanaProviderError error,
-                              const std::string& error_message)>;
   void SnsResolveHost(const std::string& domain,
-                      SnsResolveHostCallback callback);
+                      SnsResolveHostCallback callback) override;
 
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
