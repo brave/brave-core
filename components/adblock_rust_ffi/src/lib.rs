@@ -6,7 +6,7 @@
 use adblock::engine::{Engine, EngineDebugInfo};
 use adblock::lists::FilterListMetadata;
 use adblock::resources::{MimeType, Resource, ResourceType};
-use adblock::filters::regex_manager::RegexManagerDiscardPolicy;
+use adblock::regex_manager::RegexManagerDiscardPolicy;
 use core::ptr;
 use libc::size_t;
 use std::ffi::CStr;
@@ -383,10 +383,9 @@ pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
     let entry = &regex_data[index];
 
     *id = entry.id;
-    *regex = CString::new(
-        entry.regex.as_ref().unwrap_or(&"".to_string()).as_str())
-    .expect("Error: CString::new()")
-    .into_raw();
+    *regex = CString::new(entry.regex.as_deref().unwrap_or(""))
+      .expect("Error: CString::new()")
+      .into_raw();
     *unused_sec = entry.last_used.elapsed().as_secs();
     *usage_count = entry.usage_count;
 }
