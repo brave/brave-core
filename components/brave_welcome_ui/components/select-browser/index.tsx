@@ -22,6 +22,7 @@ import FirefoxSVG from '../svg/browser-icons/firefox'
 import OperaSVG from '../svg/browser-icons/opera'
 import SafariSVG from '../svg/browser-icons/safari'
 import VivaldiSVG from '../svg/browser-icons/vivaldi'
+import MicrosoftIE from '../svg/browser-icons/ie'
 
 interface BrowserItemButtonProps {
   browserName: string
@@ -37,7 +38,8 @@ const browserIcons = {
   'Mozilla Firefox': <FirefoxSVG />,
   'Opera': <OperaSVG />,
   'Safari': <SafariSVG />,
-  'Vivaldi': <VivaldiSVG />
+  'Vivaldi': <VivaldiSVG />,
+  'Microsoft Internet Explorer': <MicrosoftIE />
 }
 
 function BrowserItemButton (props: BrowserItemButtonProps) {
@@ -57,7 +59,7 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
       <i className="check-icon-box">
         {props.isActive && (
           <svg viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.9558.9327c-.2259-.2134-.5083-.2667-.7907-.2667s-.5648.16-.7907.3733l-7.06 7.68-3.7276-3.4666c-.4518-.4267-1.186-.4267-1.5814 0-.226.2133-.3389.48-.3389.7466 0 .2667.113.5334.3389.7467l4.5748 4.2667c.1695.2133.4519.32.7907.32h.0565c.3389 0 .6213-.16.7907-.3734l7.8507-8.5333c.3953-.4267.3389-1.12-.113-1.4933Z" fill="#4C54D2"/>
+            <path d="M14.9558.9327c-.2259-.2134-.5083-.2667-.7907-.2667s-.5648.16-.7907.3733l-7.06 7.68-3.7276-3.4666c-.4518-.4267-1.186-.4267-1.5814 0-.226.2133-.3389.48-.3389.7466 0 .2667.113.5334.3389.7467l4.5748 4.2667c.1695.2133.4519.32.7907.32h.0565c.3389 0 .6213-.16.7907-.3734l7.8507-8.5333c.3953-.4267.3389-1.12-.113-1.4933Z" fill="#4C54D2" />
           </svg>
         )}
       </i>
