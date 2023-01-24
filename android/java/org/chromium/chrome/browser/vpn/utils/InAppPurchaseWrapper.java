@@ -44,6 +44,7 @@ public class InAppPurchaseWrapper {
     public static final String RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
+    private int mRetryCount;
 
     private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
 
@@ -170,7 +171,10 @@ public class InAppPurchaseWrapper {
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
         return (billingResult, purchases) -> {
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                if (purchases != null) processPurchases(context, purchases);
+                if (purchases != null) {
+                    mRetryCount = 0;
+                    processPurchases(context, purchases);
+                }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                 Toast.makeText(context,
@@ -178,8 +182,10 @@ public class InAppPurchaseWrapper {
                              Toast.LENGTH_SHORT)
                         .show();
             } else if (billingResult.getResponseCode()
-                    == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED) {
+                            == BillingClient.BillingResponseCode.SERVICE_DISCONNECTED
+                    && mRetryCount < 5) {
                 connectToBillingService();
+                mRetryCount++;
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
                 Toast.makeText(context,
