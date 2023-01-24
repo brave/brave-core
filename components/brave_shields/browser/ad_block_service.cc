@@ -338,7 +338,7 @@ void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
 }
 
 void AdBlockService::DiscardRegex(uint64_t regex_id) {
-  // Dispath to both default & additional engines, ids are unique.
+  // Dispatch to both default & additional engines, ids are unique.
   GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&AdBlockEngine::DiscardRegex,
                                 default_engine_->AsWeakPtr(), regex_id));
