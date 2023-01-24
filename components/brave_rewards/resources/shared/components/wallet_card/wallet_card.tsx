@@ -60,9 +60,6 @@ export function WalletCard (props: Props) {
   const walletDisconnected =
     externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
 
-  const providerPayoutStatus =
-    externalWallet ? props.providerPayoutStatus : 'off'
-
   function renderBalance () {
     if (externalWallet && walletDisconnected) {
       const onReconnectClick = () => {
@@ -171,7 +168,7 @@ export function WalletCard (props: Props) {
           ? <style.summaryBox>
               <RewardsSummary
                 data={props.summaryData}
-                providerPayoutStatus={providerPayoutStatus}
+                providerPayoutStatus={props.providerPayoutStatus}
                 autoContributeEnabled={props.autoContributeEnabled}
                 hideAdEarnings={Boolean(props.externalWallet)}
                 earningsLastMonth={props.earningsLastMonth}
@@ -185,7 +182,7 @@ export function WalletCard (props: Props) {
               <PendingRewardsView
                 earningsLastMonth={props.earningsLastMonth}
                 nextPaymentDate={props.nextPaymentDate}
-                providerPayoutStatus={providerPayoutStatus}
+                providerPayoutStatus={props.providerPayoutStatus}
               />
             </style.pendingBox>
       }
