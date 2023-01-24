@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.text.Html;
@@ -88,5 +89,13 @@ public class AndroidUtils {
         for (View view : views) {
             view.setVisibility(visibility);
         }
+    }
+
+    /**
+     * Gets device screen height in pixels, excluding the navigation bar (if visible) and insets.
+     * @return device screen height in pixels.
+     */
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 }
