@@ -142,10 +142,3 @@ export function PaymentStatusView (props: Props) {
 
   return null
 }
-
-export function shouldRenderPendingRewards (
-  earningsLastMonth: number,
-  nextPaymentDate: number
-) {
-  return earningsLastMonth > 0 && getDaysUntilRewardsPayment(nextPaymentDate)
-}
