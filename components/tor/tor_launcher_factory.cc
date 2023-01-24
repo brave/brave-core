@@ -26,8 +26,21 @@ constexpr char kTorProxyScheme[] = "socks5://";
 constexpr char kStatusClientBootstrap[] = "BOOTSTRAP";
 constexpr char kStatusClientBootstrapProgress[] = "PROGRESS=";
 constexpr char kStatusSummary[] = "SUMMARY=";
+constexpr char kCount[] = "COUNT=";
 constexpr char kStatusClientCircuitEstablished[] = "CIRCUIT_ESTABLISHED";
 constexpr char kStatusClientCircuitNotEstablished[] = "CIRCUIT_NOT_ESTABLISHED";
+
+std::string GetMessageParam(const std::string& message,
+                            const std::string& key,
+                            bool quoted) {
+  size_t begin = message.find(key);
+  if (begin == std::string::npos)
+    return {};
+  begin += key.length() + (quoted ? 1 : 0);
+  size_t end = message.find(quoted ? '\"' : ' ', begin);
+  return message.substr(begin, end - begin);
+}
+
 }  // namespace
 
 // static
@@ -370,22 +383,18 @@ void TorLauncherFactory::OnTorEvent(
     observer.OnTorControlEvent(raw_event);
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
     if (initial.find(kStatusClientBootstrap) != std::string::npos) {
-      size_t progress_start = initial.find(kStatusClientBootstrapProgress);
-      size_t progress_length = initial.substr(progress_start).find(" ");
-      // Dispatch progress
-      const std::string percentage = initial.substr(
-          progress_start + strlen(kStatusClientBootstrapProgress),
-          progress_length - strlen(kStatusClientBootstrapProgress));
-
-      std::string message;
-      size_t summary_start = initial.find(kStatusSummary);
-      if (summary_start != std::string::npos) {
-        summary_start += strlen(kStatusSummary) + 1;
-        const size_t summary_end = initial.find("\"", summary_start);
-        message = initial.substr(summary_start, summary_end - summary_start);
+      const std::string& count = GetMessageParam(initial, kCount, false);
+      if (!count.empty() && count != "1") {
+        // This message already posted to the observer, ignore it.
+        return;
       }
+      const std::string& percentage =
+          GetMessageParam(initial, kStatusClientBootstrapProgress, false);
+      const std::string& summary =
+          GetMessageParam(initial, kStatusSummary, true);
+
       for (auto& observer : observers_)
-        observer.OnTorInitializing(percentage, message);
+        observer.OnTorInitializing(percentage, summary);
     } else if (initial.find(kStatusClientCircuitEstablished) !=
                std::string::npos) {
       for (auto& observer : observers_)
