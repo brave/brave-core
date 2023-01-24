@@ -163,6 +163,7 @@ test("brave_unit_tests") {
     ":crypto_unittests",
     ":test_support",
     "//brave/app:command_ids",
+    "//brave/app:unit_tests",
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/base:base_unittests",
     "//brave/browser",
@@ -677,8 +678,6 @@ test("brave_browser_tests") {
   ]
 
   sources = [
-    "//brave/app/brave_main_delegate_browsertest.cc",
-    "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
     "//brave/browser/brave_ads/ads_service_browsertest.cc",
     "//brave/browser/brave_ads/brave_stats_updater_helper_browsertest.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
@@ -800,6 +799,7 @@ test("brave_browser_tests") {
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/app:browser_tests",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources_grit",
     "//brave/app/theme:brave_unscaled_resources_grit",

@@ -188,6 +188,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
@@ -198,6 +199,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -479,6 +482,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     registry.ForWebUI<playlist::PlaylistUI>()
         .Add<playlist::mojom::PageHandlerFactory>();
+  }
+#endif
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    registry.ForWebUI<commands::CommandsUI>().Add<CommandsService>();
   }
 #endif
 }

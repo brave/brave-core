@@ -233,6 +233,10 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
+if (!is_android && !is_ios) {
+  brave_chrome_browser_deps += [ "//brave/components/commands/common" ]
+}
+
 if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_app_controller_mac.h",
