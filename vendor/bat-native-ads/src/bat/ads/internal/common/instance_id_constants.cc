@@ -11,9 +11,9 @@
 namespace ads {
 
 const std::string& GetInstanceId() {
-  static const base::NoDestructor<std::string> kInstanceId(
+  static const base::NoDestructor<std::string> instance_id(
       base::GUID::GenerateRandomV4().AsLowercaseString());
-  return *kInstanceId;
+  return *instance_id;
 }
 
 }  // namespace ads

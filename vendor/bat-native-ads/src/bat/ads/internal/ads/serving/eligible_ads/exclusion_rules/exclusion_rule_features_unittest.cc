@@ -44,10 +44,10 @@ TEST(BatAdsExclusionRuleFeaturesTest, IsDisabled) {
 
 TEST(BatAdsExclusionRuleFeaturesTest, ShouldExcludeAdIfConverted) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["should_exclude_ad_if_converted"] = "false";
+  base::FieldTrialParams kParameters;
+  kParameters["should_exclude_ad_if_converted"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -105,8 +105,8 @@ TEST(BatAdsExclusionRuleFeaturesTest, DisabledShouldExcludeAdIfConverted) {
 TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char parameter[] = "exclude_ad_if_dismissed_within_time_window";
-  parameters[parameter] = "24h";
+  const char kParameter[] = "exclude_ad_if_dismissed_within_time_window";
+  parameters[kParameter] = "24h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 
@@ -166,8 +166,8 @@ TEST(BatAdsExclusionRuleFeaturesTest,
 TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
   // Arrange
   base::FieldTrialParams parameters;
-  const char parameter[] = "exclude_ad_if_transferred_within_time_window";
-  parameters[parameter] = "24h";
+  const char kParameter[] = "exclude_ad_if_transferred_within_time_window";
+  parameters[kParameter] = "24h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kFeature, parameters);
 

@@ -47,7 +47,7 @@ DiagnosticManager* DiagnosticManager::GetInstance() {
 
 // static
 bool DiagnosticManager::HasInstance() {
-  return g_diagnostic_manager_instance != nullptr;
+  return !!g_diagnostic_manager_instance;
 }
 
 void DiagnosticManager::SetEntry(

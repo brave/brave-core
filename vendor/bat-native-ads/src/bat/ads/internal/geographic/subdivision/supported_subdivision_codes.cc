@@ -14,7 +14,7 @@ const SupportedSubdivisionCodesMap& GetSupportedSubdivisionCodes() {
   //  Format: { ISO Country Code, { ISO country subdivision codes as defined
   //  in ISO 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }
   static const base::NoDestructor<SupportedSubdivisionCodesMap>
-      kSupportedSubdivisionCodes(
+      supported_subdivision_codes(
           {{"US",
             {// United States of America
              {"US-AL", "Alabama"},        {"US-AK", "Alaska"},
@@ -53,7 +53,7 @@ const SupportedSubdivisionCodesMap& GetSupportedSubdivisionCodes() {
              {"CA-QC", "Quebec"},
              {"CA-SK", "Saskatchewan"}}}});
 
-  return *kSupportedSubdivisionCodes;
+  return *supported_subdivision_codes;
 }
 
 bool IsSupportedSubdivisionCode(const std::string& country_code,

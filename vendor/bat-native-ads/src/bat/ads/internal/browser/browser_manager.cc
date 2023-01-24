@@ -42,7 +42,7 @@ BrowserManager* BrowserManager::GetInstance() {
 
 // static
 bool BrowserManager::HasInstance() {
-  return g_browser_manager_instance != nullptr;
+  return !!g_browser_manager_instance;
 }
 
 void BrowserManager::AddObserver(BrowserManagerObserver* observer) {

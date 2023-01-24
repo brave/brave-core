@@ -163,12 +163,12 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {
-    const char epsilon_value[] = "epsilon_value";
-    base::FieldTrialParams epsilon_greedy_bandit_parameters;
+    const char kEpsilonValue[] = "epsilon_value";
+    base::FieldTrialParams kEpsilonGreedyBanditParameters;
     // Set bandit to always exploit for deterministic execution
-    epsilon_greedy_bandit_parameters[epsilon_value] = "0.0";
+    kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
     enabled_features.emplace_back(features::kEpsilonGreedyBandit,
-                                  epsilon_greedy_bandit_parameters);
+                                  kEpsilonGreedyBanditParameters);
   } else {
     disabled_features.emplace_back(features::kEpsilonGreedyBandit);
   }
@@ -236,15 +236,15 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   ProcessTextClassification();
   ProcessPurchaseIntent();
 
-  const char epsilon_value[] = "epsilon_value";
-  std::map<std::string, std::string> epsilon_greedy_bandit_parameters;
+  const char kEpsilonValue[] = "epsilon_value";
+  std::map<std::string, std::string> kEpsilonGreedyBanditParameters;
   // Set bandit to always exploit for deterministic execution
-  epsilon_greedy_bandit_parameters[epsilon_value] = "0.0";
+  kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kPurchaseIntent, /*default params*/ {}},
-       {features::kEpsilonGreedyBandit, epsilon_greedy_bandit_parameters},
+       {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
        {features::kTextClassification, /*default params*/ {}}},
       {});
 

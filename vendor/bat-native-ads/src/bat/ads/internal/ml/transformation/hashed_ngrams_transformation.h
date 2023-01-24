@@ -35,7 +35,7 @@ class HashedNGramsTransformation final : public Transformation {
       const std::unique_ptr<Data>& input_data) const override;
 
  private:
-  std::unique_ptr<HashVectorizer> hash_vectorizer_;
+  std::unique_ptr<HashVectorizer> hash_vectorizer;
 };
 
 }  // namespace ads::ml

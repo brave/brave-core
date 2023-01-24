@@ -328,7 +328,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
 
- protected:
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;

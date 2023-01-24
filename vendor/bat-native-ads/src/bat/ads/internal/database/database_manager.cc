@@ -39,7 +39,7 @@ DatabaseManager* DatabaseManager::GetInstance() {
 
 // static
 bool DatabaseManager::HasInstance() {
-  return g_database_manager_instance != nullptr;
+  return !!g_database_manager_instance;
 }
 
 void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {

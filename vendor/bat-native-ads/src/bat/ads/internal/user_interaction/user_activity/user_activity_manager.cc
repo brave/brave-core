@@ -75,7 +75,7 @@ UserActivityManager* UserActivityManager::GetInstance() {
 
 // static
 bool UserActivityManager::HasInstance() {
-  return g_user_activity_manager_instance != nullptr;
+  return !!g_user_activity_manager_instance;
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {

@@ -16,14 +16,14 @@ namespace ads::ml {
 
 HashedNGramsTransformation::HashedNGramsTransformation()
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer_ = std::make_unique<HashVectorizer>();
+  hash_vectorizer = std::make_unique<HashVectorizer>();
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
     const int bucket_count,
     const std::vector<int>& subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
-  hash_vectorizer_ = std::make_unique<HashVectorizer>(bucket_count, subgrams);
+  hash_vectorizer = std::make_unique<HashVectorizer>(bucket_count, subgrams);
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
@@ -38,8 +38,8 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
   auto* text_data = static_cast<TextData*>(input_data.get());
 
   const std::map<unsigned, double> frequences =
-      hash_vectorizer_->GetFrequencies(text_data->GetText());
-  const int dimension_count = hash_vectorizer_->GetBucketCount();
+      hash_vectorizer->GetFrequencies(text_data->GetText());
+  const int dimension_count = hash_vectorizer->GetBucketCount();
 
   return std::make_unique<VectorData>(dimension_count, frequences);
 }

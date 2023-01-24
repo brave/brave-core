@@ -108,11 +108,11 @@ TEST_F(BatAdsMediaPermissionRuleTest,
 TEST_F(BatAdsMediaPermissionRuleTest,
        AlwaysAllowAdIfMediaIsPlayingOnVisibleTabIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["should_only_serve_ads_if_media_is_not_playing"] = "false";
+  base::FieldTrialParams kParameters;
+  kParameters["should_only_serve_ads_if_media_is_not_playing"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(permission_rules::features::kFeature,
-                                parameters);
+                                kParameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

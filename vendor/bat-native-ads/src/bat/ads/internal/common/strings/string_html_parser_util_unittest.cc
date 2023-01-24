@@ -28,7 +28,7 @@ TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
   const std::vector<std::tuple</*html*/ std::string, /*tag_substr*/ std::string,
                                /*tag_attribute*/ std::string,
                                /*expected_html_tag_attribute*/ std::string>>
-      samples = {
+      kSamples = {
           {meta_html_tag, "og:title", "content", "this is info "},
           {meta_html_tag, "title", "content", "this is info "},
           {meta_html_tag, "title", "foo", {}},
@@ -61,7 +61,7 @@ TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
            "うゐのおくやま　けふこえて あさきゆめみじ　ゑひもせず"}};
 
   for (const auto& [html, tag_substr, tag_attribute,
-                    expected_html_tag_attribute] : samples) {
+                    expected_html_tag_attribute] : kSamples) {
     // Act
     const std::string html_tag_attribute =
         ParseHtmlTagAttribute(html, tag_substr, tag_attribute);

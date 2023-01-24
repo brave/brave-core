@@ -154,14 +154,14 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     return;
   }
 
-  const absl::optional<int> schema_version =
+  const absl::optional<int> schemaVersion =
       manifest->FindIntPath(kSchemaVersionPath);
-  if (!schema_version) {
+  if (!schemaVersion) {
     VLOG(1) << "Resource schema version is missing";
     return;
   }
 
-  if (*schema_version != kCurrentSchemaVersion) {
+  if (*schemaVersion != kCurrentSchemaVersion) {
     VLOG(1) << "Resource schema version mismatch";
     return;
   }

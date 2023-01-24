@@ -40,7 +40,7 @@ TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
       resource.Get();
   ASSERT_TRUE(embedding_processing);
 
-  const std::vector<std::tuple<std::string, ml::VectorData>> samples = {
+  const std::vector<std::tuple<std::string, ml::VectorData>> kSamples = {
       {"this simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"this is a simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
       {"this is @ #1a simple unittest", ml::VectorData({0.5, 0.4, 1.0})},
@@ -48,7 +48,7 @@ TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
       {"this 54 is simple", ml::VectorData({0.85, 0.2, 1.0})},
       {{}, {}}};
 
-  for (const auto& [text, expected_embedding] : samples) {
+  for (const auto& [text, expected_embedding] : kSamples) {
     // Act
     const ml::pipeline::TextEmbeddingInfo text_embedding =
         embedding_processing->EmbedText(text);

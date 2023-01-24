@@ -22,7 +22,7 @@ constexpr size_t kDoesMatchIntentChildSegmentsIndex = 0;
 constexpr size_t kDoesMatchIntentParentSegmentsIndex = 1;
 constexpr size_t kDoesMatchInterestChildSegmentsIndex = 2;
 constexpr size_t kDoesMatchInterestParentSegmentsIndex = 3;
-constexpr size_t kAdLastSeenHoursAgoIndex = 4;
+constexpr size_t AdLastSeenHoursAgoIndex = 4;
 constexpr size_t kAdvertiserLastSeenHoursAgoIndex = 5;
 constexpr size_t kPriorityIndex = 6;
 
@@ -120,7 +120,7 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
   }
 
   if (ad_predictor.ad_last_seen_hours_ago <= base::Time::kHoursPerDay) {
-    score += weights.at(kAdLastSeenHoursAgoIndex) *
+    score += weights.at(AdLastSeenHoursAgoIndex) *
              ad_predictor.ad_last_seen_hours_ago /
              double{base::Time::kHoursPerDay};
   }

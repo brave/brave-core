@@ -17,11 +17,11 @@ class BatAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
 TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
-  const int default_bucket_count = 10'000;
-  const size_t expected_element_count = 10;
-  const std::string test_string = "tiny";
+  const int kDefaultBucketCount = 10'000;
+  const size_t kExpectedElementCount = 10;
+  const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
-      std::make_unique<TextData>(test_string);
+      std::make_unique<TextData>(kTestString);
 
   const HashedNGramsTransformation hashed_ngrams;
 
@@ -35,21 +35,21 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
 
   // Assert
   // 10000 is the default size
-  ASSERT_EQ(default_bucket_count, hashed_vector_data->GetDimensionCount());
+  ASSERT_EQ(kDefaultBucketCount, hashed_vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(expected_element_count,
+  EXPECT_EQ(kExpectedElementCount,
             hashed_vector_data->GetValuesForTesting().size());
 }
 
 TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Arrange
-  const int hash_bucket_count = 3;
-  const std::string test_string = "tiny";
+  const int kHashBucketCount = 3;
+  const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
-      std::make_unique<TextData>(test_string);
+      std::make_unique<TextData>(kTestString);
 
-  const HashedNGramsTransformation hashed_ngrams(hash_bucket_count,
+  const HashedNGramsTransformation hashed_ngrams(kHashBucketCount,
                                                  std::vector<int>{1, 2, 3});
 
   // Act
@@ -61,8 +61,8 @@ TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(hash_bucket_count, hashed_vector_data->GetDimensionCount());
-  EXPECT_EQ(hash_bucket_count,
+  ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
+  EXPECT_EQ(kHashBucketCount,
             static_cast<int>(hashed_vector_data->GetValuesForTesting().size()));
 }
 

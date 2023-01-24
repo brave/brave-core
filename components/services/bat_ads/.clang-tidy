@@ -180,6 +180,7 @@
                     readability-deleted-default,
                     readability-duplicate-include,
                     readability-else-after-return,
+                    readability-function-cognitive-complexity,
                     readability-function-size,
                     readability-identifier-naming,
                     readability-implicit-bool-conversion,
@@ -210,6 +211,8 @@
                     readability-uppercase-literal-suffix,
                     readability-use-anyofallof'
   CheckOptions:
+    - key:          readability-function-cognitive-complexity.IgnoreMacros
+      value:        1
     - key:          readability-implicit-bool-conversion.AllowPointerConditions
       value:        1
     - key:          misc-const-correctness.WarnPointersAsValues

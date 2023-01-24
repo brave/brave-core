@@ -154,7 +154,7 @@ CovariateManager* CovariateManager::GetInstance() {
 
 // static
 bool CovariateManager::HasInstance() {
-  return g_covariate_logs_instance != nullptr;
+  return !!g_covariate_logs_instance;
 }
 
 void CovariateManager::SetLogEntry(
