@@ -1183,16 +1183,18 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  void TestGetERC20TokenBalances(const std::string& balance_scanner_contract_address,
-                             const std::vector<std::string>& token_contract_addresses,
-                             const std::string& user_address,
-                             const std::string& chain_id,
-                             const std::vector<std::pair<std::string, uint256_t>>& expected_results,
-                             mojom::ProviderError expected_error,
-                             const std::string& expected_error_message) {
+  void TestGetERC20TokenBalances(
+      const std::string& balance_scanner_contract_address,
+      const std::vector<std::string>& token_contract_addresses,
+      const std::string& user_address,
+      const std::string& chain_id,
+      const std::vector<std::pair<std::string, uint256_t>>& expected_results,
+      mojom::ProviderError expected_error,
+      const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetERC20TokenBalances(
-        balance_scanner_contract_address, token_contract_addresses, user_address, chain_id,
+        balance_scanner_contract_address, token_contract_addresses,
+        user_address, chain_id,
         base::BindLambdaForTesting(
             [&](const std::vector<std::pair<std::string, uint256_t>>& results,
                 mojom::ProviderError error, const std::string& error_message) {

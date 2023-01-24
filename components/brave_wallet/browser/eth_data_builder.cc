@@ -456,7 +456,8 @@ bool TokensBalance(const std::string& balance_scanner_address,
                    const std::string& owner_address,
                    const std::vector<std::string>& contract_addresses,
                    std::string* data) {
-  const std::string function_hash = GetFunctionHash("tokensBalance(address,address[])");
+  const std::string function_hash =
+      GetFunctionHash("tokensBalance(address,address[])");
   VLOG(1) << "tokensBalance function hash: " << function_hash;
   return false;
 }

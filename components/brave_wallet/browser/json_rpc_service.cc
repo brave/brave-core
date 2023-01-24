@@ -1151,17 +1151,19 @@ void JsonRpcService::OnGetERC20TokenAllowance(
   std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetERC20TokenBalances(const std::string& balance_scanner_contract_address,
-                             const std::vector<std::string>& token_contract_addresses,
-                             const std::string& user_address,
-                             const std::string& chain_id,
-                             GetERC20TokenBalancesCallback callback) {
+void JsonRpcService::GetERC20TokenBalances(
+    const std::string& balance_scanner_contract_address,
+    const std::vector<std::string>& token_contract_addresses,
+    const std::string& user_address,
+    const std::string& chain_id,
+    GetERC20TokenBalancesCallback callback) {
   // Makes the eth_call request to the balance scanner contract.
   return;
 }
 
-void JsonRpcService::OnGetERC20TokenBalances(GetERC20TokenBalancesCallback callback,
-                                             APIRequestResult api_request_result) {
+void JsonRpcService::OnGetERC20TokenBalances(
+    GetERC20TokenBalancesCallback callback,
+    APIRequestResult api_request_result) {
   // Parses the eth_call response and returns the balances
   // as a vector of pairs of (success, balance).
 }

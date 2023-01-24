@@ -115,12 +115,12 @@ absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name);
 
 namespace asset_discovery {
 
-  bool TokensBalance(const std::string& balance_scanner_address,
-                     const std::string& owner_address,
-                     const std::vector<std::string>& contract_addresses,
-                     std::string* data);
+bool TokensBalance(const std::string& balance_scanner_address,
+                   const std::string& owner_address,
+                   const std::vector<std::string>& contract_addresses,
+                   std::string* data);
 
-} // namespace asset_discovery
+}  // namespace asset_discovery
 
 }  // namespace brave_wallet
 
