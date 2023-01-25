@@ -16,7 +16,7 @@ public class TransactionConfirmationStore: ObservableObject {
   /// The fiat value of `value`
   @Published var fiat: String = ""
   /// The network name that this transaction is made on
-  @Published var networkChainName: String = ""
+  @Published var network: BraveWallet.NetworkInfo?
   /// The gas value for this transaction
   @Published var gasValue: String = ""
   /// The symbol of the gas token for this transaction
@@ -312,7 +312,7 @@ public class TransactionConfirmationStore: ObservableObject {
   ) async {
     originInfo = activeParsedTransaction.transaction.originInfo
     transactionDetails = activeTransactionDetails
-    networkChainName = network.chainName
+    self.network = network
     
     switch activeParsedTransaction.details {
     case let .ethSend(details),

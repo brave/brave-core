@@ -26,6 +26,7 @@ struct EditNonceView: View {
       ) {
         TextField(Strings.Wallet.editNoncePlaceholder, text: $nonce)
           .keyboardType(.numberPad)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
         Button(action: {

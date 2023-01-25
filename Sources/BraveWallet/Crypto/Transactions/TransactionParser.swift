@@ -799,6 +799,11 @@ extension ParsedTransaction {
   var coin: BraveWallet.CoinType {
     transaction.coin
   }
+
+  var ethSwap: EthSwapDetails? {
+    guard case let .ethSwap(ethSwapDetails) = details else { return nil }
+    return ethSwapDetails
+  }
 }
 
 extension BraveWallet.TransactionInfo {

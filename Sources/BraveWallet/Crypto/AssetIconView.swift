@@ -22,6 +22,9 @@ struct AssetIconView: View {
   /// If we should show the native token logo on non-native assets
   var shouldShowNativeTokenIcon: Bool = false
   @ScaledMetric var length: CGFloat = 40
+  var maxLength: CGFloat?
+  @ScaledMetric var networkSymbolLength: CGFloat = 15
+  var maxNetworkSymbolLength: CGFloat?
 
   private var fallbackMonogram: some View {
     Blockie(address: token.contractAddress)
@@ -67,7 +70,7 @@ struct AssetIconView: View {
         }
       }
     }
-    .frame(width: length, height: length)
+    .frame(width: min(length, maxLength ?? length), height: min(length, maxLength ?? length))
     .overlay(tokenLogo, alignment: .bottomTrailing)
     .accessibilityHidden(true)
   }
@@ -83,7 +86,7 @@ struct AssetIconView: View {
     if shouldShowNativeTokenIcon, !network.isNativeAsset(token), let image = networkNativeTokenLogo {
       Image(uiImage: image)
         .resizable()
-        .frame(width: 15, height: 15)
+        .frame(width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength), height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength))
     }
   }
 }
