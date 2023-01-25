@@ -77,7 +77,7 @@ public class CryptoModel {
     private SendModel mSendModel;
 
     private NetworkModel mNetworkModel;
-    // Todo: create a models for portfolio
+    private PortfolioModel mPortfolioModel;
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation, SwapModel, AssetModel, SendModel
 
@@ -104,6 +104,9 @@ public class CryptoModel {
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
         mNetworkModel =
                 new NetworkModel(mJsonRpcService, mSharedData, mCryptoSharedActions, context);
+        mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
+                mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
+                mBraveWalletService, mAssetRatioService, mSharedData);
         _mIsSwapEnabled = new MediatorLiveData<>();
         mIsSwapEnabled = _mIsSwapEnabled;
         _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {
@@ -128,6 +131,9 @@ public class CryptoModel {
             this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mJsonRpcService);
+            mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
+                    mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
+                    mAssetRatioService);
         }
         init();
     }
@@ -265,6 +271,10 @@ public class CryptoModel {
 
     public NetworkModel getNetworkModel() {
         return mNetworkModel;
+    }
+
+    public PortfolioModel getPortfolioModel() {
+        return mPortfolioModel;
     }
 
     public SendModel createSendModel() {

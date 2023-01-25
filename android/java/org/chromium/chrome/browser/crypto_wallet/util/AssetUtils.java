@@ -186,4 +186,11 @@ public class AssetUtils {
             put(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID, Arrays.asList("avax", "avaxc"));
         }
     };
+    public static String httpifyIpfsUrl(String url) {
+        if (TextUtils.isEmpty(url)) return "";
+        String trimedUrl = url.trim();
+        return trimedUrl.startsWith("ipfs://")
+                ? trimedUrl.replace("ipfs://", "https://ipfs.io/ipfs/")
+                : trimedUrl;
+    }
 }

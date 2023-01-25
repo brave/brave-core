@@ -228,7 +228,7 @@ public class NetworkSelectorAdapter
                     if (networkName.equals(nestedItem.getNetworkName())) {
                         nestedItem.setIsSelected(true);
                         if (networkSelectorItem.mNestedNetworkSelectorAdapter != null) {
-                            nestedItem.mNestedNetworkSelectorAdapter.notifyItemChanged(j);
+                            networkSelectorItem.mNestedNetworkSelectorAdapter.notifyItemChanged(j);
                         } else {
                             notifyItemChanged(i);
                         }
