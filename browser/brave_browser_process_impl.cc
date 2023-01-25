@@ -86,7 +86,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -433,9 +432,7 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
     return brave_vpn_os_connection_api_.get();
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
-      shared_url_loader_factory(), local_state());
-  brave_vpn_os_connection_api_->SetTargetVpnEntryName(
-      brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
+      shared_url_loader_factory(), local_state(), chrome::GetChannel());
   return brave_vpn_os_connection_api_.get();
 }
 #endif

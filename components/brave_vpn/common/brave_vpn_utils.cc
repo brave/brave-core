@@ -86,6 +86,8 @@ bool IsBraveVPNEnabled() {
 }
 
 std::string GetBraveVPNEntryName(version_info::Channel channel) {
+  constexpr char kBraveVPNEntryName[] = "BraveVPN";
+
   const std::string entry_name(kBraveVPNEntryName);
   switch (channel) {
     case version_info::Channel::CANARY:

@@ -41,7 +41,6 @@ class BraveVPNOSConnectionAPIBase
   bool IsInProgress() const;
 
   // BraveVPNOSConnectionAPI
-  void SetTargetVpnEntryName(const std::string& name) override;
   mojom::ConnectionState GetConnectionState() const override;
   void Connect() override;
   void Disconnect() override;
@@ -58,7 +57,8 @@ class BraveVPNOSConnectionAPIBase
  protected:
   BraveVPNOSConnectionAPIBase(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs);
+      PrefService* local_prefs,
+      version_info::Channel channel);
   ~BraveVPNOSConnectionAPIBase() override;
 
   // Subclass should add platform dependent impls.
