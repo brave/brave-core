@@ -260,7 +260,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
     task_environment_.RunUntilIdle();
   }
 
-  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 200));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
@@ -276,7 +276,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
 
   // Fast forward to the first of the next month
   task_environment_.FastForwardBy(base::Days(15) +
-                                  base::Seconds(kUploadIntervalSeconds * 100));
+                                  base::Seconds(kUploadIntervalSeconds * 200));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
