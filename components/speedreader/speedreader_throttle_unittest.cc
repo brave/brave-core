@@ -36,7 +36,7 @@ class TestSpeedreaderThrottleDelegate
  public:
   ~TestSpeedreaderThrottleDelegate() override = default;
   bool IsPageDistillationAllowed() override { return true; }
-  void OnDistillComplete() override {}
+  void OnDistillComplete(DistillationStatus status) override {}
 };
 
 }  // anonymous namespace

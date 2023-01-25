@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
@@ -29,6 +29,7 @@ class SpeedreaderRewriterService;
 class SpeedreaderService;
 class SpeedReaderThrottle;
 class SpeedreaderThrottleDelegate;
+enum class DistillationStatus : int;
 
 // Loads the whole response body and tries to Speedreader-distill it.
 // Cargoculted from |`SniffingURLLoader|.
@@ -88,6 +89,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
   base::WeakPtr<SpeedreaderThrottleDelegate> delegate_;
 
   GURL response_url_;
+  DistillationStatus distillation_status_;
 
   // Not Owned
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;

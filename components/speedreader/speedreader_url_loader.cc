@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/speedreader/speedreader_url_loader.h"
 
@@ -95,6 +95,7 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
           task_runner),
       delegate_(delegate),
       response_url_(response_url),
+      distillation_status_(DistillationStatus::kNone),
       rewriter_service_(rewriter_service),
       speedreader_service_(speedreader_service) {}
 
@@ -135,6 +136,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   bytes_remaining_in_buffer_ = body.size();
 
   if (bytes_remaining_in_buffer_ > 0) {
+    using DistillationResult = std::pair<DistillationStatus, std::string>;
     // Offload heavy distilling to another thread.
     base::ThreadPool::PostTaskAndReplyWithResult(
         FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
@@ -146,7 +148,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
               if (written != 0) {
-                return data;
+                return std::make_pair(DistillationStatus::kFail, data);
               }
 
               rewriter->End();
@@ -156,11 +158,12 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               // explicit signal back from rewriter to indicate if content was
               // found
               if (transformed.length() < 1024) {
-                return data;
+                return std::make_pair(DistillationStatus::kFail, data);
               }
               MaybeSaveDistilledDataForDebug(response_url, data, stylesheet,
                                              transformed);
-              return stylesheet + transformed;
+              return std::make_pair(DistillationStatus::kSucceess,
+                                    stylesheet + transformed);
             },
             response_url_, std::move(body),
             rewriter_service_->MakeRewriter(
@@ -170,9 +173,12 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
                 speedreader_service_->GetContentStyleName()),
             rewriter_service_->GetContentStylesheet()),
         base::BindOnce(
-            [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {
+            [](base::WeakPtr<SpeedReaderURLLoader> self,
+               DistillationResult result) {
               if (self) {
-                self->BodySnifferURLLoader::CompleteLoading(std::move(result));
+                self->distillation_status_ = result.first;
+                self->BodySnifferURLLoader::CompleteLoading(
+                    std::move(result.second));
               }
             },
             weak_factory_.GetWeakPtr()));
@@ -186,7 +192,7 @@ void SpeedReaderURLLoader::OnCompleteSending() {
   // indicating distill success, distill fail, load from cache.
   // |complete_status_| has an |exists_in_cache| field.
   if (delegate_)
-    delegate_->OnDistillComplete();
+    delegate_->OnDistillComplete(distillation_status_);
 }
 
 }  // namespace speedreader

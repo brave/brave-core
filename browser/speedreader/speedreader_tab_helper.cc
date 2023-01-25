@@ -25,6 +25,7 @@
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -128,7 +129,7 @@ bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
   return speedreader::IsEnabledForSite(content_rules_, url);
 }
 
-void SpeedreaderTabHelper::ProcessIconClick() {
+bool SpeedreaderTabHelper::ProcessIconClick() {
   switch (distill_state_) {
     case DistillState::kSpeedreaderMode:
       ShowSpeedreaderBubble();
@@ -150,8 +151,9 @@ void SpeedreaderTabHelper::ProcessIconClick() {
       SingleShotSpeedreader();
       break;
     default:
-      NOTREACHED();
+      return false;
   }
+  return true;
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
@@ -535,7 +537,8 @@ bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
   return speedreader::PageWantsDistill(distill_state_);
 }
 
-void SpeedreaderTabHelper::OnDistillComplete() {
+void SpeedreaderTabHelper::OnDistillComplete(
+    speedreader::DistillationStatus status) {
   // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
     distill_state_ = DistillState::kSpeedreaderMode;
@@ -545,6 +548,12 @@ void SpeedreaderTabHelper::OnDistillComplete() {
     // We got here via an already cached page.
     DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
            distill_state_ == DistillState::kReaderMode);
+  }
+
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFallback)) {
+    if (status == speedreader::DistillationStatus::kFail) {
+      distill_state_ = DistillState::kNone;
+    }
   }
 
   UpdateButtonIfNeeded();

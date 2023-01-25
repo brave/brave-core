@@ -8,13 +8,13 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "chrome/browser/ui/views/reader_mode/reader_mode_icon_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class PrefService;
 
-class SpeedreaderIconView : public PageActionIconView {
+class SpeedreaderIconView : public ReaderModeIconView {
  public:
-  METADATA_HEADER(SpeedreaderIconView);
   SpeedreaderIconView(CommandUpdater* command_updater,
                       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
                       PageActionIconView::Delegate* page_action_icon_delegate,
@@ -24,7 +24,7 @@ class SpeedreaderIconView : public PageActionIconView {
   ~SpeedreaderIconView() override;
 
  protected:
-  // PageActionIconView:
+  // ReaderModeIconView:
   const gfx::VectorIcon& GetVectorIcon() const override;
   void OnExecuting(PageActionIconView::ExecuteSource execute_source) override;
   views::BubbleDialogDelegate* GetBubble() const override;

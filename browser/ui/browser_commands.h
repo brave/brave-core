@@ -18,7 +18,7 @@ void OpenGuestProfile();
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
-void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
+bool MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void OpenBraveVPNUrls(Browser* browser, int command_id);

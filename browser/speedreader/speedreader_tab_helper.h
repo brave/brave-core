@@ -67,7 +67,7 @@ class SpeedreaderTabHelper
   bool IsEnabledForSite();
 
   // In Speedreader mode shows bubble. In Reader mode toggles state.
-  void ProcessIconClick();
+  bool ProcessIconClick();
 
   DistillState PageDistillState() const { return distill_state_; }
 
@@ -160,7 +160,7 @@ class SpeedreaderTabHelper
 
   // SpeedreaderThrottleDelegate:
   bool IsPageDistillationAllowed() override;
-  void OnDistillComplete() override;
+  void OnDistillComplete(speedreader::DistillationStatus status) override;
 
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);

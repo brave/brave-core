@@ -18,4 +18,8 @@ BASE_FEATURE(kSpeedreaderPanelV2,
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
 
+BASE_FEATURE(kSpeedreaderFallback,
+             "SpeedreaderFallback",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace speedreader

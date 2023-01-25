@@ -35,13 +35,10 @@ SpeedreaderIconView::SpeedreaderIconView(
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate,
     PrefService* pref_service)
-    : PageActionIconView(command_updater,
-                         IDC_SPEEDREADER_ICON_ONCLICK,
+    : ReaderModeIconView(command_updater,
                          icon_label_bubble_delegate,
                          page_action_icon_delegate,
-                         "SpeedReader") {
-  SetVisible(false);
-}
+                         pref_service) {}
 
 SpeedreaderIconView::~SpeedreaderIconView() = default;
 
@@ -49,8 +46,13 @@ void SpeedreaderIconView::UpdateImpl() {
   const DistillState state = GetDistillState();
   if (!speedreader::PageStateIsDistilled(state) &&
       !speedreader::PageSupportsDistillation(state)) {
-    SetVisible(false);
-    return;
+    if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFallback)) {
+      ReaderModeIconView::UpdateImpl();
+      if (!GetVisible())
+        return;
+    } else {
+      return;
+    }
   }
 
   if (views::InkDrop::Get(this)->GetHighlighted() && !IsBubbleShowing()) {
@@ -59,11 +61,11 @@ void SpeedreaderIconView::UpdateImpl() {
   }
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-    if (speedreader::PageStateIsDistilled(state)) {
+    if (speedreader::PageStateIsDistilled(state) || GetActive()) {
       const SkColor icon_color_active =
           color_provider->GetColor(kColorSpeedreaderIcon);
       SetIconColor(icon_color_active);
-    } else if (speedreader::PageSupportsDistillation(state)) {
+    } else {
       // Reset the icon color
       const SkColor icon_color_default =
           color_provider->GetColor(kColorOmniboxResultsIcon);
@@ -71,6 +73,7 @@ void SpeedreaderIconView::UpdateImpl() {
     }
   }
 
+  SetActive(false);
   UpdateIconImage();
   SetVisible(true);
 }
@@ -130,6 +133,3 @@ DistillState SpeedreaderIconView::GetDistillState() const {
   }
   return state;
 }
-
-BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)
-END_METADATA

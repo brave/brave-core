@@ -49,10 +49,11 @@ bool IsBraveCommands(int id) {
 }
 
 bool IsBraveOverrideCommands(int id) {
-  static std::vector<int> override_commands({
+  constexpr const int override_commands[] = {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
-  });
+      IDC_DISTILL_PAGE,
+  };
   return base::Contains(override_commands, id);
 }
 
@@ -161,12 +162,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_COPY_CLEAN_LINK, true);
   UpdateCommandEnabled(IDC_TOGGLE_TAB_MUTE, true);
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
-    UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
-  }
-#endif
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
@@ -288,8 +283,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_OPEN_GUEST_PROFILE:
       brave::OpenGuestProfile();
       break;
-    case IDC_SPEEDREADER_ICON_ONCLICK:
-      brave::MaybeDistillAndShowSpeedreaderBubble(browser_);
+    case IDC_DISTILL_PAGE:
+      if (!brave::MaybeDistillAndShowSpeedreaderBubble(browser_)) {
+        BrowserCommandController::ExecuteCommandWithDisposition(id, disposition,
+                                                                time_stamp);
+      }
       break;
     case IDC_SHOW_BRAVE_WALLET_PANEL:
       brave::ShowWalletBubble(browser_);

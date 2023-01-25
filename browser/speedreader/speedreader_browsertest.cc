@@ -24,6 +24,7 @@
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
@@ -125,8 +126,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void ClickReaderButton() {
-    browser()->command_controller()->ExecuteCommand(
-        IDC_SPEEDREADER_ICON_ONCLICK);
+    browser()->command_controller()->ExecuteCommand(IDC_DISTILL_PAGE);
     content::WaitForLoadStop(ActiveWebContents());
   }
 

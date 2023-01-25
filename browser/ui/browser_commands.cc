@@ -112,16 +112,17 @@ void OpenGuestProfile() {
   profiles::SwitchToGuestProfile(base::DoNothing());
 }
 
-void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
+bool MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
   if (!contents)
-    return;
+    return false;
   if (auto* tab_helper =
           speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
-    tab_helper->ProcessIconClick();
+    return tab_helper->ProcessIconClick();
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
+  return false;
 }
 
 void ShowBraveVPNBubble(Browser* browser) {
