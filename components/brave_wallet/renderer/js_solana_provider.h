@@ -57,6 +57,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
   // RenderFrameObserver implementation.
   void OnDestruct() override {}
+  void DidFinishLoad() override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
 

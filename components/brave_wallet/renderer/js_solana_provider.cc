@@ -41,6 +41,7 @@ namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
 static base::NoDestructor<std::string> g_provider_solana_web3_script("");
+static base::NoDestructor<std::string> g_wallet_standard_script("");
 
 constexpr char kBraveSolana[] = "braveSolana";
 constexpr char kPublicKeyModule[] = "PublicKey";
@@ -53,7 +54,8 @@ constexpr char kSolana[] = "solana";
 constexpr char kSignature[] = "signature";
 constexpr char kSignatures[] = "signatures";
 constexpr char kToString[] = "toString";
-constexpr char kSolanaProviderSript[] = "solana_provider.js";
+constexpr char kSolanaProviderScript[] = "solana_provider.js";
+constexpr char kWalletStandardScript[] = "wallet_standard.js";
 
 }  // namespace
 
@@ -67,6 +69,10 @@ JSSolanaProvider::JSSolanaProvider(content::RenderFrame* render_frame)
   if (g_provider_solana_web3_script->empty()) {
     *g_provider_solana_web3_script =
         LoadDataResource(IDR_BRAVE_WALLET_SOLANA_WEB3_JS);
+  }
+  if (g_wallet_standard_script->empty()) {
+    *g_wallet_standard_script = LoadDataResource(
+        IDR_BRAVE_WALLET_SCRIPT_WALLET_STANDARD_SCRIPT_BUNDLE_JS);
   }
   EnsureConnected();
   v8_value_converter_->SetStrategy(&strategy_);
@@ -152,7 +158,7 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   }
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  ExecuteScript(web_frame, *g_provider_script, kSolanaProviderSript);
+  ExecuteScript(web_frame, *g_provider_script, kSolanaProviderScript);
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -196,6 +202,13 @@ void JSSolanaProvider::AccountChangedEvent(
     args.push_back(std::move(v8_public_key));
   }
   FireEvent(solana::kAccountChangedEvent, std::move(args));
+}
+
+void JSSolanaProvider::DidFinishLoad() {
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
+  ExecuteScript(web_frame, *g_wallet_standard_script, kWalletStandardScript);
 }
 
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
