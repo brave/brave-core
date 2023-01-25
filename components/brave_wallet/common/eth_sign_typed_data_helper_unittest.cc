@@ -308,9 +308,9 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                                      EthSignTypedDataHelper::Version::kV3);
   ASSERT_TRUE(helper);
 
-  base::ListValue list;
-  list.Append("hello");
-  list.Append("world");
+  base::Value list(base::Value::Type::LIST);
+  list.GetList().Append("hello");
+  list.GetList().Append("world");
 
   // v3 doesn't support array
   EXPECT_FALSE(helper->EncodeField("string[]", list));

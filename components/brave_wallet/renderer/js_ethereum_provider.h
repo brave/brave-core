@@ -59,7 +59,7 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
 
   bool EnsureConnected();
 
-  void FireEvent(const std::string& event, base::Value event_args);
+  void FireEvent(const std::string& event, base::ValueView event_args);
   void OnGetChainId(const std::string& chain_id);
   void ConnectEvent();
   void DisconnectEvent(const std::string& message);

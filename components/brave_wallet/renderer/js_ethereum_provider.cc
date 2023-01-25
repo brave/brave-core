@@ -360,7 +360,7 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
     }
   } else {
     // supported_single_arg_function
-    params = base::Value::ToUniquePtrValue(base::ListValue());
+    params = std::make_unique<base::Value>(base::Value::Type::LIST);
   }
 
   if (!EnsureConnected())
@@ -515,12 +515,11 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked(v8::Isolate* isolate) {
 }
 
 void JSEthereumProvider::FireEvent(const std::string& event,
-                                   base::Value event_args) {
+                                   base::ValueView event_args) {
   if (!render_frame())
     return;
-  base::Value::List args_list;
-  args_list.Append(event);
-  args_list.Append(std::move(event_args));
+  base::Value event_name(event);
+  base::ValueView args_list[] = {event_name, event_args};
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
@@ -547,7 +546,7 @@ void JSEthereumProvider::ConnectEvent() {
 void JSEthereumProvider::OnGetChainId(const std::string& chain_id) {
   base::Value::Dict event_args;
   event_args.Set("chainId", chain_id);
-  FireEvent(kConnectEvent, base::Value(std::move(event_args)));
+  FireEvent(kConnectEvent, event_args);
   is_connected_ = true;
   chain_id_ = chain_id;
 }
@@ -566,7 +565,7 @@ void JSEthereumProvider::ChainChangedEvent(const std::string& chain_id) {
 
 void JSEthereumProvider::AccountsChangedEvent(
     const std::vector<std::string>& accounts) {
-  base::ListValue event_args;
+  base::Value::List event_args;
   for (const std::string& account : accounts) {
     event_args.Append(base::Value(account));
   }
@@ -574,7 +573,7 @@ void JSEthereumProvider::AccountsChangedEvent(
   if (accounts.size() > 0) {
     first_allowed_account_ = accounts[0];
   }
-  FireEvent(ethereum::kAccountsChangedEvent, std::move(event_args));
+  FireEvent(ethereum::kAccountsChangedEvent, event_args);
 }
 
 void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
@@ -585,7 +584,7 @@ void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
   data.Set("result", std::move(result));
   event_args.Set("type", "eth_subscription");
   event_args.Set("data", std::move(data));
-  FireEvent(ethereum::kMessageEvent, base::Value(std::move(event_args)));
+  FireEvent(ethereum::kMessageEvent, event_args);
 }
 
 }  // namespace brave_wallet
