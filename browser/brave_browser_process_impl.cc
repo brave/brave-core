@@ -46,6 +46,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
@@ -85,6 +86,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_os_connection_api.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -432,6 +434,8 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
       shared_url_loader_factory(), local_state());
+  brave_vpn_os_connection_api_->SetTargetVpnEntryName(
+      brave_vpn::GetBraveVPNEntryName(chrome::GetChannel()));
   return brave_vpn_os_connection_api_.get();
 }
 #endif
