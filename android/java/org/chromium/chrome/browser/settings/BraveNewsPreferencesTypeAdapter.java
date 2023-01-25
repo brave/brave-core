@@ -90,24 +90,26 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
 
         } else if (holder instanceof NewsPreferencesViewHolder) {
             NewsPreferencesViewHolder viewHolder = (NewsPreferencesViewHolder) holder;
-            if (mBraveNewsPreferencesType.equalsIgnoreCase(
-                        BraveNewsPreferencesType.PopularSources.toString())
-                    || mBraveNewsPreferencesType.equalsIgnoreCase(
-                            BraveNewsPreferencesType.Suggested.toString())) {
+            if ((mBraveNewsPreferencesType.equalsIgnoreCase(
+                         BraveNewsPreferencesType.PopularSources.toString())
+                        || mBraveNewsPreferencesType.equalsIgnoreCase(
+                                BraveNewsPreferencesType.Suggested.toString()))
+                    && position < mPublisherList.size()) {
                 setSource(position, viewHolder, mPublisherList.get(position));
 
             } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
                                BraveNewsPreferencesType.Following.toString())) {
                 if (mChannelList.size() > 0 && position < mChannelList.size()) {
                     setChannel(position, viewHolder, mChannelList.get(position));
-                } else {
+                } else if (mPublisherList.size() > 0 && position - mChannelList.size() >= 0
+                        && (position - mChannelList.size()) < mPublisherList.size()) {
                     setSource(position, viewHolder,
                             mPublisherList.get(position - mChannelList.size()));
                 }
 
             } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
                                BraveNewsPreferencesType.Search.toString())) {
-                if (mChannelList.size() > 0 && position <= mChannelList.size()) {
+                if (mChannelList.size() > 0 && position < getChannelItemsCount()) {
                     setChannel(position, viewHolder, mChannelList.get(position - ONE_ITEM_SPACE));
                 } else if (position == getItemCount() - ONE_ITEM_SPACE
                         && (mBraveNewsPreferencesSearchType
@@ -118,8 +120,7 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                                         == BraveNewsPreferencesSearchType.NotFound)) {
                     setSearchUrl(position, viewHolder);
                 } else if (mBraveNewsPreferencesSearchType
-                                == BraveNewsPreferencesSearchType.NewSource
-                        && position <= getItemCount() - mFeedSearchResultItemList.size()) {
+                        == BraveNewsPreferencesSearchType.NewSource) {
                     int resultPosition = 0;
                     if (mChannelList.size() > 0) {
                         resultPosition = mChannelList.size() + ONE_ITEM_SPACE;
@@ -127,13 +128,17 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                     resultPosition += mPublisherList.size() + ONE_ITEM_SPACE;
 
                     setFeedSearchResultItem(position - resultPosition, viewHolder);
-                } else {
+
+                } else if (position - getChannelItemsCount() - ONE_ITEM_SPACE >= 0
+                        && position - getChannelItemsCount() - ONE_ITEM_SPACE
+                                < mPublisherList.size()) {
                     setSource(position, viewHolder,
                             mPublisherList.get(position - getChannelItemsCount() - ONE_ITEM_SPACE));
                 }
 
             } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
-                               BraveNewsPreferencesType.Channels.toString())) {
+                               BraveNewsPreferencesType.Channels.toString())
+                    && position < getChannelItemsCount()) {
                 setChannel(position, viewHolder, mChannelList.get(position));
             }
         }
@@ -170,7 +175,7 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void setFeedSearchResultItem(int position, NewsPreferencesViewHolder viewHolder) {
-        if (position < mFeedSearchResultItemList.size()) {
+        if (position >= 0 && position < mFeedSearchResultItemList.size()) {
             FeedSearchResultItem feedSearchResultItem = mFeedSearchResultItemList.get(position);
 
             viewHolder.name.setText(feedSearchResultItem.feedTitle);
@@ -372,10 +377,8 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
 
         mFeedSearchResultItemList = feedSearchResultItemList;
         mBraveNewsPreferencesSearchType = braveNewsPreferencesSearchType;
-
         if (braveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.NewSource) {
-            int itemsInserted = feedSearchResultItemList.size();
-            notifyItemRangeInserted(startPosition, itemsInserted);
+            notifyItemRangeInserted(startPosition, feedSearchResultItemList.size());
         } else if (braveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.NotFound) {
             notifyItemRangeInserted(startPosition, ONE_ITEM_SPACE);
         }
