@@ -61,7 +61,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Callbacks are invoked after rotation for a particular log type,
   // before metrics are sent. Useful for just-in-time metrics collection
   base::CallbackListSubscription RegisterRotationCallback(
-      base::RepeatingCallback<void(MetricLogType log_type, bool is_star)> callback);
+      base::RepeatingCallback<void(MetricLogType log_type, bool is_star)>
+          callback);
   // Callbacks are invoked for each metric is sent to the P3A JSON server,
   // or STAR message preparation.
   base::CallbackListSubscription RegisterMetricCycledCallback(

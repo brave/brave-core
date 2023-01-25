@@ -31,7 +31,6 @@ class MessageMetainfo {
 
   void Update();
 
-
   std::string platform;
   std::string version;
   std::string channel;

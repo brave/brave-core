@@ -152,7 +152,8 @@ void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
 }
 
 base::CallbackListSubscription BraveP3AService::RegisterRotationCallback(
-    base::RepeatingCallback<void(MetricLogType log_type, bool is_star)> callback) {
+    base::RepeatingCallback<void(MetricLogType log_type, bool is_star)>
+        callback) {
   DCheckCurrentlyOnUIThread();
   return rotation_callbacks_.Add(std::move(callback));
 }
@@ -183,8 +184,8 @@ void BraveP3AService::Init(
   histogram_values_ = {};
 }
 
-void BraveP3AService::OnRotation(bool is_express, bool is_star) {
-  rotation_callbacks_.Notify(is_express, is_star);
+void BraveP3AService::OnRotation(MetricLogType log_type, bool is_star) {
+  rotation_callbacks_.Notify(log_type, is_star);
 }
 
 void BraveP3AService::OnMetricCycled(const std::string& histogram_name,
@@ -275,22 +276,6 @@ void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
   } else {
     HandleHistogramChange(histogram_name, bucket);
   }
-}
-
-MetricLogType BraveP3AService::GetLogTypeForHistogram(
-    const std::string& histogram_name) {
-  MetricLogType result = MetricLogType::kTypical;
-  if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-      (dynamic_metric_log_types_.contains(histogram_name) &&
-       dynamic_metric_log_types_[histogram_name] == MetricLogType::kExpress)) {
-    result = MetricLogType::kExpress;
-  } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
-             (dynamic_metric_log_types_.contains(histogram_name) &&
-              dynamic_metric_log_types_[histogram_name] ==
-                  MetricLogType::kSlow)) {
-    result = MetricLogType::kSlow;
-  }
-  return result;
 }
 
 void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,

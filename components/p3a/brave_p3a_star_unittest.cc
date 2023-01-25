@@ -11,7 +11,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
@@ -46,7 +45,6 @@ class P3AStarTest : public testing::Test {
     p3a_config.star_randomness_host = kTestHost;
 
     BraveP3AStar::RegisterPrefs(local_state.registry());
-    RegisterPrefsForBraveReferralsService(local_state.registry());
 
     url_loader_factory.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {

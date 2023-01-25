@@ -117,10 +117,12 @@ void BraveP3AMessageManager::UpdateMetricValue(base::StringPiece histogram_name,
   std::string histogram_name_str = std::string(histogram_name);
   MetricLogType log_type = GetLogTypeForHistogram(histogram_name_str);
   if (log_type == MetricLogType::kTypical) {
-    // Only update typical metrics, until express/slow STAR metrics are supported
+    // Only update typical metrics, until express/slow STAR metrics are
+    // supported
     star_prep_log_store_->UpdateValue(std::string(histogram_name), bucket);
   }
-  json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name), bucket);
+  json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name),
+                                                bucket);
 }
 
 void BraveP3AMessageManager::RemoveMetricValue(
@@ -299,10 +301,12 @@ MetricLogType BraveP3AMessageManager::GetLogTypeForHistogram(
     const std::string& histogram_name) {
   MetricLogType result = MetricLogType::kTypical;
   if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-      delegate_->GetDynamicMetricLogType(histogram_name) == MetricLogType::kExpress) {
+      delegate_->GetDynamicMetricLogType(histogram_name) ==
+          MetricLogType::kExpress) {
     result = MetricLogType::kExpress;
   } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
-             delegate_->GetDynamicMetricLogType(histogram_name) == MetricLogType::kSlow) {
+             delegate_->GetDynamicMetricLogType(histogram_name) ==
+                 MetricLogType::kSlow) {
     result = MetricLogType::kSlow;
   }
   return result;
@@ -333,7 +337,7 @@ bool BraveP3AMessageManager::IsActualMetric(
     const std::string& histogram_name) const {
   return p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
          p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-         p3a::kCollectedMonthlyHistograms.contains(histogram_name) ||
+         p3a::kCollectedSlowHistograms.contains(histogram_name) ||
          delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 

@@ -215,8 +215,8 @@ void BraveP3AMetricLogStore::StageNextLog() {
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
   staged_log_ =
-      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, type_, is_star_,
-                              GetUploadType(staged_entry_key_));
+      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, type_,
+                              is_star_, GetUploadType(staged_entry_key_));
 
   VLOG(2) << "BraveP3AMetricLogStore::StageNextLog: staged "
           << staged_entry_key_;

@@ -94,7 +94,8 @@ void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
   last_tab_hostname_ = url.host();
 }
 
-void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type, bool is_star) {
+void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type,
+                                     bool is_star) {
   if (log_type != brave::MetricLogType::kExpress || is_star) {
     return;
   }
