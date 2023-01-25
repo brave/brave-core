@@ -493,7 +493,8 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #define SPEEDREADER_FEATURE_ENTRIES \
     {"brave-speedreader",                                               \
      flag_descriptions::kBraveSpeedreaderName,                          \
-     flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,       \
+     flag_descriptions::kBraveSpeedreaderDescription,        \
+     kOsDesktop | kOsAndroid,       \
      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
