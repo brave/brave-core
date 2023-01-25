@@ -50,12 +50,6 @@ interface BatLedger {
   OnHide(uint32 tab_id, uint64 current_time);
   OnForeground(uint32 tab_id, uint64 current_time);
   OnBackground(uint32 tab_id, uint64 current_time);
-
-  OnPostData(string url,
-             string first_party_url,
-             string referrer,
-             string post_data,
-             ledger.mojom.VisitData visit_data);
   OnXHRLoad(uint32 tab_id,
             string url,
             map<string, string> parts,

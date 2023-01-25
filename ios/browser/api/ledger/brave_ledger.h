@@ -243,10 +243,6 @@ OBJC_EXPORT
 
 #pragma mark - Misc
 
-+ (bool)isMediaURL:(NSURL*)url
-     firstPartyURL:(nullable NSURL*)firstPartyURL
-       referrerURL:(nullable NSURL*)referrerURL;
-
 - (void)rewardsInternalInfo:
     (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion;
 
@@ -269,12 +265,6 @@ OBJC_EXPORT
                 tabId:(UInt32)tabId
         firstPartyURL:(NSURL*)firstPartyURL
           referrerURL:(nullable NSURL*)referrerURL;
-
-- (void)reportPostData:(NSData*)postData
-                   url:(NSURL*)url
-                 tabId:(UInt32)tabId
-         firstPartyURL:(NSURL*)firstPartyURL
-           referrerURL:(nullable NSURL*)referrerURL;
 
 /// Report that a tab with a given id navigated or was closed by the user
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId

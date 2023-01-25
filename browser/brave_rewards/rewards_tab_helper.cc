@@ -173,7 +173,12 @@ bool RewardsTabHelper::BrowserHasWebContents(Browser* browser) {
 
 void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
   MaybeSavePublisherInfo();
+
+  // When Rewards is initialized for the current profile, we need to inform the
+  // utility process about the currently active tab so that it can start
+  // measuring auto-contribute correctly.
   if (rewards_service_) {
+    rewards_service_->OnShow(tab_id_);
     rewards_service_->OnLoad(tab_id_, GetWebContents().GetLastCommittedURL());
   }
 }

@@ -127,10 +127,6 @@ using GetDrainCallback =
 
 class LEDGER_EXPORT Ledger {
  public:
-  static bool IsMediaLink(const std::string& url,
-                          const std::string& first_party_url,
-                          const std::string& referrer);
-
   Ledger() = default;
   virtual ~Ledger() = default;
 
@@ -167,12 +163,6 @@ class LEDGER_EXPORT Ledger {
                          const std::string& first_party_url,
                          const std::string& referrer,
                          mojom::VisitDataPtr visit_data) = 0;
-
-  virtual void OnPostData(const std::string& url,
-                          const std::string& first_party_url,
-                          const std::string& referrer,
-                          const std::string& post_data,
-                          mojom::VisitDataPtr visit_data) = 0;
 
   virtual void GetActivityInfoList(uint32_t start,
                                    uint32_t limit,

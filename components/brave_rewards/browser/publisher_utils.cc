@@ -38,7 +38,10 @@ absl::optional<std::string> GetPublisherIdFromURL(const GURL& url) {
   if (IsMediaPlatformURL(url)) {
     return absl::nullopt;
   }
+  return GetPublisherDomainFromURL(url);
+}
 
+absl::optional<std::string> GetPublisherDomainFromURL(const GURL& url) {
 #if BUILDFLAG(ENABLE_IPFS)
   if (url.SchemeIs(ipfs::kIPNSScheme)) {
     std::string domain = ipfs::GetRegistryDomainFromIPNS(url);
@@ -60,6 +63,14 @@ absl::optional<std::string> GetPublisherIdFromURL(const GURL& url) {
     return absl::nullopt;
   }
   return domain;
+}
+
+bool IsAutoContributeHandledByContentScript(const GURL& url) {
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  return false;
+#else
+  return IsMediaPlatformURL(url);
+#endif
 }
 
 }  // namespace brave_rewards

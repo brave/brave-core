@@ -1063,17 +1063,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 #pragma mark - Misc
 
-+ (bool)isMediaURL:(NSURL*)url
-     firstPartyURL:(NSURL*)firstPartyURL
-       referrerURL:(NSURL*)referrerURL {
-  std::string referrer =
-      referrerURL != nil ? base::SysNSStringToUTF8(referrerURL.absoluteString)
-                         : "";
-  return ledger::Ledger::IsMediaLink(
-      base::SysNSStringToUTF8(url.absoluteString),
-      base::SysNSStringToUTF8(firstPartyURL.absoluteString), referrer);
-}
-
 - (void)rewardsInternalInfo:
     (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion {
   ledger->GetRewardsInternalsInfo(
@@ -1157,7 +1146,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
 
   ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
-  data->tld = data->name = baseDomain;
+  data->name = baseDomain;
   data->domain = origin.host();
   data->path = parsedUrl.path();
   data->tab_id = tabId;
@@ -1196,39 +1185,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
   ledger->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
                     partsMap, fpu, ref, std::move(visit));
-}
-
-- (void)reportPostData:(NSData*)postData
-                   url:(NSURL*)url
-                 tabId:(UInt32)tabId
-         firstPartyURL:(NSURL*)firstPartyURL
-           referrerURL:(NSURL*)referrerURL {
-  if (!self.initialized) {
-    return;
-  }
-
-  GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-  if (!parsedUrl.is_valid()) {
-    return;
-  }
-
-  const auto postDataString = [[[NSString alloc]
-      initWithData:postData
-          encoding:NSUTF8StringEncoding] stringByRemovingPercentEncoding];
-
-  auto visit = ledger::mojom::VisitData::New();
-  visit->path = parsedUrl.spec();
-  visit->tab_id = tabId;
-
-  std::string ref = referrerURL != nil
-                        ? base::SysNSStringToUTF8(referrerURL.absoluteString)
-                        : "";
-  std::string fpu = firstPartyURL != nil
-                        ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
-                        : "";
-
-  ledger->OnPostData(parsedUrl.spec(), fpu, ref,
-                     base::SysNSStringToUTF8(postDataString), std::move(visit));
 }
 
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId {

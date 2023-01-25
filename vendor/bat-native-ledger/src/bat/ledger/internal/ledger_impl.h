@@ -122,12 +122,6 @@ class LedgerImpl : public Ledger {
                  const std::string& referrer,
                  mojom::VisitDataPtr visit_data) override;
 
-  void OnPostData(const std::string& url,
-                  const std::string& first_party_url,
-                  const std::string& referrer,
-                  const std::string& post_data,
-                  mojom::VisitDataPtr visit_data) override;
-
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
