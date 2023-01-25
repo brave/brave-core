@@ -31,7 +31,6 @@
 #include "components/search_engines/template_url_data_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 class BraveLocalHistoryZeroSuggestProviderTest
