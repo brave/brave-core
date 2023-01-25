@@ -92,6 +92,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletDAppsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BuySendSwapActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/NetworkSelectorActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/NftDetailActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/AccountSpinnerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/ApproveTxFragmentPageAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CreateAccountAdapter.java",
