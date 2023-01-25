@@ -221,7 +221,7 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
       }
 
       // Don't display sessions with no tabs.
-      if (![distant_session.tabs count]) {
+      if ([distant_session.tabs count] > 0) {
         [sessions_list addObject:distant_session];
       }
     }
