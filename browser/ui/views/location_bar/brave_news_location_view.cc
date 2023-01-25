@@ -10,210 +10,173 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/functional/callback_forward.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_member.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/color_utils.h"
-#include "ui/gfx/geometry/insets.h"
-#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
-#include "ui/views/animation/ink_drop.h"
-#include "ui/views/border.h"
-#include "ui/views/controls/button/label_button.h"
-#include "ui/views/controls/button/label_button_border.h"
-#include "ui/views/controls/button/menu_button_controller.h"
-#include "ui/views/layout/flex_layout_view.h"
-#include "ui/views/layout/layout_types.h"
-#include "ui/views/view.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 namespace {
+
 constexpr SkColor kSubscribedLightColor = SkColorSetRGB(76, 84, 210);
 constexpr SkColor kSubscribedDarkColor = SkColorSetRGB(115, 122, 222);
 
-class BraveNewsButtonView : public views::LabelButton,
-                            public TabStripModelObserver,
-                            public BraveNewsTabHelper::PageFeedsObserver {
- public:
-  BraveNewsButtonView(Profile* profile, TabStripModel* tab_strip)
-      : views::LabelButton(
-            base::BindRepeating(&BraveNewsButtonView::ButtonPressed,
-                                base::Unretained(this))),
-        profile_(profile),
-        tab_strip_(tab_strip) {
-    DCHECK(profile_);
-    SetAccessibleName(
-        l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP));
-    SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_CENTER);
-
-    auto* ink_drop = views::InkDrop::Get(this);
-    ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    ink_drop->SetBaseColorCallback(base::BindRepeating(
-        [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
-        this));
-    ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
-    SetHasInkDropActionOnClick(true);
-
-    tab_strip_->AddObserver(this);
-    if (tab_strip_->GetActiveWebContents()) {
-      BraveNewsTabHelper::FromWebContents(tab_strip_->GetActiveWebContents())
-          ->AddObserver(this);
-    }
-
-    should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
-                      profile->GetPrefs(),
-                      base::BindRepeating(&BraveNewsButtonView::Update,
-                                          base::Unretained(this)));
-    opted_in_.Init(brave_news::prefs::kBraveTodayOptedIn, profile->GetPrefs(),
-                   base::BindRepeating(&BraveNewsButtonView::Update,
-                                       base::Unretained(this)));
-    news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
-                       profile->GetPrefs(),
-                       base::BindRepeating(&BraveNewsButtonView::Update,
-                                           base::Unretained(this)));
-
-    auto menu_button_controller = std::make_unique<views::MenuButtonController>(
-        this,
-        base::BindRepeating(&BraveNewsButtonView::ButtonPressed,
-                            base::Unretained(this)),
-        std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
-    SetButtonController(std::move(menu_button_controller));
-
-    Update();
-  }
-  ~BraveNewsButtonView() override = default;
-  BraveNewsButtonView(const BraveNewsButtonView&) = delete;
-  BraveNewsButtonView& operator=(const BraveNewsButtonView&) = delete;
-
-  void Update() {
-    if (!should_show_.GetValue() || !news_enabled_.GetValue() ||
-        !opted_in_.GetValue()) {
-      SetVisible(false);
-      return;
-    }
-
-    auto* contents = tab_strip_->GetActiveWebContents();
-    bool subscribed = false;
-    bool has_feeds = false;
-    absl::optional<BraveNewsTabHelper::FeedDetails> feed;
-
-    if (contents) {
-      auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-      subscribed = tab_helper->IsSubscribed();
-      has_feeds = !tab_helper->GetAvailableFeeds().empty();
-    }
-
-    auto image = gfx::CreateVectorIcon(kBraveNewsSubscribeIcon, 16,
-                                       GetIconColor(subscribed));
-    SetImage(ButtonState::STATE_NORMAL, image);
-    SetVisible(has_feeds);
-  }
-
-  // views::LabelButton:
-  std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
-      const override {
-    std::unique_ptr<views::LabelButtonBorder> border =
-        LabelButton::CreateDefaultBorder();
-    border->set_insets(gfx::Insets::VH(3, 0));
-    return border;
-  }
-
-  std::u16string GetTooltipText(const gfx::Point& p) const override {
-    return l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP);
-  }
-
-  SkPath GetHighlightPath() const {
-    gfx::Rect rect(GetPreferredSize());
-    const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-        views::Emphasis::kMaximum, rect.size());
-    SkPath path;
-    path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
-    return path;
-  }
-
-  // TabStripModelObserver:
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override {
-    if (selection.active_tab_changed()) {
-      if (selection.old_contents) {
-        BraveNewsTabHelper::FromWebContents(selection.old_contents)
-            ->RemoveObserver(this);
-      }
-
-      if (selection.new_contents) {
-        BraveNewsTabHelper::FromWebContents(selection.new_contents)
-            ->AddObserver(this);
-      }
-    }
-
-    Update();
-  }
-
-  // BraveNewsTabHelper::PageFeedsObserver:
-  void OnAvailableFeedsChanged(
-      const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) override {
-    Update();
-  }
-
-  // views::View:
-  void OnThemeChanged() override {
-    views::LabelButton::OnThemeChanged();
-    Update();
-  }
-
- private:
-  void ButtonPressed() {
-    // If the bubble is already open, do nothing.
-    if (bubble_widget_) {
-      return;
-    }
-
-    bubble_widget_ =
-        BraveNewsBubbleView::Show(this, tab_strip_->GetActiveWebContents());
-  }
-
-  SkColor GetIconColor(bool subscribed) const {
-    if (!subscribed)
-      return color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
-
-    auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
-                   ui::NativeTheme::PreferredColorScheme::kDark;
-    return is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
-  }
-
-  BooleanPrefMember should_show_;
-  BooleanPrefMember opted_in_;
-  BooleanPrefMember news_enabled_;
-
-  base::raw_ptr<Profile> profile_;
-  base::raw_ptr<TabStripModel> tab_strip_;
-  base::WeakPtr<views::Widget> bubble_widget_;
-};
 }  // namespace
 
-BraveNewsLocationView::BraveNewsLocationView(Profile* profile,
-                                             TabStripModel* tab_strip_model) {
-  SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(3, 3)));
+BraveNewsLocationView::BraveNewsLocationView(
+    Profile* profile,
+    IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+    PageActionIconView::Delegate* page_action_icon_delegate)
+    : PageActionIconView(/*command_updater=*/nullptr,
+                         /*command_id=*/0,
+                         icon_label_bubble_delegate,
+                         page_action_icon_delegate,
+                         "BraveNewsFollow") {
+  SetLabel(l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP));
 
-  SetLayoutManager(std::make_unique<views::FlexLayout>())
-      ->SetMainAxisAlignment(views::LayoutAlignment::kCenter)
-      .SetCrossAxisAlignment(views::LayoutAlignment::kCenter);
+  should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
+                    profile->GetPrefs(),
+                    base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                                        base::Unretained(this)));
+  opted_in_.Init(brave_news::prefs::kBraveTodayOptedIn, profile->GetPrefs(),
+                 base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                                     base::Unretained(this)));
+  news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
+                     profile->GetPrefs(),
+                     base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                                         base::Unretained(this)));
 
-  auto* button = AddChildView(
-      std::make_unique<BraveNewsButtonView>(profile, tab_strip_model));
-  button->SetPreferredSize(gfx::Size(34, 24));
+  Update();
 }
 
 BraveNewsLocationView::~BraveNewsLocationView() = default;
+
+views::BubbleDialogDelegate* BraveNewsLocationView::GetBubble() const {
+  return bubble_view_;
+}
+
+void BraveNewsLocationView::UpdateImpl() {
+  auto* contents = GetWebContents();
+  BraveNewsTabHelper* tab_helper =
+      contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
+
+  // When the active tab changes, subscribe to notification when
+  // it has found a feed.
+  if (contents && tab_helper) {
+    // Observe BraveNewsTabHelper for feed changes
+    if (!page_feeds_observer_.IsObservingSource(tab_helper)) {
+      page_feeds_observer_.Reset();
+      page_feeds_observer_.Observe(tab_helper);
+    }
+    // Observe WebContentsObserver for WebContentsDestroyed
+    if (web_contents() != contents) {
+      Observe(contents);
+    }
+  } else {
+    // Unobserve WebContentsObserver
+    if (web_contents()) {
+      Observe(nullptr);
+    }
+    // Unobserve BraveNewsTabHelper
+    if (page_feeds_observer_.IsObserving()) {
+      page_feeds_observer_.Reset();
+    }
+  }
+
+  // Don't show the icon if preferences don't allow
+  if (!tab_helper || !should_show_.GetValue() || !news_enabled_.GetValue() ||
+      !opted_in_.GetValue()) {
+    SetVisible(false);
+    return;
+  }
+
+  // Verify observing BraveNewsTabHelper
+  DCHECK(page_feeds_observer_.IsObservingSource(tab_helper));
+  // Verify observing for WebContentsDestroyed
+  DCHECK(web_contents());
+
+  // Icon color changes if any feeds are being followed
+  UpdateIconColor(tab_helper->IsSubscribed());
+
+  // Don't show icon if there are no feeds
+  const bool has_feeds = !tab_helper->GetAvailableFeeds().empty();
+  const bool is_visible = has_feeds || IsBubbleShowing();
+  SetVisible(is_visible);
+}
+
+void BraveNewsLocationView::WebContentsDestroyed() {
+  page_feeds_observer_.Reset();
+  Observe(nullptr);
+}
+
+const gfx::VectorIcon& BraveNewsLocationView::GetVectorIcon() const {
+  return kBraveNewsSubscribeIcon;
+}
+
+std::u16string BraveNewsLocationView::GetTextForTooltipAndAccessibleName()
+    const {
+  return l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP);
+}
+
+bool BraveNewsLocationView::ShouldShowLabel() const {
+  return false;
+}
+
+void BraveNewsLocationView::OnAvailableFeedsChanged(
+    const std::vector<BraveNewsTabHelper::FeedDetails>& feeds) {
+  Update();
+}
+
+void BraveNewsLocationView::OnThemeChanged() {
+  bool subscribed = false;
+  if (auto* contents = GetWebContents()) {
+    subscribed = BraveNewsTabHelper::FromWebContents(contents)->IsSubscribed();
+  }
+  UpdateIconColor(subscribed);
+  PageActionIconView::OnThemeChanged();
+}
+
+void BraveNewsLocationView::OnExecuting(
+    PageActionIconView::ExecuteSource execute_source) {
+  // If the bubble is already open, do nothing.
+  if (IsBubbleShowing()) {
+    return;
+  }
+
+  auto* contents = GetWebContents();
+  if (!contents) {
+    return;
+  }
+
+  bubble_view_ = new BraveNewsBubbleView(this, contents);
+  bubble_view_->SetCloseCallback(base::BindOnce(
+      &BraveNewsLocationView::OnBubbleClosed, base::Unretained(this)));
+  auto* bubble_widget =
+      views::BubbleDialogDelegateView::CreateBubble(bubble_view_);
+  bubble_widget->Show();
+}
+
+void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
+  SkColor icon_color;
+  if (subscribed) {
+    auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+                   ui::NativeTheme::PreferredColorScheme::kDark;
+    icon_color = is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
+  } else {
+    icon_color = color_utils::DeriveDefaultIconColor(GetCurrentTextColor());
+  }
+  SetIconColor(icon_color);
+}
+
+void BraveNewsLocationView::OnBubbleClosed() {
+  bubble_view_ = nullptr;
+}

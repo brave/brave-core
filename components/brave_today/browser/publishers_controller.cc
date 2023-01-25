@@ -55,6 +55,12 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
     return nullptr;
 
   const auto& site_host = site_url.host();
+
+  // Can't match a Publisher from an empty host
+  if (site_host.empty()) {
+    return nullptr;
+  }
+
   for (const auto& kv : publishers_) {
     const auto& publisher_host = kv.second->site_url.host();
     // When https://github.com/brave/brave-browser/issues/26092 is fixed, this
