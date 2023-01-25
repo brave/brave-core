@@ -32,6 +32,8 @@ struct TransactionConfirmationView: View {
   }
 
   @State private var viewMode: ViewMode = .transaction
+  @State private var isShowingGas: Bool = false
+  @State private var isShowingAdvancedSettings: Bool = false
 
   private var transactionType: String {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
@@ -45,6 +47,13 @@ struct TransactionConfirmationView: View {
     default:
       return confirmationStore.activeParsedTransaction.transaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
     }
+  }
+  
+  private var navigationTitle: String {
+    if confirmationStore.activeParsedTransaction.transaction.txType == .ethSwap {
+      return Strings.Wallet.swapConfirmationTitle
+    }
+    return confirmationStore.transactions.count > 1 ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle
   }
 
   /// View showing the currently selected account with a blockie
@@ -215,217 +224,275 @@ struct TransactionConfirmationView: View {
   }
 
   var body: some View {
-      ScrollView(.vertical) {
-        VStack {
-          // Header
-          HStack(alignment: .top) {
-            Text(confirmationStore.networkChainName)
-            Spacer()
-            VStack(alignment: .trailing) {
-              transactionsButton
-              if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-                accountView // for other txTypes, account is shown in `TransactionHeader`
-              }
+    ScrollView(.vertical) {
+      VStack {
+        // Current network, transaction buttons
+        HStack(alignment: .top) {
+          if confirmationStore.activeParsedTransaction.transaction.txType != .ethSwap {
+            Text(confirmationStore.network?.chainName ?? "") // network shown below each token for swap
+          }
+          Spacer()
+          VStack(alignment: .trailing) {
+            transactionsButton
+            if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
+              accountView // for other txTypes, account is shown in `TransactionHeader`
             }
           }
-          .font(.callout)
-          // Summary
-          if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-            erc20ApproveHeader
-          } else {
-            TransactionHeader(
-              fromAccountAddress: confirmationStore.activeParsedTransaction.fromAddress,
-              fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
-              toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
-              toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
-              originInfo: confirmationStore.originInfo,
-              transactionType: transactionType,
-              value: "\(confirmationStore.value) \(confirmationStore.symbol)",
-              fiat: confirmationStore.fiat
-            )
-          }
-          
-          if confirmationStore.isSolTokenTransferWithAssociatedTokenAccountCreation {
-            VStack(alignment: .leading, spacing: 8) {
-              Text(Strings.Wallet.confirmationViewSolSplTokenAccountCreationWarning)
-                .foregroundColor(Color(.braveErrorLabel))
-                .font(.subheadline.weight(.medium))
-              Button {
-                openWalletURL?(WalletConstants.splTokenAccountCreationLink)
-              } label: {
-                Text(Strings.Wallet.learnMoreButton)
-                  .foregroundColor(Color(.braveBlurpleTint))
-                  .font(.subheadline)
+        }
+        .font(.callout)
+        
+        // Current Active Transaction info
+        if confirmationStore.activeParsedTransaction.transaction.txType == .ethSwap {
+          SwapTransactionConfirmationView(
+            parsedTransaction: confirmationStore.activeParsedTransaction,
+            network: confirmationStore.network ?? .init(),
+            editGasFeeTapped: {
+              isShowingGas = true
+            },
+            advancedSettingsTapped: {
+              isShowingAdvancedSettings = true
+            }
+          )
+        } else {
+          currentTransactionView
+        }
+        
+        // Cancel / Confirm buttons
+        if confirmationStore.transactions.count > 1 {
+          Button(action: {
+            confirmationStore.rejectAllTransactions { success in
+              if success {
+                onDismiss()
               }
             }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 20)
+          }) {
+            Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
+              .font(.subheadline.weight(.semibold))
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+          .padding(.top, 8)
+        }
+        rejectConfirmContainer
+          .padding(.top)
+          .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
+          .accessibility(hidden: sizeCategory.isAccessibilityCategory)
+      }
+      .padding()
+    }
+    .overlay(
+      Group {
+        if sizeCategory.isAccessibilityCategory {
+          rejectConfirmContainer
+            .frame(maxWidth: .infinity)
+            .padding(.top)
             .background(
-              Color(.braveErrorBackground)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+              LinearGradient(
+                stops: [
+                  .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
+                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
+                  .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+              )
+              .ignoresSafeArea()
+              .allowsHitTesting(false)
             )
-          }
-
-          // View Mode
-          VStack(spacing: 12) {
-            Picker("", selection: $viewMode) {
-              Text(Strings.Wallet.confirmationViewModeTransaction).tag(ViewMode.transaction)
-              Text(Strings.Wallet.confirmationViewModeDetails).tag(ViewMode.details)
+        }
+      },
+      alignment: .bottom
+    )
+    .navigationBarTitle(navigationTitle)
+    .navigationBarTitleDisplayMode(.inline)
+    .foregroundColor(Color(.braveLabel))
+    .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
+    .onAppear {
+      Task {
+        await confirmationStore.prepare()
+      }
+    }
+    .background(
+      NavigationLink(
+        isActive: $isShowingGas,
+        destination: {
+          Group {
+            if let gasEstimation = confirmationStore.eip1559GasEstimation {
+              EditPriorityFeeView(
+                transaction: confirmationStore.activeParsedTransaction.transaction,
+                gasEstimation: gasEstimation,
+                confirmationStore: confirmationStore
+              )
+            } else {
+              EditGasFeeView(
+                transaction: confirmationStore.activeParsedTransaction.transaction,
+                confirmationStore: confirmationStore
+              )
             }
-            .pickerStyle(SegmentedPickerStyle())
-            Group {
-              switch viewMode {
-              case .transaction:
-                VStack(spacing: 0) {
-                  HStack {
-                    VStack(alignment: .leading) {
-                      Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee)
-                        .foregroundColor(Color(.bravePrimary))
-                      if confirmationStore.activeParsedTransaction.coin == .eth {
-                        editGasFeeButton
-                      }
-                    }
-                    Spacer()
-                    VStack(alignment: .trailing) {
-                      Text("\(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
-                        .foregroundColor(Color(.bravePrimary))
-                      Text(confirmationStore.gasFiat)
-                        .font(.footnote)
-                    }
+          }
+        },
+        label: { EmptyView() }
+      )
+    )
+    .background(
+      NavigationLink(
+        isActive: $isShowingAdvancedSettings,
+        destination: {
+          EditNonceView(
+            confirmationStore: confirmationStore,
+            transaction: confirmationStore.activeParsedTransaction.transaction
+          )
+        },
+        label: { EmptyView() }
+      )
+    )
+  }
+  
+  private var currentTransactionView: some View {
+    VStack {
+      if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
+        erc20ApproveHeader
+      } else {
+        TransactionHeader(
+          fromAccountAddress: confirmationStore.activeParsedTransaction.fromAddress,
+          fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
+          toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
+          toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
+          originInfo: confirmationStore.originInfo,
+          transactionType: transactionType,
+          value: "\(confirmationStore.value) \(confirmationStore.symbol)",
+          fiat: confirmationStore.fiat
+        )
+      }
+      
+      if confirmationStore.isSolTokenTransferWithAssociatedTokenAccountCreation {
+        VStack(alignment: .leading, spacing: 8) {
+          Text(Strings.Wallet.confirmationViewSolSplTokenAccountCreationWarning)
+            .foregroundColor(Color(.braveErrorLabel))
+            .font(.subheadline.weight(.medium))
+          Button {
+            openWalletURL?(WalletConstants.splTokenAccountCreationLink)
+          } label: {
+            Text(Strings.Wallet.learnMoreButton)
+              .foregroundColor(Color(.braveBlurpleTint))
+              .font(.subheadline)
+          }
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 20)
+        .background(
+          Color(.braveErrorBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        )
+      }
+      
+      // View Mode
+      VStack(spacing: 12) {
+        Picker("", selection: $viewMode) {
+          Text(Strings.Wallet.confirmationViewModeTransaction).tag(ViewMode.transaction)
+          Text(Strings.Wallet.confirmationViewModeDetails).tag(ViewMode.details)
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        Group {
+          switch viewMode {
+          case .transaction:
+            VStack(spacing: 0) {
+              HStack {
+                VStack(alignment: .leading) {
+                  Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee)
+                    .foregroundColor(Color(.bravePrimary))
+                  if confirmationStore.activeParsedTransaction.coin == .eth {
+                    editGasFeeButton
                   }
-                  .font(.callout)
+                }
+                Spacer()
+                VStack(alignment: .trailing) {
+                  Text("\(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
+                    .foregroundColor(Color(.bravePrimary))
+                  Text(confirmationStore.gasFiat)
+                    .font(.footnote)
+                }
+              }
+              .font(.callout)
+              .padding()
+              .accessibilityElement(children: .contain)
+              Divider()
+                .padding(.leading)
+              if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
+                Group {
+                  HStack {
+                    Text(Strings.Wallet.confirmationViewCurrentAllowance)
+                    Spacer()
+                    Text("\(confirmationStore.currentAllowance) \(confirmationStore.symbol)")
+                      .multilineTextAlignment(.trailing)
+                  }
                   .padding()
                   .accessibilityElement(children: .contain)
                   Divider()
-                    .padding(.leading)
-                  if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-                    Group {
-                      HStack {
-                        Text(Strings.Wallet.confirmationViewCurrentAllowance)
-                        Spacer()
-                        Text("\(confirmationStore.currentAllowance) \(confirmationStore.symbol)")
-                          .multilineTextAlignment(.trailing)
-                      }
-                      .padding()
-                      .accessibilityElement(children: .contain)
-                      Divider()
-                      HStack {
-                        Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
-                        Spacer()
-                        Text("\(confirmationStore.value) \(confirmationStore.symbol)")
-                          .multilineTextAlignment(.trailing)
-                      }
-                      .padding()
-                      .accessibilityElement(children: .contain)
-                    }
-                    .font(.callout)
-                    .foregroundColor(Color(.bravePrimary))
-                  } else {
-                    HStack {
-                      Text(Strings.Wallet.total)
-                        .foregroundColor(Color(.bravePrimary))
-                        .font(.callout)
-                        .accessibility(sortPriority: 1)
-                      Spacer()
-                      VStack(alignment: .trailing) {
-                        Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas)
-                          .font(.footnote)
-                          .foregroundColor(Color(.secondaryBraveLabel))
-                        Text("\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
-                          .foregroundColor(Color(.bravePrimary))
-                        HStack(spacing: 4) {
-                          if !confirmationStore.isBalanceSufficient {
-                            Text(Strings.Wallet.insufficientBalance)
-                              .foregroundColor(Color(.braveErrorLabel))
-                          }
-                          Text(confirmationStore.totalFiat)
-                            .foregroundColor(
-                              confirmationStore.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
-                            )
-                        }
-                        .accessibilityElement(children: .contain)
-                        .font(.footnote)
-                      }
-                    }
-                    .padding()
-                    .accessibilityElement(children: .contain)
+                  HStack {
+                    Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
+                    Spacer()
+                    Text("\(confirmationStore.value) \(confirmationStore.symbol)")
+                      .multilineTextAlignment(.trailing)
                   }
-                  if confirmationStore.activeParsedTransaction.coin == .eth {
-                    Divider()
-                      .padding(.leading)
-                    editNonceRow
-                  }
+                  .padding()
+                  .accessibilityElement(children: .contain)
                 }
-              case .details:
-                VStack(alignment: .leading) {
-                  StaticTextView(text: confirmationStore.transactionDetails)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 200)
-                    .background(Color(.tertiaryBraveGroupedBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                .font(.callout)
+                .foregroundColor(Color(.bravePrimary))
+              } else {
+                HStack {
+                  Text(Strings.Wallet.total)
+                    .foregroundColor(Color(.bravePrimary))
+                    .font(.callout)
+                    .accessibility(sortPriority: 1)
+                  Spacer()
+                  VStack(alignment: .trailing) {
+                    Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas)
+                      .font(.footnote)
+                      .foregroundColor(Color(.secondaryBraveLabel))
+                    Text("\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
+                      .foregroundColor(Color(.bravePrimary))
+                    HStack(spacing: 4) {
+                      if !confirmationStore.isBalanceSufficient {
+                        Text(Strings.Wallet.insufficientBalance)
+                          .foregroundColor(Color(.braveErrorLabel))
+                      }
+                      Text(confirmationStore.totalFiat)
+                        .foregroundColor(
+                          confirmationStore.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
+                        )
+                    }
+                    .accessibilityElement(children: .contain)
+                    .font(.footnote)
+                  }
                 }
                 .padding()
+                .accessibilityElement(children: .contain)
+              }
+              if confirmationStore.activeParsedTransaction.coin == .eth {
+                Divider()
+                  .padding(.leading)
+                editNonceRow
               }
             }
-            .frame(maxWidth: .infinity)
-            .background(
-              Color(.secondaryBraveGroupedBackground)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-          }
-          if confirmationStore.transactions.count > 1 {
-            Button(action: {
-              confirmationStore.rejectAllTransactions { success in
-                if success {
-                  onDismiss()
-                }
-              }
-            }) {
-              Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
-                .font(.subheadline.weight(.semibold))
-                .foregroundColor(Color(.braveBlurpleTint))
+          case .details:
+            VStack(alignment: .leading) {
+              StaticTextView(text: confirmationStore.transactionDetails)
+                .frame(maxWidth: .infinity)
+                .frame(height: 200)
+                .background(Color(.tertiaryBraveGroupedBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
             }
-            .padding(.top, 8)
+            .padding()
           }
-          rejectConfirmContainer
-            .padding(.top)
-            .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
-            .accessibility(hidden: sizeCategory.isAccessibilityCategory)
         }
-        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+          Color(.secondaryBraveGroupedBackground)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
       }
-      .overlay(
-        Group {
-          if sizeCategory.isAccessibilityCategory {
-            rejectConfirmContainer
-              .frame(maxWidth: .infinity)
-              .padding(.top)
-              .background(
-                LinearGradient(
-                  stops: [
-                    .init(color: Color(.braveGroupedBackground).opacity(0), location: 0),
-                    .init(color: Color(.braveGroupedBackground).opacity(1), location: 0.05),
-                    .init(color: Color(.braveGroupedBackground).opacity(1), location: 1),
-                  ],
-                  startPoint: .top,
-                  endPoint: .bottom
-                )
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
-              )
-          }
-        },
-        alignment: .bottom
-      )
-      .navigationBarTitle(confirmationStore.transactions.count > 1 ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle)
-      .navigationBarTitleDisplayMode(.inline)
-      .foregroundColor(Color(.braveLabel))
-      .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
-      .onAppear {
-        Task {
-          await confirmationStore.prepare()
-        }
-      }
+    }
   }
 
   @ViewBuilder private var rejectConfirmContainer: some View {

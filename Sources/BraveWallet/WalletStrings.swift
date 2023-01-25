@@ -3417,5 +3417,40 @@ extension Strings {
       value: "Sign at your own risk",
       comment: "A title of a warning message that warns users the risk of signing a transaction."
     )
+    public static let swapConfirmationTitle = NSLocalizedString(
+      "wallet.swapConfirmationTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Confirm Order",
+      comment: "A title displayed in transaction confirmation navigation bar for a Swap transaction."
+    )
+    public static let swapConfirmationYouSpend = NSLocalizedString(
+      "wallet.swapConfirmationYouSpend",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You spend",
+      comment: "A title displayed in transaction confirmation above the token being swapped from in a Swap transaction."
+    )
+    public static let swapConfirmationYoullReceive = NSLocalizedString(
+      "wallet.swapConfirmationYoullReceive",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You'll receive",
+      comment: "A title displayed in transaction confirmation above the token being swapped for in a Swap transaction."
+    )
+    public static let swapConfirmationNetworkFee = NSLocalizedString(
+      "wallet.swapConfirmationNetworkFee",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Network Fee",
+      comment: "A title displayed in transaction confirmation above the network / gas fee for a Swap transaction."
+    )
+    public static let swapConfirmationNetworkDesc = NSLocalizedString(
+      "wallet.swapConfirmationNetworkDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "on %@",
+      comment: "The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name."
+    )
   }
 }
