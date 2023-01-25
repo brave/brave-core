@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"
 
-#include <algorithm>
-
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/common/time/time_util.h"
 
@@ -17,12 +16,11 @@ namespace {
 bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
                                            const base::Time from_time,
                                            const base::Time to_time) {
-  const int count =
-      std::count_if(transactions.cbegin(), transactions.cend(),
-                    [from_time, to_time](const TransactionInfo& transaction) {
-                      return DidReconcileTransactionWithinDateRange(
-                          transaction, from_time, to_time);
-                    });
+  const int count = base::ranges::count_if(
+      transactions, [from_time, to_time](const TransactionInfo& transaction) {
+        return DidReconcileTransactionWithinDateRange(transaction, from_time,
+                                                      to_time);
+      });
 
   return count != 0;
 }

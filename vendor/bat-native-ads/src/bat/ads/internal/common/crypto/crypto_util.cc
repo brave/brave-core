@@ -8,10 +8,10 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
-#include <algorithm>
 
 #include "base/base64.h"
 #include "base/rand_util.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/common/crypto/key_pair_info.h"
 #include "tweetnacl.h"  // NOLINT
@@ -111,8 +111,8 @@ std::string Sign(const base::flat_map<std::string, std::string>& headers,
       concatenated_message.length(), &raw_secret_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
-  std::copy(signed_message.cbegin(),
-            signed_message.cbegin() + crypto_sign_BYTES, signature.begin());
+  base::ranges::copy_n(signed_message.cbegin(), crypto_sign_BYTES,
+                       signature.begin());
 
   return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
          "\",headers=\"" + concatenated_header + "\",signature=\"" +

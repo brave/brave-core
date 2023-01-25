@@ -5,10 +5,9 @@
 
 #include "bat/ads/ad_event_history.h"
 
-#include <algorithm>
-
 #include "base/check.h"
 #include "base/containers/flat_map.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
 namespace ads {
@@ -26,11 +25,10 @@ void PurgeHistoryOlderThan(std::vector<base::Time>* history,
 
   const base::Time past = base::Time::Now() - time_delta;
 
-  const auto iter =
-      std::remove_if(history->begin(), history->end(),
-                     [past](const base::Time time) { return time < past; });
-
-  history->erase(iter, history->end());
+  history->erase(
+      base::ranges::remove_if(
+          *history, [past](const base::Time time) { return time < past; }),
+      history->end());
 }
 
 }  // namespace

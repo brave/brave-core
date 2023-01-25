@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/base64.h"
@@ -23,6 +22,7 @@
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -318,9 +318,8 @@ void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
     history.push_back(result.url().GetWithEmptyPath());
   }
 
-  std::sort(history.begin(), history.end());
-  history.erase(std::unique(history.begin(), history.end()), history.end());
-
+  base::ranges::sort(history);
+  history.erase(base::ranges::unique(history), history.cend());
   std::move(callback).Run(history);
 }
 

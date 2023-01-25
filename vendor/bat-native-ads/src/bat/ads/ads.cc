@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/conversions/sorts/conversions_descending_sort.h"
 
-#include <algorithm>
+#include "base/ranges/algorithm.h"
 
 namespace ads {
 
@@ -13,10 +13,10 @@ ConversionList ConversionsDescendingSort::Apply(
     const ConversionList& conversions) const {
   ConversionList sorted_conversions = conversions;
 
-  std::sort(sorted_conversions.begin(), sorted_conversions.end(),
-            [](const ConversionInfo& lhs, const ConversionInfo& rhs) {
-              return lhs.type == "postclick" && rhs.type == "postview";
-            });
+  base::ranges::sort(sorted_conversions,
+                     [](const ConversionInfo& lhs, const ConversionInfo& rhs) {
+                       return lhs.type == "postclick" && rhs.type == "postview";
+                     });
 
   return sorted_conversions;
 }

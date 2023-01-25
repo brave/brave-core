@@ -7,8 +7,8 @@
 
 #include <cstdint>
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/deprecated/client/client_state_manager.h"
@@ -96,7 +96,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
       {"segment 2", {targeting::PurchaseIntentSignalHistoryInfo(now, weight)}},
       {"segment 3", {targeting::PurchaseIntentSignalHistoryInfo(now, weight)}}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
@@ -127,7 +127,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
        {targeting::PurchaseIntentSignalHistoryInfo(now, weight),
         targeting::PurchaseIntentSignalHistoryInfo(now, weight)}}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
@@ -163,7 +163,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
        {targeting::PurchaseIntentSignalHistoryInfo(now_1, weight),
         targeting::PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
@@ -200,7 +200,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
       {"segment 2",
        {targeting::PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
@@ -235,7 +235,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
        {targeting::PurchaseIntentSignalHistoryInfo(now_1, weight),
         targeting::PurchaseIntentSignalHistoryInfo(now_2, weight)}}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
@@ -264,7 +264,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
            targeting::PurchaseIntentSignalHistoryInfo(now, weight),
        }}};
 
-  EXPECT_TRUE(CompareMaps(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 }  // namespace ads

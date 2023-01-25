@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_H_
 
-#include <algorithm>
 #include <iterator>
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/pacing/pacing_util.h"
 
 namespace ads {
@@ -23,11 +23,10 @@ T PaceCreativeAds(const T& creative_ads) {
 
   T paced_creative_ads;
 
-  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
-               std::back_inserter(paced_creative_ads),
-               [](const CreativeAdInfo& creative_ad) {
-                 return !ShouldPaceAd(creative_ad);
-               });
+  base::ranges::copy_if(creative_ads, std::back_inserter(paced_creative_ads),
+                        [](const CreativeAdInfo& creative_ad) {
+                          return !ShouldPaceAd(creative_ad);
+                        });
 
   return paced_creative_ads;
 }

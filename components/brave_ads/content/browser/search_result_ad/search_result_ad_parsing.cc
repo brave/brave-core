@@ -258,10 +258,9 @@ absl::optional<SearchResultAdMap> ParseSearchResultAdMapEntityProperties(
       // Not all of attributes were specified.
       if (found_attributes.size() != kSearchResultAdAttributes.size()) {
         std::vector<base::StringPiece> absent_attributes;
-        std::set_difference(kSearchResultAdAttributes.begin(),
-                            kSearchResultAdAttributes.end(),
-                            found_attributes.begin(), found_attributes.end(),
-                            std::back_inserter(absent_attributes));
+        base::ranges::set_difference(kSearchResultAdAttributes,
+                                     found_attributes,
+                                     std::back_inserter(absent_attributes));
 
         LOG(ERROR) << "Some of search result ad attributes were not specified: "
                    << base::JoinString(absent_attributes, ", ");

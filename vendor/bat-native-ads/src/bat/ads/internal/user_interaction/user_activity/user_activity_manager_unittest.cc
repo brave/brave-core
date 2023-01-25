@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 
-#include "bat/ads/internal/common/containers/container_util.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_constants.h"
@@ -45,7 +45,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
@@ -67,7 +67,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterForegroundEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
@@ -89,7 +89,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidEnterBackgroundEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest,
@@ -112,7 +112,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
@@ -134,7 +134,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedBookmarkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
@@ -156,7 +156,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedHomePageButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
@@ -177,7 +177,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedLinkEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
@@ -199,7 +199,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClickedReloadButtonEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
@@ -220,7 +220,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordClosedTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
@@ -242,7 +242,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordFocusedOnExistingTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
@@ -264,7 +264,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordGeneratedKeywordEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
@@ -286,7 +286,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordNewNavigationEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest,
@@ -309,7 +309,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
@@ -330,7 +330,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordOpenedNewTabEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
@@ -352,7 +352,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordPlayedMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
@@ -374,7 +374,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordStoppedPlayingMediaEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
@@ -396,7 +396,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordSubmittedFormEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
@@ -417,7 +417,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTabUpdatedEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
@@ -439,7 +439,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedAndSelectedNonUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest,
@@ -462,7 +462,7 @@ TEST_F(BatAdsUserActivityManagerTest,
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
@@ -483,7 +483,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordTypedUrlEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
@@ -505,7 +505,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordUsedAddressBarEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
@@ -527,7 +527,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidBecomeActiveEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
@@ -549,7 +549,7 @@ TEST_F(BatAdsUserActivityManagerTest, RecordBrowserDidResignActiveEvent) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
@@ -631,7 +631,7 @@ TEST_F(BatAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   event.created_at = time;
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 TEST_F(BatAdsUserActivityManagerTest, MaximumHistoryItems) {
@@ -663,7 +663,7 @@ TEST_F(BatAdsUserActivityManagerTest, MaximumHistoryItems) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_TRUE(IsEqualContainers(expected_events, events));
+  EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
 }  // namespace ads

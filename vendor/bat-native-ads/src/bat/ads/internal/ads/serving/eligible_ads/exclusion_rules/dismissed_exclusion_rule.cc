@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/dismissed_exclusion_rule.h"
 
-#include <algorithm>
 #include <iterator>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
@@ -47,9 +47,8 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
   }
 
   AdEventList filtered_ad_events;
-  std::copy_if(
-      ad_events.cbegin(), ad_events.cend(),
-      std::back_inserter(filtered_ad_events),
+  base::ranges::copy_if(
+      ad_events, std::back_inserter(filtered_ad_events),
       [time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.confirmation_type == ConfirmationType::kClicked ||
                 ad_event.confirmation_type == ConfirmationType::kDismissed) &&

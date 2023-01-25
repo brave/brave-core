@@ -6,9 +6,9 @@
 #include "bat/ads/internal/history/filters/date_range_history_filter.h"
 
 #include "base/containers/circular_deque.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
@@ -61,7 +61,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -79,7 +79,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   // Assert
   const HistoryItemList expected_history;
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -104,7 +104,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(222222222);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -122,7 +122,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   // Assert
   const HistoryItemList expected_history;
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -151,7 +151,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   history_item.created_at = base::Time::FromDoubleT(555555555);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest,
@@ -169,7 +169,7 @@ TEST(BatAdsDateRangeHistoryFilterTest,
   // Assert
   const HistoryItemList expected_history;
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
@@ -186,7 +186,7 @@ TEST(BatAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   // Assert
   const HistoryItemList expected_history;
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 }  // namespace ads

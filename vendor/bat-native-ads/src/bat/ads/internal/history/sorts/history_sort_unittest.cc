@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/history/sorts/history_sort_factory.h"
 
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -71,7 +71,7 @@ TEST(BatAdsHistorySortTest, DescendingSortOrder) {
   history_item.created_at = base::Time::FromDoubleT(111111111);
   expected_history.push_back(history_item);
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
@@ -87,7 +87,7 @@ TEST(BatAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   // Assert
   const HistoryItemList expected_history;
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsHistorySortTest, AscendingSortOrder) {
@@ -113,7 +113,7 @@ TEST(BatAdsHistorySortTest, AscendingSortOrder) {
   history = sort->Apply(history);
 
   // Assert
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
@@ -127,7 +127,7 @@ TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
 
   // Assert
   const HistoryItemList expected_history;
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 }  // namespace ads
