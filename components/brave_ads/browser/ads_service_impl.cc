@@ -836,7 +836,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
 bool AdsServiceImpl::StopNotificationAdTimeOutTimer(
     const std::string& placement_id) {
   const auto iter = notification_ad_timers_.find(placement_id);
-  if (iter == notification_ad_timers_.end()) {
+  if (iter == notification_ad_timers_.cend()) {
     return false;
   }
 
@@ -1960,7 +1960,7 @@ void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
   url_loader->SetAllowHttpErrorResults(true);
 
   auto url_loader_iter =
-      url_loaders_.insert(url_loaders_.end(), std::move(url_loader));
+      url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
   url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       profile_->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess()

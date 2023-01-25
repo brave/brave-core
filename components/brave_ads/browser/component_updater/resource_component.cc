@@ -73,7 +73,7 @@ absl::optional<base::FilePath> ResourceComponent::GetPath(const std::string& id,
                                                           const int version) {
   const std::string index = GetIndex(id, version);
   const auto iter = resources_.find(index);
-  if (iter == resources_.end()) {
+  if (iter == resources_.cend()) {
     return absl::nullopt;
   }
 
@@ -202,7 +202,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
 
     const std::string index = GetIndex(resource.id, resource.version);
     auto iter = resources_.find(index);
-    if (iter != resources_.end()) {
+    if (iter != resources_.cend()) {
       VLOG(1) << "Updating resource " << resource.id << " version "
               << resource.version;
       iter->second = resource;
