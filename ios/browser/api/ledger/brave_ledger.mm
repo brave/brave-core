@@ -167,6 +167,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self savePrefs];
     }
 
+    if (!self.prefs[@"parameters.wallet_provider_regions"]) {
+      self.prefs[@"parameters.wallet_provider_regions"] = @{};
+    }
+
     [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
 
     databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
