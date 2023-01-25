@@ -22,9 +22,6 @@
     <message name="IDS_BOOKMARK_GROUP" desc="The group name of bookmarks imported from a file">
       Imported
     </message>
-    <message name="IDS_BOOKMARKS_READING_LIST_GROUP" desc="The title of reading list folder in imported bookmarks.">
-      Reading List
-    </message>
   </if>
 
   <if expr="not use_titlecase">
