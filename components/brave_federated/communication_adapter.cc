@@ -12,7 +12,7 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_federated/task/flower_helper.h"
+#include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
@@ -105,54 +105,48 @@ void CommunicationAdapter::OnGetTasks(
   int response_code = headers->response_code();
   // TODO(lminto): Check headers (as per Daniel instructions)
   if (response_code == net::HTTP_OK) {
-    flower::GetTasksResponse task_response;
-    if (task_response.ParseFromString(*response_body)) {
-      if (task_response.has_tokenized_tasks()) {
-        flower::TokenizedTasks tok_tasks = task_response.tokenized_tasks();
+    flower::PullTaskInsResponse pull_task_response;
+    if (pull_task_response.ParseFromString(*response_body)) {
+      TaskList task_list;
+      for (int i = 0; i < pull_task_response.task_ins_list_size(); i++) {
+        flower::TaskIns task_instruction = pull_task_response.task_ins_list(i);
 
-        TaskList task_list;
-        for (int i = 0; i < tok_tasks.tokenized_tasks_size(); i++) {
-          flower::TokenizedTask tok_task = tok_tasks.tokenized_tasks(i);
+        std::string task_id = task_instruction.task_id();
+        std::string group_id = task_instruction.group_id();
+        std::string workload_id = task_instruction.workload_id();
+        flower::Task flower_task = task_instruction.task();
 
-          std::string token = tok_task.token();
-          flower::Task flwr_task = tok_task.task();
+        flower::ServerMessage message = flower_task.legacy_server_message();
 
-          int task_id = flwr_task.task_id();
-          flower::ServerMessage message = flwr_task.legacy_server_message();
-
-          TaskType type;
-          std::vector<Weights> parameters = {};
-          if (message.has_fit_ins()) {
-            type = TaskType::Training;
-            parameters =
-                GetParametersFromMessage(message.fit_ins().parameters());
-          } else if (message.has_evaluate_ins()) {
-            type = TaskType::Evaluation;
-            parameters =
-                GetParametersFromMessage(message.evaluate_ins().parameters());
-          } else if (message.has_reconnect_ins()) {
-            std::move(callback).Run(task_list,
-                                    message.reconnect_ins().seconds());
-            return;
-          } else {
-            // Unrecognized instruction
-            VLOG(2) << "**: Received unrecognized instruction from FL service";
-            return;
-          }
-
-          Task task = Task(task_id, type, token, parameters);
-          task_list.push_back(task);
+        TaskType type;
+        std::vector<Weights> parameters = {};
+        if (message.has_fit_ins()) {
+          type = TaskType::Training;
+          parameters =
+              GetParametersFromMessage(message.fit_ins().parameters());
+        } else if (message.has_evaluate_ins()) {
+          type = TaskType::Evaluation;
+          parameters =
+              GetParametersFromMessage(message.evaluate_ins().parameters());
+        } else if (message.has_reconnect_ins()) {
+          std::move(callback).Run(task_list,
+                                  message.reconnect_ins().seconds());
+          return;
+        } else {
+          // Unrecognized instruction
+          VLOG(2) << "**: Received unrecognized instruction from FL service";
+          return;
         }
 
-        VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
-        std::move(callback).Run(task_list, 60 * 60);
-        return;
-      } else {
-        VLOG(2) << "Reconnecting";
-        std::move(callback).Run({}, 10);
+        Task task = Task(std::stoi(task_id), type, "token", parameters);
+        task_list.push_back(task);
       }
+
+      VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
+      std::move(callback).Run(task_list, pull_task_response.reconnect().reconnect());
+      return;
     } else {
-      VLOG(1) << "Failed to parse GetTasksResponse";
+      VLOG(1) << "Failed to parse PullTaskInsRes";
     }
   }
 
@@ -172,9 +166,6 @@ void CommunicationAdapter::PostTaskResult(TaskResult result,
   VLOG(2) << "Posting Task results " << request->method << " " << request->url;
 
   const std::string& payload = BuildPostTaskResultsPayload(result);
-
-  flower::Result task_result;
-  task_result.ParseFromString(payload);
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
