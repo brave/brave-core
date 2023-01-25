@@ -20,16 +20,16 @@ namespace brave_ads {
 
 namespace {
 
-const uint16_t kCurrentSchemaVersion = 1;
-const char kSchemaVersionPath[] = "schemaVersion";
-const char kResourcePath[] = "resources";
-const char kResourceIdPath[] = "id";
-const char kResourceFilenamePath[] = "filename";
-const char kResourceVersionPath[] = "version";
+constexpr uint16_t kCurrentSchemaVersion = 1;
+constexpr char kSchemaVersionPath[] = "schemaVersion";
+constexpr char kResourcePath[] = "resources";
+constexpr char kResourceIdPath[] = "id";
+constexpr char kResourceFilenamePath[] = "filename";
+constexpr char kResourceVersionPath[] = "version";
 
-const char kComponentName[] = "Brave Ads Resources (%s)";
+constexpr char kComponentName[] = "Brave Ads Resources (%s)";
 
-const base::FilePath::CharType kManifestFile[] =
+constexpr base::FilePath::CharType kManifestFile[] =
     FILE_PATH_LITERAL("resources.json");
 
 std::string GetIndex(const std::string& id, int version) {

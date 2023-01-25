@@ -48,7 +48,7 @@ struct ModelCombinationsParamInfo final {
 
 // Expected number of segments for all possible model combinations for both,
 // never processed and previously processed state
-const ModelCombinationsParamInfo kTests[] = {
+constexpr ModelCombinationsParamInfo kTests[] = {
     // Never processed
     {false, false, false, false, 0},
     {false, false, true, false, 0},

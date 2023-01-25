@@ -26,15 +26,15 @@ namespace brave_ads {
 
 namespace {
 
-const int kMinimumButtonHeight = 44;
+constexpr int kMinimumButtonHeight = 44;
 
-const int kInfoButtonIconDipSize = 40;
+constexpr int kInfoButtonIconDipSize = 40;
 
 constexpr SkColor kLightModeCloseButtonIconColor =
     SkColorSetRGB(0x69, 0x6f, 0x78);
 constexpr SkColor kDarkModeCloseButtonIconColor =
     SkColorSetRGB(0xae, 0xb1, 0xc2);
-const int kCloseButtonIconDipSize = 16;
+constexpr int kCloseButtonIconDipSize = 16;
 
 }  // namespace
 

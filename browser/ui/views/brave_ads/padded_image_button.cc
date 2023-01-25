@@ -26,7 +26,7 @@ constexpr SkColor kBackgroundColor = SK_ColorTRANSPARENT;
 
 constexpr auto kBorderInset = gfx::Insets::TLBR(4, 4, 0, 4);
 
-const float kVisibleOpacity = 0.12f;
+constexpr float kVisibleOpacity = 0.12f;
 
 }  // namespace
 
