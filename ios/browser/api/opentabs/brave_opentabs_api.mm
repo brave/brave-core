@@ -73,10 +73,6 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
 
 #pragma mark - IOSOpenDistantSession
 
-@interface IOSOpenDistantSession ()
-@property(nonatomic, strong) NSArray<IOSOpenDistantTab*>* tabs;
-@end
-
 @implementation IOSOpenDistantSession
 
 - (instancetype)initWithName:(nullable NSString*)name

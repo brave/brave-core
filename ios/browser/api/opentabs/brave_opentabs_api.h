@@ -52,7 +52,7 @@ OBJC_EXPORT
 @property(nonatomic, copy) NSString* sessionTag;
 @property(nonatomic, nullable, copy) NSDate* modifiedTime;
 @property(nonatomic) SyncDeviceFormFactor deviceFormFactor;
-@property(nonatomic, strong, readonly) NSArray<IOSOpenDistantTab*>* tabs;
+@property(nonatomic, strong) NSArray<IOSOpenDistantTab*>* tabs;
 
 /// Open Tab Constructor used with OpenTabSessionAPI
 /// @param name - This is the name of the device for the distant session
