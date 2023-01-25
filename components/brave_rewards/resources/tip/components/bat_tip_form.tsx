@@ -19,8 +19,12 @@ import { SadFaceIcon } from './icons/sad_face'
 import { PaperAirplaneIcon } from './icons/paper_airplane_icon'
 import { CalendarIcon } from './icons/calendar_icon'
 import { LoadingIcon } from '../../shared/components/icons/loading_icon'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 
 import * as style from './bat_tip_form.style'
+
+import * as mojom from '../../shared/lib/mojom'
+import * as urls from '../../shared/lib/rewards_urls'
 
 const minimumTip = 0.25
 const maximumTip = 100
@@ -41,6 +45,8 @@ export function BatTipForm (props: Props) {
 
   const [rewardsParameters, setRewardsParameters] = React.useState(
     host.state.rewardsParameters)
+  const [externalWalletInfo, setExternalWalletInfo] = React.useState(
+    host.state.externalWalletInfo)
 
   const [tipAmount, setTipAmount] = React.useState(props.defaultTipAmount)
   const [tipProcessing, setTipProcessing] = React.useState(false)
@@ -50,6 +56,7 @@ export function BatTipForm (props: Props) {
   React.useEffect(() => {
     return host.addListener((state) => {
       setRewardsParameters(state.rewardsParameters)
+      setExternalWalletInfo(state.externalWalletInfo)
     })
   }, [host])
 
@@ -157,7 +164,21 @@ export function BatTipForm (props: Props) {
             </style.minimumAmount>
           : props.tipKind === 'one-time' && tipAmount > props.userBalance
             ? <style.notEnoughFunds>
-              <SadFaceIcon /> {getString('notEnoughTokens')}
+                <SadFaceIcon />&nbsp;
+                {
+                  externalWalletInfo &&
+                    externalWalletInfo.status === mojom.WalletStatus.kLoggedOut
+                    ? formatMessage(getString('youAreCurrentlyLoggedOut'), {
+                      tags: {
+                        $1: (content) => (
+                          <NewTabLink key='link' href={urls.settingsURL}>
+                            {content}
+                          </NewTabLink>
+                        )
+                      }
+                    })
+                    : getString('notEnoughTokens')
+                }
             </style.notEnoughFunds>
           : showCustomInput
             ? <FormSubmitButton onClick={onSubmitCustomTip}>
