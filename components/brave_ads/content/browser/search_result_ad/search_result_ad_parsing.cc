@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing.h"
 
+#include <iterator>
 #include <utility>
 #include <vector>
 
