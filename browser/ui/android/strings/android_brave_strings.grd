@@ -3494,6 +3494,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
     </message>
+    <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
+      Action required: Connect a custodial account or your vBAT will be lost
+    </message>
+    <message name="IDS_VBAT_SUPPORTED_REGION_TEXT" desc="Vbat modal text for supported region">
+      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
+    </message>
+    <message name="IDS_VBAT_UNSUPPORTED_REGION_TITLE" desc="Vbat modal title text for unsupported region">
+      You still have time to contribute your vBAT to your favorite creators
+    </message>
+    <message name="IDS_VBAT_UNSUPPORTED_REGION_TEXT" desc="Vbat modal text for unsupported region">
+      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">%2$s</ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
+    </message>
   </messages>
   </release>
 </grit>

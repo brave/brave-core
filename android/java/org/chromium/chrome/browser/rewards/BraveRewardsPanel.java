@@ -104,6 +104,7 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ledger.mojom.UserType;
 import org.chromium.ledger.mojom.WalletStatus;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.permissions.PermissionConstants;
@@ -225,6 +226,7 @@ public class BraveRewardsPanel
     private View mBraveRewardsOnboardingModalView;
     private View mRewardsResponseModal;
     private View mConnectAccountModal;
+    private View mRewardsVbatExpireNoticeModal;
 
     private BraveRewardsOnboardingPagerAdapter mBraveRewardsOnboardingPagerAdapter;
     private HeightWrappingViewPager mBraveRewardsViewPager;
@@ -341,6 +343,9 @@ public class BraveRewardsPanel
         mRewardsSummaryDetailLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_summary_layout_id);
         mRewardsTipLayout = mPopupView.findViewById(R.id.brave_rewards_panel_tip_layout_id);
+
+        mRewardsVbatExpireNoticeModal =
+                mPopupView.findViewById(R.id.brave_rewards_vbat_expire_notice_modal_id);
         mPopupWindow.setContentView(mPopupView);
     }
 
@@ -1010,6 +1015,18 @@ public class BraveRewardsPanel
     }
 
     @Override
+    public void onGetUserType(int userType) {
+        switch (userType) {
+            case UserType.LEGACY_UNCONNECTED:
+                showVbatExpireNotice();
+                break;
+            case UserType.UNCONNECTED:
+                newInstallViewChanges();
+                break;
+        }
+    }
+
+    @Override
     public void onBalance(int errorCode) {
         mWalletBalanceLayout.setAlpha(1.0f);
         mWalletBalanceProgress.setVisibility(View.GONE);
@@ -1048,6 +1065,9 @@ public class BraveRewardsPanel
             shouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
         } else if (mExternalWallet != null) {
+            if (mBraveRewardsNativeWorker.getVbatDeadline() > 0) {
+                mBraveRewardsNativeWorker.getUserType();
+            }
             showViewsBasedOnExternalWallet();
         }
     }
@@ -1603,6 +1623,67 @@ public class BraveRewardsPanel
         }
     }
 
+    private void showVbatExpireNotice() {
+        if (mRewardsVbatExpireNoticeModal == null) {
+            return;
+        }
+
+        panelShadow(true);
+
+        mRewardsVbatExpireNoticeModal.setVisibility(View.VISIBLE);
+        TextView vBatModalTitle = mRewardsVbatExpireNoticeModal.findViewById(R.id.vbat_modal_title);
+        TextView vBatModalText = mRewardsVbatExpireNoticeModal.findViewById(R.id.vbat_modal_text);
+        FrameLayout vBatConnectButton =
+                mRewardsVbatExpireNoticeModal.findViewById(R.id.btn_vbat_connect_account);
+        vBatConnectButton.setVisibility(
+                mBraveRewardsNativeWorker.canConnectAccount() ? View.VISIBLE : View.GONE);
+        vBatConnectButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TabUtils.openUrlInNewTab(
+                        false, BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                dismiss();
+            }
+        }));
+        Button vBatLearnMoreButton =
+                mRewardsVbatExpireNoticeModal.findViewById(R.id.btn_vbat_learn_more);
+        vBatLearnMoreButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTabActivity.showInfoPage(mActivity, BRAVE_REWARDS_CHANGES_PAGE);
+            }
+        }));
+        AppCompatImageView vbatCloseBtn =
+                mRewardsVbatExpireNoticeModal.findViewById(R.id.vbat_modal_close);
+        vbatCloseBtn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mRewardsVbatExpireNoticeModal != null) {
+                    mRewardsVbatExpireNoticeModal.setVisibility(View.GONE);
+                }
+                panelShadow(false);
+            }
+        }));
+
+        String vbatModalTitleString = "";
+        String vbatModalTextString = "";
+        double dueDateInMillis = mBraveRewardsNativeWorker.getVbatDeadline();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy h:mm a", Locale.getDefault());
+        String dueDate = sdf.format(new Date((long) dueDateInMillis));
+        if (mBraveRewardsNativeWorker.canConnectAccount()) {
+            vbatModalTitleString = mActivity.getString(R.string.vbat_supported_region_title);
+            vbatModalTextString = String.format(
+                    mActivity.getString(R.string.vbat_supported_region_text), dueDate);
+        } else {
+            vbatModalTitleString = mActivity.getString(R.string.vbat_unsupported_region_title);
+            vbatModalTextString =
+                    String.format(mActivity.getString(R.string.vbat_unsupported_region_text),
+                            dueDate, mBraveRewardsNativeWorker.getCountryCode());
+        }
+        vBatModalTitle.setText(vbatModalTitleString);
+        vBatModalText.setText(vbatModalTextString);
+    }
+
     private void showConnectAccountModal() {
         if (mConnectAccountModal == null) {
             return;
@@ -1721,6 +1802,7 @@ public class BraveRewardsPanel
             public void onClick(View v) {
                 mRewardsResponseModal.setVisibility(View.GONE);
                 mRewardsMainLayout.setForeground(null);
+                panelShadow(false);
                 if (!isSuccess && !errorMessage.equals(WALLET_GENERATION_DISABLED_ERROR)) {
                     showBraveRewardsOnboardingModal();
                 }
