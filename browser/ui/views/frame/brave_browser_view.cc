@@ -491,7 +491,7 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
     base::OnceCallback<void(bool)> callback) {
   // Simulate user response.
   if (g_download_confirm_return_allow_for_testing) {
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(std::move(callback),
                        *g_download_confirm_return_allow_for_testing));

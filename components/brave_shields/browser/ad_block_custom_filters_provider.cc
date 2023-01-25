@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -54,7 +54,7 @@ void AdBlockCustomFiltersProvider::LoadDATBuffer(
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
 
   // PostTask so this has an async return to match other loaders
-  base::ThreadTaskRunnerHandle::Get()->PostTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
 }
 

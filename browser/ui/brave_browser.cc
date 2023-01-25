@@ -80,7 +80,7 @@ void BraveBrowser::TabStripEmpty() {
     return;
   }
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
                                 true, absl::nullopt));
 }

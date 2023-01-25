@@ -268,7 +268,7 @@ void IpnsKeysManager::OnKeysLoaded(
   requests_list_.erase(iter);
   last_load_retry_value_for_test_ = retry_number;
   if (response.error_code() == net::ERR_CONNECTION_REFUSED && retry_number) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpnsKeysManager::LoadKeysInternal,
                        weak_factory_.GetWeakPtr(), retry_number - 1),

@@ -199,7 +199,7 @@ void BraveWalletAutoPinService::AddOrExecute(std::unique_ptr<IntentData> data) {
 
 void BraveWalletAutoPinService::PostRetry(std::unique_ptr<IntentData> data) {
   int multiply = ++data->attempt;
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&BraveWalletAutoPinService::AddOrExecute,
                      weak_ptr_factory_.GetWeakPtr(), std::move(data)),
