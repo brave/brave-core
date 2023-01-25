@@ -74,6 +74,10 @@ engineFromBufferWithMetadata(const char* data, size_t data_size) {
   return std::make_pair(std::move(metadata), std::move(engine));
 }
 
+AdblockDebugInfo::AdblockDebugInfo() = default;
+AdblockDebugInfo::AdblockDebugInfo(const AdblockDebugInfo&) = default;
+AdblockDebugInfo::~AdblockDebugInfo() = default;
+
 Engine::Engine(C_Engine* c_engine) : raw(c_engine) {}
 
 Engine::Engine() : raw(engine_create("")) {}
@@ -189,6 +193,38 @@ const std::string Engine::hiddenClassIdSelectors(
 
   c_char_buffer_destroy(stylesheet_raw);
   return stylesheet;
+}
+
+AdblockDebugInfo Engine::getAdblockDebugInfo() {
+  AdblockDebugInfo info;
+  auto* debug_info_raw = get_engine_debug_info(raw);
+  size_t filters_size = 0U;
+  engine_debug_info_get_attr(debug_info_raw, &info.compiled_regex_count,
+                             &filters_size);
+  info.regex_data.reserve(filters_size);
+  for (size_t i = 0; i < filters_size; ++i) {
+    RegexDebugEntry entry;
+    char* regex_raw = nullptr;
+    engine_debug_info_get_regex_entry(debug_info_raw, i, &entry.id, &regex_raw,
+                                      &entry.unused_sec, &entry.usage_count);
+    if (regex_raw) {
+      entry.regex = std::string(regex_raw);
+      c_char_buffer_destroy(regex_raw);
+    }
+    info.regex_data.push_back(std::move(entry));
+  }
+  engine_debug_info_destroy(debug_info_raw);
+
+  return info;
+}
+
+void Engine::discardRegex(uint64_t regex_id) {
+  discard_regex(raw, regex_id);
+}
+
+void Engine::setupDiscardPolicy(const RegexManagerDiscardPolicy& policy) {
+  setup_discard_policy(raw, policy.cleanup_interval_sec,
+                       policy.discard_unused_sec);
 }
 
 Engine::~Engine() {

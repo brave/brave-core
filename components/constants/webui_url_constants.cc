@@ -6,6 +6,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 
 const char kAdblockHost[] = "adblock";
+const char kAdblockInternalsHost[] = "adblock-internals";
 const char kAdblockJS[] = "brave_adblock.js";
 const char kIPFSWebUIHost[] = "ipfs-internals";
 const char kIPFSWebUIURL[] = "chrome://ipfs-internals/";
