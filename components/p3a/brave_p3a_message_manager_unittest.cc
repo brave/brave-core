@@ -16,7 +16,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/features.h"
@@ -58,7 +57,7 @@ class P3AMessageManagerTest : public testing::Test,
     return absl::optional<MetricLogType>();
   }
 
-  void OnRotation(bool is_express, bool is_star) override {}
+  void OnRotation(MetricLogType log_type, bool is_star) override {}
 
   void OnMetricCycled(const std::string& histogram_name,
                       bool is_star) override {}
@@ -80,7 +79,6 @@ class P3AMessageManagerTest : public testing::Test,
     p3a_config.p2a_star_upload_url = GURL(std::string(kTestHost) + "/p2a_star");
 
     BraveP3AService::RegisterPrefs(local_state.registry(), true);
-    RegisterPrefsForBraveReferralsService(local_state.registry());
 
     next_epoch_time = base::Time::Now() + base::Days(kEpochLenDays);
 

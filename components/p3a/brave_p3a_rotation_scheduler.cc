@@ -105,6 +105,8 @@ BraveP3ARotationScheduler::BraveP3ARotationScheduler(
   }
 }
 
+BraveP3ARotationScheduler::~BraveP3ARotationScheduler() = default;
+
 void BraveP3ARotationScheduler::RegisterPrefs(PrefRegistrySimple* registry) {
   // Using "year ago" as default value to fix macOS test crashes
   const base::Time year_ago = base::Time::Now() - base::Days(365);

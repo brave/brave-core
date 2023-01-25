@@ -24,6 +24,7 @@ class P3AMetricLogStoreTest : public testing::Test,
 
   std::string SerializeLog(base::StringPiece histogram_name,
                            uint64_t value,
+                           MetricLogType log_type,
                            bool is_star,
                            const std::string& upload_type) override {
     return std::string(histogram_name) + "_" + base::NumberToString(value) +
