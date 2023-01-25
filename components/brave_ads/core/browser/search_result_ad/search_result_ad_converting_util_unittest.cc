@@ -9,15 +9,15 @@
 #include "brave/components/brave_ads/core/browser/search_result_ad/test_web_page_util.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
 TEST(SearchResultAdConvertingTest, ValidWebPage) {
-  blink::mojom::WebPagePtr web_page = CreateTestWebPage();
+  std::vector<::schema_org::mojom::EntityPtr> entities =
+      CreateTestWebPageEntities();
   const SearchResultAdMap ads =
-      ConvertWebPageToSearchResultAds(std::move(web_page));
+      ConvertWebPageEntitiesToSearchResultAds(entities);
   EXPECT_EQ(ads.size(), 1U);
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
       ads.at(GURL(kTestWebPageTargetUrl));
@@ -44,70 +44,77 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
 
 TEST(SearchResultAdConvertingTest, NotValidWebPage) {
   {
-    blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
+    std::vector<::schema_org::mojom::EntityPtr> entities;
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    web_page->entities[0]->type = "Not-Product";
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    entities[0]->type = "Not-Product";
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    web_page->entities[0]->properties.clear();
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    entities[0]->properties.clear();
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
     property->name = "not-creatives";
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewEntityValues({});
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 }
 
 TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
     ad_entity->type = "Not-SearchResultAd";
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage();
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
 
     schema_org::mojom::PropertyPtr extra_property =
@@ -118,7 +125,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_FALSE(ads.empty());
   }
 }
@@ -126,9 +133,10 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
 TEST(SearchResultAdConvertingTest, NotValidAdEntityPropertySkipped) {
   constexpr int kSearchResultAdAttributesCount = 12;
   for (int index = 0; index < kSearchResultAdAttributesCount; ++index) {
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage(index);
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities(index);
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 }
@@ -136,8 +144,9 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityPropertySkipped) {
 TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
   {
     // Skip "data-landing-page".
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage(0);
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities(0);
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
 
     schema_org::mojom::PropertyPtr extra_property =
@@ -148,14 +157,15 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
     // Skip "data-rewards-value".
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage(1);
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities(1);
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
 
     schema_org::mojom::PropertyPtr extra_property =
@@ -166,14 +176,15 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
     // Skip "data-conversion-observation-window-value".
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage(2);
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities(2);
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
 
     schema_org::mojom::PropertyPtr extra_property =
@@ -183,14 +194,15 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 
   {
     // Skip "data-creative-instance-id".
-    blink::mojom::WebPagePtr web_page = CreateTestWebPage(3);
-    auto& property = web_page->entities[0]->properties[0];
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities(3);
+    auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
 
     schema_org::mojom::PropertyPtr extra_property =
@@ -200,7 +212,7 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     ad_entity->properties.push_back(std::move(extra_property));
 
     const SearchResultAdMap ads =
-        ConvertWebPageToSearchResultAds(std::move(web_page));
+        ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_TRUE(ads.empty());
   }
 }

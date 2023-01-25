@@ -6,14 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SEARCH_RESULT_AD_TEST_WEB_PAGE_UTIL_H_
 
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom-forward.h"
+#include <vector>
+
+#include "components/schema_org/common/metadata.mojom.h"
 
 namespace brave_ads {
 
 constexpr char kTestWebPageCreativeInstanceId[] = "creative_instance_id";
 constexpr char kTestWebPageTargetUrl[] = "https://brave.com";
 
-blink::mojom::WebPagePtr CreateTestWebPage(int attribute_index_to_skip = -1);
+std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
+    int attribute_index_to_skip = -1);
 
 }  // namespace brave_ads
 

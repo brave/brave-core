@@ -5,17 +5,17 @@
 
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 
+#include <iterator>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
+#include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "components/schema_org/common/metadata.mojom.h"
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 using ads::mojom::ConversionInfo;
 using ads::mojom::ConversionInfoPtr;
@@ -229,14 +229,16 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
 
   // Not all of attributes were specified.
   if (found_attributes.size() != kSearchResultAdAttributes.size()) {
-    std::vector<base::StringPiece> absent_attributes;
-    std::set_difference(kSearchResultAdAttributes.begin(),
-                        kSearchResultAdAttributes.end(),
-                        found_attributes.begin(), found_attributes.end(),
-                        std::back_inserter(absent_attributes));
+    if (VLOG_IS_ON(6)) {
+      std::vector<base::StringPiece> absent_attributes;
+      base::ranges::set_difference(
+          kSearchResultAdAttributes.cbegin(), kSearchResultAdAttributes.cend(),
+          found_attributes.cbegin(), found_attributes.cend(),
+          std::back_inserter(absent_attributes));
 
-    VLOG(6) << "Some of search result ad attributes were not specified: "
-            << base::JoinString(absent_attributes, ", ");
+      VLOG(6) << "Some of search result ad attributes were not specified: "
+              << base::JoinString(absent_attributes, ", ");
+    }
 
     return;
   }
@@ -302,14 +304,11 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
 
 }  // namespace
 
-SearchResultAdMap ConvertWebPageToSearchResultAds(
-    blink::mojom::WebPagePtr web_page) {
+SearchResultAdMap ConvertWebPageEntitiesToSearchResultAds(
+    const std::vector<::schema_org::mojom::EntityPtr>& web_page_entities) {
   SearchResultAdMap search_result_ads;
-  if (!web_page) {
-    return search_result_ads;
-  }
 
-  for (const auto& entity : web_page->entities) {
+  for (const auto& entity : web_page_entities) {
     if (!entity || entity->type != kProductType) {
       continue;
     }

@@ -100,7 +100,8 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     return;
   }
 
-  search_result_ads_ = ConvertWebPageToSearchResultAds(std::move(web_page));
+  search_result_ads_ =
+      ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
 
   if (search_result_ads_ && should_trigger_viewed_event_) {
     for (const auto& [key, search_result_ad] : *search_result_ads_) {

@@ -25,6 +25,12 @@ namespace {
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
 
+blink::mojom::WebPagePtr CreateTestWebPage() {
+  blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
+  web_page->entities = CreateTestWebPageEntities();
+  return web_page;
+}
+
 }  // namespace
 
 class SearchResultAdHandlerTest : public ::testing::Test {

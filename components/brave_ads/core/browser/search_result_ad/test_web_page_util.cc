@@ -11,7 +11,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
-#include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 namespace brave_ads {
 
@@ -25,21 +24,19 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
   return schema_org::mojom::Values::NewLongValues({value});
 }
 
-class TestWebPageConstructor final {
+class TestWebPageEntitiesConstructor final {
  public:
-  explicit TestWebPageConstructor(int attribute_index_to_skip)
+  explicit TestWebPageEntitiesConstructor(int attribute_index_to_skip)
       : attribute_index_to_skip_(attribute_index_to_skip) {
-    web_page_ = CreateWebPage();
+    web_page_entities_ = CreateWebPageEntities();
   }
-  ~TestWebPageConstructor() = default;
-  TestWebPageConstructor(const TestWebPageConstructor&) = delete;
-  TestWebPageConstructor& operator=(const TestWebPageConstructor&) = delete;
 
-  blink::mojom::WebPagePtr GetTestWebPage() { return std::move(web_page_); }
+  std::vector<::schema_org::mojom::EntityPtr> GetTestWebPageEntities() {
+    return std::move(web_page_entities_);
+  }
 
  private:
-  blink::mojom::WebPagePtr CreateWebPage() {
-    blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
+  std::vector<::schema_org::mojom::EntityPtr> CreateWebPageEntities() {
     schema_org::mojom::EntityPtr entity = schema_org::mojom::Entity::New();
     entity->type = "Product";
     schema_org::mojom::PropertyPtr property =
@@ -52,9 +49,10 @@ class TestWebPageConstructor final {
         schema_org::mojom::Values::NewEntityValues(std::move(entity_values));
 
     entity->properties.push_back(std::move(property));
-    web_page->entities.push_back(std::move(entity));
+    std::vector<::schema_org::mojom::EntityPtr> entities;
+    entities.push_back(std::move(entity));
 
-    return web_page;
+    return entities;
   }
 
   template <typename T>
@@ -74,7 +72,7 @@ class TestWebPageConstructor final {
   }
 
   schema_org::mojom::EntityPtr CreateCreativeEntity() {
-    const char* kSearchResultAdStringAttributes[] = {
+    constexpr const char* kSearchResultAdStringAttributes[] = {
         "data-placement-id",
         "data-creative-set-id",
         "data-campaign-id",
@@ -97,7 +95,7 @@ class TestWebPageConstructor final {
                          "data-conversion-observation-window-value", 1);
 
     int index = 0;
-    for (const auto** it = std::begin(kSearchResultAdStringAttributes);
+    for (const auto* const* it = std::begin(kSearchResultAdStringAttributes);
          it != std::end(kSearchResultAdStringAttributes); ++it, ++index) {
       AddProperty<std::string>(
           &entity->properties, *it,
@@ -107,16 +105,17 @@ class TestWebPageConstructor final {
     return entity;
   }
 
-  blink::mojom::WebPagePtr web_page_;
+  std::vector<::schema_org::mojom::EntityPtr> web_page_entities_;
   int current_attribute_index_ = 0;
   int attribute_index_to_skip_ = -1;
 };
 
 }  // namespace
 
-blink::mojom::WebPagePtr CreateTestWebPage(int attribute_index_to_skip) {
-  TestWebPageConstructor constructor(attribute_index_to_skip);
-  return constructor.GetTestWebPage();
+std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
+    int attribute_index_to_skip) {
+  TestWebPageEntitiesConstructor constructor(attribute_index_to_skip);
+  return constructor.GetTestWebPageEntities();
 }
 
 }  // namespace brave_ads
