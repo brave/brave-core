@@ -573,7 +573,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           - Brave Search
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL" desc="The text for detailed description about brave search in promotion match">
-          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks. 
+          Support independent search with better privacy. Brave search doesn't track you, your queries, or your clicks.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_DESC_LABEL_FIRST_PART" desc="The text for finding the first sentence from above. Both should have the same translation.">
           Support independent search with better privacy.
@@ -654,7 +654,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <if expr="toolkit_views">
         <if expr="not use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
-            Hide sidebar icon 
+            Hide sidebar icon
           </message>
           <message name="IDS_TOOLTIP_SIDEBAR_HIDE" desc="The tooltip for the sidebar button, when closed">
             Hide sidebar
@@ -1012,6 +1012,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BOOKMARKS_NO_ITEMS" desc="Text shown when the user has no bookmarks">
         For quick access, place your bookmarks here on the bookmarks bar.
+      </message>
+      <message name="IDS_BOOKMARKS_READING_LIST_GROUP" desc="The title of reading list folder in imported bookmarks.">
+        Reading List
       </message>
 
       <!--First-run dialog messages -->
