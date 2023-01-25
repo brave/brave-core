@@ -5,6 +5,7 @@
 
 import UIKit
 import Shared
+import SwiftUI
 import BraveCore
 import BraveShared
 import Combine
@@ -265,6 +266,7 @@ class TabTrayController: LoadingViewController {
 
     doneButton.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
     newTabButton.addTarget(self, action: #selector(newTabAction), for: .touchUpInside)
+    newTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(tappedButton(_:))))
     privateModeButton.addTarget(self, action: #selector(togglePrivateModeAction), for: .touchUpInside)
 
     navigationController?.isToolbarHidden = false
@@ -516,6 +518,39 @@ class TabTrayController: LoadingViewController {
       tabManager.addTabAndSelect(isPrivate: privateMode)
     }
   }
+  
+  @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {
+    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      return
+    }
+    
+    var recentlyClosedTabsView = RecentlyClosedTabsView(tabManager: tabManager)
+    recentlyClosedTabsView.onRecentlyClosedSelected = { [weak self] recentlyClosed in
+      guard let self else { return }
+      
+      self.tabManager.addAndSelectRecentlyClosed(recentlyClosed)
+      // After opening the Recently Closed in a new tab delete it from list
+      RecentlyClosed.remove(with: recentlyClosed.url)
+      
+      self.dismiss(animated: false)
+    }
+    
+    recentlyClosedTabsView.onDismiss = { [weak self] cleared in
+      guard let self else { return }
+      
+      // Dismiss on presentation mode does not work on iOS 14
+      if #unavailable(iOS 15) {
+        self.dismiss(animated: true)
+      }
+      
+      // Clear All should also dismiss Tab Tray
+      if cleared {
+        self.dismiss(animated: false)
+      }
+    }
+    
+    present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
+  }
 
   @objc func togglePrivateModeAction() {
     tabTraySearchController.isActive = false
@@ -552,7 +587,9 @@ class TabTrayController: LoadingViewController {
 
   }
 
-  private func remove(tab: Tab) {
+  func remove(tab: Tab) {
+    // Initially add the tab to recently closed and remove it from Tab Data after
+    tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
     
     let query = isTabTrayBeingSearched ? tabTraySearchQuery : nil

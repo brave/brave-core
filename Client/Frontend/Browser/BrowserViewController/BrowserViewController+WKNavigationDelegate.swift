@@ -28,66 +28,22 @@ extension WKNavigationAction {
   }
 }
 
-extension URL {
-  /// Obtain a schemeless absolute string
-  fileprivate var schemelessAbsoluteString: String {
-    guard let scheme = self.scheme else { return absoluteString }
-    return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
+extension WKNavigationType: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    switch self {
+    case .linkActivated: return "linkActivated"
+    case .formResubmitted: return "formResubmitted"
+    case .backForward: return "backForward"
+    case .formSubmitted: return "formSubmitted"
+    case .other: return "other"
+    case .reload: return "reload"
+    @unknown default:
+      return "Unknown(\(rawValue))"
+    }
   }
 }
 
-extension BrowserViewController {
-  private func tab(for webView: WKWebView) -> Tab? {
-    tabManager[webView] ?? (webView as? TabWebView)?.tab
-  }
-  
-  fileprivate func handleExternalURL(_ url: URL,
-                                     tab: Tab?,
-                                     navigationAction: WKNavigationAction,
-                                     openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
-    
-    let isMainFrame = navigationAction.targetFrame?.isMainFrame == true
-    
-    // Do not open external links for child tabs automatically
-    // The user must tap on the link to open it.
-    if tab?.parent != nil && navigationAction.navigationType != .linkActivated {
-      return
-    }
-    
-    var alertTitle = Strings.openExternalAppURLGenericTitle
-    
-    // We do not want certain schemes to be opened externally when called from subframes.
-    // And tel / sms dialog should not be shown for non-active tabs #6687
-    if ["tel", "sms"].contains(url.scheme) {
-      if !isMainFrame || tab?.url?.host != topToolbar.currentURL?.host {
-        return
-      }
-      
-      if let displayHost = tab?.url?.withoutWWW.host {
-        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-      }
-    }
-    
-    self.view.endEditing(true)
-    
-    let popup = AlertPopupView(
-      imageView: nil,
-      title: alertTitle,
-      message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
-      titleWeight: .semibold,
-      titleSize: 21
-    )
-    popup.addButton(title: Strings.openExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
-      return .flyDown
-    }
-    popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
-      UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
-      return .flyDown
-    }
-    popup.showWithType(showType: .flyUp)
-  }
-}
-
+// MARK: WKNavigationDelegate
 extension BrowserViewController: WKNavigationDelegate {
   public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     if tabManager.selectedTab?.webView !== webView {
@@ -694,17 +650,293 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 }
 
-extension WKNavigationType: CustomDebugStringConvertible {
-  public var debugDescription: String {
-    switch self {
-    case .linkActivated: return "linkActivated"
-    case .formResubmitted: return "formResubmitted"
-    case .backForward: return "backForward"
-    case .formSubmitted: return "formSubmitted"
-    case .other: return "other"
-    case .reload: return "reload"
-    @unknown default:
-      return "Unknown(\(rawValue))"
+// MARK: WKNavigationDelegateHelper
+
+extension BrowserViewController {
+  private func tab(for webView: WKWebView) -> Tab? {
+    tabManager[webView] ?? (webView as? TabWebView)?.tab
+  }
+  
+  private func handleExternalURL(
+    _ url: URL,
+    tab: Tab?,
+    navigationAction: WKNavigationAction,
+    openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
+    
+    let isMainFrame = navigationAction.targetFrame?.isMainFrame == true
+    
+    // Do not open external links for child tabs automatically
+    // The user must tap on the link to open it.
+    if tab?.parent != nil && navigationAction.navigationType != .linkActivated {
+      return
     }
+    
+    // We do not want certain schemes to be opened externally when called from subframes.
+    if ["tel", "sms"].contains(url.scheme) && !isMainFrame {
+      return
+    }
+    
+    view.endEditing(true)
+    let popup = AlertPopupView(
+      imageView: nil,
+      title: Strings.openExternalAppURLTitle,
+      message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
+      titleWeight: .semibold,
+      titleSize: 21
+    )
+    popup.addButton(title: Strings.openExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
+      return .flyDown
+    }
+    popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
+      UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
+      return .flyDown
+    }
+    popup.showWithType(showType: .flyUp)
+  }
+}
+
+// MARK: WKUIDelegate
+
+extension BrowserViewController: WKUIDelegate {
+  public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    guard let parentTab = tabManager[webView] else { return nil }
+
+    guard !navigationAction.isInternalUnprivileged,
+          let navigationURL = navigationAction.request.url,
+          navigationURL.shouldRequestBeOpenedAsPopup()
+    else {
+      print("Denying popup from request: \(navigationAction.request)")
+      return nil
+    }
+
+    if let currentTab = tabManager.selectedTab {
+      screenshotHelper.takeScreenshot(currentTab)
+    }
+
+    // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
+    // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
+    // the request here manually leads to incorrect results!!
+    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
+
+    newTab.url = URL(string: "about:blank")
+    
+    toolbarVisibilityViewModel.toolbarState = .expanded
+
+    return newTab.webView
+  }
+
+  fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
+    // Only display a JS Alert if we are selected and there isn't anything being shown
+    return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView)) && (self.presentedViewController == nil)
+  }
+
+  public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+    var messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
+    handleAlert(webView: webView, alert: &messageAlert) {
+      completionHandler()
+    }
+  }
+
+  public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+    var confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
+    handleAlert(webView: webView, alert: &confirmAlert) {
+      completionHandler(false)
+    }
+  }
+
+  public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
+    var textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText, suppressHandler: nil)
+    handleAlert(webView: webView, alert: &textInputAlert) {
+      completionHandler(nil)
+    }
+  }
+
+  func suppressJSAlerts(webView: WKWebView) {
+    let script = """
+      window.alert=window.confirm=window.prompt=function(n){},
+      [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
+      """
+    webView.evaluateSafeJavaScript(functionName: script, contentWorld: .defaultClient, asFunction: false)
+  }
+
+  func handleAlert<T: JSAlertInfo>(webView: WKWebView, alert: inout T, completionHandler: @escaping () -> Void) {
+    guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
+      suppressJSAlerts(webView: webView)
+      tabManager[webView]?.cancelQueuedAlerts()
+      completionHandler()
+      return
+    }
+    promptingTab.alertShownCount += 1
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
+      if suppress {
+        func suppressDialogues(_: UIAlertAction) {
+          self.suppressJSAlerts(webView: webView)
+          promptingTab.blockAllAlerts = true
+          self.tabManager[webView]?.cancelQueuedAlerts()
+          completionHandler()
+        }
+        // Show confirm alert here.
+        let suppressSheet = UIAlertController(title: nil, message: Strings.suppressAlertsActionMessage, preferredStyle: .actionSheet)
+        suppressSheet.addAction(UIAlertAction(title: Strings.suppressAlertsActionTitle, style: .destructive, handler: suppressDialogues))
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle, style: .cancel,
+            handler: { _ in
+              completionHandler()
+            }))
+        if UIDevice.current.userInterfaceIdiom == .pad, let popoverController = suppressSheet.popoverPresentationController {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+          popoverController.permittedArrowDirections = []
+        }
+        self.present(suppressSheet, animated: true)
+      } else {
+        completionHandler()
+      }
+    }
+    alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
+    if shouldDisplayJSAlertForWebView(webView) {
+      let controller = alert.alertController()
+      controller.delegate = self
+      present(controller, animated: true)
+    } else {
+      promptingTab.queueJavascriptAlertPrompt(alert)
+    }
+  }
+
+  func checkIfWebContentProcessHasCrashed(_ webView: WKWebView, error: NSError) -> Bool {
+    if error.code == WKError.webContentProcessTerminated.rawValue && error.domain == "WebKitErrorDomain" {
+      print("WebContent process has crashed. Trying to reload to restart it.")
+      webView.reload()
+      return true
+    }
+
+    return false
+  }
+
+  public func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+
+    // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
+    // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
+    guard let url = elementInfo.linkURL, url.isWebPage() else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
+
+    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+      var actions = [UIAction]()
+
+      if let currentTab = self.tabManager.selectedTab {
+        let tabType = currentTab.type
+
+        if !tabType.isPrivate {
+          let openNewTabAction = UIAction(
+            title: Strings.openNewTabButtonTitle,
+            image: UIImage(systemName: "plus")
+          ) { _ in
+            self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
+          }
+
+          openNewTabAction.accessibilityLabel = "linkContextMenu.openInNewTab"
+
+          actions.append(openNewTabAction)
+        }
+
+        let openNewPrivateTabAction = UIAction(
+          title: Strings.openNewPrivateTabButtonTitle,
+          image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
+        ) { _ in
+          self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+        }
+        openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
+
+        actions.append(openNewPrivateTabAction)
+
+        let copyAction = UIAction(
+          title: Strings.copyLinkActionTitle,
+          image: UIImage(systemName: "doc.on.doc")
+        ) { _ in
+          UIPasteboard.general.url = url
+        }
+        copyAction.accessibilityLabel = "linkContextMenu.copyLink"
+
+        actions.append(copyAction)
+
+        if let braveWebView = webView as? BraveWebView {
+          let shareAction = UIAction(
+            title: Strings.shareLinkActionTitle,
+            image: UIImage(systemName: "square.and.arrow.up")
+          ) { _ in
+            let touchPoint = braveWebView.lastHitPoint
+            let touchRect = CGRect(origin: touchPoint, size: .zero)
+
+            // TODO: Find a way to add fixes #3323 and #2961 here:
+            // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
+            // `temporaryDocument` returns the downloaded file to disk on the current tab.
+            // Using a downloaded file url results in having functions like "Save to files" available.
+            // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
+            // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
+            // This results in the fixes for #3323 and #2961 not being included in this share scenario.
+            // This is not a regression, we simply never handled this scenario in both fixes.
+            // Some possibile fixes include:
+            // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
+            // - Add custom "Save to file" functionality (needs investigation).
+            self.presentActivityViewController(
+              url, sourceView: braveWebView,
+              sourceRect: touchRect,
+              arrowDirection: .any)
+          }
+
+          shareAction.accessibilityLabel = "linkContextMenu.share"
+
+          actions.append(shareAction)
+        }
+
+        let linkPreview = Preferences.General.enableLinkPreview.value
+
+        let linkPreviewTitle = linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
+        let linkPreviewAction = UIAction(title: linkPreviewTitle, image: UIImage(systemName: "eye.fill")) { _ in
+          Preferences.General.enableLinkPreview.value.toggle()
+        }
+
+        actions.append(linkPreviewAction)
+      }
+
+      return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
+    }
+
+    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
+      if let tab = tabManager.tabForWebView(webView) {
+        return LinkPreviewViewController(url: url, for: tab, browserController: self)
+      }
+      return nil
+    }
+
+    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
+    let config = UIContextMenuConfiguration(
+      identifier: nil, previewProvider: linkPreviewProvider,
+      actionProvider: actionProvider)
+
+    completionHandler(config)
+  }
+
+  public func webView(_ webView: WKWebView, contextMenuForElement elementInfo: WKContextMenuElementInfo, willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating) {
+    guard let url = elementInfo.linkURL else { return }
+    webView.load(URLRequest(url: url))
+  }
+
+  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
+    let tab = self.tabManager.addTab(URLRequest(url: url), afterTab: currentTab, isPrivate: inPrivateMode)
+    if inPrivateMode && !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      self.tabManager.selectTab(tab)
+    } else {
+      // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
+      let toast = ButtonToast(
+        labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
+        completion: { buttonPressed in
+          if buttonPressed {
+            self.tabManager.selectTab(tab)
+          }
+        })
+      self.show(toast: toast)
+    }
+    self.toolbarVisibilityViewModel.toolbarState = .expanded
   }
 }

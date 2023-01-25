@@ -42,7 +42,7 @@ extension TabTrayController {
 
   @objc func didCloseTabKeyCommand() {
     if let tab = tabManager.selectedTab {
-      tabManager.removeTab(tab)
+      remove(tab: tab)
     }
   }
 

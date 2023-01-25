@@ -25,17 +25,17 @@ public struct SavedTab {
   /// If you don't, you **WILL break session restore**.
   public init(
     id: String, title: String?, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?,
-    history: [String], historyIndex: Int16, isPrivate: Bool
-  ) {
-    self.id = id
-    self.title = title
-    self.url = url
-    self.isSelected = isSelected
-    self.order = order
-    self.screenshot = screenshot
-    self.history = history
-    self.historyIndex = historyIndex
-    self.isPrivate = isPrivate
+    history: [String], historyIndex: Int16, isPrivate: Bool) {
+      self.id = id
+      self.title = title
+      self.url = url
+      self.isSelected = isSelected
+      self.order = order
+      self.screenshot = screenshot
+      self.history = history
+      self.historyIndex = historyIndex
+      self.isPrivate = isPrivate
+      
   }
 }
 
@@ -54,15 +54,9 @@ public final class TabMO: NSManagedObject, CRUD {
   /// Last time this tab was updated. Required for 'purge unused tabs' feature.
   @NSManaged public var lastUpdate: Date?
   @NSManaged public var isPrivate: Bool
-
+  
   public override func prepareForDeletion() {
     super.prepareForDeletion()
-
-    // BRAVE TODO: check, if we still need it for restoring website screenshots.
-    // Remove cached image
-    //        if let url = imageUrl, !PrivateBrowsing.singleton.isOn {
-    //            ImageCache.shared.remove(url, type: .portrait)
-    //        }
   }
 
   // MARK: - Public interface
@@ -77,7 +71,12 @@ public final class TabMO: NSManagedObject, CRUD {
 
   class func createInternal(uuidString: String, lastUpdateDate: Date) {
     DataController.perform(task: { context in
-      let tab = TabMO(entity: entity(context), insertInto: context)
+      guard let entity = entity(context) else {
+        Logger.module.error("Error fetching the entity 'Tab' from Managed Object-Model")
+        return
+      }
+      
+      let tab = TabMO(entity: entity, insertInto: context)
       // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
       tab.syncUUID = uuidString
       tab.title = Strings.newTab
@@ -95,10 +94,9 @@ public final class TabMO: NSManagedObject, CRUD {
   public class func all(noOlderThan timeInterval: TimeInterval) -> [TabMO] {
     let lastUpdateKeyPath = #keyPath(TabMO.lastUpdate)
     let date = Date().advanced(by: -timeInterval) as NSDate
-
+  
     let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
-    let predicate =
-      NSPredicate(format: "\(lastUpdateKeyPath) = nil OR \(lastUpdateKeyPath) > %@", date)
+    let predicate = NSPredicate(format: "\(lastUpdateKeyPath) = nil OR \(lastUpdateKeyPath) > %@", date)
     return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
   }
 
@@ -106,6 +104,22 @@ public final class TabMO: NSManagedObject, CRUD {
     return getInternal(fromId: id)
   }
 
+  public class func insertRecentlyClosed(uuidString: String, _ saved: SavedRecentlyClosed) {
+    DataController.perform { context in
+      guard let entity = entity(context) else {
+        Logger.module.error("Error fetching the entity 'Tab' from Managed Object-Model")
+        return
+      }
+  
+      let tab = TabMO(entity: entity, insertInto: context)
+      tab.syncUUID = uuidString
+      tab.url = saved.url
+      tab.title = saved.title
+      tab.urlHistorySnapshot = saved.historyList as NSArray
+      tab.urlHistoryCurrentIndex = saved.historyIndex
+    }
+  }
+  
   // MARK: Update
 
   // Updates existing tab with new data.
@@ -134,7 +148,6 @@ public final class TabMO: NSManagedObject, CRUD {
       guard let tabToUpdate = getInternal(fromId: tabID, context: context) else { return }
       tabToUpdate.lastUpdate = Date()
     }
-
   }
 
   public class func selectTabAndDeselectOthers(selectedTabId: String) {
@@ -169,7 +182,7 @@ public final class TabMO: NSManagedObject, CRUD {
       tabMO?.screenshotUUID = uuid?.uuidString
     }
   }
-
+  
   public class func saveTabOrder(tabIds: [String]) {
     DataController.perform { context in
       for (i, tabId) in tabIds.enumerated() {
@@ -200,8 +213,7 @@ public final class TabMO: NSManagedObject, CRUD {
     let lastUpdateKeyPath = #keyPath(TabMO.lastUpdate)
     let date = Date().advanced(by: -timeInterval) as NSDate
 
-    let predicate =
-      NSPredicate(format: "\(lastUpdateKeyPath) != nil AND \(lastUpdateKeyPath) < %@", date)
+    let predicate = NSPredicate(format: "\(lastUpdateKeyPath) != nil AND \(lastUpdateKeyPath) < %@", date)
 
     self.deleteAll(predicate: predicate)
   }
@@ -210,8 +222,8 @@ public final class TabMO: NSManagedObject, CRUD {
 // MARK: - Internal implementations
 extension TabMO {
   // Currently required, because not `syncable`
-  private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
-    return NSEntityDescription.entity(forEntityName: "TabMO", in: context)!
+  private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription? {
+    return NSEntityDescription.entity(forEntityName: "TabMO", in: context)
   }
 
   private class func getInternal(

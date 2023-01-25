@@ -106,7 +106,7 @@ struct CustomNetworkListView: View {
       Section {
         Toggle(Strings.Wallet.showTestNetworksTitle, isOn: $showTestNetworks.value)
           .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint))) 
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }

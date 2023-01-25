@@ -209,7 +209,6 @@ class TabCell: UICollectionViewCell {
 
   @objc
   func close() {
-    animator.closeWithoutGesture()
     if let tab = tab {
       closedTab?(tab)
     }

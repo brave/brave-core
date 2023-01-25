@@ -226,10 +226,10 @@ public class Migration {
     // However due to a bug, some private tabs remain in the container. Since 1.7 removes `isPrivate` from TabMO,
     // we must dismiss any records that are private tabs during migration from Model7
     TabMO.deleteAllPrivateTabs()
-
+  
     Domain.migrateShieldOverrides()
     LegacyBookmarksHelper.migrateBookmarkOrders()
-
+  
     Preferences.Migration.coreDataCompleted.value = true
   }
 }
