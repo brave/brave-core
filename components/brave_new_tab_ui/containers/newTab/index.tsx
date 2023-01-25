@@ -29,6 +29,7 @@ import VisibilityTimer from '../../helpers/visibilityTimer'
 import { getLocale } from '../../../common/locale'
 import { NewTabActions } from '../../constants/new_tab_types'
 import { BraveTodayState } from '../../reducers/today'
+import * as mojom from '../../../brave_rewards/resources/shared/lib/mojom'
 
 // NTP features
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
@@ -301,7 +302,8 @@ class NewTabPage extends React.Component<Props, State> {
 
   startRewards = () => {
     const { rewardsState } = this.props.newTabData
-    if (!rewardsState.rewardsEnabled) {
+    if (!rewardsState.rewardsEnabled ||
+      rewardsState.externalWallet?.status === mojom.WalletStatus.kConnected) {
       chrome.braveRewards.openRewardsPanel()
     } else {
       chrome.braveRewards.enableAds()

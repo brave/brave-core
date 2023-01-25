@@ -164,10 +164,14 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
         { "cards", IDS_BRAVE_NEW_TAB_SHOW_CARDS },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
-        { "sponsoredImageOn", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON},
-        { "sponsoredImageOff", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF},
+        { "sponsoredImageEarningTitle", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_EARNING_TITLE},
+        { "sponsoredImageEnableRewards", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS},
+        { "sponsoredImageNotEarningTitle", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE},
+        { "sponsoredImageOffRewardsOnDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION},  // NOLINT
+        { "sponsoredImageOnAdsOff", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_ADS_OFF_DESCRIPTION},  // NOLINT
         { "sponsoredImageOnDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION},  // NOLINT
-        { "sponsoredImageOffDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_DESCRIPTION},  // NOLINT
+        { "sponsoredImageOnRewardsOnNoCustodianDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION},  // NOLINT
+        { "sponsoredImageRewardsOffDescription", IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION},  // NOLINT
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },
