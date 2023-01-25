@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Brave 검색 사용해보기";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "나중에";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "숨기기";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "캐시";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "탭 바 이동";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "주소창, 탭, 북마크 및 기타 도구를 브라우저의 맨 밑으로 이동합니다.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Brave 탭 바 맞춤 설정";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Brave를 기본 브라우저로 설정할까요?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Brave를 기본으로 설정하면 탭한 모든 링크가 Brave의 프라이버시 보호가 적용되어 열립니다.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "기본 브라우저로 설정";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "기본값으로 설정";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "이미 기본으로 설정하셨나요?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "파일 앱에서 다운로드 폴더를 여는 중 알 수 없는 오류가 발생했습니다.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ 요청:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "새 탭에서 이미지 열기";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "브라우징하면서 콘텐츠 제작자를 지원해 주셔서 감사합니다!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "레거시 월렛 이전";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "레거시 월렛 이전이 완료되었습니다!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "보류 중";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "기존 토큰 일회성 이전";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "클릭하면 %1$@ 및 %2$@에 동의하게 됩니다. 설정에서 언제든지 비활성화할 수 있습니다.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "확인되지 않은 제작자이기 때문에 제작자 지원에 포함되지 않습니다.";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "이전이 시작되었습니다. 기존 BAT 잔액이 데스크톱 Brave Rewards 잔액에 표시되려면 몇 분 정도 소요될 수 있습니다. 이전이 완료되었을 때 자세한 내용을 보려면 데스크톱에서 Rewards 요약을 확인하세요.\n\n이 창을 닫고 Brave 사용을 계속해도 이전이 진행됩니다.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "잔액 이전 시작됨";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 서버가 응답하지 않습니다. 잠시 후 다시 시도하세요.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "연결 오류";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Brave Rewards 토큰 잔액을 기존 Brave Rewards 데스크톱 월렛으로 단 한 번 이전할 수 있습니다.\n\n1. 데스크톱에서 Brave 브라우저를 엽니다.\n2. brave://rewards 페이지로 이동합니다.\n3. “QR Code”를 클릭합니다.\n4. 기기로 QR 코드를 스캔합니다.";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "일회성 이전 코드 스캔";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "월렛 이전 상태";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "금액";

@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "試用 Brave 搜尋";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "稍後再說";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "快取";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "移動標籤欄";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "將地址欄、標籤、書籤和其他工具移動到瀏覽器底部。";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "自訂 Brave 標籤欄";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "將 Brave 設為預設瀏覽器？";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "將 Brave 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Brave 的隱私保護下開啟。";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設瀏覽器";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設值";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "已經是預設瀏覽器了嗎？";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "在「檔案」應用程式中開啟「下載」資料夾時發生不明錯誤。";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ 說：";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "在新分頁中打開圖像";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "感謝您在瀏覽期間不忘支持內容創作者！";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "舊版錢包轉帳";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "舊錢包轉帳已完成！";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "等待中";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "一次轉出現有代幣";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "這位創作者尚未通過驗證，不會納入您支持的創作者名單";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "已啟動轉帳程序。BAT 餘額可能需要幾分鐘後，才會顯示於桌面版 Brave Rewards 錢包。轉帳完成後，請查看桌面版 Rewards 摘要以瞭解詳細資訊。\n\n您可以關閉此視窗，在轉帳期間繼續使用 Brave。";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "已啟動餘額轉帳程序";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 伺服器未回應，請稍後再試。";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "連線錯誤";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "您可將 Brave Rewards 代幣餘額一次轉至現有 Brave Rewards 桌面版錢包。\n\n1. 在桌上型電腦上開啟 Brave 瀏覽器\n2. 瀏覽至 brave://rewards\n3. 按一下「QR 碼」\n4. 以裝置掃描 QR 碼";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "掃描一次性轉帳碼";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "錢包轉帳狀態";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "金額";

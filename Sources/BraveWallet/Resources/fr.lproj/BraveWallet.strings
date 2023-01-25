@@ -190,9 +190,6 @@
 /* As in buying cryptocurrency */
 "wallet.buy" = "Acheter";
 
-/* The title of the button for users to click when they are ready to buy using Wyre payment */
-"wallet.buyButtonTitle" = "Poursuivre vers Wyre";
-
 /* The description of a buy button on the buy/send/swap modal */
 "wallet.buyDescription" = "Achetez des cryptos avec Apple Pay ou une carte bancaire via Wyre.";
 
@@ -715,7 +712,7 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "Nom du réseau";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre. */
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "Les achats ne sont pas pris en charge sur le réseau sélectionné";
 
 /* The title of the section for secondary networks in the network selection view. */
@@ -759,6 +756,9 @@
 
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Envoyer";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Il se peut que l'image présentée ci-dessus ne corresponde pas exactement au NFT";
@@ -957,6 +957,9 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Envoyez des cryptos ou transférez-les d'un compte à l'autre.";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. Ex. `Stephen.sol` */
+"wallet.sendErrorDomainNotRegistered" = "%@ n'est pas enregistré";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Saisissez une adresse";
@@ -1273,6 +1276,9 @@
 /* A title that will be displayed on top of the text field for users to input the custom token address */
 "wallet.tokenAddress" = "Adresse du jeton";
 
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "Adresse de monnayage";
+
 /* A title that will be displayed on top of the text field for users to input the custom token name */
 "wallet.tokenName" = "Nom du jeton";
 
@@ -1433,10 +1439,10 @@
 "wallet.warningAlertConfirmation" = "Êtes-vous sûr ?";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "Demander lorsqu'un site veut accéder à l'API du fournisseur d'Ethereum";
+"wallet.web3PreferencesAllowEthProviderAccess" = "Les sites peuvent demander l'accès à votre portefeuille Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "Demander lorsqu'un site veut accéder à l'API du fournisseur de Solana";
+"wallet.web3PreferencesAllowSolProviderAccess" = "Les sites peuvent demander l'accès à votre portefeuille Solana";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Portefeuille Ethereum par défaut";
@@ -1452,13 +1458,4 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Préférences Web3";
-
-/* The description of one of the 'Wyre' provider. */
-"wallet.wyreProviderDescription" = "Achetez des cryptos avec une carte Visa ou Mastercard.";
-
-/* The name of one of the on ramp provider. */
-"wallet.wyreProviderName" = "Wyre";
-
-/* The short name of one of the on ramp provider. */
-"wallet.wyreProviderShortName" = "Wyre";
 

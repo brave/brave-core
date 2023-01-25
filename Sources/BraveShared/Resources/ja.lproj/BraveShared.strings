@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Brave検索を試す";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "あとで";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "表示しない";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "キャッシュ";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "タブバーを移動";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "アドレスバー、タブ、ブックマーク、その他のツールをブラウザの下部に移動します。";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Braveタブバーをカスタマイズする";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Braveをデフォルトのブラウザに設定しますか？";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Braveをデフォルトに設定すると、すべてのリンクをBraveのプライバシー保護により開くことができます。";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "デフォルトブラウザに設定する";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "デフォルトに設定する";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "すでにデフォルトに設定していますか？";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "「ファイル」アプリの「ダウンロード」フォルダを開く際に不明なエラーが発生しました。";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ からのお知らせ:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "画像を新しいタブで開く";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "ブラウジングによるクリエイターの支援をありがとうございます！";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "レガシーウォレットからの移行";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "旧ウォレットからの移行が完了しました！";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "ペンディング";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "既存のトークンの一度限りの移管";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "クリックすることで %1$@ と %2$@ に同意したことになります。設定からいつでも無効にすることができます。";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "このクリエイターは認証が完了していないため、支援対象になりません";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "移行が開始されました。デスクトップのBraveリワードウォレットに反映されるまで数分かかる場合があります。完了したらデスクトップでリワードのサマリを確認してください。\n\nこのウィンドウを閉じても移行を続けることができます。";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "残高の移行が開始されました";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Rewardsのサーバーが応答しませんでした。しばらく経ってからもう一度お試しください。";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "接続エラー";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Brave Rewardsの残高は、一度限りデスクトップ版のBraveのウォレットに移行することができます。\n\n1.   デスクトップでBraveブラウザを開く\n2.  brave://rewards に移動\n3. 「QRコード」をクリック\n4.  QRコードを端末でスキャン";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "一度限りの転送用のQRコードをスキャンする";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "ウォレット移行ステータス";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "総額";

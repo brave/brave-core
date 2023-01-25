@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Cuba gunakan Carian Brave";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Mungkin kemudian";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Singkirkan";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Cache";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Alihkan Bar Tab";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Alihkan bar alamat, tab, penanda halaman, dan alatan lain ke sebelah bawah penyemak imbas.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Sesuaikan Bar Tab Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Brave sebagai penyemak imbas lalai?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai lalai, setiap pautan yang anda ketik dibuka dengan perlindungan privasi Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai pelayar lalai";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan lalai";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah ditetapkan sebagai lalai?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Ralat tidak diketahui telah berlaku semasa membuka folder Downloads dalam apl Files.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ menyebut:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Buka Imej Dalam Tab Baru";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "Terima kasih kerana membantu menyokong pencipta kandungan sambil anda menyemak lalu!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Pemindahan Dompet Legasi";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Pemindahan dompet legasi anda telah selesai!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "Belum Selesai";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Pindah keluar sekali sahaja token sedia ada";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Dengan mengklik, anda bersetuju dengan %1$@ dan %2$@. Nyahdayakan bila-bila masa dalam Tetapan.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Pencipta ini belum mengesahkan dan tidak akan dimasukakn dalam sokongan pencipta";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Pemindahan anda telah dimulakan. Apa-apa baki BAT yang sedia ada mungkin mengambil masa beberapa minit untuk muncul dalam dompet Brave Rewards pada desktop anda. Semak ringkasan Ganjaran anda pada Desktop untuk mengetahui butiran apabila pemindahan telah selesai.\n\nAnda boleh menutup tetingkap ini dan terus menggunakan Brave semasa pemindahan anda masih dijalankan. ";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Pemindahan baki telah dimulakan";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Pelayan Brave Rewards tidak bertindak balas. Sila cuba lagi kemudian.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Ralat Sambungan";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Baki token Brave Rewards anda boleh dipindahkan ke dompet desktop Brave Rewards sedia ada, sekali.\n\n1. Buka Pelayar Brave pada desktop anda\n2. Navigasi ke brave://rewards\n3. Klik “Kod QR”\n4. Imbas Kod QR menggunakan peranti anda";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Imbas Kod Pemindahan Sekali Sahaja";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Status Pemindahan Dompet";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Jumlah";

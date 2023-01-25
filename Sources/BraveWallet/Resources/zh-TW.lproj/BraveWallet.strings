@@ -190,9 +190,6 @@
 /* As in buying cryptocurrency */
 "wallet.buy" = "購買";
 
-/* The title of the button for users to click when they are ready to buy using Wyre payment */
-"wallet.buyButtonTitle" = "繼續前往 Wyre";
-
 /* The description of a buy button on the buy/send/swap modal */
 "wallet.buyDescription" = "透過 Wyre 使用 Apple Pay、信用卡或金融卡購買加密資產。";
 
@@ -715,7 +712,7 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "網路名稱";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support buy token with Wyre. */
+/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "特定網路不支援購買程序";
 
 /* The title of the section for secondary networks in the network selection view. */
@@ -759,6 +756,9 @@
 
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "傳送";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "上方呈現的圖片可能與 NFT 不完全一致";
@@ -957,6 +957,9 @@
 
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "從一個帳戶傳送加密資產或轉帳至另一個帳戶。";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. Ex. `Stephen.sol` */
+"wallet.sendErrorDomainNotRegistered" = "%@ 未註冊";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "輸入位址";
@@ -1273,6 +1276,9 @@
 /* A title that will be displayed on top of the text field for users to input the custom token address */
 "wallet.tokenAddress" = "代幣位址";
 
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "Mint 地址";
+
 /* A title that will be displayed on top of the text field for users to input the custom token name */
 "wallet.tokenName" = "代幣名稱";
 
@@ -1433,10 +1439,10 @@
 "wallet.warningAlertConfirmation" = "您確定嗎？";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "網站希望存取以太坊提供者 API 時詢問我";
+"wallet.web3PreferencesAllowEthProviderAccess" = "網站可以請求造訪您的 Ethereum 錢包";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "網站希望存取 Solana 提供者 API 時詢問我";
+"wallet.web3PreferencesAllowSolProviderAccess" = "網站可以請求造訪您的 Solana 錢包";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "預設以太坊錢包";
@@ -1452,13 +1458,4 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3 偏好設定";
-
-/* The description of one of the 'Wyre' provider. */
-"wallet.wyreProviderDescription" = "使用 Visa 或 Mastercard 購買加密貨幣。";
-
-/* The name of one of the on ramp provider. */
-"wallet.wyreProviderName" = "Wyre";
-
-/* The short name of one of the on ramp provider. */
-"wallet.wyreProviderShortName" = "Wyre";
 

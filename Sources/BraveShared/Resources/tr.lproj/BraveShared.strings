@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Brave ile Aramayı Deneyin";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Belki daha sonra";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Önbellek";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Sekme Çubuğunu Taşı";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Adres çubuğunu, sekmeleri, yer işaretleri ve diğer araçları tarayıcının altına taşıyın.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Brave Sekmeleri Çubuğunu Özelleştir";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Brave'i varsayılan tarayıcı olarak ayarlamak istiyor musunuz?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Brave varsayılan olarak ayarlandığında, tıkladığınız her bağlantı Brave'in gizlilik korumasıyla açılır.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan tarayıcı olarak ayarla";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan seç";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Zaten varsayılan mı?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Dosyalar uygulamasında İndirilenler klasörü açılırken bilinmeyen bir hata oluştu.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ diyor ki:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Resmi Yeni Sekmede Aç";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "Gezinirken içerik oluşturucuları desteklemeye yardımcı olduğunuz için teşekkür ederiz!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Eski Cüzdan Aktarımı";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Eski cüzdan aktarımınız tamamlandı!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "Beklemede";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Tek seferlik aktarımın mevcut belirteçleri";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Tıkladığınızda %1$@ ve %2$@ içeriğini kabul etmiş olursunuz. Dilediğiniz zaman Ayarlar bölümünden devre dışı bırakın.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Bu içerik üretici, içerik üretici desteğini doğrulamadı ve desteğe dahil edilmeyecek";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Aktarımınız başlatıldı. Mevcut herhangi bir BAT bakiyenin masaüstü Brave Ödülleri cüzdanınızda görünmesi birkaç dakika sürebilir. Aktarım tamamlandığında ayrıntılar için Masaüstü'ndeki Ödül özetinizi kontrol edin.\n\nBu pencereyi kapatabilir ve aktarımınız gerçekleştirilirken Brave'i kullanmaya devam edebilirsiniz.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Bakiye aktarımı başlatıldı";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Ödülleri sunucusu yanıt vermedi. Lütfen birazdan yeniden deneyin.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Bağlantı Hatası";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Brave Ödülleri jeton bakiyeniz mevcut bir Brave Ödülleri masaüstü cüzdanına bir kere aktarılabilir.\n\n1. Masaüstünüzde Brave Tarayıcıyı Açın\n2. brave://rewards'a gidin\n3. \"QR Kodu\" na tıklayın\n4. QR Kodunu cihazınızla tarayın";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Tek Seferlik Aktarım Kodunu Tara";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Cüzdan Aktarım Durumu";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Miktar";

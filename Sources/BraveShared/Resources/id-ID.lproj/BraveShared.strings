@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Coba Pencarian Brave";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Mungkin nanti";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Tutup";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Cache";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Pindahkan Bilah Tab";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Pindahkan bilah alamat, tab, markah, dan alat lainnya ke bagian bawah peramban.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Sesuaikan Bilah Tab Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Brave sebagai peramban bawaan?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Siapkan sebagai peramban bawaan";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Atur default";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Sudah menjadi bawaan?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Terjadi kesalahan yang tidak diketahui saat membuka folder Unduhan di aplikasi Berkas.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ menyatakan:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Buka Gambar di Tab Baru";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "Terima kasih karena telah membantu mendukung kreator konten sembari Anda meramban!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Transfer Dompet Lama";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Transfer dompet lama Anda telah selesai!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "Ditangguhkan";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Token transfer sekali yang sudah ada";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Dengan mengklik, Anda menyetujui %1$@ dan %2$@. Nonaktifkan kapan saja di Pengaturan.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Kreator ini belum diverifikasi dan tidak akan disertakan dalam dukungan kreator.";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Transfer Anda telah dimulai. Semua saldo BAT yang ada mungkin memerlukan beberapa menit untuk muncul di dompet Brave Rewards pada desktop Anda. Periksa ringkasan Rewards Anda pada Desktop untuk mengetahui detail saat proses transfer telah selesai.\n\nAnda dapat menutup jendela ini dan lanjut menggunakan Brave saat transfer Anda sedang berlangsung.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Transfer saldo telah dimulai";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Server Brave Rewards tidak merespon. Silakan coba beberapa saat lagi.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Koneksi Gagal";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Saldo token Brave Rewards Anda dapat ditransfer to dompet desktop Brave Rewards yang ada, satu demi satu.\n\n1. Buka Peramban Brave pada desktop Anda\n2. Navigasi ke brave://rewards\n3. Klik \"Kode QR\"'\n4. Pindai Kode QR dengan perangkat Anda";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Pindai Kode Sekali Transfer";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Status Transfer Dompet";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Jumlah";

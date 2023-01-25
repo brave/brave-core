@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Prøv Brave Søk";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Kanskje senere";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Avvis";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Buffer";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Flytt  fanelinjen";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Flytt adresselinjen, fanene, bokmerkene og øvrige verktøy til nederst i nettleseren.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Tilpass Brave-fanelinjen";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Vil du angi Brave som standardnettleser?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Med Brave som standard åpnes alle linker du trykker på, med Braves innebygde standardinnstillinger.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Angi som standardnettleser";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Angi som standard";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Allerede angitt som standard?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "En ukjent feil oppstod ved åpning av Nedlastinger-mappen i Filer-appen.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ sier:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Åpne bilde i ny fane";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "Takk for at du støtter innholdsskapere mens du er på nettet!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Overføring fra Legacy-lommebok";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Din overføring fra den gamle lommeboken er nå fullført!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "Venter";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Engangsoverføring ut for eksisterende tokener";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Ved å klikke, samtykker du til %1$@ og %2$@. Deaktiver dette når som helst i innstillingene.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Denne skaperen har ikke blitt verifisert og vil ikke bli inkludert i skaperstøtten";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Overføringen din har startet. En eksisterende BAT-saldo kan ta flere minutter før den vises på Brave Rewards-lommeboken din på skrivebordet. Sjekk Rewards-sammendraget ditt på skrivebordet for detaljer når overføringen er fullført.\n\nDu kan lukke dette vinduet og fortsette å bruke Brave mens overføringen pågår.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Saldooverføring er igangsatt";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Rewards-serveren svarte ikke. Prøv igjen om et øyeblikk.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Kommunikasjonsfeil";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Brave Rewards-saldoen din kan overføres til en eksisterende stasjonær Brave Rewards-lommebok, én gang.\n\n1. Åpne Brave Browser på skrivebordet\n2. Gå til brave://rewards\n3. Klikk på “QR-kode”\n4. Skann QR-kode med enheten din";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Skann engangskode for overføring";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Status på overføring til lommebok";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Mengde";
