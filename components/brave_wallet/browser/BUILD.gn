@@ -38,8 +38,6 @@ static_library("browser") {
     "brave_wallet_p3a.h",
     "brave_wallet_p3a_private.cc",
     "brave_wallet_p3a_private.h",
-    "brave_wallet_pin_service.cc",
-    "brave_wallet_pin_service.h",
     "brave_wallet_prefs.cc",
     "brave_wallet_prefs.h",
     "brave_wallet_provider_delegate.cc",
@@ -159,6 +157,14 @@ static_library("browser") {
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]
+
+  if (enable_ipfs_local_node) {
+    sources += [
+      "brave_wallet_pin_service.cc",
+      "brave_wallet_pin_service.h",
+    ]
+  }
+
   deps = [
     ":constants",
     ":generated_json_rpc_responses",

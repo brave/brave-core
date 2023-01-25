@@ -12,6 +12,7 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
+#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 using ipfs::IpfsService;
