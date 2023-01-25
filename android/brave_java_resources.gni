@@ -644,7 +644,7 @@ brave_java_resources = [
   "java/res/drawable/ic_site_settings.xml",
   "java/res/drawable/ic_sol_asset_icon.xml",
   "java/res/drawable/ic_stats_notification_background.xml",
-  "java/res/drawable/ic_suggested.xml",
+  "java/res/drawable/ic_suggestions.xml",
   "java/res/drawable/ic_swap_bg.xml",
   "java/res/drawable/ic_swap_icon.xml",
   "java/res/drawable/ic_sync.xml",

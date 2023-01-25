@@ -84,9 +84,9 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             publisherList = BraveNewsUtils.getPopularSources();
             getActivity().setTitle(R.string.popular);
         } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
-                           BraveNewsPreferencesType.Suggested.toString())) {
-            publisherList = BraveNewsUtils.getSuggestedPublisherList();
-            getActivity().setTitle(R.string.suggested);
+                           BraveNewsPreferencesType.Suggestions.toString())) {
+            publisherList = BraveNewsUtils.getSuggestionsPublisherList();
+            getActivity().setTitle(R.string.suggestions);
         } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
                            BraveNewsPreferencesType.Channels.toString())) {
             getActivity().setTitle(R.string.channels);
