@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "尝试使用 Brave 搜索";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "稍後再說";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "缓存";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "移动标签栏";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "将地址栏、标签、书签和其他工具移动到浏览器底部。";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "自定义 Brave 标签栏";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "将 Brave 设为默认浏览器？";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "有 Brave 作为默认设置，您点击的每个链接都会在 Brave 的隐私保护下打开。";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "设置为默认浏览器";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "设为默认";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "已经是默认浏览器？";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "在“文件”应用中打开“下载”文件夹时出现未知错误。";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ 说：";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "在新标签中打开图片";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "感谢您在浏览过程中帮助支持内容创建者！";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "旧版钱包转账";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "您的旧钱包转账已完成！";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "待处理";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "一次性转出现有代币";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "该创建者尚未验证，因此不会受创建者支持";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "您的转账程序已启动。现有，所有 BAT 余额可能都需要几分钟才能显示在您桌面的 Brave Reward 钱包中。完成转账后，请在桌面上查看您的“奖励”摘要以了解详情。\n\n您可以关闭此窗口，并在转账过程中继续使用 Brave。";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "余额转移已启动";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Brave Rewards 服务器未响应。请稍后重试。";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "连接错误";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "您的 Brave Rewards 代币余额可以一次转到现有的 Brave Rewards 桌面钱包中。\n\n1. 在桌面上打开 Brave 浏览器 \n2. 导航至 brave://rewards\n3. 点击“QR 码”\n4. 使用设备扫描 QR 码";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "扫描一次性转账码";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "钱包转账状态";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "金额";

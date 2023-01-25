@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Спробувати пошук Brave";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Можливо, пізніше";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Відхилити";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Кеш";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Перемістити панель вкладок";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Перемістіть адресний рядок, вкладки, закладки й інші інструменти у нижню частину браузеру.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Персоналізуйте панель вкладок Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Установити Brave як браузер за замовчуванням?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Якщо Brave буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити як браузер за замовчуванням";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Встановити типовим";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "Уже є браузером за замовчуванням?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Під час відкриття папки «Завантаження» у програмі «Файли» сталася помилка.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ повідомляє:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Відкрити зображення в новій вкладці";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "Дякуємо, що підтримуєте авторів умісту, переглядаючи сторінки в Інтернеті!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Переказ коштів із застарілого гаманця";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "Перерахування коштів на ваш старий гаманець завершено!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "На розгляді";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Одноразовий переказ наявних токенів";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Цей автор не підтвердив особу і його не буде додано до програми підтримки авторів";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Перенесення розпочато. Наявний рахунок BAT відобразиться в настільній версії гаманця Brave Rewards через кілька хвилин. Після завершення перенесення перевірте зведення сервісу Rewards у настільній версії.\n\nПід час перенесення ви можете закрити це вікно та продовжити користуватися Brave.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Перенесення рахунку розпочато";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "Сервер Brave Rewards не відповідає. Спробуйте ще раз пізніше.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Помилка з’єднання";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Токени з Brave Rewards можна один раз перевести в наявний гаманець Brave Rewards на настільному комп’ютері.\n\n1. Відкрийте браузер Brave на настільному комп’ютері.\n2. Перейдіть за адресою «brave://rewards».\n3. Натисніть на пункт «QR-код».\n4. Відскануйте QR-код за допомогою пристрою.";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Сканування одноразового коду переказу";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Статус перерахування коштів на гаманець";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Сума";

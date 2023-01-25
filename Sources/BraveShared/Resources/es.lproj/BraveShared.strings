@@ -199,6 +199,9 @@
 /* Brave Search Banner Promotion title for try button in Search Suggestions */
 "braveSearchPromotion.bannerTryButtonTitle" = "Probar Búsqueda de Brave";
 
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Quizás más tarde";
+
 /* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
@@ -271,11 +274,23 @@
 /* Settings item for clearing the cache */
 "Cache" = "Caché";
 
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Mover barra de pestañas";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Mueve la barra de direcciones, las pestañas, los marcadores y otras herramientas a la parte inferior del navegador.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Personaliza la barra de pestañas de Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "¿Establecer Brave como navegador predeterminado?";
+
 /* Subtitle - Description for Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutDescription" = "Si usas Brave como navegador predeterminado, todos los enlaces que pulses se abrirán con la protección de privacidad de Brave.";
 
 /* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer como navegador predeterminado";
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer por defecto ";
 
 /* Description for secondary button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutSecondaryButtonDescription" = "¿Ya está como predeterminado?";
@@ -1255,6 +1270,9 @@
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Se ha producido un error desconocido al abrir la carpeta de descargas en la aplicación Archivos.";
 
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ dice:";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Abrir imagen en una pestaña nueva";
 
@@ -2162,9 +2180,6 @@
 "rewards.enabledStatusBody" = "¡Gracias por ayudar a apoyar a los creadores de contenido mientras navegas!";
 
 /* No comment provided by engineer. */
-"rewards.legacyWalletTransfer" = "Transferencia de cartera heredada";
-
-/* No comment provided by engineer. */
 "rewards.legacyWalletTransferStatusButtonCompletedTitle" = "¡La transferencia de tu cartera heredada se ha completado!";
 
 /* No comment provided by engineer. */
@@ -2224,9 +2239,6 @@
 /* Pending as in: stating that the status of the users transfer is pending */
 "rewards.legacyWalletTransferStatusShortformPending" = "Pendiente";
 
-/* No comment provided by engineer. */
-"rewards.legacyWalletTransferSubtitle" = "Tokens existentes de transferencia saliente única";
-
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "Al hacer clic, aceptas las %1$@ y la %2$@. Puedes deshabilitar esta opción en cualquier momento en Ajustes.";
 
@@ -2250,27 +2262,6 @@
 
 /* Displayed under unverified publishers */
 "rewards.unverifiedPublisher" = "Este creador no ha realizado la verificación y no se incluirá en el apoyo para creadores.";
-
-/* A confirmation message shown to the user after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteBody" = "Se ha iniciado la transferencia. El saldo de BAT, sea cual sea, puede tardar varios minutos en aparecer en tu cartera de escritorio de Brave Rewards. Consulta tu resumen de Brave Rewards en un dispositivo de escritorio para obtener todos los detalles una vez que se haya completado la transferencia.\n\nPuedes cerrar esta ventana y usar Brave con normalidad mientras se realiza la transferencia.";
-
-/* Title shown above the confirmation message after completing a wallet transfer successfully */
-"rewards.walletTransferCompleteTitle" = "Se ha iniciado la transferencia de saldo";
-
-/* Message on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertMessage" = "El servidor de Brave Rewards no ha respondido. Vuelve a intentarlo dentro de un poco.";
-
-/* Title on the alert presented if wallet transfer fails */
-"rewards.walletTransferFailureAlertTitle" = "Error de conexión";
-
-/* Describes the steps for using wallet transfer */
-"rewards.walletTransferStepsBody" = "Tu saldo de tokens de Brave Rewards puede transferirse, por única vez, a una cartera de escritorio de Brave Rewards existente.\n\n1. Abre el navegador de Brave en tu escritorio.\n2. Navega a brave://rewards.\n3. Haz clic en \"Código QR\".\n4. Escanea el código QR con tu dispositivo.";
-
-/* Title above the steps to use wallet transfer */
-"rewards.walletTransferStepsTitle" = "Escanear código de transferencia de uso único";
-
-/* Title of the legacy wallet transfer screen */
-"rewards.walletTransferTitle" = "Estado de la transferencia de la cartera";
 
 /* No comment provided by engineer. */
 "RewardsInternalsAmount" = "Importe";
