@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
+#include <string>
+
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -62,6 +64,7 @@ class BraveBrowserWindow : public BrowserWindow {
 #endif
 
   virtual void ShowBraveVPNBubble() {}
+  virtual void ShowBraveHelpBubbleView(const std::string& text) {}
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

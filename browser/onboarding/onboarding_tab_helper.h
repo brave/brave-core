@@ -6,16 +6,17 @@
 #ifndef BRAVE_BROWSER_ONBOARDING_ONBOARDING_TAB_HELPER_H_
 #define BRAVE_BROWSER_ONBOARDING_ONBOARDING_TAB_HELPER_H_
 
+#include <string>
+
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-
-namespace onboarding {
 
 class OnboardingTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<OnboardingTabHelper> {
  public:
+  static void MaybeCreateForWebContents(content::WebContents* contents);
   OnboardingTabHelper(const OnboardingTabHelper&) = delete;
   OnboardingTabHelper& operator=(const OnboardingTabHelper&) = delete;
   ~OnboardingTabHelper() override;
@@ -30,11 +31,9 @@ class OnboardingTabHelper
 
   void ShowBraveHelpBubbleView();
   bool CanHighlightBraveShields();
-  std::u16string GetTextForOnboardingShieldsBubble();
+  std::string GetTextForOnboardingShieldsBubble();
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
-
-}  // namespace onboarding
 
 #endif  // BRAVE_BROWSER_ONBOARDING_ONBOARDING_TAB_HELPER_H_

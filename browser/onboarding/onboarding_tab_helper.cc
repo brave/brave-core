@@ -11,7 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/onboarding/domain_map.h"
 #include "brave/browser/onboarding/pref_names.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -20,7 +20,18 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
-namespace onboarding {
+// static
+void OnboardingTabHelper::MaybeCreateForWebContents(
+    content::WebContents* web_contents) {
+  bool is_shields_highlighted = g_browser_process->local_state()->GetBoolean(
+      onboarding::prefs::kOnboardingIsShieldsHighlighted);
+
+  if (is_shields_highlighted) {
+    return;
+  }
+
+  OnboardingTabHelper::CreateForWebContents(web_contents);
+}
 
 OnboardingTabHelper::~OnboardingTabHelper() = default;
 
@@ -30,17 +41,21 @@ OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
 
 void OnboardingTabHelper::DidStopLoading() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  auto* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          web_contents());
+  DCHECK(browser);
+
   auto* active_tab_web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
 
-  if (web_contents() != active_tab_web_contents)
+  if (web_contents() != active_tab_web_contents) {
     return;
+  }
 
-  if (shields_data_controller &&
-      shields_data_controller->GetBraveShieldsEnabled() &&
+  auto* shields_data_controller =
+      brave_shields::BraveShieldsDataController::FromWebContents(
+          web_contents());
+  DCHECK(shields_data_controller);
+
+  if (shields_data_controller->GetBraveShieldsEnabled() &&
       shields_data_controller->GetTotalBlockedCount() > 1 &&
       CanHighlightBraveShields()) {
     ShowBraveHelpBubbleView();
@@ -49,65 +64,67 @@ void OnboardingTabHelper::DidStopLoading() {
 
 void OnboardingTabHelper::ShowBraveHelpBubbleView() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser));
-  browser_view->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
+  DCHECK(browser);
+
+  BraveBrowserWindow::From(browser->window())
+      ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
 
   g_browser_process->local_state()->SetBoolean(
-      prefs::kOnboardingIsShieldsHighlighted, true);
+      onboarding::prefs::kOnboardingIsShieldsHighlighted, true);
+
+  Observe(nullptr);
 }
 
 bool OnboardingTabHelper::CanHighlightBraveShields() {
+  bool is_shields_highlighted = g_browser_process->local_state()->GetBoolean(
+      onboarding::prefs::kOnboardingIsShieldsHighlighted);
+
+  if (is_shields_highlighted) {
+    return false;
+  }
+
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
   base::Time time_now = base::Time::Now();
   base::Time time_7_days_ago = time_now - base::Days(7);
   bool has_browser_been_run_recently = (time_first_run > time_7_days_ago);
-  bool is_shields_highlighted = g_browser_process->local_state()->GetBoolean(
-      prefs::kOnboardingIsShieldsHighlighted);
 
-  // TODO(nullhook): Fix this
-  if (has_browser_been_run_recently && !is_shields_highlighted) {
+  if (first_run::IsChromeFirstRun() || has_browser_been_run_recently) {
     return true;
   }
 
   return false;
 }
 
-std::u16string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
+std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   auto* shields_data_controller =
       brave_shields::BraveShieldsDataController::FromWebContents(
           web_contents());
 
-  if (!shields_data_controller)
-    return std::u16string();
+  if (!shields_data_controller) {
+    return std::string();
+  }
 
-  auto blocked_ads_urls = shields_data_controller->GetBlockedAdsList();
-
-  std::u16string label_with_companies = l10n_util::GetStringUTF16(
-      IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES);
-  std::u16string label_with_out_companies = l10n_util::GetStringUTF16(
-      IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES);
-
-  std::vector<std::u16string> replacements;
+  std::vector<std::string> replacements;
   auto [company_names, total_companies_blocked] =
-      DomainMap::GetCompanyNamesAndCountFromAdsList(blocked_ads_urls);
+      domain_map::GetCompanyNamesAndCountFromAdsList(
+          shields_data_controller->GetBlockedAdsList());
+
+  std::string label_text = l10n_util::GetStringUTF8(
+      company_names.empty()
+          ? IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES
+          : IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITH_COMPANIES);
 
   if (!company_names.empty()) {
     replacements.push_back(company_names);
   }
 
   replacements.push_back(
-      base::NumberToString16(shields_data_controller->GetTotalBlockedCount() -
-                             total_companies_blocked));
-  replacements.push_back(
-      base::UTF8ToUTF16(shields_data_controller->GetCurrentSiteURL().host()));
+      base::NumberToString(shields_data_controller->GetTotalBlockedCount() -
+                           total_companies_blocked));
+  replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 
-  return base::ReplaceStringPlaceholders(
-      company_names.empty() ? label_with_out_companies : label_with_companies,
-      replacements, nullptr);
+  return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(OnboardingTabHelper);
-
-}  // namespace onboarding

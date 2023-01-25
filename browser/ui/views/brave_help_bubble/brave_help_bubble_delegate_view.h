@@ -1,12 +1,13 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_H_
-#define BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_VIEW_H_
 
 #include <memory>
+#include <string>
 
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -16,19 +17,20 @@
 using views::View;
 using views::Widget;
 
-class BraveHelpBubbleDelegate : public views::BubbleDialogDelegateView {
+class BraveHelpBubbleDelegateView : public views::BubbleDialogDelegateView {
  public:
-  METADATA_HEADER(BraveHelpBubbleDelegate);
+  METADATA_HEADER(BraveHelpBubbleDelegateView);
 
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnBubbleClosing(Widget* widget) {}
   };
-  explicit BraveHelpBubbleDelegate(View* anchor_view,
-                                   const std::u16string text);
-  BraveHelpBubbleDelegate(const BraveHelpBubbleDelegate&) = delete;
-  BraveHelpBubbleDelegate& operator=(const BraveHelpBubbleDelegate&) = delete;
-  ~BraveHelpBubbleDelegate() override;
+  explicit BraveHelpBubbleDelegateView(View* anchor_view,
+                                       const std::string text);
+  BraveHelpBubbleDelegateView(const BraveHelpBubbleDelegateView&) = delete;
+  BraveHelpBubbleDelegateView& operator=(const BraveHelpBubbleDelegateView&) =
+      delete;
+  ~BraveHelpBubbleDelegateView() override;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -49,4 +51,4 @@ class BraveHelpBubbleDelegate : public views::BubbleDialogDelegateView {
   raw_ptr<Widget> widget_ = nullptr;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_HELP_BUBBLE_BRAVE_HELP_BUBBLE_DELEGATE_VIEW_H_

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 onboarding_sources = [
+  "//brave/browser/onboarding/domain_map.cc",
   "//brave/browser/onboarding/domain_map.h",
   "//brave/browser/onboarding/onboarding_tab_helper.cc",
   "//brave/browser/onboarding/onboarding_tab_helper.h",
