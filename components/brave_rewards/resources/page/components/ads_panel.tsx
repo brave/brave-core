@@ -340,14 +340,9 @@ export function AdsPanel () {
       return renderLimited()
     }
 
-    const providerPayoutStatus = () => {
-      if (!externalWallet) {
-        return 'off'
-      }
-      return getProviderPayoutStatus(
-        data.parameters.payoutStatus,
-        externalWallet.provider)
-    }
+    const providerPayoutStatus = getProviderPayoutStatus(
+      data.parameters.payoutStatus,
+      externalWallet ? externalWallet.provider : null)
 
     return (
       <>
@@ -356,7 +351,7 @@ export function AdsPanel () {
             <PaymentStatusView
               earningsLastMonth={adsData.adsEarningsLastMonth}
               nextPaymentDate={adsData.adsNextPaymentDate}
-              providerPayoutStatus={providerPayoutStatus()}
+              providerPayoutStatus={providerPayoutStatus}
             />
           </style.paymentStatus>
         <PanelItem label={getString('adsCurrentEarnings')}>
