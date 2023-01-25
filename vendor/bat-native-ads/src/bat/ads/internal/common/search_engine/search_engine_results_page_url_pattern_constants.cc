@@ -12,33 +12,33 @@
 namespace ads {
 
 const std::string& GetAmazonResultsPageUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(
+  static const base::NoDestructor<std::string> kUrlPattern(
       base::StrCat({GetAmazonUrlPattern(), "s"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetGoogleResultsPageUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(
+  static const base::NoDestructor<std::string> kUrlPattern(
       base::StrCat({GetGoogleUrlPattern(), "search"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetMojeekResultsPageUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(
+  static const base::NoDestructor<std::string> kUrlPattern(
       base::StrCat({GetMojeekUrlPattern(), "search"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetWikipediaResultsPageUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(
+  static const base::NoDestructor<std::string> kUrlPattern(
       base::StrCat({GetWikipediaUrlPattern(), "wiki/(.*)"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetYahooResultsPageUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(
+  static const base::NoDestructor<std::string> kUrlPattern(
       base::StrCat({GetYahooUrlPattern(), "search(.*)"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 }  // namespace ads

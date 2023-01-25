@@ -1115,20 +1115,20 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
-  static base::NoDestructor<
+  static const base::NoDestructor<
       base::flat_map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
-      mappings({// {{from version, to version}, function}
-                {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-                {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-                {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-                {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-                {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-                {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-                {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
-                {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
-                {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
-                {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11},
-                {{11, 12}, &AdsServiceImpl::MigratePrefsVersion11To12}});
+      kMappings({// {{from version, to version}, function}
+                 {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+                 {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+                 {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
+                 {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
+                 {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
+                 {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+                 {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
+                 {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
+                 {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
+                 {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11},
+                 {{11, 12}, &AdsServiceImpl::MigratePrefsVersion11To12}});
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -1137,8 +1137,8 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = mappings->find(std::make_pair(from_version, to_version));
-    if (mapping == mappings->end()) {
+    auto mapping = kMappings->find(std::make_pair(from_version, to_version));
+    if (mapping == kMappings->end()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences
       return false;

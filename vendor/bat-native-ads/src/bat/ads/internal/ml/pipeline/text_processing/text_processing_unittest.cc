@@ -44,9 +44,9 @@ class BatAdsTextProcessingTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
-  const double kTolerance = 1e-6;
-  const unsigned kExpectedLen = 3;
-  const std::string kTestString = "Test String";
+  constexpr double kTolerance = 1e-6;
+  constexpr unsigned kExpectedLen = 3;
+  constexpr char kTestString[] = "Test String";
 
   TransformationVector transformations;
   transformations.push_back(std::make_unique<LowercaseTransformation>());
@@ -179,8 +179,8 @@ TEST_F(BatAdsTextProcessingTest, MissingModelTest) {
 
 TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   // Arrange
-  const size_t kMaxPredictionsSize = 100;
-  const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
+  constexpr size_t kMaxPredictionsSize = 100;
+  constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
@@ -206,8 +206,8 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
 
 TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
   // Arrange
-  const size_t kMinPredictionsSize = 2;
-  const size_t kMaxPredictionsSize = 100;
+  constexpr size_t kMinPredictionsSize = 2;
+  constexpr size_t kMaxPredictionsSize = 100;
 
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);

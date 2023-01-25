@@ -33,7 +33,7 @@ struct ParamInfo final {
   bool expected_should_debug;
   bool expected_did_override_command_line_switches;
   EnvironmentType expected_environment_type;
-} kTests[] = {
+} const kTestCases[] = {
     // Should debug
     {/*should_force_staging_environment*/ false,
      /*command_line_switches*/ {{kRewardsSwitch, "debug=true"}},
@@ -188,7 +188,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BatAdsFlagManagerTest,
-                         testing::ValuesIn(kTests),
+                         testing::ValuesIn(kTestCases),
                          TestParamToString);
 
 }  // namespace ads

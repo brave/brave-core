@@ -18,10 +18,10 @@ class BatAdsLowercaseTransformationTest : public UnitTestBase {};
 
 TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
   // Arrange
-  const std::string kUppercaseStr = "LOWER CASE";
-  const std::string kLowercaseStr = "lower case";
+  constexpr char kUppercaseText[] = "LOWER CASE";
+  constexpr char kLowercaseText[] = "lower case";
   const std::unique_ptr<Data> uppercase_data =
-      std::make_unique<TextData>(kUppercaseStr);
+      std::make_unique<TextData>(kUppercaseText);
 
   const LowercaseTransformation lowercase;
 
@@ -33,7 +33,7 @@ TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
       static_cast<TextData*>(lowercase_data.get());
 
   // Assert
-  EXPECT_FALSE(kLowercaseStr.compare(lowercase_text_data->GetText()));
+  EXPECT_EQ(kLowercaseText, lowercase_text_data->GetText());
 }
 
 }  // namespace ads::ml

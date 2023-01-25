@@ -11,15 +11,15 @@ namespace ads {
 
 const std::vector<std::string>& GetAmazonSearchEngineDomainExtensions() {
   // See https://www.amazon.com/gp/navigation-country/select-country.
-  static base::NoDestructor<std::vector<std::string>> extensions(
+  static const base::NoDestructor<std::vector<std::string>> kExtensions(
       {"ae",     "ca",     "cn", "co.jp", "co.uk", "com", "com.au",
        "com.br", "com.mx", "de", "eg",    "es",    "fr",  "in",
        "it",     "nl",     "pl", "sa",    "se",    "sp",  "tr"});
-  return *extensions;
+  return *kExtensions;
 }
 
 const std::vector<std::string>& GetGoogleSearchEngineDomainExtensions() {
-  static base::NoDestructor<std::vector<std::string>> extensions(
+  static const base::NoDestructor<std::vector<std::string>> kExtensions(
       {"ac",     "ad",     "ae",     "al",     "am",     "as",     "at",
        "az",     "ba",     "be",     "bf",     "bg",     "bi",     "bj",
        "bs",     "bt",     "ca",     "cat",    "cd",     "cf",     "cg",
@@ -48,13 +48,13 @@ const std::vector<std::string>& GetGoogleSearchEngineDomainExtensions() {
        "sh",     "si",     "sk",     "sm",     "sn",     "so",     "sr",
        "st",     "td",     "tg",     "tk",     "tl",     "tm",     "tn",
        "to",     "tt",     "vg",     "vu",     "ws"});
-  return *extensions;
+  return *kExtensions;
 }
 
 const std::vector<std::string>& GetMojeekSearchEngineDomainExtensions() {
-  static base::NoDestructor<std::vector<std::string>> extensions(
+  static const base::NoDestructor<std::vector<std::string>> kExtensions(
       {"co.uk", "com"});
-  return *extensions;
+  return *kExtensions;
 }
 
 }  // namespace ads

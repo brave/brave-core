@@ -20,12 +20,10 @@ class BatAdsIdleDetectionUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kShouldDetectScreenWasLockedParameter[] =
-      "should_detect_was_locked";
-  parameters[kShouldDetectScreenWasLockedParameter] = "true";
+  base::FieldTrialParams params;
+  params["should_detect_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -43,12 +41,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kShouldDetectScreenWasLockedParameter[] =
-      "should_detect_was_locked";
-  parameters[kShouldDetectScreenWasLockedParameter] = "true";
+  base::FieldTrialParams params;
+  params["should_detect_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -66,12 +62,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kShouldDetectScreenWasLockedParameter[] =
-      "should_detect_was_locked";
-  parameters[kShouldDetectScreenWasLockedParameter] = "true";
+  base::FieldTrialParams params;
+  params["should_detect_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -89,12 +83,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kShouldDetectScreenWasLockedParameter[] =
-      "should_detect_was_locked";
-  parameters[kShouldDetectScreenWasLockedParameter] = "false";
+  base::FieldTrialParams params;
+  params["should_detect_was_locked"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -112,11 +104,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
-  parameters[kMaximumIdleTimeParameter] = "10s";
+  base::FieldTrialParams params;
+  params["maximum_idle_time"] = "10s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -134,11 +125,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededMaximumIdleTime) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
-  parameters[kMaximumIdleTimeParameter] = "0s";
+  base::FieldTrialParams params;
+  params["maximum_idle_time"] = "0s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -156,11 +146,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasNotExceededInfiniteMaximumIdleTime) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kMaximumIdleTimeParameter[] = "maximum_idle_time";
-  parameters[kMaximumIdleTimeParameter] = "10s";
+  base::FieldTrialParams params;
+  params["maximum_idle_time"] = "10s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -178,11 +167,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, HasExceededMaximumIdleTime) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
-  parameters[kIdleTimeThresholdParameter] = "5s";
+  base::FieldTrialParams params;
+  params["idle_time_threshold"] = "5s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -205,11 +193,10 @@ TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
 
 TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char kIdleTimeThresholdParameter[] = "idle_time_threshold";
-  parameters[kIdleTimeThresholdParameter] = "10s";
+  base::FieldTrialParams params;
+  params["idle_time_threshold"] = "10s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(user_activity::features::kFeature, parameters);
+  enabled_features.emplace_back(user_activity::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
