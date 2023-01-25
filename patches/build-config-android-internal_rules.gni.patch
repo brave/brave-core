@@ -1,5 +1,5 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index bff3789b73749ab6b35cd4d364f76663086094f6..5b6f88c450ab798fab7eb8886372366cc1e936cd 100644
+index 656d711f0caf011bdf090e688f560aaf06f3fe7d..e76084a0b25c22f404789acb5d46f97f4b146671 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
 @@ -3924,6 +3924,7 @@ if (enable_java_templates) {
