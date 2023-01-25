@@ -27,14 +27,15 @@ void ShowWalletOnboarding(content::WebContents*) {
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
 }
 
-void ShowAccountCreation(content::WebContents* web_contents,
-                         const std::string& keyring_id) {
+void ShowAccountCreation(content::WebContents*, const std::string& keyring_id) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_ShowAccountCreation(
       env, base::android::ConvertUTF8ToJavaString(env, keyring_id));
 }
 
 void WalletInteractionDetected(content::WebContents* web_contents) {
+  if (!web_contents)
+    return;
   Java_BraveWalletProviderDelegateImplHelper_walletInteractionDetected(
       base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
 }
