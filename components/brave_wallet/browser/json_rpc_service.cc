@@ -187,6 +187,8 @@ JsonRpcService::JsonRpcService(
     : JsonRpcService(std::move(url_loader_factory), std::move(prefs), nullptr) {
 }
 
+JsonRpcService::JsonRpcService() : weak_ptr_factory_(this) {}
+
 void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<APIRequestHelper>(

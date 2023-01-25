@@ -1,3 +1,8 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 
 static_library("ipfs") {
@@ -73,6 +78,12 @@ static_library("ipfs") {
       "ipfs_onboarding_page.h",
       "keys/ipns_keys_manager.cc",
       "keys/ipns_keys_manager.h",
+      "pin/ipfs_base_pin_service.cc",
+      "pin/ipfs_base_pin_service.h",
+      "pin/ipfs_local_pin_service.cc",
+      "pin/ipfs_local_pin_service.h",
+      "pin/ipfs_pin_rpc_types.cc",
+      "pin/ipfs_pin_rpc_types.h",
     ]
     deps += [
       "//brave/components/l10n/common",

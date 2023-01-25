@@ -235,7 +235,8 @@ export const WalletAsyncActions = {
   addFilecoinAccount:
     createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
+  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>('updateTokenPinStatus')
 }
 
 // slice

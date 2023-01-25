@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -41,6 +42,11 @@
 #include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
+
+#if BUILDFLAG(ENABLE_IPFS)
+#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
+#endif
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -111,7 +117,11 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
-        brave_wallet_p3a_receiver) {
+        brave_wallet_p3a_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
+        brave_wallet_pin_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
+        brave_wallet_auto_pin_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -142,6 +152,13 @@ void WalletPageUI::CreatePageHandler(
   wallet_service->Bind(std::move(brave_wallet_service_receiver));
   wallet_service->GetBraveWalletP3A()->Bind(
       std::move(brave_wallet_p3a_receiver));
+
+#if BUILDFLAG(ENABLE_IPFS)
+  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_pin_service_receiver));
+  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_auto_pin_service_receiver));
+#endif
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

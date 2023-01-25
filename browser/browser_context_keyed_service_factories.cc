@@ -53,6 +53,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
+#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -107,6 +109,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
+  brave_wallet::BraveWalletAutoPinServiceFactory::GetInstance();
+  brave_wallet::BraveWalletPinServiceFactory::GetInstance();
   ipfs::IpfsServiceFactory::GetInstance();
 #endif
 
