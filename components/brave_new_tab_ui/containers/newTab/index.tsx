@@ -16,7 +16,6 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
-import { SponsoredImageTooltip } from '../../components/default/rewards'
 import TopSitesGrid from './gridSites'
 import SiteRemovalNotification from './notification'
 import Stats from './stats'
@@ -472,22 +471,10 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
-    const { rewardsState } = this.props.newTabData
-    if (!rewardsState.adsSupported) {
-      return null
-    }
-
-    const onClose = () => { this.dismissBrandedWallpaperNotification(true) }
-
-    return (
-      <Page.BrandedWallpaperNotification>
-        <SponsoredImageTooltip
-          adsEnabled={rewardsState.enabledAds}
-          onEnableAds={this.startRewards}
-          onClose={onClose}
-        />
-      </Page.BrandedWallpaperNotification>
-    )
+    // Previously the NTP would show a Rewards tooltip on top of a sponsored
+    // image under certain conditions. We no longer show that tooltip, and there
+    // are currently no other "branded wallpaper notifications" defined.
+    return null
   }
 
   renderRewardsWidget (showContent: boolean, position: number) {

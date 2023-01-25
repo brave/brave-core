@@ -329,8 +329,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsSelectCountryHeader", IDS_REWARDS_WIDGET_SELECT_COUNTRY_HEADER},  // NOLINT
         { "rewardsSelectCountryText", IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT},
         { "rewardsSettings", IDS_REWARDS_WIDGET_SETTINGS },
-        { "rewardsSponsoredImageEarningText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT },  // NOLINT
-        { "rewardsSponsoredImageOptInText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT },  // NOLINT
         { "rewardsStartUsingRewards", IDS_REWARDS_WIDGET_START_USING_REWARDS },
         { "rewardsTokenBalance", IDS_REWARDS_WIDGET_TOKEN_BALANCE },
         { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
