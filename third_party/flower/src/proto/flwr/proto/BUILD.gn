@@ -5,5 +5,7 @@ grpc_library("transport_grpc_proto") {
   sources = [ "transport.proto",
               "task.proto",
               "fleet.proto",
+              "node.proto",
+              "driver.proto"
             ]
 }

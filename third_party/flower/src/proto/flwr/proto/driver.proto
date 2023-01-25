@@ -20,33 +20,28 @@ package flower;
 import "node.proto";
 import "task.proto";
 
-service Fleet {
-  // Retrieve one or more tasks, if possible
-  //
-  // HTTP API path: /api/v1/fleet/pull-task-ins
-  rpc PullTaskIns(PullTaskInsRequest) returns (PullTaskInsResponse) {}
+service Driver {
+  // Return a set of nodes
+  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse) {}
 
-  // Complete one or more tasks, if possible
-  //
-  // HTTP API path: /api/v1/fleet/push-task-res
-  rpc PushTaskRes(PushTaskResRequest) returns (PushTaskResResponse) {}
+  // Create one or more tasks
+  rpc PushTaskIns(PushTaskInsRequest) returns (PushTaskInsResponse) {}
+
+  // Get task results
+  rpc PullTaskRes(PullTaskResRequest) returns (PullTaskResResponse) {}
 }
 
-// PullTaskIns messages
-message PullTaskInsRequest {
+// GetNodes messages
+message GetNodesRequest {}
+message GetNodesResponse { repeated uint64 node_ids = 1; }
+
+// PushTaskIns messages
+message PushTaskInsRequest { repeated TaskIns task_ins_list = 1; }
+message PushTaskInsResponse { repeated string task_ids = 2; }
+
+// PullTaskRes messages
+message PullTaskResRequest {
   Node node = 1;
   repeated string task_ids = 2;
 }
-message PullTaskInsResponse {
-  Reconnect reconnect = 1;
-  repeated TaskIns task_ins_list = 2;
-}
-
-// PushTaskRes messages
-message PushTaskResRequest { repeated TaskRes task_res_list = 1; }
-message PushTaskResResponse {
-  Reconnect reconnect = 1;
-  map<string, uint32> results = 2;
-}
-
-message Reconnect { uint64 reconnect = 1; }
+message PullTaskResResponse { repeated TaskRes task_res_list = 1; }

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated/task/flower_helper.h"
+#include "brave/components/brave_federated/adapters/flower_helper.h"
 
 #include <sstream>
 
@@ -14,7 +14,7 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
+#include "brave/third_party/flower/src/proto/flwr/proto/node.pb.h"
 
 namespace {
 // TODO(lminto): Create this wiki url
@@ -70,17 +70,22 @@ flower::Parameters GetMessageFromParameters(
   return flower_parameters;
 }
 
-flower::GetTasksRequest BuildGetTasksRequestMessage() {
-  flower::GetTasksRequest trm;
-  trm.set_id(111);
+flower::PullTaskInsRequest BuildPullTaskInsRequestMessage() {
+  flower::Node node;
+  node.set_node_id(1);
+  node.set_anonymous(true);
 
-  return trm;
+  flower::PullTaskInsRequest pull_task_instructions_request;
+  *pull_task_instructions_request.mutable_node() = node;
+  pull_task_instructions_request.add_task_ids(0);
+
+  return pull_task_instructions_request;
 }
 
 std::string BuildGetTasksPayload() {
-  flower::GetTasksRequest task_request = BuildGetTasksRequestMessage();
-
   std::string request;
+
+  flower::PullTaskInsRequest task_request = BuildPullTaskInsRequestMessage();
   task_request.SerializeToString(&request);
 
   return request;
@@ -88,37 +93,36 @@ std::string BuildGetTasksPayload() {
 
 std::string BuildPostTaskResultsPayload(TaskResult result) {
   Task task = result.GetTask();
-  int task_id = task.GetId();
   PerformanceReport report = result.GetReport();
 
-  flower::Result flwr_result;
-  flwr_result.set_task_id(task_id);
-
+  int task_id = task.GetId();
   TaskType task_type = task.GetType();
+
+  flower::Task flower_task;
   flower::ClientMessage client_message;
   if (task_type == TaskType::Training) {
     flower::ClientMessage_FitRes fit_res;
     fit_res.set_num_examples(report.dataset_size);
     *fit_res.mutable_parameters() = GetMessageFromParameters(report.parameters);
-    // TODO(lminto): add res of information
     *client_message.mutable_fit_res() = fit_res;
   } else {
     flower::ClientMessage_EvaluateRes eval_res;
     eval_res.set_num_examples(report.dataset_size);
     eval_res.set_loss(report.loss);
-    // TODO(lminto): Add status, metrics?
     *client_message.mutable_evaluate_res() = eval_res;
   }
+  *flower_task.mutable_legacy_client_message() = client_message;
 
-  *flwr_result.mutable_legacy_client_message() = client_message;
-
-  flower::CreateResultsRequest response;
-  flower::TokenizedResult* tok_res = response.add_tokenized_results();
-  *tok_res->mutable_result() = flwr_result;
-  tok_res->set_token("fixed_token");
+  flower::PushTaskResRequest task_results;
+  flower::TaskRes* task_result = task_results.add_task_res_list();
+  task_result->set_task_id(std::to_string(task_id));
+  task_result->set_group_id("0");
+  task_result->set_workload_id("0");
+  *task_result->mutable_task() = flower_task;
+  //task_result->set_token("fixed_token");
 
   std::string result_payload;
-  response.SerializeToString(&result_payload);
+  task_results.SerializeToString(&result_payload);
 
   return result_payload;
 }

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_COMMUNICATION_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_COMMUNICATION_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_ADAPTERS_COMMUNICATION_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_ADAPTERS_COMMUNICATION_HELPER_H_
 
 #include <string>
 
@@ -15,6 +15,7 @@ namespace brave_federated {
 
 std::vector<float> GetFloatVectorFromString(std::string string);
 std::string GetStringFromFloatVector(std::vector<float> vector);
+
 flower::Parameters GetMessageFromParameters(
     std::vector<std::vector<float>> parameters_vector);
 std::vector<std::vector<float>> GetParametersFromMessage(
@@ -24,4 +25,4 @@ std::string BuildGetTasksPayload();
 std::string BuildPostTaskResultsPayload(TaskResult result);
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_COMMUNICATION_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_ADAPTERS_COMMUNICATION_HELPER_H_
