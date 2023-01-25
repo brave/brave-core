@@ -40,6 +40,7 @@ export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const knownTransactions = ({ wallet }: State) => wallet.knownTransactions
 export const networkList = ({ wallet }: State) => wallet.networkList
+export const hiddenNetworkList = ({ wallet }: State) => wallet.hiddenNetworkList
 export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
 export const pendingTransactions = ({ wallet }: State) => wallet.pendingTransactions
 export const portfolioPriceHistory = ({ wallet }: State) => wallet.portfolioPriceHistory

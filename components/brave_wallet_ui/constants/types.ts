@@ -243,6 +243,7 @@ export interface WalletState {
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
+  hiddenNetworkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet

@@ -758,6 +758,16 @@ export function refreshFullNetworkList () {
     )).flat(1)
 
     dispatch(WalletActions.setAllNetworks(networks))
+
+    const hiddenNetworks = (await Promise.all(
+      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
+        return networks.filter((n) => hiddenChains.includes(n.chainId))
+      })
+    )).flat(1)
+
+    dispatch(WalletActions.setAllHiddenNetworks(hiddenNetworks))
   }
 }
 

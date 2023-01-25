@@ -70,6 +70,7 @@
   sendTransaction,
   setAccountTransactions,
   setAllNetworks,
+  setAllHiddenNetworks,
   setAllTokensList,
   setAssetAutoDiscoveryCompleted,
   setCoinMarkets,
