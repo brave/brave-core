@@ -433,14 +433,6 @@ extension Strings {
   
 }
 
-// MARK:-  TabPeekViewController.swift
-extension Strings {
-  public static let previewActionAddToBookmarksActionTitle = NSLocalizedString("PreviewActionAddToBookmarksActionTitle", tableName: "BraveShared", bundle: .module, value: "Add to Bookmarks", comment: "Label for preview action on Tab Tray Tab to add current tab to Bookmarks")
-  public static let previewActionCopyURLActionTitle = NSLocalizedString("PreviewActionCopyURLActionTitle", tableName: "BraveShared", bundle: .module, value: "Copy URL", comment: "Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard")
-  public static let previewActionCloseTabActionTitle = NSLocalizedString("PreviewActionCloseTabActionTitle", tableName: "BraveShared", bundle: .module, value: "Close Tab", comment: "Label for preview action on Tab Tray Tab to close the current tab")
-  public static let previewFormatAccessibilityLabel = NSLocalizedString("PreviewFormatAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Preview of %@", comment: "Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab.")
-}
-
 // MARK:-  TabToolbar.swift
 extension Strings {
   public static let tabToolbarBackButtonAccessibilityLabel = NSLocalizedString("TabToolbarBackButtonAccessibilityLabel", tableName: "BraveShared", bundle: .module, value: "Back", comment: "Accessibility label for the Back button in the tab toolbar.")
@@ -4296,6 +4288,50 @@ extension Strings {
       value: "When a website's Zoom-Level has changed, the website will show up on the list here. Currently, there are no websites zoomed in or out.",
       comment: "Description for the empty Web-Page zoom view"
     )
+  }
+}
+
+extension Strings {
+  public struct RecentlyClosed {
+    public static let viewRecentlyClosedTab =
+      NSLocalizedString(
+        "recently.closed.view.tab",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "View Recently Closed Tabs",
+        comment: "Action item title of long press for Opening recently closed tab view")
+    
+    public static let recentlyClosedTabsScreenTitle =
+      NSLocalizedString(
+        "recently.closed.title",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Recently Closed Tabs",
+        comment: "Action item title of long press for Opening recently closed tab view")
+    
+    public static let recentlyClosedClearActionTitle =
+      NSLocalizedString(
+        "recently.closed.action.clear",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Clear",
+        comment: "Title for Clear Button inside Recently Closed Tabs")
+    
+    public static let recentlyClosedClearActionConfirmation =
+      NSLocalizedString(
+        "recently.closed.confirmation.clear.title",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Clear All Recently Closed Tabs?",
+        comment: "Confirmation message for Clear Button action inside Recently Closed Tabs")
+    
+    public static let recentlyClosedEmptyListTitle =
+      NSLocalizedString(
+        "recently.closed.empty.list.title",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "No Recently Closed Tabs.",
+        comment: "Title for empty screen Recently Closed Tabs")
   }
 }
 

@@ -353,9 +353,7 @@ class Tab: NSObject {
   }
 
   func clearHistory(config: WKWebViewConfiguration) {
-    guard let webView = webView,
-      let tabID = id
-    else {
+    guard let webView = webView, let tabID = id else {
       return
     }
 
@@ -363,12 +361,12 @@ class Tab: NSObject {
     TabMO.removeHistory(with: tabID)
 
     /*
-         * Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
-         * and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
-         * This approach is chosen to achieve removing tab history in the event of removing  browser history
-         * Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
-         * And alternative would be to reload webpages which will be costly and also can cause unexpected results
-         */
+     * Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
+     * and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
+     * This approach is chosen to achieve removing tab history in the event of removing  browser history
+     * Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
+     * And alternative would be to reload webpages which will be costly and also can cause unexpected results
+     */
     let argument: [Any] = ["_c", "lea", "r"]
 
     let method = argument.compactMap { $0 as? String }.joined()

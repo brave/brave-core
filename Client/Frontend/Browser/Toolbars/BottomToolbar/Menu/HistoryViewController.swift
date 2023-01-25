@@ -196,6 +196,9 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
             self.tabManager.clearTabHistory() {
               self.refreshHistory()
             }
+            
+            // Clearing History should clear Recently Closed
+            RecentlyClosed.removeAll()
           }
         }))
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
@@ -289,6 +292,10 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     case .delete:
       guard let historyItem = historyFRC?.object(at: indexPath) else { return }
       historyAPI.removeHistory(historyItem)
+      
+      // Reoving a history item should remove its corresponded Recently Closed item
+      RecentlyClosed.remove(with: historyItem.url.absoluteString)
+      
       if isHistoryBeingSearched {
         reloadDataAndShowLoading(with: searchQuery)
       } else {
