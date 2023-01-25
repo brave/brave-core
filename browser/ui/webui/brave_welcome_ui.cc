@@ -12,7 +12,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
@@ -251,7 +251,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   web_ui->AddMessageHandler(
       std::make_unique<WelcomeDOMHandler>(Profile::FromWebUI(web_ui)));
   web_ui->AddMessageHandler(
-      std::make_unique<settings::BraveImportDataHandler>());
+      std::make_unique<settings::BraveImportBulkDataHandler>());
   web_ui->AddMessageHandler(
       std::make_unique<settings::DefaultBrowserHandler>());  // set default
                                                              // browser

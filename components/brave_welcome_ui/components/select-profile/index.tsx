@@ -72,12 +72,17 @@ function SelectProfile () {
 
   const handleImportProfiles = () => {
     if (selectedProfiles.size <= 0) return
-
+    let entries: number[] = []
     selectedProfiles.forEach((entry) => {
-      ImportDataBrowserProxyImpl.getInstance().importData(entry, defaultImportTypes)
+      entries.push(entry)
       incrementCount()
     })
 
+    if (entries.length === 1) {
+      ImportDataBrowserProxyImpl.getInstance().importData(entries[0], defaultImportTypes)
+    } else {
+      ImportDataBrowserProxyImpl.getInstance().importDataBulk(entries, defaultImportTypes)
+    }
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectProfile, isFinished: false, isSkipped: false })
   }
   const getImportEntryName = (entry: any) => {
