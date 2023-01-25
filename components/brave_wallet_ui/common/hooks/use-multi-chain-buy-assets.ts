@@ -28,6 +28,7 @@ import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selec
 export const useMultiChainBuyAssets = () => {
   // redux
   const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const hiddenNetworkList = useUnsafeWalletSelector(WalletSelectors.hiddenNetworkList)
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
   const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
@@ -55,10 +56,10 @@ export const useMultiChainBuyAssets = () => {
 
   // memos
   const buyAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
-    return networkList.filter(n =>
+    return [...networkList, ...hiddenNetworkList].filter(n =>
       SupportedOnRampNetworks.includes(n.chainId)
     )
-  }, [networkList])
+  }, [networkList, hiddenNetworkList])
 
   const selectedAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
     return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined

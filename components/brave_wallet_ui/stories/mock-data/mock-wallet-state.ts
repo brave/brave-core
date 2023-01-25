@@ -217,6 +217,7 @@ export const mockWalletState: WalletState = {
   isWalletLocked: false,
   knownTransactions: [],
   networkList: mockNetworks,
+  hiddenNetworkList: [],
   pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
