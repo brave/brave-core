@@ -98,6 +98,8 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   // methods
   const onFilecoinNetworkChanged = React.useCallback((network: FilecoinNetwork) => {
+    // clear previous accounts & show loading spinner
+    setAccounts([])
     setFilecoinNetwork(network)
     onConnectHardwareWallet({
       hardware: BraveWallet.LEDGER_HARDWARE_VENDOR,
