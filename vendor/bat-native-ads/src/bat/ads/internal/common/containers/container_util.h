@@ -42,31 +42,6 @@ bool CompareMaps(const T& lhs, const T& rhs) {
          std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
 }
 
-// Checks that |c1| and |c2| contain the same number of elements and each
-// element in |c1| is present in |c2| and vice-versa (Uses the == operator for
-// comparing). Returns true if it is the case. Note that this method will return
-// true for (aab, abb)
-template <typename T>
-bool CompareAsSets(const T& c1, const T& c2) {
-  if (c1.size() != c2.size()) {
-    return false;
-  }
-
-  for (size_t i = 0; i < c2.size(); i++) {
-    bool found = false;
-
-    for (size_t j = 0; (j < c2.size()) && !found; j++) {
-      found = found || (c1[i] == c2[j]);
-    }
-
-    if (!found) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_CONTAINERS_CONTAINER_UTIL_H_
