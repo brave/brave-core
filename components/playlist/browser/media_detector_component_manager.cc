@@ -92,6 +92,9 @@ void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
   register_requested_ = true;
 
   OnGetScript(GetLocalScript());
+  site_specific_detectors_[net::SchemefulSite(GURL("https://youtube.com"))] =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS);
 }
 
 bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
@@ -103,14 +106,27 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
                               });
 }
 
-const std::string& MediaDetectorComponentManager::GetMediaDetectorScript() {
-  if (!script_.empty())
-    return script_;
+std::string MediaDetectorComponentManager::GetMediaDetectorScript(
+    const GURL& url) {
+  std::string detector_script = script_;
+  if (detector_script.empty()) {
+    // In case we have yet to fetch the script, use local script instead. At the
+    // same time, fetch the script from component.
+    RegisterIfNeeded();
+    detector_script = GetLocalScript();
+  }
 
-  // In case we have yet to fetch the script, use local script instead. At the
-  // same time, fetch the script from component.
-  RegisterIfNeeded();
-  return GetLocalScript();
+  if (net::SchemefulSite site(url); site_specific_detectors_.count(site)) {
+    constexpr std::string_view kPlaceholder =
+        "const siteSpecificDetector = null";
+    auto pos = detector_script.find(kPlaceholder);
+    if (pos != std::string::npos) {
+      detector_script.replace(pos, kPlaceholder.length(),
+                              site_specific_detectors_.at(site));
+    }
+  }
+
+  return detector_script;
 }
 
 void MediaDetectorComponentManager::SetUseLocalListToHideMediaSrcAPI() {

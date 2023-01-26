@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
@@ -45,7 +46,7 @@ class MediaDetectorComponentManager {
 
   // Returns a script to get media from page. If the script isn't fetched
   // from component yet, will return a local script.
-  const std::string& GetMediaDetectorScript();
+  std::string GetMediaDetectorScript(const GURL& url);
 
   void SetUseLocalScriptForTesting();
 
@@ -68,6 +69,8 @@ class MediaDetectorComponentManager {
   std::string script_;
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
+
+  base::flat_map<net::SchemefulSite, std::string> site_specific_detectors_;
 
   base::ObserverList<Observer> observer_list_;
   base::WeakPtrFactory<MediaDetectorComponentManager> weak_factory_{this};

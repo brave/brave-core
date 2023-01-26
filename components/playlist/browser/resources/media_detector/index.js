@@ -6,6 +6,9 @@
 // This script is modified version of
 // https://github.com/brave/brave-ios/blob/development/Client/Frontend/UserContent/UserScripts/Playlist.js
 (function () {
+  // This will be replaced by native code on demand.
+  const siteSpecificDetector = null
+
   function fixUpRelativeUrl (url) {
     if (!url || typeof url !== 'string') {
       return url
@@ -97,6 +100,10 @@
     const isThumbnailValid = (thumbnail) => { return thumbnail && thumbnail !== '' }
 
     let thumbnail = document.querySelector('meta[property="og:image"]')?.content
+    if (!isThumbnailValid(thumbnail) && typeof siteSpecificDetector?.getThumbnail === 'function') {
+      thumbnail = siteSpecificDetector.getThumbnail()
+    }
+
     return fixUpRelativeUrl(thumbnail)
   }
 
@@ -104,18 +111,29 @@
     const isTitleValid = (title) => { return title && title !== '' }
 
     let title = node.title
+    if (!isTitleValid(title) && typeof siteSpecificDetector?.getMediaTitle === 'function') {
+      title = siteSpecificDetector.getMediaTitle(node)
+    }
+
     if (!isTitleValid(title)) { title = document.title }
 
     return title
   }
 
   function getMediaAuthor (node) {
-    // TODO(sko) Get metadata of author
-    return null
+    // TODO(sko) Get metadata of author in more general way
+    let author = null
+    if (typeof siteSpecificDetector?.getMediaAuthor === 'function') {
+      author = siteSpecificDetector.getMediaAuthor(node)
+    }
+    return author
   }
 
   function getMediaDurationInSeconds (node) {
     let duration = node.duration
+
+    if (!duration && typeof siteSpecificDetector?.getMediaDurationInSeconds === 'function') { duration = siteSpecificDetector.getMediaDurationInSeconds(node) }
+
     const isNan = (value) => { return typeof value === 'number' && Number.isNaN(value) }
     const isInfinite = (value) => { return typeof value === 'number' && (value === Infinity || value === -Infinity) }
     const clampDuration = (value) => {
