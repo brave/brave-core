@@ -29,7 +29,7 @@ targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const targeting::EpsilonGreedyBanditArmMap& arms) {
   targeting::EpsilonGreedyBanditArmMap updated_arms = arms;
 
-  for (const auto& segment : targeting::kSegments) {
+  for (const char* segment : targeting::kSegments) {
     const auto iter = updated_arms.find(segment);
     if (iter != updated_arms.cend()) {
       const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;

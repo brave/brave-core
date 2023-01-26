@@ -78,7 +78,7 @@ void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void AntiTargeting::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
+  if (IsValidCountryComponentId(id)) {
     Load();
   }
 }

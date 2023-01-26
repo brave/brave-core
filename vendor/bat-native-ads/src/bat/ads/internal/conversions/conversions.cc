@@ -568,7 +568,7 @@ void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void Conversions::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
+  if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }
 }

@@ -17,10 +17,11 @@ namespace ads {
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
 
-  return base::ranges::any_of(
-      geographic::kSupportedCountryCodes, [&country_code](const auto& schema) {
-        return base::Contains(schema.second, country_code);
-      });
+  return base::ranges::any_of(geographic::GetSupportedCountryCodes(),
+                              [&country_code](const auto& schema) {
+                                return base::Contains(schema.second,
+                                                      country_code);
+                              });
 }
 
 // static

@@ -86,7 +86,7 @@ void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void TextClassification::OnResourceDidUpdate(const std::string& id) {
-  if (kLanguageComponentIds.find(id) != kLanguageComponentIds.cend()) {
+  if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }

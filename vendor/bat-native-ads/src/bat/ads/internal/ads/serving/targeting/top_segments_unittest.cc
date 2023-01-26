@@ -5,12 +5,14 @@
 
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 
+#include <iterator>
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
@@ -27,6 +29,7 @@
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -69,6 +72,12 @@ constexpr ModelCombinationsParamInfo kTests[] = {
     {true, true, true, true, 8},
 };
 
+SegmentList GetSegments() {
+  SegmentList segments;
+  base::ranges::copy(kSegments, std::back_inserter(segments));
+  return segments;
+}
+
 void ProcessEpsilonGreedyBandit() {
   const std::vector<processor::BanditFeedbackInfo> feedbacks = {
       {"science", mojom::NotificationAdEventType::kClicked},
@@ -81,7 +90,7 @@ void ProcessEpsilonGreedyBandit() {
       {"technology & computing", mojom::NotificationAdEventType::kDismissed},
       {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
-  for (const auto& segment : kSegments) {
+  for (const char* segment : kSegments) {
     processor::EpsilonGreedyBandit::Process(
         {segment, mojom::NotificationAdEventType::kDismissed});
   }
@@ -150,7 +159,7 @@ class BatAdsTopSegmentsTest
 
 TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   const ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
@@ -228,7 +237,7 @@ INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
@@ -265,7 +274,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();

@@ -94,7 +94,7 @@ void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
-  if (kLanguageComponentIds.find(id) != kLanguageComponentIds.end()) {
+  if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }

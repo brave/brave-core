@@ -19,12 +19,22 @@
 
 namespace ads::targeting::model {
 
+namespace {
+
+SegmentList GetSegments() {
+  SegmentList segments;
+  base::ranges::copy(kSegments, std::back_inserter(segments));
+  return segments;
+}
+
+}  // namespace
+
 class BatAdsEpsilonGreedyBanditModelTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest,
        GetSegmentsIfProcessorNeverInitialized) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   // Act
   const EpsilonGreedyBandit model;
@@ -52,7 +62,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -70,7 +80,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -96,7 +106,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploration) {
 
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegments());
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -105,7 +115,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   const processor::EpsilonGreedyBandit processor;
-  for (const auto& segment : kSegments) {
+  for (const char* segment : kSegments) {
     processor::EpsilonGreedyBandit::Process(
         {segment, mojom::NotificationAdEventType::kDismissed});
   }
@@ -157,7 +167,7 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   const processor::EpsilonGreedyBandit processor;
-  for (const auto& segment : kSegments) {
+  for (const char* segment : kSegments) {
     processor::EpsilonGreedyBandit::Process(
         {segment, mojom::NotificationAdEventType::kDismissed});
   }
