@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -85,59 +84,6 @@ TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
   const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
 
   EXPECT_EQ(expected_vectors, vectors);
-}
-
-TEST(BatAdsContainerUtilTest, CompareMatchingMaps) {
-  // Arrange
-  const base::flat_map<std::string, std::string> map_1 = {{"key 1", "value 1"},
-                                                          {"key 2", "value 2"}};
-
-  const base::flat_map<std::string, std::string> map_2 = {{"key 2", "value 2"},
-                                                          {"key 1", "value 1"}};
-
-  // Act
-  const bool does_equal = CompareMaps(map_1, map_2);
-
-  // Assert
-  EXPECT_TRUE(does_equal);
-}
-
-TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingMaps) {
-  // Arrange
-  const base::flat_map<std::string, std::string> map = {{"key 1", "value 1"},
-                                                        {"key 2", "value 2"}};
-
-  // Act
-  const bool does_equal = CompareMaps(map, map);
-
-  // Assert
-  EXPECT_TRUE(does_equal);
-}
-
-TEST(BatAdsContainerUtilTest, CompareNonMatchingMaps) {
-  // Arrange
-  const base::flat_map<std::string, std::string> map_1 = {{"key 1", "value 1"},
-                                                          {"key 2", "value 2"}};
-
-  const base::flat_map<std::string, std::string> map_2 = {{"key 3", "value 3"},
-                                                          {"key 4", "value 4"}};
-
-  // Act
-  const bool does_equal = CompareMaps(map_1, map_2);
-
-  // Assert
-  EXPECT_FALSE(does_equal);
-}
-
-TEST(BatAdsContainerUtilTest, CompareEmptyMaps) {
-  // Arrange
-  const base::flat_map<std::string, std::string> map;
-
-  // Act
-  const bool does_equal = CompareMaps(map, map);
-
-  // Assert
-  EXPECT_TRUE(does_equal);
 }
 
 }  // namespace ads
