@@ -13,8 +13,7 @@
 #undef GetDialogTitle
 
 std::u16string ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
-  if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||
-      type_ == ExtensionInstallPrompt::WEBSTORE_WIDGET_PROMPT) {
+  if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT) {
     return brave_l10n::GetLocalizedResourceUTF16String(
         IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE);
   }
