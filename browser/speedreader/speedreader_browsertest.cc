@@ -36,6 +36,8 @@
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/dom_distiller/core/dom_distiller_features.h"
+#include "components/dom_distiller/core/url_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -584,4 +586,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserPanelV2Test, NoCrash) {
 
   NavigateToPageSynchronously(kTestPageReadable);
   ClickReaderButton();
+}
+
+class SpeedReaderFallbackTest : public SpeedReaderBrowserTest {
+ public:
+  SpeedReaderFallbackTest() {
+    feature_list_.InitWithFeatures(
+        {dom_distiller::kReaderMode, speedreader::kSpeedreaderFallback}, {});
+  }
+  ~SpeedReaderFallbackTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderFallbackTest, Fallback) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(
+      "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html");
+
+  EXPECT_FALSE(
+      speedreader::PageSupportsDistillation(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  ClickReaderButton();
+
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_FALSE(
+      speedreader::PageSupportsDistillation(tab_helper()->PageDistillState()));
+  EXPECT_FALSE(
+      speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
+  EXPECT_TRUE(dom_distiller::url_utils::IsDistilledPage(
+      ActiveWebContents()->GetLastCommittedURL()));
 }
