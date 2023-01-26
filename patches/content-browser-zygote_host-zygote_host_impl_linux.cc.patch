@@ -1,5 +1,5 @@
 diff --git a/content/browser/zygote_host/zygote_host_impl_linux.cc b/content/browser/zygote_host/zygote_host_impl_linux.cc
-index 2de8b35aa18a11e6d5bf44954e5ae4b3bcd9d4ea..38db2c1e4f59daa4c21129ca6194a990b9681c9d 100644
+index 7bc5e4acf632d7a643e5eb3099e893963703426c..fdf38432c9a5cb3cec52577c544adde091631888 100644
 --- a/content/browser/zygote_host/zygote_host_impl_linux.cc
 +++ b/content/browser/zygote_host/zygote_host_impl_linux.cc
 @@ -125,6 +125,7 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {

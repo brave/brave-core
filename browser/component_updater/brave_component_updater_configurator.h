@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
+#include "base/time/time.h"
 #include "components/component_updater/configurator_impl.h"
 #include "components/update_client/configurator.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -35,10 +36,10 @@ class BraveConfigurator : public update_client::Configurator {
                     PrefService* pref_service);
 
   // update_client::Configurator overrides.
-  double InitialDelay() const override;
-  int NextCheckDelay() const override;
-  int OnDemandDelay() const override;
-  int UpdateDelay() const override;
+  base::TimeDelta InitialDelay() const override;
+  base::TimeDelta NextCheckDelay() const override;
+  base::TimeDelta OnDemandDelay() const override;
+  base::TimeDelta UpdateDelay() const override;
   std::vector<GURL> UpdateUrl() const override;
   std::vector<GURL> PingUrl() const override;
   std::string GetProdId() const override;

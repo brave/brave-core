@@ -48,8 +48,9 @@ void BraveConfirmInfoBar::Layout() {
   // Early return when checkbox is not used.
   // This class is only valid when this infobar has checkbox now.
   // NOTE: Revisit when we want to use other buttons together with checkbox.
-  if (!checkbox_)
+  if (!checkbox_) {
     return;
+  }
 
   checkbox_->SizeToPreferredSize();
 
@@ -71,15 +72,17 @@ int BraveConfirmInfoBar::NonLabelWidth() const {
 
   // Early return when checkbox is not used.
   // This class is only valid when this infobar has checkbox now.
-  if (!checkbox_)
+  if (!checkbox_) {
     return width;
+  }
 
   return width + checkbox_->width() + kCheckboxSpacing;
 }
 
 void BraveConfirmInfoBar::CloseButtonPressed() {
-  if (GetBraveDelegate()->InterceptClosing())
+  if (GetBraveDelegate()->InterceptClosing()) {
     return;
+  }
 
   ConfirmInfoBar::CloseButtonPressed();
 }

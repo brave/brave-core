@@ -144,3 +144,15 @@ void BraveMainDelegate::PreSandboxStartup() {
     brave::InitializeResourceBundle();
   }
 }
+
+absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
+    ChromeMainDelegate::InvokedIn invoked_in) {
+  auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
+  BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
+  std::string update_url = GetUpdateURLHost();
+  if (!update_url.empty()) {
+    std::string source = "url-source=" + update_url;
+    command_line.AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
+  }
+  return result;
+}

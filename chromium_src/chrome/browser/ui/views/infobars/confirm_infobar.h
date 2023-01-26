@@ -7,7 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
 
 #define GetDelegate                            \
-  Unused() { return nullptr; }                 \
+  Unused() {                                   \
+    return nullptr;                            \
+  }                                            \
   friend class BraveSyncAccountDeletedInfoBar; \
   friend class BraveConfirmInfoBar;            \
   ConfirmInfoBarDelegate* GetDelegate

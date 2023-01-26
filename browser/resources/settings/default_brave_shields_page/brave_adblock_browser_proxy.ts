@@ -1,11 +1,11 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * you can obtain one at https://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import { sendWithPromise, addWebUIListener } from 'chrome://resources/js/cr.m.js';
+import { sendWithPromise, addWebUiListener } from 'chrome://resources/js/cr.js';
 
 export interface BraveAdblockBrowserProxy {
   getRegionalLists(): Promise<any[]> // TODO(petemill): Define the expected type
@@ -14,7 +14,7 @@ export interface BraveAdblockBrowserProxy {
   getCustomFilters(): Promise<any> // TODO(petemill): Define the expected type
   setSubscriptionEnabled(url: string, enabled: boolean)
   addSubscription(url: string)
-  addWebUIListener(eventName: string, callback: Function)
+  addWebUiListener(eventName: string, callback: Function)
   updateSubscription(url: string)
   deleteSubscription(url: string)
   viewSubscription(url: string)
@@ -68,8 +68,8 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
     chrome.send('brave_adblock.viewSubscription', [url])
   }
 
-  addWebUIListener (event_name, callback) {
-    addWebUIListener(event_name, callback)
+  addWebUiListener (event_name, callback) {
+    addWebUiListener(event_name, callback)
   }
 }
 

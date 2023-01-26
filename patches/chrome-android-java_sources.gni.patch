@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java_sources.gni b/chrome/android/java_sources.gni
-index f641e3648151503d0dadb1ad3476a64f70f530eb..00f3197f30cc4232371ac7e9d9194625a5c5f12b 100644
+index 3c71a40ccc6cab2de1f3f26d655a86ae9b68bc8a..e2a3f775e5e2d409af9e576b95c5b53a10498632 100644
 --- a/chrome/android/java_sources.gni
 +++ b/chrome/android/java_sources.gni
-@@ -26,6 +26,7 @@ import("//components/offline_pages/buildflags/features.gni")
- import("//device/vr/buildflags/buildflags.gni")
- 
- chrome_java_sources += public_autofill_assistant_java_sources
-+chrome_java_sources += brave_java_sources
- 
+@@ -27,6 +27,7 @@ import("//device/vr/buildflags/buildflags.gni")
  if (enable_vr) {
    chrome_java_sources += [ "java/src/org/chromium/chrome/browser/component_updater/VrAssetsComponentInstaller.java" ]
+ }
++chrome_java_sources += brave_java_sources
+ 
+ # Only used for testing, should not be shipped to end users.
+ if (enable_offline_pages_harness) {

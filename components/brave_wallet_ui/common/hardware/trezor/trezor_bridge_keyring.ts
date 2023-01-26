@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert.js'
+import { assert } from 'chrome://resources/js/assert_ts.js'
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
 import { BraveWallet, SerializableTransactionInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
@@ -206,7 +206,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private createEIP1559TransactionPayload = (path: string, txInfo: SerializableTransactionInfo, chainId: string): SignTransactionCommandPayload => {
-    assert(txInfo.txDataUnion.ethTxData1559)
+    assert(txInfo.txDataUnion.ethTxData1559, '')
     return {
       path: path,
       transaction: {
@@ -223,7 +223,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private createLegacyTransactionPayload = (path: string, txInfo: SerializableTransactionInfo, chainId: string): SignTransactionCommandPayload => {
-    assert(txInfo.txDataUnion.ethTxData1559)
+    assert(txInfo.txDataUnion.ethTxData1559, '')
     return {
       path: path,
       transaction: {

@@ -12,7 +12,6 @@
 
 #include "base/files/file_util.h"
 #include "base/json/json_writer.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"

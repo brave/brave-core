@@ -9,6 +9,7 @@ import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_o
 import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
@@ -29,9 +30,12 @@ RegisterPolymerTemplateModifications({
         useDefaultButtonTemplate.setAttribute("restamp", "true")
       }
       theme.setAttribute("class", "settings-row hr")
-      theme.insertAdjacentHTML('beforebegin', `
-        <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
-      `)
+      theme.insertAdjacentHTML(
+        'beforebegin',
+        getTrustedHTML`
+          <settings-brave-appearance-theme prefs="{{prefs}}">
+          </settings-brave-appearance-theme>
+        `)
     }
     const r = Router.getInstance().routes_
     // Super-referral
@@ -59,32 +63,57 @@ RegisterPolymerTemplateModifications({
     if (!bookmarkBarToggle) {
       console.error(`[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
     } else {
-      bookmarkBarToggle.insertAdjacentHTML('afterend', `
-        <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
-      `)
+      bookmarkBarToggle.insertAdjacentHTML(
+        'afterend',
+        getTrustedHTML`
+          <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
+        `)
     }
     const zoomLevel = templateContent.getElementById('zoomLevel')
     if (!zoomLevel || !zoomLevel.parentNode) {
       console.error(`[Brave Settings Overrides] Couldn't find zoomLevel`)
     } else {
-      zoomLevel.parentNode.insertAdjacentHTML('afterend', `
-        <settings-toggle-button
-          class="hr"
-          pref="{{prefs.brave.mru_cycling_enabled}}"
-          label="${I18nBehavior.i18n('mruCyclingSettingLabel')}">
-        </settings-toggle-button>
-      `)
-      const isSpeedreaderEnabled = loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
-      if (isSpeedreaderEnabled) {
-        zoomLevel.parentNode.insertAdjacentHTML('afterend', `
+      zoomLevel.parentNode.insertAdjacentHTML(
+        'afterend',
+        getTrustedHTML`
           <settings-toggle-button
             class="hr"
-            pref="{{prefs.brave.speedreader.enabled}}"
-            label="${I18nBehavior.i18n('speedreaderSettingLabel')}"
-            sub-label="${I18nBehavior.i18n('speedreaderSettingSubLabel')}"
-            learn-more-url="${I18nBehavior.i18n('speedreaderLearnMoreURL')}">
+            id="mru-cycling"
+            pref="{{prefs.brave.mru_cycling_enabled}}"
           </settings-toggle-button>
-      `)
+        `)
+      const mruCyclingToggle = templateContent.getElementById('mru-cycling')
+      if (!mruCyclingToggle) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find MRU cycling toggle')
+      } else {
+        mruCyclingToggle.setAttribute(
+          'label', I18nBehavior.i18n('mruCyclingSettingLabel'))
+      }
+      const isSpeedreaderEnabled =
+        loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
+      if (isSpeedreaderEnabled) {
+        zoomLevel.parentNode.insertAdjacentHTML(
+          'afterend',
+          getTrustedHTML`
+            <settings-toggle-button
+              class="hr"
+              id="speedreader"
+              pref="{{prefs.brave.speedreader.enabled}}"
+            </settings-toggle-button>
+          `)
+        const speedreaderToggle = templateContent.getElementById('speedreader')
+        if (!speedreaderToggle) {
+          console.error(
+            '[Brave Settings Overrides] Couldn\'t find Speedreader toggle')
+        } else {
+          speedreaderToggle.setAttribute(
+            'label', I18nBehavior.i18n('speedreaderSettingLabel'))
+          speedreaderToggle.setAttribute(
+            'sub-label', I18nBehavior.i18n('speedreaderSettingSubLabel'))
+          speedreaderToggle.setAttribute(
+            'learn-more-url', I18nBehavior.i18n('speedreaderLearnMoreURL'))
+        }
       }
     }
 
@@ -102,16 +131,19 @@ RegisterPolymerTemplateModifications({
     if (!pages) {
       console.error(`[Brave Settings Overrides] Couldn't find appearance_page #pages`)
     } else {
-      pages.insertAdjacentHTML('beforeend', `
-        <template is="dom-if" route-path="/themes">
-          <settings-subpage
-          associated-control="[[$$('#themes-subpage-trigger')]]"
-          page-title="${I18nBehavior.i18n('themes')}">
-            <settings-brave-appearance-super-referral prefs="{{prefs}}">
-            </settings-brave-appearance-super-referral>
-          </settings-subpage>
-        </template>
-      `)
+      pages.insertAdjacentHTML(
+        'beforeend',
+        getTrustedHTML`
+          <template is="dom-if" route-path="/themes">
+            <settings-subpage
+              associated-control="[[$$('#themes-subpage-trigger')]]"
+              page-title="themes"
+            >
+              <settings-brave-appearance-super-referral prefs="{{prefs}}">
+              </settings-brave-appearance-super-referral>
+            </settings-subpage>
+          </template>
+        `)
     }
   },
 })

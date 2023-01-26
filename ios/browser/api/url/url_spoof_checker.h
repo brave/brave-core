@@ -26,7 +26,7 @@ typedef NSInteger BraveSpoofCheckerLookalikeURLMatchType NS_TYPED_ENUM
 OBJC_EXPORT BraveSpoofCheckerLookalikeURLMatchType const
     BraveSpoofCheckerLookalikeURLMatchTypeNone;
 OBJC_EXPORT BraveSpoofCheckerLookalikeURLMatchType const
-    BraveSpoofCheckerLookalikeURLMatchTypeSiteEngagement;
+    BraveSpoofCheckerLookalikeURLMatchTypeSkeletonMatchSiteEngagement;
 OBJC_EXPORT BraveSpoofCheckerLookalikeURLMatchType const
     BraveSpoofCheckerLookalikeURLMatchTypeEditDistance;
 OBJC_EXPORT BraveSpoofCheckerLookalikeURLMatchType const

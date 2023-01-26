@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/importer/chrome_importer_utils.h"
 
@@ -190,11 +190,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
       continue;
 
     if (auto* manifest_dict = dict.FindDict("manifest")) {
-      // TODO(cdesouza): Whenever Manifest::GetTypeFromManifestValue gets
-      // refactored upstream to take a base::Value::Dict reference, also
-      // remove the cloning done here to convert back to value.
-      if (Manifest::GetTypeFromManifestValue(base::Value::AsDictionaryValue(
-              base::Value(manifest_dict->Clone()))) ==
+      if (Manifest::GetTypeFromManifestValue(*manifest_dict) ==
           Manifest::TYPE_EXTENSION) {
         extensions.push_back(key);
       }

@@ -1,11 +1,11 @@
 diff --git a/components/download/public/background_service/clients.cc b/components/download/public/background_service/clients.cc
-index ad9780ad6a2cdef8266dbe46484a90259da12cc1..bf6be3be2d7dc6e78190828edf658eb7cda7d2bb 100644
+index ca9151e61761137094c550fdbe25e204fa2916e1..e7047b84199e9f962666cc7bdd2ea9c545f898ae 100644
 --- a/components/download/public/background_service/clients.cc
 +++ b/components/download/public/background_service/clients.cc
-@@ -26,6 +26,7 @@ std::string BackgroundDownloadClientToString(DownloadClient client) {
-       return "PluginVmImage";
-     case DownloadClient::OPTIMIZATION_GUIDE_PREDICTION_MODELS:
+@@ -28,6 +28,7 @@ std::string BackgroundDownloadClientToString(DownloadClient client) {
        return "OptimizationGuidePredictionModels";
+     case DownloadClient::BRUSCHETTA:
+       return "Bruschetta";
 +    BRAVE_BACKGROUND_DOWNLOAD_CLIENT_TO_STRING
      case DownloadClient::BOUNDARY:
        break;

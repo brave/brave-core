@@ -5,6 +5,8 @@
 
 #include "src/third_party/blink/renderer/core/exported/web_document.cc"
 
+#include "third_party/blink/renderer/core/permissions_policy/dom_feature_policy.h"
+
 namespace blink {
 
 bool WebDocument::IsDOMFeaturePolicyEnabled(v8::Local<v8::Context> context,

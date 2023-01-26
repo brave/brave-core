@@ -8,7 +8,9 @@
 #include "brave/ios/browser/api/opentabs/opentabs_session_listener_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "base/strings/utf_string_conversions.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync_device_info/device_info.h"
 #include "components/sync_sessions/open_tabs_ui_delegate.h"
 #include "components/sync_sessions/session_sync_service.h"
 #include "ios/chrome/browser/ui/recent_tabs/synced_sessions.h"
@@ -18,22 +20,14 @@
 #error "This file requires ARC support."
 #endif
 
-SyncDeviceType const SyncDeviceTypeUnset = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_UNSET);
-SyncDeviceType const SyncDeviceTypeWin = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_WIN);
-SyncDeviceType const SyncDeviceTypeMac = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_MAC);
-SyncDeviceType const SyncDeviceTypeLinux = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_LINUX);
-SyncDeviceType const SyncDeviceTypeCros = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_CROS);
-SyncDeviceType const SyncDeviceTypeOther = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_OTHER);
-SyncDeviceType const SyncDeviceTypePhone = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_PHONE);
-SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
-    sync_pb::SyncEnums::DeviceType::SyncEnums_DeviceType_TYPE_TABLET);
+SyncDeviceFormFactor const SyncDeviceFormFactorUnknown =
+    static_cast<NSInteger>(syncer::DeviceInfo::FormFactor::kUnknown);
+SyncDeviceFormFactor const SyncDeviceFormFactorDesktop =
+    static_cast<NSInteger>(syncer::DeviceInfo::FormFactor::kDesktop);
+SyncDeviceFormFactor const SyncDeviceFormFactorPhone =
+    static_cast<NSInteger>(syncer::DeviceInfo::FormFactor::kPhone);
+SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
+    static_cast<NSInteger>(syncer::DeviceInfo::FormFactor::kTablet);
 
 #pragma mark - IOSOpenDistantTab
 
@@ -84,14 +78,13 @@ SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
 - (instancetype)initWithName:(nullable NSString*)name
                   sessionTag:(NSString*)sessionTag
                  dateCreated:(nullable NSDate*)modifiedTime
-                  deviceType:(SyncDeviceType)deviceType
-                        tabs:(NSArray<IOSOpenDistantTab*>*)tabs {
+            deviceFormFactor:(SyncDeviceFormFactor)deviceFormFactor {
   if ((self = [super init])) {
     self.name = name;
     self.sessionTag = sessionTag;
     self.modifiedTime = modifiedTime;
-    self.deviceType = deviceType;
-    self.tabs = tabs;
+    self.deviceFormFactor = deviceFormFactor;
+    self.tabs = [[NSMutableArray alloc] init];
   }
 
   return self;
@@ -102,11 +95,11 @@ SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
       [[[self class] allocWithZone:zone] init];
 
   if (openDistantSession) {
-    openDistantSession.name = self.name;
-    openDistantSession.sessionTag = self.sessionTag;
-    openDistantSession.modifiedTime = self.modifiedTime;
-    openDistantSession.deviceType = self.deviceType;
-    openDistantSession.tabs = self.tabs;
+    openDistantSession.name = [self.name copy];
+    openDistantSession.sessionTag = [self.sessionTag copy];
+    openDistantSession.modifiedTime = [self.modifiedTime copy];
+    openDistantSession.deviceFormFactor = self.deviceFormFactor;
+    openDistantSession.tabs = [self.tabs copy];
   }
 
   return openDistantSession;
@@ -114,6 +107,41 @@ SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
 
 - (void)updateOpenDistantSessionModified:(NSDate*)modifiedTime {
   [self setModifiedTime:modifiedTime];
+}
+
+// Helper to extract the relevant content from a SessionTab and add it to a
+// DistantSession.
+- (void)addTab:(const sessions::SessionTab&)session_tab
+    sessionTag:(const std::string&)session_tag {
+  if (session_tab.navigations.size() > 0) {
+    // Retrieve tab index
+    int index = session_tab.current_navigation_index;
+    if (index < 0) {
+      index = 0;
+    }
+
+    if (index > static_cast<int>(session_tab.navigations.size()) - 1) {
+      index = session_tab.navigations.size() - 1;
+    }
+
+    // Retrieve tab title and url
+    const sessions::SerializedNavigationEntry* navigation =
+        &session_tab.navigations[index];
+    std::string tab_title = base::UTF16ToUTF8(navigation->title());
+    GURL virtual_url = navigation->virtual_url();
+
+    if (tab_title.empty()) {
+      tab_title = navigation->virtual_url().spec();
+    }
+
+    // Store the tab
+    IOSOpenDistantTab* distant_tab = [[IOSOpenDistantTab alloc]
+        initWithURL:net::NSURLWithGURL(virtual_url)
+              title:base::SysUTF8ToNSString(tab_title)
+              tabId:session_tab.tab_id.id()
+         sessionTag:base::SysUTF8ToNSString(session_tag)];
+    [(NSMutableArray*)_tabs addObject:distant_tab];
+  }
 }
 
 @end
@@ -158,52 +186,54 @@ SyncDeviceType const SyncDeviceTypeTablet = static_cast<NSInteger>(
 }
 
 - (NSArray<IOSOpenDistantSession*>*)getSyncedSessions {
-  // Getting SyncedSessions from SessionSyncService
-  auto syncedSessions =
-      std::make_unique<synced_sessions::SyncedSessions>(session_sync_service_);
+  // Taken from: ios/chrome/browser/ui/recent_tabs/synced_sessions.mm
+  // but modified to allow us to retrieve `device_type` via
+  // GetDeviceFormFactor()
 
-  NSMutableArray<IOSOpenDistantSession*>* distantSessionList =
+  NSMutableArray<IOSOpenDistantSession*>* sessions_list =
       [[NSMutableArray alloc] init];
 
-  // Traversing Sync Sessions to fetch list of Distant Sessions
-  for (size_t sessionIndex = 0;
-       sessionIndex < syncedSessions->GetSessionCount(); sessionIndex++) {
-    const synced_sessions::DistantSession* session =
-        syncedSessions->GetSession(sessionIndex);
+  DCHECK(session_sync_service_);
+  // Reload Sync open tab sessions.
+  sync_sessions::OpenTabsUIDelegate* open_tabs_delegate =
+      session_sync_service_->GetOpenTabsUIDelegate();
+  if (open_tabs_delegate) {
+    // Iterating through all remote sessions, then retrieving the tabs to
+    // display to the user.
+    std::vector<const sync_sessions::SyncedSession*> sessions;
+    open_tabs_delegate->GetAllForeignSessions(&sessions);
 
-    // Create a DistantTab List information  for each Distant Session
-    NSArray<IOSOpenDistantTab*>* distantTabs =
-        [self onDistantTabResults:session->tabs];
+    for (const auto* session : sessions) {
+      // Create a distant session
+      IOSOpenDistantSession* distant_session = [[IOSOpenDistantSession alloc]
+              initWithName:base::SysUTF8ToNSString(session->session_name)
+                sessionTag:base::SysUTF8ToNSString(session->session_tag)
+               dateCreated:session->modified_time.ToNSDate()
+          deviceFormFactor:static_cast<SyncDeviceFormFactor>(
+                               session->GetDeviceFormFactor())];
 
-    IOSOpenDistantSession* distantSession = [[IOSOpenDistantSession alloc]
-        initWithName:base::SysUTF8ToNSString(session->name)
-          sessionTag:base::SysUTF8ToNSString(session->tag)
-         dateCreated:session->modified_time.ToNSDate()
-          deviceType:static_cast<SyncDeviceType>(session->device_type)
-                tabs:distantTabs];
-    [distantSessionList addObject:distantSession];
+      // Add tabs to the distant session
+      std::vector<const sessions::SessionTab*> open_tabs;
+      open_tabs_delegate->GetForeignSessionTabs(session->session_tag,
+                                                &open_tabs);
+      for (const sessions::SessionTab* session_tab : open_tabs) {
+        [distant_session addTab:*session_tab sessionTag:session->session_tag];
+      }
+
+      // Don't display sessions with no tabs.
+      if ([distant_session.tabs count] > 0) {
+        [sessions_list addObject:distant_session];
+      }
+    }
+
+    // Sort Sessions by Time
+    [sessions_list sortedArrayUsingComparator:^NSComparisonResult(
+                       IOSOpenDistantSession* a, IOSOpenDistantSession* b) {
+      return [[a modifiedTime] compare:[b modifiedTime]];
+    }];
   }
 
-  return [distantSessionList copy];
-}
-
-- (NSArray<IOSOpenDistantTab*>*)onDistantTabResults:
-    (const std::vector<std::unique_ptr<synced_sessions::DistantTab>>&)
-        distantTabList {
-  NSMutableArray<IOSOpenDistantTab*>* distantTabs =
-      [[NSMutableArray alloc] init];
-
-  for (const auto& tab : distantTabList) {
-    IOSOpenDistantTab* distantTab = [[IOSOpenDistantTab alloc]
-        initWithURL:net::NSURLWithGURL(tab->virtual_url)
-              title:base::SysUTF16ToNSString(tab->title)
-              tabId:tab->tab_id.id()
-         sessionTag:base::SysUTF8ToNSString(tab->session_tag)];
-
-    [distantTabs addObject:distantTab];
-  }
-
-  return [distantTabs copy];
+  return [sessions_list copy];
 }
 
 - (void)deleteSyncedSession:(NSString*)sessionTag {

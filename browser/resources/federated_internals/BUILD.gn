@@ -1,6 +1,7 @@
-# Copyright 2022 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
@@ -74,8 +75,7 @@ js_type_check("closure_compile") {
 js_library("federated_internals") {
   deps = [
     ":federated_internals_browser_proxy",
-    "//ui/webui/resources/js:assert",
-    "//ui/webui/resources/js:util",
+    "//ui/webui/resources:library",
   ]
 }
 
@@ -83,7 +83,6 @@ js_library("federated_internals_browser_proxy") {
   deps = [
     "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
     "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
-    "//ui/webui/resources/js:assert",
-    "//ui/webui/resources/js:util",
+    "//ui/webui/resources:library",
   ]
 }

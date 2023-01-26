@@ -211,6 +211,9 @@
   <message name="IDS_POLICY_INVALID_NUMBER_OF_URLS_ERROR" desc="The text displayed in the status column for the policy WebUsbAllowDevicesForUrls when an entry has either 0 or more than 2 URLs">
     Each urls string entry must contain between 1 to 2 URLs.
   </message>
+  <message name="IDS_POLICY_BRUSCHETTA_UNINSTALLABLE_ERROR" desc="The text displayed in the status column when a VM config is marked as installable, but no image is available to install for this archetecture">
+    This configuration is marked as installable, but no image is provided for this archetecture, so it cannot be installed.
+  </message>
   <message name="IDS_POLICY_CLOUD_SOURCE_ONLY_ERROR" desc="The text displayed in the status column when a policy that should only be set in the cloud is set from another source.">
     Ignored because the policy is not set by a cloud source.
   </message>
@@ -252,6 +255,18 @@
   </message>
   <message name="IDS_POLICY_SECURE_DNS_TEMPLATES_INVALID_ERROR" desc="The text displayed in the status column when one or more of the DnsOverHttpsTemplates server template URIs is invalid.">
     One or more of the DnsOverHttpsTemplates server template URIs is invalid and will not be used.
+  </message>
+  <message name="IDS_POLICY_SECURE_DNS_SALT_IRRELEVANT_ERROR" desc="The text displayed in the status column when the DnsOverHttpsSalt policy is set but the DnsOverHttpsTemplateWithIdentifiers policy is not set.">
+    The <ph name="SECURE_DNS_SALT">DnsOverHttpsSalt</ph> value is not relevant, and will not be used, unless the <ph name="SECURE_DNS_TEMPLATES_WITH_IDENTIFIERS">DnsOverHttpsTemplateWithIdentifiers</ph> policy is set.
+  </message>
+    <message name="IDS_POLICY_SECURE_DNS_TEMPLATES_WITH_IDENTIFIERS_IRRELEVANT_ERROR" desc="The text displayed in the status column when the DnsOverHttpsSalt policy is EMPTY but the DnsOverHttpsTemplateWithIdentifiers policy is set.">
+    The <ph name="SECURE_DNS_TEMPLATES_WITH_IDENTIFIERS">DnsOverHttpsTemplateWithIdentifiers</ph> policy is not used unless the <ph name="SECURE_DNS_SALT">DnsOverHttpsSalt</ph> policy is set.
+  </message>
+  <message name="IDS_POLICY_SECURE_DNS_SALT_INVALID_ERROR" desc="The text displayed in the status column when the value of DnsOverHttpsSalt is invalid.">
+    The <ph name="SECURE_DNS_SALT">DnsOverHttpsSalt</ph> value is invalid and will not be used.
+  </message>
+  <message name="IDS_POLICY_SECURE_DNS_SALT_INVALID_SIZE_ERROR" desc="The text displayed in the status column when the size of DnsOverHttpsSalt is invalid.">
+    The <ph name="SECURE_DNS_SALT">DnsOverHttpsSalt</ph> value does not meet the size requirements.
   </message>
   <message name="IDS_POLICY_SECURE_DNS_TEMPLATES_IRRELEVANT_MODE_ERROR" desc="The text displayed in the status column when the DnsOverHttpsTemplate policy is specified but DnsOverHttpsMode is not set to a value that makes the templates relevant.">
     The DnsOverHttpsTemplates value is not relevant, and will not be used, unless the DnsOverHttpsMode policy is set to either <ph name="SECURE_DNS_MODE_AUTOMATIC">'automatic'</ph> or <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph>.
@@ -311,6 +326,9 @@
   </message>
   <message name="IDS_POLICY_DEPENDENCY_ERROR" desc="The text displayed in the status column when a policy is ignored as another policies is not set properly.">
     Ignored because <ph name="POLICY_NAME">$1<ex>CloudReportingEnabled</ex></ph> is not set to <ph name="VALUE">$2<ex>Enabled</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_DEPENDENCY_ERROR_ANY_VALUE" desc="The text displayed in the status column when a policy is ignored as another policies is not set at all.">
+    Ignored because <ph name="POLICY_NAME">$1<ex>CloudReportingEnabled</ex></ph> is not set.
   </message>
   <message name="IDS_POLICY_USER_IS_NOT_AFFILIATED_ERROR" desc="The text displayed in the status column when a user cloud policy is ignored due to user is not affiliated to the machine management.">
     Ignored because user is not affiliated to the machine management or the machine is not managed.
@@ -399,6 +417,9 @@ Additional details:
     Brave Update
   </message>
  </if>
+  <message name="IDS_POLICY_STATUS_ERROR_MANAGED_NO_POLICY" desc="Message to display when a managed device does not have a policy loaded.">
+    Managed user or device has no policy loaded.
+  </message>
   <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the machine policy status box.">
     Enrollment domain:
   </message>
@@ -839,6 +860,11 @@ Additional details:
           =1 {Copy confidential file?}
           other {Copy confidential files?}}
   </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_WARN_TITLE" desc="The title for notification informing the user that opening selected files is not recommended.">
+        {0, plural,
+          =1 {Open confidential file?}
+          other {Open confidential files?}}
+  </message>
   <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_MESSAGE" desc="The message for notification informing the user that downloading files is not recommended.">
         {0, plural,
                 =1 {Administrator policy doesn’t recommend downloading this file to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
@@ -864,6 +890,11 @@ Additional details:
                 =1 {Administrator policy doesn’t recommend copying this file to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
                 other {Administrator policy doesn’t recommend copying these files to <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}}
   </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_WARN_MESSAGE" desc="The message for notification informing the user that opening files is not recommended.">
+        {0, plural,
+                =1 {Administrator policy doesn’t recommend opening this file in <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}
+                other {Administrator policy doesn’t recommend opening these files in <ph name="DESTINATION_NAME">$1<ex>External storage</ex></ph>}}
+  </message>
   <message name="IDS_POLICY_DLP_FILES_DOWNLOAD_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before downloading files.">
     Download anyway
   </message>
@@ -878,6 +909,9 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DLP_FILES_COPY_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before copying files.">
     Copy anyway
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before opening files.">
+    Open anyway
   </message>
   <message name="IDS_POLICY_DLP_FILES_DESTINATION_REMOVABLE_STORAGE" desc="A label for the 'Removable storage' files transfer destination.">
     Removable storage
@@ -901,6 +935,14 @@ Additional details:
      {0, plural,
                 =1 {Uploading this file is blocked by administrator policy}
                 other {Uploading # files is blocked by administrator policy}}
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_BLOCK_TITLE" desc="The title of the notification informing the user that opening files is blocked.">
+    Blocked open
+  </message>
+  <message name="IDS_POLICY_DLP_FILES_OPEN_BLOCK_MESSAGE" desc="The title of the notification informing the user that opening files is blocked.">
+     {0, plural,
+                =1 {Opening this file is blocked by administrator policy}
+                other {Opening # files is blocked by administrator policy}}
   </message>
   <message name="IDS_POLICY_DEVICE_SCHEDULED_REBOOT_TITLE" desc="The title for notification informing the user that the device will restart soon.">
     Device will restart very soon

@@ -81,7 +81,8 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
   override async connectedCallback() {
     super.connectedCallback()
     const deviceList = await this.browserProxy_.getDeviceList()
-    this.addWebUIListener('device-info-changed', this.handleDeviceInfo_.bind(this))
+    this.addWebUiListener(
+      'device-info-changed', this.handleDeviceInfo_.bind(this))
     this.handleDeviceInfo_(deviceList)
   }
 

@@ -117,9 +117,9 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p =
-      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                CookieSettingsBase::QueryReason::kCookies);
+  bool allow_3p = IsCookieAccessAllowedImpl(
+      url, site_for_cookies, top_frame_origin, net::CookieSettingOverrides(),
+      CookieSettingsBase::QueryReason::kCookies);
   bool allow_1p = first_party_setting
                       ? IsAllowed(first_party_setting->setting)
                       : IsFirstPartyAccessAllowed(
@@ -149,7 +149,18 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
   }
 
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
+                                   net::CookieSettingOverrides(),
                                    CookieSettingsBase::QueryReason::kCookies);
+}
+
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    const absl::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    QueryReason query_reason) const {
+  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
+                                   overrides, query_reason);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
@@ -158,25 +169,17 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     CookieSettingsBase::QueryReason query_reason) const {
   return IsFullCookieAccessAllowed(
       url, net::SiteForCookies::FromUrl(first_party_url), absl::nullopt,
-      query_reason);
-}
-
-bool CookieSettingsBase::IsFullCookieAccessAllowed(
-    const GURL& url,
-    const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin,
-    CookieSettingsBase::QueryReason query_reason) const {
-  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   query_reason);
+      net::CookieSettingOverrides(), query_reason);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides,
     CookieSettingsBase::QueryReason query_reason) const {
   bool allow = IsChromiumFullCookieAccessAllowed(
-      url, site_for_cookies, top_frame_origin, query_reason);
+      url, site_for_cookies, top_frame_origin, overrides, query_reason);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);

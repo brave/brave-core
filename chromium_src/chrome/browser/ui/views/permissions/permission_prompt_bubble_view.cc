@@ -12,6 +12,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/common/webui_url_constants.h"

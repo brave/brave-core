@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 320aafa9a9be7aa3c2ea3acb9f1d96cece1895dc..eaa2096692173966b1eef982acbf4ea53468cac3 100644
+index 30621d716e577c14587046fbc0342d7381668dc2..a823c382e037608c43538c4c62c7d8afa310af64 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -296,6 +296,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
+@@ -273,6 +273,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
          GetSpecificsFieldNumberFromModelType(data_type));
    }
  
@@ -10,7 +10,7 @@ index 320aafa9a9be7aa3c2ea3acb9f1d96cece1895dc..eaa2096692173966b1eef982acbf4ea5
    return specifics;
  }
  
-@@ -465,6 +466,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+@@ -444,6 +445,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
    for (const std::unique_ptr<EntityChange>& change : entity_changes) {
      const std::string guid = change->storage_key();
  
@@ -18,7 +18,7 @@ index 320aafa9a9be7aa3c2ea3acb9f1d96cece1895dc..eaa2096692173966b1eef982acbf4ea5
      // Reupload local device if it was deleted from the server.
      if (local_cache_guid_ == guid &&
          change->type() == EntityChange::ACTION_DELETE) {
-@@ -475,7 +477,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
+@@ -454,7 +456,7 @@ absl::optional<ModelError> DeviceInfoSyncBridge::ApplySyncChanges(
      // Ignore any remote changes that have a cache guid that is or was this
      // local device.
      if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
@@ -27,7 +27,7 @@ index 320aafa9a9be7aa3c2ea3acb9f1d96cece1895dc..eaa2096692173966b1eef982acbf4ea5
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
-@@ -742,6 +744,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
+@@ -721,6 +723,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
      return;
    }
  

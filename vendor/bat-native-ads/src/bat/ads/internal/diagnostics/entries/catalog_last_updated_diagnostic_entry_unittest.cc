@@ -31,7 +31,7 @@ TEST_F(BatAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogLastUpdated) {
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());
-  EXPECT_EQ("Wednesday, November 18, 1970 at 12:34:56 PM",
+  EXPECT_EQ("Wednesday, November 18, 1970 at 12:34:56\u202fPM",
             diagnostic_entry.GetValue());
 }
 
