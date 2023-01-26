@@ -116,8 +116,9 @@ std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   std::string result;
   for (size_t i = 0; i < vec.size(); ++i) {
     base::StrAppend(&result, {base::NumberToString(vec[i])});
-    if (i != vec.size() - 1)
+    if (i != vec.size() - 1) {
       base::StrAppend(&result, {", "});
+    }
   }
   return result;
 }
@@ -305,10 +306,11 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void Disconnect() override {
     // Used to test onAccountChanged
-    if (emit_empty_account_changed_)
+    if (emit_empty_account_changed_) {
       events_listener_->AccountChangedEvent(absl::nullopt);
-    else
+    } else {
       events_listener_->AccountChangedEvent(kTestPublicKey);
+    }
   }
   void IsConnected(IsConnectedCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
@@ -335,9 +337,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   void SignAllTransactions(
       std::vector<brave_wallet::mojom::SolanaSignTransactionParamPtr> params,
       SignAllTransactionsCallback callback) override {
-    for (const auto& param : params)
+    for (const auto& param : params) {
       EXPECT_EQ(param->encoded_serialized_msg,
                 brave_wallet::Base58Encode(kSerializedMessage));
+    }
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
                               {kSignedTx, kSignedTx});
@@ -400,6 +403,11 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
 
+  void IsSolanaKeyringCreated(
+      IsSolanaKeyringCreatedCallback callback) override {
+    std::move(callback).Run(true);
+  }
+
   void SetError(SolanaProviderError error, const std::string& error_message) {
     error_ = error;
     error_message_ = error_message;
@@ -445,15 +453,17 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
   }
 
   TestSolanaProvider* GetProvider(content::RenderFrameHost* frame_host) {
-    if (!provider_map_.contains(frame_host))
+    if (!provider_map_.contains(frame_host)) {
       return nullptr;
+    }
     return static_cast<TestSolanaProvider*>(
         provider_map_.at(frame_host)->impl());
   }
   bool WaitForBinding(content::RenderFrameHost* render_frame_host,
                       base::OnceClosure callback) {
-    if (IsBound(render_frame_host))
+    if (IsBound(render_frame_host)) {
       return false;
+    }
     quit_on_binding_ = std::move(callback);
     return true;
   }
@@ -471,8 +481,9 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
         base::BindOnce(&TestBraveContentBrowserClient::OnDisconnect,
                        weak_ptr_factory_.GetWeakPtr(), frame_host));
     provider_map_[frame_host] = provider;
-    if (quit_on_binding_)
+    if (quit_on_binding_) {
       std::move(quit_on_binding_).Run();
+    }
   }
   void OnDisconnect(content::RenderFrameHost* frame_host) {
     provider_map_.erase(frame_host);

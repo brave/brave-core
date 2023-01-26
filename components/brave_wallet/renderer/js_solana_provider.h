@@ -177,6 +177,9 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
 
+  void OnIsSolanaKeyringCreated(bool created);
+
+  bool wallet_standard_loaded_ = false;
   v8::Global<v8::Value> solana_web3_module_;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;

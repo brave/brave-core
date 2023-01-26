@@ -205,10 +205,13 @@ void JSSolanaProvider::AccountChangedEvent(
 }
 
 void JSSolanaProvider::DidFinishLoad() {
-  v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::HandleScope handle_scope(isolate);
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  ExecuteScript(web_frame, *g_wallet_standard_script, kWalletStandardScript);
+  if (wallet_standard_loaded_) {
+    return;
+  }
+  solana_provider_->IsSolanaKeyringCreated(
+      // We don't need weak ptr for mojo bindings when owning mojo::Remote
+      base::BindOnce(&JSSolanaProvider::OnIsSolanaKeyringCreated,
+                     base::Unretained(this)));
 }
 
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -969,6 +972,17 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
   }
 
   return transaction.ToLocalChecked();
+}
+
+void JSSolanaProvider::OnIsSolanaKeyringCreated(bool created) {
+  if (!created) {
+    return;
+  }
+  v8::Isolate* isolate = blink::MainThreadIsolate();
+  v8::HandleScope handle_scope(isolate);
+  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
+  ExecuteScript(web_frame, *g_wallet_standard_script, kWalletStandardScript);
+  wallet_standard_loaded_ = true;
 }
 
 }  // namespace brave_wallet
