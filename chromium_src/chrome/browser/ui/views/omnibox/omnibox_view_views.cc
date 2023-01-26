@@ -6,6 +6,6 @@
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_contents_view.h"
 
-#define OmniboxPopupContentsView BraveOmniboxPopupContentsView
+#define OmniboxPopupContentsView BraveOmniboxPopupViewViews
 #include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.cc"
 #undef OmniboxPopupContentsView

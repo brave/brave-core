@@ -8,9 +8,9 @@
 
 #define OmniboxPopupViewViewsTest \
   OmniboxPopupViewViewsTest;      \
-  friend class BraveOmniboxPopupContentsView
+  friend class BraveOmniboxPopupViewViews
 #define GetTargetBounds virtual GetTargetBounds
-#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"
+#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #undef GetTargetBounds
 #undef OmniboxPopupViewViewsTest
 

@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_CONTENTS_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_CONTENTS_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_VIEW_VIEWS_H_
+#define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_VIEW_VIEWS_H_
 
-#include "chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.cc"
 
-class BraveOmniboxPopupContentsView : public OmniboxPopupContentsView {
+class BraveOmniboxPopupViewViews : public OmniboxPopupViewViews {
  public:
-  METADATA_HEADER(BraveOmniboxPopupContentsView);
+  METADATA_HEADER(BraveOmniboxPopupViewViews);
 
-  using OmniboxPopupContentsView::OmniboxPopupContentsView;
-  ~BraveOmniboxPopupContentsView() override;
+  using OmniboxPopupViewViews::OmniboxPopupViewViews;
+  ~BraveOmniboxPopupViewViews() override;
 
-  // OmniboxPopupContentsView:
+  // OmniboxPopupViewViews:
   gfx::Rect GetTargetBounds() const override;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_CONTENTS_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_POPUP_VIEW_VIEWS_H_

@@ -10,10 +10,10 @@
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
-BraveOmniboxPopupContentsView::~BraveOmniboxPopupContentsView() = default;
+BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
-gfx::Rect BraveOmniboxPopupContentsView::GetTargetBounds() const {
-  auto bounds = OmniboxPopupContentsView::GetTargetBounds();
+gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
+  auto bounds = OmniboxPopupViewViews::GetTargetBounds();
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return bounds;
 
@@ -31,5 +31,5 @@ gfx::Rect BraveOmniboxPopupContentsView::GetTargetBounds() const {
   return bounds;
 }
 
-BEGIN_METADATA(BraveOmniboxPopupContentsView, OmniboxPopupContentsView)
+BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
 END_METADATA
