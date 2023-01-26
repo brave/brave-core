@@ -56,7 +56,7 @@ void RecordSearchEventP3A(uint64_t number_of_searches) {
 }  // namespace
 
 BraveOmniboxClientImpl::BraveOmniboxClientImpl(
-    OmniboxEditController* controller,
+    ChromeOmniboxEditController* controller,
     Profile* profile)
     : ChromeOmniboxClient(controller, profile),
       profile_(profile),

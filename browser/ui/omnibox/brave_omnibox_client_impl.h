@@ -10,13 +10,14 @@
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 
-class OmniboxEditController;
+class ChromeOmniboxEditController;
 class PrefRegistrySimple;
 class Profile;
 
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
-  BraveOmniboxClientImpl(OmniboxEditController* controller, Profile* profile);
+  BraveOmniboxClientImpl(ChromeOmniboxEditController* controller,
+                         Profile* profile);
   BraveOmniboxClientImpl(const BraveOmniboxClientImpl&) = delete;
   BraveOmniboxClientImpl& operator=(const BraveOmniboxClientImpl&) = delete;
   ~BraveOmniboxClientImpl() override;
