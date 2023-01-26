@@ -36,8 +36,7 @@ class NftMetadataFetcher {
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
   using GetEthTokenMetadataCallback =
-      base::OnceCallback<void(const std::string& token_url,
-                              const std::string& result,
+      base::OnceCallback<void(const std::string& result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
   void GetEthTokenMetadata(const std::string& contract_address,
@@ -84,7 +83,6 @@ class NftMetadataFetcher {
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void CompleteGetEthTokenMetadata(GetEthTokenMetadataCallback callback,
-                                   const GURL& uri,
                                    const std::string& response,
                                    int error,
                                    const std::string& error_message);

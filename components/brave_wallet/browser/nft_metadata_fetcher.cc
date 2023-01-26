@@ -94,14 +94,14 @@ void NftMetadataFetcher::GetEthTokenMetadata(
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
-        "", "", mojom::ProviderError::kInvalidParams,
+        "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (!EthAddress::IsValidAddress(contract_address)) {
     std::move(callback).Run(
-        "", "", mojom::ProviderError::kInvalidParams,
+        "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -125,13 +125,13 @@ void NftMetadataFetcher::OnGetSupportsInterface(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
-    std::move(callback).Run("", "", error, error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   if (!is_supported) {
     std::move(callback).Run(
-        "", "", mojom::ProviderError::kMethodNotSupported,
+        "", mojom::ProviderError::kMethodNotSupported,
         l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
     return;
   }
@@ -149,20 +149,20 @@ void NftMetadataFetcher::OnGetEthTokenUri(GetEthTokenMetadataCallback callback,
                                           mojom::ProviderError error,
                                           const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
-    std::move(callback).Run("", "", error, error_message);
+    std::move(callback).Run("", error, error_message);
     return;
   }
 
   if (!uri.is_valid()) {
     std::move(callback).Run(
-        "", "", mojom::ProviderError::kInternalError,
+        "", mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::CompleteGetEthTokenMetadata,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), uri);
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   FetchMetadata(uri, std::move(internal_callback));
 }
 
@@ -263,14 +263,13 @@ void NftMetadataFetcher::OnGetTokenMetadataPayload(
 
 void NftMetadataFetcher::CompleteGetEthTokenMetadata(
     GetEthTokenMetadataCallback callback,
-    const GURL& uri,
     const std::string& response,
     int error,
     const std::string& error_message) {
   mojom::ProviderError mojo_err = static_cast<mojom::ProviderError>(error);
   if (!mojom::IsKnownEnumValue(mojo_err))
     mojo_err = mojom::ProviderError::kUnknown;
-  std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
+  std::move(callback).Run(response, mojo_err, error_message);
 }
 
 void NftMetadataFetcher::GetSolTokenMetadata(

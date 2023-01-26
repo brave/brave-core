@@ -98,6 +98,5 @@
   unlocked,
   updateUnapprovedTransactionGasFields,
   updateUnapprovedTransactionNonce,
-  updateUnapprovedTransactionSpendAllowance,
-  updateTokenPinStatus
+  updateUnapprovedTransactionSpendAllowance
  } = WalletActions

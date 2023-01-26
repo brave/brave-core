@@ -42,7 +42,5 @@ export const {
   updateSelectedAsset,
   walletBackupComplete,
   walletCreated,
-  walletSetupComplete,
-  updateNFTPinStatus,
-  getPinStatus
+  walletSetupComplete
 } = PageActions

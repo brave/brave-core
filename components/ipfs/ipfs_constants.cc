@@ -45,10 +45,4 @@ const char kFileValueName[] = "file";
 const char kFileMimeType[] = "application/octet-stream";
 const char kDirectoryMimeType[] = "application/x-directory";
 const char kIPFSImportTextMimeType[] = "application/octet-stream";
-
-// Local pins
-const char kAddPinPath[] = "api/v0/pin/add";
-const char kRemovePinPath[] = "api/v0/pin/rm";
-const char kGetPinsPath[] = "api/v0/pin/ls";
-
 }  // namespace ipfs

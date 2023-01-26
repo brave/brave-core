@@ -55,8 +55,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs);
-  // For testing:
-  JsonRpcService();
   ~JsonRpcService() override;
 
   static void MigrateMultichainNetworks(PrefService* prefs);
@@ -545,7 +543,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                      const std::string& owner_address,
                                      mojom::ProviderError error,
                                      const std::string& error_message);
-
   void OnGetEthTokenUri(GetEthTokenUriCallback callback,
                         const APIRequestResult api_request_result);
 

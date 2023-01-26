@@ -42,7 +42,6 @@ proxy.addJsonRpcServiceObserver(store)
 proxy.addKeyringServiceObserver(store)
 proxy.addTxServiceObserver(store)
 proxy.addBraveWalletServiceObserver(store)
-proxy.addBraveWalletPinServiceObserver(store)
 
 export const walletPageApiProxy = proxy
 

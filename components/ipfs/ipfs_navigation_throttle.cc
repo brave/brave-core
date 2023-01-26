@@ -145,8 +145,7 @@ IpfsNavigationThrottle::WillFailRequest() {
 void IpfsNavigationThrottle::GetConnectedPeers() {
   ipfs_service_->GetConnectedPeers(
       base::BindOnce(&IpfsNavigationThrottle::OnGetConnectedPeers,
-                     weak_ptr_factory_.GetWeakPtr()),
-      absl::nullopt);
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void IpfsNavigationThrottle::OnGetConnectedPeers(

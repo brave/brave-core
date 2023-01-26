@@ -22,7 +22,6 @@ export const mockPageState: PageState = {
   isMetaMaskInitialized: false,
   portfolioPriceHistory: [],
   selectedAsset: undefined,
-  pinStatusOverview: undefined,
   selectedAssetCryptoPrice: undefined,
   selectedAssetFiatPrice: undefined,
   selectedAssetPriceHistory: [],
