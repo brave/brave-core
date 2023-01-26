@@ -31,7 +31,7 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         if (intent != null) {
             mRampNetworkUrl = intent.getStringExtra(RAMP_NETWORK_URL);
         }
-        
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
