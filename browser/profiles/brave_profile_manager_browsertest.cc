@@ -1,7 +1,7 @@
-// Copyright 2019 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <vector>
 
@@ -140,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        ExcludeServicesInOTRAndGuestProfiles) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
-  Profile* profile = ProfileManager::GetActiveUserProfile();
+  Profile* profile = ProfileManager::GetLastUsedProfile();
   Profile* otr_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
@@ -185,8 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        PRE_MediaRouterDisabledRestartTest) {
-  Profile* profile =
-      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  Profile* profile = g_browser_process->profile_manager()->GetLastUsedProfile();
   {
     profile->GetPrefs()->SetBoolean(::prefs::kEnableMediaRouter, true);
     profile->GetPrefs()->SetBoolean(kEnableMediaRouterOnRestart, false);
@@ -197,8 +196,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        MediaRouterDisabledRestartTest) {
-  Profile* profile =
-      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  Profile* profile = g_browser_process->profile_manager()->GetLastUsedProfile();
   {
     EXPECT_FALSE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
     EXPECT_FALSE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));
@@ -207,8 +205,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        PRE_MediaRouterEnabledRestartTest) {
-  Profile* profile =
-      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  Profile* profile = g_browser_process->profile_manager()->GetLastUsedProfile();
   {
     profile->GetPrefs()->SetBoolean(::prefs::kEnableMediaRouter, false);
     profile->GetPrefs()->SetBoolean(kEnableMediaRouterOnRestart, true);
@@ -218,8 +215,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, MediaRouterEnabledRestartTest) {
-  Profile* profile =
-      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  Profile* profile = g_browser_process->profile_manager()->GetLastUsedProfile();
   {
     EXPECT_TRUE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
     EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));

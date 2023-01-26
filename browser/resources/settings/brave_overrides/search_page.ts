@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import '../brave_search_engines_page/brave_search_engines_page.js'
 
@@ -13,9 +14,12 @@ RegisterPolymerTemplateModifications({
     if (!enginesSubpageTrigger) {
       console.error(`[Brave Settings Overrides] Couldn't find enginesSubpageTrigger`)
     } else {
-      enginesSubpageTrigger.insertAdjacentHTML('beforebegin', `
-        <settings-brave-search-page prefs="{{prefs}}"></settings-brave-search-page>
-      `)
+      enginesSubpageTrigger.insertAdjacentHTML(
+        'beforebegin',
+        getTrustedHTML`
+          <settings-brave-search-page prefs="{{prefs}}">
+          </settings-brave-search-page>
+        `)
     }
   }
 })

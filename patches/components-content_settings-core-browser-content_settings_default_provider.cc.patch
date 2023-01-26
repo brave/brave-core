@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 783839c7116b06128df8b2daf98dbe99d3b60dbb..12d28156ced83b2d5bf84a36e9f3cda7146226e0 100644
+index 41e8cd4287823d83fdd09917580a6c276a156dd8..031475e41c1e8b878e9fccbe7039e3e9787fe147 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
 @@ -365,6 +365,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {

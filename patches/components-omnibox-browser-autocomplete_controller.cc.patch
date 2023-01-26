@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index b8d4c7b5e588d43296acdcfcbd919c376d1976cc..8b413a805302380eb3b0863d0876324f040bfa9c 100644
+index 79b5379140e781d2befcf88d46c918945878763b..6a0835d204a2805b78bcee9505314a54cd1d315b 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -347,6 +347,7 @@ AutocompleteController::AutocompleteController(
@@ -10,11 +10,11 @@ index b8d4c7b5e588d43296acdcfcbd919c376d1976cc..8b413a805302380eb3b0863d0876324f
      }
      // Providers run in the order they're added.  Add `HistoryURLProvider` after
      // `SearchProvider` because:
-@@ -993,6 +994,7 @@ void AutocompleteController::UpdateResult(
+@@ -970,6 +971,7 @@ void AutocompleteController::UpdateResult(
  #if DCHECK_IS_ON()
    result_.Validate();
  #endif  // DCHECK_IS_ON()
 +  BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
  
    // Below are all annotations after the match list is ready.
- 
+   if (!input_.IsZeroSuggest()) {

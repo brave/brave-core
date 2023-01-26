@@ -11,6 +11,5 @@
 -CDM_10/ECKEncryptedMediaTest.MultipeCdmTypes/0
 -CDM_11/ECKEncryptedMediaTest.MultipeCdmTypes/0
 
-# These tests fail on x86 CI but pass locally
--MetricIntegrationTest.FirstInputDelay
+# This test fails on x86 CI but passes locally
 -MetricIntegrationTest.LargestContentfulPaint_SubframeInput

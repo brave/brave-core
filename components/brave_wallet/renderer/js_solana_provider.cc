@@ -565,9 +565,9 @@ void JSSolanaProvider::OnConnect(
     const std::string& error_message,
     const std::string& public_key) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> result;
   v8::Local<v8::Value> v8_public_key;
@@ -670,9 +670,9 @@ void JSSolanaProvider::OnSignTransaction(
     const std::string& error_message,
     const std::vector<uint8_t>& serialized_tx) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     result = CreateTransaction(context, serialized_tx);
@@ -694,10 +694,10 @@ void JSSolanaProvider::OnSignAllTransactions(
     const std::string& error_message,
     const std::vector<std::vector<uint8_t>>& serialized_txs) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     size_t serialized_txs_length = serialized_txs.size();
@@ -770,9 +770,9 @@ void JSSolanaProvider::SendResponse(
     v8::Local<v8::Value> response,
     bool success) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
@@ -892,7 +892,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
   v8::Isolate* isolate = context->GetIsolate();
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 

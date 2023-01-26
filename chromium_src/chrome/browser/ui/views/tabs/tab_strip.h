@@ -12,10 +12,11 @@
 
 class BraveTabHoverCardController;
 
-#define UpdateHoverCard           \
-  UpdateHoverCard_Unused();       \
-  friend class BraveTabHoverTest; \
-  friend class BraveTabStrip;     \
+#define UpdateHoverCard                    \
+  UpdateHoverCard_Unused();                \
+  friend class BraveTabHoverTest;          \
+  friend class BraveTabStrip;              \
+  friend class VerticalTabStripRegionView; \
   void UpdateHoverCard
 
 #define ShouldDrawStrokes   \

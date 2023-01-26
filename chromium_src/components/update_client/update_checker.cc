@@ -90,7 +90,7 @@ void SequentialUpdateChecker::UpdateResultAvailable(
   bool done = error || remaining_ids_.empty();
 
   if (done) {
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(
             std::move(update_check_callback_),

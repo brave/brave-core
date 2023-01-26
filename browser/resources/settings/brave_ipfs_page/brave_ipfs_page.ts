@@ -69,7 +69,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
       this.ipfsEnabled_ = enabled
     });
 
-    this.addWebUIListener('brave-ipfs-node-status-changed', (launched) => {
+    this.addWebUiListener('brave-ipfs-node-status-changed', (launched) => {
       this.isLocalNodeLaunched_ = launched
     })
     this.browserProxy_.notifyIpfsNodeStatus();

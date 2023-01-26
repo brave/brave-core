@@ -16,7 +16,7 @@
 // to the Browser delegate instead of default one.
 // In order to close all popups we also save tab ids of each opened popup window
 // and close all with the bubble together.
-#define RenderViewHostChanged                                                 \
+#define PrimaryPageChanged                                                    \
   SetWebContentsAddNewContentsDelegate(                                       \
       base::WeakPtr<content::WebContentsDelegate> browser_delegate) {         \
     browser_delegate_ = std::move(browser_delegate);                          \
@@ -39,7 +39,10 @@
         sessions::SessionTabHelper::IdForTab(raw_popup_contents).id();        \
     popup_ids_.push_back(tab_id);                                             \
   }                                                                           \
-  void BubbleContentsWrapper::RenderViewHostChanged
+  void BubbleContentsWrapper::ClearPopupIds() {                               \
+    popup_ids_.clear();                                                       \
+  }                                                                           \
+  void BubbleContentsWrapper::PrimaryPageChanged
 
 #include "src/chrome/browser/ui/views/bubble/bubble_contents_wrapper.cc"
-#undef RenderViewHostChanged
+#undef PrimaryPageChanged

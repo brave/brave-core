@@ -106,28 +106,31 @@ export class SettingsBraveP2pKeysSubpageElement extends SettingsBraveP2pKeysSubp
 
   override ready() {
     super.ready()
-    this.addWebUIListener('brave-ipfs-node-status-changed', (launched: boolean) => {
-      this.onServiceLaunched(launched)
+    this.addWebUiListener(
+      'brave-ipfs-node-status-changed', (launched: boolean) => {
+        this.onServiceLaunched(launched)
     })
-    this.addWebUIListener('brave-ipfs-keys-loaded', () => {
+    this.addWebUiListener('brave-ipfs-keys-loaded', () => {
       this.updateKeys()
     })
-    this.addWebUIListener('brave-ipfs-key-exported', (key: string, success: boolean) => {
-      this.actionKeysError_ = !success
-      if (this.actionKeysError_) {
-        const errorLabel = (this.$.keyError);
-        errorLabel.textContent = this.i18n('ipfsKeyExportError', key)
-        return;
-      }
+    this.addWebUiListener(
+      'brave-ipfs-key-exported', (key: string, success: boolean) => {
+        this.actionKeysError_ = !success
+        if (this.actionKeysError_) {
+          const errorLabel = (this.$.keyError);
+          errorLabel.textContent = this.i18n('ipfsKeyExportError', key)
+          return;
+        }
     })
-    this.addWebUIListener('brave-ipfs-key-imported', (key: string, success: boolean) => {
-      this.actionKeysError_ = !success
-      if (this.actionKeysError_ ) {
-        const errorLabel = (this.$.keyError);
-        errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
-        return;
-      }
-      this.updateKeys();
+    this.addWebUiListener(
+      'brave-ipfs-key-imported', (key: string, success: boolean) => {
+        this.actionKeysError_ = !success
+        if (this.actionKeysError_ ) {
+          const errorLabel = (this.$.keyError);
+          errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
+          return;
+        }
+        this.updateKeys();
     })
     window.addEventListener('load', this.onLoad_.bind(this));
     if (document.readyState == 'complete') {

@@ -66,7 +66,7 @@ class BraveStatsUpdaterHelperBrowserTest : public PlatformBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
                        PrimaryProfileEnabledUpdate) {
-  Profile* primary_profile = profile_manager_->GetPrimaryUserProfile();
+  Profile* primary_profile = profile_manager_->GetLastUsedProfile();
 
   EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile),
             false);

@@ -1,26 +1,26 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index f08c07401bf2e82bb9b38deff45f179ee39c8875..40fa5eab2ce0d2ad7c8269cb174247dae3e2454a 100644
+index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..89932eab0b83d7653b4ea7dc88b48647df71f19a 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -43,7 +43,7 @@ public class SiteSettingsCategory {
-             Type.JAVASCRIPT, Type.MICROPHONE, Type.NFC, Type.NOTIFICATIONS, Type.POPUPS,
+@@ -47,7 +47,7 @@ public class SiteSettingsCategory {
              Type.PROTECTED_MEDIA, Type.SENSORS, Type.SOUND, Type.USB, Type.VIRTUAL_REALITY,
              Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE,
--            Type.FEDERATED_IDENTITY_API})
-+            Type.FEDERATED_IDENTITY_API, Type.AUTOPLAY})
+             Type.FEDERATED_IDENTITY_API, Type.THIRD_PARTY_COOKIES, Type.SITE_DATA,
+-            Type.NUM_ENTRIES})
++            Type.NUM_ENTRIES, Type.AUTOPLAY})
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
          // All updates here must also be reflected in {@link #preferenceKey(int)
-@@ -74,10 +74,11 @@ public class SiteSettingsCategory {
-         int AUTO_DARK_WEB_CONTENT = 23;
-         int REQUEST_DESKTOP_SITE = 24;
+@@ -80,10 +80,11 @@ public class SiteSettingsCategory {
          int FEDERATED_IDENTITY_API = 25;
-+        int AUTOPLAY = 26;
+         int THIRD_PARTY_COOKIES = 26;
+         int SITE_DATA = 27;
++        int AUTOPLAY = 28;
          /**
           * Number of handled categories used for calculating array sizes.
           */
--        int NUM_ENTRIES = 26;
-+        int NUM_ENTRIES = 27;
+-        int NUM_ENTRIES = 28;
++        int NUM_ENTRIES = 29;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

@@ -15,7 +15,7 @@
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
-#define RenderViewHostChanged                                              \
+#define PrimaryPageChanged                                                 \
   SetWebContentsAddNewContentsDelegate(                                    \
       base::WeakPtr<content::WebContentsDelegate> browser_delegate);       \
   void AddNewContents(content::WebContents* source,                        \
@@ -24,8 +24,11 @@
                       WindowOpenDisposition disposition,                   \
                       const blink::mojom::WindowFeatures& window_features, \
                       bool user_gesture, bool* was_blocked) override;      \
-  std::vector<int32_t>& GetPopupIds() { return popup_ids_; }               \
-  void RenderViewHostChanged
+  const std::vector<int32_t>& popup_ids() const {                          \
+    return popup_ids_;                                                     \
+  }                                                                        \
+  void ClearPopupIds();                                                    \
+  void PrimaryPageChanged
 
 #define webui_resizes_host_        \
   webui_resizes_host_;             \
@@ -33,6 +36,6 @@
   base::WeakPtr<content::WebContentsDelegate> browser_delegate_
 #include "src/chrome/browser/ui/views/bubble/bubble_contents_wrapper.h"
 #undef webui_resizes_host_
-#undef RenderViewHostChanged
+#undef PrimaryPageChanged
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_BUBBLE_BUBBLE_CONTENTS_WRAPPER_H_

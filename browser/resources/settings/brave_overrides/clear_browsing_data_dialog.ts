@@ -9,6 +9,7 @@ import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.
 import {BraveSettingsClearBrowsingDataDialogElement} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
 import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/polymer_overriding.js'
 import {loadTimeData} from '../i18n_setup.js'
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 RegisterStyleOverride(
   'settings-clear-browsing-data-dialog',
@@ -37,8 +38,12 @@ RegisterPolymerTemplateModifications({
     }
     tabsElement.insertAdjacentHTML(
       'beforeend',
-      `<settings-brave-clear-browsing-data-on-exit-page id="on-exit-tab" prefs="{{prefs}}" />`
-    )
+      getTrustedHTML`
+        <settings-brave-clear-browsing-data-on-exit-page
+          id="on-exit-tab"
+          prefs="{{prefs}}"
+        />
+      `)
 
     // Append Save button.
     const confirmButtonElement = templateContent.querySelector('#clearBrowsingDataConfirm')
@@ -48,10 +53,20 @@ RegisterPolymerTemplateModifications({
     }
     confirmButtonElement.insertAdjacentHTML(
       'afterend',
-      `<cr-button id="saveOnExitSettingsConfirm" class="action-button" disabled hidden>
-        ${loadTimeData.getString('save')}
-      </cr-button>`
-    )
+      getTrustedHTML`
+        <cr-button
+          id="saveOnExitSettingsConfirm"
+          class="action-button"
+          disabled hidden>
+        </cr-button>
+      `)
+    const saveButton =
+      templateContent.getElementById('saveOnExitSettingsConfirm')
+    if (!saveButton) {
+      console.error('[Brave Settings Overrides] Couldn\'t find save button')
+    } else {
+      saveButton.textContent = loadTimeData.getString('save')
+    }
 
     // Append rewards reset data link
     const body = templateContent.querySelector('[slot="body"]')
@@ -61,6 +76,16 @@ RegisterPolymerTemplateModifications({
     }
     body.insertAdjacentHTML(
       'beforeend',
-      `<a id="rewards-reset-data" href="chrome://rewards/#manage-wallet">${loadTimeData.getString('resetRewardsData')}</a>`)
+      getTrustedHTML`
+        <a id="rewards-reset-data" href="chrome://rewards/#manage-wallet"></a>
+      `)
+    const rewardsResetLink =
+      templateContent.getElementById('rewards-reset-data')
+    if (!rewardsResetLink) {
+      console.error(
+        '[Brave Settings Overrides] Couldn\'t find Rewards reset link')
+    } else {
+      rewardsResetLink.textContent = loadTimeData.getString('resetRewardsData')
+    }
   }
 })

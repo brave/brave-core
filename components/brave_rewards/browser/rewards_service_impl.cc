@@ -33,7 +33,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
@@ -943,10 +942,9 @@ void RewardsServiceImpl::OnReconcileComplete(
 
 void RewardsServiceImpl::LoadLedgerState(
     ledger::client::OnLoadCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
-      base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded,
-                     AsWeakPtr(),
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
+      base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded, AsWeakPtr(),
                      std::move(callback)));
 }
 
@@ -973,10 +971,9 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 
 void RewardsServiceImpl::LoadPublisherState(
     ledger::client::OnLoadCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
-      base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded,
-                     AsWeakPtr(),
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
+      base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded, AsWeakPtr(),
                      std::move(callback)));
 }
 
@@ -1451,9 +1448,8 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
     publisher_info_db_path_,
     publisher_list_path_,
   };
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
       base::BindOnce(&RewardsServiceImpl::OnFilesDeletedForCompleteReset,
                      AsWeakPtr(), std::move(callback)));
 }

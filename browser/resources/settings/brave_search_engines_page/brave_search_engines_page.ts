@@ -44,7 +44,8 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     }
 
     this.browserProxy_.getPrivateSearchEnginesList().then(updatePrivateSearchEngines)
-    this.addWebUIListener('private-search-engines-changed', updatePrivateSearchEngines)
+    this.addWebUiListener(
+      'private-search-engines-changed', updatePrivateSearchEngines)
   }
 
   shouldShowPrivateSearchProvider_(prefs) {

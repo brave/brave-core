@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
-index bbced6284dd0f7611de6661c6be6322fca3d0705..b9614d3b9d8dac6cc959f4899c18421ae779408c 100644
+index d14dec2b4aca53a69da5612bfb42e9585bd00834..36720b0f758a90f9e6c26db91ef84598c0219c09 100644
 --- a/components/sync/protocol/device_info_specifics.proto
 +++ b/components/sync/protocol/device_info_specifics.proto
 @@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
@@ -10,10 +10,10 @@ index bbced6284dd0f7611de6661c6be6322fca3d0705..b9614d3b9d8dac6cc959f4899c18421a
  
  // Information about a device that is running a sync-enabled Chrome browser.  We
  // are mapping the per-client cache guid to more specific information about the
-@@ -90,6 +91,7 @@ message DeviceInfoSpecifics {
-     ChromeVersionInfo chrome_version_info = 17;
-     GooglePlayServicesVersionInfo google_play_services_version_info = 18;
-   }
+@@ -98,6 +99,7 @@ message DeviceInfoSpecifics {
+ 
+   // The form factor of the device.
+   optional SyncEnums.DeviceFormFactor device_form_factor = 20;
 +  optional BraveSpecificFields brave_fields = 1000;
  }
  

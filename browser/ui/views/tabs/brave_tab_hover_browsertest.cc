@@ -59,7 +59,10 @@ class BraveTabHoverTest : public InProcessBrowserTest {
     return browser_view->tabstrip();
   }
 
-  Tab* active_tab() { return tabstrip()->tab_at(tabstrip()->GetActiveIndex()); }
+  Tab* active_tab() {
+    TabStripModel* tab_strip_model = browser()->tab_strip_model();
+    return tabstrip()->tab_at(tab_strip_model->active_index());
+  }
 
   void HoverOverTab(Tab* tab) {
     // Note: As stated in |tab_hover_card_bubble_view_browsertest.cc| we don't
@@ -84,7 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   TabRendererData data;
   data.visible_url = GURL("https://example.com");
   data.title = u"Hello World";
-  tabstrip()->SetTabData(tabstrip()->GetActiveIndex(), data);
+  tabstrip()->SetTabData(browser()->tab_strip_model()->active_index(), data);
   EXPECT_EQ(u"Hello World", active_tab()->data().title);
 
   browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
@@ -109,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.visible_url = GURL("https://card.com");
   data.title = u"Hello World";
   tabstrip()->AddTabAt(0, data);
-  EXPECT_EQ(0, tabstrip()->GetActiveIndex());
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
@@ -120,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   data.visible_url = GURL("https://card-with-preview.com");
   data.title = u"Foo Bar";
   tabstrip()->AddTabAt(0, data);
-  EXPECT_EQ(0, tabstrip()->GetActiveIndex());
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data.visible_url, active_tab()->data().visible_url);
   EXPECT_NE(nullptr,
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(

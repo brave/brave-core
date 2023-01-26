@@ -15,7 +15,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -171,14 +170,14 @@ class WalletDataFilesInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::Value& manifest,
+      const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::Value& manifest,
+  bool VerifyInstallation(const base::Value::Dict& manifest,
                           const base::FilePath& install_dir) const override;
   void ComponentReady(const base::Version& version,
                       const base::FilePath& path,
-                      base::Value manifest) override;
+                      base::Value::Dict manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
@@ -207,7 +206,7 @@ bool WalletDataFilesInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 WalletDataFilesInstallerPolicy::OnCustomInstall(
-    const base::Value& manifest,
+    const base::Value::Dict& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(update_client::InstallError::NONE);
 }
@@ -217,7 +216,7 @@ void WalletDataFilesInstallerPolicy::OnCustomUninstall() {}
 void WalletDataFilesInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
-    base::Value manifest) {
+    base::Value::Dict manifest) {
   last_installed_wallet_version = version;
   sequenced_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&ParseTokenListAndUpdateRegistry, path));
@@ -227,7 +226,7 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
-    const base::Value& manifest,
+    const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }

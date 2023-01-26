@@ -16,7 +16,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -758,8 +757,8 @@ void IpfsService::ShutdownDaemon(BoolCallback callback) {
 }
 
 void IpfsService::GetConfig(GetConfigCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&LoadConfigFileOnFileTaskRunner, GetConfigFilePath()),
       base::BindOnce(&IpfsService::OnConfigLoaded, weak_factory_.GetWeakPtr(),
                      std::move(callback)));

@@ -7,7 +7,8 @@
 
 import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {I18nBehavior} from 'chrome://resources/i18n_behavior.js';
 import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 import {routes} from '../route.js'
@@ -27,13 +28,25 @@ RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not find all sites list')
       return
     }
-    allSites.insertAdjacentHTML('afterend', `
-      <div class="cr-row first line-only"><h2>${I18nBehavior.i18n('siteSettingsShields')}</h2></div>
-      <settings-site-settings-list id="basicShieldsList"
+    allSites.insertAdjacentHTML(
+      'afterend',
+      getTrustedHTML`
+        <div class="cr-row first line-only">
+          <h2 id="siteSettingsShields"></h2>
+        </div>
+        <settings-site-settings-list id="basicShieldsList"
           category-list="[[lists_.shieldsBasic]]"
           focus-config="[[focusConfig]]">
-      </settings-site-settings-list>
-    `)
+        </settings-site-settings-list>
+      `)
+    const siteSettingsShieldsTitle =
+      templateContent.getElementById('siteSettingsShields')
+    if (!siteSettingsShieldsTitle) {
+      console.error('[Brave Settings Overrides] Couldn\'t find shields title')
+    } else {
+      siteSettingsShieldsTitle.textcontent =
+        I18nBehavior.i18n('siteSettingsShields')
+    }
   }
 })
 

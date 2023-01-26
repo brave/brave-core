@@ -27,7 +27,7 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
     gurl = last_committed_entry->GetBaseURLForDataURL();
 #endif
   if (gurl.is_empty())
-    gurl = frame_tree_node->frame_tree()->root()->current_url();
+    gurl = frame_tree_node->frame_tree().root()->current_url();
   return gurl;
 }
 

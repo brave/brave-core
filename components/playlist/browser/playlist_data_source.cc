@@ -14,7 +14,6 @@
 #include "base/location.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/components/playlist/browser/playlist_service.h"

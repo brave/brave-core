@@ -339,6 +339,10 @@ are declared in tools/grit/grit_rule.gni.
           <if expr="use_titlecase">
             </if>
       </if>
+      <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
 
       <if expr="not is_android">
         </if>
@@ -511,6 +515,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_fuchsia">
         </if>
+      <if expr="use_titlecase">
+        </if>
+        <if expr="not use_titlecase">
+        </if>
       <if expr="is_macosx">
         </if>
       <if expr="is_win">
@@ -549,6 +557,8 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
        <if expr="is_android">
+        </if>
+      <if expr="is_android">
         </if>
       <if expr="use_titlecase">
         </if>
@@ -595,9 +605,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
-      <if expr="is_android">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -1014,7 +1021,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_ash">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="not is_android">
+      </if>
+
+    <if expr="chromeos_ash">
       </if>
 
     <if expr="is_win">
@@ -1138,8 +1148,6 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="chromeos_ash">
       </if>
 
-    <if expr="not is_android">
-      </if>
     <if expr="not is_android">
       <if expr="use_titlecase">
         </if>

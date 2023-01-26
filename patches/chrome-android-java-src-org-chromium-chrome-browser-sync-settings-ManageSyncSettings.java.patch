@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 655fee00cfb3560e64b76a66757c1b131c3d8dd1..370dab9dcfd9135b045fc4d43b2654be02812a73 100644
+index 95c4dd94fadbbb56304bb0536e91eefbd14bae86..181dd93eea8696b366f13df9c5b11a30f71655c9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +11,12 @@ index 655fee00cfb3560e64b76a66757c1b131c3d8dd1..370dab9dcfd9135b045fc4d43b2654be
  import androidx.preference.Preference;
  import androidx.preference.PreferenceCategory;
  import androidx.preference.PreferenceFragmentCompat;
-@@ -365,7 +365,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
-                 IdentityServicesProvider.get()
+@@ -360,7 +360,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));
+         // May happen if account is removed from the device while this screen is shown.
 -        if (signedInAccountName == null) {
 +        if (false) {
-             // May happen if account is removed from the device while this screen is shown.
-             getActivity().finish();
+             if (getActivity() != null) getActivity().finish();
              return;
+         }

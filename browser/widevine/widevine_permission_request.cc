@@ -24,8 +24,8 @@ WidevinePermissionRequest::WidevinePermissionRequest(
           web_contents->GetVisibleURL(),
           permissions::RequestType::kWidevine,
           /*has_gesture=*/false,
-          base::BindOnce(&WidevinePermissionRequest::PermissionDecided,
-                         base::Unretained(this)),
+          base::BindRepeating(&WidevinePermissionRequest::PermissionDecided,
+                              base::Unretained(this)),
           base::BindOnce(&WidevinePermissionRequest::DeleteRequest,
                          base::Unretained(this))),
       web_contents_(web_contents),
@@ -39,7 +39,8 @@ std::u16string WidevinePermissionRequest::GetMessageTextFragment() const {
 }
 
 void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
-                                                  bool is_one_time) {
+                                                  bool is_one_time,
+                                                  bool is_final_decision) {
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
 #if BUILDFLAG(IS_LINUX)

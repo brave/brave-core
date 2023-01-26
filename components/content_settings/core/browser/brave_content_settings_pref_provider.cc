@@ -580,7 +580,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
         store_last_modified_ ? base::Time::Now() : base::Time();
 
     base::Time last_visited = constraints.track_last_visit_for_autoexpiration
-                                  ? GetCoarseTime(base::Time::Now())
+                                  ? GetCoarseVisitedTime(base::Time::Now())
                                   : base::Time();
 
     GetPref(content_type)
