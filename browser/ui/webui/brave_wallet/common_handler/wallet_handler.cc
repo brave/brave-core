@@ -83,7 +83,7 @@ void WalletHandler::OnGetWalletInfo(
       default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
       std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled());
+      brave_wallet::IsSolanaEnabled(), brave_wallet::IsNftPinningEnabled());
 }
 
 void WalletHandler::AddFavoriteApp(

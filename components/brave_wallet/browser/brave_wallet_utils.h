@@ -28,6 +28,7 @@ bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
 bool ShouldShowTxStatusInToolbar();
+bool IsNftPinningEnabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 

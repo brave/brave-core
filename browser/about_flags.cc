@@ -310,6 +310,10 @@ constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 constexpr char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
 
+constexpr char kBraveWalletNftPinningFeatureName[] = "Enable NFT pinning";
+constexpr char kBraveWalletNftPinningFeatureDescription[] =
+    "Enables NFT pinning entry points for the Brave Wallet";
+
 constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
@@ -516,6 +520,12 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
 #endif
 
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
+    {"enable-nft-pinning",                                                     \
+     flag_descriptions::kBraveWalletNftPinningFeatureName,                     \
+     flag_descriptions::kBraveWalletNftPinningFeatureDescription,              \
+     kOsDesktop,                                                               \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletNftPinningFeature) \
+    },                                                                         \
     {"native-brave-wallet",                                                    \
      flag_descriptions::kNativeBraveWalletName,                                \
      flag_descriptions::kNativeBraveWalletDescription,                         \

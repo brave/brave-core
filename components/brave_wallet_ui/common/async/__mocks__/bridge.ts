@@ -248,7 +248,8 @@ export class MockedWalletApiProxy {
         isFilecoinEnabled: true,
         isWalletBackedUp: true,
         isWalletCreated: true,
-        isWalletLocked: false
+        isWalletLocked: false,
+        isNftAutoPinningFeatureEnabled: false,
       }
     }
   }

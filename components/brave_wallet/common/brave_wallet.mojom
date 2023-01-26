@@ -580,7 +580,8 @@ interface WalletHandler {
                       bool isWalletBackedUp,
                       array<AccountInfo> accountInfos,
                       bool isFilecoinEnabled,
-                      bool isSolanaEnabled);
+                      bool isSolanaEnabled,
+                      bool isNftAutoPinningFeatureEnabled);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);
