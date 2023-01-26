@@ -15,15 +15,14 @@
 // we still want to block 3p frames as usual and not fall back to "allow
 // everything" path.
 #define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL                    \
-  DCHECK(third_party_blocking_outcome ==                                      \
-         ThirdPartyBlockingOutcome::kIrrelevant);                             \
+  DCHECK(third_party_blocking_scope == absl::nullopt);                        \
   if (is_third_party_request &&                                               \
       ShouldBlockThirdPartyIfSettingIsExplicit(                               \
           block_third_party_cookies_, cookie_setting, found_explicit_setting, \
           base::Contains(third_party_cookies_allowed_schemes_,                \
                          first_party_url.scheme()))) {                        \
-    third_party_blocking_outcome =                                            \
-        ThirdPartyBlockingOutcome::kAllStateDisallowed;                       \
+    third_party_blocking_scope =                                              \
+        ThirdPartyBlockingScope::kUnpartitionedAndPartitioned;                \
     cookie_setting = CONTENT_SETTING_BLOCK;                                   \
   }                                                                           \
   /* Store patterns information to determine if Shields are disabled. */      \
