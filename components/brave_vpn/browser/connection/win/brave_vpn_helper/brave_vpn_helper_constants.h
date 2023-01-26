@@ -12,7 +12,6 @@ constexpr char kBraveVpnHelperInstall[] = "install";
 constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
     L"Software\\BraveSoftware\\Brave\\Vpn\\HelperService";
 constexpr wchar_t kBraveVPNHelperExecutable[] = L"brave_vpn_helper.exe";
-constexpr wchar_t kBraveVpnServiceName[] = L"BraveVPNService";
 constexpr wchar_t kBraveVpnHelperLaunchCounterValue[] = L"launched";
 // Repeating interval to check the connection is live.
 constexpr int kCheckConnectionIntervalInSeconds = 3;

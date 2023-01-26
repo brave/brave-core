@@ -23,7 +23,11 @@ source_set("common") {
     "brave_vpn_helper_state.h",
     "scoped_sc_handle.h",
   ]
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//chrome/install_static:install_static_util",
+  ]
 }
 
 source_set("lib") {

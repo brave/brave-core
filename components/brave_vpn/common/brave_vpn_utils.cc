@@ -92,6 +92,7 @@ std::string GetBraveVPNEntryName(version_info::Channel channel) {
   switch (channel) {
     case version_info::Channel::CANARY:
       return entry_name + "-Nightly";
+    case version_info::Channel::UNKNOWN:
     case version_info::Channel::DEV:
       return entry_name + "-Dev";
     case version_info::Channel::BETA:

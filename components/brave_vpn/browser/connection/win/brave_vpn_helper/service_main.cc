@@ -17,6 +17,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
 
 namespace brave_vpn {
@@ -61,7 +62,7 @@ ServiceMain::ServiceMain()
 ServiceMain::~ServiceMain() = default;
 
 int ServiceMain::RunAsService() {
-  const std::wstring& service_name(brave_vpn::kBraveVpnServiceName);
+  const std::wstring& service_name(brave_vpn::GetVpnServiceName());
   const SERVICE_TABLE_ENTRY dispatch_table[] = {
       {const_cast<LPTSTR>(service_name.c_str()),
        &ServiceMain::ServiceMainEntry},
@@ -78,8 +79,9 @@ int ServiceMain::RunAsService() {
 
 void ServiceMain::ServiceMainImpl() {
   VLOG(1) << __func__ << " BraveVPN Service started";
-  service_status_handle_ = ::RegisterServiceCtrlHandler(
-      brave_vpn::kBraveVpnServiceName, &ServiceMain::ServiceControlHandler);
+  service_status_handle_ =
+      ::RegisterServiceCtrlHandler(brave_vpn::GetVpnServiceName().c_str(),
+                                   &ServiceMain::ServiceControlHandler);
   if (service_status_handle_ == nullptr) {
     LOG(ERROR) << "RegisterServiceCtrlHandler failed";
     return;

@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "chrome/install_static/install_util.h"
 #include "chrome/install_static/product_install_details.h"
@@ -76,7 +77,7 @@ void BraveVPNHelperCrashReporterClient::GetProductNameAndVersion(
     std::wstring* version,
     std::wstring* special_build,
     std::wstring* channel_name) {
-  *product_name = brave_vpn::kBraveVpnServiceName;
+  *product_name = brave_vpn::GetVpnServiceName();
   std::unique_ptr<FileVersionInfo> version_info(
       FileVersionInfo::CreateFileVersionInfo(base::FilePath(exe_path)));
   if (version_info) {

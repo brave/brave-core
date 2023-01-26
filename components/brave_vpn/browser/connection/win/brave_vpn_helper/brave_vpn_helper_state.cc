@@ -8,9 +8,12 @@
 #include <windows.h>
 
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/scoped_sc_handle.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
 
@@ -43,17 +46,33 @@ bool IsBraveVPNHelperServiceLive() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
   if (!scm.IsValid()) {
     LOG(ERROR) << "::OpenSCManager failed. service_name: "
-               << brave_vpn::kBraveVpnServiceName << ", error: " << std::hex
+               << brave_vpn::GetVpnServiceName() << ", error: " << std::hex
                << HRESULTFromLastError();
     return false;
   }
   ScopedScHandle service(::OpenService(
-      scm.Get(), brave_vpn::kBraveVpnServiceName, SERVICE_QUERY_STATUS));
+      scm.Get(), brave_vpn::GetVpnServiceName().c_str(), SERVICE_QUERY_STATUS));
 
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
   return service.IsValid() &&
          GetServiceLaunchCounterValue() <= kHelperServiceFailActionsNumber;
+}
+
+std::wstring GetBraveVPNConnectionName() {
+  return base::UTF8ToWide(
+      brave_vpn::GetBraveVPNEntryName(install_static::GetChromeChannel()));
+}
+
+std::wstring GetVpnServiceName() {
+  std::wstring name = GetVpnServiceDisplayName();
+  name.erase(std::remove_if(name.begin(), name.end(), isspace), name.end());
+  return name;
+}
+
+std::wstring GetVpnServiceDisplayName() {
+  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service ";
+  return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
 }
 
 }  // namespace brave_vpn

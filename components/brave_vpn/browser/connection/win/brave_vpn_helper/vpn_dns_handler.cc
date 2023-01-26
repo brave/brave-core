@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/win/utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
@@ -99,8 +100,7 @@ internal::CheckConnectionResult VpnDnsHandler::GetVpnEntryStatus() {
   if (connection_result_for_testing_.has_value()) {
     return connection_result_for_testing_.value();
   }
-  return internal::CheckConnection(
-      base::UTF8ToWide(brave_vpn::kBraveVPNEntryName));
+  return internal::CheckConnection(GetBraveVPNConnectionName());
 }
 
 void VpnDnsHandler::UpdateFiltersState() {
@@ -112,10 +112,9 @@ void VpnDnsHandler::UpdateFiltersState() {
         VLOG(1) << "Filters are already installed";
         return;
       }
-      if (!SetFilters(base::UTF8ToWide(brave_vpn::kBraveVPNEntryName))) {
+      if (!SetFilters(GetBraveVPNConnectionName())) {
         VLOG(1) << "Failed to set DNS filters";
-        auto result = internal::DisconnectEntry(
-            base::UTF8ToWide(brave_vpn::kBraveVPNEntryName));
+        auto result = internal::DisconnectEntry(GetBraveVPNConnectionName());
         if (!result.success) {
           VLOG(1) << "Failed to disconnect entry:" << result.error_description;
         }
@@ -125,7 +124,7 @@ void VpnDnsHandler::UpdateFiltersState() {
       break;
     case internal::CheckConnectionResult::DISCONNECTED:
       VLOG(1) << "BraveVPN Disconnected, remove filters";
-      if (!RemoveFilters(base::UTF8ToWide(brave_vpn::kBraveVPNEntryName))) {
+      if (!RemoveFilters(GetBraveVPNConnectionName())) {
         VLOG(1) << "Failed to remove DNS filters";
         Exit();
         break;

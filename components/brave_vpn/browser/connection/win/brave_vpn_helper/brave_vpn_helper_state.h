@@ -6,9 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_STATE_H_
 
+#include <string>
+
 namespace brave_vpn {
 
 bool IsBraveVPNHelperServiceLive();
+std::wstring GetBraveVPNConnectionName();
+std::wstring GetVpnServiceName();
+std::wstring GetVpnServiceDisplayName();
 
 }  // namespace brave_vpn
 

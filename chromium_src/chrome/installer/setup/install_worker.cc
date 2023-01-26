@@ -31,13 +31,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 
 namespace {
-
-std::wstring GetVpnServiceDisplayName() {
-  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service";
-  return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
-}
 
 base::FilePath GetBraveVPNServicePath(const base::FilePath& target_path,
                                       const base::Version& version) {
@@ -67,7 +63,7 @@ void AddBraveVPNServiceWorkItems(const base::FilePath& vpn_service_path,
     return;
   }
   WorkItem* install_service_work_item = new installer::InstallServiceWorkItem(
-      brave_vpn::kBraveVpnServiceName, GetVpnServiceDisplayName(),
+      brave_vpn::GetVpnServiceName(), brave_vpn::GetVpnServiceDisplayName(),
       SERVICE_DEMAND_START, base::CommandLine(vpn_service_path),
       base::CommandLine(base::CommandLine::NO_PROGRAM),
       brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {});
