@@ -215,6 +215,7 @@ export const WalletAsyncActions = {
   addSitePermission:
     createAction<AddSitePermissionPayloadType>('addSitePermission'),
   refreshBalancesAndPrices: createAction('refreshBalancesAndPrices'),
+  refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   retryTransaction: createAction<RetryTransactionPayload>('retryTransaction'),
   cancelTransaction:
     createAction<CancelTransactionPayload>('cancelTransaction'),

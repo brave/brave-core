@@ -52,6 +52,7 @@
   refreshAccountInfo,
   refreshBalancesAndPriceHistory,
   refreshBalancesAndPrices,
+  refreshNetworksAndTokens,
   refreshGasEstimates,
   rejectAllTransactions,
   rejectTransaction,

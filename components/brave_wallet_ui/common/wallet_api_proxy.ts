@@ -123,7 +123,7 @@ export class WalletApiProxy {
         store.dispatch(WalletActions.defaultBaseCryptocurrencyChanged({ cryptocurrency }))
       },
       onNetworkListChanged: function () {
-        store.dispatch(WalletActions.getAllNetworks())
+        store.dispatch(WalletActions.refreshNetworksAndTokens())
       },
       onDiscoverAssetsCompleted: function (discoveredAssets) {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(discoveredAssets))
