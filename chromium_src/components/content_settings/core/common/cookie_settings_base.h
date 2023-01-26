@@ -38,14 +38,9 @@ struct CookieSettingWithBraveMetadata {
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin) const;              \
   bool IsEphemeralCookieAccessAllowed(                                         \
-      const GURL& url, const GURL& first_party_url,                            \
-      CookieSettingsBase::QueryReason query_reason) const;                     \
-  bool IsEphemeralCookieAccessAllowed(                                         \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin,                     \
-      CookieSettingsBase::QueryReason query_reason) const;                     \
-  bool IsChromiumFullCookieAccessAllowed(                                      \
-      const GURL& url, const GURL& first_party_url,                            \
+      net::CookieSettingOverrides overrides,                                   \
       CookieSettingsBase::QueryReason query_reason) const;                     \
   bool IsChromiumFullCookieAccessAllowed(                                      \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
