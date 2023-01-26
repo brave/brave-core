@@ -980,8 +980,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                                 return;
                             }
 
-                            TabUtils.openUrlInNewTab(false, url);
-                            TabUtils.bringChromeTabbedActivityToTheTop(this);
+                            Intent selectPurchaseMethodIntent =
+                                    SelectPurchaseMethodActivity.getIntent(this, url);
+                            startActivity(selectPurchaseMethodIntent);
                         });
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentBlockchainToken != null) {
