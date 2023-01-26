@@ -108,7 +108,7 @@ void SidebarContainerView::Init() {
   DCHECK(browser_view);
 
   auto* side_panel_registry =
-      browser_view->side_panel_coordinator()->GetGlobalSidePanelRegistry();
+      SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
   panel_registry_observation_.Observe(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
