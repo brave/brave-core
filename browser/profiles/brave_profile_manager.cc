@@ -43,10 +43,13 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_constants.h"
@@ -98,10 +101,12 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   brave_wallet::BraveWalletAutoPinServiceFactory::GetServiceForContext(profile);
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetForContext(profile);
-#endif
+#endif  // BUILDFLAG(ENABLE_IPFS)
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =

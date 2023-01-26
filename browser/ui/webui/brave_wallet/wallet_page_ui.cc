@@ -21,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -30,6 +29,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
@@ -43,7 +43,7 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #endif
@@ -84,7 +84,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
 }
 
 WalletPageUI::~WalletPageUI() = default;
-
 WEB_UI_CONTROLLER_TYPE_IMPL(WalletPageUI)
 
 void WalletPageUI::BindInterface(
@@ -153,7 +152,7 @@ void WalletPageUI::CreatePageHandler(
   wallet_service->GetBraveWalletP3A()->Bind(
       std::move(brave_wallet_p3a_receiver));
 
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   brave_wallet::BraveWalletPinServiceFactory::BindForContext(
       profile, std::move(brave_wallet_pin_service_receiver));
   brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
