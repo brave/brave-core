@@ -115,3 +115,13 @@ export const getNFTTokenStandard = (token: BraveWallet.BlockchainToken) => {
   }
   return ''
 }
+
+/**
+ * Checks if the component is displayed in a local storybook env
+ * Uses hostname for the check
+ * There maybe a better way to do this
+ * @returns true if the hostname is local
+ */
+export const isComponentInStorybook = (hostname: string = window.location.hostname) => {
+  return ['localhost', '127.0.0.1'].includes(window.location.hostname)
+}

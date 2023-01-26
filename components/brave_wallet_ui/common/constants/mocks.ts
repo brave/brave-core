@@ -6,6 +6,7 @@
 import {
   AppsListType,
   BraveWallet,
+  SerializableTransactionInfo,
   WalletAccountType
 } from '../../constants/types'
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
@@ -308,7 +309,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
 }
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
-export const mockSolDappSignAndSendTransactionRequest = {
+export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionInfo = {
   'id': 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
   'fromAddress': mockSolanaAccount.address,
   'txHash': '',
@@ -318,12 +319,12 @@ export const mockSolDappSignAndSendTransactionRequest = {
     'filTxData': undefined,
     'solanaTxData': {
       'recentBlockhash': 'C115cyMDVoGGYNd4r8vFy5qPJEUdoJQQCXMYYKQTQimn',
-      'lastValidBlockHeight': 0 as unknown as bigint,
+      'lastValidBlockHeight': '0',
       'feePayer': mockSolanaAccount.address,
       'toWalletAddress': '',
       'splTokenMintAddress': '',
-      'lamports': 0 as unknown as bigint,
-      'amount': 0 as unknown as bigint,
+      'lamports': '0',
+      'amount': '0',
       'txType': 11,
       'instructions': [
         {
@@ -352,9 +353,9 @@ export const mockSolDappSignAndSendTransactionRequest = {
   'txType': 11,
   'txParams': [],
   'txArgs': [],
-  'createdTime': { 'microseconds': 1654540245386000 as unknown as bigint },
-  'submittedTime': { 'microseconds': 0 as unknown as bigint },
-  'confirmedTime': { 'microseconds': 0 as unknown as bigint },
+  'createdTime': { 'microseconds': 1654540245386000 },
+  'submittedTime': { 'microseconds': 0 },
+  'confirmedTime': { 'microseconds': 0 },
   'originInfo': {
     'origin': {
       'scheme': 'https',
@@ -366,7 +367,7 @@ export const mockSolDappSignAndSendTransactionRequest = {
     'eTldPlusOne': 'csb.app'
   },
   'groupId': undefined
-} as BraveWallet.TransactionInfo
+}
 
 export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransactionsRequest = {
   'originInfo': {

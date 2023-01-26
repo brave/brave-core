@@ -296,9 +296,9 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
         name: response.name,
         description: response.description,
         website: '',
-        twitter: '',
         facebook: '',
-        logo: ''
+        logo: '',
+        twitter: ''
       }
     }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))

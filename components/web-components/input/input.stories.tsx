@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import Storybook from '@storybook/react'
 import Component from './index'
 
 export default {
@@ -30,9 +30,9 @@ export default {
       //   control: { type: 'select' }
       // }
     }
-} as ComponentMeta<typeof Component>
+} as Storybook.ComponentMeta<typeof Component>
 
-const Template: ComponentStory<typeof Component> = function (args, o) {
+const Template: Storybook.ComponentStory<typeof Component> = function (args, o) {
   const [value, setValue] = React.useState('I am an input')
   const handleChange: React.FormEventHandler<HTMLInputElement> = (e) => {
     setValue(e.currentTarget.value)
