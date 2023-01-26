@@ -151,7 +151,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kKAnonymityService,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
-    &features::kPrivacyGuide2,
     &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSCTAuditing,
     &features::kSignedExchangeReportingForDistributors,
