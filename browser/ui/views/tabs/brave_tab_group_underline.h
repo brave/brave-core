@@ -13,13 +13,15 @@
 class BraveTabGroupUnderline : public TabGroupUnderline {
  public:
   BraveTabGroupUnderline(TabGroupViews* tab_group_views,
-                         const tab_groups::TabGroupId& group);
+                         const tab_groups::TabGroupId& group,
+                         const TabGroupStyle& style);
   ~BraveTabGroupUnderline() override;
 
   // TabGroupUnderline:
-  void UpdateBounds(views::View* leading_view,
-                    views::View* trailing_view) override;
-  gfx::Insets GetInsetsForUnderline(views::View* sibling_view) const override;
+  void UpdateBounds(const views::View* leading_view,
+                    const views::View* trailing_view) override;
+  gfx::Insets GetInsetsForUnderline(
+      const views::View* sibling_view) const override;
   SkPath GetPath() const override;
   void OnPaint(gfx::Canvas* canvas) override;
 
