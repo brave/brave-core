@@ -5,10 +5,11 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 
+#include <iterator>
 #include <string>
 
 #include "base/metrics/field_trial_params.h"
-#include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features_util.h"
 
 namespace ads::features {
@@ -19,18 +20,14 @@ constexpr char kFeatureName[] = "EligibleAds";
 constexpr char kFieldTrialParameterAdPredictorWeights[] =
     "ad_predictor_weights";
 
-AdPredictorWeightList GetDefaultAdPredictorWeights() {
-  static const base::NoDestructor<AdPredictorWeightList> kDefaultWeights(
-      {/*kDoesMatchIntentChildSegmentsIndex*/ 1.0,
-       /*kDoesMatchIntentParentSegmentsIndex*/ 1.0,
-       /*kDoesMatchInterestChildSegmentsIndex*/ 1.0,
-       /*kDoesMatchInterestParentSegmentsIndex*/ 1.0,
-       /*AdLastSeenHoursAgoIndex*/ 1.0,
-       /*kAdvertiserLastSeenHoursAgoIndex*/ 1.0,
-       /*kPriorityIndex*/ 1.0});
-
-  return *kDefaultWeights;
-}
+constexpr double kDefaultWeights[] = {
+    /*kDoesMatchIntentChildSegmentsIndex*/ 1.0,
+    /*kDoesMatchIntentParentSegmentsIndex*/ 1.0,
+    /*kDoesMatchInterestChildSegmentsIndex*/ 1.0,
+    /*kDoesMatchInterestParentSegmentsIndex*/ 1.0,
+    /*AdLastSeenHoursAgoIndex*/ 1.0,
+    /*kAdvertiserLastSeenHoursAgoIndex*/ 1.0,
+    /*kPriorityIndex*/ 1.0};
 
 }  // namespace
 
@@ -46,7 +43,7 @@ AdPredictorWeightList GetAdPredictorWeights() {
 
   AdPredictorWeightList weights = ToAdPredictorWeights(param_value);
   if (weights.empty()) {
-    return GetDefaultAdPredictorWeights();
+    base::ranges::copy(kDefaultWeights, std::back_inserter(weights));
   }
 
   return weights;

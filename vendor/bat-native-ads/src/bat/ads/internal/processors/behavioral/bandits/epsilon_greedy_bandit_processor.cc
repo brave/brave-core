@@ -15,7 +15,7 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
 namespace ads::processor {
@@ -29,7 +29,7 @@ targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const targeting::EpsilonGreedyBanditArmMap& arms) {
   targeting::EpsilonGreedyBanditArmMap updated_arms = arms;
 
-  for (const char* segment : targeting::kSegments) {
+  for (const char* const segment : targeting::GetSegments()) {
     const auto iter = updated_arms.find(segment);
     if (iter != updated_arms.cend()) {
       const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
@@ -60,7 +60,7 @@ targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
 
   for (auto arm_iter = updated_arms.cbegin();
        arm_iter != updated_arms.cend();) {
-    if (base::Contains(targeting::kSegments, arm_iter->first)) {
+    if (base::Contains(targeting::GetSegments(), arm_iter->first)) {
       ++arm_iter;
       continue;
     }

@@ -1,12 +1,11 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_CONSTANTS_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_CONSTANTS_H_
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 
-namespace ads::targeting {
+namespace {
 
 constexpr const char* kSegments[] = {"architecture",
                                      "arts & entertainment",
@@ -38,7 +37,12 @@ constexpr const char* kSegments[] = {"architecture",
                                      "travel",
                                      "weather",
                                      "crypto"};
+}  // namespace
+
+namespace ads::targeting {
+
+base::span<const char* const> GetSegments() {
+  return base::make_span(kSegments);
+}
 
 }  // namespace ads::targeting
-
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_CONSTANTS_H_

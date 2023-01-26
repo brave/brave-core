@@ -17,8 +17,6 @@ source_set("browser") {
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
-    "component_updater/components.cc",
-    "component_updater/components.h",
     "component_updater/resource_component.cc",
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
