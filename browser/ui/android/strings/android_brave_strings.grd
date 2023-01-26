@@ -3662,6 +3662,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_RESET_PLAYLIST_SUMMARY" desc="Reset settings summary">
       Remove all videos from Playlist, including offline mode storage.
     </message>
+    <message name="IDS_ON_TEXT" desc="Auto save media option text">
+      On
+    </message>
+    <message name="IDS_OFF_TEXT" desc="Auto save media option text">
+      Off
+    </message>
+    <message name="IDS_WIFI_ONLY_TEXT" desc="Auto save media option text">
+      Wifi Only
+    </message>
   </messages>
   </release>
 </grit>

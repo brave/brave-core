@@ -632,13 +632,22 @@ void PlaylistService::GetDefaultPlaylistId(
 }
 
 void PlaylistService::SetDefaultPlaylistId(const std::string& playlist_id) {
-  // auto id = prefs_->GetString(kPlaylistDefaultSaveTargetListID);
-  // if (!prefs_->GetDict(kPlaylistsPref).contains(id)) {
-  //   prefs_->SetString(kPlaylistDefaultSaveTargetListID, kDefaultPlaylistID);
-  //   id = kDefaultPlaylistID;
-  // }
-  // return id;
-  prefs_->SetString(kPlaylistDefaultSaveTargetListID, playlist_id);
+  if (!prefs_) {
+    prefs_->SetString(kPlaylistDefaultSaveTargetListID, playlist_id);
+  }
+}
+
+void PlaylistService::GetPlaylistCacheByDefault(
+    GetPlaylistCacheByDefaultCallback callback) {
+  if (!prefs_) {
+    std::move(callback).Run(prefs_->GetBoolean(kPlaylistCacheByDefault));
+  }
+}
+
+void PlaylistService::SetPlaylistCacheByDefault(const bool is_enabled) {
+  if (!prefs_) {
+    prefs_->SetBoolean(kPlaylistCacheByDefault, is_enabled);
+  }
 }
 
 void PlaylistService::RemovePlaylist(const std::string& playlist_id) {

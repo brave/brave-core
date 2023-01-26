@@ -102,6 +102,9 @@ interface PlaylistService {
 
   GetDefaultPlaylistId() => (string playlist_id);
   SetDefaultPlaylistId(string playlist_id);
+
+  GetPlaylistCacheByDefault() => (bool is_enabled);
+  SetPlaylistCacheByDefault(bool is_enabled);
 };
 
 // UI-side handler for response from the service.

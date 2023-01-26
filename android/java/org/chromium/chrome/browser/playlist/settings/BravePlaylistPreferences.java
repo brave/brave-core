@@ -6,10 +6,12 @@
 package org.chromium.chrome.browser.playlist.settings;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistResetPreference;
@@ -54,9 +56,14 @@ public class BravePlaylistPreferences
                 SharedPreferencesManager.getInstance().readBoolean(PREF_AUTO_PLAY, true));
         mAutoPlaySwitch.setOnPreferenceChangeListener(this);
 
+        Log.e("BravePlaylist",
+                "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE : "
+                        + SharedPreferencesManager.getInstance().readInt(
+                                BravePlaylistSaveMediaFragment.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
+                                0));
         mAutoSaveMediaForOfflinePreference =
                 (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
-        mAutoSaveMediaForOfflinePreference.setSummary("On");
+        updateAutoSaveMedia();
 
         mStartPlaybackSwitch = (ChromeSwitchPreference) findPreference(PREF_START_PLAYBACK);
         mStartPlaybackSwitch.setChecked(
@@ -74,6 +81,32 @@ public class BravePlaylistPreferences
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.brave_playlist);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_playlist_preferences);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new Handler().post(() -> { updateAutoSaveMedia(); });
+    }
+
+    private void updateAutoSaveMedia() {
+        if (mAutoSaveMediaForOfflinePreference != null) {
+            switch (SharedPreferencesManager.getInstance().readInt(
+                    BravePlaylistSaveMediaFragment.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
+                case 0:
+                    mAutoSaveMediaForOfflinePreference.setSummary(
+                            getActivity().getResources().getString(R.string.on_text));
+                    break;
+                case 1:
+                    mAutoSaveMediaForOfflinePreference.setSummary(
+                            getActivity().getResources().getString(R.string.off_text));
+                    break;
+                case 2:
+                    mAutoSaveMediaForOfflinePreference.setSummary(
+                            getActivity().getResources().getString(R.string.wifi_only_text));
+                    break;
+            }
+        }
     }
 
     @Override
