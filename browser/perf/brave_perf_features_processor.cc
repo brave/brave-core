@@ -17,10 +17,13 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_today/common/pref_names.h"
-#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
 
 namespace {
 void FakeCallback(ledger::mojom::CreateRewardsWalletResult) {}
@@ -71,8 +74,10 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
                                   true);
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveTodayOptedIn, true);
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader
   profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefEnabled, true);
+#endif
 
   // Adblock
   EnableAdblockCookieList(profile->GetWeakPtr());
