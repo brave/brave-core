@@ -104,7 +104,7 @@ extension AdblockEngine {
         return
       }
       
-      addResources(json)
+      useResources(json)
     case .ruleList:
       // This is added during engine initialization
       break

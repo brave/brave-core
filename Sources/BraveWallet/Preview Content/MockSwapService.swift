@@ -13,21 +13,16 @@ class MockSwapService: BraveWalletSwapService {
     completion(true)
   }
 
-  func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
-    completion(
-      true,
-      .init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: ""),
-      nil)
-  }
-  func priceQuote(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
-    completion(
-      true,
-      .init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: ""),
-      nil)
+  func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (BraveWallet.SwapResponse?, BraveWallet.SwapErrorResponse?, String) -> Void) {
+    completion(.init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: "", estimatedPriceImpact: "", sources: []), nil, "")
   }
   
-  func jupiterQuote(_ params: BraveWallet.JupiterQuoteParams, completion: @escaping (Bool, BraveWallet.JupiterQuote?, String?) -> Void) {
-    completion(false, nil, nil)
+  func priceQuote(_ params: BraveWallet.SwapParams, completion: @escaping (BraveWallet.SwapResponse?, BraveWallet.SwapErrorResponse?, String) -> Void) {
+    completion(.init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: "", estimatedPriceImpact: "", sources: []), nil, "")
+  }
+  
+  func jupiterQuote(_ params: BraveWallet.JupiterQuoteParams, completion: @escaping (BraveWallet.JupiterQuote?, BraveWallet.JupiterErrorResponse?, String) -> Void) {
+    completion(nil, nil, "")
   }
   
   func jupiterSwapTransactions(_ params: BraveWallet.JupiterSwapParams, completion: @escaping (Bool, BraveWallet.JupiterSwapTransactions?, String?) -> Void) {
@@ -36,7 +31,11 @@ class MockSwapService: BraveWalletSwapService {
   
   func hasJupiterFees(forTokenMint mint: String, completion: @escaping (Bool) -> Void) {
     completion(false)
-  }  
+  }
+  
+  func jupiterSwapTransactions(_ params: BraveWallet.JupiterSwapParams, completion: @escaping (BraveWallet.JupiterSwapTransactions?, BraveWallet.JupiterErrorResponse?, String) -> Void) {
+    completion(nil, .init(statusCode: "0", error: "Error", message: "Error Message", isInsufficientLiquidity: false), "")
+  }
 }
 
 #endif

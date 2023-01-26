@@ -54,7 +54,7 @@ extension AdblockEngine {
     guard let string = String(data: json, encoding: .utf8) else {
       return false
     }
-    addResources(string)
+    useResources(string)
     return true
   }
 }
