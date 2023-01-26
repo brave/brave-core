@@ -6,7 +6,7 @@
 #include "ui/base/webui/web_ui_util.h"
 
 #include "build/build_config.h"
-#include "ui/resources/grit/webui_generated_resources.h"
+#include "ui/resources/grit/webui_resources.h"
 
 #if !BUILDFLAG(IS_IOS)
 // Replace text_defaults_md.css with brave's text_defaults_md.css
