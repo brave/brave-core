@@ -9,7 +9,7 @@
 #include "src/extensions/common/constants.h"
 
 EXTENSIONS_EXPORT extern const int kBraveActionGraphicSize;
-EXTENSIONS_EXPORT extern const int kBraveActionRightMargin;
+EXTENSIONS_EXPORT extern const int kBraveActionLeftMarginExtra;
 
 EXTENSIONS_EXPORT extern const char brave_extension_id[];
 EXTENSIONS_EXPORT extern const char hangouts_extension_id[];

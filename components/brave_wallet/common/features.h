@@ -13,6 +13,7 @@ namespace brave_wallet {
 namespace features {
 
 BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);
+extern const base::FeatureParam<bool> kShowToolbarTxStatus;
 BASE_DECLARE_FEATURE(kBraveWalletFilecoinFeature);
 BASE_DECLARE_FEATURE(kBraveWalletSolanaFeature);
 extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;

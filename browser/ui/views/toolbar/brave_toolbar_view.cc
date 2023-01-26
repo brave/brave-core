@@ -183,7 +183,7 @@ void BraveToolbarView::Init() {
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = AddChildViewAt(
-        std::make_unique<WalletButton>(GetAppMenuButton(), profile->GetPrefs()),
+        std::make_unique<WalletButton>(GetAppMenuButton(), profile),
         *GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);

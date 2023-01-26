@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -110,7 +110,8 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
-  auto highlight_insets = gfx::Insets::TLBR(0, 0, 0, kBraveActionRightMargin);
+  auto highlight_insets =
+      gfx::Insets::TLBR(0, 0, 0, -1 * kBraveActionLeftMarginExtra);
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
@@ -139,8 +140,9 @@ BraveShieldsActionView::GetImageSource() {
                    : base::WeakPtr<content::WebContents>());
 
   std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(
-          preferred_size, std::move(get_color_provider_callback)));
+      new brave::BraveIconWithBadgeImageSource(
+          preferred_size, std::move(get_color_provider_callback),
+          kBraveActionGraphicSize, kBraveActionLeftMarginExtra));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;

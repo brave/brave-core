@@ -44,6 +44,9 @@ public class TxServiceObserverImpl implements TxServiceObserver {
     }
 
     @Override
+    public void onTxServiceReset() {}
+
+    @Override
     public void close() {
         mDelegate = null;
     }

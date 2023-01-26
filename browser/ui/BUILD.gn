@@ -82,6 +82,8 @@ source_set("ui") {
       "brave_browser_content_setting_bubble_model_delegate.h",
       "brave_browser_window.cc",
       "brave_browser_window.h",
+      "brave_icon_with_badge_image_source.cc",
+      "brave_icon_with_badge_image_source.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -598,8 +600,6 @@ source_set("ui") {
 
   if (enable_extensions && toolkit_views) {
     sources += [
-      "brave_actions/brave_action_icon_with_badge_image_source.cc",
-      "brave_actions/brave_action_icon_with_badge_image_source.h",
       "toolbar/brave_location_bar_model_delegate.cc",
       "toolbar/brave_location_bar_model_delegate.h",
       "views/brave_actions/brave_actions_container.cc",
@@ -744,6 +744,8 @@ source_set("ui") {
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
+      "views/toolbar/wallet_button_notification_source.cc",
+      "views/toolbar/wallet_button_notification_source.h",
       "views/wallet_bubble_focus_observer.cc",
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
