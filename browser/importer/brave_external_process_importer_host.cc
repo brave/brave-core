@@ -45,7 +45,6 @@ class WebstoreInstallerForImporting
       CreateInstallPrompt() const override {
     return nullptr;
   }
-  bool ShouldShowAppInstalledBubble() const override { return false; }
   bool ShouldShowPostInstallUI() const override { return false; }
 };
 #endif
