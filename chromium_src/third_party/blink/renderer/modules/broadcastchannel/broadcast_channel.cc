@@ -30,7 +30,7 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
 // the worker is using.
 // The name change is applied only while connecting.
 #define GetRemoteNavigationAssociatedInterfaces                 \
-  should_send_resource_timing_info_to_parent(); /* no-op */     \
+  RemoteMainFrameIntersection(); /* no-op */                    \
   base::AutoReset<String> ephemeral_name_auto_reset(            \
       &name_, GetEphemeralBroadcastChannelName(window, name_)); \
   frame->GetRemoteNavigationAssociatedInterfaces
