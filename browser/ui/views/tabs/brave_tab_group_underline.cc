@@ -20,13 +20,14 @@ constexpr int kStrokeThicknessForVerticalTabs = 4;
 
 BraveTabGroupUnderline::BraveTabGroupUnderline(
     TabGroupViews* tab_group_views,
-    const tab_groups::TabGroupId& group)
-    : TabGroupUnderline(tab_group_views, group) {}
+    const tab_groups::TabGroupId& group,
+    const TabGroupStyle& style)
+    : TabGroupUnderline(tab_group_views, group, style) {}
 
 BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
 
-void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
-                                          views::View* trailing_view) {
+void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
+                                          const views::View* trailing_view) {
   TabGroupUnderline::UpdateBounds(leading_view, trailing_view);
   if (!ShouldShowVerticalTabs() || !GetVisible())
     return;
@@ -56,7 +57,7 @@ void BraveTabGroupUnderline::UpdateBounds(views::View* leading_view,
 }
 
 gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
-    views::View* sibling_view) const {
+    const views::View* sibling_view) const {
   if (!ShouldShowVerticalTabs())
     return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
 
