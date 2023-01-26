@@ -1,12 +1,13 @@
 diff --git a/chrome/android/java_sources.gni b/chrome/android/java_sources.gni
-index d9f9cca6be31085971b98771c74ca973a74a4ff0..698fe92e25700d0823fa1445c05ae8bff14d52c6 100644
+index ed23c8f716b69cdba116b4af2cbfc97f250e9d81..514d8690cd99f76d68ed7a7453410d04efd53e82 100644
 --- a/chrome/android/java_sources.gni
 +++ b/chrome/android/java_sources.gni
-@@ -27,6 +27,7 @@ import("//device/vr/buildflags/buildflags.gni")
- if (enable_vr) {
-   chrome_java_sources += [ "java/src/org/chromium/chrome/browser/component_updater/VrAssetsComponentInstaller.java" ]
- }
-+chrome_java_sources += brave_java_sources
+@@ -24,6 +24,8 @@ import("//components/feed/features.gni")
+ import("//components/offline_pages/buildflags/features.gni")
+ import("//device/vr/buildflags/buildflags.gni")
  
++chrome_java_sources += brave_java_sources
++
  # Only used for testing, should not be shipped to end users.
  if (enable_offline_pages_harness) {
+   chrome_java_sources += [ "java/src/org/chromium/chrome/browser/offlinepages/evaluation/OfflinePageEvaluationBridge.java" ]
