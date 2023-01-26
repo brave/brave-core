@@ -132,17 +132,9 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
-    const GURL& first_party_url,
-    CookieSettingsBase::QueryReason query_reason) const {
-  return IsEphemeralCookieAccessAllowed(
-      url, net::SiteForCookies::FromUrl(first_party_url), absl::nullopt,
-      query_reason);
-}
-
-bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
-    const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides,
     CookieSettingsBase::QueryReason query_reason) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
     return true;
@@ -161,15 +153,6 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     QueryReason query_reason) const {
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
                                    overrides, query_reason);
-}
-
-bool CookieSettingsBase::IsFullCookieAccessAllowed(
-    const GURL& url,
-    const GURL& first_party_url,
-    CookieSettingsBase::QueryReason query_reason) const {
-  return IsFullCookieAccessAllowed(
-      url, net::SiteForCookies::FromUrl(first_party_url), absl::nullopt,
-      net::CookieSettingOverrides(), query_reason);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
