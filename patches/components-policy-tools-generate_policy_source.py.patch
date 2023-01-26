@@ -1,20 +1,12 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index feb36d536f184b8d9f8e7284a26ba68d8b2205ea..1aa486b4811f4cd5a5e10f785f72a563297acd49 100755
+index feb36d536f184b8d9f8e7284a26ba68d8b2205ea..021536491dc2dcca662f64ea11a657a53a33dd75 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
 @@ -55,6 +55,7 @@ PLATFORM_STRINGS = {
      'chrome.win7': ['win'],
  }
  
-+from policy_source_helper import AddBravePolicies, CHROMIUM_POLICY_KEY
++from policy_source_helper import CHROMIUM_POLICY_KEY
  
  class PolicyDetails:
    """Parses a policy template and caches all its details."""
-@@ -382,6 +383,7 @@ def main():
-     chrome_major_version = ParseVersionFile(version_path)
- 
-   template_file_contents = _LoadJSONFile(template_file_name)
-+  AddBravePolicies(template_file_contents)
-   risk_tags = RiskTags(template_file_contents)
-   policy_details = [
-       PolicyDetails(policy, chrome_major_version, deprecation_milestone_buffer,

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -9,33 +7,71 @@
 CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
 
 
-def AddBravePolicies(template_file_contents):
+class BravePolicies:  # pylint: disable=too-few-public-methods
+    """
+    We want to add Brave-specific values to policy_templates.json. Doing so in
+    policy_templates.json would produce a very large diff. This class implements
+    a trick that allows us to do it with a single-line change.
+
+    policy_templates.json is Python code that evaluates to a dictionary. It has
+    the form:
+
+        {
+        ...
+        }
+
+    We change it to:
+
+        BravePolicies() + {
+        ...
+        }
+
+    This invokes __add__(...) below. There, we can add our own values and return
+    the new dicitonary.
+    """
+
+    def __add__(self, policy_templates_dict):
+        _add_brave_policies(policy_templates_dict)
+        return policy_templates_dict
+
+
+def _add_brave_policies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
     policies = [
         {
-            'name': 'TorDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
-            'supported_on': ['chrome.win:78-',
-                             'chrome.mac:93-',
-                             'chrome.linux:93-'],
+            'name':
+            'TorDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
+            'supported_on':
+            ['chrome.win:78-', 'chrome.mac:93-', 'chrome.linux:93-'],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': False,
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 0,
-            'caption': '''Disables the tor feature.''',
+            'example_value':
+            True,
+            'id':
+            0,
+            'caption':
+            '''Disables the tor feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that tor '''
                      '''must be disabled at startup.'''),
         },
         {
-            'name': 'IPFSEnabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'IPFSEnabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:87-'],
             'future_on': ['android'],
             'features': {
@@ -44,17 +80,24 @@ def AddBravePolicies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 1,
-            'caption': '''Enable IPFS feature''',
+            'example_value':
+            True,
+            'id':
+            1,
+            'caption':
+            '''Enable IPFS feature''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify whether IPFS '''
                      '''feature can be enabled.'''),
         },
         {
-            'name': 'BraveRewardsDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'BraveRewardsDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:105-'],
             'features': {
                 'dynamic_refresh': False,
@@ -62,17 +105,24 @@ def AddBravePolicies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 2,
-            'caption': '''Disable Brave Rewards feature.''',
+            'example_value':
+            True,
+            'id':
+            2,
+            'caption':
+            '''Disable Brave Rewards feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Rewards feature will be disabled.'''),
         },
         {
-            'name': 'BraveWalletDisabled',
-            'type': 'main',
-            'schema': {'type': 'boolean'},
+            'name':
+            'BraveWalletDisabled',
+            'type':
+            'main',
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:106-'],
             'features': {
                 'dynamic_refresh': False,
@@ -80,19 +130,26 @@ def AddBravePolicies(template_file_contents):
                 'can_be_recommended': False,
                 'can_be_mandatory': True
             },
-            'example_value': True,
-            'id': 3,
-            'caption': '''Disable Brave Wallet feature.''',
+            'example_value':
+            True,
+            'id':
+            3,
+            'caption':
+            '''Disable Brave Wallet feature.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Wallet feature will be disabled.'''),
         },
         {
-            'name': 'BraveShieldsDisabledForUrls',
-            'type': 'main',
+            'name':
+            'BraveShieldsDisabledForUrls',
+            'type':
+            'list',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -102,18 +159,24 @@ def AddBravePolicies(template_file_contents):
                 'can_be_mandatory': True
             },
             'example_value': ['https://brave.com'],
-            'id': 4,
-            'caption': '''Disables Brave Shields for urls.''',
+            'id':
+            4,
+            'caption':
+            '''Disables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Shields disabled.'''),
         },
         {
-            'name': 'BraveShieldsEnabledForUrls',
-            'type': 'main',
+            'name':
+            'BraveShieldsEnabledForUrls',
+            'type':
+            'list',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -123,8 +186,10 @@ def AddBravePolicies(template_file_contents):
                 'can_be_mandatory': True
             },
             'example_value': ['https://brave.com'],
-            'id': 5,
-            'caption': '''Enables Brave Shields for urls.''',
+            'id':
+            5,
+            'caption':
+            '''Enables Brave Shields for urls.''',
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Shields enabled.'''),
