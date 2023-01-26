@@ -31,22 +31,26 @@ struct NFTImageView<Placeholder: View>: View {
         }
       }
     } else {
-      if urlString.hasSuffix(".svg") {
-        WebImageReader(url: URL(string: urlString)) { image, isFinished in
-          if let image = image {
-            Image(uiImage: image)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-          } else {
-            placeholder()
+      if let url = URL(string: urlString), url.isSecureWebPage() {
+        if urlString.hasSuffix(".svg") {
+          WebImageReader(url: url) { image, isFinished in
+            if let image = image {
+              Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            } else {
+              placeholder()
+            }
           }
+        } else {
+          WebImage(url: url)
+            .resizable()
+            .placeholder { placeholder() }
+            .indicator(.activity)
+            .aspectRatio(contentMode: .fit)
         }
       } else {
-        WebImage(url: URL(string: urlString))
-          .resizable()
-          .placeholder { placeholder() }
-          .indicator(.activity)
-          .aspectRatio(contentMode: .fit)
+        placeholder()
       }
     }
   }
