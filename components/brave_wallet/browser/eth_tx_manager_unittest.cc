@@ -145,6 +145,8 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
     EXPECT_EQ(tx->tx_status, expected_status_);
   }
 
+  void OnTxServiceReset() override {}
+
   bool TxUpdated() { return tx_updated_; }
   bool TxStatusChanged() { return tx_status_changed_; }
   void Reset() {

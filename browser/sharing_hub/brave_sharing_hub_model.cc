@@ -10,6 +10,7 @@ namespace sharing_hub {
 BraveSharingHubModel::~BraveSharingHubModel() = default;
 
 void BraveSharingHubModel::GetThirdPartyActionList(
+    content::WebContents* web_contents,
     std::vector<SharingHubAction>* list) {
   // We don't use any third party actions now.
 }

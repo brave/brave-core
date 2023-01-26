@@ -25,7 +25,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -323,8 +322,8 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
       GreaselionRule rule_copy(*rule);
-      base::PostTaskAndReplyWithResult(
-          task_runner_.get(), FROM_HERE,
+      task_runner_->PostTaskAndReplyWithResult(
+          FROM_HERE,
           base::BindOnce(&ConvertGreaselionRuleToExtensionOnTaskRunner,
                          rule_copy, install_directory_),
           base::BindOnce(&GreaselionServiceImpl::PostConvert,

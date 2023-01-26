@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cxx = { path = "../../../../third_party/rust/cxx/v1/crate"}
+cxx = "1.0"
 ed25519-dalek-bip32 = "0.2.0"
 curve25519-dalek = "3.2.0"
 

@@ -93,6 +93,8 @@ class TestTxServiceObserver : public brave_wallet::mojom::TxServiceObserver {
     }
   }
 
+  void OnTxServiceReset() override {}
+
   void WaitForNewUnapprovedTx() {
     run_loop_new_unapproved_ = std::make_unique<base::RunLoop>();
     run_loop_new_unapproved_->Run();

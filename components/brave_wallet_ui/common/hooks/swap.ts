@@ -38,6 +38,7 @@ import { WalletActions } from '../actions'
 import getAPIProxy from '../async/bridge'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
 import { getBalance } from '../../utils/balance-utils'
+import { hasEIP1559Support } from '../../utils/network-utils'
 
 // Hooks
 import useAssetManagement from './assets-management'
@@ -167,8 +168,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const {
     getIsSwapSupported,
     getERC20Allowance,
-    sendSolanaSerializedTransaction,
-    hasEIP1559Support
+    sendSolanaSerializedTransaction
   } = useLib()
 
   // memos
@@ -426,9 +426,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         // order to ensure a swap with minimum slippage.
         const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
 
-        const isEIP1559 = selectedNetwork && gasEstimates && selectedAccount
-          ? hasEIP1559Support(selectedAccount, selectedNetwork)
-          : false
+        const isEIP1559 =
+          selectedNetwork && gasEstimates && selectedAccount
+            ? hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
+            : false
         let maxPriorityFeePerGas
         let maxFeePerGas
         if (isEIP1559 && gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {

@@ -135,6 +135,32 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
+double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
+  if (parameters_) {
+    base::Time vbat_deadline = parameters_->vbat_deadline;
+    if (!vbat_deadline.is_null()) {
+      return floor(parameters_->vbat_deadline.ToDoubleT() *
+                   base::Time::kMillisecondsPerSecond);
+    }
+  }
+  return 0.0;
+}
+
+void BraveRewardsNativeWorker::GetUserType(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->GetUserType(base::BindOnce(
+        &BraveRewardsNativeWorker::OnGetUserType, weak_factory_.GetWeakPtr()));
+  }
+}
+
+void BraveRewardsNativeWorker::OnGetUserType(
+    const ledger::mojom::UserType user_type) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onGetUserType(
+      env, weak_java_brave_rewards_native_worker_.get(env),
+      static_cast<int>(user_type));
+}
+
 void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->FetchBalance(base::BindOnce(

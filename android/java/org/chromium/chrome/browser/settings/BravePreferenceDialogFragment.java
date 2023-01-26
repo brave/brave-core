@@ -26,6 +26,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
+import org.chromium.chrome.browser.profiles.Profile;
 
 public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BravePreferenceDialogFragment";
@@ -62,10 +63,14 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             if (currentPreference.equals(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
                 onPreferenceChangeListener.onPreferenceChange(dialogPreference,
-                        BravePrefServiceBridge.getInstance().getFingerprintingControlType());
+                        BraveShieldsContentSettings.getShieldsValue(
+                                Profile.getLastUsedRegularProfile(), "",
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING));
             } else if (currentPreference.equals(BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
                 onPreferenceChangeListener.onPreferenceChange(dialogPreference,
-                        BravePrefServiceBridge.getInstance().getCosmeticFilteringControlType());
+                        BraveShieldsContentSettings.getShieldsValue(
+                                Profile.getLastUsedRegularProfile(), "",
+                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS));
             } else {
                 onPreferenceChangeListener.onPreferenceChange(
                         dialogPreference, sharedPreferences.getInt(currentPreference, 1));
@@ -87,19 +92,43 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                     if (currentPreference.equals(
                                 BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
                         if ((int) newValue == 0) {
-                            BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                                    BraveShieldsContentSettings.BLOCK_RESOURCE);
+                            BraveShieldsContentSettings.setShieldsValue(
+                                    Profile.getLastUsedRegularProfile(), "",
+                                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                                    BraveShieldsContentSettings.BLOCK_RESOURCE, false);
                         } else if ((int) newValue == 1) {
-                            BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                                    BraveShieldsContentSettings.DEFAULT);
+                            BraveShieldsContentSettings.setShieldsValue(
+                                    Profile.getLastUsedRegularProfile(), "",
+                                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                                    BraveShieldsContentSettings.DEFAULT, false);
                         } else {
-                            BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                                    BraveShieldsContentSettings.ALLOW_RESOURCE);
+                            BraveShieldsContentSettings.setShieldsValue(
+                                    Profile.getLastUsedRegularProfile(), "",
+                                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                                    BraveShieldsContentSettings.ALLOW_RESOURCE, false);
                         }
                     } else if (currentPreference.equals(
                                        BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
-                        BravePrefServiceBridge.getInstance().setCosmeticFilteringControlType(
-                                (int) newValue);
+                        switch ((int) newValue) {
+                            case 0:
+                                BraveShieldsContentSettings.setShieldsValue(
+                                        Profile.getLastUsedRegularProfile(), "",
+                                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                                        BraveShieldsContentSettings.BLOCK_RESOURCE, false);
+                                break;
+                            case 1:
+                                BraveShieldsContentSettings.setShieldsValue(
+                                        Profile.getLastUsedRegularProfile(), "",
+                                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                                        BraveShieldsContentSettings.DEFAULT, false);
+                                break;
+                            default:
+                                BraveShieldsContentSettings.setShieldsValue(
+                                        Profile.getLastUsedRegularProfile(), "",
+                                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                                        BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                                break;
+                        }
                     } else {
                         sharedPreferencesEditor.putInt(currentPreference, (int) newValue);
                     }

@@ -768,9 +768,13 @@ void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
 }
 
 void EthTxManager::GetAllTransactionInfo(
-    const std::string& from,
+    const absl::optional<std::string>& from,
     GetAllTransactionInfoCallback callback) {
-  auto from_address = EthAddress::FromHex(from);
+  if (!from) {
+    TxManager::GetAllTransactionInfo(absl::nullopt, std::move(callback));
+    return;
+  }
+  auto from_address = EthAddress::FromHex(from.value());
   if (from_address.IsEmpty()) {
     std::move(callback).Run(std::vector<mojom::TransactionInfoPtr>());
     return;

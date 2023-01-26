@@ -244,13 +244,26 @@
 
         </LinearLayout>
 
-        <TextView
-            style="@style/BraveWalletTextView"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/assets"
-            android:textColor="@color/brave_theme_hint_text" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/BraveWalletTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="6dp"
+                android:text="@string/assets"
+                android:textColor="@color/brave_theme_hint_text" />
 
+            <ProgressBar
+                android:id="@+id/frag_port_pb_asset_discovery"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+        
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

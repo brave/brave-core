@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { assert } from 'chrome://resources/js/assert.js'
+
+import { assert } from 'chrome://resources/js/assert_ts.js'
+
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -234,9 +236,11 @@ export async function getBuyAssetUrl (args: {
   return url
 }
 
-export async function getTokenList (network: BraveWallet.NetworkInfo) {
+export const getTokenList = async (
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+): Promise<{ tokens: BraveWallet.BlockchainToken[] }> => {
   const { blockchainRegistry } = getAPIProxy()
-  return (blockchainRegistry.getAllTokens(network.chainId, network.coin))
+  return blockchainRegistry.getAllTokens(network.chainId, network.coin)
 }
 
 export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, chainId: string) {
@@ -338,7 +342,7 @@ export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings
   if (coin === BraveWallet.CoinType.SOL) {
     return BraveWallet.SOLANA_KEYRING_ID
   }
-  assert(coin === BraveWallet.CoinType.ETH)
+  assert(coin === BraveWallet.CoinType.ETH, '')
   return BraveWallet.DEFAULT_KEYRING_ID
 }
 
@@ -756,6 +760,16 @@ export function refreshFullNetworkList () {
     )).flat(1)
 
     dispatch(WalletActions.setAllNetworks(networks))
+
+    const hiddenNetworks = (await Promise.all(
+      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
+        return networks.filter((n) => hiddenChains.includes(n.chainId))
+      })
+    )).flat(1)
+
+    dispatch(WalletActions.setAllHiddenNetworks(hiddenNetworks))
   }
 }
 
@@ -777,7 +791,9 @@ export function refreshNetworkInfo () {
     dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
 
     // Get current selected networks info
-    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
+    const selectedCoin = await dispatch(
+      walletApi.endpoints.getSelectedCoin.initiate(undefined)
+    ).unwrap()
     const chainId = await jsonRpcService.getChainId(selectedCoin)
 
     const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
@@ -810,14 +826,26 @@ export function refreshKeyringInfo () {
     }))
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
-    const selectedCoin = await dispatch(walletApi.endpoints.getSelectedCoin.initiate()).unwrap()
-    const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
+
+    const selectedCoin = await dispatch(
+      walletApi.endpoints.getSelectedCoin.initiate(undefined)
+    ).unwrap()
+
+    let selectedAccount = { address: null } as { address: string | null }
+
+    if (selectedCoin === BraveWallet.CoinType.FIL) {
+      const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
+      selectedAccount = await keyringService.getFilecoinSelectedAccount(
+        coinsChainId.chainId
+      )
+    }
+
+    if (selectedCoin && selectedCoin !== BraveWallet.CoinType.FIL) {
+      selectedAccount = await keyringService.getSelectedAccount(selectedCoin)
+    }
 
     // Get selectedAccountAddress
-    const getSelectedAccount = selectedCoin === BraveWallet.CoinType.FIL
-      ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
-      : await keyringService.getSelectedAccount(selectedCoin)
-    const selectedAddress = getSelectedAccount.address
+    const selectedAddress = selectedAccount.address
 
     // Fallback account address if selectedAccount returns null
     const fallbackAccount = walletInfo.accountInfos[0]
@@ -863,34 +891,6 @@ export function refreshSitePermissions () {
     const accountsWithPermission: WalletAccountType[] = getAllPermissions.filter((account): account is WalletAccountType => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
-}
-
-/**
- * Check if the keyring associated with the given account AND the network
- * support the EIP-1559 fee market for paying gas fees.
- *
- * This method can also be used to determine if the given parameters support
- * EVM Type-2 transactions. The return value is always false for non-EVM
- * networks.
- *
- * @param {WalletAccountType} account
- * @param {BraveWallet.NetworkInfo} network
- * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
- */
-export function hasEIP1559Support (account: WalletAccountType, network: BraveWallet.NetworkInfo) {
-  let keyringSupportsEIP1559
-  switch (account.accountType) {
-    case 'Primary':
-    case 'Secondary':
-    case 'Ledger':
-    case 'Trezor':
-      keyringSupportsEIP1559 = true
-      break
-    default:
-      keyringSupportsEIP1559 = false
-  }
-
-  return keyringSupportsEIP1559 && network.isEip1559
 }
 
 export async function sendEthTransaction (payload: SendEthTransactionParams) {

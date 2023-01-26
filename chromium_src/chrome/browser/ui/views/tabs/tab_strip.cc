@@ -28,7 +28,8 @@
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
 #define BRAVE_CALCULATE_INSERTION_INDEX                                       \
-  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {     \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&     \
+      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {     \
     tabs::UpdateInsertionIndexForVerticalTabs(                                \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,            \
         dragged_group, candidate_index, tab_strip_->controller_.get(),        \
@@ -37,7 +38,8 @@
   }
 
 #define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                          \
-  if (tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) { \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
+      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) { \
     return tabs::CalculateBoundsForVerticalDraggedViews(views);           \
   }
 

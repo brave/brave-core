@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
-index eb31c740b7ab8f40479a6bd67c49a18f1b239004..2566152d4eedcd0e5d5a237fdbe261ae0a554ee5 100644
+index 432868354db241d36ee41e9e5ca191edfb504670..3ecc839ad67d3f7f2845476a39fc9080a5c5a0c9 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc
 @@ -465,6 +465,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {

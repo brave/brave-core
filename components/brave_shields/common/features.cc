@@ -106,5 +106,17 @@ constexpr base::FeatureParam<std::string>
     kCosmeticFilteringFetchNewClassIdRulesThrottlingMs{
         &kCosmeticFilteringJsPerformance, "fetch_throttling_ms", "100"};
 
+BASE_FEATURE(kAdblockOverrideRegexDiscardPolicy,
+             "AdblockOverrideRegexDiscardPolicy",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+constexpr base::FeatureParam<int>
+    kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec{
+        &kAdblockOverrideRegexDiscardPolicy, "cleanup_interval_sec", 0};
+
+constexpr base::FeatureParam<int>
+    kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
+        &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
+
 }  // namespace features
 }  // namespace brave_shields

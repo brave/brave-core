@@ -19,7 +19,10 @@ import {
 // Utils
 import Amount from '../../../../utils/amount'
 import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
-import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import {
+  ParsedTransaction,
+  sortTransactionByDate
+} from '../../../../utils/tx-utils'
 import { getTokensNetwork } from '../../../../utils/network-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import useExplorer from '../../../../common/hooks/explorer'
@@ -97,7 +100,6 @@ import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
-import { ParsedTransaction } from '../../../../common/hooks/transaction-parser'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -442,6 +444,15 @@ export const PortfolioAsset = (props: Props) => {
 
   const onHideAsset = React.useCallback(() => {
     if (!selectedAsset) return
+    if (
+      fullTokenList.some((asset) =>
+        asset.contractAddress.toLowerCase() ===
+        selectedAsset.contractAddress.toLowerCase())
+    ) {
+      dispatch(WalletActions.removeUserAsset(selectedAsset))
+    } else {
+      dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
+    }
     dispatch(WalletActions.setUserAssetVisible({ token: selectedAsset, isVisible: false }))
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     dispatch(WalletPageActions.selectAsset({
@@ -451,7 +462,7 @@ export const PortfolioAsset = (props: Props) => {
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.Portfolio)
-  }, [selectedAsset, showTokenDetailsModal])
+  }, [selectedAsset, showTokenDetailsModal, fullTokenList])
 
   const onViewOnExplorer = React.useCallback(() => {
     if (selectedAsset) {

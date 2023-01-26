@@ -17,7 +17,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "net/base/io_buffer.h"
 #include "net/base/net_errors.h"
 #include "net/socket/tcp_client_socket.h"
@@ -88,7 +87,7 @@ static std::string escapify(const char* buf, int len) {
 TorControl::TorControl(base::WeakPtr<TorControl::Delegate> delegate,
                        scoped_refptr<base::SequencedTaskRunner> task_runner)
     : running_(false),
-      owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
+      owner_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
       io_task_runner_(task_runner),
       writing_(false),
       reading_(false),

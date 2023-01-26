@@ -70,6 +70,7 @@
   sendTransaction,
   setAccountTransactions,
   setAllNetworks,
+  setAllHiddenNetworks,
   setAllTokensList,
   setAssetAutoDiscoveryCompleted,
   setCoinMarkets,
@@ -97,5 +98,6 @@
   unlocked,
   updateUnapprovedTransactionGasFields,
   updateUnapprovedTransactionNonce,
-  updateUnapprovedTransactionSpendAllowance
+  updateUnapprovedTransactionSpendAllowance,
+  updateTokenPinStatus
  } = WalletActions

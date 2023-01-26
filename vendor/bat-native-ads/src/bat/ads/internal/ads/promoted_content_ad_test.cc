@@ -58,6 +58,9 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
@@ -66,9 +69,13 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kViewed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kClicked));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 }  // namespace ads

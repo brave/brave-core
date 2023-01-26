@@ -60,7 +60,7 @@ class BraveLocationBarView : public LocationBarView {
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
-  void ChildPreferredSizeChanged(views::View* child) override;
+  void ChildVisibilityChanged(views::View* child) override;
 
   int GetBorderRadius() const override;
 

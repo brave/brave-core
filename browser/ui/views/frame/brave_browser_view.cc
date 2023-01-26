@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -172,6 +173,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 
   const bool supports_vertical_tabs =
+      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
       tabs::features::SupportsVerticalTabs(browser_.get());
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
@@ -301,6 +303,9 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return BrowserView::GetTabStripVisible();
+
   if (tabs::features::ShouldShowVerticalTabs(browser()))
     return false;
 
@@ -309,6 +314,9 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return BrowserView::GetSupportsTitle();
+
   if (tabs::features::SupportsVerticalTabs(browser()))
     return true;
 
@@ -378,6 +386,12 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 #endif
 }
 
+bool BraveBrowserView::HasSelectedURL() const {
+  return static_cast<BraveOmniboxViewViews*>(
+             GetLocationBarView()->omnibox_view())
+      ->SelectedTextIsURL();
+}
+
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
 }
@@ -410,6 +424,14 @@ void BraveBrowserView::AddedToWidget() {
     vertical_tab_strip_widget_delegate_view_ =
         VerticalTabStripWidgetDelegateView::Create(
             this, vertical_tab_strip_host_view_);
+
+    // By setting this property to the widget for vertical tabs,
+    // BrowserView::GetBrowserViewForNativeWindow() will return browser view
+    // properly even when we pass the native window for vertical tab strip.
+    // As a result, we don't have to call GetTopLevelWidget() in order to
+    // get browser view from the vertical tab strip's widget.
+    SetNativeWindowPropertyForWidget(
+        vertical_tab_strip_widget_delegate_view_->GetWidget());
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
@@ -483,9 +505,27 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
+void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
+                                                 bool active) {
+  BrowserView::OnWidgetActivationChanged(widget, active);
+
+  // For updating sidebar's item state.
+  // As we can activate other window's Talk tab with current window's sidebar
+  // Talk item, sidebar Talk item should have activated state if other windows
+  // have Talk tab. It would be complex to get updated when Talk tab is opened
+  // from other windows. So, simply trying to update when window activation
+  // state is changed. With this, active window could have correct sidebar item
+  // state.
+  if (sidebar_container_view_)
+    sidebar_container_view_->UpdateSidebar();
+}
+
 bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle())
     return true;
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
 
   if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()))
     return true;

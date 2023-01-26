@@ -25,7 +25,8 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPIBase,
  public:
   BraveVPNOSConnectionAPIWin(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* local_prefs);
+      PrefService* local_prefs,
+      version_info::Channel channel);
   BraveVPNOSConnectionAPIWin(const BraveVPNOSConnectionAPIWin&) = delete;
   BraveVPNOSConnectionAPIWin& operator=(const BraveVPNOSConnectionAPIWin&) =
       delete;

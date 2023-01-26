@@ -27,6 +27,7 @@ namespace brave_wallet {
 bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
+bool ShouldShowTxStatusInToolbar();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
 
@@ -150,6 +151,14 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
+
+// Converts string representation of CoinType to enum.
+absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
+
+// Resolves chain_id from network_id.
+absl::optional<std::string> GetChainId(PrefService* prefs,
+                                       const mojom::CoinType& coin,
+                                       const std::string& network_id);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium

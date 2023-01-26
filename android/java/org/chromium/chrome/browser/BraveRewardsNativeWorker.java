@@ -194,6 +194,19 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public double getVbatDeadline() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getVbatDeadline(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
+    public void getUserType() {
+        synchronized (lock) {
+            BraveRewardsNativeWorkerJni.get().getUserType(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public void fetchBalance() {
         synchronized (lock) {
             BraveRewardsNativeWorkerJni.get().fetchBalance(mNativeBraveRewardsNativeWorker);
@@ -756,6 +769,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void onGetUserType(int userType) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.onGetUserType(userType);
+        }
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveRewardsNativeWorker caller);
@@ -810,6 +830,8 @@ public class BraveRewardsNativeWorker {
         void refreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
         void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
+        double getVbatDeadline(long nativeBraveRewardsNativeWorker);
+        void getUserType(long nativeBraveRewardsNativeWorker);
         void fetchBalance(long nativeBraveRewardsNativeWorker);
         void setAutoContributeEnabled(
                 long nativeBraveRewardsNativeWorker, boolean isSetAutoContributeEnabled);

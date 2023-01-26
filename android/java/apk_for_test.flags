@@ -107,8 +107,13 @@
     *** runMenuItemEnterAnimations(...);
 }
 
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch
+
 -keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
     *** setWidgetEnabled(...);
+    *** setWidgetComponentEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
@@ -637,15 +642,13 @@
 }
 
 -keep class org.chromium.chrome.browser.logo.LogoCoordinator {
-    *** mShouldShowLogo;
+    *** mLogoModel;
     public <init>(...);
-    *** updateVisibility(...);
 }
 
 -keep class org.chromium.chrome.browser.logo.BraveLogoCoordinator {
-    *** mShouldShowLogo;
+    *** mLogoModel;
     public <init>(...);
-    *** updateVisibility(...);
 }
 
 

@@ -42,6 +42,7 @@ constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletTokenMintAddress", IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS},
     {"braveWalletActivity", IDS_BRAVE_WALLET_ACTIVITY},
     {"braveWalletTokenDecimalsIsRequiredError",
      IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR},
@@ -363,6 +364,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletWatchListSearchPlaceholder",
      IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER},
     {"braveWalletWatchListError", IDS_BRAVE_WALLET_WATCH_LIST_ERROR},
+    {"braveWalletCustomTokenExistsError",
+     IDS_BRAVE_WALLET_CUSTOM_TOKEN_EXISTS_ERROR},
     {"braveWalletWatchListTokenId", IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID},
     {"braveWalletWatchListTokenIdError",
      IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR},

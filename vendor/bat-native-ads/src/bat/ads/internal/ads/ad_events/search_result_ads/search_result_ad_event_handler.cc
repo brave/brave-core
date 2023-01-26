@@ -30,22 +30,45 @@ namespace ads::search_result_ads {
 
 namespace {
 
+bool ShouldDebounceViewedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kViewed &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
+}
+
+bool ShouldDebounceClickedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kClicked &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
+}
+
+bool IsAdPlaced(const AdInfo& ad,
+                const AdEventList& ad_events,
+                const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kServed ||
+         event_type == mojom::SearchResultAdEventType::kViewed ||
+         (HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed) &&
+          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
+}
+
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::SearchResultAdEventType& event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (event_type == mojom::SearchResultAdEventType::kViewed &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
-    return true;
-  }
-
-  if (event_type == mojom::SearchResultAdEventType::kClicked &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
-    return true;
-  }
-
-  return false;
+  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
+         ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
+         !IsAdPlaced(ad, ad_events, event_type);
 }
 
 }  // namespace
@@ -180,7 +203,7 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as already fired "
+          BLOG(1, "Search result ad: Not allowed as debounced "
                       << event_type << " event for this placement id "
                       << ad.placement_id);
           FailedToFireEvent(ad, event_type, callback);
@@ -212,7 +235,7 @@ void EventHandler::FireClickedEvent(
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as already fired "
+          BLOG(1, "Search result ad: Not allowed as debounced "
                       << event_type << " event for this placement id "
                       << ad.placement_id);
           FailedToFireEvent(ad, event_type, callback);

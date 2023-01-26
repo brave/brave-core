@@ -137,6 +137,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+  void OnTxServiceReset() override {}
 
   base::flat_map<std::string, SignAndSendTransactionCallback>
       sign_and_send_tx_callbacks_;

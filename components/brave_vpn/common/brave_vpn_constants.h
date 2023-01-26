@@ -19,7 +19,6 @@ constexpr char kManageUrlDev[] = "https://account.brave.software/account/";
 constexpr char kFeedbackUrl[] = "https://support.brave.com/";
 constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 
-constexpr char kBraveVPNEntryName[] = "BraveVPN";
 constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";

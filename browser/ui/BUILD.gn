@@ -43,6 +43,8 @@ source_set("ui") {
   check_includes = false
   public_deps = []
   sources = [
+    "webui/brave_adblock_internals_ui.cc",
+    "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
     "webui/brave_federated/federated_internals_page_handler.cc",
@@ -80,6 +82,8 @@ source_set("ui") {
       "brave_browser_content_setting_bubble_model_delegate.h",
       "brave_browser_window.cc",
       "brave_browser_window.h",
+      "brave_icon_with_badge_image_source.cc",
+      "brave_icon_with_badge_image_source.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -148,6 +152,8 @@ source_set("ui") {
       "webui/settings/brave_adblock_handler.h",
       "webui/settings/brave_appearance_handler.cc",
       "webui/settings/brave_appearance_handler.h",
+      "webui/settings/brave_import_bulk_data_handler.cc",
+      "webui/settings/brave_import_bulk_data_handler.h",
       "webui/settings/brave_import_data_handler.cc",
       "webui/settings/brave_import_data_handler.h",
       "webui/settings/brave_importer_observer.cc",
@@ -166,8 +172,6 @@ source_set("ui") {
       "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
-      "webui/settings/import_feature.cc",
-      "webui/settings/import_feature.h",
       "webui/speedreader/speedreader_panel_data_handler_impl.cc",
       "webui/speedreader/speedreader_panel_data_handler_impl.h",
       "webui/speedreader/speedreader_panel_handler_impl.cc",
@@ -253,6 +257,8 @@ source_set("ui") {
       "views/omnibox/brave_omnibox_popup_contents_view.h",
       "views/omnibox/brave_omnibox_result_view.cc",
       "views/omnibox/brave_omnibox_result_view.h",
+      "views/omnibox/brave_omnibox_view_views.cc",
+      "views/omnibox/brave_omnibox_view_views.h",
       "views/omnibox/brave_rounded_omnibox_results_frame.cc",
       "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
@@ -389,6 +395,7 @@ source_set("ui") {
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
+    "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_federated",
@@ -434,6 +441,7 @@ source_set("ui") {
     "//content/public/common",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
+    "//services/resource_coordinator/public/cpp/memory_instrumentation:browser",
     "//skia",
     "//third_party/abseil-cpp:absl",
     "//ui/accessibility",
@@ -592,8 +600,6 @@ source_set("ui") {
 
   if (enable_extensions && toolkit_views) {
     sources += [
-      "brave_actions/brave_action_icon_with_badge_image_source.cc",
-      "brave_actions/brave_action_icon_with_badge_image_source.h",
       "toolbar/brave_location_bar_model_delegate.cc",
       "toolbar/brave_location_bar_model_delegate.h",
       "views/brave_actions/brave_actions_container.cc",
@@ -623,6 +629,10 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
+
+    if (is_mac) {
+      sources += [ "views/frame/vertical_tab_strip_region_view_mac.mm" ]
+    }
 
     if (enable_extensions) {
       sources += [
@@ -734,6 +744,8 @@ source_set("ui") {
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
       "views/toolbar/wallet_button.h",
+      "views/toolbar/wallet_button_notification_source.cc",
+      "views/toolbar/wallet_button_notification_source.h",
       "views/wallet_bubble_focus_observer.cc",
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",

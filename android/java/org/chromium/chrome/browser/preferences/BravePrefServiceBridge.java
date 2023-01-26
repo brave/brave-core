@@ -38,61 +38,12 @@ public class BravePrefServiceBridge {
         return sInstance;
     }
 
-    /**
-     * @param whether HTTPSE should be enabled.
-     */
-    public void setHTTPSEEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setHTTPSEEnabled(enabled);
-    }
-
-    /**
-     * @param whether the IPFS gateway should be enabled.
-     */
-    public void setIpfsGatewayEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setIpfsGatewayEnabled(enabled);
-    }
-
-    /**
-     * @param whether AdBlock should be enabled.
-     */
-    public void setAdBlockEnabled(boolean enabled) {
-        BravePrefServiceBridgeJni.get().setAdBlockEnabled(enabled);
-    }
-
-    public void setNoScriptControlType(String type) {
-        BravePrefServiceBridgeJni.get().setNoScriptControlType(type);
-    }
-
-    public String getNoScriptControlType() {
-        return BravePrefServiceBridgeJni.get().getNoScriptControlType();
-    }
-
     public void setCookiesBlockType(String type) {
         BravePrefServiceBridgeJni.get().setCookiesBlockType(type);
     }
 
     public String getCookiesBlockType() {
         return BravePrefServiceBridgeJni.get().getCookiesBlockType();
-    }
-
-    /**
-     * @param whether Fingerprinting Protection should be enabled.
-     */
-
-    public void setFingerprintingControlType(String type) {
-        BravePrefServiceBridgeJni.get().setFingerprintingControlType(type);
-    }
-
-    public String getFingerprintingControlType() {
-        return BravePrefServiceBridgeJni.get().getFingerprintingControlType();
-    }
-
-    public void setCosmeticFilteringControlType(int type) {
-        BravePrefServiceBridgeJni.get().setCosmeticFilteringControlType(type);
-    }
-
-    public String getCosmeticFilteringControlType() {
-        return BravePrefServiceBridgeJni.get().getCosmeticFilteringControlType();
     }
 
     public void setPlayYTVideoInBrowserEnabled(boolean enabled) {
@@ -188,21 +139,8 @@ public class BravePrefServiceBridge {
 
     @NativeMethods
     interface Natives {
-        void setCosmeticFilteringControlType(int type);
-        String getCosmeticFilteringControlType();
-
         void setCookiesBlockType(String type);
         String getCookiesBlockType();
-
-        void setFingerprintingControlType(String type);
-        String getFingerprintingControlType();
-
-        void setNoScriptControlType(String type);
-        String getNoScriptControlType();
-
-        void setHTTPSEEnabled(boolean enabled);
-        void setIpfsGatewayEnabled(boolean enabled);
-        void setAdBlockEnabled(boolean enabled);
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
         boolean getPlayYTVideoInBrowserEnabled();

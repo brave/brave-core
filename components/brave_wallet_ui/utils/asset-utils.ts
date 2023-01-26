@@ -199,12 +199,15 @@ export const getAssetIdKey = (asset: GetBlockchainTokenIdArg) => {
  */
 export const isSardineSupported = () => navigator.language.toLowerCase() === 'en-us'
 
-export const findTokenByContractAddress = (
+export const findTokenByContractAddress = <
+  T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
+>(
   contractAddress: string,
-  tokensList: BraveWallet.BlockchainToken[]
-) => {
-  return tokensList.find((token) =>
-    token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
+  tokensList: T[]
+): T | undefined => {
+  return tokensList.find(
+    (token) =>
+      token.contractAddress.toLowerCase() === contractAddress.toLowerCase()
   )
 }
 
@@ -233,4 +236,14 @@ export const formatTokenBalance = (
         .divideByDecimals(selectedAsset?.decimals ?? 18)
         .formatAsAsset(decimalPlaces ?? 6, selectedAsset?.symbol ?? '')
     : ''
+}
+
+export const checkIfTokensMatch = (
+  tokenOne: BraveWallet.BlockchainToken,
+  tokenTwo: BraveWallet.BlockchainToken
+): boolean => {
+  return tokenOne.symbol.toLowerCase() === tokenTwo.symbol.toLowerCase() &&
+    tokenOne.contractAddress.toLowerCase() === tokenTwo.contractAddress.toLowerCase() &&
+    tokenOne.chainId === tokenTwo.chainId &&
+    tokenOne.tokenId === tokenTwo.tokenId
 }

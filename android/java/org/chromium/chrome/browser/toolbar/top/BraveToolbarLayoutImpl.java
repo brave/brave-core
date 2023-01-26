@@ -50,15 +50,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -75,6 +76,7 @@ import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindo
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -86,6 +88,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -126,8 +129,12 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.Playlist;
+import org.chromium.playlist.mojom.PlaylistItem;
+import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -146,6 +153,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
@@ -200,6 +208,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+    private PlaylistService mPlaylistService;
 
     private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
 
@@ -214,6 +223,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
+        }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                && mPlaylistService != null) {
+            mPlaylistService.close();
         }
         super.destroy();
         if (mBraveRewardsNativeWorker != null) {
@@ -356,6 +369,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
         initCookieListOptInPageAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            mPlaylistService = null;
+            initPlaylistService();
+        }
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -368,10 +385,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         this);
     }
 
+    private void initPlaylistService() {
+        if (mPlaylistService != null) {
+            return;
+        }
+
+        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
+    }
+
     @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            initPlaylistService();
+        }
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
@@ -486,6 +514,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && mBraveRewardsNativeWorker != null
                         && mBraveRewardsNativeWorker.IsSupported()) {
                     showBraveRewardsOnboardingModal();
+                }
+                if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                        && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+                        && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
+                        && tab.getUrl().domainIs(YOUTUBE_DOMAIN) && mPlaylistService != null) {
+                    // TODO DEEP : find contents from the page and show the playlist button
                 }
             }
 
@@ -1056,7 +1090,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
-        if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+        // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+            if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+        });
 
         if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
             OnboardingPrefManager.getInstance().updateUrlFocusCount();

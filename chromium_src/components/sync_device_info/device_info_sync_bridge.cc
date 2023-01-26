@@ -35,7 +35,7 @@
 #undef BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
 
 #include "base/containers/contains.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 
 namespace syncer {
 
@@ -61,8 +61,8 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       specifics.cache_guid(), specifics.client_name(),
       specifics.chrome_version(), specifics.sync_user_agent(),
       specifics.device_type(),
-      DeriveOSfromDeviceType(specifics.device_type(), specifics.manufacturer()),
-      DeriveFormFactorfromDeviceType(specifics.device_type()),
+      DeriveOsFromDeviceType(specifics.device_type(), specifics.manufacturer()),
+      DeriveFormFactorFromDeviceType(specifics.device_type()),
       specifics.signin_scoped_device_id(), specifics.manufacturer(),
       specifics.model(), ProtoTimeToTime(specifics.last_updated_timestamp()),
       GetPulseIntervalFromSpecifics(specifics),
@@ -84,7 +84,7 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
   DeleteSpecifics(client_id, batch.get());
   batch->GetMetadataChangeList()->ClearMetadata(client_id);
   CommitAndNotify(std::move(batch), /*should_notify=*/true);
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                      weak_ptr_factory_.GetWeakPtr(), client_id, 1,
@@ -98,7 +98,7 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
   // Make sure the deleted device info is sent
   if (change_processor()->IsEntityUnsynced(client_id) &&
       attempt < kFailedAttemtpsToAckDeviceDelete) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                        weak_ptr_factory_.GetWeakPtr(), client_id, attempt + 1,

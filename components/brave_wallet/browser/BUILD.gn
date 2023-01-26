@@ -1,4 +1,4 @@
-# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -98,6 +98,7 @@ static_library("browser") {
     "json_rpc_service.h",
     "keyring_service.cc",
     "keyring_service.h",
+    "keyring_service_observer_base.h",
     "nft_metadata_fetcher.cc",
     "nft_metadata_fetcher.h",
     "nonce_tracker.cc",
@@ -155,6 +156,14 @@ static_library("browser") {
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]
+  if (enable_ipfs_local_node) {
+    sources += [
+      "brave_wallet_auto_pin_service.cc",
+      "brave_wallet_auto_pin_service.h",
+      "brave_wallet_pin_service.cc",
+      "brave_wallet_pin_service.h",
+    ]
+  }
   deps = [
     ":constants",
     ":generated_json_rpc_responses",

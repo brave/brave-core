@@ -15,7 +15,8 @@
 
 #define BrowserViewLayoutDelegateImpl \
   BrowserViewLayoutDelegateImpl;      \
-  friend class BraveBrowserView
+  friend class BraveBrowserView;      \
+  void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel

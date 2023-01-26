@@ -28,10 +28,8 @@ namespace brave_stats {
 class BraveStatsUpdaterParams {
  public:
   explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                                   PrefService* profile_pref_service,
                                    const ProcessArch arch);
   BraveStatsUpdaterParams(PrefService* stats_pref_service,
-                          PrefService* profile_pref_service,
                           const ProcessArch arch,
                           const std::string& ymd,
                           int woy,
@@ -65,7 +63,6 @@ class BraveStatsUpdaterParams {
   FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringInactive);
 
   raw_ptr<PrefService> stats_pref_service_ = nullptr;
-  raw_ptr<PrefService> profile_pref_service_ = nullptr;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;

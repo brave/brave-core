@@ -11,6 +11,7 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
@@ -85,6 +86,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       web_ui->GetWebContents()->GetBrowserContext());
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
+  } else if (host == kAdblockInternalsHost) {
+    return new BraveAdblockInternalsUI(web_ui, url.host());
   } else if (host == kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(ENABLE_IPFS)
@@ -173,6 +176,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
+      url.host_piece() == kAdblockInternalsHost ||
       url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(ENABLE_IPFS)
       (url.host_piece() == kIPFSWebUIHost &&

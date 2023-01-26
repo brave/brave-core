@@ -46,9 +46,9 @@ class HDKeyring {
 
   std::string GetAddress(size_t index) const;
   std::string GetDiscoveryAddress(size_t index) const;
-  // Find private key by address (it would be hex or base58 depends on
-  // underlying hd key
-  virtual std::string GetEncodedPrivateKey(const std::string& address);
+  // Find private key by address and encode for export (it would be hex or
+  // base58 depends on underlying hd key)
+  virtual std::string EncodePrivateKeyForExport(const std::string& address);
 
   std::vector<uint8_t> SignMessage(const std::string& address,
                                    const std::vector<uint8_t>& message);

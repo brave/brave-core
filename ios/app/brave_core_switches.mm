@@ -33,6 +33,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalRotationIntervalSeconds =
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds =
     base::SysUTF8ToNSString(
         brave::switches::kP3AExpressRotationIntervalSeconds);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds =
+    base::SysUTF8ToNSString(brave::switches::kP3ASlowRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadServerURL =
     base::SysUTF8ToNSString(brave::switches::kP3AUploadServerUrl);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =

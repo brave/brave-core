@@ -238,6 +238,7 @@
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ERROR" desc="Visible assets modal failed to add token error">Failed to add custom token, please try again.</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM_TOKEN_EXISTS_ERROR" desc="Error message that is shown when trying to add a token that already exists in your portfolio.">This token has already been added to your portfolio.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID" desc="Visible assets modal tokenId label">Token ID (only for ERC721)</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR" desc="Visible assets modal tokenId error">Token ID is required</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADVANCED" desc="Visible assets modal advanced fields">Advanced</message>
@@ -815,4 +816,5 @@
   <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR" desc="Error explaining that an invalid or empty token contract address has been entered as a form value">Invalid or empty token contract address</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
 </grit-part>

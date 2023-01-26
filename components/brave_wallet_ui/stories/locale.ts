@@ -336,6 +336,7 @@ provideStrings({
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
+  braveWalletCustomTokenExistsError: 'This token has already been added to your portfolio.',
   braveWalletAccountSettingsDisclaimer: 'WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
@@ -812,5 +813,6 @@ provideStrings({
   braveWalletTokenDecimalsIsRequiredError:
     'Token decimals of precision value is required',
   braveWalletTokenContractAddress: 'Token Contract Address',
-  braveWalletTokenDecimal: 'Token Decimal'
+  braveWalletTokenDecimal: 'Token Decimal',
+  braveWalletTokenMintAddress: 'Mint address'
 })

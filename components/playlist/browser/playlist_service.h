@@ -22,6 +22,9 @@
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 namespace base {
 class SequencedTaskRunner;
@@ -95,6 +98,10 @@ class PlaylistService : public KeyedService,
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
+#endif  // BUILDFLAG(IS_ANDROID)
+
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
 
@@ -135,6 +142,8 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void RecoverLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
+  void RemoveLocalDataForItemsInPlaylist(
+      const std::string& playlist_id) override;
 
   void CreatePlaylist(mojom::PlaylistPtr playlist,
                       CreatePlaylistCallback callback) override;
@@ -252,6 +261,8 @@ class PlaylistService : public KeyedService,
   void DeletePlaylistItemData(const std::string& id);
   void DeleteAllPlaylistItems();
 
+  void RemoveLocalDataForItem(const mojom::PlaylistItemPtr& item);
+
   std::unique_ptr<Delegate> delegate_;
 
   const base::FilePath base_dir_;
@@ -267,6 +278,10 @@ class PlaylistService : public KeyedService,
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<PrefService> prefs_ = nullptr;
+
+#if BUILDFLAG(IS_ANDROID)
+  mojo::ReceiverSet<mojom::PlaylistService> receivers_;
+#endif  // BUILDFLAG(IS_ANDROID)
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };

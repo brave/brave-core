@@ -61,6 +61,9 @@ void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
 }
 
 bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
+
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
     return tabs::features::ShouldShowVerticalTabs(controller_->browser());
 
@@ -74,7 +77,7 @@ bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
         controller_->browser());
   }
 
-  return false;
+  return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
 }
 
 bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
@@ -86,6 +89,9 @@ bool BraveTabContextMenuContents::IsCommandIdEnabled(int command_id) const {
 }
 
 bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
+
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
     return tabs::features::SupportsVerticalTabs(controller_->browser());
 

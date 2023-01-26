@@ -124,6 +124,9 @@
   <message name="IDS_EXTENSIONS_HOST_PERMISSIONS_DESCRIPTION" desc="The explanatory text for adjusting which websites an extension is allowed to run on.">
     This extension can read and change your data on sites. You can control which sites the extension can access.
   </message>
+  <message name="IDS_EXTENSIONS_PERMISSIONS_LEARN_MORE_A11Y_LABEL" desc="Accessibility label for a 'Learn more' link that links to an external help article about Extension permissions.">
+    Learn more about extension permissions
+  </message>
   <!-- TODO(devlin): Unify this with IDS_SETTINGS_EDIT. -->
   <message name="IDS_EXTENSIONS_HOST_PERMISSIONS_EDIT" desc="The label of the button used to edit an extension's access to a given website.">
     Edit
@@ -419,6 +422,9 @@
   <message name="IDS_EXTENSIONS_SITE_PERMISSIONS_ALWAYS_ON_THIS_SITE" desc="The option shown for an extension that can automatically access the site in the edit permissions dialog.">
     Always on this site
   </message>
+  <message name="IDS_EXTENSIONS_SITE_SETTINGS" desc="The text for the link to manage site settings for the extension.">
+    Site settings
+  </message>
   <message name="IDS_EXTENSIONS_PERMITTED_SITES" desc="The label above the list of sites that extensions are always permitted to run in.">
     All extensions allowed
   </message>
@@ -452,14 +458,17 @@
   <message name="IDS_EXTENSIONS_SITE_PERMISSIONS_DIALOG_INPUT_LABEL" desc="The label for the input field where a user enters a new site. Used for the permitted and restricted site lists.">
     Site URL
   </message>
-  <message name="IDS_EXTENSIONS_EDIT_SHORTCUT" desc="The label for a button to edit the shortcut.">
-    Edit shortcut
+  <message name="IDS_EXTENSIONS_EDIT_SHORTCUT_INPUT_LABEL" desc="The label for the input to edit the shortcut.">
+    Shortcut <ph name="SHORTCUT">$1</ph> for <ph name="EXTENSION_NAME">$2</ph>
+  </message>
+  <message name="IDS_EXTENSIONS_EDIT_SHORTCUT_BUTTON_LABEL" desc="The label for a button to edit the shortcut.">
+    Edit shortcut <ph name="SHORTCUT">$1</ph> for <ph name="EXTENSION_NAME">$2</ph>
   </message>
   <message name="IDS_EXTENSIONS_SHORTCUT_NOT_SET" desc="The label to indicate that an extension has no shortcut set for a given command.">
     Not set
   </message>
   <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_LABEL" desc="The label for the dropdown menu that lets the user choose the scope of an extension command (within chrome or global).">
-    Scope
+    Scope of <ph name="SHORTCUT">$1</ph> for <ph name="EXTENSION_NAME">$2</ph>
   </message>
   <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_GLOBAL" desc="The label to indicate that a shortcut will be triggerable globally (including outside of the Brave application).">
     Global

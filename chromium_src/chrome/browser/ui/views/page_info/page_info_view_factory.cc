@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/page_info/chrome_page_info_ui_delegate.h"
 #include "chrome/browser/ui/views/controls/rich_hover_button.h"
 #include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -28,14 +29,14 @@ std::unique_ptr<RichHoverButton> CreateButton(
     views::Button::PressedCallback callback) {
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
   const auto& ipfs_logo = *bundle.GetImageSkiaNamed(logo_resource_id);
-  const std::u16string& tooltip =
+  const std::u16string& title_text =
+      brave_l10n::GetLocalizedResourceUTF16String(text_resource_id);
+  const std::u16string& tooltip_text =
       brave_l10n::GetLocalizedResourceUTF16String(tooltip_resource_id);
 
   return std::make_unique<RichHoverButton>(
-      std::move(callback), ui::ImageModel::FromImageSkia(ipfs_logo),
-      text_resource_id, std::u16string(),
-      PageInfoViewFactory::VIEW_ID_PAGE_INFO_LINK_OR_BUTTON_COOKIE_DIALOG,
-      tooltip, std::u16string());
+      std::move(callback), ui::ImageModel::FromImageSkia(ipfs_logo), title_text,
+      std::u16string(), tooltip_text, std::u16string());
 }
 
 void BraveAddIPFSButtons(views::View* container,

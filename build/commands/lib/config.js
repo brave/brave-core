@@ -186,6 +186,7 @@ const Config = function () {
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.goma_offline = false
+  this.use_libfuzzer = false
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -325,6 +326,9 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
+    use_libfuzzer: this.use_libfuzzer,
+    enable_updater: this.isOfficialBuild(),
+    enable_update_notifications: this.isOfficialBuild(),
     ...this.extraGnArgs,
   }
 
@@ -376,6 +380,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
+      !this.isComponentBuild() &&
       this.targetOS !== 'ios' &&
       this.targetOS !== 'android') {
     args.enable_profiling = true
@@ -453,7 +458,6 @@ Config.prototype.buildArgs = function () {
 
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
-    args.enable_jdk_library_desugaring = false
     if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
@@ -515,6 +519,9 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'ios') {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
+    }
+    if (this.targetArch == 'x64' && this.isDebug()) {
+      args.use_lld = false
     }
     args.enable_dsyms = true
     args.enable_stripping = !this.isComponentBuild()
@@ -923,6 +930,10 @@ Config.prototype.update = function (options) {
 
   if (options.target) {
     this.buildTarget = options.target
+  }
+
+  if (options.use_libfuzzer) {
+    this.use_libfuzzer = options.use_libfuzzer
   }
 }
 

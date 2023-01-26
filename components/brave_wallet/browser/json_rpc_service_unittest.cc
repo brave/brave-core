@@ -1108,14 +1108,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
     base::RunLoop run_loop;
     json_rpc_service_->GetERC721Metadata(
         contract, token_id, chain_id,
-        base::BindLambdaForTesting([&](const std::string& response,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(response, expected_response);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](const std::string& token_url, const std::string& response,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(response, expected_response);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -1128,14 +1128,14 @@ class JsonRpcServiceUnitTest : public testing::Test {
     base::RunLoop run_loop;
     json_rpc_service_->GetERC1155Metadata(
         contract, token_id, chain_id,
-        base::BindLambdaForTesting([&](const std::string& response,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(response, expected_response);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](const std::string& token_url, const std::string& response,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(response, expected_response);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -1384,6 +1384,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
         }));
+    run_loop.Run();
+  }
+
+  void TestGetSolanaTokenAccountsByOwner(
+      const SolanaAddress& solana_address,
+      const std::vector<SolanaAccountInfo>& expected_token_accounts,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaTokenAccountsByOwner(
+        solana_address,
+        base::BindLambdaForTesting(
+            [&](const std::vector<SolanaAccountInfo>& token_accounts,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(token_accounts, expected_token_accounts);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -4350,6 +4370,110 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaBlockHeight) {
                            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
+TEST_F(JsonRpcServiceUnitTest, GetSolanaTokenAccountsByOwner) {
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL));
+  auto expected_network_url =
+      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+
+  // Valid
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "", R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "5gjGaTE41sPVS1Dzwg43ipdj9NTtApZLcK55ihRuVb6Y"
+        },
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+        }
+      ]
+    },
+    "id": 1
+  })");
+  // Create expected account infos
+  std::vector<SolanaAccountInfo> expected_account_infos;
+  SolanaAccountInfo account_info;
+  account_info.data =
+      "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/"
+      "xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
+      "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAA";
+  account_info.executable = false;
+  account_info.lamports = 2039280;
+  account_info.owner = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+  account_info.rent_epoch = 361;
+
+  expected_account_infos.push_back(std::move(account_info));
+  account_info.data =
+      "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+"
+      "lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
+      "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAA";
+  account_info.executable = false;
+  account_info.lamports = 2039280;
+  account_info.owner = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+  account_info.rent_epoch = 361;
+  expected_account_infos.push_back(std::move(account_info));
+
+  absl::optional solana_address =
+      SolanaAddress::FromBase58("4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF");
+  ASSERT_TRUE(solana_address);
+
+  TestGetSolanaTokenAccountsByOwner(*solana_address, expected_account_infos,
+                                    mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "",
+                 R"({"jsonrpc":"2.0","id":1})");
+  TestGetSolanaTokenAccountsByOwner(
+      *solana_address, {}, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor(expected_network_url, "getTokenAccountsByOwner", "",
+                 R"({"jsonrpc": "2.0", "id": 1,
+                     "error": {
+                       "code":-32601,
+                       "message":"method does not exist"
+                     }
+                    })");
+  TestGetSolanaTokenAccountsByOwner(*solana_address, {},
+                                    mojom::SolanaProviderError::kMethodNotFound,
+                                    "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaTokenAccountsByOwner(
+      *solana_address, {}, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
 TEST_F(JsonRpcServiceUnitTest, GetFilEstimateGas) {
   SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
@@ -5499,17 +5623,18 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
 
 TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback,
-              Run(url_value(), mojom::SolanaProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(testing::Eq(url_value()),
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for url record account. Fail resolution.
   url_record_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5521,17 +5646,18 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
 
   // No url record. Will return ipfs record.
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
-  EXPECT_CALL(callback,
-              Run(ipfs_value(), mojom::SolanaProviderError::kSuccess, ""));
+  EXPECT_CALL(callback, Run(testing::Eq(ipfs_value()),
+                            mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for ipfs record account. Fail resolution.
   ipfs_record_address_handler_->FailWithTimeout();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
@@ -5539,9 +5665,10 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
 
   // No ipfs record account. Fail resolution.
   ipfs_record_address_handler_->Disable();
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::SolanaProviderError::kInternalError,
-                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  EXPECT_CALL(
+      callback,
+      Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

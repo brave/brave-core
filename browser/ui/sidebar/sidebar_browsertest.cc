@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/bind.h"
+#include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -18,7 +21,9 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -107,6 +112,28 @@ class SidebarBrowserTest : public InProcessBrowserTest {
            !GetSidePanel()->IsRightAligned() &&
            GetSidebarControlView()->sidebar_on_left_;
   }
+
+  void WaitUntil(base::RepeatingCallback<bool()> condition) {
+    if (condition.Run())
+      return;
+
+    base::RepeatingTimer scheduler;
+    scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                    base::BindLambdaForTesting([this, &condition]() {
+                      if (condition.Run())
+                        run_loop_->Quit();
+                    }));
+    Run();
+  }
+
+  void Run() {
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop()->Run();
+  }
+
+  base::RunLoop* run_loop() const { return run_loop_.get(); }
+
+  std::unique_ptr<base::RunLoop> run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
@@ -239,6 +266,23 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click wallet item and then first wallet tab(index 0) is activated.
   SimulateSidebarItemClickAt(1);
   EXPECT_EQ(0, tab_model()->active_index());
+
+  // Checking windows' activation state is flaky in browser tests.
+#if !BUILDFLAG(IS_MAC)
+  auto* browser2 = CreateBrowser(browser()->profile());
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return browser2->window()->IsActive(); }));
+
+  // |browser2| doesn't have any wallet tab. So, clicking wallet sidebar item
+  // activates other browser's first wallet tab.
+  static_cast<BraveBrowser*>(browser2)->sidebar_controller()->ActivateItemAt(1);
+
+  // Wait till browser() is activated.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return browser()->window()->IsActive(); }));
+
+  EXPECT_EQ(0, tab_model()->active_index());
+#endif
 }
 
 // Test sidebar's initial horizontal option is set properly.
@@ -310,16 +354,28 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
 
   // Check if vertical tabs is located at first and sidebar is located on the
   // right side.
+#if BUILDFLAG(IS_MAC)
+  // On Mac, we should consider frame border thickness.
+  EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x() + 1,
+            sidebar_container->GetBoundsInScreen().x());
+#else
   EXPECT_LT(vertical_tabs_container->GetBoundsInScreen().x(),
             sidebar_container->GetBoundsInScreen().x());
+#endif
 
   // Changed to sidebar on left side again.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
   // Check if vertical tabs is located first and sidebar is following it.
+#if BUILDFLAG(IS_MAC)
+  // On Mac, we should consider frame border thickness.
+  EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right() + 1,
+            sidebar_container->GetBoundsInScreen().x());
+#else
   EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right(),
             sidebar_container->GetBoundsInScreen().x());
+#endif
 
   // Check sidebar position option is synced between normal and private window.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());

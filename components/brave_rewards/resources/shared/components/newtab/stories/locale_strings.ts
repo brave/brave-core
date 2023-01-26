@@ -14,6 +14,7 @@ export const localeStrings = {
   rewardsContinue: 'Continue',
   rewardsEarning: 'Earning',
   rewardsEarningInfoText: 'The tokens you earn this month will begin processing on $1.',
+  rewardsEnableBraveAds: 'Enable Brave Ads',
   rewardsExchangeValueNote: 'This may vary based on market volatility.',
   rewardsGiving: 'Giving',
   rewardsGrantDaysRemaining: 'You have $1 left to claim',

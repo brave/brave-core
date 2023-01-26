@@ -111,7 +111,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
-    "//brave/components/brave_ads/browser/ads_status_header_throttle_unittest.cc",
     "//brave/components/brave_ads/common/search_result_ad_util_unittest.cc",
     "//brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_parsing_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
@@ -183,7 +182,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui/new_tab_page:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
-    "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
     "//brave/components/adblock_rust_ffi",
@@ -480,7 +478,6 @@ test("brave_unit_tests") {
       "//brave/browser/extensions/chrome_content_verifier_delegate_unittest.cc",
       "//brave/browser/extensions/install_verifier_unittest.cc",
       "//brave/browser/extensions/mv2_warning_unittest.cc",
-      "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
       "//brave/common/importer/chrome_importer_utils_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
       "//chrome/browser/extensions/extension_service_test_base.h",
@@ -679,6 +676,7 @@ test("brave_browser_tests") {
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",
     "//brave/browser/brave_ads/ads_service_browsertest.cc",
+    "//brave/browser/brave_ads/brave_stats_updater_helper_browsertest.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
     "//brave/browser/brave_ads/search_result_ad/search_result_ad_browsertest.cc",
@@ -941,6 +939,7 @@ test("brave_browser_tests") {
 
   if (is_mac) {
     sources += [
+      "//brave/browser/brave_app_controller_mac_browsertest.mm",
       "//chrome/browser/ui/test/test_browser_dialog_mac.h",
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
@@ -1079,6 +1078,7 @@ test("brave_browser_tests") {
   }
 
   if (!is_android) {
+    sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
     deps += [ "//brave/browser/sharing_hub:browser_tests" ]
   }
 

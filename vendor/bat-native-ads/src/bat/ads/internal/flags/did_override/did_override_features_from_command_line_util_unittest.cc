@@ -42,7 +42,7 @@ constexpr char kFooBarSwitch[] = "foobar";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_from_command_line;
-} kTests[] = {
+} g_k_tests[] = {
     {/*command_line_switch*/ {kFooBarSwitch, {}},
      /*expected_did_override_from_command_line*/ false},
     {/*command_line_switch*/ {switches::kEnableFeatures, {}},
@@ -194,7 +194,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BatAdsDidOverrideFeaturesFromCommandLineUtilTest,
-                         testing::ValuesIn(kTests),
+                         testing::ValuesIn(g_k_tests),
                          TestParamToString);
 
 }  // namespace ads

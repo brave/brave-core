@@ -32,7 +32,7 @@ AdsClient* AdsClientHelper::GetInstance() {
 
 // static
 bool AdsClientHelper::HasInstance() {
-  return !!g_ads_client_instance;
+  return g_ads_client_instance != nullptr;
 }
 
 }  // namespace ads

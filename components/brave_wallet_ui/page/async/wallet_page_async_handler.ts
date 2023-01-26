@@ -144,6 +144,7 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
 
     if (payload.asset.isErc721 || payload.asset.isNft) {
       store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))
+      store.dispatch(WalletPageActions.getPinStatus(payload.asset))
     }
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
@@ -306,6 +307,16 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
     store.dispatch(WalletPageActions.updateNftMetadataError(result.errorMessage))
   }
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
+})
+
+handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWallet.BlockchainToken) => {
+  const braveWalletPinService = getWalletPageApiProxy().braveWalletPinService
+  const result = await braveWalletPinService.getTokenStatus(payload)
+  if (result.status) {
+    store.dispatch(WalletPageActions.updateNFTPinStatus(result.status))
+  } else {
+    store.dispatch(WalletPageActions.updateNFTPinStatus(undefined))
+  }
 })
 
 export default handler.middleware

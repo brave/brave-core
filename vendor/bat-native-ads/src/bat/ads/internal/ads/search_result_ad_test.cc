@@ -85,16 +85,24 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
 TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  const mojom::SearchResultAdInfoPtr ad_mojom = BuildSearchResultAd();
+
+  GetAds()->TriggerSearchResultAdEvent(ad_mojom->Clone(),
+                                       mojom::SearchResultAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerSearchResultAdEvent(
-      BuildSearchResultAd(), mojom::SearchResultAdEventType::kClicked);
+      ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
 
   // Assert
   EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+  EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 }  // namespace ads

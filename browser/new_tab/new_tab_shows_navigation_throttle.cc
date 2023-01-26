@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/bind.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,7 +45,7 @@ NewTabShowsNavigationThrottle::WillStartRequest() {
   }
 
   new_tab_options_url_ = brave::GetNewTabPageURL(profile);
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&NewTabShowsNavigationThrottle::LoadNewTabOptionsURL,
                      weak_factory_.GetWeakPtr()));

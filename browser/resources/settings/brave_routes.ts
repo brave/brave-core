@@ -7,7 +7,7 @@
 
 import {pageVisibility} from './brave_overrides/page_visibility.js'
 import {loadTimeData} from './i18n_setup.js'
-import {SettingsRoutes} from './settings_routes.js';
+import {SettingsRoutes} from 'chrome://settings/settings.js';
 
 export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')

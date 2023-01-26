@@ -22,7 +22,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         }
     }
 
-    protected static ResourceItem getResourceItem(int contentType) {
+    protected static ResourceItem getResourceItem(int contentType, SiteSettingsDelegate delegate) {
         switch (contentType) {
             case ContentSettingsType.AUTOPLAY:
                 return new ResourceItem(R.drawable.ic_volume_up_grey600_24dp,
@@ -31,7 +31,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                         R.string.website_settings_category_autoplay_allowed, 0);
         }
 
-        return (ResourceItem) BraveReflectionUtil.InvokeMethod(
-                ContentSettingsResources.class, null, "getResourceItem", int.class, contentType);
+        return (ResourceItem) BraveReflectionUtil.InvokeMethod(ContentSettingsResources.class, null,
+                "getResourceItem", int.class, contentType, SiteSettingsDelegate.class, delegate);
     }
 }

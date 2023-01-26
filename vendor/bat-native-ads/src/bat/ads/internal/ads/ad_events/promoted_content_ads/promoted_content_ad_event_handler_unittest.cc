@@ -112,6 +112,8 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
       BuildPromotedContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kViewed));
 }
 
@@ -131,6 +133,8 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Assert
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kViewed));
 }
 
@@ -140,19 +144,40 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kViewed);
+
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::PromotedContentAdEventType::kClicked);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
+  EXPECT_TRUE(did_serve_ad_);
+  EXPECT_TRUE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   const PromotedContentAdInfo expected_ad =
       BuildPromotedContentAd(creative_ad, kPlacementId);
   EXPECT_EQ(expected_ad, ad_);
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kViewed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kClicked));
+}
+
+TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+       DoNotFireClickedEventIfMissingAdPlacement) {
+  // Arrange
+  const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  // Act
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kClicked);
+
+  // Assert
+  EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kClicked));
 }
 
@@ -164,6 +189,8 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kViewed);
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::PromotedContentAdEventType::kClicked);
 
   // Act
@@ -172,15 +199,20 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Assert
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kViewed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kClicked));
 }
 
-TEST_F(BatAdsPromotedContentAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
+TEST_F(BatAdsPromotedContentAdEventHandlerTest,
+       DoNotFireEventWithInvalidPlacementId) {
   // Arrange
 
   // Act
   event_handler_->FireEvent(kInvalidPlacementId, kCreativeInstanceId,
-                            mojom::PromotedContentAdEventType::kViewed);
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -188,7 +220,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, DoNotFireEventWithInvalidUuid) {
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(0, GetAdEventCount(AdType::kPromotedContentAd,
-                               ConfirmationType::kViewed));
+                               ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
@@ -227,7 +259,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 }
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
-       DoNotFireEventIfCreativeInstanceIdWasNotFound) {
+       DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
   ForcePermissionRules();
 
@@ -252,7 +284,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kViewed, Now());
+                   ConfirmationType::kServed, Now());
 
   const int ads_per_hour = features::GetMaximumPromotedContentAdsPerHour();
 
@@ -263,11 +295,11 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                            mojom::PromotedContentAdEventType::kViewed);
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kPromotedContentAd,
-                                          ConfirmationType::kViewed));
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
@@ -278,7 +310,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kViewed, Now());
+                   ConfirmationType::kServed, Now());
 
   const int ads_per_hour = features::GetMaximumPromotedContentAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
@@ -288,11 +320,11 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                            mojom::PromotedContentAdEventType::kViewed);
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kPromotedContentAd,
-                                          ConfirmationType::kViewed));
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
@@ -303,7 +335,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kViewed, Now());
+                   ConfirmationType::kServed, Now());
 
   const int ads_per_day = features::GetMaximumPromotedContentAdsPerDay();
 
@@ -316,11 +348,11 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                            mojom::PromotedContentAdEventType::kViewed);
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kPromotedContentAd,
-                                         ConfirmationType::kViewed));
+                                         ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
@@ -331,7 +363,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
-                   ConfirmationType::kViewed, Now());
+                   ConfirmationType::kServed, Now());
 
   const int ads_per_day = features::GetMaximumPromotedContentAdsPerDay();
 
@@ -344,11 +376,11 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
-                            mojom::PromotedContentAdEventType::kViewed);
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kPromotedContentAd,
-                                         ConfirmationType::kViewed));
+                                         ConfirmationType::kServed));
 }
 
 }  // namespace ads::promoted_content_ads

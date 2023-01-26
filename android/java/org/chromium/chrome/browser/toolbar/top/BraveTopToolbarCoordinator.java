@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewStub;
 
 import org.chromium.base.Callback;
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -37,6 +36,7 @@ import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private TabSwitcherModeTTCoordinator mTabSwitcherModeCoordinator;

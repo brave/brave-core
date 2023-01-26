@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/callback.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "bat/ledger/internal/endpoints/request_builder.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/logging.h"
@@ -52,7 +52,7 @@ class RequestFor {
                     "Please make sure the error type of your endpoint has the "
                     "kFailedToCreateRequest enumerator!");
 
-      base::SequencedTaskRunnerHandle::Get()->PostTask(
+      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE,
           base::BindOnce(
               std::move(callback),

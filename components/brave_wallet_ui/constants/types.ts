@@ -243,6 +243,7 @@ export interface WalletState {
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
+  hiddenNetworkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -295,6 +296,7 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]

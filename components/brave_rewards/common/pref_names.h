@@ -74,6 +74,7 @@ extern const char kWalletBrave[];
 extern const char kWalletUphold[];
 extern const char kWalletBitflyer[];
 extern const char kWalletGemini[];
+extern const char kWalletCreationEnvironment[];
 
 }  // namespace brave_rewards::prefs
 

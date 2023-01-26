@@ -67,11 +67,11 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
           },
           {
             "name": "Catalog last updated",
-            "value": "Wednesday, November 18, 1970 at 12:34:56 PM"
+            "value": "Wednesday, November 18, 1970 at 12:34:56\u202fPM"
           },
           {
             "name": "Last unidle time",
-            "value": "Monday, July 8, 1996 at 9:25:00 AM"
+            "value": "Monday, July 8, 1996 at 9:25:00\u202fAM"
           }
         ])~");
         ASSERT_TRUE(expected_list.is_list());

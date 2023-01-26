@@ -231,11 +231,14 @@ brave_chrome_browser_deps = [
 
 if (is_mac) {
   brave_chrome_browser_sources += [
+    "//brave/browser/brave_app_controller_mac.h",
+    "//brave/browser/brave_app_controller_mac.mm",
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
     "//brave/browser/brave_shell_integration_mac.h",
     "//brave/browser/brave_shell_integration_mac.mm",
   ]
+  brave_chrome_browser_deps += [ "//brave/app:command_ids" ]
 }
 
 if (enable_sparkle) {

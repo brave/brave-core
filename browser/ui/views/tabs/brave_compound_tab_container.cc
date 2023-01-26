@@ -33,6 +33,9 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
 void BraveCompoundTabContainer::SetAvailableWidthCallback(
     base::RepeatingCallback<int()> available_width_callback) {
   CompoundTabContainer::SetAvailableWidthCallback(available_width_callback);
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   if (!available_width_callback || tabs::features::ShouldShowVerticalTabs(
                                        tab_slot_controller_->GetBrowser())) {
     // Unlike Chromium Impl, Just pass the `available_width_callback` to
@@ -61,19 +64,6 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
                                [](auto& closure) { std::move(closure).Run(); });
       },
       std::move(closures));
-}
-
-int BraveCompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-    base::RepeatingCallback<int()> available_width_callback) {
-  // At this moment, Chromium upstream has a bug which causes crash.
-  // In a near future, this patch won't be needed as upstream checks if the
-  // `available_width_callback` is null.
-  if (!available_width_callback) {
-    return parent() ? parent()->GetAvailableSize(this).width().value() : 0;
-  }
-
-  return CompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-      available_width_callback);
 }
 
 void BraveCompoundTabContainer::TransferTabBetweenContainers(

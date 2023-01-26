@@ -95,6 +95,7 @@ const defaultState: WalletState = {
   isFetchingPortfolioPriceHistory: true,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   networkList: [],
+  hiddenNetworkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
@@ -235,7 +236,8 @@ export const WalletAsyncActions = {
   addFilecoinAccount:
     createAction<AddFilecoinAccountPayloadType>('addFilecoinAccount'),
   getOnRampCurrencies: createAction('getOnRampCurrencies'),
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
+  autoLockMinutesChanged: createAction('autoLockMinutesChanged'), // No reducer or API logic for this (UNUSED)
+  updateTokenPinStatus: createAction<BraveWallet.BlockchainToken>('updateTokenPinStatus')
 }
 
 // slice
@@ -397,6 +399,10 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
 
       setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
         state.networkList = payload
+      },
+
+      setAllHiddenNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
+        state.hiddenNetworkList = payload
       },
 
       setAllTokensList (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {

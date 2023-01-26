@@ -47,6 +47,9 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
                  PrefService* profile_prefs,
                  PrefService* local_state);
 
+  // For testing
+  BraveWalletP3A();
+
   ~BraveWalletP3A() override;
   BraveWalletP3A(const BraveWalletP3A&) = delete;
   BraveWalletP3A& operator=(BraveWalletP3A&) = delete;

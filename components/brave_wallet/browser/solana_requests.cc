@@ -99,6 +99,24 @@ std::string getBlockHeight() {
   return GetJsonRpcString("getBlockHeight");
 }
 
+std::string getTokenAccountsByOwner(const std::string& pubkey) {
+  base::Value::List params;
+  params.Append(pubkey);
+
+  // Set encoding to base64 because the document says base58 is currently the
+  // default value but is slow and deprecated.
+  base::Value::Dict program;
+  base::Value::Dict encoding;
+  program.Set("programId", mojom::kSolanaTokenProgramId);
+  encoding.Set("encoding", "base64");
+  params.Append(std::move(program));
+  params.Append(std::move(encoding));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("getTokenAccountsByOwner", std::move(params));
+  return GetJSON(dictionary);
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -313,6 +313,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
         { "rewardsEarning", IDS_REWARDS_WIDGET_EARNING },
         { "rewardsEarningInfoText", IDS_REWARDS_WIDGET_EARNING_INFO_TEXT },
+        { "rewardsEnableBraveAds", IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS },
         { "rewardsExchangeValueNote", IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE },
         { "rewardsGiving", IDS_REWARDS_WIDGET_GIVING },
         { "rewardsGrantDaysRemaining", IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING },  // NOLINT
@@ -329,8 +330,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "rewardsSelectCountryHeader", IDS_REWARDS_WIDGET_SELECT_COUNTRY_HEADER},  // NOLINT
         { "rewardsSelectCountryText", IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT},
         { "rewardsSettings", IDS_REWARDS_WIDGET_SETTINGS },
-        { "rewardsSponsoredImageEarningText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT },  // NOLINT
-        { "rewardsSponsoredImageOptInText", IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT },  // NOLINT
         { "rewardsStartUsingRewards", IDS_REWARDS_WIDGET_START_USING_REWARDS },
         { "rewardsTokenBalance", IDS_REWARDS_WIDGET_TOKEN_BALANCE },
         { "rewardsTokenGrantTitle", IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE },
@@ -801,6 +800,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },
         { "unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE },
         { "welcome", IDS_BRAVE_UI_WELCOME },
+        { "youAreCurrentlyLoggedOut", IDS_BRAVE_REWARDS_TIP_YOU_ARE_CURRENTLY_LOGGED_OUT},  // NOLINT
       }
     }, {
       std::string("rewards-internals"), {
@@ -894,6 +894,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletStatusNotConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED },    // NOLINT
         { "walletStatusVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED },    // NOLINT
         { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
+        { "walletCreationEnvironment", IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT },    // NOLINT
+        { "currentEnvironment", IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT},    // NOLINT
       }
     }, {
 #if BUILDFLAG(ENABLE_TOR)

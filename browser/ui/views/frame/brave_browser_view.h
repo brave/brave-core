@@ -106,6 +106,7 @@ class BraveBrowserView : public BrowserView {
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
+  void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -114,6 +115,7 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+  bool HasSelectedURL() const override;
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;

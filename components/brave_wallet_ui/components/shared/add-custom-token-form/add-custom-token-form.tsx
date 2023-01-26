@@ -223,6 +223,16 @@ export const AddCustomTokenForm = (props: Props) => {
     tokenDecimalsError
   ])
 
+  const tokenAlreadyExists = React.useMemo(() => {
+    if (tokenContractAddress !== '' && customAssetsNetwork?.chainId !== undefined) {
+      return userVisibleTokensInfo.some((t) =>
+        t.contractAddress.toLocaleLowerCase() === tokenContractAddress.toLowerCase() &&
+        t.chainId === customAssetsNetwork?.chainId
+      )
+    }
+    return false
+  }, [tokenContractAddress, userVisibleTokensInfo, customAssetsNetwork?.chainId])
+
   // effects
   React.useEffect(() => {
     if (tokenContractAddress === '') {
@@ -259,7 +269,9 @@ export const AddCustomTokenForm = (props: Props) => {
         </FormColumn>
         <FormColumn>
           <InputLabel>
-            {getLocale('braveWalletWatchListTokenAddress')}
+            {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+              ? getLocale('braveWalletTokenMintAddress')
+              : getLocale('braveWalletWatchListTokenAddress')}
           </InputLabel>
           <Input
             value={tokenContractAddress}
@@ -308,6 +320,9 @@ export const AddCustomTokenForm = (props: Props) => {
       {hasError && (
         <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
       )}
+      {tokenAlreadyExists &&
+        <ErrorText>{getLocale('braveWalletCustomTokenExistsError')}</ErrorText>
+      }
       <ButtonRow>
         <NavButton
           onSubmit={onClickCancel}
@@ -323,7 +338,7 @@ export const AddCustomTokenForm = (props: Props) => {
             onSubmit={onClickAddCustomToken}
             text={getLocale('braveWalletWatchListAdd')}
             buttonType='primary'
-            disabled={buttonDisabled}
+            disabled={buttonDisabled || tokenAlreadyExists}
           />
         </Tooltip>
       </ButtonRow>

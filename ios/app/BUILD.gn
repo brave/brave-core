@@ -42,6 +42,7 @@ source_set("app") {
     "//brave/ios/browser/api/brave_wallet",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/api/history",
+    "//brave/ios/browser/api/ipfs",
     "//brave/ios/browser/api/ledger",
     "//brave/ios/browser/api/opentabs",
     "//brave/ios/browser/api/p3a",

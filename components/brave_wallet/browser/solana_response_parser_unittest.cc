@@ -356,6 +356,51 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
   EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ParseJson(json), nullptr));
 }
 
+TEST(SolanaResponseParserUnitTest, ParseGetTokenAccountsByOwner) {
+  std::string json = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.14.10",
+        "slot": 166492586
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": "2039280",
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": "361"
+          },
+          "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+        },
+        {
+          "account": {
+            "data": [
+              "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": "2039280",
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": "361"
+          },
+          "pubkey": "5gjGaTE41sPVS1Dzwg43ipdj9NTtApZLcK55ihRuVb6Y"
+        }
+      ]
+    },
+    "id": 1
+  })";
+
+  std::vector<SolanaAccountInfo> token_accounts;
+  EXPECT_TRUE(ParseGetTokenAccountsByOwner(ParseJson(json), &token_accounts));
+  EXPECT_EQ(token_accounts.size(), 2u);
+}
+
 TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
   std::string json = R"(
     {

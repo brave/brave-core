@@ -1,18 +1,20 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
@@ -92,6 +95,8 @@ public class PortfolioFragment
     private TextView mTvNftTitle;
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
+    private ProgressBar mPbAssetDiscovery;
+    private List<PortfolioModel.NftDataModel> mNftDataModels;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -119,20 +124,22 @@ public class PortfolioFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
+            mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            mWalletModel = activity.getWalletModel();
-            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
-        }
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
         mRvCoins = view.findViewById(R.id.rvCoins);
         mChartES = view.findViewById(R.id.line_chart);
+        mPbAssetDiscovery = view.findViewById(R.id.frag_port_pb_asset_discovery);
         mRvCoins.addItemDecoration(
                 new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
@@ -198,6 +205,7 @@ public class PortfolioFragment
                 });
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (nftDataModels.isEmpty() || mPortfolioModel.mPortfolioHelper == null) return;
+            mNftDataModels = nftDataModels;
             setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
         });
@@ -209,6 +217,15 @@ public class PortfolioFragment
                         mCurrentPendingTx = mPendingTxs.get(0);
                     }
                     updatePendingTxNotification();
+                });
+        mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
+                getViewLifecycleOwner(), isDiscoveringUserAssets -> {
+                    if (isDiscoveringUserAssets) {
+                        AndroidUtils.show(mPbAssetDiscovery);
+                    } else {
+                        AndroidUtils.gone(mPbAssetDiscovery);
+                        updatePortfolioGetPendingTx();
+                    }
                 });
 
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
@@ -337,11 +354,25 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
+
         if (asset.isErc721 || asset.isNft) {
-            // TODO: show nft details of clicked nft
-            return;
+            PortfolioModel.NftDataModel selectedNft = null;
+            for (PortfolioModel.NftDataModel nftDataModel : mNftDataModels) {
+                if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
+                    selectedNft = nftDataModel;
+                    break;
+                }
+            }
+            if (selectedNft == null) {
+                return;
+            }
+
+            Intent intent = NftDetailActivity.getIntent(
+                    getContext(), selectedNetwork.chainId, asset, selectedNft);
+            startActivity(intent);
+        } else {
+            Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
         }
-        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
     private void openNetworkSelection() {

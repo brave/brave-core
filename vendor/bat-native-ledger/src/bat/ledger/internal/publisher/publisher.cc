@@ -109,12 +109,6 @@ std::string getProviderName(const std::string& publisher_id) {
   // TODO(anyone) this is for the media stuff
   if (publisher_id.find(YOUTUBE_MEDIA_TYPE) != std::string::npos) {
     return YOUTUBE_MEDIA_TYPE;
-  } else if (publisher_id.find(TWITCH_MEDIA_TYPE) != std::string::npos) {
-    return TWITCH_MEDIA_TYPE;
-  } else if (publisher_id.find(TWITTER_MEDIA_TYPE) != std::string::npos) {
-    return TWITTER_MEDIA_TYPE;
-  } else if (publisher_id.find(VIMEO_MEDIA_TYPE) != std::string::npos) {
-    return VIMEO_MEDIA_TYPE;
   } else if (publisher_id.find(GITHUB_MEDIA_TYPE) != std::string::npos) {
     return GITHUB_MEDIA_TYPE;
   }
@@ -613,25 +607,12 @@ void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,
     return;
   }
 
-  const bool is_media =
-      visit_data->domain == YOUTUBE_TLD ||
-      visit_data->domain == TWITCH_TLD ||
-      visit_data->domain == TWITTER_TLD ||
-      visit_data->domain == REDDIT_TLD ||
-      visit_data->domain == VIMEO_TLD ||
-      visit_data->domain == GITHUB_TLD;
+  const bool is_media = visit_data->domain == YOUTUBE_DOMAIN ||
+                        visit_data->domain == GITHUB_DOMAIN;
 
   if (is_media && visit_data->path != "" && visit_data->path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
-    if (visit_data->domain == TWITCH_TLD) {
-      type = TWITCH_MEDIA_TYPE;
-    } else if (visit_data->domain == TWITTER_TLD) {
-      type = TWITTER_MEDIA_TYPE;
-    } else if (visit_data->domain == REDDIT_TLD) {
-      type = REDDIT_MEDIA_TYPE;
-    } else if (visit_data->domain == VIMEO_TLD) {
-      type = VIMEO_MEDIA_TYPE;
-    } else if (visit_data->domain == GITHUB_TLD) {
+    if (visit_data->domain == GITHUB_DOMAIN) {
       type = GITHUB_MEDIA_TYPE;
     }
 

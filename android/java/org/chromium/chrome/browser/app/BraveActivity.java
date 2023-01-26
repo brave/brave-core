@@ -360,7 +360,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
-            openBraveWallet(false);
+            openBraveWallet(false, false, false);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -744,6 +744,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
+        Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY, false)) {
+            openBraveWallet(false,
+                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, false),
+                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false));
+        }
     }
 
     public int getLastTabId() {
@@ -1241,11 +1247,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             boolean value = sharedPreferences.getBoolean(
                     BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION, true);
             if (value) {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.DEFAULT);
+                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                        BraveShieldsContentSettings.DEFAULT, false);
             } else {
-                BravePrefServiceBridge.getInstance().setFingerprintingControlType(
-                        BraveShieldsContentSettings.ALLOW_RESOURCE);
+                BraveShieldsContentSettings.setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                        BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                        BraveShieldsContentSettings.ALLOW_RESOURCE, false);
             }
         }
     }
@@ -1269,9 +1277,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         settingsLauncher.launchSettingsActivity(this, BraveWalletEthereumConnectedSites.class);
     }
 
-    public void openBraveWallet(boolean fromDapp) {
+    public void openBraveWallet(boolean fromDapp, boolean setupAction, boolean restoreAction) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
         braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
+        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
     }

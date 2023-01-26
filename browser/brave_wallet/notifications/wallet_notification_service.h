@@ -33,6 +33,7 @@ class WalletNotificationService : public KeyedService,
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+  void OnTxServiceReset() override {}
 
   mojo::PendingRemote<mojom::TxServiceObserver> GetReceiver() {
     return tx_observer_receiver_.BindNewPipeAndPassRemote();

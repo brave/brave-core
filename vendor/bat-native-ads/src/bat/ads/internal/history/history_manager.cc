@@ -47,7 +47,7 @@ HistoryManager* HistoryManager::GetInstance() {
 
 // static
 bool HistoryManager::HasInstance() {
-  return !!g_history_manager_instance;
+  return g_history_manager_instance != nullptr;
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {

@@ -21,7 +21,7 @@ constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
 
 void RunHashingExtractorTestCase(const std::string& test_case_name) {
   // Arrange
-  const double kTolerance = 1e-7;
+  const double tolerance = 1e-7;
 
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kHashCheck);
@@ -56,7 +56,7 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
     const base::Value& idx_val = idx_list[i];
     const base::Value& count_val = count_list[i];
     EXPECT_TRUE(count_val.GetInt() - frequencies.at(idx_val.GetInt()) <
-                kTolerance);
+                tolerance);
   }
 }
 

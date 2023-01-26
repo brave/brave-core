@@ -36,7 +36,7 @@ IdleDetectionManager* IdleDetectionManager::GetInstance() {
 
 // static
 bool IdleDetectionManager::HasInstance() {
-  return !!g_idle_detection_manager_instance;
+  return g_idle_detection_manager_instance != nullptr;
 }
 
 void IdleDetectionManager::AddObserver(IdleDetectionManagerObserver* observer) {

@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_SERVICE_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_SERVICE_H_
@@ -64,7 +64,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // Callbacks are invoked after rotation for a particular log type,
   // before metrics are sent. Useful for just-in-time metrics collection
   base::CallbackListSubscription RegisterRotationCallback(
-      base::RepeatingCallback<void(bool is_express)> callback);
+      base::RepeatingCallback<void(MetricLogType log_type)> callback);
   // Callbacks are invoked for each metric uploaded to the P3A server.
   base::CallbackListSubscription RegisterMetricSentCallback(
       base::RepeatingCallback<void(const std::string& histogram_name)>
@@ -79,6 +79,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // BraveP3ALogStore::Delegate
   std::string Serialize(base::StringPiece histogram_name,
                         uint64_t value,
+                        MetricLogType log_type,
                         const std::string& upload_type) override;
 
   // May be accessed from multiple threads, so this is thread-safe.
@@ -93,6 +94,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
  private:
   friend class base::RefCountedThreadSafe<BraveP3AService>;
   ~BraveP3AService() override;
+
+  void InitCallback(const base::StringPiece& histogram_name);
 
   void LoadDynamicMetrics();
 
@@ -109,6 +112,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
 
+  MetricLogType GetLogTypeForHistogram(const std::string& histogram_name);
   // Updates or removes a metric from the log.
   void HandleHistogramChange(base::StringPiece histogram_name, size_t bucket);
 
@@ -167,7 +171,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       histogram_sample_callbacks_;
 
   // Contains callbacks registered via `RegisterRotationCallback`
-  base::RepeatingCallbackList<void(bool is_express)> rotation_callbacks_;
+  base::RepeatingCallbackList<void(MetricLogType log_type)> rotation_callbacks_;
   // Contains callbacks registered via `RegisterMetricSentCallback`
   base::RepeatingCallbackList<void(const std::string& histogram_name)>
       metric_sent_callbacks_;

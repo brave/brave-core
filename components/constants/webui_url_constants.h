@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
 extern const char kAdblockHost[];
+extern const char kAdblockInternalsHost[];
 extern const char kAdblockJS[];
 extern const char kIPFSWebUIHost[];
 extern const char kIPFSWebUIURL[];

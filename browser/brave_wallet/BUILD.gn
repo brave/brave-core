@@ -1,4 +1,10 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -21,6 +27,14 @@ source_set("brave_wallet") {
     "tx_service_factory.cc",
     "tx_service_factory.h",
   ]
+  if (enable_ipfs_local_node) {
+    sources += [
+      "brave_wallet_auto_pin_service_factory.cc",
+      "brave_wallet_auto_pin_service_factory.h",
+      "brave_wallet_pin_service_factory.cc",
+      "brave_wallet_pin_service_factory.h",
+    ]
+  }
   if (!is_android) {
     sources += [ "wallet_notification_helper.h" ]
   }

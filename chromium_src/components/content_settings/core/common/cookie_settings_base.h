@@ -50,6 +50,7 @@ struct CookieSettingWithBraveMetadata {
   bool IsChromiumFullCookieAccessAllowed(                                      \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin,                     \
+      net::CookieSettingOverrides overrides,                                   \
       CookieSettingsBase::QueryReason query_reason) const;                     \
   bool ShouldBlockThirdPartyIfSettingIsExplicit(                               \
       bool block_third_party_cookies, ContentSetting cookie_setting,           \
@@ -65,6 +66,7 @@ struct CookieSettingWithBraveMetadata {
   bool IsCookieAccessAllowedImpl(                                              \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin,                     \
+      net::CookieSettingOverrides overrides,                                   \
       CookieSettingsBase::QueryReason query_reason) const;                     \
                                                                                \
   mutable base::ThreadLocalPointer<CookieSettingWithBraveMetadata>             \

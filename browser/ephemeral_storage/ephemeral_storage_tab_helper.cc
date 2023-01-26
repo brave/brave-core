@@ -12,7 +12,7 @@
 #include "base/feature_list.h"
 #include "base/hash/md5.h"
 #include "base/ranges/ranges.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -139,7 +139,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     // keep the ephemeral storage alive for some time to handle redirects
     // including meta refresh or other page driven "redirects" that end up back
     // at the original origin
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(
             &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,

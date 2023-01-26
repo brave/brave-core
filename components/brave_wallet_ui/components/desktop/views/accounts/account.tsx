@@ -23,10 +23,12 @@ import {
 // utils
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { getLocale } from '../../../../../common/locale'
-import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import {
+  parseTransactionWithPrices,
+  sortTransactionByDate
+} from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion } from '../../../../utils/network-utils'
-import { parseTransactionWithPrices } from '../../../../common/hooks/transaction-parser'
 import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
 import { selectAllNetworksFromQueryResult } from '../../../../common/slices/entities/network.entity'
 

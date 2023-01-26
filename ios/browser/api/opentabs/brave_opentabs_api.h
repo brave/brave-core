@@ -10,16 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSInteger SyncDeviceType NS_TYPED_ENUM;
+typedef NSInteger SyncDeviceFormFactor NS_TYPED_ENUM;
 
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeUnset;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeWin;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeMac;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeLinux;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeCros;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeOther;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypePhone;
-OBJC_EXPORT SyncDeviceType const SyncDeviceTypeTablet;
+OBJC_EXPORT SyncDeviceFormFactor const SyncDeviceFormFactorUnknown;
+OBJC_EXPORT SyncDeviceFormFactor const SyncDeviceFormFactorDesktop;
+OBJC_EXPORT SyncDeviceFormFactor const SyncDeviceFormFactorPhone;
+OBJC_EXPORT SyncDeviceFormFactor const SyncDeviceFormFactorTablet;
 
 @protocol OpenTabsSessionStateObserver;
 @protocol OpenTabsSessionStateListener;
@@ -55,20 +51,19 @@ OBJC_EXPORT
 @property(nonatomic, nullable, copy) NSString* name;
 @property(nonatomic, copy) NSString* sessionTag;
 @property(nonatomic, nullable, copy) NSDate* modifiedTime;
-@property(nonatomic) SyncDeviceType deviceType;
+@property(nonatomic) SyncDeviceFormFactor deviceFormFactor;
 @property(nonatomic, strong) NSArray<IOSOpenDistantTab*>* tabs;
 
 /// Open Tab Constructor used with OpenTabSessionAPI
 /// @param name - This is the name of the device for the distant session
 /// @param sessionTag - Uniquely identifies the distant session
 /// @param modifiedTime - The time last distant session is modified
-/// @param deviceType - The type of synced device for the distant session
+/// @param deviceFormFactor - The type of synced device for the distant session
 /// @param tabs - The open tabs synced with the particular session
 - (instancetype)initWithName:(nullable NSString*)name
                   sessionTag:(NSString*)sessionTag
                  dateCreated:(nullable NSDate*)modifiedTime
-                  deviceType:(SyncDeviceType)deviceType
-                        tabs:(NSArray<IOSOpenDistantTab*>*)tabs;
+            deviceFormFactor:(SyncDeviceFormFactor)deviceFormFactor;
 @end
 
 NS_SWIFT_NAME(BraveOpenTabsAPI)

@@ -11,6 +11,9 @@
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc"
 
 int BrowserFrameViewLayoutLinux::NonClientTopHeight(bool restored) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);
+
   if (!view_) {
     CHECK_IS_TEST();
     return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);

@@ -20,7 +20,7 @@ import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
 import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
-import { PaymentStatusView, shouldRenderPendingRewards } from '../payment_status_view'
+import { PaymentStatusView } from '../payment_status_view'
 import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 
@@ -154,13 +154,16 @@ export function RewardsCard (props: Props) {
               {getString('rewardsBrowserNeedsUpdateToSeeAds')}
             </style.needsBrowserUpdateContentBody>
           </style.needsBrowserUpdateView>
+          <style.pendingRewards>
+            <PaymentStatusView
+              earningsLastMonth={props.earningsLastMonth}
+              nextPaymentDate={props.nextPaymentDate}
+              providerPayoutStatus={props.providerPayoutStatus}
+            />
+          </style.pendingRewards>
         </style.balance>
       )
     }
-
-    const showPending = shouldRenderPendingRewards(
-      props.earningsLastMonth,
-      props.nextPaymentDate)
 
     return (
       <style.balance>
@@ -180,22 +183,19 @@ export function RewardsCard (props: Props) {
             />
           </style.balanceExchangeAmount>
           {
-            props.rewardsBalance > 0 && !showPending &&
+            props.rewardsBalance > 0 &&
               <style.balanceExchangeNote>
                 {getString('rewardsExchangeValueNote')}
               </style.balanceExchangeNote>
           }
         </style.balanceExchange>
-        {
-          showPending &&
-            <style.pendingRewards>
-              <PaymentStatusView
-                earningsLastMonth={props.earningsLastMonth}
-                nextPaymentDate={props.nextPaymentDate}
-                providerPayoutStatus={props.providerPayoutStatus}
-              />
-            </style.pendingRewards>
-        }
+        <style.pendingRewards>
+          <PaymentStatusView
+            earningsLastMonth={props.earningsLastMonth}
+            nextPaymentDate={props.nextPaymentDate}
+            providerPayoutStatus={props.providerPayoutStatus}
+          />
+        </style.pendingRewards>
       </style.balance>
     )
   }
@@ -256,7 +256,7 @@ export function RewardsCard (props: Props) {
         </style.adsOptIn>
         <style.primaryAction>
           <button onClick={props.onEnableAds}>
-            {getString('rewardsStartUsingRewards')}
+            {getString('rewardsEnableBraveAds')}
           </button>
         </style.primaryAction>
       </>

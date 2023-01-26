@@ -29,11 +29,14 @@ absl::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 
 // Choose Brave's own default, and exclude items that user has removed
 // from sidebar. If none are enabled, do nothing.
-#define BRAVE_SIDE_PANEL_COORDINATOR_SHOW                      \
-  if (!entry_id.has_value()) {                                 \
-    entry_id = GetDefaultEntryId(browser_view_->GetProfile()); \
-    if (!entry_id.has_value())                                 \
-      return;                                                  \
+#define BRAVE_SIDE_PANEL_COORDINATOR_SHOW                            \
+  if (!entry_id.has_value()) {                                       \
+    auto last_active_entry = GetLastActiveEntryKey();                \
+    entry_id = last_active_entry.has_value()                         \
+                   ? last_active_entry.value().id()                  \
+                   : GetDefaultEntryId(browser_view_->GetProfile()); \
+    if (!entry_id.has_value())                                       \
+      return;                                                        \
   }
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc"

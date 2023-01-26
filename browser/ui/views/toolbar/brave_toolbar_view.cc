@@ -150,7 +150,8 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnLocationBarIsWideChanged,
                           base::Unretained(this)));
 
-  if (tabs::features::SupportsVerticalTabs(browser_)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+      tabs::features::SupportsVerticalTabs(browser_)) {
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -182,7 +183,7 @@ void BraveToolbarView::Init() {
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = AddChildViewAt(
-        std::make_unique<WalletButton>(GetAppMenuButton(), profile->GetPrefs()),
+        std::make_unique<WalletButton>(GetAppMenuButton(), profile),
         *GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
@@ -287,6 +288,8 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+
   if (!tabs::features::ShouldShowVerticalTabs(browser()) ||
       tabs::features::ShouldShowWindowTitleForVerticalTabs(browser())) {
     SetBorder(nullptr);

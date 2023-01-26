@@ -40,6 +40,127 @@ bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
 
 }  // namespace
 
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+// static
+// Response format /api/v0/pin/add
+// {
+//   "Pins": [
+//     "<string>"
+//   ],
+//   "Progress": "<int>"
+// }
+absl::optional<ipfs::AddPinResult> IPFSJSONParser::GetAddPinsResultFromJSON(
+    const base::Value& value) {
+  auto* auto_dict = value.GetIfDict();
+  if (!auto_dict) {
+    VLOG(1) << "Invalid response, wrong format.";
+    return absl::nullopt;
+  }
+  const base::Value::List* pins_list = auto_dict->FindList("Pins");
+  if (!pins_list) {
+    VLOG(1) << "Invalid response, can not find Pins array.";
+    return absl::nullopt;
+  }
+
+  ipfs::AddPinResult result;
+
+  auto progress = auto_dict->FindInt("Progress");
+  if (progress) {
+    result.progress = *progress;
+  } else {
+    result.progress = -1;
+  }
+
+  for (const base::Value& val : *pins_list) {
+    auto* val_as_str = val.GetIfString();
+    if (!val_as_str) {
+      VLOG(1) << "Invalid response, wrong format.";
+      return absl::nullopt;
+    }
+    result.pins.push_back(*val_as_str);
+  }
+  return result;
+}
+
+// static
+// Response format /api/v0/pin/rm
+// {
+//   "Pins": [
+//     "<string>"
+//   ]
+// }
+absl::optional<ipfs::RemovePinResult>
+IPFSJSONParser::GetRemovePinsResultFromJSON(const base::Value& value) {
+  auto* auto_dict = value.GetIfDict();
+  if (!auto_dict) {
+    VLOG(1) << "Invalid response, wrong format.";
+    return absl::nullopt;
+  }
+  const base::Value::List* pins_list = auto_dict->FindList("Pins");
+  if (!pins_list) {
+    VLOG(1) << "Invalid response, can not find Pins array.";
+    return absl::nullopt;
+  }
+
+  ipfs::RemovePinResult result;
+  for (const base::Value& val : *pins_list) {
+    auto* val_as_str = val.GetIfString();
+    if (!val_as_str) {
+      return absl::nullopt;
+    }
+    result.push_back(*val_as_str);
+  }
+  return result;
+}
+
+// static
+// Response format /api/v0/pin/ls
+// {
+//   "PinLsList": {
+//     "Keys": {
+//       "<string>": {
+//         "Type": "<string>"
+//       }
+//     }
+//   },
+//   "PinLsObject": {
+//     "Cid": "<string>",
+//     "Type": "<string>"
+//   }
+// }
+absl::optional<ipfs::GetPinsResult> IPFSJSONParser::GetGetPinsResultFromJSON(
+    const base::Value& value) {
+  auto* auto_dict = value.GetIfDict();
+  if (!auto_dict) {
+    VLOG(1) << "Invalid response, wrong format.";
+    return absl::nullopt;
+  }
+
+  const base::Value::Dict* keys = auto_dict->FindDict("Keys");
+  if (!keys) {
+    VLOG(1) << "Invalid response, can not find Keys in PinLsList dict.";
+    return absl::nullopt;
+  }
+
+  ipfs::GetPinsResult result;
+  for (auto it : *keys) {
+    auto* it_dict = it.second.GetIfDict();
+    if (!it_dict) {
+      VLOG(1) << "Missing Type for " << it.first;
+      return absl::nullopt;
+    }
+    const std::string* type = it_dict->FindString("Type");
+    if (!type) {
+      VLOG(1) << "Missing Type for " << it.first;
+      return absl::nullopt;
+    }
+    result[it.first] = *type;
+  }
+
+  return result;
+}
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+
 // static
 // Response Format for /api/v0/swarm/peers
 // {

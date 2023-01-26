@@ -21,11 +21,8 @@ import {
 
 import {
   RewardsCard,
-  RewardsCardHeader,
-  SponsoredImageTooltip
+  RewardsCardHeader
 } from '../../../../brave_rewards/resources/shared/components/newtab'
-
-export { SponsoredImageTooltip }
 
 const locale = createLocaleContextForWebUI()
 

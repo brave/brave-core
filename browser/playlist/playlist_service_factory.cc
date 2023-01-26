@@ -94,6 +94,16 @@ PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
   return nullptr;
 }
 
+#if BUILDFLAG(IS_ANDROID)
+// static
+mojo::PendingRemote<mojom::PlaylistService>
+PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
+  return static_cast<PlaylistService*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeRemote();
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 // static
 bool PlaylistServiceFactory::IsPlaylistEnabled(
     content::BrowserContext* context) {
@@ -123,7 +133,7 @@ PlaylistServiceFactory::PlaylistServiceFactory()
           "PlaylistService",
           BrowserContextDependencyManager::GetInstance()) {
   PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
-      ISOLATED_WORLD_ID_CHROME_INTERNAL);
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 PlaylistServiceFactory::~PlaylistServiceFactory() = default;

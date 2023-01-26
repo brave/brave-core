@@ -45,10 +45,10 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
 TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  base::FieldTrialParams kAdRewardsParameters;
-  const char kNextPaymentDayParameter[] = "next_payment_day";
-  kAdRewardsParameters[kNextPaymentDayParameter] = "5";
-  enabled_features.emplace_back(kAdRewards, kAdRewardsParameters);
+  base::FieldTrialParams ad_rewards_parameters;
+  const char next_payment_day_parameter[] = "next_payment_day";
+  ad_rewards_parameters[next_payment_day_parameter] = "5";
+  enabled_features.emplace_back(kAdRewards, ad_rewards_parameters);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

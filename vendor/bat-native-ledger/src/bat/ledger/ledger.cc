@@ -25,15 +25,4 @@ Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new LedgerImpl(client);
 }
 
-bool Ledger::IsMediaLink(const std::string& url,
-                         const std::string& first_party_url,
-                         const std::string& referrer) {
-  const std::string type = braveledger_media::Media::GetLinkType(
-      url,
-      first_party_url,
-      referrer);
-
-  return type == TWITCH_MEDIA_TYPE || type == VIMEO_MEDIA_TYPE;
-}
-
 }  // namespace ledger
