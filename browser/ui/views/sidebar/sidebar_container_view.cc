@@ -455,7 +455,8 @@ void SidebarContainerView::OnEntryRegistered(SidePanelEntry* entry) {
   panel_entry_observations_.AddObservation(entry);
 }
 
-void SidebarContainerView::OnEntryWillDeregister(SidePanelEntry* entry) {
+void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
+                                                 SidePanelEntry* entry) {
   // Stop observing
   DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);
