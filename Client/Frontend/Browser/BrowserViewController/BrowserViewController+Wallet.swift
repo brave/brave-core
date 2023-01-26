@@ -460,6 +460,9 @@ extension Tab: BraveWalletEventsListener {
       )
     }
   }
+  
+  func messageEvent(_ subscriptionId: String, result: MojoBase.Value) {
+  }
 }
 
 extension Tab: BraveWalletSolanaEventsListener {

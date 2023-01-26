@@ -506,8 +506,8 @@ private extension AdblockService {
         continuation.finish()
         return
       }
-              
-      registerFilterListComponent(filterList) { filterList, folderPath in
+
+      registerFilterListComponent(filterList, useLegacyComponent: true) { folderPath in
         guard let folderPath = folderPath else {
           continuation.yield(nil)
           return
@@ -518,7 +518,7 @@ private extension AdblockService {
       }
       
       continuation.onTermination = { @Sendable _ in
-        self.unregisterFilterListComponent(filterList)
+        self.unregisterFilterListComponent(filterList, useLegacyComponent: true)
       }
     }
   }

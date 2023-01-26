@@ -53,7 +53,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0x5208",
         to: "0x0987654321098765432109876543210987654321",
         value: "0x1b667a56d488000", // 0.1234
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
@@ -144,7 +146,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0xca48",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
@@ -222,7 +226,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0x4be75",
         to: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF", // 0x exchange address
         value: "0x1b6951ef585a000",
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
@@ -308,7 +314,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0x4be75",
         to: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF", // 0x exchange address
         value: "0x0",
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
@@ -394,7 +402,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0xb53f",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
@@ -474,7 +484,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0xb53f",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
@@ -554,7 +566,9 @@ class TransactionParserTests: XCTestCase {
         gasLimit: "0x5208",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0xde0b6b3a7640000", // 1
-        data: []
+        data: [],
+        signOnly: false,
+        signedTransaction: nil
       ),
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",

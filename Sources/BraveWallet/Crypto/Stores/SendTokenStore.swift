@@ -372,7 +372,7 @@ public class SendTokenStore: ObservableObject {
     rpcService.network(.eth) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
-        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: sendToAddress, value: "0x\(weiHexString)", data: .init())
+        let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: sendToAddress, value: "0x\(weiHexString)", data: .init(), signOnly: false, signedTransaction: nil)
         if network.isEip1559 {
           self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success, errorMessage  in
             self.isMakingTx = false
@@ -391,7 +391,7 @@ public class SendTokenStore: ObservableObject {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data, signOnly: false, signedTransaction: nil)
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress, origin: nil, groupId: nil) { success, txMetaId, errorMessage in
             self.isMakingTx = false
@@ -404,7 +404,7 @@ public class SendTokenStore: ObservableObject {
             completion(false, nil)
             return
           }
-          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+          let baseData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data, signOnly: false, signedTransaction: nil)
           if network.isEip1559 {
             self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: fromAddress) { success, errorMessage  in
               self.isMakingTx = false
