@@ -26,8 +26,9 @@ namespace {
 void FakeCallback(ledger::mojom::CreateRewardsWalletResult) {}
 
 void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
-  if (!profile)
+  if (!profile) {
     return;
+  }
 
   // Obtrusive cookie notices list in cosmetic filters.
   auto* regional_service_manager =

@@ -53,8 +53,9 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
   void WaitForRewardsServiceInitialized() {
     auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
         browser()->profile());
-    while (!rewards_service->IsInitialized())
+    while (!rewards_service->IsInitialized()) {
       NonBlockingDelay(base::Seconds(1));
+    }
   }
 };
 

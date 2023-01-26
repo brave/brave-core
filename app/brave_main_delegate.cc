@@ -157,8 +157,9 @@ absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
       current_value = cmd->GetSwitchValueASCII(switches::kComponentUpdater);
       cmd->RemoveSwitch(switches::kComponentUpdater);
     }
-    if (!current_value.empty())
+    if (!current_value.empty()) {
       current_value += ',';
+    }
 
     command_line.AppendSwitchASCII(
         switches::kComponentUpdater,
