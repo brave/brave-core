@@ -968,6 +968,7 @@ void IpfsService::OnPreWarmComplete(
     std::move(prewarm_callback_for_testing_).Run();
 }
 
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 //{
 //  "PinLsList": {
 //    "Keys": {
@@ -1052,6 +1053,7 @@ void IpfsService::OnPinRemoveResult(
 
   std::move(callback).Run(std::move(parse_result));
 }
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
 void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
   GURL::Replacements replacements;

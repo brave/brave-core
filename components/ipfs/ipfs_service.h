@@ -27,7 +27,6 @@
 #include "brave/components/ipfs/ipfs_dns_resolver.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
 #include "brave/components/ipfs/node_info.h"
-#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
 #include "brave/components/ipfs/repo_stats.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,6 +34,10 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/components/ipfs/pin/ipfs_pin_rpc_types.h"
+#endif
 
 namespace base {
 class CommandLine;
@@ -82,13 +85,14 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   // Local pins
   using AddPinCallback = base::OnceCallback<void(absl::optional<AddPinResult>)>;
   using RemovePinCallback =
       base::OnceCallback<void(absl::optional<RemovePinResult>)>;
   using GetPinsCallback =
       base::OnceCallback<void(absl::optional<GetPinsResult>)>;
-
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
@@ -206,8 +210,6 @@ class IpfsService : public KeyedService,
   void ExecuteNodeCommand(const base::CommandLine& command_line,
                           const base::FilePath& data,
                           BoolCallback callback);
-#endif
-  base::TimeDelta CalculatePeersRetryTime();
 
   // Local pins
   void OnGetPinsResult(APIRequestList::iterator iter,
@@ -219,6 +221,8 @@ class IpfsService : public KeyedService,
   void OnPinRemoveResult(APIRequestList::iterator iter,
                          RemovePinCallback callback,
                          api_request_helper::APIRequestResult response);
+#endif
+  base::TimeDelta CalculatePeersRetryTime();
 
   void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
                                    BoolCallback callback,

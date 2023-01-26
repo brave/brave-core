@@ -40,6 +40,7 @@ bool RemoveValueFromList(base::Value::List* root, const T& value_to_remove) {
 
 }  // namespace
 
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
 // Response format /api/v0/pin/add
 // {
@@ -158,6 +159,7 @@ absl::optional<ipfs::GetPinsResult> IPFSJSONParser::GetGetPinsResultFromJSON(
 
   return result;
 }
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 
 // static
 // Response Format for /api/v0/swarm/peers

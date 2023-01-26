@@ -18,12 +18,15 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
+#endif
 
 namespace brave_wallet {
 
