@@ -26,8 +26,11 @@ using ConnectionState = mojom::ConnectionState;
 
 BraveVPNOSConnectionAPIBase::BraveVPNOSConnectionAPIBase(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : local_prefs_(local_prefs), url_loader_factory_(url_loader_factory) {
+    PrefService* local_prefs,
+    version_info::Channel channel)
+    : target_vpn_entry_name_(GetBraveVPNEntryName(channel)),
+      local_prefs_(local_prefs),
+      url_loader_factory_(url_loader_factory) {
   DCHECK(url_loader_factory && local_prefs);
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
@@ -442,11 +445,6 @@ void BraveVPNOSConnectionAPIBase::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : it's invalid profile credential";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-}
-
-void BraveVPNOSConnectionAPIBase::SetTargetVpnEntryName(
-    const std::string& name) {
-  target_vpn_entry_name_ = name;
 }
 
 const BraveVPNConnectionInfo& BraveVPNOSConnectionAPIBase::connection_info()

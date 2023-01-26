@@ -46,6 +46,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
@@ -431,7 +432,7 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
     return brave_vpn_os_connection_api_.get();
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
-      shared_url_loader_factory(), local_state());
+      shared_url_loader_factory(), local_state(), chrome::GetChannel());
   return brave_vpn_os_connection_api_.get();
 }
 #endif

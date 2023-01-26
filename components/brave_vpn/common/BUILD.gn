@@ -25,6 +25,7 @@ source_set("common") {
     "//build:buildflag_header_h",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/version_info",
     "//net",
   ]
 }

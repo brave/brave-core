@@ -16,8 +16,13 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
+namespace version_info {
+enum class Channel;
+}  // namespace version_info
+
 namespace brave_vpn {
 
+std::string GetBraveVPNEntryName(version_info::Channel channel);
 bool IsBraveVPNEnabled();
 std::string GetBraveVPNPaymentsEnv(const std::string& env);
 std::string GetManageUrl(const std::string& env);

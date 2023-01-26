@@ -68,6 +68,7 @@ source_set("sim") {
     ":common",
     "//base",
     "//brave/components/brave_vpn/common",
+    "//components/version_info:channel",
     "//third_party/icu",
   ]
 }

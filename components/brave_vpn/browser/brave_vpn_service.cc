@@ -54,8 +54,6 @@ BraveVpnService::BraveVpnService(
   connection_api_ = connection_api;
   observed_.Observe(GetBraveVPNConnectionAPI());
 
-  GetBraveVPNConnectionAPI()->SetTargetVpnEntryName(kBraveVPNEntryName);
-
   pref_change_registrar_.Init(local_prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveVPNSelectedRegion,

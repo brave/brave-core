@@ -16,7 +16,8 @@ namespace brave_vpn {
 // android.
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs) {
+    PrefService* local_prefs,
+    version_info::Channel channel) {
   return nullptr;
 }
 #endif

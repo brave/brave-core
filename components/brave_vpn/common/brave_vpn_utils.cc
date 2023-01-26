@@ -22,6 +22,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/channel.h"
 
 namespace brave_vpn {
 
@@ -82,6 +83,24 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
 bool IsBraveVPNEnabled() {
   return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN) &&
          base::FeatureList::IsEnabled(skus::features::kSkusFeature);
+}
+
+std::string GetBraveVPNEntryName(version_info::Channel channel) {
+  constexpr char kBraveVPNEntryName[] = "BraveVPN";
+
+  const std::string entry_name(kBraveVPNEntryName);
+  switch (channel) {
+    case version_info::Channel::CANARY:
+      return entry_name + "-Nightly";
+    case version_info::Channel::DEV:
+      return entry_name + "-Dev";
+    case version_info::Channel::BETA:
+      return entry_name + "-Beta";
+    case version_info::Channel::STABLE:
+      return entry_name;
+    default:
+      return entry_name;
+  }
 }
 
 std::string GetManageUrl(const std::string& env) {

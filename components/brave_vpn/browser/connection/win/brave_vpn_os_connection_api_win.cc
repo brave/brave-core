@@ -43,15 +43,17 @@ RasOperationResult DisconnectEntry(const std::wstring& name) {
 
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs) {
+    PrefService* local_prefs,
+    version_info::Channel channel) {
   return std::make_unique<BraveVPNOSConnectionAPIWin>(url_loader_factory,
-                                                      local_prefs);
+                                                      local_prefs, channel);
 }
 
 BraveVPNOSConnectionAPIWin::BraveVPNOSConnectionAPIWin(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs) {
+    PrefService* local_prefs,
+    version_info::Channel channel)
+    : BraveVPNOSConnectionAPIBase(url_loader_factory, local_prefs, channel) {
   StartVPNConnectionChangeMonitoring();
 }
 
