@@ -29,7 +29,7 @@ void GetConversion(const std::string& creative_instance_id,
       creative_instance_id,
       base::BindOnce(
           [](ConversionCallback callback, base::Value::Dict user_data) {
-            std::move(callback).Run(user_data.Clone());
+            std::move(callback).Run(std::move(user_data));
           },
           std::move(callback)));
 }

@@ -43,8 +43,7 @@ class RedeemUnblindedPaymentTokens final {
 
  private:
   void Redeem();
-  void OnRedeemUnblindedPaymentTokensUserDataBuilt(
-      const base::Value::Dict& user_data);
+  void OnRedeemUnblindedPaymentTokensUserDataBuilt(base::Value::Dict user_data);
   void OnRedeem(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
       const mojom::UrlResponseInfo& url_response);

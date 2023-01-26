@@ -52,11 +52,11 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   void CreateConfirmationAndRedeemToken(const TransactionInfo& transaction,
                                         const base::Time& created_at,
-                                        const base::Value::Dict& user_data);
+                                        base::Value::Dict user_data);
 
   void CreateNewConfirmationAndAppendToRetryQueue(
       const ConfirmationInfo& confirmation,
-      const base::Value::Dict& user_data);
+      base::Value::Dict user_data);
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;

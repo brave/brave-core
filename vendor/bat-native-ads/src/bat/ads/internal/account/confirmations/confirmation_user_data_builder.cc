@@ -62,7 +62,7 @@ void ConfirmationUserDataBuilder::OnGetConversion(
   user_data.Merge(user_data::GetSystemTimestamp());
   user_data.Merge(user_data::GetVersionNumber());
 
-  std::move(callback).Run(user_data);
+  std::move(callback).Run(std::move(user_data));
 }
 
 }  // namespace ads

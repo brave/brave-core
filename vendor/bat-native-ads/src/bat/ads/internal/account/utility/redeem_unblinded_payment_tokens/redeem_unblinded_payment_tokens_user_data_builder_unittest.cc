@@ -33,8 +33,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
       unblinded_payment_tokens);
 
   // Act
-  user_data_builder.Build(base::BindOnce([](const base::Value::Dict&
-                                                user_data) {
+  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
     const base::Value expected_user_data = base::test::ParseJson(
         R"({"odyssey":"host","platform":"windows","totals":[{"ad_format":"ad_notification","view":"2"}]})");
     ASSERT_TRUE(expected_user_data.is_dict());

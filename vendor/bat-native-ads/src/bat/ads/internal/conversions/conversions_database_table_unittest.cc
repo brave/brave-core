@@ -47,7 +47,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       },
       conversions));
 }
@@ -82,7 +82,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       },
       expected_conversions));
 }
@@ -111,7 +111,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       },
       expected_conversions));
 }
@@ -160,7 +160,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       },
       expected_conversions));
 }
@@ -199,7 +199,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
       [](const ConversionList& expected_conversions, const bool success,
          const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       },
       expected_conversions));
 }

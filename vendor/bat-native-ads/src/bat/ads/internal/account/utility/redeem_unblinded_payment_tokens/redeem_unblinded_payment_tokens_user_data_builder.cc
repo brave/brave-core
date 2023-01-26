@@ -30,7 +30,7 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
   user_data.Merge(user_data::GetPlatform());
   user_data.Merge(user_data::GetTotals(unblinded_payment_tokens_));
 
-  std::move(callback).Run(user_data);
+  std::move(callback).Run(std::move(user_data));
 }
 
 }  // namespace ads

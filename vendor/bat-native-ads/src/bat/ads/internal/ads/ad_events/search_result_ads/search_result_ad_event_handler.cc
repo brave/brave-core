@@ -252,25 +252,24 @@ void EventHandler::OnGetAdEventsForClickedSearchResultAd(
   const mojom::SearchResultAdEventType event_type =
       mojom::SearchResultAdEventType::kClicked;
 
-        if (!success) {
-          BLOG(1, "Search result ad: Failed to get ad events");
-          return FailedToFireEvent(ad, event_type, std::move(callback));
-        }
+  if (!success) {
+    BLOG(1, "Search result ad: Failed to get ad events");
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
 
-        if (!WasAdServed(ad, ad_events, event_type)) {
-          BLOG(1,
-               "Search result ad: Not allowed because an ad was not served "
-               "for placement id "
-                   << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, std::move(callback));
-        }
+  if (!WasAdServed(ad, ad_events, event_type)) {
+    BLOG(1,
+         "Search result ad: Not allowed because an ad was not served "
+         "for placement id "
+             << ad.placement_id);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
 
-        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as debounced "
-                      << event_type << " event for placement id "
-                      << ad.placement_id);
-          return FailedToFireEvent(ad, event_type, std::move(callback));
-        }
+  if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+    BLOG(1, "Search result ad: Not allowed as debounced "
+                << event_type << " event for placement id " << ad.placement_id);
+    return FailedToFireEvent(ad, event_type, std::move(callback));
+  }
 
   FireEvent(ad, event_type, std::move(callback));
 }

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 
+#include <utility>
+
 #include "absl/types/optional.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
@@ -147,11 +149,11 @@ void Confirmations::StopRetrying() {
 void Confirmations::CreateConfirmationAndRedeemToken(
     const TransactionInfo& transaction,
     const base::Time& created_at,
-    const base::Value::Dict& user_data) {
+    base::Value::Dict user_data) {
   const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
       token_generator_, created_at, transaction.id,
       transaction.creative_instance_id, transaction.confirmation_type,
-      transaction.ad_type, user_data);
+      transaction.ad_type, std::move(user_data));
   if (!confirmation) {
     BLOG(0, "Failed to confirm confirmation");
     return;
@@ -162,11 +164,11 @@ void Confirmations::CreateConfirmationAndRedeemToken(
 
 void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     const ConfirmationInfo& confirmation,
-    const base::Value::Dict& user_data) {
+    base::Value::Dict user_data) {
   const absl::optional<ConfirmationInfo> new_confirmation = CreateConfirmation(
       token_generator_, confirmation.created_at, confirmation.transaction_id,
       confirmation.creative_instance_id, confirmation.type,
-      confirmation.ad_type, user_data);
+      confirmation.ad_type, std::move(user_data));
   if (!new_confirmation) {
     AppendToRetryQueue(confirmation);
     return;
