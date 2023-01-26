@@ -130,7 +130,7 @@
 
 # These tests fail because we intentionally disable preloading via
 # features::kEarlyHintsPreloadForNavigation
--PreconnectManagerTest.*
+# -PreconnectManagerTest.*
 
 # These tests fail because we disable DIPS via dips::kFeature
 -All/DIPSDatabaseAllColumnTest.*/*

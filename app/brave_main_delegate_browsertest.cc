@@ -140,7 +140,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDigitalGoodsApi,
-    &features::kEarlyHintsPreloadForNavigation,
     &features::kFedCm,
     &features::kFedCmIframeSupport,
     &features::kFedCmUserInfo,
