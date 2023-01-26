@@ -46,7 +46,7 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     return v8::Local<v8::Value>();
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> object;
   if (!GetProperty(context, context->Global(), object_name).ToLocal(&object)) {
@@ -66,7 +66,7 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> method;
   if (!GetProperty(context, object, method_name).ToLocal(&method)) {
