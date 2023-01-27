@@ -42,12 +42,12 @@ void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
                                                   const std::string& locale,
                                                   const std::string& channel_id,
                                                   bool subscribed) {
-  DictionaryPrefUpdate update(prefs, prefs::kBraveNewsChannels);
-  auto* locale_dict = update->GetDict().EnsureDict(locale);
+  ScopedDictPrefUpdate update(prefs, prefs::kBraveNewsChannels);
+  auto* dict = update->EnsureDict(locale);
   if (!subscribed) {
-    locale_dict->Remove(channel_id);
+    dict->Remove(channel_id);
   } else {
-    locale_dict->Set(channel_id, true);
+    dict->Set(channel_id, true);
   }
 }
 

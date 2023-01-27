@@ -91,8 +91,8 @@ void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type) {
   if (log_type != brave::MetricLogType::kExpress) {
     return;
   }
-  DictionaryPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
-  base::Value::Dict& update_dict = update->GetDict();
+  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
+  base::Value::Dict& update_dict = update.Get();
 
   if (!p3a_service_->IsP3AEnabled()) {
     update_dict.clear();
@@ -131,8 +131,8 @@ void NTPP3AHelperImpl::OnP3AMetricSent(const std::string& histogram_name) {
   const std::string& creative_instance_id = histogram_name_tokens[1];
   const std::string& event_type = histogram_name_tokens[2];
 
-  DictionaryPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
-  base::Value::Dict& update_dict = update->GetDict();
+  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
+  base::Value::Dict& update_dict = update.Get();
 
   base::Value::Dict* creative_dict = update_dict.FindDict(creative_instance_id);
   if (creative_dict == nullptr) {
@@ -181,9 +181,8 @@ void NTPP3AHelperImpl::UpdateMetricCount(
   p3a_service_->RegisterDynamicMetric(histogram_name,
                                       brave::MetricLogType::kExpress);
 
-  DictionaryPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
-
-  base::Value::Dict& update_dict = update->GetDict();
+  ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
+  base::Value::Dict& update_dict = update.Get();
 
   base::Value* creative_instance_value = update_dict.Find(creative_instance_id);
   if (creative_instance_value == nullptr ||

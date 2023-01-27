@@ -347,13 +347,12 @@ void AssetDiscoveryManager::OnGetTokenTransferLogs(
   if (!triggered_by_accounts_added) {
     // Update the last block discovered for this chain unless this
     // was triggered by accounts being added
-    DictionaryPrefUpdate update(prefs_,
+    ScopedDictPrefUpdate update(prefs_,
                                 kBraveWalletNextAssetDiscoveryFromBlocks);
-    auto* next_asset_discovery_from_blocks = update.Get()->GetIfDict();
-    DCHECK(next_asset_discovery_from_blocks);
+    base::Value::Dict& next_asset_discovery_from_blocks = update.Get();
     const auto path = base::StrCat({kEthereumPrefKey, ".", chain_id});
     const std::string* current =
-        next_asset_discovery_from_blocks->FindStringByDottedPath(path);
+        next_asset_discovery_from_blocks.FindStringByDottedPath(path);
     uint256_t current_int = 0;
     if (current) {
       if (!HexValueToUint256(*current, &current_int)) {
@@ -366,7 +365,7 @@ void AssetDiscoveryManager::OnGetTokenTransferLogs(
       }
     }
     if ((!current || current_int <= largest_block) && largest_block > 0) {
-      next_asset_discovery_from_blocks->SetByDottedPath(
+      next_asset_discovery_from_blocks.SetByDottedPath(
           path, Uint256ValueToHex(largest_block + 1));
     }
   }

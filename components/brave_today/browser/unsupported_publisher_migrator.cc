@@ -95,8 +95,8 @@ void UnsupportedPublisherMigrator::MigrateUnsupportedFeeds(
 
     // Once we've added the direct feed, delete the feed from our combined
     // publishers list.
-    DictionaryPrefUpdate update(prefs_, prefs::kBraveTodaySources);
-    update->RemoveKey(publisher_id);
+    ScopedDictPrefUpdate update(prefs_, prefs::kBraveTodaySources);
+    update->Remove(publisher_id);
     migrated_count++;
   }
   std::move(callback).Run(migrated_count);

@@ -180,11 +180,10 @@ TEST_F(BraveWalletPrefsUnitTest,
   tx2.Set("status", 2);
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
-    base::Value* update_dict = update.Get();
-    update_dict->SetPath("mainnet.meta1", base::Value(tx1.Clone()));
-    update_dict->SetPath("mainnet.meta2", base::Value(tx2.Clone()));
-    update_dict->SetPath("ropsten.meta3", base::Value(tx1.Clone()));
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
+    update->SetByDottedPath("mainnet.meta1", tx1.Clone());
+    update->SetByDottedPath("mainnet.meta2", tx2.Clone());
+    update->SetByDottedPath("ropsten.meta3", tx1.Clone());
   }
 
   MigrateObsoleteProfilePrefs(GetPrefs());
@@ -207,10 +206,9 @@ TEST_F(BraveWalletPrefsUnitTest,
   GetPrefs()->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
   GetPrefs()->ClearPref(kBraveWalletTransactions);
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
-    base::Value* update_dict = update.Get();
-    update_dict->SetPath("mainnet.meta1", base::Value(tx1.Clone()));
-    update_dict->RemovePath("mainnet");
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
+    update->SetByDottedPath("mainnet.meta1", tx1.Clone());
+    update->Remove("mainnet");
   }
   EXPECT_TRUE(pref && !pref->IsDefaultValue());
   EXPECT_TRUE(GetPrefs()->GetDict(kBraveWalletTransactions).empty());

@@ -233,9 +233,8 @@ void BraveP3AService::RegisterDynamicMetric(const std::string& histogram_name,
           std::string(histogram_name),
           base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
 
-  DictionaryPrefUpdate update(local_state_, kDynamicMetricsDictPref);
-  base::Value::Dict& update_dict = update->GetDict();
-  update_dict.Set(histogram_name, static_cast<int>(log_type));
+  ScopedDictPrefUpdate update(local_state_, kDynamicMetricsDictPref);
+  update->Set(histogram_name, static_cast<int>(log_type));
 }
 
 void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
@@ -253,9 +252,8 @@ void BraveP3AService::RemoveDynamicMetric(const std::string& histogram_name) {
   dynamic_metric_sample_callbacks_.erase(histogram_name);
   dynamic_metric_log_types_.erase(histogram_name);
 
-  DictionaryPrefUpdate update(local_state_, kDynamicMetricsDictPref);
-  base::Value::Dict& update_dict = update->GetDict();
-  update_dict.Remove(histogram_name);
+  ScopedDictPrefUpdate update(local_state_, kDynamicMetricsDictPref);
+  update->Remove(histogram_name);
 }
 
 bool BraveP3AService::IsDynamicMetricRegistered(
