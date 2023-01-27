@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_search_conversion",
+  "+brave/components/commander/common",
   "+brave/components/omnibox/browser",
   "+content/public/common",
 ]

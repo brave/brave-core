@@ -3,7 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 #include "brave/browser/about_flags.cc"
+#include "brave/components/commander/common/features.h"
 
+// Note: We replace the kQuickCommands feature with the kBraveCommander feature
+// so we can use it from //components without DEPS violations.
+#define kQuickCommands kBraveCommander
 #include "src/chrome/browser/about_flags.cc"
+#undef kQuickCommands

@@ -1085,6 +1085,7 @@ test("brave_browser_tests") {
     sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
     deps += [
       "//brave/browser/sharing_hub:browser_tests",
+      "//brave/browser/ui/commander:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",

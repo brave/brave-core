@@ -56,6 +56,7 @@ class BraveLocationBarView : public LocationBarView {
 
   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                      on_icon_fetched) const override;
+  void OnOmniboxBlurred() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;

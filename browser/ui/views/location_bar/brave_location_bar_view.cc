@@ -14,10 +14,13 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/commander/common/commander_frontend_delegate.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -89,8 +92,9 @@ void BraveLocationBarView::Init() {
     focus_ring->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
-    if (const auto color_id = GetFocusRingColor(profile()))
+    if (const auto color_id = GetFocusRingColor(profile())) {
       focus_ring->SetColorId(color_id.value());
+    }
   }
 
   if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature) &&
@@ -119,8 +123,9 @@ void BraveLocationBarView::Init() {
   Update(nullptr);
 
   // Stop slide animation for all content settings views icon.
-  for (auto* content_setting_view : content_setting_views_)
+  for (auto* content_setting_view : content_setting_views_) {
     content_setting_view->disable_animation();
+  }
 }
 
 bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
@@ -128,8 +133,9 @@ bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
   const GURL& url = GetLocationBarModel()->GetURL();
   if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
       !ipfs::IsIPFSScheme(url) ||
-      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs()))
+      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs())) {
     return false;
+  }
 
   return true;
 #else
@@ -146,12 +152,14 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
 
   auto show_page_actions = !ShouldHidePageActionIcons();
 #if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_)
+  if (onion_location_view_) {
     onion_location_view_->Update(contents, show_page_actions);
+  }
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_)
+  if (ipfs_location_view_) {
     ipfs_location_view_->Update(contents, show_page_actions);
+  }
 #endif
 
   if (brave_news_location_view_) {
@@ -160,12 +168,14 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
 
   LocationBarView::Update(contents);
 
-  if (!ShouldShowIPFSLocationView())
+  if (!ShouldShowIPFSLocationView()) {
     return;
+  }
   // Secure display text for a page was set by chromium.
   // We do not want to override this.
-  if (!GetLocationBarModel()->GetSecureDisplayText().empty())
+  if (!GetLocationBarModel()->GetSecureDisplayText().empty()) {
     return;
+  }
   auto badge_text =
       brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
   location_icon_view()->SetLabel(badge_text);
@@ -174,12 +184,20 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
 ui::ImageModel BraveLocationBarView::GetLocationIcon(
     LocationIconView::Delegate::IconFetchedCallback on_icon_fetched) const {
   if (!ShouldShowIPFSLocationView() ||
-      !omnibox_view_->model()->ShouldShowCurrentPageIcon())
+      !omnibox_view_->model()->ShouldShowCurrentPageIcon()) {
     return LocationBarView::GetLocationIcon(std::move(on_icon_fetched));
+  }
 
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
   const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
   return ui::ImageModel::FromImageSkia(ipfs_logo);
+}
+
+void BraveLocationBarView::OnOmniboxBlurred() {
+  if (commander::CommanderEnabled()) {
+    commander::CommanderServiceFactory::GetForBrowserContext(profile_)->Hide();
+  }
+  LocationBarView::OnOmniboxBlurred();
 }
 
 void BraveLocationBarView::OnChanged() {
@@ -188,16 +206,18 @@ void BraveLocationBarView::OnChanged() {
     brave_actions_->SetShouldHide(hide_page_actions);
   }
 #if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_)
+  if (onion_location_view_) {
     onion_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents(),
         !hide_page_actions);
+  }
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_)
+  if (ipfs_location_view_) {
     ipfs_location_view_->Update(
         browser_->tab_strip_model()->GetActiveWebContents(),
         !hide_page_actions);
+  }
 #endif
 
   if (brave_news_location_view_) {
@@ -210,19 +230,23 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   std::vector<views::View*> views;
-  if (brave_news_location_view_)
+  if (brave_news_location_view_) {
     views.push_back(brave_news_location_view_);
+  }
 #if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_)
+  if (onion_location_view_) {
     views.push_back(onion_location_view_);
+  }
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_)
+  if (ipfs_location_view_) {
     views.push_back(ipfs_location_view_);
+  }
 #endif
 
-  if (brave_actions_)
+  if (brave_actions_) {
     views.push_back(brave_actions_);
+  }
 
   return views;
 }
@@ -261,8 +285,9 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
 
-  if (!IsInitialized())
+  if (!IsInitialized()) {
     return;
+  }
 
   Update(nullptr);
   RefreshBackground();

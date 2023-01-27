@@ -13,9 +13,11 @@
  public:                             \
   virtual std::vector<views::View*> GetTrailingViews();
 
+#define OnOmniboxBlurred virtual OnOmniboxBlurred
 #define GetBorderRadius virtual GetBorderRadius
 #include "src/chrome/browser/ui/views/location_bar/location_bar_view.h"  // IWYU pragma: export
 #undef GetBorderRadius
+#undef OnOmniboxBlurred
 #undef BRAVE_LOCATION_BAR_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_

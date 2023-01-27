@@ -88,6 +88,10 @@ source_set("ui") {
       "browser_commands.cc",
       "browser_commands.h",
       "browser_dialogs.h",
+      "commander/commander_service.cc",
+      "commander/commander_service.h",
+      "commander/commander_service_factory.cc",
+      "commander/commander_service_factory.h",
       "content_settings/brave_autoplay_blocked_image_model.cc",
       "content_settings/brave_autoplay_blocked_image_model.h",
       "content_settings/brave_autoplay_content_setting_bubble_model.cc",
@@ -533,6 +537,10 @@ source_set("ui") {
     ]
 
     deps += [ "//brave/components/text_recognition/browser" ]
+  }
+
+  if (!is_android && !is_ios) {
+    deps += [ "//brave/components/commander/common" ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still

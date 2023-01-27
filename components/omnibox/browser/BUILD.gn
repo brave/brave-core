@@ -41,4 +41,11 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (!is_android && !is_ios) {
+    sources +=
+        [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
+
+    deps += [ "//brave/components/commander/common" ]
+  }
 }
