@@ -38,6 +38,7 @@ def main():
   config = perf_config.PerfConfig(json_config)
 
   common_options = perf_test_runner.CommonOptions.from_args(args)
+  common_options.local_run = True
 
   return 0 if perf_test_runner.RunConfigurations(
       config.runners, config.benchmarks, common_options) else 1
