@@ -32,9 +32,8 @@ extension BrowserViewController {
   }
   
   func presentBottomBarCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .bottomBar) {
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .blockCookieConsentNotices) else {
       return
     }
 
@@ -69,9 +68,8 @@ extension BrowserViewController {
   }
   
   func presentP3AScreenCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .p3a) {
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .p3a) else {
       return
     }
     
@@ -114,9 +112,8 @@ extension BrowserViewController {
   }
 
   func presentVPNAlertCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .vpn) {
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .vpn) else {
       return
     }
 
@@ -149,11 +146,11 @@ extension BrowserViewController {
   }
 
   func presentDefaultBrowserScreenCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .defaultBrowser) {
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .defaultBrowser) else {
       return
     }
+    
 
     let onboardingController = WelcomeViewController(
       state: WelcomeViewCalloutState.defaultBrowserCallout(
@@ -188,9 +185,8 @@ extension BrowserViewController {
   }
 
   func presentBraveRewardsScreenCallout() {
-    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented { return }
-
-    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .rewards) {
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .rewards) else {
       return
     }
 
@@ -225,5 +221,17 @@ extension BrowserViewController {
       
       show(toast: toast, duration: ButtonToastUX.toastDismissAfter)
     }
+  }
+  
+  func shouldShowCallout(calloutType: FullScreenCalloutManager.FullScreenCalloutType) -> Bool {
+    if Preferences.DebugFlag.skipNTPCallouts == true || isOnboardingOrFullScreenCalloutPresented || topToolbar.inOverlayMode {
+      return false
+    }
+
+    if presentedViewController != nil || !FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: calloutType) {
+      return false
+    }
+    
+    return true
   }
 }

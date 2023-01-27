@@ -12,7 +12,10 @@ import Onboarding
 
 extension BrowserViewController {
   func presentCookieNotificationBlockingCalloutIfNeeded() {
-    if Preferences.DebugFlag.skipEduPopups == true { return }
+    // Check the blockCookieConsentNotices callout can be shown
+    guard shouldShowCallout(calloutType: .blockCookieConsentNotices) else {
+      return
+    }
     
     // Don't show this if we already enabled the setting
     guard !FilterListResourceDownloader.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID) else { return }
@@ -23,10 +26,7 @@ extension BrowserViewController {
     // Ensure we successfully shown basic onboarding first
     guard Preferences.FullScreenCallout.omniboxCalloutCompleted.value else { return }
 
-    // Make sure we didn't already show this popup
-    guard presentedViewController == nil && FullScreenCalloutManager.shouldShowDefaultBrowserCallout(calloutType: .blockCookieConsentNotices) else {
-      return
-    }
+
     
     let popover = PopoverController(
       contentController: CookieNotificationBlockingConsentViewController(),
