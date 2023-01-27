@@ -7,6 +7,9 @@
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+class GURL;
 
 class BraveOmniboxViewViews : public OmniboxViewViews {
  public:
@@ -19,6 +22,8 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   bool SelectedTextIsURL();
 
  protected:
+  absl::optional<GURL> GetURLToCopy();
+  void CopySanitizedURL(const GURL& url);
 #if BUILDFLAG(IS_WIN)
   // View overrides:
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
