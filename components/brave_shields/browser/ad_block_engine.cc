@@ -254,7 +254,8 @@ void AdBlockEngine::UpdateAdBlockClient(
     const std::string& resources_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_ = std::move(ad_block_client);
-  ad_block_client_->setupDiscardPolicy(regex_discard_policy_);
+  if (regex_discard_policy_)
+    ad_block_client_->setupDiscardPolicy(*regex_discard_policy_);
   UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {

@@ -106,7 +106,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   friend class ::PerfPredictorTabHelperTest;
 
   std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
-  adblock::RegexManagerDiscardPolicy regex_discard_policy_
+  absl::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<TestObserver> test_observer_ = nullptr;
