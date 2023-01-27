@@ -100,6 +100,8 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
+  RenamePlaylist(string playlist_id, string playlist_name) => (Playlist updated_playlist);
+
   GetDefaultPlaylistId() => (string playlist_id);
   SetDefaultPlaylistId(string playlist_id);
 

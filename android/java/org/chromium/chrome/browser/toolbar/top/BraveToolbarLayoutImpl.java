@@ -155,6 +155,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
+import org.chromium.playlist.mojom.PlaylistServiceObserver;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -1683,5 +1684,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mRewardsLayout.draw(canvas);
             canvas.restore();
         }
+    }
+
+    @Override
+    public void onEvent(int event) {
+        Log.e("BravePlaylist", "Event : " + event);
+    }
+
+    @Override
+    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
+            byte percentComplete, String timeRemaining) {
+        Log.e("BravePlaylist",
+                "Id : " + id + "totalBytes : " + (totalBytes / 1024) + "KB "
+                        + "receivedBytes : " + (receivedBytes / 1024) + "KB "
+                        + "timeRemaining : " + timeRemaining);
     }
 }

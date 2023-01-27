@@ -157,6 +157,9 @@ class PlaylistService : public KeyedService,
   void CreatePlaylist(mojom::PlaylistPtr playlist,
                       CreatePlaylistCallback callback) override;
   void RemovePlaylist(const std::string& playlist_id) override;
+  void RenamePlaylist(const std::string& playlist_id,
+                      const std::string& playlist_name,
+                      RenamePlaylistCallback callback) override;
   void GetDefaultPlaylistId(GetDefaultPlaylistIdCallback callback) override;
   void SetDefaultPlaylistId(const std::string& playlist_id) override;
   void GetPlaylistCacheByDefault(

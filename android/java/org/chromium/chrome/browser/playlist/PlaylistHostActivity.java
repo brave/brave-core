@@ -66,6 +66,18 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
             }
         });
 
+        playlistViewModel.getRenamePlaylistOption().observe(
+                PlaylistHostActivity.this, renamePlaylistModel -> {
+                    if (mPlaylistService != null) {
+                        mPlaylistService.renamePlaylist(renamePlaylistModel.getPlaylistId(),
+                                renamePlaylistModel.getNewName(), updatedPlaylist -> {
+                                    Log.e(PlaylistUtils.TAG,
+                                            "after rename Name : " + updatedPlaylist.name);
+                                    openPlaylist(updatedPlaylist.id, false);
+                                });
+                    }
+                });
+
         playlistViewModel.getPlaylistToOpen().observe(PlaylistHostActivity.this, playlistId -> {
             if (mPlaylistService != null) {
                 openPlaylist(playlistId, true);
@@ -94,6 +106,11 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         } else if (option == PlaylistOptions.REMOVE_PLAYLIST_OFFLINE_DATA) {
                             Log.e(PlaylistUtils.TAG,
                                     "PlaylistOptions.REMOVE_PLAYLIST_OFFLINE_DATA");
+                            if (mPlaylistService != null
+                                    && playlistOptionsModel.getPlaylistModel() != null) {
+                                mPlaylistService.removeLocalDataForItemsInPlaylist(
+                                        playlistOptionsModel.getPlaylistModel().getId());
+                            }
                         } else if (option == PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
                             Log.e(PlaylistUtils.TAG,
                                     "PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE");
@@ -103,7 +120,7 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                                     && playlistOptionsModel.getPlaylistModel() != null) {
                                 mPlaylistService.removePlaylist(
                                         playlistOptionsModel.getPlaylistModel().getId());
-                                finish();
+                                openAllPlaylists(false, null);
                             }
                         }
                     }
@@ -115,6 +132,11 @@ public class PlaylistHostActivity extends PlaylistBaseActivity implements Playli
                         PlaylistOptions option = playlistOptionsModel.getOptionType();
                         if (option == PlaylistOptions.REMOVE_ALL_OFFLINE_DATA) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.REMOVE_ALL_OFFLINE_DATA");
+                            if (mPlaylistService != null
+                                    && playlistOptionsModel.getPlaylistModel() != null) {
+                                mPlaylistService.removeLocalDataForItemsInPlaylist(
+                                        playlistOptionsModel.getPlaylistModel().getId());
+                            }
                         } else if (option
                                 == PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
                             Log.e(PlaylistUtils.TAG,
