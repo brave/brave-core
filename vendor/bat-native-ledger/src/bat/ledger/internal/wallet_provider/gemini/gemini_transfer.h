@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_PROVIDER_GEMINI_GEMINI_TRANSFER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_WALLET_PROVIDER_GEMINI_GEMINI_TRANSFER_H_
 
-#include <string>
-
 #include "bat/ledger/internal/endpoints/gemini/post_commit_transaction/post_commit_transaction_gemini.h"
 #include "bat/ledger/internal/wallet_provider/transfer.h"
 
@@ -19,9 +17,7 @@ class GeminiTransfer final : public wallet_provider::Transfer {
 
  private:
   void CommitTransaction(ledger::ResultCallback,
-                         std::string&& destination,
-                         double amount,
-                         std::string&& transaction_id) const override;
+                         mojom::ExternalTransactionPtr) const override;
 
   void OnCommitTransaction(
       ledger::ResultCallback,

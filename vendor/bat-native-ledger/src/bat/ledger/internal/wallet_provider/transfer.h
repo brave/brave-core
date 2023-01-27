@@ -28,39 +28,33 @@ class Transfer {
 
  protected:
   using MaybeCreateTransactionCallback =
-      base::OnceCallback<void(std::string&&)>;
+      base::OnceCallback<void(mojom::ExternalTransactionPtr)>;
 
  private:
   void MaybeCreateTransaction(const std::string& contribution_id,
                               const std::string& destination,
-                              double amount,
+                              const std::string& amount,
                               MaybeCreateTransactionCallback) const;
 
-  void OnGetExternalTransactionId(MaybeCreateTransactionCallback,
-                                  std::string&& contribution_id,
-                                  std::string&& destination,
-                                  double amount,
-                                  std::string&& transaction_id) const;
+  void OnGetExternalTransaction(MaybeCreateTransactionCallback,
+                                std::string&& contribution_id,
+                                std::string&& destination,
+                                std::string&& amount,
+                                mojom::ExternalTransactionPtr) const;
 
   void SaveExternalTransaction(MaybeCreateTransactionCallback callback,
-                               std::string&& contribution_id,
-                               std::string&& destination,
-                               double amount,
-                               std::string&& transaction_id) const;
+                               mojom::ExternalTransactionPtr) const;
 
   void OnSaveExternalTransaction(MaybeCreateTransactionCallback,
-                                 std::string&& transaction_id,
+                                 mojom::ExternalTransactionPtr,
                                  mojom::Result) const;
 
  protected:
   virtual void CreateTransaction(MaybeCreateTransactionCallback,
-                                 std::string&& destination,
-                                 double amount) const;
+                                 mojom::ExternalTransactionPtr) const;
 
   virtual void CommitTransaction(ledger::ResultCallback,
-                                 std::string&& destination,
-                                 double amount,
-                                 std::string&& transaction_id) const = 0;
+                                 mojom::ExternalTransactionPtr) const = 0;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

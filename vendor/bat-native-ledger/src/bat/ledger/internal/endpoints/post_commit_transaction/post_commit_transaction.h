@@ -20,13 +20,13 @@ class PostCommitTransaction : public RequestBuilder {
   PostCommitTransaction(LedgerImpl*,
                         std::string&& token,
                         std::string&& address,
-                        std::string&& transaction_id);
+                        mojom::ExternalTransactionPtr);
   ~PostCommitTransaction() override;
 
  protected:
   std::string token_;
   std::string address_;
-  std::string transaction_id_;
+  mojom::ExternalTransactionPtr transaction_;
 };
 
 }  // namespace endpoints

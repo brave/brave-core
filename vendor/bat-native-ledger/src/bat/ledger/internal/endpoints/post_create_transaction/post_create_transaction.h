@@ -20,8 +20,7 @@ class PostCreateTransaction : public RequestBuilder {
   PostCreateTransaction(LedgerImpl*,
                         std::string&& token,
                         std::string&& address,
-                        std::string&& destination,
-                        double amount);
+                        mojom::ExternalTransactionPtr);
   ~PostCreateTransaction() override;
 
  private:
@@ -33,8 +32,7 @@ class PostCreateTransaction : public RequestBuilder {
 
   std::string token_;
   std::string address_;
-  std::string destination_;
-  double amount_;
+  mojom::ExternalTransactionPtr transaction_;
 };
 
 }  // namespace endpoints

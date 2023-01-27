@@ -14,7 +14,7 @@ constexpr char v37[] =
        transaction_id TEXT NOT NULL CHECK(transaction_id <> ''),
        contribution_id TEXT NOT NULL CHECK(contribution_id <> ''),
        destination TEXT NOT NULL CHECK(destination <> ''),
-       amount DOUBLE NOT NULL,
+       amount TEXT NOT NULL CHECK(amount <> ''),
        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
        PRIMARY KEY (contribution_id, destination),
        FOREIGN KEY (contribution_id) )"

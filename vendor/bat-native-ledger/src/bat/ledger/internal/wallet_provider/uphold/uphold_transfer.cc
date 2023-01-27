@@ -20,27 +20,36 @@ using ledger::endpoints::RequestFor;
 
 namespace ledger::uphold {
 
-void UpholdTransfer::CreateTransaction(MaybeCreateTransactionCallback callback,
-                                       std::string&& destination,
-                                       double amount) const {
+void UpholdTransfer::CreateTransaction(
+    MaybeCreateTransactionCallback callback,
+    mojom::ExternalTransactionPtr transaction) const {
+  DCHECK(transaction);
+  DCHECK(transaction->transaction_id.empty());
+
   const auto wallet =
       ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    return std::move(callback).Run("");
+    return std::move(callback).Run(nullptr);
   }
+
+  auto on_create_transaction = base::BindOnce(
+      &UpholdTransfer::OnCreateTransaction, base::Unretained(this),
+      std::move(callback), transaction->Clone());
 
   RequestFor<PostCreateTransactionUphold>(ledger_, std::move(wallet->token),
                                           std::move(wallet->address),
-                                          std::move(destination), amount)
-      .Send(base::BindOnce(&UpholdTransfer::OnCreateTransaction,
-                           base::Unretained(this), std::move(callback)));
+                                          std::move(transaction))
+      .Send(std::move(on_create_transaction));
 }
 
 void UpholdTransfer::OnCreateTransaction(
     MaybeCreateTransactionCallback callback,
+    mojom::ExternalTransactionPtr transaction,
     PostCreateTransactionUphold::Result&& result) const {
+  DCHECK(transaction);
+
   if (!ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected})) {
-    return std::move(callback).Run("");
+    return std::move(callback).Run(nullptr);
   }
 
   if (!result.has_value()) {
@@ -52,19 +61,22 @@ void UpholdTransfer::OnCreateTransaction(
       }
     }
 
-    return std::move(callback).Run("");
+    return std::move(callback).Run(nullptr);
   }
 
-  std::move(callback).Run(std::move(result.value()));
+  transaction->transaction_id = std::move(result.value());
+
+  std::move(callback).Run(std::move(transaction));
 }
 
-void UpholdTransfer::CommitTransaction(ledger::ResultCallback callback,
-                                       std::string&&,
-                                       double,
-                                       std::string&& transaction_id) const {
-  if (transaction_id.empty()) {
+void UpholdTransfer::CommitTransaction(
+    ledger::ResultCallback callback,
+    mojom::ExternalTransactionPtr transaction) const {
+  if (!transaction) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
+
+  DCHECK(!transaction->transaction_id.empty());
 
   const auto wallet =
       ledger_->uphold()->GetWalletIf({mojom::WalletStatus::kConnected});
@@ -74,11 +86,11 @@ void UpholdTransfer::CommitTransaction(ledger::ResultCallback callback,
 
   auto on_commit_transaction = base::BindOnce(
       &UpholdTransfer::OnCommitTransaction, base::Unretained(this),
-      std::move(callback), transaction_id);
+      std::move(callback), transaction->transaction_id);
 
   RequestFor<PostCommitTransactionUphold>(ledger_, std::move(wallet->token),
                                           std::move(wallet->address),
-                                          std::move(transaction_id))
+                                          std::move(transaction))
       .Send(std::move(on_commit_transaction));
 }
 

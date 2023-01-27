@@ -190,9 +190,9 @@ class Database {
   void SaveExternalTransaction(mojom::ExternalTransactionPtr,
                                ledger::ResultCallback);
 
-  void GetExternalTransactionId(const std::string& contribution_id,
-                                const std::string& destination,
-                                GetExternalTransactionIdCallback);
+  void GetExternalTransaction(const std::string& contribution_id,
+                              const std::string& destination,
+                              GetExternalTransactionCallback);
 
   /**
    * MEDIA PUBLISHER INFO

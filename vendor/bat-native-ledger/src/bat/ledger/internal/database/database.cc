@@ -302,12 +302,11 @@ void Database::SaveExternalTransaction(
   external_transactions_->Insert(std::move(transaction), std::move(callback));
 }
 
-void Database::GetExternalTransactionId(
-    const std::string& contribution_id,
-    const std::string& destination,
-    GetExternalTransactionIdCallback callback) {
-  external_transactions_->GetTransactionId(contribution_id, destination,
-                                           std::move(callback));
+void Database::GetExternalTransaction(const std::string& contribution_id,
+                                      const std::string& destination,
+                                      GetExternalTransactionCallback callback) {
+  external_transactions_->GetTransaction(contribution_id, destination,
+                                         std::move(callback));
 }
 
 /**

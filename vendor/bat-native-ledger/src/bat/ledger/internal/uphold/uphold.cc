@@ -55,7 +55,7 @@ void Uphold::StartContribution(const std::string& contribution_id,
     return callback(mojom::Result::LEDGER_ERROR);
   }
 
-  const double fee = (amount * 1.05) - amount;
+  const double fee = amount * 0.05;
 
   transfer_->Run(contribution_id, info->address, amount - fee,
                  base::BindOnce(&Uphold::ContributionCompleted,

@@ -52,12 +52,7 @@ class PostCommitTransactionBitFlyer final
     : public PostCommitTransaction,
       public ResponseHandler<PostCommitTransactionBitFlyer> {
  public:
-  PostCommitTransactionBitFlyer(LedgerImpl*,
-                                std::string&& token,
-                                std::string&& address,
-                                std::string&& transaction_id,
-                                std::string&& destination,
-                                double amount);
+  using PostCommitTransaction::PostCommitTransaction;
 
   static Result ProcessResponse(const mojom::UrlResponse&);
 
@@ -67,9 +62,6 @@ class PostCommitTransactionBitFlyer final
       const std::string& content) const override;
   absl::optional<std::string> Content() const override;
   std::string ContentType() const override;
-
-  std::string destination_;
-  double amount_;
 };
 
 }  // namespace endpoints

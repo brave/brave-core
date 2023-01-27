@@ -9,7 +9,6 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
@@ -39,20 +38,6 @@ Result ParseBody(const std::string& body) {
 }
 
 }  // namespace
-
-PostCommitTransactionBitFlyer::PostCommitTransactionBitFlyer(
-    LedgerImpl* ledger,
-    std::string&& token,
-    std::string&& address,
-    std::string&& transaction_id,
-    std::string&& destination,
-    double amount)
-    : PostCommitTransaction(ledger,
-                            std::move(token),
-                            std::move(address),
-                            std::move(transaction_id)),
-      destination_(std::move(destination)),
-      amount_(amount) {}
 
 // static
 Result PostCommitTransactionBitFlyer::ProcessResponse(
@@ -84,10 +69,10 @@ absl::optional<std::vector<std::string>> PostCommitTransactionBitFlyer::Headers(
 absl::optional<std::string> PostCommitTransactionBitFlyer::Content() const {
   base::Value::Dict payload;
   payload.Set("currency_code", "BAT");
-  payload.Set("amount", base::StringPrintf("%f", amount_));
+  payload.Set("amount", transaction_->amount);
   payload.Set("dry_run", false);
-  payload.Set("deposit_id", destination_);
-  payload.Set("transfer_id", transaction_id_);
+  payload.Set("deposit_id", transaction_->destination);
+  payload.Set("transfer_id", transaction_->transaction_id);
 
   std::string json;
   if (!base::JSONWriter::Write(payload, &json)) {

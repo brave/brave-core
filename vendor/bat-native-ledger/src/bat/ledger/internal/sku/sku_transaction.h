@@ -46,9 +46,9 @@ class SKUTransaction {
                   const std::string& destination,
                   ledger::LegacyResultCallback callback);
 
-  void OnGetExternalTransactionId(ledger::LegacyResultCallback,
-                                  mojom::SKUTransaction&&,
-                                  std::string&& external_transaction_id);
+  void OnGetExternalTransaction(ledger::LegacyResultCallback,
+                                mojom::SKUTransaction&&,
+                                mojom::ExternalTransactionPtr);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,

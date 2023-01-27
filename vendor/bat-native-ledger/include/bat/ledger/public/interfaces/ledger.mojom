@@ -538,5 +538,5 @@ struct ExternalTransaction {
   string transaction_id;
   string contribution_id;
   string destination;
-  double amount;
+  string amount;
 };

@@ -21,17 +21,15 @@ class UpholdTransfer final : public wallet_provider::Transfer {
 
  private:
   void CreateTransaction(MaybeCreateTransactionCallback,
-                         std::string&& destination,
-                         double amount) const override;
+                         mojom::ExternalTransactionPtr) const override;
 
   void OnCreateTransaction(
       MaybeCreateTransactionCallback,
+      mojom::ExternalTransactionPtr,
       endpoints::PostCreateTransactionUphold::Result&&) const;
 
   void CommitTransaction(ledger::ResultCallback,
-                         std::string&& destination,
-                         double amount,
-                         std::string&& transaction_id) const override;
+                         mojom::ExternalTransactionPtr) const override;
 
   void OnCommitTransaction(
       ledger::ResultCallback,

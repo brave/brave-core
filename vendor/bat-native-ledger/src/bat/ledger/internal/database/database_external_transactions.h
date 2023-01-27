@@ -12,8 +12,7 @@
 
 namespace ledger::database {
 
-using GetExternalTransactionIdCallback =
-    base::OnceCallback<void(std::string&&)>;
+using GetExternalTransactionCallback = base::OnceCallback<void(mojom::ExternalTransactionPtr)>;
 
 class DatabaseExternalTransactions : public DatabaseTable {
  public:
@@ -21,14 +20,14 @@ class DatabaseExternalTransactions : public DatabaseTable {
   ~DatabaseExternalTransactions() override;
 
   void Insert(mojom::ExternalTransactionPtr, ledger::ResultCallback);
-  void GetTransactionId(const std::string& contribution_id,
-                        const std::string& destination,
-                        GetExternalTransactionIdCallback);
+  void GetTransaction(const std::string& contribution_id,
+                      const std::string& destination,
+                      GetExternalTransactionCallback);
 
  private:
   void OnInsert(ledger::ResultCallback, mojom::DBCommandResponsePtr);
-  void OnGetTransactionId(GetExternalTransactionIdCallback,
-                          mojom::DBCommandResponsePtr);
+  void OnGetTransaction(GetExternalTransactionCallback,
+                        mojom::DBCommandResponsePtr);
 };
 
 }  // namespace ledger::database

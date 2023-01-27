@@ -18,13 +18,14 @@ using ledger::endpoints::RequestFor;
 
 namespace ledger::gemini {
 
-void GeminiTransfer::CommitTransaction(ledger::ResultCallback callback,
-                                       std::string&& destination,
-                                       double amount,
-                                       std::string&& transaction_id) const {
-  if (transaction_id.empty()) {
+void GeminiTransfer::CommitTransaction(
+    ledger::ResultCallback callback,
+    mojom::ExternalTransactionPtr transaction) const {
+  if (!transaction) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
+
+  DCHECK(!transaction->transaction_id.empty());
 
   const auto wallet =
       ledger_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
@@ -36,9 +37,9 @@ void GeminiTransfer::CommitTransaction(ledger::ResultCallback callback,
       base::BindOnce(&GeminiTransfer::OnCommitTransaction,
                      base::Unretained(this), std::move(callback));
 
-  RequestFor<PostCommitTransactionGemini>(
-      ledger_, std::move(wallet->token), std::move(wallet->address),
-      std::move(transaction_id), std::move(destination), amount)
+  RequestFor<PostCommitTransactionGemini>(ledger_, std::move(wallet->token),
+                                          std::move(wallet->address),
+                                          std::move(transaction))
       .Send(std::move(on_commit_transaction));
 }
 

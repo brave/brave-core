@@ -66,13 +66,13 @@ absl::optional<std::vector<std::string>> PostCreateTransactionUphold::Headers(
 
 absl::optional<std::string> PostCreateTransactionUphold::Content() const {
   base::Value::Dict denomination;
-  denomination.Set("amount", base::StringPrintf("%f", amount_));
+  denomination.Set("amount", transaction_->amount);
   denomination.Set("currency", "BAT");
 
   base::Value::Dict payload;
-  payload.Set("destination", destination_);
+  payload.Set("destination", transaction_->destination);
   payload.Set("denomination", std::move(denomination));
-  if (destination_ == uphold::GetFeeAddress()) {
+  if (transaction_->destination == uphold::GetFeeAddress()) {
     payload.Set("message", kFeeMessage);
   }
 

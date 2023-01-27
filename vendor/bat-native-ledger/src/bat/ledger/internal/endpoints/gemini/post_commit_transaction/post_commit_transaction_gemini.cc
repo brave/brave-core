@@ -10,7 +10,6 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
@@ -47,20 +46,6 @@ Result ParseBody(const std::string& body) {
 
 }  // namespace
 
-PostCommitTransactionGemini::PostCommitTransactionGemini(
-    LedgerImpl* ledger,
-    std::string&& token,
-    std::string&& address,
-    std::string&& transaction_id,
-    std::string&& destination,
-    double amount)
-    : PostCommitTransaction(ledger,
-                            std::move(token),
-                            std::move(address),
-                            std::move(transaction_id)),
-      destination_(std::move(destination)),
-      amount_(amount) {}
-
 // static
 Result PostCommitTransactionGemini::ProcessResponse(
     const mojom::UrlResponse& response) {
@@ -83,10 +68,10 @@ absl::optional<std::string> PostCommitTransactionGemini::Url() const {
 absl::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
     const std::string&) const {
   base::Value::Dict payload;
-  payload.Set("tx_ref", transaction_id_);
-  payload.Set("amount", base::StringPrintf("%f", amount_));
+  payload.Set("tx_ref", transaction_->transaction_id);
+  payload.Set("amount", transaction_->amount);
   payload.Set("currency", "BAT");
-  payload.Set("destination", destination_);
+  payload.Set("destination", transaction_->destination);
 
   std::string json;
   if (!base::JSONWriter::Write(payload, &json)) {

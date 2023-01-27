@@ -45,12 +45,7 @@ class PostCommitTransactionGemini final
     : public PostCommitTransaction,
       public ResponseHandler<PostCommitTransactionGemini> {
  public:
-  PostCommitTransactionGemini(LedgerImpl*,
-                              std::string&& token,
-                              std::string&& address,
-                              std::string&& transaction_id,
-                              std::string&& destination,
-                              double amount);
+  using PostCommitTransaction::PostCommitTransaction;
 
   static Result ProcessResponse(const mojom::UrlResponse&);
 
@@ -59,9 +54,6 @@ class PostCommitTransactionGemini final
   absl::optional<std::vector<std::string>> Headers(
       const std::string& content) const override;
   std::string ContentType() const override;
-
-  std::string destination_;
-  double amount_;
 };
 
 }  // namespace endpoints

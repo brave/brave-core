@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/guid.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 namespace ledger::wallet_provider {
@@ -23,78 +24,88 @@ void Transfer::Run(const std::string& contribution_id,
                    double amount,
                    ledger::ResultCallback callback) const {
   MaybeCreateTransaction(
-      contribution_id, destination, amount,
+      contribution_id, destination,
+      // We can one-time/monthly tip in multiples of 0.25.
+      // A-C we can do in multiples of 1 (which is also a multiple of 0.25).
+      // The least amount one can tip is 0.25, where:
+      //   - 0.2375 (95%) is the actual contribution, and
+      //   - 0.0125 (== 1/80) (5%) is the fee
+      // Rounding to nearest eightieth:
+      base::NumberToString(std::round(amount * 80) / 80),
       base::BindOnce(&Transfer::CommitTransaction, base::Unretained(this),
-                     std::move(callback), destination, amount));
+                     std::move(callback)));
 }
 
 void Transfer::MaybeCreateTransaction(
     const std::string& contribution_id,
     const std::string& destination,
-    double amount,
+    const std::string& amount,
     MaybeCreateTransactionCallback callback) const {
-  ledger_->database()->GetExternalTransactionId(
+  ledger_->database()->GetExternalTransaction(
       contribution_id, destination,
-      base::BindOnce(&Transfer::OnGetExternalTransactionId,
+      base::BindOnce(&Transfer::OnGetExternalTransaction,
                      base::Unretained(this), std::move(callback),
                      contribution_id, destination, amount));
 }
 
-void Transfer::OnGetExternalTransactionId(
+void Transfer::OnGetExternalTransaction(
     MaybeCreateTransactionCallback callback,
     std::string&& contribution_id,
     std::string&& destination,
-    double amount,
-    std::string&& transaction_id) const {
-  if (!transaction_id.empty()) {
-    return std::move(callback).Run(std::move(transaction_id));
+    std::string&& amount,
+    mojom::ExternalTransactionPtr transaction) const {
+  if (transaction) {
+    return std::move(callback).Run(std::move(transaction));
   }
 
-  auto create_transaction_callback = base::BindOnce(
-      &Transfer::SaveExternalTransaction, base::Unretained(this),
-      std::move(callback), std::move(contribution_id), destination, amount);
+  transaction = mojom::ExternalTransaction::New(
+      "" /* transaction_id - to be generated */, std::move(contribution_id),
+      std::move(destination), std::move(amount));
 
-  CreateTransaction(std::move(create_transaction_callback),
-                    std::move(destination), amount);
+  CreateTransaction(base::BindOnce(&Transfer::SaveExternalTransaction,
+                                   base::Unretained(this), std::move(callback)),
+                    std::move(transaction));
 }
 
-void Transfer::SaveExternalTransaction(MaybeCreateTransactionCallback callback,
-                                       std::string&& contribution_id,
-                                       std::string&& destination,
-                                       double amount,
-                                       std::string&& transaction_id) const {
-  if (transaction_id.empty()) {
-    return std::move(callback).Run("");
+void Transfer::SaveExternalTransaction(
+    MaybeCreateTransactionCallback callback,
+    mojom::ExternalTransactionPtr transaction) const {
+  if (!transaction) {
+    return std::move(callback).Run(nullptr);
   }
 
-  auto external_transaction = mojom::ExternalTransaction::New(
-      transaction_id, std::move(contribution_id), std::move(destination),
-      amount);
+  DCHECK(!transaction->transaction_id.empty());
+
+  auto on_save_external_transaction = base::BindOnce(
+      &Transfer::OnSaveExternalTransaction, base::Unretained(this),
+      std::move(callback), transaction->Clone());
 
   ledger_->database()->SaveExternalTransaction(
-      std::move(external_transaction),
-      base::BindOnce(&Transfer::OnSaveExternalTransaction,
-                     base::Unretained(this), std::move(callback),
-                     std::move(transaction_id)));
+      std::move(transaction), std::move(on_save_external_transaction));
 }
 
 void Transfer::OnSaveExternalTransaction(
     MaybeCreateTransactionCallback callback,
-    std::string&& transaction_id,
+    mojom::ExternalTransactionPtr transaction,
     mojom::Result result) const {
   if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Failed to save external transaction ID!");
-    return std::move(callback).Run("");
+    BLOG(0, "Failed to save external transaction!");
+    return std::move(callback).Run(nullptr);
   }
 
-  std::move(callback).Run(std::move(transaction_id));
+  std::move(callback).Run(std::move(transaction));
 }
 
-void Transfer::CreateTransaction(MaybeCreateTransactionCallback callback,
-                                 std::string&&,
-                                 double) const {
+void Transfer::CreateTransaction(
+    MaybeCreateTransactionCallback callback,
+    mojom::ExternalTransactionPtr transaction) const {
+  DCHECK(transaction);
+  DCHECK(transaction->transaction_id.empty());
+
+  transaction->transaction_id = base::GenerateGUID();
+
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), base::GenerateGUID()));
+      FROM_HERE, base::BindOnce(std::move(callback), std::move(transaction)));
 }
 
 }  // namespace ledger::wallet_provider

@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/database/database_external_transactions.h"
 #include "bat/ledger/internal/database/database_util.h"
@@ -38,7 +39,7 @@ void DatabaseExternalTransactions::Insert(
   BindString(command.get(), 0, external_transaction->transaction_id);
   BindString(command.get(), 1, external_transaction->contribution_id);
   BindString(command.get(), 2, external_transaction->destination);
-  BindDouble(command.get(), 3, external_transaction->amount);
+  BindString(command.get(), 3, external_transaction->amount);
 
   auto transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
@@ -59,20 +60,23 @@ void DatabaseExternalTransactions::OnInsert(
           : mojom::Result::LEDGER_ERROR);
 }
 
-void DatabaseExternalTransactions::GetTransactionId(
+void DatabaseExternalTransactions::GetTransaction(
     const std::string& contribution_id,
     const std::string& destination,
-    GetExternalTransactionIdCallback callback) {
+    GetExternalTransactionCallback callback) {
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       R"(
-        SELECT transaction_id
+        SELECT transaction_id, contribution_id, destination, amount
         FROM %s
         WHERE contribution_id = ? AND destination = ?
       )",
       kTableName);
-  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE};
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE,
+                              mojom::DBCommand::RecordBindingType::STRING_TYPE};
   BindString(command.get(), 0, contribution_id);
   BindString(command.get(), 1, destination);
 
@@ -81,33 +85,50 @@ void DatabaseExternalTransactions::GetTransactionId(
 
   ledger_->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&DatabaseExternalTransactions::OnGetTransactionId,
+      base::BindOnce(&DatabaseExternalTransactions::OnGetTransaction,
                      base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseExternalTransactions::OnGetTransactionId(
-    GetExternalTransactionIdCallback callback,
+void DatabaseExternalTransactions::OnGetTransaction(
+    GetExternalTransactionCallback callback,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
-    BLOG(0, "Failed to get external transaction ID!");
-    return std::move(callback).Run("");
+    BLOG(0, "Failed to get external transaction!");
+    return std::move(callback).Run(nullptr);
   }
 
   const auto& records = response->result->get_records();
   if (records.empty()) {
-    return std::move(callback).Run("");
+    return std::move(callback).Run(nullptr);
   }
 
   DCHECK_EQ(records.size(), 1ull);
-
-  auto transaction_id = GetStringColumn(records[0].get(), 0);
-  if (transaction_id.empty()) {
-    BLOG(0, "Failed to get external transaction ID!");
-    return std::move(callback).Run("");
+  if (records.size() != 1) {
+    BLOG(0, "Failed to get external transaction!");
+    return std::move(callback).Run(nullptr);
   }
 
-  std::move(callback).Run(std::move(transaction_id));
+  auto transaction_id = GetStringColumn(records[0].get(), 0);
+  auto contribution_id = GetStringColumn(records[0].get(), 1);
+  auto destination = GetStringColumn(records[0].get(), 2);
+  auto amount = GetStringColumn(records[0].get(), 3);
+
+  if (transaction_id.empty() || contribution_id.empty() ||
+      destination.empty() || amount.empty()) {
+    BLOG(0, "Failed to get external transaction!");
+    return std::move(callback).Run(nullptr);
+  }
+
+  double value = 0.0;
+  if (!base::StringToDouble(amount, &value)) {
+    BLOG(0, "Failed to get external transaction!");
+    return std::move(callback).Run(nullptr);
+  }
+
+  std::move(callback).Run(mojom::ExternalTransaction::New(
+      std::move(transaction_id), std::move(contribution_id),
+      std::move(destination), std::move(amount)));
 }
 
 }  // namespace ledger::database

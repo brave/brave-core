@@ -35,9 +35,9 @@ Result PostCommitTransactionUphold::ProcessResponse(
 }
 
 absl::optional<std::string> PostCommitTransactionUphold::Url() const {
-  return endpoint::uphold::GetServerUrl(
-      base::StringPrintf("/v0/me/cards/%s/transactions/%s/commit",
-                         address_.c_str(), transaction_id_.c_str()));
+  return endpoint::uphold::GetServerUrl(base::StringPrintf(
+      "/v0/me/cards/%s/transactions/%s/commit", address_.c_str(),
+      transaction_->transaction_id.c_str()));
 }
 
 absl::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(

@@ -8,14 +8,21 @@
 #include <utility>
 
 namespace ledger::endpoints {
-PostCommitTransaction::PostCommitTransaction(LedgerImpl* ledger,
-                                             std::string&& token,
-                                             std::string&& address,
-                                             std::string&& transaction_id)
+PostCommitTransaction::PostCommitTransaction(
+    LedgerImpl* ledger,
+    std::string&& token,
+    std::string&& address,
+    mojom::ExternalTransactionPtr transaction)
     : RequestBuilder(ledger),
       token_(std::move(token)),
       address_(std::move(address)),
-      transaction_id_(std::move(transaction_id)) {}
+      transaction_(std::move(transaction)) {
+  DCHECK(transaction_);
+  DCHECK(!transaction_->transaction_id.empty());
+  DCHECK(!transaction_->contribution_id.empty());
+  DCHECK(!transaction_->destination.empty());
+  DCHECK(!transaction_->amount.empty());
+}
 
 PostCommitTransaction::~PostCommitTransaction() = default;
 
