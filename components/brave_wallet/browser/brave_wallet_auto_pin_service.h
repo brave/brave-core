@@ -51,6 +51,8 @@ class BraveWalletAutoPinService
   void OnTokenRemoved(mojom::BlockchainTokenPtr token) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest,
+                           QueueCleared_WhenAutoPinDisabled);
   enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
 
   struct IntentData {
@@ -63,6 +65,8 @@ class BraveWalletAutoPinService
                absl::optional<std::string> service);
     ~IntentData();
   };
+
+  void OnAutoPinStatusChanged();
 
   void PostPinToken(BlockchainTokenPtr token);
   void PostUnpinToken(BlockchainTokenPtr token);
@@ -97,6 +101,8 @@ class BraveWalletAutoPinService
 
   std::unique_ptr<IntentData> current_;
   std::deque<std::unique_ptr<IntentData>> queue_;
+
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   base::WeakPtrFactory<BraveWalletAutoPinService> weak_ptr_factory_{this};
 };

@@ -215,6 +215,10 @@ BraveWalletPinService::BraveWalletPinService(
 // For testing
 BraveWalletPinService::BraveWalletPinService() = default;
 
+void BraveWalletPinService::Restore() {
+  local_pin_service_->ScheduleGcTask();
+}
+
 BraveWalletPinService::~BraveWalletPinService() {
   if (ipfs_service_) {
     ipfs_service_->RemoveObserver(this);
