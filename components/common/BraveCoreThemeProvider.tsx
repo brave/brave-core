@@ -4,18 +4,33 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { ThemeProvider } from 'styled-components'
-import DefaultTheme from 'brave-ui/theme/brave-default'
-import DefaultDarkTheme from 'brave-ui/theme/brave-dark'
-import IBraveTheme from 'brave-ui/theme/theme-interface'
+import LeoTheme from '@brave/leo/tokens/styledComponents/theme'
+import DefaultLegacyTheme from 'brave-ui/theme/brave-default'
+import DefaultDarkLegacyTheme from 'brave-ui/theme/brave-dark'
+import IBraveUITheme from 'brave-ui/theme/theme-interface'
 
 export type Props = {
-  // `initialThemeType` is not used!
+  // Deprecated: `initialThemeType` is not used!
   initialThemeType?: any
-  dark?: IBraveTheme
-  light?: IBraveTheme
+  // Deprecated: Any extra theme properties should be provided by a custom
+  // ThemeProvider local to a specific component. The definition would need
+  // to be provided to styled-components' DefaultTheme via a separate
+  // styled-components-theme.d.ts local to that component.
+  legacyDarkTheme?: IBraveUITheme
+  // Deprecated: Any extra theme properties should be provided by a custom
+  // ThemeProvider local to a specific component. The definition would need
+  // to be provided to styled-components' DefaultTheme via a separate
+  // styled-components-theme.d.ts local to that component.
+  legacyLightTheme?: IBraveUITheme
 }
 
 const darkModeMediaMatcher = window.matchMedia('(prefers-color-scheme: dark)')
+
+/**
+ * Provides a boolean value indicating whether the user's preferred color scheme
+ * is dark or not.
+ */
+export const DarkColorSchemeContext = React.createContext<boolean>(darkModeMediaMatcher.matches)
 
 export default function LightDarkThemeProvider (props: React.PropsWithChildren<Props>) {
   const [isDarkMode, setIsDarkMode] = React.useState(darkModeMediaMatcher.matches)
@@ -40,12 +55,24 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
     }
   }, [])
 
-  const selectedTheme = isDarkMode
-    ? props.dark || DefaultDarkTheme
-    : props.light || DefaultTheme
+  const selectedLegacyTheme = isDarkMode
+    ? props.legacyDarkTheme || DefaultDarkLegacyTheme
+    : props.legacyLightTheme || DefaultLegacyTheme
+
+  const selectedThemeWithLeo = React.useMemo(() => {
+    // Always add the Leo theme, there is no separate dark or light version
+    // of it.
+    return {
+      ...LeoTheme,
+      legacy: selectedLegacyTheme
+    }
+  }, [selectedLegacyTheme])
+
   return (
-    <ThemeProvider theme={selectedTheme}>
-      {React.Children.only(props.children)}
+    <ThemeProvider theme={selectedThemeWithLeo}>
+      <DarkColorSchemeContext.Provider value={isDarkMode}>
+        {React.Children.only(props.children)}
+      </DarkColorSchemeContext.Provider>
     </ThemeProvider>
   )
 }

@@ -3,7 +3,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
+import { DarkColorSchemeContext } from '$web-common/BraveCoreThemeProvider'
 import braveDefaultTheme from 'brave-ui/theme/brave-default'
 import braveDarkTheme from 'brave-ui/theme/brave-dark'
 
@@ -35,26 +36,15 @@ const Wrapper = styled.div`
   }
 `
 
-function normalizeThemeName (name: string) {
-  if (name.toLowerCase() === 'dark' || name === braveDarkTheme.name) {
-    return 'dark'
-  }
-  return 'default'
-}
-
+/**
+ * Deprecated - Instead use @brave/leo css variables or styled-component theme.
+ *
+ * Converts BraveUI styled-component theme to css variables
+ */
 export function WithThemeVariables (props: { children: React.ReactNode }) {
-  const styledComponentsTheme = React.useContext(ThemeContext) || {}
-  const [themeName, setThemeName] = React.useState('')
+  const isDarkMode = React.useContext(DarkColorSchemeContext)
 
-  React.useEffect(() => {
-    if (chrome && chrome.braveTheme) {
-      chrome.braveTheme.getBraveThemeType(setThemeName)
-      chrome.braveTheme.onBraveThemeTypeChanged.addListener(setThemeName)
-    }
-  }, [])
-
-  const currentTheme = normalizeThemeName(
-    themeName || styledComponentsTheme.name || '')
+  const currentTheme = isDarkMode ? 'dark' : 'default'
 
   return (
     <Wrapper className={`brave-theme-${currentTheme}`}>

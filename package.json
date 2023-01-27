@@ -294,7 +294,7 @@
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
-    "brave-ui": "github:brave/brave-ui#e4c049880199ac652b8f69610b8b70d1cd6d906f",
+    "brave-ui": "github:brave/brave-ui#b0776a1a2c505a5e5650127d193ec095cdea307b",
     "chalk": "4.1.0",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
@@ -345,7 +345,7 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo",
+    "@brave/leo": "github:brave/leo#928b9a6e381dfd2cb1728d590be168588040e73c",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "~0.0.5",
     "@dnd-kit/core": "6.0.5",
