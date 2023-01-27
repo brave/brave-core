@@ -153,6 +153,13 @@ handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => 
   await store.dispatch(refreshPrices())
 })
 
+handler.on(WalletActions.refreshNetworksAndTokens.type, async (store: Store) => {
+  await store.dispatch(refreshFullNetworkList())
+  await store.dispatch(refreshVisibleTokenInfo())
+  await store.dispatch(refreshBalances())
+  await store.dispatch(refreshPrices())
+})
+
 handler.on(WalletActions.initialize.type, async (store) => {
   // Initialize active origin state.
   const braveWalletService = getAPIProxy().braveWalletService
