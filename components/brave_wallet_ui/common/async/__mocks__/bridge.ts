@@ -249,7 +249,7 @@ export class MockedWalletApiProxy {
         isWalletBackedUp: true,
         isWalletCreated: true,
         isWalletLocked: false,
-        isNftAutoPinningFeatureEnabled: false,
+        isNftAutoPinningFeatureEnabled: false
       }
     }
   }
