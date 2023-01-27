@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "net/http/http_request_headers.h"
 #include "net/url_request/redirect_info.h"

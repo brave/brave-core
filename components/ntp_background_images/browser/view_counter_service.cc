@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"

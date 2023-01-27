@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"

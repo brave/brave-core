@@ -13,7 +13,7 @@
 #include <set>
 #include <string>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"

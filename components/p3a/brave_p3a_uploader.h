@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/metric_log_type.h"

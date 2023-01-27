@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SYNC_TEST_BRAVE_MOCK_SYNC_ENGINE_H_
 #define BRAVE_COMPONENTS_SYNC_TEST_BRAVE_MOCK_SYNC_ENGINE_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "components/sync/test/mock_sync_engine.h"
 #include "testing/gmock/include/gmock/gmock.h"
 

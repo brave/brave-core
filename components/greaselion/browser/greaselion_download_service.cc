@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"

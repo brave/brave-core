@@ -10,8 +10,8 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
-#include "base/callback_helpers.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/containers/flat_map.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "url/gurl.h"

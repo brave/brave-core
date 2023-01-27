@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/de_amp/common/features.h"

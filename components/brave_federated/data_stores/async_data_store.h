@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/files/file_path.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"

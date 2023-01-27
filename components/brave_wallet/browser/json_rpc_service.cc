@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"

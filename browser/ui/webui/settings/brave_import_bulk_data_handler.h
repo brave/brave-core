@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"

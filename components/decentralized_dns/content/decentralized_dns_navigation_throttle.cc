@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/features.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/common/features.h"

@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/containers/contains.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"

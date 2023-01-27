@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_
 #define BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 class Browser;

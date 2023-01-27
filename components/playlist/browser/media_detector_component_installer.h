@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_MEDIA_DETECTOR_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_MEDIA_DETECTOR_COMPONENT_INSTALLER_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/files/file_path.h"
 
 namespace component_updater {

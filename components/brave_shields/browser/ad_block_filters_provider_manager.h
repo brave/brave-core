@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/singleton.h"
 #include "base/observer_list.h"

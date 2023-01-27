@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/check_is_test.h"
 #include "base/json/values_util.h"
 #include "base/strings/utf_string_conversions.h"

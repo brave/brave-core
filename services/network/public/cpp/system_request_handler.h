@@ -6,7 +6,7 @@
 #ifndef BRAVE_SERVICES_NETWORK_PUBLIC_CPP_SYSTEM_REQUEST_HANDLER_H_
 #define BRAVE_SERVICES_NETWORK_PUBLIC_CPP_SYSTEM_REQUEST_HANDLER_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/component_export.h"
 #include "base/memory/singleton.h"
 #include "services/network/public/cpp/resource_request.h"

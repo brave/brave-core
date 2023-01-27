@@ -15,8 +15,8 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
-#include "base/bind.h"
-#include "base/callback_forward.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/one_shot_event.h"

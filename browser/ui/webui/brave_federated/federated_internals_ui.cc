@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
-#include "base/callback_helpers.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/values.h"
 #include "brave/browser/resources/federated_internals/grit/federated_internals_resources.h"
 #include "brave/browser/resources/federated_internals/grit/federated_internals_resources_map.h"

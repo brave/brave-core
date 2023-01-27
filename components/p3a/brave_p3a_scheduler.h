@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_SCHEDULER_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_SCHEDULER_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "components/metrics/metrics_scheduler.h"
 
 namespace brave {

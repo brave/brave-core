@@ -5,7 +5,7 @@
 
 #include "brave/components/p3a/histograms_braveizer.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"

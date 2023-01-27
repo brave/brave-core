@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/check_is_test.h"
 #include "base/json/json_reader.h"
 #include "base/power_monitor/power_monitor.h"

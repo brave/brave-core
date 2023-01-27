@@ -5,7 +5,7 @@
 
 #include "src/chrome/browser/component_updater/component_updater_utils.cc"
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "chrome/browser/browser_process.h"
 #include "components/component_updater/component_updater_service.h"
 

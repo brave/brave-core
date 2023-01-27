@@ -12,7 +12,7 @@
 #include <string>
 #include <map>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/export.h"

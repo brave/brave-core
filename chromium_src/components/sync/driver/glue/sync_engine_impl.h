@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 // chromium_src/components/sync/engine/sync_engine.h also redefines
 // DisableProtocolEventForwarding include explicitly it to avoid compilation
 // error 'DisableProtocolEventForwarding' macro redefined
