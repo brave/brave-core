@@ -21,7 +21,9 @@ export const StyledButton = styled(WalletButton) <StyleProps>`
   padding: 12px 22px;
   outline: none;
   background-color: ${(p) =>
-    p.buttonType === 'primary' ? `${p.theme.legacy.palette.blurple500}` : 'transparent'};
+    p.buttonType === 'primary'
+      ? `${p.theme.legacy.palette.blurple500}`
+      : 'transparent'};
   border: ${(p) =>
     p.buttonType === 'primary'
       ? 'none'
@@ -32,7 +34,9 @@ export const ButtonText = styled.span<StyleProps>`
   font-size: 13px;
   font-weight: 600;
   color: ${(p) =>
-    p.buttonType === 'primary' ? '#ffffff' : `${p.theme.legacy.color.interactive07}`};
+    p.buttonType === 'primary'
+      ? '#ffffff'
+      : `${p.theme.legacy.color.interactive07}`};
 `
 
 export const PlusIcon = styled.div`

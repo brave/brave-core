@@ -17,6 +17,8 @@ import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
 import CheckedCircle from './assets/checked-circle.svg'
 
+const darkMatcher = window.matchMedia('(prefers-color-scheme: dark)')
+
 // Reverse decisions to have the controls define their margin. This helps
 // fill the gap before we remove all margins from these types of controls.
 // Usually containers will want to define spacing based on specific UI needs.
@@ -28,10 +30,11 @@ interface Props {
 }
 
 const isDarkTheme = (): boolean => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
+  return darkMatcher.matches
 }
 
-const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorites: boolean) => {
+const getTopSiteCustomizationImage = (
+    dark: boolean, selected: boolean, favorites: boolean) => {
   if (dark) {
     if (selected) {
       return favorites ? favoritesSelectedDark : frecencySelectedDark
@@ -50,7 +53,9 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
 export const SettingsMenu = styled('div')<Props>`
   width: 720px;
   min-width: 720px;
-  ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
+  ${p => p.textDirection && (p.textDirection === 'rtl')
+    ? 'left: 12px'
+    : 'right: 12px'};
   background-color: ${p => p.theme.legacy.color.contextMenuBackground};
   color:  ${p => p.theme.legacy.color.contextMenuForeground};
   border-radius: 8px;
@@ -88,7 +93,10 @@ export const SettingsSidebarActiveButtonSlider =
   left: 0;
   height: 48px;
   width: 4px;
-  background: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
+  background: linear-gradient(
+    93.83deg,
+    ${p => p.theme.legacy.color.brandBrave} -3.53%,
+    ${p => p.theme.legacy.palette.magenta500} 110.11%);
   border-radius: 0px 2px 2px 0px;
   transform: translateY(${p => p.translateTo * 48}px);
   transition-delay: 0.05s;
@@ -101,42 +109,47 @@ interface SettingsSidebarSVGContentProps {
   isActive: boolean
 }
 
-export const SettingsSidebarSVGContent = styled('div')<SettingsSidebarSVGContentProps>`
-  position: relative;
-  width: 20px;
-  height: 20px;
-  background: ${p => isDarkTheme() ? p.theme.legacy.palette.grey400 : p.theme.legacy.palette.grey800};
-  -webkit-mask-image: url(${p => p.src});
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  flex-shrink: 0;
-
-  transition: background var(--sidebar-button-transition-timing) ease-in-out;
-
-  ${p => p.isActive && css`
-    --active-opacity: 1;
-  `}
-
-  /* Active version (hidden until item is active).
-    This is a separate element so that we can:
-    1. fade it in (no transition for background gradient) */
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    opacity: var(--active-opacity, 0);
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
+export const SettingsSidebarSVGContent =
+  styled('div')<SettingsSidebarSVGContentProps>`
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background: ${p => isDarkTheme()
+      ? p.theme.legacy.palette.grey400
+      : p.theme.legacy.palette.grey800};
     -webkit-mask-image: url(${p => p.src});
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
-    transition: opacity var(--sidebar-button-transition-timing) ease-in-out;
-  }
+    flex-shrink: 0;
 
-`
+    transition: background var(--sidebar-button-transition-timing) ease-in-out;
+
+    ${p => p.isActive && css`
+      --active-opacity: 1;
+    `}
+
+    /* Active version (hidden until item is active).
+      This is a separate element so that we can:
+      1. fade it in (no transition for background gradient) */
+    &::after {
+      position: absolute;
+      display: block;
+      content: '';
+      opacity: var(--active-opacity, 0);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        93.83deg,
+        ${p => p.theme.legacy.color.brandBrave} -3.53%,
+        ${p => p.theme.legacy.palette.magenta500} 110.11%);
+      -webkit-mask-image: url(${p => p.src});
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      transition: opacity var(--sidebar-button-transition-timing) ease-in-out;
+    }
+  `
 
 export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
   margin-left: 16px;
@@ -183,7 +196,10 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
+    background-image: linear-gradient(
+      93.83deg,
+      ${p => p.theme.legacy.color.brandBrave} -3.53%,
+      ${p => p.theme.legacy.palette.magenta500} 110.11%);
     overflow: hidden;
     text-overflow: ellipsis;
     transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
@@ -195,44 +211,45 @@ interface SettingsSidebarButtonProps {
   activeTab: boolean
 }
 
-export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps>`
-  --sidebar-button-transition-timing: .12s;
-  appearance: none;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  width: 220px;
-  height: 48px;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background: inherit;
+export const SettingsSidebarButton =
+  styled('button')<SettingsSidebarButtonProps>`
+    --sidebar-button-transition-timing: .12s;
+    appearance: none;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 220px;
+    height: 48px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: inherit;
 
-  &:hover {
-    ${SettingsSidebarSVGContent} {
-      background: ${p => p.theme.legacy.color.brandBrave};
+    &:hover {
+      ${SettingsSidebarSVGContent} {
+        background: ${p => p.theme.legacy.color.brandBrave};
+      }
+      ${SettingsSidebarButtonText} {
+        color: ${p => p.theme.legacy.color.brandBrave};
+      }
     }
-    ${SettingsSidebarButtonText} {
-      color: ${p => p.theme.legacy.color.brandBrave};
+
+    &:active,
+    &:focus {
+      outline: none;
     }
-  }
 
-  &:active,
-  &:focus {
-    outline: none;
-  }
+    &:active {
+      --active-opacity: 1;
+    }
 
-  &:active {
-    --active-opacity: 1;
-  }
-
-  &:focus-visible {
-    outline-style: solid;
-    outline-color: ${p => p.theme.legacy.color.brandBrave};
-    outline-width: 1px;
-  }
-`
+    &:focus-visible {
+      outline-style: solid;
+      outline-color: ${p => p.theme.legacy.color.brandBrave};
+      outline-width: 1px;
+    }
+  `
 
 export const SettingsFeatureBody = styled('section')<{}>`
   padding: 10px 16px;
@@ -353,8 +370,10 @@ export const SettingsWrapper = styled('div')<SettingsWrapperProps>`
   color: rgba(255,255,255,0.8);
   margin-right: ${p => p.textDirection === 'ltr' && '8px'};
   margin-left: ${p => p.textDirection === 'rtl' && '8px'};
-  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
-  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-right: ${p =>
+    p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-left: ${p =>
+     p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
   background: rgba(33, 37, 41, 0.32);
 
   &:hover {
@@ -423,7 +442,11 @@ export const StyledWidgetToggle = styled('button')<WidgetToggleProps>`
   border: none;
   margin-top: 15px;
   cursor: pointer;
-  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme() ? '#5E6175' : '#212529'};
+  background: ${p => p.isAdd
+    ? '#FB542B'
+    : isDarkTheme()
+      ? '#5E6175'
+      : '#212529'};
   width: fit-content;
   display: flex;
   align-items: center;
@@ -516,45 +539,60 @@ interface CustomizationImageBorderProps {
   selected?: boolean
 }
 
-export const StyledTopSitesCustomizationImageBorder = styled('div')<CustomizationImageBorderProps>`
-  margin-bottom: 8px;
-  border-radius: 11px;
+export const StyledTopSitesCustomizationImageBorder =
+  styled('div')<CustomizationImageBorderProps>`
+    margin-bottom: 8px;
+    border-radius: 11px;
 
-  ${p => p.selected && css`
-    background: ${p => isDarkTheme() ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-                                      : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
-    padding: 3px;
-  `}
+    ${p => p.selected && css`
+      background: ${p => isDarkTheme()
+        ? css`linear-gradient(
+            314.42deg,
+            #FA7250 6.04%,
+            #FF1893 44.31%,
+            #A78AFF 100%)`
+        : css`linear-gradient(
+            122.53deg,
+            #4C54D2 0%,
+            #BF14A2 56.25%,
+            #F73A1C 100%)`
+        };
+      padding: 3px;
+    `}
 
-  ${p => !p.selected && css`
-    border: 2px solid ${p => isDarkTheme() ? '#3B3E4F' : '#F1F3F5'};
-    background: ${p => isDarkTheme() ? '#17171F' : '#FFF'};
-    padding: 1px;
-
-    &:hover {
-      border: 2px solid ${p => isDarkTheme() ? '#C2C4CF' : '#AEB1C2'};
-      background: ${p => isDarkTheme() ? '#2B2D3F' : '#FAFAFF'};
+    ${p => !p.selected && css`
+      border: 2px solid ${p => isDarkTheme() ? '#3B3E4F' : '#F1F3F5'};
+      background: ${p => isDarkTheme() ? '#17171F' : '#FFF'};
       padding: 1px;
-    }
-  `}
-`
+
+      &:hover {
+        border: 2px solid ${p => isDarkTheme() ? '#C2C4CF' : '#AEB1C2'};
+        background: ${p => isDarkTheme() ? '#2B2D3F' : '#FAFAFF'};
+        padding: 1px;
+      }
+    `}
+  `
 
 interface CustomizationImageProps {
   isFavorites: boolean
   selected?: boolean
 }
 
-export const StyledTopSitesCustomizationImage = styled('img')<CustomizationImageProps>`
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(), p.selected ?? false, p.isFavorites)});
+export const StyledTopSitesCustomizationImage =
+  styled('img')<CustomizationImageProps>`
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    content: url(${p => getTopSiteCustomizationImage(
+      isDarkTheme(),
+      p.selected ?? false,
+      p.isFavorites)});
 
-  ${p => p.selected && css`
-    background: ${p => isDarkTheme() ? '#525779' : '#F0F2FF'};
-    border-radius: 8px;
-  `}
-`
+    ${p => p.selected && css`
+      background: ${p => isDarkTheme() ? '#525779' : '#F0F2FF'};
+      border-radius: 8px;
+    `}
+  `
 
 export const StyledTopSitesCustomizationOptionTitle = styled('div')<{}>`
   font-weight: 500;
@@ -617,8 +655,16 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
   height: 160px;
   ${p => p.selected && css`
     background: ${p => isDarkTheme()
-        ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
-        : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
+        ? css`linear-gradient(
+            314.42deg,
+            #FA7250 6.04%,
+            #FF1893 44.31%,
+            #A78AFF 100%)`
+        : css`linear-gradient(
+            122.53deg,
+            #4C54D2 0%,
+            #BF14A2 56.25%,
+            #F73A1C 100%)`};
     padding: 2px;
     border-radius: 10px;
     &::after {
@@ -651,27 +697,29 @@ export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   `}
 `
 
-export const StyledCustomBackgroundOptionImage = styled('div')<SelectionProps & ImageBackgroundProps>`
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-clip: padding-box;
-  background-position: center;
-  background-size: cover;
-  ${p => p.selected
-    ? css`border-radius: 8px;`
-    : css`border-radius: 10px;`}
-  background-image: url("${p => p.image}");
-`
+export const StyledCustomBackgroundOptionImage =
+  styled('div')<SelectionProps & ImageBackgroundProps>`
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-clip: padding-box;
+    background-position: center;
+    background-size: cover;
+    ${p => p.selected
+      ? css`border-radius: 8px;`
+      : css`border-radius: 10px;`}
+    background-image: url("${p => p.image}");
+  `
 
-export const StyledCustomBackgroundOptionColor = styled('div')<SelectionProps & ColoredBackgroundProps>`
-  width: 100%;
-  height: 100%;
-  ${p => p.selected
-    ? css`border-radius: 8px;`
-    : css`border-radius: 10px;`}
-  background: ${p => p.colorValue};
-`
+export const StyledCustomBackgroundOptionColor =
+  styled('div')<SelectionProps & ColoredBackgroundProps>`
+    width: 100%;
+    height: 100%;
+    ${p => p.selected
+      ? css`border-radius: 8px;`
+      : css`border-radius: 10px;`}
+    background: ${p => p.colorValue};
+  `
 
 export const StyledUploadLabel = styled('div')<{}>`
 font-style: normal;

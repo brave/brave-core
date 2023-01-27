@@ -12,18 +12,21 @@ interface StyleProps {
   orb: string
 }
 
-export const PortfolioTransactionItemWrapper = styled.div<{ isFocused?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  margin: 14px 0px;
-  position: relative;
-  background-color: ${(p) => p.isFocused ? `${p.theme.legacy.color.text01}10` : 'none'};
-  padding: 10px;
-  border-radius: 10px;
-`
+export const PortfolioTransactionItemWrapper =
+  styled.div<{ isFocused?: boolean }>`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    margin: 14px 0px;
+    position: relative;
+    background-color: ${(p) => p.isFocused
+      ? `${p.theme.legacy.color.text01}10`
+      : 'none'};
+    padding: 10px;
+    border-radius: 10px;
+  `
 
 export const DetailRow = styled.div`
   display: flex;

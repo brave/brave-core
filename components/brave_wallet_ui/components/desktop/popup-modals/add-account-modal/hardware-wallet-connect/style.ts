@@ -41,8 +41,12 @@ export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
   cursor: ${(p) => p.disabled ? 'not-allowed' : 'pointer'};
   outline: none;
   background: none;
-  border: ${(p) => (p.isSelected ? `2px solid ${p.theme.legacy.color.infoBorder}` : `1px solid ${p.theme.legacy.color.disabled}`)};
-  background-color: ${(p) => (p.isSelected ? p.theme.legacy.color.infoBackground : p.theme.legacy.color.background02)};
+  border: ${(p) => (p.isSelected
+    ? `2px solid ${p.theme.legacy.color.infoBorder}`
+    : `1px solid ${p.theme.legacy.color.disabled}`)};
+  background-color: ${(p) => (p.isSelected
+    ? p.theme.legacy.color.infoBackground
+    : p.theme.legacy.color.background02)};
   border-radius: 10px;
   width: 125px;
   height: 55px;

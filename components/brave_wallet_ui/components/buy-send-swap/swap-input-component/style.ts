@@ -24,7 +24,9 @@ export const Row = styled.div<Partial<StyleProps>>`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: ${(p) => p.componentType === 'exchange' ? 'flex-start' : 'space-between'};
+  justify-content: ${(p) => p.componentType === 'exchange'
+    ? 'flex-start'
+    : 'space-between'};
 `
 
 export const FromBalanceText = styled.span<Partial<StyleProps>>`
@@ -109,10 +111,18 @@ export const PresetButton = styled(WalletButton) <Partial<StyleProps>>`
   padding: 2px 0px;
   width: 48px;
   border-radius: 4px;
-  background-color: ${(p) => p.isSelected ? p.isSlippage ? p.theme.legacy.color.interactive05 : p.theme.legacy.color.divider01 : 'none'};
-  color: ${(p) => p.isSlippage && p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.interactive05};
+  background-color: ${(p) => p.isSelected
+    ? p.isSlippage
+      ? p.theme.legacy.color.interactive05
+      : p.theme.legacy.color.divider01
+    : 'none'};
+  color: ${(p) => p.isSlippage && p.isSelected
+    ? p.theme.legacy.palette.white
+    : p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.isSlippage && p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.palette.blurple300};
+    color: ${(p) => p.isSlippage && p.isSelected
+      ? p.theme.legacy.palette.white
+      : p.theme.legacy.palette.blurple300};
   }
 `
 
@@ -132,8 +142,12 @@ export const SlippageInput = styled.input<Partial<StyleProps>>`
   padding: 1px;
   border-radius: 4px;
   border: none;
-  border: 1px solid ${(p) => p.isSelected ? p.theme.legacy.color.interactive05 : p.theme.legacy.color.interactive08};
-  color: ${(p) => p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.text03};
+  border: 1px solid ${(p) => p.isSelected
+    ? p.theme.legacy.color.interactive05
+    : p.theme.legacy.color.interactive08};
+  color: ${(p) => p.isSelected
+    ? p.theme.legacy.palette.white
+    : p.theme.legacy.color.text03};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
@@ -216,7 +230,11 @@ export const Input = styled.input<Partial<StyleProps>>`
   font-weight: ${(p) => p.componentType === 'toAddress' ? '400' : '600'};
   padding: 0px;
   margin: ${(p) => p.componentType === 'exchange' ? '0px' : '4px 0px'};
-  color: ${(p) => p.hasError ? p.theme.legacy.color.errorText : p.componentType === 'toAddress' ? p.theme.legacy.color.text02 : p.theme.legacy.color.text01};
+  color: ${(p) => p.hasError
+    ? p.theme.legacy.color.errorText
+    : p.componentType === 'toAddress'
+      ? p.theme.legacy.color.text02
+      : p.theme.legacy.color.text01};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
@@ -285,7 +303,9 @@ export const WarningText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.isWarning ? p.theme.legacy.color.interactive03 : p.theme.legacy.color.errorText};
+  color: ${(p) => p.isWarning
+    ? p.theme.legacy.color.interactive03
+    : p.theme.legacy.color.errorText};
   word-break: break-word;
 `
 

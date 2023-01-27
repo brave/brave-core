@@ -116,8 +116,8 @@ function TopSitesList (props: Props) {
       const currentPercent = gridPagesContainerRef.current
         ? gridPagesContainerRef.current?.scrollLeft / (gridPagesContainerRef.current?.scrollWidth - gridPagesContainerRef.current?.clientWidth)
         : 0
-      navdotsRef.current.activeDot = currentPercent * (pageCount - 1);
-    };
+      navdotsRef.current.activeDot = currentPercent * (pageCount - 1)
+    }
     gridPagesContainerRef.current.addEventListener('scroll', handler)
     handler()
 

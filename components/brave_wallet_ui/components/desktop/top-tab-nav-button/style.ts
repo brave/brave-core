@@ -40,6 +40,7 @@ export const TabLine = styled.div<Partial<StyleProps>>`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) =>
-    p.isSelected ? 'linear-gradient(178.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);' : `${p.theme.legacy.color.divider01}`};
+  background: ${(p) => p.isSelected
+    ? 'linear-gradient(178.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);'
+    : `${p.theme.legacy.color.divider01}`};
 `

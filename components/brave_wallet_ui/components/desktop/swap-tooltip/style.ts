@@ -39,5 +39,9 @@ export const Pointer = styled.div`
   transform: translateX(-50%) translateY(25%) rotate(180deg);
   border-width: 0 7px 8px 7px;
   z-index: 120;
-  border-color: transparent transparent ${(p) => p.theme.legacy.palette.black} transparent;
+  border-color:
+    transparent
+    transparent
+    ${(p) => p.theme.legacy.palette.black}
+    transparent;
 `

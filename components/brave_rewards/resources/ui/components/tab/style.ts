@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import { Type } from './index'
@@ -58,7 +59,10 @@ export const StyledBullet = styled('div')<StyleProps>`
   border-radius: 21.5px 21.5px 21.5px 21.5px;
   position: relative;
   transition: all .4s ease;
-  transform: translate(calc(${p => 100 * (((p && p.tabIndexSelected) || 0))}%), calc(-50% - 4px));
+  transform: translate(
+    ${p => 100 * (((p && p.tabIndexSelected) || 0))}%,
+    calc(-50% - 4px)
+  );
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
   margin-left: ${p => getMargin(p.tabIndexSelected, p.size)}px;
 `
@@ -83,7 +87,9 @@ export const StyledText = styled('div')<StyleProps>`
   text-align: center;
   user-select: none;
   color: ${p => p.selected
-    ? p.type === 'contribute' ? palette.blurple500 : p.theme.legacy.color.brandBrave
+    ? p.type === 'contribute'
+      ? palette.blurple500
+      : p.theme.legacy.color.brandBrave
     : p.theme.legacy.color.subtleActive
   };
   font-weight: ${p => p.selected ? '500' : 'normal'};
