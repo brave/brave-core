@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import { WarningBoxIcon, WarningBoxTitleRow } from '../shared-panel-styles'
+import { WarningBoxTitleRow } from '../shared-panel-styles'
 
 interface StyleProps {
   orb: string
@@ -109,10 +109,4 @@ export const ButtonRow = styled.div`
 
 export const WarningTitleRow = styled(WarningBoxTitleRow)`
   margin-bottom: 8px;
-`
-
-export const WarningIcon = styled(WarningBoxIcon)`
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
 `
