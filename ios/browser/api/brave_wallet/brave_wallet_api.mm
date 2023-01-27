@@ -29,6 +29,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolana =
     @"solana_provider.js";
 BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaWeb3 =
     @"solana_web3.js";
+BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
+    @"wallet_standard.js";
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -163,7 +165,10 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeySolanaWeb3 =
                     BraveWalletProviderScriptKeySolana,
                     IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
                 std::make_pair(BraveWalletProviderScriptKeySolanaWeb3,
-                               IDR_BRAVE_WALLET_SOLANA_WEB3_JS)};
+                               IDR_BRAVE_WALLET_SOLANA_WEB3_JS),
+                std::make_pair(
+                    BraveWalletProviderScriptKeyWalletStandard,
+                    IDR_BRAVE_WALLET_SCRIPT_WALLET_STANDARD_SCRIPT_BUNDLE_JS)};
       case BraveWalletCoinTypeFil:
         // Currently not supported
         return {std::make_pair(@"", 0)};

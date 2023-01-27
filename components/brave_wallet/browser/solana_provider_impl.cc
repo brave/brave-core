@@ -600,6 +600,13 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
   }
 }
 
+void SolanaProviderImpl::IsSolanaKeyringCreated(
+    IsSolanaKeyringCreatedCallback callback) {
+  DCHECK(keyring_service_);
+  std::move(callback).Run(
+      !!keyring_service_->GetSelectedAccount(mojom::CoinType::SOL));
+}
+
 bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {
   return delegate_->IsSolanaAccountConnected(account);
 }
