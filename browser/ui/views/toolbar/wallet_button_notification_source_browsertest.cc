@@ -392,4 +392,44 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   EXPECT_EQ(0u, count_result.value());
 }
 
+IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
+                       EmptyBadgeNotShownAfterRestart_IfClicked) {
+  {
+    base::RunLoop run_loop;
+    absl::optional<bool> show_badge_suggest_result;
+    absl::optional<size_t> count_result;
+    auto notification_source = std::make_unique<WalletButtonNotificationSource>(
+        browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
+                                  [&show_badge_suggest_result, &count_result](
+                                      bool show_badge_suggest, size_t count) {
+                                    show_badge_suggest_result =
+                                        show_badge_suggest;
+                                    count_result = count;
+                                  })));
+    notification_source->Init();
+    run_loop.RunUntilIdle();
+
+    EXPECT_TRUE(show_badge_suggest_result.value());
+    notification_source->MarkWalletButtonWasClicked();
+  }
+
+  {
+    base::RunLoop run_loop;
+    absl::optional<bool> show_badge_suggest_result;
+    absl::optional<size_t> count_result;
+    auto notification_source = std::make_unique<WalletButtonNotificationSource>(
+        browser()->profile(), base::BindRepeating(base::BindLambdaForTesting(
+                                  [&show_badge_suggest_result, &count_result](
+                                      bool show_badge_suggest, size_t count) {
+                                    show_badge_suggest_result =
+                                        show_badge_suggest;
+                                    count_result = count;
+                                  })));
+    notification_source->Init();
+    run_loop.RunUntilIdle();
+
+    EXPECT_FALSE(show_badge_suggest_result.value());
+  }
+}
+
 }  // namespace brave
