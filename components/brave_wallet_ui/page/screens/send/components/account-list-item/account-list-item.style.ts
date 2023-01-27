@@ -16,11 +16,24 @@ export const Button = styled(StyledButton)`
   width: 100%;
   border-radius: 10px;
   padding: 10px 12px;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
   &:disabled {
     opacity: 0.4;
   }
   &:hover:not([disabled]) {
     box-shadow: var(--button-shadow-hover);
   }
+`
+
+export const AccountCircle = styled.div<{
+  orb: string
+}>`
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  background-image: url(${(p) => p.orb});
+  background-size: cover;
+  margin-right: 16px;
 `
