@@ -988,6 +988,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
     env.GYP_MSVS_VERSION = env.GYP_MSVS_VERSION || '2017' // enable 2017
+
+    // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
+    env.GSUTIL_ENABLE_LUCI_AUTH = '0'
+
     if (this.channel != "") {
       env.BRAVE_CHANNEL = this.channel
     }
