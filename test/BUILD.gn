@@ -463,7 +463,7 @@ test("brave_unit_tests") {
     }
 
     if (!use_v8_context_snapshot || include_both_v8_snapshots) {
-      deps += [ "//v8:v8_external_startup_data_assets" ]
+      deps += [ "//gin:v8_snapshot_assets" ]
     }
 
     data += [
