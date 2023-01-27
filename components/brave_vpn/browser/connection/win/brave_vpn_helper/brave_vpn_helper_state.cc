@@ -27,12 +27,13 @@ HRESULT HRESULTFromLastError() {
   const auto error_code = ::GetLastError();
   return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
 }
+
 int GetServiceLaunchCounterValue() {
   base::win::RegKey key(HKEY_LOCAL_MACHINE,
                         brave_vpn::kBraveVpnHelperRegistryStoragePath,
                         KEY_READ);
   if (!key.Valid()) {
-    LOG(ERROR) << "Failed to write successful launch counter";
+    LOG(ERROR) << "Failed to read the successful launch counter";
     return 0;
   }
   DWORD launch = 0;

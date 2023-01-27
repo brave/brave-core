@@ -31,7 +31,7 @@ constexpr int kChildSpacing = 16;
 constexpr int kPadding = 24;
 constexpr int kTopPadding = 32;
 constexpr int kBottomPadding = 26;
-constexpr int kDialogWidth = 400;
+constexpr int kDialogWidth = 600;
 
 }  // namespace
 

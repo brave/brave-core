@@ -96,16 +96,18 @@ void BraveVpnDnsObserverService::UnlockDNS() {
 }
 
 bool BraveVpnDnsObserverService::IsDNSHelperLive() {
-  if (dns_helper_live_for_testing_.has_value())
+  if (dns_helper_live_for_testing_.has_value()) {
     return dns_helper_live_for_testing_.value();
+  }
   // If BraveVpnHelper is live we should not override DNS because it will be
   // handled by the service.
   return brave_vpn::IsBraveVPNHelperServiceLive();
 }
 
 void BraveVpnDnsObserverService::LockDNS() {
-  if (IsDNSHelperLive())
+  if (IsDNSHelperLive()) {
     return;
+  }
   auto old_dns_config =
       SystemNetworkContextManager::GetStubResolverConfigReader()
           ->GetSecureDnsConfiguration(false);

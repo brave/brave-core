@@ -9,7 +9,7 @@
 namespace {
 // Split into two places to avoid patching:
 // components\brave_vpn\browser\connection\win\brave_vpn_helper\brave_vpn_helper_crash_reporter_client.cc
-// Need keep it in sync
+// // NOLINT Need keep it in sync
 constexpr char kBraveVPNHelperProcessType[] = "brave-vpn-helper";
 }  // namespace
 

@@ -30,8 +30,9 @@ VpnDnsHandler::~VpnDnsHandler() {
 
 bool VpnDnsHandler::SetupPlatformFilters(HANDLE engine_handle,
                                          const std::string& name) {
-  if (platform_filters_result_for_testing_.has_value())
+  if (platform_filters_result_for_testing_.has_value()) {
     return platform_filters_result_for_testing_.value();
+  }
 
   return AddWpmFilters(engine_handle, name);
 }
@@ -157,8 +158,9 @@ void VpnDnsHandler::OnObjectSignaled(HANDLE object) {
   VLOG(1) << __func__;
   // We receive events from all connections in the system and filter here
   // only expected brave vpn event.
-  if (object != event_handle_for_vpn_)
+  if (object != event_handle_for_vpn_) {
     return;
+  }
   UpdateFiltersState();
 }
 

@@ -43,8 +43,9 @@ base::FilePath GetBraveVPNServicePath(const base::FilePath& target_path,
 
 bool ConfigureBraveVPNServiceAutoRestart(const base::FilePath& exe_path,
                                          const CallbackWorkItem&) {
-  if (!base::PathExists(exe_path))
+  if (!base::PathExists(exe_path)) {
     return false;
+  }
   base::CommandLine cmd(exe_path);
   cmd.AppendSwitch(brave_vpn::kBraveVpnHelperInstall);
   base::LaunchOptions options = base::LaunchOptions();

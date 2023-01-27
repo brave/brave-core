@@ -41,8 +41,9 @@ BraveVPNHelperCrashReporterClient::~BraveVPNHelperCrashReporterClient() =
 void BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
     const std::string& process_type) {
   static BraveVPNHelperCrashReporterClient* instance = nullptr;
-  if (instance)
+  if (instance) {
     return;
+  }
 
   instance = new BraveVPNHelperCrashReporterClient();
   ANNOTATE_LEAKING_OBJECT_PTR(instance);

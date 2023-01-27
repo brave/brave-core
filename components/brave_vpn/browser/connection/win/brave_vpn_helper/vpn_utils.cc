@@ -12,6 +12,7 @@
 
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "base/win/windows_version.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
@@ -37,13 +38,15 @@ constexpr GUID kNetworkProfileGUID = {
 
 bool SetServiceTriggerForVPNConnection(SC_HANDLE hService,
                                        const std::wstring& brave_vpn_entry) {
+  std::wstring brave_vpn_entry_with_null(brave_vpn_entry);
+  brave_vpn_entry_with_null += L'\0';
   // Allocate and set the SERVICE_TRIGGER_SPECIFIC_DATA_ITEM structure
   SERVICE_TRIGGER_SPECIFIC_DATA_ITEM deviceData = {0};
   deviceData.dwDataType = SERVICE_TRIGGER_DATA_TYPE_STRING;
   // Exclude EOL
-  deviceData.cbData = sizeof(brave_vpn_entry) - 1;
-  deviceData.pData = (PBYTE)brave_vpn_entry.c_str();
-
+  deviceData.cbData = brave_vpn_entry_with_null.size() *
+                      sizeof(brave_vpn_entry_with_null.front());
+  deviceData.pData = (PBYTE)brave_vpn_entry_with_null.c_str();
   // Allocate and set the SERVICE_TRIGGER structure
   SERVICE_TRIGGER serviceTrigger = {0};
   serviceTrigger.dwTriggerType = SERVICE_TRIGGER_TYPE_CUSTOM;
@@ -78,16 +81,6 @@ bool SetServiceFailActions(SC_HANDLE service) {
                               &servFailActions);
 }
 
-/* UUID of WFP sublayer used by all instances
- * 23e10e29-eb83-4d2c-9d77-f6e9b547f39c */
-constexpr GUID kVpnDnsSublayerGUID = {
-    0x23e10e29,
-    0xeb83,
-    0x4d2c,
-    {0x9d, 0x77, 0xf6, 0xe9, 0xb5, 0x47, 0xf3, 0x9c}};
-
-constexpr wchar_t kBraveVPNServiceFilter[] = L"Brave VPN Service DNS Filter";
-
 DWORD AddSublayer(GUID uuid) {
   FWPM_SESSION0 session = {};
   HANDLE engine = nullptr;
@@ -117,8 +110,9 @@ DWORD RegisterSublayer(HANDLE engine_handle, GUID uuid) {
   if (FwpmSubLayerGetByKey0(engine_handle, &uuid, &sublayer_ptr) ==
       ERROR_SUCCESS) {
     VLOG(1) << "Using existing sublayer";
-    if (sublayer_ptr)
+    if (sublayer_ptr) {
       FwpmFreeMemory0(reinterpret_cast<void**>(&sublayer_ptr));
+    }
     return ERROR_SUCCESS;
   }
   // Add a new sublayer and do not treat "already exists" as an error
@@ -377,7 +371,7 @@ void ResetLaunchCounter() {
   base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
                         KEY_ALL_ACCESS);
   if (!key.Valid()) {
-    LOG(ERROR) << "Failed to write successful launch counter";
+    LOG(ERROR) << "Failed to reset successful launch counter";
     return;
   }
   key.DeleteValue(kBraveVpnHelperLaunchCounterValue);

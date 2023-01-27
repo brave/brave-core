@@ -39,8 +39,9 @@ bool ServiceMain::InitWithCommandLine(const base::CommandLine* command_line) {
     return false;
   }
   // Run interactively if needed.
-  if (command_line->HasSwitch(kConsoleSwitchName))
+  if (command_line->HasSwitch(kConsoleSwitchName)) {
     run_routine_ = &ServiceMain::RunInteractive;
+  }
 
   return true;
 }

@@ -82,8 +82,9 @@ int main(int argc, char* argv[]) {
 
   // Run the service.
   brave_vpn::ServiceMain* service = brave_vpn::ServiceMain::GetInstance();
-  if (!service->InitWithCommandLine(command_line))
+  if (!service->InitWithCommandLine(command_line)) {
     return 1;
+  }
 
   return service->Start();
 }

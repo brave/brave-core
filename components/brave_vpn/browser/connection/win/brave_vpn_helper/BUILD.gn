@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
 import("//build/toolchain/win/midl.gni")
 import("//build/util/process_version.gni")
 import("//chrome/process_version_rc_template.gni")
@@ -50,6 +51,18 @@ source_set("lib") {
     "//brave//components/brave_vpn/common",
     "//third_party/abseil-cpp:absl",
   ]
+
+  defines = []
+
+  if (brave_channel == "nightly") {
+    defines += [ "CHANNEL_NIGHTLY" ]
+  } else if (brave_channel == "beta") {
+    defines += [ "CHANNEL_BETA" ]
+  } else if (brave_channel == "dev") {
+    defines += [ "CHANNEL_DEV" ]
+  } else if (brave_channel == "development") {
+    defines += [ "CHANNEL_DEVELOPMENT" ]
+  }
 
   libs = [
     "Fwpuclnt.lib",
