@@ -2168,11 +2168,7 @@ void KeyringService::NotifyAccountsAdded(
     mojom::CoinType coin,
     const std::vector<std::string>& addresses) {
   for (const auto& observer : observers_) {
-    std::vector<std::string> addresses_clone;
-    for (const auto& address : addresses) {
-      addresses_clone.push_back(address);
-    }
-    observer->AccountsAdded(coin, addresses_clone);
+    observer->AccountsAdded(coin, addresses);
   }
 }
 
