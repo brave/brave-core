@@ -8,15 +8,15 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
-#include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
@@ -227,32 +227,6 @@ void BraveStatsUpdaterParams::SetCurrentTimeForTest(
 // static
 void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
   g_force_first_run = first_run;
-}
-
-// static
-base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
-#if BUILDFLAG(IS_ANDROID)
-  // Android doesn't use a sentinel to track first run, so we use a
-  // preference instead. kReferralAndroidFirstRunTimestamp is used because
-  // previously only referrals needed to know the first run value.
-  base::Time first_run_timestamp =
-      pref_service->GetTime(kReferralAndroidFirstRunTimestamp);
-  if (first_run_timestamp.is_null()) {
-    first_run_timestamp = base::Time::Now();
-    pref_service->SetTime(kReferralAndroidFirstRunTimestamp,
-                          first_run_timestamp);
-  }
-  return first_run_timestamp;
-#else
-  (void)pref_service;  // suppress unused warning
-
-  // CreateSentinelIfNeeded() is called in chrome_browser_main.cc, making this a
-  // non-blocking read of the cached sentinel value when running from production
-  // code. However tests will never create the sentinel file due to being run
-  // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  return first_run::GetFirstRunSentinelCreationTime();
-#endif  // #BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace brave_stats

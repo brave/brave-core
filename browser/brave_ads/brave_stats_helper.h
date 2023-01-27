@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_UPDATER_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_UPDATER_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_HELPER_H_
 
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,11 +19,12 @@ class Profile;
 
 namespace brave_ads {
 
-class BraveStatsUpdaterHelper : public ProfileManagerObserver,
-                                public ProfileObserver {
+extern const char kAdsEnabledInstallationTimeHistogramName[];
+
+class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
  public:
-  BraveStatsUpdaterHelper();
-  ~BraveStatsUpdaterHelper() override;
+  BraveStatsHelper();
+  ~BraveStatsHelper() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
@@ -32,10 +33,16 @@ class BraveStatsUpdaterHelper : public ProfileManagerObserver,
 
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
+  void SetFirstRunTimeForTesting(base::Time time);
+
  private:
   PrefService* GetLastUsedProfilePrefs();
   void OnLastUsedProfileChanged();
-  void UpdateLocalStateAdsEnabled();
+
+  void Update();
+  void UpdateLocalStateAdsEnabled(bool is_enabled_for_current_profile);
+  void MaybeReportAdsInstallationTimeMetric(
+      bool is_enabled_for_current_profile);
 
 #if !BUILDFLAG(IS_ANDROID)
   PrefChangeRegistrar last_used_profile_pref_change_registrar_;
@@ -48,8 +55,10 @@ class BraveStatsUpdaterHelper : public ProfileManagerObserver,
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<ProfileManager> profile_manager_;
+
+  base::Time testing_first_run_time_;
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_UPDATER_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_ADS_BRAVE_STATS_HELPER_H_

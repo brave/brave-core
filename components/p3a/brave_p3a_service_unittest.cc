@@ -341,4 +341,30 @@ TEST_F(P3AServiceTest, ShouldNotSendIfDisabled) {
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 }
 
+TEST_F(P3AServiceTest, EphemeralMetricOnlySentOnce) {
+  // Increase upload interval to reduce test time (less tasks to execute)
+  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  SetUpP3AService();
+
+  std::string test_histogram = std::string(*p3a::kEphemeralHistograms.begin());
+  base::UmaHistogramExactLinear(test_histogram, 1, 8);
+  p3a_service_->OnHistogramChanged(test_histogram.c_str(), 0, 8);
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 400));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  ResetInterceptorStores();
+  task_environment_.FastForwardBy(base::Days(70));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+}
+
 }  // namespace brave

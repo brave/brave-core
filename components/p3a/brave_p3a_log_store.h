@@ -36,6 +36,7 @@ class BraveP3ALogStore : public metrics::LogStore {
                                   const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
+    virtual bool IsEphemeralMetric(base::StringPiece histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 

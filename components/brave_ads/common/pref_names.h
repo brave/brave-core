@@ -35,6 +35,7 @@ namespace ads::prefs {
 // Brave Ads enabled/disabled pref
 extern const char kEnabled[];
 extern const char kEnabledForLastProfile[];
+extern const char kEverEnabledForAnyProfile[];
 
 // Diagnostic id prefs
 extern const char kDiagnosticId[];

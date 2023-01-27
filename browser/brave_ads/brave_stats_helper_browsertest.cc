@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
-
-#include <memory>
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -26,20 +26,19 @@
 
 namespace brave_ads {
 
-class BraveStatsUpdaterHelperBrowserTest : public PlatformBrowserTest {
+class BraveStatsHelperBrowserTest : public PlatformBrowserTest {
  public:
-  BraveStatsUpdaterHelperBrowserTest() = default;
+  BraveStatsHelperBrowserTest() = default;
 
  protected:
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
     profile_manager_ = g_browser_process->profile_manager();
     local_state_ = g_browser_process->local_state();
-    brave_stats_updater_helper_ = std::make_unique<BraveStatsUpdaterHelper>();
+    brave_stats_helper_ = g_brave_browser_process->ads_brave_stats_helper();
   }
 
   void PostRunTestOnMainThread() override {
-    brave_stats_updater_helper_.reset();
     PlatformBrowserTest::PostRunTestOnMainThread();
   }
 
@@ -60,10 +59,12 @@ class BraveStatsUpdaterHelperBrowserTest : public PlatformBrowserTest {
 
   ProfileManager* profile_manager_;
   PrefService* local_state_;
-  std::unique_ptr<BraveStatsUpdaterHelper> brave_stats_updater_helper_;
+  raw_ptr<BraveStatsHelper> brave_stats_helper_;
+
+  base::HistogramTester histogram_tester_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
                        PrimaryProfileEnabledUpdate) {
   Profile* primary_profile = profile_manager_->GetLastUsedProfile();
 
@@ -79,7 +80,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest, ProfileSwitch) {
+IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, ProfileSwitch) {
   CreateMultipleProfiles();
   profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
 
@@ -94,8 +95,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest, ProfileSwitch) {
   EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
-                       MultiProfileEnabledUpdate) {
+IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, MultiProfileEnabledUpdate) {
   CreateMultipleProfiles();
   profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
 
@@ -113,5 +113,34 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterHelperBrowserTest,
   EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
+                       AdsEnabledInstallationTime) {
+  brave_stats_helper_->SetFirstRunTimeForTesting(base::Time::Now() -
+                                                 base::Minutes(45));
+
+  Profile* primary_profile = profile_manager_->GetLastUsedProfile();
+
+  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+
+  histogram_tester_.ExpectUniqueSample(kAdsEnabledInstallationTimeHistogramName,
+                                       0, 1);
+
+  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
+  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+
+  histogram_tester_.ExpectUniqueSample(kAdsEnabledInstallationTimeHistogramName,
+                                       0, 1);
+
+  // Reset to test another bucket value
+  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
+  local_state_->SetBoolean(ads::prefs::kEverEnabledForAnyProfile, false);
+  brave_stats_helper_->SetFirstRunTimeForTesting(base::Time::Now() -
+                                                 base::Minutes(70));
+
+  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  histogram_tester_.ExpectBucketCount(kAdsEnabledInstallationTimeHistogramName,
+                                      1, 1);
+}
 
 }  // namespace brave_ads
