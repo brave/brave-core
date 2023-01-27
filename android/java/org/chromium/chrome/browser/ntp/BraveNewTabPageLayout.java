@@ -397,19 +397,22 @@ public class BraveNewTabPageLayout
         mIsBraveStatsEnabled = shouldDisplayBraveStats();
 
         if (mNtpAdapter == null) {
-            mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                    mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                    mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                    mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                    mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNews, mIsDisplayNewsOptin);
+            if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
+                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
+                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
+                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
+                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
+                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNews,
+                        mIsDisplayNewsOptin);
 
-            mRecyclerView.setAdapter(mNtpAdapter);
+                mRecyclerView.setAdapter(mNtpAdapter);
 
-            if (mRecyclerView.getItemAnimator() != null) {
-                RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
-                if (itemAnimator instanceof SimpleItemAnimator) {
-                    SimpleItemAnimator simpleItemAnimator = (SimpleItemAnimator) itemAnimator;
-                    simpleItemAnimator.setSupportsChangeAnimations(false);
+                if (mRecyclerView.getItemAnimator() != null) {
+                    RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
+                    if (itemAnimator instanceof SimpleItemAnimator) {
+                        SimpleItemAnimator simpleItemAnimator = (SimpleItemAnimator) itemAnimator;
+                        simpleItemAnimator.setSupportsChangeAnimations(false);
+                    }
                 }
             }
         } else {
