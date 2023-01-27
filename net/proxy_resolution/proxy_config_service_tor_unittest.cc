@@ -8,7 +8,7 @@
 #include <string>
 #include <memory>
 
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/single_thread_task_runner.h"
 #include "net/base/proxy_server.h"
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
@@ -136,7 +136,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       ProxyConfigServiceTor::CircuitAnonymizationKey(site_url2);
 
   auto config_service = net::ProxyConfigService::CreateSystemProxyConfigService(
-      base::ThreadTaskRunnerHandle::Get());
+      base::SingleThreadTaskRunner::GetCurrentDefault());
 
   auto* service = new ConfiguredProxyResolutionService(
       std::move(config_service),

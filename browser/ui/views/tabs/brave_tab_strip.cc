@@ -113,7 +113,7 @@ void BraveTabStrip::AddedToWidget() {
   } else {
     // Schedule UpdateTabContainer(). At this point, BrowserWindow could still
     // be being created and it could be unbound to Browser.
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
                                   base::Unretained(this)));
   }

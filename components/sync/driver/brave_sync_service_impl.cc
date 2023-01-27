@@ -217,7 +217,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     BraveSyncServiceImpl::StopAndClear();
   } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
     // Server responded failure, but we need to try more
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&BraveSyncServiceImpl::PermanentlyDeleteAccountImpl,
                        weak_ptr_factory_.GetWeakPtr(), current_attempt + 1,

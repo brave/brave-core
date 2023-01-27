@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
@@ -68,7 +68,7 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   void RemoveObserver(ComponentObserver* observer) override {}
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override {
-    return base::ThreadTaskRunnerHandle::Get();
+    return base::SingleThreadTaskRunner::GetCurrentDefault();
   }
 
   const std::string locale() const override { return "en"; }

@@ -223,7 +223,7 @@ void EnsResolverTask::SetResultForTesting(
 }
 
 void EnsResolverTask::ScheduleWorkOnTask() {
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&EnsResolverTask::WorkOnTask,
                                 weak_ptr_factory_.GetWeakPtr()));
 }

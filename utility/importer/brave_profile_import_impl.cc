@@ -15,7 +15,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/threading/thread.h"
-#include "base/threading/thread_task_runner_handle.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "brave/utility/importer/chrome_importer.h"
 #include "build/build_config.h"

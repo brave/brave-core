@@ -48,7 +48,7 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
     // This will cause abnormal termination during the test.
     if (for_restart_ && !is_test_) {
       // Try relaunch after handling permission grant logics in this turn.
-      base::SequencedTaskRunnerHandle::Get()->PostTask(
+      base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE, base::BindOnce(&chrome::AttemptRelaunch));
     }
 #endif

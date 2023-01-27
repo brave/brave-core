@@ -95,9 +95,11 @@ void BraveSyncClientTest::SetupAdblockServiceForBraveBrowserProcess() {
   base::FilePath user_data_dir;
   DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
   auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
-      local_state_->Get(), "en", nullptr, base::ThreadTaskRunnerHandle::Get(),
+      local_state_->Get(), "en", nullptr,
+      base::SingleThreadTaskRunner::GetCurrentDefault(),
       std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-          local_state_->Get(), base::ThreadTaskRunnerHandle::Get(),
+          local_state_->Get(),
+          base::SingleThreadTaskRunner::GetCurrentDefault(),
           base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
           user_data_dir));
 

@@ -10,7 +10,7 @@
 
 #include "base/bind.h"
 #include "base/rand_util.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_interstitial_controller_client.h"
 #include "brave/components/ipfs/ipfs_not_connected_page.h"
@@ -165,7 +165,7 @@ void IpfsNavigationThrottle::OnGetConnectedPeers(
 
   if (success && peers.empty()) {
     resume_pending_ = true;
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpfsNavigationThrottle::GetConnectedPeers,
                        weak_ptr_factory_.GetWeakPtr()),
@@ -253,7 +253,7 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
   IPFSWebContentsLifetimeHelper::CreateForWebContents(web_contents);
   IPFSWebContentsLifetimeHelper* helper =
       IPFSWebContentsLifetimeHelper::FromWebContents(web_contents);
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&IPFSWebContentsLifetimeHelper::NavigateTo,
                                 helper->GetWeakPtr(), std::move(params)));
 }
@@ -270,7 +270,7 @@ void IpfsNavigationThrottle::OnIpfsLaunched(bool result) {
     resume_pending_ = false;
     ShowInterstitial();
   } else {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpfsNavigationThrottle::GetConnectedPeers,
                        weak_ptr_factory_.GetWeakPtr()),
