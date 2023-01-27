@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
 #include "bat/ledger/internal/endpoints/request_builder.h"
 #include "bat/ledger/internal/ledger_impl.h"

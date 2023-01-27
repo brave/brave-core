@@ -7,7 +7,7 @@
 
 #import <AppKit/AppKit.h>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"

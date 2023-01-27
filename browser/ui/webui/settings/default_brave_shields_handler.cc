@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/browser_process.h"
