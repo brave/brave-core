@@ -23,7 +23,7 @@ export const Button = styled(WalletButton)`
   box-sizing: border-box;
   cursor: pointer;
   position: relative;
-  &:last-child { 
+  &:last-child {
     border-right: none;
   }
 `
@@ -34,5 +34,5 @@ export const ButtonIcon = styled.div <{ icon: string }>`
   mask-size: contain;
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
 `

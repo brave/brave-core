@@ -21,7 +21,7 @@ export const PanelTitle = styled.span`
   line-height: 20px;
   text-align: center;
   letter-spacing: 0.04em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-top: 5px;
 `
 
@@ -29,6 +29,6 @@ export const FavIcon = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 5px;
-  background-color: ${(p) => p.theme.palette.grey200};
+  background-color: ${(p) => p.theme.legacy.palette.grey200};
   margin-bottom: 7px;
 `

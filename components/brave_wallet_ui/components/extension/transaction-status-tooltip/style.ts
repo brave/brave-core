@@ -17,8 +17,8 @@ export const Tip = styled.div`
   left: -55px;
   transform: translateX(calc(-50% - 30px)) translateY(25%);
   padding: 6px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
+  color: ${(p) => p.theme.legacy.palette.white};
+  background: ${(p) => p.theme.legacy.palette.black};
   z-index: 120;
   font-family: Poppins;
   font-size: 12px;
@@ -40,5 +40,5 @@ export const Pointer = styled.div`
   transform: translateX(-50%) translateY(25%);
   border-width: 0 7px 8px 7px;
   z-index: 120;
-  border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  border-color: transparent transparent ${(p) => p.theme.legacy.palette.black} transparent;
 `

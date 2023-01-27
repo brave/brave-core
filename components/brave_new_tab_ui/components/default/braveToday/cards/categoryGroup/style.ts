@@ -75,7 +75,7 @@ export const Publisher = styled('div')`
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   color: white;
   font-weight: 500;

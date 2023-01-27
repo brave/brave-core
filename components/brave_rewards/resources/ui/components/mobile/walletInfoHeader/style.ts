@@ -10,7 +10,7 @@ export const StyledWrapper = styled('div')<{}>`
   display: flex;
   border-radius: 6px;
   margin-bottom: 15px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   background: url(${panelBgUrl}) no-repeat top left,
   linear-gradient(to bottom right, #392dd1 0%, #5813a6 100%) 100% no-repeat;
   flex-direction: column;

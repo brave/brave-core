@@ -22,9 +22,9 @@ export const Input = styled.input`
   outline: none;
   width: 250px;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -33,13 +33,13 @@ export const Input = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 16px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {
@@ -63,7 +63,7 @@ export const QRCodeWrapper = styled.img`
   width: 210px;
   height: 210px;
   border-radius: 8px;
-  border: 2px solid ${(p) => p.theme.color.disabled};
+  border: 2px solid ${(p) => p.theme.legacy.color.disabled};
   margin-bottom: 16px;
 `
 
@@ -76,7 +76,7 @@ export const AddressButton = styled(WalletButton)`
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   cursor: pointer;
   outline: none;
   background: none;
@@ -93,7 +93,7 @@ export const ButtonRow = styled.div`
 export const CopyIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   mask-size: cover;
@@ -115,7 +115,7 @@ export const WarningWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
+  background-color: ${(p) => p.theme.legacy.color.warningBackground};
   border-radius: 16px;
   padding: 10px;
   margin-bottom: 40px;
@@ -127,7 +127,7 @@ export const WarningText = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   a {
     color: inherit;
     text-decoration: underline;
@@ -140,7 +140,7 @@ export const PrivateKeyBubble = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   padding: 5px 10px;
   max-width: 240px;
   height: auto;
@@ -151,7 +151,7 @@ export const PrivateKeyBubble = styled(WalletButton)`
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   outline: none;
   border: none;
 `
@@ -168,7 +168,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 16px;
 `
 
@@ -176,7 +176,7 @@ export const Line = styled.div`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) => p.theme.color.divider01};
+  background: ${(p) => p.theme.legacy.color.divider01};
 `
 
 export const AccountCircle = styled.div<{
@@ -204,5 +204,5 @@ export const AccountName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `

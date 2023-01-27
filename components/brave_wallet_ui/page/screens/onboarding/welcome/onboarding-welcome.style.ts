@@ -17,7 +17,7 @@ export const Title = styled.p<{ maxWidth?: string }>`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   max-width: ${(p) => p?.maxWidth || 'unset'};
 `
 
@@ -28,7 +28,7 @@ export const LearnMoreLink = styled.a`
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,8 +50,8 @@ export const BlockQuote = styled.blockquote`
 export const VerticalRule = styled.div`
   width: 1px;
   min-height: 90%;
-  background-color: ${(p) => p.theme.color.divider01};
-  border-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
+  border-color: ${(p) => p.theme.legacy.color.divider01};
   border-width: 3px;
   border-style: solid;
   margin-right: 24px;
@@ -61,7 +61,7 @@ export const VerticalRule = styled.div`
 export const BlockQuoteTextContainer = styled(Column)`
   font-family: Poppins;
   font-style: normal;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   text-align: left;
   align-items: flex-start;
   gap: 12px;

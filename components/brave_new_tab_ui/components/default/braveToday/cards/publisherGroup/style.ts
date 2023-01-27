@@ -14,7 +14,7 @@ import {
 export const OrderedList = styled(StandardBlock)``
 
 export const ListTitle = styled('div')`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-weight: 500;
   font-size: 28px;
   color: #fff;

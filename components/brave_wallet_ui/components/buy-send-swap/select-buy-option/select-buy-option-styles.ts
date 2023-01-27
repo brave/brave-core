@@ -24,5 +24,5 @@ export const StyledWrapper = styled.div<{
 export const SubDivider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
 `

@@ -55,7 +55,7 @@ export const SelectContainer = styled.div`
   padding: 12px 12px 0px 12px;
   position: relative;
   box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const LongWrapper = styled.div`
@@ -68,7 +68,7 @@ export const LongWrapper = styled.div`
   padding: 0px 12px 0px 12px;
   position: relative;
   box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const ConnectWithSiteWrapper = styled.div`
@@ -76,7 +76,7 @@ export const ConnectWithSiteWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   width: 320px;
   height: 100%;
 `
@@ -99,7 +99,7 @@ export const DesktopComponentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 20px;
 `
 
@@ -118,7 +118,7 @@ export const DesktopComponentWrapperRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   width: 800px;
   padding: 20px;
 `
@@ -130,5 +130,5 @@ export const StyledCreateAccountPanel = styled.div`
   justify-content: center;
   width: 320px;
   height: 200px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `

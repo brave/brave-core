@@ -64,7 +64,7 @@ export const DepositIcon = styled.div`
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: 14px;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${(p) => p.theme.legacy.color.interactive05};
   height: 14px;
   width: 14px;
 `

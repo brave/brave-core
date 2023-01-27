@@ -47,7 +47,7 @@ const getIcon = (iconName: ArticleLinkIcons) => {
 export const BubbleIconBackground = styled.div<{
   backgroundColor: IconBubbleColors
 }>`
-  background-color: ${(p) => p.theme.palette[p.backgroundColor]};
+  background-color: ${(p) => p.theme.legacy.palette[p.backgroundColor]};
   border-radius: 100%;
   width: 30px;
   height: 30px;
@@ -59,7 +59,7 @@ export const BubbleIcon = styled.div<{
   display: inline-block;
   width: 30px;
   height: 30px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   mask-image: url(${p => getIcon(p.icon)});
   mask-size: 14px;
   mask-position: center center;
@@ -76,7 +76,7 @@ export const Bubble = styled.a`
   gap: 4px;
   height: 40px;
   margin-bottom: 12px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: 0px 2px 8px rgba(104, 105, 120, 0.16);
   border-radius: 8px;
 `
@@ -92,5 +92,5 @@ export const BubbleText = styled.span`
   align-items: center;
   text-align: center;
   margin-left: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `

@@ -21,7 +21,7 @@ export const Title = styled.span`
   font-family: Poppins;
   font-size: 20px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 8px;
 `
@@ -32,7 +32,7 @@ export const Description = styled.span<StyleProps>`
   font-family: Poppins;
   font-size: 14px;
   font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   max-width: 520px;
   text-align: ${(p) => p.textAlign ? p.textAlign : 'center'};
   margin-bottom: 25px;
@@ -42,7 +42,7 @@ export const FormText = styled.span`
   font-family: Poppins;
   font-size: 15px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 8px;
 `
@@ -60,7 +60,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -83,9 +83,9 @@ export const RecoveryPhraseInput = styled.input`
   width: 100%;
   outline: none;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -94,13 +94,13 @@ export const RecoveryPhraseInput = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 10px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {

@@ -5,26 +5,15 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-
-// Components
-import App from './components/app'
-
-// Theme
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
+import App from './components/app'
 import wireApiEventsToStore from './apiEventsToStore'
-
-// Utils
 import store from './store'
 
 function initialize () {
   render(
     <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}
-      >
+      <BraveCoreThemeProvider>
         <App />
       </BraveCoreThemeProvider>
     </Provider>,

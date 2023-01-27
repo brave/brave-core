@@ -27,7 +27,7 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   type: 'button',
   role: 'switch'
 })<ToggleProps>`
-  --bg-color: ${(p) => p.theme.color.disabled};
+  --bg-color: ${(p) => p.theme.legacy.color.disabled};
   --border-color: transparent;
   --border-width: 2px;
   --animation-name: none;
@@ -107,11 +107,11 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   }}
 
   &:hover {
-    --border-color: ${p => p.theme.color.interactive05};
+    --border-color: ${p => p.theme.legacy.color.interactive05};
   }
 
   &:focus-visible {
-    --border-color: ${p => p.theme.color.focusBorder};
+    --border-color: ${p => p.theme.legacy.color.focusBorder};
   }
 
   &:active {
@@ -120,9 +120,9 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
 
   &:disabled,
   [disabled] {
-    --knob-color: ${p => p.theme.color.subtle};
+    --knob-color: ${p => p.theme.legacy.color.subtle};
     --knob-border-color: #D9D9EA;
-    --bg-color: ${(p) => p.theme.color.disabled};
+    --bg-color: ${(p) => p.theme.legacy.color.disabled};
   }
 
   // Knob

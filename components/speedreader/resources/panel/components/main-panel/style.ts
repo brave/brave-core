@@ -7,10 +7,10 @@ import styled from 'styled-components'
 export const Box = styled.div`
   --speedreader-background: #FFFFFF;
   background: var(--speedreader-background);
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   width: 100%;
   height: 100%;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   flex: 1 1 auto;
   position: relative;
 
@@ -19,7 +19,7 @@ export const Box = styled.div`
   }
 
   a {
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${(p) => p.theme.legacy.color.interactive05};
   }
 `
 
@@ -49,7 +49,7 @@ export const Section = styled.section`
   font-weight: 400;
 
   .title {
-    color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.theme.legacy.color.text02};
     font-style: normal;
     font-weight: 600;
     font-size: 14px;

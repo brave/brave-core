@@ -7,9 +7,6 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // Containers
@@ -45,24 +42,14 @@ function loadDialogArgs () {
 function initialize () {
   loadDialogArgs()
 
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    render(
-      <Provider store={store}>
-        <BraveCoreThemeProvider
-          initialThemeType={themeType}
-          dark={DarkTheme}
-          light={Theme}
-        >
-          <App />
-        </BraveCoreThemeProvider>
-      </Provider>,
-      document.getElementById('root')
-    )
-  })
-  .catch(error => {
-    console.error('Problem mounting webcompat reporter modal', error)
-  })
+  render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider>
+        <App />
+      </BraveCoreThemeProvider>
+    </Provider>,
+    document.getElementById('root')
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

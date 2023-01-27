@@ -27,8 +27,8 @@ interface Props {
   textDirection: string
 }
 
-const isDarkTheme = (p: any) => {
-  return p.theme.name === 'Brave Dark'
+const isDarkTheme = (): boolean => {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
 const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorites: boolean) => {
@@ -51,13 +51,13 @@ export const SettingsMenu = styled('div')<Props>`
   width: 720px;
   min-width: 720px;
   ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
+  color:  ${p => p.theme.legacy.color.contextMenuForeground};
   border-radius: 8px;
   padding: 24px;
   padding-bottom: 0px;
   box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
 `
 
 export const SettingsContent = styled('div')<{}>`
@@ -88,7 +88,7 @@ export const SettingsSidebarActiveButtonSlider =
   left: 0;
   height: 48px;
   width: 4px;
-  background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+  background: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
   border-radius: 0px 2px 2px 0px;
   transform: translateY(${p => p.translateTo * 48}px);
   transition-delay: 0.05s;
@@ -105,7 +105,7 @@ export const SettingsSidebarSVGContent = styled('div')<SettingsSidebarSVGContent
   position: relative;
   width: 20px;
   height: 20px;
-  background: ${p => isDarkTheme(p) ? p.theme.palette.grey400 : p.theme.palette.grey800};
+  background: ${p => isDarkTheme() ? p.theme.legacy.palette.grey400 : p.theme.legacy.palette.grey800};
   -webkit-mask-image: url(${p => p.src});
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -129,7 +129,7 @@ export const SettingsSidebarSVGContent = styled('div')<SettingsSidebarSVGContent
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    background: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
     -webkit-mask-image: url(${p => p.src});
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
@@ -142,9 +142,9 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
   margin-left: 16px;
   font-weight: 500;
   font-size: 13px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   line-height: normal;
-  color: ${p => p.theme.color.contextMenuForeground};
+  color: ${p => p.theme.legacy.color.contextMenuForeground};
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -155,13 +155,13 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
               font-weight var(--sidebar-button-transition-timing) ease-in-out;
 
   &:hover {
-    color: ${p => p.theme.color.brandBrave};
+    color: ${p => p.theme.legacy.color.brandBrave};
   }
 
   ${p => p.isActive && css`
     --active-opacity: 1;
     font-weight: 600;
-    color: ${p => p.theme.palette.magenta500};
+    color: ${p => p.theme.legacy.palette.magenta500};
   `}
 
   /* Active version (hidden until item is active).
@@ -177,13 +177,13 @@ export const SettingsSidebarButtonText = styled('span')<{ isActive: boolean }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${p => p.theme.color.panelBackground};
+    background: ${p => p.theme.legacy.color.panelBackground};
     background-size: 100%;
     background-repeat: repeat;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(93.83deg, ${p => p.theme.color.brandBrave} -3.53%, ${p => p.theme.palette.magenta500} 110.11%);
+    background-image: linear-gradient(93.83deg, ${p => p.theme.legacy.color.brandBrave} -3.53%, ${p => p.theme.legacy.palette.magenta500} 110.11%);
     overflow: hidden;
     text-overflow: ellipsis;
     transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
@@ -211,10 +211,10 @@ export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps
 
   &:hover {
     ${SettingsSidebarSVGContent} {
-      background: ${p => p.theme.color.brandBrave};
+      background: ${p => p.theme.legacy.color.brandBrave};
     }
     ${SettingsSidebarButtonText} {
-      color: ${p => p.theme.color.brandBrave};
+      color: ${p => p.theme.legacy.color.brandBrave};
     }
   }
 
@@ -229,7 +229,7 @@ export const SettingsSidebarButton = styled('button')<SettingsSidebarButtonProps
 
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 1px;
   }
 `
@@ -248,7 +248,7 @@ export const SettingsTitle = styled('div')<{}>`
   align-items: center;
 
   h1 {
-    font-family: ${p => p.theme.fontFamily.heading};
+    font-family: ${p => p.theme.legacy.fontFamily.heading};
     margin: 0;
     font-weight: 600;
     font-size: 20px;
@@ -269,12 +269,12 @@ export const SettingsCloseIcon = styled('button')<{}>`
   outline: none;
 
   &:active {
-    color: ${p => p.theme.color.brandBraveActive};
+    color: ${p => p.theme.legacy.color.brandBraveActive};
   }
 
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 2px;
   }
 `
@@ -298,13 +298,13 @@ export const SettingsRow = styled('div')<SettingsRowProps>`
   ${p => p.isInteractive && css`
     cursor: pointer;
     &:focus-visible {
-      outline: solid 1px ${p => p.theme.color.brandBrave};
+      outline: solid 1px ${p => p.theme.legacy.color.brandBrave};
     }
     &:hover {
-      color: ${p => p.theme.color.brandBraveInteracting}
+      color: ${p => p.theme.legacy.color.brandBraveInteracting}
     }
     &:active {
-      color: ${p => p.theme.color.brandBraveActive}
+      color: ${p => p.theme.legacy.color.brandBraveActive}
     }
   `}
 
@@ -323,7 +323,7 @@ export const SettingsText = styled('span')<{}>`
   font-size: 13px;
   line-height: 24px;
   letter-spacing: 0.01em;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const SettingsSectionTitle = styled('h3')<ControllableLayoutProps>`
@@ -347,7 +347,7 @@ export const SettingsWrapper = styled('div')<SettingsWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
   color: rgba(255,255,255,0.8);
@@ -373,7 +373,7 @@ export const SettingsWidget = styled('div')<{}>`
 
 export const StyledWidgetSettings = styled('div')`
   --widget-gap: 17px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -423,14 +423,14 @@ export const StyledWidgetToggle = styled('button')<WidgetToggleProps>`
   border: none;
   margin-top: 15px;
   cursor: pointer;
-  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme(p) ? '#5E6175' : '#212529'};
+  background: ${p => p.isAdd ? '#FB542B' : isDarkTheme() ? '#5E6175' : '#212529'};
   width: fit-content;
   display: flex;
   align-items: center;
 
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 1px;
   }
 `
@@ -463,8 +463,8 @@ export const ToggleCardsWrapper = styled('div')<{}>`
   padding: 15px 15px 5px 15px;
   clear: both;
   border-radius: 10px;
-  background: ${p => isDarkTheme(p) ? '#3B3F4E' : '#F3F3FE'};
-  color: ${p => isDarkTheme(p) ? '#FFF' : 'rgb(59, 62, 79)'};
+  background: ${p => isDarkTheme() ? '#3B3F4E' : '#F3F3FE'};
+  color: ${p => isDarkTheme() ? '#FFF' : 'rgb(59, 62, 79)'};
 `
 
 export const ToggleCardsText = styled('div')<{}>`
@@ -488,7 +488,7 @@ export const ToggleCardsSwitch = styled('div')<{}>`
 
 export const StyledTopSitesCustomizationSettings = styled('div')`
   --widget-gap: 10px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -507,7 +507,7 @@ export const StyledTopSitesCustomizationSettingsOption = styled('button')<{}>`
 
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 1px;
   }
 `
@@ -521,19 +521,19 @@ export const StyledTopSitesCustomizationImageBorder = styled('div')<Customizatio
   border-radius: 11px;
 
   ${p => p.selected && css`
-    background: ${p => isDarkTheme(p) ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
+    background: ${p => isDarkTheme() ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
                                       : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
     padding: 3px;
   `}
 
   ${p => !p.selected && css`
-    border: 2px solid ${p => isDarkTheme(p) ? '#3B3E4F' : '#F1F3F5'};
-    background: ${p => isDarkTheme(p) ? '#17171F' : '#FFF'};
+    border: 2px solid ${p => isDarkTheme() ? '#3B3E4F' : '#F1F3F5'};
+    background: ${p => isDarkTheme() ? '#17171F' : '#FFF'};
     padding: 1px;
 
     &:hover {
-      border: 2px solid ${p => isDarkTheme(p) ? '#C2C4CF' : '#AEB1C2'};
-      background: ${p => isDarkTheme(p) ? '#2B2D3F' : '#FAFAFF'};
+      border: 2px solid ${p => isDarkTheme() ? '#C2C4CF' : '#AEB1C2'};
+      background: ${p => isDarkTheme() ? '#2B2D3F' : '#FAFAFF'};
       padding: 1px;
     }
   `}
@@ -548,10 +548,10 @@ export const StyledTopSitesCustomizationImage = styled('img')<CustomizationImage
   width: 100%;
   height: 100%;
   cursor: pointer;
-  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(p), p.selected ?? false, p.isFavorites)});
+  content: url(${p => getTopSiteCustomizationImage(isDarkTheme(), p.selected ?? false, p.isFavorites)});
 
   ${p => p.selected && css`
-    background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'};
+    background: ${p => isDarkTheme() ? '#525779' : '#F0F2FF'};
     border-radius: 8px;
   `}
 `
@@ -593,7 +593,7 @@ export const StyledCustomBackgroundOption = styled('button')<{}>`
 
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 1px;
   }
 `
@@ -616,7 +616,7 @@ export const StyledSelectionBorder = styled('div')<SelectionProps>`
   width: 100%;
   height: 160px;
   ${p => p.selected && css`
-    background: ${p => isDarkTheme(p)
+    background: ${p => isDarkTheme()
         ? 'linear-gradient(314.42deg, #FA7250 6.04%, #FF1893 44.31%, #A78AFF 100%)'
         : 'linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%)'};
     padding: 2px;
@@ -642,12 +642,12 @@ export const StyledUploadIconContainer = styled('div')<SelectionProps>`
   justify-content: center;
   gap: 16px;
   ${p => p.selected
-    ? css`    
-      background: ${p => isDarkTheme(p) ? '#525779' : '#F0F2FF'}; 
+    ? css`
+      background: ${p => isDarkTheme() ? '#525779' : '#F0F2FF'};
       border-radius: 8px;`
     : css`
-      border: 2px solid #E9E9F4; 
-      border-radius: 10px; 
+      border: 2px solid #E9E9F4;
+      border-radius: 10px;
   `}
 `
 

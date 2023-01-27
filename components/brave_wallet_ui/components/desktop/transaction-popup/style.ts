@@ -11,7 +11,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 7px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 8px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
@@ -34,7 +34,7 @@ export const PopupButton = styled(WalletButton)`
   margin: 0px;
   background-color: transparent;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${(p) => p.theme.legacy.color.divider01};
   }
 `
 
@@ -44,7 +44,7 @@ export const PopupButtonText = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const ClickAwayContainer = styled.div`

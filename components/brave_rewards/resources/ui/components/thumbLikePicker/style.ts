@@ -13,7 +13,7 @@ export const StyledAdStatThumbUpIcon = styled('div')<{}>`
 `
 
 export const StyledAdStatThumbUpFilledIcon = styled(StyledAdStatThumbUpIcon)`
-  color: ${p => p.theme.palette.green500};
+  color: ${p => p.theme.legacy.palette.green500};
 `
 
 export const StyledAdStatThumbDownIcon = styled('div')<{}>`
@@ -26,5 +26,5 @@ export const StyledAdStatThumbDownIcon = styled('div')<{}>`
 `
 
 export const StyledAdStatThumbDownFilledIcon = styled(StyledAdStatThumbDownIcon)`
-  color: ${p => p.theme.palette.red500};
+  color: ${p => p.theme.legacy.palette.red500};
 `

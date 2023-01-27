@@ -24,7 +24,7 @@ export const NetworkNotSupported = styled.p`
   line-height: 20px;
   text-align: center;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text02};
+  color: ${p => p.theme.legacy.color.text02};
   margin: 55px 20px 59px;
   padding: 0;
 `

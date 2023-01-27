@@ -20,8 +20,8 @@ export const BatAdLabel = styled('a')`
   display: flex;
   align-items: center;
   white-space: nowrap;
-  color: ${p => p.theme.color.interactive05};
-  font: 500 12px ${p => p.theme.fontFamily.heading};
+  color: ${p => p.theme.legacy.color.interactive05};
+  font: 500 12px ${p => p.theme.legacy.fontFamily.heading};
   /* line-height: 18px; */
   ::before {
     width: 15px;

@@ -28,10 +28,10 @@ export const PriceChange = styled.span`
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.background01};
-  
+  color: ${p => p.theme.legacy.color.background01};
+
   @media (prefers-color-scheme: dark) {
-    color: ${p => p.theme.color.text};
+    color: ${p => p.theme.legacy.color.text};
   }
 `
 

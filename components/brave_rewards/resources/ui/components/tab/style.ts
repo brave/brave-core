@@ -54,7 +54,7 @@ export const StyledBullet = styled('div')<StyleProps>`
   top: -17px;
   width: ${p => 100 / ((p && p.size) || 1)}%;
   height: 37px;
-  background: ${p => p.theme.color.primaryBackground};
+  background: ${p => p.theme.legacy.color.primaryBackground};
   border-radius: 21.5px 21.5px 21.5px 21.5px;
   position: relative;
   transition: all .4s ease;
@@ -83,8 +83,8 @@ export const StyledText = styled('div')<StyleProps>`
   text-align: center;
   user-select: none;
   color: ${p => p.selected
-    ? p.type === 'contribute' ? palette.blurple500 : p.theme.color.brandBrave
-    : p.theme.color.subtleActive
+    ? p.type === 'contribute' ? palette.blurple500 : p.theme.legacy.color.brandBrave
+    : p.theme.legacy.color.subtleActive
   };
   font-weight: ${p => p.selected ? '500' : 'normal'};
 

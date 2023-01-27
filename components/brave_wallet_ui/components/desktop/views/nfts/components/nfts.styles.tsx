@@ -34,7 +34,7 @@ export const NftGrid = styled.div`
 export const EmptyStateText = styled.div`
   text-align: center;
   padding: 30px 0;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
   font-size: 14px;
   font-family: Poppins;
 `

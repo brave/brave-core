@@ -67,7 +67,7 @@ const Text = styled('span')`
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 const Menu = styled('ul')`
@@ -82,8 +82,8 @@ const Menu = styled('ul')`
   border-radius: 4px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   padding: 8px 0;
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
+  color:  ${p => p.theme.legacy.color.contextMenuForeground};
 `
 
 const MenuItem = styled('li')`
@@ -94,8 +94,8 @@ const MenuItem = styled('li')`
 
   &:hover,
   &:focus {
-    background-color: ${p => p.theme.color.contextMenuHoverBackground};
-    color: ${p => p.theme.color.contextMenuHoverForeground};
+    background-color: ${p => p.theme.legacy.color.contextMenuHoverBackground};
+    color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
   }
 
   &:active {
@@ -105,7 +105,7 @@ const MenuItem = styled('li')`
   }
 
   &:focus-visible {
-    outline: solid 1px ${p => p.theme.color.brandBrave};
+    outline: solid 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `
 

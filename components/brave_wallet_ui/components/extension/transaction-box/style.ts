@@ -11,14 +11,14 @@ export const CodeSnippet = styled.pre`
   justify-content: flex-start;
   tab-size: 0;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   padding: 14px;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   border-radius: 4px;
   margin: 0px;
   margin-bottom: 14px;
@@ -30,14 +30,14 @@ export const CodeSnippet = styled.pre`
 export const HexBlock = styled.div`
   display: flex;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   padding: 14px;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   border-radius: 4px;
   word-break: break-all;
   box-sizing: border-box;
@@ -62,7 +62,7 @@ export const DetailText = styled.span`
   font-size: 11px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   word-break: break-all;
 `
 
@@ -76,5 +76,5 @@ export const TransactionText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `

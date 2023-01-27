@@ -15,9 +15,9 @@ export const StyledWrapper = styled.div<Partial<StyleProps>>`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: ${(p) => p.bannerType === 'warning' ? p.theme.color.warningBackground : p.theme.color.errorBackground};
+  background-color: ${(p) => p.bannerType === 'warning' ? p.theme.legacy.color.warningBackground : p.theme.legacy.color.errorBackground};
   border-radius: 4px;
-  border: 1px solid ${(p) => p.bannerType === 'warning' ? p.theme.color.warningBorder : p.theme.color.errorBorder};
+  border: 1px solid ${(p) => p.bannerType === 'warning' ? p.theme.legacy.color.warningBorder : p.theme.legacy.color.errorBorder};
   padding: 20px;
   margin-bottom: 14px;
   @media screen and (max-width: 1080px) {
@@ -31,7 +31,7 @@ export const WarningText = styled.span`
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   @media screen and (max-width: 1080px) {
     margin-bottom: 12px;
   }
@@ -55,9 +55,9 @@ export const BannerButton = styled(WalletButton) <Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 12px;
   font-weight: 600;
-  color: ${(p) => p.buttonType === 'primary' ? p.theme.color.interactive05 : p.theme.color.text02};
+  color: ${(p) => p.buttonType === 'primary' ? p.theme.legacy.color.interactive05 : p.theme.legacy.color.text02};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.buttonType === 'primary' ? p.theme.palette.white : p.theme.color.text02};
+    color: ${(p) => p.buttonType === 'primary' ? p.theme.legacy.palette.white : p.theme.legacy.color.text02};
   }
   letter-spacing: 0.01em;
   margin-left: 20px;

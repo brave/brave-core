@@ -33,7 +33,7 @@ export const FromBalanceText = styled.span<Partial<StyleProps>>`
   margin-top: 4px;
   margin-bottom: ${(p) => p.componentType === 'exchange' ? '0px' : '2px'};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const AssetButton = styled(WalletButton) <Partial<StyleProps>>`
@@ -73,14 +73,14 @@ export const AssetTicker = styled.span`
   letter-spacing: 0.02em;
   font-weight: 600;
   margin-right: 4px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   cursor: pointer;
 `
 
 export const CaratDownIcon = styled(CaratStrongDownIcon)`
   width: 12px;
   height: auto;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const PresetRow = styled.div`
@@ -109,15 +109,15 @@ export const PresetButton = styled(WalletButton) <Partial<StyleProps>>`
   padding: 2px 0px;
   width: 48px;
   border-radius: 4px;
-  background-color: ${(p) => p.isSelected ? p.isSlippage ? p.theme.color.interactive05 : p.theme.color.divider01 : 'none'};
-  color: ${(p) => p.isSlippage && p.isSelected ? p.theme.palette.white : p.theme.color.interactive05};
+  background-color: ${(p) => p.isSelected ? p.isSlippage ? p.theme.legacy.color.interactive05 : p.theme.legacy.color.divider01 : 'none'};
+  color: ${(p) => p.isSlippage && p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.isSlippage && p.isSelected ? p.theme.palette.white : p.theme.palette.blurple300};
+    color: ${(p) => p.isSlippage && p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.palette.blurple300};
   }
 `
 
 export const SlippageInput = styled.input<Partial<StyleProps>>`
-  --main-bg-color: ${(p) => p.theme.color.interactive05};
+  --main-bg-color: ${(p) => p.theme.legacy.color.interactive05};
   width: 48px;
   outline: none;
   background-image: none;
@@ -132,12 +132,12 @@ export const SlippageInput = styled.input<Partial<StyleProps>>`
   padding: 1px;
   border-radius: 4px;
   border: none;
-  border: 1px solid ${(p) => p.isSelected ? p.theme.color.interactive05 : p.theme.color.interactive08};
-  color: ${(p) => p.isSelected ? p.theme.palette.white : p.theme.color.text03};
+  border: 1px solid ${(p) => p.isSelected ? p.theme.legacy.color.interactive05 : p.theme.legacy.color.interactive08};
+  color: ${(p) => p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.text03};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
   }
   :focus {
       outline: none;
@@ -166,7 +166,7 @@ export const MarketLimitButton = styled(WalletButton)`
   margin-top: 4px;
   letter-spacing: 0.01em;
   padding: 0px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
 `
 
 export const RefreshButton = styled(WalletButton)`
@@ -181,14 +181,14 @@ export const RefreshButton = styled(WalletButton)`
   width: 18px;
   height: 18px;
   padding: 0px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   border-radius: 100%;
 `
 
 export const RefreshIcon = styled.div<Partial<StyleProps>>`
   width: 12px;
   height: 12px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${Refresh});
   mask-image: url(${Refresh});
   animation: ${(p) => p.spin === 1 ? 'spin 1s 1' : 'none'};
@@ -206,7 +206,7 @@ export const Input = styled.input<Partial<StyleProps>>`
   width: 100%;
   outline: none;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
   border: none;
   font-family: Poppins;
@@ -216,11 +216,11 @@ export const Input = styled.input<Partial<StyleProps>>`
   font-weight: ${(p) => p.componentType === 'toAddress' ? '400' : '600'};
   padding: 0px;
   margin: ${(p) => p.componentType === 'exchange' ? '0px' : '4px 0px'};
-  color: ${(p) => p.hasError ? p.theme.color.errorText : p.componentType === 'toAddress' ? p.theme.color.text02 : p.theme.color.text01};
+  color: ${(p) => p.hasError ? p.theme.legacy.color.errorText : p.componentType === 'toAddress' ? p.theme.legacy.color.text02 : p.theme.legacy.color.text01};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
-    color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.theme.legacy.color.text02};
   }
   :focus {
       outline: none;
@@ -241,7 +241,7 @@ export const SelectText = styled.span`
   margin: 2px 0px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const SelectValueText = styled.span`
@@ -251,7 +251,7 @@ export const SelectValueText = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-right: 4px;
 `
 
@@ -269,13 +269,13 @@ export const PasteButton = styled(WalletButton)`
   margin: 0px;
   padding: 0px;
   border-radius: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
 `
 
 export const PasteIcon = styled.div`
   width: 12px;
   height: 12px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   mask-size: 100%;
@@ -285,7 +285,7 @@ export const WarningText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.isWarning ? p.theme.color.interactive03 : p.theme.color.errorText};
+  color: ${(p) => p.isWarning ? p.theme.legacy.color.interactive03 : p.theme.legacy.color.errorText};
   word-break: break-word;
 `
 
@@ -294,7 +294,7 @@ export const AddressConfirmationText = styled.span`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const LearnMoreButton = styled(WalletButton)`
@@ -306,7 +306,7 @@ export const LearnMoreButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin: 0px;
   padding: 0px;
 `

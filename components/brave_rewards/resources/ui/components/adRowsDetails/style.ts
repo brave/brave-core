@@ -5,9 +5,9 @@
 import styled from 'styled-components'
 
 export const StyledDateText = styled('div')<{}>`
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 14px;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
   display: inline-block;
 `
 export const StyledAdsDateRow = styled('div')<{}>`
@@ -27,8 +27,8 @@ export const StyledHRDiv = styled('div')<{}>`
 `
 
 export const StyledHR = styled('hr')<{}>`
-  color: ${p => p.theme.color.subtle};
-  background-color: ${p => p.theme.color.subtle};
+  color: ${p => p.theme.legacy.color.subtle};
+  background-color: ${p => p.theme.legacy.color.subtle};
   height: 2px;
   border: none;
 `
@@ -39,7 +39,7 @@ export const StyledCaratIcon = styled('div')<{}>`
   border: none;
   width: 16px;
   height: 16px;
-  color: ${p => p.theme.color.subtle};
+  color: ${p => p.theme.legacy.color.subtle};
   padding: 1px;
   outline: none;
   display: inline-block;
@@ -47,20 +47,20 @@ export const StyledCaratIcon = styled('div')<{}>`
 `
 
 export const StyledAdPortionTD = styled('td')<{}>`
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 14px;
   font-weight: 500;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
   border-bottom: none;
   padding: 5px 0;
   text-align: left;
 `
 
 export const StyledInnerStartTD = styled('td')<{}>`
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 14px;
   font-weight: 500;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
   border-bottom: none;
   padding: 12px 0;
   text-align: left;

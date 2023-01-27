@@ -9,18 +9,18 @@ import styled from 'styled-components'
 import { Icon, StyledDiv } from '../../shared.styles'
 
 export const ButtonIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text03};
+  background-color: ${(p) => p.theme.legacy.color.text03};
   margin-right: 8px;
 `
 
 export const ArrowIcon = styled(Icon) <{ isOpen: boolean }>`
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   transition-duration: 0.3s;
   transform: ${(p) => p.isOpen ? 'rotate(180deg)' : 'unset'};
 `
 
 export const DropDown = styled(StyledDiv)`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 8px;
   border-radius: 16px;
   position: absolute;

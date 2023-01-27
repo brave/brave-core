@@ -25,8 +25,8 @@ export const RecoveryBaseCss = css`
   font-size: 14px;
   letter-spacing: 0.01em;
 
-  color: ${(p) => p.theme.color.text01};
-  background-color: ${(p) => p.theme.color.background02};
+  color: ${(p) => p.theme.legacy.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.background02};
 `
 
 export const RecoveryTextArea = styled.textarea`
@@ -46,5 +46,5 @@ export const CheckboxText = styled.div`
   font-weight: 400;
   font-size: 14px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `

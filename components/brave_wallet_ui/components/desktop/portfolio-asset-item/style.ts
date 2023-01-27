@@ -18,7 +18,7 @@ export const StyledWrapper = styled(WalletButton) <{ disabled: boolean }>`
   padding: 12px;
   border-radius: 10px;
   &:hover {
-    background-color: ${(p) => p.theme.color.background01}85;
+    background-color: ${(p) => p.theme.legacy.color.background01}85;
   }
 `
 
@@ -34,7 +34,7 @@ export const AssetName = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const BalanceColumn = styled.div`
@@ -49,7 +49,7 @@ export const FiatBalanceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AssetBalanceText = styled.span`
@@ -57,7 +57,7 @@ export const AssetBalanceText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -87,5 +87,5 @@ export const NetworkDescriptionText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `

@@ -17,7 +17,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const Title = styled.span`
@@ -25,7 +25,7 @@ export const Title = styled.span`
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 5px;
   width: 250px;
@@ -36,7 +36,7 @@ export const Description = styled.span`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.01em;
 `
 
@@ -44,7 +44,7 @@ export const PageIcon = styled.div`
   width: 120px;
   height: 120px;
   mask-size: 100%;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${FlashDriveIcon});
   mask-image: url(${FlashDriveIcon});
   margin-bottom: 35px;
@@ -60,7 +60,7 @@ export const InstructionsButton = styled(WalletButton)`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin-bottom: 35px;
 `
 
@@ -76,7 +76,7 @@ export const Indicator = styled.div<StyleProps>`
   width: 15px;
   height: 15px;
   border-radius: 100%;
-  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  background-color: ${(p) => p.isConnected ? p.theme.legacy.color.successBorder : p.theme.legacy.color.errorBorder};
   margin-right: 8px;
 `
 

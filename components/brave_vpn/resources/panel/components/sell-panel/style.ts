@@ -17,7 +17,7 @@ export const Box = styled.div`
 
 export const ProductTitle = styled.h1`
   color: #F0F2FF;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-weight: 600;
   font-size: 20px;
   margin: 0 0 10px 0;
@@ -29,7 +29,7 @@ export const PoweredBy = styled.div`
   align-items: center;
 
   span {
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -44,7 +44,7 @@ export const List = styled.ul`
 
   li {
     color: #F0F2FF;
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
@@ -131,7 +131,7 @@ export const ActionArea = styled.div`
   a {
     --color: #F0F2FF;
     color: var(--color);
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 12px;
     text-decoration-line: underline;
 

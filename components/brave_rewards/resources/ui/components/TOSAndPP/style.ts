@@ -14,6 +14,6 @@ export const StyledWrapper = styled('div')<{}>`
 export const StyledLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   font-weight: 600;
 `

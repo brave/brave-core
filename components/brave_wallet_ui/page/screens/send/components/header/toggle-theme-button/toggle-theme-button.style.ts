@@ -13,7 +13,7 @@ import NightIcon from '../../../assets/night-icon.svg'
 import { StyledButton, StyledDiv } from '../../../shared.styles'
 
 export const Button = styled(StyledButton)`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   border-radius: 100%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   height: 40px;

@@ -6,8 +6,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
 import '../common/defaultTrustedTypesPolicy'
 import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
 import { wireApiEventsToStore } from './apiEventsToStore'
@@ -27,26 +25,17 @@ store.dispatch(init())
 function initialize () {
   console.timeStamp('loaded')
   // Get rendering going
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    render(
-      <Provider store={store}>
-        <BraveCoreThemeProvider
-          initialThemeType={themeType}
-          dark={DarkTheme}
-          light={Theme}
-        >
-          <RewardsContextAdapter>
-            <App />
-          </RewardsContextAdapter>
-        </BraveCoreThemeProvider>
-      </Provider>,
-      document.getElementById('root'),
-      () => console.timeStamp('first react render'))
-  })
-  .catch((error) => {
-    console.error('Problem mounting brave new tab', error)
-  })
+  render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider>
+        <RewardsContextAdapter>
+          <App />
+        </RewardsContextAdapter>
+      </BraveCoreThemeProvider>
+    </Provider>,
+    document.getElementById('root'),
+    () => console.timeStamp('first react render')
+  )
 }
 
 console.timeStamp('JS start')

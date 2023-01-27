@@ -420,7 +420,7 @@ export const IconButton = styled('button')<IconButtonProps>`
     opacity: 0.95;
   }
   &:focus-visible {
-    outline: 2px solid ${p => p.theme.color.brandBraveInteracting};
+    outline: 2px solid ${p => p.theme.legacy.color.brandBraveInteracting};
   }
 `
 
@@ -464,7 +464,7 @@ interface IconButtonContainerProps {
 }
 
 export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
   color: rgba(var(--override-readability-color-rgb, 255, 255, 255), 0.8);

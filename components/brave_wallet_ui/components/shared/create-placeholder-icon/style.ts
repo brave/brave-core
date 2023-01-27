@@ -30,5 +30,5 @@ export const PlaceholderText = styled.span<Partial<StyleProps>>`
   font-size: ${(p) => p.size === 'big' ? '16px' : '12px'};
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `

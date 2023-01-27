@@ -25,21 +25,21 @@ export const Tip = styled(StyledDiv)`
   right: 8px;
   top: 42px;
   width: 220px;
-  background-color: ${(p) => p.theme.color.background01};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-  white-space: normal; 
+  white-space: normal;
 `
 
 export const TipIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   margin-right: 8px;
 `
 
 export const AddressLink = styled(StyledButton)`
-  --text-color: ${(p) => p.theme.color.interactive05};
+  --text-color: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    --text-color: ${(p) => p.theme.palette.blurple500};
+    --text-color: ${(p) => p.theme.legacy.palette.blurple500};
   }
   color: var(--text-color);
   font-size: 14px;

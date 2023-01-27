@@ -18,7 +18,7 @@ export const ButtonsContainer = styled.div`
   padding: 4px 0px;
   width: 210px;
   height: 44px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   border-radius: 100px;
   position: relative;
 `
@@ -27,9 +27,9 @@ export const Button = styled(StyledButton) <{
   isSelected: boolean
   buttonAlign: 'left' | 'right'
 }>`
-  --selected-background-color: ${(p) => p.theme.color.interactive05};
+  --selected-background-color: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    --selected-background-color: ${(p) => p.theme.palette.blurple500};
+    --selected-background-color: ${(p) => p.theme.legacy.palette.blurple500};
   }
   background-color: ${(p) =>
     p.isSelected ? 'var(--selected-background-color)' : 'none'};
@@ -42,6 +42,6 @@ export const Button = styled(StyledButton) <{
   left: ${(p) => (p.buttonAlign === 'left' ? '4px' : 'unset')};
   right: ${(p) => (p.buttonAlign === 'right' ? '4px' : 'unset')};
   color: ${(p) =>
-    p.isSelected ? p.theme.palette.white : p.theme.color.text02};
+    p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.text02};
   z-index: ${(p) => (p.isSelected ? '10px' : '5px')};
 `

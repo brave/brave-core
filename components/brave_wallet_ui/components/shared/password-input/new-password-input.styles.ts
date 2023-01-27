@@ -18,7 +18,7 @@ export const PasswordMatchRow = styled.div`
 `
 
 export const PasswordMatchText = styled.p`
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
@@ -33,7 +33,7 @@ export const PasswordMatchCheckmark = styled.div`
   width: 10px;
   height: 10px;
   margin-right: 4px;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${(p) => p.theme.legacy.color.interactive05};
   mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
   mask-size: contain;
   vertical-align: middle;

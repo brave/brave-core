@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
+  border: 1px solid ${p => p.theme.legacy.color.divider01};
   border-radius: 2000px;
   padding: 3px;
   display: grid;
@@ -33,6 +33,6 @@ export const Box = styled.div`
   }
 
   .is-active {
-    background: ${p => p.theme.color.divider01};
+    background: ${p => p.theme.legacy.color.divider01};
   }
 `

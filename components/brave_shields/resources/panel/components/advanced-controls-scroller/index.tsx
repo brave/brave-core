@@ -31,11 +31,11 @@ const ScrollBox = styled.div<ScrollBoxProps>`
   }
 
   &::-webkit-scrollbar-track {
-    background: ${p => p.theme.color.subtleBackground};
+    background: ${p => p.theme.legacy.color.subtleBackground};
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${p => p.theme.color.subtle};
+    background: ${p => p.theme.legacy.color.subtle};
   }
 `
 

@@ -11,7 +11,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
 `
 
@@ -19,5 +19,5 @@ export const HorizontalDivider = styled.div`
   display: flex;
   width: 1px;
   height: 24px;
-  background-color: ${(p) => p.theme.color.interactive08};
+  background-color: ${(p) => p.theme.legacy.color.interactive08};
 `

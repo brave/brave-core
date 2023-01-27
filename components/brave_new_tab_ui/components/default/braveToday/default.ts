@@ -74,7 +74,7 @@ export const Image = styled('img')`
 
 export const Text = styled('div')<{}>`
   box-sizing: border-box;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-weight: normal;
   font-size: 14px;
   line-height: 19px;
@@ -83,7 +83,7 @@ export const Text = styled('div')<{}>`
 `
 
 export const Heading = styled(Text.withComponent('h2'))`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-weight: 600;
   font-size: 22px;
   line-height: 32px;
@@ -92,7 +92,7 @@ export const Heading = styled(Text.withComponent('h2'))`
 export const Time = styled(Text.withComponent('time'))`
   box-sizing: border-box;
   display: block;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   margin-top: 4px;
   color: rgba(255,255,255,0.7);
@@ -131,7 +131,7 @@ export const Button = styled('button')<{}>`
     background: rgba(255, 255, 255, .4);
   }
   &:focus-visible {
-    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
+    box-shadow: 0 0 0 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `
 
@@ -166,6 +166,6 @@ export const TertiaryButton = styled('button')<{}>`
     transform: translate(1px, 1px)
   }
   &:focus-visible {
-    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
+    box-shadow: 0 0 0 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `

@@ -44,20 +44,20 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
 
     background-color: ${(p) =>
       p.disabled
-        ? p.theme.color.disabled
+        ? p.theme.legacy.color.disabled
         : p.buttonType === 'primary' ||
           p.buttonType === 'confirm' ||
           p.buttonType === 'sign'
-            ? p.theme.palette.blurple500
+            ? p.theme.legacy.palette.blurple500
             : p.buttonType === 'danger'
-              ? p.theme.color.errorBorder
+              ? p.theme.legacy.color.errorBorder
               : 'transparent'
     };
 
     border: ${(p) =>
       p.buttonType === 'secondary' ||
       p.buttonType === 'reject'
-        ? `1px solid ${p.theme.color.interactive08}`
+        ? `1px solid ${p.theme.legacy.color.interactive08}`
         : 'none'
     };
 
@@ -98,15 +98,15 @@ export const ButtonText = styled.span<{
     p.buttonType === 'secondary' ||
     p.buttonType === 'reject' ||
     p.buttonType === 'cancel'
-      ? p.theme.color.interactive07
-      : p.theme.palette.white
+      ? p.theme.legacy.color.interactive07
+      : p.theme.legacy.palette.white
   };
 `
 
 export const RejectIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   mask-size: 100%;
@@ -116,7 +116,7 @@ export const RejectIcon = styled.div`
 export const SignIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   -webkit-mask-image: url(${KeyIcon});
   mask-image: url(${KeyIcon});
   mask-size: 100%;
@@ -126,7 +126,7 @@ export const SignIcon = styled.div`
 export const ConfirmIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   -webkit-mask-image: url(${CheckIcon});
   mask-image: url(${CheckIcon});
   mask-size: 100%;

@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 export const ArrowDownIcon = styled(CaratStrongDownIcon)`
   width: 18px;
   height: auto;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const ArrowButton = styled(WalletButton)`
@@ -35,7 +35,7 @@ export const ArrowButton = styled(WalletButton)`
   margin-bottom: 12px;
   border-radius: 4px;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01}
+    background-color: ${(p) => p.theme.legacy.color.divider01}
   }
 `
 
@@ -47,7 +47,7 @@ export const SwapButtonText = styled.span`
   font-size: 13px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const SwapButtonLoader = styled(SwapButtonText)`
@@ -67,7 +67,7 @@ export const SwapDisclaimerText = styled.span`
   letter-spacing: 0.01em;
   font-size: 11px;
   line-height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   word-break: break-word;
   margin-right: 6px;
 `
@@ -81,7 +81,7 @@ export const SwapDisclaimerButton = styled(WalletButton)`
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin: 0px;
   padding: 0px;
 `
@@ -89,7 +89,7 @@ export const SwapDisclaimerButton = styled(WalletButton)`
 export const AlertIcon = styled(AlertCircleIcon)`
   width: 14px;
   height: 14px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
 `
 
 export const SwapFeesNoticeRow = styled.div`
@@ -106,7 +106,7 @@ export const SwapFeesNoticeText = styled.div`
   letter-spacing: 0.01em;
   font-size: 12px;
   line-height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   word-break: break-word;
 `
 

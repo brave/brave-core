@@ -16,20 +16,20 @@ interface ShieldsIconProps {
 }
 
 export const Box = styled.div`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   width: 100%;
   height: 100%;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
 
   a {
-    font-family: ${(p) => p.theme.fontFamily.heading};
-    color: ${(p) => p.theme.color.interactive05};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
+    color: ${(p) => p.theme.legacy.color.interactive05};
     text-decoration: underline;
   }
 `
 
 export const HeaderBox = styled.section`
-  background-color: ${(p) => p.theme.color.background03};
+  background-color: ${(p) => p.theme.legacy.color.background03};
   padding: 22px 17px 22px 17px;
 `
 
@@ -53,7 +53,7 @@ export const FavIconBox = styled.i`
 `
 
 export const SiteTitle = styled.h1`
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-size: 20px;
   line-height: 1.4;
   font-weight: 500;
@@ -79,7 +79,7 @@ export const CountBox = styled.section`
 export const BlockCount = styled.span`
   font-size: 38px;
   line-height: 1;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   grid-column: 3;
   text-align: right;
 `
@@ -88,7 +88,7 @@ export const BlockNote = styled.span`
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   grid-column: 2;
 `
 
@@ -114,7 +114,7 @@ export const ShieldsIcon = styled.i<ShieldsIconProps>`
   }
 
   ${p => p.isActive && css`
-    --fill-color: ${(p) => p.theme.color.interactive02};
+    --fill-color: ${(p) => p.theme.legacy.color.interactive02};
   `}
 `
 
@@ -122,7 +122,7 @@ export const StatusText = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   grid-column: 2;
   word-break: break-word;
   display: -webkit-box;
@@ -150,12 +150,12 @@ export const StatusFootnoteBox = styled.div`
 `
 
 export const Footnote = styled.div`
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: left;
   grid-column: 2;
 
   span {
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     display: block;
   }
 `
@@ -166,7 +166,7 @@ export const ReportSiteBox = styled.div`
   p {
     max-width: 35ch;
     margin: 0 0 10px 0;
-    color: ${(p) => p.theme.color.warningIcon};
+    color: ${(p) => p.theme.legacy.color.warningIcon};
   }
 `
 
@@ -177,7 +177,7 @@ export const ReportSiteAction = styled.div`
   span {
     font-weight: 500;
     font-size: 14px;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     margin-bottom: 16px;
   }
 `
@@ -193,11 +193,11 @@ export const PanelContent = styled.section`
 
 export const AdvancedControlsButton = styled.button`
   --border: 3px solid transparent;
-  --svg-color: ${(p) => p.theme.color.interactive05};
-  --text-color: ${(p) => p.theme.color.interactive06};
+  --svg-color: ${(p) => p.theme.legacy.color.interactive05};
+  --text-color: ${(p) => p.theme.legacy.color.interactive06};
 
-  background-color: ${(p) => p.theme.color.background03};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  background-color: ${(p) => p.theme.legacy.color.background03};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
@@ -211,11 +211,11 @@ export const AdvancedControlsButton = styled.button`
   text-align: left;
   cursor: pointer;
 
-  i { 
+  i {
     grid-column: 1;
   }
-  
-  span { 
+
+  span {
     grid-column: 2;
   }
 
@@ -224,12 +224,12 @@ export const AdvancedControlsButton = styled.button`
   }
 
   &:hover {
-    --text-color: ${(p) => p.theme.color.interactive07};
-    --svg-color: ${(p) => p.theme.color.interactive08};
+    --text-color: ${(p) => p.theme.legacy.color.interactive07};
+    --svg-color: ${(p) => p.theme.legacy.color.interactive08};
   }
 
   &:focus-visible {
-    --border: 3px solid ${(p) => p.theme.color.focusBorder};
+    --border: 3px solid ${(p) => p.theme.legacy.color.focusBorder};
   }
 `
 

@@ -43,7 +43,7 @@ export const ChartLabel = styled.span`
   font-family: Poppins;
   font-size: 13px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const LoadingOverlay = styled.div<Partial<StyleProps>>`
@@ -59,7 +59,7 @@ export const LoadingOverlay = styled.div<Partial<StyleProps>>`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${p => p.theme.legacy.color.interactive08};
   height: 70px;
   width: 70px;
   opacity: .4;

@@ -13,7 +13,7 @@ export const HeaderTitle = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const HeaderWrapper = styled.div`

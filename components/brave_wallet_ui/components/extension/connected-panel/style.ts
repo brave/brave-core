@@ -49,7 +49,7 @@ export const AccountNameText = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const AccountAddressText = styled(WalletButton)`
@@ -57,7 +57,7 @@ export const AccountAddressText = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   font-weight: 300;
   cursor: pointer;
   outline: none;
@@ -78,7 +78,7 @@ export const AssetBalanceText = styled.span`
   font-size: 24px;
   line-height: 36px;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   font-weight: 600;
   height: 36px;
 `
@@ -88,7 +88,7 @@ export const FiatBalanceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   font-weight: 300;
   height: 20px;
 `
@@ -111,7 +111,7 @@ export const OvalButton = styled(WalletButton)`
   border-radius: 48px;
   padding: 3px 10px;
   border: 1px solid rgba(255,255,255,0.5);
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   &:disabled {
     cursor: default;
   }
@@ -122,7 +122,7 @@ export const OvalButtonText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   font-weight: 600;
 `
 
@@ -138,7 +138,7 @@ export const StatusRow = styled.div`
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;
@@ -163,7 +163,7 @@ export const MoreAssetsButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const ConnectedStatusBubble = styled.div<{ isConnected: boolean }>`
@@ -173,7 +173,7 @@ export const ConnectedStatusBubble = styled.div<{ isConnected: boolean }>`
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  background-color: ${(p) => p.isConnected ? p.theme.color.successBorder : p.theme.color.errorBorder};
+  background-color: ${(p) => p.isConnected ? p.theme.legacy.color.successBorder : p.theme.legacy.color.errorBorder};
   margin-right: 6px;
   border: 1px solid rgba(255,255,255, 1);
 `

@@ -29,13 +29,13 @@ const Back = styled('button')`
 
   &:focus,
   &:hover {
-    color: ${p => p.theme.color.brandBraveInteracting}
+    color: ${p => p.theme.legacy.color.brandBraveInteracting}
   }
   &:active {
-    color: ${p => p.theme.color.brandBraveActive}
+    color: ${p => p.theme.legacy.color.brandBraveActive}
   }
   &:focus-visible {
-    outline: solid 1px ${p => p.theme.color.brandBrave};
+    outline: solid 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `
 

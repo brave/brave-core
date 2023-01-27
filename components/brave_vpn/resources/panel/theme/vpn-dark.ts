@@ -4,10 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import ITheme from 'brave-ui/theme/theme-interface'
-import IThemeVPN from './vpn-theme'
 import defaultDarkTheme from 'brave-ui/theme/brave-dark'
 
-const vpnDarkTheme: ITheme & IThemeVPN = {
+const vpnDarkTheme: ITheme = {
   ...defaultDarkTheme,
   name: 'VPN Dark',
   color: {

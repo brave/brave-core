@@ -13,7 +13,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-conent: center;
   padding: 7px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 8px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
@@ -37,7 +37,7 @@ export const PopupButton = styled(WalletButton)`
   margin: 0px;
   background-color: transparent;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${(p) => p.theme.legacy.color.divider01};
   }
 `
 
@@ -48,7 +48,7 @@ export const PopupButtonText = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const SettingsIcon = styled.div`
@@ -56,7 +56,7 @@ export const SettingsIcon = styled.div`
  height: 20px;
  margin-right: 18px;
  margin-left: 14px;
- background-color: ${(p) => p.theme.color.interactive07};
+ background-color: ${(p) => p.theme.legacy.color.interactive07};
  -webkit-mask-image: url(${SettingsAdvancedIcon});
  mask-image: url(${SettingsAdvancedIcon});
  mask-size: contain;
@@ -65,7 +65,7 @@ export const SettingsIcon = styled.div`
 export const ExplorerIcon = styled(OpenNewIcon)`
   width: 20px;
   height: 20px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
   margin-right: 18px;
   margin-left: 14px;
 `
@@ -75,7 +75,7 @@ export const LockIcon = styled.div`
   height: 20px;
   margin-right: 18px;
   margin-left: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${LockIconD});
   mask-image: url(${LockIconD});
 `
@@ -85,7 +85,7 @@ export const BackupIcon = styled.div`
   height: 20px;
   margin-right: 18px;
   margin-left: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${SafeIcon});
   mask-image: url(${SafeIcon});
 `
@@ -95,7 +95,7 @@ export const ConnectedSitesIcon = styled.div`
   height: 20px;
   margin-right: 18px;
   margin-left: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${InternetIcon});
   mask-image: url(${InternetIcon});
   mask-size: contain;
@@ -106,7 +106,7 @@ export const HelpCenterIcon = styled.div`
   height: 20px;
   margin-right: 18px;
   margin-left: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${InfoIcon});
   mask-image: url(${InfoIcon});
   mask-size: contain;

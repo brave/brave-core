@@ -29,6 +29,6 @@ export const SelectAccountTitle = styled.span`
   line-height: 18px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 12px;
 `

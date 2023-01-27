@@ -48,7 +48,7 @@ export const AccountNameText = styled.span`
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AccountAddressText = styled.span`
@@ -56,14 +56,14 @@ export const AccountAddressText = styled.span`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const UnSelectedCircle = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 24px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.legacy.color.interactive08};
 `
 // I added this SVG icon for now, will change once added to brave-ui
 export const SelectedIcon = styled.div`

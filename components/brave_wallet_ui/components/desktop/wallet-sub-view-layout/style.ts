@@ -12,5 +12,5 @@ export const StyledWrapper = styled('div') <{ noPadding?: boolean }>`
   width: 100%;
   height: 100%;
   padding: ${(p) => p.noPadding ? '0px' : '0px 25px'};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
  `

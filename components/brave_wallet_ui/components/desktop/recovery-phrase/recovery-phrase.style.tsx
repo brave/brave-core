@@ -47,20 +47,20 @@ export const RecoveryBubble = styled.div<{
   font-weight: 600;
 
 
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   background-color: ${(p) => p.selected
-    ? p.theme.palette.blurple200
-    : p.theme.color.background01
+    ? p.theme.legacy.palette.blurple200
+    : p.theme.legacy.color.background01
   };
-  
+
   @media (prefers-color-scheme: dark) {
     color: ${(p) => p.selected
-      ? p.theme.palette.black
-      : p.theme.color.text01
+      ? p.theme.legacy.palette.black
+      : p.theme.legacy.color.text01
     };
     background-color: ${(p) => p.selected
-    ? p.theme.palette.blurple200
-    : p.theme.color.background01
+    ? p.theme.legacy.palette.blurple200
+    : p.theme.legacy.color.background01
   };
   }
 
@@ -70,8 +70,8 @@ export const RecoveryBubbleBadge = styled.p`
   position: absolute;
   top: -15px;
   left: -8px;
-  color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.color.brandBat};
+  color: ${(p) => p.theme.legacy.palette.white};
+  background-color: ${(p) => p.theme.legacy.color.brandBat};
   width: 40px;
   border-radius: 4px;
   font-family: 'Poppins';
@@ -88,7 +88,7 @@ export const RecoveryBubbleBadge = styled.p`
 export const FrostedGlass = styled.div`
   position: absolute;
   top: 0;
-  bottom: 0; 
+  bottom: 0;
   left: 0;
   right: 0;
   background-image: url(${FrostedGlassRecoveryPhrase});
@@ -119,7 +119,7 @@ export const HiddenPhraseContainer = styled.div`
     line-height: 20px;
     text-align: center;
     margin-top: 10px;
-    color: ${(p) => p.theme.color.background01};
+    color: ${(p) => p.theme.legacy.color.background01};
   }
 `
 
@@ -130,5 +130,5 @@ export const EyeOffIcon = styled.div`
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: 24px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `

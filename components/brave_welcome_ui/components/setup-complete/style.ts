@@ -10,7 +10,7 @@ export const MainBox = styled.div`
   border-radius: 30px;
   max-width: 800px;
   color: white;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -5,14 +5,16 @@
 
 import styled from 'styled-components'
 
-const isDarkTheme = (p: any) => {
-  return p.theme.name === 'Brave Dark'
+const darkThemeMatcher = window.matchMedia('prefers-color-scheme: dark')
+
+const isDarkTheme = () => {
+  return darkThemeMatcher.matches
 }
 
 export const StyledWrapper = styled('div')<{}>`
   width: 100%;
-  color: ${p => isDarkTheme(p) ? '#fff' : '#000'};
-  background: ${p => isDarkTheme(p) ? '#1d2025' : '#fff'};
+  color: ${() => isDarkTheme() ? '#fff' : '#000'};
+  background: ${() => isDarkTheme() ? '#1d2025' : '#fff'};
 `
 
 export const StyledInner = styled('div')<{}>`

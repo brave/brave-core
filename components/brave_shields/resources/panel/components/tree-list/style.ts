@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   width: 100%;
   height: 100%;
   position: absolute;
@@ -22,7 +22,7 @@ export const HeaderBox = styled.section`
 `
 
 export const TreeBox = styled.section`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 10px 17px 10px 17px;
   height: calc(100% - 94px - 96px); /* subtract offset top from height of footer */
   overflow: auto;
@@ -63,8 +63,8 @@ export const SiteTitleBox = styled.div`
 `
 
 export const SiteTitle = styled.span`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 500;
 `
@@ -88,11 +88,11 @@ export const BackButton = styled.button`
   width: 100%;
 
   background-color: transparent;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.legacy.color.interactive08};
   border-radius: 48px;
 
-  color: ${(p) => p.theme.color.interactive05};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.interactive05};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
 
@@ -111,8 +111,8 @@ export const Grid = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  color: ${(p) => p.theme.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-size: 14px;
   font-weight: 600;
 

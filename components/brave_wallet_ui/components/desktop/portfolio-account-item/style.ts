@@ -45,14 +45,14 @@ export const AccountNameButton = styled(WalletButton)`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AccountAddressButton = styled(AccountNameButton)`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const AddressAndButtonRow = styled.div`
@@ -82,7 +82,7 @@ export const FiatBalanceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AssetBalanceText = styled.span`
@@ -90,7 +90,7 @@ export const AssetBalanceText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const AccountCircle = styled.div<StyleProps>`
@@ -116,14 +116,14 @@ export const MoreIcon = styled(MoreVertRIcon)`
   width: auto;
   height: 26px;
   transform: rotate(90deg);
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${(p) => p.theme.legacy.color.interactive08};
 `
 
 export const CopyIcon = styled.div`
   cursor: pointer;
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   mask-size: cover;

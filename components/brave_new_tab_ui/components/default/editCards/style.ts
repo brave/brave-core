@@ -23,7 +23,7 @@ export const StyledWrapper = styled('button')<{}>`
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 1px ${p => p.theme.color.brandBrave};
+    box-shadow: 0 0 0 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `
 
@@ -35,7 +35,7 @@ export const StyledTitle = styled('div')<{}>`
   font-weight: 600;
   color: ${palette.white};
   margin: 0 auto;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const StyledEditIcon = styled('img')<{}>`

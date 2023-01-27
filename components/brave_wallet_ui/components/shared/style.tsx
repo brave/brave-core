@@ -50,7 +50,7 @@ export const LinkText = styled.a`
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin: 0px;
   cursor: pointer;
   display: inline-flex;
@@ -64,7 +64,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -79,7 +79,7 @@ type FlexProps = Partial<Pick<CSSProperties,
 export const walletButtonFocusMixin = css`
   &:focus-visible {
     outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
+    outline-color: ${p => p.theme.legacy.palette.blurple300};
     outline-width: 2px;
   }
 `
@@ -88,8 +88,8 @@ export const backgroundColorMixin = css<{
   color?: ThemeColor
 }>`
   background-color: ${(p) => p?.color
-    ? p.theme.color?.[p.color] || p.theme.palette?.[p.color] || p.color
-    : p.theme.palette.white};
+    ? p.theme.legacy.color?.[p.color] || p.theme.legacy.palette?.[p.color] || p.color
+    : p.theme.legacy.palette.white};
 `
 
 // Containers
@@ -154,9 +154,9 @@ export const StatusBubble = styled.div<{ status: BraveWallet.TransactionStatus }
     : 1
   };
   background-color: ${(p) => p.status === BraveWallet.TransactionStatus.Confirmed || p.status === BraveWallet.TransactionStatus.Approved
-    ? p.theme.color.successBorder
-    : p.status === BraveWallet.TransactionStatus.Rejected || p.status === BraveWallet.TransactionStatus.Error || p.status === BraveWallet.TransactionStatus.Dropped ? p.theme.color.errorBorder
-      : p.status === BraveWallet.TransactionStatus.Unapproved ? p.theme.color.interactive08 : p.theme.color.warningIcon
+    ? p.theme.legacy.color.successBorder
+    : p.status === BraveWallet.TransactionStatus.Rejected || p.status === BraveWallet.TransactionStatus.Error || p.status === BraveWallet.TransactionStatus.Dropped ? p.theme.legacy.color.errorBorder
+      : p.status === BraveWallet.TransactionStatus.Unapproved ? p.theme.legacy.color.interactive08 : p.theme.legacy.color.warningIcon
   };
   margin-right: 6px;
 `
@@ -173,7 +173,7 @@ export const WalletLink = styled(Link)`
   font-size: 13px;
   line-height: 20px;
   text-align: center;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   background: none;
   border: none;
 
@@ -182,7 +182,7 @@ export const WalletLink = styled(Link)`
   &:hover {
     cursor: pointer;
   }
-  
+
   &:active {
     opacity: 0.5;
   }
@@ -206,7 +206,7 @@ export const ToggleVisibilityButton = styled.button<{
   padding: 0px;
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${(p) => p.isVisible ? EyeOnIcon : EyeOffIcon});
   mask-image: url(${(p) => p.isVisible ? EyeOnIcon : EyeOffIcon});
   mask-size: contain;
@@ -215,9 +215,9 @@ export const ToggleVisibilityButton = styled.button<{
   &:focus-visible {
     outline: auto;
     outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
+    outline-color: ${p => p.theme.legacy.palette.blurple300};
     outline-width: 2px;
-  } 
+  }
 `
 
 export const CopyButton = styled(WalletButton)<{
@@ -230,7 +230,7 @@ export const CopyButton = styled(WalletButton)<{
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: 14px;
-  background-color: ${(p) => p.theme.color[p?.iconColor ?? 'text01']};
+  background-color: ${(p) => p.theme.legacy.color[p?.iconColor ?? 'text01']};
   height: 14px;
   width: 14px;
 `
@@ -243,7 +243,7 @@ export const DownloadButton = styled(WalletButton)`
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.text01};
   height: 14px;
   width: 14px;
 `
@@ -290,7 +290,7 @@ export const GreenCheckmark = styled.div`
   width: 10px;
   height: 10px;
   margin-right: 4px;
-  background-color: ${(p) => p.theme.color.successBorder};
+  background-color: ${(p) => p.theme.legacy.color.successBorder};
   mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
   mask-size: contain;
   vertical-align: middle;
@@ -299,7 +299,7 @@ export const GreenCheckmark = styled.div`
 export const CloseIcon = styled.div`
   width: 20px;
   height: 20px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${CloseSvg});
   mask-image: url(${CloseSvg});
   mask-size: 20px;
@@ -310,7 +310,7 @@ export const CloseIcon = styled.div`
 export const ErrorXIcon = styled.div`
   width: 12px;
   height: 12px;
-  background-color: ${(p) => p.theme.color.errorIcon};
+  background-color: ${(p) => p.theme.legacy.color.errorIcon};
   -webkit-mask-image: url(${CloseSvg});
   mask-image: url(${CloseSvg});
   mask-size: 12px;
@@ -325,7 +325,7 @@ export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
   color: keyof IThemeProps['color']
   opacity: number
 }>`
-  color: ${p => p.theme.color[p.color]};
+  color: ${p => p.theme.legacy.color[p.color]};
   height: ${(p) => p.size};
   width: ${(p) => p.size};
   opacity: ${(p) => p.opacity};
@@ -336,7 +336,7 @@ export const CheckIcon = styled.div<{
 }>`
   width: 100%;
   height: 100%;
-  background-color: ${(p) => p?.color || p.theme.color.text};
+  background-color: ${(p) => p?.color || p.theme.legacy.color.text};
   -webkit-mask-image: url(${CheckIconSvg});
   mask-image: url(${CheckIconSvg});
   mask-repeat: no-repeat;
@@ -379,10 +379,10 @@ export const CircleIconWrapper = styled.div<{
   position: relative;
   ${makePaddingMixin('12px')}
   box-shadow: 0px 0px 1px rgba(66, 69, 82, 0.08), 0px 0.5px 1.5px rgba(66, 69, 82, 0.1);
-  
-  background-color: ${p => p.theme.color.background01};
+
+  background-color: ${p => p.theme.legacy.color.background01};
   @media (prefers-color-scheme: dark) {
-    background-color: ${p => p.theme.color.background02};
+    background-color: ${p => p.theme.legacy.color.background02};
   }
 `
 
@@ -394,7 +394,7 @@ export const NetworkIconWrapper = styled.div`
   position: absolute;
   bottom: 0px;
   right: 4px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 100%;
   padding: 2px;
 `
@@ -426,7 +426,7 @@ export const InputLabelText = styled.label`
   font-style: normal;
   display: block;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   text-align: left;
   width: 100%;
 `

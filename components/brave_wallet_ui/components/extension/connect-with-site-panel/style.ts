@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const SelectAddressContainer = styled.div`
@@ -67,7 +67,7 @@ export const NewAccountTitle = styled.span`
   padding-left: 12px;
   padding-bottom: 8px;
   align-self: flex-start;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const AccountListWrapper = styled.div`
@@ -102,7 +102,7 @@ export const ConfirmText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const Details = styled.span`
@@ -116,7 +116,7 @@ export const Details = styled.span`
   opacity: 0.7;
   word-wrap: wrap;
   max-width: 75%;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const ConfirmIcon = styled.div`

@@ -120,7 +120,7 @@ export const YourSources = styled('div')`
   flex-direction: column;
   gap: 8px;
   align-items: stretch;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const AddSourceForm = styled('form')`

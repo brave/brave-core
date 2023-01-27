@@ -6,11 +6,10 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { ThemeProvider } from 'styled-components'
-import Theme from 'brave-ui/theme/brave-default'
 import { createStore, bindActionCreators } from 'redux'
 
 import { loadTimeData } from '../../../common/loadTimeData'
+import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../shared/lib/webui_locale_context'
 import { PlatformContext } from './lib/platform_context'
@@ -34,7 +33,7 @@ function initialize () {
 
   render(
     <Provider store={store}>
-      <ThemeProvider theme={Theme}>
+      <BraveCoreThemeProvider>
         <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
@@ -42,7 +41,7 @@ function initialize () {
             </WithThemeVariables>
           </PlatformContext.Provider>
         </LocaleContext.Provider>
-      </ThemeProvider>
+      </BraveCoreThemeProvider>
     </Provider>,
     document.getElementById('root'))
 }

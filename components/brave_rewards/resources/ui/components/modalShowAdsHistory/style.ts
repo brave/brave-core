@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled('div')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   padding-top: 10px;
   white-space: nowrap;
 `
@@ -13,7 +13,7 @@ export const StyledWrapper = styled('div')<{}>`
 export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
-  color: ${p => p.theme.palette.grey300};
+  color: ${p => p.theme.legacy.palette.grey300};
   font-size: 16px;
   letter-spacing: 0;
 `
@@ -26,7 +26,7 @@ export const StyledNoActivity = styled('span')<{}>`
 
 export const StyledNotSelectedLink = styled('span')<{}>`
   display: inline-block;
-  color: ${p => p.theme.color.brandBat};
+  color: ${p => p.theme.legacy.color.brandBat};
   font-size: 16px;
   letter-spacing: 0;
 `
@@ -35,14 +35,14 @@ export const StyledText = styled('span')<{}>`
   font-size: 16px;
   letter-spacing: 0;
   display: inline-block;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
   margin: 0 10px 0;
 `
 
 export const StyledAdsHistoryTitle = styled('div')<{}>`
   font-size: 22px;
   font-weight: 600;
-  color: ${p => p.theme.palette.magenta600};
+  color: ${p => p.theme.legacy.palette.magenta600};
   margin-bottom: 10px;
   line-height: 1.3;
 `
@@ -52,7 +52,7 @@ export const StyledSeparatorText = styled('span')<{}>`
   font-weight: 200;
   letter-spacing: 0;
   display: inline-block;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
 `
 
 export const StyledSubTitleText = styled('div')<{}>`
@@ -64,7 +64,7 @@ export const StyledSubTitleText = styled('div')<{}>`
 
 export const StyledAdsInfoText = styled('span')<{}>`
   font-size: 18px;
-  color: ${p => p.theme.palette.magenta600};
+  color: ${p => p.theme.legacy.palette.magenta600};
   margin-right: 5px;
 `
 
@@ -74,7 +74,7 @@ export const StyledAdsInfoTextWrapper = styled('div')<{}>`
 
 export const StyledAdsPerHourText = styled('span')<{}>`
   font-size: 18px;
-  color: ${p => p.theme.palette.magenta600};
+  color: ${p => p.theme.legacy.palette.magenta600};
   font-weight: 600;
 `
 
@@ -101,14 +101,14 @@ export const StyledThumbDownFilter = styled('div')<{}>`
   padding: 4px;
   padding-top: 0px;
   cursor: pointer;
-  color: ${p => p.theme.color.subtle};
+  color: ${p => p.theme.legacy.color.subtle};
 `
 
 export const StyledThumbDownNotSelectedFilter = styled('div')<{}>`
   display: inline-block;
   width: 32px;
   height: 32px;
-  color: ${p => p.theme.color.brandBat};
+  color: ${p => p.theme.legacy.color.brandBat};
   padding: 4px;
   padding-top: 0px;
 `

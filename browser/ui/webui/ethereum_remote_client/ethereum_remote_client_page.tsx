@@ -10,10 +10,8 @@ import { initLocale } from 'brave-ui'
 import 'emptykit.css'
 
 import LegacyApp from './components/legacy_app'
-import Theme from 'brave-ui/theme/brave-default'
-import DarkTheme from 'brave-ui/theme/brave-dark'
-import BraveCoreThemeProvider from '../../../../components/common/BraveCoreThemeProvider'
 import { loadTimeData } from '../../../../components/common/loadTimeData'
+import BraveCoreThemeProvider from '../../../../components/common/BraveCoreThemeProvider'
 
 function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
@@ -28,24 +26,14 @@ function initialize () {
 }
 
 function renderUI () {
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    initLocale(loadTimeData.data_)
+  initLocale(loadTimeData.data_)
 
-    render(
-      <BraveCoreThemeProvider
-        initialThemeType={themeType}
-        dark={DarkTheme}
-        light={Theme}
-      >
-        <LegacyApp />
-      </BraveCoreThemeProvider>,
-      document.getElementById('root')
-    )
-  })
-  .catch(({ message }) => {
-    console.error(`Could not mount brave wallet: ${message}`)
-  })
+  render(
+    <BraveCoreThemeProvider>
+      <LegacyApp />
+    </BraveCoreThemeProvider>,
+    document.getElementById('root')
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

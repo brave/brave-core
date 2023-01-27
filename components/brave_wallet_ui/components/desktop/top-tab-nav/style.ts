@@ -28,7 +28,7 @@ export const Line = styled.div`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) => p.theme.color.divider01};
+  background: ${(p) => p.theme.legacy.color.divider01};
 `
 
 export const MoreButton = styled(WalletButton)`
@@ -55,7 +55,7 @@ export const EmptyPadding = styled.div`
 export const MoreIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${More});
   mask-image: url(${More});
   mask-size: cover;

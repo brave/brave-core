@@ -25,7 +25,7 @@ const RefreshButton = styled('button')<Props>`
   outline: none;
   border: none;
   border-radius: 24px;
-  background: ${p => p.theme.color.brandBat};
+  background: ${p => p.theme.legacy.color.brandBat};
   padding: 12px 30px;
   display: flex;
   flex-direction: row;
@@ -37,10 +37,10 @@ const RefreshButton = styled('button')<Props>`
   color: white;
   transition: opacity 1s ease-in-out, background .124s ease-in-out;
   &:hover {
-    background: ${p => p.theme.color.brandBatInteracting};
+    background: ${p => p.theme.legacy.color.brandBatInteracting};
   }
   &:active {
-    background: ${p => p.theme.color.brandBatActive};
+    background: ${p => p.theme.legacy.color.brandBatActive};
   }
   &:focus-visible {
     box-shadow: 0 0 0 1px white;

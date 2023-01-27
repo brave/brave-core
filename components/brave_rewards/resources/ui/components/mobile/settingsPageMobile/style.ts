@@ -5,11 +5,11 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled('div')<{}>`
-  background: ${p => p.theme.color.subtleBackground};
+  background: ${p => p.theme.legacy.color.subtleBackground};
   min-height: 100vh;
   width: 100%;
   padding-top: 35px;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
 `
 
 export const StyledContent = styled('div')<{}>`

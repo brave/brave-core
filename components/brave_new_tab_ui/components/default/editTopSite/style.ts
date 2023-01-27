@@ -30,7 +30,7 @@ export const StyledDialog = styled('div')<StyledDialogProps>`
   position: relative;
   width: 437px;
   top: -50px;
-  background-color: ${p => p.theme.color.contextMenuBackground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
   border-radius: 4px;
   padding: 32px 24px 24px 24px;
   display: flex;
@@ -141,7 +141,7 @@ export const StyledButtonsContainer = styled('div')<{}>`
 export const StyledButton = styled(Button as React.ComponentType<ButtonProps>)`
   &:focus {
     outline-offset: 2px;
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.legacy.color.brandBrave};
     outline-width: 2px;
   }
 

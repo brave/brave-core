@@ -28,7 +28,7 @@ export const InputLabel = styled.span`
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 6px;
 `
 
@@ -37,9 +37,9 @@ export const Input = styled.input`
   outline: none;
   width: 100%;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -48,13 +48,13 @@ export const Input = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {
@@ -83,7 +83,7 @@ export const InfoText = styled.span`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   word-break: break-word;
   margin-bottom: 12px;
 `

@@ -20,7 +20,7 @@ export const PortfolioTransactionItemWrapper = styled.div<{ isFocused?: boolean 
   width: 100%;
   margin: 14px 0px;
   position: relative;
-  background-color: ${(p) => p.isFocused ? `${p.theme.color.text01}10` : 'none'};
+  background-color: ${(p) => p.isFocused ? `${p.theme.legacy.color.text01}10` : 'none'};
   padding: 10px;
   border-radius: 10px;
 `
@@ -39,7 +39,7 @@ export const AddressText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin: 0px 5px;
 `
 
@@ -49,7 +49,7 @@ export const DetailText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const FromCircle = styled.div<Partial<StyleProps>>`
@@ -95,7 +95,7 @@ export const MoreIcon = styled(MoreVertRIcon)`
   width: auto;
   height: 26px;
   transform: rotate(90deg);
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${(p) => p.theme.legacy.color.interactive08};
 `
 
 export const DetailColumn = styled.div`
@@ -110,7 +110,7 @@ export const DetailTextLight = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-right: 6px;
 `
 
@@ -119,7 +119,7 @@ export const DetailTextDark = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-right: 6px;
 `
 
@@ -129,7 +129,7 @@ export const DetailTextDarkBold = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const BalanceColumn = styled.div`
@@ -143,7 +143,7 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   width: auto;
   height: 16px;
   margin-right: 6px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const OrbAndTxDescriptionContainer = styled.div`

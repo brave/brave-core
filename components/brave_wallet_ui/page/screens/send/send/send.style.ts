@@ -12,7 +12,7 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 import { StyledDiv, StyledInput, Row } from '../shared.styles'
 
 export const SendContainer = styled(StyledDiv)`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 24px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
@@ -32,12 +32,12 @@ export const SectionBox = styled(StyledDiv) <{
   noPadding?: boolean
   boxDirection?: 'row' | 'column'
 }>`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   flex-direction: ${(p) => p.boxDirection ? p.boxDirection : 'column'};
   box-sizing: border-box;
   border-radius: 16px;
   border: 1px solid
-    ${(p) => (p.hasError ? p.theme.color.errorBorder : p.theme.color.divider01)};
+    ${(p) => (p.hasError ? p.theme.legacy.color.errorBorder : p.theme.legacy.color.divider01)};
   padding: ${(p) => p.noPadding ? '0px' : '16px 16px 16px 8px'};
   width: 100%;
   position: relative;
@@ -48,21 +48,21 @@ export const SectionBox = styled(StyledDiv) <{
 export const AmountInput = styled(StyledInput) <{
   hasError: boolean
 }>`
-  color: ${(p) => (p.hasError ? p.theme.color.errorBorder : 'inherit')};
+  color: ${(p) => (p.hasError ? p.theme.legacy.color.errorBorder : 'inherit')};
   font-weight: 500;
   font-size: 28px;
   line-height: 42px;
   text-align: right;
   width: 100%;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
   }
 `
 
 export const AddressInput = styled(StyledInput) <{
   hasError: boolean
 }>`
-  color: ${(p) => (p.hasError ? p.theme.color.errorBorder : 'inherit')};
+  color: ${(p) => (p.hasError ? p.theme.legacy.color.errorBorder : 'inherit')};
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
@@ -70,7 +70,7 @@ export const AddressInput = styled(StyledInput) <{
   z-index: 9;
   position: relative;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
   }
 `
 
@@ -182,7 +182,7 @@ export const InputRow = styled(Row)`
 `
 
 export const DomainLoadIcon = styled(LoaderIcon) <{ position: number }>`
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   height: 16px;
   width: 16px;
   opacity: 0.4;

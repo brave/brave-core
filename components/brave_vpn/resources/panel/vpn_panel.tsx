@@ -36,8 +36,8 @@ function App () {
   return (
     <Provider store={store}>
       <BraveCoreThemeProvider
-        dark={vpnDarkTheme}
-        light={vpnLightTheme}
+        legacyDarkTheme={vpnDarkTheme}
+        legacyLightTheme={vpnLightTheme}
       >
         <PanelWrapper>
           <Container />

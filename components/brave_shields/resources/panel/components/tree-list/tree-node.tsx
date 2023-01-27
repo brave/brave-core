@@ -11,8 +11,8 @@ const Tree = styled.div`
   grid-template-columns: 20px 2fr;
   grid-gap: 5px;
   align-items: flex-start;
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 12px;
   font-weight: 600;
   font-weight: normal;
@@ -37,7 +37,7 @@ const SVGBox = styled.i`
   left: 10px;
 
   path {
-    stroke: ${(p) => p.theme.color.text03};
+    stroke: ${(p) => p.theme.legacy.color.text03};
   }
 `
 
@@ -54,7 +54,7 @@ const ExpandToggleButton = styled.button`
   cursor: pointer;
 
   &:focus-visible {
-    --border: 2px solid ${(p) => p.theme.color.focusBorder};
+    --border: 2px solid ${(p) => p.theme.legacy.color.focusBorder};
   }
 `
 

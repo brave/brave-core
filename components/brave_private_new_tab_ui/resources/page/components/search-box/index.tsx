@@ -24,7 +24,7 @@ const Form = styled.form`
   align-items: center;
   width: 100%;
   height: 52px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   color: white;
   font-size: 14px;
   font-weight: 400;

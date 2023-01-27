@@ -65,7 +65,7 @@ export const Right = styled('div')<{}>`
 `
 
 export const Title = styled('div')<StyleProps>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 18px;
   font-weight: 600;
   color: ${p => {
@@ -84,7 +84,7 @@ export const Description = styled('div')<StyleProps>`
   font-size: 14px;
   line-height: 1.7;
   padding: 16px 0;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
 `
 
 export const Content = styled('div')<StyleProps>`
@@ -110,7 +110,7 @@ export const SettingsClose = styled('button')<{}>`
   background: none;
   padding: 0;
   cursor: pointer;
-  color: ${p => p.theme.palette.grey600};
+  color: ${p => p.theme.legacy.palette.grey600};
 `
 
 export const SettingsTitle = styled('span')<{}>`
@@ -242,7 +242,7 @@ export const MobileListWrapper = styled('div')<{}>`
 export const Alert = styled('div')<{}>`
   background: ${p => {
     // but the error was found during a typescript / styled-components refactor.
-    return p.theme.color.infoBackground
+    return p.theme.legacy.color.infoBackground
   }};
   padding: 18px;
   display: flex;
@@ -262,7 +262,7 @@ export const AlertIcon = styled(AlertCircleIcon)`
   height: 24px;
   width: 24px;
   margin-right: 8px;
-  color: ${p => p.theme.color.infoForeground};
+  color: ${p => p.theme.legacy.color.infoForeground};
 `
 
 export const AlertContent = styled('div')<{}>`
@@ -274,7 +274,7 @@ export const AlertContent = styled('div')<{}>`
 `
 
 export const TOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.legacy.palette.grey800};
   padding: 10px 24px 0;
   flex: 1;
 `

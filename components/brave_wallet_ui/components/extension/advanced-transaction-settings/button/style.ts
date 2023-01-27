@@ -22,12 +22,12 @@ export const StyledButton = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   padding-bottom: 12px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const TabLine = styled.div`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) => p.theme.color.divider01};
+  background: ${(p) => p.theme.legacy.color.divider01};
 `

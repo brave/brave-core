@@ -24,6 +24,6 @@ export const CopiedToClipboardContainer = styled.div`
     font-size: 12px;
     line-height: 20px;
     text-align: center;
-    color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.legacy.color.text01};
   }
 `

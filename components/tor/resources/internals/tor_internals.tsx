@@ -9,9 +9,8 @@ import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 // Components
+import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import App from './components/app'
-import { ThemeProvider } from 'styled-components'
-import Theme from 'brave-ui/theme/brave-default'
 
 // Utils
 import store from './store'
@@ -52,9 +51,9 @@ function initialize () {
   getTorGeneralInfo()
   render(
     <Provider store={store}>
-      <ThemeProvider theme={Theme}>
+      <BraveCoreThemeProvider>
         <App />
-      </ThemeProvider>
+      </BraveCoreThemeProvider>
     </Provider>,
     document.getElementById('root'))
 }

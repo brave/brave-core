@@ -24,7 +24,7 @@ export const StyledWrapper = styled(WalletButton)`
   border-radius: 8px;
   padding: 5px;
   &:hover {
-    background-color: ${(p) => p.theme.color.background02};
+    background-color: ${(p) => p.theme.legacy.color.background02};
   }
 `
 
@@ -34,7 +34,7 @@ export const AddressText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin: 0px 5px;
 `
 
@@ -44,7 +44,7 @@ export const DetailText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const DetailWrappedText = styled(DetailText)`
@@ -88,7 +88,7 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   width: auto;
   height: 16px;
   margin-right: 6px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   vertical-align: middle;
 `
 

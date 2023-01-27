@@ -28,7 +28,7 @@ export const InputLabel = styled.span`
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 6px;
 `
 
@@ -39,9 +39,9 @@ export const Input = styled.input<{
   outline: none;
   width: 100%;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -51,14 +51,14 @@ export const Input = styled.input<{
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.hasError
-    ? p.theme.color.errorText
-    : p.theme.color.text01};
+    ? p.theme.legacy.color.errorText
+    : p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {
@@ -90,14 +90,14 @@ export const Description = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: flex-start;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const CurrentBaseText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-bottom: 10px;
 `
 
@@ -107,7 +107,7 @@ export const CurrentBaseRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   margin-bottom: 12px;
 `
 
@@ -115,7 +115,7 @@ export const MaximumFeeText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.01em;
 `
 
@@ -141,7 +141,7 @@ export const SliderValue = styled.span`
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.01em;
   margin-top: 6px;
   margin-bottom: 16px;
@@ -173,7 +173,7 @@ export const GasSlider = styled.input`
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
-    background: ${(p) => p.theme.color.interactive05};
+    background: ${(p) => p.theme.legacy.color.interactive05};
     border-radius: 10px;
   }
   &::-webkit-slider-thumb {
@@ -181,12 +181,12 @@ export const GasSlider = styled.input`
     appearance: none;
     height: 24px;
     width: 24px;
-    background: ${(p) => p.theme.color.background01};
+    background: ${(p) => p.theme.legacy.color.background01};
     border-radius: 100%;
-    border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+    border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: ${(p) => makeLongShadow(p.theme.color.divider01, '-9px')};
+    box-shadow: ${(p) => makeLongShadow(p.theme.legacy.color.divider01, '-9px')};
   }
   &::-webkit-progress-value {
     background: orange;
@@ -196,7 +196,7 @@ export const GasSlider = styled.input`
   &:hover,
   &:focus {
     &::-webkit-slider-thumb {
-      background: ${(p) => p.theme.color.background01};
+      background: ${(p) => p.theme.legacy.color.background01};
     }
   }
 `
@@ -213,7 +213,7 @@ export const SliderLabel = styled.span`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   letter-spacing: 0.01em;
 `
 
@@ -221,7 +221,7 @@ export const WarningText = styled.span`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   word-break: break-word;
   margin-bottom: 12px;
 `

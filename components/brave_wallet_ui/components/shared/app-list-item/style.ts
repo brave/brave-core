@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
 `
 
 export const IconAndInfo = styled.div`
@@ -29,7 +29,7 @@ export const AppIconWrapper = styled.div`
   justify-content: center;
   min-width: 65px;
   min-height: 65px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   border-radius: 6px;
   margin: 8px 8px 8px 0px;
   overflow: hidden;
@@ -55,7 +55,7 @@ export const AppName = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   cursor: pointer;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AppDesctription = styled.span`
@@ -63,7 +63,7 @@ export const AppDesctription = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   word-wrap: wrap;
 `
 

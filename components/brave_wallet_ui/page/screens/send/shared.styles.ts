@@ -12,14 +12,14 @@ export const Text = styled.span<{
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }>`
-  --text01: ${(p) => p.theme.color.text01};
-  --text02: ${(p) => p.theme.color.text02};
-  --text03: ${(p) => p.theme.color.text03};
-  --success: ${(p) => p.theme.color.successIcon};
+  --text01: ${(p) => p.theme.legacy.color.text01};
+  --text02: ${(p) => p.theme.legacy.color.text02};
+  --text03: ${(p) => p.theme.legacy.color.text03};
+  --success: ${(p) => p.theme.legacy.color.successIcon};
   --line-height: ${(p) => (p.textSize === '12px' ? '18px' : '20px')}
   font-family: 'Poppins';
   color: ${(p) =>
-    p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
+    p.textColor ? `var(--${p.textColor})` : p.theme.legacy.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
@@ -35,7 +35,7 @@ export const StyledDiv = styled.div`
   justify-content: center;
   flex-direction: column;
   font-family: 'Poppins';
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-weight: 400;
   font-size: 18px;
   line-height: 20px;
@@ -111,12 +111,12 @@ export const HorizontalDivider = styled(StyledDiv) <{
 }>`
   --light-theme-color: #E9E9F4;
   @media (prefers-color-scheme: dark) {
-  --light-theme-color: ${(p) => p.theme.color.interactive08};
+  --light-theme-color: ${(p) => p.theme.legacy.color.interactive08};
   }
   background-color: ${(p) =>
     p.dividerTheme === 'lighter'
       ? 'var(--light-theme-color)'
-      : p.theme.color.interactive08};
+      : p.theme.legacy.color.interactive08};
   height: ${(p) => (p.height ? `${p.height}px` : '100%')};
   margin-left: ${(p) => p.marginLeft ?? 0}px;
   margin-right: ${(p) => p.marginRight ?? 0}px;
@@ -128,7 +128,7 @@ export const VerticalDivider = styled(StyledDiv) <{
   marginTop?: number
   marginBottom?: number
 }>`
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   height: 2px;
   margin-top: ${(p) => p.marginTop ?? 0}px;
   margin-bottom: ${(p) => p.marginBottom ?? 0}px;
@@ -149,7 +149,7 @@ export const Icon = styled(StyledDiv) <{
 export const Loader = styled(StyledDiv)`
   animation: spin 0.75s linear infinite;
   border: 2px solid transparent;
-  border-top: 2px solid ${(p) => p.theme.color.text03};
+  border-top: 2px solid ${(p) => p.theme.legacy.color.text03};
   border-radius: 50%;
   height: 10px;
   margin-right: 6px;
@@ -178,7 +178,7 @@ export const StyledButton = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   :disabled {
     cursor: not-allowed;
   }
@@ -188,7 +188,7 @@ export const IconButton = styled(StyledButton) <{
   size?: number
   icon: string
 }>`
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   height: ${(p) => (p.size ? p.size : 16)}px;
   mask-image: url(${(p) => p.icon});
   mask-size: contain;
@@ -212,14 +212,14 @@ export const StyledInput = styled.input`
   background-image: none;
   box-shadow: none;
   border: none;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   padding: 0px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
   letter-spacing: 0.02em;
   ::placeholder {
-    color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.legacy.color.text01};
   }
   :focus {
     outline: none;
@@ -240,5 +240,5 @@ export const StyledLabel = styled.label`
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `

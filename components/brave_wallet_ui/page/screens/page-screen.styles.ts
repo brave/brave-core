@@ -37,7 +37,7 @@ export const FeatureRequestButton = styled(WalletButton)`
   position: fixed;
   bottom: 32px;
   right: 32px;
-  background-color: ${p => p.theme.palette.blurple500};
+  background-color: ${p => p.theme.legacy.palette.blurple500};
   border: none;
   outline: none;
   border-radius: 40px;
@@ -50,13 +50,13 @@ export const ButtonText = styled.span`
   font-weight: 600;
   font-size: 14px;
   line-height: 21px;
-  color: ${p => p.theme.palette.white};
+  color: ${p => p.theme.legacy.palette.white};
 `
 
 export const IdeaButtonIcon = styled.span`
  width: 24px;
  height: 24px;
- background-color: ${(p) => p.theme.palette.white};
+ background-color: ${(p) => p.theme.legacy.palette.white};
  -webkit-mask-image: url(${IdeaIcon});
  mask-image: url(${IdeaIcon});
  mask-size: cover;

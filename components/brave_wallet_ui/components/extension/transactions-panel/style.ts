@@ -39,7 +39,7 @@ export const FillerTitleText = styled.p`
   font-size: 16px;
   line-height: 24px;
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin: 0px;
 `
 
@@ -50,7 +50,7 @@ export const FillerDescriptionText = styled.p`
   font-size: 12px;
   line-height: 18px;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin: 0px;
 `
 

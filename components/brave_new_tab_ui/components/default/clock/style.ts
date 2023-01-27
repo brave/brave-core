@@ -12,7 +12,7 @@ export const StyledClock = styled('div')<{}>`
   user-select: none;
   display: flex;
   -webkit-font-smoothing: antialiased;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const StyledTime = styled('span')<{}>`

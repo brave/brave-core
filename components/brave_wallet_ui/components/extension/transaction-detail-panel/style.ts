@@ -24,7 +24,7 @@ export const TransactionValue = styled.span`
   font-size: 18px;
   line-height: 22px;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-weight: 600;
 `
 
@@ -32,7 +32,7 @@ export const PanelDescription = styled.span`
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   height: 18px;
 `
 
@@ -78,7 +78,7 @@ export const DetailTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-weight: 600;
 `
 
@@ -87,7 +87,7 @@ export const SpacerText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-weight: 600;
   margin: 0px 6px;
 `
@@ -97,7 +97,7 @@ export const DetailButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -134,7 +134,7 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   height: 16px;
   margin-right: 6px;
   margin-left: 6px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const AccountNameText = styled.span`
@@ -144,12 +144,12 @@ export const AccountNameText = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const AlertIcon = styled(AlertCircleIcon)`
   width: 14px;
   height: 14px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   padding-left: 2px;
 `

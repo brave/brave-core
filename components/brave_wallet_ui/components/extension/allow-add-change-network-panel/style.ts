@@ -10,7 +10,7 @@ export const MessageBox = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
@@ -27,7 +27,7 @@ export const NetworkTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-weight: 600;
 `
 
@@ -44,7 +44,7 @@ export const FavIcon = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 5px;
-  background-color: ${(p) => p.theme.palette.grey200};
+  background-color: ${(p) => p.theme.legacy.palette.grey200};
   margin-bottom: 7px;
   margin-top: 38px;
 `
@@ -64,7 +64,7 @@ export const DetailsButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -78,7 +78,7 @@ export const NetworkDetail = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const TabRow = styled.div`

@@ -22,7 +22,7 @@ export const StyledWrapper = styled.div`
   --show-buttons: none;
   &:hover {
     --show-buttons: flex;
-    background-color: ${(p) => p.theme.color.interactive08}15;
+    background-color: ${(p) => p.theme.legacy.color.interactive08}15;
   }
 `
 
@@ -63,7 +63,7 @@ export const Icon = styled.div<{
   height: 14px;
   margin-left: 4px;
   margin-right: 8px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${(p) => p.icon});
   mask-image: url(${(p) => p.icon});
   mask-size: 100%;
@@ -78,7 +78,7 @@ export const OvalButton = styled(WalletButton)`
   background: none;
   border-radius: 48px;
   padding: 3px 10px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.legacy.color.interactive08};
   margin-right: 6px;
   pointer-events: auto;
 `
@@ -88,14 +88,14 @@ export const OvalButtonText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-weight: 600;
 `
 
 export const HardwareIcon = styled.div`
   width: 13px;
   height: 13px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${FlashdriveIcon});
   mask-image: url(${FlashdriveIcon});
 `

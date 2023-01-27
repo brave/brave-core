@@ -45,7 +45,7 @@ export const LoadingWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${p => p.theme.legacy.color.interactive08};
   height: 70px;
   width: 70px;
   opacity: .4;
@@ -54,7 +54,7 @@ export const LoadIcon = styled(LoaderIcon)`
 export const Divider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
 `
 
 export const NoAssetRow = styled.div`
@@ -71,7 +71,7 @@ export const NoAssetText = styled.span`
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const NoAssetButton = styled(WalletButton)`
@@ -85,9 +85,9 @@ export const NoAssetButton = styled(WalletButton)`
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.legacy.palette.blurple500};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.color.interactive06};
+    color: ${(p) => p.theme.legacy.color.interactive06};
   }
 `
 

@@ -20,7 +20,7 @@ export const HardwareTitle = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 25px;
 `
 
@@ -41,8 +41,8 @@ export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
   cursor: ${(p) => p.disabled ? 'not-allowed' : 'pointer'};
   outline: none;
   background: none;
-  border: ${(p) => (p.isSelected ? `2px solid ${p.theme.color.infoBorder}` : `1px solid ${p.theme.color.disabled}`)};
-  background-color: ${(p) => (p.isSelected ? p.theme.color.infoBackground : p.theme.color.background02)};
+  border: ${(p) => (p.isSelected ? `2px solid ${p.theme.legacy.color.infoBorder}` : `1px solid ${p.theme.legacy.color.disabled}`)};
+  background-color: ${(p) => (p.isSelected ? p.theme.legacy.color.infoBackground : p.theme.legacy.color.background02)};
   border-radius: 10px;
   width: 125px;
   height: 55px;
@@ -51,7 +51,7 @@ export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
 export const LedgerIcon = styled.div`
   width: 93px;
   height: 23px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${LedgerLogo});
   mask-image: url(${LedgerLogo});
 `
@@ -59,7 +59,7 @@ export const LedgerIcon = styled.div`
 export const TrezorIcon = styled.div`
   width: 105px;
   height: 33px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${TrezorLogo});
   mask-image: url(${TrezorLogo});
 `
@@ -86,7 +86,7 @@ export const ConnectingButton = styled(WalletButton)`
   justify-content: center;
   align-items: center;
   padding: 10px 22px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.legacy.color.interactive08};
   box-sizing: border-box;
   border-radius: 48px;
   background-color: transparent;
@@ -101,7 +101,7 @@ export const ConnectingButtonText = styled.span`
   text-align: center;
 
   /* Light Theme/Brand/interactive07 */
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
 
   /* Inside Auto Layout */
   flex: none;
@@ -158,7 +158,7 @@ export const HardwareWalletAccountListItemRow = styled.div`
   letter-spacing: 0.01em;
 
   /* Light Theme/Text/text01 */
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 
   justify-content: space-between;
   padding-left: 10px;
@@ -204,7 +204,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -218,7 +218,7 @@ export const LoadingWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon) <Partial<StyleProps>>`
-  color: ${p => p.theme.color.interactive08};
+  color: ${p => p.theme.legacy.color.interactive08};
   height: ${(p) => p.size === 'small' ? '25px' : '70px'};
   width: ${(p) => p.size === 'small' ? '25px' : '70px'};
   opacity: .4;
@@ -233,5 +233,5 @@ export const NoSearchResultText = styled.div`
   margin-top: 16px;
 
   /* Light Theme/Text/text02 */
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `

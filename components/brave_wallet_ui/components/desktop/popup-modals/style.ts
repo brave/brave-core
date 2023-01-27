@@ -28,7 +28,7 @@ export const Modal = styled.div<{ width?: string }>`
   justify-conent: center;
   min-width: ${p => p.width ? p.width : '580px'};
   max-width: ${p => p.width ? p.width : '580px'};
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   @media screen and (max-width: 600px) {
@@ -52,7 +52,7 @@ export const Title = styled.span`
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 26px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const CloseButton = styled(WalletButton)`
@@ -62,7 +62,7 @@ export const CloseButton = styled(WalletButton)`
   cursor: pointer;
   width: 20px;
   height: 20px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   outline: none;

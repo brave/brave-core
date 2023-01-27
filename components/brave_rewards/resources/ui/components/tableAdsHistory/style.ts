@@ -7,12 +7,12 @@ import styled from 'styled-components'
 export const StyledDateTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 12px;
   font-weight: 500;
-  border-bottom: 2px solid ${p => p.theme.color.separatorLine};
-  border-top: 2px solid ${p => p.theme.color.separatorLine};
-  color: ${p => p.theme.color.text};
+  border-bottom: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  border-top: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  color: ${p => p.theme.legacy.color.text};
   padding: 12px 0;
   min-width: 55px;
 `
@@ -20,12 +20,12 @@ export const StyledDateTH = styled('th')<{}>`
 export const StyledAdTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 12px;
   font-weight: 500;
-  border-bottom: 2px solid ${p => p.theme.color.separatorLine};
-  border-top: 2px solid ${p => p.theme.color.separatorLine};
-  color: ${p => p.theme.color.text};
+  border-bottom: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  border-top: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  color: ${p => p.theme.legacy.color.text};
   padding: 12px 0;
   min-width: 550px;
 `
@@ -33,12 +33,12 @@ export const StyledAdTH = styled('th')<{}>`
 export const StyledCategoryTH = styled('th')<{}>`
   text-transform: uppercase;
   text-align: left;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-size: 12px;
   font-weight: 500;
-  border-bottom: 2px solid ${p => p.theme.color.separatorLine};
-  border-top: 2px solid ${p => p.theme.color.separatorLine};
-  color: ${p => p.theme.color.text};
+  border-bottom: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  border-top: 2px solid ${p => p.theme.legacy.color.separatorLine};
+  color: ${p => p.theme.legacy.color.text};
   padding: 12px 0;
   min-width: 220px;
 `
@@ -55,7 +55,7 @@ export const StyledAdLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
   display: flex;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
 `
 
 export const StyledAdTable = styled('table')<{}>`
@@ -68,7 +68,7 @@ export const StyledAdContentDiv = styled('div')<{}>`
   border: 1px solid;
   border-collapse: separate;
   border-radius: 5px;
-  border-color: ${p => p.theme.color.subtle};
+  border-color: ${p => p.theme.legacy.color.subtle};
   padding: 10px;
   display: inline-flex;
   align-items: center;
@@ -98,12 +98,12 @@ export const StyledAdInfoDiv = styled('div')<{}>`
 `
 export const StyledAdInfo = styled('div')<{}>`
   display: block;
-  color: ${p => p.theme.color.detailDescription};
+  color: ${p => p.theme.legacy.color.detailDescription};
   padding-bottom: 2px;
 `
 
 export const StyledAdBrand = styled('div')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-weight: 600;
   padding-bottom: 2px;
 `

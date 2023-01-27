@@ -42,7 +42,7 @@ export const AssetName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AssetSymbol = styled.span`
@@ -50,7 +50,7 @@ export const AssetSymbol = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const Balance = styled.div`
@@ -62,7 +62,7 @@ export const Balance = styled.div`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   width: 48%;
 `
 
@@ -103,7 +103,7 @@ export const DeleteButton = styled(WalletButton)`
 export const DeleteIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${TrashIcon});
   mask-image: url(${TrashIcon});
 `

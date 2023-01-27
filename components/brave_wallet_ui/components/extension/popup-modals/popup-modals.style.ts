@@ -27,7 +27,7 @@ export const Modal = styled.div`
   align-items: center;
   min-width: 280px;
   max-width: 280px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 4px;
   box-shadow: 0 2px 28px rgba(0, 0, 0, 0.5);
 `
@@ -55,7 +55,7 @@ export const CloseButton = styled(WalletButton)`
   cursor: pointer;
   width: 16px;
   height: 16px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   outline: none;

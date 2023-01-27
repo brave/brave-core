@@ -10,7 +10,7 @@ export const WidgetWrapper = styled('div')<{}>`
   padding: 6px 20px 12px 20px;
   border-radius: 6px;
   position: relative;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   overflow: hidden;
   min-width: 284px;
   min-height: initial;
@@ -57,7 +57,7 @@ export const CallButton = styled('button')<{}>`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 1px ${p => p.theme.palette.blurple200};
+    box-shadow: 0 0 0 1px ${p => p.theme.legacy.palette.blurple200};
   }
 `
 
@@ -77,7 +77,7 @@ export const StyledTitle = styled('div')<{}>`
   font-size: 18px;
   font-weight: 600;
   color: ${palette.white};
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const Privacy = styled('div')<{}>`
@@ -92,5 +92,5 @@ export const PrivacyLink = styled('a')<{}>`
   color: #FFFFFF;
   opacity: 0.8;
   text-decoration: none;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `

@@ -22,7 +22,7 @@ export const AdvancedButton = styled(WalletButton)`
 export const AdvancedIcon = styled(CaratStrongDownIcon) <Partial<{ rotated: boolean }>>`
   width: 18px;
   height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
   transform: ${(p) => p.rotated ? 'rotate(180deg)' : 'rotate(0deg)'};
   margin-right: 10px;
 `
@@ -39,7 +39,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -55,7 +55,7 @@ export const DividerRow = styled.div`
 export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   margin-bottom: 12px;
 `
 
@@ -66,7 +66,7 @@ export const DividerText = styled.span`
   letter-spacing: 0.04em;
   font-weight: 600;
   margin-bottom: 10px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 export const FormWrapper = styled.div`
   display: flex;
@@ -98,7 +98,7 @@ export const InputLabel = styled.span`
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 6px;
 `
 
@@ -106,9 +106,9 @@ export const Input = styled.input`
   outline: none;
   width: 265px;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -117,13 +117,13 @@ export const Input = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {

@@ -18,8 +18,8 @@ export const Menu = styled('ul')`
   border-radius: 4px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   padding: 8px 0;
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
+  color:  ${p => p.theme.legacy.color.contextMenuForeground};
 `
 
 export const MenuItem = styled('li')`
@@ -30,8 +30,8 @@ export const MenuItem = styled('li')`
 
   &:hover,
   &:focus {
-    background-color: ${p => p.theme.color.contextMenuHoverBackground};
-    color: ${p => p.theme.color.contextMenuHoverForeground};
+    background-color: ${p => p.theme.legacy.color.contextMenuHoverBackground};
+    color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
   }
 
   &:active {
@@ -41,7 +41,7 @@ export const MenuItem = styled('li')`
   }
 
   &:focus-visible {
-    outline: solid 1px ${p => p.theme.color.brandBrave};
+    outline: solid 1px ${p => p.theme.legacy.color.brandBrave};
   }
 `
 
@@ -67,10 +67,10 @@ export const IconButton = styled('button')<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${p => p.theme.color.text02};
+  color: ${p => p.theme.legacy.color.text02};
 
   &:hover {
-    color: ${p => p.theme.color.interactive02};
+    color: ${p => p.theme.legacy.color.interactive02};
     background: rgba(160, 165, 235, 0.16);
 
   }

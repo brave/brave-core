@@ -20,7 +20,7 @@ export const Wrapper = styled(StyledDiv)`
 `
 
 export const Modal = styled(StyledDiv)`
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 22px;
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   box-sizing: border-box;
@@ -42,7 +42,7 @@ export const Modal = styled(StyledDiv)`
 export const AccountSection = styled(Row)`
   background-color: rgba(233, 233, 244, 0.3);
   @media (prefers-color-scheme: dark) {
-    background-color: ${(p) => p.theme.color.background01};
+    background-color: ${(p) => p.theme.legacy.color.background01};
   }
 `
 

@@ -44,7 +44,7 @@ export const AccountName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AccountAddress = styled.span`
@@ -52,7 +52,7 @@ export const AccountAddress = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 export const AccountCircle = styled(WalletButton)<{
   orb: string

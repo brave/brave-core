@@ -19,7 +19,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const TopRow = styled.div`
@@ -61,7 +61,7 @@ export const AddressText = styled.span`
   line-height: 18px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-right: 12px;
 `
 
@@ -70,7 +70,7 @@ export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const PanelTitle = styled.span`
@@ -80,7 +80,7 @@ export const PanelTitle = styled.span`
   letter-spacing: 0.04em;
   text-align: center;
   width: 90%;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-weight: 600;
   margin-bottom: 6px;
 `
@@ -92,7 +92,7 @@ export const Description = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 12px;
 `
 
@@ -111,7 +111,7 @@ export const DetailTextDarkBold = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const DetailTextLight = styled.span`
@@ -119,7 +119,7 @@ export const DetailTextLight = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const DetailTextDark = styled.span`
@@ -127,7 +127,7 @@ export const DetailTextDark = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const URLText = styled.span`
@@ -139,7 +139,7 @@ export const URLText = styled.span`
   text-align: center;
   letter-spacing: 0.01em;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   max-width: 80%;
   word-break: break-word;
 `
@@ -156,8 +156,8 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
   margin-bottom: 14px;
   background-color: ${(p) =>
     p.warningType === 'danger'
-      ? p.theme.color.errorBackground
-      : p.theme.color.warningBackground
+      ? p.theme.legacy.color.errorBackground
+      : p.theme.legacy.color.warningBackground
   };
 `
 
@@ -169,8 +169,8 @@ export const WarningTitle = styled.span<Partial<StyleProps>>`
   font-weight: 600;
   color: ${(p) =>
     p.warningType === 'danger'
-      ? p.theme.color.errorText
-      : p.theme.color.text01
+      ? p.theme.legacy.color.errorText
+      : p.theme.legacy.color.text01
   };
 `
 
@@ -188,7 +188,7 @@ export const WarningText = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
 `
 
 export const WarningBoxIcon = styled.div<{
@@ -196,8 +196,8 @@ export const WarningBoxIcon = styled.div<{
 }>`
   mask-size: 100%;
   background-color: ${(p) => p?.color
-    ? p.theme.color[p.color]
-    : p.theme.color.errorIcon
+    ? p.theme.legacy.color[p.color]
+    : p.theme.legacy.color.errorIcon
   };
   -webkit-mask-image: url(${WaringTriangle});
   mask-image: url(${WaringTriangle});
@@ -209,7 +209,7 @@ export const LearnMoreButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

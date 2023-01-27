@@ -22,13 +22,13 @@ export const NetworkButton = styled(WalletButton) <{ useWithSearch?: boolean }>`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   min-width: ${(p) => p.useWithSearch ? 'fit-content' : '265px'};
   height: 40px;
   cursor: pointer;
   outline: none;
   background: none;
-  border: ${(p) => p.useWithSearch ? 'none' : `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => p.useWithSearch ? 'none' : `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   padding: 10px;
   padding-left: 12px;
@@ -38,7 +38,7 @@ export const NetworkButton = styled(WalletButton) <{ useWithSearch?: boolean }>`
 export const DropDownIcon = styled(CaratStrongDownIcon) <{ isOpen: boolean }>`
   width: 18px;
   height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
   transition-duration: 0.3s;
   transform: ${(p) => p.isOpen ? 'rotate(180deg)' : 'unset'};
 `
@@ -50,8 +50,8 @@ export const DropDown = styled.div <{ useWithSearch?: boolean }>`
   min-width: 275px;
   max-height: 262px;
   padding: 10px 10px 10px 20px;
-  background-color: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.background02};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
   @media (prefers-color-scheme: dark) {
@@ -80,5 +80,5 @@ export const NetworkText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `

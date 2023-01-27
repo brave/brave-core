@@ -12,7 +12,7 @@ const Font = css`
   font-weight: 600;
   font-size: 13px;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const Wrapper = styled.div`
@@ -34,7 +34,7 @@ export const BackButton = styled(WalletButton)<{
   align-items: center;
   text-align: center;
   align-self: flex-start;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   cursor: pointer;
   outline: none;
   background: none;
@@ -56,18 +56,18 @@ export const DotsWrapper = styled.div`
   align-items: center;
   justify-content: center;
   align-self: center;
-  
+
   & > * {
     display: inline;
     width: 10px;
     height: 10px;
     border-radius: 25px;
     margin-right: 16px;
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${(p) => p.theme.legacy.color.divider01};
   }
 
   & > .active {
-    background-color: ${(p) => p.theme.color.interactive05};
+    background-color: ${(p) => p.theme.legacy.color.interactive05};
   }
 `
 

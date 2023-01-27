@@ -7,7 +7,7 @@ import styled from 'styled-components'
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   overflow: hidden;
   min-height: 260px;
 `
@@ -27,8 +27,8 @@ export const IconBox = styled.div`
 `
 
 export const Title = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.02em;
@@ -39,8 +39,8 @@ export const Title = styled.h1`
 
 export const ButtonText = styled.button`
   --border-color: transparent;
-  color: ${(p) => p.theme.color.interactive05};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.interactive05};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
   padding: 13px 4px;
@@ -49,7 +49,7 @@ export const ButtonText = styled.button`
   border: 2px solid var(--border-color);
 
   &:focus-visible {
-    --border-color: ${(p) => p.theme.color.focusBorder};
+    --border-color: ${(p) => p.theme.legacy.color.focusBorder};
   }
 `
 

@@ -26,13 +26,13 @@ export const NetworkIconWrapper = styled.div`
   position: absolute;
   bottom: -3px;
   right: -3px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   border-radius: 100%;
   padding: 2px;
 `
 
 export const ButtonWrapper = styled(StyledDiv)`
-  --background-hover: ${(p) => p.theme.palette.white};
+  --background-hover: ${(p) => p.theme.legacy.palette.white};
   --shadow-hover: 0px 0px 16px rgba(99, 105, 110, 0.18);
   @media (prefers-color-scheme: dark) {
     --background-hover: transparent;

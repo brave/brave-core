@@ -60,7 +60,7 @@ export const StyledWrapper = styled('div')<Partial<Props>>`
   position: relative;
   display: flex;
   align-items: center;
-  font-family: ${p => p.type === 'mobile' ? 'var(--brave-font-heading)' : p.theme.fontFamily.body};
+  font-family: ${p => p.type === 'mobile' ? 'var(--brave-font-heading)' : p.theme.legacy.fontFamily.body};
 `
 
 export const StyledImageWrapper = styled('div')<Partial<Props>>`
@@ -96,7 +96,7 @@ export const StyledVerified = styled('span')<{}>`
   right: -8px;
   width: 16px;
   height: 16px;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   background-color: #FFFFFF;
   border-radius: 20px;
   position: absolute;
@@ -111,7 +111,7 @@ export const StyledTitleWrap = styled('div')<Partial<Props>>`
   display: flex;
   font-size: ${p => p.type === 'mobile' ? '16px' : '14px'};
   font-weight: ${p => p.type === 'mobile' ? '500' : '700'};
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.legacy.palette.grey800};
   display: ${p => p.type === 'mobile' ? 'block' : 'flex'};
 
 `
@@ -160,22 +160,22 @@ export const StyledProviderWrapRefreshFinished = styled('div')<{}>`
 `
 
 export const StyledVerifiedText = styled('span')<{}>`
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.legacy.palette.grey800};
 `
 
 export const StyledVerifiedCheckLink = styled('span')<{}>`
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   cursor: pointer;
   text-decoration: none;
   z-index: 1;
 
   &:hover{
     text-decoration: underline;
-    color: ${p => p.theme.palette.blurple400};
+    color: ${p => p.theme.legacy.palette.blurple400};
   }
 `
 export const StyledVerifiedCheckNoLink = styled('span')<{}>`
-  color: ${p => p.theme.palette.grey400};
+  color: ${p => p.theme.legacy.palette.grey400};
   text-decoration: none;
   z-index: 1;
 `
@@ -184,18 +184,18 @@ export const StyledVerifiedDivider = styled.span`
   margin: 0 8px;
   height: 12px;
   width: 1px;
-  background: ${p => p.theme.palette.grey400};
+  background: ${p => p.theme.legacy.palette.grey400};
 `
 
 export const StyledInlineVerified = styled.span`
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   width: 16px;
   height: 16px;
   margin: 0 4px 0 0;
 `
 
 export const StyledInlineUnVerified = styled(StyledInlineVerified)`
-  color: ${p => p.theme.palette.grey500};
+  color: ${p => p.theme.legacy.palette.grey500};
 `
 
 export const StyledRefreshOverlay = styled('div')<{}>`
@@ -205,7 +205,7 @@ export const StyledRefreshOverlay = styled('div')<{}>`
   position: absolute;
   display: flex;
   justify-content: center;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   top: 0;
   left: 0;
   margin-top: 25px;
@@ -218,7 +218,7 @@ export const StyledRefreshOverlayFinished = styled('div')<{}>`
   position: absolute;
   display: flex;
   justify-content: center;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   top: 0;
   left: 0;
   margin-top: 25px;
@@ -236,7 +236,7 @@ export const StyledRefreshCheckOverlayFinished = styled('div')<{}>`
   position: absolute;
   display: flex;
   justify-content: center;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   top: 0;
   left: 0;
   margin-top: 25px;
@@ -269,7 +269,7 @@ export const StyledRefreshFinished = styled('span')<{}>`
   position: absolute;
   height: 24px;
   width: 24px;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
 `
 
 export const StyledSubTitle = styled.span`

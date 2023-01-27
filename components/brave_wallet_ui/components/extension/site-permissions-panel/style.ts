@@ -61,7 +61,7 @@ export const SiteOriginTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 2px;
   margin-right: 10px;
   word-break: break-word;
@@ -73,7 +73,7 @@ export const AccountsTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-top: 4px;
 `
 
@@ -81,7 +81,7 @@ export const FavIcon = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 5px;
-  background-color: ${(p) => p.theme.palette.grey200};
+  background-color: ${(p) => p.theme.legacy.palette.grey200};
   margin-left: 12px;
   margin-right: 12px;
 `
@@ -100,9 +100,9 @@ export const NewAccountButton = styled(WalletButton)`
   font-weight: 600;
   margin-bottom: 8px;
   margin-left: 12px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.palette.blurple300};
+    color: ${(p) => p.theme.legacy.palette.blurple300};
   }
   letter-spacing: 0.01em;
 `

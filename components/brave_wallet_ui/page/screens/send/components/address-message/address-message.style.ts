@@ -11,12 +11,12 @@ export const LearnMoreLink = styled.a`
   font-weight: 600;
   font-size: 12px;
   line-height: 20px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin: 0px;
   padding: 0px;
   text-decoration: none;
   cursor: pointer;
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.color.interactive06};
+    color: ${(p) => p.theme.legacy.color.interactive06};
   }
 `

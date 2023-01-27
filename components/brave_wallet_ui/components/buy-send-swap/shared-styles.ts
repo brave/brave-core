@@ -13,8 +13,8 @@ export const BubbleContainer = styled.div`
   justify-content: space-between;
   border-radius: 12px;
   padding: 5px 12px;
-  background-color: ${(p) => p.theme.color.background02};
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  background-color: ${(p) => p.theme.legacy.color.background02};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   margin-bottom: 12px;
   box-sizing: border-box;
 `
@@ -57,7 +57,7 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   word-break: break-word;
   margin-bottom: 12px;
 `
@@ -68,7 +68,7 @@ export const DivderTextWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  border-bottom: 2px solid ${(p) => p.theme.color.divider01};
+  border-bottom: 2px solid ${(p) => p.theme.legacy.color.divider01};
   padding-bottom: 6px;
   margin-bottom: 10px;
 `
@@ -79,7 +79,7 @@ export const DividerText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const ResetButton = styled(WalletButton)`
@@ -95,8 +95,8 @@ export const ResetButton = styled(WalletButton)`
   width: 48px;
   margin: 12px 0px;
   background: none;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.palette.blurple300};
+    color: ${(p) => p.theme.legacy.palette.blurple300};
   }
 `

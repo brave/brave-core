@@ -21,7 +21,7 @@ export const Title = styled.span`
   font-size: 20px;
   font-weight: 600;
   line-height: 30px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 10px;
   text-align: center;
@@ -63,6 +63,6 @@ export const RestoreButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 19px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-top: 12px;
 `

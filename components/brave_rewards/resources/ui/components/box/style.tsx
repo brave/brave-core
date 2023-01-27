@@ -48,7 +48,7 @@ export const StyledContentWrapper = styled('div')<StyleProps>`
 
 export const StyledTitle = styled('div')<StyleProps>`
   display: flex;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 20px;
   font-weight: 600;
   color: ${p => p.type && colors[p.type] || '#4b4c5c'};
@@ -57,7 +57,7 @@ export const StyledTitle = styled('div')<StyleProps>`
 export const StyledDescription = styled('div')<{}>`
   width: 100%;
   font-size: 15px;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.legacy.color.text};
   padding: 12px 0 0;
   line-height: 1.7;
 `
@@ -101,7 +101,7 @@ export const StyledSettingsClose = styled('button')<StyleProps>`
   background: none;
   padding: 0;
   cursor: pointer;
-  color: ${p => p.theme.palette.grey600};
+  color: ${p => p.theme.legacy.palette.grey600};
 `
 export const StyledSettingTitleWrapper = styled('div')`
   display: flex;
@@ -123,14 +123,14 @@ export const StyledSettingsToggleContainer = styled('div')<{}>`
 export const StyledSettingsText = styled('div')<{}>`
   font-size: 20px;
   font-weight: 500;
-  font-family: ${p => p.theme.fontFamily.heading};
-  color: ${p => p.theme.color.text};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
+  color: ${p => p.theme.legacy.color.text};
   display: flex;
   align-items: center;
 `
 
 export const StyledTOS = styled(TOSAndPP as React.ComponentType<TOSProps>)`
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.legacy.palette.grey800};
   margin: 20px -32px 0;
   padding: 0 15px 15px 32px;
   border-bottom: 1px solid rgba(184, 185, 196, 0.4);

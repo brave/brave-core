@@ -7,7 +7,7 @@ import styled from 'styled-components'
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   overflow: hidden;
 `
 
@@ -26,16 +26,16 @@ export const List = styled.ul`
   }
 
   a {
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 13px;
     font-weight: 600;
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${(p) => p.theme.legacy.color.interactive05};
     text-decoration: none;
   }
 `
 
 export const Card = styled.li`
-  --divider-color: ${(p) => p.theme.color.divider01};
+  --divider-color: ${(p) => p.theme.legacy.color.divider01};
   border: 1px solid var(--divider-color);
   border-radius: 8px;
 `
@@ -62,10 +62,10 @@ export const BackButton = styled.button`
   cursor: pointer;
 
   span {
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 13px;
     font-weight: 600;
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${(p) => p.theme.legacy.color.interactive05};
   }
 
   i {
@@ -75,6 +75,6 @@ export const BackButton = styled.button`
   }
 
   svg {
-    fill: ${(p) => p.theme.color.interactive05};
+    fill: ${(p) => p.theme.legacy.color.interactive05};
   }
 `

@@ -16,7 +16,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const TopRow = styled.div`
@@ -44,7 +44,7 @@ export const AccountNameText = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 2px;
   max-width: 80%;
   word-break: break-word;
@@ -56,7 +56,7 @@ export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const PanelTitle = styled.span`
@@ -66,7 +66,7 @@ export const PanelTitle = styled.span`
   line-height: 26px;
   letter-spacing: 0.02em;
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-weight: 600;
   margin-bottom: 15px;
 `
@@ -76,7 +76,7 @@ export const MessageBox = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   box-sizing: border-box;
   border-radius: 4px;
   width: 255px;
@@ -93,7 +93,7 @@ export const MessageText = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   word-break: break-word;
   white-space: pre-wrap;
 `

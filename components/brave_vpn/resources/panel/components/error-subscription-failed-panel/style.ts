@@ -8,7 +8,7 @@ export const Box = styled.div`
   width: 100%;
   height: 100%;
   max-height: 450px;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   position: relative;
   overflow: hidden;
 `
@@ -23,8 +23,8 @@ export const PanelContent = styled.section`
 `
 
 export const ReasonTitle = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -34,8 +34,8 @@ export const ReasonTitle = styled.h1`
 `
 
 export const ReasonDesc = styled.p`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.02em;
@@ -62,8 +62,8 @@ export const ActionArea = styled.div`
 
 export const ButtonText = styled.button`
   --border-color: transparent;
-  color: ${(p) => p.theme.color.interactive05};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.interactive05};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
   padding: 6px 4px;
@@ -72,6 +72,6 @@ export const ButtonText = styled.button`
   border: 2px solid var(--border-color);
 
   &:focus-visible {
-    --border-color: ${(p) => p.theme.color.focusBorder};
+    --border-color: ${(p) => p.theme.legacy.color.focusBorder};
   }
 `

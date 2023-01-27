@@ -19,7 +19,6 @@ import DataContext from './state/context'
 import { ViewType } from './state/component_types'
 
 function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
   const { siteBlockInfo } = useSiteBlockInfoData()
   const { siteSettings, getSiteSettings } = useSiteSettingsData()
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.Main)
@@ -33,8 +32,6 @@ function App () {
   }
 
   React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
@@ -52,21 +49,18 @@ function App () {
 
   return (
     <>
-      {initialThemeType &&
-        <DataContext.Provider
-          value={store}
+      <DataContext.Provider
+        value={store}
+      >
+        <BraveCoreThemeProvider
+          legacyDarkTheme={shieldsDarkTheme}
+          legacyLightTheme={shieldsLightTheme}
         >
-          <BraveCoreThemeProvider
-            initialThemeType={initialThemeType}
-            dark={shieldsDarkTheme}
-            light={shieldsLightTheme}
-          >
-            <PanelWrapper>
-              <Container />
-            </PanelWrapper>
-          </BraveCoreThemeProvider>
-        </DataContext.Provider>
-      }
+          <PanelWrapper>
+            <Container />
+          </PanelWrapper>
+        </BraveCoreThemeProvider>
+      </DataContext.Provider>
     </>
   )
 }

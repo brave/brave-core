@@ -23,8 +23,8 @@ export const PanelContent = styled.section`
 `
 
 export const PanelTitle = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -40,13 +40,13 @@ export const SettingsButton = styled.button`
   svg {
     width: 24px;
     height: 24px;
-    fill: ${(p) => p.theme.color.text02};
+    fill: ${(p) => p.theme.legacy.color.text02};
   }
 `
 
 export const RegionSelectorButton = styled.button`
-  --region-label-color: ${(p) => p.theme.color.text01};
-  --svg-color: ${(p) => p.theme.color.text01};
+  --region-label-color: ${(p) => p.theme.legacy.color.text01};
+  --svg-color: ${(p) => p.theme.legacy.color.text01};
   --border-color: transparent;
   display: flex;
   align-items: center;
@@ -56,7 +56,7 @@ export const RegionSelectorButton = styled.button`
   border-radius: 38px;
   border: 4px solid var(--border-color);
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 0 16px;
   cursor: pointer;
 
@@ -70,18 +70,18 @@ export const RegionSelectorButton = styled.button`
   }
 
   &:hover {
-    --region-label-color: ${(p) => p.theme.color.interactive05};
-    --svg-color: ${(p) => p.theme.color.interactive05};
+    --region-label-color: ${(p) => p.theme.legacy.color.interactive05};
+    --svg-color: ${(p) => p.theme.legacy.color.interactive05};
   }
 
   &:focus-visible {
-    --border-color: ${(p) => p.theme.color.focusBorder};
+    --border-color: ${(p) => p.theme.legacy.color.focusBorder};
     outline: 0;
   }
 `
 
 export const RegionLabel = styled.span`
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -90,16 +90,16 @@ export const RegionLabel = styled.span`
 `
 
 export const ConnectNotAllowedNote = styled.section`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   text-align: center;
   padding: 0 22px;
   margin-bottom: 20px;
-  
+
   div {
     padding: 12px;
-    background-color: ${(p) => p.theme.color.warningBackground};
+    background-color: ${(p) => p.theme.legacy.color.warningBackground};
     border-radius: 8px;
   }
 `

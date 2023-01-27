@@ -12,7 +12,7 @@ export const StyledWrapper = styled('div')<{}>`
 export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
-  color: ${p => p.theme.color.subtleActive};
+  color: ${p => p.theme.legacy.color.subtleActive};
   font-size: 13px;
   font-weight: normal;
   letter-spacing: 0;
@@ -20,7 +20,7 @@ export const StyledLink = styled('a')<{}>`
 
 export const StyledDisabledLink = styled('span')<{}>`
   display: inline-block;
-  color: ${p => p.theme.color.disabled};
+  color: ${p => p.theme.legacy.color.disabled};
   cursor: pointer;
   font-size: 13px;
   font-weight: normal;

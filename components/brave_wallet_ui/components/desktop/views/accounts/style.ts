@@ -27,7 +27,7 @@ export const PrimaryListContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   border-radius: 16px;
   margin-top: 14px;
   margin-bottom: 14px;
@@ -40,7 +40,7 @@ export const SecondaryListContainer = styled.div<Partial<StyleProps>>`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  background-color: ${(p) => p.isHardwareWallet ? p.theme.color.divider01 : 'transparent'};
+  background-color: ${(p) => p.isHardwareWallet ? p.theme.legacy.color.divider01 : 'transparent'};
   border-radius: 16px;
   padding: 8px;
   margin-bottom: ${(p) => p.isHardwareWallet ? '15px' : '0px'};
@@ -52,7 +52,7 @@ export const SectionTitle = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-top: 10px;
 `
 
@@ -69,13 +69,13 @@ export const DisclaimerText = styled.span`
   text-align: flex-start;
   margin-bottom: 14px;
   margin-top: 6px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
 `
 
 export const TopRow = styled.div`
@@ -117,7 +117,7 @@ export const WalletName = styled.span`
   line-height: 30px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-right: 15px;
 `
 
@@ -127,7 +127,7 @@ export const WalletAddress = styled(WalletButton)`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-right: 15px;
   cursor: pointer;
   outline: none;
@@ -141,7 +141,7 @@ export const SubviewSectionTitle = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 10px;
 `
 
@@ -173,27 +173,27 @@ export const StyledButton = styled(WalletButton)`
   padding: 12px 22px;
   outline: none;
   background-color: transparent;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.legacy.color.interactive08};
   margin-right: 8px;
 `
 
 export const ButtonText = styled.span`
   font-size: 13px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
 `
 
 export const WalletIcon = styled(WalletAddIcon)`
   width: 15px;
   height: 15px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-right: 8px;
 `
 
 export const HardwareIcon = styled.div`
   width: 15px;
   height: 15px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${FlashdriveIcon});
   mask-image: url(${FlashdriveIcon});
   mask-size: cover;

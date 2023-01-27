@@ -10,9 +10,9 @@ export const StyledAdMenuDropContent = styled('div')<{}>`
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   margin-top: -10px;
-  background-color: ${p => p.theme.color.contextMenuBackground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
   border: 1px solid;
-  border-color: ${p => p.theme.color.inputBorder};
+  border-color: ${p => p.theme.legacy.color.inputBorder};
   border-radius: 5px;
   min-width: 200px;
 `
@@ -35,7 +35,7 @@ export const StyledAdMenuOptionDropContent = styled('div')<{}>`
   margin-top: auto;
   cursor: pointer;
   &:hover {
-    background-color: ${p => p.theme.color.brandBraveLight};
+    background-color: ${p => p.theme.legacy.color.brandBraveLight};
   }
 `
 

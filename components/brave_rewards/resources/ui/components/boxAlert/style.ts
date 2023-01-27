@@ -15,7 +15,7 @@ export const StyledWrapper = styled('div')<{}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${p => p.theme.palette.blue000};
+  background: ${p => p.theme.legacy.palette.blue000};
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   border-radius: 4px;
@@ -25,13 +25,13 @@ export const StyledAlertIcon = styled('div')<{}>`
   width: 24px;
   height: 24px;
   margin: 8px;
-  color: ${p => p.theme.palette.blue500};
+  color: ${p => p.theme.legacy.palette.blue500};
 `
 
 export const StyledInfo = styled('div')<StyleProps>`
   font-size: 16px;
-  font-family: ${p => p.theme.fontFamily.body};
-  color: ${p => p.theme.color.text};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
+  color: ${p => p.theme.legacy.color.text};
   display: flex;
   align-items: center;
 `

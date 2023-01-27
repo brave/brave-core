@@ -26,8 +26,8 @@ export const AddAssetButton = styled(WalletButton)`
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.legacy.palette.blurple500};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.color.interactive06};
+    color: ${(p) => p.theme.legacy.color.interactive06};
   }
 `

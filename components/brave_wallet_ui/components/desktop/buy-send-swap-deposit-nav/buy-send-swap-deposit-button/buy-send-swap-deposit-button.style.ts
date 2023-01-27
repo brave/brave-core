@@ -17,7 +17,7 @@ export const StyledButton = styled(WalletButton) <{ isTab?: boolean }>`
   outline: none;
   border: none;
   background-color: var(--nav-button-background);
-  border-bottom: ${(p) => p.isTab ? 'none' : `1px solid ${p.theme.color.divider01}`};
+  border-bottom: ${(p) => p.isTab ? 'none' : `1px solid ${p.theme.legacy.color.divider01}`};
   border-radius: ${(p) => p.isTab ? 6 : 0}px;
   margin-bottom: ${(p) => p.isTab ? 16 : 0}px;
   color: var(--nav-button-color);
@@ -28,7 +28,7 @@ export const StyledButton = styled(WalletButton) <{ isTab?: boolean }>`
     color: var(--nav-button-color-hover);
     background-color: var(--nav-button-background-hover);
   }
-  &:last-child { 
+  &:last-child {
     border-bottom: none;
     margin-bottom: 0px;
   }

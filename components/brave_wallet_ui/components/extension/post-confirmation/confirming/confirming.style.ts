@@ -12,7 +12,7 @@ export const ConfirmingIcon = styled(TransactionStatusIcon)`
 `
 
 export const Title = styled(TransactionStatusText)`
-  color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.legacy.color.text01};
 `
 
 export const ConfirmingText = styled.div`
@@ -28,7 +28,7 @@ export const ConfirmingText = styled.div`
   text-align: center;
   letter-spacing: 0.02em;
 
-  color: ${p => p.theme.color.text02};
+  color: ${p => p.theme.legacy.color.text02};
 `
 
 export const ConfirmationsNumber = styled.div`
@@ -44,5 +44,5 @@ export const ConfirmationsNumber = styled.div`
   text-align: center;
   letter-spacing: 0.02em;
 
-  color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.legacy.color.text01};
 `

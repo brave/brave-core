@@ -5,14 +5,14 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled('div')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const StyledTitle = styled('div')<{}>`
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
-  color: ${p => p.theme.palette.grey800};
+  color: ${p => p.theme.legacy.palette.grey800};
   margin-bottom: 20px;
   text-align: center;
 `
@@ -27,7 +27,7 @@ export const StyledError = styled('div')<{}>`
   text-align: center;
 
   a {
-    color: ${p => p.theme.palette.blurple500};
+    color: ${p => p.theme.legacy.palette.blurple500};
     text-decoration: none;
 
     :hover {
@@ -46,6 +46,6 @@ export const StyledButton = styled('div')<{}>`
 export const StyledLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
-  color: ${p => p.theme.palette.blurple500};
+  color: ${p => p.theme.legacy.palette.blurple500};
   font-weight: 600;
 `

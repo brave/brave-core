@@ -34,14 +34,14 @@ export const NetworkName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: left;
 `
 
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.text01};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;

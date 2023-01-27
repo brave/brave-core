@@ -18,7 +18,7 @@ export const HeaderTitle = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.legacy.color.text01};
   margin: 4px 0 8px 0;
 `
 
@@ -32,12 +32,12 @@ export const ExchangeRate = styled.div`
   display: flex;
   align-items: center;
   text-align: right;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
 `
 
 export const SwapDetails = styled.div`
   position: relative;
-  border: 1px solid ${p => p.theme.color.divider01};
+  border: 1px solid ${p => p.theme.legacy.color.divider01};
   box-shadow: 0 0 90px rgba(99, 105, 110, 0.08);
   border-radius: 8px;
   height: 220px;
@@ -48,7 +48,7 @@ export const SwapDetails = styled.div`
 export const SwapDetailsDivider = styled.div`
   position: absolute;
   top: 50%;
-  border: 0.5px solid ${p => p.theme.color.divider01};
+  border: 0.5px solid ${p => p.theme.legacy.color.divider01};
   width: 100%;
 `
 
@@ -56,8 +56,8 @@ export const SwapDetailsArrowContainer = styled.div`
   top: calc(50% - 16px); // 16px = half of 32px (height)
   left: calc(50% - 16px); // 16px = half of 32px (width)
   position: absolute;
-  border: 1px solid ${p => p.theme.color.divider01};
-  background-color: ${p => p.theme.color.background01};
+  border: 1px solid ${p => p.theme.legacy.color.divider01};
+  background-color: ${p => p.theme.legacy.color.background01};
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -70,7 +70,7 @@ export const SwapDetailsArrowContainer = styled.div`
 export const SwapDetailsArrow = styled.div`
   -webkit-mask-image: url(${ArrowDown2Icon});
   mask-image: url(${ArrowDown2Icon});
-  background-color: ${p => p.theme.color.interactive08};
+  background-color: ${p => p.theme.legacy.color.interactive08};
   width: 12px;
   height: 16px;
 `
@@ -93,11 +93,11 @@ export const SwapAssetTitle = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
 `
 
 export const SwapAssetAddress = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
+  border: 1px solid ${p => p.theme.legacy.color.divider01};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -125,7 +125,7 @@ export const AccountNameText = styled.span`
   align-items: center;
   text-align: right;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
   margin-right: 3px;
 `
 
@@ -161,7 +161,7 @@ export const SwapAssetAmountSymbol = styled.span`
   font-size: 22px;
   display: flex;
   align-items: center;
-  color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.legacy.color.text01};
 `
 
 export const NetworkDescriptionText = styled.span`
@@ -171,7 +171,7 @@ export const NetworkDescriptionText = styled.span`
   font-size: 12px;
   display: flex;
   align-items: center;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
 `
 
 export const NetworkFeeAndSettingsContainer = styled.div`
@@ -188,7 +188,7 @@ export const NetworkFeeTitle = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
 `
 
 export const NetworkFeeValue = styled.div`
@@ -200,7 +200,7 @@ export const NetworkFeeValue = styled.div`
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text02};
+  color: ${p => p.theme.legacy.color.text02};
   gap: 6px;
 `
 
@@ -215,11 +215,11 @@ export const Settings = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   width: 14px;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
 `
 
 export const FooterButton = styled(WalletButton)`
-  background: ${p => p.theme.color.interactive05};
+  background: ${p => p.theme.legacy.color.interactive05};
   border-radius: 48px;
   height: 40px;
 `

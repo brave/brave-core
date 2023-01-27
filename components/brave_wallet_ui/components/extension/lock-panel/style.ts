@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div<{ hideBackground?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.hideBackground ? 'transparent' : p.theme.color.background01};
+  background-color: ${(p) => p.hideBackground ? 'transparent' : p.theme.legacy.color.background01};
 `
 
 export const Title = styled.span`
@@ -22,7 +22,7 @@ export const Title = styled.span`
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 12px;
   text-align: center;
@@ -64,6 +64,6 @@ export const RestoreButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 19px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-top: 12px;
 `

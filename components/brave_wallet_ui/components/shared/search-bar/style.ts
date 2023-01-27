@@ -13,10 +13,10 @@ export const StyledWrapper = styled.div<{ useWithFilter?: boolean }>`
   flex-direction: row;
   min-height: 36px;
   width: 100%;
-  border: ${(p) => p.useWithFilter ? 'none' : `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => p.useWithFilter ? 'none' : `1px solid ${p.theme.legacy.color.interactive08}`};
   box-sizing: border-box;
   border-radius: 4px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   margin-bottom: ${(p) => p.useWithFilter ? '0px' : '10px'};
   overflow: hidden;
 `
@@ -26,14 +26,14 @@ export const SearchInput = styled.input<{ useWithFilter?: boolean }>`
   height: 100%;
   outline: none;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
   border: none;
   font-family: Poppins;
   font-style: normal;
   font-size: ${(p) => p.useWithFilter ? '14px' : '12px'};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   ::placeholder {
@@ -41,7 +41,7 @@ export const SearchInput = styled.input<{ useWithFilter?: boolean }>`
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.theme.legacy.color.text02};
     font-weight: normal;
   }
   :focus {

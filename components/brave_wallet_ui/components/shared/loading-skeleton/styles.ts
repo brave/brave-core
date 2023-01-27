@@ -29,7 +29,7 @@ const loadingAnimation = keyframes`
 `
 
 export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
-  background-color: ${p => p.theme.color.panelBackgroundSecondary};
+  background-color: ${p => p.theme.legacy.color.panelBackgroundSecondary};
   width: ${(p) => typeof (p.width) === 'number' ? `${p.width}px` : p.width};
   height: ${(p) => typeof (p.height) === 'number' ? `${p.height}px` : p.height};
   border-radius: ${p => p.circle ? '50%' : '0.25rem'};
@@ -41,9 +41,9 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
   opacity: ${p => p.useLightTheme ? 0.6 : 1};
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${p => p.useLightTheme ? p.theme.color.panelBackgroundSecondary : p.theme.color.divider01};
+    background-color: ${p => p.useLightTheme ? p.theme.legacy.color.panelBackgroundSecondary : p.theme.legacy.color.divider01};
   }
-  
+
   &:after {
     content: ' ';
     display: ${p => p.enableAnimation ? 'block' : 'none'};
@@ -60,7 +60,7 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
     animation-duration: ${p => p.duration ? p.duration : '2s'};
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    
+
     @media (prefers-color-scheme: dark) {
       background-image: ${p => p.useLightTheme
     ? 'linear-gradient(90deg, transparent, #ededed, transparent)'

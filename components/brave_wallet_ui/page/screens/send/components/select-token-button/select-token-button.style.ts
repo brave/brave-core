@@ -26,7 +26,7 @@ export const NetworkIconWrapper = styled.div`
   position: absolute;
   bottom: -3px;
   right: -3px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   border-radius: 100%;
   padding: 2px;
 `
@@ -34,7 +34,7 @@ export const NetworkIconWrapper = styled.div`
 export const Button = styled(StyledButton) <{ morePadding?: boolean, isNFT: boolean }>`
   --button-background-hover: #f5f6fc;
   @media (prefers-color-scheme: dark) {
-    --button-background-hover: ${(p) => p.theme.color.background01};
+    --button-background-hover: ${(p) => p.theme.legacy.color.background01};
     }
   background-color: transparent;
   border-radius: ${(p) => p.isNFT ? 8 : 100}px;
@@ -48,7 +48,7 @@ export const Button = styled(StyledButton) <{ morePadding?: boolean, isNFT: bool
 `
 
 export const ButtonIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.text01};
   margin-left: 8px;
 `
 

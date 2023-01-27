@@ -33,7 +33,7 @@ export const QRCodeImage = styled.img`
   width: 260px;
   height: 260px;
   border-radius: 4px;
-  border: 4px solid ${(p) => p.theme.color.text01};
+  border: 4px solid ${(p) => p.theme.legacy.color.text01};
   margin-bottom: 16px;
 `
 
@@ -44,7 +44,7 @@ export const AddressText = styled.div`
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   letter-spacing: 0.01em;
 `
 export const AddressTextLabel = styled(AddressText)`

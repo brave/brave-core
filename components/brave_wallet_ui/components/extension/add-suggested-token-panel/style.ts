@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
 `
 
 export const TopWrapper = styled.div`
@@ -39,7 +39,7 @@ export const Title = styled.span`
   font-size: 15px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 10px;
   text-align: center;
@@ -49,7 +49,7 @@ export const Description = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   letter-spacing: 0.01em;
   text-align: center;
   margin-bottom: 40px;
@@ -60,7 +60,7 @@ export const TokenName = styled.span`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   letter-spacing: 0.01em;
   margin-top: 15px;
   margin-bottom: 4px;
@@ -76,7 +76,7 @@ export const ContractAddress = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   margin: 0px;
   padding: 0px;
 `
@@ -99,5 +99,5 @@ export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `

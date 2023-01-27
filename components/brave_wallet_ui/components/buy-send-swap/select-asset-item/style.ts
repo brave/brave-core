@@ -32,7 +32,7 @@ export const AssetName = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: left;
 `
 
@@ -41,7 +41,7 @@ export const AssetBalance = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 // Construct styled-component using JS object instead of string, for editor

@@ -78,7 +78,7 @@ export const List = styled('div')`
 
   // Add right padding of one column, so there's a nice gap between pages.
   padding-right: var(--grid-column-width);
-  
+
   display: grid;
   justify-content: var(--ntp-item-justify, start);
   grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
@@ -184,11 +184,11 @@ export const TileMenuItem = styled('button')<{}>`
   align-items: center;
   gap: 11px;
   cursor: pointer;
-  color: ${p => p.theme.color.contextMenuHoverForeground};
+  color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
 
   &:hover, :focus-visible {
-    background-color: ${p => p.theme.color.contextMenuHoverBackground};
-    color: ${p => p.theme.color.contextMenuHoverForeground};
+    background-color: ${p => p.theme.legacy.color.contextMenuHoverBackground};
+    color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
   }
 `
 
@@ -228,9 +228,9 @@ export const TileFavicon = styled('img')<{}>`
   border-radius: 8px;
   object-fit: contain;
 
-  background: ${p => p.theme.palette.white};
+  background: ${p => p.theme.legacy.palette.white};
   @media (prefers-color-scheme: dark) {
-    background: ${p => p.theme.palette.black};
+    background: ${p => p.theme.legacy.palette.black};
   }
 `
 

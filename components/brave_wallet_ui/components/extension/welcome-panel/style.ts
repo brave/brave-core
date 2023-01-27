@@ -10,7 +10,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   padding: 24px;
 `
 
@@ -19,7 +19,7 @@ export const Title = styled.span`
   font-size: 20px;
   font-weight: 600;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
   margin-bottom: 12px;
 `
@@ -29,7 +29,7 @@ export const Description = styled.span`
   font-size: 14px;
   line-height: 20px;
   font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   max-width: 270px;
   text-align: center;
   margin-bottom: 35px;

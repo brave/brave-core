@@ -90,7 +90,7 @@ export const PublisherHeading = styled(StandardHeading)`
 `
 
 export const Text = styled(StandardText)`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   font-size: 18px;
   line-height: 25px;
   font-weight: 600;
@@ -118,7 +118,7 @@ export const Source = styled('div')`
 
 export const Publisher = styled('div')`
   box-sizing: border-box;
-  font: 500 14px ${p => p.theme.fontFamily.heading};
+  font: 500 14px ${p => p.theme.legacy.fontFamily.heading};
   color: #fff;
 `
 
@@ -127,7 +127,7 @@ export const PromotedLabel = styled('a')`
   background: #495057;
   color: rgba(255, 255, 255, .8);
   padding: 4px 8px;
-  font: 400 12px ${p => p.theme.fontFamily.heading};
+  font: 400 12px ${p => p.theme.legacy.fontFamily.heading};
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -154,7 +154,7 @@ export const ContainerForTwo = styled('div')<{}>`
 
 export const DealsCategory = styled('h3')`
   margin: 0;
-  font: 600 18px ${p => p.theme.fontFamily.heading};
+  font: 600 18px ${p => p.theme.legacy.fontFamily.heading};
   color: white;
 `
 

@@ -14,7 +14,7 @@ export const StyledWrapper = styled('div')<Partial<Props>>`
   align-items: baseline;
   align-content: flex-start;
   flex-wrap: nowrap;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
 `
 
 export const StyledTitle = styled('div')<{}>`
@@ -33,7 +33,7 @@ export const StyledContentWrapper = styled('div')<{}>`
 export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
-  color: ${p => p.theme.color.subtleActive};
+  color: ${p => p.theme.legacy.color.subtleActive};
   font-size: 13px;
   font-weight: normal;
   letter-spacing: 0;

@@ -16,7 +16,7 @@ export const StatusText = styled.span`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.04em;
 `
 
@@ -25,15 +25,15 @@ export const ActiveIndicator = styled.span`
   height: 6px;
   margin-right: 8px;
   border-radius: 50%;
-  background: ${(p) => p.theme.color.successBorder};
+  background: ${(p) => p.theme.legacy.color.successBorder};
 `
 
 export const InActiveIndicator = styled(ActiveIndicator)`
-  background: ${(p) => p.theme.color.disabled};
+  background: ${(p) => p.theme.legacy.color.disabled};
 `
 
 export const FailedIndicator = styled(ActiveIndicator)`
-  background: ${(p) => p.theme.color.warn};
+  background: ${(p) => p.theme.legacy.color.warn};
 `
 
 export const Loader = styled.span`
@@ -42,6 +42,6 @@ export const Loader = styled.span`
   margin-right: 8px;
 
   svg {
-    fill: ${(p) => p.theme.color.text03};
+    fill: ${(p) => p.theme.legacy.color.text03};
   }
 `

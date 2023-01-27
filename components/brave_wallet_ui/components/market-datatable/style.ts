@@ -70,7 +70,7 @@ export const CoinGeckoText = styled.span`
   font-family: Arial;
   font-size: 10px;
   font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin: 15px 0px;
 `
 

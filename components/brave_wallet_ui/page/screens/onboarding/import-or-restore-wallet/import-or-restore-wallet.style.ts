@@ -23,8 +23,8 @@ export const CardButton = styled(WalletLink)`
   box-sizing: border-box;
   width: 376px;
   min-height: 88px;
-  background: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background: ${(p) => p.theme.legacy.color.background02};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   border-radius: 8px;
 
   display: flex;
@@ -39,7 +39,7 @@ export const CardButton = styled(WalletLink)`
 
   &:hover {
     outline-style: solid;
-    outline-color: ${p => p.theme.palette.blurple300};
+    outline-color: ${p => p.theme.legacy.palette.blurple300};
     outline-width: 2px;
   }
 `
@@ -55,15 +55,15 @@ export const CardButtonTextContainer = styled.div`
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 0.02em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     text-align: left;
     margin: 2px;
   }
-  
+
   & > p:first-of-type {
     font-weight: 500;
     font-size: 14px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.legacy.color.text01};
     line-height: 26px;
   }
 `

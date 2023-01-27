@@ -36,7 +36,7 @@ export const MainWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 30px;
   border-radius: 8px;
   margin-top: 10vh;
@@ -67,7 +67,7 @@ export const Title = styled.p<{
   font-family: Poppins;
   font-size: 20px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
@@ -85,13 +85,13 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
     font-weight: 600;
     font-size: 14px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.legacy.color.text01};
   }
 `
 
@@ -119,7 +119,7 @@ export const PhraseCardBody = styled.div`
   width: 100%;
   border-style: solid;
   border-width: 1px;
-  border-color: ${(p) => p.theme.color.divider01};
+  border-color: ${(p) => p.theme.legacy.color.divider01};
   border-radius: 4px;
 `
 

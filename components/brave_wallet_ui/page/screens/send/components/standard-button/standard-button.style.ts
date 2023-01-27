@@ -20,28 +20,28 @@ export interface StandardButtonStyleProps {
 }
 
 export const Button = styled(StyledButton) <StandardButtonStyleProps>`
-  --disabled-text-color: ${(p) => p.theme.palette.white};
-  --button-background-primary: ${(p) => p.theme.color.interactive05};
+  --disabled-text-color: ${(p) => p.theme.legacy.palette.white};
+  --button-background-primary: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
     /* #677078 does not exist in design system */
     --disabled-text-color: #677078;
-    --button-background-primary: ${(p) => p.theme.palette.blurple500};
+    --button-background-primary: ${(p) => p.theme.legacy.palette.blurple500};
   }
   --button-background: ${(p) =>
     p.buttonType === 'secondary'
-      ? p.theme.color.background01
+      ? p.theme.legacy.color.background01
       : 'var(--button-background-primary)'};
-  --button-background-hover: ${(p) => p.theme.color.interactive04};
+  --button-background-hover: ${(p) => p.theme.legacy.color.interactive04};
   background-color: var(--button-background);
   border-radius: 48px;
   border: ${(p) =>
     p.buttonType === 'secondary'
-      ? `1px solid ${p.theme.color.interactive08}`
+      ? `1px solid ${p.theme.legacy.color.interactive08}`
       : 'none'};
   color: ${(p) =>
     p.buttonType === 'secondary'
-      ? p.theme.color.text03
-      : p.theme.palette.white};
+      ? p.theme.legacy.color.text03
+      : p.theme.legacy.palette.white};
   font-size: 16px;
   margin-right: ${(p) => p.marginRight ?? 0}px;
   padding: 18px;
@@ -54,36 +54,36 @@ export const Button = styled(StyledButton) <StandardButtonStyleProps>`
   &:hover:not([disabled]) {
     background-color: ${(p) =>
     p.buttonType === 'secondary'
-      ? p.theme.color.background01
+      ? p.theme.legacy.color.background01
       : 'var(--button-background-hover)'};
     border: ${(p) =>
     p.buttonType === 'secondary'
-      ? `1px solid ${p.theme.color.interactive05}`
+      ? `1px solid ${p.theme.legacy.color.interactive05}`
       : 'none'};
     color: ${(p) =>
     p.buttonType === 'secondary'
-      ? p.theme.color.text03
-      : p.theme.palette.white};
+      ? p.theme.legacy.color.text03
+      : p.theme.legacy.palette.white};
   }
   :disabled {
     background-color: ${(p) =>
     p.hasError
-      ? p.theme.color.errorBackground
-      : p.theme.color.disabled};
+      ? p.theme.legacy.color.errorBackground
+      : p.theme.legacy.color.disabled};
     color: ${(p) =>
     p.hasError
-      ? p.theme.color.errorBorder
+      ? p.theme.legacy.color.errorBorder
       : 'var(--disabled-text-color)'};
   }
 `
 
 export const ErrorIcon = styled(Icon)`
-  background-color: ${(p) => p.theme.color.errorBorder};
+  background-color: ${(p) => p.theme.legacy.color.errorBorder};
   margin-right: 12px;
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.white};
+  color: ${p => p.theme.legacy.color.white};
   height: 25px;
   width: 25px;
   opacity: .4;

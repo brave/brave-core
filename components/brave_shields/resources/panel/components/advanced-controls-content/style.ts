@@ -22,8 +22,8 @@ export const FooterActionBox = styled.div`
   }
 
   button {
-    --svg-color: ${(p) => p.theme.color.interactive05};
-    --text-color: ${(p) => p.theme.color.interactive06};
+    --svg-color: ${(p) => p.theme.legacy.color.interactive05};
+    --text-color: ${(p) => p.theme.legacy.color.interactive06};
     background-color: transparent;
     padding: 0;
     margin: 0;
@@ -41,11 +41,11 @@ export const FooterActionBox = styled.div`
     }
 
     &:hover {
-      --text-color: ${(p) => p.theme.color.interactive07};
-      --svg-color: ${(p) => p.theme.color.interactive08};
+      --text-color: ${(p) => p.theme.legacy.color.interactive07};
+      --svg-color: ${(p) => p.theme.legacy.color.interactive08};
     }
   }
-  
+
   i {
     display: block;
     width: 17px;
@@ -64,7 +64,7 @@ export const SettingsDesc = styled.section`
     grid-column: 2;
     margin: 0;
     font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
   }
 `
 
@@ -75,7 +75,7 @@ export const ControlGroup = styled.div`
   grid-gap: 10px;
   align-items: center;
   margin-bottom: 8px;
-  
+
   .col-2,
   label {
     grid-column: 2;
@@ -90,9 +90,9 @@ export const ControlGroup = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 12px;
-    color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.legacy.color.text01};
     text-indent: 8px;
     cursor: pointer;
 
@@ -107,10 +107,10 @@ export const CountButton = styled.button`
   border: 0;
   padding: 0;
   text-align: right;
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 18px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.interactive06};
+  color: ${(p) => p.theme.legacy.color.interactive06};
   padding: 5px 6px;
   max-width: 100%;
   border-radius: 4px;
@@ -118,16 +118,16 @@ export const CountButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(p) => p.theme.color.background03};
+    background-color: ${(p) => p.theme.legacy.color.background03};
   }
 
   &:focus-visible {
-    border-color: ${(p) => p.theme.color.focusBorder};
+    border-color: ${(p) => p.theme.legacy.color.focusBorder};
   }
 
   &:disabled,
   [disabled] {
-    color: ${(p) => p.theme.color.disabled};
+    color: ${(p) => p.theme.legacy.color.disabled};
     pointer-events: none; /* This disables native title tooltip */
 
     &:hover {

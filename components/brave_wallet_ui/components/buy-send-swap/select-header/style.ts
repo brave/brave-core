@@ -22,7 +22,7 @@ export const HeaderText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const Button = styled(WalletButton)`
@@ -42,7 +42,7 @@ export const Button = styled(WalletButton)`
 export const BackIcon = styled(CaratStrongLeftIcon)`
   width: 16px;
   height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const HeaderSpacing = styled.div`
@@ -54,5 +54,5 @@ export const PlusIcon = styled.div`
   width: 15px;
   height: 15px;
   background: url(${Plus});
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `

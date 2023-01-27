@@ -10,8 +10,7 @@ import { getActions as getUtilActions, setActions } from './utils'
 
 // Components
 import App from './components/app'
-import { ThemeProvider } from 'styled-components'
-import Theme from 'brave-ui/theme/brave-default'
+import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 
 // Utils
 import store from './store'
@@ -71,9 +70,9 @@ function environment (environment: RewardsInternals.Environment) {
 function initialize () {
   render(
     <Provider store={store}>
-      <ThemeProvider theme={Theme}>
+      <BraveCoreThemeProvider>
         <App />
-      </ThemeProvider>
+      </BraveCoreThemeProvider>
     </Provider>,
     document.getElementById('root'))
 }

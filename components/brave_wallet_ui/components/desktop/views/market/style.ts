@@ -61,7 +61,7 @@ export const LineChartWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${p => p.theme.color.interactive08};
+  color: ${p => p.theme.legacy.color.interactive08};
   height: 70px;
   width: 70px;
   opacity: .4;

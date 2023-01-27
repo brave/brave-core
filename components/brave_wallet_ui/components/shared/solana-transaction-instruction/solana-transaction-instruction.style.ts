@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 export const InstructionBox = styled.div`
   width: 100%;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   border-radius: 4px;
   padding: 10px 10px 0px 10px;
   box-sizing: border-box;
@@ -28,13 +28,13 @@ export const InstructionParamBox = styled.div`
   font-size: 12px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: left;
 
   & > * {
     font-style: normal;
     width: 100%;
-  } 
+  }
 
   & > var {
     font-weight: 600;
@@ -42,10 +42,10 @@ export const InstructionParamBox = styled.div`
     display: block;
     font-size: 12px;
   }
-  
+
   & > samp {
     font-weight: 400;
-    color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.theme.legacy.color.text02};
     font-size: 12px;
     margin-left: 4px;
   }
@@ -54,7 +54,7 @@ export const InstructionParamBox = styled.div`
 export const AddressText = styled.span`
   font-family: Poppins;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-size: 12px;
   margin-left: 4px;
   text-align: left;
@@ -64,7 +64,7 @@ export const AddressText = styled.span`
 export const CodeSectionTitle = styled.span`
   font-family: Poppins;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-size: 12px;
   margin-left: 4px;
   margin-bottom: 4px;

@@ -25,12 +25,12 @@ export const Button = styled(WalletButton)`
   align-items: center;
   width: 100%;
   border: none;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-family: Poppins;
   font-weight: 400;
   box-sizing: border-box;
-  background-color: ${(p) => p.theme.color.background02};
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  background-color: ${(p) => p.theme.legacy.color.background02};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   padding: 9px 12px;
   border-radius: 12px;
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
@@ -46,7 +46,7 @@ export const Dropdown = styled.ul`
   box-shadow: 0 0 16px rgba(99, 105, 110, 0.18);
   border-radius: 4px;
   width: 100%;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   padding: 10px 12px;
   margin: 0;
   position: absolute;
@@ -58,7 +58,7 @@ export const Dropdown = styled.ul`
 export const CaratDown = styled.div`
   width: 12px;
   height: 6px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${CaratDownIcon});
   mask-image: url(${CaratDownIcon});
   position: absolute;
@@ -73,7 +73,7 @@ export const Option = styled.li<Partial<OptionProps>>`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   font-weight: ${(p) => p.selected ? 600 : 400};
   cursor: pointer;
 `

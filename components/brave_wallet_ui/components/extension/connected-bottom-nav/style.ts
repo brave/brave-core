@@ -64,7 +64,7 @@ export const NavButtonText = styled.span<{
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
   opacity: ${(p) => p.disabled ? '0.6' : '1'};
 `
 
@@ -83,7 +83,7 @@ export const TransactionsButton = styled(WalletButton)`
 export const TransactionsIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.white};
   -webkit-mask-image: url(${HistoryIcon});
   mask-image: url(${HistoryIcon});
 `

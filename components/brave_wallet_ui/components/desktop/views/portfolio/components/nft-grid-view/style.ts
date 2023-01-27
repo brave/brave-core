@@ -65,6 +65,6 @@ export const NFTText = styled.span`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-top: 6px;
 `

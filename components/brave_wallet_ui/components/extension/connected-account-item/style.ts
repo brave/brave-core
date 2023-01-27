@@ -53,7 +53,7 @@ export const AccountNameText = styled.span`
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const AccountAddressText = styled.span`
@@ -61,7 +61,7 @@ export const AccountAddressText = styled.span`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const PrimaryButton = styled(WalletButton) <Partial<StyleProps>>`
@@ -75,9 +75,9 @@ export const PrimaryButton = styled(WalletButton) <Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 12px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.palette.blurple300};
+    color: ${(p) => p.theme.legacy.palette.blurple300};
   }
   letter-spacing: 0.01em;
 `

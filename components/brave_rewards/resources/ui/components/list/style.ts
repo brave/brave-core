@@ -9,7 +9,7 @@ export const StyledWrapper = styled('div')<{}>`
   display: flex;
   border-bottom: solid 1px #E5E5EA;
   justify-content: space-between;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   align-items: center;
 `
 

@@ -111,8 +111,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <BraveCoreThemeProvider
-        dark={walletDarkTheme}
-        light={walletLightTheme}
+        legacyDarkTheme={walletDarkTheme}
+        legacyLightTheme={walletLightTheme}
       >
       <NftContent
         isLoading={loadingNftMetadata}

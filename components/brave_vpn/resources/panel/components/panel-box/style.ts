@@ -9,7 +9,7 @@ export const Box = styled.div`
   width: 100%;
   height: 100%;
   max-height: 450px;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   position: relative;
   overflow: hidden;
 `

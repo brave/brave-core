@@ -75,8 +75,8 @@ export default {
       return (
         <DataContext.Provider value={store}>
           <ThemeProvider
-            dark={shieldsDarkTheme}
-            light={shieldsLightTheme}
+            legacyDarkTheme={shieldsDarkTheme}
+            legacyLightTheme={shieldsLightTheme}
           >
             <Story />
           </ThemeProvider>

@@ -21,7 +21,7 @@ export const Description = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: center;
   width: 80%;
   margin-bottom: 20px;

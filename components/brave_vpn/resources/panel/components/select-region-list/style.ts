@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  --box-bg: ${(p) => p.theme.color.panelBackground};
+  --box-bg: ${(p) => p.theme.legacy.color.panelBackground};
   width: 100%;
   height: 100%;
   background: var(--box-bg);
@@ -49,7 +49,7 @@ export const RegionList = styled.div`
   &::-webkit-scrollbar-thumb {
     border-radius: 8px;
     border: 2px solid var(--box-bg);
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${(p) => p.theme.legacy.color.divider01};
   }
 
   label {
@@ -70,7 +70,7 @@ export const RegionLabelButton = styled.button`
 `
 
 export const RegionLabel = styled.span`
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   font-family: Poppins;
   font-size: 14px;
 `
@@ -84,7 +84,7 @@ export const BackButton = styled.button`
   cursor: pointer;
 
   svg {
-    fill: ${(p) => p.theme.color.interactive05}
+    fill: ${(p) => p.theme.legacy.color.interactive05}
   }
 `
 

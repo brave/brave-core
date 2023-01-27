@@ -29,7 +29,7 @@ export const ButtonText = styled.span<Partial<StyleProps>>`
   font-weight: 600;
   letter-spacing: 0.02em;
   color: ${(p) =>
-    p.isSelected ? p.theme.palette.white : p.theme.color.text02};
+    p.isSelected ? p.theme.legacy.palette.white : p.theme.legacy.color.text02};
 `
 
 export const ButtonIcon = styled.div<Partial<StyleProps>>`

@@ -79,7 +79,7 @@ export const StyledReservedWrapper = styled('div')<{}>`
   background: rgba(0, 0, 0, 0.04);
   color: #676283;
   font-size: 12px;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   font-weight: normal;
   letter-spacing: 0;
   line-height: 16px;

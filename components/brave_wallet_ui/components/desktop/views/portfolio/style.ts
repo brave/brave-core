@@ -29,7 +29,7 @@ export const BalanceTitle = styled.span`
   font-family: Poppins;
   font-size: 15px;
   font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const BalanceText = styled.span`
@@ -37,7 +37,7 @@ export const BalanceText = styled.span`
   font-size: 32px;
   font-weight: 600;
   margin-bottom: 20px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const PriceText = styled.span`
@@ -47,7 +47,7 @@ export const PriceText = styled.span`
   line-height: 36px;
   letter-spacing: 0.02em;
   margin-right: 10px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const ButtonRow = styled.div<{ noMargin?: boolean }>`
@@ -104,7 +104,7 @@ export const AssetNameText = styled.span`
   line-height: 30px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const NetworkDescription = styled.span`
@@ -112,7 +112,7 @@ export const NetworkDescription = styled.span`
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const DetailText = styled.span`
@@ -121,7 +121,7 @@ export const DetailText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 // Construct styled-component using JS object instead of string, for editor
@@ -136,7 +136,7 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.divider01};
   margin-bottom: 12px;
 `
 
@@ -147,7 +147,7 @@ export const DividerText = styled.span`
   letter-spacing: 0.04em;
   font-weight: 600;
   margin-bottom: 10px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const PercentBubble = styled.div<{ isDown?: boolean}>`
@@ -165,7 +165,7 @@ export const PercentText = styled.span`
   font-size: 11px;
   line-height: 17px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
@@ -173,7 +173,7 @@ export const ArrowIcon = styled(ArrowUpIcon) <{ isDown?: boolean }>`
   height: 12px;
   margin-right: 2px;
   transform: ${(p) => p.isDown ? 'rotate(270deg)' : 'rotate(90deg)'};
-  color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.legacy.palette.white};
 `
 
 export const EmptyTransactionContainer = styled.div`
@@ -191,7 +191,7 @@ export const TransactionPlaceholderText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-left: 10px;
 `
 
@@ -201,7 +201,7 @@ export const AssetBalanceDisplay = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const DividerRow = styled.div`
@@ -223,7 +223,7 @@ export const CoinGeckoText = styled.span`
   font-family: Arial;
   font-size: 10px;
   font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin: 15px 0px;
 `
 
@@ -260,8 +260,8 @@ export const BridgeToAuroraButton = styled(WalletButton)`
   font-weight: 600;
   font-size: 14px;
   line-height: 21px;
-  background-color: ${(p) => p.theme.palette.blurple500};
-  color: ${(p) => p.theme.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.blurple500};
+  color: ${(p) => p.theme.legacy.palette.white};
   border: none;
   margin-bottom: 32px;
   margin-right: 10px;
@@ -273,7 +273,7 @@ export const NotSupportedText = styled.span`
   line-height: 20px;
   letter-spacing: 0.01em;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-left: 10px;
   padding: 28px 0 40px;
 `
@@ -289,7 +289,7 @@ export const MoreButton = styled(WalletButton)`
   outline: none;
   border: none;
   padding: 0;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${More});
   mask-image: url(${More});
   mask-size: cover;

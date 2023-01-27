@@ -20,7 +20,7 @@ export const Title = styled.span`
   font-size: 20px;
   font-weight: 600;
   line-height: 30px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 10px;
   text-align: left;
@@ -33,7 +33,7 @@ export const Description = styled.span`
   font-size: 14px;
   line-height: 20px;
   font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   max-width: 380px;
   text-align: left;
   margin-bottom: 24px;

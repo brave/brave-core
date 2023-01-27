@@ -13,7 +13,7 @@ export const HeaderTitle = styled.span`
   line-height: 18px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text03};
+  color: ${p => p.theme.legacy.color.text03};
   position: absolute;
 `
 
@@ -23,7 +23,7 @@ export const HeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   margin-bottom: 8px;
 `
 

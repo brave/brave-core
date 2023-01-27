@@ -16,7 +16,7 @@ const Loading = styled('div')`
 `
 
 const Graphic = styled('div')`
-  color: var(--loading-color, ${p => p.theme.color.subtleActive});
+  color: var(--loading-color, ${p => p.theme.legacy.color.subtleActive});
   width: 50px;
   height: 50px;
   align-self: center;

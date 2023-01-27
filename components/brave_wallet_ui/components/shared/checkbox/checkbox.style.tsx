@@ -52,7 +52,7 @@ export const StyledLabel = styled('label')<StyleProps & {
   justifyContent?: CSSProperties['justifyContent']
 }>`
   ${getLabelProps};
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.legacy.fontFamily.body};
   display: flex;
   align-items: ${(p) => p?.alignItems ?? 'center'};
   justify-content: ${(p) => p?.justifyContent ?? 'center'};

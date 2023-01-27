@@ -20,9 +20,9 @@ export const Input = styled.input`
   outline: none;
   width: 250px;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -31,13 +31,13 @@ export const Input = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 15px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.legacy.color.text03};
     font-weight: normal;
   }
   :focus {
@@ -68,7 +68,7 @@ export const DisclaimerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
+  background-color: ${(p) => p.theme.legacy.color.warningBackground};
   border-radius: 16px;
   padding: 10px;
 `
@@ -79,14 +79,14 @@ export const DisclaimerText = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const InfoIcon = styled.div`
   width: 12px;
   height: 12px;
   margin-top: 4px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${(p) => p.theme.legacy.color.interactive07};
   -webkit-mask-image: url(${InfoLogo});
   mask-image: url(${InfoLogo});
 `
@@ -109,19 +109,19 @@ export const ImportButton = styled.label`
   padding: 4px 6px;
   outline: none;
   background-color: transparent;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
   margin-right: 10px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
 `
 
 export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.legacy.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -131,7 +131,7 @@ export const ImportDisclaimer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: ${(p) => p.theme.color.warningBackground};
+  background-color: ${(p) => p.theme.legacy.color.warningBackground};
   border-radius: 16px;
   padding: 10px;
   margin: 15px 0px 15px 0px;

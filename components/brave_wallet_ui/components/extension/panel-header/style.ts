@@ -16,7 +16,7 @@ export const HeaderTitle = styled.span`
   line-height: 26px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
 `
 
 export const HeaderWrapper = styled.div<StyleProps>`
@@ -25,7 +25,7 @@ export const HeaderWrapper = styled.div<StyleProps>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   padding: 0px 12px;
   max-width: 300px;
   margin-bottom: ${(p) => p.hasSearch ? '0px' : '8px'};

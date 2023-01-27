@@ -35,7 +35,7 @@ export const TokenName = styled.span`
   line-height: 30px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-bottom: 15px;
 `
 
@@ -45,7 +45,7 @@ export const TokenFiatValue = styled.span`
   line-height: 36px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const TokenCryptoValue = styled.span`
@@ -53,7 +53,7 @@ export const TokenCryptoValue = styled.span`
   font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   margin-bottom: 20px;
 `
 
@@ -78,7 +78,7 @@ export const DetailSectionTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-bottom: 10px;
 `
 
@@ -88,7 +88,7 @@ export const DetailSectionValue = styled.span`
   line-height: 20px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-right: 8px;
 `
 
@@ -112,7 +112,7 @@ export const ProjectDetailName = styled.span`
   font-size: 14px;
   line-height: 24px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   margin-right: 12px;
 `
 
@@ -121,7 +121,7 @@ export const ProjectDetailDescription = styled.span`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   margin-right: 12px;
   max-width: 80%;
 `
@@ -205,7 +205,7 @@ export const ExplorerButton = styled(WalletButton)`
 export const ExplorerIcon = styled(OpenNewIcon)`
   width: 14px;
   height: 14px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.legacy.color.interactive05};
 `
 
 export const ErrorMessage = styled.p`
@@ -216,7 +216,7 @@ export const ErrorMessage = styled.p`
   letter-spacing: 0.01em;
   font-size: 11px;
   line-height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.legacy.color.text02};
   word-break: break-word;
   margin-top: 50px;
 `

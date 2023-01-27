@@ -14,18 +14,18 @@ export const SelectBox = styled.div`
     pointer-events: none;
 
     path {
-      fill: ${(p) => p.theme.color.text02};
+      fill: ${(p) => p.theme.legacy.color.text02};
     }
   }
 `
 
 export const Select = styled.select`
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 12px;
   line-height: 1.2;
   padding: 9px calc(8px + 20px) 9px 8px; /* Offset left of svg icon */
-  color: ${(p) => p.theme.color.text01};
-  background-color: ${(p) => p.theme.color.background01};
+  color: ${(p) => p.theme.legacy.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   border-radius: 4px;
   border: 2px solid transparent;
   width: 100%;
@@ -44,6 +44,6 @@ export const Select = styled.select`
 
   &:focus-visible {
     outline: 0;
-    border-color: ${(p) => p.theme.color.focusBorder};
+    border-color: ${(p) => p.theme.legacy.color.focusBorder};
   }
 `

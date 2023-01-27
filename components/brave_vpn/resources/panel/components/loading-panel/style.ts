@@ -7,7 +7,7 @@ import styled from 'styled-components'
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   overflow: hidden;
   min-height: 260px;
 `
@@ -32,8 +32,8 @@ export const LoaderIconBox = styled.div`
 `
 
 export const Title = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.02em;

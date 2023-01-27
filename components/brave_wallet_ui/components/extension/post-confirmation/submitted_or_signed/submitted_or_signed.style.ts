@@ -15,7 +15,7 @@ export const SubmittedOrSignedIcon = styled(TransactionStatusIcon)`
 `
 
 export const Title = styled(TransactionStatusText)`
-  color: ${p => p.theme.color.text01};
+  color: ${p => p.theme.legacy.color.text01};
 `
 
 export const DetailButton = styled(WalletButton)`
@@ -25,7 +25,7 @@ export const DetailButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 20px;
   text-align: center;
-  color: ${p => p.theme.color.interactive05};
+  color: ${p => p.theme.legacy.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

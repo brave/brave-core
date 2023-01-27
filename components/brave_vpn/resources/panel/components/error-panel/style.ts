@@ -8,7 +8,7 @@ export const Box = styled.div`
   width: 100%;
   height: 100%;
   max-height: 450px;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   position: relative;
   overflow: hidden;
 `
@@ -23,8 +23,8 @@ export const PanelContent = styled.section`
 `
 
 export const ReasonTitle = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -34,8 +34,8 @@ export const ReasonTitle = styled.h1`
 `
 
 export const ReasonDesc = styled.p`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
+  color: ${(p) => p.theme.legacy.color.text01};
+  font-family: ${(p) => p.theme.legacy.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.02em;

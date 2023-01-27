@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const SiteRemovalNotification = styled('header')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
   border-radius: 8px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   background-color: #fff;

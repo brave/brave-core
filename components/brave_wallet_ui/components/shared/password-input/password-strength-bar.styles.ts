@@ -29,7 +29,7 @@ export const BarBackground = styled.div`
   position: absolute;
   box-sizing: border-box;
   height: 8px;
-  background-color: ${(p) => p.theme.color.disabled};
+  background-color: ${(p) => p.theme.legacy.color.disabled};
   opacity: 0.4;
   border-radius: 100px;
   width: 100%;
@@ -43,7 +43,7 @@ export const BarProgress = styled.div<{ criteria: boolean[] }>`
   flex-direction: row;
   height: 8px;
   border-radius: 100px;
-  
+
   width: ${(p) => (p.criteria.filter(c => !!c).length / p.criteria.length) * 100}%;
   background-color: ${(p) => {
     return getCriteriaPercentColor(p)
@@ -76,8 +76,8 @@ const getCriteriaPercentColor = (p: ThemedStyledProps<{
 }, DefaultTheme>) => {
   const percentComplete = (p.criteria.filter(c => !!c).length / p.criteria.length) * 100
   return percentComplete === 100
-    ? p.theme.color.successBorder
+    ? p.theme.legacy.color.successBorder
     : percentComplete < 50
-      ? p.theme.color.errorIcon
-      : p.theme.color.warningIcon
+      ? p.theme.legacy.color.errorIcon
+      : p.theme.legacy.color.warningIcon
 }

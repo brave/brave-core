@@ -21,11 +21,11 @@ export const DropDownButton = styled(WalletButton)`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   cursor: pointer;
   outline: none;
   background: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.interactive08}`};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -34,13 +34,13 @@ export const DropDownButton = styled(WalletButton)`
   letter-spacing: 0.01em;
   padding: 8px 12px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const DropDownIcon = styled(CaratStrongDownIcon)`
   width: 18px;
   height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.legacy.color.interactive07};
 `
 
 export const DropDown = styled.div`
@@ -50,8 +50,8 @@ export const DropDown = styled.div`
   justify-content: flex-start;
   width: 250px;
   padding: 5px;
-  background-color: ${(p) => p.theme.color.background02};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.background02};
+  border: 1px solid ${(p) => p.theme.legacy.color.divider01};
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
   @media (prefers-color-scheme: dark) {
@@ -90,7 +90,7 @@ export const NetworkItemButton = styled(WalletButton)`
   box-sizing: border-box;
   border-radius: 6px;
   &:hover {
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${(p) => p.theme.legacy.color.divider01};
   }
 `
 
@@ -111,14 +111,14 @@ export const NetworkName = styled.span`
   font-size: 14px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: left;
 `
 
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.legacy.color.text01};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;
@@ -129,7 +129,7 @@ export const SecondaryNetworkText = styled.span`
   font-size: 12px;
   letter-spacing: 0.01em;
   font-weight: 400;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
   text-align: left;
   margin: 10px 0px 10px 10px;
 `

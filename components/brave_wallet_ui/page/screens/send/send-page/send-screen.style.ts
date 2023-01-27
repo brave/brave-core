@@ -15,7 +15,7 @@ export const SendScreenWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.legacy.color.background01};
   overflow-y: auto;
   padding: 100px 0px;
   @media (prefers-color-scheme: dark) {

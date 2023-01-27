@@ -19,7 +19,7 @@ export const CaratDownIcon = styled(CaratCircleODownIcon)<IsPanelProps>`
   width: 14px;
   height: 14px;
   margin-left: 4px;
-  color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.interactive07};
+  color: ${(p) => p.isPanel ? p.theme.legacy.palette.white : p.theme.legacy.color.interactive07};
 `
 
 export const OvalButton = styled(WalletButton)<IsPanelProps>`
@@ -31,7 +31,7 @@ export const OvalButton = styled(WalletButton)<IsPanelProps>`
   background: none;
   border-radius: 48px;
   padding: 3px 10px;
-  border: 1px solid ${(p) => p.isPanel ? 'rgba(255,255,255,0.5)' : p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.isPanel ? 'rgba(255,255,255,0.5)' : p.theme.legacy.color.interactive08};
 `
 
 export const OvalButtonText = styled.span<IsPanelProps>`
@@ -39,6 +39,6 @@ export const OvalButtonText = styled.span<IsPanelProps>`
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.text02};
+  color: ${(p) => p.isPanel ? p.theme.legacy.palette.white : p.theme.legacy.color.text02};
   font-weight: 600;
 `

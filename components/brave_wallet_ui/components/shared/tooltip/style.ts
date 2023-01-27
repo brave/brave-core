@@ -33,7 +33,7 @@ export const TipWrapper = styled.div<PositionProps>`
   justify-content: center;
   align-content: center;
 
-  transform: 
+  transform:
     translateY(${
       (p) => p.verticalPosition === 'below'
         ? '8px'
@@ -50,20 +50,20 @@ export const Tip = styled.div<{ isAddress?: boolean, maxWidth?: CSSProperties['m
   font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
-  
+
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
   max-width: ${(p) => p?.maxWidth || '100%'};
   min-width: fit-content;
-  
+
   word-wrap: break-word;
   white-space: ${(p) => p.isAddress || p?.maxWidth ? 'pre-line' : 'nowrap'};
   word-break: ${(p) => p.isAddress ? 'break-all' : 'keep-all'};
-  
-  color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.palette.black};
-  
+
+  color: ${(p) => p.theme.legacy.palette.white};
+  background-color: ${(p) => p.theme.legacy.palette.black};
+
   @media (prefers-color-scheme: dark) {
-    border: 1px ${(p) => p.theme.color.divider01} solid;
+    border: 1px ${(p) => p.theme.legacy.color.divider01} solid;
   }
 `
 
@@ -73,17 +73,17 @@ export const Pointer = styled.div<PositionProps>`
   border-style: solid;
   border-width: 0 7px 8px 7px;
 
-  border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  border-color: transparent transparent ${(p) => p.theme.legacy.palette.black} transparent;
 
   @media (prefers-color-scheme: dark) {
-    border-color: transparent transparent ${(p) => p.theme.color.divider01} transparent;
+    border-color: transparent transparent ${(p) => p.theme.legacy.color.divider01} transparent;
   }
-  
+
   ${(p) => p.position === 'center' && css`
     margin: 0 auto;
   `}
 
-  transform: 
+  transform:
     translateX(${(p) => p.position === 'center'
       ? '0'
       : p.position === 'right'
@@ -102,5 +102,5 @@ export const Pointer = styled.div<PositionProps>`
 `
 
 export const ActionNotification = styled(Tip)`
-  background: ${p => p.theme.palette.blurple500};
+  background: ${p => p.theme.legacy.palette.blurple500};
 `

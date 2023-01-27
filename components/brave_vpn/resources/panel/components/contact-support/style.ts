@@ -7,9 +7,9 @@ import styled from 'styled-components'
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: ${(p) => p.theme.color.panelBackground};
+  background: ${(p) => p.theme.legacy.color.panelBackground};
   overflow: hidden;
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.legacy.fontFamily.heading};
 `
 
 export const Form = styled.form`
@@ -21,10 +21,10 @@ export const Form = styled.form`
   color: var(--text2);
 
   a {
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 13px;
     font-weight: 600;
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${(p) => p.theme.legacy.color.interactive05};
     text-decoration: none;
   }
 `
@@ -101,10 +101,10 @@ export const BackButton = styled.button`
   cursor: pointer;
 
   span {
-    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-family: ${(p) => p.theme.legacy.fontFamily.heading};
     font-size: 13px;
     font-weight: 600;
-    color: ${(p) => p.theme.color.interactive05};
+    color: ${(p) => p.theme.legacy.color.interactive05};
   }
 
   i {
@@ -114,6 +114,6 @@ export const BackButton = styled.button`
   }
 
   svg {
-    fill: ${(p) => p.theme.color.interactive05};
+    fill: ${(p) => p.theme.legacy.color.interactive05};
   }
 `

@@ -81,8 +81,8 @@ export const StyledWidgetMenu = styled('div')<WidgetVisibilityProps & WidgetMenu
   width: max-content;
   min-width: 166px;
   padding: 8px 0;
-  background-color: ${p => p.theme.color.contextMenuBackground};
-  color:  ${p => p.theme.color.contextMenuForeground};
+  background-color: ${p => p.theme.legacy.color.contextMenuBackground};
+  color:  ${p => p.theme.legacy.color.contextMenuForeground};
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   top: 48px;
@@ -131,8 +131,8 @@ export const StyledWidgetButton = styled('button')<WidgetButtonProps>`
   cursor: pointer;
 
   &:hover, :focus-visible {
-    background-color: ${p => p.theme.color.contextMenuHoverBackground};
-    color: ${p => p.theme.color.contextMenuHoverForeground};
+    background-color: ${p => p.theme.legacy.color.contextMenuHoverBackground};
+    color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
   }
 `
 
@@ -153,8 +153,8 @@ export const StyledWidgetLink = styled('a')<WidgetButtonProps>`
   text-decoration: none;
 
   &:hover {
-    background-color: ${p => p.theme.color.contextMenuHoverBackground};
-    color: ${p => p.theme.color.contextMenuHoverForeground};
+    background-color: ${p => p.theme.legacy.color.contextMenuHoverBackground};
+    color: ${p => p.theme.legacy.color.contextMenuHoverForeground};
   }
 `
 
@@ -184,7 +184,7 @@ export const StyledWidgetIcon = styled('div')<WidgetIconProps>`
   margin-left: ${p => p.isRefresh ? '13px' : '10px'};
 
   svg {
-    fill: ${p => p.theme.color.contextMenuForeground};
+    fill: ${p => p.theme.legacy.color.contextMenuForeground};
   }
 `
 export const StyledSpan = styled('span')<{}>`

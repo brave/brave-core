@@ -20,8 +20,8 @@ export const Tip = styled.div`
   padding: 10px;
   line-height: 18px;
   min-width: 168px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
+  color: ${(p) => p.theme.legacy.palette.white};
+  background: ${(p) => p.theme.legacy.palette.black};
   z-index: 120;
   white-space: nowrap;
   font-family: Poppins;
@@ -40,5 +40,5 @@ export const Pointer = styled.div`
   transform: translateX(-50%) translateY(-40%);
   border-width: 0 7px 8px 7px;
   z-index: 120;
-  border-color: transparent transparent ${(p) => p.theme.palette.black} transparent;
+  border-color: transparent transparent ${(p) => p.theme.legacy.palette.black} transparent;
 `

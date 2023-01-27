@@ -10,7 +10,7 @@ import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circl
 export const BannerCard = styled.div`
   margin-top: 24px;
   margin-bottom: 40px;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   box-shadow: 0px 0px 8px rgba(151, 151, 151, 0.16);
   border-radius: 4px;
   display: flex;
@@ -27,7 +27,7 @@ export const ImportantText = styled.span`
   font-weight: 600;
   font-size: 12px;
   line-height: 22px;
-  color: ${(p) => p.theme.color.errorBorder};
+  color: ${(p) => p.theme.legacy.color.errorBorder};
 `
 
 export const BannerText = styled.span`
@@ -36,7 +36,7 @@ export const BannerText = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 22px;
-  color: ${(p) => p.theme.color.text};
+  color: ${(p) => p.theme.legacy.color.text};
 `
 
 export const CenteredRow = styled.div`
@@ -56,6 +56,6 @@ export const WarningCircle = styled.div`
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  background-color: ${(p) => p.theme.color.errorBorder};
+  background-color: ${(p) => p.theme.legacy.color.errorBorder};
   margin-right: 16px;
 `

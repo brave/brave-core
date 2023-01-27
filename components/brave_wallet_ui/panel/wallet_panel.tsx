@@ -28,8 +28,8 @@ function App () {
       {initialThemeType &&
         <BraveCoreThemeProvider
           initialThemeType={initialThemeType}
-          dark={walletDarkTheme}
-          light={walletLightTheme}
+          legacyDarkTheme={walletDarkTheme}
+          legacyLightTheme={walletLightTheme}
         >
           <ApiProxyContext.Provider value={walletPanelApiProxy}>
             <LibContext.Provider value={Lib}>

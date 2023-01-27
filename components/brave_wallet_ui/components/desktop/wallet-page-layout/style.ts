@@ -8,7 +8,7 @@ export const StyledWrapper = styled('div') <{ maintainWidth?: boolean }>`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.legacy.color.background02};
   width: 100%;
   min-width: ${(p) => p.maintainWidth ? 'unset' : '500px'};
  `

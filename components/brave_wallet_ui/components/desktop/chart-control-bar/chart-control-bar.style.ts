@@ -17,14 +17,14 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border: ${(p) => `1px solid ${p.theme.legacy.color.divider01}`};
   box-sizing: border-box;
   border-radius: 12px;
   padding: 8px;
   background: none;
-  --selected-color: ${p => p.theme.palette.white};
+  --selected-color: ${p => p.theme.legacy.palette.white};
   @media (prefers-color-scheme: dark) {
-    --selected-color: ${p => p.theme.color.background02};
+    --selected-color: ${p => p.theme.legacy.color.background02};
   }
 `
 
@@ -37,7 +37,7 @@ export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
   outline: none;
   padding: 4px 6px;
   background: ${(p) =>
-    p.isSelected && !p.disabled ? p.theme.color.text02 : 'none'};
+    p.isSelected && !p.disabled ? p.theme.legacy.color.text02 : 'none'};
   border: none;
   margin: 0px 2px;
 `
@@ -48,10 +48,10 @@ export const ButtonText = styled.span<{ isSelected?: boolean, disabled?: boolean
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${p => p.disabled
-    ? p.theme.color.disabled
+    ? p.theme.legacy.color.disabled
     : p.isSelected
       ? 'var(--selected-color)'
-      : p.theme.color.text02
+      : p.theme.legacy.color.text02
   };
 `
 
@@ -72,7 +72,7 @@ export const ToggleVisibilityIcon = styled.div<{
 }>`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) => p.theme.legacy.color.text02};
   -webkit-mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
   mask-image: url(${(p) => !p.isVisible ? EyeOffIcon : EyeOnIcon});
   mask-size: contain;

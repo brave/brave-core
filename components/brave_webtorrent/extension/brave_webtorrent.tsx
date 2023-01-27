@@ -6,9 +6,8 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from 'webext-redux'
-
-import Theme from 'brave-ui/theme/brave-default'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // Components
 import App from './components/app'
@@ -49,9 +48,9 @@ const unsubscribe = store.subscribe(async () => {
     const tab: any = await new Promise(resolve => chrome.tabs.getCurrent(resolve))
     render(<Provider store={store}>
       <GlobalStyle/>
-      <ThemeProvider theme={Theme}>
+      <BraveCoreThemeProvider>
         <App tabId={tab.id} />
-      </ThemeProvider>
+      </BraveCoreThemeProvider>
     </Provider>, document.getElementById('root'))
   } catch (err) {
     console.log('Problem mounting webtorrent', err)

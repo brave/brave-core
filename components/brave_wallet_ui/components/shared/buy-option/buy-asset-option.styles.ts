@@ -17,8 +17,8 @@ export const BuyAssetOptionWrapper = styled(WalletButton)<{ isSelected?: boolean
   cursor: pointer;
   border-style: solid;
   border-radius: 4px;
-  background-color: ${(p) => p.theme.color.background02};
-  border-color: ${(p) => p.isSelected ? p.theme.color.focusBorder : p.theme.color.divider01};
+  background-color: ${(p) => p.theme.legacy.color.background02};
+  border-color: ${(p) => p.isSelected ? p.theme.legacy.color.focusBorder : p.theme.legacy.color.divider01};
   border-width: ${(p) => p.isSelected ? '3px' : '1px'};
   margin-top: 6px;
   margin-bottom: 18px;
@@ -37,7 +37,7 @@ export const AssetName = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
 `
 
 export const NameColumn = styled.div`
@@ -52,7 +52,7 @@ export const NetworkDescriptionText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.legacy.color.text03};
 `
 
 export const PriceContainer = styled.div`
@@ -65,7 +65,7 @@ export const PriceText = styled.span`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.legacy.color.text01};
   text-align: right;
   vertical-align: middle;
 `

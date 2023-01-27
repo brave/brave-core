@@ -19,8 +19,8 @@ export const Tip = styled.div<{
   right: ${(p) => p.horizontalAlign === 'right' ? '0px' : 'unset'};
   transform: translateY(var(--y-tip-translation)) translateX(var(--x-tip-translation));
   padding: 8px 16px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black};
+  color: ${(p) => p.theme.legacy.palette.white};
+  background: ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.legacy.palette.black};
   z-index: 10;
   font-family: Poppins;
   font-size: 14px;
@@ -47,5 +47,5 @@ export const Pointer = styled.div<{
   border-width: 0 7px 8px 7px;
   z-index: 10;
   /* --nav-tool-tip-background is closer aligned with swap design theme */
-  border-color: transparent transparent ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.palette.black} transparent;
+  border-color: transparent transparent ${(p) => p.isSwap ? 'var(--nav-tool-tip-background)' : p.theme.legacy.palette.black} transparent;
 `
