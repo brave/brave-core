@@ -208,6 +208,9 @@ interface SolanaProvider {
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DictionaryValue result);
 
+  // DO NOT USE: This is supposed to be a temporary solution for us to decide
+  // whether to load wallet-standard js module
+  IsSolanaKeyringCreated() => (bool created);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

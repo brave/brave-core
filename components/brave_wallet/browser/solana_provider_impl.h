@@ -62,6 +62,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                    SignMessageCallback callback) override;
   void Request(base::Value::Dict arg, RequestCallback callback) override;
 
+  void IsSolanaKeyringCreated(IsSolanaKeyringCreatedCallback callback) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
 
