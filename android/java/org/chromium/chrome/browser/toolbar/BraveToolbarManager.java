@@ -325,6 +325,7 @@ public class BraveToolbarManager extends ToolbarManager {
     }
 
     protected void updateBookmarkButtonStatus() {
+        if (mBookmarkModelSupplier == null) return;
         Tab currentTab = mLocationBarModel.getTab();
         BookmarkModel bridge = mBookmarkModelSupplier.get();
         boolean isBookmarked =
