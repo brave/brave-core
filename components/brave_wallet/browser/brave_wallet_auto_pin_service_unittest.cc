@@ -41,6 +41,7 @@ mojom::BlockchainTokenPtr GetErc721Token(const std::string& pref_path) {
 class MockBraveWalletPinService : public BraveWalletPinService {
  public:
   MockBraveWalletPinService() : BraveWalletPinService() {}
+  MOCK_METHOD0(Restore, void());
   MOCK_METHOD3(AddPin,
                void(mojom::BlockchainTokenPtr,
                     const absl::optional<std::string>&,
@@ -94,6 +95,8 @@ class BraveWalletAutoPinServiceTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    ON_CALL(*GetBraveWalletPinService(), Restore())
+        .WillByDefault(::testing::Invoke([]() {}));
     auto* registry = pref_service_.registry();
     registry->RegisterBooleanPref(kAutoPinEnabled, true);
     brave_wallet_auto_pin_service_ =
@@ -113,12 +116,13 @@ class BraveWalletAutoPinServiceTest : public testing::Test {
 
   void SetAutoPinEnabled(bool value) {}
 
+  TestingPrefServiceSimple pref_service_;
+
   testing::NiceMock<MockBraveWalletPinService> brave_wallet_pin_service_;
   testing::NiceMock<MockBraveWalletService> brave_wallet_service_;
 
   std::unique_ptr<BraveWalletAutoPinService> brave_wallet_auto_pin_service_;
 
-  TestingPrefServiceSimple pref_service_;
   content::BrowserTaskEnvironment task_environment_;
 };
 
@@ -519,6 +523,35 @@ TEST_F(BraveWalletAutoPinServiceTest, PinOldTokens_WhenAutoPinEnabled) {
 
   BraveWalletAutoPinService auto_pin_service(
       GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
+}
+
+TEST_F(BraveWalletAutoPinServiceTest, QueueCleared_WhenAutoPinDisabled) {
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
+                                              GetUserAssetsCallback callback) {
+        std::vector<mojom::BlockchainTokenPtr> result;
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
+        std::move(callback).Run(std::move(result));
+      }));
+  BraveWalletAutoPinService auto_pin_service(
+      GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
+  // First one is in progress
+  EXPECT_EQ(auto_pin_service.queue_.size(), 2u);
+
+  auto_pin_service.SetAutoPinEnabled(false);
+  EXPECT_EQ(auto_pin_service.queue_.size(), 0u);
+}
+
+TEST_F(BraveWalletAutoPinServiceTest, RestoreNotCalled_WhenAutoPinDisabled) {
+  service()->SetAutoPinEnabled(false);
+  BraveWalletAutoPinService auto_pin_service(
+      GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
+  EXPECT_CALL(*GetBraveWalletPinService(), Restore()).Times(0);
 }
 
 }  // namespace brave_wallet
