@@ -873,6 +873,8 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos_lacros">
         </if>
 
+      <if expr="chromeos_lacros">
+        </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
