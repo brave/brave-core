@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
