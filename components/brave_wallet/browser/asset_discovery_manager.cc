@@ -300,9 +300,13 @@ void AssetDiscoveryManager::OnGetEthTokenRegistry(
                                  weak_ptr_factory_.GetWeakPtr(),
                                  base::OwnedRef(std::move(tokens_to_search)),
                                  triggered_by_accounts_added, chain_id);
-  json_rpc_service_->EthGetLogs(chain_id, from_block, to_block,
-                                std::move(contract_addresses_to_search),
-                                std::move(topics), std::move(callback));
+  base::Value::Dict filtering;
+  filtering.Set("fromBlock", from_block);
+  filtering.Set("toBlock", to_block);
+  filtering.Set("address", std::move(contract_addresses_to_search));
+  filtering.Set("topics", std::move(topics));
+  json_rpc_service_->EthGetLogs(chain_id, base::Value(std::move(filtering)),
+                                std::move(callback));
 }
 
 void AssetDiscoveryManager::OnGetTokenTransferLogs(

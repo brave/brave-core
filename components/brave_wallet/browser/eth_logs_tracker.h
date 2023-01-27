@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_LOGS_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_LOGS_TRACKER_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -34,7 +35,8 @@ class EthLogsTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLogsReceived(base::Value rawlogs) = 0;
+    virtual void OnLogsReceived(const std::string& subscription,
+                                base::Value rawlogs) = 0;
   };
 
   // If timer is already running, it will be replaced with new interval
@@ -42,18 +44,25 @@ class EthLogsTracker {
   void Stop();
   bool IsRunning() const;
 
+  void AddSubscriber(const std::string& subscription_id,
+                     const base::Value& params);
+  void RemoveSubscriber(const std::string& subscription_id);
+
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
  private:
   void GetLogs();
-  void OnGetLogs(const std::vector<Log>& logs,
+  void OnGetLogs(const std::string& subscription,
+                 const std::vector<Log>& logs,
                  base::Value rawlogs,
                  mojom::ProviderError error,
                  const std::string& error_message);
 
   base::RepeatingTimer timer_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
+  std::map<std::string, base::Value> eth_logs_subscription_info_;
 
   base::ObserverList<Observer> observers_;
 

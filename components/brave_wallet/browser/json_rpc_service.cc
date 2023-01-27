@@ -2168,10 +2168,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 }
 
 void JsonRpcService::EthGetLogs(const std::string& chain_id,
-                                const std::string& from_block,
-                                const std::string& to_block,
-                                base::Value::List contract_addresses,
-                                base::Value::List topics,
+                                const base::Value& params,
                                 EthGetLogsCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
@@ -2181,12 +2178,56 @@ void JsonRpcService::EthGetLogs(const std::string& chain_id,
     return;
   }
 
+  const auto load_params = [&](std::string& from_block, std::string& to_block,
+                               std::string& block_hash,
+                               base::Value::List* address,
+                               base::Value::List* topics) {
+    auto* filtering_opts = params.GetIfDict();
+    if (filtering_opts == nullptr) {
+      return;
+    }
+
+    const base::Value* from_block_val = filtering_opts->Find("fromBlock");
+    if (from_block_val != nullptr && from_block_val->is_string()) {
+      from_block = from_block_val->GetString();
+    }
+
+    const base::Value* to_block_val = filtering_opts->Find("toBlock");
+    if (to_block_val != nullptr && to_block_val->is_string()) {
+      to_block = *(to_block_val->GetIfString());
+    }
+
+    const base::Value* block_hash_val = filtering_opts->Find("blockHash");
+    if (block_hash_val != nullptr && block_hash_val->is_string()) {
+      block_hash = *(block_hash_val->GetIfString());
+    }
+
+    const auto* contract_addresses_str = filtering_opts->FindString("address");
+    if (contract_addresses_str != nullptr) {
+      address->Append(*contract_addresses_str);
+    }
+
+    const base::Value::List* contract_addresses =
+        filtering_opts->FindList("address");
+    if (contract_addresses != nullptr) {
+      *address = contract_addresses->Clone();
+    }
+
+    const base::Value::List* topics_list = filtering_opts->FindList("topics");
+    if (topics_list != nullptr) {
+      *topics = topics_list->Clone();
+    }
+  };
+
+  std::string from_block, to_block, block_hash;
+  base::Value::List contract_addresses, topics;
+  load_params(from_block, to_block, block_hash, &contract_addresses, &topics);
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnEthGetLogs,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(
       eth::eth_getLogs(from_block, to_block, std::move(contract_addresses),
-                       std::move(topics), ""),
+                       std::move(topics), block_hash),
       true, network_url, std::move(internal_callback));
 }
 

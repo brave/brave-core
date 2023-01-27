@@ -74,7 +74,7 @@ bool ParseRequestPermissionsParams(
 
 bool ParseEthSendRawTransactionParams(const std::string& json,
                                       std::string* signed_transaction);
-bool ParseEthSubscribeParams(const std::string& json, std::string* event_type);
+bool ParseEthSubscribeParams(const std::string& json, base::Value* params);
 bool ParseEthUnsubscribeParams(const std::string& json,
                                std::string* subscription_id);
 

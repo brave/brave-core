@@ -88,7 +88,7 @@ class EthereumProviderImpl final
                       RequestCallback callback,
                       base::Value id);
 
-  void EthSubscribe(const std::string& event_type,
+  void EthSubscribe(const base::Value& params,
                     RequestCallback callback,
                     base::Value id);
   void EthUnsubscribe(const std::string& subscription_id,
@@ -173,6 +173,8 @@ class EthereumProviderImpl final
                            RequestEthereumPermissionsWithAccounts);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribe);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribeLogs);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
+                           EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
@@ -378,7 +380,8 @@ class EthereumProviderImpl final
   bool UnsubscribeBlockObserver(const std::string& subscription_id);
 
   // EthLogsTracker::Observer:
-  void OnLogsReceived(base::Value rawlogs) override;
+  void OnLogsReceived(const std::string& subscription,
+                      base::Value rawlogs) override;
   bool UnsubscribeLogObserver(const std::string& subscription_id);
 
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
