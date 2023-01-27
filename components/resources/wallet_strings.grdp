@@ -333,6 +333,9 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FRIST" desc="Confirm transaction panel first transaction button">first</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTIONS" desc="Confirm transaction panel transactions label">transactions</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_LIMIT" desc="Transaction gas limit">Gas Limit</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_PREMIUM" desc="Transaction gas premium">Gas Premium</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_FEE_CAP" desc="Transaction gas fee cap">Gas Fee Cap</message>
   <message name="IDS_BRAVE_WALLET_PANEL_TITLE" desc="Brave Wallet panel title">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PANEL_CONNECTED" desc="Brave Wallet panel connected status">Connected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE" desc="Site Permissions panel title">Site permissions</message>

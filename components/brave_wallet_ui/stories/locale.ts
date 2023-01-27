@@ -516,6 +516,9 @@ provideStrings({
   braveWalletConfirmTransactionAccountCreationFee: 'The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.',
   braveWalletAllowSpendCurrentAllowance: 'Current allowance',
   braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
+  braveWalletTransactionGasLimit: 'Gas Limit',
+  braveWalletTransactionGasPremium: 'Gas Premium',
+  braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
