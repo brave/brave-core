@@ -269,6 +269,7 @@ class RunableConfiguration:
         shutil.rmtree(artifacts_dir)
 
   def Run(self) -> Tuple[bool, List[str]]:
+    self.logs = []
     logging.info('##Label: %s binary %s', self.config.label, self.binary_path)
     run_tests_ok = True
     report_ok = True
