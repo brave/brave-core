@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/api/password/brave_password_api.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
 
 #include "components/password_manager/core/browser/password_form.h"

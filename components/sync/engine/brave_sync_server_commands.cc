@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "components/sync/engine/syncer_proto_util.h"

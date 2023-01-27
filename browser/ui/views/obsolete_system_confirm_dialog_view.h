@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_OBSOLETE_SYSTEM_CONFIRM_DIALOG_VIEW_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 

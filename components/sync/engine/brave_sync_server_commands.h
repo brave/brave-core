@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_SERVER_COMMANDS_H_
 #define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_SYNC_SERVER_COMMANDS_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
