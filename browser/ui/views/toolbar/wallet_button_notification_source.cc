@@ -22,7 +22,6 @@ WalletButtonNotificationSource::WalletButtonNotificationSource(
     WalletButtonNotificationSourceCallback callback)
     : profile_(profile), callback_(callback) {
   prefs_ = profile->GetPrefs();
-  prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, true);
 }
 
 void WalletButtonNotificationSource::Init() {
