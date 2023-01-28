@@ -590,8 +590,8 @@ bool BraveWalletPinService::AddToken(const absl::optional<std::string>& service,
   }
 
   {
-    DictionaryPrefUpdate update(prefs_, kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(prefs_, kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict token_data;
     base::Value::List cids_list;
@@ -619,8 +619,8 @@ bool BraveWalletPinService::RemoveToken(
   }
 
   {
-    DictionaryPrefUpdate update(prefs_, kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(prefs_, kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
     update_dict.RemoveByDottedPath(path.value());
   }
   for (const auto& observer : observers_) {
@@ -641,8 +641,8 @@ bool BraveWalletPinService::SetTokenStatus(
   }
 
   {
-    DictionaryPrefUpdate update(prefs_, kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(prefs_, kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     update_dict.SetByDottedPath(path.value() + "." + kAssetStatus,
                                 StatusToString(status));

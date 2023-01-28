@@ -243,8 +243,8 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
 
 TEST_F(BraveWalletPinServiceTest, RemovePin) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
@@ -310,8 +310,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
 
 TEST_F(BraveWalletPinServiceTest, ValidatePin) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
@@ -420,8 +420,8 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
 
 TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
@@ -436,8 +436,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", BraveWalletPinService::StatusToString(
@@ -484,8 +484,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
 
 TEST_F(BraveWalletPinServiceTest, GetLastValidateTime) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
@@ -558,8 +558,8 @@ TEST_F(BraveWalletPinServiceTest, GetPath) {
 
 TEST_F(BraveWalletPinServiceTest, GetTokens) {
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
@@ -568,8 +568,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokens) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinning_failed");
@@ -578,8 +578,8 @@ TEST_F(BraveWalletPinServiceTest, GetTokens) {
   }
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict item;
     item.Set("status", "pinned");
