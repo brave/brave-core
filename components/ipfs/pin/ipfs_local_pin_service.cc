@@ -52,8 +52,8 @@ void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
   }
 
   {
-    DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
+    base::Value::Dict& update_dict = update.Get();
 
     for (const auto& cid : cids_) {
       base::Value::List* list = update_dict.EnsureList(cid);
@@ -75,8 +75,8 @@ RemoveLocalPinJob::~RemoveLocalPinJob() = default;
 
 void RemoveLocalPinJob::Start() {
   {
-    DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-    base::Value::Dict& update_dict = update->GetDict();
+    ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
+    base::Value::Dict& update_dict = update.Get();
 
     std::vector<std::string> remove_list;
     for (auto pair : update_dict) {
@@ -119,8 +119,8 @@ void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
     std::move(callback_).Run(absl::nullopt);
     return;
   }
-  DictionaryPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-  base::Value::Dict& update_dict = update->GetDict();
+  ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
+  base::Value::Dict& update_dict = update.Get();
 
   bool verification_passed = true;
   for (const auto& cid : cids_) {
