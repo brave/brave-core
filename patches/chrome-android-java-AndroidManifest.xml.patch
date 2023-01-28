@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index e861de3a552a0ad5719f910a398898396e7d8674..62ab20aa7360d1d1233894c1ef54bbeacb7325b0 100644
+index e861de3a552a0ad5719f910a398898396e7d8674..3e157449e7040a267fd9f0c12fcb8463a41f4b7b 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -79,23 +79,7 @@ index e861de3a552a0ad5719f910a398898396e7d8674..62ab20aa7360d1d1233894c1ef54bbea
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -888,6 +903,7 @@ by a child template that "extends" this file.
-         <receiver
-             android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
-             android:label="@string/quick_action_search_widget_title"
-+            android:enabled="false"
-             android:exported="true">
-             <intent-filter>
-                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-@@ -900,6 +916,7 @@ by a child template that "extends" this file.
-         <receiver
-         android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"
-         android:label="@string/dino_widget_text"
-+        android:enabled="false"
-             android:exported="true">
-             <intent-filter>
-                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-@@ -1183,6 +1200,7 @@ by a child template that "extends" this file.
+@@ -1183,6 +1198,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -103,7 +87,7 @@ index e861de3a552a0ad5719f910a398898396e7d8674..62ab20aa7360d1d1233894c1ef54bbea
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1254,6 +1272,7 @@ by a child template that "extends" this file.
+@@ -1254,6 +1270,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />
