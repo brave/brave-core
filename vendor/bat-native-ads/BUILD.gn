@@ -104,7 +104,10 @@ source_set("headers") {
 }
 
 source_set("ads") {
-  configs += [ ":internal_config" ]
+  configs += [
+    ":internal_config",
+    "//build/config/compiler:wexit_time_destructors",
+  ]
 
   output_name = "bat_native_ads"
 

@@ -25,6 +25,8 @@ source_set("browser") {
     "frequency_capping_helper.h",
   ]
 
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+
   deps = [
     "//base",
     "//brave/components/brave_adaptive_captcha",

@@ -99,7 +99,7 @@ void ResourceComponent::RegisterComponentForCountryCode(
 
   VLOG(1) << "Registering " << component_name << " with id " << component->id;
 
-  Register(component_name, component->id, component->public_key);
+  Register(component_name, component->id.data(), component->public_key.data());
 }
 
 void ResourceComponent::RegisterComponentForLanguageCode(
@@ -118,7 +118,7 @@ void ResourceComponent::RegisterComponentForLanguageCode(
 
   VLOG(1) << "Registering " << component_name << " with id " << component->id;
 
-  Register(component_name, component->id, component->public_key);
+  Register(component_name, component->id.data(), component->public_key.data());
 }
 
 std::string GetManifest(const base::FilePath& path) {
