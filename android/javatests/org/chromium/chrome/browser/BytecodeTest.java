@@ -285,14 +285,6 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/LocationBarMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/BraveLocationBarMediator"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
@@ -454,12 +446,6 @@ public class BytecodeTest {
                 "extractUrlFromIntent", true, String.class, Intent.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
                 "updateVisibility", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
-                "setWidgetEnabled", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
-                "setWidgetComponentEnabled", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "wrapDialogDismissalCallback", true, Callback.class, Callback.class));
