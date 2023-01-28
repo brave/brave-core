@@ -10,6 +10,7 @@ checksum = "413a31d3d06e4e645113f43fbfd33f12c7ebe27cf2568e1e97f33b9f7107fcde"
 dependencies = [
  "base64 0.13.0",
  "bitflags",
+ "cssparser 0.28.1",
  "flate2",
  "idna 0.2.3",
  "itertools",
@@ -20,6 +21,7 @@ dependencies = [
  "rmp-serde 0.13.7",
  "rmp-serde 0.15.5",
  "seahash",
+ "selectors 0.23.0",
  "serde",
  "serde_json",
  "twoway",
@@ -501,6 +503,23 @@ name = "cssparser"
 version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "754b69d351cdc2d8ee09ae203db831e005560fc6030da058f86ad60c92a9cb0a"
+dependencies = [
+ "cssparser-macros 0.6.0",
+ "dtoa-short",
+ "itoa 0.4.8",
+ "matches",
+ "phf 0.8.0",
+ "proc-macro2",
+ "quote",
+ "smallvec 1.8.0",
+ "syn",
+]
+
+[[package]]
+name = "cssparser"
+version = "0.28.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1db8599a9761b371751fbf13e076fa03c6e1a78f8c5288e6ab9467f10a2322c1"
 dependencies = [
  "cssparser-macros 0.6.0",
  "dtoa-short",
@@ -2151,6 +2170,24 @@ dependencies = [
  "servo_arc",
  "smallvec 1.8.0",
  "thin-slice",
+]
+
+[[package]]
+name = "selectors"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fdea87c686be721aab36607728047801ee21561bfdbd6bf0da7ace2536d5879f"
+dependencies = [
+ "bitflags",
+ "cssparser 0.28.1",
+ "derive_more",
+ "fxhash",
+ "log",
+ "phf 0.8.0",
+ "phf_codegen 0.8.0",
+ "precomputed-hash",
+ "servo_arc",
+ "smallvec 1.8.0",
 ]
 
 [[package]]

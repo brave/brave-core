@@ -106,7 +106,7 @@ if (is_win) {
     rustc_target = "aarch64-unknown-linux-gnu"
   }
   if (use_sysroot) {
-    default_rustflags += [ "-C link-arg=--sysroot=$target_sysroot" ]
+    default_rustflags += [ "-C link-arg=--sysroot=$sysroot" ]
     default_rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
   }
 } else if (is_android) {
