@@ -130,28 +130,21 @@
   }
 
   function getMediaDurationInSeconds (node) {
+    const clampDuration = (value) => {
+      if (Number.isFinite(value) && value >= 0) return value
+      if (value === Number.POSITIVE_INFINITY) return Number.MAX_VALUE
+      return 0.0
+    }
+
     let duration = node.duration
 
     if (!duration && typeof siteSpecificDetector?.getMediaDurationInSeconds === 'function') { duration = siteSpecificDetector.getMediaDurationInSeconds(node) }
 
-    const isNan = (value) => { return typeof value === 'number' && Number.isNaN(value) }
-    const isInfinite = (value) => { return typeof value === 'number' && (value === Infinity || value === -Infinity) }
-    const clampDuration = (value) => {
-      if (isNan(value)) {
-        return 0.0
-      }
-
-      if (isInfinite(value)) {
-        return Number.MAX_VALUE
-      }
-      return value
-    }
-
     return clampDuration(duration)
   }
 
-  let videoElements = getAllVideoElements() ?? []
-  let audioElements = getAllAudioElements() ?? []
+  const videoElements = getAllVideoElements() ?? []
+  const audioElements = getAllAudioElements() ?? []
   // TODO(sko) These data could be incorrect when there're multiple items.
   // For now we're assuming that the first media is a representative one.
   const thumbnail = getThumbnail()
