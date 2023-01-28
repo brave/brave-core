@@ -288,8 +288,8 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     if (should_use_compound_tab_container) {
-      tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-          ->SetOrientation(views::LayoutOrientation::kVertical);
+      // Upstream's compound tab container lay out its sub containers manually.
+      tab_container_->SetLayoutManager(nullptr);
     }
   }
 }
