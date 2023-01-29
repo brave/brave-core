@@ -574,7 +574,8 @@ public class BraveNewTabPageLayout
                             final int visiblePercentageFinal = visiblePercentage;
 
                             int newsFeedViewPosition = viewPosition - newsFeedPosition;
-                            if (newsFeedViewPosition >= 0) {
+                            if (newsFeedViewPosition >= 0
+                                    && newsFeedViewPosition < mNewsItemsFeedCard.size()) {
                                 if (visiblePercentageFinal >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
                                     mVisibleCard = mNewsItemsFeedCard.get(newsFeedViewPosition);
                                     // get params for view PROMOTED_ARTICLE
