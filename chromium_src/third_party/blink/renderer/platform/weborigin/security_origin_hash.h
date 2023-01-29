@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
 
-#define safe_to_compare_to_empty_or_deleted                              \
+#define kSafeToCompareToEmptyOrDeleted                                   \
   unused = false;                                                        \
   static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
       const SecurityOrigin* origin) {                                    \
@@ -17,10 +17,10 @@
       const scoped_refptr<const SecurityOrigin>& origin) {               \
     return GetNonceForEphemeralStorageKeying(origin.get());              \
   }                                                                      \
-  static const bool safe_to_compare_to_empty_or_deleted
+  static constexpr bool kSafeToCompareToEmptyOrDeleted
 
 #include "src/third_party/blink/renderer/platform/weborigin/security_origin_hash.h"  // IWYU pragma: export
 
-#undef safe_to_compare_to_empty_or_deleted
+#undef kSafeToCompareToEmptyOrDeleted
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
