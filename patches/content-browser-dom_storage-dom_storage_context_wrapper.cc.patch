@@ -1,11 +1,11 @@
 diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-index 40e64d1ca8ccde862ef698f5fba776cd184f1d94..8e60f398ac2adf263b6ae2c298cc15c7bfcc5568 100644
+index 68493c5922b30fb45ba6fbf8baed0b7bdf82e45c..43b536b15848f289594e5e3b4eae18b14681f19e 100644
 --- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
 +++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
-@@ -297,6 +297,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
-       return false;
+@@ -309,6 +309,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
+         break;
+       }
      }
-     host_storage_key_did_not_match = host->storage_key() != storage_key;
 +    BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID
    }
    if (!security_policy_handle.CanAccessDataForOrigin(storage_key.origin())) {
