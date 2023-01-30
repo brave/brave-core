@@ -6,17 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_
 
-#define kPDFExtensionPluginPath     \
-  kPDFExtensionPluginPath_Unused[]; \
-  static const char kPDFExtensionPluginPath
+#define kPDFExtensionPluginName     \
+  kPDFExtensionPluginName_Unused[]; \
+  static const char kPDFExtensionPluginName
 
-#define kPDFInternalPluginPath     \
-  kPDFInternalPluginPath_Unused[]; \
-  static const char kPDFInternalPluginPath
+#define kPDFInternalPluginName     \
+  kPDFInternalPluginName_Unused[]; \
+  static const char kPDFInternalPluginName
 
 #include "src/chrome/common/chrome_content_client.h"
 
-#undef kPDFExtensionPluginPath
-#undef kPDFInternalPluginPath
+#undef kPDFExtensionPluginName
+#undef kPDFInternalPluginName
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_
