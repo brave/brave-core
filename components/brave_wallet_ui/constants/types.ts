@@ -995,3 +995,5 @@ export type AddressMessageInfo = {
   description?: string
   url?: string
 }
+
+export type AlertType = 'danger' | 'warning' | 'info' | 'success'

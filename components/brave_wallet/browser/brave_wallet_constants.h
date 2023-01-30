@@ -42,6 +42,8 @@ constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletGasFeeLimitLowerThanBaseFeeWarning",
+     IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING},
     {"braveWalletTokenMintAddress", IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS},
     {"braveWalletActivity", IDS_BRAVE_WALLET_ACTIVITY},
     {"braveWalletTokenDecimalsIsRequiredError",

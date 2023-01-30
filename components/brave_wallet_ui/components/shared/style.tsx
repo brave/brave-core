@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom'
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
 import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
+// colors
+import { LeoColors } from '../leo/alert-inline/leo-colors'
+
 // utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 
@@ -27,6 +30,8 @@ import ClipboardSvg from '../../assets/svg-icons/copy-to-clipboard-icon.svg'
 import DownloadSvg from '../../assets/svg-icons/download-icon.svg'
 import CheckIconSvg from '../../assets/svg-icons/checkbox-check.svg'
 import SwitchDown from '../../assets/svg-icons/switch-icon.svg'
+import WarningCircleFilled from '../../assets/svg-icons/warning-circle-icon.svg'
+import WarningTriangleFilled from '../../assets/svg-icons/warning-triangle-filled.svg'
 
 export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
 
@@ -294,6 +299,47 @@ export const GreenCheckmark = styled.div`
   mask: url(${CheckmarkSvg}) no-repeat 50% 50%;
   mask-size: contain;
   vertical-align: middle;
+`
+
+export const WarningTriangleFilledIcon = styled.div<{
+  color?: keyof IThemeProps['color']
+}>`
+  mask-size: 100%;
+  background-color: ${(p) => p?.color
+    ? p.theme.color[p.color]
+    : LeoColors['light.system.feedback.warning.icon']
+  };
+  -webkit-mask-image: url(${WarningTriangleFilled});
+  mask-repeat: no-repeat;
+  mask-image: url(${WarningTriangleFilled});
+  @media (prefers-color-scheme: dark) {
+    color: ${(p) => p.theme.palette.blurple300};
+    background-color: ${(p) => p?.color
+      ? p.theme.color[p.color]
+      : LeoColors['dark.system.feedback.warning.icon']
+    };
+  }
+`
+
+export const WarningCircleFilledIcon = styled.div<{
+  color?: keyof IThemeProps['color']
+}>`
+  opacity: 50%;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  background-color: ${(p) => p?.color
+    ? p.theme.color[p.color]
+    : LeoColors['light.system.feedback.error.icon']
+  };
+  -webkit-mask-image: url(${WarningCircleFilled});
+  mask-image: url(${WarningCircleFilled});
+  @media (prefers-color-scheme: dark) {
+    background-color: ${(p) => p?.color
+      ? p.theme.color[p.color]
+      : LeoColors['dark.system.feedback.error.icon']
+    };
+  }
 `
 
 export const CloseIcon = styled.div`

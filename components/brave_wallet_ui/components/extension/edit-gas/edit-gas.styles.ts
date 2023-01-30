@@ -1,8 +1,10 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
+import { LeoColors } from '../../leo/alert-inline/leo-colors'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -12,6 +14,7 @@ export const StyledWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 5px 15px 15px 15px;
+  overflow-y: auto;
 `
 
 export const FormColumn = styled.div`
@@ -41,7 +44,12 @@ export const Input = styled.input<{
   background-image: none;
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${(p) =>
+    p.hasError
+      ? LeoColors['light.system.feedback.error.icon']
+      : p.theme.color.interactive08};
   border-radius: 4px;
   font-family: Poppins;
   font-style: normal;
@@ -50,9 +58,7 @@ export const Input = styled.input<{
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.hasError
-    ? p.theme.color.errorText
-    : p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
@@ -71,6 +77,12 @@ export const Input = styled.input<{
   ::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    border-color: ${(p) =>
+      p.hasError
+        ? LeoColors['light.system.feedback.error.icon']
+        : p.theme.color.interactive08};
   }
 `
 
@@ -125,7 +137,6 @@ export const MaximumFeeRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin-bottom: 8px;
 `
 
 export const SliderWrapper = styled.div`
