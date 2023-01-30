@@ -516,7 +516,7 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
   const auto* value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   DCHECK(value);
   auto playlist_item = ConvertValueToPlaylistItem(*value);
-  playlist_item->thumbnail_path = GURL(path.AsUTF8Unsafe());
+  playlist_item->thumbnail_path = GURL("file://" + path.AsUTF8Unsafe());
   UpdatePlaylistItemValue(
       id, base::Value(ConvertPlaylistItemToValue(playlist_item)));
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemThumbnailReady, id});

@@ -6,9 +6,10 @@
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 
 #include "base/bind.h"
-#include "base/files/file_path.h"
+#include "base/containers/flat_set.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/media_detector_component_installer.h"
 #include "components/grit/brave_components_resources.h"
@@ -19,8 +20,38 @@ namespace playlist {
 
 namespace {
 
-base::FilePath GetScriptPath(const base::FilePath& install_path) {
-  return install_path.AppendASCII("index.js");
+using ScriptName = base::FilePath::StringType;
+using ScriptToSchemefulSiteMap = base::flat_map<ScriptName, net::SchemefulSite>;
+using ScriptToResourceIdMap = base::flat_map<ScriptName, int>;
+
+const base::FilePath::StringType& GetBaseScriptName() {
+  static const base::NoDestructor base_script(
+      ScriptName(FILE_PATH_LITERAL("index.js")));
+  return *base_script;
+}
+
+const ScriptToSchemefulSiteMap& GetScriptNameToSchemefulSiteMap() {
+  static const base::NoDestructor script_name_to_schemeful_sites(
+      ScriptToSchemefulSiteMap{
+          {FILE_PATH_LITERAL("youtube.com.js"),
+           net::SchemefulSite(GURL("https://youtube.com"))}});
+
+  return *script_name_to_schemeful_sites;
+}
+
+const base::flat_map<ScriptName, std::string>& GetLocalScriptMap() {
+  static const base::NoDestructor local_resource_map(([]() {
+    const auto& rb = ui::ResourceBundle::GetSharedInstance();
+    base::flat_map<ScriptName, std::string> local_resource_map = {
+        {GetBaseScriptName(),
+         rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_JS)},
+        {FILE_PATH_LITERAL("youtube.com.js"),
+         rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS)},
+    };
+    return local_resource_map;
+  })());
+
+  return *local_resource_map;
 }
 
 std::string ReadScript(const base::FilePath& path) {
@@ -29,11 +60,16 @@ std::string ReadScript(const base::FilePath& path) {
   return contents;
 }
 
-const std::string& GetLocalScript() {
-  static const std::string kScript =
-      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-          IDR_PLAYLIST_MEDIA_DETECTOR_JS);
-  return kScript;
+base::flat_map<ScriptName, std::string> ReadScriptsFromComponent(
+    base::flat_set<base::FilePath> files) {
+  base::flat_map<ScriptName, std::string> script_map;
+  for (const auto& path : files) {
+    if (auto script = ReadScript(path); !script.empty()) {
+      script_map[path.BaseName().value()] = script;
+    }
+  }
+
+  return script_map;
 }
 
 }  // namespace
@@ -69,20 +105,39 @@ void MediaDetectorComponentManager::RegisterIfNeeded() {
 
 void MediaDetectorComponentManager::OnComponentReady(
     const base::FilePath& install_path) {
+  base::flat_set<base::FilePath> files(
+      {install_path.Append(GetBaseScriptName())});
+  for (const auto& [file, _] : GetScriptNameToSchemefulSiteMap()) {
+    files.insert(install_path.Append(file));
+  }
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, base::MayBlock(),
-      base::BindOnce(&ReadScript, GetScriptPath(install_path)),
-      base::BindOnce(&MediaDetectorComponentManager::OnGetScript,
+      base::BindOnce(&ReadScriptsFromComponent, files),
+      base::BindOnce(&MediaDetectorComponentManager::OnGetScripts,
                      weak_factory_.GetWeakPtr()));
 }
 
-void MediaDetectorComponentManager::OnGetScript(const std::string& script) {
-  if (script.empty()) {
-    LOG(ERROR) << __FUNCTION__ << " script is empty!";
+void MediaDetectorComponentManager::OnGetScripts(
+    const MediaDetectorComponentManager::ScriptMap& script_map) {
+  if (script_map.empty()) {
+    LOG(ERROR) << __FUNCTION__ << " scripts are empty!";
     return;
   }
 
-  script_ = script;
+  DCHECK(script_map.count(GetBaseScriptName()));
+  script_ = script_map.at(GetBaseScriptName());
+
+  // This could have been filled when we've used media detector script before
+  // component updater finishes its work.
+  site_specific_detectors_.clear();
+
+  const auto& schemeful_site_map = GetScriptNameToSchemefulSiteMap();
+  for (const auto& [script_name, script] : script_map) {
+    if (schemeful_site_map.count(script_name)) {
+      site_specific_detectors_[schemeful_site_map.at(script_name)] = script;
+    }
+  }
 
   for (auto& observer : observer_list_)
     observer.OnScriptReady(script_);
@@ -91,10 +146,7 @@ void MediaDetectorComponentManager::OnGetScript(const std::string& script) {
 void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
   register_requested_ = true;
 
-  OnGetScript(GetLocalScript());
-  site_specific_detectors_[net::SchemefulSite(GURL("https://youtube.com"))] =
-      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-          IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS);
+  OnGetScripts(GetLocalScriptMap());
 }
 
 bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
@@ -108,21 +160,34 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
-  std::string detector_script = script_;
-  if (detector_script.empty()) {
+  if (script_.empty()) {
     // In case we have yet to fetch the script, use local script instead. At the
     // same time, fetch the script from component.
     RegisterIfNeeded();
-    detector_script = GetLocalScript();
+    OnGetScripts(GetLocalScriptMap());
   }
+
+  std::string detector_script = script_;
+  DCHECK(!detector_script.empty());
 
   if (net::SchemefulSite site(url); site_specific_detectors_.count(site)) {
     constexpr std::string_view kPlaceholder =
         "const siteSpecificDetector = null";
     auto pos = detector_script.find(kPlaceholder);
+    if (pos == std::string::npos) {
+      // Reportedly, in some environment(e.g. Android release), the js script
+      // resource could be minified by removing white spaces.
+      constexpr std::string_view kPlaceholderWithoutWhitespace =
+          "const siteSpecificDetector=null";
+      pos = detector_script.find(kPlaceholderWithoutWhitespace);
+    }
+
     if (pos != std::string::npos) {
       detector_script.replace(pos, kPlaceholder.length(),
                               site_specific_detectors_.at(site));
+    } else {
+      LOG(ERROR) << "Couldn't find `const siteSpecificDetector = null` from "
+                    "base script";
     }
   }
 

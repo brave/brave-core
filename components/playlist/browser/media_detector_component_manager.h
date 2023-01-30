@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "net/base/schemeful_site.h"
@@ -58,10 +59,12 @@ class MediaDetectorComponentManager {
   }
 
  private:
-  void RegisterIfNeeded();
+  using ScriptMap = base::flat_map</* script_name */ base::FilePath::StringType,
+                                   /* contents */ std::string>;
 
+  void RegisterIfNeeded();
   void OnComponentReady(const base::FilePath& install_path);
-  void OnGetScript(const std::string& script);
+  void OnGetScripts(const ScriptMap& script_map);
 
   bool register_requested_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
