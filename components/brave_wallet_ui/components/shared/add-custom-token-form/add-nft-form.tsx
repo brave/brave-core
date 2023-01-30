@@ -119,6 +119,7 @@ export const AddNftForm = (props: Props) => {
         let token = { ...foundTokenInfoByContractAddress }
         token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
         token.chainId = customAssetsNetwork.chainId
+        token.name = tokenName
         onAddCustomAsset(token)
         onHideForm()
         return
