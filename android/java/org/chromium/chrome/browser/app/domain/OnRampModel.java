@@ -17,15 +17,16 @@ public class OnRampModel {
         mBlockchainRegistry = blockchainRegistry;
     }
 
-    public void getBuyUrl(int onRampProvider, String chainId, String from, String rampNetworkSymbol, String amount, OnRampCallback callback) {
-         mBlockchainRegistry.getBuyUrl(OnRampProvider.RAMP, chainId,
-                        from, rampNetworkSymbol, amount, (url, error) -> {
-                            if (error != null && !error.isEmpty()) {
-                                callback.OnUrlReady(null);
-                                return;
-                            }
-                            callback.OnUrlReady(url);
-                        });
+    public void getBuyUrl(int onRampProvider, String chainId, String from, String rampNetworkSymbol,
+            String amount, OnRampCallback callback) {
+        mBlockchainRegistry.getBuyUrl(
+                OnRampProvider.RAMP, chainId, from, rampNetworkSymbol, amount, (url, error) -> {
+                    if (error != null && !error.isEmpty()) {
+                        callback.OnUrlReady(null);
+                        return;
+                    }
+                    callback.OnUrlReady(url);
+                });
     }
 
     public interface OnRampCallback {

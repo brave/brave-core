@@ -72,29 +72,33 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         mTransakButton = findViewById(R.id.purchase_method_btn_transak);
 
         if (mOnRampModel != null) {
-            mOnRampModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+            mOnRampModel.getBuyUrl(
+                    OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
                         if (url != null) {
                             enableOnRampService(mRampNetworkLayout, mRampButton, url);
                         }
                     });
 
-            mOnRampModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
-                if (url != null) {
-                    enableOnRampService(mSardineLayout, mSardineButton, url);
-                }
-            });
+            mOnRampModel.getBuyUrl(
+                    OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+                        if (url != null) {
+                            enableOnRampService(mSardineLayout, mSardineButton, url);
+                        }
+                    });
 
-            mOnRampModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
-                if (url != null) {
-                    enableOnRampService(mTransakLayout, mTransakButton, url);
-                }
-            });
+            mOnRampModel.getBuyUrl(
+                    OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+                        if (url != null) {
+                            enableOnRampService(mTransakLayout, mTransakButton, url);
+                        }
+                    });
         }
 
         onInitialLayoutInflationComplete();
     }
 
-    private void enableOnRampService(ViewGroup onRampLayout, Button onRampButton, String onRampUrl) {
+    private void enableOnRampService(
+            ViewGroup onRampLayout, Button onRampButton, String onRampUrl) {
         onRampButton.setOnClickListener(v -> {
             TabUtils.openUrlInNewTab(false, onRampUrl);
             TabUtils.bringChromeTabbedActivityToTheTop(this);
@@ -102,7 +106,8 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         onRampLayout.setVisibility(View.VISIBLE);
     }
 
-    public static Intent getIntent(Context context, String chainId, String from, String rampNetworkSymbol, String amount) {
+    public static Intent getIntent(
+            Context context, String chainId, String from, String rampNetworkSymbol, String amount) {
         Intent intent = new Intent(context, SelectPurchaseMethodActivity.class);
         intent.putExtra(CHAIN_ID, chainId);
         intent.putExtra(FROM, from);
