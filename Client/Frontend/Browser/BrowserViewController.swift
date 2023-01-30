@@ -24,7 +24,9 @@ import BraveWallet
 import BraveVPN
 import BraveNews
 import os.log
+#if canImport(BraveTalk)
 import BraveTalk
+#endif
 import Onboarding
 import Growth
 
@@ -246,8 +248,10 @@ public class BrowserViewController: UIViewController {
   var widgetFaviconFetchers: [FaviconFetcher] = []
   let deviceCheckClient: DeviceCheckClient?
   
+  #if canImport(BraveTalk)
   // Brave Talk native implementations
   let braveTalkJitsiCoordinator = BraveTalkJitsiCoordinator()
+  #endif
 
   /// The currently open WalletStore
   weak var walletStore: WalletStore?
@@ -432,7 +436,9 @@ public class BrowserViewController: UIViewController {
           self.updateDisplayedPopoverProperties?()
           self.present(popover, animated: true, completion: nil)
         }
+#if canImport(BraveTalk)
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
+#endif
       },
       completion: { _ in
         if let tab = self.tabManager.selectedTab {
@@ -2417,9 +2423,6 @@ extension BrowserViewController: TabDelegate {
       FocusScriptHandler(tab: tab),
       BraveGetUA(tab: tab),
       BraveSearchScriptHandler(tab: tab, profile: profile, rewards: rewards),
-      BraveTalkScriptHandler(tab: tab, rewards: rewards, launchNativeBraveTalk: { [weak self] tab, room, token in
-        self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-      }),
       ResourceDownloadScriptHandler(tab: tab),
       DownloadContentScriptHandler(browserController: self, tab: tab),
       WindowRenderScriptHandler(tab: tab),
@@ -2435,6 +2438,12 @@ extension BrowserViewController: TabDelegate {
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
+    
+#if canImport(BraveTalk)
+    injectedScripts.append(BraveTalkScriptHandler(tab: tab, rewards: rewards, launchNativeBraveTalk: { [weak self] tab, room, token in
+      self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
+    }))
+#endif
     
     if let braveSkusHandler = BraveSkusScriptHandler(tab: tab) {
       injectedScripts.append(braveSkusHandler)

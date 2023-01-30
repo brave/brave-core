@@ -10,7 +10,9 @@ import WebKit
 
 enum DomainUserScript: CaseIterable {
   case braveSearchHelper
+#if canImport(BraveTalk)
   case braveTalkHelper
+#endif
   case braveSkus
   case bravePlaylistFolderSharingHelper
   case youtubeAdblock
@@ -40,11 +42,13 @@ enum DomainUserScript: CaseIterable {
                   "search.bravesoftware.com", "safesearch.brave.com",
                   "safesearch.brave.software", "safesearch.bravesoftware.com",
                   "search-dev-local.brave.com"])
+#if canImport(BraveTalk)
     case .braveTalkHelper:
       return Set(["talk.brave.com", "beta.talk.brave.com",
                  "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
                  "dev.talk.brave.software", "beta.talk.brave.software",
                  "talk.brave.software"])
+#endif
     case .bravePlaylistFolderSharingHelper:
       return Set(["playlist.bravesoftware.com", "playlist.brave.com"])
     case .braveSkus:
@@ -60,8 +64,12 @@ enum DomainUserScript: CaseIterable {
   /// Returns nil if the domain's user script can't be turned off via a shield toggle. (i.e. it's always enabled)
   var requiredShield: BraveShield? {
     switch self {
-    case .braveSearchHelper, .braveTalkHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
+    case .braveSearchHelper, .bravePlaylistFolderSharingHelper, .braveSkus:
       return nil
+#if canImport(BraveTalk)
+    case .braveTalkHelper:
+      return nil
+#endif
     case .youtubeAdblock:
       return .AdblockAndTp
     }

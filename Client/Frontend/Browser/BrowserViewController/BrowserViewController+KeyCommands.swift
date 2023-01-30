@@ -284,13 +284,16 @@ extension BrowserViewController {
       keyCommandList.append(contentsOf: searchLocationCommands)
     }
     
+#if canImport(BraveTalk)
     if braveTalkJitsiCoordinator.isCallActive {
       keyCommandList.append(contentsOf: braveTalkKeyCommands)
     }
+#endif
 
     return keyCommandList
   }
   
+#if canImport(BraveTalk)
   public override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
     super.pressesBegan(presses, with: event)
     braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .began)
@@ -310,4 +313,5 @@ extension BrowserViewController {
     super.pressesCancelled(presses, with: event)
     braveTalkJitsiCoordinator.handleResponderPresses(presses: presses, phase: .cancelled)
   }
+#endif
 }

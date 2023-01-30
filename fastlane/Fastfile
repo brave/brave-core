@@ -97,6 +97,7 @@ platform :ios do
 
   desc "Create an archive to be uploaded to the App Store"
   lane :release do |options|
+    ENV["BRAVE_APPSTORE_BUILD"] = "1"
     overrideParams = {
       scheme: "Release (AppStore)",
       export_options: {
