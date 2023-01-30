@@ -94,6 +94,19 @@ class TabManager: NSObject {
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
+  
+  /// The property returning only existing tab is NTP for current mode
+  var isBrowserEmptyForCurrentMode: Bool {
+    get {
+      guard tabsForCurrentMode.count == 1,
+            let tabURL = tabsForCurrentMode.first?.url,
+            InternalURL(tabURL)?.isAboutHomeURL == true else {
+        return false
+      }
+      
+      return true
+    }
+  }
 
   init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?, tabGeneratorAPI: BraveTabGeneratorAPI?) {
     assert(Thread.isMainThread)

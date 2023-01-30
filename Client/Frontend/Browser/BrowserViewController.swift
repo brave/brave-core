@@ -1842,12 +1842,18 @@ public class BrowserViewController: UIViewController {
     }
     let request: URLRequest?
     if let url = url {
+      // If only empty tab present, the url will open in existing tab
+      if tabManager.isBrowserEmptyForCurrentMode {
+        finishEditingAndSubmit(url, visitType: .link)
+        return
+      }
       request = isPrivileged ? PrivilegedRequest(url: url) as URLRequest : URLRequest(url: url)
     } else {
       request = nil
     }
 
-    _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
+    tabManager.addTabAndSelect(request, isPrivate: isPrivate)
+    
     // Has to go after since switching tabs will cause the URL bar to update to the selected Tab's url (which
     // is going to be nil still until the web view first commits
     updateToolbarCurrentURL(url)
