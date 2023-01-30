@@ -11,6 +11,7 @@ import Shared
 import BraveCore
 import BraveUI
 import SafariServices
+import DesignSystem
 
 private enum WelcomeViewID: Int {
   case background = 1
@@ -44,11 +45,8 @@ public class WelcomeViewController: UIViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
-  private let backgroundImageView = UIImageView().then {
-    $0.image = UIImage(named: "welcome-view-background", in: .module, compatibleWith: nil)!
-    $0.contentMode = .scaleAspectFill
-  }
+  
+  private let backgroundGradientView = BraveGradientView(gradient: .backgroundGradient)
 
   private let topImageView = UIImageView().then {
     $0.image = UIImage(named: "welcome-view-top-image", in: .module, compatibleWith: nil)!
@@ -136,7 +134,7 @@ public class WelcomeViewController: UIViewController {
   }
 
   private func doLayout() {
-    backgroundImageView.tag = WelcomeViewID.background.rawValue
+    backgroundGradientView.tag = WelcomeViewID.background.rawValue
     topImageView.tag = WelcomeViewID.topImage.rawValue
     contentContainer.tag = WelcomeViewID.contents.rawValue
     calloutView.tag = WelcomeViewID.callout.rawValue
@@ -152,7 +150,7 @@ public class WelcomeViewController: UIViewController {
 
     let scrollView = UIScrollView()
 
-    [backgroundImageView, topImageView, bottomImageView, scrollView].forEach {
+    [backgroundGradientView, topImageView, bottomImageView, scrollView].forEach {
       view.addSubview($0)
     }
 
@@ -188,7 +186,7 @@ public class WelcomeViewController: UIViewController {
       $0.height.equalTo(iconView.snp.height).multipliedBy(2.25)
     }
 
-    backgroundImageView.snp.makeConstraints {
+    backgroundGradientView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
 
@@ -453,7 +451,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   let isPresenting: Bool
 
   private struct WelcomeViewInfo {
-    let backgroundImageView: UIView
+    let backgroundGradientView: UIView
     let topImageView: UIView
     let contentContainer: UIView
     let calloutView: UIView
@@ -464,7 +462,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     var allViews: [UIView] {
       return [
-        backgroundImageView,
+        backgroundGradientView,
         topImageView,
         contentContainer,
         calloutView,
@@ -476,7 +474,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
 
     init?(view: UIView) {
-      guard let backgroundImageView = view.subview(with: WelcomeViewID.background.rawValue),
+      guard let backgroundGradientView = view.subview(with: WelcomeViewID.background.rawValue),
         let topImageView = view.subview(with: WelcomeViewID.topImage.rawValue),
         let contentContainer = view.subview(with: WelcomeViewID.contents.rawValue),
         let calloutView = view.subview(with: WelcomeViewID.callout.rawValue),
@@ -488,7 +486,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         return nil
       }
 
-      self.backgroundImageView = backgroundImageView
+      self.backgroundGradientView = backgroundGradientView
       self.topImageView = topImageView
       self.contentContainer = contentContainer
       self.calloutView = calloutView
@@ -583,7 +581,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         $0.alpha = 0.0
       }
 
-      if fromView == fromWelcomeView.backgroundImageView {
+      if fromView == fromWelcomeView.backgroundGradientView {
         continue
       }
 
@@ -603,7 +601,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + totalAnimationTime) {
-      toWelcomeView.backgroundImageView.alpha = 1.0
+      toWelcomeView.backgroundGradientView.alpha = 1.0
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     }
   }
