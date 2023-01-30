@@ -12,6 +12,7 @@
   NotUsed() const override;                                                \
   bool ShouldUseEphemeralStorage(                                          \
       const GURL& url, const net::SiteForCookies& site_for_cookies,        \
+      net::CookieSettingOverrides overrides,                               \
       const absl::optional<url::Origin>& top_frame_origin) const override; \
   bool ShouldTreatUrlAsTrustworthy
 
