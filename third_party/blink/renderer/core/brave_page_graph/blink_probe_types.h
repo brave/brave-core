@@ -6,14 +6,13 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_BLINK_PROBE_TYPES_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_BLINK_PROBE_TYPES_H_
 
-#include <vector>
-
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
-using PageGraphBlinkArgs = std::vector<String>;
+using PageGraphBlinkArgs = Vector<String>;
 using PageGraphBlinkReceiverData = HashMap<String, String>;
 
 enum class PageGraphBindingType {

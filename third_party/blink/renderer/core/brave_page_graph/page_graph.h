@@ -193,7 +193,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::ExecutionContext* execution_context,
       const char* name,
       const blink::PageGraphBlinkReceiverData& receiver_data,
-      const blink::PageGraphBlinkArgs& args,
+      blink::PageGraphBlinkArgs args,
       const blink::ExceptionState* exception_state,
       const absl::optional<String>& result);
   // Event listeners tracking:
@@ -215,7 +215,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                            v8::Local<v8::String> source);
   void RegisterV8JSBuiltinCall(v8::Isolate* isolate,
                                const char* builtin_name,
-                               const std::vector<std::string>& args,
+                               blink::PageGraphBlinkArgs args,
                                const std::string* result);
   // *** v8 handlers end ***
 
@@ -388,14 +388,14 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   void RegisterWebAPICall(blink::ExecutionContext* execution_context,
                           const MethodName& method,
-                          const std::vector<String>& arguments);
+                          blink::PageGraphBlinkArgs arguments);
   void RegisterWebAPIResult(blink::ExecutionContext* execution_context,
                             const MethodName& method,
                             const String& result);
 
   void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
                              const char* builtin_name,
-                             const std::vector<std::string>& args);
+                             const blink::PageGraphBlinkArgs args);
   void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
                                  const char* builtin_name,
                                  const std::string& result);
