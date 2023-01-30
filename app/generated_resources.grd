@@ -2360,6 +2360,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
         Show all downloads
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_TOOLTIP" desc="Tooltip label for the button to open all downloads">
+        Show all downloads in a new tab
+      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_MESSAGE_WITH_SEPARATOR" desc="The download status and message are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
         <ph name="STATUS">$1<ex>100/120 MB</ex></ph> • <ph name="MESSAGE">$2<ex>Opening in 10 seconds...</ex></ph>
       </message>
@@ -3741,13 +3744,22 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Tab casting infobar -->
-      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being casted.">
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being cast. The placeholder text (DEVICE_NAME) represents the name of the cast receiver.">
+       Casting this tab to <ph name="DEVICE_NAME">$1<ex>Living Room TV</ex></ph>
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_CURRENT_TAB_NO_DEVICE_NAME_LABEL" desc="Text displayed on an infobar when current tab is being cast.">
        Casting this tab
       </message>
-      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_UNTITLED_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) untitled tab is being casted.">
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_UNTITLED_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) untitled tab is being cast. The placeholder text (DEVICE_NAME) represents the name of the cast receiver.">
+       Casting a tab to <ph name="DEVICE_NAME">$1<ex>Living Room TV</ex></ph>
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_UNTITLED_TAB_NO_DEVICE_NAME_LABEL" desc="Text displayed on an infobar when another (non-current) untitled tab is being cast.">
        Casting a tab
       </message>
-      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being shacastedred.">
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being cast. The placeholder text (DEVICE_NAME) represents the name of the cast receiver.">
+       Casting <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Living Room TV</ex></ph>
+      </message>
+      <message name="IDS_TAB_CASTING_INFOBAR_CASTING_ANOTHER_TAB_NO_DEVICE_NAME_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being cast.">
        Casting <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph>
       </message>
       <message name="IDS_TAB_CASTING_INFOBAR_CAST_BUTTON" desc="Text displayed on the button to cast current tab.">
@@ -4935,6 +4947,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_MANAGE_EXTENSIONS" desc="The text of the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (sentence case).">
             Manage extensions
           </message>
+          <message name="IDS_VIEW_WEB_PERMISSIONS" desc="The text for the button in the extension context menu used to open the chrome://settings/content/siteDetails?site=xxx page and view the site details for a specific extension (sentence case).">
+            View web permissions
+          </message>
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (sentence case).">
             Inspect popup
           </message>
@@ -5017,6 +5032,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_MANAGE_EXTENSIONS" desc="The text for the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (title case).">
             Manage Extensions
+          </message>
+          <message name="IDS_VIEW_WEB_PERMISSIONS" desc="The text for the button in the extension context menu used to open the chrome://settings/content/siteDetails?site=xxx page and view the site details for a specific extension (title case).">
+            View Web Permissions
           </message>
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (title case).">
             Inspect Popup
@@ -5584,7 +5602,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_DISABLED_ALERT" desc="Status change notification that the title bar is showing after window controls overlay is disabled">
         Title bar is now showing
       </message>
- 
+
      <!-- App Home WebUI strings. -->
       <message name="IDS_APP_HOME_TITLE" desc="Title of the new App Home page">
         Apps
@@ -5608,6 +5626,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <message name="IDS_APP_HOME_CREATE_SHORTCUT" desc="Menu entry label for creating a shortcut for an app from context menu on App Home">
         Create shortcut
+      </message>
+
+      <message name="IDS_APP_HOME_INSTALL_LOCALLY" desc="Menu entry label for installing the app on this device from context menu on App Home">
+        Install on this device
       </message>
 
       <message name="IDS_APP_HOME_UNINSTALL_APP" desc="Menu entry label for uninstalling an app from context menu on App Home">
@@ -7104,8 +7126,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
       </message>
+      <message name="IDS_BOOKMARKS_EDIT_MOVE_TO_ANOTHER_FOLDER" desc="Tooltip for the button in the bookmarks side panel bulk edit mode that allows the user to move the selected bookmarks to a different folder.">
+        Move to another folder
+      </message>
       <message name="IDS_BOOKMARKS_EDIT_MORE" desc="Tooltip for the menu button in the bookmarks side panel bulk edit mode that shows more actions the user can take on selected bookmarks.">
         More
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_MOVE_TO" desc="Title for the bookmarks side panel edit dialog when there are multiple selected bookmarks">
+        Move to…
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_NEW_FOLDER" desc="Label for the button to add a new folder in the bookmarks side panel edit dialog">
+        New Folder
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_CANCEL" desc="Label for the button to close the bookmarks side panel edit dialog">
+        Cancel
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_SAVE" desc="Label for the button to save changes from the bookmarks side panel edit dialog">
+        Save
       </message>
       <message name="IDS_BOOKMARK_DELETION_COUNT" desc="Text description for the number of deleted bookmarks">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark deleted} other {# bookmarks deleted}}
@@ -10007,9 +10044,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_SYNC_CONFIRMATION_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
         You can always choose what to sync in settings.
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-        Yes, I'm in
-      </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
+          Yes, I'm in
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="In Title Case: Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
+          Yes, I'm In
+        </message>
+      </if>
       <message name="IDS_SYNC_CONFIRMATION_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
         Settings
       </message>
@@ -10277,9 +10321,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_SAVE_PAGE_DESC_COMPLETE" desc="In the Save Page dialog, the description of saving both the HTML and all shown resources.">
         Webpage, Complete
-      </message>
-      <message name="IDS_SAVE_PAGE_DESC_WEB_BUNDLE_FILE" desc="In the Save Page dialog, the description of saving both the HTML and all shown resources into a single Web Bundle file.">
-        Webpage, Single File (Web Bundle)
       </message>
 
       <!-- General app failure messages -->
@@ -13652,6 +13693,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_VERIFY_SHEET_TITLE" desc="Header shown to the user while signing in happens.">
       Verifying…
+    </message>
+    <message name="IDS_VERIFY_SHEET_TITLE_AUTO_SIGNIN" desc="Header for auto sign-in sheet. Sheet is shown to notify the user that they are signing in to a website using an account from an identity provider." translateable="false">
+      Signing in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
     </message>
 
     <!-- Input overlay strings -->
