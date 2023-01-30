@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index e861de3a552a0ad5719f910a398898396e7d8674..3e157449e7040a267fd9f0c12fcb8463a41f4b7b 100644
+index 1dadcc3f156ad64af9e3bef1fd81a93ff5e036f4..2cfaa8e2621a03ee48a26c26525f01177aceab7a 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -79,7 +79,7 @@ index e861de3a552a0ad5719f910a398898396e7d8674..3e157449e7040a267fd9f0c12fcb8463
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1183,6 +1198,7 @@ by a child template that "extends" this file.
+@@ -1188,6 +1203,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -87,10 +87,10 @@ index e861de3a552a0ad5719f910a398898396e7d8674..3e157449e7040a267fd9f0c12fcb8463
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1254,6 +1270,7 @@ by a child template that "extends" this file.
-       <!-- ARCore APK integration -->
-       <!-- This tag indicates that this application optionally uses ARCore. -->
-       <meta-data android:name="com.google.ar.core" android:value="optional" />
+@@ -1265,6 +1281,7 @@ by a child template that "extends" this file.
+           android:value="allow_front_facing_motion_tracking_6dof," />
+       {% endblock base_application_extra_arcore_definitions %}
+ 
 +        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="221020000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
        {% endif %}
  
