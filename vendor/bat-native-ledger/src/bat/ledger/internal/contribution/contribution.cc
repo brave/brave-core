@@ -124,6 +124,8 @@ void Contribution::ProcessContributionQueue() {
     return;
   }
 
+  queue_in_progress_ = true;
+
   const auto callback = std::bind(&Contribution::OnProcessContributionQueue,
       this,
       _1);
@@ -137,7 +139,8 @@ void Contribution::OnProcessContributionQueue(
     return;
   }
 
-  queue_in_progress_ = true;
+  DCHECK(queue_in_progress_);
+
   Start(std::move(info));
 }
 
