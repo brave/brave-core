@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -8,7 +9,6 @@ import * as mixins from '../../shared/lib/css_mixins'
 
 export const root = styled.div`
   background: linear-gradient(125.83deg, #392DD1 0%, #22B8CF 99.09%);
-  margin: 30px auto 0;
   border-radius: 8px;
   overflow: hidden;
   color: #fff;
@@ -86,12 +86,15 @@ export const dismiss = styled.div`
 `
 
 export const image = styled.div`
-  margin-top: 16px;
+  margin: 8px;
+  border-radius: 8px;
+  overflow: hidden;
 
   img {
     width: calc(100% + 4px);
     height: auto;
-    margin-bottom: -4px;
+    margin-bottom: -5px;
     margin-left: -2px;
+    margin-top: -2px;
   }
 `
