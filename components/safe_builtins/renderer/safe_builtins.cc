@@ -147,10 +147,12 @@ class ExtensionImpl : public v8::Extension {
   v8::Local<v8::FunctionTemplate> GetNativeFunctionTemplate(
       v8::Isolate* isolate,
       v8::Local<v8::String> name) override {
-    if (name->StringEquals(ToV8StringUnsafe(isolate, "Apply")))
+    if (name->StringEquals(ToV8StringUnsafe(isolate, "Apply"))) {
       return v8::FunctionTemplate::New(isolate, Apply);
-    if (name->StringEquals(ToV8StringUnsafe(isolate, "Save")))
+    }
+    if (name->StringEquals(ToV8StringUnsafe(isolate, "Save"))) {
       return v8::FunctionTemplate::New(isolate, Save);
+    }
     NOTREACHED() << std::string(*v8::String::Utf8Value(isolate, name));
     return v8::Local<v8::FunctionTemplate>();
   }
@@ -162,7 +164,9 @@ class ExtensionImpl : public v8::Extension {
           info[2]->IsObject() &&    // args
           info[3]->IsInt32() &&     // first_arg_index
           info[4]->IsInt32());      // args_length
+    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     v8::MicrotasksScope microtasks(info.GetIsolate(),
+                                   context->GetMicrotaskQueue(),
                                    v8::MicrotasksScope::kDoNotRunMicrotasks);
     v8::Local<v8::Function> function = info[0].As<v8::Function>();
     v8::Local<v8::Object> recv;
@@ -183,20 +187,22 @@ class ExtensionImpl : public v8::Extension {
     int first_arg_index = info[3].As<v8::Int32>()->Value();
     int args_length = info[4].As<v8::Int32>()->Value();
 
-    v8::Local<v8::Context> context = info.GetIsolate()->GetCurrentContext();
     int argc = args_length - first_arg_index;
     std::unique_ptr<v8::Local<v8::Value>[]> argv(
         new v8::Local<v8::Value>[argc]);
     for (int i = 0; i < argc; ++i) {
       CHECK(IsTrue(args->Has(context, i + first_arg_index)));
       // Getting a property value could throw an exception.
-      if (!GetProperty(context, args, i + first_arg_index, &argv[i]))
+      if (!GetProperty(context, args, i + first_arg_index, &argv[i])) {
         return;
+      }
     }
 
     v8::Local<v8::Value> return_value;
-    if (function->Call(context, recv, argc, argv.get()).ToLocal(&return_value))
+    if (function->Call(context, recv, argc, argv.get())
+            .ToLocal(&return_value)) {
       info.GetReturnValue().Set(return_value);
+    }
   }
 
   static void Save(const v8::FunctionCallbackInfo<v8::Value>& info) {
