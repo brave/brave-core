@@ -971,19 +971,10 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             });
                 }
             } else if (mActivityType == ActivityType.BUY) {
-                assert mBlockchainRegistry != null;
                 String symbol = AssetUtils.mapToRampNetworkSymbol(mCurrentBlockchainToken);
-                mBlockchainRegistry.getBuyUrl(OnRampProvider.RAMP, mCurrentBlockchainToken.chainId,
-                        from, symbol, amount, (url, error) -> {
-                            if (error != null && !error.isEmpty() && Utils.isDebuggable(this)) {
-                                Log.e(TAG, "Could not get buy URL: " + error);
-                                return;
-                            }
+                Intent selectPurchaseMethodIntent = SelectPurchaseMethodActivity.getIntent(this, mCurrentBlockchainToken.chainId, from, symbol, amount);
+                startActivity(selectPurchaseMethodIntent);
 
-                            Intent selectPurchaseMethodIntent =
-                                    SelectPurchaseMethodActivity.getIntent(this, url);
-                            startActivity(selectPurchaseMethodIntent);
-                        });
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentBlockchainToken != null) {
                     String btnText = mBtnBuySendSwap.getText().toString();

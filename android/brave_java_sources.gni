@@ -52,6 +52,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/KeyringModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/NetworkModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/NetworkSelectorModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/app/domain/OnRampModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/PortfolioModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/SendModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/SwapModel.java",

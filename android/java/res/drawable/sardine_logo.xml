@@ -1,0 +1,14 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<vector android:height="24dp" android:viewportHeight="745"
+    android:viewportWidth="745" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <clip-path android:pathData="M0,0h745v745h-745z"/>
+        <path android:fillColor="#3147FF" android:pathData="M372.5,372.5m-372.5,0a372.5,372.5 0,1 1,745 0a372.5,372.5 0,1 1,-745 0"/>
+        <path android:fillColor="#ffffff" android:pathData="M209.51,372.36L424.44,157.43C424.52,157.35 424.64,157.35 424.72,157.43L639.65,372.36C639.73,372.44 639.73,372.56 639.65,372.64L424.72,587.57C424.64,587.65 424.52,587.65 424.44,587.57L209.51,372.64C209.43,372.56 209.43,372.44 209.51,372.36Z"/>
+        <path android:fillColor="#ffffff" android:pathData="M123.22,248.1C123.22,247.92 123.44,247.84 123.57,247.96L248.68,372.19C248.76,372.27 248.76,372.39 248.68,372.47L123.57,497.04C123.44,497.16 123.22,497.08 123.22,496.9L123.22,248.1Z"/>
+    </group>
+</vector>
