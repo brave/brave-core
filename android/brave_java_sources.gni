@@ -55,6 +55,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/SendModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/SwapModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/WalletModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/app/helpers/Api33AndPlusBackPressHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
