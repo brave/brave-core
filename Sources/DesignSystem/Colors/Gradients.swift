@@ -31,6 +31,11 @@ public struct BraveGradient {
   public struct Stop {
     public var color: UIColor
     public var position: Double
+    
+    public init(color: UIColor, position: Double) {
+      self.color = color
+      self.position = position
+    }
   }
   public var type: CAGradientLayerType = .axial
   public var stops: [Stop]
@@ -57,7 +62,7 @@ public struct BraveGradient {
   }
 }
 
-extension Angle {
+public extension Angle {
   /// Create an Angle using degrees reported by Figma
   ///
   /// CSS gradients are flipped, therefore need to adjusted to look correct while in iOS
