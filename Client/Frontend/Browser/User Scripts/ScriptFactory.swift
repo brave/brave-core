@@ -63,7 +63,7 @@ class ScriptFactory {
       }
       
       return script
-      
+#if canImport(BraveTalk)
     case .braveTalkHelper:
       guard let script = BraveTalkScriptHandler.userScript else {
         assertionFailure("Cannot load script. This should not happen as it's part of the codebase")
@@ -71,6 +71,7 @@ class ScriptFactory {
       }
       
       return script
+#endif
       
     case .braveSkus:
       guard let script = BraveSkusScriptHandler.userScript else {

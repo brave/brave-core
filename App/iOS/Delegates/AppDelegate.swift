@@ -22,7 +22,9 @@ import BraveVPN
 import Growth
 import RuntimeWarnings
 import BraveNews
+#if canImport(BraveTalk)
 import BraveTalk
+#endif
 import Onboarding
 import os
 
@@ -343,10 +345,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     DebouncingResourceDownloader.shared.startLoading()
-
+#if canImport(BraveTalk)
     BraveTalkJitsiCoordinator.sendAppLifetimeEvent(
       .didFinishLaunching(options: launchOptions ?? [:])
     )
+#endif
     
     // DAU may not have pinged on the first launch so weekOfInstallation pref may not be set yet
     if let weekOfInstall = Preferences.DAU.weekOfInstallation.value ??
@@ -360,7 +363,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     return shouldPerformAdditionalDelegateHandling
   }
-
+  
+#if canImport(BraveTalk)
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     return BraveTalkJitsiCoordinator.sendAppLifetimeEvent(.continueUserActivity(userActivity, restorationHandler: restorationHandler))
   }
@@ -368,6 +372,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     return BraveTalkJitsiCoordinator.sendAppLifetimeEvent(.openURL(url, options: options))
   }
+#endif
   
   func applicationWillTerminate(_ application: UIApplication) {
     // We have only five seconds here, so let's hope this doesn't take too long.

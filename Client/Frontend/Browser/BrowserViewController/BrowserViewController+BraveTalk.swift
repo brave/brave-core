@@ -9,6 +9,7 @@ import Shared
 
 extension BrowserViewController {
   func launchNativeBraveTalk(tab: Tab?, room: String, token: String) {
+#if canImport(BraveTalk)
     braveTalkJitsiCoordinator.launchNativeBraveTalk(
       for: room,
       token: token,
@@ -29,6 +30,7 @@ extension BrowserViewController {
         }
       }
     )
+#endif
   }
   
   var braveTalkKeyCommands: [UIKeyCommand] {
@@ -38,6 +40,8 @@ extension BrowserViewController {
   }
   
   @objc private func toggleBraveTalkMute() {
+#if canImport(BraveTalk)
     braveTalkJitsiCoordinator.toggleMute()
+#endif
   }
 }
