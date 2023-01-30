@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
-     You can obtain one at http://mozilla.org/MPL/2.0/.
+     You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -78,47 +78,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvNotNow"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:text="@string/not_now"
-                android:gravity="center"
-                android:ellipsize="end"
-                android:textColor="@color/search_widget_promo_not_now_text_color"
-                android:fontFamily="sans-serif-medium" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNotNow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/not_now"
+                    android:gravity="center"
+                    android:ellipsize="end"
+                    android:textColor="@color/search_widget_promo_not_now_text_color"
+                    android:fontFamily="sans-serif-medium" />
 
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/cvAddWidget"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btAddWidget"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    app:cardBackgroundColor="@color/brave_action_color"
-                    app:cardCornerRadius="60dp">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="10dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_plus_add_widget"
-                        android:drawablePadding="8dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:text="@string/add_widget"
-                        android:textColor="@color/search_widget_promo_add_widget_text_color" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:background="@drawable/add_widget_button"
+                    android:text="@string/add_widget"
+                    android:textAllCaps="false"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="10dp"
+                    android:textColor="@color/search_widget_promo_add_widget_text_color"
+                    android:fontFamily="sans-serif-medium"
+                    app:drawableStartCompat="@drawable/ic_plus_add_widget"
+                    android:drawablePadding="2dp"
+                    style="?android:attr/borderlessButtonStyle"/>
 
             </LinearLayout>
 
