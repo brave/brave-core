@@ -40,7 +40,10 @@ deps = {
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "components/playlist/browser/resources/media_detector": "https://github.com/brave/playlist-component@58639d1d08bf6aaf3c92124c86db57332016a4c4",
+  "components/playlist/browser/resources/media_detector": {
+    "url": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
+    "condition": "checkout_win or checkout_linux or checkout_mac or checkout_android",
+  }
 }
 
 recursedeps = [
