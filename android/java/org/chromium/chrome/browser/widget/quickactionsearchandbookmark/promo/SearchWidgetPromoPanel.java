@@ -2,7 +2,7 @@
   Copyright (c) 2022 The Brave Authors. All rights reserved.
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at http://mozilla.org/MPL/2.0/.
+  You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo;
@@ -13,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -24,10 +22,8 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
 
     public SearchWidgetPromoPanel(@NonNull Context context) {
         View view = View.inflate(context, R.layout.layout_search_widget_promo, null);
-        CardView cvAddWidget = view.findViewById(R.id.cvAddWidget);
-        AppCompatTextView tvNotNow = view.findViewById(R.id.tvNotNow);
-        cvAddWidget.setOnClickListener(this);
-        tvNotNow.setOnClickListener(this);
+        view.findViewById(R.id.btAddWidget).setOnClickListener(this);
+        view.findViewById(R.id.tvNotNow).setOnClickListener(this);
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         mPopupWindow = new PopupWindow(view, width, height, true);
@@ -35,7 +31,7 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
 
     @Override
     public void onClick(@NonNull View view) {
-        if (view.getId() == R.id.cvAddWidget)
+        if (view.getId() == R.id.btAddWidget)
             BraveSearchWidgetUtils.requestPinAppWidget();
         else if (view.getId() == R.id.tvNotNow)
             BraveSearchWidgetUtils.setShouldShowWidgetPromo(false);
