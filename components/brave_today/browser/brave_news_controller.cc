@@ -420,13 +420,13 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
             controller->RemoveDirectFeed(publisher_id);
           }
         } else {
-          DictionaryPrefUpdate update(controller->prefs_,
+          ScopedDictPrefUpdate update(controller->prefs_,
                                       prefs::kBraveTodaySources);
           if (new_status == mojom::UserEnabled::NOT_MODIFIED) {
-            update->RemoveKey(publisher_id);
+            update->Remove(publisher_id);
           } else {
-            update->SetBoolKey(publisher_id,
-                               (new_status == mojom::UserEnabled::ENABLED));
+            update->Set(publisher_id,
+                        (new_status == mojom::UserEnabled::ENABLED));
             controller->publishers_controller_.EnsurePublishersIsUpdating();
           }
         }
@@ -435,8 +435,8 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
 }
 
 void BraveNewsController::ClearPrefs() {
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodaySources);
-  update->GetDict().clear();
+  ScopedDictPrefUpdate update(prefs_, prefs::kBraveTodaySources);
+  update->clear();
   // Force an update of publishers and feed to include or ignore
   // content from the affected publisher.
   publishers_controller_.EnsurePublishersIsUpdating();

@@ -52,18 +52,11 @@ const char kPasswordBrave[] = "brave";
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value::Dict>* values) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* dict = update.Get();
-  ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(kEthereumPrefKey);
-  if (!list) {
-    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
-  }
-  ASSERT_TRUE(list);
-  auto& list_value = list->GetList();
-  list_value.clear();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list = update->EnsureList(kEthereumPrefKey);
+  list->clear();
   for (auto& it : *values) {
-    list_value.Append(std::move(it));
+    list->Append(std::move(it));
   }
 }
 

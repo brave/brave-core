@@ -105,7 +105,7 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
 
   // In case title visibility wasn't changed and only vertical tab strip enabled
   // state changed, we should reset controls positions manually.
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
                                 frame()->GetWeakPtr()));
 }

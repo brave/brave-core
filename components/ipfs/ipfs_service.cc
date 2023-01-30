@@ -629,7 +629,7 @@ void IpfsService::OnGetConnectedPeers(
   bool success = response.Is2XXResponseCode();
   last_peers_retry_value_for_test_ = retry_number;
   if (response.error_code() == net::ERR_CONNECTION_REFUSED && retry_number) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpfsService::GetConnectedPeers,
                        weak_factory_.GetWeakPtr(), std::move(callback),

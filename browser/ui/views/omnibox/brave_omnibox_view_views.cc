@@ -8,6 +8,9 @@
 #include <utility>
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/omnibox/browser/omnibox_edit_controller.h"
@@ -28,13 +31,26 @@ void BraveUpdateContextMenu(ui::SimpleMenuModel* menu_contents, GURL url) {
 
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
-bool BraveOmniboxViewViews::SelectedTextIsURL() {
+absl::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
   GURL url;
   bool write_url = false;
   std::u16string selected_text = GetSelectedText();
   model()->AdjustTextForCopy(GetSelectedRange().GetMin(), &selected_text, &url,
                              &write_url);
-  return write_url;
+  if (!write_url) {
+    return absl::nullopt;
+  }
+  return url;
+}
+
+bool BraveOmniboxViewViews::SelectedTextIsURL() {
+  return GetURLToCopy().has_value();
+}
+
+void BraveOmniboxViewViews::CopySanitizedURL(const GURL& url) {
+  OnBeforePossibleChange();
+  brave::CopySanitizedURL(chrome::FindLastActive(), url);
+  OnAfterPossibleChange(true);
 }
 
 #if BUILDFLAG(IS_WIN)
@@ -46,12 +62,15 @@ bool BraveOmniboxViewViews::AcceleratorPressed(
           : ui::ET_KEY_RELEASED,
       accelerator.key_code(), accelerator.modifiers());
   auto command = GetCommandForKeyEvent(event);
-
+  auto url_to_copy = GetURLToCopy();
   if ((GetTextInputType() != ui::TEXT_INPUT_TYPE_PASSWORD) &&
-      (command != ui::TextEditCommand::COPY || !SelectedTextIsURL())) {
+      (command != ui::TextEditCommand::COPY)) {
     return OmniboxViewViews::AcceleratorPressed(accelerator);
   }
-  ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
+  if (!url_to_copy.has_value()) {
+    return OmniboxViewViews::AcceleratorPressed(accelerator);
+  }
+  CopySanitizedURL(url_to_copy.value());
   return true;
 }
 
@@ -75,8 +94,9 @@ bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 void BraveOmniboxViewViews::ExecuteTextEditCommand(
     ui::TextEditCommand command) {
-  if (command == ui::TextEditCommand::COPY && SelectedTextIsURL()) {
-    ExecuteCommand(IDC_COPY_CLEAN_LINK, 0);
+  auto url_to_copy = GetURLToCopy();
+  if (command == ui::TextEditCommand::COPY && url_to_copy.has_value()) {
+    CopySanitizedURL(url_to_copy.value());
     return;
   }
   OmniboxViewViews::ExecuteTextEditCommand(command);
@@ -86,8 +106,8 @@ void BraveOmniboxViewViews::ExecuteTextEditCommand(
 void BraveOmniboxViewViews::UpdateContextMenu(
     ui::SimpleMenuModel* menu_contents) {
   OmniboxViewViews::UpdateContextMenu(menu_contents);
-  if (SelectedTextIsURL()) {
-    BraveUpdateContextMenu(menu_contents,
-                           controller()->GetLocationBarModel()->GetURL());
+  auto url_to_copy = GetURLToCopy();
+  if (url_to_copy.has_value()) {
+    BraveUpdateContextMenu(menu_contents, url_to_copy.value());
   }
 }

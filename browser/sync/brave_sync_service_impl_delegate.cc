@@ -10,7 +10,7 @@
 
 #include "base/callback_helpers.h"
 #include "base/metrics/histogram_functions.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -61,7 +61,7 @@ void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
   if (!found_local_device) {
     // We can't call OnSelfDeviceInfoDeleted directly because we are on
     // remove device execution path, so posting task
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&BraveSyncServiceImplDelegate::OnSelfDeviceInfoDeleted,
                        weak_ptr_factory_.GetWeakPtr()));

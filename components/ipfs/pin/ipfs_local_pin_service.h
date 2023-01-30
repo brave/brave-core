@@ -139,6 +139,7 @@ class IpfsLocalPinService : public KeyedService {
   virtual void ValidatePins(const std::string& key,
                             const std::vector<std::string>& cids,
                             ValidatePinsCallback callback);
+  void ScheduleGcTask();
 
   void SetIpfsBasePinServiceForTesting(std::unique_ptr<IpfsBasePinService>);
 

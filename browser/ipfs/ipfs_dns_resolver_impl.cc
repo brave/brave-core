@@ -45,7 +45,7 @@ void IpfsDnsResolverImpl::OnDnsConfigChangeManagerConnectionError() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receiver_.reset();
   // Throttle network service reconnect to prevent possible battery drain.
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&IpfsDnsResolverImpl::SetupDnsConfigChangeNotifications,
                      weak_ptr_factory_.GetWeakPtr()),

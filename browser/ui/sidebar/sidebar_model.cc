@@ -162,7 +162,7 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
       // Favicon seems cached after this callback.
       // TODO(simonhong): Find more deterministic method instead of using
       // delayed task.
-      base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&SidebarModel::FetchFavicon,
                          weak_ptr_factory_.GetWeakPtr(), item),

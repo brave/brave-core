@@ -45,19 +45,11 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           const std::vector<base::Value::Dict>& values,
                           brave_wallet::mojom::CoinType coin) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* dict = update.Get();
-  ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(GetPrefKeyForCoinType(coin));
-  if (!list) {
-    list = dict->SetKey(GetPrefKeyForCoinType(coin),
-                        base::Value(base::Value::Type::LIST));
-  }
-  ASSERT_TRUE(list);
-  auto& list_value = list->GetList();
-  list_value.clear();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
+  list->clear();
   for (auto& it : values) {
-    list_value.Append(it.Clone());
+    list->Append(it.Clone());
   }
 }
 

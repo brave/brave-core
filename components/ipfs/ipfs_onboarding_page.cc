@@ -113,7 +113,7 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
                       kConnectedPeersRetryStepSec;
         RespondToPage(NO_PEERS_AVAILABLE, base::NumberToString16(retries));
       }
-      base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&IPFSOnboardingPage::GetConnectedPeers,
                          weak_ptr_factory_.GetWeakPtr()),

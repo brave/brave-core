@@ -189,7 +189,10 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
                                          IpfsService* ipfs_service)
     : prefs_service_(prefs_service), ipfs_service_(ipfs_service) {
   ipfs_base_pin_service_ = std::make_unique<IpfsBasePinService>(ipfs_service_);
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+}
+
+void IpfsLocalPinService::ScheduleGcTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&IpfsLocalPinService::AddGcTask,
                      weak_ptr_factory_.GetWeakPtr()),
@@ -235,7 +238,7 @@ void IpfsLocalPinService::OnRemovePinsFinished(RemovePinCallback callback,
                                                bool status) {
   std::move(callback).Run(status);
   if (status) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&IpfsLocalPinService::AddGcTask,
                        weak_ptr_factory_.GetWeakPtr()),

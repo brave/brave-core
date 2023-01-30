@@ -90,7 +90,7 @@ std::string Select(const std::string& selector1, const std::string& selector2) {
 
 void NonBlockingDelay(const base::TimeDelta& delay) {
   base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
   run_loop.Run();
 }

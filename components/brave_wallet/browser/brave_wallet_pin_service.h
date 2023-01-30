@@ -41,6 +41,8 @@ class BraveWalletPinService : public KeyedService,
                         IpfsService* ipfs_service);
   ~BraveWalletPinService() override;
 
+  virtual void Restore();
+
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletPinService> receiver);
 

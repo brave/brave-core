@@ -52,18 +52,12 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           CoinType coin,
                           std::vector<base::Value::Dict>* values) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  base::Value* list = dict.Find(brave_wallet::GetPrefKeyForCoinType(coin));
-  if (!list) {
-    list = dict.Set(brave_wallet::GetPrefKeyForCoinType(coin),
-                    base::Value::List());
-  }
-  ASSERT_TRUE(list);
-  auto& list_value = list->GetList();
-  list_value.clear();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list =
+      update->EnsureList(brave_wallet::GetPrefKeyForCoinType(coin));
+  list->clear();
   for (auto& it : *values) {
-    list_value.Append(std::move(it));
+    list->Append(std::move(it));
   }
 }
 
@@ -349,9 +343,8 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
   UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
-  DictionaryPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  dict.Set(brave_wallet::kEthereumPrefKey, "chain_id");
+  ScopedDictPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);
+  update->Set(brave_wallet::kEthereumPrefKey, "chain_id");
   {
     base::Value::List args;
     args.Append(base::Value("id"));

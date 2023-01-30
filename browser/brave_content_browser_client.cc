@@ -762,7 +762,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               g_brave_browser_process->speedreader_rewriter_service(),
               speedreader_service, settings_map, tab_helper->GetWeakPtr(),
               request.url, check_disabled_sites,
-              base::ThreadTaskRunnerHandle::Get());
+              base::SingleThreadTaskRunner::GetCurrentDefault());
       if (throttle)
         result.push_back(std::move(throttle));
     }
@@ -771,7 +771,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     if (isMainFrame) {
       // De-AMP
       if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-              base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
+              base::SingleThreadTaskRunner::GetCurrentDefault(), request,
+              wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
       }
     }

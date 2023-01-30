@@ -11,10 +11,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/test/test_timeouts.h"
-#include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
@@ -70,7 +70,7 @@ void WaitForTimeout(int timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(
       FROM_HERE, base::Seconds(kMaxTimeoutPerLoadedURL + 1));
   base::RunLoop run_loop;
-  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, run_loop.QuitClosure(), base::Seconds(timeout));
   run_loop.Run();
 }

@@ -4,14 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { create } from 'ethereum-blockies'
 
 // Selectors
 import { WalletSelectors } from '../../../../../common/selectors'
 import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
 
 // Styled Components
-import { Button } from './account-list-item.style'
-import { Text } from '../../shared.styles'
+import { Button, AccountCircle } from './account-list-item.style'
+import { Text, Column } from '../../shared.styles'
 
 interface Props {
   onClick: (address: string) => void
@@ -30,10 +31,17 @@ export const AccountListItem = (props: Props) => {
     return selectedAccount?.address.toLowerCase() === address.toLowerCase()
   }, [selectedAccount, address])
 
+  const orb = React.useMemo(() => {
+    return create({ seed: address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [address])
+
   return (
     <Button disabled={isAccountDisabled} onClick={() => onClick(address)}>
-      <Text textColor='text01' textSize='12px' isBold={true}>{name}</Text>
-      <Text textColor='text03' textSize='12px' isBold={false}>{address}</Text>
+      <AccountCircle orb={orb} />
+      <Column horizontalAlign='flex-start' verticalAlign='center'>
+        <Text textColor='text03' textSize='12px' isBold={false}>{name}</Text>
+        <Text textColor='text01' textSize='12px' isBold={false}>{address}</Text>
+      </Column>
     </Button>
 
   )

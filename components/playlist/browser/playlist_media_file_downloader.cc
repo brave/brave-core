@@ -100,7 +100,7 @@ void PlaylistMediaFileDownloader::ScheduleToDetachCachedFile(
     download_items_to_be_detached_.push_back(std::move(download));
   }
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&PlaylistMediaFileDownloader::DetachCachedFile,
                                 weak_factory_.GetWeakPtr(), item));
 }

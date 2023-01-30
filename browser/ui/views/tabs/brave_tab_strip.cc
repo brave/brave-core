@@ -113,7 +113,7 @@ void BraveTabStrip::AddedToWidget() {
   } else {
     // Schedule UpdateTabContainer(). At this point, BrowserWindow could still
     // be being created and it could be unbound to Browser.
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
                                   base::Unretained(this)));
   }
@@ -288,8 +288,8 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     if (should_use_compound_tab_container) {
-      tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-          ->SetOrientation(views::LayoutOrientation::kVertical);
+      // Upstream's compound tab container lay out its sub containers manually.
+      tab_container_->SetLayoutManager(nullptr);
     }
   }
 }

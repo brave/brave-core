@@ -25,9 +25,25 @@ BraveWalletAutoPinService::BraveWalletAutoPinService(
       brave_wallet_service_(brave_wallet_service),
       brave_wallet_pin_service_(brave_wallet_pin_service) {
   DCHECK(brave_wallet_service);
-  Restore();
   brave_wallet_service->AddTokenObserver(
       token_observer_.BindNewPipeAndPassRemote());
+  if (IsAutoPinEnabled()) {
+    Restore();
+  }
+  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+  pref_change_registrar_->Init(pref_service_);
+  pref_change_registrar_->Add(
+      kAutoPinEnabled,
+      base::BindRepeating(&BraveWalletAutoPinService::OnAutoPinStatusChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletAutoPinService::OnAutoPinStatusChanged() {
+  if (IsAutoPinEnabled()) {
+    Restore();
+  } else {
+    queue_.clear();
+  }
 }
 
 BraveWalletAutoPinService::~BraveWalletAutoPinService() {}
@@ -45,16 +61,19 @@ BraveWalletAutoPinService::MakeRemote() {
 }
 
 void BraveWalletAutoPinService::OnTokenAdded(BlockchainTokenPtr token) {
-  if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
+  if (!IsAutoPinEnabled()) {
     return;
   }
-  if (!IsAutoPinEnabled()) {
+  if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
   PostPinToken(std::move(token));
 }
 
 void BraveWalletAutoPinService::OnTokenRemoved(BlockchainTokenPtr token) {
+  if (!IsAutoPinEnabled()) {
+    return;
+  }
   if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
@@ -65,6 +84,11 @@ void BraveWalletAutoPinService::OnTokenRemoved(BlockchainTokenPtr token) {
 }
 
 void BraveWalletAutoPinService::Restore() {
+  if (!IsAutoPinEnabled()) {
+    NOTREACHED();
+    return;
+  }
+  brave_wallet_pin_service_->Restore();
   brave_wallet_service_->GetAllUserAssets(
       base::BindOnce(&BraveWalletAutoPinService::OnTokenListResolved,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -72,7 +96,9 @@ void BraveWalletAutoPinService::Restore() {
 
 void BraveWalletAutoPinService::OnTokenListResolved(
     std::vector<BlockchainTokenPtr> token_list) {
-  bool autopin_enabled = IsAutoPinEnabled();
+  if (!IsAutoPinEnabled()) {
+    return;
+  }
   // Resolves list of user tokens.
   // Check whether they are pinned or not and posts corresponding tasks.
   std::set<std::string> known_tokens =
@@ -94,10 +120,8 @@ void BraveWalletAutoPinService::OnTokenListResolved(
 
     if (!status ||
         status->code == mojom::TokenPinStatusCode::STATUS_NOT_PINNED) {
-      if (autopin_enabled) {
-        AddOrExecute(std::make_unique<IntentData>(token, Operation::kAdd,
-                                                  absl::nullopt));
-      }
+      AddOrExecute(
+          std::make_unique<IntentData>(token, Operation::kAdd, absl::nullopt));
     } else if (status->code ==
                    mojom::TokenPinStatusCode::STATUS_PINNING_FAILED ||
                status->code ==
@@ -176,6 +200,9 @@ void BraveWalletAutoPinService::UnpinToken(
 }
 
 void BraveWalletAutoPinService::AddOrExecute(std::unique_ptr<IntentData> data) {
+  if (!IsAutoPinEnabled()) {
+    return;
+  }
   DCHECK(data);
   for (const auto& v : queue_) {
     if (v->token == data->token && v->service == data->service) {
@@ -198,8 +225,11 @@ void BraveWalletAutoPinService::AddOrExecute(std::unique_ptr<IntentData> data) {
 }
 
 void BraveWalletAutoPinService::PostRetry(std::unique_ptr<IntentData> data) {
+  if (!IsAutoPinEnabled()) {
+    return;
+  }
   int multiply = ++data->attempt;
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&BraveWalletAutoPinService::AddOrExecute,
                      weak_ptr_factory_.GetWeakPtr(), std::move(data)),
@@ -207,6 +237,9 @@ void BraveWalletAutoPinService::PostRetry(std::unique_ptr<IntentData> data) {
 }
 
 void BraveWalletAutoPinService::CheckQueue() {
+  if (!IsAutoPinEnabled()) {
+    return;
+  }
   if (queue_.empty() || current_) {
     return;
   }
@@ -246,7 +279,6 @@ void BraveWalletAutoPinService::OnValidateTaskFinished(
 
 void BraveWalletAutoPinService::SetAutoPinEnabled(bool enabled) {
   pref_service_->SetBoolean(kAutoPinEnabled, enabled);
-  Restore();
 }
 
 bool BraveWalletAutoPinService::IsAutoPinEnabled() {

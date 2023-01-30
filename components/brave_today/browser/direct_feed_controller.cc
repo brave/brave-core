@@ -146,19 +146,19 @@ bool DirectFeedController::AddDirectFeedPref(
   // We use a dictionary pref, but that's to reserve space for more
   // future customization on a feed. For now we just store a bool, and
   // remove the entire entry if a user unsubscribes from a user feed.
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
-  base::Value value = base::Value(base::Value::Type::DICTIONARY);
-  value.SetStringKey(prefs::kBraveTodayDirectFeedsKeySource, feed_url.spec());
-  value.SetStringKey(prefs::kBraveTodayDirectFeedsKeyTitle, entry_title);
-  update->SetPath(entry_id, std::move(value));
+  ScopedDictPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
+  base::Value::Dict value;
+  value.Set(prefs::kBraveTodayDirectFeedsKeySource, feed_url.spec());
+  value.Set(prefs::kBraveTodayDirectFeedsKeyTitle, entry_title);
+  update->SetByDottedPath(entry_id, std::move(value));
 
   return true;
 }
 
 void DirectFeedController::RemoveDirectFeedPref(
     const std::string& publisher_id) {
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
-  update->RemoveKey(publisher_id);
+  ScopedDictPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
+  update->Remove(publisher_id);
 }
 
 std::vector<mojom::PublisherPtr> DirectFeedController::ParseDirectFeedsPref() {

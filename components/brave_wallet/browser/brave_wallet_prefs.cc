@@ -247,9 +247,8 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
     prefs->ClearPref(kBraveWalletTransactions);
     if (!transactions.empty()) {
-      DictionaryPrefUpdate update(prefs, kBraveWalletTransactions);
-      base::Value* dict = update.Get();
-      dict->SetPath(kEthereumPrefKey, base::Value(std::move(transactions)));
+      ScopedDictPrefUpdate update(prefs, kBraveWalletTransactions);
+      update->Set(kEthereumPrefKey, std::move(transactions));
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }

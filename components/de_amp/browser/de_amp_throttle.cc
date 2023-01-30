@@ -141,7 +141,7 @@ bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,
   // This is added to check for server redirect loops
   params.extra_headers += base::StringPrintf("%s: true\r\n", kDeAmpHeaderName);
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(
                      [](base::WeakPtr<content::WebContents> web_contents,
                         const content::OpenURLParams& params) {
