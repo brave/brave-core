@@ -108,7 +108,7 @@ public class CryptoModel {
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
                 mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
                 mBraveWalletService, mAssetRatioService, mSharedData);
-        mOnRampModel = new OnRampModel(mBlockchainRegistry);
+        mOnRampModel = new OnRampModel(mAssetRatioService);
         _mIsSwapEnabled = new MediatorLiveData<>();
         mIsSwapEnabled = _mIsSwapEnabled;
         _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {

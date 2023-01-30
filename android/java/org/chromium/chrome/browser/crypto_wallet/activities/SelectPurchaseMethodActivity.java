@@ -72,22 +72,22 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         mTransakButton = findViewById(R.id.purchase_method_btn_transak);
 
         if (mOnRampModel != null) {
-            mOnRampModel.getBuyUrl(
-                    OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+            mOnRampModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
+                    mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mRampNetworkLayout, mRampButton, url);
                         }
                     });
 
-            mOnRampModel.getBuyUrl(
-                    OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+            mOnRampModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
+                    mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mSardineLayout, mSardineButton, url);
                         }
                     });
 
-            mOnRampModel.getBuyUrl(
-                    OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol, mAmount, url -> {
+            mOnRampModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
+                    mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mTransakLayout, mTransakButton, url);
                         }
