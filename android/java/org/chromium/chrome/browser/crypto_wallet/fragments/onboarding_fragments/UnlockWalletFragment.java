@@ -24,9 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -47,6 +49,15 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         }
 
         return null;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Api33AndPlusBackPressHelper.create(
+                    this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
+        }
     }
 
     @Override
