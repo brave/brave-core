@@ -6,7 +6,6 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_FARBLING_BRAVE_SESSION_CACHE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_FARBLING_BRAVE_SESSION_CACHE_H_
 
-#include <map>
 #include <string>
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
@@ -16,6 +15,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
@@ -94,7 +94,7 @@ class CORE_EXPORT BraveSessionCache final
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
-  std::map<FarbleKey, int> farbled_integers_;
+  WTF::HashMap<FarbleKey, int> farbled_integers_;
   BraveFarblingLevel farbling_level_;
   absl::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
 
