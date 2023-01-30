@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 7e917c31f61293ef5dd72807f0c03217005953b2..f8385ede4e92045ea59c8470557ff61a817a883b 100644
+index 193d174d20d4511c0288ddaf91bc018524e15f6a..60674cb3a48afed6ea06de47b66ad8b34bcb70de 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1356,6 +1356,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -11,7 +11,7 @@ index 7e917c31f61293ef5dd72807f0c03217005953b2..f8385ede4e92045ea59c8470557ff61a
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1749,6 +1751,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1751,6 +1753,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
        prefs::kAccessibilityPdfOcrAlwaysActive, false,
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
