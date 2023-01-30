@@ -387,9 +387,12 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 bool BraveBrowserView::HasSelectedURL() const {
-  return static_cast<BraveOmniboxViewViews*>(
-             GetLocationBarView()->omnibox_view())
-      ->SelectedTextIsURL();
+  if (!GetLocationBarView()) {
+    return false;
+  }
+  auto* brave_omnibox_view =
+      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
+  return brave_omnibox_view && brave_omnibox_view->SelectedTextIsURL();
 }
 
 WalletButton* BraveBrowserView::GetWalletButton() {
