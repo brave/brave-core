@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/net/brave_request_handler.h"

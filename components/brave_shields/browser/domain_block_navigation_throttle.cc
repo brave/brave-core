@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"

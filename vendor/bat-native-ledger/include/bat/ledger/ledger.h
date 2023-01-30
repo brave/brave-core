@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"

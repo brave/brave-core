@@ -13,10 +13,10 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 #include "base/base64.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"

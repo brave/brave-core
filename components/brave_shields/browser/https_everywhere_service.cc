@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/base_paths.h"
-#include "base/functional/bind.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"

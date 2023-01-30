@@ -13,8 +13,8 @@
 #include <set>
 #include <string>
 
-#include "base/functional/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
 #include "bat/ledger/internal/wallet_provider/get_external_wallet.h"

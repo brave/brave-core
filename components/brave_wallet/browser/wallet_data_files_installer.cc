@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/functional/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"

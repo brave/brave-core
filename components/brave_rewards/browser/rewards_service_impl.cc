@@ -15,11 +15,11 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/functional/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_string_value_serializer.h"

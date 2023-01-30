@@ -10,8 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/debounce/browser/debounce_service.h"

@@ -9,10 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"

@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/functional/callback.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 
 namespace component_updater {
 class ComponentUpdateService;

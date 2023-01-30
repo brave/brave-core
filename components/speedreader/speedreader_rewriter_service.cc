@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/functional/bind.h"
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"

@@ -11,10 +11,10 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"

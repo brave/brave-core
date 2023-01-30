@@ -7,8 +7,8 @@
 
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
-#include "base/functional/bind.h"
 #include "base/command_line.h"
+#include "base/functional/bind.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/metrics/field_trial.h"
 #include "base/path_service.h"

@@ -13,9 +13,9 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/containers/flat_set.h"
 #include "base/guid.h"
 #include "base/location.h"
 #include "base/logging.h"

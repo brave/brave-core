@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "base/functional/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"

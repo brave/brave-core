@@ -6,9 +6,9 @@
 #include <functional>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"

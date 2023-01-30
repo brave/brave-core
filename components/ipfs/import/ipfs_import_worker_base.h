@@ -12,9 +12,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
