@@ -48,7 +48,7 @@ struct ModelCombinationsParamInfo final {
 
 // Expected number of segments for all possible model combinations for both,
 // never processed and previously processed state
-const ModelCombinationsParamInfo kTests[] = {
+constexpr ModelCombinationsParamInfo kTests[] = {
     // Never processed
     {false, false, false, false, 0},
     {false, false, true, false, 0},
@@ -163,12 +163,10 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {
-    const char epsilon_value[] = "epsilon_value";
-    base::FieldTrialParams epsilon_greedy_bandit_parameters;
-    // Set bandit to always exploit for deterministic execution
-    epsilon_greedy_bandit_parameters[epsilon_value] = "0.0";
-    enabled_features.emplace_back(features::kEpsilonGreedyBandit,
-                                  epsilon_greedy_bandit_parameters);
+    base::FieldTrialParams params;
+    params["epsilon_value"] =
+        "0.0";  // Set bandit to always exploit for deterministic execution
+    enabled_features.emplace_back(features::kEpsilonGreedyBandit, params);
   } else {
     disabled_features.emplace_back(features::kEpsilonGreedyBandit);
   }
@@ -236,15 +234,14 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   ProcessTextClassification();
   ProcessPurchaseIntent();
 
-  const char epsilon_value[] = "epsilon_value";
-  std::map<std::string, std::string> epsilon_greedy_bandit_parameters;
-  // Set bandit to always exploit for deterministic execution
-  epsilon_greedy_bandit_parameters[epsilon_value] = "0.0";
+  std::map<std::string, std::string> params;
+  params["epsilon_value"] =
+      "0.0";  // Set bandit to always exploit for deterministic execution
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kPurchaseIntent, /*default params*/ {}},
-       {features::kEpsilonGreedyBandit, epsilon_greedy_bandit_parameters},
+       {features::kEpsilonGreedyBandit, params},
        {features::kTextClassification, /*default params*/ {}}},
       {});
 

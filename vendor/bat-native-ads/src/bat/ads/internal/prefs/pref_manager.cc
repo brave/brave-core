@@ -31,7 +31,7 @@ PrefManager* PrefManager::GetInstance() {
 
 // static
 bool PrefManager::HasInstance() {
-  return g_pref_manager_instance != nullptr;
+  return !!g_pref_manager_instance;
 }
 
 void PrefManager::AddObserver(PrefManagerObserver* observer) {

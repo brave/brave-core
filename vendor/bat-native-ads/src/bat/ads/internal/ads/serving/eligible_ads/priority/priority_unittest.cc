@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/priority/priority.h"
 
-#include "bat/ads/internal/common/containers/container_util.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
@@ -66,8 +66,8 @@ TEST(BatAdsPriorityTest, PrioritizeMultipleCreativeAds) {
   // Assert
   const CreativeNotificationAdList expected_prioritized_creative_ads = {
       creative_ad_1, creative_ad_3};
-  EXPECT_TRUE(IsEqualContainers(expected_prioritized_creative_ads,
-                                prioritized_creative_ads));
+  EXPECT_TRUE(base::ranges::equal(expected_prioritized_creative_ads,
+                                  prioritized_creative_ads));
 }
 
 TEST(BatAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {

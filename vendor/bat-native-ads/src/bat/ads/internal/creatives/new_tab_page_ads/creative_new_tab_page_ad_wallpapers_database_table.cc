@@ -5,12 +5,12 @@
 
 #include "bat/ads/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
-#include <algorithm>
 #include <iterator>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/database/database_bind_util.h"
@@ -75,11 +75,10 @@ void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
   DCHECK(transaction);
 
   CreativeNewTabPageAdList filtered_creative_ads;
-  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
-               std::back_inserter(filtered_creative_ads),
-               [](const CreativeNewTabPageAdInfo& creative_ad) {
-                 return !creative_ad.wallpapers.empty();
-               });
+  base::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
+                        [](const CreativeNewTabPageAdInfo& creative_ad) {
+                          return !creative_ad.wallpapers.empty();
+                        });
 
   if (filtered_creative_ads.empty()) {
     return;

@@ -7,7 +7,7 @@
 
 #include "base/containers/circular_deque.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/common/containers/container_util.h"
+#include "bat/ads/internal/common/unittest/unittest_container_util.h"
 #include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -73,7 +73,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
       ad7   // Ad 5
   };
 
-  EXPECT_TRUE(CompareAsSets(expected_history, history));
+  EXPECT_TRUE(ContainersEq(expected_history, history));
 }
 
 TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
@@ -139,7 +139,7 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
       ad8   // Click
   };
 
-  EXPECT_TRUE(CompareAsSets(expected_history, history));
+  EXPECT_TRUE(ContainersEq(expected_history, history));
 }
 
 }  // namespace ads

@@ -114,7 +114,7 @@ ClientStateManager* ClientStateManager::GetInstance() {
 
 // static
 bool ClientStateManager::HasInstance() {
-  return g_client_instance != nullptr;
+  return !!g_client_instance;
 }
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()

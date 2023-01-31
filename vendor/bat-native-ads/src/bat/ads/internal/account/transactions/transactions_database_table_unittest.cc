@@ -9,8 +9,8 @@
 
 #include "base/functional/bind.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -34,7 +34,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
       [](const TransactionList& expected_transactions, const bool success,
          const TransactionList& transactions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
       std::move(expected_transactions)));
 }
@@ -64,7 +64,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
       [](const TransactionList& expected_transactions, const bool success,
          const TransactionList& transactions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
       std::move(expected_transactions)));
 }
@@ -90,7 +90,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
       [](const TransactionList& expected_transactions, const bool success,
          const TransactionList& transactions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
       std::move(expected_transactions)));
 }
@@ -121,7 +121,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
           [](const TransactionList& expected_transactions, const bool success,
              const TransactionList& transactions) {
             ASSERT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+            EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
           },
           std::move(expected_transactions)));
 
@@ -160,7 +160,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
       [](const TransactionList& expected_transactions, const bool success,
          const TransactionList& transactions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_transactions, transactions));
+        EXPECT_TRUE(ContainersEq(expected_transactions, transactions));
       },
       std::move(expected_transactions)));
 }

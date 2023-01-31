@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/time/time.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_constants.h"
+#include "bat/ads/internal/common/unittest/unittest_container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
@@ -552,7 +552,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
       expected_conversions.push_back(expected_conversion);
     }
 
-    EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+    EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
   });
 
   // Assert

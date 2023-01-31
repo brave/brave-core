@@ -20,12 +20,11 @@ class BatAdsStatementUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "7";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "7";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
@@ -143,8 +142,8 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   const int ads_received = GetAdsReceivedThisMonth(transactions);
 
   // Assert
-  const int expected_ads_received = 2;
-  EXPECT_EQ(expected_ads_received, ads_received);
+  constexpr int kExpectedAdsReceived = 2;
+  EXPECT_EQ(kExpectedAdsReceived, ads_received);
 }
 
 }  // namespace ads

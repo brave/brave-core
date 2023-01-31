@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-const std::map<std::string, ComponentInfo> kComponents = {
+const std::map<std::string, ComponentInfo> components = {
     {"AF",
      ComponentInfo(
          "jememeholcpjpoahinnlafoiaknnmfgl",

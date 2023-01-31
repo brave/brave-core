@@ -80,7 +80,7 @@ constexpr const char* kP2AQuestionNameList[] = {
     "Brave.P2A.AdImpressionsPerSegment.weather",
     "Brave.P2A.AdImpressionsPerSegment.untargeted"};
 
-const uint16_t kIntervalBuckets[] = {0, 5, 10, 20, 50, 100, 250, 500};
+constexpr uint16_t kIntervalBuckets[] = {0, 5, 10, 20, 50, 100, 250, 500};
 
 }  // namespace
 

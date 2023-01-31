@@ -11,7 +11,7 @@ namespace ads {
 
 const std::vector<std::string>& GetWikipediaSearchEngineSubdomains() {
   // See https://www.wikipedia.org/.
-  static base::NoDestructor<std::vector<std::string>> extensions(
+  static const base::NoDestructor<std::vector<std::string>> kExtensions(
       {"af", "ar", "arz", "ast", "az",  "azb", "be", "bg",    "bn",
        "ca", "ce", "ceb", "cs",  "cy",  "da",  "de", "el",    "en",
        "eo", "es", "et",  "eu",  "fa",  "fi",  "fr", "gl",    "he",
@@ -20,17 +20,17 @@ const std::vector<std::string>& GetWikipediaSearchEngineSubdomains() {
        "nl", "nn", "no",  "pl",  "pt",  "ro",  "ru", "sh",    "simple",
        "sk", "sl", "sr",  "sv",  "ta",  "tg",  "th", "tr",    "tt",
        "uk", "ur", "uz",  "vi",  "vo",  "war", "zh", "zh-yue"});
-  return *extensions;
+  return *kExtensions;
 }
 
 const std::vector<std::string>& GetYahooSearchEngineSubdomains() {
   // See https://uk.yahoo.com/everything/world.
-  static base::NoDestructor<std::vector<std::string>> extensions(
+  static const base::NoDestructor<std::vector<std::string>> kExtensions(
       {"au",      "be", "br",       "ca", "de", "en-maktoob", "es",
        "espanol", "fr", "fr-be",    "gr", "hk", "id",         "ie",
        "in",      "it", "malaysia", "nz", "ph", "qc",         "ro",
        "se",      "sg", "tw",       "uk", "vn", "www",        "za"});
-  return *extensions;
+  return *kExtensions;
 }
 
 }  // namespace ads

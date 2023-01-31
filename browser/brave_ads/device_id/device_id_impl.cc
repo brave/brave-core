@@ -65,7 +65,7 @@ bool IsValidMacAddressImpl(const void* bytes, size_t size) {
   constexpr size_t kOuiLength = 3;
 
   // VPN, virtualization, tethering, bluetooth, etc.
-  static MacAddressInfo invalid_mac_addresses[] = {
+  static constexpr MacAddressInfo kInvalidMacAddresses[] = {
       // Empty address
       {kMacLength, {0, 0, 0, 0, 0, 0}},
       // VMware
@@ -167,7 +167,7 @@ bool IsValidMacAddressImpl(const void* bytes, size_t size) {
     return false;
   }
 
-  for (const auto& mac_address : invalid_mac_addresses) {
+  for (const auto& mac_address : kInvalidMacAddresses) {
     if (memcmp(mac_address.address, bytes, mac_address.count) == 0) {
       return false;
     }

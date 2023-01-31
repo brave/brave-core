@@ -59,7 +59,7 @@ FlagManager* FlagManager::GetInstance() {
 
 // static
 bool FlagManager::HasInstance() {
-  return g_flag_manager_instance != nullptr;
+  return !!g_flag_manager_instance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

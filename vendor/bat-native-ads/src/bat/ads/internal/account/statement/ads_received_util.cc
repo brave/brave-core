@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/account/statement/ads_received_util.h"
 
-#include <algorithm>
-
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
 namespace ads {
@@ -14,13 +13,12 @@ namespace ads {
 int GetAdsReceivedForDateRange(const TransactionList& transactions,
                                const base::Time from_time,
                                const base::Time to_time) {
-  return std::count_if(
-      transactions.cbegin(), transactions.cend(),
-      [from_time, to_time](const TransactionInfo& transaction) {
+  return static_cast<int>(base::ranges::count_if(
+      transactions, [from_time, to_time](const TransactionInfo& transaction) {
         return transaction.confirmation_type == ConfirmationType::kViewed &&
                transaction.created_at >= from_time &&
                transaction.created_at <= to_time;
-      });
+      }));
 }
 
 }  // namespace ads

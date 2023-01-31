@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULES_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULES_UTIL_H_
 
-#include <algorithm>
 #include <iterator>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -32,18 +32,18 @@ T ApplyExclusionRules(const T& creative_ads,
 
   T filtered_creative_ads;
 
-  std::copy_if(creative_ads.cbegin(), creative_ads.cend(),
-               std::back_inserter(filtered_creative_ads),
-               [exclusion_rules, &last_served_ad,
-                &should_cap_last_served_ad](const CreativeAdInfo& creative_ad) {
-                 const bool should_exclude =
-                     exclusion_rules->ShouldExcludeCreativeAd(creative_ad) ||
-                     (should_cap_last_served_ad &&
-                      creative_ad.creative_instance_id ==
-                          last_served_ad.creative_instance_id);
+  base::ranges::copy_if(
+      creative_ads, std::back_inserter(filtered_creative_ads),
+      [exclusion_rules, &last_served_ad,
+       &should_cap_last_served_ad](const CreativeAdInfo& creative_ad) {
+        const bool should_exclude =
+            exclusion_rules->ShouldExcludeCreativeAd(creative_ad) ||
+            (should_cap_last_served_ad &&
+             creative_ad.creative_instance_id ==
+                 last_served_ad.creative_instance_id);
 
-                 return !should_exclude;
-               });
+        return !should_exclude;
+      });
 
   return filtered_creative_ads;
 }

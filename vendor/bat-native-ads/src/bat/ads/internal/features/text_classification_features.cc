@@ -15,7 +15,7 @@ constexpr char kFeatureName[] = "TextClassification";
 
 constexpr char kFieldTrialParameterPageProbabilitiesHistorySize[] =
     "page_probabilities_history_size";
-const int kDefaultPageProbabilitiesHistorySize = 5;
+constexpr int kDefaultPageProbabilitiesHistorySize = 5;
 
 constexpr char kFieldTrialParameterResourceVersion[] =
     "text_classification_resource_version";

@@ -78,7 +78,7 @@ std::string GetDiskUuid() {
   std::string result;
   for (const char* device_name : kDeviceNames) {
     DiskMap::iterator iter = disks.find(base::FilePath(device_name));
-    if (iter != disks.end()) {
+    if (iter != disks.cend()) {
       result = iter->second.value();
       break;
     }

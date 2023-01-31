@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/account/transactions/transactions_util.h"
 
-#include <algorithm>
 #include <iterator>
 
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
 namespace ads {
@@ -17,12 +17,12 @@ TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                                             const base::Time to_time) {
   TransactionList filtered_transactions;
 
-  std::copy_if(transactions.cbegin(), transactions.cend(),
-               std::back_inserter(filtered_transactions),
-               [from_time, to_time](const TransactionInfo& transaction) {
-                 return transaction.created_at >= from_time &&
-                        transaction.created_at <= to_time;
-               });
+  base::ranges::copy_if(
+      transactions, std::back_inserter(filtered_transactions),
+      [from_time, to_time](const TransactionInfo& transaction) {
+        return transaction.created_at >= from_time &&
+               transaction.created_at <= to_time;
+      });
 
   return filtered_transactions;
 }

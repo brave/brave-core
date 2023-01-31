@@ -69,13 +69,11 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithZeroWeightsNotAllowedByGriffin) {
   // Arrange
-  std::map<std::string, std::string> eligible_ads_parameters;
-  eligible_ads_parameters["ad_predictor_weights"] =
-      "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0";
-
+  std::map<std::string, std::string> params;
+  params["ad_predictor_weights"] = "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kEligibleAds, eligible_ads_parameters}}, {});
+      {{features::kEligibleAds, params}}, {});
 
   CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
   creative_ad.segment = "foo-bar";

@@ -19,7 +19,7 @@ constexpr int kDefaultResourceVersion = 1;
 
 constexpr char kFieldTrialParameterTextEmbeddingsHistorySize[] =
     "text_embeddings_history_size";
-const int kDefaultTextEmbeddingsHistorySize = 10;
+constexpr int kDefaultTextEmbeddingsHistorySize = 10;
 
 }  // namespace
 

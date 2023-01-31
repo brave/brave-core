@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/base64.h"
@@ -23,6 +22,7 @@
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -318,9 +318,8 @@ void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
     history.push_back(result.url().GetWithEmptyPath());
   }
 
-  std::sort(history.begin(), history.end());
-  history.erase(std::unique(history.begin(), history.end()), history.end());
-
+  base::ranges::sort(history);
+  history.erase(base::ranges::unique(history), history.cend());
   std::move(callback).Run(history);
 }
 
@@ -836,7 +835,7 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
 bool AdsServiceImpl::StopNotificationAdTimeOutTimer(
     const std::string& placement_id) {
   const auto iter = notification_ad_timers_.find(placement_id);
-  if (iter == notification_ad_timers_.end()) {
+  if (iter == notification_ad_timers_.cend()) {
     return false;
   }
 
@@ -1115,20 +1114,20 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
-  static base::NoDestructor<
+  static const base::NoDestructor<
       base::flat_map<std::pair<int, int>, void (AdsServiceImpl::*)()>>
-      mappings({// {{from version, to version}, function}
-                {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-                {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-                {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-                {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-                {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
-                {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
-                {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
-                {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
-                {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
-                {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11},
-                {{11, 12}, &AdsServiceImpl::MigratePrefsVersion11To12}});
+      kMappings({// {{from version, to version}, function}
+                 {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+                 {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+                 {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
+                 {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
+                 {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
+                 {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7},
+                 {{7, 8}, &AdsServiceImpl::MigratePrefsVersion7To8},
+                 {{8, 9}, &AdsServiceImpl::MigratePrefsVersion8To9},
+                 {{9, 10}, &AdsServiceImpl::MigratePrefsVersion9To10},
+                 {{10, 11}, &AdsServiceImpl::MigratePrefsVersion10To11},
+                 {{11, 12}, &AdsServiceImpl::MigratePrefsVersion11To12}});
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -1137,8 +1136,8 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = mappings->find(std::make_pair(from_version, to_version));
-    if (mapping == mappings->end()) {
+    auto mapping = kMappings->find(std::make_pair(from_version, to_version));
+    if (mapping == kMappings->end()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences
       return false;
@@ -1960,7 +1959,7 @@ void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
   url_loader->SetAllowHttpErrorResults(true);
 
   auto url_loader_iter =
-      url_loaders_.insert(url_loaders_.end(), std::move(url_loader));
+      url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
   url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       profile_->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess()

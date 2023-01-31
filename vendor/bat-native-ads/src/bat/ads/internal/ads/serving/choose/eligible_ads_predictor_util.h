@@ -13,7 +13,6 @@
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
@@ -29,6 +28,8 @@ constexpr size_t kPriorityIndex = 6;
 namespace targeting {
 struct UserModelInfo;
 }  // namespace targeting
+
+SegmentList SegmentIntersection(SegmentList lhs, SegmentList rhs);
 
 template <typename T>
 CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
@@ -61,27 +62,27 @@ AdPredictorInfo<T> ComputePredictorFeatures(
     const AdEventList& ad_events) {
   AdPredictorInfo<T> mutable_ad_predictor = ad_predictor;
 
-  const SegmentList intent_child_segments_intersection =
-      SetIntersection(targeting::GetTopChildPurchaseIntentSegments(user_model),
-                      ad_predictor.segments);
+  const SegmentList intent_child_segments_intersection = SegmentIntersection(
+      targeting::GetTopChildPurchaseIntentSegments(user_model),
+      ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_child_segments =
       !intent_child_segments_intersection.empty();
 
-  const SegmentList intent_parent_segments_intersection =
-      SetIntersection(targeting::GetTopParentPurchaseIntentSegments(user_model),
-                      ad_predictor.segments);
+  const SegmentList intent_parent_segments_intersection = SegmentIntersection(
+      targeting::GetTopParentPurchaseIntentSegments(user_model),
+      ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_parent_segments =
       !intent_parent_segments_intersection.empty();
 
   const SegmentList interest_child_segments_intersection =
-      SetIntersection(targeting::GetTopChildInterestSegments(user_model),
-                      ad_predictor.segments);
+      SegmentIntersection(targeting::GetTopChildInterestSegments(user_model),
+                          ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_child_segments =
       !interest_child_segments_intersection.empty();
 
   const SegmentList interest_parent_segments_intersection =
-      SetIntersection(targeting::GetTopParentInterestSegments(user_model),
-                      ad_predictor.segments);
+      SegmentIntersection(targeting::GetTopParentInterestSegments(user_model),
+                          ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_parent_segments =
       !interest_parent_segments_intersection.empty();
 

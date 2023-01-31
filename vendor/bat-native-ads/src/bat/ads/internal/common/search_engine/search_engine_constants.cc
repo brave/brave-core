@@ -13,7 +13,7 @@
 namespace ads {
 
 const std::vector<SearchEngineInfo>& GetSearchEngines() {
-  static base::NoDestructor<std::vector<SearchEngineInfo>> search_engines(
+  static const base::NoDestructor<std::vector<SearchEngineInfo>> kSearchEngines(
       {{"https://ask.com/", "https://ask.com/web", "q"},
        {"https://developer.mozilla.org/(.*)/",
         "https://developer.mozilla.org/(.*)/search", "q"},
@@ -55,7 +55,7 @@ const std::vector<SearchEngineInfo>& GetSearchEngines() {
        {GetMojeekUrlPattern(), GetMojeekResultsPageUrlPattern(), "q"},
        {GetWikipediaUrlPattern(), GetWikipediaResultsPageUrlPattern(), {}},
        {GetYahooUrlPattern(), GetYahooResultsPageUrlPattern(), "p"}});
-  return *search_engines;
+  return *kSearchEngines;
 }
 
 }  // namespace ads

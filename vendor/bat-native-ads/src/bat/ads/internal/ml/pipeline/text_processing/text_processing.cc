@@ -74,7 +74,7 @@ PredictionMap TextProcessing::Apply(
     const std::unique_ptr<Data>& input_data) const {
   const size_t transformation_count = transformations_.size();
 
-  if (transformation_count == 0U) {
+  if (!transformation_count) {
     DCHECK(input_data->GetType() == DataType::kVector);
     const VectorData* const vector_data =
         static_cast<VectorData*>(input_data.get());

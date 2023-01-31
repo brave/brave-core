@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_scoring.h"
 
-#include <algorithm>
 #include <string>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
@@ -17,17 +17,15 @@ namespace ads {
 namespace {
 
 UserActivityTriggerList SortTriggers(const UserActivityTriggerList& triggers) {
-  UserActivityTriggerList mutable_triggers = triggers;
+  UserActivityTriggerList sorted_triggers = triggers;
 
-  std::sort(mutable_triggers.begin(), mutable_triggers.end(),
-            [](const UserActivityTriggerInfo& lhs,
-               const UserActivityTriggerInfo& rhs) {
-              return lhs.event_sequence.length() >
-                         rhs.event_sequence.length() &&
-                     lhs.score > rhs.score;
-            });
+  base::ranges::sort(sorted_triggers, [](const UserActivityTriggerInfo& lhs,
+                                         const UserActivityTriggerInfo& rhs) {
+    return lhs.event_sequence.length() > rhs.event_sequence.length() &&
+           lhs.score > rhs.score;
+  });
 
-  return mutable_triggers;
+  return sorted_triggers;
 }
 
 std::string EncodeEvents(const UserActivityEventList& events) {

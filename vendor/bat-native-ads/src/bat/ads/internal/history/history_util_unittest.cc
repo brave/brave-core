@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/history/history_util.h"
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -36,7 +36,7 @@ TEST_F(BatAdsHistoryUtilTest, AddHistory) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
@@ -61,7 +61,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
@@ -87,7 +87,7 @@ TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
 }  // namespace ads
