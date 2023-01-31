@@ -198,7 +198,7 @@ void JSSolanaProvider::AccountChangedEvent(
 }
 
 void JSSolanaProvider::DidFinishLoad() {
-  if (wallet_standard_loaded_) {
+  if (wallet_standard_loaded_ || !EnsureConnected()) {
     return;
   }
   solana_provider_->IsSolanaKeyringCreated(
@@ -993,7 +993,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
 }
 
 void JSSolanaProvider::OnIsSolanaKeyringCreated(bool created) {
-  if (!created) {
+  if (!created || !render_frame()) {
     return;
   }
   v8::Isolate* isolate = blink::MainThreadIsolate();
