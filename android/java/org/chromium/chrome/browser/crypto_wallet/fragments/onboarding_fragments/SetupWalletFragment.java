@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
@@ -30,6 +33,15 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     public SetupWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
         mRestartRestoreAction = restartRestoreAction;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Api33AndPlusBackPressHelper.create(
+                    this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
+        }
     }
 
     @Override
