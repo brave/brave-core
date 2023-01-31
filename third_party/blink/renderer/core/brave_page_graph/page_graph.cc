@@ -20,6 +20,7 @@
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_page_graph/common/features.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
@@ -217,7 +218,12 @@ class V8PageGraphDelegate : public v8::page_graph::PageGraphDelegate {
                      const std::vector<std::string>& args,
                      const std::string* result) override {
     if (auto* page_graph = GetPageGraphFromIsolate(isolate)) {
-      page_graph->RegisterV8JSBuiltinCall(isolate, builtin_name, args, result);
+      Vector<String> arguments;
+      arguments.reserve(base::checked_cast<wtf_size_t>(args.size()));
+      base::ranges::for_each(
+          args, [&arguments](const auto& arg) { arguments.emplace_back(arg); });
+      page_graph->RegisterV8JSBuiltinCall(isolate, builtin_name,
+                                          std::move(arguments), result);
     }
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
@@ -707,7 +713,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
     blink::ExecutionContext* execution_context,
     const char* name,
     const blink::PageGraphBlinkReceiverData& receiver_data,
-    const blink::PageGraphBlinkArgs& args,
+    blink::PageGraphBlinkArgs args,
     const blink::ExceptionState* exception_state,
     const absl::optional<String>& result) {
   const base::StringPiece name_piece(name);
@@ -751,7 +757,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       return;
     }
   }
-  RegisterWebAPICall(execution_context, name, args);
+  RegisterWebAPICall(execution_context, name, std::move(args));
   if (result)
     RegisterWebAPIResult(execution_context, name, *result);
 }
@@ -848,11 +854,11 @@ void PageGraph::RegisterV8ScriptCompilationFromEval(
 
 void PageGraph::RegisterV8JSBuiltinCall(v8::Isolate* isolate,
                                         const char* builtin_name,
-                                        const std::vector<std::string>& args,
+                                        blink::PageGraphBlinkArgs args,
                                         const std::string* result) {
   blink::ExecutionContext* execution_context =
       blink::ToExecutionContext(isolate->GetCurrentContext());
-  RegisterJSBuiltInCall(execution_context, builtin_name, args);
+  RegisterJSBuiltInCall(execution_context, builtin_name, std::move(args));
   if (result) {
     RegisterJSBuiltInResponse(execution_context, builtin_name, *result);
   }
@@ -1746,20 +1752,20 @@ void PageGraph::RegisterStorageClear(blink::ExecutionContext* execution_context,
 
 void PageGraph::RegisterWebAPICall(blink::ExecutionContext* execution_context,
                                    const MethodName& method,
-                                   const std::vector<String>& arguments) {
-  std::vector<std::string> local_args;
-  std::stringstream buffer;
-  buffer << "{";
-  for (size_t i = 0; i < arguments.size(); ++i) {
-    if (i != 0) {
-      buffer << ", ";
+                                   blink::PageGraphBlinkArgs arguments) {
+  if (VLOG_IS_ON(2)) {
+    std::stringstream buffer;
+    buffer << "{";
+    for (wtf_size_t i = 0; i < arguments.size(); ++i) {
+      if (i != 0) {
+        buffer << ", ";
+      }
+      buffer << arguments.at(i);
     }
-    buffer << arguments.at(i);
-    local_args.push_back(arguments.at(i).Utf8());
+    buffer << "}";
+    VLOG(2) << "RegisterWebAPICall) method: " << method
+            << ", arguments: " << buffer.str();
   }
-  buffer << "}";
-  VLOG(2) << "RegisterWebAPICall) method: " << method
-          << ", arguments: " << buffer.str();
 
   ScriptPosition script_position;
   NodeActor* const acting_node =
@@ -1771,7 +1777,7 @@ void PageGraph::RegisterWebAPICall(blink::ExecutionContext* execution_context,
 
   NodeJSWebAPI* js_webapi_node = GetJSWebAPINode(method);
   AddEdge<EdgeJSCall>(static_cast<NodeScript*>(acting_node), js_webapi_node,
-                      local_args, script_position);
+                      std::move(arguments), script_position);
 }
 
 void PageGraph::RegisterWebAPIResult(blink::ExecutionContext* execution_context,
@@ -1796,11 +1802,11 @@ void PageGraph::RegisterWebAPIResult(blink::ExecutionContext* execution_context,
 void PageGraph::RegisterJSBuiltInCall(
     blink::ExecutionContext* execution_context,
     const char* builtin_name,
-    const std::vector<std::string>& arguments) {
+    blink::PageGraphBlinkArgs arguments) {
   if (VLOG_IS_ON(2)) {
     std::stringstream buffer;
     buffer << "{";
-    for (size_t i = 0; i < arguments.size(); ++i) {
+    for (wtf_size_t i = 0; i < arguments.size(); ++i) {
       if (i != 0) {
         buffer << ", ";
       }
@@ -1821,7 +1827,7 @@ void PageGraph::RegisterJSBuiltInCall(
 
   NodeJSBuiltin* js_builtin_node = GetJSBuiltinNode(builtin_name);
   AddEdge<EdgeJSCall>(static_cast<NodeScript*>(acting_node), js_builtin_node,
-                      arguments, script_position);
+                      std::move(arguments), script_position);
 }
 
 void PageGraph::RegisterJSBuiltInResponse(
