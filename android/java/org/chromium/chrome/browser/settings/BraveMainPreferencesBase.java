@@ -434,12 +434,10 @@ public class BraveMainPreferencesBase
         findPreference(PREF_RATE_BRAVE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
-
-                BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
-                mRateDialogFragment.setArguments(bundle);
-                mRateDialogFragment.show(getParentFragmentManager(), "RateDialogFragment");
+                BraveRateDialogFragment rateDialogFragment =
+                        BraveRateDialogFragment.newInstance(true);
+                rateDialogFragment.show(
+                        getParentFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
                 return true;
             }
         });

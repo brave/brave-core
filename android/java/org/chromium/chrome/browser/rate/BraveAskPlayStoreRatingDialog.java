@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.rate;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,9 +34,27 @@ import org.chromium.chrome.R;
 public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
     private static final String TAG = "AskPlayStoreRating";
+    private ReviewManager mReviewManager;
+    private ReviewInfo mReviewInfo;
+    private boolean mIsFromSettings;
+    private Context mContext;
 
-    public static BraveAskPlayStoreRatingDialog newInstance() {
-        return new BraveAskPlayStoreRatingDialog();
+    public static BraveAskPlayStoreRatingDialog newInstance(boolean isFromSettings) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(RateUtils.FROM_SETTINGS, isFromSettings);
+        BraveAskPlayStoreRatingDialog fragment = new BraveAskPlayStoreRatingDialog();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (getArguments() != null) {
+            mIsFromSettings = getArguments().getBoolean(RateUtils.FROM_SETTINGS);
+        }
     }
 
     @Override
@@ -65,6 +84,12 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
+        mReviewManager = ReviewManagerFactory.create(mContext);
+        try {
+            requestReviewFlow();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "In-App requestReviewFlow exception");
+        }
 
         final View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
@@ -76,7 +101,15 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     private void clickRateNowButton(View view) {
         Button rateNowButton = view.findViewById(R.id.rate_now_button);
         rateNowButton.setOnClickListener((v) -> {
-            rating(getActivity());
+            try {
+                if (mIsFromSettings) {
+                    RateUtils.getInstance().openPlaystore(mContext);
+                } else {
+                    launchReviewFlow();
+                }
+            } catch (NullPointerException e) {
+                Log.e(TAG, "In-App launch Review exception");
+            }
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -91,33 +124,33 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         rateNotNowButton.setOnClickListener((v) -> dismiss());
     }
 
-    public static void showBraveAskPlayStoreRatingDialog(AppCompatActivity activity) {
-        if (activity != null) {
-            BraveAskPlayStoreRatingDialog braveAskPlayStoreRatingDialog =
-                    BraveAskPlayStoreRatingDialog.newInstance();
-            braveAskPlayStoreRatingDialog.show(activity.getSupportFragmentManager(), TAG_FRAGMENT);
+    private void requestReviewFlow() {
+        if (mReviewManager != null) {
+            Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
+            request.addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    mReviewInfo = task.getResult();
+                } else {
+                    // There was some problem
+                    Log.e(TAG, "In-App review error " + task.getException());
+                }
+            });
         }
     }
 
-    private void rating(Context context) {
-        ReviewManager manager = ReviewManagerFactory.create(context);
-        Task<ReviewInfo> request = manager.requestReviewFlow();
-        request.addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                // We can get the ReviewInfo object
-                ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
-                flow.addOnCompleteListener(task1
-                        -> {
-                                // The flow has finished. The API does not indicate whether the user
-                                // reviewed or not, or even whether the review dialog was shown.
-                                // Thus, no
-                                // matter the result, we continue our app flow.
-                        });
-            } else {
-                // There was some problem
-                Log.e(TAG, "In-App review error " + task.getException());
-            }
-        });
+    private void launchReviewFlow() {
+        if (mReviewManager != null && mReviewInfo != null && mContext instanceof Activity) {
+            // We can get the ReviewInfo object
+            Task<Void> flow = mReviewManager.launchReviewFlow((Activity) mContext, mReviewInfo);
+            flow.addOnCompleteListener(task1
+                    -> {
+                            // The flow has finished. The API does not indicate whether the user
+                            // reviewed or not, or even whether the review dialog was shown.
+                            // Thus, no matter the result, we continue our app flow.
+                    });
+        } else {
+            // if case fails then open play store app page
+            RateUtils.getInstance().openPlaystore(mContext);
+        }
     }
 }
