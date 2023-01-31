@@ -56,7 +56,7 @@ const InfoIcon = styled.span`
   .tooltip {
     position: absolute;
     bottom: 100%;
-    left: -200px;
+    inset-inline-start: -200px;
     width: 264px;
     padding-bottom: 12px;
     display: none;
@@ -64,6 +64,16 @@ const InfoIcon = styled.span`
 
   &:hover .tooltip {
     display: initial;
+  }
+
+  &:focus .tooltip {
+    display: initial;
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
   }
 `
 
@@ -80,7 +90,7 @@ const InfoIconTooltip = styled.div`
     content: '';
     position: absolute;
     bottom: -7px;
-    left: 201px;
+    inset-inline-start: 201px;
     background: inherit;
     height: 15px;
     width: 15px;
@@ -213,7 +223,7 @@ export default function SponsoredImageToggle (
         <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
         <ControlsContainer>
           {showInfoIcon &&
-            <InfoIcon title=''>
+            <InfoIcon title='' tabIndex={0}>
               {SponsoredImageInfoIcon}
               <div className='tooltip'>
                 <InfoIconTooltip>
