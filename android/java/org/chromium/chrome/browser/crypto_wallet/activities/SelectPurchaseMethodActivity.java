@@ -46,11 +46,6 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_select_purchase_method);
 
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            mOnRampModel = activity.getWalletModel().getCryptoModel().getOnRampModel();
-        }
-
         Intent intent = getIntent();
         if (intent != null) {
             mChainId = intent.getStringExtra(CHAIN_ID);
@@ -77,6 +72,11 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mOnRampModel = activity.getWalletModel().getCryptoModel().getOnRampModel();
+        }
         if (mOnRampModel != null) {
             mOnRampModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
                     mAmount, getResources(), url -> {
