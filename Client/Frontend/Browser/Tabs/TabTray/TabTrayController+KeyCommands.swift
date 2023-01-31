@@ -4,37 +4,11 @@
 
 import Shared
 import UIKit
+import Data
 
 extension TabTrayController {
-  override var keyCommands: [UIKeyCommand]? {
-    let toggleText = privateMode ? Strings.switchToNonPBMKeyCodeTitle : Strings.switchToPBMKeyCodeTitle
 
-    let arrowCommands: [UIKeyCommand] =
-      [
-        UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-      ]
-
-    arrowCommands.forEach {
-      if #available(iOS 15.0, *) {
-        $0.wantsPriorityOverSystemBehavior = true
-      }
-    }
-
-    return [
-      UIKeyCommand(title: toggleText, action: #selector(didTogglePrivateModeKeyCommand), input: "`", modifierFlags: .command),
-      UIKeyCommand(input: "w", modifierFlags: .command, action: #selector(didCloseTabKeyCommand)),
-      UIKeyCommand(title: Strings.closeTabFromTabTrayKeyCodeTitle, action: #selector(didCloseTabKeyCommand), input: "\u{8}", modifierFlags: []),
-      UIKeyCommand(title: Strings.closeAllTabsFromTabTrayKeyCodeTitle, action: #selector(didCloseAllTabsKeyCommand), input: "w", modifierFlags: [.command, .shift]),
-      UIKeyCommand(title: Strings.openSelectedTabFromTabTrayKeyCodeTitle, action: #selector(didEnterTabKeyCommand), input: "\r", modifierFlags: []),
-      UIKeyCommand(input: "\\", modifierFlags: [.command, .shift], action: #selector(didEnterTabKeyCommand)),
-      UIKeyCommand(input: "\t", modifierFlags: [.command, .alternate], action: #selector(didEnterTabKeyCommand)),
-      UIKeyCommand(title: Strings.openNewTabFromTabTrayKeyCodeTitle, action: #selector(didOpenNewTabKeyCommand), input: "t", modifierFlags: .command),
-    ] + arrowCommands
-
-  }
+  // MARK: Actions
 
   @objc func didTogglePrivateModeKeyCommand() {
     togglePrivateModeAction()
@@ -56,6 +30,15 @@ extension TabTrayController {
 
   @objc func didOpenNewTabKeyCommand() {
     newTabAction()
+  }
+  
+  @objc private func reopenRecentlyClosedTabCommand() {
+    guard let recentlyClosed = RecentlyClosed.all().first else {
+      return
+    }
+    
+    tabManager.addAndSelectRecentlyClosed(recentlyClosed)
+    RecentlyClosed.remove(with: recentlyClosed.url)
   }
 
   @objc func didChangeSelectedTabKeyCommand(sender: UIKeyCommand) {
@@ -92,6 +75,44 @@ extension TabTrayController {
       // In all other cases when a tab selection changes, the tab tray is dismissed.
       forceReload()
     }
+  }
+  
+  // KeyCommands
+  
+  override var keyCommands: [UIKeyCommand]? {
+    let toggleText = privateMode ? Strings.Hotkey.switchToNonPBMKeyCodeTitle : Strings.Hotkey.switchToPBMKeyCodeTitle
 
+    let arrowCommands: [UIKeyCommand] =
+      [
+        UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+        UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+        UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+        UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+      ]
+
+    arrowCommands.forEach {
+      if #available(iOS 15.0, *) {
+        $0.wantsPriorityOverSystemBehavior = true
+      }
+    }
+
+    var navigationCommands = [
+      UIKeyCommand(title: toggleText, action: #selector(didTogglePrivateModeKeyCommand), input: "`", modifierFlags: .command),
+      UIKeyCommand(input: "w", modifierFlags: .command, action: #selector(didCloseTabKeyCommand)),
+      UIKeyCommand(title: Strings.Hotkey.closeTabFromTabTrayKeyCodeTitle, action: #selector(didCloseTabKeyCommand), input: "\u{8}", modifierFlags: []),
+      UIKeyCommand(title: Strings.Hotkey.closeAllTabsFromTabTrayKeyCodeTitle, action: #selector(didCloseAllTabsKeyCommand), input: "w", modifierFlags: [.command, .shift]),
+      UIKeyCommand(title: Strings.Hotkey.openSelectedTabFromTabTrayKeyCodeTitle, action: #selector(didEnterTabKeyCommand), input: "\r", modifierFlags: []),
+      UIKeyCommand(input: "\\", modifierFlags: [.command, .shift], action: #selector(didEnterTabKeyCommand)),
+      UIKeyCommand(input: "\t", modifierFlags: [.command, .alternate], action: #selector(didEnterTabKeyCommand)),
+      UIKeyCommand(title: Strings.Hotkey.openNewTabFromTabTrayKeyCodeTitle, action: #selector(didOpenNewTabKeyCommand), input: "t", modifierFlags: .command)
+    ]
+    
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      navigationCommands += [
+        UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift])
+      ]
+    }
+    
+    return navigationCommands + arrowCommands
   }
 }

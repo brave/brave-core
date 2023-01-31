@@ -184,6 +184,12 @@ class WKWebViewFindStringFindDelegate: NSObject {
 // MARK: FindInPageBarDelegate - FindInPageScriptHandlerDelegate
 
 extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerDelegate {
+  
+  enum TextSearchDirection: String {
+    case next = "findNext"
+    case previous = "findPrevious"
+  }
+  
   func findInPage(_ findInPage: FindInPageBar, didTextChange text: String) {
     find(text, function: "find")
   }
