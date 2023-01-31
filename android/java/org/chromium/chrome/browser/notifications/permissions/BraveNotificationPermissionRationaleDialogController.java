@@ -45,7 +45,7 @@ public class BraveNotificationPermissionRationaleDialogController
     }
 
     @Override
-    public void showRationaleUi(Callback<Boolean> rationaleCallback) {
+    public void showRationaleUi(Callback<Integer> rationaleCallback) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         Resources resources = mContext.getResources();
 
@@ -81,7 +81,7 @@ public class BraveNotificationPermissionRationaleDialogController
         mModalDialogManager.showDialog(dialogModel, ModalDialogType.APP);
     }
 
-    private Callback<Integer> wrapDialogDismissalCallback(Callback<Boolean> rationaleCallback) {
+    private Callback<Integer> wrapDialogDismissalCallback(Callback<Integer> rationaleCallback) {
         assert false : "removeSuggestionsForGroup should be redirected to parent in bytecode!";
         return null;
     }
