@@ -25,7 +25,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
     }
     
     if url.url.lastPathComponent == "page-exists" {
-      let statusCode = ReaderModeHandler.readerModeCache.contains(_url) ? 200 : 400
+      let statusCode = ReaderModeHandler.readerModeCache.contains(readerModeUrl) ? 200 : 400
       if let response = HTTPURLResponse(url: url.url,
                                         statusCode: statusCode,
                                         httpVersion: "HTTP/1.1",
@@ -88,8 +88,8 @@ public class ReaderModeHandler: InternalSchemeResponse {
         do {
           var contents = try String(contentsOfFile: readerViewLoadingPath)
           let mapping = [
-            "%message_handler%": LocalRequestHelper.messageHandlerName,
             "%ORIGINAL-URL%": readerModeUrl.absoluteString,
+            "%READER-URL%": url.url.absoluteString,
             "%LOADING-TEXT%": Strings.readerModeLoadingContentDisplayText,
             "%LOADING-FAILED-TEXT%": Strings.readerModePageCantShowDisplayText,
             "%LOAD-ORIGINAL-TEXT%": Strings.readerModeLoadOriginalLinkText

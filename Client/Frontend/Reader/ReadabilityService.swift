@@ -17,11 +17,11 @@ enum ReadabilityOperationResult {
 }
 
 class ReadabilityOperation: Operation {
-  var url: URL
-  var semaphore: DispatchSemaphore
+  private var url: URL
+  private var semaphore: DispatchSemaphore
+  private var tab: Tab!
+  private var readerModeCache: ReaderModeCache
   var result: ReadabilityOperationResult?
-  var tab: Tab!
-  var readerModeCache: ReaderModeCache
 
   init(url: URL, readerModeCache: ReaderModeCache) {
     self.url = url
@@ -55,6 +55,10 @@ class ReadabilityOperation: Operation {
     let timeout = DispatchTime.now() + .seconds(10)
     if semaphore.wait(timeout: timeout) == .timedOut {
       result = ReadabilityOperationResult.timeout
+    }
+    
+    DispatchQueue.main.async {
+      self.tab = nil
     }
 
     // Maybe this is where we should store stuff in the cache / run a callback?
