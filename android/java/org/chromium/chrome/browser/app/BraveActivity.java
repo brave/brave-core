@@ -1718,7 +1718,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (intent != null) {
             String openUrl = intent.getStringExtra(BraveActivity.OPEN_URL);
             if (!TextUtils.isEmpty(openUrl)) {
-                openNewOrSelectExistingTab(openUrl);
+                try {
+                    openNewOrSelectExistingTab(openUrl);
+                } catch (NullPointerException e) {
+                    Log.e("BraveActivity", "opening new tab " + e.getMessage());
+                }
             }
         }
         checkForNotificationData();
