@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/scoped_observation.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,6 +22,31 @@
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #endif
+
+namespace {
+class TestRewardsServiceObserver
+    : public brave_rewards::RewardsServiceObserver {
+ public:
+  void WaitForServiceInitialized(brave_rewards::RewardsService* service) {
+    if (service->IsInitialized()) {
+      return;
+    }
+
+    observer_.Observe(service);
+    run_loop_.Run();
+  }
+
+ private:
+  void OnRewardsInitialized(brave_rewards::RewardsService*) override {
+    run_loop_.Quit();
+  }
+
+  base::RunLoop run_loop_;
+  base::ScopedObservation<brave_rewards::RewardsService,
+                          brave_rewards::RewardsServiceObserver>
+      observer_{this};
+};
+}  // namespace
 
 class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
  protected:
@@ -50,19 +77,11 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
     return ads_service->IsEnabled();
   }
 
-  void NonBlockingDelay(const base::TimeDelta& delay) {
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
-    run_loop.Run();
-  }
-
   void WaitForRewardsServiceInitialized() {
     auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
         browser()->profile());
-    while (!rewards_service->IsInitialized()) {
-      NonBlockingDelay(base::Seconds(1));
-    }
+    TestRewardsServiceObserver observer;
+    observer.WaitForServiceInitialized(rewards_service);
   }
 };
 
