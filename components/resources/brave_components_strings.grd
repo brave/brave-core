@@ -834,8 +834,8 @@
       <message name="IDS_BRAVE_UI_PROMO_LEARN_MORE" desc="">Learn more</message>
       <message name="IDS_BRAVE_UI_PROMO_DISMISS" desc="">Don't show again</message>
 
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Verify</message>
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Verifying is optional. However, by verifying, you will be able to withdraw your BAT earned from Brave Rewards to a custodial wallet directly.</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Connect to bitFlyer</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Connecting Brave Rewards to a bitFlyer account will let you earn BAT and withdraw your BAT earnings from Brave Rewards.</message>
 
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
