@@ -36,7 +36,6 @@ class DomDistillerResult;
 namespace brave_ads {
 
 class AdsService;
-class SearchResultAdService;
 
 class AdsTabHelper : public content::WebContentsObserver,
 #if !BUILDFLAG(IS_ANDROID)
@@ -84,8 +83,6 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   SessionID tab_id_;
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
-  raw_ptr<SearchResultAdService> search_result_ad_service_ =
-      nullptr;  // NOT OWNED
   bool is_active_ = false;
   bool is_browser_active_ = true;
   std::vector<GURL> redirect_chain_;

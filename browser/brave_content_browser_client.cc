@@ -15,7 +15,6 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/brave_ads_host.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -233,19 +232,6 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
           g_brave_browser_process->ad_block_service()),
-      std::move(receiver));
-}
-
-void BindBraveAdsHost(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  auto* profile = Profile::FromBrowserContext(context);
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_ads::BraveAdsHost>(profile, web_contents),
       std::move(receiver));
 }
 
@@ -575,12 +561,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_search::IsDefaultAPIEnabled()) {
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
-  }
-
-  if (base::FeatureList::IsEnabled(
-          brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
-    map->Add<brave_ads::mojom::BraveAdsHost>(
-        base::BindRepeating(&BindBraveAdsHost));
   }
 
   map->Add<brave_wallet::mojom::BraveWalletP3A>(

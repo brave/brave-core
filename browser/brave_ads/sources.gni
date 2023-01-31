@@ -12,8 +12,6 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/background_helper/background_helper.h",
   "//brave/browser/brave_ads/background_helper/background_helper_holder.cc",
   "//brave/browser/brave_ads/background_helper/background_helper_holder.h",
-  "//brave/browser/brave_ads/brave_ads_host.cc",
-  "//brave/browser/brave_ads/brave_ads_host.h",
   "//brave/browser/brave_ads/brave_stats_updater_helper.cc",
   "//brave/browser/brave_ads/brave_stats_updater_helper.h",
   "//brave/browser/brave_ads/notification_helper/notification_helper.cc",
@@ -21,8 +19,8 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/notification_helper/notification_helper_impl.cc",
   "//brave/browser/brave_ads/notification_helper/notification_helper_impl.h",
   "//brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h",
-  "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.cc",
-  "//brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h",
+  "//brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.cc",
+  "//brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h",
 ]
 
 brave_browser_brave_ads_deps = [
@@ -33,8 +31,7 @@ brave_browser_brave_ads_deps = [
   "//brave/browser/ui/brave_ads",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
-  "//brave/components/brave_ads/common:mojom",
-  "//brave/components/brave_ads/content/browser/search_result_ad",
+  "//brave/components/brave_ads/content/browser",
   "//brave/components/brave_federated",
   "//brave/components/brave_federated/public/interfaces",
   "//brave/components/brave_rewards/browser",
@@ -47,6 +44,7 @@ brave_browser_brave_ads_deps = [
   "//components/keyed_service/content",
   "//components/sessions",
   "//content/public/browser",
+  "//services/network/public/cpp",
   "//ui/base",
 ]
 
