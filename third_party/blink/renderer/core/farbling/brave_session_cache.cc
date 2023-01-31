@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
@@ -310,13 +311,17 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
                                       int spoof_value,
                                       int min_random_offset,
                                       int max_random_offset) {
-  if (farbled_integers_.count(key) == 0) {
+  auto item = farbled_integers_.find(key);
+  if (item == farbled_integers_.end()) {
     FarblingPRNG prng = MakePseudoRandomGenerator(key);
-    farbled_integers_[key] =
-        prng() % (1 + max_random_offset - min_random_offset) +
-        min_random_offset;
+    auto added = farbled_integers_.insert(
+        key, base::checked_cast<int>(
+                 prng() % (1 + max_random_offset - min_random_offset) +
+                 min_random_offset));
+
+    return added.stored_value->value + spoof_value;
   }
-  return farbled_integers_[key] + spoof_value;
+  return item->value + spoof_value;
 }
 
 bool BraveSessionCache::AllowFontFamily(

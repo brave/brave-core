@@ -14,38 +14,38 @@
 namespace ads {
 
 const std::string& GetAmazonUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(base::StrCat(
+  static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
       {"https://www.amazon.(",
        base::JoinString(GetAmazonSearchEngineDomainExtensions(), "|"), ")/"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetGoogleUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(base::StrCat(
+  static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
       {"https://www.google.(",
        base::JoinString(GetGoogleSearchEngineDomainExtensions(), "|"), ")/"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetMojeekUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(base::StrCat(
+  static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
       {"https://www.mojeek.(",
        base::JoinString(GetMojeekSearchEngineDomainExtensions(), "|"), ")/"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetWikipediaUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(base::StrCat(
+  static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
       {"https://(", base::JoinString(GetWikipediaSearchEngineSubdomains(), "|"),
        ").wikipedia.org/"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 const std::string& GetYahooUrlPattern() {
-  static base::NoDestructor<std::string> url_pattern(base::StrCat(
+  static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
       {"https://((", base::JoinString(GetYahooSearchEngineSubdomains(), "|"),
        ").search.yahoo.com/|search.yahoo.com/)"}));
-  return *url_pattern;
+  return *kUrlPattern;
 }
 
 }  // namespace ads

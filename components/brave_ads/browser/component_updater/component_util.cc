@@ -10,8 +10,8 @@
 namespace brave_ads {
 
 absl::optional<ComponentInfo> GetComponentInfo(const std::string& id) {
-  const auto iter = kComponents.find(id);
-  if (iter == kComponents.end()) {
+  const auto iter = components.find(id);
+  if (iter == components.cend()) {
     return absl::nullopt;
   }
 

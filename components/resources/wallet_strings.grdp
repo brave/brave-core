@@ -817,4 +817,5 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
 </grit-part>

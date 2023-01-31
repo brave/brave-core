@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
-     You can obtain one at http://mozilla.org/MPL/2.0/.
+     You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -92,6 +92,7 @@
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
     <color name="brave_wallet_button_pressed">#737ADE</color>
+    <color name="brave_add_widget_button_pressed">#737ADE</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->    

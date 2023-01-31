@@ -553,8 +553,8 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store
   if (isEIP1559) {
     const result = await apiProxy.ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
       payload.txMetaId,
-      payload.maxPriorityFeePerGas || '',
-      payload.maxFeePerGas || '',
+      payload.maxPriorityFeePerGas || '0x0',
+      payload.maxFeePerGas || '0x0',
       payload.gasLimit
     )
 

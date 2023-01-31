@@ -27,10 +27,10 @@ constexpr char kEnableAutomationSwitch[] = "enable-automation";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
-} g_k_tests[] = {{/*command_line_switch*/ {kFooBarSwitch, {}},
-                  /*expected_did_override_command_line_switch*/ false},
-                 {/*command_line_switch*/ {kEnableAutomationSwitch, {}},
-                  /*expected_did_override_command_line_switch*/ true}};
+} const kTestCases[] = {{/*command_line_switch*/ {kFooBarSwitch, {}},
+                         /*expected_did_override_command_line_switch*/ false},
+                        {/*command_line_switch*/ {kEnableAutomationSwitch, {}},
+                         /*expected_did_override_command_line_switch*/ true}};
 
 }  // namespace
 
@@ -81,7 +81,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BatAdsDidOverrideCommandLineSwitchesUtilTest,
-                         testing::ValuesIn(g_k_tests),
+                         testing::ValuesIn(kTestCases),
                          TestParamToString);
 
 }  // namespace ads

@@ -20,12 +20,11 @@ class BatAdsNextPaymentDateUtilTest : public UnitTestBase {};
 TEST_F(BatAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithReconciledTransactionsLastMonth) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "5";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("1 January 2020", /*is_local*/ false));
 
@@ -52,12 +51,11 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 TEST_F(BatAdsNextPaymentDateUtilTest,
        TimeNowIsBeforeNextPaymentDayWithNoReconciledTransactionsLastMonth) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "5";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
 
@@ -79,12 +77,11 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 TEST_F(BatAdsNextPaymentDateUtilTest,
        TimeNowIsAfterNextPaymentDayWithReconciledTransactionsThisMonth) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "5";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 
@@ -110,12 +107,11 @@ TEST_F(
     BatAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "5";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("11 January 2020", /*is_local*/ false));
 
@@ -138,12 +134,11 @@ TEST_F(
     BatAdsNextPaymentDateUtilTest,
     TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["next_payment_day"] = "5";
-
+  base::FieldTrialParams params;
+  params["next_payment_day"] = "5";
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
-                                                         parameters);
+                                                         params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));
 

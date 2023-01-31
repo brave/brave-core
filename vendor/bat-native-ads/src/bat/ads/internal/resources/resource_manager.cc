@@ -32,7 +32,7 @@ ResourceManager* ResourceManager::GetInstance() {
 
 // static
 bool ResourceManager::HasInstance() {
-  return g_resource_manager_instance != nullptr;
+  return !!g_resource_manager_instance;
 }
 
 void ResourceManager::AddObserver(ResourceManagerObserver* observer) {

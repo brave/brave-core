@@ -73,11 +73,10 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
 TEST_F(BatAdsFullScreenModePermissionRuleTest,
        AllowAdIfPermissionRuleIsDisabled) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["should_only_serve_ads_in_windowed_mode"] = "false";
+  base::FieldTrialParams params;
+  params["should_only_serve_ads_in_windowed_mode"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(permission_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(permission_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

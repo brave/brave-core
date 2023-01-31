@@ -22,7 +22,7 @@ constexpr char kRewardsSwitch[] = "rewards";
 struct ParamInfo final {
   CommandLineSwitchInfo command_line_switch;
   bool expected_should_debug;
-} g_k_tests[] = {
+} const kTestCases[] = {
     {/*command_line_switch*/ {kRewardsSwitch, "debug=true"},
      /*expected_should_debug*/ true},
     {/*command_line_switch*/ {kRewardsSwitch, "debug=1"},
@@ -69,7 +69,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BatAdsDebugCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(g_k_tests),
+                         testing::ValuesIn(kTestCases),
                          TestParamToString);
 
 }  // namespace ads

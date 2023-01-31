@@ -12,7 +12,9 @@
 
 namespace ads::json::reader {
 
+namespace {
 constexpr char kNotificationListKey[] = "notifications";
+}  // namespace
 
 absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
     const std::string& json) {

@@ -44,11 +44,10 @@ TEST(BatAdsUserActivityFeaturesTest, Disabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, Triggers) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char triggers_parameter[] = "triggers";
-  parameters[triggers_parameter] = "01=0.5;010203=1.0;0203=0.75";
+  base::FieldTrialParams params;
+  params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -104,11 +103,10 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, TimeWindow) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char time_window_parameter[] = "time_window";
-  parameters[time_window_parameter] = "2h";
+  base::FieldTrialParams params;
+  params["time_window"] = "2h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -163,11 +161,10 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, Threshold) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char threshold_parameter[] = "threshold";
-  parameters[threshold_parameter] = "7.0";
+  base::FieldTrialParams params;
+  params["threshold"] = "7.0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -222,11 +219,10 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, IdleTimeThreshold) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char idle_time_threshold_parameter[] = "idle_time_threshold";
-  parameters[idle_time_threshold_parameter] = "7s";
+  base::FieldTrialParams params;
+  params["idle_time_threshold"] = "7s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -281,11 +277,10 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, MaximumIdleTime) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char maximum_idle_time_parameter[] = "maximum_idle_time";
-  parameters[maximum_idle_time_parameter] = "30m";
+  base::FieldTrialParams params;
+  params["maximum_idle_time"] = "30m";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -340,12 +335,10 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
 
 TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLocked) {
   // Arrange
-  base::FieldTrialParams parameters;
-  const char should_detect_screen_was_locked_parameter[] =
-      "should_detect_was_locked";
-  parameters[should_detect_screen_was_locked_parameter] = "false";
+  base::FieldTrialParams params;
+  params["should_detect_was_locked"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, parameters);
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

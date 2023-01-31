@@ -106,8 +106,7 @@ VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
 }
 
 double operator*(const VectorData& lhs, const VectorData& rhs) {
-  if (lhs.storage_->DimensionCount() == 0 ||
-      rhs.storage_->DimensionCount() == 0) {
+  if (!lhs.storage_->DimensionCount() || !rhs.storage_->DimensionCount()) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
@@ -140,8 +139,7 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
 }
 
 void VectorData::AddElementWise(const VectorData& v_add) {
-  if (storage_->DimensionCount() == 0 ||
-      v_add.storage_->DimensionCount() == 0) {
+  if (!storage_->DimensionCount() || !v_add.storage_->DimensionCount()) {
     return;
   }
 
@@ -170,7 +168,7 @@ void VectorData::AddElementWise(const VectorData& v_add) {
 }
 
 void VectorData::DivideByScalar(const float scalar) {
-  if (storage_->DimensionCount() == 0) {
+  if (!storage_->DimensionCount()) {
     return;
   }
 
@@ -219,7 +217,7 @@ const std::vector<float>& VectorData::GetValuesForTesting() const {
 }
 
 std::string VectorData::GetVectorAsString() const {
-  if (storage_->DimensionCount() == 0) {
+  if (!storage_->DimensionCount()) {
     return {};
   }
 

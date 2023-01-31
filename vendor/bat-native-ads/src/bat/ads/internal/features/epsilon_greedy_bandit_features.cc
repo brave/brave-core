@@ -14,7 +14,7 @@ namespace {
 constexpr char kFeatureName[] = "EpsilonGreedyBandit";
 
 constexpr char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
-const double kDefaultEpsilonValue = 0.25;
+constexpr double kDefaultEpsilonValue = 0.25;
 
 }  // namespace
 

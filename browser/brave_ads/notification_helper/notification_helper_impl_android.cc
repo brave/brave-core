@@ -19,10 +19,10 @@ namespace brave_ads {
 
 namespace {
 
-const int kMinimumMajorOperatingSystemVersionForNotificationChannels = 8;
+constexpr int kMinimumMajorOperatingSystemVersionForNotificationChannels = 8;
 
-const int kAppNotificationStatusUndeterminable = 0;
-const int kAppNotificationsStatusEnabled = 2;
+constexpr int kAppNotificationStatusUndeterminable = 0;
+constexpr int kAppNotificationsStatusEnabled = 2;
 
 int GetOperatingSystemMajorVersion() {
   int32_t major_version = 0;

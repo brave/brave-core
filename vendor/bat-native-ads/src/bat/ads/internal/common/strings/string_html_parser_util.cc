@@ -9,7 +9,7 @@
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
-const int kPrefixPadding = 2;
+constexpr int kPrefixPadding = 2;
 }  // namespace
 
 namespace ads {

@@ -86,20 +86,12 @@ void SearchResultAdRendererThrottle::DetachFromCurrentSequence() {}
 void SearchResultAdRendererThrottle::WillStartRequest(
     network::ResourceRequest* request,
     bool* defer) {
-  DCHECK(defer);
-
-  if (!request || !request->request_initiator) {
-    brave_ads_pending_remote_.reset();
-    return;
-  }
-
-  if (!request->is_fetch_like_api ||
-      request->resource_type !=
-          static_cast<int>(blink::mojom::ResourceType::kXhr) ||
-      !brave_search::IsAllowedHost(request->request_initiator->GetURL())) {
-    brave_ads_pending_remote_.reset();
-    return;
-  }
+  DCHECK(request);
+  DCHECK(request->request_initiator);
+  DCHECK(brave_search::IsAllowedHost(request->request_initiator->GetURL()));
+  DCHECK_EQ(request->resource_type,
+            static_cast<int>(blink::mojom::ResourceType::kXhr));
+  DCHECK(request->is_fetch_like_api);
 
   const std::string creative_instance_id =
       GetViewedSearchResultAdCreativeInstanceId(*request);

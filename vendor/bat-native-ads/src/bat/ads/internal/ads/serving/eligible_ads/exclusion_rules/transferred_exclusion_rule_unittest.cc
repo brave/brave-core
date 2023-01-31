@@ -48,11 +48,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 TEST_F(BatAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdWithin48Hours) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "48h";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "48h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -89,11 +88,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 TEST_F(BatAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdWithin48HoursForMultipleTypes) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "48h";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "48h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -144,11 +142,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 TEST_F(BatAdsTransferredExclusionRuleTest,
        DoNotAllowAdWithSameCampaignIdWithin48Hours) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "48h";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "48h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -181,11 +178,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 TEST_F(BatAdsTransferredExclusionRuleTest,
        AllowAdWithSameCampaignIdWithin0Seconds) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "0s";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "0s";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -218,11 +214,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 TEST_F(BatAdsTransferredExclusionRuleTest,
        AllowAdWithSameCampaignIdAfter48Hours) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "48h";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "48h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -255,11 +250,10 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 TEST_F(BatAdsTransferredExclusionRuleTest,
        AllowAdWithDifferentCampaignIdAfter48Hours) {
   // Arrange
-  base::FieldTrialParams parameters;
-  parameters["exclude_ad_if_transferred_within_time_window"] = "48h";
+  base::FieldTrialParams params;
+  params["exclude_ad_if_transferred_within_time_window"] = "48h";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                parameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

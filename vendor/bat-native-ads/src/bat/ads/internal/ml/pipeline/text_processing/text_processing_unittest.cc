@@ -44,9 +44,9 @@ class BatAdsTextProcessingTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
-  const double tolerancee = 1e-6;
-  const unsigned expected_len = 3;
-  const std::string test_string = "Test String";
+  constexpr double kTolerance = 1e-6;
+  constexpr unsigned kExpectedLen = 3;
+  constexpr char kTestString[] = "Test String";
 
   TransformationVector transformations;
   transformations.push_back(std::make_unique<LowercaseTransformation>());
@@ -71,14 +71,14 @@ TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
       std::move(transformations), std::move(linear_model));
 
   // Act
-  const PredictionMap predictions = pipeline.GetTopPredictions(test_string);
+  const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
 
   // Assert
-  ASSERT_EQ(expected_len, data_point_3_predictions.size());
-  ASSERT_TRUE(!predictions.empty() && predictions.size() <= expected_len);
+  ASSERT_EQ(kExpectedLen, data_point_3_predictions.size());
+  ASSERT_TRUE(!predictions.empty() && predictions.size() <= kExpectedLen);
   for (const auto& prediction : predictions) {
-    EXPECT_TRUE(prediction.second > -tolerancee &&
-                prediction.second < 1.0 + tolerancee);
+    EXPECT_TRUE(prediction.second > -kTolerance &&
+                prediction.second < 1.0 + kTolerance);
   }
 }
 
@@ -179,8 +179,8 @@ TEST_F(BatAdsTextProcessingTest, MissingModelTest) {
 
 TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
   // Arrange
-  const size_t max_predictions_size = 100;
-  const std::string test_page = "ethereum bitcoin bat zcash crypto tokens!";
+  constexpr size_t kMaxPredictionsSize = 100;
+  constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
@@ -193,11 +193,11 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
 
   // Act
   const PredictionMap predictions =
-      text_processing_pipeline.ClassifyPage(test_page);
+      text_processing_pipeline.ClassifyPage(kTestPage);
 
   // Assert
   ASSERT_TRUE(predictions.size());
-  ASSERT_LT(predictions.size(), max_predictions_size);
+  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
   ASSERT_TRUE(predictions.count("crypto-crypto"));
   for (const auto& prediction : predictions) {
     EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));
@@ -206,8 +206,8 @@ TEST_F(BatAdsTextProcessingTest, TopPredUnitTest) {
 
 TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
   // Arrange
-  const size_t min_predictions_size = 2;
-  const size_t max_predictions_size = 100;
+  constexpr size_t kMinPredictionsSize = 2;
+  constexpr size_t kMaxPredictionsSize = 100;
 
   const absl::optional<std::string> json =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
@@ -227,8 +227,8 @@ TEST_F(BatAdsTextProcessingTest, TextCMCCrashTest) {
       text_processing_pipeline.ClassifyPage(*text);
 
   // Assert
-  ASSERT_GT(predictions.size(), min_predictions_size);
-  ASSERT_LT(predictions.size(), max_predictions_size);
+  ASSERT_GT(predictions.size(), kMinPredictionsSize);
+  ASSERT_LT(predictions.size(), kMaxPredictionsSize);
   ASSERT_TRUE(predictions.count("crypto-crypto"));
   for (const auto& prediction : predictions) {
     EXPECT_TRUE(prediction.second <= predictions.at("crypto-crypto"));

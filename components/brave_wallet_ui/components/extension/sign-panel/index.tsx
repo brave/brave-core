@@ -27,8 +27,7 @@ import {
   MessageBox,
   MessageText,
   ButtonRow,
-  WarningTitleRow,
-  WarningIcon
+  WarningTitleRow
 } from './style'
 
 import {
@@ -43,7 +42,8 @@ import {
   WarningTitle,
   WarningText,
   LearnMoreButton,
-  URLText
+  URLText,
+  WarningIcon
 } from '../shared-panel-styles'
 
 export interface Props {

@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/history/sorts/descending_history_sort.h"
 
-#include <algorithm>
-
+#include "base/ranges/algorithm.h"
+#include "base/ranges/functional.h"
 #include "bat/ads/history_item_info.h"
 
 namespace ads {
@@ -15,10 +15,8 @@ HistoryItemList DescendingHistorySort::Apply(
     const HistoryItemList& history) const {
   HistoryItemList sorted_history = history;
 
-  std::sort(sorted_history.begin(), sorted_history.end(),
-            [](const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
-              return lhs.created_at > rhs.created_at;
-            });
+  base::ranges::sort(sorted_history, base::ranges::greater{},
+                     &HistoryItemInfo::created_at);
 
   return sorted_history;
 }

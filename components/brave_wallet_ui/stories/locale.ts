@@ -594,6 +594,9 @@ provideStrings({
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
   braveWalletEditGasLimitError: 'Gas limit must be an integer greater than 0',
+  braveWalletGasFeeLimitLowerThanBaseFeeWarning:
+    'Fee limit is set lower than the base fee. ' +
+    'Your transaction may take a long time or fail.',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',

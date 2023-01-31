@@ -4,11 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-import EditGas, { MaxPriorityPanels } from '../../edit-gas'
-import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
 import { useSelector } from 'react-redux'
-import { WalletState } from '../../../../constants/types'
+
+// hooks
+import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
+
+// components
+import EditGas, { MaxPriorityPanels } from '../../edit-gas/edit-gas'
+
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
 
 interface Props {
   onCancel: () => void
@@ -18,8 +23,8 @@ export function EditPendingTransactionGas (props: Props) {
   const { onCancel } = props
 
   // redux
-  const { selectedPendingTransaction: transactionInfo } = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet
+  const transactionInfo = useSelector(
+    WalletSelectors.selectedPendingTransaction
   )
 
   const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')

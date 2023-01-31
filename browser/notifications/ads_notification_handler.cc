@@ -10,7 +10,9 @@
 
 namespace brave_ads {
 
+namespace {
 const void* const kUserDataKey = &kUserDataKey;
+}  // namespace
 
 AdsNotificationHandler::AdsNotificationHandler(Profile* profile)
     : profile_(profile) {
