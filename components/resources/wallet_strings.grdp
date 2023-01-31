@@ -426,6 +426,7 @@
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS" desc="Invalid recipient address error">Invalid recipient address</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>

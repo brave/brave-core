@@ -658,6 +658,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletZeroBalanceError", IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR},
     {"braveWalletAddressRequiredError",
      IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR},
+    {"braveWalletInvalidRecipientAddress",
+     IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS},
     {"braveWalletQueueOf", IDS_BRAVE_WALLET_QUEUE_OF},
     {"braveWalletQueueNext", IDS_BRAVE_WALLET_QUEUE_NEXT},
     {"braveWalletQueueFirst", IDS_BRAVE_WALLET_QUEUE_FIRST},

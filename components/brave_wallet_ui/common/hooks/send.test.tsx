@@ -300,8 +300,8 @@ describe('useSend hook', () => {
   describe('check for address errors', () => {
     describe.each([
       [mockAccountWithAddress.address, 'braveWalletSameAddressError'],
-      ['0x8b52c24d6e2600bdb8dbb6e8da849ed', 'braveWalletNotValidAddress'],
-      ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF', 'braveWalletContractAddressError']
+      ['0x8b52c24d6e2600bdb8dbb6e8da849ed', 'braveWalletInvalidRecipientAddress'],
+      ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF', 'braveWalletInvalidRecipientAddress']
     ])('%s', (toAddress, addressError) => {
       it(`Should return a ${addressError}`, async () => {
         let sendTransactionSpy = jest.fn()

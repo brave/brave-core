@@ -146,7 +146,7 @@ export default function useSend (isSendTab?: boolean) {
     if (fullTokenList.some(token => token.contractAddress.toLowerCase() === valueToLowerCase)) {
       setToAddress(addressOrUrl)
       setAddressWarning('')
-      setAddressError(getLocale('braveWalletContractAddressError'))
+      setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
       return
     }
 
@@ -155,7 +155,7 @@ export default function useSend (isSendTab?: boolean) {
       setToAddress(addressOrUrl)
       if (!isValidAddress(addressOrUrl, 20)) {
         setAddressWarning('')
-        setAddressError(getLocale('braveWalletNotValidAddress'))
+        setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
         return
       }
 
@@ -189,7 +189,7 @@ export default function useSend (isSendTab?: boolean) {
 
     // Fallback error state
     setAddressWarning('')
-    setAddressError(getLocale('braveWalletNotValidAddress'))
+    setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
   }, [selectedAccount?.address, handleUDAddressLookUp, handleDomainLookupResponse, setShowEnsOffchainWarning])
 
   const processFilecoinAddress = React.useCallback((addressOrUrl: string) => {
@@ -220,7 +220,7 @@ export default function useSend (isSendTab?: boolean) {
     setToAddress(valueToLowerCase)
     if (!isValidFilAddress(valueToLowerCase)) {
       setAddressWarning('')
-      setAddressError(getLocale('braveWalletNotValidFilAddress'))
+      setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
       return
     }
 
@@ -268,7 +268,7 @@ export default function useSend (isSendTab?: boolean) {
 
     // Check if value is a Tokens Contract Address
     if (fullTokenList.some(token => token.contractAddress.toLowerCase() === addressOrUrl.toLowerCase())) {
-      setAddressError(getLocale('braveWalletContractAddressError'))
+      setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
       setAddressWarning('')
       return
     }
@@ -280,7 +280,7 @@ export default function useSend (isSendTab?: boolean) {
       // If result is false we show address error
       if (!result) {
         setAddressWarning('')
-        setAddressError(getLocale('braveWalletNotValidSolAddress'))
+        setAddressError(getLocale('braveWalletInvalidRecipientAddress'))
         return
       }
       setAddressWarning('')

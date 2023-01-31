@@ -624,6 +624,7 @@ provideStrings({
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
+  braveWalletInvalidRecipientAddress: 'Invalid recipient address',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
