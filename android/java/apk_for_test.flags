@@ -23,10 +23,6 @@
     *** createBookmarkItem(...);
 }
 
--keep class org.chromium.components.external_intents.ExternalNavigationHandler {
-    *** clobberCurrentTabWithFallbackUrl(...);
-}
-
 -keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
     *** isCustomTabIntent(...);
 }
