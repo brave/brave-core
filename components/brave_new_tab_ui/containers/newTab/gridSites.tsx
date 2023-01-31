@@ -4,10 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // DnD Kit
+import Navdots from '@brave/leo/react/navdots'
 import { AutoScrollOptions, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerActivationConstraint, TouchSensor, useDndContext, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import * as React from 'react'
 import { useRef } from 'react'
+import styled from 'styled-components'
+
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
@@ -21,8 +24,6 @@ import AddSiteTile from './addSiteTile'
 // Component groups
 import GridSiteTile from './gridTile'
 import { TopSiteDragOverlay } from './gridTileOverlay'
-import Navdots from '@brave/leo/react/navdots'
-import styled from 'styled-components'
 
 // Note: to increase the number of pages, you will also need to increase
 // kMaxNumCustomLinks in ntp_tiles/constants.cc
@@ -30,7 +31,7 @@ const MAX_PAGES = 4
 const activationConstraint: PointerActivationConstraint = { distance: 2 }
 const autoScrollOptions: AutoScrollOptions = { interval: 500 }
 
-const NavDotsContainer = styled.div`
+const Pagination = styled(Navdots)`
   --leo-navdots-active-color: white;
   --leo-navdots-active-color-hover: white;
   --leo-navdots-color: rgba(255,255,255,0.5);
@@ -116,8 +117,8 @@ function TopSitesList (props: Props) {
       const currentPercent = gridPagesContainerRef.current
         ? gridPagesContainerRef.current?.scrollLeft / (gridPagesContainerRef.current?.scrollWidth - gridPagesContainerRef.current?.clientWidth)
         : 0
-      navdotsRef.current.activeDot = currentPercent * (pageCount - 1);
-    };
+      navdotsRef.current.activeDot = currentPercent * (pageCount - 1)
+    }
     gridPagesContainerRef.current.addEventListener('scroll', handler)
     handler()
 
@@ -137,9 +138,7 @@ function TopSitesList (props: Props) {
     </GridPagesContainer>
     {customLinksEnabled &&
       pageCount > 1 &&
-      <NavDotsContainer>
-        <Navdots ref={navdotsRef} dotCount={pageCount} onChange={showPage} />
-      </NavDotsContainer>}
+      <Pagination ref={navdotsRef} dotCount={pageCount} onChange={showPage} />}
   </PagesContainer>
 }
 
