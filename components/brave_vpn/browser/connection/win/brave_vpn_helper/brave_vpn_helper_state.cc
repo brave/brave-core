@@ -72,7 +72,7 @@ std::wstring GetVpnServiceName() {
 }
 
 std::wstring GetVpnServiceDisplayName() {
-  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service ";
+  static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service";
   return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
 }
 

@@ -38,14 +38,17 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
 
   internal::CheckConnectionResult GetVpnEntryStatus();
   bool CloseEngineSession();
-  void Exit();
+
   bool SetFilters(const std::wstring& connection_name);
   bool RemoveFilters(const std::wstring& connection_name);
   bool IsActive() const;
+  bool IsExitTimerRunningForTesting();
   void SetConnectionResultForTesting(internal::CheckConnectionResult result);
   void SetCloseEngineResultForTesting(bool value);
   void SetPlatformFiltersResultForTesting(bool value);
+  void SetWaitingIntervalBeforeExitForTesting(int value);
   void UpdateFiltersState();
+  void ScheduleExit();
 
  private:
   friend class MockVpnDnsHandler;
@@ -53,18 +56,23 @@ class VpnDnsHandler : public base::win::ObjectWatcher::Delegate {
                            ConnectingSuccessFiltersInstalled);
 
   bool SetupPlatformFilters(HANDLE engine_handle, const std::string& name);
+  int GetWaitingIntervalBeforeExit();
   void CloseWatchers();
+  void DisconnectVPN();
+  void Exit();
   virtual void SubscribeForRasNotifications(HANDLE event_handle);
 
   absl::optional<internal::CheckConnectionResult>
       connection_result_for_testing_;
   absl::optional<bool> platform_filters_result_for_testing_;
   absl::optional<bool> close_engine_result_for_testing_;
+  absl::optional<int> waiting_interval_before_exit_for_testing_;
   raw_ptr<BraveVpnDnsDelegate> delegate_;
   HANDLE engine_ = nullptr;
   HANDLE event_handle_for_vpn_ = nullptr;
   base::win::ObjectWatcher connected_disconnected_event_watcher_;
   base::RepeatingTimer periodic_timer_;
+  base::OneShotTimer exit_timer_;
   base::WeakPtrFactory<VpnDnsHandler> weak_factory_{this};
 };
 

@@ -26,6 +26,7 @@ class MockVpnDnsHandler : public VpnDnsHandler, public BraveVpnDnsDelegate {
       : VpnDnsHandler(this), quit_callback_(std::move(callback)) {
     SetCloseEngineResultForTesting(true);
     SetPlatformFiltersResultForTesting(true);
+    SetWaitingIntervalBeforeExitForTesting(1);
   }
   ~MockVpnDnsHandler() override {}
 
@@ -41,8 +42,14 @@ class MockVpnDnsHandler : public VpnDnsHandler, public BraveVpnDnsDelegate {
   void SetPlatformFiltersResultForTesting(bool value) {
     VpnDnsHandler::SetPlatformFiltersResultForTesting(value);
   }
+  void SetWaitingIntervalBeforeExitForTesting(int value) {
+    VpnDnsHandler::SetWaitingIntervalBeforeExitForTesting(value);
+  }
   bool SetFilters(const std::wstring& connection_name) {
     return VpnDnsHandler::SetFilters(connection_name);
+  }
+  bool IsExitTimerRunningForTesting() {
+    return VpnDnsHandler::IsExitTimerRunningForTesting();
   }
   bool Subscribed() const { return event_handle_ != nullptr; }
   HANDLE GetEventHandle() { return event_handle_; }
@@ -80,6 +87,7 @@ TEST_F(VpnDnsHandlerTest, Disconnected) {
       internal::CheckConnectionResult::DISCONNECTED);
   handler.StartMonitoring();
   base::RunLoop().RunUntilIdle();
+  FastForwardBy(base::Seconds(1));
   EXPECT_TRUE(callback_called);
 }
 
@@ -95,11 +103,13 @@ TEST_F(VpnDnsHandlerTest, ConnectingFailed) {
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(
       internal::CheckConnectionResult::DISCONNECTED);
-
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
   FastForwardBy(base::Seconds(kCheckConnectionIntervalInSeconds));
   EXPECT_FALSE(handler.IsActive());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+  FastForwardBy(base::Seconds(1));
   // Disconnected status should stop service.
   EXPECT_TRUE(callback_called);
 }
@@ -117,10 +127,14 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFailedToSetFilters) {
   handler.SetConnectionResultForTesting(
       internal::CheckConnectionResult::CONNECTED);
   handler.SetPlatformFiltersResultForTesting(false);
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
   // Repeating interval to check the connection is live.
   // kCheckConnectionIntervalInSeconds
   FastForwardBy(base::Seconds(kCheckConnectionIntervalInSeconds));
   EXPECT_FALSE(handler.IsActive());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+
+  FastForwardBy(base::Seconds(1));
   // Failed to set filters, stop service
   EXPECT_TRUE(callback_called);
 }
@@ -155,6 +169,9 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFiltersInstalled) {
 
   // BraveVpn changed state.
   handler.OnObjectSignaled(handler.GetEventHandle());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+  FastForwardBy(base::Seconds(1));
+
   // Vpn disconnected and service stoped.
   EXPECT_FALSE(handler.IsActive());
   EXPECT_TRUE(callback_called);
@@ -180,6 +197,8 @@ TEST_F(VpnDnsHandlerTest, Connected) {
       internal::CheckConnectionResult::DISCONNECTED);
   // BraveVpn changed state.
   handler.OnObjectSignaled(handler.GetEventHandle());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+  FastForwardBy(base::Seconds(1));
   // Vpn disconnected and service stoped.
   EXPECT_FALSE(handler.IsActive());
   EXPECT_TRUE(callback_called);
@@ -227,7 +246,70 @@ TEST_F(VpnDnsHandlerTest, CheckDisconnectedState) {
   base::RunLoop().RunUntilIdle();
   // Remove filters
   EXPECT_FALSE(handler.IsActive());
+  FastForwardBy(base::Seconds(1));
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterBySignal) {
+  bool callback_called = false;
+  MockVpnDnsHandler handler(
+      base::BindLambdaForTesting([&]() { callback_called = true; }));
+  handler.SetPlatformFiltersResultForTesting(true);
+  handler.SetWaitingIntervalBeforeExitForTesting(6);
+  handler.SetFilters(std::wstring());
+  EXPECT_TRUE(handler.IsActive());
+  // Disconnected.
+  handler.SetConnectionResultForTesting(
+      internal::CheckConnectionResult::DISCONNECTED);
+  handler.UpdateFiltersState();
+  base::RunLoop().RunUntilIdle();
+  // Filters removed
+  EXPECT_FALSE(handler.IsActive());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+  // Emulate vpn connect after some time.
+  FastForwardBy(base::Seconds(2));
+  handler.SetConnectionResultForTesting(
+      internal::CheckConnectionResult::CONNECTED);
+  handler.OnObjectSignaled(handler.GetEventHandle());
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
+  // Exit should not happen because connection is on.
+  FastForwardBy(base::Seconds(4));
+  EXPECT_TRUE(handler.IsActive());
+  // Exit timer reset and service is not stopped.
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
+  EXPECT_FALSE(callback_called);
+}
+
+TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterByPolling) {
+  bool callback_called = false;
+  MockVpnDnsHandler handler(
+      base::BindLambdaForTesting([&]() { callback_called = true; }));
+  handler.SetPlatformFiltersResultForTesting(true);
+  handler.SetWaitingIntervalBeforeExitForTesting(6);
+  handler.StartMonitoring();
+  handler.SetFilters(std::wstring());
+  EXPECT_TRUE(handler.IsActive());
+
+  // Disconnected.
+  handler.SetConnectionResultForTesting(
+      internal::CheckConnectionResult::DISCONNECTED);
+  handler.UpdateFiltersState();
+  base::RunLoop().RunUntilIdle();
+  // Filters removed
+  EXPECT_FALSE(handler.IsActive());
+  EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
+  // Emulate vpn connect after some time.
+  FastForwardBy(base::Seconds(2));
+  handler.SetConnectionResultForTesting(
+      internal::CheckConnectionResult::CONNECTED);
+  // Exit should not happen because connection is on.
+  // Polling should reset exit timer.
+  FastForwardBy(base::Seconds(4));
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
+  EXPECT_TRUE(handler.IsActive());
+  // Exit timer reset and service is not stopped.
+  EXPECT_FALSE(handler.IsExitTimerRunningForTesting());
+  EXPECT_FALSE(callback_called);
 }
 
 }  // namespace brave_vpn

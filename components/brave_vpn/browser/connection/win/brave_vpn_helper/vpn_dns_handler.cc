@@ -20,6 +20,16 @@
 
 namespace brave_vpn {
 
+namespace {
+// If the user clicks connect vpn immediately after disconnecting, the service
+// may not start sometimes because there is no notification about vpn connection
+// from the system. We only get 2 'Network State Change...' events and there is
+// no trigger event in the system log about the vpn connection state change.
+// In order to manage this we keep service running for sometime and check if any
+// subsequent events occur.
+constexpr int kWaitingIntervalBeforeExitSec = 10;
+}  // namespace
+
 VpnDnsHandler::VpnDnsHandler(BraveVpnDnsDelegate* delegate)
     : delegate_(delegate) {
   DCHECK(delegate_);
@@ -104,6 +114,19 @@ internal::CheckConnectionResult VpnDnsHandler::GetVpnEntryStatus() {
   return internal::CheckConnection(GetBraveVPNConnectionName());
 }
 
+void VpnDnsHandler::DisconnectVPN() {
+  if (connection_result_for_testing_.has_value()) {
+    connection_result_for_testing_ =
+        internal::CheckConnectionResult::DISCONNECTED;
+    return;
+  }
+
+  auto result = internal::DisconnectEntry(GetBraveVPNConnectionName());
+  if (!result.success) {
+    VLOG(1) << "Failed to disconnect entry:" << result.error_description;
+  }
+}
+
 void VpnDnsHandler::UpdateFiltersState() {
   VLOG(1) << __func__;
   switch (GetVpnEntryStatus()) {
@@ -115,11 +138,8 @@ void VpnDnsHandler::UpdateFiltersState() {
       }
       if (!SetFilters(GetBraveVPNConnectionName())) {
         VLOG(1) << "Failed to set DNS filters";
-        auto result = internal::DisconnectEntry(GetBraveVPNConnectionName());
-        if (!result.success) {
-          VLOG(1) << "Failed to disconnect entry:" << result.error_description;
-        }
-        Exit();
+        DisconnectVPN();
+        ScheduleExit();
         return;
       }
       break;
@@ -132,7 +152,7 @@ void VpnDnsHandler::UpdateFiltersState() {
       }
       // Reset service launch counter if dns filters successfully removed.
       ResetLaunchCounter();
-      Exit();
+      ScheduleExit();
       break;
     default:
       VLOG(1) << "BraveVPN is connecting, try later after "
@@ -149,7 +169,31 @@ void VpnDnsHandler::CloseWatchers() {
   periodic_timer_.Stop();
 }
 
+int VpnDnsHandler::GetWaitingIntervalBeforeExit() {
+  if (waiting_interval_before_exit_for_testing_.has_value()) {
+    return waiting_interval_before_exit_for_testing_.value();
+  }
+  return kWaitingIntervalBeforeExitSec;
+}
+
+void VpnDnsHandler::SetWaitingIntervalBeforeExitForTesting(int value) {
+  waiting_interval_before_exit_for_testing_ = value;
+}
+
+void VpnDnsHandler::ScheduleExit() {
+  if (exit_timer_.IsRunning()) {
+    return;
+  }
+  exit_timer_.Start(
+      FROM_HERE, base::Seconds(GetWaitingIntervalBeforeExit()),
+      base::BindOnce(&VpnDnsHandler::Exit, weak_factory_.GetWeakPtr()));
+}
+
 void VpnDnsHandler::Exit() {
+  if (GetVpnEntryStatus() == internal::CheckConnectionResult::CONNECTED) {
+    VLOG(1) << __func__ << " vpn is active, do not exit";
+    return;
+  }
   CloseWatchers();
   delegate_->SignalExit();
 }
@@ -160,6 +204,9 @@ void VpnDnsHandler::OnObjectSignaled(HANDLE object) {
   // only expected brave vpn event.
   if (object != event_handle_for_vpn_) {
     return;
+  }
+  if (exit_timer_.IsRunning()) {
+    exit_timer_.Stop();
   }
   UpdateFiltersState();
 }
@@ -186,6 +233,10 @@ void VpnDnsHandler::StartVPNConnectionChangeMonitoring() {
                         base::BindRepeating(&VpnDnsHandler::UpdateFiltersState,
                                             weak_factory_.GetWeakPtr()));
   UpdateFiltersState();
+}
+
+bool VpnDnsHandler::IsExitTimerRunningForTesting() {
+  return exit_timer_.IsRunning();
 }
 
 }  // namespace brave_vpn
