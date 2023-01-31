@@ -852,7 +852,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
-        BraveHelper.cacheNativeFeatures();
 
         PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
