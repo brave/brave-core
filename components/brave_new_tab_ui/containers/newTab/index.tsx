@@ -563,6 +563,10 @@ class NewTabPage extends React.Component<Props, State> {
       showTopSites = this.props.gridSitesData.gridSites.length !== 0
     }
 
+    // Allow background customization if Super Referrals is not activated.
+    const isSuperReferral = newTabData.brandedWallpaper && !newTabData.brandedWallpaper.isSponsored
+    const allowBackgroundCustomization = !isSuperReferral
+
     if (forceToHideWidget) {
       showTopSites = false
       showStats = false
@@ -726,7 +730,7 @@ class NewTabPage extends React.Component<Props, State> {
           showRewards={newTabData.showRewards}
           braveRewardsSupported={newTabData.braveRewardsSupported}
           brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
-          allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
+          allowBackgroundCustomization={allowBackgroundCustomization}
           toggleShowRewards={this.toggleShowRewards}
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
