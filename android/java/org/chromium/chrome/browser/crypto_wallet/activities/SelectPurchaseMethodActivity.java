@@ -71,6 +71,12 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         mSardineButton = findViewById(R.id.purchase_method_btn_sardine);
         mTransakButton = findViewById(R.id.purchase_method_btn_transak);
 
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
         if (mOnRampModel != null) {
             mOnRampModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
                     mAmount, getResources(), url -> {
@@ -93,8 +99,6 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
                         }
                     });
         }
-
-        onInitialLayoutInflationComplete();
     }
 
     private void enableOnRampService(
