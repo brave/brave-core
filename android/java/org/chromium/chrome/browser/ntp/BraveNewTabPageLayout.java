@@ -397,19 +397,22 @@ public class BraveNewTabPageLayout
         mIsBraveStatsEnabled = shouldDisplayBraveStats();
 
         if (mNtpAdapter == null) {
-            mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                    mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                    mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                    mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                    mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNews, mIsDisplayNewsOptin);
+            if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
+                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
+                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
+                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
+                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
+                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNews,
+                        mIsDisplayNewsOptin);
 
-            mRecyclerView.setAdapter(mNtpAdapter);
+                mRecyclerView.setAdapter(mNtpAdapter);
 
-            if (mRecyclerView.getItemAnimator() != null) {
-                RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
-                if (itemAnimator instanceof SimpleItemAnimator) {
-                    SimpleItemAnimator simpleItemAnimator = (SimpleItemAnimator) itemAnimator;
-                    simpleItemAnimator.setSupportsChangeAnimations(false);
+                if (mRecyclerView.getItemAnimator() != null) {
+                    RecyclerView.ItemAnimator itemAnimator = mRecyclerView.getItemAnimator();
+                    if (itemAnimator instanceof SimpleItemAnimator) {
+                        SimpleItemAnimator simpleItemAnimator = (SimpleItemAnimator) itemAnimator;
+                        simpleItemAnimator.setSupportsChangeAnimations(false);
+                    }
                 }
             }
         } else {
@@ -592,7 +595,8 @@ public class BraveNewTabPageLayout
                             final int visiblePercentageFinal = visiblePercentage;
 
                             int newsFeedViewPosition = viewPosition - newsFeedPosition;
-                            if (newsFeedViewPosition >= 0) {
+                            if (newsFeedViewPosition >= 0
+                                    && newsFeedViewPosition < mNewsItemsFeedCard.size()) {
                                 if (visiblePercentageFinal >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
                                     mVisibleCard = mNewsItemsFeedCard.get(newsFeedViewPosition);
                                     // get params for view PROMOTED_ARTICLE

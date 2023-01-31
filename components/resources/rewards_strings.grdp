@@ -133,12 +133,6 @@
   <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
     To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
   </message>
-  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT" desc="">
-    You’re earning tokens for viewing this sponsored image.
-  </message>
-  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT" desc="">
-    Earn tokens for viewing this image and support content creators.
-  </message>
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards
   </message>

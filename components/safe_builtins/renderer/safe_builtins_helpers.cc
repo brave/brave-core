@@ -67,6 +67,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
   v8::Context::Scope context_scope(context);
 
   v8::MicrotasksScope microtasks(context->GetIsolate(),
+                                 context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::TryCatch try_catch(context->GetIsolate());
   try_catch.SetCaptureMessage(true);
@@ -107,6 +108,7 @@ v8::MaybeLocal<v8::Value> SafeCallFunction(
   v8::EscapableHandleScope handle_scope(context->GetIsolate());
   v8::Context::Scope scope(context);
   v8::MicrotasksScope microtasks(context->GetIsolate(),
+                                 context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Object> global = context->Global();
   if (web_frame) {
