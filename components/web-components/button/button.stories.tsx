@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Icons from 'brave-ui/components/icons'
+import * as Icons from 'brave-ui/components/icons'
 import Button, { ButtonIconContainer } from './index'
 
 export default {
