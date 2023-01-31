@@ -43,10 +43,10 @@ base::flat_map<ScriptName, std::string> GetLocalScriptMap() {
   const auto& rb = ui::ResourceBundle::GetSharedInstance();
   return {
       {GetBaseScriptName(),
-       std::string(rb.GetRawDataResource(IDR_PLAYLIST_MEDIA_DETECTOR_JS))},
+       std::string(rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_JS))},
       {FILE_PATH_LITERAL("youtube.com.js"),
        std::string(
-           rb.GetRawDataResource(IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS))},
+           rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS))},
   };
 }
 
