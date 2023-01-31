@@ -1456,12 +1456,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator,
-                isProgressBarVisibleSupplier, historyDelegate, partnerHomepageEnabledSupplier,
-                offlineDownloader);
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, historyDelegate,
+                partnerHomepageEnabledSupplier, offlineDownloader);
+
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
 
