@@ -11,7 +11,6 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
-#include "chrome/browser/ui/views/side_search/side_search_browser_controller.h"
 
 #define BrowserViewLayoutDelegateImpl \
   BrowserViewLayoutDelegateImpl;      \
