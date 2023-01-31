@@ -33,21 +33,6 @@ extension Strings {
   public static let updateLoginPrompt = NSLocalizedString("UpdateLoginPrompt", bundle: .module, value: "Update login %@ for %@?", comment: "Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site.")
 }
 
-// Hotkey Titles
-extension Strings {
-  public static let reloadPageTitle = NSLocalizedString("ReloadPageTitle", bundle: .module, value: "Reload Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let backTitle = NSLocalizedString("BackTitle", bundle: .module, value: "Back", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let forwardTitle = NSLocalizedString("ForwardTitle", bundle: .module, value: "Forward", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let selectLocationBarTitle = NSLocalizedString("SelectLocationBarTitle", bundle: .module, value: "Select Location Bar", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let newTabTitle = NSLocalizedString("NewTabTitle", bundle: .module, value: "New Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let newPrivateTabTitle = NSLocalizedString("NewPrivateTabTitle", bundle: .module, value: "New Private Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let closeTabTitle = NSLocalizedString("CloseTabTitle", bundle: .module, value: "Close Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let showNextTabTitle = NSLocalizedString("ShowNextTabTitle", bundle: .module, value: "Show Next Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let showPreviousTabTitle = NSLocalizedString("ShowPreviousTabTitle", bundle: .module, value: "Show Previous Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let showBookmarksTitle = NSLocalizedString("showBookmarksTitle", bundle: .module, value: "Show Bookmarks", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let showShieldsTitle = NSLocalizedString("showShieldsTitle", bundle: .module, value: "Open Brave Shields", comment: "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields")
-}
-
 // Tabs Delete All Undo Toast
 extension Strings {
   public static let tabsDeleteAllUndoTitle = NSLocalizedString("TabsDeleteAllUndoTitle", bundle: .module, value: "%d tab(s) closed", comment: "The label indicating that all the tabs were closed")
@@ -120,15 +105,4 @@ extension Strings {
   public static let pasteAndGoTitle = NSLocalizedString("PasteAndGoTitle", bundle: .module, value: "Paste & Go", comment: "The title for the button that lets you paste and go to a URL")
   public static let pasteTitle = NSLocalizedString("PasteTitle", bundle: .module, value: "Paste", comment: "The title for the button that lets you paste into the location bar")
   public static let copyAddressTitle = NSLocalizedString("CopyAddressTitle", bundle: .module, value: "Copy Address", comment: "The title for the button that lets you copy the url from the location bar.")
-}
-
-// Keyboard short cuts
-extension Strings {
-  public static let showTabTrayFromTabKeyCodeTitle = NSLocalizedString("ShowTabTrayFromTabKeyCodeTitle", bundle: .module, value: "Show All Tabs", comment: "Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let closeTabFromTabTrayKeyCodeTitle = NSLocalizedString("CloseTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Close Selected Tab", comment: "Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let closeAllTabsFromTabTrayKeyCodeTitle = NSLocalizedString("CloseAllTabsFromTabTrayKeyCodeTitle", bundle: .module, value: "Close All Tabs", comment: "Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let openSelectedTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenSelectedTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Open Selected Tab", comment: "Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let openNewTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenNewTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Open New Tab", comment: "Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let switchToPBMKeyCodeTitle = NSLocalizedString("SwitchToPBMKeyCodeTitle", bundle: .module, value: "Private Browsing Mode", comment: "Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-  public static let switchToNonPBMKeyCodeTitle = NSLocalizedString("SwitchToNonPBMKeyCodeTitle", bundle: .module, value: "Normal Browsing Mode", comment: "Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
 }

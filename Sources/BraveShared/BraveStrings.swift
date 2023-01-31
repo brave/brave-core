@@ -4332,18 +4332,24 @@ extension Strings {
         bundle: .module,
         value: "No Recently Closed Tabs.",
         comment: "Title for empty screen Recently Closed Tabs")
-  }
-}
+    
+    public static let recentlyClosedShakeActionDescription =
+      NSLocalizedString(
+        "recently.closed.shake.description",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Do you want to open the latest closed tab?",
+        comment: "Description for alert to ask user for opening last closed tab in list")
+    
+    public static let recentlyClosedOpenActionTitle =
+      NSLocalizedString(
+        "recently.closed.open",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Open",
+        comment: "Open Tab action title")
 
-extension Strings {
-  public static let showHistoryTitle = NSLocalizedString("showHistoryTitle", tableName: "BraveShared", bundle: .module, value: "Show History", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let showDownloadsTitle = NSLocalizedString("showDownloadsTitle", tableName: "BraveShared", bundle: .module, value: "Show Downloads", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let addBookmarkTitle = NSLocalizedString("addBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "Add Bookmark", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let addFavouritesTitle = NSLocalizedString("addFavouritesTitle", tableName: "BraveShared", bundle: .module, value: "Add to Favourites", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let findInPageTitle = NSLocalizedString("findInPageTitle", tableName: "BraveShared", bundle: .module, value: "Find in Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let findNextTitle = NSLocalizedString("findNextTitle", tableName: "BraveShared", bundle: .module, value: "Find Next", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let findPreviousTitle = NSLocalizedString("findPreviousTitle", tableName: "BraveShared", bundle: .module, value: "Find Previous", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
-  public static let shareWithTitle = NSLocalizedString("shareWithTitle", tableName: "BraveShared", bundle: .module, value: "Share with...", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+  }
 }
 
 extension Strings {
@@ -4409,4 +4415,38 @@ extension Strings {
     value: "No thanks",
     comment: "An action (button title) that does not block cookie consent notices and dismisses the popup"
   )
+}
+
+// MARK: Hotkey Titles
+
+extension Strings {
+  public struct Hotkey {
+    public static let reloadPageTitle = NSLocalizedString("ReloadPageTitle", bundle: .module, value: "Reload Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let backTitle = NSLocalizedString("BackTitle", bundle: .module, value: "Back", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let forwardTitle = NSLocalizedString("ForwardTitle", bundle: .module, value: "Forward", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let selectLocationBarTitle = NSLocalizedString("SelectLocationBarTitle", bundle: .module, value: "Select Location Bar", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let newTabTitle = NSLocalizedString("NewTabTitle", bundle: .module, value: "New Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let newPrivateTabTitle = NSLocalizedString("NewPrivateTabTitle", bundle: .module, value: "New Private Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let recentlyClosedTabTitle = NSLocalizedString("RecentlyClosedTabTitle", bundle: .module, value: "Re-Open Closed Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab.")
+    public static let closeTabTitle = NSLocalizedString("CloseTabTitle", bundle: .module, value: "Close Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showNextTabTitle = NSLocalizedString("ShowNextTabTitle", bundle: .module, value: "Show Next Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showPreviousTabTitle = NSLocalizedString("ShowPreviousTabTitle", bundle: .module, value: "Show Previous Tab", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showBookmarksTitle = NSLocalizedString("showBookmarksTitle", bundle: .module, value: "Show Bookmarks", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showShieldsTitle = NSLocalizedString("showShieldsTitle", bundle: .module, value: "Open Brave Shields", comment: "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields")
+    public static let showHistoryTitle = NSLocalizedString("showHistoryTitle", tableName: "BraveShared", bundle: .module, value: "Show History", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showDownloadsTitle = NSLocalizedString("showDownloadsTitle", tableName: "BraveShared", bundle: .module, value: "Show Downloads", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let addBookmarkTitle = NSLocalizedString("addBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "Add Bookmark", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let addFavouritesTitle = NSLocalizedString("addFavouritesTitle", tableName: "BraveShared", bundle: .module, value: "Add to Favourites", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findInPageTitle = NSLocalizedString("findInPageTitle", tableName: "BraveShared", bundle: .module, value: "Find in Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findNextTitle = NSLocalizedString("findNextTitle", tableName: "BraveShared", bundle: .module, value: "Find Next", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let findPreviousTitle = NSLocalizedString("findPreviousTitle", tableName: "BraveShared", bundle: .module, value: "Find Previous", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let shareWithTitle = NSLocalizedString("shareWithTitle", tableName: "BraveShared", bundle: .module, value: "Share with...", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+    public static let showTabTrayFromTabKeyCodeTitle = NSLocalizedString("ShowTabTrayFromTabKeyCodeTitle", bundle: .module, value: "Show All Tabs", comment: "Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let closeTabFromTabTrayKeyCodeTitle = NSLocalizedString("CloseTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Close Selected Tab", comment: "Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let closeAllTabsFromTabTrayKeyCodeTitle = NSLocalizedString("CloseAllTabsFromTabTrayKeyCodeTitle", bundle: .module, value: "Close All Tabs", comment: "Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let openSelectedTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenSelectedTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Open Selected Tab", comment: "Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let openNewTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenNewTabFromTabTrayKeyCodeTitle", bundle: .module, value: "Open New Tab", comment: "Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let switchToPBMKeyCodeTitle = NSLocalizedString("SwitchToPBMKeyCodeTitle", bundle: .module, value: "Private Browsing Mode", comment: "Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+    public static let switchToNonPBMKeyCodeTitle = NSLocalizedString("SwitchToNonPBMKeyCodeTitle", bundle: .module, value: "Normal Browsing Mode", comment: "Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
+  }
 }

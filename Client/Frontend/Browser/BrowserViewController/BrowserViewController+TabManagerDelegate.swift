@@ -215,7 +215,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
       let openNewPrivateTab = UIAction(
-        title: Strings.newPrivateTabTitle,
+        title: Strings.Hotkey.newPrivateTabTitle,
         image: UIImage(systemName: "plus.square.fill.on.square.fill"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
@@ -229,7 +229,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     let openNewTab = UIAction(
-      title: PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.newPrivateTabTitle : Strings.newTabTitle,
+      title: PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
       image: PrivateBrowsingManager.shared.isPrivateBrowsing ? UIImage(systemName: "plus.square.fill.on.square.fill") : UIImage(systemName: "plus.square.on.square"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
         self.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
@@ -324,7 +324,7 @@ extension BrowserViewController: TabManagerDelegate {
     var closeTabMenuChildren: [UIAction] = []
 
     let closeActiveTab = UIAction(
-      title: String(format: Strings.closeTabTitle),
+      title: String(format: Strings.Hotkey.closeTabTitle),
       image: UIImage(systemName: "xmark"),
       attributes: .destructive,
       handler: UIAction.deferredActionHandler { [unowned self] _ in
