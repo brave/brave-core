@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
@@ -54,19 +55,19 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
     @Override
     public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
         mCurrentTint = tint;
-        ApiCompatibilityUtils.setImageTintList(this, tint);
+        ImageViewCompat.setImageTintList(this, tint);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
         if (isBookmarked) {
             setImageResource(R.drawable.btn_bookmark_fill);
-            ApiCompatibilityUtils.setImageTintList(this,
+            ImageViewCompat.setImageTintList(this,
                     AppCompatResources.getColorStateList(
                             getContext(), R.color.default_icon_color_accent1_tint_list));
             setContentDescription(getContext().getString(R.string.edit_bookmark));
         } else {
             setImageResource(R.drawable.btn_bookmark);
-            ApiCompatibilityUtils.setImageTintList(this, mCurrentTint);
+            ImageViewCompat.setImageTintList(this, mCurrentTint);
             setContentDescription(getContext().getString(R.string.accessibility_menu_bookmark));
         }
         setEnabled(editingAllowed);

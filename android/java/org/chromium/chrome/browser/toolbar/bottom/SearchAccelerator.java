@@ -13,6 +13,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
+import androidx.core.widget.ImageViewCompat;
+
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -85,7 +87,7 @@ class SearchAccelerator extends ChromeImageButton
 
     @Override
     public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
-        ApiCompatibilityUtils.setImageTintList(this, tint);
+        ImageViewCompat.setImageTintList(this, tint);
         updateBackground();
     }
 

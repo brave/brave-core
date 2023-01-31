@@ -10,6 +10,8 @@ import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import androidx.core.widget.ImageViewCompat;
+
 import org.chromium.base.ApiCompatibilityUtils;
 
 public class BraveLocationBarLayout extends LocationBarLayout {
@@ -26,7 +28,7 @@ public class BraveLocationBarLayout extends LocationBarLayout {
     }
 
     void setQRButtonTint(ColorStateList colorStateList) {
-        ApiCompatibilityUtils.setImageTintList(mQRButton, colorStateList);
+        ImageViewCompat.setImageTintList(mQRButton, colorStateList);
     }
 
     void setQRButtonVisibility(boolean shouldShow) {
