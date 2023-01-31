@@ -131,6 +131,8 @@ class PlaylistService : public KeyedService,
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id) override;
+  void CopyItemToPlaylist(const std::vector<std::string>& item_ids,
+                          const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,
                               const std::string& item_id) override;
   void MoveItem(const std::string& from_playlist_id,
@@ -168,6 +170,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, UpdateItem);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreateAndRemovePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ReorderItemFromPlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveItemFromPlaylist);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
@@ -243,11 +246,12 @@ class PlaylistService : public KeyedService,
 
   std::string GetDefaultSaveTargetListID();
 
-  // Remove a item from a list. When |remove_item| is true, the item preference
-  // and local data will be removed together.
+  // Remove a item from a list. When |delete_item| is true, the item preference
+  // and local data will be removed if there's no other playlists referencing
+  // the item.
   bool RemoveItemFromPlaylist(const PlaylistId& playlist_id,
                               const PlaylistItemId& item_id,
-                              bool remove_item = true);
+                              bool delete_item);
 
   bool MoveItem(const PlaylistId& from,
                 const PlaylistId& to,

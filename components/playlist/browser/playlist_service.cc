@@ -139,15 +139,35 @@ bool PlaylistService::AddItemsToPlaylist(
     auto new_item = mojom::PlaylistItem::New();
     new_item->id = new_item_id;
     playlist->items.push_back(std::move(new_item));
+
+    // Update the item's parent lists.
+    // This callback will be run in sync. So it's safe to bind raw ptr of this.
+    GetPlaylistItem(
+        new_item_id,
+        base::BindOnce(
+            [](PlaylistService* service, const std::string& playlist_id,
+               mojom::PlaylistItemPtr item) {
+              item->parent_lists.push_back(playlist_id);
+              service->UpdatePlaylistItemValue(
+                  item->id, base::Value(ConvertPlaylistItemToValue(item)));
+            },
+            this, playlist_id));
   }
 
   playlists_update->Set(playlist_id, ConvertPlaylistToValue(playlist));
   return true;
 }
 
+void PlaylistService::CopyItemToPlaylist(
+    const std::vector<std::string>& item_ids,
+    const std::string& playlist_id) {
+  // We don't copy the playlist item deeply and just add item id to playlist.
+  AddItemsToPlaylist(playlist_id, item_ids);
+}
+
 bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
                                              const PlaylistItemId& item_id,
-                                             bool remove_item) {
+                                             bool delete_item) {
   VLOG(2) << __func__ << " " << *playlist_id << " " << *item_id;
 
   DCHECK(!item_id->empty());
@@ -177,11 +197,27 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
                           ConvertPlaylistToValue(target_playlist));
   }
 
-  // TODO(sko) Once we can support to share an item between playlists, we should
-  // check if other playlists have this item before deleting this item
-  // permanantly.
-  if (remove_item)
-    DeletePlaylistItemData(*item_id);
+  GetPlaylistItem(
+      *item_id,
+      base::BindOnce(
+          [](PlaylistService* service, const std::string& playlist_id,
+             bool delete_item, mojom::PlaylistItemPtr item) {
+            if (delete_item && item->parent_lists.size() == 1) {
+              DCHECK_EQ(item->parent_lists.front(), playlist_id);
+              service->DeletePlaylistItemData(item->id);
+              return;
+            }
+
+            // There're other playlists referencing this. Don't delete item
+            // and update the item's parent playlists data.
+            auto iter = base::ranges::find(item->parent_lists, playlist_id);
+            DCHECK(iter != item->parent_lists.end());
+            item->parent_lists.erase(iter);
+            service->UpdatePlaylistItemValue(
+                item->id, base::Value(ConvertPlaylistItemToValue(item)));
+          },
+          this, *playlist_id, delete_item));
+
   return true;
 }
 
@@ -223,7 +259,7 @@ void PlaylistService::ReorderItemFromPlaylist(const std::string& playlist_id,
 bool PlaylistService::MoveItem(const PlaylistId& from,
                                const PlaylistId& to,
                                const PlaylistItemId& item) {
-  if (!RemoveItemFromPlaylist(from, item, /* remove_item = */ false)) {
+  if (!RemoveItemFromPlaylist(from, item, /* delete_item = */ false)) {
     LOG(ERROR) << "Failed to remove item from playlist";
     return false;
   }
@@ -396,7 +432,8 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
 
 void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
                                              const std::string& item_id) {
-  RemoveItemFromPlaylist(PlaylistId(playlist_id), PlaylistItemId(item_id));
+  RemoveItemFromPlaylist(PlaylistId(playlist_id), PlaylistItemId(item_id),
+                         /*delete_item=*/true);
 }
 
 void PlaylistService::MoveItem(const std::string& from_playlist_id,

@@ -753,8 +753,36 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
     EXPECT_EQ(item_ids, stored_ids);
   }
 
+  for (const auto& item_id : item_ids) {
+    service->GetPlaylistItem(
+        item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
+          ASSERT_EQ(item->parent_lists.size(), 1u);
+          EXPECT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
+        }));
+  }
+
   // Try adding items to a non-existing playlist and it should fail.
   EXPECT_FALSE(service->AddItemsToPlaylist("non-existing-id", {"id1"}));
+
+  // Adding items to another playlists should work well.
+  std::string another_playlist_id;
+  service->CreatePlaylist(
+      mojom::Playlist::New(),
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+        another_playlist_id = new_list->id.value_or(std::string());
+      }));
+  ASSERT_FALSE(another_playlist_id.empty());
+  EXPECT_TRUE(service->AddItemsToPlaylist(another_playlist_id,
+                                          {item_ids.begin(), item_ids.end()}));
+
+  for (const auto& id : item_ids) {
+    service->GetPlaylistItem(
+        id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
+          EXPECT_EQ(item->parent_lists.size(), 2u);
+          EXPECT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
+          EXPECT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+        }));
+  }
 }
 
 TEST_F(PlaylistServiceUnitTest, MoveItem) {
@@ -782,6 +810,13 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   auto playlist = GetPlaylist(kDefaultPlaylistID);
   ASSERT_TRUE(playlist);
   ASSERT_EQ(item_ids.size(), playlist->items.size());
+  for (const auto& item_id : item_ids) {
+    service->GetPlaylistItem(
+        item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
+          ASSERT_EQ(item->parent_lists.size(), 1u);
+          ASSERT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
+        }));
+  }
 
   std::string another_playlist_id;
   service->CreatePlaylist(
@@ -808,6 +843,13 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                           std::inserter(stored_ids, stored_ids.end()),
                           [](const auto& item) { return item->id; });
   EXPECT_EQ(item_ids, stored_ids);
+  for (const auto& item_id : item_ids) {
+    service->GetPlaylistItem(
+        item_id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
+          ASSERT_EQ(item->parent_lists.size(), 1u);
+          ASSERT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+        }));
+  }
 
   playlist = GetPlaylist(kDefaultPlaylistID);
   EXPECT_TRUE(playlist);
@@ -908,6 +950,9 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   item.cached = false;
   item.author = "me";
 
+  playlist_service()->UpdatePlaylistItemValue(
+      item.id, base::Value(ConvertPlaylistItemToValue(item.Clone())));
+
   std::vector<mojom::PlaylistItemPtr> items;
   items.push_back(item.Clone());
   playlist_service()->AddMediaFilesFromItems(
@@ -952,12 +997,17 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
     auto item = prototype_item.Clone();
     item->id = base::Token::CreateRandom().ToString();
     item->name = base::NumberToString(i + 1);
+
+    playlist_service()->UpdatePlaylistItemValue(
+        item->id, base::Value(ConvertPlaylistItemToValue(item->Clone())));
     items.push_back(std::move(item));
   }
 
   auto target = prototype_item.Clone();
   target->id = base::Token::CreateRandom().ToString();
   target->name = "target";
+  playlist_service()->UpdatePlaylistItemValue(
+      target->id, base::Value(ConvertPlaylistItemToValue(target->Clone())));
   items.push_back(target->Clone());
 
   auto* service = playlist_service();
@@ -1000,6 +1050,76 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
   service->ReorderItemFromPlaylist(playlist::kDefaultPlaylistID, target->id, 5);
   service->GetPlaylist(playlist::kDefaultPlaylistID,
                        order_checker({"1", "2", "3", "4", "5", "target"}));
+}
+
+TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
+  auto* service = playlist_service();
+
+  // Precondition - There's an item from a list.
+  auto* prefs = this->prefs();
+  auto default_playlist = GetPlaylist(kDefaultPlaylistID);
+
+  const base::flat_set<std::string> item_ids = {"id1", "id2", "id3"};
+  for (const auto& id : item_ids) {
+    auto dummy_item = mojom::PlaylistItem::New();
+    dummy_item->id = id;
+    service->UpdatePlaylistItemValue(
+        id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
+  }
+  ASSERT_TRUE(service->AddItemsToPlaylist(kDefaultPlaylistID,
+                                          {item_ids.begin(), item_ids.end()}));
+
+  // Test if removing works well - Related data should be cleaned up.
+  for (const auto& id : item_ids) {
+    service->RemoveItemFromPlaylist(kDefaultPlaylistID, id);
+    default_playlist = GetPlaylist(kDefaultPlaylistID);
+
+    base::flat_set<std::string> stored_ids;
+    base::ranges::transform(default_playlist->items,
+                            std::inserter(stored_ids, stored_ids.end()),
+                            [](const auto& item) { return item->id; });
+    EXPECT_FALSE(base::Contains(stored_ids, id));
+    EXPECT_FALSE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+  }
+
+  // Test if removing items shared by multiple playlist doesn't destroy items.
+  for (const auto& id : item_ids) {
+    auto dummy_item = mojom::PlaylistItem::New();
+    dummy_item->id = id;
+    service->UpdatePlaylistItemValue(
+        id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
+  }
+  ASSERT_TRUE(service->AddItemsToPlaylist(kDefaultPlaylistID,
+                                          {item_ids.begin(), item_ids.end()}));
+
+  std::string another_playlist_id;
+  service->CreatePlaylist(
+      mojom::Playlist::New(),
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+        another_playlist_id = new_list->id.value_or(std::string());
+      }));
+  ASSERT_FALSE(another_playlist_id.empty());
+  ASSERT_TRUE(service->AddItemsToPlaylist(another_playlist_id,
+                                          {item_ids.begin(), item_ids.end()}));
+
+  for (const auto& id : item_ids) {
+    service->RemoveItemFromPlaylist(kDefaultPlaylistID, id);
+    default_playlist = GetPlaylist(kDefaultPlaylistID);
+
+    base::flat_set<std::string> stored_ids;
+    base::ranges::transform(default_playlist->items,
+                            std::inserter(stored_ids, stored_ids.end()),
+                            [](const auto& item) { return item->id; });
+
+    EXPECT_FALSE(base::Contains(stored_ids, id));
+    EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
+
+    service->GetPlaylistItem(
+        id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
+          EXPECT_EQ(item->parent_lists.size(), 1u);
+          EXPECT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+        }));
+  }
 }
 
 }  // namespace playlist
