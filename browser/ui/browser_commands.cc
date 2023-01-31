@@ -278,8 +278,11 @@ void ToggleSidebarPosition(Browser* browser) {
 }
 
 bool HasSelectedURL(Browser* browser) {
-  DCHECK(browser);
-  return BraveBrowserWindow::From(browser->window())->HasSelectedURL();
+  if (!browser) {
+    return false;
+  }
+  auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
+  return brave_browser_window && brave_browser_window->HasSelectedURL();
 }
 
 }  // namespace brave
