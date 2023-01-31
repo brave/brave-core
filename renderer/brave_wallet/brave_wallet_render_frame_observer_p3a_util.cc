@@ -27,15 +27,14 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportEthereumProvider(
   }
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   auto* web_frame = render_frame->GetWebFrame();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-
   if (context.IsEmpty()) {
     return;
   }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Value> ethereum_value;
   v8::Local<v8::Object> ethereum_obj;
