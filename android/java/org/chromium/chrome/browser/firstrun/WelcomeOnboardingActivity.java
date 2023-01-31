@@ -349,7 +349,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void handleBackPress() {}
 
     @Override
     public void triggerLayoutInflation() {
