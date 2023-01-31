@@ -56,7 +56,7 @@ void BraveSearchFallbackJSHandler::AddJavaScriptObject() {
     return;
 
   v8::Context::Scope context_scope(Context());
-  v8::MicrotasksScope microtasks(isolate_,
+  v8::MicrotasksScope microtasks(isolate_, Context()->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   BindFunctionsToObject();
@@ -127,7 +127,7 @@ void BraveSearchFallbackJSHandler::OnFetchBackupResults(
   v8::HandleScope handle_scope(isolate_);
   v8::Local<v8::Context> context = context_.Get(isolate_);
   v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate_,
+  v8::MicrotasksScope microtasks(isolate_, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate_);
