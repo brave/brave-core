@@ -551,12 +551,12 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
-                StatusBarColorController.class, AppMenuDelegate.class,
-                ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
-                Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
-                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class));
+                WindowAndroid.class, Supplier.class, Supplier.class, StatusBarColorController.class,
+                AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
+                BottomSheetController.class, Supplier.class, TabContentManager.class,
+                TabCreatorManager.class, SnackbarManager.class, JankTracker.class, Supplier.class,
+                OneshotSupplier.class, OmniboxPedalDelegate.class, Supplier.class, boolean.class,
+                BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
