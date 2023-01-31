@@ -99,7 +99,7 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   }
 
   const std::string in_vocab_text = base::JoinString(in_vocab_tokens, " ");
-  const std::vector<uint8_t> in_vocab_sha256 = security::Sha256(in_vocab_text);
+  const std::vector<uint8_t> in_vocab_sha256 = crypto::Sha256(in_vocab_text);
   text_embedding.hashed_text_base64 = base::Base64Encode(in_vocab_sha256);
 
   const auto scalar = static_cast<float>(in_vocab_tokens.size());

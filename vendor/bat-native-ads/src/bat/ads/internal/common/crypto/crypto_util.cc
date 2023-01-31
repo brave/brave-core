@@ -8,15 +8,16 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
+#include <iterator>
 
 #include "base/base64.h"
-#include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/common/crypto/key_pair_info.h"
+#include "crypto/random.h"
+#include "third_party/boringssl/src/include/openssl/curve25519.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads::security {
+namespace ads::crypto {
 
 namespace {
 
@@ -29,41 +30,32 @@ constexpr uint8_t kHKDFSalt[] = {
     246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
     210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
 
-std::vector<uint8_t> GetHKDF(const std::string& secret) {
-  if (secret.empty()) {
-    return {};
-  }
-
-  std::vector<uint8_t> raw_secret;
-  raw_secret.assign(secret.cbegin(), secret.cend());
+absl::optional<std::vector<uint8_t>> GetHKDF(
+    const std::vector<uint8_t>& secret) {
+  DCHECK(!secret.empty());
 
   std::vector<uint8_t> derived_key(kHKDFSeedLength);
 
-  const uint8_t info[] = {0};
+  constexpr uint8_t kInfo[] = {0};
 
-  const int result =
-      HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
-           &raw_secret.front(), raw_secret.size(), kHKDFSalt,
-           std::size(kHKDFSalt), info, sizeof(info) / sizeof(info[0]));
-
-  if (result == 0) {
-    return {};
+  if (HKDF(derived_key.data(), kHKDFSeedLength, EVP_sha512(), secret.data(),
+           secret.size(), kHKDFSalt, std::size(kHKDFSalt), kInfo,
+           sizeof(kInfo) / sizeof(kInfo[0])) == 0) {
+    return absl::nullopt;
   }
 
   return derived_key;
 }
 
-KeyPairInfo GenerateSignKeyPairFromSeed(const std::vector<uint8_t>& seed) {
-  KeyPairInfo key_pair;
-  if (seed.empty()) {
-    return key_pair;
-  }
+KeyPairInfo GenerateSignKeyPairFromSecret(const std::vector<uint8_t>& secret) {
+  DCHECK(!secret.empty());
 
-  std::vector<uint8_t> secret_key = seed;
+  std::vector<uint8_t> secret_key = secret;
   secret_key.resize(crypto_sign_SECRETKEYBYTES);
   std::vector<uint8_t> public_key(crypto_sign_PUBLICKEYBYTES);
-  crypto_sign_keypair(&public_key.front(), &secret_key.front(), 1);
+  crypto_sign_keypair(public_key.data(), secret_key.data(), /*seeded*/ 1);
 
+  KeyPairInfo key_pair;
   key_pair.public_key = public_key;
   key_pair.secret_key = secret_key;
 
@@ -72,69 +64,29 @@ KeyPairInfo GenerateSignKeyPairFromSeed(const std::vector<uint8_t>& seed) {
 
 }  // namespace
 
-std::string Sign(const base::flat_map<std::string, std::string>& headers,
-                 const std::string& key_id,
-                 const std::string& secret_key) {
-  if (headers.empty() || key_id.empty() || secret_key.empty()) {
-    return {};
-  }
-
-  std::string concatenated_header;
-  std::string concatenated_message;
-
-  unsigned int index = 0;
-  for (const auto& header : headers) {
-    if (index != 0) {
-      concatenated_header += " ";
-      concatenated_message += "\n";
-    }
-
-    concatenated_header += header.first;
-    concatenated_message += header.first + ": " + header.second;
-
-    index++;
-  }
-
-  std::vector<uint8_t> signed_message(crypto_sign_BYTES +
-                                      concatenated_message.length());
-
-  std::vector<uint8_t> raw_secret_key;
-  if (!base::HexStringToBytes(secret_key, &raw_secret_key)) {
-    return {};
-  }
-
-  // Resolving the following linter/presubmit error breaks the build on Windows.
-  unsigned long long signed_message_length = 0;  // NOLINT
-  crypto_sign(
-      &signed_message.front(), &signed_message_length,
-      reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
-      concatenated_message.length(), &raw_secret_key.front());
-
-  std::vector<uint8_t> signature(crypto_sign_BYTES);
-  base::ranges::copy_n(signed_message.cbegin(), crypto_sign_BYTES,
-                       signature.begin());
-
-  return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
-         "\",headers=\"" + concatenated_header + "\",signature=\"" +
-         base::Base64Encode(signature) + "\"";
+std::vector<uint8_t> Sha256(const std::string& value) {
+  std::vector<uint8_t> hash(SHA256_DIGEST_LENGTH);
+  SHA256(reinterpret_cast<const uint8_t*>(value.data()), value.length(),
+         hash.data());
+  return hash;
 }
 
-std::vector<uint8_t> Sha256(const std::string& value) {
-  if (value.empty()) {
-    return {};
+absl::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
+    const std::vector<uint8_t>& seed) {
+  DCHECK(!seed.empty());
+
+  const absl::optional<std::vector<uint8_t>> derived_key = GetHKDF(seed);
+  if (!derived_key) {
+    return absl::nullopt;
   }
 
-  std::vector<uint8_t> sha256(SHA256_DIGEST_LENGTH);
-  SHA256(reinterpret_cast<const uint8_t*>(value.c_str()), value.length(),
-         &sha256.front());
-
-  return sha256;
+  return GenerateSignKeyPairFromSecret(*derived_key);
 }
 
 KeyPairInfo GenerateBoxKeyPair() {
   std::vector<uint8_t> public_key(crypto_box_PUBLICKEYBYTES);
   std::vector<uint8_t> secret_key(crypto_box_SECRETKEYBYTES);
-  crypto_box_keypair(&public_key.front(), &secret_key.front());
+  crypto_box_keypair(public_key.data(), secret_key.data());
 
   KeyPairInfo key_pair;
   key_pair.public_key = public_key;
@@ -143,40 +95,81 @@ KeyPairInfo GenerateBoxKeyPair() {
   return key_pair;
 }
 
-std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64) {
-  std::string seed;
-  if (!base::Base64Decode(seed_base64, &seed)) {
-    return {};
-  }
-
-  const std::vector<uint8_t> derived_key = GetHKDF(seed);
-  const KeyPairInfo key_pair = GenerateSignKeyPairFromSeed(derived_key);
-  return key_pair.secret_key;
+std::vector<uint8_t> GenerateRandomNonce() {
+  std::vector<uint8_t> nonce(crypto_box_NONCEBYTES);
+  ::crypto::RandBytes(nonce);
+  return nonce;
 }
 
-// Because NaCL uses a 192bit nonce, there is enough entropy to ensure
-// uniqueness if generated at random.
-std::vector<uint8_t> GenerateRandom192BitNonce() {
-  std::vector<uint8_t> nonce(crypto_box_NONCEBYTES);
-  base::RandBytes(&nonce.front(), nonce.size());
+absl::optional<std::string> Sign(const std::string& message,
+                                 const std::string& secret_key) {
+  const absl::optional<std::vector<uint8_t>> raw_secret_key =
+      base::Base64Decode(secret_key);
+  if (!raw_secret_key) {
+    return absl::nullopt;
+  }
 
-  return nonce;
+  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+
+  std::vector<uint8_t> raw_signature;
+  raw_signature.resize(ED25519_SIGNATURE_LEN);
+  if (ED25519_sign(raw_signature.data(), raw_message.data(), raw_message.size(),
+                   raw_secret_key->data()) == 0) {
+    return absl::nullopt;
+  }
+
+  return base::Base64Encode(raw_signature);
+}
+
+bool Verify(const std::string& message,
+            const std::string& public_key,
+            const std::string& signature) {
+  const absl::optional<std::vector<uint8_t>> raw_public_key =
+      base::Base64Decode(public_key);
+  if (!raw_public_key) {
+    return false;
+  }
+
+  const absl::optional<std::vector<uint8_t>> raw_signature =
+      base::Base64Decode(signature);
+  if (!raw_signature) {
+    return false;
+  }
+
+  const std::vector<uint8_t> raw_message(message.begin(), message.end());
+
+  return ED25519_verify(raw_message.data(), raw_message.size(),
+                        raw_signature->data(), raw_public_key->data()) != 0;
 }
 
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,
                              const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& ephemeral_secret_key) {
-  // API requires 32 leading zero-padded bytes
+                             const std::vector<uint8_t>& secret_key) {
   std::vector<uint8_t> padded_plaintext = plaintext;
   padded_plaintext.insert(padded_plaintext.cbegin(), crypto_box_ZEROBYTES, 0);
 
   std::vector<uint8_t> ciphertext(padded_plaintext.size());
-  crypto_box(&ciphertext.front(), &padded_plaintext.front(),
-             padded_plaintext.size(), &nonce.front(), &public_key.front(),
-             &ephemeral_secret_key.front());
+  crypto_box(ciphertext.data(), padded_plaintext.data(),
+             padded_plaintext.size(), nonce.data(), public_key.data(),
+             secret_key.data());
 
   return ciphertext;
 }
 
-}  // namespace ads::security
+std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
+                             const std::vector<uint8_t>& nonce,
+                             const std::vector<uint8_t>& public_key,
+                             const std::vector<uint8_t>& secret_key) {
+  std::vector<uint8_t> padded_plaintext(ciphertext.size());
+  crypto_box_open(padded_plaintext.data(), ciphertext.data(), ciphertext.size(),
+                  nonce.data(), public_key.data(), secret_key.data());
+
+  std::vector<uint8_t> plaintext;
+  base::ranges::copy_n(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+                       padded_plaintext.size() - crypto_box_ZEROBYTES,
+                       std::back_inserter(plaintext));
+  return plaintext;
+}
+
+}  // namespace ads::crypto

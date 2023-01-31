@@ -64,15 +64,15 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     return absl::nullopt;
   }
 
-  const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
+  const crypto::KeyPairInfo ephemeral_key_pair = crypto::GenerateBoxKeyPair();
   if (!ephemeral_key_pair.IsValid()) {
     return absl::nullopt;
   }
 
-  const std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
+  const std::vector<uint8_t> nonce = crypto::GenerateRandomNonce();
 
-  const std::vector<uint8_t> padded_ciphertext =
-      Encrypt(plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
+  const std::vector<uint8_t> padded_ciphertext = crypto::Encrypt(
+      plaintext, nonce, *public_key, ephemeral_key_pair.secret_key);
 
   // The first 16 bytes of the resulting ciphertext is left as padding by the
   // C API and should be removed before sending out extraneously.

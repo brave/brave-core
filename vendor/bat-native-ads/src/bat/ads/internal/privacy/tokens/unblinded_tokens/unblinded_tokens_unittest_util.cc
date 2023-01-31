@@ -6,6 +6,9 @@
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
 #include "base/check.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
@@ -25,7 +28,8 @@ UnblindedTokenList SetUnblindedTokens(const int count) {
 }
 
 UnblindedTokenInfo CreateUnblindedToken(
-    const std::string& unblinded_token_base64) {
+    const std::string& unblinded_token_base64,
+    const WalletInfo& wallet) {
   UnblindedTokenInfo unblinded_token;
 
   unblinded_token.value = cbr::UnblindedToken(unblinded_token_base64);
@@ -33,18 +37,24 @@ UnblindedTokenInfo CreateUnblindedToken(
   unblinded_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
 
+  const absl::optional<std::string> signature =
+      crypto::Sign(unblinded_token_base64, wallet.secret_key);
+  CHECK(signature);
+  unblinded_token.signature = *signature;
+
   CHECK(IsValid(unblinded_token));
 
   return unblinded_token;
 }
 
 UnblindedTokenList CreateUnblindedTokens(
-    const std::vector<std::string>& unblinded_tokens_base64) {
+    const std::vector<std::string>& unblinded_tokens_base64,
+    const WalletInfo& wallet) {
   UnblindedTokenList unblinded_tokens;
 
   for (const auto& unblinded_token_base64 : unblinded_tokens_base64) {
     const UnblindedTokenInfo unblinded_token =
-        CreateUnblindedToken(unblinded_token_base64);
+        CreateUnblindedToken(unblinded_token_base64, wallet);
 
     unblinded_tokens.push_back(unblinded_token);
   }
@@ -53,6 +63,8 @@ UnblindedTokenList CreateUnblindedTokens(
 }
 
 UnblindedTokenList GetUnblindedTokens(const int count) {
+  const WalletInfo& wallet = GetWalletForTesting();
+
   const std::vector<std::string> unblinded_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
       R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
@@ -73,7 +85,7 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
     const std::string& unblinded_token_base64 =
         unblinded_tokens_base64.at(i % modulo);
     const UnblindedTokenInfo unblinded_token =
-        CreateUnblindedToken(unblinded_token_base64);
+        CreateUnblindedToken(unblinded_token_base64, wallet);
 
     unblinded_tokens.push_back(unblinded_token);
   }

@@ -91,7 +91,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -163,7 +163,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
@@ -217,7 +217,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -325,7 +325,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
               OnDidRetryRedeemingUnblindedPaymentTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -379,7 +379,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   EXPECT_CALL(*redeem_unblinded_payment_tokens_delegate_mock_,
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_));
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   FastForwardClockToNextPendingTask();

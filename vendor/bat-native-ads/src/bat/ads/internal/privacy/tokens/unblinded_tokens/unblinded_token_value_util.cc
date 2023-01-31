@@ -18,6 +18,7 @@ namespace {
 
 constexpr char kUnblindedTokenKey[] = "unblinded_token";
 constexpr char kPublicKey[] = "public_key";
+constexpr char kSignature[] = "signature";
 
 }  // namespace
 
@@ -41,6 +42,7 @@ base::Value::List UnblindedTokensToValue(
     base::Value::Dict dict;
     dict.Set(kUnblindedTokenKey, *unblinded_token_base64);
     dict.Set(kPublicKey, *public_key_base64);
+    dict.Set(kSignature, unblinded_token.signature);
     list.Append(std::move(dict));
   }
 
@@ -80,6 +82,14 @@ UnblindedTokenList UnblindedTokensFromValue(const base::Value::List& list) {
       }
     } else {
       BLOG(0, "Missing unblinded token public key");
+      continue;
+    }
+
+    // Signature
+    if (const std::string* const value = dict->FindString(kSignature)) {
+      unblinded_token.signature = *value;
+    } else {
+      BLOG(0, "Missing unblinded token signature");
       continue;
     }
 

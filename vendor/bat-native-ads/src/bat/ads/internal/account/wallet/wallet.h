@@ -6,7 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_WALLET_WALLET_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_WALLET_WALLET_H_
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 
@@ -14,7 +16,8 @@ namespace ads {
 
 class Wallet final {
  public:
-  bool Set(const std::string& id, const std::string& seed);
+  bool Set(const std::string& payment_id,
+           const std::vector<uint8_t>& recovery_seed);
   const WalletInfo& Get() const;
 
  private:

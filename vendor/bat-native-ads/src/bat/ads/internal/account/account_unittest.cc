@@ -18,6 +18,7 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
@@ -37,15 +38,6 @@ namespace ads {
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace {
-
-constexpr char kWalletId[] = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-constexpr char kWalletSeed[] = "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=";
-constexpr char kInvalidWalletSeed[] =
-    "y6vCwhJ6NUUWZ7tkHw76f0FIs9w8j-VylGC0rWd6gQ1=";
-
-}  // namespace
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
@@ -108,7 +100,8 @@ TEST_F(BatAdsAccountTest, SetWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
@@ -120,7 +113,8 @@ TEST_F(BatAdsAccountTest, SetInvalidWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kInvalidWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetInvalidWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_FALSE(wallet_did_update_);
@@ -130,10 +124,12 @@ TEST_F(BatAdsAccountTest, SetInvalidWallet) {
 
 TEST_F(BatAdsAccountTest, ChangeWallet) {
   // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Act
-  account_->SetWallet("c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3", kWalletSeed);
+  account_->SetWallet(/*payment_id*/ "c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3",
+                      GetWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
@@ -143,17 +139,19 @@ TEST_F(BatAdsAccountTest, ChangeWallet) {
 
 TEST_F(BatAdsAccountTest, GetWallet) {
   // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Act
   const WalletInfo& wallet = account_->GetWallet();
 
   // Assert
   WalletInfo expected_wallet;
-  expected_wallet.id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
+  expected_wallet.payment_id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
+  expected_wallet.public_key = "BiG/i3tfNLSeOA9ZF5rkPCGyhkc7KCRbQS3bVGMvFQ0=";
   expected_wallet.secret_key =
-      "93052310477323AAE423A84BA32C68B1AE3B66B71952F6D8A69026E33BD817980621BF8B"
-      "7B5F34B49E380F59179AE43C21B286473B28245B412DDB54632F150D";
+      "kwUjEEdzI6rkI6hLoyxosa47ZrcZUvbYppAm4zvYF5gGIb+"
+      "Le180tJ44D1kXmuQ8IbKGRzsoJFtBLdtUYy8VDQ==";
 
   EXPECT_EQ(expected_wallet, wallet);
 }
