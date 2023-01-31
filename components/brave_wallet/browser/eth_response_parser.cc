@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -203,6 +204,33 @@ absl::optional<std::vector<std::string>> DecodeEthCallResponse(
     return absl::nullopt;
 
   return args;
+}
+
+absl::optional<std::vector<absl::optional<std::string>>>
+DecodeGetERC20TokenBalancesEthCallResponse(const std::string& data) {
+  std::vector<uint8_t> response_bytes;
+  if (!PrefixedHexStringToBytes(data, &response_bytes)) {
+    return absl::nullopt;
+  }
+
+  auto decoded = eth_abi::ExtractBoolBytesArrayFromTuple(response_bytes, 0);
+  if (decoded == absl::nullopt) {
+    return absl::nullopt;
+  }
+
+  // Loop through the decoded values, and add the balance
+  // if successful, otherwise null optional
+  std::vector<absl::optional<std::string>> balances;
+  for (const auto& tuple : *decoded) {
+    if (tuple.first) {
+      // Convert bytes to hex
+      balances.push_back(ToHex(tuple.second));
+    } else {
+      balances.push_back(absl::nullopt);
+    }
+  }
+
+  return balances;
 }
 
 absl::optional<std::string> ParseEthEstimateGas(const base::Value& json_value) {

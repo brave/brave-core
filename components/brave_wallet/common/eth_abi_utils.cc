@@ -48,6 +48,11 @@ uint256_t BytesToUint256(Span32 data) {
   return result;
 }
 
+bool BytesToBool(Span32 data) {
+  auto value = BytesToUint256(data);
+  return value != 0;
+}
+
 absl::optional<size_t> BytesToSize(Span32 data) {
   auto result = BytesToUint256(data);
   if (result > std::numeric_limits<size_t>::max())
@@ -200,6 +205,78 @@ absl::optional<std::vector<std::string>> ExtractStringArray(Span string_array) {
       return absl::nullopt;
     result.emplace_back(std::move(*string));
   }
+  return result;
+}
+
+absl::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
+    Span data) {
+  auto bool_row = ExtractRow(data, 0);
+  if (!bool_row) {
+    return absl::nullopt;
+  }
+
+  auto bytes = ExtractBytesFromTuple(data, 1);
+  if (!bytes) {
+    return absl::nullopt;
+  }
+
+  return std::make_pair(BytesToBool(*bool_row), std::move(*bytes));
+}
+
+absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+ExtractBoolBytesArrayFromTuple(Span data, size_t tuple_pos) {
+  // Head row contains offset to (bool, bytes)[] start.
+  auto array_head = ExtractHeadFromTuple(data, tuple_pos);
+  if (!array_head) {
+    return absl::nullopt;
+  }
+
+  absl::optional<size_t> array_offset = BytesToSize(*array_head);
+  if (!array_offset || *array_offset > data.size()) {
+    return absl::nullopt;
+  }
+
+  Span array_data = data.subspan(*array_offset);
+  return ExtractBoolBytesArray(array_data);
+}
+
+absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+ExtractBoolBytesArray(Span tuple_array) {
+  // Array is stored as size row and tuple of that size.
+  auto [tuple_size, tuple_header] = ExtractArrayInfo(tuple_array);
+  if (!tuple_size) {
+    return absl::nullopt;
+  }
+  // Row count in array is reasonable upper limit.
+  if (*tuple_size > PaddedRowCount(tuple_array.size())) {
+    return absl::nullopt;
+  }
+  if (*tuple_size == 0) {
+    return std::vector<std::pair<bool, std::vector<uint8_t>>>();
+  }
+
+  std::vector<std::pair<bool, std::vector<uint8_t>>> result;
+  result.reserve(*tuple_size);
+  for (auto i = 0u; i < *tuple_size; ++i) {
+    // Each tuple head row contains offset to encoded tuple.
+    auto tuple_element_head = ExtractHeadFromTuple(tuple_header, i);
+    if (!tuple_element_head) {
+      return absl::nullopt;
+    }
+
+    auto tuple_element_offset = BytesToSize(*tuple_element_head);
+    if (!tuple_element_offset || *tuple_element_offset > tuple_header.size()) {
+      return absl::nullopt;
+    }
+
+    auto bool_bytes =
+        ExtractBoolAndBytes(tuple_header.subspan(*tuple_element_offset));
+    if (!bool_bytes) {
+      return absl::nullopt;
+    }
+    result.emplace_back(std::move(*bool_bytes));
+  }
+
   return result;
 }
 

@@ -554,6 +554,30 @@ const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
   return *endpoints;
 }
 
+const base::flat_map<std::string, std::string>&
+GetEthBalanceScannerContractAddresses() {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      contract_addresses(
+          // Mainnet, Polygon, and Avalanche conctract addresses pulled from
+          // https://github.com/MyCryptoHQ/eth-scan
+          {{mojom::kMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           {mojom::kPolygonMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           {mojom::kAvalancheMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           // BSC, Optimism, and Arbitrum contract addresses pulled from
+           // https://github.com/onyb/x/blob/75800edce88688dcfe59dd6b4a664087862369bb/core/evm/scanner/balances/EVMScanner.ts
+           {mojom::kBinanceSmartChainMainnetChainId,
+            "0x53242a975aa7c607e17138b0e0231162e3e68593"},
+           {mojom::kOptimismMainnetChainId,
+            "0x9e5076DF494FC949aBc4461F4E57592B81517D81"},
+           {mojom::kArbitrumMainnetChainId,
+            "0xa3e7eb35e779f261ca604138d41d0258e995e97b"}});
+
+  return *contract_addresses;
+}
+
 bool HasJupiterFeesForTokenMint(const std::string& mint) {
   static std::vector<std::string> mints(
       {"So11111111111111111111111111111111111111112",     // wSOL

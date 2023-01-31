@@ -984,6 +984,11 @@ struct SolanaSendTransactionOptions {
   OptionalSkipPreflight? skip_preflight;
 };
 
+struct ERC20BalanceResult {
+  string contract_address;
+  string? balance;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1019,9 +1024,20 @@ interface JsonRpcService {
   GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
+  // Supported by all EVM chains.
   GetERC20TokenBalance(string contract,
                        string address,
                        string chain_id) => (string balance, ProviderError error, string error_message);
+
+  // Fetches the balances of multiple ERC20 tokens for an address. Requires a
+  // BalanceScanner contract to be deployed on that network. See
+  // GetEthBalanceScannerContractAddresses() in brave_wallet_constants.cc for
+  // the list of supported chains.
+  GetERC20TokenBalances(array<string> contracts,
+                        string address,
+                        string chain_id) => (array<ERC20BalanceResult> balances,
+                                             ProviderError error,
+                                             string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,

@@ -1214,6 +1214,8 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
+const base::flat_map<std::string, std::string>&
+GetEthBalanceScannerContractAddresses();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
 
 }  // namespace brave_wallet

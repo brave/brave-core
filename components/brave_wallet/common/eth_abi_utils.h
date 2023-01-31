@@ -39,6 +39,13 @@ absl::optional<std::vector<std::string>> ExtractStringArrayFromTuple(
     size_t tuple_pos);
 absl::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
                                                            size_t tuple_pos);
+absl::optional<std::pair<bool, std::vector<uint8_t>>> ExtractBoolAndBytes(
+    Span data);
+absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+ExtractBoolBytesArray(Span string_array);
+absl::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
+ExtractBoolBytesArrayFromTuple(Span data, size_t tuple_pos);
+
 absl::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos);
 
