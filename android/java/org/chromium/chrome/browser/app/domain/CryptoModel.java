@@ -136,6 +136,7 @@ public class CryptoModel {
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
+            mOnRampModel.resetServices(mAssetRatioService);
         }
         init();
     }

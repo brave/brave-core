@@ -16,9 +16,9 @@ import org.chromium.brave_wallet.mojom.OnRampProvider;
 import java.util.Locale;
 
 public class OnRampModel {
-    private final AssetRatioService mAssetRatioService;
-
     private static final String CURRENCY_CODE_USD = "USD";
+    private final Object mLock = new Object();
+    private AssetRatioService mAssetRatioService;
 
     public OnRampModel(AssetRatioService assetRatioService) {
         mAssetRatioService = assetRatioService;
@@ -43,6 +43,12 @@ public class OnRampModel {
                     }
                     callback.OnUrlReady(url);
                 });
+    }
+
+    void resetServices(AssetRatioService assetRatioService) {
+        synchronized (mLock) {
+            mAssetRatioService = assetRatioService;
+        }
     }
 
     public interface OnRampCallback {
