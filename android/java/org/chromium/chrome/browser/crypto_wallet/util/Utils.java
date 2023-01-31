@@ -88,6 +88,7 @@ import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;

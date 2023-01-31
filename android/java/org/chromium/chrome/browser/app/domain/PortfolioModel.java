@@ -118,7 +118,7 @@ public class PortfolioModel {
         }
     }
 
-    public class NftDataModel {
+    public static class NftDataModel {
         public BlockchainToken token;
         public NetworkInfo networkInfo;
         public Erc721MetaData erc721MetaData;
@@ -131,7 +131,7 @@ public class PortfolioModel {
         }
     }
 
-    public class Erc721MetaData implements Serializable {
+    public static class Erc721MetaData implements Serializable {
         public String mDescription;
         public String mImageUrl;
         public String mName;
