@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
@@ -196,8 +196,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             } else {
                 PortfolioModel.NftDataModel nftDataModel = walletListItemModel.getNftDataModel();
                 if (walletListItemModel.hasNftImageLink()
-                        && ImageLoader.isSupported(nftDataModel.erc721MetaData.mImageUrl)) {
-                    String url = nftDataModel.erc721MetaData.mImageUrl;
+                        && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
+                    String url = nftDataModel.nftMetadata.mImageUrl;
                     ImageLoader.createLoadNftRequest(url, context, false).into(holder.iconImg);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
