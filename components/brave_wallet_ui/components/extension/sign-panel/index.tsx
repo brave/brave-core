@@ -137,6 +137,9 @@ export const SignPanel = (props: Props) => {
     }
   }, [showWarning])
 
+  // TODO(apaymyshev): implement ui for this.
+  console.log(selectedQueueData.domain)
+
   // render
   return (
     <StyledWrapper>
