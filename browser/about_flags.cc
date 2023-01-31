@@ -447,6 +447,11 @@ constexpr char kBraveChangeActiveTabOnScrollEventName[] =
 constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
     "Change the active tab when scroll events occur on tab strip.";
 #endif  // BUILDFLAG(IS_LINUX)
+
+constexpr char kRestrictEventSourcePoolName[] = "Restrict Event Source Pool";
+constexpr char kRestrictEventSourcePoolDescription[] =
+    "Limits simultaneous active WebSockets connections per eTLD+1";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -809,6 +814,11 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
       flag_descriptions::kBraveSyncHistoryDiagnosticsDescription,           \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           brave_sync::features::kBraveSyncHistoryDiagnostics)},             \
+    {"restrict-event-source-pool",                                          \
+      flag_descriptions::kRestrictEventSourcePoolName,                      \
+      flag_descriptions::kRestrictEventSourcePoolDescription,               \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kRestrictEventSourcePool)},                      \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \
