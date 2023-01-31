@@ -73,7 +73,7 @@ export interface Props {
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
-  allowSponsoredWallpaperUI: boolean
+  allowBackgroundCustomization: boolean
   showRewards: boolean
   showBraveTalk: boolean
   braveRewardsSupported: boolean
@@ -163,7 +163,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   getInitialTab () {
-    let tab = this.props.allowSponsoredWallpaperUI
+    let tab = this.props.allowBackgroundCustomization
       ? TabType.BackgroundImage
       : TabType.BraveStats
     if (this.props.setActiveTab) {
@@ -196,17 +196,10 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   getActiveTabTypes (): TabType[] {
-    // TODO(petemill): We're not allowing
-    // any background image changes when user is not
-    // in a sponsored image region, which is weird.
-    // Seems like this should actually only be for
-    // super referral users, where the bg image is
-    // mandatory. Maybe that's the only case
-    // allowSponsoredWallpaperUI is false?
-    if (!this.props.allowSponsoredWallpaperUI) {
-      return this.allTabTypesWithoutBackground
-    } else {
+    if (this.props.allowBackgroundCustomization) {
       return this.allTabTypes
+    } else {
+      return this.allTabTypesWithoutBackground
     }
   }
 
