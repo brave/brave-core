@@ -20,8 +20,7 @@ namespace ads {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetAmazonSearchEngineDomainExtensions();
+  const auto domain_extensions = GetAmazonSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -44,8 +43,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetGoogleSearchEngineDomainExtensions();
+  const auto domain_extensions = GetGoogleSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -68,8 +66,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetMojeekSearchEngineDomainExtensions();
+  const auto domain_extensions = GetMojeekSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -92,8 +89,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
   // Arrange
-  const std::vector<std::string>& subdomains =
-      GetWikipediaSearchEngineSubdomains();
+  const auto subdomains = GetWikipediaSearchEngineSubdomains();
 
   // Act
   for (const auto& subdomain : subdomains) {
@@ -116,7 +112,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
   // Arrange
-  const std::vector<std::string>& subdomains = GetYahooSearchEngineSubdomains();
+  const auto subdomains = GetYahooSearchEngineSubdomains();
 
   // Act
   for (const auto& subdomain : subdomains) {
