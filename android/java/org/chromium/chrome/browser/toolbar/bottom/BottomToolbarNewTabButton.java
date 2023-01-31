@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import androidx.annotation.StringRes;
+import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
@@ -96,7 +97,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
 
     @Override
     public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
-        ApiCompatibilityUtils.setImageTintList(this, tint);
+        ImageViewCompat.setImageTintList(this, tint);
         updateBackground();
     }
 
