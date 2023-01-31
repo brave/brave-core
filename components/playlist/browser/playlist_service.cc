@@ -382,10 +382,11 @@ void PlaylistService::FindMediaFilesFromActiveTab(
   }
 
   PlaylistDownloadRequestManager::Request request;
-  if (ShouldDownloadOnBackground(contents))
+  if (ShouldDownloadOnBackground(contents)) {
     request.url_or_contents = contents->GetVisibleURL().spec();
-  else
+  } else {
     request.url_or_contents = contents->GetWeakPtr();
+  }
   request.callback = std::move(callback);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
