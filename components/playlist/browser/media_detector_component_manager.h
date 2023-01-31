@@ -69,7 +69,7 @@ class MediaDetectorComponentManager {
   bool register_requested_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
 
-  std::string script_;
+  std::string base_script_;
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;
 

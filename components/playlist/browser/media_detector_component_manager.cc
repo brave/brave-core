@@ -39,19 +39,15 @@ const ScriptToSchemefulSiteMap& GetScriptNameToSchemefulSiteMap() {
   return *script_name_to_schemeful_sites;
 }
 
-const base::flat_map<ScriptName, std::string>& GetLocalScriptMap() {
-  static const base::NoDestructor local_resource_map(([]() {
-    const auto& rb = ui::ResourceBundle::GetSharedInstance();
-    base::flat_map<ScriptName, std::string> local_resource_map = {
-        {GetBaseScriptName(),
-         rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_JS)},
-        {FILE_PATH_LITERAL("youtube.com.js"),
-         rb.LoadDataResourceString(IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS)},
-    };
-    return local_resource_map;
-  })());
-
-  return *local_resource_map;
+base::flat_map<ScriptName, std::string> GetLocalScriptMap() {
+  const auto& rb = ui::ResourceBundle::GetSharedInstance();
+  return {
+      {GetBaseScriptName(),
+       std::string(rb.GetRawDataResource(IDR_PLAYLIST_MEDIA_DETECTOR_JS))},
+      {FILE_PATH_LITERAL("youtube.com.js"),
+       std::string(
+           rb.GetRawDataResource(IDR_PLAYLIST_MEDIA_DETECTOR_YOUTUBE_JS))},
+  };
 }
 
 std::string ReadScript(const base::FilePath& path) {
@@ -126,7 +122,7 @@ void MediaDetectorComponentManager::OnGetScripts(
   }
 
   DCHECK(script_map.count(GetBaseScriptName()));
-  script_ = script_map.at(GetBaseScriptName());
+  base_script_ = script_map.at(GetBaseScriptName());
 
   // This could have been filled when we've used media detector script before
   // component updater finishes its work.
@@ -140,7 +136,7 @@ void MediaDetectorComponentManager::OnGetScripts(
   }
 
   for (auto& observer : observer_list_)
-    observer.OnScriptReady(script_);
+    observer.OnScriptReady(base_script_);
 }
 
 void MediaDetectorComponentManager::SetUseLocalScriptForTesting() {
@@ -160,14 +156,14 @@ bool MediaDetectorComponentManager::ShouldHideMediaSrcAPI(
 
 std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     const GURL& url) {
-  if (script_.empty()) {
+  if (base_script_.empty()) {
     // In case we have yet to fetch the script, use local script instead. At the
     // same time, fetch the script from component.
     RegisterIfNeeded();
     OnGetScripts(GetLocalScriptMap());
   }
 
-  std::string detector_script = script_;
+  std::string detector_script = base_script_;
   DCHECK(!detector_script.empty());
 
   if (net::SchemefulSite site(url); site_specific_detectors_.count(site)) {
@@ -175,8 +171,8 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
         "const siteSpecificDetector = null";
     auto pos = detector_script.find(kPlaceholder);
     if (pos == std::string::npos) {
-      // Reportedly, in some environment(e.g. Android release), the js script
-      // resource could be minified by removing white spaces.
+      // Reportedly, in some environments(e.g. Android release), the js resource
+      // could be minified by removing white spaces.
       constexpr std::string_view kPlaceholderWithoutWhitespace =
           "const siteSpecificDetector=null";
       pos = detector_script.find(kPlaceholderWithoutWhitespace);
