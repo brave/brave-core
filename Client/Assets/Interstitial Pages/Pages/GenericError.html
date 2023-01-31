@@ -10,21 +10,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     <meta name="referrer" content="no-referrer">
     <title>%page_title%</title>
     <link rel="stylesheet" href="internal://local/interstitial-style/InterstitialStyles.css">
-        
-    <script type="text/javascript">
-        // If the user swipes back and forth to this tab, we want to make sure we make an attempt to reload the original page.
-        var fresh = true;
-        window.addEventListener('popstate', function () {
-            if (fresh) {
-                fresh = false;
-            } else {
-                webkit.messageHandlers["%message_handler%"].postMessage({
-                    "securityToken": "%security_token%",
-                    "type": "reload"
-                });
-            }
-        });
-    </script>
 </head>
 
 <body dir="&locale.dir;" class="background content">

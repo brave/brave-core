@@ -92,8 +92,6 @@ class GenericErrorPageHandler: InterstitialPageHandler {
       "error_title": "This site can't be reached",
       "error_description": model.description + "<br><br>\(Strings.errorPageCantBeReachedTry)",
       "error_domain": domain,
-      "message_handler": LocalRequestHelper.messageHandlerName,
-      "security_token": LocalRequestHelper.scriptId,
       "actions": action,
     ]
 
