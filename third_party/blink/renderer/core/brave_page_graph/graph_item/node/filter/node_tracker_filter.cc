@@ -10,7 +10,7 @@
 namespace brave_page_graph {
 
 NodeTrackerFilter::NodeTrackerFilter(GraphItemContext* context,
-                                     const std::string& host)
+                                     const String& host)
     : NodeFilter(context), host_(host) {}
 
 NodeTrackerFilter::~NodeTrackerFilter() = default;
@@ -20,7 +20,7 @@ ItemName NodeTrackerFilter::GetItemName() const {
 }
 
 ItemDesc NodeTrackerFilter::GetItemDesc() const {
-  return NodeFilter::GetItemDesc() + " [" + host_ + "]";
+  return NodeFilter::GetItemDesc() + " [" + host_.Utf8() + "]";
 }
 
 void NodeTrackerFilter::AddGraphMLAttributes(xmlDocPtr doc,
