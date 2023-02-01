@@ -25,6 +25,7 @@ import {
   NetworkText,
   PanelTitle,
   MessageBox,
+  MessageHeader,
   MessageText,
   ButtonRow,
   WarningTitleRow
@@ -137,9 +138,6 @@ export const SignPanel = (props: Props) => {
     }
   }, [showWarning])
 
-  // TODO(apaymyshev): implement ui for this.
-  console.log(selectedQueueData.domain)
-
   // render
   return (
     <StyledWrapper>
@@ -183,11 +181,16 @@ export const SignPanel = (props: Props) => {
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={getLocale('braveWalletSignTransactionMessageTitle')}
+              text={
+                selectedQueueData.isEip712
+                  ? getLocale('braveWalletSignTransactionEIP712MessageTitle')
+                  : getLocale('braveWalletSignTransactionMessageTitle')
+              }
             />
           </TabRow>
 
-          {hasUnicode(selectedQueueData.message) &&
+          {(hasUnicode(selectedQueueData.message) ||
+              (selectedQueueData.isEip712 && hasUnicode(selectedQueueData.domain))) &&
             <WarningBox warningType='warning'>
               <WarningTitleRow>
                 <WarningIcon color={'warningIcon'} />
@@ -209,15 +212,40 @@ export const SignPanel = (props: Props) => {
             </WarningBox>
           }
 
-          <MessageBox>
-            <MessageText>
-              {
-                renderUnicode
-                  ? selectedQueueData.message
-                  : unicodeEscape(selectedQueueData.message)
-              }
-            </MessageText>
-          </MessageBox>
+          {selectedQueueData.isEip712 && (
+            <MessageBox height='180px'>
+              <MessageHeader>
+                {getLocale('braveWalletSignTransactionEIP712MessageDomain')}:
+              </MessageHeader>
+              <MessageText>
+                {!renderUnicode && hasUnicode(selectedQueueData.domain)
+                  ? unicodeEscape(selectedQueueData.domain)
+                  : selectedQueueData.domain
+                }
+              </MessageText>
+
+              <MessageHeader>
+                {getLocale('braveWalletSignTransactionMessageTitle')}:
+              </MessageHeader>
+              <MessageText>
+                {!renderUnicode && hasUnicode(selectedQueueData.message)
+                  ? unicodeEscape(selectedQueueData.message)
+                  : selectedQueueData.message
+                }
+              </MessageText>
+            </MessageBox>
+          )}
+
+          {!selectedQueueData.isEip712 && (
+            <MessageBox>
+              <MessageText>
+                {!renderUnicode && hasUnicode(selectedQueueData.message)
+                  ? unicodeEscape(selectedQueueData.message)
+                  : selectedQueueData.message
+                }
+              </MessageText>
+            </MessageBox>
+          )}
         </>
       }
       <ButtonRow>
