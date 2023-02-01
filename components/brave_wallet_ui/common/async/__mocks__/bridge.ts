@@ -229,26 +229,29 @@ export class MockedWalletApiProxy {
   > = {
     getWalletInfo: async () => {
       return {
-        accountInfos: [
-          {
-            hardware: {
-              deviceId: mockAccount.deviceId || '',
-              path: '',
-              vendor: ''
-            },
-            isImported: mockAccount.accountType !== 'Primary',
-            address: mockAccount.address,
-            coin: mockAccount.coin,
-            keyringId: mockAccount.keyringId,
-            name: mockAccount.name
-          }
-        ],
-        favoriteApps: [],
-        isSolanaEnabled: true,
-        isFilecoinEnabled: true,
-        isWalletBackedUp: true,
-        isWalletCreated: true,
-        isWalletLocked: false
+        walletInfo: {
+          accountInfos: [
+            {
+              hardware: {
+                deviceId: mockAccount.deviceId || '',
+                path: '',
+                vendor: ''
+              },
+              isImported: mockAccount.accountType !== 'Primary',
+              address: mockAccount.address,
+              coin: mockAccount.coin,
+              keyringId: mockAccount.keyringId,
+              name: mockAccount.name
+            }
+          ],
+          favoriteApps: [],
+          isSolanaEnabled: true,
+          isFilecoinEnabled: true,
+          isWalletBackedUp: true,
+          isWalletCreated: true,
+          isWalletLocked: false,
+          isNftPinningFeatureEnabled: false
+        }
       }
     }
   }

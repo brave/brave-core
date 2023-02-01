@@ -266,6 +266,7 @@ export interface WalletState {
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
+  isNftAutopinningFeatureEnabled: boolean
 }
 
 export interface PanelState {
@@ -349,6 +350,7 @@ export interface WalletInfoBase {
   accountInfos: AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isNftPinningFeatureEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {

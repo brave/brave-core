@@ -199,7 +199,7 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
 
 export async function findHardwareAccountInfo (address: string): Promise<AccountInfo | false> {
   const apiProxy = getAPIProxy()
-  const result = await apiProxy.walletHandler.getWalletInfo()
+  const result = (await apiProxy.walletHandler.getWalletInfo()).walletInfo
   for (const account of result.accountInfos) {
     if (!account.hardware) {
       continue
@@ -348,7 +348,7 @@ export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings
 
 export async function getKeyringIdFromAddress (address: string): Promise<string> {
   const apiProxy = getAPIProxy()
-  const result = await apiProxy.walletHandler.getWalletInfo()
+  const result = (await apiProxy.walletHandler.getWalletInfo()).walletInfo
   for (const account of result.accountInfos) {
     if (account.address === address) {
       return getKeyringIdFromCoin(account.coin)
@@ -806,7 +806,7 @@ export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { keyringService, walletHandler, jsonRpcService } = apiProxy
-    const walletInfoBase = await walletHandler.getWalletInfo()
+    const walletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
     const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
 
     // Get/Set selectedAccount

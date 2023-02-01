@@ -129,7 +129,8 @@ const defaultState: WalletState = {
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
   passwordAttempts: 0,
-  assetAutoDiscoveryCompleted: false
+  assetAutoDiscoveryCompleted: false,
+  isNftAutopinningFeatureEnabled: false
 }
 
  // async actions
@@ -297,6 +298,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.accounts = accounts
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
+        state.isNftAutopinningFeatureEnabled =
+          payload.isNftPinningFeatureEnabled
       },
 
       isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
