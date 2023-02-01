@@ -37,6 +37,10 @@ struct PlaylistItem {
   string author;
   string duration;
   int32 last_played_position;
+
+  // Playlists that contain this item. Could have multiple |Playlist| in case
+  // user copied this item to another list.
+  array<string> parents;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -65,6 +69,8 @@ interface PlaylistService {
   FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id);
+
+  CopyItemToPlaylist(array<string> item_ids, string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);

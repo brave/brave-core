@@ -41,6 +41,7 @@ constexpr char kPlaylistItemTitleKey[] = "title";
 constexpr char kPlaylistItemAuthorKey[] = "author";
 constexpr char kPlaylistItemDurationKey[] = "duration";
 constexpr char kPlaylistItemLastPlayedPositionKey[] = "lastPlayedPosition";
+constexpr char kPlaylistItemParentKey[] = "parent";
 
 }  // namespace
 
@@ -54,10 +55,12 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
          !dict.contains(kPlaylistItemMediaSrcKey) ||
          !dict.contains(kPlaylistItemThumbnailSrcKey) ||
          !dict.contains(kPlaylistItemMediaFilePathKey) ||
-         // Added 2022, dec.
+         // Added 2022. Dec.
          !dict.contains(kPlaylistItemDurationKey) ||
          !dict.contains(kPlaylistItemAuthorKey) ||
-         !dict.contains(kPlaylistItemLastPlayedPositionKey);
+         !dict.contains(kPlaylistItemLastPlayedPositionKey) ||
+         // Added 2023. Jan.
+         !dict.contains(kPlaylistItemParentKey);
 }
 
 mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
@@ -77,6 +80,15 @@ mojom::PlaylistItemPtr ConvertValueToPlaylistItem(
   item->author = *dict.FindString(kPlaylistItemAuthorKey);
   item->last_played_position =
       *dict.FindInt(kPlaylistItemLastPlayedPositionKey);
+
+  const auto* parents = dict.FindList(kPlaylistItemParentKey);
+  for (const auto& id_value : *parents) {
+    DCHECK(id_value.is_string());
+    const auto& id = id_value.GetString();
+    DCHECK(!id.empty());
+    item->parents.push_back(id);
+  }
+
   return item;
 }
 
@@ -97,6 +109,14 @@ base::Value::Dict ConvertPlaylistItemToValue(
   playlist_value.Set(kPlaylistItemDurationKey, item->duration);
   playlist_value.Set(kPlaylistItemLastPlayedPositionKey,
                      item->last_played_position);
+
+  base::Value::List parent;
+  for (const auto& parent_playlist_id : item->parents) {
+    parent.Append(base::Value(parent_playlist_id));
+  }
+
+  playlist_value.Set(kPlaylistItemParentKey, std::move(parent));
+
   return playlist_value;
 }
 
