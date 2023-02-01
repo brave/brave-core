@@ -28,10 +28,8 @@
 
                 <TextView
                     android:id="@+id/select_purchase_method_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/BraveWalletTextView"
                     android:textSize="20sp"
-                    android:textColor="@color/wallet_text_color"
                     android:gravity="center_vertical"
                     android:layout_marginEnd="20dp"
                     android:text="@string/wallet_buy_mainnet_button_text"/>
@@ -43,11 +41,7 @@
         <TextView
             android:id="@+id/select_options_text"
             style="@style/BraveWalletTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/wallet_secondary_text_color"
             android:text="@string/brave_wallet_select_following_options"/>
@@ -56,12 +50,9 @@
         android:id="@+id/ramp_network_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="14dp"
+        android:layout_marginHorizontal="14dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_filled_bg_radius_12"
         android:orientation="horizontal"
@@ -85,33 +76,28 @@
             <TextView
                 style="@style/BraveWalletTextViewTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingVertical="8dp"
                 android:text="@string/brave_wallet_ramp_network_title"
-                android:textColor="@color/wallet_text_color"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <TextView
                 style="@style/BraveWalletTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingVertical="8dp"
                 android:text="@string/brave_wallet_buy_crypto_visa_mastercard"
-                android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/purchase_method_btn_ramp"
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="8dp"
                 android:text="@string/brave_wallet_buy_with_ramp_network"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -120,12 +106,9 @@
         android:id="@+id/sardine_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="14dp"
+        android:layout_marginHorizontal="14dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_filled_bg_radius_12"
         android:orientation="horizontal"
@@ -149,33 +132,28 @@
             <TextView
                 style="@style/BraveWalletTextViewTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingVertical="8dp"
                 android:text="@string/brave_wallet_sardine_title"
-                android:textColor="@color/wallet_text_color"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <TextView
                 style="@style/BraveWalletTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingVertical="8dp"
                 android:text="@string/brave_wallet_instant_buy"
-                android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/purchase_method_btn_sardine"
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="8dp"
                 android:text="@string/brave_wallet_buy_with_sardine"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -186,8 +164,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
         android:paddingHorizontal="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginHorizontal="14dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_filled_bg_radius_12"
         android:orientation="horizontal"
@@ -211,35 +188,29 @@
             <TextView
                 style="@style/BraveWalletTextViewTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/brave_wallet_transak_title"
-                android:textColor="@color/wallet_text_color"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
             <TextView
                 style="@style/BraveWalletTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="start"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingVertical="8dp"
                 android:text="@string/brave_wallet_instant_buy"
-                android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/purchase_method_btn_transak"
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="8dp"
                 android:text="@string/brave_wallet_buy_with_transak"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
