@@ -19,4 +19,5 @@ onboarding_deps = [
   "//components/pref_registry",
   "//components/prefs",
   "//content/public/browser",
+  "//net/base/registry_controlled_domains",
 ]

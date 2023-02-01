@@ -41,8 +41,9 @@ class BraveHelpBubbleHostView : public views::View,
   void AddedToWidget() override;
   void OnPaint(gfx::Canvas* canvas) override;
 
-  // BraveHelpBubbleDelegate::Observer:
-  void OnBubbleClosing(Widget* widget) override;
+  // BraveHelpBubbleDelegateView::Observer:
+  void OnBubbleDestroying(views::Widget* widget) override;
+  // views::ViewObserver:
   void OnViewBoundsChanged(views::View* observed_view) override;
 
   void OnTrackedElementShown(ui::TrackedElement* element);
@@ -55,7 +56,10 @@ class BraveHelpBubbleHostView : public views::View,
   ui::ElementContext context_;
   ui::ElementTracker::Subscription shown_subscription_;
   ui::ElementTracker::Subscription hidden_subscription_;
-  base::ScopedObservation<views::View, views::ViewObserver> scoped_observation_{
+  base::ScopedObservation<BraveHelpBubbleDelegateView,
+                          BraveHelpBubbleDelegateView::Observer>
+      bubble_help_delegate_observation_{this};
+  base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
   base::WeakPtrFactory<BraveHelpBubbleHostView> weak_factory_{this};
 };

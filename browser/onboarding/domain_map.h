@@ -7,16 +7,15 @@
 #define BRAVE_BROWSER_ONBOARDING_DOMAIN_MAP_H_
 
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "url/gurl.h"
+class GURL;
 
-namespace domain_map {
-std::string GetCompanyNameFromGURL(const GURL url);
+namespace onboarding {
+std::string GetCompanyNameFromGURL(const GURL& url);
 std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
-    std::vector<GURL> ads_list);
-}  // namespace domain_map
+    const std::vector<GURL>& ads_list);
+}  // namespace onboarding
 
 #endif  // BRAVE_BROWSER_ONBOARDING_DOMAIN_MAP_H_

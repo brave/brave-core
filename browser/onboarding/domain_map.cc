@@ -5,13 +5,14 @@
 
 #include "brave/browser/onboarding/domain_map.h"
 
-#include <sstream>
+#include <unordered_map>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/strings/string_piece.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/gurl.h"
 
-namespace domain_map {
+namespace onboarding {
 constexpr auto kDomains =
     base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
         {"2mdn.net", "Google"},
@@ -137,25 +138,21 @@ constexpr auto kDomains =
         {"messenger.com", "Facebook"},
     });
 
-std::string GetCompanyNameFromGURL(const GURL url) {
+std::string GetCompanyNameFromGURL(const GURL& url) {
   auto host = net::registry_controlled_domains::GetDomainAndRegistry(
-      url.host(), net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
+      url, net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
 
-  if (kDomains.contains(host)) {
-    base::StringPiece domain = kDomains.at(host);
-    return std::string(domain.data(), domain.size());
-  }
-
-  return std::string();
+  return kDomains.contains(host) ? std::string(kDomains.at(host))
+                                 : std::string();
 }
 
 std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
-    std::vector<GURL> ads_list) {
+    const std::vector<GURL>& ads_list) {
   std::string result;
   std::unordered_map<std::string, int> company_count_map;
   int total_count = 0;
 
-  for (GURL url : ads_list) {
+  for (const GURL& url : ads_list) {
     std::string company_name = GetCompanyNameFromGURL(url);
     if (company_name.empty()) {
       continue;
@@ -163,11 +160,11 @@ std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
     company_count_map[company_name]++;
   }
 
-  for (const auto& [key, value] : company_count_map) {
-    if (value > 0) {
-      result.append(key);
+  for (const auto& [company_name, count] : company_count_map) {
+    if (count > 0) {
+      result.append(company_name);
       result.append(", ", 2);
-      total_count += value;
+      total_count += count;
     }
   }
 
@@ -177,4 +174,4 @@ std::pair<std::string, int> GetCompanyNamesAndCountFromAdsList(
 
   return {result, total_count};
 }
-}  // namespace domain_map
+}  // namespace onboarding

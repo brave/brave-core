@@ -107,7 +107,7 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
 
   std::vector<std::string> replacements;
   auto [company_names, total_companies_blocked] =
-      domain_map::GetCompanyNamesAndCountFromAdsList(
+      onboarding::GetCompanyNamesAndCountFromAdsList(
           shields_data_controller->GetBlockedAdsList());
 
   std::string label_text = l10n_util::GetStringUTF8(

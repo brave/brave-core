@@ -144,8 +144,9 @@ class BorderWithArrow : public views::BubbleBorder {
 };
 }  // namespace
 
-BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(View* anchor_view,
-                                                         const std::string text)
+BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
+    View* anchor_view,
+    const std::string& text)
     : BubbleDialogDelegateView(anchor_view, BubbleBorder::Arrow::TOP_CENTER) {
   SetButtons(ui::DIALOG_BUTTON_NONE);
   set_shadow(BubbleBorder::Shadow::NO_SHADOW_LEGACY);
@@ -171,7 +172,7 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(View* anchor_view,
 }
 
 std::unique_ptr<NonClientFrameView>
-BraveHelpBubbleDelegateView::CreateNonClientFrameView(Widget* widget) {
+BraveHelpBubbleDelegateView::CreateNonClientFrameView(views::Widget* widget) {
   std::unique_ptr<NonClientFrameView> frame =
       BubbleDialogDelegate::CreateNonClientFrameView(widget);
 
@@ -191,9 +192,9 @@ BraveHelpBubbleDelegateView::CreateNonClientFrameView(Widget* widget) {
   return frame;
 }
 
-void BraveHelpBubbleDelegateView::OnWidgetClosing(Widget* widget) {
+void BraveHelpBubbleDelegateView::OnWidgetDestroying(views::Widget* widget) {
   for (auto& obs : observers_) {
-    obs.OnBubbleClosing(widget);
+    obs.OnBubbleDestroying(widget);
   }
 }
 
@@ -204,6 +205,8 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetMultiLine(true);
   label->SetMaximumWidth(390);
   label->SetText(text);
+  label->SetEnabledColor(SK_ColorWHITE);
+
   gfx::FontList font_list({"Poppins", "Arial"}, gfx::Font::NORMAL, font_size,
                           font_weight);
   label->SetFontList(font_list);

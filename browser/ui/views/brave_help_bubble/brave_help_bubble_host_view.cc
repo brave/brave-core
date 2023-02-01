@@ -63,13 +63,7 @@ BraveHelpBubbleHostView::BraveHelpBubbleHostView(View* tracked_element)
   SetEnabled(false);
 }
 
-BraveHelpBubbleHostView::~BraveHelpBubbleHostView() {
-  if (brave_help_bubble_delegate_view_) {
-    brave_help_bubble_delegate_view_->RemoveObserver(this);
-  }
-
-  scoped_observation_.Reset();
-}
+BraveHelpBubbleHostView::~BraveHelpBubbleHostView() = default;
 
 // static
 base::WeakPtr<BraveHelpBubbleHostView> BraveHelpBubbleHostView::Create(
@@ -84,7 +78,7 @@ void BraveHelpBubbleHostView::Show() {
   if (!brave_help_bubble_delegate_view_) {
     brave_help_bubble_delegate_view_ =
         new BraveHelpBubbleDelegateView(this, text_);
-    brave_help_bubble_delegate_view_->AddObserver(this);
+    bubble_help_delegate_observation_.Observe(brave_help_bubble_delegate_view_);
   }
 
   if (brave_help_bubble_delegate_view_) {
@@ -153,8 +147,8 @@ void BraveHelpBubbleHostView::UpdatePosition() {
 void BraveHelpBubbleHostView::StartObservingAndShow() {
   // Observing changes to the parent element's bounds,
   // as they are the only ones that are expected to change
-  if (!scoped_observation_.IsObserving()) {
-    scoped_observation_.Observe(tracked_element_->parent());
+  if (!view_observation_.IsObserving()) {
+    view_observation_.Observe(tracked_element_->parent());
   }
 
   UpdatePosition();
@@ -181,7 +175,7 @@ void BraveHelpBubbleHostView::OnPaint(gfx::Canvas* canvas) {
   canvas->DrawCircle(GetContentsBounds().CenterPoint(), 20.f, flags);
 }
 
-void BraveHelpBubbleHostView::OnBubbleClosing(Widget* widget) {
+void BraveHelpBubbleHostView::OnBubbleDestroying(views::Widget* widget) {
   // In the destruction, we don't have to remove this from parent. Otherwise,
   // DCHECK will fail as the ancestor view is iterating its children to destroy
   // all descendant.
