@@ -78,36 +78,42 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
             mBuyModel = activity.getWalletModel().getCryptoModel().getBuyModel();
         }
         if (mBuyModel != null) {
-            mBuyModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
-                    mAmount, getResources(), url -> {
-                        if (url != null) {
+            if (mBuyModel.isAvailable(OnRampProvider.RAMP, getResources())) {
+                mRampNetworkLayout.setVisibility(View.VISIBLE);
+                mBuyModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
+                        mAmount, url -> {
                             enableOnRampService(mRampNetworkLayout, mRampButton, url);
-                        }
-                    });
+                        });
+            }
 
-            mBuyModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
-                    mAmount, getResources(), url -> {
-                        if (url != null) {
+            if (mBuyModel.isAvailable(OnRampProvider.SARDINE, getResources())) {
+                mSardineLayout.setVisibility(View.VISIBLE);
+                mBuyModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
+                        mAmount, url -> {
                             enableOnRampService(mSardineLayout, mSardineButton, url);
-                        }
-                    });
+                        });
+            }
 
-            mBuyModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
-                    mAmount, getResources(), url -> {
-                        if (url != null) {
+            if (mBuyModel.isAvailable(OnRampProvider.TRANSAK, getResources())) {
+                mTransakLayout.setVisibility(View.VISIBLE);
+                mBuyModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
+                        mAmount, url -> {
                             enableOnRampService(mTransakLayout, mTransakButton, url);
-                        }
-                    });
+                        });
+            }
         }
     }
 
     private void enableOnRampService(
             ViewGroup onRampLayout, Button onRampButton, String onRampUrl) {
-        onRampButton.setOnClickListener(v -> {
-            TabUtils.openUrlInNewTab(false, onRampUrl);
-            TabUtils.bringChromeTabbedActivityToTheTop(this);
-        });
-        onRampLayout.setVisibility(View.VISIBLE);
+        if (onRampUrl == null) {
+            onRampLayout.setVisibility(View.GONE);
+        } else {
+            onRampButton.setOnClickListener(v -> {
+                TabUtils.openUrlInNewTab(false, onRampUrl);
+                TabUtils.bringChromeTabbedActivityToTheTop(this);
+            });
+        }
     }
 
     public static Intent getIntent(

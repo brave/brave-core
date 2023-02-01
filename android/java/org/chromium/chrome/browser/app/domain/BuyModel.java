@@ -24,17 +24,18 @@ public class BuyModel {
         mAssetRatioService = assetRatioService;
     }
 
-    public void getBuyUrl(int onRampProvider, String chainId, String from, String rampNetworkSymbol,
-            String amount, Resources resources, OnRampCallback callback) {
+    public boolean isAvailable(int onRampProvider, Resources resources) {
         if (onRampProvider == OnRampProvider.SARDINE) {
             // Sardine services are available only for US locales.
             Locale currentLocale =
                     ConfigurationCompat.getLocales(resources.getConfiguration()).get(0);
-            if (currentLocale == null || !currentLocale.getCountry().equals("US")) {
-                callback.OnUrlReady(null);
-                return;
-            }
+            return (currentLocale != null && currentLocale.getCountry().equals("US"));
         }
+        return true;
+    }
+
+    public void getBuyUrl(int onRampProvider, String chainId, String from, String rampNetworkSymbol,
+            String amount, OnRampCallback callback) {
         mAssetRatioService.getBuyUrlV1(onRampProvider, chainId, from, rampNetworkSymbol, amount,
                 CURRENCY_CODE_USD, (url, error) -> {
                     if (error != null && !error.isEmpty()) {
