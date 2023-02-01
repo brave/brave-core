@@ -246,7 +246,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   // Lottie animations tick on a worker thread and requires the document CSP to
   // be set to "worker-src blob: 'self';".
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src blob: 'self';");
+      network::mojom::CSPDirectiveName::WorkerSrc,
+      "worker-src blob: chrome://resources 'self';");
 
   web_ui->AddMessageHandler(
       std::make_unique<WelcomeDOMHandler>(Profile::FromWebUI(web_ui)));
