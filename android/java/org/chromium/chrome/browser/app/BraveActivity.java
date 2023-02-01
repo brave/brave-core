@@ -1670,8 +1670,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void showBraveRateDialog() {
-        BraveRateDialogFragment mRateDialogFragment = new BraveRateDialogFragment();
-        mRateDialogFragment.show(getSupportFragmentManager(), "BraveRateDialogFragment");
+        BraveRateDialogFragment rateDialogFragment = BraveRateDialogFragment.newInstance(false);
+        rateDialogFragment.show(getSupportFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
     }
 
     private void showCrossPromotionalDialog() {
