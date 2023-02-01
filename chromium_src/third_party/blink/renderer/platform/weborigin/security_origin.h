@@ -3,24 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
-#define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
+#ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_
+#define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_
 
-#define kSafeToCompareToEmptyOrDeleted                                   \
-  unused = false;                                                        \
+#define BuildRawString                                                   \
+  BuildRawString_Unused();                                               \
   static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
-      const SecurityOrigin* origin) {                                    \
+      const blink::SecurityOrigin* origin) {                             \
     CHECK(origin->IsOpaque());                                           \
     return *origin->GetNonceForSerialization();                          \
   }                                                                      \
   static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
-      const scoped_refptr<const SecurityOrigin>& origin) {               \
+      const scoped_refptr<const blink::SecurityOrigin>& origin) {        \
     return GetNonceForEphemeralStorageKeying(origin.get());              \
   }                                                                      \
-  static constexpr bool kSafeToCompareToEmptyOrDeleted
+  void BuildRawString
 
-#include "src/third_party/blink/renderer/platform/weborigin/security_origin_hash.h"
+#include "src/third_party/blink/renderer/platform/weborigin/security_origin.h"
 
-#undef kSafeToCompareToEmptyOrDeleted
+#undef BuildRawString
 
-#endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_HASH_H_
+#endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_

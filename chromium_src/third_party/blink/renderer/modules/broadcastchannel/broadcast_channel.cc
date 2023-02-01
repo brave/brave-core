@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin_hash.h"
+#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 
 namespace blink {
 namespace {
