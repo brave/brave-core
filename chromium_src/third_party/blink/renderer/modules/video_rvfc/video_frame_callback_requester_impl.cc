@@ -5,6 +5,8 @@
 
 #include "third_party/blink/renderer/modules/video_rvfc/video_frame_callback_requester_impl.h"
 
+#include "third_party/abseil-cpp/absl/container/internal/layout.h"
+
 #define kCoarseResolution kCoarseResolution [[maybe_unused]]
 
 #define FloorToMultiple(X) \
