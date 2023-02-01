@@ -5,6 +5,7 @@
 
 // Intentionally no header guards (see the comment in the overridden .h file).
 // NOLINT(build/header_guard)
+// no-include-guard-because-multiply-included
 
 #include "src/net/log/net_log_event_type_list.h"  // IWYU pragma: export
 
