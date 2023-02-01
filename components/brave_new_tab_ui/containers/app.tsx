@@ -8,6 +8,7 @@ import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import '$web-components/app.global.scss'
+import '@brave/leo/tokens/css/variables.css'
 
 // Components
 import NewTabPage from './newTab'
