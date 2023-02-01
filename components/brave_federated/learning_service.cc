@@ -70,6 +70,8 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   ModelSpec spec{32, 64, 0.01, 500, 0.5};
 
   Model* model = new Model(spec);
+  model->SetWeights(task.GetParameters()[0]);
+  model->SetBias(task.GetParameters()[1][0]);
   TaskRunner* notification_ad_task_runner = new TaskRunner(task, model);
 
   SyntheticDataset* local_training_data = new SyntheticDataset(5000);

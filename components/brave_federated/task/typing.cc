@@ -9,7 +9,7 @@
 
 namespace brave_federated {
 
-Task::Task(int task_id,
+Task::Task(TaskId task_id,
            TaskType type,
            std::string token,
            std::vector<Weights> parameters)
@@ -17,7 +17,7 @@ Task::Task(int task_id,
 Task::Task(const Task& other) = default;
 Task::~Task() = default;
 
-int Task::GetId() {
+TaskId Task::GetId() {
   return task_id_;
 }
 
