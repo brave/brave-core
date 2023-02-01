@@ -577,6 +577,8 @@ public class BraveRewardsPanel
                                 valueString);
                         break;
                     case AUTO_CONTRIBUTE_GENERAL_ERROR: // General error
+                        actionNotificationButton.setText(
+                                mPopupView.getResources().getString(R.string.ok));
                         title = mPopupView.getResources().getString(
                                 R.string.monthly_tip_failed_notification_title);
                         notificationIcon = R.drawable.ic_notification_error;
