@@ -548,13 +548,16 @@
     Google Sign-In
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
-    Ask when a site wants to use legacy Google Sign-In
+    Ask when a site wants to use third-party cookies for legacy Google Sign-In
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
-    Block sites from using legacy Google Sign-In
+    Block sites from using third-party cookies for legacy Google Sign-In
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
-    Allow sites to use legacy Google Sign-In
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Block these sites from using third-party cookies for legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Allow these sites to use third-party cookies for legacy Google Sign-In
   </message>
 
   <!-- Settings / Privacy and security / Safety Check -->

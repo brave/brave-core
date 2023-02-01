@@ -124,8 +124,12 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
     this.browserProxy_.setStatsUsagePingEnabled(this.$.statsUsagePingEnabled.checked);
   }
 
-  shouldShowRestart_(enabled: boolean) {
+  shouldShowRestartForGCM_(enabled: boolean) {
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup();
+  }
+
+  shouldShowRestartForGoogleSignInPref_(enabled: boolean) {
+    return enabled != loadTimeData.getBoolean('isGoogleSignInPrefEnabled');
   }
 
   restartBrowser_(e: Event) {

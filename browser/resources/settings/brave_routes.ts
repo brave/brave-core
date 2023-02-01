@@ -57,7 +57,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
     const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-    if (isGoogleSignInFeatureEnabled) {
+    const isGoogleSignInPrefEnabled = loadTimeData.getBoolean('isGoogleSignInPrefEnabled')
+    if (isGoogleSignInFeatureEnabled && isGoogleSignInPrefEnabled) {
       r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
     }
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')

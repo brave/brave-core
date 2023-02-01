@@ -38,8 +38,9 @@ RegisterPolymerTemplateModifications({
             icon="cr:extension">
           </site-details-permission>
         `)
+      let curChild = 1
       const autoplaySettings = templateContent.
-        querySelector('div.list-frame > site-details-permission:nth-child(1)')
+        querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
       if (!autoplaySettings) {
         console.error(
           '[Brave Settings Overrides] Couldn\'t find autoplay settings')
@@ -47,9 +48,13 @@ RegisterPolymerTemplateModifications({
         autoplaySettings.setAttribute(
           'label', I18nBehavior.i18n('siteSettingsAutoplay'))
       }
+      curChild++
+      // Google Sign-In feature
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-      if (isGoogleSignInFeatureEnabled) {
+      const isGoogleSignInPrefEnabled =
+        loadTimeData.getBoolean('isGoogleSignInPrefEnabled')
+      if (isGoogleSignInFeatureEnabled && isGoogleSignInPrefEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
           getTrustedHTML`
@@ -58,15 +63,16 @@ RegisterPolymerTemplateModifications({
               icon="cr:person">
             </site-details-permission>
           `)
-      }
-      const googleSignInSettings = templateContent.
-        querySelector('div.list-frame > site-details-permission:nth-child(2)')
-      if (!googleSignInSettings) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin settings')
-      } else {
-        googleSignInSettings.setAttribute(
-          'label', I18nBehavior.i18n('siteSettingsGoogleSignIn'))
+        const googleSignInSettings = templateContent.
+          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+        if (!googleSignInSettings) {
+          console.error(
+            '[Brave Settings Overrides] Couldn\'t find Google signin settings')
+        } else {
+          googleSignInSettings.setAttribute(
+            'label', I18nBehavior.i18n('siteSettingsGoogleSignIn'))
+        }
+        curChild++
       }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
@@ -79,7 +85,7 @@ RegisterPolymerTemplateModifications({
             </site-details-permission>
           `)
         const ethereumSettings = templateContent.
-          querySelector('div.list-frame > site-details-permission:nth-child(3)')
+          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!ethereumSettings) {
           console.error(
             '[Brave Settings Overrides] Couldn\'t find Ethereum settings')
@@ -87,6 +93,7 @@ RegisterPolymerTemplateModifications({
           ethereumSettings.setAttribute(
             'label', I18nBehavior.i18n('siteSettingsEthereum'))
         }
+        curChild++
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
           getTrustedHTML`
@@ -96,7 +103,7 @@ RegisterPolymerTemplateModifications({
             </site-details-permission>
           `)
         const solanaSettings = templateContent.
-          querySelector('div.list-frame > site-details-permission:nth-child(4)')
+          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!solanaSettings) {
           console.error(
             '[Brave Settings Overrides] Couldn\'t find Solana settings')

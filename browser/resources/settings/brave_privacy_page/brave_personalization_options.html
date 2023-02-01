@@ -21,7 +21,7 @@
     class="cr-row"
     pref="{{prefs.brave.gcm.channel_status}}"
     label="$i18n{pushMessagingLabel}">
-    <template is="dom-if" if="[[shouldShowRestart_(
+    <template is="dom-if" if="[[shouldShowRestartForGCM_(
       prefs.brave.gcm.channel_status.value)]]">
     <cr-button on-click="restartBrowser_" slot="more-actions">
       $i18n{restart}
@@ -32,8 +32,13 @@
   <settings-toggle-button id="googleLoginControlType"
       class="cr-row"
       pref="{{prefs.brave.google_login_default}}"
-      label="$i18n{googleLoginControlLabel}"
-      learn-more-url="$i18n{googleLoginLearnMoreURL}">
+      label="$i18n{googleSignInPrefControlLabel}"
+      learn-more-url="$i18n{googleSignInPrefLearnMoreURL}">
+      <template is="dom-if" if="[[shouldShowRestartForGoogleSignInPref_(
+        prefs.brave.google_login_default.value)]]">
+      <cr-button on-click="restartBrowser_" slot="more-actions">
+        $i18n{restart}
+      </cr-button>
   </settings-toggle-button>
 </template>
 <settings-toggle-button id="p3aEnabled"

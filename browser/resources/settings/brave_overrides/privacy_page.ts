@@ -19,10 +19,6 @@ function InsertGoogleSignInSubpage (
     getTrustedHTML`
       <template is="dom-if" route-path="/content/googleSignIn" no-search>
         <settings-subpage>
-          <category-default-setting
-            id="googleSignInDefault"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
-          </category-default-setting>
           <category-setting-exceptions
             id="googleSignInExceptions"
             category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
@@ -44,19 +40,6 @@ function InsertGoogleSignInSubpage (
     } else {
       googleSignInSubpage.setAttribute('page-title',
         I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn'))
-      const googleSignInDefault =
-        googleSignInTemplate.content.getElementById('googleSignInDefault')
-      if (!googleSignInDefault) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin default')
-      } else {
-        googleSignInDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
-        googleSignInDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
-      }
       const googleSignInExceptions =
         googleSignInTemplate.content.getElementById('googleSignInExceptions')
       if (!googleSignInExceptions) {
@@ -65,10 +48,10 @@ function InsertGoogleSignInSubpage (
       } else {
         googleSignInExceptions.setAttribute(
           'block-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInBlockExceptions'))
         googleSignInExceptions.setAttribute(
           'allow-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInAllowExceptions'))
       }
     }
   }
@@ -327,7 +310,9 @@ RegisterPolymerTemplateModifications({
       }
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-      if (isGoogleSignInFeatureEnabled) {
+      const isGoogleSignInPrefEnabled =
+        loadTimeData.getBoolean('isGoogleSignInPrefEnabled')
+      if (isGoogleSignInFeatureEnabled && isGoogleSignInPrefEnabled) {
         InsertGoogleSignInSubpage(templateContent, pages)
       }
       InsertAutoplaySubpage(templateContent, pages)

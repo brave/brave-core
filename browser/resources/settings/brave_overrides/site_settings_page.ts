@@ -103,7 +103,8 @@ RegisterPolymerComponentReplacement(
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
             let currentIndex = indexForAutoplay
             const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-            if (isGoogleSignInFeatureEnabled) {
+            const isGoogleSignInPrefEnabled = loadTimeData.getBoolean('isGoogleSignInPrefEnabled')
+            if (isGoogleSignInFeatureEnabled && isGoogleSignInPrefEnabled) {
               let indexForGoogleSignIn = currentIndex + 1
               currentIndex++
               const googleSignInItem = {

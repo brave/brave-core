@@ -51,6 +51,9 @@ const char16_t kBraveReleaseTagPrefix[] =
 const char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
+const char16_t kGoogleSignInPrefLearnMoreURL[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Google-Sign-In-Permission";
 const char16_t kDNSLinkLearnMoreURL[] =
     u"https://docs.ipfs.io/concepts/dnslink/";
 const char16_t kUnstoppableDomainsLearnMoreURL[] =
@@ -93,8 +96,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK},
     {"siteSettingsGoogleSignInBlock",
      IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK},
-    {"siteSettingsGoogleSignInAllow",
-     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW},
+    {"siteSettingsGoogleSignInBlockExceptions",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK_EXCEPTIONS},
+    {"siteSettingsGoogleSignInAllowExceptions",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
     {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
@@ -198,6 +203,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"showStatsBlockedBadgeLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL},
     {"googleLoginControlLabel", IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT},
+    {"googleSignInPrefControlLabel",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK},
     {"fbEmbedControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL},
     {"twitterEmbedControlLabel",
@@ -622,6 +629,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
+  html_source->AddString("googleSignInPrefLearnMoreURL",
+                         kGoogleSignInPrefLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);

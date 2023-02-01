@@ -8,6 +8,9 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/common/features.h"
+#include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -76,6 +79,19 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean("pushMessagingEnabledAtStartup",
                           gcm_channel_status->IsGCMEnabled());
 #endif
+  data_source->AddBoolean(
+      "isDeAmpFeatureEnabled",
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+  data_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
+  // Google Sign In feature and preference
+  data_source->AddBoolean(
+      "isGoogleSignInFeatureEnabled",
+      google_sign_in_permission::IsGoogleSignInFeatureEnabled());
+  data_source->AddBoolean("isGoogleSignInPrefEnabled",
+                          google_sign_in_permission::IsGoogleSignInPrefEnabled(
+                              profile->GetPrefs()));
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(
