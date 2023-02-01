@@ -27,7 +27,7 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestStart(
     const InspectorId request_id,
     GraphNode* requester,
     NodeResource* resource,
-    const std::string& resource_type) {
+    const String& resource_type) {
   auto item = tracked_requests_.find(request_id);
   if (item == tracked_requests_.end()) {
     auto request_record = std::make_unique<TrackedRequest>(

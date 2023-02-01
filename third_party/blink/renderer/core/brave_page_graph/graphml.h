@@ -13,6 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -30,6 +31,9 @@ class GraphMLAttr {
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
                     const std::string& value) const;
+  void AddValueNode(xmlDocPtr doc,
+                    xmlNodePtr parent_node,
+                    const String& value) const;
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
                     const int value) const;

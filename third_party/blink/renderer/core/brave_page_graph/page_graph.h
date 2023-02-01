@@ -320,28 +320,28 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   void DoRegisterRequestStart(const InspectorId request_id,
                               GraphNode* requesting_node,
                               const std::string& local_url,
-                              const std::string& resource_type);
+                              const String& resource_type);
   void PossiblyWriteRequestsIntoGraph(
       scoped_refptr<const TrackedRequestRecord> record);
   void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
                                    const InspectorId request_id,
                                    const blink::KURL& url,
-                                   const std::string& resource_type);
+                                   const String& resource_type);
   void RegisterRequestStartFromCurrentScript(
       blink::ExecutionContext* execution_context,
       const InspectorId request_id,
       const blink::KURL& url,
-      const std::string& resource_type);
+      const String& resource_type);
   void RegisterRequestStartFromScript(
       blink::ExecutionContext* execution_context,
       const ScriptId script_id,
       const InspectorId request_id,
       const blink::KURL& url,
-      const std::string& resource_type);
+      const String& resource_type);
   void RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
                                          const InspectorId request_id,
                                          const blink::KURL& url,
-                                         const std::string& resource_type);
+                                         const String& resource_type);
   void RegisterRequestStartForDocument(blink::Document* document,
                                        const InspectorId request_id,
                                        const blink::KURL& url,

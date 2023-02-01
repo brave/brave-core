@@ -443,9 +443,8 @@ void PageGraph::WillSendRequest(
   blink::ExecutionContext* execution_context =
       loader->GetFrame()->GetDocument()->GetExecutionContext();
 
-  const std::string page_graph_resource_type =
-      blink::Resource::ResourceTypeToString(resource_type,
-                                            options.initiator_info.name);
+  const String page_graph_resource_type = blink::Resource::ResourceTypeToString(
+      resource_type, options.initiator_info.name);
 
   if (options.initiator_info.dom_node_id != blink::kInvalidDOMNodeId) {
     RegisterRequestStartFromElm(options.initiator_info.dom_node_id,
@@ -1339,7 +1338,7 @@ void PageGraph::RegisterTextNodeChange(blink::Node* node,
 void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
                                        GraphNode* requesting_node,
                                        const std::string& local_url,
-                                       const std::string& resource_type) {
+                                       const String& resource_type) {
   NodeResource* const requested_node = GetResourceNodeForUrl(local_url);
 
   scoped_refptr<const TrackedRequestRecord> request_record =
@@ -1364,7 +1363,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
 
   NodeResource* const resource = request->GetResource();
   const bool was_error = request->GetIsError();
-  const std::string& resource_type = request->GetResourceType();
+  const String& resource_type = request->GetResourceType();
   const InspectorId request_id = request->GetRequestId();
 
   if (was_error) {
@@ -1388,7 +1387,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
 void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
                                             const InspectorId request_id,
                                             const KURL& url,
-                                            const std::string& resource_type) {
+                                            const String& resource_type) {
   const KURL normalized_url = NormalizeUrl(url);
   const std::string local_url(normalized_url.GetString().Utf8());
 
@@ -1407,7 +1406,7 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
     blink::ExecutionContext* execution_context,
     const InspectorId request_id,
     const KURL& url,
-    const std::string& resource_type) {
+    const String& resource_type) {
   VLOG(1) << "RegisterRequestStartFromCurrentScript)";
   const ScriptId script_id = GetExecutingScriptId(execution_context);
   RegisterRequestStartFromScript(execution_context, script_id, request_id, url,
@@ -1419,7 +1418,7 @@ void PageGraph::RegisterRequestStartFromScript(
     const ScriptId script_id,
     const InspectorId request_id,
     const blink::KURL& url,
-    const std::string& resource_type) {
+    const String& resource_type) {
   const KURL normalized_url = NormalizeUrl(url);
   const std::string local_url(normalized_url.GetString().Utf8());
 
@@ -1435,11 +1434,10 @@ void PageGraph::RegisterRequestStartFromScript(
 // This is basically the same as |RegisterRequestStartFromCurrentScript|,
 // except we don't require the acting node to be a script (CSS fetches
 // can be initiated by the parser).
-void PageGraph::RegisterRequestStartFromCSSOrLink(
-    blink::DocumentLoader* loader,
-    const InspectorId request_id,
-    const blink::KURL& url,
-    const std::string& resource_type) {
+void PageGraph::RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
+                                                  const InspectorId request_id,
+                                                  const blink::KURL& url,
+                                                  const String& resource_type) {
   NodeActor* const acting_node = GetCurrentActingNode(
       loader->GetFrame()->GetDocument()->GetExecutionContext());
   const KURL normalized_url = NormalizeUrl(url);
