@@ -32,6 +32,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');

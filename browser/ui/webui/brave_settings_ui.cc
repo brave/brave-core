@@ -54,6 +54,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
@@ -77,6 +78,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   web_ui->AddMessageHandler(
       std::make_unique<BraveTorSnowflakeExtensionHandler>());
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveExtensionsManifestV2Handler>());
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());

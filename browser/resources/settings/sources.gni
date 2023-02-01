@@ -19,6 +19,7 @@ brave_settings_web_component_files = [
   "brave_appearance_page/toolbar.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
+  "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_help_tips_page/brave_help_tips_page.ts",
   "brave_ipfs_page/add_ipfs_peer_dialog.ts",
   "brave_ipfs_page/add_p2p_key_dialog.ts",
