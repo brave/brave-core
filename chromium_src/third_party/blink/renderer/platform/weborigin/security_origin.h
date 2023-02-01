@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_
 
-#define BuildRawString                                                   \
-  BuildRawString_Unused();                                               \
+#define SerializesAsNull                                                 \
+  SerializesAsNull_Unused();                                             \
   static const base::UnguessableToken GetNonceForEphemeralStorageKeying( \
       const blink::SecurityOrigin* origin) {                             \
     CHECK(origin->IsOpaque());                                           \
@@ -17,10 +17,10 @@
       const scoped_refptr<const blink::SecurityOrigin>& origin) {        \
     return GetNonceForEphemeralStorageKeying(origin.get());              \
   }                                                                      \
-  void BuildRawString
+  bool SerializesAsNull
 
 #include "src/third_party/blink/renderer/platform/weborigin/security_origin.h"
 
-#undef BuildRawString
+#undef SerializesAsNull
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_WEBORIGIN_SECURITY_ORIGIN_H_

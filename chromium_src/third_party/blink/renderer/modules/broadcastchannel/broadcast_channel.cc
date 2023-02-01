@@ -15,7 +15,7 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
   if (!ephemeral_storage_origin) {
     return name;
   }
-  const auto& nonce = SecurityOriginHash::GetNonceForEphemeralStorageKeying(
+  const auto& nonce = SecurityOrigin::GetNonceForEphemeralStorageKeying(
       ephemeral_storage_origin);
   return name + String::FromUTF8(nonce.ToString());
 }
