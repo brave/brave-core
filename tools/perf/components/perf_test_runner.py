@@ -306,7 +306,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       os.makedirs(out_dir)
       binary_path = PrepareBinary(out_dir, config.tag, config.location,
                                   config.browser_type)
-      assert (config.tag is not None)
+      assert config.tag is not None
       field_trial_config = config.browser_type.MakeFieldTrials(
           config.tag, out_dir, common_options.variations_repo_dir)
       logging.info('%s : %s directory %s', description, binary_path, out_dir)

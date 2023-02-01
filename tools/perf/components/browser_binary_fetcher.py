@@ -16,9 +16,9 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   if not m:
     return None, target
   tag = BraveVersion(m.group(1))
-  localtion = m.group(2)
-  logging.debug('Parsed tag: %s, location : %s', tag, localtion)
-  return tag, localtion
+  location = m.group(2)
+  logging.debug('Parsed tag: %s, location : %s', tag, location)
+  return tag, location
 
 
 def PrepareBinary(out_dir: str, tag: Optional[BraveVersion],

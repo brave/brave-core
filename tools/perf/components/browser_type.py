@@ -26,11 +26,15 @@ from components.perf_test_utils import GetProcessOutput
 class _BaseVersion:
   _version: List[int]
 
-  def equals(self, a: _BaseVersion) -> bool:
-    return self._version == a.version()
+  def __eq__(self, other) -> bool:
+    if not isinstance(other, _BaseVersion):
+      return NotImplemented
+    return self._version == other.version()
 
-  def less(self, a: _BaseVersion) -> bool:
-    return self._version < a.version()
+  def __lt__(self, other) -> bool:
+    if not isinstance(other, _BaseVersion):
+      return NotImplemented
+    return self._version < other.version()
 
   def version(self) -> List[int]:
     return self._version
@@ -289,9 +293,9 @@ def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
   best_candidate: Optional[ChromiumVersion] = None
   for version_str in chrome_versions:
     version = ChromiumVersion(version_str)
-    if version.major() == requested_version.major() and requested_version.less(
-        version):
-      if not best_candidate or version.less(best_candidate):
+    if (version.major() == requested_version.major() and
+        requested_version < version):
+      if not best_candidate or version < best_candidate:
         best_candidate = version
 
   if best_candidate:
