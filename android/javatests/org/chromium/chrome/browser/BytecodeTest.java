@@ -834,6 +834,9 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
         Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mToolbarColorObserverManager"));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
                         "mActiveTabSwitcherToolbar"));
         Assert.assertTrue(

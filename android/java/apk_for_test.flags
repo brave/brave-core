@@ -150,6 +150,7 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
     *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
+    *** mToolbarColorObserverManager;
     public <init>(...);
 }
 

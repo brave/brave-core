@@ -23,5 +23,8 @@ public class BraveTopToolbarCoordinatorClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveTopToolbarCoordinatorClassName, "mOptionalButtonController");
         makeProtectedField(sTopToolbarCoordinatorClassName, "mOptionalButtonController");
+
+        deleteField(sBraveTopToolbarCoordinatorClassName, "mToolbarColorObserverManager");
+        makeProtectedField(sTopToolbarCoordinatorClassName, "mToolbarColorObserverManager");
     }
 }
