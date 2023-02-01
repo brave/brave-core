@@ -6,7 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_GRIT_GENERATED_RESOURCES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_GRIT_GENERATED_RESOURCES_H_
 
-#include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_generated_resources.h"  // IWYU pragma: export
+
 #include "../gen/chrome/grit/generated_resources.h"  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_GRIT_GENERATED_RESOURCES_H_
