@@ -41,7 +41,6 @@ class _BaseVersion:
 
 
 class BraveVersion(_BaseVersion):
-
   def __init__(self, tag: str) -> None:
     super().__init__()
     assert re.match(r'v\d+\.\d+\.\d+', tag)
@@ -60,7 +59,6 @@ class BraveVersion(_BaseVersion):
 
 
 class ChromiumVersion(_BaseVersion):
-
   def __init__(self, v: str) -> None:
     super().__init__()
     assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
@@ -293,8 +291,8 @@ def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
   best_candidate: Optional[ChromiumVersion] = None
   for version_str in chrome_versions:
     version = ChromiumVersion(version_str)
-    if (version.major() == requested_version.major() and
-        requested_version < version):
+    if (version.major() == requested_version.major()
+        and requested_version < version):
       if not best_candidate or version < best_candidate:
         best_candidate = version
 
