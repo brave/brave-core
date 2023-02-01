@@ -6,13 +6,16 @@
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 
 #include <sstream>
+#include <string>
+#include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "brave/third_party/flower/src/brave/flwr/serde.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/node.pb.h"
 
@@ -25,67 +28,54 @@ namespace {
 
 namespace brave_federated {
 
-std::vector<float> GetFloatVectorFromString(std::string string) {
-  int vector_size = string.size() / sizeof(float);
-  float parameters_array[vector_size];
-  std::memcpy(parameters_array, string.data(), string.size());
+TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
+  flower::PullTaskInsResponse response;
+  if ((response.ParseFromString(response_body))) {
+    TaskList task_list;
+    for (int i = 0; i < response.task_ins_list_size(); i++) {
+      flower::TaskIns task_instruction = response.task_ins_list(i);
 
-  std::vector<float> parameters_vector(parameters_array,
-                                       parameters_array + vector_size);
+      std::string id = task_instruction.task_id();
+      std::string group_id = task_instruction.group_id();
+      std::string workload_id = task_instruction.workload_id();
+      TaskId task_id = TaskId{id, group_id, workload_id};
+      flower::Task flower_task = task_instruction.task();
 
-  return parameters_vector;
-}
+      flower::ServerMessage message = flower_task.legacy_server_message();
 
-std::string GetStringFromFloatVector(std::vector<float> vector) {
-  std::ostringstream oss;
-  oss.write(reinterpret_cast<const char*>(vector.data()),
-            vector.size() * sizeof(float));
+      TaskType type;
+      std::vector<Weights> parameters = {};
+      if (message.has_fit_ins()) {
+        type = TaskType::Training;
+        parameters = GetVectorsFromParameters(message.fit_ins().parameters());
+      } else if (message.has_evaluate_ins()) {
+        type = TaskType::Evaluation;
+        parameters =
+            GetVectorsFromParameters(message.evaluate_ins().parameters());
+      } else if (message.has_reconnect_ins()) {
+        VLOG(2) << "**: Legacy reconnect instruction received from FL service";
+        continue;
+      } else {
+        VLOG(2) << "**: Received unrecognized instruction from FL service";
+        continue;
+      }
 
-  return oss.str();
-}
+      Task task = Task(task_id, type, "token", parameters);
+      task_list.push_back(task);
+    }
 
-std::vector<std::vector<float>> GetParametersFromMessage(
-    flower::Parameters parameters_msg) {
-  std::vector<std::vector<float>> tensors;
-  for (int i = 0; i < parameters_msg.tensors_size(); i++) {
-    std::string parameters_string = parameters_msg.tensors(i);
-    std::vector<float> parameters_vector =
-        GetFloatVectorFromString(parameters_string);
-    tensors.push_back(parameters_vector);
+    return task_list;
   }
 
-  return tensors;
-}
-
-flower::Parameters GetMessageFromParameters(
-    std::vector<std::vector<float>> parameters_vector) {
-  flower::Parameters flower_parameters;
-  flower_parameters.set_tensor_type("cpp_float");
-
-  for (auto const& vector : parameters_vector) {
-    std::string string = GetStringFromFloatVector(vector);
-    flower_parameters.add_tensors();
-  }
-
-  return flower_parameters;
-}
-
-flower::PullTaskInsRequest BuildPullTaskInsRequestMessage() {
-  flower::Node node;
-  node.set_node_id(1);
-  node.set_anonymous(true);
-
-  flower::PullTaskInsRequest pull_task_instructions_request;
-  *pull_task_instructions_request.mutable_node() = node;
-  pull_task_instructions_request.add_task_ids(0);
-
-  return pull_task_instructions_request;
+  VLOG(1) << "Failed to parse PullTaskInsRes";
+  return {};
 }
 
 std::string BuildGetTasksPayload() {
   std::string request;
 
-  flower::PullTaskInsRequest task_request = BuildPullTaskInsRequestMessage();
+  flower::PullTaskInsRequest task_request =
+      BuildAnonymousPullTaskInsRequestMessage();
   task_request.SerializeToString(&request);
 
   return request;
@@ -93,17 +83,17 @@ std::string BuildGetTasksPayload() {
 
 std::string BuildPostTaskResultsPayload(TaskResult result) {
   Task task = result.GetTask();
+  TaskId task_id = task.GetId();
+  TaskType task_type = task.GetType();
   PerformanceReport report = result.GetReport();
 
-  int task_id = task.GetId();
-  TaskType task_type = task.GetType();
-
   flower::Task flower_task;
+  // Client Message Creation
   flower::ClientMessage client_message;
   if (task_type == TaskType::Training) {
     flower::ClientMessage_FitRes fit_res;
     fit_res.set_num_examples(report.dataset_size);
-    *fit_res.mutable_parameters() = GetMessageFromParameters(report.parameters);
+    *fit_res.mutable_parameters() = GetParametersFromVectors(report.parameters);
     *client_message.mutable_fit_res() = fit_res;
   } else {
     flower::ClientMessage_EvaluateRes eval_res;
@@ -111,15 +101,21 @@ std::string BuildPostTaskResultsPayload(TaskResult result) {
     eval_res.set_loss(report.loss);
     *client_message.mutable_evaluate_res() = eval_res;
   }
+  flower_task.add_ancestry(task_id.id);
+
+  flower::Node node;
+  node.set_node_id(0);
+  node.set_anonymous(true);
+
+  *flower_task.mutable_producer() = node;
   *flower_task.mutable_legacy_client_message() = client_message;
 
   flower::PushTaskResRequest task_results;
   flower::TaskRes* task_result = task_results.add_task_res_list();
-  task_result->set_task_id(std::to_string(task_id));
-  task_result->set_group_id("0");
-  task_result->set_workload_id("0");
+  task_result->set_task_id("");
+  task_result->set_group_id(task_id.group_id);
+  task_result->set_workload_id(task_id.family_id);
   *task_result->mutable_task() = flower_task;
-  //task_result->set_token("fixed_token");
 
   std::string result_payload;
   task_results.SerializeToString(&result_payload);

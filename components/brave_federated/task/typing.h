@@ -19,22 +19,28 @@ enum TaskType {
   Training,
 };
 
+struct TaskId {
+  std::string id;
+  std::string group_id;
+  std::string family_id;
+};
+
 class Task {
  public:
-  Task(int task_id,
+  Task(TaskId task_id,
        TaskType type,
        std::string token,
        std::vector<Weights> parameters);
   Task(const Task& other);
   ~Task();
 
-  int GetId();
+  TaskId GetId();
   TaskType GetType();
   std::string GetToken();
   std::vector<Weights> GetParameters();
 
  private:
-  int task_id_;
+  TaskId task_id_;
   TaskType type_;
   std::string token_;
   std::vector<Weights> parameters_;

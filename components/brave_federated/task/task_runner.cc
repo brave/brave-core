@@ -45,6 +45,7 @@ TaskResult TaskRunner::Run() {
     report = model_->Evaluate(test_data_);
   }
 
+  report.parameters = task_.GetParameters();
   TaskResult result(task_, report);
   return result;
 }
