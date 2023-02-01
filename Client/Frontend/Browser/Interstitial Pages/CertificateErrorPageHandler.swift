@@ -7,6 +7,10 @@ import Foundation
 import Shared
 import BraveShared
 
+extension CFNetworkErrors {
+  static let braveCertificatePinningFailed = CFNetworkErrors(rawValue: Int32.min)!
+}
+
 class CertificateErrorPageHandler: InterstitialPageHandler {
   func canHandle(error: NSError) -> Bool {
     return CertificateErrorPageHandler.isValidCertificateError(error: error)
@@ -36,20 +40,22 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     }
 
     let host = model.originalURL.normalizedHost(stripWWWSubdomainOnly: true) ?? model.originalHost
+    let isBadRoot = model.errorCode == CFNetworkErrors.braveCertificatePinningFailed.rawValue
 
     var variables = [String: String]()
     if hasCertificate {
       variables = [
         "page_title": host,
+        "allow_bypass": "\(!isBadRoot)",
         "error_code": "\(model.errorCode)",
         "error_title": Strings.errorPagesCertWarningTitle,
         "error_description": String(format: Strings.errorPagesAdvancedWarningTitle, host),
-        "error_more_details_description": String(format: Strings.errorPagesAdvancedWarningDetails, host),
+        "error_more_details_description": isBadRoot ? String(format: Strings.errorPagesAdvancedErrorPinningDetails, host, host, host, host) : String(format: Strings.errorPagesAdvancedWarningDetails, host),
         "error_domain": domain,
         "learn_more": Strings.errorPagesLearnMoreButton,
         "more_details": Strings.errorPagesMoreDetailsButton,
         "hide_details": Strings.errorPagesHideDetailsButton,
-        "back_to_safety": Strings.errorPagesBackToSafetyButton,
+        "back_to_safety_or_reload": isBadRoot ? Strings.errorPageReloadButtonTitle : Strings.errorPagesBackToSafetyButton,
         "visit_unsafe": String(format: Strings.errorPagesProceedAnywayButton, host),
         "has_certificate": "\(hasCertificate)",
         "message_handler": ErrorPageHelper.messageHandlerName,
@@ -59,6 +65,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     } else {
       variables = [
         "page_title": host,
+        "allow_bypass": "\(!isBadRoot)",
         "error_code": "\(model.errorCode)",
         "error_title": Strings.errorPagesCertErrorTitle,
         "error_description": model.description,
@@ -67,7 +74,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
         "learn_more": "",
         "more_details": "",
         "hide_details": "",
-        "back_to_safety": "",
+        "back_to_safety_or_reload": "",
         "visit_unsafe": "",
         "has_certificate": "\(hasCertificate)",
         "message_handler": ErrorPageHelper.messageHandlerName,
@@ -143,6 +150,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     .cfurlErrorServerCertificateNotYetValid,
     .cfurlErrorClientCertificateRejected,
     .cfurlErrorClientCertificateRequired,
+    .braveCertificatePinningFailed,
   ]
 
   // Regardless of cause, NSURLErrorServerCertificateUntrusted is currently returned in all cases.
@@ -156,6 +164,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     NSURLErrorServerCertificateNotYetValid,
     NSURLErrorClientCertificateRejected,
     NSURLErrorClientCertificateRequired,
+    Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue)
 
     // Apple lists `NSURLErrorCannotLoadFromNetwork` as an `SSL Error`, but I believe the documentation is incorrect as it is for any cache miss.
   ]

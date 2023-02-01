@@ -485,8 +485,7 @@ extension BrowserViewController: WKNavigationDelegate {
     return .allow
   }
 
-  // When this function is moved to Async-Await, do NOT forget to move the `TabManagerNavDelegate` to async-await!
-  public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
 
     // If this is a certificate challenge, see if the certificate has previously been
     // accepted by the user.
@@ -494,37 +493,80 @@ extension BrowserViewController: WKNavigationDelegate {
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
       let trust = challenge.protectionSpace.serverTrust,
       let cert = SecTrustGetCertificateAtIndex(trust, 0), profile.certStore.containsCertificate(cert, forOrigin: origin) {
-      completionHandler(.useCredential, URLCredential(trust: trust))
-      return
+      return (.useCredential, URLCredential(trust: trust))
     }
-
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
-          challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
-          challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-          let tab = tab(for: webView)
-    else {
-      completionHandler(.performDefaultHandling, nil)
-      return
-    }
-
-    // If this is a request to our local web server, use our private credentials.
-    if challenge.protectionSpace.host == "localhost" && challenge.protectionSpace.port == Int(WebServer.sharedInstance.server.port) {
-      completionHandler(.useCredential, WebServer.sharedInstance.credentials)
-      return
-    }
-
-    // The challenge may come from a background tab, so ensure it's the one visible.
-    tabManager.selectTab(tab)
-
-    let loginsHelper = tab.getContentScript(name: LoginsScriptHandler.scriptName) as? LoginsScriptHandler
-    Task { @MainActor in
-      do {
-        let credentials = try await Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper)
-        completionHandler(.useCredential, credentials.credentials)
-      } catch {
-        completionHandler(.rejectProtectionSpace, nil)
+    
+    // Certificate Pinning
+    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+      if let serverTrust = challenge.protectionSpace.serverTrust {
+        let host = challenge.protectionSpace.host
+        let port = challenge.protectionSpace.port
+        
+        let result = BraveCertificateUtility.verifyTrust(serverTrust,
+                                                         host: host,
+                                                         port: port)
+        let certificateChain = (0..<SecTrustGetCertificateCount(serverTrust))
+          .compactMap { SecTrustGetCertificateAtIndex(serverTrust, $0) }
+        
+        // Cert is valid and should be pinned
+        if result == 0 {
+          return (.useCredential, URLCredential(trust: serverTrust))
+        }
+        
+        // Cert is valid and should not be pinned
+        // Let the system handle it and we'll show an error if the system cannot validate it
+        if result == Int32.min {
+          return (.performDefaultHandling, nil)
+        }
+        
+        // Cert is invalid and cannot be pinned
+        Logger.module.error("CERTIFICATE_INVALID")
+        let errorCode = CFNetworkErrors.braveCertificatePinningFailed.rawValue
+        
+        let underlyingError = NSError(domain: kCFErrorDomainCFNetwork as String,
+                                      code: Int(errorCode),
+                                      userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)])
+        
+        let error = NSError(domain: kCFErrorDomainCFNetwork as String,
+                            code: Int(errorCode),
+                            userInfo: [NSURLErrorFailingURLErrorKey: webView.url as Any,
+                                       "NSErrorPeerCertificateChainKey": certificateChain,
+                                               NSUnderlyingErrorKey: underlyingError])
+          
+        await MainActor.run {
+          // Handle the error later in `didFailProvisionalNavigation`
+          self.tab(for: webView)?.sslPinningError = error
+        }
+        
+        return (.cancelAuthenticationChallenge, nil)
       }
     }
+
+    return await Task { @MainActor in
+      guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+              challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+              challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
+            let tab = tab(for: webView)
+      else {
+        return (.performDefaultHandling, nil)
+      }
+      
+      // If this is a request to our local web server, use our private credentials.
+      if challenge.protectionSpace.host == "localhost" && challenge.protectionSpace.port == Int(WebServer.sharedInstance.server.port) {
+        return (.useCredential, WebServer.sharedInstance.credentials)
+      }
+      
+      // The challenge may come from a background tab, so ensure it's the one visible.
+      tabManager.selectTab(tab)
+      
+      let loginsHelper = tab.getContentScript(name: LoginsScriptHandler.scriptName) as? LoginsScriptHandler
+      do {
+        let credentials = try await Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper)
+        return (.useCredential, credentials.credentials)
+      } catch {
+        return (.rejectProtectionSpace, nil)
+      }
+    }.value
   }
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
@@ -616,13 +658,17 @@ extension BrowserViewController: WKNavigationDelegate {
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
     // original web page in the tab instead of replacing it with an error page.
-    let error = error as NSError
+    var error = error as NSError
     if error.domain == "WebKitErrorDomain" && error.code == 102 {
       return
     }
 
     if checkIfWebContentProcessHasCrashed(webView, error: error) {
       return
+    }
+    
+    if let tab = tabManager[webView], let sslPinningError = tab.sslPinningError {
+      error = sslPinningError as NSError
     }
 
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {

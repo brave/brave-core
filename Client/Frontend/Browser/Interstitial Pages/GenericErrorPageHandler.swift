@@ -25,6 +25,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
         .cfurlErrorServerCertificateNotYetValid,
         .cfurlErrorClientCertificateRejected,
         .cfurlErrorClientCertificateRequired,
+        .braveCertificatePinningFailed,
       ]
 
       return !unhandledCodes.contains(code)
@@ -194,6 +195,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case .cfNetServiceErrorInvalid: return "CFNetServiceErrorInvalid"
     case .cfNetServiceErrorTimeout: return "CFNetServiceErrorTimeout"
     case .cfNetServiceErrorDNSServiceFailure: return "CFNetServiceErrorDNSServiceFailure"
+      
+    case .braveCertificatePinningFailed: return "ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN"
     default: return "Unknown: \(err.rawValue)"
     }
   }
@@ -254,6 +257,8 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     case NSURLErrorBackgroundSessionRequiresSharedContainer: return "NSURLErrorBackgroundSessionRequiresSharedContainer"
     case NSURLErrorBackgroundSessionInUseByAnotherProcess: return "NSURLErrorBackgroundSessionInUseByAnotherProcess"
     case NSURLErrorBackgroundSessionWasDisconnected: return "NSURLErrorBackgroundSessionWasDisconnected"
+      
+    case Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue): return "ERR_SSL_PINNED_KEY_NOT_IN_CERT_CHAIN"
     default: return "Unknown: \(err)"
     }
   }

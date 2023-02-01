@@ -80,6 +80,7 @@ class Tab: NSObject {
   }
 
   var secureContentState: TabSecureContentState = .unknown
+  var sslPinningError: Error? = nil
 
   var walletEthProvider: BraveWalletEthereumProvider?
   var walletEthProviderScript: WKUserScript?
@@ -576,6 +577,7 @@ class Tab: NSObject {
   @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
     if let webView = webView {
       lastRequest = request
+      sslPinningError = nil
       if let url = request.url {
         if url.isFileURL, request.isPrivileged {
           return webView.loadFileURL(url, allowingReadAccessTo: url)
