@@ -756,8 +756,8 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   for (const auto& item_id : item_ids) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
-          ASSERT_EQ(item->parent_lists.size(), 1u);
-          EXPECT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
+          ASSERT_EQ(item->parents.size(), 1u);
+          EXPECT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
         }));
   }
 
@@ -778,9 +778,9 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   for (const auto& id : item_ids) {
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          EXPECT_EQ(item->parent_lists.size(), 2u);
-          EXPECT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
-          EXPECT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+          EXPECT_EQ(item->parents.size(), 2u);
+          EXPECT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
+          EXPECT_TRUE(base::Contains(item->parents, another_playlist_id));
         }));
   }
 }
@@ -813,8 +813,8 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   for (const auto& item_id : item_ids) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
-          ASSERT_EQ(item->parent_lists.size(), 1u);
-          ASSERT_TRUE(base::Contains(item->parent_lists, kDefaultPlaylistID));
+          ASSERT_EQ(item->parents.size(), 1u);
+          ASSERT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
         }));
   }
 
@@ -846,8 +846,8 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   for (const auto& item_id : item_ids) {
     service->GetPlaylistItem(
         item_id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          ASSERT_EQ(item->parent_lists.size(), 1u);
-          ASSERT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+          ASSERT_EQ(item->parents.size(), 1u);
+          ASSERT_TRUE(base::Contains(item->parents, another_playlist_id));
         }));
   }
 
@@ -1111,8 +1111,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
 
     service->GetPlaylistItem(
         id, base::BindLambdaForTesting([&](mojom::PlaylistItemPtr item) {
-          EXPECT_EQ(item->parent_lists.size(), 1u);
-          EXPECT_TRUE(base::Contains(item->parent_lists, another_playlist_id));
+          EXPECT_EQ(item->parents.size(), 1u);
+          EXPECT_TRUE(base::Contains(item->parents, another_playlist_id));
         }));
   }
 }

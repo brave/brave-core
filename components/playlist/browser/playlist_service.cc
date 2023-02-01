@@ -147,7 +147,7 @@ bool PlaylistService::AddItemsToPlaylist(
         base::BindOnce(
             [](PlaylistService* service, const std::string& playlist_id,
                mojom::PlaylistItemPtr item) {
-              item->parent_lists.push_back(playlist_id);
+              item->parents.push_back(playlist_id);
               service->UpdatePlaylistItemValue(
                   item->id, base::Value(ConvertPlaylistItemToValue(item)));
             },
@@ -197,22 +197,24 @@ bool PlaylistService::RemoveItemFromPlaylist(const PlaylistId& playlist_id,
                           ConvertPlaylistToValue(target_playlist));
   }
 
+  // Try to remove |playlist_id| from item->parents or delete the this item
+  // if there's no other parent playlist.
   GetPlaylistItem(
       *item_id,
       base::BindOnce(
           [](PlaylistService* service, const std::string& playlist_id,
              bool delete_item, mojom::PlaylistItemPtr item) {
-            if (delete_item && item->parent_lists.size() == 1) {
-              DCHECK_EQ(item->parent_lists.front(), playlist_id);
+            if (delete_item && item->parents.size() == 1) {
+              DCHECK_EQ(item->parents.front(), playlist_id);
               service->DeletePlaylistItemData(item->id);
               return;
             }
 
             // There're other playlists referencing this. Don't delete item
             // and update the item's parent playlists data.
-            auto iter = base::ranges::find(item->parent_lists, playlist_id);
-            DCHECK(iter != item->parent_lists.end());
-            item->parent_lists.erase(iter);
+            auto iter = base::ranges::find(item->parents, playlist_id);
+            DCHECK(iter != item->parents.end());
+            item->parents.erase(iter);
             service->UpdatePlaylistItemValue(
                 item->id, base::Value(ConvertPlaylistItemToValue(item)));
           },
