@@ -115,7 +115,7 @@ async function updateAccountInfo (store: Store) {
   const state = getWalletState(store)
   const apiProxy = getAPIProxy()
   const { walletHandler } = apiProxy
-  const walletInfo = await walletHandler.getWalletInfo()
+  const walletInfo = (await walletHandler.getWalletInfo()).walletInfo
   if (state.accounts.length === walletInfo.accountInfos.length) {
     await store.dispatch(WalletActions.refreshAccountInfo(walletInfo))
   } else {

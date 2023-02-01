@@ -572,16 +572,21 @@ struct KeyringInfo {
   array<AccountInfo> account_infos;
 };
 
+struct WalletInfo {
+  bool isWalletCreated;
+  bool isWalletLocked;
+  array<AppItem> favoriteApps;
+  bool isWalletBackedUp;
+  array<AccountInfo> accountInfos;
+  bool isFilecoinEnabled;
+  bool isSolanaEnabled;
+  bool isNftPinningFeatureEnabled;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   // Obtains basic information about the wallet that is needed for first render
-  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
-                      array<AppItem> favoriteApps,
-                      bool isWalletBackedUp,
-                      array<AccountInfo> accountInfos,
-                      bool isFilecoinEnabled,
-                      bool isSolanaEnabled,
-                      bool isNftAutoPinningFeatureEnabled);
+  GetWalletInfo() => (WalletInfo walletInfo);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);

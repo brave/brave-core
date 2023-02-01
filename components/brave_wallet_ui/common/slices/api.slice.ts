@@ -181,7 +181,7 @@ export function createWalletApi (
       getWalletInfoBase: query<WalletInfoBase, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           const { walletHandler } = baseQuery(undefined).data
-          const walletInfo: WalletInfoBase = await walletHandler.getWalletInfo()
+          const walletInfo: WalletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
           return {
             data: walletInfo
           }

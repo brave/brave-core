@@ -350,7 +350,7 @@ export interface WalletInfoBase {
   accountInfos: AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
-  isNftAutoPinningFeatureEnabled: boolean
+  isNftPinningFeatureEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {

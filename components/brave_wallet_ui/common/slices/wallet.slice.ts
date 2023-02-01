@@ -298,7 +298,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
         state.isNftAutopinningFeatureEnabled =
-          payload.isNftAutoPinningFeatureEnabled
+          payload.isNftPinningFeatureEnabled
       },
 
       isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
