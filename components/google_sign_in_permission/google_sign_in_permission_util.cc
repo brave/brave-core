@@ -103,11 +103,6 @@ bool IsGoogleSignInFeatureEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveGoogleSignInPermission);
 }
 
-bool IsGoogleSignInPrefEnabled(PrefService* prefs) {
-  return prefs->FindPreference(kGoogleLoginControlType) &&
-         prefs->GetBoolean(kGoogleLoginControlType);
-}
-
 blink::mojom::PermissionStatus GetCurrentGoogleSignInPermissionStatus(
     content::PermissionControllerDelegate* permission_controller,
     content::WebContents* contents,
@@ -194,11 +189,6 @@ bool CanCreateWindow(content::RenderFrameHost* opener,
 
   if (IsGoogleSignInFeatureEnabled() &&
       IsGoogleAuthRelatedRequest(target_url, opener_url)) {
-    if (!IsGoogleSignInPrefEnabled(
-            user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
-      return false;
-    }
-
     return GetPermissionAndMaybeCreatePrompt(
         contents, opener_url, nullptr,
         base::BindOnce(&ReloadTab, contents->GetWeakPtr()));

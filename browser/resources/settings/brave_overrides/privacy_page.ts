@@ -55,7 +55,7 @@ function InsertGoogleSignInSubpage (
           I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
         googleSignInDefault.setAttribute(
           'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
       }
       const googleSignInExceptions =
         googleSignInTemplate.content.getElementById('googleSignInExceptions')
@@ -65,10 +65,10 @@ function InsertGoogleSignInSubpage (
       } else {
         googleSignInExceptions.setAttribute(
           'block-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInBlockExceptions'))
         googleSignInExceptions.setAttribute(
           'allow-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInAllowExceptions'))
       }
     }
   }
