@@ -997,17 +997,12 @@ TEST_F(PlaylistServiceUnitTest, ReorderItemFromPlaylist) {
     auto item = prototype_item.Clone();
     item->id = base::Token::CreateRandom().ToString();
     item->name = base::NumberToString(i + 1);
-
-    playlist_service()->UpdatePlaylistItemValue(
-        item->id, base::Value(ConvertPlaylistItemToValue(item->Clone())));
     items.push_back(std::move(item));
   }
 
   auto target = prototype_item.Clone();
   target->id = base::Token::CreateRandom().ToString();
   target->name = "target";
-  playlist_service()->UpdatePlaylistItemValue(
-      target->id, base::Value(ConvertPlaylistItemToValue(target->Clone())));
   items.push_back(target->Clone());
 
   auto* service = playlist_service();

@@ -284,15 +284,15 @@ void PlaylistService::AddMediaFilesFromItems(
   if (items.empty())
     return;
 
+  base::ranges::for_each(items, [this, cache](const auto& item) {
+    CreatePlaylistItem(item, cache);
+  });
+
   std::vector<std::string> ids;
   base::ranges::transform(items, std::back_inserter(ids),
                           [](const auto& item) { return item->id; });
   AddItemsToPlaylist(
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, ids);
-
-  base::ranges::for_each(items, [this, cache](const auto& item) {
-    CreatePlaylistItem(item, cache);
-  });
 }
 
 void PlaylistService::NotifyPlaylistChanged(
