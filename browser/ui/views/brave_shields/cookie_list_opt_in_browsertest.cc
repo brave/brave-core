@@ -9,6 +9,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -217,6 +218,25 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, FirstRun) {
   observer.Wait();
 
   EXPECT_FALSE(CookieListOptInBubbleHost::FromBrowser(new_browser));
+}
+
+class CookieListOptInPrefSwitchBrowserTest : public CookieListOptInBrowserTest {
+ protected:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    CookieListOptInBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(
+        perf::switches::kEnableBraveFeaturesForPerfTesting);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(CookieListOptInPrefSwitchBrowserTest,
+                       EnableByPerfSwitch) {
+  if (!IsCookieListFilterEnabled()) {
+    CookieListFilterEnabledObserver enabled_observer;
+    enabled_observer.Wait();
+  }
+
+  EXPECT_TRUE(IsCookieListFilterEnabled());
 }
 
 class CookieListOptInPreEnabledBrowserTest : public CookieListOptInBrowserTest {

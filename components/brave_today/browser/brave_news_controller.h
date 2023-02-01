@@ -83,6 +83,8 @@ class BraveNewsController : public KeyedService,
     return &publishers_controller_;
   }
 
+  bool GetIsEnabledForTesting();
+
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
   void GetFeed(GetFeedCallback callback) override;

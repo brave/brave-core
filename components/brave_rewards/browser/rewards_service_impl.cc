@@ -873,6 +873,7 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
+  bat_ledger_client_receiver_.reset();
   url_loaders_.clear();
 
   bat_ledger_.reset();
