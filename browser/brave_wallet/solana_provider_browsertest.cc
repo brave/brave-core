@@ -1155,8 +1155,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
   RestoreWallet();
   AddAccount("Account 1");
   SetSelectedAccount(kFirstAccount);
-  GURL url = https_server_for_files()->GetURL(
-      "a.test", "/short_lived_iframe_solana_provider.html");
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/short_lived_iframes.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   ReloadAndWaitForLoadStop(browser());
 }

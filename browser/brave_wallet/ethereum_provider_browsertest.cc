@@ -12,6 +12,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -98,6 +99,11 @@ class EthereumProviderBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void ReloadAndWaitForLoadStop(Browser* browser) {
+    chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
+    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
@@ -153,6 +159,15 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, ActiveTabRequest) {
       EvalJs(web_contents(), CheckForEventScript("!inactiveTabError"),
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
+}
+
+IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest,
+                       NoCrashOnShortLivedIframes) {
+  RestoreWallet();
+  GURL url = https_server()->GetURL("a.com", "/short_lived_iframes.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  ReloadAndWaitForLoadStop(browser());
 }
 
 }  // namespace brave_wallet
