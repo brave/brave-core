@@ -41,18 +41,18 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
   }
 
-  func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
     let authenticatingDelegates = delegates.filter { wv in
-      return wv.responds(to: #selector(webView(_:didReceive:completionHandler:)))
+      return wv.responds(to: #selector(WKNavigationDelegate.webView(_:didReceive:completionHandler:)))
     }
 
     guard let firstAuthenticatingDelegate = authenticatingDelegates.first else {
-      return completionHandler(.performDefaultHandling, nil)
+      return (.performDefaultHandling, nil)
     }
 
-    firstAuthenticatingDelegate.webView?(webView, didReceive: challenge) { (disposition, credential) in
-      completionHandler(disposition, credential)
-    }
+    // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
+    // It must be force-unwrapped at the time of writing `January 17th, 2023`.
+    return await firstAuthenticatingDelegate.webView!(webView, respondTo: challenge)
   }
 
   func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {

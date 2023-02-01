@@ -849,6 +849,8 @@ extension Strings {
   public static let errorPagesNoInternetTryItem1 = NSLocalizedString("ErrorPagesNoInternetTryItem1", tableName: "BraveShared", bundle: .module, value: "Checking the network cables, modem, and router", comment: "List of things to try when internet is not working")
 
   public static let errorPagesNoInternetTryItem2 = NSLocalizedString("ErrorPagesNoInternetTryItem2", tableName: "BraveShared", bundle: .module, value: "Reconnecting to Wi-Fi", comment: "List of things to try when internet is not working")
+  
+  public static let errorPagesAdvancedErrorPinningDetails = NSLocalizedString("ErrorPagesAdvancedErrorPinningDetails", tableName: "BraveShared", bundle: .module, value: "%@ normally uses encryption to protect your information. When Brave tried to connect to %@ this time, the website sent back unusual and incorrect credentials. This may happen when an attacker is trying to pretend to be %@, or a Wi-Fi sign-in screen has interrupted the connection. Your information is still secure because Brave stopped the connection before any data was exchanged.<br />You cannot visit %@ right now because the website uses certificate pinning. Network errors and attacks are usually temporary, so this page will probably work later.", comment: "Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />.")
 }
 
 // MARK: - Sync

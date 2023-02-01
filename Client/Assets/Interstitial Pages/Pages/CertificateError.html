@@ -55,13 +55,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
             <button id="moreDetailsButton" class="leftNavButton leftNavButtonTitle">%more_details%
                 <img id="arrow" class="arrow down" src="internal://local/interstitial-icon/Carret.png" alt="Icon" class="icon" />
             </button>
-            <button class="rightNavButton rightNavButtonTitle" onclick="history.back();">%back_to_safety%</button>
+            <button id="backToSafetyOrReloadButton" class="rightNavButton rightNavButtonTitle">%back_to_safety_or_reload%</button>
         </div>
 
         <p id="details" class="moreDetails" style="display:none;">
             %error_more_details_description%
             <br /><br />
-            <a id="proceedAnyway" class="moreDetails" href="#">%visit_unsafe%</a>.
+            <a id="proceedAnyway" class="moreDetails" href="#">%visit_unsafe%.</a>
         </p>
         
         <script type="text/javascript">
@@ -121,6 +121,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
                         "securityToken": "%security_token%",
                         "type": "certVisitOnce"
                     });
+                });
+            }
+          
+            if (!%allow_bypass% && proceedAnywayLink != null) {
+              proceedAnywayLink.remove();
+            }
+          
+            var backToSafetyOrReloadButton = document.getElementById("backToSafetyOrReloadButton");
+            if (backToSafetyOrReloadButton != null) {
+                backToSafetyOrReloadButton.addEventListener('click', function(e) {
+                  if (%allow_bypass%) {
+                    history.back();
+                  } else {
+                    location.reload();
+                  }
                 });
             }
         </script>
