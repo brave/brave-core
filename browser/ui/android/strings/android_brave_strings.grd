@@ -3365,6 +3365,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
       View message in ASCII encoding
     </message>
+    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_DOMAIN_SECTION" desc="A domain section template of sign message details">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Domain:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_DOMAIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_MESSAGE_SECTION" desc="A message section template of sign message details">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Message:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_MESSAGE_TEXT">%1$s</ph>
+    </message>
     <message name="IDS_WALLET_ADD_SOLANA_NFT_CHECKBOX" desc="A title for a Solana NFT custom assets checkbox" translateable="false">
       NFT
     </message>

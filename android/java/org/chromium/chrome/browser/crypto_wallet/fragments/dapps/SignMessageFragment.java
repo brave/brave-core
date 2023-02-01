@@ -59,7 +59,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
         mTabTitles = new ArrayList<>();
-        mTabTitles.add(getString(R.string.message));
+        mTabTitles.add(getString(R.string.details));
     }
 
     @Override
