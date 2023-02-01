@@ -150,12 +150,13 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   // Act
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
@@ -175,10 +176,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAdWithConversion(kPlacementId, kCreativeInstanceId);
+
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
 
   // Act
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
@@ -201,11 +204,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Act
@@ -222,11 +226,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Act
@@ -250,11 +255,12 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
   FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
 
@@ -326,7 +332,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
@@ -341,8 +347,10 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
       ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
@@ -356,7 +364,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
@@ -379,7 +387,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
@@ -396,8 +404,10 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 
   AdvanceClockBy(base::Hours(1));
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
@@ -411,7 +421,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);

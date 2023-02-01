@@ -100,7 +100,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
 TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
@@ -126,7 +126,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
 
 TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =

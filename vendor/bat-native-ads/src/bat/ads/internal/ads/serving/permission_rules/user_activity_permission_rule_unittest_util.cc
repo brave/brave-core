@@ -9,7 +9,7 @@
 
 namespace ads {
 
-void ForceUserActivityPermissionRule() {
+void ForceUserActivityPermissionRuleForTesting() {
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance()->RecordEvent(

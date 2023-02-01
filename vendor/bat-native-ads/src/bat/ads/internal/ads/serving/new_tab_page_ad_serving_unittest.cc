@@ -99,7 +99,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
 TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   CreativeNewTabPageAdList creative_ads;
   const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
@@ -122,7 +122,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
 
 TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   CreativeNewTabPageAdList creative_ads;
   CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
@@ -145,7 +145,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
 
 TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(

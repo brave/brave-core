@@ -95,9 +95,12 @@ class BatAdsPromotedContentAdEventHandlerTest : public EventHandlerObserver,
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kServed);
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -120,9 +123,12 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kServed);
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::PromotedContentAdEventType::kViewed);
@@ -140,9 +146,12 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 
 TEST_F(BatAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kServed);
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::PromotedContentAdEventType::kViewed);
@@ -184,10 +193,12 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
 
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::PromotedContentAdEventType::kServed);
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::PromotedContentAdEventType::kViewed);
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -261,7 +272,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   // Act
   event_handler_->FireEvent(kPlacementId, kCreativeInstanceId,
@@ -279,7 +290,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
@@ -305,7 +316,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
@@ -330,7 +341,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =
@@ -358,7 +369,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
 TEST_F(BatAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativePromotedContentAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo ad_event =

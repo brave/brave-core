@@ -33,11 +33,13 @@
 
 // npm run test -- brave_browser_tests --filter=SearchResultAdTest*
 
+namespace brave_ads {
+
+namespace {
+
 using testing::_;
 using testing::Mock;
 using testing::Return;
-
-namespace {
 
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
@@ -50,20 +52,19 @@ constexpr char kSearchResultUrlPath[] =
 constexpr char kSearchResultWithRedirectUrlPath[] =
     "/brave_ads/search_result_ad_with_redirect.html";
 
-brave_ads::SearchResultAdTabHelper* GetSearchResultAdTabHelper(
-    Browser* browser) {
+SearchResultAdTabHelper* GetSearchResultAdTabHelper(Browser* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  return brave_ads::SearchResultAdTabHelper::FromWebContents(web_contents);
+  return SearchResultAdTabHelper::FromWebContents(web_contents);
 }
 
 class ScopedTestingAdsServiceSetter {
  public:
-  explicit ScopedTestingAdsServiceSetter(brave_ads::AdsService* ads_service) {
-    brave_ads::SearchResultAdTabHelper::SetAdsServiceForTesting(ads_service);
+  explicit ScopedTestingAdsServiceSetter(AdsService* ads_service) {
+    SearchResultAdTabHelper::SetAdsServiceForTesting(ads_service);
   }
 
   ~ScopedTestingAdsServiceSetter() {
-    brave_ads::SearchResultAdTabHelper::SetAdsServiceForTesting(nullptr);
+    SearchResultAdTabHelper::SetAdsServiceForTesting(nullptr);
   }
 
   ScopedTestingAdsServiceSetter(const ScopedTestingAdsServiceSetter&) = delete;
@@ -77,7 +78,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
     feature_list_.InitAndEnableFeature(
-        brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents);
+        features::kSupportBraveSearchResultAdConfirmationEvents);
   }
 
   void SetUpOnMainThread() override {
@@ -162,7 +163,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
-  brave_ads::MockAdsService ads_service;
+  MockAdsService ads_service;
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(false));
@@ -176,7 +177,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
-  brave_ads::MockAdsService ads_service;
+  MockAdsService ads_service;
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
@@ -190,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
-  brave_ads::MockAdsService ads_service;
+  MockAdsService ads_service;
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
 
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
@@ -271,11 +272,17 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
   }
 
   content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
-      brave_ads::MockAdsService* ads_service,
+      MockAdsService* ads_service,
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(*ads_service, TriggerSearchResultAdEvent(_, _))
+    EXPECT_CALL(*ads_service,
+                TriggerSearchResultAdEvent(
+                    _, ads::mojom::SearchResultAdEventType::kServed))
+        .Times(2);
+    EXPECT_CALL(*ads_service,
+                TriggerSearchResultAdEvent(
+                    _, ads::mojom::SearchResultAdEventType::kViewed))
         .Times(2)
         .WillRepeatedly(
             [this, &run_loop1, &run_loop2](
@@ -309,7 +316,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
 
 IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
                        SearchResultAdOpenedInSameTab) {
-  brave_ads::MockAdsService ads_service;
+  MockAdsService ads_service;
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
@@ -332,7 +339,7 @@ IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
 }
 
 IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
-  brave_ads::MockAdsService ads_service;
+  MockAdsService ads_service;
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
   EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
 
@@ -356,3 +363,5 @@ IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
 }
 
 INSTANTIATE_TEST_SUITE_P(, SampleSearchResultAdTest, testing::Bool());
+
+}  // namespace brave_ads

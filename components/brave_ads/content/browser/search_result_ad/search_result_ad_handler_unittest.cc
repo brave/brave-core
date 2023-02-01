@@ -15,12 +15,13 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
+namespace brave_ads {
+
+namespace {
+
 using testing::_;
 using testing::Mock;
 using testing::Return;
-
-namespace brave_ads {
-namespace {
 
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
@@ -138,6 +139,9 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kServed));
   EXPECT_CALL(ads_service_,
               TriggerSearchResultAdEvent(
                   _, ads::mojom::SearchResultAdEventType::kViewed));
