@@ -108,7 +108,6 @@ public class CryptoModel {
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
                 mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
                 mBraveWalletService, mAssetRatioService, mSharedData);
-        mBuyModel = new BuyModel(mAssetRatioService);
         _mIsSwapEnabled = new MediatorLiveData<>();
         mIsSwapEnabled = _mIsSwapEnabled;
         _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {
@@ -136,7 +135,9 @@ public class CryptoModel {
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
-            mBuyModel.resetServices(mAssetRatioService);
+            if (mBuyModel != null) {
+                mBuyModel.resetServices(mAssetRatioService);
+            }
         }
         init();
     }
@@ -277,6 +278,9 @@ public class CryptoModel {
     }
 
     public BuyModel getBuyModel() {
+        if (mBuyModel == null) {
+            mBuyModel = new BuyModel(mAssetRatioService);
+        }
         return mBuyModel;
     }
 
