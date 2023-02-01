@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SEARCH_ENGINES_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SEARCH_ENGINES_HANDLER_H_
 
-#include <memory>
-
 #define GetSearchEnginesList                    \
   GetSearchEnginesList_NotUsed() { return {}; } \
   friend class BraveSearchEnginesHandler;       \
