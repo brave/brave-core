@@ -7,13 +7,13 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_REQUESTS_TRACKED_REQUEST_H_
 
 #include <string>
-#include <vector>
 
 #include "base/containers/span.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/crypto.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
+#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace brave_page_graph {
 
@@ -33,7 +33,7 @@ class TrackedRequest {
   bool IsComplete() const;
 
   InspectorId GetRequestId() const;
-  const std::vector<GraphNode*>& GetRequesters() const;
+  const Vector<GraphNode*>& GetRequesters() const;
   const std::string& GetResourceType() const;
   NodeResource* GetResource() const;
   bool GetIsError() const;
@@ -57,7 +57,7 @@ class TrackedRequest {
 
   const InspectorId request_id_;
 
-  std::vector<GraphNode*> requesters_;
+  Vector<GraphNode*> requesters_;
   std::string resource_type_;
 
   NodeResource* resource_ = nullptr;

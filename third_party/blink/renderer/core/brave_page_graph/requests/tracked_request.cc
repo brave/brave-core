@@ -6,7 +6,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h"
 
 #include <string>
-#include <vector>
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
@@ -49,7 +48,7 @@ InspectorId TrackedRequest::GetRequestId() const {
   return request_id_;
 }
 
-const std::vector<GraphNode*>& TrackedRequest::GetRequesters() const {
+const Vector<GraphNode*>& TrackedRequest::GetRequesters() const {
   return requesters_;
 }
 

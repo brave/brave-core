@@ -1467,14 +1467,14 @@ void PageGraph::RegisterRequestStartForDocument(blink::Document* document,
   const base::TimeDelta timestamp = base::TimeTicks::Now() - start_;
 
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
   VLOG(1) << "RegisterRequestStartForDocument) frame id: " << frame_id
-          << ", request id: " << request_id << ", url: " << local_url
+          << ", request id: " << request_id
+          << ", url: " << normalized_url.GetString()
           << ", is_main_frame: " << is_main_frame;
 
-  request_tracker_.RegisterDocumentRequestStart(request_id, frame_id, local_url,
-                                                is_main_frame, timestamp);
+  request_tracker_.RegisterDocumentRequestStart(
+      request_id, frame_id, normalized_url, is_main_frame, timestamp);
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
