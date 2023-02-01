@@ -597,6 +597,37 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
       {PlaylistChangeParams::Type::kListRemoved, playlist_id});
 }
 
+void PlaylistService::ResetAll() {
+  // Removes all saved data ----------------------------------------------------
+  // As these functions will be run in sync, it's safe to bind `this` to raw
+  // ptr.
+  // Remove all playlist items
+  GetAllPlaylistItems(base::BindOnce(
+      [](PlaylistService* service, std::vector<mojom::PlaylistItemPtr> items) {
+        for (const auto& item : items) {
+          for (auto playlist_id : item->parents) {
+            service->RemoveItemFromPlaylist(playlist_id, item->id);
+          }
+        }
+      },
+      this));
+
+  // Remove playlists except the default playlist
+  GetAllPlaylists(base::BindOnce(
+      [](PlaylistService* service, std::vector<mojom::PlaylistPtr> playlists) {
+        for (const auto& a_playlist : playlists) {
+          if (a_playlist->id != kDefaultPlaylistID) {
+            service->RemovePlaylist(*a_playlist->id);
+          }
+        }
+      },
+      this));
+
+  // Resets preference ---------------------------------------------------------
+  prefs_->ClearPref(kPlaylistCacheByDefault);
+  prefs_->ClearPref(kPlaylistDefaultSaveTargetListID);
+}
+
 void PlaylistService::RecoverLocalDataForItem(const std::string& id) {
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!item_value) {

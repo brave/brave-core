@@ -151,6 +151,8 @@ class PlaylistService : public KeyedService,
                       CreatePlaylistCallback callback) override;
   void RemovePlaylist(const std::string& playlist_id) override;
 
+  void ResetAll() override;
+
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistRenderFrameObserverBrowserTest;
@@ -171,6 +173,7 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreateAndRemovePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ReorderItemFromPlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveItemFromPlaylist);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
