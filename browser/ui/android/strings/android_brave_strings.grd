@@ -2685,7 +2685,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Auto-Contribute
     </message>
     <message name="IDS_ONE_TIME_TIP" desc="Title text for `One-Time Tip` section in Brave rewards panel">
-      One-Time Tip
+      One-Time Tips
     </message>
     <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
       Monthly Tips
