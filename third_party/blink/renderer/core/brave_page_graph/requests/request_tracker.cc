@@ -5,7 +5,6 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -29,18 +28,18 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestStart(
     GraphNode* requester,
     NodeResource* resource,
     const std::string& resource_type) {
-  if (tracked_requests_.count(request_id) == 0) {
+  auto item = tracked_requests_.find(request_id);
+  if (item == tracked_requests_.end()) {
     auto request_record = std::make_unique<TrackedRequest>(
         request_id, requester, resource, resource_type);
     CheckTracedRequestAgainstHistory(request_record.get());
     auto tracking_record = base::MakeRefCounted<TrackedRequestRecord>();
     tracking_record->request = std::move(request_record);
-    tracked_requests_.emplace(request_id, tracking_record);
+    tracked_requests_.insert(request_id, tracking_record);
     return tracking_record;
   }
 
-  tracked_requests_.at(request_id)
-      ->request->AddRequest(requester, resource, resource_type);
+  item->value->request->AddRequest(requester, resource, resource_type);
   return ReturnTrackingRecord(request_id);
 }
 
@@ -62,11 +61,11 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestError(
 void RequestTracker::RegisterDocumentRequestStart(
     const InspectorId request_id,
     const blink::DOMNodeId frame_id,
-    const std::string& url,
+    const blink::KURL& url,
     const bool is_main_frame,
     const base::TimeDelta timestamp) {
   // Any previous document requests from this root should have been canceled.
-  if (document_request_initiators_.count(frame_id) != 0) {
+  if (document_request_initiators_.Contains(frame_id)) {
     CHECK_EQ(document_request_initiators_.at(frame_id), request_id);
     return;
   }
@@ -80,8 +79,8 @@ void RequestTracker::RegisterDocumentRequestStart(
       .is_main_frame = is_main_frame,
       .start_timestamp = timestamp,
   };
-  document_request_initiators_.emplace(frame_id, request_id);
-  document_requests_.emplace(request_id, std::move(request_record));
+  document_request_initiators_.insert(frame_id, request_id);
+  document_requests_.insert(request_id, std::move(request_record));
 }
 
 void RequestTracker::RegisterDocumentRequestComplete(
@@ -91,7 +90,7 @@ void RequestTracker::RegisterDocumentRequestComplete(
   // The request should have been started previously.
   auto request_record_it = document_requests_.find(request_id);
   CHECK(request_record_it != document_requests_.end());
-  auto& request_record = request_record_it->second;
+  auto& request_record = request_record_it->value;
 
   // The request should not have been completed previously.
   DCHECK_EQ(request_record.response_metadata.EncodedDataLength(), -1);
@@ -104,24 +103,24 @@ void RequestTracker::RegisterDocumentRequestComplete(
 DocumentRequest* RequestTracker::GetDocumentRequestInfo(
     const InspectorId request_id) {
   auto request_it = document_requests_.find(request_id);
-  return request_it != document_requests_.end() ? &request_it->second : nullptr;
+  return request_it != document_requests_.end() ? &request_it->value : nullptr;
 }
 
 TrackedRequestRecord* RequestTracker::GetTrackingRecord(
     const InspectorId request_id) {
   auto record_it = tracked_requests_.find(request_id);
-  return record_it != tracked_requests_.end() ? record_it->second.get()
+  return record_it != tracked_requests_.end() ? record_it->value.get()
                                               : nullptr;
 }
 
 scoped_refptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
     const InspectorId request_id) {
   auto record_it = tracked_requests_.find(request_id);
-  auto& record = record_it->second;
+  auto& record = record_it->value;
   TrackedRequest* request = record->request.get();
 
   if (!request->IsComplete()) {
-    return record_it->second;
+    return record_it->value;
   }
 
   const size_t num_requestors = request->GetRequesters().size();
@@ -132,7 +131,7 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
   // we want to set things up so that we loose our handle on the std::unique_ptr
   // on return.  Otherwise, we can just leave it in place.
   if (record->num_complete_replies < num_requestors) {
-    return tracked_requests_.at(request_id);
+    return record;
   }
 
   AddTracedRequestToHistory(request);
@@ -144,14 +143,14 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
 void RequestTracker::AddTracedRequestToHistory(const TrackedRequest* request) {
   CHECK_GT(request->GetRequestId(), 0ull);
   CHECK(request->GetResource());
-  completed_requests_.emplace(request->GetRequestId(), request->GetResource());
+  completed_requests_.insert(request->GetRequestId(), request->GetResource());
 }
 
 void RequestTracker::CheckTracedRequestAgainstHistory(
     const TrackedRequest* request) {
   const auto request_it = completed_requests_.find(request->GetRequestId());
   CHECK(request_it == completed_requests_.end() ||
-        request_it->second == request->GetResource());
+        request_it->value == request->GetResource());
 }
 
 }  // namespace brave_page_graph
