@@ -312,7 +312,7 @@ constexpr char kBraveSuperReferralDescription[] =
 
 constexpr char kBraveWalletNftPinningFeatureName[] = "Enable NFT pinning";
 constexpr char kBraveWalletNftPinningFeatureDescription[] =
-    "Enables NFT pinning entry points for the Brave Wallet";
+    "Enable NFT pinning for Brave Wallet";
 
 constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
