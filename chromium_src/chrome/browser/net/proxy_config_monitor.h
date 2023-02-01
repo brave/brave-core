@@ -9,7 +9,7 @@
 #define BRAVE_PROXY_CONFIG_MONITOR_H \
   net::ProxyConfigService* GetProxyConfigServiceForTesting() \
     { return proxy_config_service_.get(); }
-#include "src/chrome/browser/net/proxy_config_monitor.h"
+#include "src/chrome/browser/net/proxy_config_monitor.h"  // IWYU pragma: export
 #undef BRAVE_PROXY_CONFIG_MONITOR_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NET_PROXY_CONFIG_MONITOR_H_

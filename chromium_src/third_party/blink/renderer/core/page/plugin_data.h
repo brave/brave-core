@@ -11,7 +11,7 @@
   void SetFilename(const String& new_filename) { filename_ = new_filename; } \
   void AddMimeType
 
-#include "src/third_party/blink/renderer/core/page/plugin_data.h"
+#include "src/third_party/blink/renderer/core/page/plugin_data.h"  // IWYU pragma: export
 
 #undef AddMimeType
 

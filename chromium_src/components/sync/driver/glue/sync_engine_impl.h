@@ -18,7 +18,7 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) override; \
   void DisableProtocolEventForwarding
 
-#include "src/components/sync/driver/glue/sync_engine_impl.h"
+#include "src/components/sync/driver/glue/sync_engine_impl.h"  // IWYU pragma: export
 
 #undef DisableProtocolEventForwarding
 

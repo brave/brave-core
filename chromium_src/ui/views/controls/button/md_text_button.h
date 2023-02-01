@@ -27,7 +27,7 @@
   virtual void UpdateIconForBrave() = 0;   \
   void UpdateBackgroundColor
 
-#include "src/ui/views/controls/button/md_text_button.h"
+#include "src/ui/views/controls/button/md_text_button.h"  // IWYU pragma: export
 
 #undef UpdateBackgroundColor
 #undef MdTextButton

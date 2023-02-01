@@ -10,7 +10,7 @@
   SetWindowTitleVisibility(bool visible); \
   void OnWidgetInitDone
 
-#include "src/ui/views/cocoa/native_widget_mac_ns_window_host.h"
+#include "src/ui/views/cocoa/native_widget_mac_ns_window_host.h"  // IWYU pragma: export
 
 #undef OnWidgetInitDone
 

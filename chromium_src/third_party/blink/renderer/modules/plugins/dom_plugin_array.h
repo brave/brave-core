@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_PLUGINS_DOM_PLUGIN_ARRAY_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_PLUGINS_DOM_PLUGIN_ARRAY_H_
 
-#include "src/third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
+#include "src/third_party/blink/renderer/modules/plugins/dom_plugin_array.h"  // IWYU pragma: export
 
 #include "third_party/blink/renderer/modules/modules_export.h"
 

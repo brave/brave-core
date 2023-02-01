@@ -34,7 +34,7 @@
 #define GetSupportsTitle virtual GetSupportsTitle
 #endif
 
-#include "src/chrome/browser/ui/views/frame/browser_view.h"
+#include "src/chrome/browser/ui/views/frame/browser_view.h"  // IWYU pragma: export
 
 #if BUILDFLAG(IS_WIN)
 #undef GetSupportsTitle

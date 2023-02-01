@@ -13,7 +13,7 @@
   const std::string& get_last_server_error_message() const;  \
   void set_commit_result
 
-#include "src/components/sync/engine/cycle/status_controller.h"
+#include "src/components/sync/engine/cycle/status_controller.h"  // IWYU pragma: export
 
 #undef set_commit_result
 

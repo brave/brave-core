@@ -11,7 +11,7 @@
   std::string last_server_error_message; \
   SyncerError last_download_updates_result
 
-#include "src/components/sync/engine/cycle/model_neutral_state.h"
+#include "src/components/sync/engine/cycle/model_neutral_state.h"  // IWYU pragma: export
 
 #undef last_download_updates_result
 

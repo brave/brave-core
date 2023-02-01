@@ -22,7 +22,7 @@ using WebSocketChannelImpl_BraveImpl = WebSocketChannelImpl;
   void NotUsed
 #define ShouldDisallowConnection virtual ShouldDisallowConnection
 
-#include "src/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h"
+#include "src/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h"  // IWYU pragma: export
 
 #undef ShouldDisallowConnection
 #undef TearDownFailedConnection

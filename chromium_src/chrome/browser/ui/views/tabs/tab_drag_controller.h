@@ -29,7 +29,7 @@ using TabDragControllerBrave = TabDragController;
   virtual CalculateNonMaximizedDraggedBrowserBounds
 #define CalculateDraggedBrowserBounds virtual CalculateDraggedBrowserBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"
+#include "src/chrome/browser/ui/views/tabs/tab_drag_controller.h"  // IWYU pragma: export
 
 #undef InitDragData
 #undef CalculateDraggedBrowserBounds

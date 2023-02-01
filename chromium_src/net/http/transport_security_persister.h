@@ -11,7 +11,7 @@
 // Use upstream version of TransportSerurityState to reference
 // TransportSecurityState::Delegate without build issues.
 #define TransportSecurityState TransportSecurityState_ChromiumImpl
-#include "src/net/http/transport_security_persister.h"
+#include "src/net/http/transport_security_persister.h"  // IWYU pragma: export
 #undef TransportSecurityState
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_HTTP_TRANSPORT_SECURITY_PERSISTER_H_

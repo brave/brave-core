@@ -22,7 +22,7 @@ class TabHoverCardBubbleView;
 #define UpdateCardContent virtual UpdateCardContent
 #define SetTargetTabImage virtual SetTargetTabImage
 #define SetPlaceholderImage virtual SetPlaceholderImage
-#include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
+#include "src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"  // IWYU pragma: export
 #undef SetPlaceholderImage
 #undef SetTargetTabImage
 #undef UpdateCardContent

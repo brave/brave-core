@@ -15,7 +15,7 @@
   GetSanitizedPageStateForPickle_ChromiumImpl(            \
       const SerializedNavigationEntry* navigation) const; \
   std::string GetSanitizedPageStateForPickle
-#include "src/components/sessions/content/content_serialized_navigation_driver.h"
+#include "src/components/sessions/content/content_serialized_navigation_driver.h"  // IWYU pragma: export
 #undef GetSanitizedPageStateForPickle
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SESSIONS_CONTENT_CONTENT_SERIALIZED_NAVIGATION_DRIVER_H_

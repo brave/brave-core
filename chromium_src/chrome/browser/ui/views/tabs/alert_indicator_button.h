@@ -15,7 +15,7 @@ class AlertIndicatorButton;
   Tab* GetTab
 
 #define UpdateEnabledForMuteToggle virtual UpdateEnabledForMuteToggle
-#include "src/chrome/browser/ui/views/tabs/alert_indicator_button.h"
+#include "src/chrome/browser/ui/views/tabs/alert_indicator_button.h"  // IWYU pragma: export
 #undef UpdateEnabledForMuteToggle
 #undef GetTab
 #undef AlertIndicatorButton

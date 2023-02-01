@@ -25,7 +25,7 @@
   NUM_TYPES
 // clang-format on
 
-#include "src/components/content_settings/core/common/content_settings_types.h"
+#include "src/components/content_settings/core/common/content_settings_types.h"  // IWYU pragma: export
 
 #undef NUM_TYPES
 

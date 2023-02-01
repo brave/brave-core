@@ -28,7 +28,7 @@
   FetchParameters CreateFetchParameters
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"
+#include "src/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef CreateFetchParameters

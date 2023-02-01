@@ -33,7 +33,7 @@
  public:                                                                      \
   void ShutdownOnUIThread
 
-#include "src/components/content_settings/core/browser/cookie_settings.h"
+#include "src/components/content_settings/core/browser/cookie_settings.h"  // IWYU pragma: export
 
 #undef ShutdownOnUIThread
 

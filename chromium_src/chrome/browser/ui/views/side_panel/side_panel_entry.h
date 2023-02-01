@@ -8,7 +8,7 @@
 
 #define kAssistant kAssistant, kPlaylist
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "src/chrome/browser/ui/views/side_panel/side_panel_entry.h"  // IWYU pragma: export
 
 #undef kAssistant
 

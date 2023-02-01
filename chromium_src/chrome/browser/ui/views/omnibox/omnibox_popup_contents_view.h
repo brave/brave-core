@@ -10,7 +10,7 @@
   OmniboxPopupContentsViewTest;      \
   friend class BraveOmniboxPopupContentsView
 #define GetTargetBounds virtual GetTargetBounds
-#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"
+#include "src/chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.h"  // IWYU pragma: export
 #undef GetTargetBounds
 #undef OmniboxPopupContentsViewTest
 

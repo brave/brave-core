@@ -14,7 +14,7 @@
       const;                                                             \
   KeyedService* BuildServiceInstanceFor
 
-#include "src/chrome/browser/profiles/gaia_info_update_service_factory.h"
+#include "src/chrome/browser/profiles/gaia_info_update_service_factory.h"  // IWYU pragma: export
 #undef BuildServiceInstanceFor
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_GAIA_INFO_UPDATE_SERVICE_FACTORY_H_

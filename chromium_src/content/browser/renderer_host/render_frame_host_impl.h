@@ -14,7 +14,7 @@
       override;                                                                \
   void CopyImageAt
 
-#include "src/content/browser/renderer_host/render_frame_host_impl.h"
+#include "src/content/browser/renderer_host/render_frame_host_impl.h"  // IWYU pragma: export
 
 #undef CopyImageAt
 

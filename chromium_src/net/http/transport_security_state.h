@@ -21,7 +21,7 @@ using TransportSecurityState_BraveImpl = TransportSecurityState;
   friend TransportSecurityState_BraveImpl; \
   PartitionedHostStateMap<STSStateMap> enabled_sts_hosts_
 
-#include "src/net/http/transport_security_state.h"
+#include "src/net/http/transport_security_state.h"  // IWYU pragma: export
 
 #undef enabled_sts_hosts_
 #undef TransportSecurityState

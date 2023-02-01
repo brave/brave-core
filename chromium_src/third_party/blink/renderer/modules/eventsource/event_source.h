@@ -39,7 +39,7 @@
   std::unique_ptr<ResourcePoolLimiter::ResourceInUseTracker> \
       event_source_in_use_tracker_
 
-#include "src/third_party/blink/renderer/modules/eventsource/event_source.h"
+#include "src/third_party/blink/renderer/modules/eventsource/event_source.h"  // IWYU pragma: export
 
 #undef ConnectTimerFired
 #undef Connect

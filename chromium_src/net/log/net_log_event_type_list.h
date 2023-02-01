@@ -6,7 +6,7 @@
 // Intentionally no header guards (see the comment in the overridden .h file).
 // NOLINT(build/header_guard)
 
-#include "src/net/log/net_log_event_type_list.h"
+#include "src/net/log/net_log_event_type_list.h"  // IWYU pragma: export
 
 // The time spent sending authentication to the SOCKS server
 EVENT_TYPE(SOCKS5_AUTH_WRITE)

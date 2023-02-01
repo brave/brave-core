@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 
-#include "src/chrome/installer/mini_installer/mini_installer.h"
+#include "src/chrome/installer/mini_installer/mini_installer.h"  // IWYU pragma: export
 
 namespace mini_installer {
 typedef StackString<128> ReferralCodeString;

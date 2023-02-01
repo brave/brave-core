@@ -14,7 +14,7 @@
   int NumPinnedTabs
 #define TransferTabBetweenContainers virtual TransferTabBetweenContainers
 
-#include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"
+#include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"  // IWYU pragma: export
 
 #undef TransferTabBetweenContainers
 #undef NumPinnedTabs

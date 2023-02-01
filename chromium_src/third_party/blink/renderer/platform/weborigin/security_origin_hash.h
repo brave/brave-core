@@ -19,7 +19,7 @@
   }                                                                      \
   static const bool safe_to_compare_to_empty_or_deleted
 
-#include "src/third_party/blink/renderer/platform/weborigin/security_origin_hash.h"
+#include "src/third_party/blink/renderer/platform/weborigin/security_origin_hash.h"  // IWYU pragma: export
 
 #undef safe_to_compare_to_empty_or_deleted
 

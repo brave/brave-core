@@ -24,7 +24,7 @@
   }                                                                            \
   double screenY_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/input/touch.h"
+#include "src/third_party/blink/renderer/core/input/touch.h"  // IWYU pragma: export
 
 #undef screenX
 #undef screenY

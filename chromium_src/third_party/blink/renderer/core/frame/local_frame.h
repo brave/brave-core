@@ -13,7 +13,7 @@ class SkBitmap;
   SkBitmap GetImageAtViewportPoint(const gfx::Point& viewport_point); \
   void CopyImageAtViewportPoint
 
-#include "src/third_party/blink/renderer/core/frame/local_frame.h"
+#include "src/third_party/blink/renderer/core/frame/local_frame.h"  // IWYU pragma: export
 
 #undef CopyImageAtViewportPoint
 

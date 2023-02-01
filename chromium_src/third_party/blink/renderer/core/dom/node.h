@@ -16,7 +16,7 @@
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, void NodeConstructed();) \
   void MarkAncestorsWithChildNeedsStyleInvalidation
 
-#include "src/third_party/blink/renderer/core/dom/node.h"
+#include "src/third_party/blink/renderer/core/dom/node.h"  // IWYU pragma: export
 
 #undef MarkAncestorsWithChildNeedsStyleInvalidation
 

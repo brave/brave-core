@@ -22,7 +22,7 @@
                                                                             \
   virtual void UnsubscribePermissionStatusChange
 
-#include "src/content/public/browser/permission_controller_delegate.h"
+#include "src/content/public/browser/permission_controller_delegate.h"  // IWYU pragma: export
 
 #undef UnsubscribePermissionStatusChange
 

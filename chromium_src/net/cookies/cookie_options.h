@@ -11,7 +11,7 @@
 #include "url/origin.h"
 
 #define CookieOptions CookieOptions_ChromiumImpl
-#include "src/net/cookies/cookie_options.h"
+#include "src/net/cookies/cookie_options.h"  // IWYU pragma: export
 #undef CookieOptions
 
 namespace net {

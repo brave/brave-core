@@ -14,7 +14,7 @@ friend class BraveContentSettingsAgentImpl;
                                   const blink::WebURL& document_url) const; \
   bool IsAllowlistedForContentSettings
 
-#include "src/components/content_settings/renderer/content_settings_agent_impl.h"
+#include "src/components/content_settings/renderer/content_settings_agent_impl.h"  // IWYU pragma: export
 #undef IsAllowlistedForContentSettings
 
 namespace content_settings {

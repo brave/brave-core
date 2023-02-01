@@ -14,7 +14,7 @@
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #define ChromeViewsDelegate BraveViewsDelegateLinux
 #endif
-#include "src/chrome/test/views/accessibility_checker.h"
+#include "src/chrome/test/views/accessibility_checker.h"  // IWYU pragma: export
 #if BUILDFLAG(IS_LINUX)
 #undef ChromeViewsDelegate
 #endif

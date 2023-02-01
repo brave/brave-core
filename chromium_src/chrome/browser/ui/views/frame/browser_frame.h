@@ -11,7 +11,7 @@
   friend class BraveBrowserFrame; \
   void SelectNativeTheme
 
-#include "src/chrome/browser/ui/views/frame/browser_frame.h"
+#include "src/chrome/browser/ui/views/frame/browser_frame.h"  // IWYU pragma: export
 
 #undef SelectNativeTheme
 

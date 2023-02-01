@@ -16,7 +16,7 @@ class CustomStyledLabel;
   friend class ::CustomStyledLabel;                                        \
   virtual std::unique_ptr<views::Label> CreateLabel
 
-#include "src/ui/views/controls/styled_label.h"
+#include "src/ui/views/controls/styled_label.h"  // IWYU pragma: export
 
 #undef CreateLabel
 

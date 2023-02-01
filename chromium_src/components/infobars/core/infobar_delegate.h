@@ -19,7 +19,7 @@
   WEB_DISCOVERY_INFOBAR_DELEGATE = 506,                                      \
   BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,
 
-#include "src/components/infobars/core/infobar_delegate.h"
+#include "src/components/infobars/core/infobar_delegate.h"  // IWYU pragma: export
 
 #undef BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
 

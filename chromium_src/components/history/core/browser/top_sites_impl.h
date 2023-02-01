@@ -11,7 +11,7 @@
   kTopSitesNumber = 12; \
   static constexpr size_t kTopSitesNumber_Unused
 
-#include "src/components/history/core/browser/top_sites_impl.h"
+#include "src/components/history/core/browser/top_sites_impl.h"  // IWYU pragma: export
 
 #undef kTopSitesNumber
 
