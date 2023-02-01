@@ -27,7 +27,7 @@ source_set("unit_tests") {
   sources = [ "cose_unittest.cc" ]
   deps = [
     "//base/test:test_support",
-    "//brave/components/nitro_utils",
+    "//brave/components/p3a/nitro_utils",
     "//components/cbor",
     "//testing/gtest",
   ]

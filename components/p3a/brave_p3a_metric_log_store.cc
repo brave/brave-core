@@ -113,8 +113,7 @@ void BraveP3AMetricLogStore::RemoveValueIfExists(
   unsent_entries_.erase(histogram_name);
 
   // Update the persistent value.
-  ScopedDictPrefUpdate(local_state_, GetPrefName())
-      ->Remove(histogram_name);
+  ScopedDictPrefUpdate(local_state_, GetPrefName())->Remove(histogram_name);
 
   if (has_staged_log() && staged_entry_key_ == histogram_name) {
     staged_entry_key_.clear();

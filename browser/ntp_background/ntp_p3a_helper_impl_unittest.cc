@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
@@ -12,12 +13,14 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace ntp_background_images {
 
@@ -29,6 +32,10 @@ constexpr char kCreativeTotalHistogramName[] = "creativeInstanceId.total.count";
 constexpr char kClicksEventType[] = "clicks";
 constexpr char kViewsEventType[] = "views";
 constexpr char kLandsEventType[] = "lands";
+
+constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
+constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
+constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
 }  // namespace
 
 class NTPP3AHelperImplTest : public testing::Test {
@@ -45,8 +52,13 @@ class NTPP3AHelperImplTest : public testing::Test {
                                           /*first_run*/ false);
     NTPP3AHelperImpl::RegisterLocalStatePrefs(local_state_.registry());
 
-    p3a_service_ = scoped_refptr(
-        new brave::BraveP3AService(&local_state_, "release", "2049-01-01"));
+    std::unique_ptr<brave::BraveP3AConfig> config =
+        std::make_unique<brave::BraveP3AConfig>();
+    config->p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config->p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config->p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
+    p3a_service_ = scoped_refptr(new brave::BraveP3AService(
+        &local_state_, "release", "2049-01-01", std::move(config)));
 
     ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
         &local_state_, p3a_service_.get(), &ads_service_);

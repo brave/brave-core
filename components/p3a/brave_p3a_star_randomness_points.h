@@ -11,9 +11,9 @@
 
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
-#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_meta.h"
+#include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 
 namespace network {
 class SharedURLLoaderFactory;

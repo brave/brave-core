@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/nitro_utils/attestation.h"
+#include "brave/components/p3a/nitro_utils/attestation.h"
 
 #include <algorithm>
 #include <cstring>
@@ -16,7 +16,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/nitro_utils/cose.h"
+#include "brave/components/p3a/nitro_utils/cose.h"
 #include "crypto/random.h"
 #include "net/base/url_util.h"
 #include "net/cert/pki/parsed_certificate.h"

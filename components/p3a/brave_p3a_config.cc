@@ -16,43 +16,46 @@ namespace {
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
-void LoadTimeDelta(base::CommandLine* cmdline,
-                   const char* switch_name,
-                   base::TimeDelta* result) {
+base::TimeDelta GetTimeDeltaFromCommandLine(base::CommandLine* cmdline,
+                                            const char* switch_name) {
   if (cmdline->HasSwitch(switch_name)) {
     std::string seconds_str = cmdline->GetSwitchValueASCII(switch_name);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      *result = base::Seconds(seconds);
+      return base::Seconds(seconds);
     }
   }
+  return base::TimeDelta();
 }
 
-void LoadString(base::CommandLine* cmdline,
-                const char* switch_name,
-                std::string* result) {
+std::string GetStringFromCommandLine(base::CommandLine* cmdline,
+                                     const char* switch_name) {
   if (cmdline->HasSwitch(switch_name)) {
-    *result = cmdline->GetSwitchValueASCII(switch_name);
+    return cmdline->GetSwitchValueASCII(switch_name);
   }
+  return std::string();
 }
 
-void LoadURL(base::CommandLine* cmdline,
-             const char* switch_name,
-             GURL* result) {
+GURL GetURLFromCommandLine(base::CommandLine* cmdline,
+                           const char* switch_name) {
   if (cmdline->HasSwitch(switch_name)) {
     GURL url = GURL(cmdline->GetSwitchValueASCII(switch_name));
+#if defined(OFFICIAL_BUILD)
+    CHECK(url.is_valid());
+#endif
     if (url.is_valid()) {
-      *result = url;
+      return url;
     }
   }
+  return GURL();
 }
 
-void LoadBool(base::CommandLine* cmdline,
-              const char* switch_name,
-              bool* result) {
+bool GetBoolFromCommandLine(base::CommandLine* cmdline,
+                            const char* switch_name) {
   if (cmdline->HasSwitch(switch_name)) {
-    *result = true;
+    return true;
   }
+  return false;
 }
 
 }  // namespace
@@ -72,31 +75,40 @@ BraveP3AConfig::~BraveP3AConfig() {}
 void BraveP3AConfig::LoadFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
-  LoadTimeDelta(cmdline, switches::kP3AUploadIntervalSeconds,
-                &average_upload_interval);
+  average_upload_interval =
+      GetTimeDeltaFromCommandLine(cmdline, switches::kP3AUploadIntervalSeconds);
 
   if (cmdline->HasSwitch(switches::kP3ADoNotRandomizeUploadInterval)) {
     randomize_upload_interval = false;
   }
 
-  LoadTimeDelta(cmdline, switches::kP3ASlowRotationIntervalSeconds,
-                &json_rotation_intervals[MetricLogType::kSlow]);
-  LoadTimeDelta(cmdline, switches::kP3ATypicalRotationIntervalSeconds,
-                &json_rotation_intervals[MetricLogType::kTypical]);
-  LoadTimeDelta(cmdline, switches::kP3AExpressRotationIntervalSeconds,
-                &json_rotation_intervals[MetricLogType::kExpress]);
+  json_rotation_intervals[MetricLogType::kSlow] = GetTimeDeltaFromCommandLine(
+      cmdline, switches::kP3ASlowRotationIntervalSeconds);
+  json_rotation_intervals[MetricLogType::kTypical] =
+      GetTimeDeltaFromCommandLine(cmdline,
+                                  switches::kP3ATypicalRotationIntervalSeconds);
+  json_rotation_intervals[MetricLogType::kExpress] =
+      GetTimeDeltaFromCommandLine(cmdline,
+                                  switches::kP3AExpressRotationIntervalSeconds);
 
-  LoadURL(cmdline, switches::kP3AJsonUploadUrl, &p3a_json_upload_url);
-  LoadURL(cmdline, switches::kP3ACreativeUploadUrl, &p3a_creative_upload_url);
-  LoadURL(cmdline, switches::kP2AJsonUploadUrl, &p2a_json_upload_url);
-  LoadURL(cmdline, switches::kP3AStarUploadUrl, &p3a_star_upload_url);
-  LoadURL(cmdline, switches::kP2AStarUploadUrl, &p2a_star_upload_url);
-  LoadString(cmdline, switches::kP3AStarRandomnessHost, &star_randomness_host);
+  p3a_json_upload_url =
+      GetURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl);
+  p3a_creative_upload_url =
+      GetURLFromCommandLine(cmdline, switches::kP3ACreativeUploadUrl);
+  p2a_json_upload_url =
+      GetURLFromCommandLine(cmdline, switches::kP2AJsonUploadUrl);
+  p3a_star_upload_url =
+      GetURLFromCommandLine(cmdline, switches::kP3AStarUploadUrl);
+  p2a_star_upload_url =
+      GetURLFromCommandLine(cmdline, switches::kP2AStarUploadUrl);
+  star_randomness_host =
+      GetStringFromCommandLine(cmdline, switches::kP3AStarRandomnessHost);
 
-  LoadBool(cmdline, switches::kP3ADisableStarAttestation,
-           &disable_star_attestation);
+  disable_star_attestation =
+      GetBoolFromCommandLine(cmdline, switches::kP3ADisableStarAttestation);
 
-  LoadBool(cmdline, switches::kP3AIgnoreServerErrors, &ignore_server_errors);
+  ignore_server_errors =
+      GetBoolFromCommandLine(cmdline, switches::kP3AIgnoreServerErrors);
 
   VLOG(2) << "BraveP3AConfig parameters are:"
           << ", average_upload_interval_ = " << average_upload_interval

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc b/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
-index 1013b64e97c9c25f524d1d53b6bab27f0d970baf..4dc073f3ff53512bae3b8166611706c315b7a9ac 100644
+index a37c2b212e091cfb8c564267d78d93e5a1273f26..84abad05f4a68ed3e8b203aec521ebb275a6f5a7 100644
 --- a/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
 +++ b/chrome/browser/ui/webui/connectors_internals/device_trust_utils.cc
 @@ -46,6 +46,7 @@ connectors_internals::mojom::KeyType AlgorithmToType(

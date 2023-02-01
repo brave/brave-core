@@ -44,8 +44,10 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   void SetLastTabURL(const GURL& url) override;
 
+  // See BraveP3AService::RegisterDynamicMetric and
+  // BraveP3AService::RegisterMetricCycledCallback header comments for more
+  // info.
   void OnP3ARotation(brave::MetricLogType log_type, bool is_star);
-
   void OnP3AMetricCycled(const std::string& histogram_name, bool is_star);
 
  private:

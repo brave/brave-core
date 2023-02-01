@@ -1,0 +1,20 @@
+[package]
+name = "constellation-cxx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+star-constellation = { git = "https://github.com/brave/constellation", rev = "bd9301a775d690151f1694080dd514733616a694" }
+cxx = "1.0"
+
+[lib]
+name = "constellation_cxx"
+crate-type = ["rlib"]
+# Use following crate type setting + build-dependencies if compiling example via Makefile
+# crate-type = ["staticlib"]
+#
+# [build-dependencies]
+# cxx-build = "1.0"
+
+
+# Also, if compiling example, rename build.example.rs to build.rs
