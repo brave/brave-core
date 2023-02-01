@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-from __future__ import annotations
-
 import sys
 import os
 import logging
@@ -39,6 +37,7 @@ class _BaseVersion:
 
 
 class BraveVersion(_BaseVersion):
+
   def __init__(self, tag: str) -> None:
     super().__init__()
     assert re.match(r'v\d+\.\d+\.\d+', tag)
@@ -47,7 +46,7 @@ class BraveVersion(_BaseVersion):
   def __str__(self) -> str:
     return 'v' + '.'.join(map(str, self._version))
 
-  def to_chromium_version(self) -> ChromiumVersion:
+  def to_chromium_version(self) -> 'ChromiumVersion':
     return _GetChromiumVersion(self)
 
   #Returns a version like 108.1.48.1
@@ -57,6 +56,7 @@ class BraveVersion(_BaseVersion):
 
 
 class ChromiumVersion(_BaseVersion):
+
   def __init__(self, v: str) -> None:
     super().__init__()
     assert re.match(r'\d+\.\d+\.\d+\.\d+', v)
