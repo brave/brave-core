@@ -281,7 +281,7 @@ void NftMetadataFetcher::GetSolTokenMetadata(
       SolanaKeyring::GetAssociatedMetadataAccount(token_mint_address);
   if (!associated_metadata_account) {
     std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
+        "", "", mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -299,7 +299,7 @@ void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess || !account_info) {
-    std::move(callback).Run("", error, error_message);
+    std::move(callback).Run("", "", error, error_message);
     return;
   }
 
@@ -307,24 +307,26 @@ void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(
       base::Base64Decode(account_info->data);
 
   if (!metadata) {
-    std::move(callback).Run("", mojom::SolanaProviderError::kParsingError,
+    std::move(callback).Run("", "", mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
   absl::optional<GURL> url = DecodeMetadataUri(*metadata);
   if (!url || !url.value().is_valid()) {
-    std::move(callback).Run("", mojom::SolanaProviderError::kParsingError,
+    std::move(callback).Run("", "", mojom::SolanaProviderError::kParsingError,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 
-  FetchMetadata(*url, base::BindOnce(
-                          &NftMetadataFetcher::CompleteGetSolTokenMetadata,
-                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  FetchMetadata(*url,
+                base::BindOnce(&NftMetadataFetcher::CompleteGetSolTokenMetadata,
+                               weak_ptr_factory_.GetWeakPtr(), *url,
+                               std::move(callback)));
 }
 
 void NftMetadataFetcher::CompleteGetSolTokenMetadata(
+    const GURL& uri,
     GetSolTokenMetadataCallback callback,
     const std::string& response,
     int error,
@@ -333,7 +335,7 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
       static_cast<mojom::SolanaProviderError>(error);
   if (!mojom::IsKnownEnumValue(mojo_err))
     mojo_err = mojom::SolanaProviderError::kUnknown;
-  std::move(callback).Run(response, mojo_err, error_message);
+  std::move(callback).Run(uri.spec(), response, mojo_err, error_message);
 }
 
 // static
