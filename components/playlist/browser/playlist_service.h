@@ -102,9 +102,6 @@ class PlaylistService : public KeyedService,
   mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  void AddObserver(
-      mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
-
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
@@ -167,6 +164,9 @@ class PlaylistService : public KeyedService,
   void SetPlaylistCacheByDefault(const bool is_enabled) override;
 
   void ResetAll() override;
+
+  void AddObserver(
+      mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;

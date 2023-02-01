@@ -21,7 +21,8 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="auto_play"
         android:title="@string/auto_play"
-        android:summary="@string/auto_play_summary" />
+        android:summary="@string/auto_play_summary"
+        app:isPreferenceVisible="false" />
 
     <Preference
         android:fragment="org.chromium.chrome.browser.playlist.settings.BravePlaylistSaveMediaFragment"

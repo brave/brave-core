@@ -107,6 +107,8 @@ interface PlaylistService {
 
   GetPlaylistCacheByDefault() => (bool is_enabled);
   SetPlaylistCacheByDefault(bool is_enabled);
+
+  AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
 
 // UI-side handler for response from the service.
