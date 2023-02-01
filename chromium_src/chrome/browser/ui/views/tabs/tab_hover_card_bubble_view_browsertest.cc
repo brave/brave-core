@@ -44,9 +44,9 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
     TabRendererData new_tab_data = TabRendererData();
     new_tab_data.title = kTabTitle;
     new_tab_data.last_committed_url = GURL(kTabUrl);
-    GetTabStrip(browser())->AddTabAt(1, new_tab_data);
+    GetTabStrip(browser())->AddTabAt(0, new_tab_data);
 
-    SimulateHoverTab(browser(), 1);
+    SimulateHoverTab(browser(), 0);
   }
 
   bool VerifyUi() override {

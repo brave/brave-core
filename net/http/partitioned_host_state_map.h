@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -6,11 +6,13 @@
 #ifndef BRAVE_NET_HTTP_PARTITIONED_HOST_STATE_MAP_H_
 #define BRAVE_NET_HTTP_PARTITIONED_HOST_STATE_MAP_H_
 
+#include <array>
 #include <string>
 
 #include "base/auto_reset.h"
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_piece.h"
+#include "crypto/sha2.h"
 #include "net/base/net_export.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -19,6 +21,8 @@ namespace net {
 // Implements partitioning support for structures in TransportSecurityState.
 class NET_EXPORT PartitionedHostStateMapBase {
  public:
+  using HashedHost = std::array<uint8_t, crypto::kSHA256Length>;
+
   PartitionedHostStateMapBase();
   ~PartitionedHostStateMapBase();
 
@@ -27,8 +31,8 @@ class NET_EXPORT PartitionedHostStateMapBase {
       delete;
 
   // Stores scoped partition hash for use in subsequent calls.
-  base::AutoReset<absl::optional<std::string>> SetScopedPartitionHash(
-      absl::optional<std::string> partition_hash);
+  base::AutoReset<absl::optional<HashedHost>> SetScopedPartitionHash(
+      absl::optional<HashedHost> partition_hash);
   // Returns true if |partition_hash_| is set. The value may be empty.
   bool HasPartitionHash() const;
   // Returns true if |partition_hash_| contains a non empty valid hash.
@@ -36,17 +40,18 @@ class NET_EXPORT PartitionedHostStateMapBase {
   // Creates a host hash by concatenating first 16 bytes (half of SHA256) from
   // |k| and first 16 bytes from |partition_hash_|.
   // CHECKs if |partition_hash_| is not valid.
-  std::string GetKeyWithPartitionHash(const std::string& k) const;
+  HashedHost GetKeyWithPartitionHash(const HashedHost& k) const;
 
-  // Returns first 16 bytes from |k|.
-  static base::StringPiece GetHalfKey(base::StringPiece k);
+  // Returns first `HashedHost::size() / 2` bytes from |k|.
+  static base::span<const uint8_t> GetHalfKey(const HashedHost& k);
 
  private:
   // Partition hash can be of these values:
   //   nullopt - unpartitioned;
-  //   empty string - invalid/opaque partition, i.e. shouldn't be stored;
-  //   non empty string - valid partition.
-  absl::optional<std::string> partition_hash_;
+  //   empty array - invalid/opaque partition, i.e. shouldn't be stored;
+  //   non-empty array - valid partition.
+  // Where empty is defined as zero-initialized.
+  absl::optional<HashedHost> partition_hash_;
 };
 
 // Allows data partitioning using half key from PartitionHash. The class mimics
@@ -112,7 +117,12 @@ class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
   // partition hash part.
   bool DeleteDataInAllPartitions(const key_type& k) {
     auto equal_range_pair = base::ranges::equal_range(
-        map_, GetHalfKey(k), {},
+        map_, GetHalfKey(k),
+        [](const auto& v1, const auto& v2) {
+          // Mimic std::less by calling memcmp on base::span arrays.
+          DCHECK(v1.size() == v2.size());
+          return memcmp(v1.data(), v2.data(), v1.size()) < 0;
+        },
         [](const value_type& v) { return GetHalfKey(v.first); });
 
     if (equal_range_pair.first == equal_range_pair.second) {

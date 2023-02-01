@@ -6,7 +6,6 @@
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 
 #include <algorithm>
-#include <codecvt>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -21,6 +20,7 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_cdn/headers.h"
@@ -72,9 +72,8 @@ mojom::ArticlePtr RustFeedItemToArticle(const FeedItem& rust_feed_item,
   // Get language-specific relative time
   base::TimeDelta relative_time_delta =
       base::Time::Now() - metadata->publish_time;
-  std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
   metadata->relative_time_description =
-      converter.to_bytes(ui::TimeFormat::Simple(
+      base::UTF16ToUTF8(ui::TimeFormat::Simple(
           ui::TimeFormat::Format::FORMAT_ELAPSED,
           ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta));
   auto article = mojom::Article::New();

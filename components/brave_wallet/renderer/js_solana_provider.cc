@@ -96,14 +96,14 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                                content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
   if (context.IsEmpty()) {
     return;
   }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   // check window.braveSolana existence
@@ -586,9 +586,9 @@ void JSSolanaProvider::OnConnect(
     const std::string& error_message,
     const std::string& public_key) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> result;
   v8::Local<v8::Value> v8_public_key;
@@ -622,9 +622,9 @@ void JSSolanaProvider::OnSignAndSendTransaction(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     base::Value value(std::move(result));
@@ -647,9 +647,9 @@ void JSSolanaProvider::OnSignMessage(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
@@ -691,9 +691,9 @@ void JSSolanaProvider::OnSignTransaction(
     const std::string& error_message,
     const std::vector<uint8_t>& serialized_tx) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     result = CreateTransaction(context, serialized_tx);
@@ -715,10 +715,10 @@ void JSSolanaProvider::OnSignAllTransactions(
     const std::string& error_message,
     const std::vector<std::vector<uint8_t>>& serialized_txs) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     size_t serialized_txs_length = serialized_txs.size();
@@ -751,9 +751,9 @@ void JSSolanaProvider::OnRequest(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
@@ -791,9 +791,9 @@ void JSSolanaProvider::SendResponse(
     v8::Local<v8::Value> response,
     bool success) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
@@ -925,7 +925,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
     v8::Local<v8::Context> context,
     const std::string& base58_str) {
   v8::Isolate* isolate = context->GetIsolate();
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
@@ -960,7 +960,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     return v8::Undefined(isolate);
   }
 
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 

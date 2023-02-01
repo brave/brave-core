@@ -42,6 +42,8 @@ class BraveSidePanel : public views::View,
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
 
+  void SetMinimumSidePanelContentsWidthForTesting(int width) {}
+
  private:
   void UpdateVisibility();
   void UpdateBorder();

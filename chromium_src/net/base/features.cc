@@ -16,8 +16,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPartitionConnectionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
     {kPartitionedCookies, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPartitionExpectCTStateByNetworkIsolationKey,
-     base::FEATURE_ENABLED_BY_DEFAULT},
     {kPartitionHttpServerPropertiesByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
     {kPartitionSSLSessionsByNetworkIsolationKey,

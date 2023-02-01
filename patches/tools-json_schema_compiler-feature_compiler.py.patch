@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/feature_compiler.py b/tools/json_schema_compiler/feature_compiler.py
-index 7a938eb885b77856948a271ed9b40372491c2145..f87a833d4817cd1bcb043ea35baa603e694bd25a 100644
+index 72fd4b50c91ea3a0715abcc0c667136d02df0c84..a95eddab1142a45f8a1d9f839a05c4d36c20aa7c 100644
 --- a/tools/json_schema_compiler/feature_compiler.py
 +++ b/tools/json_schema_compiler/feature_compiler.py
 @@ -774,6 +774,7 @@ class FeatureCompiler(object):

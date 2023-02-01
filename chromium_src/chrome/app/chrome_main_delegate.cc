@@ -63,12 +63,6 @@ absl::optional<int> ChromeMainDelegate::BasicStartupComplete() {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kEnableDomDistiller);
 
-  std::string update_url = GetUpdateURLHost();
-  if (!update_url.empty()) {
-    std::string source = "url-source=" + update_url;
-    command_line.AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
-  }
-
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
     command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,

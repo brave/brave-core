@@ -436,7 +436,7 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
 
 void BraveNewsController::ClearPrefs() {
   DictionaryPrefUpdate update(prefs_, prefs::kBraveTodaySources);
-  update->DictClear();
+  update->GetDict().clear();
   // Force an update of publishers and feed to include or ignore
   // content from the affected publisher.
   publishers_controller_.EnsurePublishersIsUpdating();

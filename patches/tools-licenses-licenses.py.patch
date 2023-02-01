@@ -1,9 +1,9 @@
-diff --git a/tools/licenses.py b/tools/licenses.py
-index de49fae95801e402cef4cda481bdf17222c9525c..fee2b33b157778166239c3410b6ea08342d5337a 100755
---- a/tools/licenses.py
-+++ b/tools/licenses.py
+diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
+index 6f2e1a707767462e7b0e6909149cc16e6b22e62c..185e03d6c325857ad9fb03146722b9355e4db773 100755
+--- a/tools/licenses/licenses.py
++++ b/tools/licenses/licenses.py
 @@ -39,6 +39,7 @@ from spdx_writer import SpdxWriter
- _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+ _REPOSITORY_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
  from util import build_utils
 +from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS, CheckBraveMissingLicense

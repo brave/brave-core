@@ -33,15 +33,23 @@ BraveCompoundTabContainer::BraveCompoundTabContainer(
 void BraveCompoundTabContainer::SetAvailableWidthCallback(
     base::RepeatingCallback<int()> available_width_callback) {
   CompoundTabContainer::SetAvailableWidthCallback(available_width_callback);
-  if (!available_width_callback || tabs::features::ShouldShowVerticalTabs(
-                                       tab_slot_controller_->GetBrowser())) {
-    // Unlike Chromium Impl, Just pass the `available_width_callback` to
-    // child containers when it's vertical tabs or we're trying to clear
-    // the callback.
-    pinned_tab_container_->SetAvailableWidthCallback(available_width_callback_);
-    unpinned_tab_container_->SetAvailableWidthCallback(
-        available_width_callback_);
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
   }
+
+  if (tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser()) &&
+      available_width_callback) {
+    pinned_tab_container_->SetAvailableWidthCallback(
+        base::BindRepeating(&views::View::width, base::Unretained(this)));
+    unpinned_tab_container_->SetAvailableWidthCallback(
+        base::BindRepeating(&views::View::width, base::Unretained(this)));
+    return;
+  }
+
+  // Upstream's compound tab container doesn't use this.
+  pinned_tab_container_->SetAvailableWidthCallback(base::NullCallback());
+  unpinned_tab_container_->SetAvailableWidthCallback(base::NullCallback());
 }
 
 BraveCompoundTabContainer::~BraveCompoundTabContainer() = default;
@@ -63,25 +71,19 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
       std::move(closures));
 }
 
-int BraveCompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-    base::RepeatingCallback<int()> available_width_callback) {
-  // At this moment, Chromium upstream has a bug which causes crash.
-  // In a near future, this patch won't be needed as upstream checks if the
-  // `available_width_callback` is null.
-  if (!available_width_callback) {
-    return parent() ? parent()->GetAvailableSize(this).width().value() : 0;
-  }
-
-  return CompoundTabContainer::GetAvailableWidthForUnpinnedTabContainer(
-      available_width_callback);
-}
-
 void BraveCompoundTabContainer::TransferTabBetweenContainers(
     int from_model_index,
     int to_model_index) {
   const bool was_pinned = to_model_index < NumPinnedTabs();
   CompoundTabContainer::TransferTabBetweenContainers(from_model_index,
                                                      to_model_index);
+  if (!ShouldShowVerticalTabs()) {
+    return;
+  }
+
+  // Override transfer animation so that it goes well with vertical tab strip.
+  CompleteAnimationAndLayout();
+
   const bool is_pinned = to_model_index < NumPinnedTabs();
   bool layout_dirty = false;
   if (is_pinned && !pinned_tab_container_->GetVisible()) {
@@ -90,6 +92,13 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
     pinned_tab_container_->SetVisible(true);
     layout_dirty = true;
   }
+
+  // Animate tab from left to right.
+  Tab* tab = GetTabAtModelIndex(to_model_index);
+  tab->SetPosition({-tab->width(), 0});
+  TabContainer& to_container =
+      *(is_pinned ? pinned_tab_container_ : unpinned_tab_container_);
+  to_container.AnimateToIdealBounds();
 
   if (was_pinned != is_pinned) {
     // After transferring a tab from one to another container, we should layout
@@ -103,6 +112,52 @@ void BraveCompoundTabContainer::TransferTabBetweenContainers(
 
   if (layout_dirty)
     Layout();
+}
+
+void BraveCompoundTabContainer::Layout() {
+  if (!ShouldShowVerticalTabs()) {
+    CompoundTabContainer::Layout();
+    return;
+  }
+
+  // We use flex layout manager so let it do its job.
+  views::View::Layout();
+}
+
+gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::CalculatePreferredSize();
+  }
+
+  // We use flex layout manager so let it do its job.
+  return views::View::CalculatePreferredSize();
+}
+
+gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetMinimumSize();
+  }
+
+  // We use flex layout manager so let it do its job.
+  return views::View::GetMinimumSize();
+}
+
+views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
+    const views::View* child) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
+      !tabs::features::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return CompoundTabContainer::GetAvailableSize(child);
+  }
+
+  return views::SizeBounds(views::SizeBound(width()),
+                           /*height=*/views::SizeBound());
+}
+
+bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
+  return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+         tabs::features::ShouldShowVerticalTabs(
+             tab_slot_controller_->GetBrowser());
 }
 
 BEGIN_METADATA(BraveCompoundTabContainer, CompoundTabContainer)

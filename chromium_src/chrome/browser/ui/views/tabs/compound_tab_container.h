@@ -7,17 +7,16 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMPOUND_TAB_CONTAINER_H_
 
 #define NumPinnedTabs                     \
-  NumPinnedTabs_Unused() { return {}; }   \
+  NumPinnedTabs_Unused() {                \
+    return {};                            \
+  }                                       \
   friend class BraveCompoundTabContainer; \
   int NumPinnedTabs
-#define GetAvailableWidthForUnpinnedTabContainer \
-  virtual GetAvailableWidthForUnpinnedTabContainer
 #define TransferTabBetweenContainers virtual TransferTabBetweenContainers
 
 #include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"
 
 #undef TransferTabBetweenContainers
-#undef GetAvailableWidthForUnpinnedTabContainer
 #undef NumPinnedTabs
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMPOUND_TAB_CONTAINER_H_

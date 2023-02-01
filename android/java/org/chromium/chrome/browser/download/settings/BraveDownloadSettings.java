@@ -20,8 +20,7 @@ public class BraveDownloadSettings
         extends DownloadSettings implements Preference.OnPreferenceChangeListener {
     private static final String PREF_AUTOMATICALLY_OPEN_WHEN_POSSIBLE =
             "automatically_open_when_possible";
-    private static final String PREF_DOWNLOAD_LATER_PROMPT_ENABLED =
-            "download_later_prompt_enabled";
+    public static final String PREF_LOCATION_PROMPT_ENABLED = "location_prompt_enabled";
 
     private ChromeSwitchPreference mAutomaticallyOpenWhenPossiblePref;
 
@@ -35,12 +34,12 @@ public class BraveDownloadSettings
                 (ChromeSwitchPreference) findPreference(PREF_AUTOMATICALLY_OPEN_WHEN_POSSIBLE);
         mAutomaticallyOpenWhenPossiblePref.setOnPreferenceChangeListener(this);
 
-        ChromeSwitchPreference downloadLaterPromptEnabledPref =
-                (ChromeSwitchPreference) findPreference(PREF_DOWNLOAD_LATER_PROMPT_ENABLED);
-        assert downloadLaterPromptEnabledPref != null : "Upstream applied new changes!";
+        ChromeSwitchPreference locationPromptEnabledPref =
+                (ChromeSwitchPreference) findPreference(PREF_LOCATION_PROMPT_ENABLED);
+        assert locationPromptEnabledPref != null : "Upstream applied new changes!";
 
-        if (downloadLaterPromptEnabledPref != null) {
-            getPreferenceScreen().removePreference(downloadLaterPromptEnabledPref);
+        if (locationPromptEnabledPref != null) {
+            getPreferenceScreen().removePreference(locationPromptEnabledPref);
         }
     }
 

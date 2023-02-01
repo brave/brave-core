@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Cr from 'chrome://resources/js/cr.m'
+import * as Cr from 'chrome://resources/js/cr.js'
 
 //
 // Manages get and update of stats data
@@ -51,5 +51,5 @@ export async function getStats (): Promise<Stats> {
 }
 
 export function addChangeListener (listener: StatsUpdatedHandler): void {
-  Cr.addWebUIListener('stats-updated', (raw: any) => listener(rawToStats(raw)))
+  Cr.addWebUiListener('stats-updated', (raw: any) => listener(rawToStats(raw)))
 }

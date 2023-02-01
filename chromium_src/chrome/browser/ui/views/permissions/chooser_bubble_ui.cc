@@ -5,10 +5,13 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/extensions/extension_context_menu_model.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/focus/focus_manager.h"
@@ -22,6 +25,27 @@ bool IsBravePanel(content::WebContents* content) {
       GURL(kBraveUIWalletPanelURL));
 }
 
+void OnWindowClosing(views::Widget* anchor_widget) {
+  if (!anchor_widget) {
+    return;
+  }
+  Browser* browser =
+      chrome::FindBrowserWithWindow(anchor_widget->GetNativeWindow());
+  if (!browser || !browser->tab_strip_model()) {
+    return;
+  }
+  content::WebContents* active =
+      browser->tab_strip_model()->GetActiveWebContents();
+  if (!active) {
+    return;
+  }
+  auto* tab_helper =
+      brave_wallet::BraveWalletTabHelper::FromWebContents(active);
+  if (tab_helper) {
+    tab_helper->SetCloseOnDeactivate(true);
+  }
+}
+
 }  // namespace
 
 namespace views {
@@ -31,25 +55,11 @@ class BraveBubbleDialogDelegateView : public views::BubbleDialogDelegateView {
 
   static views::Widget* CreateBubble(
       std::unique_ptr<BubbleDialogDelegateView> delegate) {
-    return BubbleDialogDelegateView::CreateBubble(std::move(delegate));
-  }
-  void WindowClosing() override {
-    views::BubbleDialogDelegateView::WindowClosing();
-    if (!anchor_widget())
-      return;
-    Browser* browser =
-        chrome::FindBrowserWithWindow(anchor_widget()->GetNativeWindow());
-    if (!browser || !browser->tab_strip_model())
-      return;
-    content::WebContents* active =
-        browser->tab_strip_model()->GetActiveWebContents();
-    if (!active) {
-      return;
+    if (delegate) {
+      delegate->RegisterWindowClosingCallback(
+          base::BindOnce(&OnWindowClosing, delegate->anchor_widget()));
     }
-    auto* tab_helper =
-        brave_wallet::BraveWalletTabHelper::FromWebContents(active);
-    if (tab_helper)
-      tab_helper->SetCloseOnDeactivate(true);
+    return BubbleDialogDelegateView::CreateBubble(std::move(delegate));
   }
 };
 

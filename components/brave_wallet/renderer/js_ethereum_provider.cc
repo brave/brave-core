@@ -53,10 +53,10 @@ void JSEthereumProvider::OnIsUnlocked(
     v8::Isolate* isolate,
     bool locked) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   base::Value result = base::Value(!locked);
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result, context);
@@ -76,10 +76,10 @@ void JSEthereumProvider::SendResponse(
     return;
   }
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   if (global_callback || force_json_response) {
     auto full_formed_response = brave_wallet::ToProviderResponse(
@@ -153,14 +153,14 @@ bool JSEthereumProvider::EnsureConnected() {
 void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
   if (context.IsEmpty()) {
     return;
   }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   // Check window.ethereum existence.

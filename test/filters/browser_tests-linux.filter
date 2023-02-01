@@ -24,7 +24,6 @@
 -ExternalProtocolHandlerSandboxBrowserTest.*
 -IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
--MetricIntegrationTest.FirstInputDelay
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginAllow
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedCrossOriginDeny
 -MultiscreenWindowPlacementPermissionContextTest.IsExtendedSameOriginAllow

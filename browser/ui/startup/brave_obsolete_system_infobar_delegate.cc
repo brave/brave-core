@@ -48,8 +48,9 @@ void BraveObsoleteSystemInfoBarDelegate::SetCheckboxChecked(bool checked) {
 }
 
 bool BraveObsoleteSystemInfoBarDelegate::InterceptClosing() {
-  if (!launch_confirmation_dialog_)
+  if (!launch_confirmation_dialog_) {
     return false;
+  }
 
   // This infobar will be destroyed after confirmation dialog closed.
   brave::ShowObsoleteSystemConfirmDialog(base::BindOnce(

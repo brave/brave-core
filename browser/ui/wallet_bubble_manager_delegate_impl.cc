@@ -82,7 +82,7 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
     if (!contents_wrapper)
       return;
     brave_observer_.reset();
-    for (auto tab_id : contents_wrapper->GetPopupIds()) {
+    for (auto tab_id : contents_wrapper->popup_ids()) {
       Browser* popup_browser = nullptr;
       content::WebContents* popup_contents =
           brave_wallet::GetWebContentsFromTabId(&popup_browser, tab_id);
@@ -93,12 +93,12 @@ class BraveWebUIBubbleManagerT : public WebUIBubbleManagerT<T>,
         continue;
       delegate->CloseContents(popup_contents);
     }
-    contents_wrapper->GetPopupIds().clear();
+    contents_wrapper->ClearPopupIds();
   }
 
   const std::vector<int32_t>& GetPopupIdsForTesting() {
     auto contents_wrapper = WebUIBubbleManagerT<T>::cached_contents_wrapper();
-    return contents_wrapper->GetPopupIds();
+    return contents_wrapper->popup_ids();
   }
 
   void OnWidgetDestroying(views::Widget* widget) override {

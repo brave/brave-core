@@ -25,15 +25,15 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
         .Set("description", "An awesome extension");
     if (manifest_version)
       builder.Set("manifest_version", *manifest_version);
-    return builder.Build();
+    return builder.BuildDict();
   };
 
   std::string error;
   scoped_refptr<extensions::Extension> extension =
       extensions::Extension::Create(
           base::FilePath(), extensions::mojom::ManifestLocation::kUnpacked,
-          *get_manifest(2).get(),
-          extensions::Extension::InitFromValueFlags::NO_FLAGS, &error);
+          get_manifest(2), extensions::Extension::InitFromValueFlags::NO_FLAGS,
+          &error);
 
   ASSERT_NE(extension, nullptr);
 

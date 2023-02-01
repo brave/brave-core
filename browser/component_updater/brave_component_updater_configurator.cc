@@ -57,11 +57,11 @@ BraveConfigurator::BraveConfigurator(
 
 BraveConfigurator::~BraveConfigurator() = default;
 
-double BraveConfigurator::InitialDelay() const {
+base::TimeDelta BraveConfigurator::InitialDelay() const {
   return configurator_impl_.InitialDelay();
 }
 
-int BraveConfigurator::NextCheckDelay() const {
+base::TimeDelta BraveConfigurator::NextCheckDelay() const {
   auto* command = base::CommandLine::ForCurrentProcess();
   if (command->HasSwitch(switches::kComponentUpdateIntervalInSec)) {
     int interval = 0;
@@ -69,17 +69,17 @@ int BraveConfigurator::NextCheckDelay() const {
                               switches::kComponentUpdateIntervalInSec),
                           &interval)) {
       DCHECK_GE(interval, 1);
-      return interval;
+      return base::Seconds(interval);
     }
   }
   return configurator_impl_.NextCheckDelay();
 }
 
-int BraveConfigurator::OnDemandDelay() const {
+base::TimeDelta BraveConfigurator::OnDemandDelay() const {
   return configurator_impl_.OnDemandDelay();
 }
 
-int BraveConfigurator::UpdateDelay() const {
+base::TimeDelta BraveConfigurator::UpdateDelay() const {
   return configurator_impl_.UpdateDelay();
 }
 

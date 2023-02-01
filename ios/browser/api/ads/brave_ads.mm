@@ -18,7 +18,6 @@
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -1329,8 +1328,8 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 - (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
                 callback:(ads::RunDBTransactionCallback)completion {
   __weak BraveAds* weakSelf = self;
-  base::PostTaskAndReplyWithResult(
-      databaseQueue.get(), FROM_HERE,
+  databaseQueue->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&RunDBTransactionOnTaskRunner, std::move(transaction),
                      adsDatabase),
       base::BindOnce(

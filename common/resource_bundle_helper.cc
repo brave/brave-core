@@ -31,8 +31,7 @@ namespace {
 #if !BUILDFLAG(IS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
 #if BUILDFLAG(IS_MAC)
-  return base::mac::PathForFrameworkBundleResource(
-      CFSTR("brave_resources.pak"));
+  return base::mac::PathForFrameworkBundleResource("brave_resources.pak");
 #else
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_MODULE, &pak_path);
@@ -51,9 +50,7 @@ base::FilePath GetScaledResourcesPakFilePath(
                              ? "brave_100_percent.pak"
                              : "brave_200_percent.pak";
 #if BUILDFLAG(IS_MAC)
-  base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
-      base::SysUTF8ToCFStringRef(pak_file));
-  return base::mac::PathForFrameworkBundleResource(pak_file_mac);
+  return base::mac::PathForFrameworkBundleResource(pak_file);
 #else
   base::FilePath pak_path;
   base::PathService::Get(base::DIR_MODULE, &pak_path);

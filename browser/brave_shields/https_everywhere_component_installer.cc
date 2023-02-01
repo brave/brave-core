@@ -54,14 +54,14 @@ class HTTPSEverywhereComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::Value& manifest,
+      const base::Value::Dict& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::Value& manifest,
+  bool VerifyInstallation(const base::Value::Dict& manifest,
                           const base::FilePath& install_dir) const override;
   void ComponentReady(const base::Version& version,
                       const base::FilePath& path,
-                      base::Value manifest) override;
+                      base::Value::Dict manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
@@ -110,7 +110,7 @@ bool HTTPSEverywhereComponentInstallerPolicy::RequiresNetworkEncryption()
 
 update_client::CrxInstaller::Result
 HTTPSEverywhereComponentInstallerPolicy::OnCustomInstall(
-    const base::Value& manifest,
+    const base::Value::Dict& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(0);
 }
@@ -120,7 +120,7 @@ void HTTPSEverywhereComponentInstallerPolicy::OnCustomUninstall() {}
 void HTTPSEverywhereComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
-    base::Value manifest) {
+    base::Value::Dict manifest) {
   if (g_browser_process->IsShuttingDown())
     return;
 
@@ -128,7 +128,7 @@ void HTTPSEverywhereComponentInstallerPolicy::ComponentReady(
 }
 
 bool HTTPSEverywhereComponentInstallerPolicy::VerifyInstallation(
-    const base::Value& manifest,
+    const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }

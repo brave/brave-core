@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
+index 4c83c6a6685490ce1899b119742fa25b6b9a50cd..4a9af5b0ee54f62d46758751f8710da02d183818 100644
+--- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
++++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
+@@ -640,6 +640,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+ 
+   max_size_ = new_max_size;
+ 
++  BRAVE_UPDATE_MAX_SIZE
+   if (!native_widget())
+     return;
+ 

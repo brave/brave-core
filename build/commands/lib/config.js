@@ -325,6 +325,8 @@ Config.prototype.buildArgs = function () {
     sparkle_eddsa_private_key: this.sparkleEdDSAPrivateKey,
     sparkle_eddsa_public_key: this.sparkleEdDSAPublicKey,
     use_goma: this.use_goma,
+    enable_updater: this.isOfficialBuild(),
+    enable_update_notifications: this.isOfficialBuild(),
     ...this.extraGnArgs,
   }
 
@@ -376,6 +378,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
+      !this.isComponentBuild() &&
       this.targetOS !== 'ios' &&
       this.targetOS !== 'android') {
     args.enable_profiling = true
@@ -453,7 +456,6 @@ Config.prototype.buildArgs = function () {
 
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
-    args.enable_jdk_library_desugaring = false
     if (!this.isReleaseBuild()) {
       args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
@@ -515,6 +517,9 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'ios') {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
+    }
+    if (this.targetArch == 'x64' && this.isDebug()) {
+      args.use_lld = false
     }
     args.enable_dsyms = true
     args.enable_stripping = !this.isComponentBuild()

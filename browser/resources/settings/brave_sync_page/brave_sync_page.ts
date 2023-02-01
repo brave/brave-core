@@ -81,9 +81,9 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     const onSyncStatus = this.handleSyncStatus_.bind(this)
     this.braveBrowserProxy_.getSyncStatus().then(
         (status: BraveSyncStatus) => onSyncStatus(status));
-    this.addWebUIListener(
+    this.addWebUiListener(
       'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
-    this.addWebUIListener('sync-status-changed', onSyncStatus);
+    this.addWebUiListener('sync-status-changed', onSyncStatus);
   }
 
   onSyncTap_() {

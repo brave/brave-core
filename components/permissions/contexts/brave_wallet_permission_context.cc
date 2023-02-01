@@ -85,7 +85,8 @@ void BraveWalletPermissionContext::RequestPermission(
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
     NotifyPermissionSet(id, requesting_origin.GetURL(), embedding_origin,
                         std::move(callback), /*persist=*/false,
-                        CONTENT_SETTING_BLOCK, /*is_one_time=*/false);
+                        CONTENT_SETTING_BLOCK, /*is_one_time=*/false,
+                        /*is_final_decision=*/true);
     return;
   }
   if (is_new_id) {

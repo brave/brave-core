@@ -1,7 +1,7 @@
-// Copyright 2020 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
 #include "base/process/launch.h"
@@ -134,7 +134,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileShareBookmarks) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
 
   // Add a bookmark in parent profile.
   const std::u16string title(u"Test");
@@ -184,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileExcludeServices) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
 
   Profile* tor_profile =
       SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
@@ -206,7 +206,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, SwitchToTorProfileInheritPrefs) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
 
   // Set ShowBookmarkBar preference in the parent profile.
   PrefService* parent_prefs = parent_profile->GetPrefs();
@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
 
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
 
   HostContentSettingsMap* parent_content_settings =
       HostContentSettingsMapFactory::GetForProfile(parent_profile);
@@ -275,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
 
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
   EXPECT_EQ(BrowserList::GetInstance()->size(), 1u);
   Profile* tor_profile =
       SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
@@ -298,7 +298,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   ASSERT_TRUE(profile_manager);
   BrowserList* browser_list = BrowserList::GetInstance();
 
-  Profile* parent_profile1 = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile1 = ProfileManager::GetLastUsedProfile();
   ASSERT_NE(CreateIncognitoBrowser(parent_profile1), nullptr);
   ASSERT_EQ(browser_list->size(), 2u);
 
@@ -369,7 +369,7 @@ class TorProfileManagerExtensionTest : public extensions::ExtensionBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerExtensionTest,
                        SwitchToTorProfileIncognitoEnabled) {
-  Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  Profile* parent_profile = ProfileManager::GetLastUsedProfile();
   ASSERT_TRUE(parent_profile);
 
   // Install an extension in parent profile and enable in incognito.

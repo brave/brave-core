@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-index 491e45ea6ca181f640144387cd94cdeedc7a2321..534910e7092cc3ae056cd22b8e8f914f4dd0aad0 100644
+index a679ec857c2500ceba91fc7fdda2d077cf26553e..bfa037103f08a6ec814283e4cdd7b61ce53ea32e 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -2213,6 +2213,7 @@ bool IsAXSetter(SEL selector) {
+@@ -2263,6 +2263,7 @@ void CollectAncestorRoles(
    if (!_node)
      return nil;
  

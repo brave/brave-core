@@ -7,6 +7,7 @@
 
 #include "base/bind.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/search_engines/template_url_service.h"
 

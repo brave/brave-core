@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.jank_tracker.JankTracker;
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -35,6 +34,8 @@ import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+
+import java.util.function.BooleanSupplier;
 
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     private LocationBarMediator mLocationBarMediator;

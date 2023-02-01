@@ -12,7 +12,6 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/metrics/histogram_functions.h"
-#include "base/task/task_runner_util.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"

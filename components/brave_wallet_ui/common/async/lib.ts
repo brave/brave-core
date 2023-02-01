@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { assert } from 'chrome://resources/js/assert.js'
+
+import { assert } from 'chrome://resources/js/assert_ts.js'
+
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -338,7 +340,7 @@ export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings
   if (coin === BraveWallet.CoinType.SOL) {
     return BraveWallet.SOLANA_KEYRING_ID
   }
-  assert(coin === BraveWallet.CoinType.ETH)
+  assert(coin === BraveWallet.CoinType.ETH, '')
   return BraveWallet.DEFAULT_KEYRING_ID
 }
 

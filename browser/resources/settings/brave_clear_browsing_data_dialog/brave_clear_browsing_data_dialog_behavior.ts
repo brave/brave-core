@@ -20,7 +20,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
     // Append On exit tab to tab selector.
     this.tabsNames_.push(loadTimeData.getString('onExitPageTitle'));
 
-    this.addWebUIListener(
+    this.addWebUiListener(
       'update-counter-text', this.updateOnExitCountersText.bind(this));
   }
 

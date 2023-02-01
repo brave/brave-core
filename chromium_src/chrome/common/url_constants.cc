@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/common/url_constants.h"
 
@@ -139,7 +139,7 @@ const char kHighEfficiencyModeLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
-const char kMixedContentDownloadBlockingLearnMoreUrl[] =
+const char kInsecureDownloadBlockingLearnMoreUrl[] =
     "https://support.brave.com/";
 
 const char kMyActivityUrlInClearBrowsingData[] =
@@ -162,9 +162,6 @@ const char kPasswordManagerLearnMoreURL[] =
     "360018185951-How-do-I-use-the-built-in-password-manager-";
 
 const char kPaymentMethodsURL[] = "https://support.brave.com";
-
-const char kPaymentMethodsLearnMoreURL[] =
-    "https://support.brave.com";
 
 const char kPrivacyLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -273,5 +270,8 @@ const char kChromeRootStoreSettingsHelpCenterURL[] =
     "https://chromium.googlesource.com/chromium/src/+/main/net/data/ssl/"
     "chrome_root_store/root_store.md";
 #endif
+
+const char kAddressesAndPaymentMethodsLearnMoreURL[] =
+    "https://support.brave.com";
 
 }  // namespace chrome

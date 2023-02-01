@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { addWebUIListener } from 'chrome://resources/js/cr.m.js'
+import { addWebUiListener } from 'chrome://resources/js/cr.js'
 
 import DataContext from '../state/context'
 import { ViewType, Scenes } from '../state/component_types'
@@ -33,7 +33,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   }
 
   React.useEffect(() => {
-    addWebUIListener('brave-import-data-status-changed', (status: any) => {
+    addWebUiListener('brave-import-data-status-changed', (status: any) => {
       // TODO(tali): Handle item based events
 
       if (status.event === 'ImportStarted' && (profileCountRef.current > 0)) {

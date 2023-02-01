@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert.js'
+import { assert } from 'chrome://resources/js/assert_ts.js'
 import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
@@ -211,7 +211,7 @@ export default class EthereumLedgerBridgeKeyring extends LedgerBridgeKeyring imp
       return `m/44'/60'/${index}'/0`
     }
 
-    assert(scheme === LedgerDerivationPaths.Legacy)
+    assert(scheme === LedgerDerivationPaths.Legacy, '')
     return `m/44'/60'/0'/${index}`
   }
 }

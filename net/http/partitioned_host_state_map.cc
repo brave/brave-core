@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -7,22 +7,30 @@
 
 #include <utility>
 
-#include "base/strings/strcat.h"
+#include "base/ranges/algorithm.h"
 #include "crypto/sha2.h"
 #include "net/base/network_isolation_key.h"
+
+namespace {
+
+bool IsEmptyPartitionHash(
+    const net::PartitionedHostStateMapBase::HashedHost& hashed_host) {
+  return base::ranges::all_of(hashed_host.begin(), hashed_host.end(),
+                              [](uint8_t i) { return i == 0; });
+}
+
+}  // namespace
 
 namespace net {
 
 PartitionedHostStateMapBase::PartitionedHostStateMapBase() = default;
 PartitionedHostStateMapBase::~PartitionedHostStateMapBase() = default;
 
-base::AutoReset<absl::optional<std::string>>
+base::AutoReset<absl::optional<PartitionedHostStateMapBase::HashedHost>>
 PartitionedHostStateMapBase::SetScopedPartitionHash(
-    absl::optional<std::string> partition_hash) {
-  CHECK(!partition_hash || partition_hash->empty() ||
-        partition_hash->size() == crypto::kSHA256Length);
-  return base::AutoReset<absl::optional<std::string>>(
-      &partition_hash_, std::move(partition_hash));
+    absl::optional<HashedHost> partition_hash) {
+  return base::AutoReset<absl::optional<HashedHost>>(&partition_hash_,
+                                                     std::move(partition_hash));
 }
 
 bool PartitionedHostStateMapBase::HasPartitionHash() const {
@@ -30,23 +38,29 @@ bool PartitionedHostStateMapBase::HasPartitionHash() const {
 }
 
 bool PartitionedHostStateMapBase::IsPartitionHashValid() const {
-  return partition_hash_ && !partition_hash_->empty();
+  return partition_hash_ && !IsEmptyPartitionHash(*partition_hash_);
 }
 
-std::string PartitionedHostStateMapBase::GetKeyWithPartitionHash(
-    const std::string& k) const {
+PartitionedHostStateMapBase::HashedHost
+PartitionedHostStateMapBase::GetKeyWithPartitionHash(
+    const HashedHost& k) const {
   CHECK(IsPartitionHashValid());
   if (k == *partition_hash_) {
     return k;
   }
-  return base::StrCat({GetHalfKey(k), GetHalfKey(*partition_hash_)});
+
+  HashedHost result;
+  static_assert(result.size() == crypto::kSHA256Length,
+                "Unexpected HashedHost size");
+  base::ranges::copy(GetHalfKey(k), result.begin());
+  base::ranges::copy(GetHalfKey(*partition_hash_),
+                     std::next(result.begin(), std::size(result) / 2));
+  return result;
 }
 
-// static
-base::StringPiece PartitionedHostStateMapBase::GetHalfKey(base::StringPiece k) {
-  CHECK_EQ(k.size(), crypto::kSHA256Length);
-  const size_t kHalfSHA256HashLength = crypto::kSHA256Length / 2;
-  return k.substr(0, kHalfSHA256HashLength);
+base::span<const uint8_t> PartitionedHostStateMapBase::GetHalfKey(
+    const HashedHost& k) {
+  return base::make_span(k.data(), std::size(k) / 2);
 }
 
 }  // namespace net

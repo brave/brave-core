@@ -121,7 +121,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
 BraveStatsUpdater::~BraveStatsUpdater() = default;
 
 void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
-  if (profile == ProfileManager::GetPrimaryUserProfile()) {
+  if (profile == ProfileManager::GetLastUsedProfile()) {
     profile_manager_observer_.Reset();
     Start();
   }
@@ -191,7 +191,7 @@ PrefService* BraveStatsUpdater::GetProfilePrefs() {
   if (testing_profile_prefs_ != nullptr) {
     return testing_profile_prefs_;
   }
-  return ProfileManager::GetPrimaryUserProfile()->GetPrefs();
+  return ProfileManager::GetLastUsedProfile()->GetPrefs();
 }
 
 // static

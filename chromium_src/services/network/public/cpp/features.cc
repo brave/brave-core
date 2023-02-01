@@ -11,7 +11,7 @@ namespace network {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kTrustTokens, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivateStateTokens, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

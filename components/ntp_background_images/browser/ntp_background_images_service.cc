@@ -16,7 +16,6 @@
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"

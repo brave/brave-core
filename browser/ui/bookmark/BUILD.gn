@@ -28,7 +28,7 @@ source_set("bookmark") {
     "//chrome/browser/new_tab_page/modules/drive:mojo_bindings",
     "//chrome/browser/new_tab_page/modules/recipes:mojo_bindings",
     "//chrome/browser/ui/webui/new_tab_page:mojo_bindings",
-    "//chrome/browser/ui/webui/realbox:mojo_bindings",
+    "//components/omnibox/browser:mojo_bindings",
     "//ui/webui/resources/js/browser_command:mojo_bindings",
   ]
 }

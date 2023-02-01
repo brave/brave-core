@@ -15,7 +15,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/ipfs/ipfs_constants.h"

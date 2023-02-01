@@ -41,6 +41,12 @@
   <message name="IDS_OS_SEARCH_RESULT_ROW_A11Y_RESULT_SELECTED" desc="ChromeVox alert to indicate the position number of a selected result in a list of search results and the selected result text itself, and that the user can press enter to navigate to section described by the search result.">
     Search result <ph name="LIST_POSITION">$1<ex>1</ex></ph> of <ph name="LIST_SIZE">$2<ex>2</ex></ph>: <ph name="SEARCH_RESULT_TEXT">$3<ex>Network Settings</ex></ph>. Press Enter to navigate to section.
   </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_FEEDBACK_BUTTON" desc="Text description of feedback button in search.">
+    Report this search result
+  </message>
+  <message name="IDS_OS_SETTINGS_SEARCH_FEEDBACK_DESCRIPTION_TEMPLATE" desc="Template description of pre-populated search feedback description.">
+    <ph name="HASHTAG_SETTINGS">#Settings</ph> No search results returned for <ph name="SEARCH_QUERY">'$1'<ex>query</ex></ph>
+  </message>
 
   <!-- About (OS Settings) -->
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
@@ -318,27 +324,6 @@
   </message>
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON" desc="Text in the add fingerprint dialog telling users to place finger on the power button which is the sensor.">
     Touch the power button with your finger
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
-    The fingerprint sensor is in the power button. Touch it lightly with any finger.
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD" desc="Text in the add fingerprint dialog telling users to place finger on the sensor on the keyboard.">
-    Touch the fingerprint sensor with your finger
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_LEFT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom left corner of the keyboard. Only visible by screen reader software.">
-    The fingerprint sensor is the bottom left-hand key on your keyboard. Touch it lightly with any finger.
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
-    The fingerprint sensor is the bottom right-hand key on your keyboard. Touch it lightly with any finger.
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
-    The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_RIGHT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the right side of the chrome device. Only visible by screen reader software.">
-    The fingerprint sensor is on the right-hand side of your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. Touch it lightly with any finger.
-  </message>
-  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_LEFT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the left side of the chrome device. Only visible by screen reader software.">
-    The fingerprint sensor is on the left-hand side of your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. Touch it lightly with any finger.
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
@@ -1249,6 +1234,90 @@ Use Ctrl + Alt + Brightness down to zoom out.
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DISABLED_DESCRIPTION" desc="In the settings tab, the description of a feature that will read on-screen text out loud. This text is shown when that feature is disabled.">
     Hear specific text read aloud. First, select the Select-to-speak icon on the bottom of your screen, then highlight text.
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_SPEECH" desc="In the Select-to-speak settings subpage, the label for the group of options where the user can adjust synthesized speech properties.">
+    Speech
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_LANGUAGES_FILTER_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for the control where the user can choose a language from a list, to filter the list of voices below.">
+    Language
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DEVICE_LANGUAGE" desc="In the Select-to-speak settings subpage, the option in the language list where the default language of the device is used as the speech language.">
+    Device language
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_VOICE_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for the control where the user can choose a voice.">
+    Voice
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_TEXT_TO_SPEECH_SETTINGS_LINK" desc="In the Select-to-speak settings subpage, the label for the link to the Text-to-Speech settings page.">
+    System voice settings
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_SYSTEM_VOICE" desc="In the Select-to-speak settings subpage, the label for the menu option for the voice name for the system default Text-to-Speech voice">
+    System voice
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_VOICE_PREVIEW" desc="In the Select-to-speak settings subpage, the label for the control where the user can listen to a preview of the selected voice.">
+    Voice preview
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DEFAULT_NETWORK_VOICE" desc="In the Select-to-speak settings subpage, the label for the natural voices option that uses a default, server-supplied Text-to-Speech voice">
+    Default natural voice
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_NATURAL_VOICE_PREVIEW" desc="In the Select-to-speak settings subpage, the label for the control where the user can listen to a preview of the selected high-quality voice.">
+    Natural voice preview
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT" desc="In the Select-to-speak settings subpage, the label for the group of options controlling highlighting.">
+    Highlight
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to highlight spoken words rather than spoken nodes.">
+    Highlight each word as it is spoken
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_VOICE_SWITCHING_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to toggle automatic voice switching.">
+    Automatically change language to match selected content
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_ENHANCED_NETWORK_VOICES_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for the control to enable support for high-quality voices streamed from the interent when the device is online.">
+    Use natural voice when device is online
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_ENHANCED_NETWORK_VOICES_SUBTITLE" desc="In the Select-to-speak settings subpage, informational text related to the Select-to-speak control that enables support for high-quality voices, mentioning that enabling these voices will send text to Brave for processing and generating audio.">
+    Text will be sent to Brave for processing.
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_ENHANCED_NETWORK_VOICE" desc="In the Select-to-speak settings subpage, the label for the control to choose a high-quality, natural-sounding voice to be streamed from the internet from a list.">
+    Natural voice
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_NATURAL_VOICE_NAME" desc="In the Select-to-speak settings subpage, the label for a voice name of a natural voice, generated by combining a localized language name like English (US) with a serial number">
+    <ph name="DISPLAY_NAME">$1<ex>English (United States)</ex></ph> Voice <ph name="COUNT">$2<ex>2</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to pick word highlight color.">
+    Highlight color
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_BLUE" desc="In the Select-to-speak settings subpage, the label for a blue highlight color.">
+    Blue
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_ORANGE" desc="In the Select-to-speak settings subpage, the label for a orange highlight color.">
+    Orange
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_YELLOW" desc="In the Select-to-speak settings subpage, the label for a yellow highlight color.">
+    Yellow
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_GREEN" desc="In the Select-to-speak settings subpage, the label for a green highlight color.">
+    Green
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_COLOR_PINK" desc="In the Select-to-speak settings subpage, the label for a pink highlight color.">
+    Pink
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_DARK" desc="In the Select-to-speak settings subpage, an example of a word highlight on a dark background.">
+    Dark background
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_HIGHLIGHT_LIGHT" desc="In the Select-to-speak settings subpage, an example of a word highlight on a light background.">
+    Light background
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_BACKGROUND_SHADING_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to fade the background outside of the focus ring to improve focus on what is being spoken.">
+    Dim background content
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_SAMPLE_TEXT" desc="In the Select-to-speak settings subpage, the sample text around which will be drawn a Select to Speak visual preview. This should be less than one line long.">
+    The quick brown fox jumped over the lazy dog.
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_NAVIGATION_CONTROLS_DESCRIPTION" desc="In the Select-to-speak settings subpage, the label for option to show navigation controls, such as going to the previous or next paragraph, when Select-to-speak is activated.">
+    Navigation controls
+  </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_NAVIGATION_CONTROLS_SUBTITLE" desc="In the Select-to-speak settings subpage, the subtitle for option to show navigation controls, such as going to the previous or next paragraph, when Select-to-speak is activated.">
+    Provides controls to speed up, slow down, and pause the reading voice
+  </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_DESCRIPTION" desc="For devices with a hardware keyboard. In the settings tab, the description of an option to hold a key and click or drag a box with the mouse to speak any on-screen text out loud.">
     Hear specific text read aloud. First, select the Select-to-speak icon on the bottom of your screen, then highlight text. You can also use a keyboard shortcut: Highlight text, then press Search + S.
   </message>
@@ -1629,6 +1698,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCESSIBILITY_AUDIO_AND_CAPTIONS_LINK_DESCRIPTION" desc="In the settings tab, the description of a link that opens a screen allowing the user to change audio and captions accessibility features.">
     Mono audio, startup, Live Caption, and more
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_LINK_TITLE" desc="In the Accessibility settings page, the title of a link that opens a screen allowing the user to change options for the Select-to-speak accessibility feature.">
+    Select-to-speak settings
+  </message>
 
   <!-- Account Manager (OS settings) -->
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_V2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
@@ -1731,7 +1803,7 @@ Press an assigned switch or key to remove assignment.
     Cancel
   </message>
 
-  <!-- Used by both Crostini and Plugin VM -->
+  <!-- Used by Crostini, Plugin VM and Bruschetta -->
   <message name="IDS_SETTINGS_GUEST_OS_SHARED_PATHS" desc="Label for managing shared folders for Parallels.">
     Manage shared folders
   </message>
@@ -1936,16 +2008,21 @@ Press an assigned switch or key to remove assignment.
     Container name
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CONTAINER_IP_LABEL" desc="Column heading for container IP address.">
-    IP
+    IP address
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_SHARE_MICROPHONE" desc="Toggle label to share host microhone with this container.">
+    Share microphone
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_APP_BADGE_COLOR" desc="Label for color picker to choose a badge color for this container's apps.">
+    App badge color
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_TITLE" desc="Title of the dialog for entering details to create a new Linux container.">
     Create a new container
   </message>
-  <!-- TODO(crbug/1300764): Remove translateable on error strings once they are finalized.-->
-  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_CONTAINER_EXISTS_ERROR" translateable="false" desc="Error for invalid input when creating a new Linux container.">
-    This container and VM name combination already exists.
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_CONTAINER_EXISTS_ERROR" desc="Error for invalid input when creating a new Linux container.">
+    This container already exists.
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_EMPTY_CONTAINER_NAME_ERROR" translateable="false" desc="Error for invalid input when creating a new Linux container.">
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_EMPTY_CONTAINER_NAME_ERROR" desc="Error for invalid input when creating a new Linux container.">
     Container name cannot be empty.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_IMAGE_SERVER" desc="Heading for the input field for entering the image server URL when creating a new Linux container.">
@@ -2068,7 +2145,18 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_USB_DEVICES_DESCRIPTION" translateable="false" desc="Description for managing shared USB devices.">
     Give Bruschetta permission to access USB devices. Bruschetta won't remember a USB device after it's removed.
   </message>
-
+  <!-- <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_DESCRIPTION" translateable="false" desc="Description for managing shared paths.">
+    Give Bruschetta permission to access USB devices. Bruschetta won't remember a USB device after it's removed.
+  </message> -->
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_LOCATE" translateable="false" desc="Instructions for how to locate shared folders in Bruschetta. Do not translate 'Bruschetta'.">
+    Shared folders are available in Bruschetta at <ph name="BASE_DIR">$1<ex>/mnt/chromeos</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_INSTRUCTIONS_ADD" translateable="false" desc="Instructions for how to add shared folders in Bruschetta. Do not translate 'Bruschetta'.">
+    To share, right-click on a folder in Files app, then select "Share with Bruschetta".
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_SHARED_PATHS_REMOVE_FAILURE_DIALOG_MESSAGE" translateable="false" desc="Message to show user when unsharing a Bruschetta shared folder fails. Do not translate 'Bruschetta'.">
+    Couldn't unshare because an application is using this folder. The folder will be unshared when Bruschetta is next shut down.
+  </message>
   <!-- Android apps page (OS settings) -->
   <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
     Google Play Store
@@ -2795,6 +2883,27 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_VPN_DETAILS" desc="Name of the settings page which displays details about a VPN connection.">
     VPN details
   </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_DETAILS" desc="Name of the settings page which displays details about Hotspot.">
+    Hotspot details
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_SUBTITLE_WITH_LEARN_MORE_LINK" desc="Subtitle of the hotspot subpage which explains how hotspot may affect your Chromebook.">
+    Uses your Chromebook’s mobile data and your carrier may charge additional fees. May increase battery usage. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_TOGGLE_A11Y_LABEL" desc="Accessibility label for Hotspot enable/disable toggle.">
+    Hotspot enable
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_SUMMARY_STATE_ON" desc="Sublabel for Hotspot summary row, when Hotspot is on.">
+    On
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_SUMMARY_STATE_OFF" desc="Sublabel for Hotspot summary row, when Hotspot is off.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_ENABLED_A11Y_LABEL" desc="Accessibility announcement when Hotspot is enabled.">
+    Hotspot enabled
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT_DISABLED_A11Y_LABEL" desc="Accessibility announcement when Hotspot is disabled.">
+    Hotspot disabled
+  </message>
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORKS" desc="Name of the settings page which displays a list of Wi-Fi networks which the user can choose to connect to.">
     Wi-Fi networks
   </message>
@@ -2818,6 +2927,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET" desc="Name of the settings page which displays internet preferences.">
     Network
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_HOTSPOT" desc="Name of the settings page which displays hotspot preferences.">
+    Hotspot
   </message>
   <message name="IDS_SETTINGS_INTERNET_SUMMARY_BUTTON_ACCESSIBILITY_LABEL" desc="Accessibility only label for network summary item button that opens network details.">
     <ph name="NETWORK_TYPE">$1<ex>Mobile Data</ex></ph> - <ph name="NETWORK_DISPLAY_NAME">$2<ex>Verizon Wireless</ex></ph>
@@ -3592,6 +3704,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PEOPLE_RECOVERY_TOGGLE_SUB_LABEL" desc="Sub-label of toggle to enable or disable cryptohome recovery.">
     Local data can be restored if you forget your password
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_RECOVERY_DISABLE_DIALOG_TITLE" desc="Title for the disable local data recovery dialog">
+    Disable local data recovery?
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_RECOVERY_DISABLE_DIALOG_MESSAGE" desc="Text for the notification informing the user that local data recovery will be disabled">
+    You will not be able to recover local data if you forget your password or PIN.
+  </message>
 
   <!-- Kerberos section (OS settings) -->
   <message name="IDS_OS_SETTINGS_KERBEROS" desc="Name of a section in the OS settings page." meaning="Manage Kerberos authetication tickets.">
@@ -4157,6 +4275,10 @@ Press an assigned switch or key to remove assignment.
     Set date and time
   </message>
 
+  <!-- Per Device Keyboard page (OS settings) -->
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_TITLE" translateable="false" desc="In Device Settings, the title of the new Per-device keyboard settings subpage.">
+    Per-device Keyboard
+  </message>
   <!-- Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
     Keyboard
@@ -4270,6 +4392,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_LABEL" desc="The label for the app badging toggle in the App Notifications page of OS Settings.">
     App badging
+  </message>
+  <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_SUBLABEL" desc="The sublabel for the app badging toggle in the App Notifications page of OS Settings.">
+    Show notification dot on app icon
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
     Google Play Store
@@ -4491,6 +4616,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_NO_MICROPHONE_CONNECTED_TEXT" desc="Text to display in the Privacy Hub subpage when no microphone is connected to the device.">
     No microphone
+  </message>
+  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_HW_MICROPHONE_TOGGLE_TOOLTIP" desc="Tooltip to display in the Privacy Hub subpage when the hardware microphone switch is engaged.">
+    To turn on microphone access, turn on the physical microphone switch on your device
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_GEOLOCATION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable geolocation from the privacy hub.">
     Location access

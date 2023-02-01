@@ -27,7 +27,8 @@ IN_PROC_BROWSER_TEST_F(BraveSharingHubTest,
   auto* sharing_hub_service = SharingHubServiceFactory::GetForProfile(profile);
   auto* model = sharing_hub_service->GetSharingHubModel();
   std::vector<SharingHubAction> list;
-  model->GetThirdPartyActionList(&list);
+  model->GetThirdPartyActionList(
+      browser()->tab_strip_model()->GetActiveWebContents(), &list);
   EXPECT_TRUE(list.empty());
 }
 

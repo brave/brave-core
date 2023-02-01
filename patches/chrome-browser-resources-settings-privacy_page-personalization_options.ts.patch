@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index d6b00eff7e54916680ba062b67491ec0728e3ecc..60c8fcff449dd746cd47b2a49f7f47cfcc661c3e 100644
+index 5c55e5518ba3087448b8333ae5c906fc14e0ac11..17e94c8eabe1a208fb60f1461d414952491e25a8 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -76,7 +76,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -69,7 +69,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index d6b00eff7e54916680ba062b67491ec0728e3ecc..60c8fcff449dd746cd47b2a49f7f47cf
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -118,7 +118,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -104,7 +104,7 @@ export class SettingsPersonalizationOptionsElement extends
    pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index d6b00eff7e54916680ba062b67491ec0728e3ecc..60c8fcff449dd746cd47b2a49f7f47cf
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>;
    private showRestart_: boolean;
    // </if>
-@@ -176,7 +176,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -137,7 +137,7 @@ export class SettingsPersonalizationOptionsElement extends
    override ready() {
      super.ready();
  
@@ -28,8 +28,8 @@ index d6b00eff7e54916680ba062b67491ec0728e3ecc..60c8fcff449dd746cd47b2a49f7f47cf
 +    // <if expr="not chromeos_ash">
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
-     this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -210,7 +210,7 @@ export class SettingsPersonalizationOptionsElement extends
+     this.addWebUiListener('metrics-reporting-change', setMetricsReportingPref);
+@@ -171,7 +171,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  
