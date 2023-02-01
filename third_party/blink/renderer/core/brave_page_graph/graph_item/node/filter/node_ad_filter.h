@@ -6,20 +6,19 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_FILTER_NODE_AD_FILTER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_FILTER_NODE_AD_FILTER_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_filter.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
 class NodeAdFilter : public NodeFilter {
  public:
-  NodeAdFilter(GraphItemContext* context, const std::string& rule);
+  NodeAdFilter(GraphItemContext* context, const String& rule);
 
   ~NodeAdFilter() override;
 
-  const std::string& GetRule() const { return rule_; }
+  const String& GetRule() const { return rule_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -30,7 +29,7 @@ class NodeAdFilter : public NodeFilter {
   bool IsNodeAdFilter() const override;
 
  private:
-  const std::string rule_;
+  const String rule_;
 };
 
 }  // namespace brave_page_graph

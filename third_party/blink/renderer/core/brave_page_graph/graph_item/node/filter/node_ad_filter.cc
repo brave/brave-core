@@ -11,7 +11,7 @@
 
 namespace brave_page_graph {
 
-NodeAdFilter::NodeAdFilter(GraphItemContext* context, const std::string& rule)
+NodeAdFilter::NodeAdFilter(GraphItemContext* context, const String& rule)
     : NodeFilter(context), rule_(rule) {}
 
 NodeAdFilter::~NodeAdFilter() = default;
@@ -24,7 +24,7 @@ ItemDesc NodeAdFilter::GetItemDesc() const {
   std::stringstream builder;
   builder << NodeFilter::GetItemDesc();
   if (!rule_.empty()) {
-    builder << " [" << rule_ << "]";
+    builder << " [" << rule_.Utf8() << "]";
   }
   return builder.str();
 }
