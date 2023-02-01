@@ -1,0 +1,25 @@
+<html><head><title>Short lived iframes</title></head>
+<body>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+    <iframe src="popup.html"></iframe>
+
+    <script>
+       window.onload = (event) => {
+               var iframes = document.querySelectorAll('iframe');
+               for (var i = 0; i < iframes.length; i++) {
+                       iframes[i].parentNode.removeChild(iframes[i]);
+                     }
+            };
+    </script>
+</body></html>
