@@ -53,7 +53,7 @@ class RequestTracker {
       const InspectorId request_id,
       GraphNode* requester,
       NodeResource* resource,
-      const std::string& resource_type);
+      const String& resource_type);
   scoped_refptr<const TrackedRequestRecord> RegisterRequestComplete(
       const InspectorId request_id,
       int64_t encoded_data_length);

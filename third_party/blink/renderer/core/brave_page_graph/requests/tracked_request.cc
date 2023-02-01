@@ -5,8 +5,6 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h"
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
@@ -21,7 +19,7 @@ TrackedRequest::~TrackedRequest() = default;
 TrackedRequest::TrackedRequest(const InspectorId request_id,
                                GraphNode* requester,
                                NodeResource* resource,
-                               const std::string& resource_type)
+                               const String& resource_type)
     : request_id_(request_id),
       resource_type_(resource_type),
       resource_(resource) {
@@ -60,13 +58,13 @@ bool TrackedRequest::GetIsError() const {
   return request_status_ == RequestStatus::kError;
 }
 
-const std::string& TrackedRequest::GetResourceType() const {
+const String& TrackedRequest::GetResourceType() const {
   return resource_type_;
 }
 
 void TrackedRequest::AddRequest(GraphNode* requester,
                                 NodeResource* resource,
-                                const std::string& resource_type) {
+                                const String& resource_type) {
   CHECK(requester != nullptr);
   CHECK(resource != nullptr);
   CHECK(!resource_type.empty());
@@ -112,7 +110,7 @@ const ResponseMetadata& TrackedRequest::GetResponseMetadata() const {
   return response_metadata_;
 }
 
-const std::string& TrackedRequest::GetResponseBodyHash() const {
+const String& TrackedRequest::GetResponseBodyHash() const {
   CHECK(request_status_ == RequestStatus::kSuccess);
   CHECK(!hash_.empty());
   return hash_;
@@ -132,7 +130,7 @@ void TrackedRequest::FinishResponseBodyHash() {
   CHECK(hash_.empty());
   blink::DigestValue digest;
   CHECK(body_digestor_.Finish(digest));
-  hash_ = WTF::Base64Encode(digest).Utf8();
+  hash_ = WTF::Base64Encode(digest);
 }
 
 }  // namespace brave_page_graph

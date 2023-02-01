@@ -62,6 +62,18 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
+                               const String& value) const {
+  CHECK(type_ == kGraphMLAttrTypeString);
+  xmlChar* encoded_content =
+      xmlEncodeEntitiesReentrant(doc, BAD_CAST value.Characters8());
+  xmlNodePtr new_node =
+      xmlNewChild(parent_node, nullptr, BAD_CAST "data", encoded_content);
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
+  xmlFree(encoded_content);
+}
+
+void GraphMLAttr::AddValueNode(xmlDocPtr doc,
+                               xmlNodePtr parent_node,
                                const int value) const {
   CHECK(type_ == kGraphMLAttrTypeInt);
   xmlNodePtr new_node =

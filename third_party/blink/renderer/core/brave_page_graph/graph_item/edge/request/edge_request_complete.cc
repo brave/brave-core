@@ -5,8 +5,6 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
@@ -18,9 +16,9 @@ EdgeRequestComplete::EdgeRequestComplete(GraphItemContext* context,
                                          NodeResource* out_node,
                                          GraphNode* in_node,
                                          const InspectorId request_id,
-                                         const std::string& resource_type,
+                                         const String& resource_type,
                                          const ResponseMetadata& metadata,
-                                         const std::string& hash)
+                                         const String& hash)
     : EdgeRequestResponse(context,
                           out_node,
                           in_node,
@@ -37,7 +35,8 @@ ItemName EdgeRequestComplete::GetItemName() const {
 }
 
 ItemDesc EdgeRequestComplete::GetItemDesc() const {
-  return EdgeRequestResponse::GetItemDesc() + " [" + resource_type_ + "]";
+  return EdgeRequestResponse::GetItemDesc() + " [" + resource_type_.Utf8() +
+         "]";
 }
 
 void EdgeRequestComplete::AddGraphMLAttributes(xmlDocPtr doc,
