@@ -62,7 +62,7 @@ bool IsGoogleAuthRelatedRequest(const GURL& request_url,
          IsGoogleAuthUrl(request_url) &&
          !IsGoogleAuthUrl(request_initiator_url) &&
          !net::registry_controlled_domains::SameDomainOrHost(
-             request_initiator_url, GURL(GetGoogleAuthPattern().GetHost()),
+             request_initiator_url, GURL(GetGoogleAuthPattern().ToString()),
              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 

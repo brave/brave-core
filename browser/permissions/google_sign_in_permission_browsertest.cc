@@ -417,6 +417,19 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   CheckCurrentStatusIsAsk();
 }
 
+// No prompt shown when current website is a google.com domain
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, GoogleDomain) {
+  SetGoogleSignInPref(true);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Go to website that is a google.com domain.
+  auto google_domain =
+      https_server_->GetURL("developers.google.com", kEmbeddingPageUrl);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), google_domain));
+  ClickButtonWithId(kAuthButtonHtmlId);
+  // No prompt shown.
+  EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
 class GoogleSignInFlagDisabledTest : public GoogleSignInBrowserTest {
  public:
   GoogleSignInFlagDisabledTest() {
