@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
@@ -33,9 +34,9 @@ namespace {
 
 // constexpr char kServerEndpoint[] = "https://fl.brave.com";
 constexpr char kLocalServerTasksEndpoint[] =
-    "http://127.0.0.1:8000/api/1.1/tasks";
+    "http://127.0.0.1:8000/api/v0/fleet/pull-task-ins";
 constexpr char kLocalServerResultsEndpoint[] =
-    "http://127.0.0.1:8000/api/1.1/results";
+    "http://127.0.0.1:8000/api/v0/fleet/push-task-res";
 
 // TODO(lminto): update this annotation
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -97,7 +98,7 @@ void CommunicationAdapter::OnGetTasks(
     const std::unique_ptr<std::string> response_body) {
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
     std::move(callback).Run({}, 10);
-    VLOG(1) << "Failed to get federated tasks, retrying in 10s";
+    VLOG(1) << "Failed to request tasks, retrying in 10s";
     return;
   }
 
@@ -105,52 +106,20 @@ void CommunicationAdapter::OnGetTasks(
   int response_code = headers->response_code();
   // TODO(lminto): Check headers (as per Daniel instructions)
   if (response_code == net::HTTP_OK) {
-    flower::PullTaskInsResponse pull_task_response;
-    if (pull_task_response.ParseFromString(*response_body)) {
-      TaskList task_list;
-      for (int i = 0; i < pull_task_response.task_ins_list_size(); i++) {
-        flower::TaskIns task_instruction = pull_task_response.task_ins_list(i);
+    TaskList task_list = ParseTaskListFromResponseBody(*response_body);
+    VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
 
-        std::string task_id = task_instruction.task_id();
-        std::string group_id = task_instruction.group_id();
-        std::string workload_id = task_instruction.workload_id();
-        flower::Task flower_task = task_instruction.task();
-
-        flower::ServerMessage message = flower_task.legacy_server_message();
-
-        TaskType type;
-        std::vector<Weights> parameters = {};
-        if (message.has_fit_ins()) {
-          type = TaskType::Training;
-          parameters =
-              GetParametersFromMessage(message.fit_ins().parameters());
-        } else if (message.has_evaluate_ins()) {
-          type = TaskType::Evaluation;
-          parameters =
-              GetParametersFromMessage(message.evaluate_ins().parameters());
-        } else if (message.has_reconnect_ins()) {
-          std::move(callback).Run(task_list,
-                                  message.reconnect_ins().seconds());
-          return;
-        } else {
-          // Unrecognized instruction
-          VLOG(2) << "**: Received unrecognized instruction from FL service";
-          return;
-        }
-
-        Task task = Task(std::stoi(task_id), type, "token", parameters);
-        task_list.push_back(task);
-      }
-
-      VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
-      std::move(callback).Run(task_list, pull_task_response.reconnect().reconnect());
+    if (task_list.empty()) {
+      VLOG(1) << "No tasks received from FL service, retrying in 60s";
+      std::move(callback).Run({}, 60);
       return;
-    } else {
-      VLOG(1) << "Failed to parse PullTaskInsRes";
     }
+
+    std::move(callback).Run(task_list, 60);
+    return;
   }
 
-  VLOG(1) << "Failed to get tasks. Response code: " << response_code;
+  VLOG(1) << "Failed to request tasks. Response code: " << response_code;
 }
 
 void CommunicationAdapter::PostTaskResult(TaskResult result,
@@ -169,8 +138,7 @@ void CommunicationAdapter::PostTaskResult(TaskResult result,
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader_->AttachStringForUpload(std::move(payload),
-                                     "application/protobuf");
+  url_loader_->AttachStringForUpload(payload, "application/protobuf");
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&CommunicationAdapter::OnPostTaskResult,
