@@ -26,9 +26,8 @@ import components.perf_config as perf_config
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument('--working-directory', required=True, type=str)
+  perf_test_runner.CommonOptions.add_common_parser_args(parser)
   parser.add_argument('--config', required=True, type=str)
-  parser.add_argument('--verbose', action='store_true')
   args = parser.parse_args()
 
   log_level = logging.DEBUG if args.verbose else logging.INFO
@@ -39,6 +38,7 @@ def main():
   config = perf_config.PerfConfig(json_config)
 
   common_options = perf_test_runner.CommonOptions.from_args(args)
+  common_options.local_run = True
 
   return 0 if perf_test_runner.RunConfigurations(
       config.runners, config.benchmarks, common_options) else 1

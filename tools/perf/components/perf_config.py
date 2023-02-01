@@ -8,12 +8,12 @@
 from typing import List, Optional, Dict
 
 from components.browser_binary_fetcher import ParseTarget
-from components.browser_type import BrowserType, ParseBrowserType
+from components.browser_type import BrowserType, BraveVersion, ParseBrowserType
 
 
 class RunnerConfig:
   """A description of a browser configuration that is able to run tests."""
-  tag: Optional[str] = None
+  tag: Optional[BraveVersion] = None
   location: Optional[str] = None
   label: Optional[str] = None
   profile = 'clean'

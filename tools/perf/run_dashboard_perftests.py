@@ -28,19 +28,17 @@ import components.perf_test_runner as perf_test_runner
 
 def main():
   parser = argparse.ArgumentParser()
+  perf_test_runner.CommonOptions.add_common_parser_args(parser)
   parser.add_argument('--targets',
                       required=True,
                       type=str,
                       help='Tags/binaries to test')
-  parser.add_argument('--working-directory', required=True, type=str)
   parser.add_argument('--config', required=True, type=str)
   parser.add_argument('--no-report', action='store_true')
   parser.add_argument('--report-only', action='store_true')
   parser.add_argument('--report-on-failure', action='store_true')
   parser.add_argument('--local-run', action='store_true')
-  parser.add_argument('--variations-repo-dir', type=str)
 
-  parser.add_argument('--verbose', action='store_true')
   args = parser.parse_args()
 
   log_level = logging.DEBUG if args.verbose else logging.INFO
@@ -53,6 +51,11 @@ def main():
   config = perf_config.PerfConfig(json_config)
 
   common_options = perf_test_runner.CommonOptions.from_args(args)
+
+  common_options.do_run_tests = not args.report_only
+  common_options.do_report = not args.no_report and not args.local_run
+  common_options.report_on_failure = args.report_on_failure
+  common_options.local_run = args.local_run
 
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
