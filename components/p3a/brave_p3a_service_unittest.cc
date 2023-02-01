@@ -6,6 +6,7 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "base/command_line.h"
@@ -35,6 +36,10 @@ constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
 constexpr char kTestExampleMetric[] = "Brave.Core.TestMetric";
+
+constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
+constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
+constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
 
 }  // namespace
 
@@ -69,8 +74,12 @@ class P3AServiceTest : public testing::Test {
   }
 
   void SetUpP3AService() {
-    p3a_service_ = scoped_refptr(
-        new BraveP3AService(&local_state_, "release", "2049-01-01"));
+    std::unique_ptr<BraveP3AConfig> config = std::make_unique<BraveP3AConfig>();
+    config->p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config->p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config->p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
+    p3a_service_ = scoped_refptr(new BraveP3AService(
+        &local_state_, "release", "2049-01-01", std::move(config)));
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
@@ -133,11 +142,11 @@ class P3AServiceTest : public testing::Test {
     std::string metric_name = *parsed_log.FindStringKey("metric_name");
 
     std::set<std::string>* metrics_set;
-    if (url == GURL(BUILDFLAG(P3A_JSON_UPLOAD_URL))) {
+    if (url == GURL(kTestP3AJsonHost)) {
       metrics_set = &p3a_json_sent_metrics_;
-    } else if (url == GURL(BUILDFLAG(P2A_JSON_UPLOAD_URL))) {
+    } else if (url == GURL(kTestP2AJsonHost)) {
       metrics_set = &p2a_json_sent_metrics_;
-    } else if (url == GURL(BUILDFLAG(P3A_CREATIVE_UPLOAD_URL))) {
+    } else if (url == GURL(kTestP3ACreativeHost)) {
       metrics_set = &p3a_creative_sent_metrics_;
     } else {
       return;

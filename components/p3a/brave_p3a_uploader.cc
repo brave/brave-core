@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -50,12 +50,17 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
 
+#if defined(IS_OFFICIAL_BUILD)
+  CHECK(!resource_request->url.is_empty() &&
+        resource_request->url.SchemeIsHTTPOrHTTPS());
+#else
   if (resource_request->url.is_empty()) {
     // If the upload URL is empty, ignore the request and act as if it
     // succeeded.
     upload_callback_.Run(true, 0, is_star, log_type);
     return;
   }
+#endif
 
   url_loaders_[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request),

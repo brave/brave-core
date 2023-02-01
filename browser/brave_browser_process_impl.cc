@@ -38,6 +38,7 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/p3a/brave_p3a_config.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -365,9 +366,12 @@ brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
   if (brave_p3a_service_) {
     return brave_p3a_service_.get();
   }
+  std::unique_ptr<brave::BraveP3AConfig> config =
+      std::make_unique<brave::BraveP3AConfig>();
+  config->LoadFromCommandLine();
   brave_p3a_service_ = base::MakeRefCounted<brave::BraveP3AService>(
       local_state(), brave::GetChannelName(),
-      local_state()->GetString(kWeekOfInstallation));
+      local_state()->GetString(kWeekOfInstallation), std::move(config));
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
 }

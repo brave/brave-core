@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NITRO_UTILS_COSE_H_
-#define BRAVE_COMPONENTS_NITRO_UTILS_COSE_H_
+#ifndef BRAVE_COMPONENTS_P3A_NITRO_UTILS_COSE_H_
+#define BRAVE_COMPONENTS_P3A_NITRO_UTILS_COSE_H_
 
 #include <vector>
 
@@ -41,4 +41,4 @@ class CoseSign1 : net::VerifyCertificateChainDelegate {
 
 }  // namespace nitro_utils
 
-#endif  // BRAVE_COMPONENTS_NITRO_UTILS_COSE_H_
+#endif  // BRAVE_COMPONENTS_P3A_NITRO_UTILS_COSE_H_

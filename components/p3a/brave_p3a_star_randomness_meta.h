@@ -13,8 +13,8 @@
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_config.h"
+#include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 
 class PrefService;
 class PrefRegistrySimple;

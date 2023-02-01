@@ -177,8 +177,8 @@ void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
   local_state->SetBoolean(path, enabled);
 }
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
 void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
   SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
-}
 #endif
+}

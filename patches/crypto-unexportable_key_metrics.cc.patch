@@ -1,5 +1,5 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 4217c2aaf95126d6606fdc3cb568f6a1030002f1..de7c926d46fab8efcf92ad4370f7aaa07b8c91bb 100644
+index 946be9bf57478391d39feb706c4f4b6ac920752e..730ce9dd7eb6c68a6d0c786a48424759f1eeac53 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
 @@ -95,6 +95,7 @@ void MeasureTpmOperationsInternal() {

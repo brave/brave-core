@@ -12,9 +12,9 @@
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
-#include "brave/components/constellation/src/lib.rs.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_meta.h"
 #include "brave/components/p3a/brave_p3a_star_randomness_points.h"
+#include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 
 class PrefService;
 class PrefRegistrySimple;

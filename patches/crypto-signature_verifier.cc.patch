@@ -1,23 +1,12 @@
 diff --git a/crypto/signature_verifier.cc b/crypto/signature_verifier.cc
-index 542c7f671b835d7b929a0623eca563ed8231fe3a..8f2cd17f29781281db695d1f54f174bc2535ad0c 100644
+index f510546c58998e2c4de44b28b00cb9a618ffd41e..c3bdd6587dffa046ac84c6eca30b481983388422 100644
 --- a/crypto/signature_verifier.cc
 +++ b/crypto/signature_verifier.cc
-@@ -12,6 +12,7 @@
- #include "third_party/boringssl/src/include/openssl/digest.h"
- #include "third_party/boringssl/src/include/openssl/evp.h"
- #include "third_party/boringssl/src/include/openssl/rsa.h"
-+#include "third_party/boringssl/src/include/openssl/err.h"
- 
- namespace crypto {
- 
-@@ -44,6 +45,10 @@ bool SignatureVerifier::VerifyInit(SignatureAlgorithm signature_algorithm,
+@@ -44,6 +44,7 @@ bool SignatureVerifier::VerifyInit(SignatureAlgorithm signature_algorithm,
        pkey_type = EVP_PKEY_EC;
        digest = EVP_sha256();
        break;
-+    case ECDSA_SHA384:
-+      pkey_type = EVP_PKEY_EC;
-+      digest = EVP_sha384();
-+      break;
++    BRAVE_VERIFY_INIT_ALGO_SWITCH
    }
    DCHECK_NE(EVP_PKEY_NONE, pkey_type);
    DCHECK(digest);

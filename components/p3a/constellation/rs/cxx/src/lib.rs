@@ -44,16 +44,27 @@ mod ffi {
         type RandomnessRequestStateWrapper;
         type PPOPRFPublicKeyWrapper;
 
+        // Loads a serialized randomness server/PPOPRF public key for
+        // randomness response authenticity verification
         fn load_ppoprf_public_key(key_data: &[u8]) -> PPOPRFPublicKeyResult;
 
+        // Creates an empty randomness server/PPOPRF public key to disable
+        // randomness response verification
         fn get_ppoprf_null_public_key() -> Box<PPOPRFPublicKeyWrapper>;
 
+        // Create Constellation points and proofs for a given set
+        // of measurement attributes/layers and an epoch
         fn prepare_measurement(
             layers: &CxxVector<CxxString>,
             epoch: u8,
         ) -> RandomnessRequestStateResult;
+
+        // Construct a randomness request for some given Constellation points (output of prepare_measurement)
+        // for the caller to send to the randomness server
         fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> Vec<VecU8>;
 
+        // Construct a final Constellation message for some given Constellation randomness and pre-randomness
+        // points (output of prepare_measurement and construct_randomness_request) to send to the collector/aggregator.
         fn construct_message(
             rand_points: &Vec<VecU8>,
             rand_proofs: &Vec<VecU8>,
@@ -63,7 +74,7 @@ mod ffi {
             threshold: u32,
         ) -> ByteDataResult;
 
-        // To be used for dev/testing only
+        // To be used for dev/testing only. Mocks the randomness server by producing a randomness response.
         fn generate_local_randomness(req: &Vec<VecU8>, epoch: u8) -> LocalRandomnessDataResult;
     }
 }

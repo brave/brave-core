@@ -75,9 +75,9 @@ inline void DCheckCurrentlyOnUIThread() {
 
 BraveP3AService::BraveP3AService(PrefService* local_state,
                                  std::string channel,
-                                 std::string week_of_install)
-    : local_state_(local_state), config_(new BraveP3AConfig()) {
-  config_->LoadFromCommandLine();
+                                 std::string week_of_install,
+                                 std::unique_ptr<BraveP3AConfig> config)
+    : local_state_(local_state), config_(std::move(config)) {
   message_manager_ = std::make_unique<BraveP3AMessageManager>(
       local_state, config_.get(), this, channel, week_of_install);
 }

@@ -40,7 +40,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
  public:
   BraveP3AService(PrefService* local_state,
                   std::string channel,
-                  std::string week_of_install);
+                  std::string week_of_install,
+                  std::unique_ptr<BraveP3AConfig> config);
 
   BraveP3AService(const BraveP3AService&) = delete;
   BraveP3AService& operator=(const BraveP3AService&) = delete;

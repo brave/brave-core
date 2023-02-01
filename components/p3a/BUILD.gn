@@ -64,10 +64,10 @@ static_library("p3a") {
   ]
 
   deps = [
+    "constellation/rs/cxx",
+    "nitro_utils",
     "//base",
     "//brave/components/brave_stats/browser",
-    "//brave/components/constellation:cxx",
-    "//brave/components/nitro_utils",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/version_info",
@@ -102,8 +102,8 @@ source_set("unit_tests") {
     "star_randomness_test_util.h",
   ]
   deps = [
+    "constellation/rs/cxx",
     "//base/test:test_support",
-    "//brave/components/constellation:cxx",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//components/prefs:test_support",
