@@ -78,7 +78,7 @@ public class CryptoModel {
 
     private NetworkModel mNetworkModel;
     private PortfolioModel mPortfolioModel;
-    private OnRampModel mOnRampModel;
+    private BuyModel mBuyModel;
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation, SwapModel, AssetModel, SendModel
 
@@ -108,7 +108,7 @@ public class CryptoModel {
         mPortfolioModel = new PortfolioModel(context, mTxService, mKeyringService,
                 mBlockchainRegistry, mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy,
                 mBraveWalletService, mAssetRatioService, mSharedData);
-        mOnRampModel = new OnRampModel(mAssetRatioService);
+        mBuyModel = new BuyModel(mAssetRatioService);
         _mIsSwapEnabled = new MediatorLiveData<>();
         mIsSwapEnabled = _mIsSwapEnabled;
         _mIsSwapEnabled.addSource(mNetworkModel.mChainId, chainId -> {
@@ -136,7 +136,7 @@ public class CryptoModel {
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
-            mOnRampModel.resetServices(mAssetRatioService);
+            mBuyModel.resetServices(mAssetRatioService);
         }
         init();
     }
@@ -276,8 +276,8 @@ public class CryptoModel {
         return mNetworkModel;
     }
 
-    public OnRampModel getOnRampModel() {
-        return mOnRampModel;
+    public BuyModel getBuyModel() {
+        return mBuyModel;
     }
 
     public PortfolioModel getPortfolioModel() {

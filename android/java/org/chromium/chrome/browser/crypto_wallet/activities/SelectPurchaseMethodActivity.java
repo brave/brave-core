@@ -19,7 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.OnRampModel;
+import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.util.TabUtils;
 
 public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
@@ -28,7 +28,7 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     private static final String RAMP_NETWORK_SYMBOL = "rampNetworkSymbol";
     private static final String AMOUNT = "amount";
 
-    private OnRampModel mOnRampModel;
+    private BuyModel mBuyModel;
 
     private String mChainId;
     private String mFrom;
@@ -75,24 +75,24 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
 
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            mOnRampModel = activity.getWalletModel().getCryptoModel().getOnRampModel();
+            mBuyModel = activity.getWalletModel().getCryptoModel().getBuyModel();
         }
-        if (mOnRampModel != null) {
-            mOnRampModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
+        if (mBuyModel != null) {
+            mBuyModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
                     mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mRampNetworkLayout, mRampButton, url);
                         }
                     });
 
-            mOnRampModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
+            mBuyModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
                     mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mSardineLayout, mSardineButton, url);
                         }
                     });
 
-            mOnRampModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
+            mBuyModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
                     mAmount, getResources(), url -> {
                         if (url != null) {
                             enableOnRampService(mTransakLayout, mTransakButton, url);
