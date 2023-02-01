@@ -101,21 +101,20 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* child,
   // Or, if sibling is null, then insert the child in the first position
   // in the child nodes.
   if (sibling == nullptr) {
-    child_nodes_.insert(child_nodes_.begin(), child);
+    child_nodes_.insert(0, child);
     return;
   }
 
   // Otherwise, figure out where the sibling is in the child node set.
-  const auto sib_pos = find(child_nodes_.begin(), child_nodes_.end(), sibling);
-  CHECK(sib_pos != child_nodes_.end());
+  const auto sib_pos = child_nodes_.Find(sibling);
+  CHECK_NE(sib_pos, WTF::kNotFound);
   child_nodes_.insert(sib_pos + 1, child);
 }
 
 void NodeHTMLElement::RemoveChildNode(NodeHTML* child_node) {
-  const auto child_pos =
-      find(child_nodes_.begin(), child_nodes_.end(), child_node);
-  CHECK(child_pos != child_nodes_.end());
-  child_nodes_.erase(child_pos);
+  const auto child_pos = child_nodes_.Find(child_node);
+  CHECK_NE(child_pos, WTF::kNotFound);
+  child_nodes_.EraseAt(child_pos);
 }
 
 void NodeHTMLElement::MarkDeleted() {
