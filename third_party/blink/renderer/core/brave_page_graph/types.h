@@ -10,7 +10,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
@@ -18,6 +17,7 @@
 #include "third_party/blink/renderer/platform/graphics/dom_node_id.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace brave_page_graph {
 
@@ -42,10 +42,10 @@ using MethodName = std::string;
 using RequestURL = std::string;
 using InspectorId = uint64_t;
 
-using GraphItemUniquePtrList = std::vector<std::unique_ptr<GraphItem>>;
-using EdgeList = std::vector<const GraphEdge*>;
-using NodeList = std::vector<GraphNode*>;
-using HTMLNodeList = std::vector<NodeHTML*>;
+using GraphItemUniquePtrList = Vector<std::unique_ptr<GraphItem>>;
+using EdgeList = Vector<const GraphEdge*>;
+using NodeList = Vector<GraphNode*>;
+using HTMLNodeList = Vector<NodeHTML*>;
 using AttributeMap = std::map<const std::string, const std::string>;
 
 struct CORE_EXPORT FingerprintingRule {
