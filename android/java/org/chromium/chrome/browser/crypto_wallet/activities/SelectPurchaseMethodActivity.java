@@ -81,25 +81,22 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
             if (mBuyModel.isAvailable(OnRampProvider.RAMP, getResources())) {
                 mRampNetworkLayout.setVisibility(View.VISIBLE);
                 mBuyModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount, url -> {
-                            enableOnRampService(mRampNetworkLayout, mRampButton, url);
-                        });
+                        mAmount,
+                        url -> { enableOnRampService(mRampNetworkLayout, mRampButton, url); });
             }
 
             if (mBuyModel.isAvailable(OnRampProvider.SARDINE, getResources())) {
                 mSardineLayout.setVisibility(View.VISIBLE);
                 mBuyModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount, url -> {
-                            enableOnRampService(mSardineLayout, mSardineButton, url);
-                        });
+                        mAmount,
+                        url -> { enableOnRampService(mSardineLayout, mSardineButton, url); });
             }
 
             if (mBuyModel.isAvailable(OnRampProvider.TRANSAK, getResources())) {
                 mTransakLayout.setVisibility(View.VISIBLE);
                 mBuyModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount, url -> {
-                            enableOnRampService(mTransakLayout, mTransakButton, url);
-                        });
+                        mAmount,
+                        url -> { enableOnRampService(mTransakLayout, mTransakButton, url); });
             }
         }
     }
