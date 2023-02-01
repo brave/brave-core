@@ -16,6 +16,7 @@
 #include <sstream>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
@@ -879,18 +880,18 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
     nodes_.push_back(graph_node);
     if (auto* element_node = DynamicTo<NodeHTMLElement>(graph_node)) {
       DCHECK(!base::Contains(element_nodes_, element_node->GetDOMNodeId()));
-      element_nodes_.emplace(element_node->GetDOMNodeId(), element_node);
+      element_nodes_.insert(element_node->GetDOMNodeId(), element_node);
     } else if (auto* text_node = DynamicTo<NodeHTMLText>(graph_node)) {
       DCHECK(!base::Contains(text_nodes_, text_node->GetDOMNodeId()));
-      text_nodes_.emplace(text_node->GetDOMNodeId(), text_node);
+      text_nodes_.insert(text_node->GetDOMNodeId(), text_node);
     } else if (auto* resource_node = DynamicTo<NodeResource>(graph_node)) {
-      resource_nodes_.emplace(resource_node->GetURL(), resource_node);
+      resource_nodes_.insert(resource_node->GetURL(), resource_node);
     } else if (auto* ad_filter_node = DynamicTo<NodeAdFilter>(graph_node)) {
-      ad_filter_nodes_.emplace(ad_filter_node->GetRule(), ad_filter_node);
+      ad_filter_nodes_.insert(ad_filter_node->GetRule(), ad_filter_node);
     } else if (auto* tracker_filter_node =
                    DynamicTo<NodeTrackerFilter>(graph_node)) {
-      tracker_filter_nodes_.emplace(tracker_filter_node->GetHost(),
-                                    tracker_filter_node);
+      tracker_filter_nodes_.insert(tracker_filter_node->GetHost(),
+                                   tracker_filter_node);
     } else if (auto* fingerprinting_filter_node =
                    DynamicTo<NodeFingerprintingFilter>(graph_node)) {
       fingerprinting_filter_nodes_.emplace(
@@ -917,11 +918,11 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
   const GraphNode* node;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
-    node = element_node_it->second;
+    node = element_node_it->value;
   } else {
     auto text_node_it = text_nodes_.find(node_id);
     if (text_node_it != text_nodes_.end()) {
-      node = text_node_it->second;
+      node = text_node_it->value;
     } else {
       return;
     }
@@ -1029,11 +1030,11 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
   VLOG(1) << "GetHTMLNode) node id: " << node_id;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
-    return element_node_it->second;
+    return element_node_it->value;
   }
   auto text_node_it = text_nodes_.find(node_id);
   if (text_node_it != text_nodes_.end()) {
-    return text_node_it->second;
+    return text_node_it->value;
   }
   CHECK(false) << "HTMLNode not found: " << node_id;
   return nullptr;
@@ -1043,7 +1044,7 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
   VLOG(1) << "GetHTMLElementNode) node id: " << node_id;
   auto element_node_it = element_nodes_.find(node_id);
   if (element_node_it != element_nodes_.end()) {
-    return element_node_it->second;
+    return element_node_it->value;
   }
   CHECK(false) << "HTMLElementNode not found: " << node_id;
   return nullptr;
@@ -1052,7 +1053,7 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
 NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   auto text_node_it = text_nodes_.find(node_id);
   if (text_node_it != text_nodes_.end()) {
-    return text_node_it->second;
+    return text_node_it->value;
   }
   CHECK(false) << "HTMLTextNode not found: " << node_id;
   return nullptr;
@@ -1337,7 +1338,7 @@ void PageGraph::RegisterTextNodeChange(blink::Node* node,
 
 void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
                                        GraphNode* requesting_node,
-                                       const std::string& local_url,
+                                       const KURL& local_url,
                                        const String& resource_type) {
   NodeResource* const requested_node = GetResourceNodeForUrl(local_url);
 
@@ -1389,17 +1390,18 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
                                             const KURL& url,
                                             const String& resource_type) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
   // For now, explode if we're getting duplicate requests for the same
   // URL in the same document.  This might need to be changed.
   VLOG(1) << "RegisterRequestStartFromElm) node id: " << node_id
-          << ", request id: " << request_id << ", url: " << local_url
+          << ", request id: " << request_id
+          << ", url: " << normalized_url.GetString()
           << ", type: " << resource_type;
 
   // We should know about the node thats issuing the request.
   NodeHTMLElement* const requesting_node = GetHTMLElementNode(node_id);
-  DoRegisterRequestStart(request_id, requesting_node, local_url, resource_type);
+  DoRegisterRequestStart(request_id, requesting_node, normalized_url,
+                         resource_type);
 }
 
 void PageGraph::RegisterRequestStartFromCurrentScript(
@@ -1420,15 +1422,16 @@ void PageGraph::RegisterRequestStartFromScript(
     const blink::KURL& url,
     const String& resource_type) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
   VLOG(1) << "RegisterRequestStartFromScript) script id: " << script_id
-          << " request id: " << request_id << ", url: " << local_url
+          << " request id: " << request_id
+          << ", url: " << normalized_url.GetString()
           << ", type: " << resource_type;
   NodeActor* const acting_node =
       script_tracker_.GetScriptNode(execution_context->GetIsolate(), script_id);
 
-  DoRegisterRequestStart(request_id, acting_node, local_url, resource_type);
+  DoRegisterRequestStart(request_id, acting_node, normalized_url,
+                         resource_type);
 }
 
 // This is basically the same as |RegisterRequestStartFromCurrentScript|,
@@ -1441,19 +1444,21 @@ void PageGraph::RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
   NodeActor* const acting_node = GetCurrentActingNode(
       loader->GetFrame()->GetDocument()->GetExecutionContext());
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
   if (IsA<NodeParser>(acting_node)) {
     VLOG(1) << "RegisterRequestStartFromCSSOrLink) request id: " << request_id
-            << ", url: " << local_url << ", type: " << resource_type;
+            << ", url: " << normalized_url.GetString()
+            << ", type: " << resource_type;
   } else {
     VLOG(1) << "RegisterRequestStartFromCSSOrLink) script id: "
             << static_cast<NodeScript*>(acting_node)->GetScriptId()
-            << ", request id: " << request_id << ", url: " << local_url
+            << ", request id: " << request_id
+            << ", url: " << normalized_url.GetString()
             << ", type: " << resource_type;
   }
 
-  DoRegisterRequestStart(request_id, acting_node, local_url, resource_type);
+  DoRegisterRequestStart(request_id, acting_node, normalized_url,
+                         resource_type);
 }
 
 // Request start for root document and subdocument HTML
@@ -1506,28 +1511,26 @@ void PageGraph::RegisterRequestError(const InspectorId request_id) {
 }
 
 void PageGraph::RegisterResourceBlockAd(const blink::WebURL& url,
-                                        const std::string& rule) {
+                                        const String& rule) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
-  VLOG(1) << "RegisterResourceBlockAd) url: " << local_url
+  VLOG(1) << "RegisterResourceBlockAd) url: " << normalized_url.GetString()
           << ", rule: " << rule;
 
-  NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
+  NodeResource* const resource_node = GetResourceNodeForUrl(normalized_url);
   NodeAdFilter* const filter_node = GetAdFilterNodeForRule(rule);
 
   AddEdge<EdgeResourceBlock>(filter_node, resource_node);
 }
 
 void PageGraph::RegisterResourceBlockTracker(const blink::WebURL& url,
-                                             const std::string& host) {
+                                             const String& host) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
-  VLOG(1) << "RegisterResourceBlockTracker) url: " << local_url
+  VLOG(1) << "RegisterResourceBlockTracker) url: " << normalized_url.GetString()
           << ", host: " << host;
 
-  NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
+  NodeResource* const resource_node = GetResourceNodeForUrl(normalized_url);
   NodeTrackerFilter* const filter_node = GetTrackerFilterNodeForHost(host);
 
   AddEdge<EdgeResourceBlock>(filter_node, resource_node);
@@ -1535,11 +1538,11 @@ void PageGraph::RegisterResourceBlockTracker(const blink::WebURL& url,
 
 void PageGraph::RegisterResourceBlockJavaScript(const blink::WebURL& url) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
-  VLOG(1) << "RegisterResourceBlockJavaScript) url: " << local_url;
+  VLOG(1) << "RegisterResourceBlockJavaScript) url: "
+          << normalized_url.GetString();
 
-  NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
+  NodeResource* const resource_node = GetResourceNodeForUrl(normalized_url);
 
   AddEdge<EdgeResourceBlock>(js_shield_node_, resource_node);
 }
@@ -1548,12 +1551,11 @@ void PageGraph::RegisterResourceBlockFingerprinting(
     const blink::WebURL& url,
     const FingerprintingRule& rule) {
   const KURL normalized_url = NormalizeUrl(url);
-  const std::string local_url(normalized_url.GetString().Utf8());
 
-  VLOG(1) << "RegisterResourceBlockFingerprinting) url: " << local_url
-          << ", rule: " << rule.ToString();
+  VLOG(1) << "RegisterResourceBlockFingerprinting) url: "
+          << normalized_url.GetString() << ", rule: " << rule.ToString();
 
-  NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
+  NodeResource* const resource_node = GetResourceNodeForUrl(normalized_url);
   NodeFingerprintingFilter* const filter_node =
       GetFingerprintingFilterNodeForRule(rule);
 
@@ -1909,29 +1911,28 @@ ScriptId PageGraph::GetExecutingScriptId(
   return executing_script.script_id;
 }
 
-NodeResource* PageGraph::GetResourceNodeForUrl(const std::string& url) {
+NodeResource* PageGraph::GetResourceNodeForUrl(const KURL& url) {
   auto resource_node_it = resource_nodes_.find(url);
   if (resource_node_it != resource_nodes_.end()) {
-    return resource_node_it->second;
+    return resource_node_it->value;
   }
   return AddNode<NodeResource>(url);
 }
 
-NodeAdFilter* PageGraph::GetAdFilterNodeForRule(const std::string& rule) {
+NodeAdFilter* PageGraph::GetAdFilterNodeForRule(const String& rule) {
   auto ad_filter_node_it = ad_filter_nodes_.find(rule);
   if (ad_filter_node_it != ad_filter_nodes_.end()) {
-    return ad_filter_node_it->second;
+    return ad_filter_node_it->value;
   }
   auto* ad_filter_node = AddNode<NodeAdFilter>(rule);
   AddEdge<EdgeFilter>(ad_shield_node_, ad_filter_node);
   return ad_filter_node;
 }
 
-NodeTrackerFilter* PageGraph::GetTrackerFilterNodeForHost(
-    const std::string& host) {
+NodeTrackerFilter* PageGraph::GetTrackerFilterNodeForHost(const String& host) {
   auto tracker_filter_it = tracker_filter_nodes_.find(host);
   if (tracker_filter_it != tracker_filter_nodes_.end()) {
-    return tracker_filter_it->second;
+    return tracker_filter_it->value;
   }
   auto* filter_node = AddNode<NodeTrackerFilter>(host);
   AddEdge<EdgeFilter>(tracker_shield_node_, filter_node);

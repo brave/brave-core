@@ -39,7 +39,7 @@ using ScriptPosition = int;
 using EventListenerId = int;
 using GraphItemId = uint64_t;
 using MethodName = std::string;
-using RequestURL = std::string;
+using RequestURL = blink::KURL;
 using InspectorId = uint64_t;
 
 using GraphItemUniquePtrList = std::vector<std::unique_ptr<GraphItem>>;

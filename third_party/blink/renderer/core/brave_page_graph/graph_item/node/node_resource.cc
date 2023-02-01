@@ -24,14 +24,14 @@ ItemName NodeResource::GetItemName() const {
 }
 
 ItemDesc NodeResource::GetItemDesc() const {
-  return GraphNode::GetItemDesc() + " [" + url_ + "]";
+  return GraphNode::GetItemDesc() + " [" + url_.GetString().Utf8() + "]";
 }
 
 void NodeResource::AddGraphMLAttributes(xmlDocPtr doc,
                                         xmlNodePtr parent_node) const {
   GraphNode::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->AddValueNode(doc, parent_node, url_);
+      ->AddValueNode(doc, parent_node, url_.GetString());
 }
 
 bool NodeResource::IsNodeResource() const {
