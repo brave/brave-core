@@ -12,7 +12,8 @@ import { WalletActions } from '../../../common/actions'
 
 // Types
 import { WalletState, AssetFilterOption } from '../../../constants/types'
-import { AssetFilterOptions } from '../../../options/asset-filter-options'
+import { AssetFilterOptions, HighToLowAssetsFilterOption } from '../../../options/asset-filter-options'
+import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
 import { AssetFilterItem } from './asset-filter-item'
@@ -39,7 +40,8 @@ export const AssetFilterSelector = () => {
   }
 
   const onSelectAndClose = (assetFilterItem: AssetFilterOption) => {
-    dispatch(WalletActions.setSelectedAssetFilterItem(assetFilterItem))
+    window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION, assetFilterItem.id)
+    dispatch(WalletActions.setSelectedAssetFilterItem(assetFilterItem.id))
     toggleShowAssetFilter()
   }
 
@@ -47,13 +49,18 @@ export const AssetFilterSelector = () => {
     setShowAssetFilter(false)
   }
 
+  // memos
+  const selectedAssetFilterInfo = React.useMemo(() => {
+    return AssetFilterOptions.find(item => item.id === selectedAssetFilter) ?? HighToLowAssetsFilterOption
+  }, [selectedAssetFilter])
+
   return (
     <StyledWrapper>
 
       <DropDownButton
         onClick={toggleShowAssetFilter}>
         <SelectorLeftSide>
-          {selectedAssetFilter.name}
+          {selectedAssetFilterInfo.name}
         </SelectorLeftSide>
         <DropDownIcon />
       </DropDownButton>
@@ -65,7 +72,7 @@ export const AssetFilterSelector = () => {
               key={assetFilterItem.id}
               assetFilterItem={assetFilterItem}
               onSelectAssetFilterItem={onSelectAndClose}
-              selectedAssetFilterItem={selectedAssetFilter}
+              selectedAssetFilterItem={selectedAssetFilterInfo}
             />
           )}
         </DropDown>

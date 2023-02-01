@@ -669,11 +669,13 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
         // Fetch Price History for Tokens by Selected Network Filter's chainId
         : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
 
+    const foundSelectedAccountForFilter = accounts.find(account => account.id === selectedAccountFilter)
+
     // If a selectedAccountFilter is selected, we only return the selectedAccountFilter
     // in the list.
-    const accountsList = selectedAccountFilter.id === AllAccountsOption.id
+    const accountsList = selectedAccountFilter === AllAccountsOption.id
       ? accounts
-      : [selectedAccountFilter]
+      : foundSelectedAccountForFilter ? [foundSelectedAccountForFilter] : []
 
     // Get all Price History
     const priceHistory = await Promise.all(getFlattenedAccountBalances(accountsList, filteredTokenInfo)

@@ -33,7 +33,8 @@ import {
   TransactionProviderError,
   SendFilTransactionParams,
   SendSolTransactionParams,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  NetworkFilterType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
@@ -718,13 +719,13 @@ handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetC
   store.dispatch(WalletActions.setCoinMarkets(result))
 })
 
-handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: NetworkFilterType) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
-handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: string) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))

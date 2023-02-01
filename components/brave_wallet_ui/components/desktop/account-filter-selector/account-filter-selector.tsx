@@ -15,6 +15,7 @@ import { WalletActions } from '../../../common/actions'
 
 // Types
 import { BraveWallet, WalletAccountType, WalletState } from '../../../constants/types'
+import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Options
 import { AllAccountsOption } from '../../../options/account-filter-options'
@@ -70,11 +71,12 @@ export const AccountFilterSelector = ({
       onSelectAccount(account)
       return
     }
-    dispatch(WalletActions.setSelectedAccountFilterItem(account))
+    window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION, account.id)
+    dispatch(WalletActions.setSelectedAccountFilterItem(account.id))
   }, [onSelectAccount])
 
   // Memos
-  const selectedAccount = accountProp || selectedAccountFilter
+  const selectedAccount = accountProp || [...accounts, AllAccountsOption].find(account => account.id === selectedAccountFilter) || AllAccountsOption
   const selectedNetwork = networkProp || selectedNetworkFilter
 
   const orb = React.useMemo(() => {

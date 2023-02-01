@@ -65,6 +65,7 @@ export const FundWalletScreen = () => {
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -92,6 +93,7 @@ export const FundWalletScreen = () => {
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
+  const selectedNetwork = selectedAssetNetwork || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -305,7 +307,7 @@ export const FundWalletScreen = () => {
                   selectedAssetInputAmount={buyAmount}
                   inputName='buy'
                   selectedAsset={selectedAsset}
-                  selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
+                  selectedNetwork={selectedNetwork}
                   autoFocus={true}
                   onShowCurrencySelection={() => setShowFiatSelection(true)}
                 />
