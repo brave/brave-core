@@ -65,27 +65,33 @@ export const sortTransactionByDate = <
   })
 }
 
-export const getTransactionStatusString = (statusId: number) => {
-  switch (statusId) {
+export const getLocaleKeyForTxStatus = (
+  status: BraveWallet.TransactionStatus
+) => {
+  switch (status) {
     case BraveWallet.TransactionStatus.Unapproved:
-      return getLocale('braveWalletTransactionStatusUnapproved')
+      return 'braveWalletTransactionStatusUnapproved'
     case BraveWallet.TransactionStatus.Approved:
-      return getLocale('braveWalletTransactionStatusApproved')
+      return 'braveWalletTransactionStatusApproved'
     case BraveWallet.TransactionStatus.Rejected:
-      return getLocale('braveWalletTransactionStatusRejected')
+      return 'braveWalletTransactionStatusRejected'
     case BraveWallet.TransactionStatus.Submitted:
-      return getLocale('braveWalletTransactionStatusSubmitted')
+      return 'braveWalletTransactionStatusSubmitted'
     case BraveWallet.TransactionStatus.Confirmed:
-      return getLocale('braveWalletTransactionStatusConfirmed')
+      return 'braveWalletTransactionStatusConfirmed'
     case BraveWallet.TransactionStatus.Error:
-      return getLocale('braveWalletTransactionStatusError')
+      return 'braveWalletTransactionStatusError'
     case BraveWallet.TransactionStatus.Dropped:
-      return getLocale('braveWalletTransactionStatusDropped')
+      return 'braveWalletTransactionStatusDropped'
     case BraveWallet.TransactionStatus.Signed:
-      return getLocale('braveWalletTransactionStatusSigned')
+      return 'braveWalletTransactionStatusSigned'
     default:
       return ''
   }
+}
+
+export const getTransactionStatusString = (statusId: number) => {
+  return getLocale(getLocaleKeyForTxStatus(statusId))
 }
 
 export function isSolanaTransaction (tx: TransactionInfo): tx is SolanaTransactionInfo {
@@ -1179,28 +1185,5 @@ export const getTransactionFiatValues = ({
     formattedNativeCurrencyTotal: sendAmountFiat
       .div(networkSpotPrice)
       .formatAsAsset(6, txNetwork?.symbol)
-  }
-}
-
-export const getLocaleKeyForTxStatus = (
-  status: BraveWallet.TransactionStatus
-) => {
-  switch (status) {
-    case BraveWallet.TransactionStatus.Unapproved:
-      return 'braveWalletTransactionStatusUnapproved'
-    case BraveWallet.TransactionStatus.Approved:
-      return 'braveWalletTransactionStatusApproved'
-    case BraveWallet.TransactionStatus.Rejected:
-      return 'braveWalletTransactionStatusRejected'
-    case BraveWallet.TransactionStatus.Submitted:
-      return 'braveWalletTransactionStatusSubmitted'
-    case BraveWallet.TransactionStatus.Confirmed:
-      return 'braveWalletTransactionStatusConfirmed'
-    case BraveWallet.TransactionStatus.Error:
-      return 'braveWalletTransactionStatusError'
-    case BraveWallet.TransactionStatus.Dropped:
-      return 'braveWalletTransactionStatusDropped'
-    default:
-      return ''
   }
 }

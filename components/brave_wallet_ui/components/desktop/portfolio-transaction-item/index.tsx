@@ -22,7 +22,7 @@ import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
-import { getLocaleKeyForTxStatus } from '../../../utils/tx-utils'
+import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
 import { accountInfoEntityAdaptorInitialState, makeSelectNetworkByIdFromQuery } from '../../../common/slices/entities/account-info.entity'
 import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
@@ -416,7 +416,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         <StatusRow>
           <StatusBubble status={transaction.status} />
           <DetailTextDarkBold>
-            {getLocale(getLocaleKeyForTxStatus(transaction.status))}
+            {getTransactionStatusString(transaction.status)}
           </DetailTextDarkBold>
         </StatusRow>
 
