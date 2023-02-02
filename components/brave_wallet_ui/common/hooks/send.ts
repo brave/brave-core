@@ -72,6 +72,12 @@ export default function useSend (isSendTab?: boolean) {
     } else {
       setSendAmount('')
     }
+    setToAddress('')
+    setToAddressOrUrl('')
+    setAddressError(undefined)
+    setAddressWarning(undefined)
+    setShowEnsOffchainWarning(false)
+    setSearchingForDomain(false)
     setSelectedSendAsset(asset)
   }
 
