@@ -2193,7 +2193,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
           const absl::optional<base::Value> req_body_payload =
               base::JSONReader::Read(
                   R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":
-[{"address":["0x1111"],"fromBlock":"0x2211","toBlock":"0xab65",
+[{"address":["0x1111", "0x1112"],"fromBlock":"0x2211","toBlock":"0xab65",
 "topics":["0x2edc","0xb832","0x8dc8"]}]})",
                   base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2213,8 +2213,8 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
   // Logs subscription with parameters
   std::string request_payload_json =
       R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
-          "params": ["logs", {"address": "0x1111", "fromBlock": "0x2211",
-          "toBlock": "0xab65",  "topics":  ["0x2edc", "0xb832", "0x8dc8"]}]})";
+  "params": ["logs", {"address": ["0x1111", "0x1112"], "fromBlock": "0x2211",
+  "toBlock": "0xab65",  "topics":  ["0x2edc", "0xb832", "0x8dc8"]}]})";
   absl::optional<base::Value> request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);

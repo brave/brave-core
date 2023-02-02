@@ -337,10 +337,17 @@ TEST(EthRequestUnitTest, eth_getLogs) {
 
   base::Value::List addresses;
   addresses.Append(base::Value("0x8888f1f195afa192cfee860698584c030f4c9db1"));
+
+  base::Value::Dict filtering;
+  filtering.Set("fromBlock", "0x1");
+  filtering.Set("toBlock", "0x2");
+  filtering.Set("address", std::move(addresses));
+  filtering.Set("topics", std::move(topics));
+  filtering.Set(
+      "blockhash",
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
   ASSERT_EQ(
-      eth_getLogs(
-          "0x1", "0x2", std::move(addresses), std::move(topics),
-          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"),
+      eth_getLogs(std::move(filtering)),
       R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":[{"address":["0x8888f1f195afa192cfee860698584c030f4c9db1"],"blockhash":"0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"]]}]})");  // NOLINT
 }
 

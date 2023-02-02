@@ -305,7 +305,7 @@ void AssetDiscoveryManager::OnGetEthTokenRegistry(
   filtering.Set("toBlock", to_block);
   filtering.Set("address", std::move(contract_addresses_to_search));
   filtering.Set("topics", std::move(topics));
-  json_rpc_service_->EthGetLogs(chain_id, base::Value(std::move(filtering)),
+  json_rpc_service_->EthGetLogs(chain_id, std::move(filtering),
                                 std::move(callback));
 }
 

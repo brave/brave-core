@@ -1166,7 +1166,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     params.Set("address", std::move(contract_addresses));
     params.Set("topics", std::move(topics));
     json_rpc_service_->EthGetLogs(
-        chain_id, base::Value(std::move(params)),
+        chain_id, std::move(params),
         base::BindLambdaForTesting(
             [&](const std::vector<Log>& logs, base::Value rawlogs,
                 mojom::ProviderError error, const std::string& error_message) {

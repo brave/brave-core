@@ -88,7 +88,8 @@ class EthereumProviderImpl final
                       RequestCallback callback,
                       base::Value id);
 
-  void EthSubscribe(const base::Value& params,
+  void EthSubscribe(const std::string& event_type,
+                    absl::optional<base::Value::Dict> filter,
                     RequestCallback callback,
                     base::Value id);
   void EthUnsubscribe(const std::string& subscription_id,

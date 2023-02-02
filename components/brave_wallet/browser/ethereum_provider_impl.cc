@@ -578,9 +578,11 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                           false);
 }
 
-void EthereumProviderImpl::EthSubscribe(const base::Value& params,
-                                        RequestCallback callback,
-                                        base::Value id) {
+void EthereumProviderImpl::EthSubscribe(
+    const std::string& event_type,
+    absl::optional<base::Value::Dict> filter,
+    RequestCallback callback,
+    base::Value id) {
   const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
     std::vector<uint8_t> bytes(16);
     crypto::RandBytes(&bytes.front(), bytes.size());
@@ -589,24 +591,7 @@ void EthereumProviderImpl::EthSubscribe(const base::Value& params,
     return std::tuple<bool, std::string>{subscriptions.size() == 1, hex_bytes};
   };
 
-  const auto is_event_type = [&](const std::string& eq_val) {
-    if (!params.is_list()) {
-      return false;
-    }
-
-    const auto& list = params.GetList();
-    auto it = std::find_if(list.begin(), list.end(), [&](const auto& item) {
-      return item.is_string() && eq_val == item.GetString();
-    });
-
-    if (it != list.end()) {
-      return true;
-    }
-
-    return false;
-  };
-
-  if (is_event_type(kEthSubscribeNewHeads)) {
+  if (event_type == kEthSubscribeNewHeads) {
     const auto gen_res = generateHexBytes(eth_subscriptions_);
     if (std::get<0>(gen_res)) {
       eth_block_tracker_.Start(
@@ -614,35 +599,14 @@ void EthereumProviderImpl::EthSubscribe(const base::Value& params,
     }
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
-  } else if (is_event_type(kEthSubscribeLogs)) {
+  } else if (event_type == kEthSubscribeLogs && filter) {
     const auto gen_res = generateHexBytes(eth_log_subscriptions_);
-
-    const auto get_filter_options = [&]() {
-      if (!params.is_list()) {
-        return base::Value();
-      }
-
-      const auto& list = params.GetList();
-      auto it = std::find_if(list.begin(), list.end(), [](const auto& item) {
-        return item.is_dict() && (nullptr != item.GetDict().Find("address") ||
-                                  nullptr != item.GetDict().Find("topics") ||
-                                  nullptr != item.GetDict().Find("fromBlock") ||
-                                  nullptr != item.GetDict().Find("toBlock") ||
-                                  nullptr != item.GetDict().Find("blockHash"));
-      });
-      if (it == list.end()) {
-        return base::Value();
-      }
-
-      return base::Value(it->Clone());
-    };
 
     if (std::get<0>(gen_res)) {
       eth_logs_tracker_.Start(base::Seconds(kLogTrackerDefaultTimeInSeconds));
     }
 
-    eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res),
-                                    std::move(get_filter_options()));
+    eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res), std::move(*filter));
 
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
@@ -1279,13 +1243,16 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
   } else if (method == kWeb3ClientVersion) {
     Web3ClientVersion(std::move(callback), std::move(id));
   } else if (method == kEthSubscribe) {
-    base::Value params;
-    if (!ParseEthSubscribeParams(normalized_json_request, &params)) {
+    std::string event_type;
+    base::Value::Dict filter;
+    if (!ParseEthSubscribeParams(normalized_json_request, &event_type,
+                                 &filter)) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
     }
-    EthSubscribe(std::move(params), std::move(callback), std::move(id));
+    EthSubscribe(event_type, std::move(filter), std::move(callback),
+                 std::move(id));
   } else if (method == kEthUnsubscribe) {
     std::string subscription_id;
     if (!ParseEthUnsubscribeParams(normalized_json_request, &subscription_id)) {

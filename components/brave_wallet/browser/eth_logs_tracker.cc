@@ -32,9 +32,9 @@ bool EthLogsTracker::IsRunning() const {
 }
 
 void EthLogsTracker::AddSubscriber(const std::string& subscription_id,
-                                   const base::Value& params) {
-  eth_logs_subscription_info_.insert(
-      std::pair<std::string, base::Value>(subscription_id, params.Clone()));
+                                   base::Value::Dict filter) {
+  eth_logs_subscription_info_.insert(std::pair<std::string, base::Value::Dict>(
+      subscription_id, std::move(filter)));
 }
 
 void EthLogsTracker::RemoveSubscriber(const std::string& subscription_id) {
@@ -54,7 +54,7 @@ void EthLogsTracker::GetLogs() {
 
   for (auto const& esi : std::as_const(eth_logs_subscription_info_)) {
     json_rpc_service_->EthGetLogs(
-        chain_id, esi.second,
+        chain_id, esi.second.Clone(),
         base::BindOnce(&EthLogsTracker::OnGetLogs, weak_factory_.GetWeakPtr(),
                        esi.first));
   }

@@ -330,7 +330,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                       GetEthTokenUriCallback callback);
 
   void EthGetLogs(const std::string& chain_id,
-                  const base::Value& params,
+                  base::Value::Dict filter_options,
                   EthGetLogsCallback callback);
 
   void OnEthGetLogs(EthGetLogsCallback callback,
