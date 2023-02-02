@@ -5,11 +5,12 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {BraveSettingsClearBrowsingDataDialogElement} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
-import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/polymer_overriding.js'
-import {loadTimeData} from '../i18n_setup.js'
+import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+import {BraveSettingsClearBrowsingDataDialogElement} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
+import {loadTimeData} from '../i18n_setup.js'
 
 RegisterStyleOverride(
   'settings-clear-browsing-data-dialog',

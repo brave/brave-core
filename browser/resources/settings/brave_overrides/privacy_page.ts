@@ -5,10 +5,10 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+
+import {loadTimeData} from '../i18n_setup.js'
 
 function InsertGoogleSignInSubpage (
   templateContent: DocumentFragment,
@@ -42,8 +42,9 @@ function InsertGoogleSignInSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Google signin subpage')
     } else {
-      googleSignInSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn'))
+      googleSignInSubpage.setAttribute(
+          'page-title',
+          loadTimeData.getString('siteSettingsCategoryGoogleSignIn'))
       const googleSignInDefault =
         googleSignInTemplate.content.getElementById('googleSignInDefault')
       if (!googleSignInDefault) {
@@ -51,11 +52,11 @@ function InsertGoogleSignInSubpage (
           '[Brave Settings Overrides] Couldn\'t find Google signin default')
       } else {
         googleSignInDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
+            'toggle-off-label',
+            loadTimeData.getString('siteSettingsGoogleSignInAsk'))
         googleSignInDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
+            'toggle-on-label',
+            loadTimeData.getString('siteSettingsGoogleSignInAsk'))
       }
       const googleSignInExceptions =
         googleSignInTemplate.content.getElementById('googleSignInExceptions')
@@ -64,11 +65,11 @@ function InsertGoogleSignInSubpage (
           '[Brave Settings Overrides] Couldn\'t find Google signin exceptions')
       } else {
         googleSignInExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlockExceptions'))
+            'block-header',
+            loadTimeData.getString('siteSettingsGoogleSignInBlockExceptions'))
         googleSignInExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllowExceptions'))
+            'allow-header',
+            loadTimeData.getString('siteSettingsGoogleSignInAllowExceptions'))
       }
     }
   }
@@ -105,8 +106,8 @@ function InsertAutoplaySubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find autoplay subpage')
     } else {
-      autoplaySubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryAutoplay'))
+      autoplaySubpage.setAttribute(
+          'page-title', loadTimeData.getString('siteSettingsCategoryAutoplay'))
       const autoplayDefault =
         autoplayTemplate.content.getElementById('autoplayDefault')
       if (!autoplayDefault) {
@@ -114,11 +115,11 @@ function InsertAutoplaySubpage (
           '[Brave Settings Overrides] Couldn\'t find autoplay default')
       } else {
         autoplayDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsAutoplayBlock'))
+            'toggle-off-label',
+            loadTimeData.getString('siteSettingsAutoplayBlock'))
         autoplayDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsAutoplayAllow'))
+            'toggle-on-label',
+            loadTimeData.getString('siteSettingsAutoplayAllow'))
       }
       const autoplayExceptions =
         autoplayTemplate.content.getElementById('autoplayExceptions')
@@ -127,11 +128,9 @@ function InsertAutoplaySubpage (
           '[Brave Settings Overrides] Couldn\'t find autoplay exceptions')
       } else {
         autoplayExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsBlock'))
+            'block-header', loadTimeData.getString('siteSettingsBlock'))
         autoplayExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsAllow'))
+            'allow-header', loadTimeData.getString('siteSettingsAllow'))
       }
     }
   }
@@ -169,8 +168,8 @@ function InsertEthereumSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Ethereum subpage')
     } else {
-      ethereumSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryEthereum'))
+      ethereumSubpage.setAttribute(
+          'page-title', loadTimeData.getString('siteSettingsCategoryEthereum'))
       const ethereumDefault =
         ethereumTemplate.content.getElementById('ethereumDefault')
       if (!ethereumDefault) {
@@ -178,11 +177,11 @@ function InsertEthereumSubpage (
           '[Brave Settings Overrides] Couldn\'t find Ethereum default')
       } else {
         ethereumDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsEthereumBlock'))
+            'toggle-off-label',
+            loadTimeData.getString('siteSettingsEthereumBlock'))
         ethereumDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsEthereumAsk'))
+            'toggle-on-label',
+            loadTimeData.getString('siteSettingsEthereumAsk'))
       }
       const ethereumExceptions =
         ethereumTemplate.content.getElementById('ethereumExceptions')
@@ -191,11 +190,9 @@ function InsertEthereumSubpage (
           '[Brave Settings Overrides] Couldn\'t find Ethereum exceptions')
       } else {
         ethereumExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsBlock'))
+            'block-header', loadTimeData.getString('siteSettingsBlock'))
         ethereumExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsAllow'))
+            'allow-header', loadTimeData.getString('siteSettingsAllow'))
       }
     }
   }
@@ -233,8 +230,8 @@ function InsertSolanaSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Solana subpage')
     } else {
-      solanaSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategorySolana'))
+      solanaSubpage.setAttribute(
+          'page-title', loadTimeData.getString('siteSettingsCategorySolana'))
       const solanaDefault =
         solanaTemplate.content.getElementById('solanaDefault')
       if (!solanaDefault) {
@@ -242,11 +239,10 @@ function InsertSolanaSubpage (
           '[Brave Settings Overrides] Couldn\'t find Solana default')
       } else {
         solanaDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsSolanaBlock'))
+            'toggle-off-label',
+            loadTimeData.getString('siteSettingsSolanaBlock'))
         solanaDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsSolanaAsk'))
+            'toggle-on-label', loadTimeData.getString('siteSettingsSolanaAsk'))
       }
       const solanaExceptions =
         solanaTemplate.content.getElementById('solanaExceptions')
@@ -255,11 +251,9 @@ function InsertSolanaSubpage (
           '[Brave Settings Overrides] Couldn\'t find Solana exceptions')
       } else {
         solanaExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsBlock'))
+            'block-header', loadTimeData.getString('siteSettingsBlock'))
         solanaExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsAllow'))
+            'allow-header', loadTimeData.getString('siteSettingsAllow'))
       }
     }
   }
@@ -292,8 +286,8 @@ function InsertShieldsSubpage (
       console.error(
         '[Brave Settings Overrides] Couldn\'t find Shields subpage')
     } else {
-      shieldsSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsShieldsStatus'))
+      shieldsSubpage.setAttribute(
+          'page-title', loadTimeData.getString('siteSettingsShieldsStatus'))
       const shieldsExceptions =
         shieldsTemplate.content.getElementById('shieldsExceptions')
       if (!shieldsExceptions) {
@@ -301,11 +295,9 @@ function InsertShieldsSubpage (
           '[Brave Settings Overrides] Couldn\'t find Shields exceptions')
       } else {
         shieldsExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsShieldsDown'))
+            'block-header', loadTimeData.getString('siteSettingsShieldsDown'))
         shieldsExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsShieldsUp'))
+            'allow-header', loadTimeData.getString('siteSettingsShieldsUp'))
       }
     }
   }

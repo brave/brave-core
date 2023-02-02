@@ -5,14 +5,15 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
-import {ContentSettingsTypes} from '../site_settings/constants.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
-import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js';
-import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
-import {routes} from '../route.js'
 import './config.js'
+
+import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+
+import {loadTimeData} from '../i18n_setup.js'
+import {routes} from '../route.js'
+import {ContentSettingsTypes} from '../site_settings/constants.js'
+import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
 
 const PERMISSIONS_BASIC_REMOVE_IDS = [
   ContentSettingsTypes.BACKGROUND_SYNC,
@@ -45,7 +46,7 @@ RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Couldn\'t find shields title')
     } else {
       siteSettingsShieldsTitle.textcontent =
-        I18nBehavior.i18n('siteSettingsShields')
+          loadTimeData.getString('siteSettingsShields')
     }
   }
 })
