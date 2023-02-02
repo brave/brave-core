@@ -481,7 +481,7 @@ void SolanaProviderImpl::SignMessage(
   else
     message = std::string(blob_msg.begin(), blob_msg.end());
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, *account, message, false,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, *account, "", message, false,
       absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL);
 
   brave_wallet_service_->AddSignMessageRequest(
