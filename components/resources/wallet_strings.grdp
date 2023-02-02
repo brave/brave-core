@@ -284,6 +284,8 @@
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE" desc="Sign panel EIP-712 message title">Details</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>

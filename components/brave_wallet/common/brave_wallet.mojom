@@ -1190,6 +1190,7 @@ struct SignMessageRequest {
   OriginInfo origin_info;
   int32 id;
   string address;
+  string domain;
   string message;
   bool is_eip712;
   // These fields are for hardware eip712 signing and

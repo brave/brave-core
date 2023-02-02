@@ -54,7 +54,7 @@
         android:importantForAutofill="no"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/non_ascii_warning_layout"
-        android:lines="12"
+        android:lines="14"
         android:scrollbars="vertical"
         android:fadeScrollbars="false"
         tools:ignore="LabelFor" />
