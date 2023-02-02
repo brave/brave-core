@@ -50,6 +50,10 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
   override ready() {
     super.ready()
 
+    if (!loadTimeData.getBoolean('extensionsManifestV2Feature')) {
+      return;
+    }
+
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
       window.testing[`extensionsV2Subpage`] = this.shadowRoot

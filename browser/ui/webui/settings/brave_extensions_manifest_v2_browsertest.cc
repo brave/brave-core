@@ -4,8 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -54,6 +56,8 @@ void NonBlockingDelay(const base::TimeDelta& delay) {
 class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
  public:
   BraveExtensionsManifestV2BrowserTest() {
+    feature_list_.InitAndEnableFeature(kExtensionsManifestV2);
+
     // Disabling CSP on webui pages so EvalJS could be run in main world.
     BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
@@ -97,6 +101,9 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
       NonBlockingDelay(base::Milliseconds(10));
     }
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {

@@ -78,8 +78,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   web_ui->AddMessageHandler(
       std::make_unique<BraveTorSnowflakeExtensionHandler>());
-  web_ui->AddMessageHandler(
-      std::make_unique<BraveExtensionsManifestV2Handler>());
+  if (base::FeatureList::IsEnabled(kExtensionsManifestV2)) {
+    web_ui->AddMessageHandler(
+        std::make_unique<BraveExtensionsManifestV2Handler>());
+  }
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
@@ -132,6 +134,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ShouldExposeElementsForTesting());
 
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
+
+  html_source->AddBoolean("extensionsManifestV2Feature",
+                          base::FeatureList::IsEnabled(kExtensionsManifestV2));
 }
 
 // static

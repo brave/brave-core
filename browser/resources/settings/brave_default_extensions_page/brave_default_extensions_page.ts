@@ -50,7 +50,8 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
           return {}
         },
       },
-      isExtensionsV2_: {
+      isExtensionsManifestV2FeatureEnabled_: Boolean,
+      isExtensionsManifestV2Routed_: {
         type: Boolean,
         value: false,
       },
@@ -60,10 +61,14 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   private browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
   showRestartToast_: boolean
   widevineEnabledPref_: chrome.settingsPrivate.PrefObject
-  isExtensionsV2_: boolean
+  isExtensionsManifestV2FeatureEnabled_: boolean
+  isExtensionsManifestV2Routed_: boolean
 
   override ready() {
     super.ready()
+
+    this.isExtensionsManifestV2FeatureEnabled_ =
+      loadTimeData.getBoolean('extensionsManifestV2Feature')
 
     this.addWebUiListener(
       'brave-needs-restart-changed', (needsRestart: boolean) => {
@@ -83,7 +88,7 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   /** @protected */
   currentRouteChanged() {
     const router = Router.getInstance();
-    this.isExtensionsV2_ =
+    this.isExtensionsManifestV2Routed_ =
       router.getCurrentRoute() == router.getRoutes().EXTENSIONS_V2;
   }
 

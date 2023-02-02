@@ -26,6 +26,10 @@ constexpr const char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
 constexpr const char kAdGuardId[] = "bgnkhhnnamicmpeenaelnjfhikgbkllg";
 }  // namespace
 
+BASE_FEATURE(kExtensionsManifestV2,
+             "ExtensionsManifestV2",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 class ExtensionWebstoreInstaller final
     : public extensions::WebstoreInstallWithPrompt {
  public:

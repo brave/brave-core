@@ -25,7 +25,7 @@
   }
 
   #needsRestart .flex:last-child {
-    text-align: right; /* csschecker-disable-line left-right */
+    text-align: right;  /* csschecker-disable-line left-right */
   }
 
   .flex {
@@ -53,7 +53,7 @@
   }
 </style>
 
-<div hidden="[[isExtensionsV2_]]">
+<div hidden="[[isExtensionsManifestV2Routed_]]">
   <settings-toggle-button id="googleLoginForExtensions" class="cr-row first"
     pref="{{prefs.signin.allowed_on_next_startup}}" learn-more-url="$i18n{googleLoginLearnMoreURL}"
     label="$i18n{googleLoginForExtensionsDesc}">
@@ -83,8 +83,8 @@
   <settings-toggle-button id="widevineEnabled" class="cr-row" pref="[[widevineEnabledPref_]]" label="Widevine"
     sub-label="$i18n{widevineEnabledDesc}" on-settings-boolean-control-change="onWidevineEnabledChange_">
   </settings-toggle-button>
-  <div class="settings-row" id="manageV2ExtensionsRow">
-    <cr-link-row icon-class="icon-external" label="$i18n{manageExtensionsV2Label}"
+  <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">
+    <cr-link-row icon-class=" icon-external" label="$i18n{manageExtensionsV2Label}"
       sub-label="$i18n{manageExtensionsV2SubLabel}" on-click="openManageV2ExtensionPage_">
     </cr-link-row>
   </div>
