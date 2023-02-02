@@ -23,7 +23,7 @@ import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
 import {
   getGasFeeFiatValue,
-  getLocaleKeyForTxStatus,
+  getTransactionStatusString,
   ParsedTransactionWithoutFiatValues
 } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
@@ -503,7 +503,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         <StatusRow>
           <StatusBubble status={transaction.status} />
           <DetailTextDarkBold>
-            {getLocale(getLocaleKeyForTxStatus(transaction.status))}
+            {getTransactionStatusString(transaction.status)}
           </DetailTextDarkBold>
         </StatusRow>
 

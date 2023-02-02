@@ -140,6 +140,8 @@ def cargo_install(tool):
     if "version" in tool:
         cargo_args.append("--version")
         cargo_args.append(tool["version"])
+    if "locked" in tool:
+        cargo_args.append("--locked")
     if "features" in tool:
         cargo_args.append("--features")
         cargo_args.append(tool["features"])
@@ -204,6 +206,9 @@ def main():
         },
         {
             "name": "cargo-audit",
+            # Pin to the v0.16.0 upstream Cargo.lock while our MSRV is 1.59.0.
+            "version": "0.16.0",
+            "locked": True,
             "features": "vendored-openssl",
         }
     ]

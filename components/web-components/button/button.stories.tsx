@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { PlusIcon } from 'brave-ui/components/icons'
+import * as Icons from 'brave-ui/components/icons'
 import Button, { ButtonIconContainer } from './index'
 
 export default {
@@ -35,13 +35,13 @@ const Template: ComponentStory<typeof Button> = function (args) {
     <Button {...args}>I am a button</Button>
     <Button {...args}>
       <ButtonIconContainer>
-        <PlusIcon />
+        <Icons.PlusIcon />
       </ButtonIconContainer>
       I am a button with icon
     </Button>
     <Button {...args}>
       <ButtonIconContainer>
-        <PlusIcon />
+        <Icons.PlusIcon />
       </ButtonIconContainer>
     </Button>
   </div>

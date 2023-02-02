@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private BraveNewsController mBraveNewsController;
@@ -46,6 +47,7 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     private List<Channel> mChannelList;
     private List<Publisher> mPublisherList;
     private List<FeedSearchResultItem> mFeedSearchResultItemList;
+    private HashMap<String, String> mFeedSearchResultItemFollowMap;
     private RequestManager mGlide;
     private String mBraveNewsPreferencesType;
     private String mSearchUrl;
@@ -119,6 +121,11 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                                 || mBraveNewsPreferencesSearchType
                                         == BraveNewsPreferencesSearchType.NotFound)) {
                     setSearchUrl(position, viewHolder);
+                } else if (position - getChannelItemsCount() - ONE_ITEM_SPACE >= 0
+                        && position - getChannelItemsCount() - ONE_ITEM_SPACE
+                                < mPublisherList.size()) {
+                    setSource(position, viewHolder,
+                            mPublisherList.get(position - getChannelItemsCount() - ONE_ITEM_SPACE));
                 } else if (mBraveNewsPreferencesSearchType
                         == BraveNewsPreferencesSearchType.NewSource) {
                     int resultPosition = 0;
@@ -128,12 +135,6 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
                     resultPosition += mPublisherList.size() + ONE_ITEM_SPACE;
 
                     setFeedSearchResultItem(position - resultPosition, viewHolder);
-
-                } else if (position - getChannelItemsCount() - ONE_ITEM_SPACE >= 0
-                        && position - getChannelItemsCount() - ONE_ITEM_SPACE
-                                < mPublisherList.size()) {
-                    setSource(position, viewHolder,
-                            mPublisherList.get(position - getChannelItemsCount() - ONE_ITEM_SPACE));
                 }
 
             } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
@@ -177,7 +178,6 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     private void setFeedSearchResultItem(int position, NewsPreferencesViewHolder viewHolder) {
         if (position >= 0 && position < mFeedSearchResultItemList.size()) {
             FeedSearchResultItem feedSearchResultItem = mFeedSearchResultItemList.get(position);
-
             viewHolder.name.setText(feedSearchResultItem.feedTitle);
             if (feedSearchResultItem.feedUrl != null && feedSearchResultItem.feedUrl.url != null
                     && feedSearchResultItem.feedUrl.url.length() > 0) {
@@ -189,12 +189,28 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
             viewHolder.imagePublisher.setVisibility(View.GONE);
             viewHolder.imageChannel.setVisibility(View.GONE);
             viewHolder.btnFollow.setVisibility(View.VISIBLE);
-
-            displayFollowButton(false, R.string.follow, viewHolder);
-
+            boolean isFollow = mFeedSearchResultItemFollowMap != null
+                    && mFeedSearchResultItemFollowMap.containsKey(feedSearchResultItem.feedUrl.url)
+                    && mFeedSearchResultItemFollowMap.get(feedSearchResultItem.feedUrl.url) != null;
+            if (!isFollow) {
+                displayFollowButton(false, R.string.follow, viewHolder);
+            } else {
+                displayFollowButton(true, R.string.unfollow, viewHolder);
+            }
             viewHolder.btnFollow.setOnClickListener(view -> {
-                mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
-                        position, feedSearchResultItem.feedUrl, true);
+                if (!isFollow) {
+                    mBraveNewsPreferencesListener.subscribeToNewDirectFeed(
+                            position, feedSearchResultItem.feedUrl, true);
+                } else if (mFeedSearchResultItemFollowMap.containsKey(
+                                   feedSearchResultItem.feedUrl.url)) {
+                    String publisherId =
+                            mFeedSearchResultItemFollowMap.get(feedSearchResultItem.feedUrl.url);
+                    mBraveNewsPreferencesListener.updateFeedSearchResultItem(
+                            position, feedSearchResultItem.feedUrl.url, publisherId);
+
+                    mBraveNewsPreferencesListener.onPublisherPref(
+                            publisherId, UserEnabled.DISABLED);
+                }
             });
         }
     }
@@ -351,11 +367,13 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public void setItems(List<Channel> channelList, List<Publisher> publisherList, String searchUrl,
-            BraveNewsPreferencesSearchType braveNewsPreferencesSearchType) {
+            BraveNewsPreferencesSearchType braveNewsPreferencesSearchType,
+            HashMap<String, String> feedSearchResultItemFollowMap) {
         mChannelList = channelList;
         mPublisherList = publisherList;
         mSearchUrl = searchUrl;
         mBraveNewsPreferencesSearchType = braveNewsPreferencesSearchType;
+        mFeedSearchResultItemFollowMap = feedSearchResultItemFollowMap;
 
         if (mChannelList.size() > 0 && mChannelIcons.size() == 0) {
             mChannelIcons = BraveNewsUtils.getChannelIcons();
@@ -382,6 +400,19 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
         } else if (braveNewsPreferencesSearchType == BraveNewsPreferencesSearchType.NotFound) {
             notifyItemRangeInserted(startPosition, ONE_ITEM_SPACE);
         }
+    }
+
+    public void setFeedSearchResultItemFollowMap(
+            int position, HashMap<String, String> feedSearchResultItemFollowMap) {
+        mFeedSearchResultItemFollowMap = feedSearchResultItemFollowMap;
+        int itemPosition = 0;
+        if (mChannelList.size() > 0) {
+            itemPosition = mChannelList.size() + ONE_ITEM_SPACE;
+        }
+        itemPosition += mPublisherList.size() + ONE_ITEM_SPACE;
+        itemPosition += position;
+
+        notifyItemChanged(itemPosition);
     }
 
     @Override

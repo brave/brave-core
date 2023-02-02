@@ -12,6 +12,7 @@ import {
   BraveWallet,
   DefaultCurrencies
 } from '../constants/types'
+import { isComponentInStorybook } from '../utils/string-utils'
 
 const marketUiOrigin = loadTimeData.getString('braveWalletMarketUiBridgeUrl')
 
@@ -65,7 +66,7 @@ export type UpdateDepositableAssetsMessage = MarketCommandMessage & {
 }
 
 export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message: MarketCommandMessage) => {
-  if (targetWindow) {
+  if (targetWindow && isComponentInStorybook()) {
     targetWindow.postMessage(message, braveMarketUiOrigin)
   }
 }
