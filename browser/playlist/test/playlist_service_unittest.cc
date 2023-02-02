@@ -1207,6 +1207,9 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   EXPECT_TRUE(prefs->FindPreference(kPlaylistDefaultSaveTargetListID)
                   ->IsDefaultValue());
   EXPECT_TRUE(prefs->FindPreference(kPlaylistCacheByDefault)->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetDict(kPlaylistsPref).contains(kDefaultPlaylistID));
+  EXPECT_EQ(1u, prefs->GetDict(kPlaylistsPref).size());
+  EXPECT_EQ(0u, prefs->GetDict(kPlaylistItemsPref).size());
 
   // Check if data on disk is removed.
   WaitUntil(base::BindRepeating(&base::IsDirectoryEmpty, service->base_dir_));
@@ -1223,6 +1226,47 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         return base::IsDirectoryEmpty(item_path);
       },
       service->GetPlaylistItemDirPath(item->id)));
+}
+
+TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
+  // Pre-condition: There's orphaned dirs. -------------------------------------
+  auto* service = playlist_service();
+
+  mojom::PlaylistItem item;
+  item.id = base::Token::CreateRandom().ToString();
+  item.page_source = GURL("https://foo.com/");
+  item.thumbnail_source = GURL("https://thumbnail.src/");
+  item.thumbnail_path = GURL("file://thumbnail/path/");
+  item.media_source = GURL("https://media.src/");
+  item.media_path = GURL("file://media/path/");
+  item.cached = false;
+  item.author = "me";
+
+  std::vector<mojom::PlaylistItemPtr> items;
+  items.push_back(item.Clone());
+
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+                                  std::move(items));
+
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) {
+        return base::DirectoryExists(item_path);
+      },
+      service->GetPlaylistItemDirPath(item.id)));
+
+  // Now removes preference without cleaning up dir - abnormal situation.
+  prefs()->ClearPref(kPlaylistItemsPref);
+  prefs()->ClearPref(kPlaylistsPref);
+
+  // Call method ---------------------------------------------------------------
+  service->CleanUpOrphanedPlaylistItemDirs();
+
+  // Verify that the the dir is removed ----------------------------------------
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) {
+        return !base::DirectoryExists(item_path);
+      },
+      service->GetPlaylistItemDirPath(item.id)));
 }
 
 }  // namespace playlist

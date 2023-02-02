@@ -174,6 +174,8 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ReorderItemFromPlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, RemoveItemFromPlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, 
+                           CleanUpOrphanedPlaylistItemDirs);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
