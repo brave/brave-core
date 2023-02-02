@@ -266,7 +266,7 @@ export interface WalletState {
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
-  isNftAutopinningFeatureEnabled: boolean
+  isNftPinningFeatureEnabled: boolean
 }
 
 export interface PanelState {

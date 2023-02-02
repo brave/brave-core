@@ -130,7 +130,7 @@ const defaultState: WalletState = {
   selectedCurrency: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
-  isNftAutopinningFeatureEnabled: false
+  isNftPinningFeatureEnabled: false
 }
 
  // async actions
@@ -298,7 +298,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.accounts = accounts
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
-        state.isNftAutopinningFeatureEnabled =
+        state.isNftPinningFeatureEnabled =
           payload.isNftPinningFeatureEnabled
       },
 
