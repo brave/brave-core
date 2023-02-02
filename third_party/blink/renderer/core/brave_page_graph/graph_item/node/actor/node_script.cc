@@ -5,11 +5,10 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 
-#include <sstream>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DynamicTo;
 
@@ -17,7 +16,7 @@ namespace brave_page_graph {
 
 namespace {
 
-std::string GetScriptTypeAsString(const ScriptSource& script_source) {
+String GetScriptTypeAsString(const ScriptSource& script_source) {
   if (script_source.is_module) {
     return "module";
   }
@@ -60,24 +59,26 @@ ItemName NodeScript::GetItemName() const {
 }
 
 ItemDesc NodeScript::GetItemDesc() const {
-  std::stringstream builder;
-  builder << NodeActor::GetItemDesc();
+  WTF::TextStream ts;
+  ts << NodeActor::GetItemDesc();
 
   if (!script_data_.source.url.IsEmpty()) {
-    builder << " [" << script_data_.source.url << "]";
+    ts << " [" << script_data_.source.url << "]";
   }
 
-  return builder.str();
+  return ts.Release();
 }
 
 void NodeScript::AddInEdge(const GraphEdge* in_edge) {
   NodeActor::AddInEdge(in_edge);
   if (const EdgeExecute* execute_in_edge = DynamicTo<EdgeExecute>(in_edge)) {
     if (const NodeHTMLElement* element =
-            DynamicTo<NodeHTMLElement>(execute_in_edge->GetOutNode())) {
-      if (element->TagName() == "script" &&
-          element->GetAttributes().count("src") == 1) {
-        url_ = element->GetAttributes().at("src");
+            DynamicTo<NodeHTMLElement>(execute_in_edge->GetOutNode());
+        element && element->TagName() == "script") {
+      const auto& attributes = element->GetAttributes();
+      const auto source = attributes.find("src");
+      if (source != attributes.end()) {
+        url_ = source->value;
       }
     }
   }
@@ -92,7 +93,7 @@ void NodeScript::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node,
                      GetScriptTypeAsString(script_data_.source));
   GraphMLAttrDefForType(kGraphMLAttrDefSource)
-      ->AddValueNode(doc, parent_node, script_data_.code.Utf8());
+      ->AddValueNode(doc, parent_node, script_data_.code);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->AddValueNode(doc, parent_node, url_);
 }

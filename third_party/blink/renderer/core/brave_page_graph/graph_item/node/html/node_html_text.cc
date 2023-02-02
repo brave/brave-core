@@ -15,6 +15,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DOMNodeId;
 using ::blink::DynamicTo;
@@ -23,7 +24,7 @@ namespace brave_page_graph {
 
 NodeHTMLText::NodeHTMLText(GraphItemContext* context,
                            const DOMNodeId dom_node_id,
-                           const std::string& text)
+                           const String& text)
     : NodeHTML(context, dom_node_id), text_(text) {}
 
 NodeHTMLText::~NodeHTMLText() = default;
@@ -33,8 +34,10 @@ ItemName NodeHTMLText::GetItemName() const {
 }
 
 ItemDesc NodeHTMLText::GetItemDesc() const {
-  return NodeHTML::GetItemDesc() +
-         " [length: " + base::NumberToString(text_.size()) + "]";
+  WTF::TextStream ts;
+  ts << NodeHTML::GetItemDesc()
+     << " [length: " << base::NumberToString(text_.length()) << "]";
+  return ts.Release();
 }
 
 void NodeHTMLText::AddGraphMLAttributes(xmlDocPtr doc,

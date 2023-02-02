@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EVENT_LISTENER_EDGE_EVENT_LISTENER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EVENT_LISTENER_EDGE_EVENT_LISTENER_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -21,11 +20,11 @@ class EdgeEventListener : public GraphEdge {
   EdgeEventListener(GraphItemContext* context,
                     NodeHTMLElement* out_node,
                     NodeActor* in_node,
-                    const std::string& event_type,
+                    const String& event_type,
                     const EventListenerId listener_id);
   ~EdgeEventListener() override;
 
-  const std::string& GetEventType() const { return event_type_; }
+  const String& GetEventType() const { return event_type_; }
   EventListenerId GetListenerId() const { return listener_id_; }
 
   ItemName GetItemName() const override;
@@ -37,7 +36,7 @@ class EdgeEventListener : public GraphEdge {
   bool IsEdgeEventListener() const override;
 
  private:
-  const std::string event_type_;
+  const String event_type_;
   const EventListenerId listener_id_;
 };
 

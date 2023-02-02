@@ -8,6 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/graph_item_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
@@ -19,7 +20,9 @@ GraphItem::GraphItem(GraphItemContext* context)
 GraphItem::~GraphItem() = default;
 
 ItemDesc GraphItem::GetItemDesc() const {
-  return GetItemName() + " #" + base::NumberToString(id_);
+  WTF::TextStream ts;
+  ts << GetItemName() << " #" << base::NumberToString(id_);
+  return ts.Release();
 }
 
 void GraphItem::AddGraphMLAttributes(xmlDocPtr doc,

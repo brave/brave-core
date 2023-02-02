@@ -10,6 +10,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
@@ -17,7 +18,7 @@ EdgeEventListenerAction::EdgeEventListenerAction(
     GraphItemContext* context,
     NodeActor* out_node,
     NodeHTMLElement* in_node,
-    const std::string& event_type,
+    const String& event_type,
     const EventListenerId listener_id,
     NodeActor* listener_script)
     : GraphEdge(context, out_node, in_node),
@@ -35,10 +36,12 @@ ScriptId EdgeEventListenerAction::GetListenerScriptId() const {
 }
 
 ItemDesc EdgeEventListenerAction::GetItemDesc() const {
-  return GraphEdge::GetItemDesc() + " [" + event_type_ + "]" +
-         " [listener id: " + base::NumberToString(listener_id_) + "]" +
-         " [listener script id: " +
-         base::NumberToString(GetListenerScriptId()) + "]";
+  WTF::TextStream ts;
+  ts << GraphEdge::GetItemDesc() << " [" << event_type_ << "]"
+     << " [listener id: " << base::NumberToString(listener_id_) << "]"
+     << " [listener script id: " << base::NumberToString(GetListenerScriptId())
+     << "]";
+  return ts.Release();
 }
 
 void EdgeEventListenerAction::AddGraphMLAttributes(
