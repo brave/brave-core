@@ -74,10 +74,10 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     
     var deviceTypeImage: UIImage?
     
-    switch sectionDetails.deviceType {
+    switch sectionDetails.deviceFormFactor {
     case .phone, .tablet:
       deviceTypeImage = UIImage(braveSystemNamed: "brave.tablet.and.phone")
-    case .win, .linux, .mac:
+    case .desktop:
       deviceTypeImage = UIImage(braveSystemNamed: "brave.laptop")
     default:
       deviceTypeImage = UIImage(braveSystemNamed: "brave.laptop.and.phone")
