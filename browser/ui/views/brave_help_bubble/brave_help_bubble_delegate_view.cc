@@ -205,6 +205,7 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetMultiLine(true);
   label->SetMaximumWidth(390);
   label->SetText(text);
+  label->SetAutoColorReadabilityEnabled(false);
   label->SetEnabledColor(SK_ColorWHITE);
 
   gfx::FontList font_list({"Poppins", "Arial"}, gfx::Font::NORMAL, font_size,

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 
 #include "cc/paint/paint_shader.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkPoint.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -24,7 +25,6 @@ namespace {
 constexpr int kWidth = 60;
 constexpr int kHeight = 60;
 constexpr base::TimeDelta kPulsingDuration = base::Milliseconds(1000);
-constexpr SkColor kBlockColor = SkColorSetRGB(52, 172, 224);
 constexpr SkPoint kPts[] = {{0, 0}, {60, 60}};
 constexpr SkColor4f kColors[] = {{0.66, 0.10, 0.47, 1.f},
                                  {0.22, 0.17, 0.81, 1.f}};
@@ -33,7 +33,7 @@ sk_sp<cc::PaintShader> kBraveGradient =
     cc::PaintShader::MakeLinearGradient(kPts,
                                         kColors,
                                         kPositions,
-                                        3,
+                                        std::size(kPts),
                                         SkTileMode::kClamp);
 
 void SchedulePulsingAnimation(ui::Layer* layer) {
@@ -130,16 +130,20 @@ void BraveHelpBubbleHostView::UpdatePosition() {
   auto tracked_element_origin =
       tracked_element_->GetBoundsInScreen().CenterPoint();
 
+  BrowserView* browser_view = BrowserView::GetBrowserViewForNativeWindow(
+      GetWidget()->GetNativeWindow());
+  int browser_frame_top_space = browser_view->frame()->GetTopInset();
+
   auto circle_center = gfx::Point(kWidth / 2, kHeight / 2);
 
   // Calculate the final origin point by taking into account the Browser
-  // window's position
+  // window's position and frame's top padding
   tracked_element_origin.set_x(tracked_element_origin.x() -
                                browser_root_view_origin.x() -
-                               circle_center.x());
+                               circle_center.x() + kBraveActionLeftMarginExtra);
   tracked_element_origin.set_y(tracked_element_origin.y() -
                                browser_root_view_origin.y() -
-                               circle_center.y());
+                               circle_center.y() - browser_frame_top_space);
 
   SetPosition({tracked_element_origin.x(), tracked_element_origin.y()});
 }
@@ -165,7 +169,6 @@ void BraveHelpBubbleHostView::AddedToWidget() {
 
 void BraveHelpBubbleHostView::OnPaint(gfx::Canvas* canvas) {
   cc::PaintFlags flags;
-  flags.setColor(kBlockColor);
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
   flags.setShader(kBraveGradient);

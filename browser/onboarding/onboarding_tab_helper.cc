@@ -33,11 +33,19 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
   OnboardingTabHelper::CreateForWebContents(web_contents);
 }
 
-OnboardingTabHelper::~OnboardingTabHelper() = default;
+OnboardingTabHelper::~OnboardingTabHelper() {
+  Observe(nullptr);
+  permission_request_manager_ = nullptr;
+  timer_delay_.Stop();
+}
 
 OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {}
+      content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {
+  permission_request_manager_ =
+      permissions::PermissionRequestManager::FromWebContents(web_contents);
+  permission_request_manager_->AddObserver(this);
+}
 
 void OnboardingTabHelper::DidStopLoading() {
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
@@ -47,6 +55,32 @@ void OnboardingTabHelper::DidStopLoading() {
       browser->tab_strip_model()->GetActiveWebContents();
 
   if (web_contents() != active_tab_web_contents) {
+    return;
+  }
+
+  // Avoid concurrent execution of permissions bubble checks and shields checks
+  // to prevent displaying two active bubbles on the screen.
+  // Add a delay to increase the likelihood of not interfering with the checks.
+  timer_delay_.Start(
+      FROM_HERE, base::Seconds(1), this,
+      &OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble);
+}
+
+void OnboardingTabHelper::WebContentsDestroyed() {
+  permission_request_manager_->RemoveObserver(this);
+  timer_delay_.Reset();
+}
+
+void OnboardingTabHelper::OnPromptAdded() {
+  browser_has_active_bubble_ = true;
+}
+
+void OnboardingTabHelper::OnPromptRemoved() {
+  browser_has_active_bubble_ = false;
+}
+
+void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
+  if (browser_has_active_bubble_) {
     return;
   }
 
@@ -60,19 +94,6 @@ void OnboardingTabHelper::DidStopLoading() {
       CanHighlightBraveShields()) {
     ShowBraveHelpBubbleView();
   }
-}
-
-void OnboardingTabHelper::ShowBraveHelpBubbleView() {
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  DCHECK(browser);
-
-  BraveBrowserWindow::From(browser->window())
-      ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
-
-  g_browser_process->local_state()->SetBoolean(
-      onboarding::prefs::kOnboardingIsShieldsHighlighted, true);
-
-  Observe(nullptr);
 }
 
 bool OnboardingTabHelper::CanHighlightBraveShields() {
@@ -94,6 +115,19 @@ bool OnboardingTabHelper::CanHighlightBraveShields() {
   }
 
   return false;
+}
+
+void OnboardingTabHelper::ShowBraveHelpBubbleView() {
+  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
+  DCHECK(browser);
+
+  BraveBrowserWindow::From(browser->window())
+      ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble());
+
+  g_browser_process->local_state()->SetBoolean(
+      onboarding::prefs::kOnboardingIsShieldsHighlighted, true);
+
+  Observe(nullptr);
 }
 
 std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {

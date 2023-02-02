@@ -9,12 +9,14 @@
 #include <string>
 
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "components/permissions/permission_request_manager.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 class OnboardingTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<OnboardingTabHelper> {
+      public content::WebContentsUserData<OnboardingTabHelper>,
+      public permissions::PermissionRequestManager::Observer {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents);
   OnboardingTabHelper(const OnboardingTabHelper&) = delete;
@@ -28,10 +30,21 @@ class OnboardingTabHelper
 
   // content::WebContentsObserver
   void DidStopLoading() override;
+  void WebContentsDestroyed() override;
 
-  void ShowBraveHelpBubbleView();
+  // PermissionRequestManager::Observer
+  void OnPromptAdded() override;
+  void OnPromptRemoved() override;
+
+  void PerformBraveShieldsChecksAndShowHelpBubble();
   bool CanHighlightBraveShields();
+  void ShowBraveHelpBubbleView();
   std::string GetTextForOnboardingShieldsBubble();
+
+  raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
+      nullptr;
+  bool browser_has_active_bubble_ = false;
+  base::OneShotTimer timer_delay_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

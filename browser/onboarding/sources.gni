@@ -16,6 +16,7 @@ onboarding_deps = [
   "//brave/browser:browser_process",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
+  "//components/permissions",
   "//components/pref_registry",
   "//components/prefs",
   "//content/public/browser",
