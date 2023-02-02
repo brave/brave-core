@@ -13,4 +13,5 @@ public interface BraveNewsPreferencesListener {
     void onPublisherPref(String publisherId, int userEnabled);
     void findFeeds(String url);
     void subscribeToNewDirectFeed(int position, Url feedUrl, boolean isFromFeed);
+    void updateFeedSearchResultItem(int position, String url, String publisherId);
 }
