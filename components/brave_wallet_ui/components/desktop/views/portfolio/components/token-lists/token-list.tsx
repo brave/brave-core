@@ -18,6 +18,9 @@ import {
 } from '../../../../../../constants/types'
 import { RenderTokenFunc } from './virtualized-tokens-list'
 
+// Options
+import { AssetFilterOptions, HighToLowAssetsFilterOption } from '../../../../../../options/asset-filter-options'
+
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 
@@ -71,7 +74,7 @@ export const TokenLists = ({
 
   // unsafe selectors
   const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
-  const selectedAssetFilter = useUnsafeWalletSelector(WalletSelectors.selectedAssetFilter)
+  const selectedAssetFilter = useSafeWalletSelector(WalletSelectors.selectedAssetFilter)
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
@@ -128,39 +131,43 @@ export const TokenLists = ({
     [filteredAssetList]
   )
 
+  const assetFilterItemInfo = React.useMemo(() => {
+    return AssetFilterOptions.find(item => item.id === selectedAssetFilter) ?? HighToLowAssetsFilterOption
+  }, [selectedAssetFilter])
+
   const sortedFungibleTokensList: UserAssetInfoType[] = React.useMemo(() => {
     if (hideAssetFilter) {
       return fungibleTokens
     }
     if (
-      selectedAssetFilter.id === 'highToLow' ||
-      selectedAssetFilter.id === 'lowToHigh'
+      assetFilterItemInfo.id === 'highToLow' ||
+      assetFilterItemInfo.id === 'lowToHigh'
     ) {
       return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
         const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals)
         const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals)
-        return selectedAssetFilter.id === 'highToLow'
+        return assetFilterItemInfo.id === 'highToLow'
           ? bFiatBalance.toNumber() - aFiatBalance.toNumber()
           : aFiatBalance.toNumber() - bFiatBalance.toNumber()
       })
     }
     if (
-      selectedAssetFilter.id === 'aToZ' ||
-      selectedAssetFilter.id === 'zToA'
+      assetFilterItemInfo.id === 'aToZ' ||
+      assetFilterItemInfo.id === 'zToA'
     ) {
       return [...fungibleTokens].sort(function (a, b) {
         const aName = a.asset.name.toUpperCase()
         const bName = b.asset.name.toUpperCase()
-        return selectedAssetFilter.id === 'aToZ'
+        return assetFilterItemInfo.id === 'aToZ'
           ? aName.localeCompare(bName)
           : bName.localeCompare(aName)
       })
     }
     return fungibleTokens
   }, [
-    selectedAssetFilter.id,
+    assetFilterItemInfo.id,
     fungibleTokens,
     computeFiatAmount,
     hideAssetFilter

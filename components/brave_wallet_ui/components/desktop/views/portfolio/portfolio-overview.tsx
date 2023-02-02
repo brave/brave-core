@@ -124,20 +124,20 @@ export const PortfolioOverview = () => {
 
   // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
   const visibleTokensForFilteredAccount: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return selectedAccountFilter.id === AllAccountsOption.id
+    return selectedAccountFilter === AllAccountsOption.id
       ? visibleTokensForSupportedChains
-      : visibleTokensForSupportedChains.filter((token) => token.coin === selectedAccountFilter.coin)
-  }, [visibleTokensForSupportedChains, selectedAccountFilter])
+      : visibleTokensForSupportedChains.filter((token) => token.coin === accounts.find(account => account.id === selectedAccountFilter)?.coin)
+  }, [visibleTokensForSupportedChains, selectedAccountFilter, accounts])
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList: UserAssetInfoType[] = React.useMemo(() => {
     return visibleTokensForFilteredAccount.map((asset) => ({
       asset: asset,
-      assetBalance: selectedAccountFilter.id === AllAccountsOption.id
+      assetBalance: selectedAccountFilter === AllAccountsOption.id
         ? fullAssetBalance(asset)
-        : getBalance(selectedAccountFilter, asset)
+        : getBalance(accounts.find(account => account.id === selectedAccountFilter), asset)
     }))
-  }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance])
+  }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance, accounts])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
     return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
