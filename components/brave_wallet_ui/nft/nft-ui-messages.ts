@@ -5,8 +5,9 @@
 
 import { loadTimeData } from '../../common/loadTimeData'
 import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
+import { isComponentInStorybook } from '../utils/string-utils'
 
-const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl')
+const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl') || ''
 // remove trailing /
 export const braveNftDisplayOrigin = nftDisplayOrigin.endsWith('/') ? nftDisplayOrigin.slice(0, -1) : nftDisplayOrigin
 
@@ -63,7 +64,7 @@ export type ToggleNftModal = CommandMessage & {
 }
 
 export const sendMessageToNftUiFrame = (targetWindow: Window | null, message: CommandMessage) => {
-  if (targetWindow) {
+  if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveNftDisplayOrigin)
   }
 }
