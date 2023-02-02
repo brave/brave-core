@@ -183,7 +183,6 @@ bool BraveFirstRunDialog::Accept() {
 }
 
 void BraveFirstRunDialog::WindowClosing() {
-  first_run::SetShouldShowWelcomePage();
   Done();
 }
 
