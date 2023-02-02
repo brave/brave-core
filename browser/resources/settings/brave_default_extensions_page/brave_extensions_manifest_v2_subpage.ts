@@ -12,6 +12,7 @@ import { PrefsMixin } from '../prefs/prefs_mixin.js'
 import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import { BraveDefaultExtensionsBrowserProxyImpl, ExtensionV2 } from './brave_default_extensions_browser_proxy.js'
 import { getTemplate } from './brave_extensions_manifest_v2_subpage.html.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 const BraveExtensionsV2SubpageBase =
   WebUiListenerMixin(PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))
@@ -48,8 +49,14 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
 
   override ready() {
     super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing[`extensionsV2Subpage`] = this.shadowRoot
+    }
+
     this.addWebUiListener('brave-extension-manifest-v2-changed',
-      () => { this.onExtensionV2Changed_ })
+      () => { this.onExtensionV2Changed_() })
     this.getExtensions_()
   }
 
