@@ -50,6 +50,7 @@ class SettingsViewController: TableViewController {
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
+  private let braveCore: BraveCoreMain
 
   private let featureSectionUUID: UUID = .init()
   private let walletRowUUID: UUID = .init()
@@ -78,6 +79,7 @@ class SettingsViewController: TableViewController {
     self.p3aUtilities = braveCore.p3aUtils
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
+    self.braveCore = braveCore
 
     super.init(style: .insetGrouped)
   }
@@ -254,6 +256,11 @@ class SettingsViewController: TableViewController {
         }, image: UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
 
+    section.rows.append(Row(text: Strings.BraveIPFS.ipfsSettingsTitle, selection: {
+      let controller = IPFSSettingsViewController(ipfsAPI: self.braveCore.ipfsAPI)
+      self.navigationController?.pushViewController(controller, animated: true)
+    }, image: UIImage(named: "settings-ipfs", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator))
+
     vpnRow = vpnSettingsRow()
     if let vpnRow = vpnRow {
       section.rows.append(vpnRow)
@@ -325,7 +332,7 @@ class SettingsViewController: TableViewController {
         option: Preferences.General.mediaAutoBackgrounding,
         image: UIImage(named: "background_play_settings_icon", in: .module, compatibleWith: nil)!.template),
     ])
-    
+
     let websiteRedirectsRow = Row(
       text: Strings.urlRedirectsSettings,
       selection: { [unowned self] in
@@ -339,13 +346,13 @@ class SettingsViewController: TableViewController {
 
   private lazy var tabsSection: Static.Section = {
     var tabs = Static.Section(header: .title(Strings.tabsSettingsSectionTitle), rows: [])
-    
+
     if UIDevice.current.userInterfaceIdiom == .phone {
       tabs.rows.append(
         Row(cellClass: LocationViewPositionPickerCell.self)
       )
     }
-    
+
     if UIDevice.current.userInterfaceIdiom == .pad {
       tabs.rows.append(
         Row(
@@ -374,7 +381,7 @@ class SettingsViewController: TableViewController {
       }
       tabs.rows.append(row)
     }
-    
+
     let autoCloseSetting =
     Preferences
       .AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value)?.displayString
@@ -398,12 +405,12 @@ class SettingsViewController: TableViewController {
       optionsViewController.footerText = Strings.Settings.autocloseTabsSettingFooter
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
-    
+
     tabs.rows.append(autoCloseTabsRow)
-    
+
     return tabs
   }()
-  
+
   private lazy var displaySection: Static.Section = {
     var display = Static.Section(
       header: .title(Strings.displaySettingsSection),
@@ -514,7 +521,7 @@ class SettingsViewController: TableViewController {
               self.settingsDelegate?.settingsOpenURLInNewTab(url)
               self.dismiss(animated: true)
             }
-            
+
             return vc
           }
         }()
