@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {BraveAddSiteDialogElement} from '../brave_add_site_dialog/brave_add_site_dialog.js'
-import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
+import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerComponentReplacement(
   'add-site-dialog',

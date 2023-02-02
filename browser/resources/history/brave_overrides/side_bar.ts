@@ -6,7 +6,7 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride} from 'chrome://resources/polymer_overriding.js'
+import {RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterStyleOverride(
   'history-side-bar',

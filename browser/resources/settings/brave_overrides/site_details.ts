@@ -5,10 +5,9 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
+import {loadTimeData} from '../i18n_setup.js'
 
 RegisterPolymerTemplateModifications({
   'site-details': (templateContent) => {
@@ -45,7 +44,7 @@ RegisterPolymerTemplateModifications({
           '[Brave Settings Overrides] Couldn\'t find autoplay settings')
       } else {
         autoplaySettings.setAttribute(
-          'label', I18nBehavior.i18n('siteSettingsAutoplay'))
+          'label', loadTimeData.getString('siteSettingsAutoplay'))
       }
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
@@ -66,7 +65,7 @@ RegisterPolymerTemplateModifications({
           '[Brave Settings Overrides] Couldn\'t find Google signin settings')
       } else {
         googleSignInSettings.setAttribute(
-          'label', I18nBehavior.i18n('siteSettingsGoogleSignIn'))
+          'label', loadTimeData.getString('siteSettingsGoogleSignIn'))
       }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
@@ -85,7 +84,7 @@ RegisterPolymerTemplateModifications({
             '[Brave Settings Overrides] Couldn\'t find Ethereum settings')
         } else {
           ethereumSettings.setAttribute(
-            'label', I18nBehavior.i18n('siteSettingsEthereum'))
+            'label', loadTimeData.getString('siteSettingsEthereum'))
         }
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
@@ -102,11 +101,11 @@ RegisterPolymerTemplateModifications({
             '[Brave Settings Overrides] Couldn\'t find Solana settings')
         } else {
           solanaSettings.setAttribute(
-            'label', I18nBehavior.i18n('siteSettingsSolana'))
+            'label', loadTimeData.getString('siteSettingsSolana'))
         }
       }
     }
-    const usageSection = templateContent.querySelector('div#usage')    
+    const usageSection = templateContent.querySelector('div#usage')
     if (!usageSection) {
       console.error(`[Brave Settings Overrides] Couldn't find usageSection item`)
     } else {
@@ -131,7 +130,7 @@ RegisterPolymerTemplateModifications({
         console.error(
           '[Brave Settings Overrides] Couldn\'t find Shields header')
       } else {
-        shieldsHeader.textContent = I18nBehavior.i18n('siteSettingsShields')
+        shieldsHeader.textContent = loadTimeData.getString('siteSettingsShields')
       }
       const shieldsSettings = templateContent.querySelector(
         'div#shields div.list-frame > site-details-permission:nth-child(1)')
@@ -140,7 +139,7 @@ RegisterPolymerTemplateModifications({
           '[Brave Settings Overrides] Couldn\'t find Shields settings')
       } else {
         shieldsSettings.setAttribute(
-          'label', I18nBehavior.i18n('siteSettingsShieldsStatus'))
+          'label', loadTimeData.getString('siteSettingsShieldsStatus'))
       }
     }
   }

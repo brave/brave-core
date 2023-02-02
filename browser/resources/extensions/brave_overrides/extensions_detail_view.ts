@@ -5,8 +5,8 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications, RegisterPolymerComponentBehaviors} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
+import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 
 RegisterPolymerTemplateModifications({
@@ -28,14 +28,14 @@ RegisterPolymerTemplateModifications({
       console.error('[Brave Extensions Overrides] Could not find incognitoWarningDiv')
       return
     }
-    incognitoWarningDiv.innerText = I18nBehavior.i18n('privateInfoWarning')
+    incognitoWarningDiv.innerText = loadTimeData.getString('privateInfoWarning')
     const spanningWarningSpan = document.createElement('span')
     spanningWarningSpan.setAttribute('class', 'section-content')
     spanningWarningSpan.setAttribute('hidden', '[[data.isSplitMode]]')
-    spanningWarningSpan.innerText = ' ' +  I18nBehavior.i18n('spanningInfoWarning')
+    spanningWarningSpan.innerText = ' ' +  loadTimeData.getString('spanningInfoWarning')
     const privateAndTorWarningSpan = document.createElement('span')
     privateAndTorWarningSpan.setAttribute('class', 'section-content')
-    privateAndTorWarningSpan.innerText = ' ' + I18nBehavior.i18n('privateAndTorInfoWarning')
+    privateAndTorWarningSpan.innerText = ' ' + loadTimeData.getString('privateAndTorInfoWarning')
     incognitoWarningDiv.appendChild(spanningWarningSpan)
     incognitoWarningDiv.appendChild(privateAndTorWarningSpan)
   }

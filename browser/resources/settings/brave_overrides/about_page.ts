@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import { html, RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://resources/polymer_overriding.js'
+import { html, RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://resources/brave/polymer_overriding.js'
 import {getSectionElement} from './basic_page.js'
 
 RegisterStyleOverride(

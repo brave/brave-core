@@ -5,8 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
@@ -100,7 +99,7 @@ RegisterPolymerTemplateModifications({
           '[Brave Settings Overrides] Couldn\'t find MRU cycling toggle')
       } else {
         mruCyclingToggle.setAttribute(
-          'label', I18nBehavior.i18n('mruCyclingSettingLabel'))
+          'label', loadTimeData.getString('mruCyclingSettingLabel'))
       }
       const isSpeedreaderEnabled =
         loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
@@ -120,11 +119,11 @@ RegisterPolymerTemplateModifications({
             '[Brave Settings Overrides] Couldn\'t find Speedreader toggle')
         } else {
           speedreaderToggle.setAttribute(
-            'label', I18nBehavior.i18n('speedreaderSettingLabel'))
+            'label', loadTimeData.getString('speedreaderSettingLabel'))
           speedreaderToggle.setAttribute(
-            'sub-label', I18nBehavior.i18n('speedreaderSettingSubLabel'))
+            'sub-label', loadTimeData.getString('speedreaderSettingSubLabel'))
           speedreaderToggle.setAttribute(
-            'learn-more-url', I18nBehavior.i18n('speedreaderLearnMoreURL'))
+            'learn-more-url', loadTimeData.getString('speedreaderLearnMoreURL'))
         }
       }
     }

@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index ed6eb9641ff5bb3a25d475929daf04811c10c009..855cdaf9a6d3e3329ad1807e5da0b2acf56f07af 100644
+index ed6eb9641ff5bb3a25d475929daf04811c10c009..bd7e2d576cd949d693dad324db3ebfb4106885c1 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -120,6 +120,7 @@ generate_grd("build_grd") {
@@ -10,3 +10,9 @@ index ed6eb9641ff5bb3a25d475929daf04811c10c009..855cdaf9a6d3e3329ad1807e5da0b2ac
  }
  
  if (is_chromeos_ash) {
+@@ -154,4 +155,5 @@ ts_library("library") {
+     "//ui/webui/resources/js:build_ts",
+     "//ui/webui/resources/mojo:library",
+   ]
++  import("//brave/ui/webui/resources/sources.gni") deps += brave_resources_library_deps
+ }

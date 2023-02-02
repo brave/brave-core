@@ -5,8 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentBehaviors} from 'chrome://resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
+import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
   'settings-import-data-dialog': (templateContent) => {
@@ -15,12 +14,12 @@ RegisterPolymerTemplateModifications({
       <settings-checkbox id="importDialogExtensions"
         hidden="[[!selected_.extensions]]"
         pref="{{prefs.import_dialog_extensions}}"
-        label="${I18nBehavior.i18n('importExtensions')}" no-set-pref>
+        label="${loadTimeData.getString('importExtensions')}" no-set-pref>
       </settings-checkbox>
       <settings-checkbox id="importDialogPayments"
         hidden="[[!selected_.payments]]"
         pref="{{prefs.import_dialog_payments}}"
-        label="${I18nBehavior.i18n('importPayments')}" no-set-pref>
+        label="${loadTimeData.getString('importPayments')}" no-set-pref>
       </settings-checkbox>
     `)
   }
