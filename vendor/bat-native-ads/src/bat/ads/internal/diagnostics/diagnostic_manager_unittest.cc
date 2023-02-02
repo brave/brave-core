@@ -48,32 +48,32 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
         ASSERT_TRUE(list);
 
         const base::Value expected_list = base::test::ParseJson(
-            R"~([
-          {
-            "name": "Device Id",
-            "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
-          },
-          {
-            "name": "Enabled",
-            "value": "true"
-          },
-          {
-            "name": "Locale",
-            "value": "en_KY"
-          },
-          {
-            "name": "Catalog ID",
-            "value": "da5dd0e8-71e9-4607-a45b-13e28b607a81"
-          },
-          {
-            "name": "Catalog last updated",
-            "value": "Wednesday, November 18, 1970 at 12:34:56\u202fPM"
-          },
-          {
-            "name": "Last unidle time",
-            "value": "Monday, July 8, 1996 at 9:25:00\u202fAM"
-          }
-        ])~");
+            R"([
+                {
+                  "name": "Device Id",
+                  "value": "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e"
+                },
+                {
+                  "name": "Enabled",
+                  "value": "true"
+                },
+                {
+                  "name": "Locale",
+                  "value": "en_KY"
+                },
+                {
+                  "name": "Catalog ID",
+                  "value": "da5dd0e8-71e9-4607-a45b-13e28b607a81"
+                },
+                {
+                  "name": "Catalog last updated",
+                  "value": "Wednesday, November 18, 1970 at 12:34:56\u202fPM"
+                },
+                {
+                  "name": "Last unidle time",
+                  "value": "Monday, July 8, 1996 at 9:25:00\u202fAM"
+                }
+              ])");
         ASSERT_TRUE(expected_list.is_list());
 
         EXPECT_EQ(expected_list, list);

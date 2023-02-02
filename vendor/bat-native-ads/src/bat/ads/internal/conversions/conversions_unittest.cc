@@ -1361,7 +1361,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Act
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/thankyou")},
-      R"~(<html><meta name="ad-conversion-id" content="abc123"></html>)~",
+      R"(<html><meta name="ad-conversion-id" content="abc123"></html>)",
       resource.get()->id_patterns);
 
   // Assert

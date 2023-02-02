@@ -29,7 +29,7 @@ namespace ads::privacy::cbr {
 
 namespace {
 constexpr char kBatchDLEQProofBase64[] =
-    R"~(y0a409PTX6g97xC0Xq8cCuY7ElLPaP+QJ6DaHNfqlQWizBYCSWdaleakKatkyNswfPmkQuhL7awmzQ0ygEUGDw==)~";
+    R"(y0a409PTX6g97xC0Xq8cCuY7ElLPaP+QJ6DaHNfqlQWizBYCSWdaleakKatkyNswfPmkQuhL7awmzQ0ygEUGDw==)";
 }  // namespace
 
 TEST(BatAdsBatchDLEQProofTest, FailToInitialize) {
