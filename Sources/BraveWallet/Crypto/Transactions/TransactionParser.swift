@@ -356,7 +356,7 @@ enum TransactionParser {
       let fromValue = "\(amount)"
       var fromValueFormatted = ""
       var fromFiat = "$0.00"
-      if let token = fromToken  {
+      if let token = fromToken {
         fromValueFormatted = formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?.trimmingTrailingZeros ?? ""
         if token.isNft {
           fromFiat = "" // don't show fiat for NFTs

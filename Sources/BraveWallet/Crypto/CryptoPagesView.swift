@@ -58,7 +58,7 @@ struct CryptoPagesView: View {
     })
     .background(
       NavigationLink(
-        destination: WalletSettingsView(
+        destination: Web3SettingsView(
           settingsStore: cryptoStore.settingsStore,
           networkStore: cryptoStore.networkStore,
           keyringStore: keyringStore
