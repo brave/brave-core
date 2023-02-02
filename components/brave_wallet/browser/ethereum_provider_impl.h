@@ -248,6 +248,7 @@ class EthereumProviderImpl final
       mojom::ProviderError error,
       const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
+                           const std::string& domain,
                            const std::string& message,
                            std::vector<uint8_t>&& message_to_sign,
                            const absl::optional<std::string>& domain_hash,
