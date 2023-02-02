@@ -13,7 +13,6 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/omnibox/browser/omnibox_edit_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 
 namespace {
