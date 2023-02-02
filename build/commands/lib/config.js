@@ -932,7 +932,7 @@ Config.prototype.update = function (options) {
     this.extraNinjaOpts.push('--offline')
   }
 
-  if (options.target) {
+  if (options.target?.length) {
     this.buildTarget = options.target
   }
 

@@ -130,7 +130,7 @@ program
   .option('--use_goma [arg]', 'whether to use Goma for building', JSON.parse)
   .option('--goma_offline', 'use offline mode for goma')
   .option('--force_gn_gen', 'always run gn gen')
-  .option('--target <target>', 'Custom target to build, instead of the default browser target')
+  .option('--target <target>', 'Custom targets to build, instead of the default browser target', collect, [])
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
   .option('--no_gn_gen', 'Build without running gn gen')
   .arguments('[build_config]')

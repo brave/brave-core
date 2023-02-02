@@ -612,8 +612,9 @@ const util = {
     if (config.ignore_compile_failure)
       num_compile_failure = 0
 
+    const targets = Array.isArray(target) ? target : [target]
     let ninjaOpts = [
-      '-C', options.outputDir || config.outputDir, target,
+      '-C', options.outputDir || config.outputDir, ...targets,
       '-k', num_compile_failure,
       ...config.extraNinjaOpts
     ]
