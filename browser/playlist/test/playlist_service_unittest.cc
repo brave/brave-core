@@ -1249,9 +1249,7 @@ TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
                                   std::move(items));
 
   WaitUntil(base::BindRepeating(
-      [](base::FilePath item_path) {
-        return base::DirectoryExists(item_path);
-      },
+      [](base::FilePath item_path) { return base::DirectoryExists(item_path); },
       service->GetPlaylistItemDirPath(item.id)));
 
   // Now removes preference without cleaning up dir - abnormal situation.
