@@ -294,24 +294,13 @@ public class FilterListResourceDownloader: ObservableObject {
     )
   }
   
-  /// This method allows us to enable selected lists by default for new users.
-  /// Make sure you use componentID to identify the filter list, as `uuid` will be deprecated in the future.
-  @MainActor private func newFilterListDefault(for componentId: String) -> Bool {
-    if let value = settingsManager.pendingDefaults[componentId] {
-      return value
-    }
-    
-    let componentIDsToOverride = [FilterList.mobileAnnoyancesComponentID]
-    return componentIDsToOverride.contains(componentId) ? true : false
-  }
-  
   /// Load filter lists from the ad block service
   @MainActor private func loadFilterLists(from regionalFilterLists: [AdblockFilterListCatalogEntry], filterListSettings: [FilterListSetting]) -> [FilterList] {
     return regionalFilterLists.map { adBlockFilterList in
       let setting = filterListSettings.first(where: { $0.uuid == adBlockFilterList.uuid })
       return FilterList(
         from: adBlockFilterList,
-        isEnabled: setting?.isEnabled ?? newFilterListDefault(for: adBlockFilterList.componentId)
+        isEnabled: setting?.isEnabled ?? adBlockFilterList.defaultToggle
       )
     }
   }
@@ -342,7 +331,7 @@ public class FilterListResourceDownloader: ObservableObject {
       uuid: filterList.uuid,
       isEnabled: filterList.isEnabled,
       componentId: filterList.componentId,
-      allowCreation: filterList.isEnabled || newFilterListDefault(for: filterList.componentId) != filterList.isEnabled
+      allowCreation: filterList.defaultToggle != filterList.isEnabled
     )
     
     // Register or unregister the filter list depending on its toggle state
@@ -520,6 +509,49 @@ private extension AdblockService {
       continuation.onTermination = { @Sendable _ in
         self.unregisterFilterListComponent(filterList, useLegacyComponent: true)
       }
+    }
+  }
+}
+
+// MARK: - FilterListLanguageProvider - A way to share `defaultToggle` logic between multiple structs/classes
+
+private protocol FilterListLanguageProvider {
+  var languages: [String] { get }
+  var componentId: String { get }
+}
+
+extension FilterList: FilterListLanguageProvider {}
+extension AdblockFilterListCatalogEntry: FilterListLanguageProvider {}
+
+private extension FilterListLanguageProvider {
+  @available(iOS 16, *)
+  /// A list of regions that this filter list focuses on.
+  /// An empty set means this filter list doesn't focus on any specific region.
+  var supportedLanguageCodes: Set<Locale.LanguageCode> {
+    return Set(languages.map({ Locale.LanguageCode($0) }))
+  }
+  
+  /// This method returns the default value for this filter list if the user does not manually toggle it.
+  /// - Warning: Make sure you use `componentID` to identify the filter list, as `uuid` will be deprecated in the future.
+  var defaultToggle: Bool {
+    let componentIDsToOverride = [FilterList.mobileAnnoyancesComponentID]
+    
+    if componentIDsToOverride.contains(componentId) {
+      return true
+    }
+    
+    // For compatibility reasons, we only enable certian regional filter lists
+    // These are the ones that are known to be well maintained.
+    guard FilterList.maintainedRegionalComponentIDs.contains(componentId) else {
+      return false
+    }
+    
+    if #available(iOS 16, *), let languageCode = Locale.current.language.languageCode {
+      return supportedLanguageCodes.contains(languageCode)
+    } else if let languageCode = Locale.current.languageCode {
+      return languages.contains(languageCode)
+    } else {
+      return false
     }
   }
 }
