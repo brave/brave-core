@@ -24,17 +24,13 @@ export const IconBox = styled.span`
 const COUNTRIES = ['GB', 'US', 'CH', 'ES', 'SG', 'NL', 'JP', 'DE', 'FR', 'CA', 'AU']
 
 function Flag (props: Props) {
-  let [url, setUrl] = React.useState(undefined)
+  let [url, setUrl] = React.useState('')
 
   React.useEffect(() => {
     let canceled = false
-    const updateSvgUrl = async () => {
-      const svgUrl = await import(`../../assets/country-flags/${props.countryCode}.svg`)
-      setUrl(svgUrl.default)
-    }
 
     if (COUNTRIES.includes(props?.countryCode ?? '') && !canceled) {
-      updateSvgUrl()
+      setUrl(`assets/country-flags/${props.countryCode}.svg`)
     }
 
     return () => {
@@ -42,7 +38,7 @@ function Flag (props: Props) {
     }
   }, [props?.countryCode])
 
-  if (url) {
+  if (url !== '') {
     return (
       <IconBox>
         <img src={url} />
