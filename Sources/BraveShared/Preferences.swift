@@ -78,6 +78,8 @@ extension Preferences {
     public static let fingerprintingProtection = Option<Bool>(key: "shields.fingerprinting-protection", default: true)
     /// Enable redirecting of Google's AMP (Accelerated Mobile Page) to the original (non-AMP) pages
     public static let autoRedirectAMPPages = Option<Bool>(key: "shields.auto-redirect-amp-pages", default: true)
+    /// Enable redirecting of tracking urls (i.e. debouncing)
+    public static let autoRedirectTrackingURLs = Option<Bool>(key: "shields.auto-redirect-tracking-urls", default: true)
     /// Disables image loading in the browser
     public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
     /// In addition to global adblocking rules, adds custom country based rules.

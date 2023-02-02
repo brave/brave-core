@@ -211,7 +211,7 @@ extension BrowserViewController: WKNavigationDelegate {
       // Debouncing logic
       // Handle debouncing for main frame only and only if the site (etld+1) changes
       // We also only handle `http` and `https` requests
-      if url.isWebPage(includeDataURIs: false),
+      if Preferences.Shields.autoRedirectTrackingURLs.value, url.isWebPage(includeDataURIs: false),
          let currentURL = tab?.webView?.url,
          currentURL.baseDomain != url.baseDomain,
          domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
