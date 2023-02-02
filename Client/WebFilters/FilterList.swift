@@ -6,17 +6,19 @@
 import Foundation
 import BraveCore
 
-struct FilterList: Decodable, Identifiable {
-  enum CodingKeys: String, CodingKey {
-    case uuid, title, componentId, description = "desc", urlString = "url"
-  }
-  
+struct FilterList: Identifiable {
   /// The component ID of the "Fanboy's Mobile Notifications List"
   /// This is a special filter list that is enabled by default
   public static let mobileAnnoyancesComponentID = "bfpgedeaaibpoidldhjcknekahbikncb"
   /// The component id of the cookie consent notices filter list.
   /// This is a special filter list that has more accessible UI to control it
   public static let cookieConsentNoticesComponentID = "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"
+  /// A list of safe filter lists that can be automatically enabled if the user has the matching localization.
+  /// - Note: These are regional fiter lists that are well maintained. For now we hardcode these values
+  /// but it would be better if our component updater told us which ones are safe in the future.
+  public static let maintainedRegionalComponentIDs = [
+    "llgjaaddopeckcifdceaaadmemagkepi" // Japanese filter lists
+  ]
   
   let uuid: String
   let title: String
@@ -24,6 +26,7 @@ struct FilterList: Decodable, Identifiable {
   let componentId: String
   let urlString: String
   var isEnabled: Bool = false
+  let languages: [String]
   
   var id: String { return uuid }
   
@@ -34,6 +37,7 @@ struct FilterList: Decodable, Identifiable {
     self.componentId = filterList.componentId
     self.isEnabled = isEnabled
     self.urlString = filterList.url
+    self.languages = filterList.languages
   }
   
   func makeRuleType() -> ContentBlockerManager.BlocklistRuleType {
