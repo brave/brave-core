@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
@@ -74,7 +75,10 @@ constexpr ModelCombinationsParamInfo kTests[] = {
 
 SegmentList GetSegmentList() {
   SegmentList segments;
-  base::ranges::copy(GetSegments(), std::back_inserter(segments));
+  base::ranges::transform(GetSegments(), std::back_inserter(segments),
+                          [](const base::StringPiece& segment) {
+                            return static_cast<std::string>(segment);
+                          });
   return segments;
 }
 
@@ -90,9 +94,10 @@ void ProcessEpsilonGreedyBandit() {
       {"technology & computing", mojom::NotificationAdEventType::kDismissed},
       {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
-  for (const char* const segment : GetSegments()) {
+  for (const base::StringPiece segment : GetSegments()) {
     processor::EpsilonGreedyBandit::Process(
-        {segment, mojom::NotificationAdEventType::kDismissed});
+        {static_cast<std::string>(segment),
+         mojom::NotificationAdEventType::kDismissed});
   }
 
   for (const auto& feedback : feedbacks) {

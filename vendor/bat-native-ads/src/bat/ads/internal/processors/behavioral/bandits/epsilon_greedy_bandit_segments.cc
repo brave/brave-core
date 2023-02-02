@@ -7,42 +7,42 @@
 
 namespace {
 
-constexpr const char* kSegments[] = {"architecture",
-                                     "arts & entertainment",
-                                     "automotive",
-                                     "business",
-                                     "careers",
-                                     "cell phones",
-                                     "drugs",
-                                     "education",
-                                     "family & parenting",
-                                     "fashion",
-                                     "folklore",
-                                     "food & drink",
-                                     "health & fitness",
-                                     "history",
-                                     "hobbies & interests",
-                                     "home",
-                                     "law",
-                                     "military",
-                                     "personal finance",
-                                     "pets",
-                                     "politics",
-                                     "real estate",
-                                     "religion",
-                                     "science",
-                                     "society",
-                                     "sports",
-                                     "technology & computing",
-                                     "travel",
-                                     "weather",
-                                     "crypto"};
+constexpr base::StringPiece kSegments[] = {"architecture",
+                                           "arts & entertainment",
+                                           "automotive",
+                                           "business",
+                                           "careers",
+                                           "cell phones",
+                                           "drugs",
+                                           "education",
+                                           "family & parenting",
+                                           "fashion",
+                                           "folklore",
+                                           "food & drink",
+                                           "health & fitness",
+                                           "history",
+                                           "hobbies & interests",
+                                           "home",
+                                           "law",
+                                           "military",
+                                           "personal finance",
+                                           "pets",
+                                           "politics",
+                                           "real estate",
+                                           "religion",
+                                           "science",
+                                           "society",
+                                           "sports",
+                                           "technology & computing",
+                                           "travel",
+                                           "weather",
+                                           "crypto"};
 }  // namespace
 
 namespace ads::targeting {
 
-base::span<const char* const> GetSegments() {
-  return base::make_span(kSegments);
+base::span<const base::StringPiece> GetSegments() {
+  return kSegments;
 }
 
 }  // namespace ads::targeting

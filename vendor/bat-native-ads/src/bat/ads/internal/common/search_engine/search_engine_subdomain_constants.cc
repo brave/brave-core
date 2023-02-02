@@ -19,7 +19,7 @@ base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains() {
       "sk", "sl", "sr",  "sv",  "ta",  "tg",  "th", "tr",    "tt",
       "uk", "ur", "uz",  "vi",  "vo",  "war", "zh", "zh-yue"};
 
-  return base::make_span(kExtensions);
+  return kExtensions;
 }
 
 base::span<const base::StringPiece> GetYahooSearchEngineSubdomains() {
@@ -30,7 +30,7 @@ base::span<const base::StringPiece> GetYahooSearchEngineSubdomains() {
       "in",      "it", "malaysia", "nz", "ph", "qc",         "ro",
       "se",      "sg", "tw",       "uk", "vn", "www",        "za"};
 
-  return base::make_span(kExtensions);
+  return kExtensions;
 }
 
 }  // namespace ads

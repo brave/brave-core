@@ -6,10 +6,12 @@
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 #include <string>
+#include <utility>
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
+#include "base/strings/string_piece.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
@@ -25,13 +27,13 @@ namespace {
 constexpr double kDefaultArmValue = 1.0;
 constexpr int kDefaultArmPulls = 0;
 
-targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
-    const targeting::EpsilonGreedyBanditArmMap& arms) {
-  targeting::EpsilonGreedyBanditArmMap updated_arms = arms;
+void MaybeAddOrResetArms(targeting::EpsilonGreedyBanditArmMap* arms) {
+  DCHECK(arms);
 
-  for (const char* const segment : targeting::GetSegments()) {
-    const auto iter = updated_arms.find(segment);
-    if (iter != updated_arms.cend()) {
+  for (const base::StringPiece value : targeting::GetSegments()) {
+    std::string segment = static_cast<std::string>(value);
+    const auto iter = arms->find(segment);
+    if (iter != arms->cend()) {
       const targeting::EpsilonGreedyBanditArmInfo arm = iter->second;
       if (arm.IsValid()) {
         BLOG(3, "Epsilon greedy bandit arm already exists for " << segment
@@ -45,21 +47,17 @@ targeting::EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     arm.value = kDefaultArmValue;
     arm.pulls = kDefaultArmPulls;
 
-    updated_arms[segment] = arm;
+    arms->insert_or_assign(std::move(segment), arm);
 
     BLOG(2,
          "Epsilon greedy bandit arm was added for " << segment << " segment");
   }
-
-  return updated_arms;
 }
 
-targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
-    const targeting::EpsilonGreedyBanditArmMap& arms) {
-  targeting::EpsilonGreedyBanditArmMap updated_arms = arms;
+void MaybeDeleteArms(targeting::EpsilonGreedyBanditArmMap* arms) {
+  DCHECK(arms);
 
-  for (auto arm_iter = updated_arms.cbegin();
-       arm_iter != updated_arms.cend();) {
+  for (auto arm_iter = arms->cbegin(); arm_iter != arms->cend();) {
     if (base::Contains(targeting::GetSegments(), arm_iter->first)) {
       ++arm_iter;
       continue;
@@ -68,19 +66,17 @@ targeting::EpsilonGreedyBanditArmMap MaybeDeleteArms(
     BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm_iter->first
                                                          << " segment ");
 
-    arm_iter = updated_arms.erase(arm_iter);
+    arm_iter = arms->erase(arm_iter);
   }
-
-  return updated_arms;
 }
 
 void InitializeArms() {
   targeting::EpsilonGreedyBanditArmMap arms =
       targeting::GetEpsilonGreedyBanditArms();
 
-  arms = MaybeAddOrResetArms(arms);
+  MaybeAddOrResetArms(&arms);
 
-  arms = MaybeDeleteArms(arms);
+  MaybeDeleteArms(&arms);
 
   targeting::SetEpsilonGreedyBanditArms(arms);
 

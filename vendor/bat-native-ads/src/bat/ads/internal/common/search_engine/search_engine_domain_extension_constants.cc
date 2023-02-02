@@ -14,7 +14,7 @@ base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions() {
       "com.br", "com.mx", "de", "eg",    "es",    "fr",  "in",
       "it",     "nl",     "pl", "sa",    "se",    "sp",  "tr"};
 
-  return base::make_span(kExtensions);
+  return kExtensions;
 }
 
 base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions() {
@@ -48,13 +48,13 @@ base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions() {
       "st",     "td",     "tg",     "tk",     "tl",     "tm",     "tn",
       "to",     "tt",     "vg",     "vu",     "ws"};
 
-  return base::make_span(kExtensions);
+  return kExtensions;
 }
 
 base::span<const base::StringPiece> GetMojeekSearchEngineDomainExtensions() {
   static constexpr base::StringPiece kExtensions[] = {"co.uk", "com"};
 
-  return base::make_span(kExtensions);
+  return kExtensions;
 }
 
 }  // namespace ads

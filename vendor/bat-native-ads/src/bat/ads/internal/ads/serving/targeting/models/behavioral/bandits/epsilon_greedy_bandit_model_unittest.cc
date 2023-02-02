@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/strings/string_piece.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
@@ -23,7 +24,10 @@ namespace {
 
 SegmentList GetSegmentList() {
   SegmentList segments;
-  base::ranges::copy(GetSegments(), std::back_inserter(segments));
+  base::ranges::transform(GetSegments(), std::back_inserter(segments),
+                          [](const base::StringPiece& segment) {
+                            return static_cast<std::string>(segment);
+                          });
   return segments;
 }
 
@@ -115,9 +119,10 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   const processor::EpsilonGreedyBandit processor;
-  for (const char* const segment : GetSegments()) {
+  for (const base::StringPiece segment : GetSegments()) {
     processor::EpsilonGreedyBandit::Process(
-        {segment, mojom::NotificationAdEventType::kDismissed});
+        {static_cast<std::string>(segment),
+         mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";
@@ -167,9 +172,10 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   // Set all values to zero by choosing a zero-reward action due to
   // optimistic initial values for arms
   const processor::EpsilonGreedyBandit processor;
-  for (const char* const segment : GetSegments()) {
+  for (const base::StringPiece segment : GetSegments()) {
     processor::EpsilonGreedyBandit::Process(
-        {segment, mojom::NotificationAdEventType::kDismissed});
+        {static_cast<std::string>(segment),
+         mojom::NotificationAdEventType::kDismissed});
   }
 
   const std::string segment_1 = "science";

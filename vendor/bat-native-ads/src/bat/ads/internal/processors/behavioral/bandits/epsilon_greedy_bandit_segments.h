@@ -7,10 +7,11 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_SEGMENTS_H_
 
 #include "base/containers/span.h"
+#include "base/strings/string_piece.h"
 
 namespace ads::targeting {
 
-base::span<const char* const> GetSegments();
+base::span<const base::StringPiece> GetSegments();
 
 }  // namespace ads::targeting
 
