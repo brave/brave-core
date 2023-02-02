@@ -618,7 +618,7 @@ provideStrings({
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidSolAddress: 'Not a valid SOL address',
   braveWalletNotValidAddress: 'Not a valid address',
-  braveWalletNotDomain: 'Domain is not registered',
+  braveWalletNotDomain: 'Domain doesn\'t have a linked $ address',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
   braveWalletAddressMissingChecksumInfoWarning: 'This address cannot be verified (missing checksum). Proceed?',
