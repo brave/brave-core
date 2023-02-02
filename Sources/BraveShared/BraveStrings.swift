@@ -3265,6 +3265,22 @@ extension Strings {
 }
 
 extension Strings {
+  public struct BraveIPFS {
+    public static let ipfsSettingsTitle = NSLocalizedString("brave.ipfs.title", tableName: "BraveShared", bundle: .module,
+                                                            value: "IPFS", comment: "Title of the IPFS feature")
+    public static let nftGatewaySetting = NSLocalizedString("brave.ipfs.nftGateway", tableName: "BraveShared", bundle: .module,
+                                                            value: "Customize NFT gateway", comment: "Title of the NFT Gateway setting")
+    public static let nftGatewayDescription = NSLocalizedString("brave.ipfs.nftGatewayDesc", tableName: "BraveShared", bundle: .module,
+                                                                value: "Gateway is used to resolve NFT content in the wallet", comment: "Description of the NFT Gateway setting.")
+    public static let nftGatewayLongDescription = NSLocalizedString("brave.ipfs.nftGatewayLongDesc", tableName: "BraveShared", bundle: .module,
+                                                                    value: "Valid IPFS gateway should be provided. Provided gateway will be checked for the ability to load IPFS resources.", comment: "Description of the NFT Gateway setting")
+    public static let setGatewayButtonTitle = NSLocalizedString("brave.ipfs.setGatewayButtonTitle", tableName: "BraveShared", bundle: .module,
+                                                                value: "Set", comment: "Title of the set IPFS gateway button")
+    public static let wrongGatewayAlertTitle = NSLocalizedString("brave.ipfs.wrongGatewayAlertTitle", tableName: "BraveShared", bundle: .module,
+                                                                 value: "Failed to set gateway", comment: "Title of the wrong IPFS gateway alert")
+    public static let wrongGatewayAlertDescription = NSLocalizedString("brave.ipfs.wrongGatewayAlertTitle", tableName: "BraveShared", bundle: .module,
+                                                                       value: "Invalid url was provided. Gateway should be able to resolve IPFS resources.", comment: "Description of the wrong IPFS gateway alert")
+  }
   public struct BraveNews {
     public static let braveNews = NSLocalizedString("today.braveToday", tableName: "BraveShared", bundle: .module,
       value: "Brave News",
