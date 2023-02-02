@@ -67,55 +67,6 @@ ModelWeights TaskRunner::GetWeights() {
   return std::make_tuple(model_->GetWeights(), model_->GetBias());
 }
 
-// flwr::ParametersRes TaskRunner::GetParameters() {
-//   // Serialize
-//   const Weights prediction_weights = model_->GetPredWeights();
-//   const float prediction_bias = model_->Bias();
-
-//   std::list<std::string> tensors;
-
-//   std::ostringstream oss1;
-//   oss1.write(reinterpret_cast<const char*>(prediction_weights.data()),
-//              prediction_weights.size() * sizeof(float));
-//   tensors.push_back(oss1.str());
-
-//   std::ostringstream oss2;
-//   oss2.write(reinterpret_cast<const char*>(&prediction_bias), sizeof(float));
-//   tensors.push_back(oss2.str());
-
-//   std::string tensor_string = "cpp_float";
-//   return flwr::ParametersRes(flwr::Parameters(tensors, tensor_string));
-// }
-
-// const float* GetLayerWeightsFromString(std::string layer_string) {
-//   const char* weights_char = (layer_string).c_str();
-//   return reinterpret_cast<const float*>(weights_char);
-// }
-
-// void TaskRunner::SetParameters(flwr::Parameters parameters) {
-//   std::list<std::string> tensor_string = parameters.getTensors();
-
-//   if (tensor_string.empty() == 0) {
-//     // Layer 1
-//     auto layer = tensor_string.begin();
-//     size_t num_bytes = (*layer).size();
-//     auto* weights_float = GetLayerWeightsFromString(*layer);
-//     Weights weights(weights_float,
-//                     weights_float + num_bytes / sizeof(float));
-//     model_->SetPredWeights(weights);
-
-//     // Layer 2 = Bias
-//     auto* bias_float = GetLayerWeightsFromString(*std::next(layer, 1));
-//     model_->SetBias(bias_float[0]);
-//   }
-// }
-// flwr::PropertiesRes TaskRunner::GetProperties(flwr::PropertiesIns
-// instructions) {
-//   flwr::PropertiesRes properties;
-//   properties.setPropertiesRes(static_cast<flwr::Properties>(instructions.getPropertiesIns()));
-//   return properties;
-// }
-
 // flwr::FitRes TaskRunner::Fit(flwr::FitIns instructions) {
 //   auto config = instructions.getConfig();
 //   flwr::FitRes response;

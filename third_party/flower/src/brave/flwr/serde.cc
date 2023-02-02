@@ -9,7 +9,62 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/node.pb.h"
+#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
+
+/**
+ * Serialize client scalar type to protobuf scalar type
+ */
+flower::Scalar scalar_to_proto(ScalarValue scalar_msg) {
+  flower::Scalar s;
+  if (scalar_msg.getBool() != std::nullopt) {
+    s.set_bool_(scalar_msg.getBool().value());
+    return s;
+  }
+  if (scalar_msg.getBytes() != std::nullopt) {
+    s.set_bytes(scalar_msg.getBytes().value());
+    return s;
+  }
+  if (scalar_msg.getDouble() != std::nullopt) {
+    s.set_double_(scalar_msg.getDouble().value());
+    return s;
+  }
+  if (scalar_msg.getInt() != std::nullopt) {
+    s.set_int64(scalar_msg.getInt().value());
+    return s;
+  }
+  if (scalar_msg.getString() != std::nullopt) {
+    s.set_string(scalar_msg.getString().value());
+    return s;
+  }
+
+  return s;
+}
+
+/**
+ * Deserialize protobuf scalar type to client scalar type
+ */
+ScalarValue scalar_from_proto(flower::Scalar scalar_msg) {
+  ScalarValue scalar;
+  switch (scalar_msg.scalar_case()) {
+    case flower::Scalar::kDouble:
+      scalar.setDouble(scalar_msg.double_());
+      return scalar;
+    case flower::Scalar::kInt64:
+      scalar.setInt(scalar_msg.int64());
+      return scalar;
+    case flower::Scalar::kBool:
+      scalar.setBool(scalar_msg.bool_());
+      return scalar;
+    case flower::Scalar::kString:
+      scalar.setString(scalar_msg.string());
+      return scalar;
+    case flower::Scalar::kBytes:
+      scalar.setBytes(scalar_msg.bytes());
+      return scalar;
+    case 0:
+      return scalar;
+  }
+}
 
 /**
  * Deserialize bytes to float vector
@@ -65,19 +120,4 @@ flower::Parameters GetParametersFromVectors(
   }
 
   return flower_parameters;
-}
-
-/**
- * Build anonymous pull task request message
- */
-flower::PullTaskInsRequest BuildAnonymousPullTaskInsRequestMessage() {
-  flower::Node node;
-  node.set_node_id(1);
-  node.set_anonymous(true);
-
-  flower::PullTaskInsRequest pull_task_instructions_request;
-  *pull_task_instructions_request.mutable_node() = node;
-  pull_task_instructions_request.add_task_ids("0");
-
-  return pull_task_instructions_request;
 }
