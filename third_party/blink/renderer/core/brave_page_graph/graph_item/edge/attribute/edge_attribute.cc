@@ -8,20 +8,23 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeAttribute::EdgeAttribute(GraphItemContext* context,
                              NodeActor* out_node,
                              NodeHTMLElement* in_node,
-                             const std::string& name,
+                             const String& name,
                              const bool is_style)
     : GraphEdge(context, out_node, in_node), name_(name), is_style_(is_style) {}
 
 EdgeAttribute::~EdgeAttribute() = default;
 
 ItemDesc EdgeAttribute::GetItemDesc() const {
-  return GraphEdge::GetItemDesc() + " [" + name_ + "]";
+  WTF::TextStream ts;
+  ts << GraphEdge::GetItemDesc() << " [" << name_ << "]";
+  return ts.Release();
 }
 
 void EdgeAttribute::AddGraphMLAttributes(xmlDocPtr doc,

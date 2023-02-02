@@ -5,19 +5,18 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_set.h"
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeStorageSet::EdgeStorageSet(GraphItemContext* context,
                                NodeScript* out_node,
                                NodeStorage* in_node,
-                               const std::string& key,
-                               const std::string& value)
+                               const String& key,
+                               const String& value)
     : EdgeStorage(context, out_node, in_node, key), value_(value) {}
 
 EdgeStorageSet::~EdgeStorageSet() = default;
@@ -27,7 +26,9 @@ ItemName EdgeStorageSet::GetItemName() const {
 }
 
 ItemDesc EdgeStorageSet::GetItemDesc() const {
-  return EdgeStorage::GetItemDesc() + " [value: " + value_ + "]";
+  WTF::TextStream ts;
+  ts << EdgeStorage::GetItemDesc() << " [value: " << value_ << "]";
+  return ts.Release();
 }
 
 void EdgeStorageSet::AddGraphMLAttributes(xmlDocPtr doc,

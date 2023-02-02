@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_FRAME_OWNER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_FRAME_OWNER_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -17,7 +16,7 @@ class NodeFrameOwner final : public NodeHTMLElement {
  public:
   NodeFrameOwner(GraphItemContext* context,
                  const blink::DOMNodeId dom_node_id,
-                 const std::string& tag_name);
+                 const String& tag_name);
 
   ItemName GetItemName() const override;
 
