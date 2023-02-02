@@ -50,7 +50,7 @@ BraveDefaultBrowserWorker::~BraveDefaultBrowserWorker() = default;
 void BraveDefaultBrowserWorker::SetAsDefaultImpl(
     base::OnceClosure on_finished_callback) {
 #if BUILDFLAG(IS_WIN)
-  if (GetDefaultWebClientSetPermission() != SET_DEFAULT_NOT_ALLOWED) {
+  if (GetDefaultBrowserSetPermission() != SET_DEFAULT_NOT_ALLOWED) {
     bool success = false;
     const wchar_t* kAssociations[] = {L"https", L"http", L".html", L".htm"};
     for (const wchar_t* association : kAssociations) {
