@@ -81,14 +81,4 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
                 profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
                 vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
     }
-
-    @Override
-    protected NotificationBuilderBase createNotificationBuilder(Context context, boolean hasImage) {
-        if (mNotificationType == NotificationType.BRAVE_ADS) {
-            // TODO(jocelyn): Remove setPriority here since we already set the
-            // importance of Ads notification channel to IMPORTANCE_HIGH?
-            return new BraveAdsNotificationBuilder(context).setPriority(Notification.PRIORITY_HIGH);
-        }
-        return super.createNotificationBuilder(context, hasImage);
-    }
 }
