@@ -74,9 +74,14 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
 std::string BuildGetTasksPayload() {
   std::string request;
 
-  flower::PullTaskInsRequest task_request =
-      BuildAnonymousPullTaskInsRequestMessage();
-  task_request.SerializeToString(&request);
+  flower::Node node;
+  node.set_node_id(1);
+  node.set_anonymous(true);
+
+  flower::PullTaskInsRequest pull_task_instructions_request;
+  *pull_task_instructions_request.mutable_node() = node;
+  pull_task_instructions_request.add_task_ids("0");
+  pull_task_instructions_request.SerializeToString(&request);
 
   return request;
 }

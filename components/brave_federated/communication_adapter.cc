@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_federated/communication_adapter.h"
 
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -16,9 +15,6 @@
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/task.pb.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
