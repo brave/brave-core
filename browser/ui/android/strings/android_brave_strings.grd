@@ -143,6 +143,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
+      <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
+        Notifications are disabled
+      </message>
+      <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
+        Brave Rewards may not work while notifications are disabled.
+      </message>
+      <message name="IDS_TURN_ON"  desc="Text for Turn On">
+        TURN ON
+      </message>
       <message name="IDS_TELL_US_WHAT_YOU_THINK"  desc="Text for Tell us what you think!">
         Tell us what you think!
       </message>
