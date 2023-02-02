@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/permissions/chip_controller.cc b/chrome/browser/ui/views/permissions/chip_controller.cc
-index 154fd219b74d55cae86ba376356b5bdc3ba3dfc6..c579dc647a012a134df14b9a31a06844c78afee5 100644
+index f2fcb5f909b842ab7a5d6e992e639c35e46e71ea..4b54a96541e01f6dca1f3e2be317caeae22ff2de 100644
 --- a/chrome/browser/ui/views/permissions/chip_controller.cc
 +++ b/chrome/browser/ui/views/permissions/chip_controller.cc
 @@ -435,6 +435,7 @@ void ChipController::HideChip() {
