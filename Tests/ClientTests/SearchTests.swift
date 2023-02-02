@@ -116,7 +116,7 @@ class SearchTests: XCTestCase {
     checkValidURL("https://www.Ǎ-.com", afterFixup: "https://www.xn----dta.com/")
     checkValidURL("http://www.googlé.com", afterFixup: "http://www.xn--googl-fsa.com/")
     checkValidURL("http://asĸ.com", afterFixup: "http://xn--as-3pa.com/")
-    checkValidURL("http://dießner.de", afterFixup: "http://diessner.de/")
+    checkValidURL("http://dießner.de", afterFixup: "http://xn--diener-dta.de/")
     checkValidURL("http://16კ.com", afterFixup: "http://xn--16-1ik.com/")
     checkValidURL("http://www.pаypal.com", afterFixup: "http://www.xn--pypal-4ve.com/")
     checkValidURL("http://аpple.com", afterFixup: "http://xn--pple-43d.com/")
