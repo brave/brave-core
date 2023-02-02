@@ -54,10 +54,6 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeExpired(base::BindOnce(
       [](AdEventCallback callback, const bool success) {
-        if (success) {
-          RebuildAdEventHistoryFromDatabase();
-        }
-
         std::move(callback).Run(success);
       },
       std::move(callback)));
@@ -71,10 +67,6 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
   database_table.PurgeOrphaned(
       ad_type, base::BindOnce(
                    [](AdEventCallback callback, const bool success) {
-                     if (success) {
-                       RebuildAdEventHistoryFromDatabase();
-                     }
-
                      std::move(callback).Run(success);
                    },
                    std::move(callback)));
