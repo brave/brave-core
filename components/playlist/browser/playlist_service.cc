@@ -598,34 +598,15 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 }
 
 void PlaylistService::ResetAll() {
-  // Removes all saved data ----------------------------------------------------
-  // As these functions will be run in sync, it's safe to bind `this` to raw
-  // ptr.
-  // Remove all playlist items
-  GetAllPlaylistItems(base::BindOnce(
-      [](PlaylistService* service, std::vector<mojom::PlaylistItemPtr> items) {
-        for (const auto& item : items) {
-          for (auto playlist_id : item->parents) {
-            service->RemoveItemFromPlaylist(playlist_id, item->id);
-          }
-        }
-      },
-      this));
-
-  // Remove playlists except the default playlist
-  GetAllPlaylists(base::BindOnce(
-      [](PlaylistService* service, std::vector<mojom::PlaylistPtr> playlists) {
-        for (const auto& a_playlist : playlists) {
-          if (a_playlist->id != kDefaultPlaylistID) {
-            service->RemovePlaylist(*a_playlist->id);
-          }
-        }
-      },
-      this));
-
   // Resets preference ---------------------------------------------------------
   prefs_->ClearPref(kPlaylistCacheByDefault);
   prefs_->ClearPref(kPlaylistDefaultSaveTargetListID);
+  prefs_->ClearPref(kPlaylistItemsPref);
+  prefs_->ClearPref(kPlaylistsPref);
+
+  // Removes data on disk ------------------------------------------------------
+  GetTaskRunner()->PostTask(FROM_HERE,
+                            base::GetDeletePathRecursivelyCallback(base_dir_));
 }
 
 void PlaylistService::RecoverLocalDataForItem(const std::string& id) {

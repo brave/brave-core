@@ -1210,6 +1210,19 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
 
   // Check if data on disk is removed.
   WaitUntil(base::BindRepeating(&base::IsDirectoryEmpty, service->base_dir_));
+
+  // Adding item should work after resetting.
+  auto item = prototype_item.Clone();
+  item->id = base::Token::CreateRandom().ToString();
+  items.push_back(item.Clone());
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+                                  std::move(items));
+
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) {
+        return base::IsDirectoryEmpty(item_path);
+      },
+      service->GetPlaylistItemDirPath(item->id)));
 }
 
 }  // namespace playlist
