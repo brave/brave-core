@@ -14,8 +14,8 @@
 
 namespace brave_federated {
 
-std::string BuildGetTasksPayload();
 TaskList ParseTaskListFromResponseBody(const std::string& response_body);
+std::string BuildGetTasksPayload();
 
 std::string BuildPostTaskResultsPayload(TaskResult result);
 }  // namespace brave_federated
