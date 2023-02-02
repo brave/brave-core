@@ -515,12 +515,12 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
-      false, base::BindOnce(&EthereumProviderImpl::ContinueSignMessage,
-                            weak_factory_.GetWeakPtr(),
-                            checksum_address.ToChecksumAddress(), message_str,
-                            std::move(message_bytes), absl::nullopt,
-                            absl::nullopt, false, std::move(callback),
-                            std::move(id), delegate_->GetOrigin()));
+      false,
+      base::BindOnce(
+          &EthereumProviderImpl::ContinueSignMessage,
+          weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(), "",
+          message_str, std::move(message_bytes), absl::nullopt, absl::nullopt,
+          false, std::move(callback), std::move(id), delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::RecoverAddress(const std::string& message,
@@ -807,7 +807,9 @@ void EthereumProviderImpl::SignTypedMessage(
     RequestCallback callback,
     base::Value id) {
   bool reject = false;
-  if (!EthAddress::IsValidAddress(address) || domain_hash.empty() ||
+  std::string domain_string;
+  if (!base::JSONWriter::Write(domain, &domain_string) ||
+      !EthAddress::IsValidAddress(address) || domain_hash.empty() ||
       primary_hash.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -861,16 +863,17 @@ void EthereumProviderImpl::SignTypedMessage(
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
       false,
-      base::BindOnce(&EthereumProviderImpl::ContinueSignMessage,
-                     weak_factory_.GetWeakPtr(),
-                     checksum_address.ToChecksumAddress(), message,
-                     std::move(*message_to_sign), base::HexEncode(domain_hash),
-                     base::HexEncode(primary_hash), true, std::move(callback),
-                     std::move(id), delegate_->GetOrigin()));
+      base::BindOnce(
+          &EthereumProviderImpl::ContinueSignMessage,
+          weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(),
+          domain_string, message, std::move(*message_to_sign),
+          base::HexEncode(domain_hash), base::HexEncode(primary_hash), true,
+          std::move(callback), std::move(id), delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::ContinueSignMessage(
     const std::string& address,
+    const std::string& domain,
     const std::string& message,
     std::vector<uint8_t>&& message_to_sign,
     const absl::optional<std::string>& domain_hash,
@@ -904,8 +907,8 @@ void EthereumProviderImpl::ContinueSignMessage(
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(origin), -1, address, message, is_eip712, domain_hash,
-      primary_hash, absl::nullopt, mojom::CoinType::ETH);
+      MakeOriginInfo(origin), -1, address, domain, message, is_eip712,
+      domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH);
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),

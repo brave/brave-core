@@ -52,6 +52,7 @@ const defaultState: PanelState = {
     originInfo: defaultOriginInfo,
     id: -1,
     address: '',
+    domain: '',
     message: '',
     isEip712: false,
     domainHash: '',
