@@ -110,41 +110,51 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         LinearLayout layoutData = findViewById(R.id.layout_data);
         LayoutTransition layoutTransition = new LayoutTransition();
         layoutTransition.setDuration(1000);
-        layoutData.setLayoutTransition(layoutTransition);
+        if (layoutData != null) {
+            layoutData.setLayoutTransition(layoutTransition);
+        }
 
         int margin = mIsTablet ? 200 : 50;
 
-        ViewGroup.MarginLayoutParams topLeafParams =
-                (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
-        topLeafParams.bottomMargin = margin;
-        mVLeafAlignTop.setLayoutParams(topLeafParams);
+        if (mVLeafAlignTop != null) {
+            ViewGroup.MarginLayoutParams topLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
+            topLeafParams.bottomMargin = margin;
+            mVLeafAlignTop.setLayoutParams(topLeafParams);
+        }
 
-        ViewGroup.MarginLayoutParams bottomLeafParams =
-                (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
-        bottomLeafParams.topMargin = margin;
-        mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        if (mVLeafAlignBottom != null) {
+            ViewGroup.MarginLayoutParams bottomLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
+            bottomLeafParams.topMargin = margin;
+            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        }
     }
 
     private void onClickViews() {
-        mBtnPositive.setOnClickListener(view -> {
-            if (mCurrentStep == 1
-                    && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-                if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+        if (mBtnPositive != null) {
+            mBtnPositive.setOnClickListener(view -> {
+                if (mCurrentStep == 1
+                        && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
+                    BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+                    if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                        nextOnboardingStep();
+                    }
+                } else {
                     nextOnboardingStep();
                 }
-            } else {
-                nextOnboardingStep();
-            }
-        });
+            });
+        }
 
-        mBtnNegative.setOnClickListener(view -> {
-            if (mCurrentStep == 2) {
-                CustomTabActivity.showInfoPage(this, P3A_URL);
-            } else {
-                nextOnboardingStep();
-            }
-        });
+        if (mBtnNegative != null) {
+            mBtnNegative.setOnClickListener(view -> {
+                if (mCurrentStep == 2) {
+                    CustomTabActivity.showInfoPage(this, P3A_URL);
+                } else {
+                    nextOnboardingStep();
+                }
+            });
+        }
     }
 
     private void startTimer(int delayMillis) {
