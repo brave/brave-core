@@ -727,44 +727,32 @@ class SettingsViewController: TableViewController {
   }()
 
   private func setUpSections() {
-    if let cryptoStore = cryptoStore, let keyringStore = keyringStore {
-      let settingsStore = cryptoStore.settingsStore
-      settingsStore.isDefaultKeyringCreated { [weak self] created in
-        guard let self = self else { return }
-        var copyOfSections = self.sections
-        if let featureSectionIndex = self.sections.firstIndex(where: {
-          $0.uuid == self.featureSectionUUID.uuidString
-        }) {
-          let walletRowIndex = copyOfSections[featureSectionIndex].rows.firstIndex(where: {
-            $0.uuid == self.walletRowUUID.uuidString
-          })
-          if created, walletRowIndex == nil {
-            settingsStore.addKeyringServiceObserver(self)
-            copyOfSections[featureSectionIndex].rows.append(
-              Row(
-                text: Strings.Wallet.braveWallet,
-                selection: { [unowned self] in
-                  let walletSettingsView = WalletSettingsView(
-                    settingsStore: settingsStore,
-                    networkStore: cryptoStore.networkStore,
-                    keyringStore: keyringStore
-                  )
-                  let vc = UIHostingController(rootView: walletSettingsView)
-                  self.navigationController?.pushViewController(vc, animated: true)
-                },
-                image: UIImage(named: "menu-crypto", in: .module, compatibleWith: nil)!.template,
-                accessory: .disclosureIndicator,
-                uuid: self.walletRowUUID.uuidString)
-            )
-          } else if !created, let index = walletRowIndex {
-            copyOfSections.remove(at: index)
-          }
-        }
-        self.dataSource.sections = copyOfSections
+    var copyOfSections = self.sections
+    if let featureSectionIndex = self.sections.firstIndex(where: {
+      $0.uuid == self.featureSectionUUID.uuidString
+    }) {
+      let walletRowIndex = copyOfSections[featureSectionIndex].rows.firstIndex(where: {
+        $0.uuid == self.walletRowUUID.uuidString
+      })
+      if walletRowIndex == nil {
+        let settingsStore = cryptoStore?.settingsStore
+        copyOfSections[featureSectionIndex].rows.append(
+          Row(
+            text: Strings.Wallet.web3,
+            selection: { [unowned self] in
+              let web3SettingsView = Web3SettingsView(settingsStore: settingsStore, networkStore: cryptoStore?.networkStore, keyringStore: keyringStore)
+              let vc = UIHostingController(rootView: web3SettingsView)
+              self.navigationController?.pushViewController(vc, animated: true)
+            },
+            image: UIImage(named: "menu-crypto", in: .module, compatibleWith: nil)!.template,
+            accessory: .disclosureIndicator,
+            uuid: self.walletRowUUID.uuidString)
+        )
+      } else if let index = walletRowIndex {
+        copyOfSections.remove(at: index)
       }
-    } else {
-      self.dataSource.sections = sections
     }
+    self.dataSource.sections = copyOfSections
   }
 
   // MARK: - Actions
@@ -786,22 +774,5 @@ class SettingsViewController: TableViewController {
     if dataSource.sections.isEmpty { return }
     dataSource.sections[0] = Static.Section()
     Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
-  }
-}
-
-extension SettingsViewController: BraveWalletKeyringServiceObserver {
-  func keyringCreated(_ keyringId: String) {}
-  func keyringRestored(_ keyringId: String) {}
-  func locked() {}
-  func unlocked() {}
-  func backedUp() {}
-  func accountsChanged() {}
-  func autoLockMinutesChanged() {}
-  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {}
-  func accountsAdded(_ coin: BraveWallet.CoinType, addresses: [String]) {}
-
-  func keyringReset() {
-    setUpSections()
-    navigationController?.popViewController(animated: true)
   }
 }

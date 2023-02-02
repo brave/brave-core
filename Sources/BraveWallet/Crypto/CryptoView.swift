@@ -185,7 +185,7 @@ public struct CryptoView: View {
               }
             case .settings:
               NavigationView {
-                WalletSettingsView(
+                Web3SettingsView(
                   settingsStore: store.settingsStore,
                   networkStore: store.networkStore,
                   keyringStore: keyringStore

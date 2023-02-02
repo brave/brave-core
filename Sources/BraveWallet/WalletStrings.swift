@@ -22,6 +22,13 @@ extension Strings {
       value: "Wallet",
       comment: "The title shown on the menu to access Brave Wallet"
     )
+    public static let web3 = NSLocalizedString(
+      "wallet.web3",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Web3",
+      comment: "The title shown on the settings menu to Web3 settings."
+    )
     public static let otherWalletActionsAccessibilityTitle = NSLocalizedString(
       "wallet.otherWalletActionsAccessibilityTitle",
       tableName: "BraveWallet",
@@ -712,7 +719,7 @@ extension Strings {
       "wallet.settingsResetButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Reset",
+      value: "Reset Brave Wallet",
       comment: "The title of a button that will reset the wallet. As in to erase the users wallet from the device"
     )
     public static let settingsResetWalletAlertTitle = NSLocalizedString(
@@ -3451,6 +3458,41 @@ extension Strings {
       bundle: .module,
       value: "on %@",
       comment: "The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name."
+    )
+    public static let web3DomainOptionAsk = NSLocalizedString(
+      "wallet.web3DomainOptionAsk",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Ask",
+      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name."
+    )
+    public static let web3DomainOptionEnabled = NSLocalizedString(
+      "wallet.web3DomainOptionEnabled",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enabled",
+      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name."
+    )
+    public static let web3DomainOptionDisabled = NSLocalizedString(
+      "wallet.web3DomainOptionDisabled",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Disabled",
+      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name."
+    )
+    public static let web3DomainOptionsTitle = NSLocalizedString(
+      "wallet.web3DomainOptionsTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Resolve Solana Name Service (SNS) Domain Names",
+      comment: "The title for the options to resolve Solana Name service domain names."
+    )
+    public static let web3DomainOptionsHeader = NSLocalizedString(
+      "wallet.web3DomainOptionsHeader",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Web3 Domains",
+      comment: "The header for the options to resolve Solana Name service domain names."
     )
   }
 }

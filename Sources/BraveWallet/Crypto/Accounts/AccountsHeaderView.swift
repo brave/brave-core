@@ -59,7 +59,7 @@ struct AccountsHeaderView: View {
             }
         )
         NavigationLink(
-          destination: WalletSettingsView(
+          destination: Web3SettingsView(
             settingsStore: settingsStore,
             networkStore: networkStore,
             keyringStore: keyringStore)
