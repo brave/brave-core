@@ -948,8 +948,9 @@ public class BraveRewardsPanel
     }
 
     private void requestNotificationPermission() {
-        if (mActivity.shouldShowRequestPermissionRationale(
-                    PermissionConstants.NOTIFICATION_PERMISSION)
+        if (BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(mAnchorView.getContext())
+                || mActivity.shouldShowRequestPermissionRationale(
+                        PermissionConstants.NOTIFICATION_PERMISSION)
                 || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
             // other than android 13 redirect to
             // setting page and for android 13 Last time don't allow selected in permission
@@ -1587,15 +1588,15 @@ public class BraveRewardsPanel
             btnContinue.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (BravePermissionUtils.hasPermission(mAnchorView.getContext(),
-                                PermissionConstants.NOTIFICATION_PERMISSION)) {
-                        if (countrySpinner != null) {
-                            mBraveRewardsNativeWorker.CreateRewardsWallet(sortedCountryMap.get(
-                                    countrySpinner.getSelectedItem().toString()));
-                        }
-                    } else {
-                        // else request notification permission
+                    if (!BravePermissionUtils.hasPermission(mAnchorView.getContext(),
+                                PermissionConstants.NOTIFICATION_PERMISSION)
+                            || BravePermissionUtils.isBraveAdsNotificationPermissionBlocked(
+                                    mAnchorView.getContext())) {
                         requestNotificationPermission();
+                    }
+                    if (countrySpinner != null) {
+                        mBraveRewardsNativeWorker.CreateRewardsWallet(
+                                sortedCountryMap.get(countrySpinner.getSelectedItem().toString()));
                     }
                 }
             }));
