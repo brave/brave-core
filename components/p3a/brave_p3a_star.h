@@ -27,6 +27,8 @@ namespace brave {
 
 struct BraveP3AConfig;
 
+// Class that contains high-level methods for preparing/generating
+// Constellation/STAR encrypted measurements.
 class BraveP3AStar {
  public:
   using StarMessageCallback = base::RepeatingCallback<void(

@@ -22,21 +22,27 @@ struct BraveP3AConfig {
   // Interval between rotations, only used for testing from the command line.
   base::flat_map<MetricLogType, base::TimeDelta> json_rotation_intervals;
 
+  // Endpoint for uploading P3A metrics in JSON format
   GURL p3a_json_upload_url;
+  // Endpoint for uploading NTP-SI/creative P3A metrics in JSON format
   GURL p3a_creative_upload_url;
+  // Endpoint for uploading P2A metrics in JSON format
   GURL p2a_json_upload_url;
+  // Endpoint for uploading P3A metrics encrypted by Constellation/STAR
   GURL p3a_star_upload_url;
-  GURL p2a_star_upload_url;
+  // Host for generating randomness points for STAR encryption of measurements
   std::string star_randomness_host;
 
+  // Disable Nitro Enclave attestation of the randomness server
   bool disable_star_attestation = false;
 
   bool ignore_server_errors = false;
 
   BraveP3AConfig();
   ~BraveP3AConfig();
+  BraveP3AConfig(const BraveP3AConfig& config);
 
-  void LoadFromCommandLine();
+  static BraveP3AConfig LoadFromCommandLine();
 };
 
 }  // namespace brave

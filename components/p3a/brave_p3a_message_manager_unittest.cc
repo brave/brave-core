@@ -76,7 +76,6 @@ class P3AMessageManagerTest : public testing::Test,
     p3a_config.p3a_json_upload_url = GURL(std::string(kTestHost) + "/p3a_json");
     p3a_config.p2a_json_upload_url = GURL(std::string(kTestHost) + "/p2a_json");
     p3a_config.p3a_star_upload_url = GURL(std::string(kTestHost) + "/p3a_star");
-    p3a_config.p2a_star_upload_url = GURL(std::string(kTestHost) + "/p2a_star");
 
     BraveP3AService::RegisterPrefs(local_state.registry(), true);
 
@@ -116,13 +115,6 @@ class P3AMessageManagerTest : public testing::Test,
                       p3a_star_sent_messages.end());
             p3a_star_sent_messages.insert(message);
             url_loader_factory.AddResponse(request.url.spec(), "{}");
-          } else if (request.url == p3a_config.p2a_star_upload_url) {
-            EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
-            std::string message = std::string(ExtractBodyFromRequest(request));
-            EXPECT_EQ(p2a_star_sent_messages.find(message),
-                      p2a_star_sent_messages.end());
-            p2a_star_sent_messages.insert(message);
-            url_loader_factory.AddResponse(request.url.spec(), "{}");
           }
         }));
 
@@ -138,7 +130,6 @@ class P3AMessageManagerTest : public testing::Test,
     p3a_json_sent_metrics.clear();
     p2a_json_sent_metrics.clear();
     p3a_star_sent_messages.clear();
-    p2a_star_sent_messages.clear();
     info_request_made = false;
     points_requests_made = 0;
   }
@@ -179,7 +170,6 @@ class P3AMessageManagerTest : public testing::Test,
   std::map<std::string, size_t> p2a_json_sent_metrics;
 
   std::set<std::string> p3a_star_sent_messages;
-  std::set<std::string> p2a_star_sent_messages;
 
   bool info_request_made = false;
   size_t points_requests_made = 0;
@@ -253,7 +243,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
   ASSERT_TRUE(info_request_made);
 
-  std::vector<std::string> test_histograms = GetTestHistogramNames(4, 3);
+  std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
 
   for (size_t i = 0; i < test_histograms.size(); i++) {
     message_manager->UpdateMetricValue(test_histograms[i], i + 1);
@@ -264,7 +254,6 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
   EXPECT_EQ(points_requests_made, 7U);
   // Should not send metrics, since they are in current epoch
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 0U);
 
   ResetInterceptorStores();
   current_epoch++;
@@ -274,8 +263,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 4U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 3U);
+  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
 
   ResetInterceptorStores();
   current_epoch++;
@@ -285,8 +273,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 4U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 3U);
+  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
 }
 
 TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
@@ -313,7 +300,6 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
 
   EXPECT_EQ(points_requests_made, 0U);
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 0U);
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
@@ -331,7 +317,6 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
   EXPECT_EQ(p3a_json_sent_metrics.size(), 0U);
   EXPECT_EQ(p2a_json_sent_metrics.size(), 0U);
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 0U);
 
   current_epoch++;
   next_epoch_time += base::Days(kEpochLenDays);
@@ -340,7 +325,6 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
 
   EXPECT_EQ(points_requests_made, 0U);
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
-  EXPECT_EQ(p2a_star_sent_messages.size(), 0U);
 }
 
 }  // namespace brave

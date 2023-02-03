@@ -11,6 +11,7 @@
 namespace brave {
 namespace features {
 
+// See https://github.com/brave/brave-browser/issues/24338 for more info.
 BASE_DECLARE_FEATURE(kSTAR);
 
 }  // namespace features

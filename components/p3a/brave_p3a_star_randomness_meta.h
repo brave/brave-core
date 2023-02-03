@@ -42,6 +42,9 @@ struct RandomnessServerInfo {
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> public_key;
 };
 
+// Handles retrieval of the current epoch number and next epoch time
+// from the randomness host. Also handles Nitro Enclave attestation
+// verification.
 class BraveP3AStarRandomnessMeta {
  public:
   using RandomnessServerInfoCallback =

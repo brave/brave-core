@@ -11,6 +11,8 @@
 
 namespace brave {
 
+// Handles scheduling of metric uploads/STAR metric preparation.
+// Will callback to BraveP3AMessageManager on a given interval.
 class BraveP3AScheduler : public metrics::MetricsScheduler {
  public:
   explicit BraveP3AScheduler(const base::RepeatingClosure& upload_callback,

@@ -39,6 +39,13 @@ class BraveP3AUploader;
 
 struct RandomnessServerInfo;
 
+// The message manager has multiple roles related to handling/reporting metric
+// values. Metric updates received upstream from the BraveP3AService are stored
+// in their appropriate BraveP3ALogStore instances. The BraveP3AScheduler calls
+// methods in this class via callbacks and propagates metric upload to the
+// BraveP3AUploader. The BraveP3ARotationScheduler also calls methods in this
+// class to handle reporting period rotation. STAR message preparation is also
+// triggered from this class.
 class BraveP3AMessageManager : public BraveP3AMetricLogStore::Delegate {
  public:
   using IsDynamicMetricRegisteredCallback =

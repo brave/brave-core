@@ -19,6 +19,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -84,9 +85,13 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         nullptr,
 #endif
         ads_service, profile->GetPrefs(), g_browser_process->local_state(),
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
         std::make_unique<NTPP3AHelperImpl>(
             g_browser_process->local_state(),
             g_brave_browser_process->brave_p3a_service(), ads_service),
+#else
+        nullptr,
+#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
         is_supported_locale);
   }
 

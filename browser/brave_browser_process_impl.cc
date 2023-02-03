@@ -120,10 +120,10 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   brave_referrals_service();
 
   // Disabled on mobile platforms, see for instance issues/6176
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   brave_p3a_service();
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
   histogram_braveizer_ = brave::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
@@ -363,17 +363,19 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 #endif
 
 brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
   if (brave_p3a_service_) {
     return brave_p3a_service_.get();
   }
-  std::unique_ptr<brave::BraveP3AConfig> config =
-      std::make_unique<brave::BraveP3AConfig>();
-  config->LoadFromCommandLine();
   brave_p3a_service_ = base::MakeRefCounted<brave::BraveP3AService>(
       local_state(), brave::GetChannelName(),
-      local_state()->GetString(kWeekOfInstallation), std::move(config));
+      local_state()->GetString(kWeekOfInstallation),
+      brave::BraveP3AConfig::LoadFromCommandLine());
   brave_p3a_service()->InitCallbacks();
   return brave_p3a_service_.get();
+#else
+  return nullptr;
+#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 brave::BraveReferralsService*

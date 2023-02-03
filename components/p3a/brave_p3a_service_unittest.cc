@@ -74,10 +74,10 @@ class P3AServiceTest : public testing::Test {
   }
 
   void SetUpP3AService() {
-    std::unique_ptr<BraveP3AConfig> config = std::make_unique<BraveP3AConfig>();
-    config->p3a_json_upload_url = GURL(kTestP3AJsonHost);
-    config->p2a_json_upload_url = GURL(kTestP2AJsonHost);
-    config->p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
+    BraveP3AConfig config;
+    config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
     p3a_service_ = scoped_refptr(new BraveP3AService(
         &local_state_, "release", "2049-01-01", std::move(config)));
 
