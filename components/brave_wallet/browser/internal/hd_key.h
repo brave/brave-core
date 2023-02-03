@@ -38,6 +38,8 @@ class HDKey : public HDKeyBase {
   static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
                                                   const std::string& json);
 
+  std::string GetPath() const override;
+
   // base58 encoded of hash160 of private key
   std::string GetPrivateExtendedKey() const;
   std::string EncodePrivateKeyForExport() const override;
@@ -56,10 +58,9 @@ class HDKey : public HDKeyBase {
       const std::vector<uint8_t>& ephemeral_public_key,
       const std::vector<uint8_t>& ciphertext) const;
 
-  // index should be 0 to 2^32
-  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
-  // If anything failed, nullptr will be returned
-  std::unique_ptr<HDKeyBase> DeriveChild(uint32_t index) override;
+  std::unique_ptr<HDKeyBase> DeriveNormalChild(uint32_t index) override;
+  std::unique_ptr<HDKeyBase> DeriveHardenedChild(uint32_t index) override;
+
   // path format: m/[n|n']*/[n|n']*...
   // n: 0 to 2^31-1 (normal derivation)
   // n': n + 2^31 (harden derivation)
@@ -104,10 +105,16 @@ class HDKey : public HDKeyBase {
   // value must be 33 bytes valid public key (compressed)
   void SetPublicKey(const std::vector<uint8_t>& value);
 
+  // index should be 0 to 2^32
+  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
+  // If anything failed, nullptr will be returned
+  std::unique_ptr<HDKey> DeriveChild(uint32_t index);
+
   void GeneratePublicKey();
   const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);
   std::string Serialize(uint32_t version, base::span<const uint8_t> key) const;
 
+  std::string path_;
   uint8_t depth_ = 0;
   uint32_t fingerprint_ = 0;
   uint32_t parent_fingerprint_ = 0;

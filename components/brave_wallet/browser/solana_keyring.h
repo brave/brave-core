@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_KEYRING_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -22,7 +23,6 @@ class SolanaKeyring : public HDKeyring {
 
   void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                           const std::string& hd_path) override;
-  void AddAccounts(size_t number) override;
 
   std::string ImportAccount(const std::vector<uint8_t>& keypair) override;
 
@@ -44,6 +44,7 @@ class SolanaKeyring : public HDKeyring {
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key) const override;
+  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
 };
 
 }  // namespace brave_wallet

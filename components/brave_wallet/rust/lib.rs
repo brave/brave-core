@@ -77,7 +77,7 @@ mod ffi {
             self: &Ed25519DalekExtendedSecretKey,
             path: String,
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
-        fn derive_child(
+        fn derive_hardened_child(
             self: &Ed25519DalekExtendedSecretKey,
             index: u32,
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
@@ -200,7 +200,7 @@ impl Ed25519DalekExtendedSecretKey {
                 .and_then(|d_path| Ok(self.0.derive(&d_path)?)),
         ))
     }
-    fn derive_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+    fn derive_hardened_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKeyResult> {
         Box::new(Ed25519DalekExtendedSecretKeyResult::from(
             ChildIndex::hardened(index)
                 .map_err(|err| Error::from(err))

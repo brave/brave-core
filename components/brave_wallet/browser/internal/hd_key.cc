@@ -32,8 +32,8 @@ namespace brave_wallet {
 namespace {
 constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
+constexpr uint32_t kHardenedOffset = 0x80000000;
 #define SERIALIZATION_LEN 78
-#define HARDENED_OFFSET 0x80000000
 #define MAINNET_PUBLIC 0x0488B21E
 #define MAINNET_PRIVATE 0x0488ADE4
 
@@ -123,6 +123,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
   auto IR = hmac_span.last(kSHA512Length / 2);
   hdkey->SetPrivateKey(IL);
   hdkey->SetChainCode(IR);
+  hdkey->path_ = kMasterNode;
   return hdkey;
 }
 
@@ -345,6 +346,10 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   return GenerateFromPrivateKey(private_key);
 }
 
+std::string HDKey::GetPath() const {
+  return path_;
+}
+
 void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   if (value.size() != 32) {
     LOG(ERROR) << __func__ << ": pivate key must be 32 bytes";
@@ -460,9 +465,24 @@ void HDKey::SetChainCode(base::span<const uint8_t> value) {
   chain_code_.assign(value.begin(), value.end());
 }
 
-std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
-  std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  bool is_hardened = index >= HARDENED_OFFSET;
+std::unique_ptr<HDKeyBase> HDKey::DeriveNormalChild(uint32_t index) {
+  if (index >= kHardenedOffset) {
+    return nullptr;
+  }
+
+  return DeriveChild(index);
+}
+
+std::unique_ptr<HDKeyBase> HDKey::DeriveHardenedChild(uint32_t index) {
+  if (index >= kHardenedOffset) {
+    return nullptr;
+  }
+
+  return DeriveChild(kHardenedOffset + index);
+}
+
+std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
+  bool is_hardened = index >= kHardenedOffset;
   SecureVector data;
 
   if (is_hardened) {
@@ -494,6 +514,7 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
   auto IL = hmac_span.first(kSHA512Length / 2);
   auto IR = hmac_span.last(kSHA512Length / 2);
 
+  std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   hdkey->SetChainCode(IR);
 
   if (!private_key_.empty()) {
@@ -532,62 +553,75 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
     hdkey->SetPublicKey(public_key);
   }
 
+  if (!path_.empty()) {
+    const std::string node = is_hardened
+                                 ? std::to_string(index - kHardenedOffset) + "'"
+                                 : std::to_string(index);
+
+    hdkey->path_ = path_ + "/" + node;
+  }
   hdkey->depth_ = depth_ + 1;
   hdkey->parent_fingerprint_ = fingerprint_;
   hdkey->index_ = index;
 
-  return std::unique_ptr<HDKeyBase>{hdkey.release()};
+  return hdkey;
 }
 
 std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
-  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
-  if (path == "m") {
-    if (!private_key_.empty())
-      hd_key->SetPrivateKey(private_key_);
-    else
-      hd_key->SetPublicKey(public_key_);
-    hd_key->chain_code_ = chain_code_;
-    return std::unique_ptr<HDKeyBase>{hd_key.release()};
+  if (path_ != kMasterNode) {
+    LOG(ERROR) << __func__ << ": must derive only from master key";
+    return nullptr;
   }
+  if (private_key_.empty()) {
+    LOG(ERROR) << __func__ << ": master key must have private key";
+    return nullptr;
+  }
+
+  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   std::vector<std::string> entries =
       base::SplitString(path, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
-  if (entries.empty())
+  if (entries.empty()) {
     return nullptr;
-  for (size_t i = 0; i < entries.size(); ++i) {
+  }
+
+  // Starting with 'm' node and effectively copying `*this` into `hd_key`.
+  if (entries[0] != kMasterNode) {
+    LOG(ERROR) << __func__ << ": path must start with \"m\"";
+    return nullptr;
+  }
+  hd_key->SetPrivateKey(private_key_);
+  hd_key->SetChainCode(chain_code_);
+  hd_key->path_ = path_;
+
+  for (size_t i = 1; i < entries.size(); ++i) {
     std::string entry = entries[i];
-    if (i == 0) {
-      if (entry != "m") {
-        LOG(ERROR) << __func__ << ": path must starts with \"m\"";
-        return nullptr;
-      }
-      if (!private_key_.empty())
-        hd_key->SetPrivateKey(private_key_);
-      else
-        hd_key->SetPublicKey(public_key_);
-      hd_key->chain_code_ = chain_code_;
-      continue;
-    }
+
     bool is_hardened = entry.length() > 1 && entry.back() == '\'';
-    if (is_hardened)
+    if (is_hardened) {
       entry.pop_back();
+    }
     unsigned child_index = 0;
     if (!base::StringToUint(entry, &child_index)) {
-      LOG(ERROR) << __func__ << ": path must contains number or number'";
+      LOG(ERROR) << __func__ << ": path must contain number or number'";
       return nullptr;
     }
-    if (child_index >= HARDENED_OFFSET) {
-      LOG(ERROR) << __func__ << ": index must be less than " << HARDENED_OFFSET;
+    if (child_index >= kHardenedOffset) {
+      LOG(ERROR) << __func__ << ": index must be less than " << kHardenedOffset;
       return nullptr;
     }
-    if (is_hardened)
-      child_index += HARDENED_OFFSET;
+    if (is_hardened) {
+      child_index += kHardenedOffset;
+    }
 
-    std::unique_ptr<HDKeyBase> child_key = hd_key->DeriveChild(child_index);
-    hd_key = std::unique_ptr<HDKey>{static_cast<HDKey*>(child_key.release())};
-    if (!hd_key)
+    hd_key = hd_key->DeriveChild(child_index);
+    if (!hd_key) {
       return nullptr;
+    }
   }
+
+  DCHECK_EQ(path, hd_key->GetPath());
+
   return std::unique_ptr<HDKeyBase>{hd_key.release()};
 }
 

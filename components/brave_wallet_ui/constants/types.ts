@@ -35,8 +35,7 @@ export interface WalletAccountType {
   accountType: WalletAccountTypeName
   deviceId?: string
   coin: BraveWallet.CoinType
-  // Used to separate networks for filecoin.
-  keyringId?: string
+  keyringId: string
 }
 
 export interface UserAccountType {
@@ -328,27 +327,12 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
-export interface HardwareInfo {
-  vendor: string
-  path: string
-  deviceId: string
-}
-
-export interface AccountInfo {
-  address: string
-  name: string
-  isImported: boolean
-  hardware: HardwareInfo | undefined
-  coin: BraveWallet.CoinType
-  keyringId: string | undefined
-}
-
 export interface WalletInfoBase {
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
-  accountInfos: AccountInfo[]
+  accountInfos: BraveWallet.AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
   isNftPinningFeatureEnabled: boolean

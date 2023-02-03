@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-  AccountInfo,
   AccountTransactions,
   BraveWallet,
   GetBlockchainTokenBalanceReturnInfo,
@@ -275,7 +274,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
-        const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
+        const accounts = payload.accountInfos.map((info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
           return {
             id: `${idx + 1}`,
             name: info.name,
@@ -286,7 +285,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
             nativeBalanceRegistry: {},
             coin: info.coin,
             keyringId: info.keyringId
-          } as WalletAccountType
+          }
         })
         const selectedAccount = payload.selectedAccount
           ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]

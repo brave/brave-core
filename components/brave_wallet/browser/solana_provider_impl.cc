@@ -233,7 +233,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
   }
 
   absl::optional<std::vector<uint8_t>> signed_tx;
-  if (!keyring_service_->IsHardwareAccount(account)) {
+  if (!keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account)) {
     signed_tx = tx->GetSignedTransactionBytes(keyring_service_);
   } else if (signature && signature->is_bytes()) {  // hardware
     signed_tx = tx->GetSignedTransactionBytes(keyring_service_,
@@ -325,7 +325,8 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
     return;
   }
 
-  bool is_hardware_account = keyring_service_->IsHardwareAccount(account);
+  bool is_hardware_account =
+      keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account);
   if (is_hardware_account &&
       (!signatures || signatures->size() != txs.size())) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
@@ -683,7 +684,8 @@ void SolanaProviderImpl::OnSignMessageRequestProcessed(
     return;
   }
 
-  bool is_hardware_account = keyring_service_->IsHardwareAccount(account);
+  bool is_hardware_account =
+      keyring_service_->IsHardwareAccount(mojom::kSolanaKeyringId, account);
   absl::optional<std::vector<uint8_t>> sig_bytes;
   if (!is_hardware_account) {
     sig_bytes = keyring_service_->SignMessage(mojom::kSolanaKeyringId, account,

@@ -9,12 +9,15 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
+
 HDKeyEd25519::HDKeyEd25519(
+    std::string path,
     rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key)
-    : private_key_(std::move(private_key)) {
+    : path_(std::move(path)), private_key_(std::move(private_key)) {
   CHECK(private_key_->is_ok());
 }
 HDKeyEd25519::~HDKeyEd25519() = default;
@@ -28,7 +31,8 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
     VLOG(0) << std::string(master_private_key->error_message());
     return nullptr;
   }
-  return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
+  return std::make_unique<HDKeyEd25519>(kMasterNode,
+                                        std::move(master_private_key));
 }
 
 // static
@@ -40,28 +44,45 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromPrivateKey(
     VLOG(0) << std::string(master_private_key->error_message());
     return nullptr;
   }
-  return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
+  return std::make_unique<HDKeyEd25519>("", std::move(master_private_key));
 }
 
-std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
-  auto child_private_key = private_key_->unwrap().derive_child(index);
+std::string HDKeyEd25519::GetPath() const {
+  return path_;
+}
+
+std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveNormalChild(uint32_t index) {
+  // Normal derivation is not supported for ed25519.
+  // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
+  NOTIMPLEMENTED();
+  return nullptr;
+}
+
+std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveHardenedChild(uint32_t index) {
+  auto child_private_key = private_key_->unwrap().derive_hardened_child(index);
   if (!child_private_key->is_ok()) {
     VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
   }
-  auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
-  return std::unique_ptr<HDKeyBase>{child_key.release()};
+  auto child_path = path_ + "/" + std::to_string(index) + "'";
+  return std::make_unique<HDKeyEd25519>(std::move(child_path),
+                                        std::move(child_private_key));
 }
 
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
     const std::string& path) {
+  if (path_ != kMasterNode) {
+    VLOG(0) << "must derive only from master key";
+    return nullptr;
+  }
+
   auto child_private_key = private_key_->unwrap().derive(path);
   if (!child_private_key->is_ok()) {
     VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
   }
-  auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
-  return std::unique_ptr<HDKeyBase>{child_key.release()};
+
+  return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
 }
 
 std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,

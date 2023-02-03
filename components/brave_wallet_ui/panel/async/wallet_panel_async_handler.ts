@@ -12,7 +12,6 @@ import {
   WalletPanelState,
   PanelState,
   WalletState,
-  HardwareInfo,
   WalletRoutes,
   SerializableTransactionInfo,
   SerializableSignMessageRequest,
@@ -194,7 +193,7 @@ handler.on(PanelActions.cancelConnectToSite.type, async (store: Store, payload: 
 handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, payload: CancelConnectHardwareWalletPayload) => {
   const found = await findHardwareAccountInfo(payload.accountAddress)
   if (found && found.hardware) {
-    const info: HardwareInfo = found.hardware
+    const info: BraveWallet.HardwareInfo = found.hardware
     await cancelHardwareOperation(info.vendor as HardwareVendor, payload.coinType)
   }
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
@@ -207,7 +206,7 @@ handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, tx
   if (!found || !found.hardware) {
     return
   }
-  const hardwareAccount: HardwareInfo = found.hardware
+  const hardwareAccount: BraveWallet.HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {

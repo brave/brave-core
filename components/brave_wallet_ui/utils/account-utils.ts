@@ -5,7 +5,6 @@
 
 // types
 import {
-  AccountInfo,
   BraveWallet,
   WalletAccountType,
   WalletAccountTypeName
@@ -62,7 +61,7 @@ export const createTokenBalanceRegistryKey = (
   return token.isErc721 ? `${token.contractAddress.toLowerCase()}#${token.tokenId}` : token.contractAddress.toLowerCase()
 }
 
-export const getAccountType = (info: AccountInfo): WalletAccountTypeName => {
+export const getAccountType = (info: BraveWallet.AccountInfo): WalletAccountTypeName => {
   if (info.hardware) {
     return info.hardware.vendor as 'Ledger' | 'Trezor'
   }
