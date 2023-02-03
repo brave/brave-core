@@ -95,18 +95,21 @@ void DatabaseExternalTransactions::OnGetTransaction(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Failed to get external transaction!");
-    return std::move(callback).Run(absl::nullopt);
+    return std::move(callback).Run(
+        base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   const auto& records = response->result->get_records();
   if (records.empty()) {
-    return std::move(callback).Run(nullptr);
+    return std::move(callback).Run(
+        base::unexpected(GetExternalTransactionError::kTransactionNotFound));
   }
 
   DCHECK_EQ(records.size(), 1ull);
   if (records.size() != 1) {
     BLOG(0, "Failed to get external transaction!");
-    return std::move(callback).Run(absl::nullopt);
+    return std::move(callback).Run(
+        base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   auto transaction_id = GetStringColumn(records[0].get(), 0);
@@ -117,12 +120,14 @@ void DatabaseExternalTransactions::OnGetTransaction(
   if (transaction_id.empty() || contribution_id.empty() ||
       destination.empty() || amount.empty()) {
     BLOG(0, "Failed to get external transaction!");
-    return std::move(callback).Run(absl::nullopt);
+    return std::move(callback).Run(
+        base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   if (double value = 0.0; !base::StringToDouble(amount, &value)) {
     BLOG(0, "Failed to get external transaction!");
-    return std::move(callback).Run(absl::nullopt);
+    return std::move(callback).Run(
+        base::unexpected(GetExternalTransactionError::kDatabaseError));
   }
 
   std::move(callback).Run(mojom::ExternalTransaction::New(

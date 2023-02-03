@@ -49,22 +49,28 @@ void Transfer::OnGetExternalTransaction(
     std::string&& contribution_id,
     std::string&& destination,
     std::string&& amount,
-    absl::optional<mojom::ExternalTransactionPtr> transaction) const {
-  if (!transaction) {
-    return std::move(callback).Run(nullptr);
+    base::expected<mojom::ExternalTransactionPtr,
+                   database::GetExternalTransactionError> existing_transaction)
+    const {
+  if (existing_transaction.has_value()) {
+    DCHECK(existing_transaction.value());
+    return std::move(callback).Run(std::move(existing_transaction.value()));
   }
 
-  if (*transaction) {
-    return std::move(callback).Run(std::move(*transaction));
+  switch (existing_transaction.error()) {
+    case database::GetExternalTransactionError::kDatabaseError:
+      return std::move(callback).Run(nullptr);
+    case database::GetExternalTransactionError::kTransactionNotFound:
+      break;
   }
 
-  *transaction = mojom::ExternalTransaction::New(
+  auto new_transaction = mojom::ExternalTransaction::New(
       "" /* transaction_id - to be generated */, std::move(contribution_id),
       std::move(destination), std::move(amount));
 
   CreateTransaction(base::BindOnce(&Transfer::SaveExternalTransaction,
                                    base::Unretained(this), std::move(callback)),
-                    std::move(*transaction));
+                    std::move(new_transaction));
 }
 
 void Transfer::SaveExternalTransaction(

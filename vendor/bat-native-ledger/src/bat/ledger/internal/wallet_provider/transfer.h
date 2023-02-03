@@ -8,8 +8,9 @@
 
 #include <string>
 
+#include "base/types/expected.h"
+#include "bat/ledger/internal/database/database_external_transactions.h"
 #include "bat/ledger/ledger.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -42,7 +43,8 @@ class Transfer {
       std::string&& contribution_id,
       std::string&& destination,
       std::string&& amount,
-      absl::optional<mojom::ExternalTransactionPtr>) const;
+      base::expected<mojom::ExternalTransactionPtr,
+                     database::GetExternalTransactionError>) const;
 
   void SaveExternalTransaction(MaybeCreateTransactionCallback callback,
                                mojom::ExternalTransactionPtr) const;

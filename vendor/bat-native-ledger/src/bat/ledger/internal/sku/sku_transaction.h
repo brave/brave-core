@@ -10,9 +10,10 @@
 #include <memory>
 #include <string>
 
+#include "base/types/expected.h"
+#include "bat/ledger/internal/database/database_external_transactions.h"
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -47,9 +48,11 @@ class SKUTransaction {
                   const std::string& destination,
                   ledger::LegacyResultCallback callback);
 
-  void OnGetExternalTransaction(ledger::LegacyResultCallback,
-                                mojom::SKUTransaction&&,
-                                absl::optional<mojom::ExternalTransactionPtr>);
+  void OnGetExternalTransaction(
+      ledger::LegacyResultCallback,
+      mojom::SKUTransaction&&,
+      base::expected<mojom::ExternalTransactionPtr,
+                     database::GetExternalTransactionError>);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,

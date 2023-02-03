@@ -8,13 +8,16 @@
 
 #include <string>
 
+#include "base/types/expected.h"
 #include "bat/ledger/internal/database/database_table.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger::database {
 
+enum class GetExternalTransactionError { kDatabaseError, kTransactionNotFound };
+
 using GetExternalTransactionCallback =
-    base::OnceCallback<void(absl::optional<mojom::ExternalTransactionPtr>)>;
+    base::OnceCallback<void(base::expected<mojom::ExternalTransactionPtr,
+                                           GetExternalTransactionError>)>;
 
 class DatabaseExternalTransactions : public DatabaseTable {
  public:

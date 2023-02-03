@@ -117,13 +117,17 @@ void SKUTransaction::OnTransfer(mojom::Result result,
 void SKUTransaction::OnGetExternalTransaction(
     ledger::LegacyResultCallback callback,
     mojom::SKUTransaction&& transaction,
-    absl::optional<mojom::ExternalTransactionPtr> external_transaction) {
-  if (!external_transaction || !*external_transaction) {
+    base::expected<mojom::ExternalTransactionPtr,
+                   database::GetExternalTransactionError>
+        external_transaction) {
+  if (!external_transaction.has_value()) {
     return callback(mojom::Result::LEDGER_OK);
   }
 
+  DCHECK(external_transaction.value());
+
   transaction.external_transaction_id =
-      std::move((*external_transaction)->transaction_id);
+      std::move(external_transaction.value()->transaction_id);
 
   auto save_callback = std::bind(&SKUTransaction::OnSaveSKUExternalTransaction,
                                  this, _1, transaction, std::move(callback));
