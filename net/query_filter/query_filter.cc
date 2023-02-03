@@ -1,15 +1,17 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_query_filter.h"
+#include "brave/net/query_filter/query_filter.h"
 
 #include <string>
 #include <vector>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/logging.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -102,6 +104,7 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
+      VLOG(1) << "QUERY FILTER: stripping " << key << " from " << spec;
       ++disallowed_count;
     } else {
       output_kv_strings.push_back(kv_string);
@@ -115,12 +118,15 @@ absl::optional<std::string> StripQueryParameter(const base::StringPiece& query,
 
 }  // namespace
 
+namespace net::query_filter {
+
 absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   const auto& query = original_url.query_piece();
   const std::string& spec = original_url.spec();
   const auto clean_query_value = StripQueryParameter(query, spec);
-  if (!clean_query_value.has_value())
+  if (!clean_query_value.has_value()) {
     return absl::nullopt;
+  }
   const auto& clean_query = clean_query_value.value();
   if (clean_query.length() < query.length()) {
     GURL::Replacements replacements;
@@ -133,3 +139,34 @@ absl::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
   }
   return absl::nullopt;
 }
+
+void MaybeRemoveTwitterParam(
+    const absl::optional<url::Origin>& request_initiator,
+    GURL& url_to_load) {
+  if (!(url_to_load.has_query() && url_to_load.DomainIs("twitter.com") &&
+        (!request_initiator || !request_initiator->DomainIs("twitter.com")))) {
+    // Ignore anything that's not a not cross-origin request to
+    // Twitter with a query string.
+    return;
+  }
+
+  GURL url = url_to_load;
+
+  std::vector<base::StringPiece> query_params =
+      base::SplitStringPiece(url.query_piece(), "&", base::KEEP_WHITESPACE,
+                             base::SplitResult::SPLIT_WANT_ALL);
+  base::EraseIf(query_params, [](const auto& p) {
+    return base::StartsWith(p, "t=", base::CompareCase::SENSITIVE);
+  });
+
+  GURL::Replacements replacements;
+  if (query_params.empty()) {
+    replacements.ClearQuery();
+  } else {
+    std::string new_query_str = base::JoinString(query_params, "&");
+    replacements.SetQueryStr(new_query_str);
+  }
+  url_to_load = url.ReplaceComponents(replacements);
+}
+
+}  // namespace net::query_filter

@@ -9,4 +9,8 @@ brave_net_sources = [
   "//brave/net/http/partitioned_host_state_map.h",
   "//brave/net/proxy_resolution/proxy_config_service_tor.cc",
   "//brave/net/proxy_resolution/proxy_config_service_tor.h",
+  "//brave/net/query_filter/query_filter.cc",
+  "//brave/net/query_filter/query_filter.h",
 ]
+
+brave_net_deps = [ "//third_party/re2" ]

@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/net/brave_query_filter.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/net/query_filter/query_filter.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
@@ -28,16 +28,22 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
 
   if (!ctx->allow_brave_shields) {
     // Don't apply the filter if the destination URL has shields down.
+    VLOG(1) << "QUERY FILTER: shields down exemption (" << ctx->request_url
+            << ")";
     return;
   }
 
   if (ctx->method != "GET") {
+    VLOG(1) << "QUERY FILTER: non-GET exemption (" << ctx->method << " on "
+            << ctx->request_url << ")";
     return;
   }
 
   if (ctx->redirect_source.is_valid()) {
     if (ctx->internal_redirect) {
       // Ignore internal redirects since we trigger them.
+      VLOG(1) << "QUERY FILTER: internal redirect exemption ("
+              << ctx->request_url << ")";
       return;
     }
 
@@ -45,6 +51,8 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
             ctx->redirect_source, ctx->request_url,
             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
       // Same-site redirects are exempted.
+      VLOG(1) << "QUERY FILTER: same-site redirect exemption ("
+              << ctx->redirect_source << " -> " << ctx->request_url << ")";
       return;
     }
   } else if (ctx->initiator_url.is_valid() &&
@@ -53,9 +61,11 @@ void ApplyPotentialQueryStringFilter(std::shared_ptr<BraveRequestInfo> ctx) {
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.
+    VLOG(1) << "QUERY FILTER: same-site exemption (" << ctx->initiator_url
+            << " -> " << ctx->request_url << ")";
     return;
   }
-  auto filtered_url = ApplyQueryFilter(ctx->request_url);
+  auto filtered_url = net::query_filter::ApplyQueryFilter(ctx->request_url);
   if (filtered_url.has_value()) {
     ctx->new_url_spec = filtered_url.value().spec();
   }

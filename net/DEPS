@@ -1,0 +1,7 @@
+# Inline upstream rules.
+from import_inline import inline_file_from_src
+inline_file_from_src('net/DEPS', globals(), locals())
+
+include_rules += [
+  "+third_party/re2",
+]
