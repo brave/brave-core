@@ -275,6 +275,20 @@ class UserScriptManager {
         }
       }
       
+      if let solanaProvider = tab.walletSolProvider {
+        solanaProvider.isSolanaKeyringCreated { isSolanaKeyringCreated in
+          guard isSolanaKeyringCreated, // don't inject if Solana keyring is not created.
+                let walletStandardScript = tab.walletSolProviderScripts[.walletStandard]
+          else { return }
+          let wkScript = WKUserScript.create(
+            source: walletStandardScript,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: true,
+            in: SolanaProviderScriptHandler.scriptSandbox)
+          scriptController.addUserScript(wkScript)
+        }
+      }
+      
       // TODO: Refactor this and get rid of the `UserScriptType`
       // Inject Custom scripts
       for userScriptType in customScripts.sorted(by: { $0.order < $1.order }) {
