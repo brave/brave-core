@@ -879,6 +879,16 @@ public class BrowserViewController: UIViewController {
         name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
     }
     
+    BraveGlobalShieldStats.shared.$adblock
+      .scan((BraveGlobalShieldStats.shared.adblock, BraveGlobalShieldStats.shared.adblock), { ($0.1, $1) })
+      .sink { [weak self] (oldValue, newValue) in
+        let change = newValue - oldValue
+        if change > 0 {
+          self?.recordDataSavedP3A(change: change)
+        }
+      }
+      .store(in: &cancellables)
+    
     KeyboardHelper.defaultHelper.addDelegate(self)
     UNUserNotificationCenter.current().delegate = self
     

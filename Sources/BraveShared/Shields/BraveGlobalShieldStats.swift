@@ -10,7 +10,7 @@ open class BraveGlobalShieldStats {
   public static let shared = BraveGlobalShieldStats()
   public static let didUpdateNotification = "BraveGlobalShieldStatsDidUpdate"
 
-  public var adblock: Int = 0 {
+  @Published public var adblock: Int = 0 {
     didSet {
       Preferences.BlockStats.adsCount.value = adblock
       postUpdateNotification()
@@ -74,7 +74,7 @@ open class BraveGlobalShieldStats {
   }
 
   fileprivate let millisecondsPerItem: Int = 50
-  fileprivate let bytesPerItem = 30485
+  public let averageBytesSavedPerItem = 30485
 
   public var timeSaved: String {
     get {
@@ -108,7 +108,7 @@ open class BraveGlobalShieldStats {
   }
 
   public var dataSaved: String {
-    var estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * bytesPerItem
+    var estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * averageBytesSavedPerItem
 
     if estimatedDataSavedInBytes <= 0 { return "0" }
     let _1MB = 1000 * 1000
