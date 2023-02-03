@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 04a1506295005bed19a905232b07f87fba858c13..456118514ca565d03394201b7d0f7cdc18d0049d 100644
+index 04a1506295005bed19a905232b07f87fba858c13..1b9870c3cfe4275ae24e84fa753bc89f567568af 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -48,6 +48,13 @@
@@ -77,7 +77,7 @@ index 04a1506295005bed19a905232b07f87fba858c13..456118514ca565d03394201b7d0f7cdc
        case IdentityTokenCacheValue::CACHE_STATUS_REMOTE_CONSENT:
          RecordInteractivityMetrics(InteractionType::kConsent);
          ShowRemoteConsentDialog(resolution_data_);
-@@ -611,6 +645,34 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
+@@ -611,6 +645,35 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE);
  }
  
@@ -103,16 +103,17 @@ index 04a1506295005bed19a905232b07f87fba858c13..456118514ca565d03394201b7d0f7cdc
 +                       " "));
 +  web_auth_flow_ = std::make_unique<WebAuthFlow>(
 +      this, GetProfile(), google_oauth_url,
-+      IsInteractionAllowed(interactivity_status_for_signin_) ?
-+        WebAuthFlow::INTERACTIVE : WebAuthFlow::SILENT,
-+      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW);
++      IsInteractionAllowed(interactivity_status_for_signin_)
++          ? WebAuthFlow::INTERACTIVE
++          : WebAuthFlow::SILENT,
++      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW, extension()->name());
 +  web_auth_flow_->Start();
 +}
 +
  void IdentityGetAuthTokenFunction::OnRefreshTokenUpdatedForAccount(
      const CoreAccountInfo& account_info) {
    if (account_listening_mode_ != AccountListeningMode::kListeningTokens)
-@@ -761,6 +823,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
+@@ -761,6 +824,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
  }
  
