@@ -34,16 +34,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
@@ -107,15 +103,6 @@ public class PortfolioFragment
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getJsonRpcService();
-        }
-
-        return null;
-    }
-
-    private TxService getTxService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getTxService();
         }
 
         return null;
@@ -375,35 +362,6 @@ public class PortfolioFragment
         activity.openNetworkSelection();
     }
 
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioService();
-        }
-
-        return null;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    BraveWalletService getBraveWalletService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletService();
-        } else {
-            assert false;
-        }
-
-        return null;
-    }
-
     private void AdjustTrendControls() {
         TextView trendTimeframe = getView().findViewById(R.id.trend_timeframe);
         TextView trendPercentage = getView().findViewById(R.id.trend_percentage);
@@ -457,8 +415,6 @@ public class PortfolioFragment
     }
 
     private void updatePortfolioGetPendingTx() {
-        KeyringService keyringService = getKeyringService();
-        assert keyringService != null;
         if (mWalletModel == null) return;
 
         final NetworkInfo selectedNetwork =
@@ -466,8 +422,9 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
-        keyringService.getKeyringInfo(
+        mWalletModel.getKeyringModel().getKeyringPerId(
                 AssetUtils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
+                    if (keyringInfo == null) return;
                     AccountInfo[] accountInfos = new AccountInfo[] {};
                     if (keyringInfo != null) {
                         accountInfos = keyringInfo.accountInfos;
