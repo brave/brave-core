@@ -45,4 +45,28 @@ extension BrowserViewController {
       break
     }
   }
+  
+  func recordDataSavedP3A(change: Int) {
+    var dataSavedStorage = P3ATimedStorage<Int>.dataSavedStorage
+    dataSavedStorage.add(value: change * BraveGlobalShieldStats.shared.averageBytesSavedPerItem, to: Date())
+    
+    // Values are in MB
+    let buckets: [Bucket] = [
+      0,
+      .r(1...50),
+      .r(51...100),
+      .r(101...200),
+      .r(201...400),
+      .r(401...700),
+      .r(701...1500),
+      .r(1501...)
+    ]
+    let amountOfDataSavedInMB = dataSavedStorage.combinedValue / 1024 / 1024
+    UmaHistogramRecordValueToBucket("Brave.Savings.BandwidthSavingsMB", buckets: buckets, value: amountOfDataSavedInMB)
+  }
+}
+
+extension P3ATimedStorage where Value == Int {
+  /// Holds timed storage for question 21 (`Brave.Savings.BandwidthSavingsMB`)
+  fileprivate static var dataSavedStorage: Self { .init(name: "data-saved", lifetimeInDays: 7) }
 }
