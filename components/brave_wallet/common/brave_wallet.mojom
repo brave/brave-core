@@ -672,6 +672,7 @@ interface BlockchainRegistry {
   // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
+  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);

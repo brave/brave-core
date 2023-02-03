@@ -116,35 +116,63 @@ void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
   std::move(callback).Run(std::move(tokens_copy));
 }
 
-void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
-                                      const std::string& chain_id,
-                                      GetBuyTokensCallback callback) {
+std::vector<brave_wallet::mojom::BlockchainTokenPtr>
+BlockchainRegistry::GetBuyTokens(
+    const std::vector<mojom::OnRampProvider>& providers,
+    const std::string& chain_id) {
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens;
-  const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
-  if (provider == mojom::OnRampProvider::kWyre)
-    buy_tokens = &GetWyreBuyTokens();
-  else if (provider == mojom::OnRampProvider::kRamp)
-    buy_tokens = &GetRampBuyTokens();
-  else if (provider == mojom::OnRampProvider::kSardine)
-    buy_tokens = &GetSardineBuyTokens();
-  else if (provider == mojom::OnRampProvider::kTransak)
-    buy_tokens = &GetTransakBuyTokens();
-
-  if (buy_tokens == nullptr) {
-    std::move(callback).Run(std::move(blockchain_buy_tokens));
-    return;
+  std::vector<mojom::BlockchainToken> buy_tokens;
+  if (std::find(providers.begin(), providers.end(),
+                mojom::OnRampProvider::kWyre) != providers.end()) {
+    buy_tokens.insert(std::end(buy_tokens), std::begin(GetWyreBuyTokens()),
+                      std::end(GetWyreBuyTokens()));
   }
-
-  for (const auto& token : *buy_tokens) {
+  if (std::find(providers.begin(), providers.end(),
+                mojom::OnRampProvider::kRamp) != providers.end()) {
+    buy_tokens.insert(std::end(buy_tokens), std::begin(GetRampBuyTokens()),
+                      std::end(GetRampBuyTokens()));
+  }
+  if (std::find(providers.begin(), providers.end(),
+                mojom::OnRampProvider::kSardine) != providers.end()) {
+    buy_tokens.insert(std::end(buy_tokens), std::begin(GetSardineBuyTokens()),
+                      std::end(GetSardineBuyTokens()));
+  }
+  if (std::find(providers.begin(), providers.end(),
+                mojom::OnRampProvider::kTransak) != providers.end()) {
+    buy_tokens.insert(std::end(buy_tokens), std::begin(GetTransakBuyTokens()),
+                      std::end(GetTransakBuyTokens()));
+  }
+  if (buy_tokens.empty()) {
+    return blockchain_buy_tokens;
+  }
+  for (const auto& token : buy_tokens) {
     if (token.chain_id != chain_id) {
       continue;
     }
-
     blockchain_buy_tokens.push_back(
         brave_wallet::mojom::BlockchainToken::New(token));
   }
+  LOG(ERROR) << "blockchain_buy_tokens size: " << blockchain_buy_tokens.size();
+  return blockchain_buy_tokens;
+}
+
+void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
+                                      const std::string& chain_id,
+                                      GetBuyTokensCallback callback) {
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens =
+      GetBuyTokens({provider}, chain_id);
   std::move(callback).Run(std::move(blockchain_buy_tokens));
 }
+
+void BlockchainRegistry::GetProvidersBuyTokens(
+    const std::vector<mojom::OnRampProvider>& providers,
+    const std::string& chain_id,
+    GetProvidersBuyTokensCallback callback) {
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens =
+      GetBuyTokens(providers, chain_id);
+  std::move(callback).Run(std::move(blockchain_buy_tokens));
+}
+
 // TODO(muliswilliam) - Remove this function when iOS and Android no longer
 // depend on it https://github.com/brave/brave-browser/issues/23503
 void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,

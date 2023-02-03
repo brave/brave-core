@@ -51,9 +51,16 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetAllTokens(const std::string& chain_id,
                     mojom::CoinType coin,
                     GetAllTokensCallback callback) override;
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> GetBuyTokens(
+      const std::vector<mojom::OnRampProvider>& providers,
+      const std::string& chain_id);
   void GetBuyTokens(mojom::OnRampProvider provider,
                     const std::string& chain_id,
                     GetBuyTokensCallback callback) override;
+  void GetProvidersBuyTokens(
+      const std::vector<mojom::OnRampProvider>& providers,
+      const std::string& chain_id,
+      GetProvidersBuyTokensCallback callback) override;
   void GetBuyUrl(mojom::OnRampProvider provider,
                  const std::string& chain_id,
                  const std::string& address,
