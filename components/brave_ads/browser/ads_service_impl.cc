@@ -1383,6 +1383,8 @@ void AdsServiceImpl::Shutdown() {
 
   idle_state_timer_.Stop();
 
+  prefetched_new_tab_page_ad_.reset();
+
   CloseAllNotificationAds();
 
   CloseAdaptiveCaptcha();
@@ -1616,36 +1618,16 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  // The previous prefetched new tab page ad is available. No need to do
-  // prefetch again.
   if (prefetched_new_tab_page_ad_) {
     return;
-  }
-
-  if (should_purge_orphaned_new_tab_page_ad_events_) {
-    should_purge_orphaned_new_tab_page_ad_events_ = false;
-
-    return PurgeOrphanedAdEventsForType(
-        ads::mojom::AdType::kNewTabPageAd,
-        base::BindOnce(&AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents,
-                       AsWeakPtr()));
   }
 
   bat_ads_->MaybeServeNewTabPageAd(
       base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnPurgeOrphanedNewTabPageAdEvents(const bool success) {
-  if (!success) {
-    VLOG(1) << "Failed to purge orphaned ad events for new tab page ads";
-    return;
-  }
-
-  PrefetchNewTabPageAd();
-}
-
 absl::optional<ads::NewTabPageAdInfo>
-AdsServiceImpl::GetPrefetchedNewTabPageAd() {
+AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
   if (!bat_ads_.is_bound()) {
     return absl::nullopt;
   }
@@ -1662,7 +1644,10 @@ AdsServiceImpl::GetPrefetchedNewTabPageAd() {
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
     const std::string& /*placement_id*/,
     const std::string& /*creative_instance_id*/) {
-  should_purge_orphaned_new_tab_page_ad_events_ = true;
+  prefetched_new_tab_page_ad_.reset();
+
+  PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd,
+                               base::DoNothing());
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(

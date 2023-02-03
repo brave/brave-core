@@ -269,9 +269,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       ads::mojom::InlineContentAdEventType event_type) override;
 
-  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
+  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+      override;
   void PrefetchNewTabPageAd() override;
-  void OnPurgeOrphanedNewTabPageAdEvents(bool success);
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
@@ -441,7 +441,6 @@ class AdsServiceImpl : public AdsService,
       notification_ad_timers_;
 
   absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
-  bool should_purge_orphaned_new_tab_page_ad_events_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 
