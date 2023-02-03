@@ -40,6 +40,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -506,8 +507,9 @@ public class AssetDetailActivity
 
         LiveDataUtil.observeOnce(mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
                 selectedNetwork -> {
-                    mWalletModel.getCryptoModel().isBuySupported(selectedNetwork, mAssetSymbol,
-                            mContractAddress, mChainId, isBuyEnabled -> {
+                    mWalletModel.getCryptoModel().getBuyModel().isBuySupported(selectedNetwork,
+                            mAssetSymbol, mContractAddress, mChainId,
+                            BuyModel.SUPPORTED_RAMP_PROVIDERS, isBuyEnabled -> {
                                 if (isBuyEnabled) {
                                     AndroidUtils.show(mBtnBuy);
                                 } else {

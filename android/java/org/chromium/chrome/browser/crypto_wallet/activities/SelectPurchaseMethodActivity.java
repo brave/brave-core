@@ -20,19 +20,24 @@ import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.BuyModel;
+import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
 public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     private static final String CHAIN_ID = "chainId";
     private static final String FROM = "from";
-    private static final String RAMP_NETWORK_SYMBOL = "rampNetworkSymbol";
+    private static final String ASSET_SYMBOL = "assetSymbol";
+    private static final String CONTRACT_ADDRESS = "contractAddress";
     private static final String AMOUNT = "amount";
 
     private BuyModel mBuyModel;
+    private WalletModel mWalletModel;
 
     private String mChainId;
     private String mFrom;
-    private String mRampNetworkSymbol;
+    private String mAssetSymbol;
+    private String mContractAddress;
     private String mAmount;
 
     private ViewGroup mRampNetworkLayout;
@@ -50,7 +55,8 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         if (intent != null) {
             mChainId = intent.getStringExtra(CHAIN_ID);
             mFrom = intent.getStringExtra(FROM);
-            mRampNetworkSymbol = intent.getStringExtra(RAMP_NETWORK_SYMBOL);
+            mAssetSymbol = intent.getStringExtra(ASSET_SYMBOL);
+            mContractAddress = intent.getStringExtra(CONTRACT_ADDRESS);
             mAmount = intent.getStringExtra(AMOUNT);
         }
 
@@ -75,29 +81,49 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
 
         BraveActivity activity = BraveActivity.getBraveActivity();
         if (activity != null) {
-            mBuyModel = activity.getWalletModel().getCryptoModel().getBuyModel();
+            mWalletModel = activity.getWalletModel();
+            if (mWalletModel != null && mWalletModel.getCryptoModel() != null) {
+                mBuyModel = mWalletModel.getCryptoModel().getBuyModel();
+            }
         }
-        if (mBuyModel != null) {
-            if (mBuyModel.isAvailable(OnRampProvider.RAMP, getResources())) {
-                mRampNetworkLayout.setVisibility(View.VISIBLE);
-                mBuyModel.getBuyUrl(OnRampProvider.RAMP, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount,
-                        url -> { enableOnRampService(mRampNetworkLayout, mRampButton, url); });
-            }
+        if (mWalletModel != null && mBuyModel != null) {
+            LiveDataUtil.observeOnce(
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
+                    selectedNetwork -> {
+                        mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
+                                mChainId, new int[] {OnRampProvider.RAMP}, isBuyEnabled -> {
+                                    if (isBuyEnabled) {
+                                        setupOnRampService(OnRampProvider.RAMP, mRampNetworkLayout,
+                                                mRampButton);
+                                    }
+                                });
 
-            if (mBuyModel.isAvailable(OnRampProvider.SARDINE, getResources())) {
-                mSardineLayout.setVisibility(View.VISIBLE);
-                mBuyModel.getBuyUrl(OnRampProvider.SARDINE, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount,
-                        url -> { enableOnRampService(mSardineLayout, mSardineButton, url); });
-            }
+                        mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
+                                mChainId, new int[] {OnRampProvider.SARDINE}, isBuyEnabled -> {
+                                    if (isBuyEnabled) {
+                                        setupOnRampService(OnRampProvider.SARDINE, mSardineLayout,
+                                                mSardineButton);
+                                    }
+                                });
 
-            if (mBuyModel.isAvailable(OnRampProvider.TRANSAK, getResources())) {
-                mTransakLayout.setVisibility(View.VISIBLE);
-                mBuyModel.getBuyUrl(OnRampProvider.TRANSAK, mChainId, mFrom, mRampNetworkSymbol,
-                        mAmount,
-                        url -> { enableOnRampService(mTransakLayout, mTransakButton, url); });
-            }
+                        mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
+                                mChainId, new int[] {OnRampProvider.TRANSAK}, isBuyEnabled -> {
+                                    if (isBuyEnabled) {
+                                        setupOnRampService(OnRampProvider.TRANSAK, mTransakLayout,
+                                                mTransakButton);
+                                    }
+                                });
+                    });
+        }
+    }
+
+    private void setupOnRampService(
+            int onRampProvider, ViewGroup onRampLayout, Button onRampButton) {
+        if (mBuyModel.isAvailable(onRampProvider, getResources())) {
+            onRampLayout.setVisibility(View.VISIBLE);
+            mBuyModel.getBuyUrl(onRampProvider, mChainId, mFrom, mAssetSymbol, mAmount,
+                    mContractAddress,
+                    url -> { enableOnRampService(onRampLayout, onRampButton, url); });
         }
     }
 
@@ -113,12 +139,13 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         }
     }
 
-    public static Intent getIntent(
-            Context context, String chainId, String from, String rampNetworkSymbol, String amount) {
+    public static Intent getIntent(Context context, String chainId, String from,
+            String rampNetworkSymbol, String contractAddress, String amount) {
         Intent intent = new Intent(context, SelectPurchaseMethodActivity.class);
         intent.putExtra(CHAIN_ID, chainId);
         intent.putExtra(FROM, from);
-        intent.putExtra(RAMP_NETWORK_SYMBOL, rampNetworkSymbol);
+        intent.putExtra(ASSET_SYMBOL, rampNetworkSymbol);
+        intent.putExtra(CONTRACT_ADDRESS, contractAddress);
         intent.putExtra(AMOUNT, amount);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;

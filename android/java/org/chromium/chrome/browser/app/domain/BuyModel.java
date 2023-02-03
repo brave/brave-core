@@ -11,17 +11,28 @@ import android.text.TextUtils;
 import androidx.core.os.ConfigurationCompat;
 
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
+import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.Locale;
 
 public class BuyModel {
+    public static final int[] SUPPORTED_RAMP_PROVIDERS = {
+            OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
+
     private static final String CURRENCY_CODE_USD = "USD";
     private final Object mLock = new Object();
     private AssetRatioService mAssetRatioService;
+    private BlockchainRegistry mBlockchainRegistry;
 
-    public BuyModel(AssetRatioService assetRatioService) {
+    public BuyModel(AssetRatioService assetRatioService, BlockchainRegistry blockchainRegistry) {
         mAssetRatioService = assetRatioService;
+        mBlockchainRegistry = blockchainRegistry;
     }
 
     public boolean isAvailable(int onRampProvider, Resources resources) {
@@ -34,10 +45,14 @@ public class BuyModel {
         return true;
     }
 
-    public void getBuyUrl(int onRampProvider, String chainId, String from, String rampNetworkSymbol,
-            String amount, OnRampCallback callback) {
-        mAssetRatioService.getBuyUrlV1(onRampProvider, chainId, from, rampNetworkSymbol, amount,
-                CURRENCY_CODE_USD, (url, error) -> {
+    public void getBuyUrl(int onRampProvider, String chainId, String from, String symbol,
+            String amount, String contractAddress, OnRampCallback callback) {
+        if (onRampProvider == OnRampProvider.RAMP) {
+            // Ramp.Network is a special case that requires a modified asset symbol.
+            symbol = AssetUtils.mapToRampNetworkSymbol(chainId, symbol, contractAddress);
+        }
+        mAssetRatioService.getBuyUrlV1(
+                onRampProvider, chainId, from, symbol, amount, CURRENCY_CODE_USD, (url, error) -> {
                     if (error != null && !error.isEmpty()) {
                         callback.OnUrlReady(null);
                         return;
@@ -46,9 +61,22 @@ public class BuyModel {
                 });
     }
 
-    void resetServices(AssetRatioService assetRatioService) {
+    public void isBuySupported(NetworkInfo selectedNetwork, String assetSymbol,
+            String contractAddress, String chainId, int[] rampProviders,
+            Callback1<Boolean> callback) {
+        TokenUtils.getBuyTokensFiltered(mBlockchainRegistry, selectedNetwork,
+                TokenUtils.TokenType.ALL, rampProviders, tokens -> {
+                    callback.call(JavaUtils.includes(tokens,
+                            iToken
+                            -> AssetUtils.Filters.isSameToken(
+                                    iToken, assetSymbol, contractAddress, chainId)));
+                });
+    }
+
+    void resetServices(AssetRatioService assetRatioService, BlockchainRegistry blockchainRegistry) {
         synchronized (mLock) {
             mAssetRatioService = assetRatioService;
+            mBlockchainRegistry = blockchainRegistry;
         }
     }
 

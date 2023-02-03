@@ -49,6 +49,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
@@ -278,7 +279,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                 TokenUtils.getBuyTokensFiltered(blockchainRegistry, mSelectedNetwork,
-                        TokenUtils.TokenType.ALL,
+                        TokenUtils.TokenType.ALL, BuyModel.SUPPORTED_RAMP_PROVIDERS,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             }
         }

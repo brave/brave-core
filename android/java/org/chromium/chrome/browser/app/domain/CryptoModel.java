@@ -136,7 +136,7 @@ public class CryptoModel {
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
             if (mBuyModel != null) {
-                mBuyModel.resetServices(mAssetRatioService);
+                mBuyModel.resetServices(mAssetRatioService, mBlockchainRegistry);
             }
         }
         init();
@@ -279,7 +279,7 @@ public class CryptoModel {
 
     public BuyModel getBuyModel() {
         if (mBuyModel == null) {
-            mBuyModel = new BuyModel(mAssetRatioService);
+            mBuyModel = new BuyModel(mAssetRatioService, mBlockchainRegistry);
         }
         return mBuyModel;
     }
@@ -335,21 +335,10 @@ public class CryptoModel {
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
-    // TODO: Move to BuyModel class
-    public void isBuySupported(NetworkInfo selectedNetwork, String assetSymbol,
-            String contractAddress, String chainId, Callback1<Boolean> callback) {
-        TokenUtils.getBuyTokensFiltered(
-                mBlockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
-                    callback.call(JavaUtils.includes(tokens,
-                            iToken
-                            -> AssetUtils.Filters.isSameToken(
-                                    iToken, assetSymbol, contractAddress, chainId)));
-                });
-    }
-
     // Clear buy send swap model
     public void clearBSS() {
         mSendModel = null;
+        mBuyModel = null;
     }
 
     /*
