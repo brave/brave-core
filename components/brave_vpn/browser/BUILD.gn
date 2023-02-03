@@ -47,9 +47,9 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    "api",
+    "api:unit_tests",
     "//base",
-    "//brave/components/brave_vpn/browser/api",
-    "//brave/components/brave_vpn/browser/api:unit_tests",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/browser/connection:sim",
@@ -69,5 +69,8 @@ source_set("unit_tests") {
   ]
   if (!is_android) {
     deps += [ "connection:unit_tests" ]
+  }
+  if (is_win) {
+    deps += [ "//brave/components/brave_vpn/browser/connection/win/brave_vpn_helper:unit_tests" ]
   }
 }

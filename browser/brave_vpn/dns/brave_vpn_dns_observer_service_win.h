@@ -41,17 +41,22 @@ class BraveVpnDnsObserverService : public brave_vpn::BraveVPNServiceObserver,
   void SetVPNNotificationCallbackForTesting(base::RepeatingClosure callback) {
     dialog_callback_ = std::move(callback);
   }
+  void SetDNSHelperLiveForTesting(bool value) {
+    dns_helper_live_for_testing_ = value;
+  }
 
  private:
   friend class BraveVpnDnsObserverServiceUnitTest;
 
   void OnPrefChanged();
+  bool IsDNSHelperLive();
   void LockDNS();
   void UnlockDNS();
   void ShowPolicyWarningMessage();
   void ShowVpnDnsSettingsNotificationDialog();
   void OnDnsModePrefChanged();
 
+  absl::optional<bool> dns_helper_live_for_testing_;
   base::OnceClosure policy_callback_;
   base::RepeatingClosure dialog_callback_;
   bool skip_notification_dialog_for_testing_ = false;

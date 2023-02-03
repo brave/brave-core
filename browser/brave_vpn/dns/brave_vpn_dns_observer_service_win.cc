@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/ui/views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "chrome/browser/net/secure_dns_config.h"
@@ -94,7 +95,19 @@ void BraveVpnDnsObserverService::UnlockDNS() {
       ->UpdateNetworkService(false);
 }
 
+bool BraveVpnDnsObserverService::IsDNSHelperLive() {
+  if (dns_helper_live_for_testing_.has_value()) {
+    return dns_helper_live_for_testing_.value();
+  }
+  // If BraveVpnHelper is live we should not override DNS because it will be
+  // handled by the service.
+  return brave_vpn::IsBraveVPNHelperServiceLive();
+}
+
 void BraveVpnDnsObserverService::LockDNS() {
+  if (IsDNSHelperLive()) {
+    return;
+  }
   auto old_dns_config =
       SystemNetworkContextManager::GetStubResolverConfigReader()
           ->GetSecureDnsConfiguration(false);
