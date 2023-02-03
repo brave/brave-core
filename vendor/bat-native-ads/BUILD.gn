@@ -104,7 +104,10 @@ source_set("headers") {
 }
 
 source_set("ads") {
-  configs += [ ":internal_config" ]
+  configs += [
+    ":internal_config",
+    "//build/config/compiler:wexit_time_destructors",
+  ]
 
   output_name = "bat_native_ads"
 
@@ -857,6 +860,7 @@ source_set("ads") {
     "src/bat/ads/internal/flags/flag_manager_constants.h",
     "src/bat/ads/internal/flags/flag_manager_util.cc",
     "src/bat/ads/internal/flags/flag_manager_util.h",
+    "src/bat/ads/internal/geographic/country/supported_country_codes.cc",
     "src/bat/ads/internal/geographic/country/supported_country_codes.h",
     "src/bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.cc",
     "src/bat/ads/internal/geographic/subdivision/get_subdivision_url_request_builder.h",
@@ -1004,10 +1008,8 @@ source_set("ads") {
     "src/bat/ads/internal/privacy/challenge_bypass_ristretto/verification_key.h",
     "src/bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.cc",
     "src/bat/ads/internal/privacy/challenge_bypass_ristretto/verification_signature.h",
-    "src/bat/ads/internal/privacy/locale/country_code_anonymity_set.h",
     "src/bat/ads/internal/privacy/locale/country_code_util.cc",
     "src/bat/ads/internal/privacy/locale/country_code_util.h",
-    "src/bat/ads/internal/privacy/locale/other_country_codes.h",
     "src/bat/ads/internal/privacy/p2a/impressions/p2a_impression.cc",
     "src/bat/ads/internal/privacy/p2a/impressions/p2a_impression.h",
     "src/bat/ads/internal/privacy/p2a/impressions/p2a_impression_questions.cc",
@@ -1047,9 +1049,10 @@ source_set("ads") {
     "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_value_util.cc",
     "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_value_util.h",
     "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h",
-    "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h",
     "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.cc",
     "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h",
+    "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.cc",
+    "src/bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h",
     "src/bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.cc",
     "src/bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h",
     "src/bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.cc",
@@ -1098,7 +1101,9 @@ source_set("ads") {
     "src/bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h",
     "src/bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.cc",
     "src/bat/ads/internal/resources/contextual/text_embedding/text_embedding_resource.h",
+    "src/bat/ads/internal/resources/country_components.cc",
     "src/bat/ads/internal/resources/country_components.h",
+    "src/bat/ads/internal/resources/language_components.cc",
     "src/bat/ads/internal/resources/language_components.h",
     "src/bat/ads/internal/resources/parsing_result.h",
     "src/bat/ads/internal/resources/resource_manager.cc",

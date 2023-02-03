@@ -12,20 +12,18 @@
 
 namespace ads::resource {
 
-namespace {
-const SegmentList kSegments = {"foo", "bar"};
-}  // namespace
-
 class BatAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetEligibleSegments) {
+  const SegmentList expected_segments = {"foo", "bar"};
+
   // Arrange
 
   // Act
-  SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  SetEpsilonGreedyBanditEligibleSegments(expected_segments);
 
   // Assert
-  EXPECT_EQ(kSegments, GetEpsilonGreedyBanditEligibleSegments());
+  EXPECT_EQ(expected_segments, GetEpsilonGreedyBanditEligibleSegments());
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {

@@ -17,9 +17,8 @@ namespace ads {
 
 namespace {
 
-const std::vector<std::string> kCampaignIds = {
-    "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
-    "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
+constexpr const char* kCampaignIds[] = {"60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+                                        "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"};
 
 }  // namespace
 
@@ -28,7 +27,7 @@ class BatAdsDailyCapExclusionRuleTest : public UnitTestBase {};
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
+  creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   const AdEventList ad_events;
@@ -44,7 +43,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
+  creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
@@ -66,11 +65,11 @@ TEST_F(BatAdsDailyCapExclusionRuleTest,
        AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.campaign_id = kCampaignIds.at(0);
+  creative_ad_1.campaign_id = kCampaignIds[0];
   creative_ad_1.daily_cap = 1;
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.campaign_id = kCampaignIds.at(1);
+  creative_ad_2.campaign_id = kCampaignIds[1];
 
   AdEventList ad_events;
 
@@ -90,7 +89,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest,
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
+  creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
@@ -113,7 +112,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
+  creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;
@@ -136,7 +135,7 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 TEST_F(BatAdsDailyCapExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
+  creative_ad.campaign_id = kCampaignIds[0];
   creative_ad.daily_cap = 2;
 
   AdEventList ad_events;

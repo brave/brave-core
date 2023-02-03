@@ -14,11 +14,9 @@ source_set("browser") {
     "ads_service_observer.h",
     "ads_storage_cleanup.cc",
     "ads_storage_cleanup.h",
-    "component_updater/component_info.cc",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
     "component_updater/component_util.h",
-    "component_updater/components.h",
     "component_updater/resource_component.cc",
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
@@ -26,6 +24,8 @@ source_set("browser") {
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
   ]
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
 
   deps = [
     "//base",

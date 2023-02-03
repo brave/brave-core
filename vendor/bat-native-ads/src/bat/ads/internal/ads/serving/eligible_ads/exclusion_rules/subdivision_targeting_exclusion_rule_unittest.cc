@@ -310,7 +310,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(should_exclude);
 }
 
-const SubdivisionTargetingExclusionRuleTestParam kTests[] = {
+constexpr SubdivisionTargetingExclusionRuleTestParam kTests[] = {
     {
         "US",  // country
         "AL",  // region
