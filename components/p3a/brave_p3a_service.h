@@ -33,7 +33,9 @@ struct BraveP3AConfig;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
-// on any thread.
+// on any thread. This class manages registration of dynamic metrics,
+// and histogram listeners. Metric value updates are propagated to the
+// BraveP3AMessageManager.
 // TODO(iefremov): It should be possible to get rid of refcounted here.
 class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                         public BraveP3AMessageManager::Delegate {
@@ -41,7 +43,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   BraveP3AService(PrefService* local_state,
                   std::string channel,
                   std::string week_of_install,
-                  std::unique_ptr<BraveP3AConfig> config);
+                  BraveP3AConfig&& config);
 
   BraveP3AService(const BraveP3AService&) = delete;
   BraveP3AService& operator=(const BraveP3AService&) = delete;

@@ -52,11 +52,10 @@ class NTPP3AHelperImplTest : public testing::Test {
                                           /*first_run*/ false);
     NTPP3AHelperImpl::RegisterLocalStatePrefs(local_state_.registry());
 
-    std::unique_ptr<brave::BraveP3AConfig> config =
-        std::make_unique<brave::BraveP3AConfig>();
-    config->p3a_json_upload_url = GURL(kTestP3AJsonHost);
-    config->p2a_json_upload_url = GURL(kTestP2AJsonHost);
-    config->p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
+    brave::BraveP3AConfig config;
+    config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
     p3a_service_ = scoped_refptr(new brave::BraveP3AService(
         &local_state_, "release", "2049-01-01", std::move(config)));
 

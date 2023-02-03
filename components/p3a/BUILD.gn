@@ -15,7 +15,6 @@ buildflag_header("buildflags") {
     "P3A_CREATIVE_UPLOAD_URL=\"$p3a_creative_upload_url\"",
     "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
     "P3A_STAR_UPLOAD_URL=\"$p3a_star_upload_url\"",
-    "P2A_STAR_UPLOAD_URL=\"$p2a_star_upload_url\"",
     "STAR_RANDOMNESS_HOST=\"$star_randomness_host\"",
   ]
 }
@@ -57,6 +56,10 @@ static_library("p3a") {
     "metric_names.h",
     "network_annotations.cc",
     "network_annotations.h",
+    "nitro_utils/attestation.cc",
+    "nitro_utils/attestation.h",
+    "nitro_utils/cose.cc",
+    "nitro_utils/cose.h",
     "p3a_message.cc",
     "p3a_message.h",
     "pref_names.cc",
@@ -65,15 +68,17 @@ static_library("p3a") {
 
   deps = [
     "constellation/rs/cxx",
-    "nitro_utils",
     "//base",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
+    "//components/cbor",
     "//components/metrics",
     "//components/prefs",
+    "//net",
+    "//services/network:network_service",
     "//services/network/public/cpp",
     "//url",
   ]
@@ -98,6 +103,7 @@ source_set("unit_tests") {
     "brave_p3a_star_log_store_unittest.cc",
     "brave_p3a_star_unittest.cc",
     "metric_names_unittest.cc",
+    "nitro_utils/cose_unittest.cc",
     "star_randomness_test_util.cc",
     "star_randomness_test_util.h",
   ]
@@ -106,6 +112,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
+    "//components/cbor",
     "//components/prefs:test_support",
     "//net:net",
     "//services/network:test_support",

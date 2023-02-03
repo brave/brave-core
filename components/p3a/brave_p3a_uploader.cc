@@ -33,8 +33,7 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
                                  MetricLogType log_type) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   if (upload_type == kP2AUploadType) {
-    resource_request->url =
-        is_star ? config_->p2a_star_upload_url : config_->p2a_json_upload_url;
+    resource_request->url = config_->p2a_json_upload_url;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
   } else if (upload_type == kP3AUploadType) {
     resource_request->url =

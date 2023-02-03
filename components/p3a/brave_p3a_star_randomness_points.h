@@ -24,6 +24,8 @@ namespace brave {
 
 struct BraveP3AConfig;
 
+// Handles sending requests/handling responses to/from the randomness
+// server in order to receive randomness point data for STAR measurements.
 class BraveP3AStarRandomnessPoints {
  public:
   using RandomnessDataCallback = base::RepeatingCallback<void(

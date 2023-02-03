@@ -41,12 +41,20 @@ void RecordSentAnswersCount(uint64_t answers_count) {
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.P3A.SentAnswersCount", answer, 3);
 }
 
+bool IsMetricP2A(const std::string& histogram_name) {
+  return base::StartsWith(histogram_name, "Brave.P2A",
+                          base::CompareCase::SENSITIVE);
+}
+
+bool IsMetricCreative(const std::string& histogram_name) {
+  return base::StartsWith(histogram_name, kCreativeMetricPrefix,
+                          base::CompareCase::SENSITIVE);
+}
+
 std::string GetUploadType(const std::string& histogram_name) {
-  if (base::StartsWith(histogram_name, "Brave.P2A",
-                       base::CompareCase::SENSITIVE)) {
+  if (IsMetricP2A(histogram_name)) {
     return kP2AUploadType;
-  } else if (base::StartsWith(histogram_name, kCreativeMetricPrefix,
-                              base::CompareCase::SENSITIVE)) {
+  } else if (IsMetricCreative(histogram_name)) {
     return kP3ACreativeUploadType;
   }
   return kP3AUploadType;
@@ -92,6 +100,12 @@ const char* BraveP3AMetricLogStore::GetPrefName() const {
 
 void BraveP3AMetricLogStore::UpdateValue(const std::string& histogram_name,
                                          uint64_t value) {
+  if (is_star_) {
+    if (IsMetricP2A(histogram_name) || IsMetricCreative(histogram_name)) {
+      // Only non-creative P3A metrics are currently supported for STAR.
+      return;
+    }
+  }
   LogEntry& entry = log_[histogram_name];
   entry.value = value;
 

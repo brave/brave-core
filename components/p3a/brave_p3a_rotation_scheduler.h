@@ -20,6 +20,8 @@ class PrefRegistrySimple;
 
 namespace brave {
 
+// Schedules reporting period rotation (i.e. monthly, daily, or weekly) and
+// calls back to the BraveP3AMessageManager on a given interval.
 class BraveP3ARotationScheduler {
   using JsonRotationCallback =
       base::RepeatingCallback<void(MetricLogType log_type)>;
