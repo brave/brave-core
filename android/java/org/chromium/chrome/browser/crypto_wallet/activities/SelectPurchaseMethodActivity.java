@@ -92,34 +92,28 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
                     selectedNetwork -> {
                         mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
                                 mChainId, new int[] {OnRampProvider.RAMP}, isBuyEnabled -> {
-                                    if (isBuyEnabled) {
-                                        setupOnRampService(OnRampProvider.RAMP, mRampNetworkLayout,
-                                                mRampButton);
-                                    }
+                                    setupOnRampService(isBuyEnabled, OnRampProvider.RAMP,
+                                            mRampNetworkLayout, mRampButton);
                                 });
 
                         mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
                                 mChainId, new int[] {OnRampProvider.SARDINE}, isBuyEnabled -> {
-                                    if (isBuyEnabled) {
-                                        setupOnRampService(OnRampProvider.SARDINE, mSardineLayout,
-                                                mSardineButton);
-                                    }
+                                    setupOnRampService(isBuyEnabled, OnRampProvider.SARDINE,
+                                            mSardineLayout, mSardineButton);
                                 });
 
                         mBuyModel.isBuySupported(selectedNetwork, mAssetSymbol, mContractAddress,
                                 mChainId, new int[] {OnRampProvider.TRANSAK}, isBuyEnabled -> {
-                                    if (isBuyEnabled) {
-                                        setupOnRampService(OnRampProvider.TRANSAK, mTransakLayout,
-                                                mTransakButton);
-                                    }
+                                    setupOnRampService(isBuyEnabled, OnRampProvider.TRANSAK,
+                                            mTransakLayout, mTransakButton);
                                 });
                     });
         }
     }
 
     private void setupOnRampService(
-            int onRampProvider, ViewGroup onRampLayout, Button onRampButton) {
-        if (mBuyModel.isAvailable(onRampProvider, getResources())) {
+            boolean isBuyEnabled, int onRampProvider, ViewGroup onRampLayout, Button onRampButton) {
+        if (isBuyEnabled && mBuyModel.isAvailable(onRampProvider, getResources())) {
             onRampLayout.setVisibility(View.VISIBLE);
             mBuyModel.getBuyUrl(onRampProvider, mChainId, mFrom, mAssetSymbol, mAmount,
                     mContractAddress,
