@@ -279,6 +279,7 @@ class NewTabPageViewController: UIViewController {
           UIView.performWithoutAnimation {
             self?.collectionView.reloadSections(IndexSet(integer: index))
           }
+          self?.collectionView.collectionViewLayout.invalidateLayout()
         }
       }
     }
