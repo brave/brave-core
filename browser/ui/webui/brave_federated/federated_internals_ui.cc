@@ -11,8 +11,10 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/values.h"
+#if 0
 #include "brave/browser/resources/federated_internals/grit/federated_internals_resources.h"
 #include "brave/browser/resources/federated_internals/grit/federated_internals_resources_map.h"
+#endif
 #include "brave/browser/ui/webui/brave_federated/federated_internals_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -33,10 +35,15 @@ FederatedInternalsUI::FederatedInternalsUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kFederatedInternalsHost);
 
+  // TODO(erogul): Based on discussions with the team, temporarily disabling the
+  // brave://federated-internals page until it's migrated to TypeScript
+  // See: https://github.com/brave/brave-browser/issues/28273
+#if 0
   webui::SetupWebUIDataSource(source,
                               base::make_span(kFederatedInternalsResources,
                                               kFederatedInternalsResourcesSize),
                               IDR_FEDERATED_INTERNALS_FEDERATED_INTERNALS_HTML);
+#endif
 
   content::BrowserContext* browser_context =
       web_ui->GetWebContents()->GetBrowserContext();
