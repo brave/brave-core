@@ -14,7 +14,8 @@ import {
   AmountValidationErrorType,
   WalletState,
   SendFilTransactionParams,
-  GetSolAddrReturnInfo
+  GetSolAddrReturnInfo,
+  CoinTypesMap
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import * as WalletActions from '../actions/wallet_actions'
@@ -81,9 +82,9 @@ export default function useSend (isSendTab?: boolean) {
     setSelectedSendAsset(asset)
   }
 
-  const setNotRegisteredError = (url: string) => {
-    setAddressError(getLocale('braveWalletNotDomain').replace('$1', url))
-  }
+  const setNotRegisteredError = React.useCallback(() => {
+    setAddressError(getLocale('braveWalletNotDomain').replace('$1', CoinTypesMap[selectedNetwork?.coin ?? 0]))
+  }, [selectedNetwork?.coin])
 
   const handleDomainLookupResponse = React.useCallback((addressOrUrl: string, error: BraveWallet.ProviderError, requireOffchainConsent: boolean) => {
     if (requireOffchainConsent) {
@@ -105,9 +106,9 @@ export default function useSend (isSendTab?: boolean) {
       return
     }
     setShowEnsOffchainWarning(false)
-    setNotRegisteredError(addressOrUrl)
+    setNotRegisteredError()
     setSearchingForDomain(false)
-  }, [selectedAccount?.address, setShowEnsOffchainWarning])
+  }, [selectedAccount?.address, setShowEnsOffchainWarning, setNotRegisteredError])
 
   const handleUDAddressLookUp = React.useCallback((addressOrUrl: string) => {
     setSearchingForDomain(true)

@@ -420,7 +420,7 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS" desc="Send input not valid SOL address error">Not a valid SOL address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
-  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="DOMAIN_NAME"><ex>doug.wallet</ex>$1</ph> is not registered</message>
+  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">This address cannot be verified (missing checksum). Proceed?</message>
