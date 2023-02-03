@@ -57,12 +57,17 @@ const ContentSettingsPattern& GetFirebaseAuthPattern() {
 
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url) {
+  static const base::NoDestructor<GURL> kGoogleAuthUrl([] {
+    DCHECK(!GetGoogleAuthPattern().HasDomainWildcard());
+    DCHECK(!GetGoogleAuthPattern().GetHost().empty());
+    return GURL("https://" + GetGoogleAuthPattern().GetHost());
+  }());
   return request_url.SchemeIsHTTPOrHTTPS() &&
          request_initiator_url.SchemeIsHTTPOrHTTPS() &&
          IsGoogleAuthUrl(request_url) &&
          !IsGoogleAuthUrl(request_initiator_url) &&
          !net::registry_controlled_domains::SameDomainOrHost(
-             request_initiator_url, GURL(GetGoogleAuthPattern().GetHost()),
+             request_initiator_url, *kGoogleAuthUrl,
              net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
