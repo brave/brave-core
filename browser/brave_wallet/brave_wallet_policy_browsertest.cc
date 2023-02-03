@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
