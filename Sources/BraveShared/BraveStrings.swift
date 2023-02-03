@@ -282,13 +282,13 @@ extension Strings {
       NSLocalizedString(
         "callout.p3aCalloutDescription",
         tableName: "BraveShared", bundle: .module,
-        value: "This helps us learn what Brave features are used most often. Change this at any time in Brave Settings under ‘Brave Shields and Privacy’.",
+        value: "This helps us learn what Brave features are used most often. Change at any time in Brave Settings under ‘Brave Shields and Other Privacy Settings.",
         comment: "Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout")
     public static let p3aCalloutToggleTitle =
       NSLocalizedString(
         "callout.p3aCalloutToggleTitle",
         tableName: "BraveShared", bundle: .module,
-        value: "Share anonymous, private product insights. ",
+        value: "Share Completely Private and Anonymous Product Insights.",
         comment: "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout")
     public static let p3aCalloutLinkTitle =
       NSLocalizedString(
