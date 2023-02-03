@@ -485,7 +485,7 @@ extension BrowserViewController: WKNavigationDelegate {
     return .allow
   }
 
-  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+  nonisolated public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
 
     // If this is a certificate challenge, see if the certificate has previously been
     // accepted by the user.
@@ -527,12 +527,12 @@ extension BrowserViewController: WKNavigationDelegate {
                                       code: Int(errorCode),
                                       userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)])
         
-        let error = NSError(domain: kCFErrorDomainCFNetwork as String,
-                            code: Int(errorCode),
-                            userInfo: [NSURLErrorFailingURLErrorKey: webView.url as Any,
-                                       "NSErrorPeerCertificateChainKey": certificateChain,
-                                               NSUnderlyingErrorKey: underlyingError])
-          
+        let error = await NSError(domain: kCFErrorDomainCFNetwork as String,
+                                  code: Int(errorCode),
+                                  userInfo: [NSURLErrorFailingURLErrorKey: webView.url as Any,
+                                             "NSErrorPeerCertificateChainKey": certificateChain,
+                                                     NSUnderlyingErrorKey: underlyingError])
+        
         await MainActor.run {
           // Handle the error later in `didFailProvisionalNavigation`
           self.tab(for: webView)?.sslPinningError = error
