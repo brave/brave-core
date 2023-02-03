@@ -44,6 +44,13 @@ constexpr char kTransakURL[] = "https://global.transak.com/";
 constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletSolanaSysvarRentProgram",
+     IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},
+    {"braveWalletSolanaMetaDataProgram",
+     IDS_BRAVE_WALLET_SOLANA_META_DATA_PROGRAM},
+    {"braveWalletSolanaAssociatedTokenProgram",
+     IDS_BRAVE_WALLET_SOLANA_ASSOCIATED_TOKEN_PROGRAM},
+    {"braveWalletSolanaTokenProgram", IDS_BRAVE_WALLET_SOLANA_TOKEN_PROGRAM},
     {"braveWalletTransactionHasFeeEstimatesError",
      IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR},
     {"braveWalletGasFeeLimitLowerThanBaseFeeWarning",
@@ -835,14 +842,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSolanaStakeProgram", IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM},
     {"braveWalletSolanaVoteProgram", IDS_BRAVE_WALLET_SOLANA_VOTE_PROGRAM},
     {"braveWalletSolanaBPFLoader", IDS_BRAVE_WALLET_SOLANA_BP_FLOADER},
-    {"braveWalletSolanaParamKeyFromPubkey",
-     IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_FROMPUBKEY},
-    {"braveWalletSolanaParamKeyToPubkey",
-     IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY},
-    {"braveWalletSolanaParamKeyLamports",
-     IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS},
-    {"braveWalletSolanaParamKeyNewAccountPubkey",
-     IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY},
     {"braveWalletSolanaAccounts", IDS_BRAVE_WALLET_SOLANA_ACCOUNTS},
     {"braveWalletSolanaData", IDS_BRAVE_WALLET_SOLANA_DATA},
     {"braveWalletSolanaProgramID", IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID},

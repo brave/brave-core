@@ -757,12 +757,12 @@ provideStrings({
   braveWalletSolanaBPFLoader: 'BPF Loader',
   braveWalletSolanaEd25519Program: 'Ed25519 Program',
   braveWalletSolanaSecp256k1Program: 'Secp256k1 Program',
+  braveWalletSolanaTokenProgram: 'Token Program',
+  braveWalletSolanaAssociatedTokenProgram: 'Associated Token Program',
+  braveWalletSolanaMetaDataProgram: 'MetaData Program',
+  braveWalletSolanaSysvarRentProgram: 'SysvarRent Program',
 
-  // Solana Instruction Paramater Names
-  braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
-  braveWalletSolanaParamKeyToPubkey: 'To Address: ',
-  braveWalletSolanaParamKeyLamports: 'Amount: ',
-  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: ',
+  // Solana Instruction Parameter Names
   braveWalletSolanaAccounts: 'Accounts:',
   braveWalletSolanaData: 'Data:',
   braveWalletSolanaProgramID: 'Program ID:',

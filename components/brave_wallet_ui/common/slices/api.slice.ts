@@ -105,7 +105,10 @@ import {
 import { getLocale } from '../../../common/locale'
 import { makeSerializableOriginInfo, makeSerializableTimeDelta } from '../../utils/model-serialization-utils'
 import { SwapExchangeProxy } from '../constants/registry'
-import { getTypedSolanaTxInstructions } from '../../utils/solana-instruction-utils'
+import {
+  getTypedSolanaTxInstructions,
+  TypedSolanaInstructionWithParams
+} from '../../utils/solana-instruction-utils'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
   id: EntityId
@@ -2867,7 +2870,8 @@ export const parseTransactionWithoutPricesAsync = async ({
     token
   })
 
-  const instructions = getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
+  const instructions: TypedSolanaInstructionWithParams[] =
+    getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
 
   const sameAddressError = transactionHasSameAddressError(tx)
     ? getLocale('braveWalletSameAddressError')
