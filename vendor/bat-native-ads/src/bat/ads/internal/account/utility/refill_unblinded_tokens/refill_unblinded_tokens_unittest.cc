@@ -169,7 +169,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -220,7 +220,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnCaptchaRequiredToRefillUnblindedTokens("captcha-id"));
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -260,7 +260,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, IssuersPublicKeyMismatch) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -286,7 +286,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, InvalidIssuersFormat) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -412,7 +412,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -449,7 +449,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -554,7 +554,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   EXPECT_CALL(*refill_unblinded_tokens_delegate_mock_,
               OnDidRefillUnblindedTokens());
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   FastForwardClockToNextPendingTask();
@@ -599,7 +599,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -698,7 +698,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -797,7 +797,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -845,7 +845,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -945,7 +945,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -975,7 +975,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert
@@ -1058,7 +1058,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
               OnDidRetryRefillingUnblindedTokens())
       .Times(0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = GetWalletForTesting();
   refill_unblinded_tokens_->MaybeRefill(wallet);
 
   // Assert

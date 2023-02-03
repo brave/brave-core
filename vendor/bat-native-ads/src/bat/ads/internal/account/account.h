@@ -57,7 +57,8 @@ class Account final : public PrefManagerObserver,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
-  void SetWallet(const std::string& id, const std::string& seed);
+  void SetWallet(const std::string& payment_id,
+                 const std::string& recovery_seed);
   const WalletInfo& GetWallet() const;
 
   void Deposit(const std::string& creative_instance_id,
@@ -82,6 +83,7 @@ class Account final : public PrefManagerObserver,
   void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
 
+  void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
 
   void MaybeResetIssuersAndConfirmations();

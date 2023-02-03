@@ -8,7 +8,8 @@
 namespace ads::privacy {
 
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& other) const {
-  return public_key == other.public_key && value == other.value;
+  return public_key == other.public_key && value == other.value &&
+         signature == other.signature;
 }
 
 bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& other) const {

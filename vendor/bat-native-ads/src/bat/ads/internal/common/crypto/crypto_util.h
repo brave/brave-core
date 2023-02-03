@@ -10,29 +10,35 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
+#include "absl/types/optional.h"
 
-namespace ads::security {
+namespace ads::crypto {
 
 struct KeyPairInfo;
 
-std::string Sign(const base::flat_map<std::string, std::string>& headers,
-                 const std::string& key_id,
-                 const std::string& secret_key);
-
 std::vector<uint8_t> Sha256(const std::string& value);
 
+absl::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
+    const std::vector<uint8_t>& seed);
 KeyPairInfo GenerateBoxKeyPair();
 
-std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64);
+std::vector<uint8_t> GenerateRandomNonce();
 
-std::vector<uint8_t> GenerateRandom192BitNonce();
+absl::optional<std::string> Sign(const std::string& message,
+                                 const std::string& secret_key);
+bool Verify(const std::string& message,
+            const std::string& public_key,
+            const std::string& signature);
 
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,
                              const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& ephemeral_secret_key);
+                             const std::vector<uint8_t>& secret_key);
+std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
+                             const std::vector<uint8_t>& nonce,
+                             const std::vector<uint8_t>& public_key,
+                             const std::vector<uint8_t>& secret_key);
 
-}  // namespace ads::security
+}  // namespace ads::crypto
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_CRYPTO_CRYPTO_UTIL_H_

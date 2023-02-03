@@ -145,8 +145,6 @@ class UnitTestBase : public testing::Test {
 
   void SetUpIntegrationTest();
 
-  void OnAdsInitialize(bool success);
-
   base::ScopedTempDir temp_dir_;
 
   bool is_integration_test_ = false;

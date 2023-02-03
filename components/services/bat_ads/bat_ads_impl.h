@@ -78,7 +78,7 @@ class BatAdsImpl : public mojom::BatAds {
   void OnDidCloseTab(int32_t tab_id) override;
 
   void OnRewardsWalletDidChange(const std::string& payment_id,
-                                const std::string& seed) override;
+                                const std::string& recovery_seed) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 

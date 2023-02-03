@@ -34,7 +34,7 @@ base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
   const std::string timestamp =
       base::NumberToString(timestamp_rounded_to_nearest_hour);
 
-  const std::string rotating_hash = base::Base64Encode(security::Sha256(
+  const std::string rotating_hash = base::Base64Encode(crypto::Sha256(
       base::StrCat({device_id, creative_instance_id, timestamp})));
   user_data.Set(kRotatingHashKey, rotating_hash);
 

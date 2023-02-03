@@ -226,8 +226,8 @@ void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
 }
 
 void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                          const std::string& seed) {
-  ads_->OnRewardsWalletDidChange(payment_id, seed);
+                                          const std::string& recovery_seed) {
+  ads_->OnRewardsWalletDidChange(payment_id, recovery_seed);
 }
 
 void BatAdsImpl::GetHistory(const base::Time from_time,

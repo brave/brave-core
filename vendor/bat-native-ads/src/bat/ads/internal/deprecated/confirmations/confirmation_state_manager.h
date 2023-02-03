@@ -9,9 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "base/values.h"
 #include "bat/ads/ads_callback.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/wallet/wallet_info.h"
 
 namespace ads {
 
@@ -38,7 +40,7 @@ class ConfirmationStateManager final {
 
   static bool HasInstance();
 
-  void Initialize(InitializeCallback callback);
+  void Initialize(const WalletInfo& wallet, InitializeCallback callback);
   bool IsInitialized() const;
 
   void Save();
@@ -46,10 +48,14 @@ class ConfirmationStateManager final {
   std::string ToJson();
   bool FromJson(const std::string& json);
 
+  absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) const;
+  bool GetFailedConfirmationsFromDictionary(
+      const base::Value::Dict& dict,
+      ConfirmationList* confirmations) const;
   const ConfirmationList& GetFailedConfirmations() const;
   void AppendFailedConfirmation(const ConfirmationInfo& confirmation);
   bool RemoveFailedConfirmation(const ConfirmationInfo& confirmation);
-  void reset_failed_confirmations() { failed_confirmations_ = {}; }
+  void reset_failed_confirmations() { failed_confirmations_.clear(); }
 
   privacy::UnblindedTokens* GetUnblindedTokens() const {
     DCHECK(is_initialized_);
@@ -77,6 +83,8 @@ class ConfirmationStateManager final {
   bool is_mutated_ = false;
 
   bool is_initialized_ = false;
+
+  WalletInfo wallet_;
 
   ConfirmationList failed_confirmations_;
 

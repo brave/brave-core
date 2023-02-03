@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
 #include "base/check.h"
+#include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/flags/flag_manager.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
@@ -71,18 +72,12 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
-  WalletInfo wallet;
-  wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet.secret_key =
-      "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
-      "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
-
   const std::vector<privacy::cbr::Token> tokens = GetTokens(3);
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
 
-  RequestSignedTokensUrlRequestBuilder url_request_builder(wallet,
-                                                           blinded_tokens);
+  RequestSignedTokensUrlRequestBuilder url_request_builder(
+      GetWalletForTesting(), blinded_tokens);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -90,10 +85,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
-      R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
+      R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)");
   expected_url_request->headers = {
       R"(digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=)",
-      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="zImEsG3U2K2jROcUOerWMgzA+LyEoDqqYcr9svpnaEDNOYLzGn67qiz+HIFlqSjzy6Q9RPdU+h3VaFrIspsfCQ==")",
+      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="tLMjZ1f52kBqbwJy0B0On2h82978eV8tf4oK/3UJyq4mQqCu5y2q6puaxoe969ENtwSPU292PvbTIFAZZzwaCA==")",
       R"(content-type: application/json)",
       R"(Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};
@@ -112,18 +107,12 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
-  WalletInfo wallet;
-  wallet.id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet.secret_key =
-      "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a56615650"
-      "33cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";
-
   const std::vector<privacy::cbr::Token> tokens = GetTokens(3);
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
       privacy::cbr::BlindTokens(tokens);
 
-  RequestSignedTokensUrlRequestBuilder url_request_builder(wallet,
-                                                           blinded_tokens);
+  RequestSignedTokensUrlRequestBuilder url_request_builder(
+      GetWalletForTesting(), blinded_tokens);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -131,10 +120,10 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
-      R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b)");
+      R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)");
   expected_url_request->headers = {
       R"(digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=)",
-      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="zImEsG3U2K2jROcUOerWMgzA+LyEoDqqYcr9svpnaEDNOYLzGn67qiz+HIFlqSjzy6Q9RPdU+h3VaFrIspsfCQ==")",
+      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="tLMjZ1f52kBqbwJy0B0On2h82978eV8tf4oK/3UJyq4mQqCu5y2q6puaxoe969ENtwSPU292PvbTIFAZZzwaCA==")",
       R"(content-type: application/json)",
       R"(Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1))",
       R"(accept: application/json)"};

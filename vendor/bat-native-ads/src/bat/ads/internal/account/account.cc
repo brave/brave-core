@@ -6,7 +6,10 @@
 #include "bat/ads/internal/account/account.h"
 
 #include <utility>
+#include <vector>
 
+#include "absl/types/optional.h"
+#include "base/base64.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -74,10 +77,19 @@ void Account::RemoveObserver(AccountObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Account::SetWallet(const std::string& id, const std::string& seed) {
+void Account::SetWallet(const std::string& payment_id,
+                        const std::string& recovery_seed) {
+  const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
+      base::Base64Decode(recovery_seed);
+  if (!raw_recovery_seed) {
+    BLOG(0, "Failed to set wallet");
+    NotifyInvalidWallet();
+    return;
+  }
+
   const WalletInfo last_wallet_copy = GetWallet();
 
-  if (!wallet_->Set(id, seed)) {
+  if (!wallet_->Set(payment_id, *raw_recovery_seed)) {
     BLOG(0, "Failed to set wallet");
     NotifyInvalidWallet();
     return;
@@ -86,8 +98,7 @@ void Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo& wallet = GetWallet();
 
   if (wallet.WasUpdated(last_wallet_copy)) {
-    BLOG(1, "Successfully set wallet");
-    NotifyWalletDidUpdate(wallet);
+    WalletDidUpdate(wallet);
   }
 
   if (wallet.HasChanged(last_wallet_copy)) {
@@ -209,6 +220,12 @@ void Account::ProcessUnclearedTransactions() const {
 
   const WalletInfo& wallet = GetWallet();
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
+}
+
+void Account::WalletDidUpdate(const WalletInfo& wallet) const {
+  BLOG(1, "Successfully set wallet");
+
+  NotifyWalletDidUpdate(wallet);
 }
 
 void Account::WalletDidChange(const WalletInfo& wallet) const {
@@ -376,7 +393,7 @@ void Account::OnCaptchaRequiredToRefillUnblindedTokens(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.id, captcha_id, should_show_tooltip_notification);
+      wallet.payment_id, captcha_id, should_show_tooltip_notification);
 }
 
 }  // namespace ads
