@@ -61,6 +61,8 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -105,6 +107,7 @@ import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
+import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabHidingType;
 import org.chromium.chrome.browser.tab.TabImpl;
@@ -210,6 +213,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+    private FilterListAndroidHandler mFilterListAndroidHandler;
     private PlaylistService mPlaylistService;
 
     private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
@@ -225,6 +229,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
+        }
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.close();
         }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && mPlaylistService != null) {
@@ -370,11 +377,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
+        mFilterListAndroidHandler = null;
         initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             mPlaylistService = null;
             initPlaylistService();
         }
+    }
+
+    private void initFilterListAndroidHandler() {
+        if (mFilterListAndroidHandler != null) {
+            return;
+        }
+
+        mFilterListAndroidHandler =
+                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -399,6 +417,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             initPlaylistService();
         }
@@ -693,18 +712,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void maybeShowCookieConsentTooltip() {
-        if (mCookieListOptInPageAndroidHandler != null) {
+        if (mCookieListOptInPageAndroidHandler != null && mFilterListAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
-                mCookieListOptInPageAndroidHandler.isFilterListEnabled(isEnabled -> {
-                    if (!isEnabled && shouldShowDialog
-                            && SharedPreferencesManager.getInstance().readBoolean(
-                                    BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
-                            && SharedPreferencesManager.getInstance().readInt(
-                                       BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                                    > 5) {
-                        showCookieConsentTooltip();
-                    }
-                });
+                mFilterListAndroidHandler.isFilterListEnabled(
+                        FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                            if (!isEnabled && shouldShowDialog
+                                    && SharedPreferencesManager.getInstance().readBoolean(
+                                            BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE,
+                                            true)
+                                    && SharedPreferencesManager.getInstance().readInt(
+                                               BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                                            > 5) {
+                                showCookieConsentTooltip();
+                            }
+                        });
             });
         }
     }
@@ -739,9 +760,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnAction.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCookieListOptInPageAndroidHandler != null) {
+                if (mCookieListOptInPageAndroidHandler != null
+                        && mFilterListAndroidHandler != null) {
                     mCookieListOptInPageAndroidHandler.onTooltipYesClicked();
-                    mCookieListOptInPageAndroidHandler.enableFilter(true);
+                    mFilterListAndroidHandler.enableFilter(
+                            FilterListConstants.COOKIE_LIST_UUID, true);
                 }
                 mCookieConsentTooltip.dismiss();
             }
