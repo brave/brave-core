@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 import styled from 'styled-components'
 
@@ -21,36 +22,22 @@ export const IconBox = styled.span`
   }
 `
 
-const COUNTRIES = ['GB', 'US', 'CH', 'ES', 'SG', 'NL', 'JP', 'DE', 'FR', 'CA', 'AU']
+const COUNTRIES = ['AU', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'JP', 'NL', 'SG', 'US']
 
 function Flag (props: Props) {
-  let [url, setUrl] = React.useState(undefined)
+  const [url, setUrl] = React.useState<undefined | string>(undefined)
 
   React.useEffect(() => {
-    let canceled = false
-    const updateSvgUrl = async () => {
-      const svgUrl = await import(`../../assets/country-flags/${props.countryCode}.svg`)
-      setUrl(svgUrl.default)
-    }
-
-    if (COUNTRIES.includes(props?.countryCode ?? '') && !canceled) {
-      updateSvgUrl()
-    }
-
-    return () => {
-      canceled = true
+    if (COUNTRIES.includes(props?.countryCode ?? '')) {
+      setUrl(`assets/country-flags/${props.countryCode}.svg`)
     }
   }, [props?.countryCode])
 
-  if (url) {
-    return (
-      <IconBox>
-        <img src={url} />
-      </IconBox>
-    )
-  }
-
-  return null
+  return !url ? null : (
+    <IconBox>
+      <img src={url} />
+    </IconBox>
+  )
 }
 
 export default Flag

@@ -669,7 +669,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+      "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
     ]
