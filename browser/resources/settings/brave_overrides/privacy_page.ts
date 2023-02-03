@@ -10,70 +10,6 @@ import {I18nBehavior} from 'chrome://resources/i18n_behavior.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
-function InsertGoogleSignInSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
-{
-  pages.insertAdjacentHTML(
-    'beforeend',
-    getTrustedHTML`
-      <template is="dom-if" route-path="/content/googleSignIn" no-search>
-        <settings-subpage>
-          <category-default-setting
-            id="googleSignInDefault"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
-          </category-default-setting>
-          <category-setting-exceptions
-            id="googleSignInExceptions"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-  const googleSignInTemplate = templateContent.
-    querySelector('[route-path="/content/googleSignIn"]')
-  if (!googleSignInTemplate) {
-    console.error(
-      '[Brave Settings Overrides] Couldn\'t find Google signin template')
-  } else {
-    const googleSignInSubpage =
-      googleSignInTemplate.content.querySelector('settings-subpage')
-    if (!googleSignInSubpage) {
-      console.error(
-        '[Brave Settings Overrides] Couldn\'t find Google signin subpage')
-    } else {
-      googleSignInSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn'))
-      const googleSignInDefault =
-        googleSignInTemplate.content.getElementById('googleSignInDefault')
-      if (!googleSignInDefault) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin default')
-      } else {
-        googleSignInDefault.setAttribute(
-          'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
-        googleSignInDefault.setAttribute(
-          'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
-      }
-      const googleSignInExceptions =
-        googleSignInTemplate.content.getElementById('googleSignInExceptions')
-      if (!googleSignInExceptions) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin exceptions')
-      } else {
-        googleSignInExceptions.setAttribute(
-          'block-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
-        googleSignInExceptions.setAttribute(
-          'allow-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllow'))
-      }
-    }
-  }
-}
-
 function InsertAutoplaySubpage (
   templateContent: DocumentFragment,
   pages: Element)
@@ -324,11 +260,6 @@ RegisterPolymerTemplateModifications({
         } else {
           idleDetection.content.firstElementChild.hidden = true
         }
-      }
-      const isGoogleSignInFeatureEnabled =
-        loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-      if (isGoogleSignInFeatureEnabled) {
-        InsertGoogleSignInSubpage(templateContent, pages)
       }
       InsertAutoplaySubpage(templateContent, pages)
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
