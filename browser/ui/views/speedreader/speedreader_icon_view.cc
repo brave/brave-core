@@ -48,8 +48,9 @@ void SpeedreaderIconView::UpdateImpl() {
       !speedreader::PageSupportsDistillation(state)) {
     if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFallback)) {
       ReaderModeIconView::UpdateImpl();
-      if (!GetVisible())
+      if (!GetVisible()) {
         return;
+      }
     } else {
       return;
     }

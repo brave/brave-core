@@ -143,7 +143,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
         base::BindOnce(
             [](const GURL& response_url, std::string data,
                std::unique_ptr<Rewriter> rewriter,
-               const std::string& stylesheet) -> auto{
+               const std::string& stylesheet) -> auto {
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
