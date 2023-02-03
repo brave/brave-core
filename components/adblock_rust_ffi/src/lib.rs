@@ -480,12 +480,13 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
 #[cfg(feature = "ios")]
 #[no_mangle]
 pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char) -> *mut c_char {
+    use adblock::lists::{ParseOptions, RuleTypes};
     let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
         ""
     });
     let mut filter_set = adblock::lists::FilterSet::new(true);
-    filter_set.add_filter_list(&rules, Default::default());
+    filter_set.add_filter_list(&rules, ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() });
     // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
     // created in debug mode
     let (cb_rules, _) = filter_set.into_content_blocking().unwrap();
