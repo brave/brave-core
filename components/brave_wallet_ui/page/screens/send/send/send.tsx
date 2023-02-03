@@ -385,7 +385,7 @@ export const Send = (props: Props) => {
                 verticalAlign='flex-start'
                 horizontalAlign='flex-end'
               >
-                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
+                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true} textAlign='right'>
                   {accountNameAndBalance}
                 </Text>
               </Column>

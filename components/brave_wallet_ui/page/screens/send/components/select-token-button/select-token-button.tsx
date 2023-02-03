@@ -78,7 +78,7 @@ export const SelectTokenButton = (props: Props) => {
     <Button onClick={onClick} morePadding={token !== undefined} isNFT={selectedSendOption === 'nft'}>
       <Row>
         {token && (
-          <IconsWrapper>
+          <IconsWrapper marginRight={selectedSendOption === 'nft' ? 12 : undefined}>
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
             {tokensNetwork && token?.contractAddress !== '' && (
               <NetworkIconWrapper>
@@ -92,6 +92,7 @@ export const SelectTokenButton = (props: Props) => {
           textColor={token !== undefined ? 'text01' : 'text03'}
           textSize={token !== undefined ? '18px' : '16px'}
           isNFT={selectedSendOption === 'nft'}
+          textAlign='left'
         >
           {buttonText}
         </ButtonText>
