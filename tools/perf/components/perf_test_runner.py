@@ -23,6 +23,7 @@ from components.browser_binary_fetcher import PrepareBinary, ParseTarget
 
 class CommonOptions:
   verbose: bool = False
+  ci_mode: bool = False
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
 
@@ -34,6 +35,7 @@ class CommonOptions:
   @classmethod
   def add_common_parser_args(cls, parser: argparse.ArgumentParser) -> None:
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--ci-mode', action='store_true')
     parser.add_argument('--variations-repo-dir', type=str)
     parser.add_argument('--working-directory', required=True, type=str)
 
@@ -41,13 +43,14 @@ class CommonOptions:
   def from_args(cls, args) -> 'CommonOptions':
     options = CommonOptions()
     options.verbose = args.verbose
+    options.ci_mode = args.ci_mode
     options.variations_repo_dir = args.variations_repo_dir
     options.working_directory = args.working_directory
     return options
 
 
 def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
-                          revision: str, output_dir: str
+                          revision: str, output_dir: str, ci_mode: bool
                           ) -> Tuple[bool, List[str], Optional[str]]:
 
   if browser_type.ReportAsReference():
@@ -68,7 +71,8 @@ def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
   args.append(f'--task-output-dir={output_dir}')
   args.append('--output-json=' + os.path.join(output_dir, 'results.json'))
 
-  revision_number, git_hash = perf_test_utils.GetRevisionNumberAndHash(revision)
+  revision_number, git_hash = perf_test_utils.GetRevisionNumberAndHash(
+      revision, ci_mode)
   logging.debug('Got revision %s git_hash %s', revision_number, git_hash)
 
   build_properties = {}
@@ -139,19 +143,26 @@ class RunableConfiguration:
     logging.info('Rebasing dir %s using binary %s', self.profile_dir,
                  self.binary_path)
     rebase_runner_config = deepcopy(self.config)
-    rebase_runner_config.extra_browser_args = ['--update-source-profile']
+    rebase_runner_config.extra_browser_args = [
+        '--update-source-profile', '--enable-brave-features-for-perf-testing'
+    ]
 
     rebase_benchmark = BenchmarkConfig()
     rebase_benchmark.name = 'loading.desktop.brave'
     rebase_benchmark.stories = ['BraveSearch_cold']
     rebase_benchmark.pageset_repeat = 1
 
-    return self.RunSingleTest(rebase_runner_config, rebase_benchmark, None,
-                              True)
+    REBASE_TIMEOUT = 120
 
-  def RunSingleTest(self, config: RunnerConfig,
-                    benchmark_config: BenchmarkConfig, out_dir: Optional[str],
-                    local_run: bool) -> bool:
+    return self.RunSingleTest(rebase_runner_config, rebase_benchmark, None,
+                              True, REBASE_TIMEOUT)
+
+  def RunSingleTest(self,
+                    config: RunnerConfig,
+                    benchmark_config: BenchmarkConfig,
+                    out_dir: Optional[str],
+                    local_run: bool,
+                    timeout: Optional[int] = None) -> bool:
     args = [path_util.GetVpython3Path()]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
@@ -204,7 +215,7 @@ class RunableConfiguration:
       args.append('--extra-browser-args=' + ' '.join(extra_browser_args))
 
     success, _ = perf_test_utils.GetProcessOutput(
-        args, cwd=path_util.GetChromiumPerfDir())
+        args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
     return success
 
   def TakeStatusLine(self):
@@ -248,8 +259,9 @@ class RunableConfiguration:
     assert (self.config.dashboard_bot_name is not None)
     assert (self.config.tag is not None)
     report_success, report_failed_logs, revision_number = ReportToDashboardImpl(
-        self.config.browser_type, self.config.dashboard_bot_name,
-        f'refs/tags/{self.config.tag}', os.path.join(self.out_dir, 'results'))
+        self.config.browser_type,
+        self.config.dashboard_bot_name, f'refs/tags/{self.config.tag}',
+        os.path.join(self.out_dir, 'results'), self.common_options.ci_mode)
     spent_time = time.time() - start_time
     self.status_line += f'Report {spent_time:.2f}s '
     self.status_line += 'OK, ' if report_success else 'FAILURE, '
@@ -258,7 +270,7 @@ class RunableConfiguration:
       self.logs.extend(report_failed_logs)
     return report_success
 
-  def ClearArtifacts(self):
+  def ClearTelemetryArtifacts(self):
     if self.common_options.local_run:
       for benchmark in self.benchmarks:
         artifacts_dir = os.path.join(self.out_dir, os.pardir, benchmark.name,
@@ -278,7 +290,7 @@ class RunableConfiguration:
         report_ok = self.ReportToDashboard()
     self.logs.append(self.TakeStatusLine())
     if run_tests_ok and report_ok and not self.config.save_artifacts:
-      self.ClearArtifacts()
+      self.ClearTelemetryArtifacts()
 
     return run_tests_ok and report_ok, self.logs
 
@@ -296,22 +308,28 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       if config.tag is not None:
         description += f'[tag_{config.tag}]'
     assert (description)
-    out_dir = os.path.join(common_options.working_directory, description)
-
+    binary_dir = os.path.join(common_options.working_directory, 'binaries',
+                              description)
+    artifacts_dir = os.path.join(common_options.working_directory, 'artifacts',
+                                 description)
     binary_path = None
     field_trial_config = None
 
     if common_options.do_run_tests:
-      shutil.rmtree(out_dir, True)
-      os.makedirs(out_dir)
-      binary_path = PrepareBinary(out_dir, config.tag, config.location,
+      shutil.rmtree(binary_dir, True)
+      shutil.rmtree(artifacts_dir, True)
+      os.makedirs(binary_dir)
+      os.makedirs(artifacts_dir)
+      binary_path = PrepareBinary(binary_dir, config.tag, config.location,
                                   config.browser_type)
       assert config.tag is not None
       field_trial_config = config.browser_type.MakeFieldTrials(
-          config.tag, out_dir, common_options.variations_repo_dir)
-      logging.info('%s : %s directory %s', description, binary_path, out_dir)
+          config.tag, artifacts_dir, common_options.variations_repo_dir,
+          common_options.ci_mode)
+      logging.info('%s : %s directory %s', description, binary_path,
+                   artifacts_dir)
     runable_configurations.append(
-        RunableConfiguration(config, benchmarks, binary_path, out_dir,
+        RunableConfiguration(config, benchmarks, binary_path, artifacts_dir,
                              common_options, field_trial_config))
   return runable_configurations
 

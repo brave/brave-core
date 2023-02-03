@@ -23,9 +23,7 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
   """ Brave version of SharedDesktopPageState with extras.
 
   1. A delay after the browser startup before running a test.
-  2. It closes extra tabs after finihsing the test to reuse the profile later
-     (used for rebasing profiles).
-  See shared_page_state.py for details.
+  2. It's used for rebasing profiles (do some setup in via the settings page).
   """
 
   def _StartBrowser(self, page):
@@ -35,12 +33,15 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
 
   def _StopBrowser(self):
     if self._browser:
-      # Try to close all previous tabs to maintain some independence between
-      # individual story runs. Note that the final tab.Close(keep_one=True)
-      # will create a fresh new tab before the last one is closed.
-      while len(self._browser.tabs) > 1:
-        self._browser.tabs[-1].Close()
-      self._browser.tabs[-1].Navigate('chrome://newtab')
+      rebasing_profile = '--update-source-profile' in self._browser.startup_args
+      if rebasing_profile:
+        # Disable session restore via settingsPrivate API.
+        t = self._browser.tabs[-1]
+        t.Navigate('chrome://settings')
+        t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
+        t.EvaluateJavaScript(
+            'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
+        time.sleep(2)
 
     super(shared_page_state.SharedDesktopPageState, self)._StopBrowser()
 

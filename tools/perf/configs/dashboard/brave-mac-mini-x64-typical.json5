@@ -1,16 +1,15 @@
 {
   "configurations": [{
-    "dashboard-bot-name": "test-agent",
+    "dashboard-bot-name": "mac-mini-x64-typical",
     "browser-type": "brave",
     "profile": "brave-typical-v1.50.26",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
-    "save-artifacts": true,
   }],
   "benchmarks": [
     {
       "name": "loading.desktop.brave",
-      "pageset-repeat": 1,
+      "pageset-repeat": 20,
       "stories": [
         "example.com_cold",
         "wikipedia.com_cold",
@@ -18,17 +17,16 @@
       ]
     },
     {
-      "name": "speedometer2-chrome-health",
-      "pageset-repeat": 1,
-    },
-    {
       "name": "system_health.memory_desktop",
-      "pageset-repeat": 1,
+      "pageset-repeat": 20,
       "stories": [
         "load:chrome:blank",
         "browse:news:hackernews:2020",
-        "load:media:youtube:2018",
       ]
     },
+    {
+      "name": "speedometer2",
+      "pageset-repeat": 50
+    }
   ]
 }
