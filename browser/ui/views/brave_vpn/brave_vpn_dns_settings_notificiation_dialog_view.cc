@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/constrained_window/constrained_window_views.h"
