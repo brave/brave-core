@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_TEXT_CHANGE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_TEXT_CHANGE_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -21,9 +20,9 @@ class EdgeTextChange : public GraphEdge {
   EdgeTextChange(GraphItemContext* context,
                  NodeScript* out_node,
                  NodeHTMLText* in_node,
-                 const std::string& text);
+                 const String& text);
 
-  const std::string& GetText() const { return text_; }
+  const String& GetText() const { return text_; }
 
   ItemName GetItemName() const override;
   ItemName GetItemDesc() const override;
@@ -34,7 +33,7 @@ class EdgeTextChange : public GraphEdge {
   bool IsEdgeTextChange() const override;
 
  private:
-  const std::string text_;
+  const String text_;
 };
 
 }  // namespace brave_page_graph

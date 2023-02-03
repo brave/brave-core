@@ -14,6 +14,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_text.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DOMNodeId;
 
@@ -48,15 +49,15 @@ ItemDesc EdgeNodeInsert::GetItemDesc() const {
 
   const GraphNode* prior_sibling_node = GetPriorSiblingNode();
 
-  std::stringstream builder;
-  builder << EdgeNode::GetItemDesc();
-  builder << " [parent: " << parent_node->GetItemDesc() << "]";
+  WTF::TextStream ts;
+  ts << EdgeNode::GetItemDesc();
+  ts << " [parent: " << parent_node->GetItemDesc() << "]";
 
   if (prior_sibling_node) {
-    builder << " [prior sibling: " << prior_sibling_node->GetItemDesc() << "]";
+    ts << " [prior sibling: " << prior_sibling_node->GetItemDesc() << "]";
   }
 
-  return builder.str();
+  return ts.Release();
 }
 
 void EdgeNodeInsert::AddGraphMLAttributes(xmlDocPtr doc,

@@ -11,7 +11,7 @@ EdgeEventListenerRemove::EdgeEventListenerRemove(
     GraphItemContext* context,
     NodeActor* out_node,
     NodeHTMLElement* in_node,
-    const std::string& event_type,
+    const String& event_type,
     const EventListenerId listener_id,
     NodeActor* listener_script)
     : EdgeEventListenerAction(context,

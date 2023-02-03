@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_STORAGE_EDGE_STORAGE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_STORAGE_EDGE_STORAGE_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -20,10 +19,10 @@ class EdgeStorage : public GraphEdge {
   EdgeStorage(GraphItemContext* context,
               GraphNode* out_node,
               GraphNode* in_node,
-              const std::string& key);
+              const String& key);
   ~EdgeStorage() override;
 
-  const std::string& GetKey() const { return key_; }
+  const String& GetKey() const { return key_; }
 
   ItemName GetItemDesc() const override;
 
@@ -39,7 +38,7 @@ class EdgeStorage : public GraphEdge {
   virtual bool IsEdgeStorageSet() const;
 
  private:
-  const std::string key_;
+  const String key_;
 };
 
 }  // namespace brave_page_graph

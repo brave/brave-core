@@ -399,7 +399,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                              const blink::PageGraphBlinkArgs args);
   void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
                                  const char* builtin_name,
-                                 const std::string& result);
+                                 const String& result);
 
   void RegisterBindingEvent(blink::ExecutionContext* execution_context,
                             const Binding binding,
@@ -428,7 +428,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   bool IsRootFrame() const;
 
   // The blink assigned frame id for the local root's frame.
-  const std::string frame_id_;
+  const String frame_id_;
   // Script tracker helper.
   ScriptTracker script_tracker_;
   // Page Graph start time stamp.
@@ -471,13 +471,13 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   // Index structure for looking up binding nodes.
   // This map does not own the references.
-  std::map<Binding, NodeBinding*> binding_nodes_;
+  HashMap<Binding, NodeBinding*> binding_nodes_;
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
-  std::map<MethodName, NodeJSWebAPI*> js_webapi_nodes_;
+  HashMap<MethodName, NodeJSWebAPI*> js_webapi_nodes_;
   // Index structure for storing and looking up nodes representing built
   // in JS funcs and methods. This map does not own the references.
-  std::map<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
+  HashMap<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
 
   using FingerprintingFilterNodes ALLOW_DISCOURAGED_TYPE(
       "TODO(https://github.com/brave/brave-browser/issues/28238)") =

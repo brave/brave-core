@@ -10,7 +10,7 @@ namespace brave_page_graph {
 EdgeEventListenerAdd::EdgeEventListenerAdd(GraphItemContext* context,
                                            NodeActor* out_node,
                                            NodeHTMLElement* in_node,
-                                           const std::string& event_type,
+                                           const String& event_type,
                                            const EventListenerId listener_id,
                                            NodeActor* listener_script)
     : EdgeEventListenerAction(context,

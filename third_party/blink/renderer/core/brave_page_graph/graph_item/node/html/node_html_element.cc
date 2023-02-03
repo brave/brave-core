@@ -23,6 +23,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DOMNodeId;
 using ::blink::DynamicTo;
@@ -31,7 +32,7 @@ namespace brave_page_graph {
 
 NodeHTMLElement::NodeHTMLElement(GraphItemContext* context,
                                  const DOMNodeId dom_node_id,
-                                 const std::string& tag_name)
+                                 const String& tag_name)
     : NodeHTML(context, dom_node_id), tag_name_(tag_name) {}
 
 NodeHTMLElement::~NodeHTMLElement() = default;
@@ -41,20 +42,21 @@ ItemName NodeHTMLElement::GetItemName() const {
 }
 
 ItemDesc NodeHTMLElement::GetItemDesc() const {
-  std::stringstream builder;
-  builder << NodeHTML::GetItemDesc();
+  WTF::TextStream ts;
+  ts << NodeHTML::GetItemDesc();
 
-  builder << " [" << tag_name_;
-  if (attributes_.count("id") == 1) {
-    builder << " id: " << attributes_.at("id");
+  ts << " [" << tag_name_;
+  if (auto attribute = attributes_.find("id"); attribute != attributes_.end()) {
+    ts << " id: " << attribute->value;
   }
 
-  if (attributes_.count("class") == 1) {
-    builder << " class: " << attributes_.at("class");
+  if (auto attribute = attributes_.find("class");
+      attribute != attributes_.end()) {
+    ts << " class: " << attribute->value;
   }
-  builder << "]";
+  ts << "]";
 
-  return builder.str();
+  return ts.Release();
 }
 
 void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,
@@ -70,9 +72,9 @@ void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,
   // For each event listener, draw an edge from the listener script to the DOM
   // node to which it's attached.
   for (auto& event_listener : event_listeners_) {
-    const EventListenerId listener_id = event_listener.first;
-    const std::string& event_type = event_listener.second->GetEventType();
-    NodeActor* listener_node = event_listener.second->GetListenerNode();
+    const EventListenerId listener_id = event_listener.key;
+    const String& event_type = event_listener.value->GetEventType();
+    NodeActor* listener_node = event_listener.value->GetListenerNode();
 
     EdgeEventListener event_listener_edge(
         GetContext(), const_cast<NodeHTMLElement*>(this), listener_node,
@@ -128,8 +130,8 @@ void NodeHTMLElement::AddInEdge(const GraphEdge* in_edge) {
   NodeHTML::AddInEdge(in_edge);
   if (const EdgeEventListenerAdd* add_event_listener_in_edge =
           DynamicTo<EdgeEventListenerAdd>(in_edge)) {
-    event_listeners_.emplace(add_event_listener_in_edge->GetListenerId(),
-                             add_event_listener_in_edge);
+    event_listeners_.insert(add_event_listener_in_edge->GetListenerId(),
+                            add_event_listener_in_edge);
   } else if (const EdgeEventListenerRemove* remove_event_listener_in_edge =
                  DynamicTo<EdgeEventListenerRemove>(in_edge)) {
     event_listeners_.erase(remove_event_listener_in_edge->GetListenerId());
@@ -155,11 +157,11 @@ void NodeHTMLElement::AddInEdge(const GraphEdge* in_edge) {
   } else if (const EdgeAttributeSet* set_attribute_in_edge =
                  DynamicTo<EdgeAttributeSet>(in_edge)) {
     if (set_attribute_in_edge->IsStyle()) {
-      inline_styles_.emplace(set_attribute_in_edge->GetName(),
-                             set_attribute_in_edge->GetValue());
+      inline_styles_.insert(set_attribute_in_edge->GetName(),
+                            set_attribute_in_edge->GetValue());
     } else {
-      attributes_.emplace(set_attribute_in_edge->GetName(),
-                          set_attribute_in_edge->GetValue());
+      attributes_.insert(set_attribute_in_edge->GetName(),
+                         set_attribute_in_edge->GetValue());
     }
   } else if (const EdgeAttributeDelete* delete_attribute_in_edge =
                  DynamicTo<EdgeAttributeDelete>(in_edge)) {

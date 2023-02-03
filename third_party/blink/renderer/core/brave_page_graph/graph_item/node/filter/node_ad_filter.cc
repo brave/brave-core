@@ -5,9 +5,8 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_ad_filter.h"
 
-#include <sstream>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
@@ -21,12 +20,12 @@ ItemName NodeAdFilter::GetItemName() const {
 }
 
 ItemDesc NodeAdFilter::GetItemDesc() const {
-  std::stringstream builder;
-  builder << NodeFilter::GetItemDesc();
+  WTF::TextStream ts;
+  ts << NodeFilter::GetItemDesc();
   if (!rule_.empty()) {
-    builder << " [" << rule_.Utf8() << "]";
+    ts << " [" << rule_ << "]";
   }
-  return builder.str();
+  return ts.Release();
 }
 
 void NodeAdFilter::AddGraphMLAttributes(xmlDocPtr doc,
