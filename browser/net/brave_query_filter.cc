@@ -69,8 +69,6 @@ static constexpr auto kScopedQueryStringTrackers =
     base::MakeFixedFlatMap<base::StringPiece, base::StringPiece>({
         // https://github.com/brave/brave-browser/issues/11580
         {"igshid", "instagram.com"},
-        // https://github.com/brave/brave-browser/issues/26756
-        {"t", "twitter.com"},
         // https://github.com/brave/brave-browser/issues/26966
         {"ref_src", "twitter.com"},
         {"ref_url", "twitter.com"},
