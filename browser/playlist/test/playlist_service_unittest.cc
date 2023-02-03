@@ -1117,4 +1117,154 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
   }
 }
 
+TEST_F(PlaylistServiceUnitTest, ResetAll) {
+  // Pre-condition: data and preferences are changed
+  auto* service = playlist_service();
+
+  std::string another_playlist_id;
+  service->CreatePlaylist(
+      mojom::Playlist::New(),
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+        another_playlist_id = new_list->id.value_or(std::string());
+      }));
+  ASSERT_FALSE(another_playlist_id.empty());
+
+  std::vector<mojom::PlaylistItemPtr> items;
+  mojom::PlaylistItem prototype_item;
+  prototype_item.page_source = GURL("https://foo.com/");
+  prototype_item.thumbnail_source = GURL("https://thumbnail.src/");
+  prototype_item.thumbnail_path = GURL("file://thumbnail/path/");
+  prototype_item.media_source = GURL("https://media.src/");
+  prototype_item.media_path = GURL("file://media/path/");
+  prototype_item.cached = false;
+  prototype_item.author = "me";
+  for (int i = 0; i < 5; i++) {
+    auto item = prototype_item.Clone();
+    item->id = base::Token::CreateRandom().ToString();
+    item->name = base::NumberToString(i + 1);
+    items.push_back(std::move(item));
+  }
+
+  service->GetPlaylist(
+      kDefaultPlaylistID,
+      base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
+        ASSERT_EQ(playlist->items.size(), 0u);
+      }));
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+                                  std::move(items));
+  service->GetPlaylist(
+      kDefaultPlaylistID,
+      base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
+        ASSERT_EQ(playlist->items.size(), 5u);
+      }));
+
+  for (int i = 0; i < 5; i++) {
+    auto item = prototype_item.Clone();
+    item->id = base::Token::CreateRandom().ToString();
+    item->name = base::NumberToString(i + 1);
+    items.push_back(std::move(item));
+  }
+  service->GetPlaylist(
+      another_playlist_id,
+      base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
+        ASSERT_EQ(playlist->items.size(), 0u);
+      }));
+  service->AddMediaFilesFromItems(another_playlist_id, false /* no caching */,
+                                  std::move(items));
+  service->GetPlaylist(
+      another_playlist_id,
+      base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
+        ASSERT_EQ(playlist->items.size(), 5u);
+      }));
+
+  auto* prefs = this->prefs();
+  prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist_id);
+  prefs->SetBoolean(kPlaylistCacheByDefault, false);
+  ASSERT_EQ(service->GetDefaultSaveTargetListID(), another_playlist_id);
+
+  // Wait until something is written on disk. Even when we don't cache media,
+  // directories for each items should be created.
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath base_path) {
+        return !base::IsDirectoryEmpty(base_path);
+      },
+      service->base_dir_));
+
+  // Call the method -----------------------------------------------------------
+  service->ResetAll();
+
+  // Check if ResetAll() clears all data ---------------------------------------
+  EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).empty());
+  const auto& playlists = prefs->GetDict(kPlaylistsPref);
+  EXPECT_EQ(1u, playlists.size());
+  EXPECT_TRUE(playlists.contains(kDefaultPlaylistID));
+  service->GetPlaylist(kDefaultPlaylistID,
+                       base::BindOnce([](mojom::PlaylistPtr default_playlist) {
+                         EXPECT_TRUE(default_playlist->items.empty());
+                       }));
+
+  // Check if ResetAll() resets preference to the default values
+  EXPECT_TRUE(prefs->FindPreference(kPlaylistDefaultSaveTargetListID)
+                  ->IsDefaultValue());
+  EXPECT_TRUE(prefs->FindPreference(kPlaylistCacheByDefault)->IsDefaultValue());
+  EXPECT_TRUE(prefs->GetDict(kPlaylistsPref).contains(kDefaultPlaylistID));
+  EXPECT_EQ(1u, prefs->GetDict(kPlaylistsPref).size());
+  EXPECT_EQ(0u, prefs->GetDict(kPlaylistItemsPref).size());
+
+  // Check if data on disk is removed.
+  WaitUntil(base::BindRepeating(&base::IsDirectoryEmpty, service->base_dir_));
+
+  // Adding item should work after resetting.
+  auto item = prototype_item.Clone();
+  item->id = base::Token::CreateRandom().ToString();
+  items.push_back(item.Clone());
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+                                  std::move(items));
+
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) {
+        return base::IsDirectoryEmpty(item_path);
+      },
+      service->GetPlaylistItemDirPath(item->id)));
+}
+
+TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
+  // Pre-condition: There's orphaned dirs. -------------------------------------
+  auto* service = playlist_service();
+
+  mojom::PlaylistItem item;
+  item.id = base::Token::CreateRandom().ToString();
+  item.page_source = GURL("https://foo.com/");
+  item.thumbnail_source = GURL("https://thumbnail.src/");
+  item.thumbnail_path = GURL("file://thumbnail/path/");
+  item.media_source = GURL("https://media.src/");
+  item.media_path = GURL("file://media/path/");
+  item.cached = false;
+  item.author = "me";
+
+  std::vector<mojom::PlaylistItemPtr> items;
+  items.push_back(item.Clone());
+
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+                                  std::move(items));
+
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) { return base::DirectoryExists(item_path); },
+      service->GetPlaylistItemDirPath(item.id)));
+
+  // Now removes preference without cleaning up dir - abnormal situation.
+  prefs()->ClearPref(kPlaylistItemsPref);
+  prefs()->ClearPref(kPlaylistsPref);
+
+  // Call method ---------------------------------------------------------------
+  service->CleanUpOrphanedPlaylistItemDirs();
+
+  // Verify that the the dir is removed ----------------------------------------
+  WaitUntil(base::BindRepeating(
+      [](base::FilePath item_path) {
+        return !base::DirectoryExists(item_path);
+      },
+      service->GetPlaylistItemDirPath(item.id)));
+}
+
 }  // namespace playlist

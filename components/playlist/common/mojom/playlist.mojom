@@ -92,6 +92,9 @@ interface PlaylistService {
   CreatePlaylist(Playlist playlist) => (Playlist created_list);
 
   RemovePlaylist(string id);
+
+  // Removes all stored data and resets preferences to default values.
+  ResetAll();
 };
 
 // UI-side handler for response from the service.

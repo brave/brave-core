@@ -597,6 +597,18 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
       {PlaylistChangeParams::Type::kListRemoved, playlist_id});
 }
 
+void PlaylistService::ResetAll() {
+  // Resets preference ---------------------------------------------------------
+  prefs_->ClearPref(kPlaylistCacheByDefault);
+  prefs_->ClearPref(kPlaylistDefaultSaveTargetListID);
+  prefs_->ClearPref(kPlaylistItemsPref);
+  prefs_->ClearPref(kPlaylistsPref);
+
+  // Removes data on disk ------------------------------------------------------
+  GetTaskRunner()->PostTask(FROM_HERE,
+                            base::GetDeletePathRecursivelyCallback(base_dir_));
+}
+
 void PlaylistService::RecoverLocalDataForItem(const std::string& id) {
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!item_value) {
