@@ -31,7 +31,7 @@ generate_grd("build_grd") {
 
 preprocess_if_expr("preprocess_mojo") {
   deps = [
-    "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
+    "//brave/browser/ui/webui/brave_federated:mojo_bindings_js__generator",
     "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
   ]
   in_folder = "$root_gen_dir/mojom-webui/"
@@ -81,7 +81,7 @@ js_library("federated_internals") {
 
 js_library("federated_internals_browser_proxy") {
   deps = [
-    "//brave/browser/ui/webui/brave_federated:mojo_bindings_webui_js",
+    "//brave/browser/ui/webui/brave_federated:mojo_bindings_js__generator",
     "//brave/components/brave_federated/public/interfaces:interfaces_webui_js",
     "//ui/webui/resources:library",
   ]
