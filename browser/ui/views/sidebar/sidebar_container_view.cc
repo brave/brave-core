@@ -449,7 +449,8 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   }
 }
 
-void SidebarContainerView::OnEntryRegistered(SidePanelEntry* entry) {
+void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
+                                             SidePanelEntry* entry) {
   // Observe when it's shown or hidden
   DVLOG(1) << "Observing panel entry in registry observer: " << entry->name();
   panel_entry_observations_.AddObservation(entry);
