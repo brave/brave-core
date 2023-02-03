@@ -79,7 +79,7 @@ interface PlaylistService {
   UpdateItem(PlaylistItem item);
 
   // Try downloading media files again
-  RecoverLocalDataForItem(string id);
+  RecoverLocalDataForItem(string id, bool update_media_src_before_recovery);
 
   // Removes media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);

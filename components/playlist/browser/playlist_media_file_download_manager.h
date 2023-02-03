@@ -26,17 +26,33 @@ namespace playlist {
 class PlaylistMediaFileDownloadManager
     : public PlaylistMediaFileDownloader::Delegate {
  public:
+  struct DownloadJob {
+    // This struct is move-only type.
+    DownloadJob();
+    DownloadJob(const DownloadJob&) = delete;
+    DownloadJob& operator=(const DownloadJob&) = delete;
+    DownloadJob(DownloadJob&&) noexcept;
+    DownloadJob& operator=(DownloadJob&&) noexcept;
+    ~DownloadJob();
+
+    mojom::PlaylistItemPtr item;
+
+    base::RepeatingCallback<void(const mojom::PlaylistItemPtr& /*item*/,
+                                 int64_t /*total_bytes*/,
+                                 int64_t /*received_bytes*/,
+                                 int /*percent_complete*/,
+                                 base::TimeDelta /*time_remaining*/)>
+        on_progress_callback;
+
+    // If the manage fails to download file, the |media_file_path| will be
+    // empty.
+    base::OnceCallback<void(mojom::PlaylistItemPtr /*item*/,
+                            const std::string& /*media_file_path*/)>
+        on_finish_callback;
+  };
+
   class Delegate {
    public:
-    virtual void OnMediaFileDownloadProgressed(
-        const std::string& id,
-        int64_t total_bytes,
-        int64_t received_bytes,
-        int percent_complete,
-        base::TimeDelta time_remaining) = 0;
-    virtual void OnMediaFileReady(const std::string& id,
-                                  const std::string& media_file_path) = 0;
-    virtual void OnMediaFileGenerationFailed(const std::string& id) = 0;
     virtual bool IsValidPlaylistItem(const std::string& id) = 0;
 
    protected:
@@ -56,11 +72,11 @@ class PlaylistMediaFileDownloadManager
   PlaylistMediaFileDownloadManager& operator=(
       const PlaylistMediaFileDownloadManager&) = delete;
 
-  void DownloadMediaFile(const mojom::PlaylistItemPtr& playlist_item);
+  void DownloadMediaFile(std::unique_ptr<DownloadJob> request);
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
-  bool has_download_requests() const { return !!current_item_; }
+  bool has_download_requests() const { return !!current_job_; }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
@@ -76,16 +92,16 @@ class PlaylistMediaFileDownloadManager
   void OnMediaFileGenerationFailed(const std::string& id) override;
 
   void TryStartingDownloadTask();
-  mojom::PlaylistItemPtr GetNextPlaylistItemTarget();
+  std::unique_ptr<DownloadJob> PopNextJob();
   std::string GetCurrentDownloadingPlaylistItemID() const;
   void CancelCurrentDownloadingPlaylistItem();
   bool IsCurrentDownloadingInProgress() const;
 
   const base::FilePath base_dir_;
   raw_ptr<Delegate> delegate_;
-  base::queue<mojom::PlaylistItemPtr> pending_media_file_creation_jobs_;
+  base::queue<std::unique_ptr<DownloadJob>> pending_media_file_creation_jobs_;
 
-  mojom::PlaylistItemPtr current_item_;
+  std::unique_ptr<DownloadJob> current_job_;
 
   std::unique_ptr<PlaylistMediaFileDownloader> media_file_downloader_;
 

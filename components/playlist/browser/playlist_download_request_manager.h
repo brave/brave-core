@@ -66,7 +66,7 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
       const PlaylistDownloadRequestManager&) = delete;
 
   // Request::callback will be called with generated param.
-  void GetMediaFilesFromPage(Request request);
+  virtual void GetMediaFilesFromPage(Request request);
 
   // Update |web_prefs| if we want for |web_contents|.
   void ConfigureWebPrefsForBackgroundWebContents(

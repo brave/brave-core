@@ -116,6 +116,8 @@ class PlaylistService : public KeyedService,
       blink::web_pref::WebPreferences* web_prefs);
 
   // mojom::Service:
+  // TODO(sko) Make getters without callbacks and simplify codes in
+  // PlaylistService and tests.
   void GetAllPlaylists(GetAllPlaylistsCallback callback) override;
   void GetPlaylist(const std::string& id,
                    GetPlaylistCallback callback) override;
@@ -142,7 +144,8 @@ class PlaylistService : public KeyedService,
                                const std::string& item_id,
                                int16_t position) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
-  void RecoverLocalDataForItem(const std::string& item_id) override;
+  void RecoverLocalDataForItem(const std::string& item_id,
+                               bool update_media_src_before_recovery) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItemsInPlaylist(
       const std::string& playlist_id) override;
@@ -193,15 +196,6 @@ class PlaylistService : public KeyedService,
                               bool cache,
                               std::vector<mojom::PlaylistItemPtr> items);
 
-  // PlaylistMediaFileDownloadManager::Delegate overrides:
-  void OnMediaFileDownloadProgressed(const std::string& id,
-                                     int64_t total_bytes,
-                                     int64_t received_bytes,
-                                     int percent_complete,
-                                     base::TimeDelta remaining_time) override;
-  void OnMediaFileReady(const std::string& id,
-                        const std::string& media_file_path) override;
-  void OnMediaFileGenerationFailed(const std::string& id) override;
   bool IsValidPlaylistItem(const std::string& id) override;
 
   // PlaylistThumbnailDownloader::Delegate overrides:
@@ -212,12 +206,16 @@ class PlaylistService : public KeyedService,
   bool ShouldDownloadOnBackground(content::WebContents* contents) const;
 
   void OnPlaylistItemDirCreated(mojom::PlaylistItemPtr item,
-                                bool cache,
+                                bool cache_media,
+                                bool update_media_src_and_retry_caching_on_fail,
                                 bool directory_ready);
+
+  mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
-  void DownloadMediaFile(const mojom::PlaylistItemPtr& item);
+  void DownloadMediaFile(const mojom::PlaylistItemPtr& item,
+                         bool update_media_src_and_retry_on_fail);
 
   base::SequencedTaskRunner* GetTaskRunner();
 
@@ -270,7 +268,18 @@ class PlaylistService : public KeyedService,
   void DeletePlaylistItemData(const std::string& id);
   void DeleteAllPlaylistItems();
 
-  void RemoveLocalDataForItem(const mojom::PlaylistItemPtr& item);
+  void RecoverLocalDataForItemImpl(const mojom::PlaylistItemPtr& item,
+                                   bool update_media_src_and_retry_on_fail);
+  void RemoveLocalDataForItemImpl(const mojom::PlaylistItemPtr& item);
+
+  void OnMediaFileDownloadProgressed(const mojom::PlaylistItemPtr& item,
+                                     int64_t total_bytes,
+                                     int64_t received_bytes,
+                                     int percent_complete,
+                                     base::TimeDelta remaining_time);
+  void OnMediaFileDownloadFinished(bool update_media_src_and_retry_on_fail,
+                                   mojom::PlaylistItemPtr item,
+                                   const std::string& media_file_path);
 
   std::unique_ptr<Delegate> delegate_;
 
