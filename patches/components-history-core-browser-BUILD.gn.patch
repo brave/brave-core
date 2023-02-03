@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
+index 7ef197effead5ea14abca72fc94ae38a71d9a392..b139fbe80d4a3472f8c169f18b85229d6b6ca3b1 100644
+--- a/components/history/core/browser/BUILD.gn
++++ b/components/history/core/browser/BUILD.gn
+@@ -156,6 +156,7 @@ static_library("browser") {
+       "android/visit_sql_handler.h",
+     ]
+   }
++  import("//brave/components/history/core/browser/sources.gni") sources += brave_components_history_core_browser_sources deps += brave_components_history_core_browser_deps
+ }
+ 
+ bundle_data("unit_tests_bundle_data") {

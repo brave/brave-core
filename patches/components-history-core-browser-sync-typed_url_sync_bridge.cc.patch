@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/sync/typed_url_sync_bridge.cc b/components/history/core/browser/sync/typed_url_sync_bridge.cc
+index eb0494be3942e1ae0eab89ca56d64be60b493ab5..271543163ce723e4c8f203625f0a92aea9ec0b8d 100644
+--- a/components/history/core/browser/sync/typed_url_sync_bridge.cc
++++ b/components/history/core/browser/sync/typed_url_sync_bridge.cc
+@@ -387,6 +387,7 @@ void TypedURLSyncBridge::OnURLVisited(HistoryBackend* history_backend,
+   if (!change_processor()->IsTrackingMetadata()) {
+     return;  // Sync processor not yet ready, don't sync.
+   }
++  BRAVE_TYPED_URL_SYNC_BRIDGE_ON_URL_VISITED_REPLACE_SHOULD_SYNC_VISIT
+   if (!ShouldSyncVisit(url_row.typed_count(), visit_row.transition)) {
+     return;
+   }
