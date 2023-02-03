@@ -156,18 +156,20 @@ class SearchResultAdTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
+  MockAdsService* ads_service() { return &ads_service_; }
+
  private:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  MockAdsService ads_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
-  MockAdsService ads_service;
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
 
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(false));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(false));
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
 
   GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -177,11 +179,10 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AdsDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
-  MockAdsService ads_service;
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
 
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
 
   GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -191,11 +192,10 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
-  MockAdsService ads_service;
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
 
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _)).Times(0);
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
 
   GURL url = GetURL(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -272,15 +272,14 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
   }
 
   content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
-      MockAdsService* ads_service,
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(*ads_service,
+    EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kServed))
         .Times(2);
-    EXPECT_CALL(*ads_service,
+    EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kViewed))
         .Times(2)
@@ -316,15 +315,14 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
 
 IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
                        SearchResultAdOpenedInSameTab) {
-  MockAdsService ads_service;
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
 
-  content::WebContents* web_contents = LoadAndCheckSampleSearchResultAdWebPage(
-      &ads_service, GetSearchResultUrl());
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _))
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
       .WillOnce([this, &run_loop](
                     ads::mojom::SearchResultAdInfoPtr ad_mojom,
                     const ads::mojom::SearchResultAdEventType event_type) {
@@ -339,16 +337,15 @@ IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
 }
 
 IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
-  MockAdsService ads_service;
-  ScopedTestingAdsServiceSetter scoped_setter(&ads_service);
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
 
-  content::WebContents* web_contents = LoadAndCheckSampleSearchResultAdWebPage(
-      &ads_service, GetSearchResultUrl());
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
-  EXPECT_CALL(ads_service, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
   base::RunLoop run_loop;
-  EXPECT_CALL(ads_service, TriggerSearchResultAdEvent(_, _))
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
       .WillOnce([this, &run_loop](
                     ads::mojom::SearchResultAdInfoPtr ad_mojom,
                     const ads::mojom::SearchResultAdEventType event_type) {
