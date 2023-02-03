@@ -47,10 +47,6 @@ source_set("ui") {
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
-    "webui/brave_federated/federated_internals_page_handler.cc",
-    "webui/brave_federated/federated_internals_page_handler.h",
-    "webui/brave_federated/federated_internals_ui.cc",
-    "webui/brave_federated/federated_internals_ui.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
@@ -402,11 +398,9 @@ source_set("ui") {
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
-    "//brave/browser/resources/federated_internals:resources",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/webui/brave_federated:mojo_bindings",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",

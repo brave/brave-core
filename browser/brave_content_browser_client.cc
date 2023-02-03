@@ -181,8 +181,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -607,12 +605,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
-  if (base::FeatureList::IsEnabled(
-          brave_federated::features::kFederatedLearning)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        federated_internals::mojom::PageHandlerFactory,
-        brave_federated::FederatedInternalsUI>(map);
-  }
 #endif
 
 // Brave News
