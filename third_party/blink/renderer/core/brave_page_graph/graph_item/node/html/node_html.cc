@@ -8,6 +8,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DynamicTo;
 
@@ -28,12 +29,12 @@ void NodeHTML::MarkDeleted() {
 }
 
 ItemDesc NodeHTML::GetItemDesc() const {
-  std::stringstream builder;
-  builder << GraphNode::GetItemDesc();
+  WTF::TextStream ts;
+  ts << GraphNode::GetItemDesc();
   if (is_deleted_) {
-    builder << " [deleted]";
+    ts << " [deleted]";
   }
-  return builder.str();
+  return ts.Release();
 }
 
 void NodeHTML::AddGraphMLAttributes(xmlDocPtr doc,

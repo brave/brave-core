@@ -5,10 +5,9 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_dom_root.h"
 
-#include <sstream>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::DOMNodeId;
 
@@ -16,7 +15,7 @@ namespace brave_page_graph {
 
 NodeDOMRoot::NodeDOMRoot(GraphItemContext* context,
                          const DOMNodeId dom_node_id,
-                         const std::string& tag_name)
+                         const String& tag_name)
     : NodeHTMLElement(context, dom_node_id, tag_name) {}
 
 ItemName NodeDOMRoot::GetItemName() const {
@@ -24,14 +23,14 @@ ItemName NodeDOMRoot::GetItemName() const {
 }
 
 ItemDesc NodeDOMRoot::GetItemDesc() const {
-  std::stringstream builder;
-  builder << NodeHTMLElement::GetItemDesc();
+  WTF::TextStream ts;
+  ts << NodeHTMLElement::GetItemDesc();
 
   if (!url_.empty()) {
-    builder << " [" << url_ << "]";
+    ts << " [" << url_ << "]";
   }
 
-  return builder.str();
+  return ts.Release();
 }
 
 void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,

@@ -10,7 +10,7 @@ namespace brave_page_graph {
 EdgeAttributeDelete::EdgeAttributeDelete(GraphItemContext* context,
                                          NodeActor* out_node,
                                          NodeHTMLElement* in_node,
-                                         const std::string& name,
+                                         const String& name,
                                          const bool is_style)
     : EdgeAttribute(context, out_node, in_node, name, is_style) {}
 
