@@ -578,9 +578,11 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                           false);
 }
 
-void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
-                                        RequestCallback callback,
-                                        base::Value id) {
+void EthereumProviderImpl::EthSubscribe(
+    const std::string& event_type,
+    absl::optional<base::Value::Dict> filter,
+    RequestCallback callback,
+    base::Value id) {
   const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
     std::vector<uint8_t> bytes(16);
     crypto::RandBytes(&bytes.front(), bytes.size());
@@ -597,11 +599,15 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
     }
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
-  } else if (event_type == kEthSubscribeLogs) {
+  } else if (event_type == kEthSubscribeLogs && filter) {
     const auto gen_res = generateHexBytes(eth_log_subscriptions_);
+
     if (std::get<0>(gen_res)) {
       eth_logs_tracker_.Start(base::Seconds(kLogTrackerDefaultTimeInSeconds));
     }
+
+    eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res), std::move(*filter));
+
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
   } else {
@@ -641,9 +647,10 @@ bool EthereumProviderImpl::UnsubscribeBlockObserver(
 bool EthereumProviderImpl::UnsubscribeLogObserver(
     const std::string& subscription_id) {
   if (base::Erase(eth_log_subscriptions_, subscription_id)) {
-    if (eth_log_subscriptions_.empty())
+    eth_logs_tracker_.RemoveSubscriber(subscription_id);
+    if (eth_log_subscriptions_.empty()) {
       eth_logs_tracker_.Stop();
-
+    }
     return true;
   }
   return false;
@@ -1237,12 +1244,15 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
     Web3ClientVersion(std::move(callback), std::move(id));
   } else if (method == kEthSubscribe) {
     std::string event_type;
-    if (!ParseEthSubscribeParams(normalized_json_request, &event_type)) {
+    base::Value::Dict filter;
+    if (!ParseEthSubscribeParams(normalized_json_request, &event_type,
+                                 &filter)) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
     }
-    EthSubscribe(event_type, std::move(callback), std::move(id));
+    EthSubscribe(event_type, std::move(filter), std::move(callback),
+                 std::move(id));
   } else if (method == kEthUnsubscribe) {
     std::string subscription_id;
     if (!ParseEthUnsubscribeParams(normalized_json_request, &subscription_id)) {
@@ -1705,7 +1715,8 @@ void EthereumProviderImpl::OnGetBlockByNumber(
 
 void EthereumProviderImpl::OnNewBlock(uint256_t block_num) {}
 
-void EthereumProviderImpl::OnLogsReceived(base::Value rawlogs) {
+void EthereumProviderImpl::OnLogsReceived(const std::string& subscription,
+                                          base::Value rawlogs) {
   if (!rawlogs.is_dict() || !events_listener_.is_bound()) {
     return;
   }
@@ -1718,8 +1729,7 @@ void EthereumProviderImpl::OnLogsReceived(base::Value rawlogs) {
   }
 
   for (auto& results_item : *results) {
-    for (const auto& subscription_id : eth_log_subscriptions_)
-      events_listener_->MessageEvent(subscription_id, results_item.Clone());
+    events_listener_->MessageEvent(subscription, results_item.Clone());
   }
 }
 

@@ -190,11 +190,7 @@ std::string eth_getFilterChanges(const std::string& filter_id);
 // Returns an array of all logs matching filter with given id.
 std::string eth_getFilterLogs(const std::string& filter_id);
 // Returns an array of all logs matching a given filter object.
-std::string eth_getLogs(const std::string& from_block_quantity_tag,
-                        const std::string& to_block_quantity_tag,
-                        base::Value::List addresses,
-                        base::Value::List topics,
-                        const std::string& block_hash);
+std::string eth_getLogs(base::Value::Dict filter_options);
 // Returns the hash of the current block, the seedHash, and the boundary
 // condition to be met (“target”).
 std::string eth_getWork();

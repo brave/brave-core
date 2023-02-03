@@ -2168,10 +2168,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 }
 
 void JsonRpcService::EthGetLogs(const std::string& chain_id,
-                                const std::string& from_block,
-                                const std::string& to_block,
-                                base::Value::List contract_addresses,
-                                base::Value::List topics,
+                                base::Value::Dict filter_options,
                                 EthGetLogsCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
@@ -2184,10 +2181,8 @@ void JsonRpcService::EthGetLogs(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnEthGetLogs,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      eth::eth_getLogs(from_block, to_block, std::move(contract_addresses),
-                       std::move(topics), ""),
-      true, network_url, std::move(internal_callback));
+  RequestInternal(eth::eth_getLogs(std::move(filter_options)), true,
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,
