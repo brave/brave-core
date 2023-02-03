@@ -14,6 +14,7 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
+#include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_static_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -44,6 +45,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       source,
       base::make_span(kBraveVpnPanelGenerated, kBraveVpnPanelGeneratedSize),
       IDR_VPN_PANEL_HTML);
+  source->AddResourcePaths(
+      base::make_span(kBraveVpnStaticResources, kBraveVpnStaticResourcesSize));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
