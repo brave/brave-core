@@ -152,7 +152,6 @@ BlockchainRegistry::GetBuyTokens(
     blockchain_buy_tokens.push_back(
         brave_wallet::mojom::BlockchainToken::New(token));
   }
-  LOG(ERROR) << "blockchain_buy_tokens size: " << blockchain_buy_tokens.size();
   return blockchain_buy_tokens;
 }
 
