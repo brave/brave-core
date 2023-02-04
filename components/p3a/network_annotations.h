@@ -9,7 +9,7 @@
 #include "base/strings/string_piece.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
-namespace brave {
+namespace p3a {
 
 net::NetworkTrafficAnnotationTag GetRandomnessRequestAnnotation();
 net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation();
@@ -18,6 +18,6 @@ net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
     base::StringPiece upload_type,
     bool is_star);
 
-}  // namespace brave
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_NETWORK_ANNOTATIONS_H_

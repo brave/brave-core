@@ -20,9 +20,10 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
+#include "brave/components/p3a/p3a_config.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
@@ -95,7 +96,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   BrowserList* _browserList;
   BrowserList* _otr_browserList;
   ChromeBrowserState* _mainBrowserState;
-  scoped_refptr<brave::BraveP3AService> _p3a_service;
+  scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<brave::HistogramsBraveizer> _histogram_braveizer;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
@@ -458,9 +459,10 @@ static bool CustomLogHandler(int severity,
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  _p3a_service = base::MakeRefCounted<brave::BraveP3AService>(
+  _p3a_service = base::MakeRefCounted<p3a::P3AService>(
       GetApplicationContext()->GetLocalState(),
-      base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall));
+      base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall),
+      p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
   _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
   _histogram_braveizer = brave::HistogramsBraveizer::Create();

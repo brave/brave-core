@@ -17,10 +17,10 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/components/p3a/uploader.h"
 #include "brave/components/version_info/version_info.h"
 
-namespace brave {
+namespace p3a {
 
 namespace {
 constexpr std::size_t kP3AStarAttributeCount = 8;
@@ -194,4 +194,4 @@ void MessageMetainfo::MaybeStripCountry() {
   }
 }
 
-}  // namespace brave
+}  // namespace p3a

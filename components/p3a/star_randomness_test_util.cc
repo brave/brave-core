@@ -17,7 +17,7 @@
 #include "net/http/http_request_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave {
+namespace p3a {
 
 std::string HandleRandomnessRequest(const network::ResourceRequest& request,
                                     uint8_t expected_epoch) {
@@ -68,4 +68,4 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
   return resp_json;
 }
 
-}  // namespace brave
+}  // namespace p3a

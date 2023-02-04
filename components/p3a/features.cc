@@ -5,10 +5,10 @@
 
 #include "brave/components/p3a/features.h"
 
-namespace brave {
+namespace p3a {
 namespace features {
 
 BASE_FEATURE(kSTAR, "BraveP3ASTAR", base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
-}  // namespace brave
+}  // namespace p3a

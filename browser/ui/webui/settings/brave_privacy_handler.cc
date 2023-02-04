@@ -35,7 +35,7 @@ BravePrivacyHandler::BravePrivacyHandler() {
                           base::Unretained(this)));
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
-      brave::kP3AEnabled,
+      p3a::kP3AEnabled,
       base::BindRepeating(&BravePrivacyHandler::OnP3AEnabledChanged,
                           base::Unretained(this)));
 #endif
@@ -135,17 +135,17 @@ void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 void BravePrivacyHandler::SetP3AEnabled(const base::Value::List& args) {
-  SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
+  SetLocalStateBooleanEnabled(p3a::kP3AEnabled, args);
 }
 
 void BravePrivacyHandler::GetP3AEnabled(const base::Value::List& args) {
-  GetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
+  GetLocalStateBooleanEnabled(p3a::kP3AEnabled, args);
 }
 
 void BravePrivacyHandler::OnP3AEnabledChanged() {
   if (IsJavascriptAllowed()) {
     PrefService* local_state = g_browser_process->local_state();
-    bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
+    bool enabled = local_state->GetBoolean(p3a::kP3AEnabled);
 
     FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
   }

@@ -179,6 +179,6 @@ void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
 
 void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
+  SetLocalStateBooleanEnabled(p3a::kP3AEnabled, args);
 #endif
 }

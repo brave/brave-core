@@ -10,11 +10,11 @@
 
 #include "services/network/public/cpp/resource_request.h"
 
-namespace brave {
+namespace p3a {
 
 std::string HandleRandomnessRequest(const network::ResourceRequest& request,
                                     uint8_t expected_epoch);
 
-}  // namespace brave
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_STAR_RANDOMNESS_TEST_UTIL_H_
