@@ -29,8 +29,8 @@ constexpr std::size_t kMaxRandomnessResponseSize = 131072;
 
 std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
     const base::Value* list) {
-  std::unique_ptr<rust::Vec<constellation::VecU8>> result(
-      new rust::Vec<constellation::VecU8>());
+  std::unique_ptr<rust::Vec<constellation::VecU8>> result =
+      std::make_unique<rust::Vec<constellation::VecU8>>();
   for (const base::Value& list_entry : list->GetList()) {
     const std::string* entry_str = list_entry.GetIfString();
     if (entry_str == nullptr) {
@@ -115,7 +115,7 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     std::unique_ptr<std::string> response_body) {
   if (!response_body || response_body->empty()) {
     std::string error_str = net::ErrorToShortString(url_loader_->NetError());
-    url_loader_.reset();
+    url_loader_ = nullptr;
     LOG(ERROR) << "StarRandomnessPoints: no response body for "
                   "randomness request, "
                << "net error: " << error_str;
@@ -126,10 +126,10 @@ void StarRandomnessPoints::HandleRandomnessResponse(
   if (!randomness_meta->VerifyRandomnessCert(url_loader_.get())) {
     data_callback_.Run(histogram_name, epoch,
                        std::move(randomness_request_state), nullptr, nullptr);
-    url_loader_.reset();
+    url_loader_ = nullptr;
     return;
   }
-  url_loader_.reset();
+  url_loader_ = nullptr;
   base::JSONReader::Result parsed_body =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
   if (!parsed_body.has_value() || !parsed_body.value().is_dict()) {
@@ -165,7 +165,7 @@ void StarRandomnessPoints::HandleRandomnessResponse(
       return;
     }
   } else {
-    proofs_vec.reset(new rust::Vec<constellation::VecU8>());
+    proofs_vec = std::make_unique<rust::Vec<constellation::VecU8>>();
   }
   data_callback_.Run(histogram_name, epoch, std::move(randomness_request_state),
                      std::move(points_vec), std::move(proofs_vec));

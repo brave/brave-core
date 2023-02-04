@@ -41,7 +41,8 @@ constexpr char kP2APrefix[] = "Brave.P2A";
 
 }  // namespace
 
-class P3AMessageManagerTest : public testing::Test, MessageManager::Delegate {
+class P3AMessageManagerTest : public testing::Test,
+                              public MessageManager::Delegate {
  public:
   P3AMessageManagerTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
@@ -117,8 +118,8 @@ class P3AMessageManagerTest : public testing::Test, MessageManager::Delegate {
           }
         }));
 
-    message_manager.reset(new MessageManager(&local_state, &p3a_config, this,
-                                             "release", "2099-01-01"));
+    message_manager = std::make_unique<MessageManager>(
+        &local_state, &p3a_config, this, "release", "2099-01-01");
 
     message_manager->Init(shared_url_loader_factory);
 
