@@ -79,7 +79,9 @@ std::string EthSignTypedDataHelper::EncodeType(
   for (size_t i = 0; i < type.GetList().size(); ++i) {
     const std::string* type_str = type.GetList()[i].FindStringKey("type");
     const std::string* name_str = type.GetList()[i].FindStringKey("name");
-    DCHECK(type_str && name_str);
+    if (!type_str || !name_str) {
+      return std::string();
+    }
     base::StrAppend(&result, {*type_str, " ", *name_str});
     if (i != type.GetList().size() - 1)
       base::StrAppend(&result, {","});
