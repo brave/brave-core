@@ -572,13 +572,13 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
          const GURL& url) -> CookieState {
     const auto first_party_blocked =
         cookie_settings->GetCookieSetting(
-            url, url, nullptr,
+            url, url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 
     const auto third_party_blocked =
         cookie_settings->GetCookieSetting(
-            GURL::EmptyGURL(), url, nullptr,
+            GURL::EmptyGURL(), url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 
