@@ -598,6 +598,10 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 }
 
 void PlaylistService::ResetAll() {
+  // Resets all on-going downloads
+  thumbnail_downloader_->CancelAllDownloadRequests();
+  media_file_download_manager_->CancelAllDownloadRequests();
+
   // Resets preference ---------------------------------------------------------
   prefs_->ClearPref(kPlaylistCacheByDefault);
   prefs_->ClearPref(kPlaylistDefaultSaveTargetListID);
