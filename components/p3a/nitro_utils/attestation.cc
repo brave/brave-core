@@ -112,7 +112,7 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
       !cabundle_it->second.is_array()) {
     LOG(ERROR) << "Nitro verification: certificate and/or cabundle are "
                << "missing or not the right type";
-    return std::unique_ptr<net::ParsedCertificateList>();
+    return nullptr;
   }
 
   const cbor::Value::ArrayValue& cabundle_arr = cabundle_it->second.GetArray();
@@ -123,8 +123,8 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
                  std::back_inserter(cert_vals),
                  [](const cbor::Value& val) { return val.Clone(); });
 
-  std::unique_ptr<net::ParsedCertificateList> cert_chain(
-      new net::ParsedCertificateList());
+  std::unique_ptr<net::ParsedCertificateList> cert_chain =
+      std::make_unique<net::ParsedCertificateList>();
 
   net::ParseCertificateOptions parse_cert_options;
   // Nitro enclave certs seem to contain serial numbers that Chromium does not
@@ -134,7 +134,7 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
   for (auto& cert_val : cert_vals) {
     if (!cert_val.is_bytestring()) {
       LOG(ERROR) << "Nitro verification: certificate is not bstr";
-      return std::unique_ptr<net::ParsedCertificateList>();
+      return nullptr;
     }
     if (!net::ParsedCertificate::CreateAndAddToVector(
             net::X509Certificate::CreateCertBufferFromBytes(
@@ -142,7 +142,7 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
             parse_cert_options, cert_chain.get(), &cert_errors)) {
       LOG(ERROR) << "Nitro verification: failed to parse certificate: "
                  << cert_errors.ToDebugString();
-      return std::unique_ptr<net::ParsedCertificateList>();
+      return nullptr;
     }
   }
 
@@ -152,7 +152,7 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
   if (root_cert_fp != kAWSRootCertFP) {
     LOG(ERROR)
         << "Nitro verification: root cert fp does not match AWS root cert fp";
-    return std::unique_ptr<net::ParsedCertificateList>();
+    return nullptr;
   }
 
   return cert_chain;

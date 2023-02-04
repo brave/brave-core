@@ -27,7 +27,8 @@ class P3AStarLogStoreTest : public testing::Test {
  protected:
   void SetUp() override {
     StarLogStore::RegisterPrefs(local_state.registry());
-    log_store.reset(new StarLogStore(&local_state, kTestKeepEpochCount));
+    log_store =
+        std::make_unique<StarLogStore>(&local_state, kTestKeepEpochCount);
   }
 
   std::string GenerateMockStarMessage() {

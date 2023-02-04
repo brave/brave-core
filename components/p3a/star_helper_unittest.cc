@@ -69,7 +69,7 @@ class P3AStarHelperTest : public testing::Test {
   }
 
   void SetUpStarManager() {
-    star_manager.reset(new StarHelper(
+    star_manager = std::make_unique<StarHelper>(
         &local_state, shared_url_loader_factory,
         base::BindLambdaForTesting(
             [this](std::string histogram_name, uint8_t epoch,
@@ -81,7 +81,7 @@ class P3AStarHelperTest : public testing::Test {
         base::BindLambdaForTesting([this](RandomnessServerInfo* server_info) {
           server_info_from_callback = server_info;
         }),
-        &p3a_config));
+        &p3a_config);
     task_environment_.RunUntilIdle();
   }
 

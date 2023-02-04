@@ -195,7 +195,7 @@ void StarRandomnessMeta::HandleAttestationResult(
 }
 
 void StarRandomnessMeta::ScheduleServerInfoRetry() {
-  url_loader_.reset();
+  url_loader_ = nullptr;
   if (current_backoff_time_.is_zero()) {
     current_backoff_time_ = base::Seconds(kRndInfoRetryInitialBackoffSeconds);
   } else {
@@ -225,7 +225,7 @@ void StarRandomnessMeta::HandleServerInfoResponse(
     ScheduleServerInfoRetry();
     return;
   }
-  url_loader_.reset();
+  url_loader_ = nullptr;
   base::JSONReader::Result parsed_value =
       base::JSONReader::ReadAndReturnValueWithError(
           *response_body, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -260,8 +260,8 @@ void StarRandomnessMeta::HandleServerInfoResponse(
   }
   local_state_->SetInteger(kCurrentEpochPrefName, *epoch);
   local_state_->SetTime(kNextEpochTimePrefName, next_epoch_time);
-  rnd_server_info_.reset(new RandomnessServerInfo(
-      static_cast<uint8_t>(*epoch), next_epoch_time, std::move(pk)));
+  rnd_server_info_ = std::make_unique<RandomnessServerInfo>(
+      static_cast<uint8_t>(*epoch), next_epoch_time, std::move(pk));
   current_backoff_time_ = base::TimeDelta();
   VLOG(2) << "StarRandomnessMeta: server info retrieved";
   info_callback_.Run(rnd_server_info_.get());

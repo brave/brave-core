@@ -13,7 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time_to_iso8601.h"
-#include "brave/components/constellation/src/lib.rs.h"
+#include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "net/http/http_request_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

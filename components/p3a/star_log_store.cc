@@ -71,7 +71,7 @@ void StarLogStore::RemoveMessageIfExists(const LogKey& key) {
 
   if (has_staged_log() && staged_entry_key_->epoch == key.epoch &&
       staged_entry_key_->histogram_name == key.histogram_name) {
-    staged_entry_key_.reset();
+    staged_entry_key_ = nullptr;
     staged_log_.clear();
   }
 }
@@ -137,7 +137,7 @@ void StarLogStore::DiscardStagedLog() {
   if (!has_staged_log()) {
     return;
   }
-  staged_entry_key_.reset();
+  staged_entry_key_ = nullptr;
   staged_log_.clear();
 }
 
