@@ -38,10 +38,10 @@
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/p3a/brave_p3a_config.h"
-#include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
+#include "brave/components/p3a/p3a_config.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -122,9 +122,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // Disabled on mobile platforms, see for instance issues/6176
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
-  brave_p3a_service();
+  p3a_service();
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  histogram_braveizer_ = brave::HistogramsBraveizer::Create();
+  histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   // initialize ads stats helper
@@ -362,17 +362,17 @@ void BraveBrowserProcessImpl::OnTorEnabledChanged() {
 }
 #endif
 
-brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
+p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  if (brave_p3a_service_) {
-    return brave_p3a_service_.get();
+  if (p3a_service_) {
+    return p3a_service_.get();
   }
-  brave_p3a_service_ = base::MakeRefCounted<brave::BraveP3AService>(
+  p3a_service_ = base::MakeRefCounted<p3a::P3AService>(
       local_state(), brave::GetChannelName(),
       local_state()->GetString(kWeekOfInstallation),
-      brave::BraveP3AConfig::LoadFromCommandLine());
-  brave_p3a_service()->InitCallbacks();
-  return brave_p3a_service_.get();
+      p3a::P3AConfig::LoadFromCommandLine());
+  p3a_service()->InitCallbacks();
+  return p3a_service_.get();
 #else
   return nullptr;
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)

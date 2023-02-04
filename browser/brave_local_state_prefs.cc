@@ -28,7 +28,7 @@
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -91,13 +91,13 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       metrics::prefs::kMetricsReportingEnabled,
       base::Value(GetDefaultPrefValueForMetricsReporting()));
 
-  brave::BraveP3AService::RegisterPrefs(registry,
+  p3a::P3AService::RegisterPrefs(registry,
 #if !BUILDFLAG(IS_ANDROID)
-                                        first_run::IsChromeFirstRun());
+                                 first_run::IsChromeFirstRun());
 #else
-                                        // BraveP3AService::RegisterPrefs
-                                        // doesn't use this arg on Android
-                                        false);
+                                 // BraveP3AService::RegisterPrefs
+                                 // doesn't use this arg on Android
+                                 false);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   brave_shields::RegisterShieldsP3ALocalPrefs(registry);

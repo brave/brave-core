@@ -104,7 +104,7 @@ TestingBraveBrowserProcess::ipfs_client_updater() {
 }
 #endif
 
-brave::BraveP3AService* TestingBraveBrowserProcess::brave_p3a_service() {
+p3a::P3AService* TestingBraveBrowserProcess::p3a_service() {
   NOTREACHED();
   return nullptr;
 }

@@ -88,7 +88,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
         std::make_unique<NTPP3AHelperImpl>(
             g_browser_process->local_state(),
-            g_brave_browser_process->brave_p3a_service(), ads_service),
+            g_brave_browser_process->p3a_service(), ads_service),
 #else
         nullptr,
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)

@@ -16,8 +16,8 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -50,7 +50,7 @@ constexpr base::TimeDelta kLandingTime = base::Seconds(10);
 }  // namespace
 
 NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
-                                   brave::BraveP3AService* p3a_service,
+                                   p3a::P3AService* p3a_service,
                                    brave_ads::AdsService* ads_service)
     : local_state_(local_state),
       p3a_service_(p3a_service),
@@ -94,9 +94,9 @@ void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
   last_tab_hostname_ = url.host();
 }
 
-void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type,
+void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
                                      bool is_star) {
-  if (log_type != brave::MetricLogType::kExpress || is_star) {
+  if (log_type != p3a::MetricLogType::kExpress || is_star) {
     return;
   }
   ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
@@ -150,7 +150,7 @@ void NTPP3AHelperImpl::OnP3AMetricCycled(const std::string& histogram_name,
     // supported for express metrics
     return;
   }
-  if (!base::StartsWith(histogram_name, brave::kCreativeMetricPrefix)) {
+  if (!base::StartsWith(histogram_name, p3a::kCreativeMetricPrefix)) {
     return;
   }
 
@@ -202,7 +202,7 @@ std::string NTPP3AHelperImpl::BuildHistogramName(
     const std::string& creative_instance_id,
     const std::string& event_type) {
   return base::StrCat(
-      {brave::kCreativeMetricPrefix, creative_instance_id, ".", event_type});
+      {p3a::kCreativeMetricPrefix, creative_instance_id, ".", event_type});
 }
 
 void NTPP3AHelperImpl::UpdateMetricCount(
@@ -212,7 +212,7 @@ void NTPP3AHelperImpl::UpdateMetricCount(
       BuildHistogramName(creative_instance_id, event_type);
 
   p3a_service_->RegisterDynamicMetric(histogram_name,
-                                      brave::MetricLogType::kExpress);
+                                      p3a::MetricLogType::kExpress);
 
   ScopedDictPrefUpdate update(local_state_, kNewTabPageEventCountDictPref);
   base::Value::Dict& update_dict = update.Get();

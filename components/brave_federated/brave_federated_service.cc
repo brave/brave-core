@@ -53,7 +53,7 @@ void BraveFederatedService::Init() {
 
   local_state_change_registrar_.Init(local_state_);
   local_state_change_registrar_.Add(
-      brave::kP3AEnabled,
+      p3a::kP3AEnabled,
       base::BindRepeating(&BraveFederatedService::OnPreferenceChanged,
                           base::Unretained(this)));
 
@@ -71,7 +71,7 @@ void BraveFederatedService::Init() {
 }
 
 void BraveFederatedService::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == brave::kP3AEnabled) {
+  if (pref_name == p3a::kP3AEnabled) {
     MaybeStartOrStopOperationalPatterns();
   }
 }
@@ -85,7 +85,7 @@ bool BraveFederatedService::IsOperationalPatternsEnabled() {
 }
 
 bool BraveFederatedService::IsP3AEnabled() {
-  return local_state_->GetBoolean(brave::kP3AEnabled);
+  return local_state_->GetBoolean(p3a::kP3AEnabled);
 }
 
 bool BraveFederatedService::ShouldStartOperationalPatterns() {

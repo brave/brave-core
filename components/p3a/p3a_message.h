@@ -15,7 +15,7 @@
 
 class PrefService;
 
-namespace brave {
+namespace p3a {
 
 constexpr const char* kP3AMessageStarKeyValueSeparator = "|";
 constexpr const char* kP3AMessageStarLayerSeparator = ";";
@@ -58,6 +58,6 @@ std::string GenerateP3AStarMessage(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta);
 
-}  // namespace brave
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_

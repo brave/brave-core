@@ -9,7 +9,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_piece.h"
 
-namespace brave::p3a {
+namespace p3a {
 
 // Allowlist for histograms that we collect.
 // A metric must be listed here to be reported.
@@ -200,6 +200,6 @@ constexpr inline auto kEphemeralHistograms =
 
 // clang-format on
 
-}  // namespace brave::p3a
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_METRIC_NAMES_H_

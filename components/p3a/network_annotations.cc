@@ -5,9 +5,9 @@
 
 #include "brave/components/p3a/network_annotations.h"
 
-#include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/components/p3a/uploader.h"
 
-namespace brave {
+namespace p3a {
 
 net::NetworkTrafficAnnotationTag GetRandomnessRequestAnnotation() {
   return net::DefineNetworkTrafficAnnotation("p3a_star_randomness", R"(
@@ -162,4 +162,4 @@ net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
   }
 }
 
-}  // namespace brave
+}  // namespace p3a
