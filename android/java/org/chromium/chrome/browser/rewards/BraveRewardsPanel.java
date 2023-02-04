@@ -803,8 +803,10 @@ public class BraveRewardsPanel
                 @Override
                 public void onClick(View v) {
                     mBraveRewardsNativeWorker.DeleteNotification(mCurrentNotificationId);
-                    TabUtils.openUrlInNewTab(
-                            false, BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                    TabUtils.openUrlInNewTab(false,
+                            mExternalWallet != null
+                                    ? mExternalWallet.getLoginUrl()
+                                    : BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
                     dismiss();
                 }
             });
@@ -1930,16 +1932,10 @@ public class BraveRewardsPanel
                         dismiss();
                         break;
                     case WalletStatus.CONNECTED:
-                        int requestCode = BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
-                        Intent intent = BuildVerifyWalletActivityIntent(status);
-                        if (intent != null) {
-                            mActivity.startActivityForResult(intent, requestCode);
-                        }
+                        openUserWalletActivity(status);
                         break;
                     case WalletStatus.LOGGED_OUT:
-                        TabUtils.openUrlInNewTab(false,
-                                BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
-                        dismiss();
+                        openUserWalletActivity(status);
                         break;
                     default:
                         Log.e(TAG, "Unexpected external wallet status");
@@ -1947,6 +1943,14 @@ public class BraveRewardsPanel
                 }
             }
         }));
+    }
+
+    private void openUserWalletActivity(int walletStatus) {
+        int requestCode = BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE;
+        Intent intent = BuildVerifyWalletActivityIntent(walletStatus);
+        if (intent != null) {
+            mActivity.startActivityForResult(intent, requestCode);
+        }
     }
 
     private void requestPublisherInfo() {
@@ -2212,6 +2216,7 @@ public class BraveRewardsPanel
         Class clazz = null;
         switch (status) {
             case WalletStatus.CONNECTED:
+            case WalletStatus.LOGGED_OUT:
                 clazz = BraveRewardsUserWalletActivity.class;
                 break;
             default:
