@@ -22,8 +22,10 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
                     const views::View* trailing_view) override;
   gfx::Insets GetInsetsForUnderline(
       const views::View* sibling_view) const override;
-  SkPath GetPath() const override;
-  void OnPaint(gfx::Canvas* canvas) override;
+  gfx::Rect CalculateTabGroupUnderlineBounds(
+      const views::View* underline_view,
+      const views::View* leading_view,
+      const views::View* trailing_view) const override;
 
  private:
   bool ShouldShowVerticalTabs() const;
