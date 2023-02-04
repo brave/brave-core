@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 // utils
-import { getLocale } from '$web-common/locale'
 import { getWalletLocationTitle } from '../utils/string-utils'
 
 // actions
@@ -30,9 +29,6 @@ import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-
 // style
 import 'emptykit.css'
 import {
-  ButtonText,
-  FeatureRequestButton,
-  IdeaButtonIcon,
   SimplePageWrapper,
   WalletWidgetStandIn
 } from './screens/page-screen.styles'
@@ -49,8 +45,7 @@ import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
 import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
-
-const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
+import { FeatureRequestButton } from '../components/shared/feature-request-button/feature-request-button'
 
 export const Container = () => {
   // routing
@@ -115,14 +110,6 @@ export const Container = () => {
 
   const onOpenWalletSettings = React.useCallback(() => {
     dispatch(WalletPageActions.openWalletSettings())
-  }, [])
-
-  const onClickFeatureRequestButton = React.useCallback(() => {
-    chrome.tabs.create({ url: featureRequestUrl }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
   }, [])
 
   // computed
@@ -294,11 +281,8 @@ export const Container = () => {
         </WalletWidgetStandIn>
       }
 
-      {!isWalletLocked && walletLocation !== WalletRoutes.Swap &&
-        <FeatureRequestButton onClick={onClickFeatureRequestButton}>
-          <IdeaButtonIcon />
-          <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>
-        </FeatureRequestButton>
+      {!isWalletLocked && walletLocation !== WalletRoutes.Swap && walletLocation !== WalletRoutes.Send &&
+        <FeatureRequestButton />
       }
     </WalletPageLayout>
   )

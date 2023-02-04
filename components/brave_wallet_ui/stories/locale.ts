@@ -621,12 +621,22 @@ provideStrings({
   braveWalletNotDomain: 'Domain doesn\'t have a linked $ address',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
+  braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
+  braveWalletFailedChecksumDescription: 'Check your address to make sure it’s the right address (e.g. letters with lower or upper case).',
+  braveWalletHowToSolve: 'How can I solve it?',
   braveWalletAddressMissingChecksumInfoWarning: 'This address cannot be verified (missing checksum). Proceed?',
   braveWalletNotValidChecksumAddressError: 'Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
   braveWalletInvalidRecipientAddress: 'Invalid recipient address',
+  braveWalletChecksumModalTitle: 'How can I find the right address?',
+  braveWalletChecksumModalDescription: 'Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.',
+  braveWalletChecksumModalStepOneTitle: '1. Visit',
+  braveWalletChecksumModalStepOneDescription: 'Visit etherscan and paste the wallet address you want to send tokens. Then enter.',
+  braveWalletChecksumModalStepTwoTitle: '2. Copy and enter ETH address',
+  braveWalletChecksumModalStepTwoDescription: 'Copy and enter the correct address. You can see that some characters have been converted correctly.',
+  braveWalletChecksumModalNeedHelp: 'Need more help?',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
@@ -755,7 +765,7 @@ provideStrings({
   braveWalletSolanaSkipPreflight: 'Skip Preflight:',
 
   // Help Center
-  braveWalletHelpCenter: 'Help Center',
+  braveWalletHelpCenter: 'Help center',
   braveWalletHelpCenterText: 'Need help? See',
 
   // Remove Account Modal
