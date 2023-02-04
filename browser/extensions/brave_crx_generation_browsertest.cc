@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -7,8 +7,10 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_file.h"
 #include "base/path_service.h"
+#include "base/run_loop.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/crx_installer.h"
+#include "chrome/browser/extensions/install_tracker.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/crx_file/crx_verifier.h"
@@ -19,7 +21,6 @@
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/extension_creator.h"
 #include "extensions/browser/extension_system.h"
-#include "extensions/browser/notification_types.h"
 #include "extensions/common/extension.h"
 
 namespace extensions {
@@ -53,6 +54,33 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
 
 }  // namespace
 
+class InstallCrxFileWaiter : public extensions::InstallObserver {
+ public:
+  explicit InstallCrxFileWaiter(Profile* profile) : profile_(profile) {
+    InstallTracker::Get(profile_)->AddObserver(this);
+  }
+
+  ~InstallCrxFileWaiter() override {
+    InstallTracker::Get(profile_)->RemoveObserver(this);
+  }
+
+  void OnFinishCrxInstall(const std::string& extension_id,
+                          bool success) override {
+    did_install_extension_ = success;
+    run_loop_.Quit();
+  }
+
+  bool WaitForInstallation() {
+    run_loop_.Run();
+    return did_install_extension_;
+  }
+
+ private:
+  raw_ptr<Profile> profile_ = nullptr;
+  bool did_install_extension_ = false;
+  base::RunLoop run_loop_;
+};
+
 class BraveCrxGenerationTest : public InProcessBrowserTest {
  public:
   BraveCrxGenerationTest() {
@@ -60,22 +88,19 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
   }
 
-  const Extension* InstallExtension(const base::FilePath& crx_path,
-                                    crx_file::VerifierFormat format) {
+  bool InstallExtension(const base::FilePath& crx_path,
+                        crx_file::VerifierFormat format) {
     auto installer = CrxInstaller::CreateSilent(
         ExtensionSystem::Get(browser()->profile())->extension_service());
     installer->set_allow_silent_install(true);
     installer->set_install_cause(extension_misc::INSTALL_CAUSE_USER_DOWNLOAD);
     installer->set_creation_flags(Extension::FROM_WEBSTORE);
 
-    content::WindowedNotificationObserver observer(
-        NOTIFICATION_CRX_INSTALLER_DONE,
-        content::NotificationService::AllSources());
+    InstallCrxFileWaiter waiter(browser()->profile());
     installer->InstallCrxFile(CRXFileInfo(crx_path, format));
-    observer.Wait();
-    content::Details<const Extension> details = observer.details();
-    return details.ptr();
+    return waiter.WaitForInstallation();
   }
+
   base::FilePath GetTestDataDir() {
     base::FilePath test_data_dir;
     base::ScopedAllowBlockingForTesting allow_blocking;
