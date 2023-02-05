@@ -75,8 +75,10 @@ constexpr char kV2PublishersResponse[] = R"([
         "cover_url": "https://tp1.example.com/cover",
         "cover_url": "https://tp1.example.com/favicon",
         "background_color": "#FF0000",
-        "channels": ["One", "Tech"],
-        "locales": ["en_US"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Tech"]
+        }],
         "enabled": false
     },
     {
@@ -88,8 +90,10 @@ constexpr char kV2PublishersResponse[] = R"([
         "cover_url": "https://tp3.example.com/favicon",
         "background_color": "#FF00FF",
         "category": "Sports",
-        "channels": ["Sports", "Two"],
-        "locales": ["en_US"],
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["Sports", "Two"]
+        }],
         "enabled": true
     },
     {
@@ -101,8 +105,10 @@ constexpr char kV2PublishersResponse[] = R"([
         "cover_url": "https://tp5.example.com/favicon",
         "background_color": "#FFFF00",
         "category": "Design",
-        "channels": ["Design"],
-        "locales": ["ja_JA"],
+        "locales": [{
+          "locale": "ja_JA",
+          "channels": ["Design"]
+        }],
         "enabled": true
     }
 ])";
@@ -187,11 +193,9 @@ class PublishersControllerTest : public testing::Test {
     Publishers publishers;
     publishers_controller_.GetOrFetchPublishers(
         base::BindLambdaForTesting([&publishers, &loop](Publishers result) {
-          LOG(ERROR) << "Quitting!";
           publishers = std::move(result);
           loop.Quit();
         }));
-    LOG(ERROR) << "Looping";
     loop.Run();
     return publishers;
   }
@@ -263,6 +267,15 @@ TEST_F(PublishersControllerTest, CantGetNonExistingPublisherBySiteUrl) {
 }
 
 TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+                                       net::HTTP_OK);
+  GetPublishers();
+  auto* publisher = publishers_controller_.GetPublisherForFeed(
+      GURL("https://tp5.example.com/feed"));
+  EXPECT_EQ("555", publisher->publisher_id);
+}
+
+TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPrefferredBySite) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
