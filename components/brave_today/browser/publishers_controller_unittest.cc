@@ -125,8 +125,9 @@ class WaitForPublishersChanged : public PublishersController::Observer {
   ~WaitForPublishersChanged() override { controller_->RemoveObserver(this); }
 
   void Wait() {
-    if (updated_)
+    if (updated_) {
       return;
+    }
     loop_.Run();
   }
 
@@ -170,8 +171,9 @@ class PublishersControllerTest : public testing::Test {
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
     ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveTodaySources);
-    for (const auto& id : publisher_ids)
+    for (const auto& id : publisher_ids) {
       update->Set(id, true);
+    }
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
@@ -182,8 +184,9 @@ class PublishersControllerTest : public testing::Test {
   bool DirectSourceExists(const std::string& publisher_id) {
     for (const auto& publisher :
          direct_feed_controller_.ParseDirectFeedsPref()) {
-      if (publisher->publisher_id == publisher_id)
+      if (publisher->publisher_id == publisher_id) {
         return true;
+      }
     }
     return false;
   }
@@ -275,13 +278,169 @@ TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPrefferredBySite) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
+    {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Tech"]
+        }],
+        "enabled": false
+    },
+    {
+        "publisher_id": "222",
+        "publisher_name": "Test Publisher 1 JA",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com/en-JA",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "ja_JP",
+          "channels": ["One"]
+        }],
+        "enabled": false
+    }])",
                                        net::HTTP_OK);
   GetPublishers();
-  auto* publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp5.example.com/feed"));
-  EXPECT_EQ("555", publisher->publisher_id);
+
+  std::string locale;
+  base::RunLoop loop;
+  publishers_controller_.GetLocale(
+      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
+        locale = result;
+        loop.Quit();
+      }));
+  loop.Run();
+
+  EXPECT_EQ("en_US", locale);
+
+  auto* publisher = publishers_controller_.GetPublisherForSite(
+      GURL("https://tp1.example.com/feed"));
+  EXPECT_EQ("111", publisher->publisher_id);
+
+  publisher = publishers_controller_.GetPublisherForFeed(
+      GURL("https://tp1.example.com/feed"));
+  EXPECT_EQ("111", publisher->publisher_id);
+}
+
+TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredLast) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
+    {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1 JA",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com/en-JA",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "ja_JP",
+          "channels": ["One"]
+        }],
+        "enabled": false
+    },
+    {
+        "publisher_id": "222",
+        "publisher_name": "Test Publisher 1",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "en_US",
+          "channels": ["One", "Tech"]
+        }],
+        "enabled": false
+    }])",
+                                       net::HTTP_OK);
+  GetPublishers();
+
+  std::string locale;
+  base::RunLoop loop;
+  publishers_controller_.GetLocale(
+      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
+        locale = result;
+        loop.Quit();
+      }));
+  loop.Run();
+
+  EXPECT_EQ("en_US", locale);
+
+  auto* publisher = publishers_controller_.GetPublisherForSite(
+      GURL("https://tp1.example.com/"));
+  EXPECT_EQ("222", publisher->publisher_id); 
+  
+  publisher = publishers_controller_.GetPublisherForFeed(
+      GURL("https://tp1.example.com/feed"));
+  EXPECT_EQ("222", publisher->publisher_id);
+}
+
+TEST_F(PublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
+    {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1 JA",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com/en-JA",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "ja_JP",
+          "channels": ["One"]
+        }],
+        "enabled": false
+    },
+    {
+        "publisher_id": "222",
+        "publisher_name": "Test Publisher 1",
+        "feed_url": "https://tp1.example.com/feed",
+        "site_url": "https://tp1.example.com",
+        "category": "Tech",
+        "cover_url": "https://tp1.example.com/cover",
+        "cover_url": "https://tp1.example.com/favicon",
+        "background_color": "#FF0000",
+        "locales": [{
+          "locale": "pt_BR",
+          "channels": ["One", "Tech"]
+        }],
+        "enabled": false
+    }])",
+                                       net::HTTP_OK);
+  GetPublishers();
+
+  std::string locale;
+  base::RunLoop loop;
+  publishers_controller_.GetLocale(
+      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
+        locale = result;
+        loop.Quit();
+      }));
+  loop.Run();
+
+  EXPECT_EQ("en_US", locale);
+
+  auto* publisher = publishers_controller_.GetPublisherForSite(
+      GURL("https://tp1.example.com/"));
+  EXPECT_EQ("111", publisher->publisher_id);
+
+  publisher = publishers_controller_.GetPublisherForFeed(
+      GURL("https://tp1.example.com/feed"));
+  EXPECT_EQ("111", publisher->publisher_id);
 }
 
 TEST_F(PublishersControllerTest, CantGetNonExistingPublisherByFeedUrl) {
