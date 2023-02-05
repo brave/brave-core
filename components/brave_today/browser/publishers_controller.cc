@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_today/browser/publishers_controller.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <memory>
@@ -17,6 +18,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
@@ -36,6 +38,45 @@
 
 namespace brave_news {
 
+namespace {
+mojom::Publisher* FindMatchPreferringLocale(
+    const Publishers& publishers,
+    const std::string& preferred_locale,
+    base::RepeatingCallback<bool(const mojom::Publisher&)> matcher) {
+  if (publishers.empty()) {
+    return nullptr;
+  }
+
+  mojom::Publisher* match = nullptr;
+  for (const auto& it : publishers) {
+    auto* publisher = it.second.get();
+    if (!matcher.Run(*publisher)) {
+      continue;
+    }
+
+    auto locale_it =
+        std::find_if(publisher->locales.begin(), publisher->locales.end(),
+                     [preferred_locale](const auto& locale_info) {
+                       return locale_info->locale == preferred_locale;
+                     });
+    // If the match is in our preferred locale, return it.
+    if (locale_it != publisher->locales.end()) {
+      return publisher;
+    }
+
+    // Otherwise, if we don't have a match yet, make this our match (so we
+    // prefer whatever we found first).
+    if (!match) {
+      match = it.second.get();
+    }
+  }
+
+  // If we didn't have a match in our preferred locale, return the first
+  // matching publisher.
+  return match;
+}
+}  // namespace
+
 PublishersController::PublishersController(
     PrefService* prefs,
     DirectFeedController* direct_feed_controller,
@@ -51,9 +92,6 @@ PublishersController::~PublishersController() = default;
 
 const mojom::Publisher* PublishersController::GetPublisherForSite(
     const GURL& site_url) const {
-  if (publishers_.empty())
-    return nullptr;
-
   const auto& site_host = site_url.host();
 
   // Can't match a Publisher from an empty host
@@ -61,29 +99,24 @@ const mojom::Publisher* PublishersController::GetPublisherForSite(
     return nullptr;
   }
 
-  for (const auto& kv : publishers_) {
-    const auto& publisher_host = kv.second->site_url.host();
-    // When https://github.com/brave/brave-browser/issues/26092 is fixed, this
-    // hack can be removed.
-    const auto& publisher_host_www = "www." + publisher_host;
-    if (publisher_host == site_host || publisher_host_www == site_host) {
-      return kv.second.get();
-    }
-  }
-
-  return nullptr;
+  return FindMatchPreferringLocale(
+      publishers_, default_locale_,
+      base::BindRepeating(
+          [](const std::string& site_host, const mojom::Publisher& publisher) {
+            return publisher.site_url.host() == site_host;
+          },
+          site_host));
 }
 
 const mojom::Publisher* PublishersController::GetPublisherForFeed(
     const GURL& feed_url) const {
-  if (publishers_.empty())
-    return nullptr;
-
-  for (const auto& kv : publishers_) {
-    if (kv.second->feed_source == feed_url)
-      return kv.second.get();
-  }
-  return nullptr;
+  return FindMatchPreferringLocale(
+      publishers_, default_locale_,
+      base::BindRepeating(
+          [](const GURL& feed_url, const mojom::Publisher& publisher) {
+            return publisher.feed_source == feed_url;
+          },
+          feed_url));
 }
 
 const Publishers& PublishersController::GetLastPublishers() const {
@@ -187,8 +220,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
                        "Attempting to migrate to a direct feed.";
             // We only care about missing publishers if the user was subscribed
             // to them.
-            if (is_user_enabled.value_or(false))
+            if (is_user_enabled.value_or(false)) {
               missing_publishers_.push_back(publisher_id);
+            }
           }
         }
         // Add direct feeds
@@ -227,8 +261,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
                      uint64_t migrated_count) {
                     // If any publisher was migrated, ensure we update the list
                     // of publishers.
-                    if (migrated_count != 0)
+                    if (migrated_count != 0) {
                       controller->EnsurePublishersIsUpdating();
+                    }
                   },
                   base::Unretained(controller)));
         }
