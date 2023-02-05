@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 
@@ -84,7 +84,7 @@ void Capture(views::Widget* widget, gfx::Image* image) {
 bool CompareSnaphot(const SkBitmap& png_bitmap, base::FilePath snapshot_path) {
   base::ScopedAllowBlockingForTesting allow_blocking;
 
-  cc::ExactPixelComparator comparator(/*discard_alpha=*/false);
+  cc::ExactPixelComparator comparator;
   return cc::MatchesPNGFile(png_bitmap, snapshot_path, comparator);
 }
 
