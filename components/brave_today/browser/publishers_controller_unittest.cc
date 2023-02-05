@@ -278,7 +278,8 @@ TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
+TEST_F(PublishersControllerTest,
+       PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -333,7 +334,8 @@ TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredFi
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredLast) {
+TEST_F(PublishersControllerTest,
+       PublisherInDefaultLocaleIsPreferred_PreferredLast) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -381,8 +383,8 @@ TEST_F(PublishersControllerTest, PublisherInDefaultLocaleIsPreferred_PreferredLa
 
   auto* publisher = publishers_controller_.GetPublisherForSite(
       GURL("https://tp1.example.com/"));
-  EXPECT_EQ("222", publisher->publisher_id); 
-  
+  EXPECT_EQ("222", publisher->publisher_id);
+
   publisher = publishers_controller_.GetPublisherForFeed(
       GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("222", publisher->publisher_id);
@@ -480,7 +482,7 @@ TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
         "cover_url": "https://tp1.example.com/favicon",
         "background_color": "#FF0000",
         "channels": ["One", "Tech"],
-        "locales": ["not_LOCALE"],
+        "locales": [{ "locale": "not_LOCALE", "channels": [] }],
         "enabled": false
     }])",
                                        net::HTTP_OK);
