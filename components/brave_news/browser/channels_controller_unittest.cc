@@ -92,7 +92,11 @@ class ChannelsControllerTest : public testing::Test {
                                &direct_feed_controller_,
                                &unsupported_publisher_migrator_,
                                &api_request_helper_),
-        channels_controller_(profile_.GetPrefs(), &publishers_controller_) {}
+        channels_controller_(profile_.GetPrefs(), &publishers_controller_) {
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                    true);
+  }
 
   std::string GetPublishersURL() {
     return "https://" + brave_news::GetHostname() + "/sources." +

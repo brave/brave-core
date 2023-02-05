@@ -54,7 +54,9 @@ void ChannelsController::SetChannelSubscribedPref(PrefService* prefs,
 ChannelsController::ChannelsController(
     PrefService* prefs,
     PublishersController* publishers_controller)
-    : prefs_(prefs), publishers_controller_(publishers_controller) {}
+    : prefs_(prefs), publishers_controller_(publishers_controller) {
+  scoped_observation_.Observe(publishers_controller_);
+}
 
 ChannelsController::~ChannelsController() = default;
 
@@ -169,6 +171,18 @@ bool ChannelsController::GetChannelSubscribed(const std::string& locale,
                                               const std::string& channel_id) {
   const auto& subscriptions = prefs_->GetDict(prefs::kBraveNewsChannels);
   return IsChannelSubscribedInLocale(subscriptions, locale, channel_id);
+}
+
+void ChannelsController::OnPublishersUpdated(PublishersController* controller) {
+  GetAllChannels(base::BindOnce(
+      [](ChannelsController* controller, Channels channels) {
+        auto event = mojom::ChannelsEvent::New();
+        event->addedOrUpdated = std::move(channels);
+        for (const auto& listener : controller->listeners_) {
+          listener->Changed(event->Clone());
+        }
+      },
+      base::Unretained(this)));
 }
 
 }  // namespace brave_news

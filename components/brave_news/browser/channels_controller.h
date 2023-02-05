@@ -12,6 +12,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_service.h"
@@ -24,11 +25,11 @@ using ChannelsCallback = base::OnceCallback<void(Channels)>;
 
 constexpr char kTopSourcesChannel[] = "Top Sources";
 
-class ChannelsController {
+class ChannelsController : public PublishersController::Observer {
  public:
   explicit ChannelsController(PrefService* prefs,
                               PublishersController* publishers_controller);
-  ~ChannelsController();
+  ~ChannelsController() override;
   ChannelsController(const ChannelsController&) = delete;
   ChannelsController& operator=(const ChannelsController&) = delete;
 
@@ -49,6 +50,9 @@ class ChannelsController {
   bool GetChannelSubscribed(const std::string& locale,
                             const std::string& channel_id);
 
+  // PublishersController::Observer:
+  void OnPublishersUpdated(PublishersController* controller) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest, BuildFeedV2);
   FRIEND_TEST_ALL_PREFIXES(BraveNewsFeedBuildingTest,
@@ -61,6 +65,9 @@ class ChannelsController {
   raw_ptr<PublishersController> publishers_controller_;
 
   mojo::RemoteSet<mojom::ChannelsListener> listeners_;
+
+  base::ScopedObservation<PublishersController, PublishersController::Observer>
+      scoped_observation_{this};
 };
 }  // namespace brave_news
 

@@ -155,6 +155,10 @@ class PublishersControllerTest : public testing::Test {
                                &direct_feed_controller_,
                                &unsupported_publishers_migrator_,
                                &api_request_helper_) {
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                    true);
+
     scoped_features_.InitAndEnableFeature(
         brave_news::features::kBraveNewsV2Feature);
   }
@@ -496,6 +500,45 @@ TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
   loop.Run();
 
   EXPECT_EQ("en_US", locale);
+}
+
+TEST_F(PublishersControllerTest, CanGetPublishers) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+                                       net::HTTP_OK);
+
+  auto result = GetPublishers();
+  EXPECT_EQ(3u, result.size());
+}
+
+TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+                                       net::HTTP_OK);
+
+  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
+  auto result = GetPublishers();
+  EXPECT_EQ(0u, result.size());
+}
+
+TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+                                       net::HTTP_OK);
+
+  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                  false);
+  auto result = GetPublishers();
+  EXPECT_EQ(0u, result.size());
+}
+
+TEST_F(PublishersControllerTest,
+       DoesntFetchPublishersWhenNotShowingAndNotOptedIn) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+                                       net::HTTP_OK);
+
+  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                  false);
+  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
+  auto result = GetPublishers();
+  EXPECT_EQ(0u, result.size());
 }
 
 }  // namespace brave_news

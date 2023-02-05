@@ -22,12 +22,12 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -130,6 +130,11 @@ void PublishersController::RemoveObserver(Observer* observer) {
 void PublishersController::GetOrFetchPublishers(
     GetPublishersCallback callback,
     bool wait_for_current_update /* = false */) {
+  if (!GetIsEnabled(prefs_)) {
+    std::move(callback).Run({});
+    return;
+  }
+
   GetOrFetchPublishers(
       base::BindOnce(
           [](PublishersController* controller, GetPublishersCallback callback) {

@@ -66,9 +66,7 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
   bool BraveNewsAreEnabled() {
-    auto* controller = brave_news::BraveNewsControllerFactory::GetForContext(
-        browser()->profile());
-    return controller->GetIsEnabledForTesting();
+    return brave_news::GetIsEnabled(browser()->profile()->GetPrefs());
   }
 
   bool AdsServiceIsEnabled() {

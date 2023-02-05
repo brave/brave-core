@@ -19,6 +19,7 @@
 #include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
@@ -75,6 +76,9 @@ class SuggestionsControllerTest : public testing::Test {
                                 &publishers_controller_,
                                 &api_request_helper_,
                                 nullptr) {
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                    true);
     SetLocale("en_US");
   }
   ~SuggestionsControllerTest() override = default;
