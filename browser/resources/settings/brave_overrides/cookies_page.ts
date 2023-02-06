@@ -14,6 +14,15 @@ RegisterPolymerTemplateModifications({
         '[Brave Settings Overrides] Could not find template with ' +
         'if*=isPrivacySandboxSettings4_ on cookies page.')
     } else {
+      const clearOnExitToggle =
+        privacySandboxSettings4Template.content.getElementById('clearOnExit')
+      if (!clearOnExitToggle) {
+        console.error(
+          '[Brave Settings Overrides] Could not find clearOnExit id ' +
+          'on cookies page.')
+      } else {
+        clearOnExitToggle.setAttribute('sub-label', '')
+      }
       const blockThirdPartyIncognitoRadioButton =
         privacySandboxSettings4Template.content.
           getElementById('blockThirdPartyIncognito')
