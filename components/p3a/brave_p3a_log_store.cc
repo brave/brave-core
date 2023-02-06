@@ -92,10 +92,9 @@ void BraveP3ALogStore::UpdateValue(const std::string& histogram_name,
 
   // Update the persistent value.
   ScopedDictPrefUpdate update(local_state_, GetPrefName(type_));
-  update->SetByDottedPath(base::JoinString({histogram_name, kLogValueKey}, "."),
-                          base::NumberToString(value));
-  update->SetByDottedPath(base::JoinString({histogram_name, kLogSentKey}, "."),
-                          entry.sent);
+  base::Value::Dict* log_dict = update->EnsureDict(histogram_name);
+  log_dict->Set(kLogValueKey, base::NumberToString(value));
+  log_dict->Set(kLogSentKey, entry.sent);
 }
 
 void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
@@ -124,11 +123,9 @@ void BraveP3ALogStore::ResetUploadStamps() {
       pair.second.ResetSentState();
 
       // Update persistent values.
-      update->SetByDottedPath(base::JoinString({pair.first, kLogSentKey}, "."),
-                              pair.second.sent);
-      update->SetByDottedPath(
-          base::JoinString({pair.first, kLogTimestampKey}, "."),
-          pair.second.sent_timestamp.ToDoubleT());
+      base::Value::Dict* log_dict = update->EnsureDict(pair.first);
+      log_dict->Set(kLogSentKey, pair.second.sent);
+      log_dict->Set(kLogTimestampKey, pair.second.sent_timestamp.ToDoubleT());
     }
   }
 
@@ -213,11 +210,9 @@ void BraveP3ALogStore::DiscardStagedLog() {
 
   // Update the persistent value.
   ScopedDictPrefUpdate update(local_state_, GetPrefName(type_));
-  update->SetByDottedPath(base::JoinString({log_iter->first, kLogSentKey}, "."),
-                          log_iter->second.sent);
-  update->SetByDottedPath(
-      base::JoinString({log_iter->first, kLogTimestampKey}, "."),
-      log_iter->second.sent_timestamp.ToDoubleT());
+  base::Value::Dict* log_dict = update->EnsureDict(log_iter->first);
+  log_dict->Set(kLogSentKey, log_iter->second.sent);
+  log_dict->Set(kLogTimestampKey, log_iter->second.sent_timestamp.ToDoubleT());
 
   // Erase the entry from the unsent queue.
   auto unsent_entries_iter = unsent_entries_.find(staged_entry_key_);
@@ -239,10 +234,12 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
   DCHECK(log_.empty());
   DCHECK(unsent_entries_.empty());
 
+  const char* pref_name = GetPrefName(type_);
+
   std::vector<std::string> metrics_to_remove;
 
-  ScopedDictPrefUpdate update(local_state_, GetPrefName(type_));
-  for (const auto [name, value] : update.Get()) {
+  const base::Value::Dict& log_dict = local_state_->GetDict(pref_name);
+  for (const auto [name, value] : log_dict) {
     LogEntry entry;
     // Check if the metric is obsolete.
     if (!delegate_->IsActualMetric(name)) {
@@ -274,8 +271,6 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
           (!entry.sent && !entry.sent_timestamp.is_null())) {
         return;
       }
-    } else {
-      // Sometimes we do not persist empty timestamps, so it is ok.
     }
 
     log_[name] = entry;
@@ -284,8 +279,11 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
     }
   }
 
-  for (const std::string& name : metrics_to_remove) {
-    update->Remove(name);
+  if (!metrics_to_remove.empty()) {
+    ScopedDictPrefUpdate update(local_state_, pref_name);
+    for (const std::string& name : metrics_to_remove) {
+      update->Remove(name);
+    }
   }
 }
 
