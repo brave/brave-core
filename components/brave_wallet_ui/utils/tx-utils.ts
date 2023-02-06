@@ -183,7 +183,7 @@ export function getTransactionToAddress (tx: TransactionInfo): string {
 
   if (
     tx.txType === BraveWallet.TransactionType.ERC20Approve ||
-    BraveWallet.TransactionType.ETHSwap
+    tx.txType === BraveWallet.TransactionType.ETHSwap
   ) {
     return tx.txDataUnion?.ethTxData1559?.baseData.to || ''
   }
