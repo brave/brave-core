@@ -21,7 +21,7 @@ public class BuyTokenStore: ObservableObject {
   @Published var selectedCurrency: BraveWallet.OnRampCurrency = .init()
   
   /// A map of list of available tokens to a certain on ramp provider
-  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [.ramp: [], .sardine: []]
+  var buyTokens: [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] = [.ramp: [], .sardine: [], .transak: []]
   /// A list of all available tokens for all providers
   var allTokens: [BraveWallet.BlockchainToken] = []
 
@@ -159,9 +159,9 @@ public class BuyTokenStore: ObservableObject {
   func updateInfo() async {
     // check device language to determine if we support `Sardine`
     if Locale.preferredLanguages.first?.caseInsensitiveCompare("en-us") == .orderedSame {
-      orderedSupportedBuyOptions = [.ramp, .sardine]
+      orderedSupportedBuyOptions = [.ramp, .sardine, .transak]
     } else {
-      orderedSupportedBuyOptions = [.ramp]
+      orderedSupportedBuyOptions = [.ramp, .transak]
     }
     
     let coin = await walletService.selectedCoin()
