@@ -67,7 +67,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
 @interface FaviconDriver () {
   std::unique_ptr<FaviconDriverObserver> driver_observer_;
 }
-@property(nonatomic, weak, readonly) WebState* webState;
+@property(nonatomic, strong, readonly) WebState* webState;
 @end
 
 @implementation FaviconDriver
