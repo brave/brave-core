@@ -69,7 +69,8 @@ absl::optional<std::string> ConvertMultiUint64ToString(
     const std::string& json);
 
 absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
-    const std::string& path,
+    const std::string& path_to_list,
+    const std::string& path_to_object,
     const std::vector<std::string>& keys,
     const std::string& json);
 

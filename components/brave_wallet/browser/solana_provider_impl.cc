@@ -481,7 +481,7 @@ void SolanaProviderImpl::SignMessage(
   else
     message = std::string(blob_msg.begin(), blob_msg.end());
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(delegate_->GetOrigin()), -1, *account, message, false,
+      MakeOriginInfo(delegate_->GetOrigin()), -1, *account, "", message, false,
       absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL);
 
   brave_wallet_service_->AddSignMessageRequest(
@@ -598,6 +598,13 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
         l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR),
         base::Value::Dict());
   }
+}
+
+void SolanaProviderImpl::IsSolanaKeyringCreated(
+    IsSolanaKeyringCreatedCallback callback) {
+  DCHECK(keyring_service_);
+  std::move(callback).Run(
+      !!keyring_service_->GetSelectedAccount(mojom::CoinType::SOL));
 }
 
 bool SolanaProviderImpl::IsAccountConnected(const std::string& account) {

@@ -310,6 +310,10 @@ constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 constexpr char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
 
+constexpr char kBraveWalletNftPinningFeatureName[] = "Enable NFT pinning";
+constexpr char kBraveWalletNftPinningFeatureDescription[] =
+    "Enable NFT pinning for Brave Wallet";
+
 constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
@@ -393,6 +397,11 @@ constexpr char kBraveSyncHistoryDiagnosticsName[] =
 constexpr char kBraveSyncHistoryDiagnosticsDescription[] =
     "Brave Sync History Diagnostics flag displays additional sync related "
     "information on History page";
+constexpr char kBraveSyncSendAllHistoryName[] =
+    "Send All History to Brave Sync";
+constexpr char kBraveSyncSendAllHistoryDescription[] =
+    "With Send All History flag all sync entries are sent to Sync server "
+    "including transitions of link, bookmark, reload, etc";
 
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
@@ -447,6 +456,11 @@ constexpr char kBraveChangeActiveTabOnScrollEventName[] =
 constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
     "Change the active tab when scroll events occur on tab strip.";
 #endif  // BUILDFLAG(IS_LINUX)
+
+constexpr char kRestrictEventSourcePoolName[] = "Restrict Event Source Pool";
+constexpr char kRestrictEventSourcePoolDescription[] =
+    "Limits simultaneous active WebSockets connections per eTLD+1";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -516,6 +530,12 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
 #endif
 
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
+    {"enable-nft-pinning",                                                     \
+     flag_descriptions::kBraveWalletNftPinningFeatureName,                     \
+     flag_descriptions::kBraveWalletNftPinningFeatureDescription,              \
+     kOsDesktop,                                                               \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletNftPinningFeature) \
+    },                                                                         \
     {"native-brave-wallet",                                                    \
      flag_descriptions::kNativeBraveWalletName,                                \
      flag_descriptions::kNativeBraveWalletDescription,                         \
@@ -590,7 +610,7 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
      {kPlaylistFeatureInternalName,                                        \
      flag_descriptions::kPlaylistName,                                     \
      flag_descriptions::kPlaylistDescription,                              \
-     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsLinux,             \
+     kOsMac | kOsWin | kOsLinux | kOsAndroid,                              \
      FEATURE_VALUE_TYPE(playlist::features::kPlaylist)},
 #else
 #define PLAYLIST_FEATURE_ENTRIES
@@ -809,6 +829,16 @@ constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
       flag_descriptions::kBraveSyncHistoryDiagnosticsDescription,           \
       kOsAll, FEATURE_VALUE_TYPE(                                           \
           brave_sync::features::kBraveSyncHistoryDiagnostics)},             \
+    {"restrict-event-source-pool",                                          \
+      flag_descriptions::kRestrictEventSourcePoolName,                      \
+      flag_descriptions::kRestrictEventSourcePoolDescription,               \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          blink::features::kRestrictEventSourcePool)},                      \
+    {"brave-sync-send-all-history",                                         \
+      flag_descriptions::kBraveSyncSendAllHistoryName,                      \
+      flag_descriptions::kBraveSyncSendAllHistoryDescription,               \
+      kOsAll, FEATURE_VALUE_TYPE(                                           \
+          brave_sync::features::kBraveSyncSendAllHistory)},                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
     BRAVE_NEWS_FEATURE_ENTRIES                                              \

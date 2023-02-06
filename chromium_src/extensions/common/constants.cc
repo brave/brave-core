@@ -6,7 +6,7 @@
 #include "src/extensions/common/constants.cc"
 
 const int kBraveActionGraphicSize = 18;
-const int kBraveActionRightMargin = 2;
+const int kBraveActionLeftMarginExtra = -2;
 
 const char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
 const char hangouts_extension_id[] = "nkeimhogjdpnpccoofpliimaahmaaome";

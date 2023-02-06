@@ -93,16 +93,13 @@ export const AccountSettingsModal = () => {
     address: string,
     coin: BraveWallet.CoinType
   ) => {
-    const { privateKey, success } = await keyringService.getPrivateKeyForKeyringAccount(
+    const { privateKey } = await keyringService.encodePrivateKeyForExport(
       address,
       password,
       coin
     )
     if (isMounted) {
-      if (success) {
-        return setPrivateKey(privateKey)
-      }
-      return setPrivateKey('')
+      return setPrivateKey(privateKey)
     }
   }, [password, keyringService, isMounted])
 

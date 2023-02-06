@@ -8,12 +8,14 @@
 #include <set>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
+#include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -31,6 +33,7 @@ constexpr size_t kUploadIntervalSeconds = 120;
 constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
+constexpr char kTestExampleMetric[] = "Brave.Core.TestMetric";
 
 }  // namespace
 
@@ -60,12 +63,12 @@ class P3AServiceTest : public testing::Test {
           StoreJsonMetricInMap(request, request.url);
           url_loader_factory_.AddResponse(request.url.spec(), "{}");
         }));
+  }
 
+  void SetUpP3AService() {
     p3a_service_ = scoped_refptr(
         new BraveP3AService(&local_state_, "release", "2049-01-01"));
-
     p3a_service_->Init(shared_url_loader_factory_);
-
     task_environment_.RunUntilIdle();
   }
 
@@ -141,6 +144,7 @@ class P3AServiceTest : public testing::Test {
 };
 
 TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
+  SetUpP3AService();
   std::vector<std::string> test_histograms = GetTestHistogramNames(3, 4);
 
   for (size_t i = 0; i < test_histograms.size(); i++) {
@@ -185,6 +189,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
 }
 
 TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
+  SetUpP3AService();
   std::vector<std::string> test_histograms({
       std::string(*p3a::kCollectedExpressHistograms.begin()),
       std::string(kTestCreativeMetric1),
@@ -237,7 +242,60 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 }
 
+TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
+  // Increase upload interval to reduce test time (less tasks to execute)
+  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  SetUpP3AService();
+
+  std::vector<std::string> test_histograms(
+      {std::string(*p3a::kCollectedSlowHistograms.begin()),
+       std::string(kTestExampleMetric)});
+
+  p3a_service_->RegisterDynamicMetric(kTestExampleMetric, MetricLogType::kSlow);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    base::UmaHistogramExactLinear(test_histograms[i], i + 1, 8);
+    p3a_service_->OnHistogramChanged(test_histograms[i].c_str(), 0, i + 1);
+    task_environment_.RunUntilIdle();
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 200));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  ResetInterceptorStores();
+  task_environment_.FastForwardBy(base::Days(20));
+
+  // Should not resend on same month
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  // Fast forward to the first of the next month
+  task_environment_.FastForwardBy(base::Days(15) +
+                                  base::Seconds(kUploadIntervalSeconds * 200));
+
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 2U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+
+  ResetInterceptorStores();
+
+  p3a_service_->RemoveDynamicMetric(kTestExampleMetric);
+
+  task_environment_.FastForwardBy(base::Days(45));
+
+  // Dynamic metrics should have been removed
+  EXPECT_EQ(p3a_json_sent_metrics_.size(), 1U);
+  EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
+  EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
+}
+
 TEST_F(P3AServiceTest, MetricSentCallback) {
+  SetUpP3AService();
   std::vector<std::string> sent_histograms;
 
   base::CallbackListSubscription sub =
@@ -266,6 +324,7 @@ TEST_F(P3AServiceTest, MetricSentCallback) {
 }
 
 TEST_F(P3AServiceTest, ShouldNotSendIfDisabled) {
+  SetUpP3AService();
   std::vector<std::string> test_histograms = GetTestHistogramNames(3, 3);
 
   for (const std::string& histogram_name : test_histograms) {

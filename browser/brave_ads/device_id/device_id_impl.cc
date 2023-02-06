@@ -62,10 +62,10 @@ bool IsValidMacAddressImpl(const void* bytes, size_t size) {
     unsigned char address[kMacLength];
   };
 
-  const size_t kOuiLength = 3;
+  constexpr size_t kOuiLength = 3;
 
   // VPN, virtualization, tethering, bluetooth, etc.
-  static MacAddressInfo kInvalidMacAddresses[] = {
+  static constexpr MacAddressInfo kInvalidMacAddresses[] = {
       // Empty address
       {kMacLength, {0, 0, 0, 0, 0, 0}},
       // VMware

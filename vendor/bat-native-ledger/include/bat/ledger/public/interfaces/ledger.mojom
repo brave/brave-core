@@ -103,7 +103,6 @@ struct PendingContributionInfo {
 };
 
 struct VisitData {
-  string tld;
   string domain;
   string path;
   uint32 tab_id;
@@ -314,12 +313,6 @@ struct ContributionQueue {
 struct ContributionQueuePublisher {
   string publisher_key;
   double amount_percent;
-};
-
-enum Environment {
-  STAGING = 0,
-  PRODUCTION = 1,
-  DEVELOPMENT = 2
 };
 
 enum PromotionType {

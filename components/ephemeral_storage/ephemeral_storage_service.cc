@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
@@ -46,7 +46,7 @@ void EphemeralStorageService::CanEnable1PESForUrl(
 
   auto site_instance = content::SiteInstance::CreateForURL(context_, url);
   auto* storage_partition = context_->GetStoragePartition(site_instance.get());
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&UrlStorageChecker::StartCheck,
                      base::MakeRefCounted<UrlStorageChecker>(

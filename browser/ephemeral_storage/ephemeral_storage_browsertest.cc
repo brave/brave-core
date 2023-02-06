@@ -11,8 +11,8 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -173,7 +173,7 @@ void EphemeralStorageBrowserTest::SetUpHttpsServer() {
 
   https_server_.RegisterDefaultHandler(
       base::BindRepeating(&HandleFileRequestWithCustomHeaders,
-                          base::SequencedTaskRunnerHandle::Get(),
+                          base::SequencedTaskRunner::GetCurrentDefault(),
                           http_request_monitor_.AsWeakPtr(), test_data_dirs));
   https_server_.AddDefaultHandlers(GetChromeTestDataDir());
   content::SetupCrossSiteRedirector(&https_server_);
@@ -284,7 +284,7 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
 
 void EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive() {
   base::RunLoop run_loop;
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 }

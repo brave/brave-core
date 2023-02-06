@@ -8,11 +8,13 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-class BraveActionIconWithBadgeImageSource;
+namespace brave {
+class BraveIconWithBadgeImageSource;
+}
 
 #define BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_            \
  private:                                                \
-  friend class BraveActionIconWithBadgeImageSource;      \
+  friend class brave::BraveIconWithBadgeImageSource;     \
   virtual absl::optional<int> GetCustomGraphicSize();    \
   virtual absl::optional<int> GetCustomGraphicXOffset(); \
   virtual absl::optional<int> GetCustomGraphicYOffset(); \

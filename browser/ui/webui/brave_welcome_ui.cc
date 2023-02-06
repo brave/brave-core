@@ -12,7 +12,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
@@ -246,12 +246,13 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   // Lottie animations tick on a worker thread and requires the document CSP to
   // be set to "worker-src blob: 'self';".
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src blob: 'self';");
+      network::mojom::CSPDirectiveName::WorkerSrc,
+      "worker-src blob: chrome://resources 'self';");
 
   web_ui->AddMessageHandler(
       std::make_unique<WelcomeDOMHandler>(Profile::FromWebUI(web_ui)));
   web_ui->AddMessageHandler(
-      std::make_unique<settings::BraveImportDataHandler>());
+      std::make_unique<settings::BraveImportBulkDataHandler>());
   web_ui->AddMessageHandler(
       std::make_unique<settings::DefaultBrowserHandler>());  // set default
                                                              // browser
@@ -265,7 +266,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
   if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
     if (country_id == country_codes::CountryStringToCountryID("JP")) {
-      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+      base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
           base::Seconds(3));
     }

@@ -6,9 +6,9 @@
 #include "bat/ads/internal/history/history_manager.h"
 
 #include "base/containers/circular_deque.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "bat/ads/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -109,7 +109,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNotificationAd) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
   EXPECT_TRUE(history_did_change_);
 }
 
@@ -127,7 +127,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
   EXPECT_TRUE(history_did_change_);
 }
 
@@ -145,7 +145,7 @@ TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
   EXPECT_TRUE(history_did_change_);
 }
 
@@ -163,7 +163,7 @@ TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
   EXPECT_TRUE(history_did_change_);
 }
 
@@ -181,7 +181,7 @@ TEST_F(BatAdsHistoryManagerTest, AddSearchResultAd) {
   const HistoryItemList& history =
       ClientStateManager::GetInstance()->GetHistory();
 
-  EXPECT_TRUE(IsEqualContainers(expected_history, history));
+  EXPECT_TRUE(base::ranges::equal(expected_history, history));
   EXPECT_TRUE(history_did_change_);
 }
 

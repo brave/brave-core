@@ -16,7 +16,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/bind_post_task.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
@@ -187,7 +187,7 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
       pref_change_registrar_.Add(
           info->website_settings_info()->pref_name(),
           base::BindPostTask(
-              base::SequencedTaskRunnerHandle::Get(),
+              base::SequencedTaskRunner::GetCurrentDefault(),
               base::BindRepeating(&BravePrefProvider::EnsureNoWildcardEntries,
                                   weak_factory_.GetWeakPtr(), content_type)));
     }
@@ -580,7 +580,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
         store_last_modified_ ? base::Time::Now() : base::Time();
 
     base::Time last_visited = constraints.track_last_visit_for_autoexpiration
-                                  ? GetCoarseTime(base::Time::Now())
+                                  ? GetCoarseVisitedTime(base::Time::Now())
                                   : base::Time();
 
     GetPref(content_type)

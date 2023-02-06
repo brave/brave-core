@@ -29,7 +29,7 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
-    ForcePermissionRules();
+    ForcePermissionRulesForTesting();
   }
 
   void SetUpMocks() override {
@@ -41,6 +41,9 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kServed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
@@ -58,6 +61,12 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kServed);
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
@@ -66,9 +75,13 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
 
   // Assert
   EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kServed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
+                               ConfirmationType::kViewed));
+  EXPECT_EQ(1, GetAdEventCount(AdType::kPromotedContentAd,
                                ConfirmationType::kClicked));
-  EXPECT_EQ(1, GetHistoryItemCount());
-  EXPECT_EQ(1, GetTransactionCount());
+  EXPECT_EQ(2, GetHistoryItemCount());
+  EXPECT_EQ(2, GetTransactionCount());
 }
 
 }  // namespace ads

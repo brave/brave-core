@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "bat/ads/database.h"
+#include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "bat/ads/internal/common/unittest/unittest_constants.h"
 #include "bat/ads/internal/common/unittest/unittest_file_util.h"
@@ -186,6 +187,7 @@ void UnitTestBase::Initialize() {
 
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
   confirmation_state_manager_->Initialize(
+      GetWalletForTesting(),
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   covariate_manager_ = std::make_unique<CovariateManager>();
@@ -323,18 +325,14 @@ void UnitTestBase::SetUpIntegrationTest() {
          "initialized for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
+
+  ads_->OnRewardsWalletDidChange(GetWalletPaymentIdForTesting(),
+                                 GetWalletRecoverySeedForTesting());
+
   ads_->Initialize(
-      base::BindOnce(&UnitTestBase::OnAdsInitialize, base::Unretained(this)));
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   task_environment_.RunUntilIdle();
-}
-
-void UnitTestBase::OnAdsInitialize(const bool success) {
-  ASSERT_TRUE(success);
-
-  ads_->OnRewardsWalletDidChange(
-      /*payment_id*/ "c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-      /*seed*/ "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 }
 
 }  // namespace ads

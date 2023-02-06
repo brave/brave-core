@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
 

@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForcePermissionRules();
+void ForcePermissionRulesForTesting();
 
 }  // namespace ads
 

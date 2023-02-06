@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
+#include "base/base64.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
@@ -51,22 +52,15 @@ const char kPasswordBrave[] = "brave";
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value::Dict>* values) {
-  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* dict = update.Get();
-  ASSERT_TRUE(dict);
-  base::Value* list = dict->FindKey(kEthereumPrefKey);
-  if (!list) {
-    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
-  }
-  ASSERT_TRUE(list);
-  auto& list_value = list->GetList();
-  list_value.clear();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value::List* list = update->EnsureList(kEthereumPrefKey);
+  list->clear();
   for (auto& it : *values) {
-    list_value.Append(std::move(it));
+    list->Append(std::move(it));
   }
 }
 
-const std::vector<std::string>& GetAssetDiscoverySupportedChainsForTest() {
+const std::vector<std::string>& GetAssetDiscoverySupportedEthChainsForTest() {
   static base::NoDestructor<std::vector<std::string>>
       asset_discovery_supported_chains({mojom::kMainnetChainId,
                                         mojom::kPolygonMainnetChainId,
@@ -162,7 +156,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
         wallet_service_.get(), json_rpc_service_, keyring_service_, GetPrefs());
     asset_discovery_manager_->SetSupportedChainsForTesting(
-        GetAssetDiscoverySupportedChainsForTest());
+        GetAssetDiscoverySupportedEthChainsForTest());
     wallet_service_observer_ =
         std::make_unique<TestBraveWalletServiceObserverForAssetDiscovery>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());
@@ -174,6 +168,33 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
           if (request.url.spec() == intended_url) {
             url_loader_factory_.ClearResponses();
             url_loader_factory_.AddResponse(request.url.spec(), content);
+          }
+        }));
+  }
+
+  // SetInterceptorForDiscoverSolAssets takes a map of addresses to responses
+  // and adds the response if the address if found in the request string
+  void SetInterceptorForDiscoverSolAssets(
+      GURL& intended_url,
+      const std::map<std::string, std::string>& requests) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, intended_url, requests](const network::ResourceRequest& request) {
+          if (request.url.spec() == intended_url) {
+            base::StringPiece request_string(
+                request.request_body->elements()
+                    ->at(0)
+                    .As<network::DataElementBytes>()
+                    .AsStringPiece());
+            std::string response;
+            for (auto const& [key, val] : requests) {
+              if (request_string.find(key) != std::string::npos) {
+                response = val;
+                break;
+              }
+            }
+            ASSERT_FALSE(response.empty());
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
           }
         }));
   }
@@ -209,23 +230,51 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
                                                ->at(0)
                                                .As<network::DataElementBytes>()
                                                .AsStringPiece());
-          const auto expected_from_block =
-              expected_from_blocks.find(request.url.spec())->second;
-          const auto expected_to_block =
-              expected_to_blocks.find(request.url.spec())->second;
 
-          EXPECT_NE(request_string.find(base::StringPrintf(
-                        "\"fromBlock\":\"%s\"", expected_from_block.c_str())),
-                    std::string::npos);
-          EXPECT_NE(request_string.find(base::StringPrintf(
-                        "\"toBlock\":\"%s\"", expected_to_block.c_str())),
-                    std::string::npos);
+          // Verify fromBlock and toBlock's requested match expected for ETH
+          // chains
+          auto it = expected_from_blocks.find(request.url.spec());
+          if (it != expected_from_blocks.end()) {
+            const auto& expected_from_block = it->second;
+            EXPECT_NE(request_string.find(base::StringPrintf(
+                          "\"fromBlock\":\"%s\"", expected_from_block.c_str())),
+                      std::string::npos);
+          }
+          // Same for toBlock
+          it = expected_to_blocks.find(request.url.spec());
+          if (it != expected_to_blocks.end()) {
+            const auto& expected_to_block = it->second;
+            EXPECT_NE(request_string.find(base::StringPrintf(
+                          "\"toBlock\":\"%s\"", expected_to_block.c_str())),
+                      std::string::npos);
+          }
           url_loader_factory_.ClearResponses();
           for (const auto& kv : responses) {
             url_loader_factory_.AddResponse(kv.first, kv.second);
           }
           return;
         }));
+  }
+
+  void TestDiscoverSolAssets(
+      const std::vector<std::string>& account_addresses,
+      const std::vector<std::string>& expected_contract_addresses) {
+    asset_discovery_manager_->SetDiscoverAssetsCompletedCallbackForTesting(
+        base::BindLambdaForTesting(
+            [&](const std::string& chain_id,
+                const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
+                absl::optional<mojom::ProviderError> error,
+                const std::string& error_message) {
+              ASSERT_FALSE(error);
+              ASSERT_EQ(discovered_assets.size(),
+                        expected_contract_addresses.size());
+              for (size_t i = 0; i < discovered_assets.size(); i++) {
+                EXPECT_EQ(discovered_assets[i]->contract_address,
+                          expected_contract_addresses[i]);
+              }
+            }));
+    asset_discovery_manager_->DiscoverSolAssets(account_addresses, false);
+    base::RunLoop().RunUntilIdle();
   }
 
   void TestDiscoverAssets(
@@ -237,7 +286,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
       const std::string& expected_error_message,
       const std::string& expected_next_asset_discovery_from_block) {
     // Set remaining chains to 1 in order since this value needs to end at
-    // 0 by the end of the DiscoverAssets call in order to trigger the
+    // 0 by the end of the DiscoverEthAssets call in order to trigger the
     // event and it will not be set by an outer
     // DiscoverAssetsOnAllSupportedChains* call in this unit test.
     asset_discovery_manager_->remaining_chains_ = 1;
@@ -245,9 +294,11 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](const std::string& chain_id,
                 const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-                mojom::ProviderError error, const std::string& error_message) {
+                absl::optional<mojom::ProviderError> error,
+                const std::string& error_message) {
               EXPECT_EQ(chain_id, chain_id);
-              EXPECT_EQ(expected_error, error);
+              ASSERT_TRUE(error);
+              EXPECT_EQ(*error, expected_error);
               EXPECT_EQ(expected_error_message, error_message);
               ASSERT_EQ(expected_token_contract_addresses.size(),
                         discovered_assets.size());
@@ -256,7 +307,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
                           discovered_assets[i]->contract_address);
               }
             }));
-    asset_discovery_manager_->DiscoverAssets(
+    asset_discovery_manager_->DiscoverEthAssets(
         chain_id, mojom::CoinType::ETH, account_addresses, false,
         kEthereumBlockTagEarliest, kEthereumBlockTagLatest);
     wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
@@ -276,24 +327,31 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
 
   void TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
+      mojom::CoinType coin,
       const std::vector<std::string>& account_addresses,
       const base::Time expected_assets_last_discovered_at_pref,
       const base::Value::Dict& expected_next_asset_discovery_from_blocks,
       const std::vector<std::string>& expected_token_contract_addresses = {}) {
-    std::vector<std::string> expected_chain_ids_remaining =
-        GetAssetDiscoverySupportedChainsForTest();
+    std::vector<std::string> expected_chain_ids_remaining;
+    if (coin == mojom::CoinType::ETH) {
+      expected_chain_ids_remaining =
+          GetAssetDiscoverySupportedEthChainsForTest();
+    } else {
+      expected_chain_ids_remaining = {mojom::kSolanaMainnet};
+    }
     asset_discovery_manager_->SetDiscoverAssetsCompletedCallbackForTesting(
         base::BindLambdaForTesting(
             [&](const std::string& chain_id,
                 const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-                mojom::ProviderError error, const std::string& error_message) {
+                absl::optional<mojom::ProviderError> error,
+                const std::string& error_message) {
               expected_chain_ids_remaining.erase(
                   std::remove(expected_chain_ids_remaining.begin(),
                               expected_chain_ids_remaining.end(), chain_id),
                   expected_chain_ids_remaining.end());
             }));
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsAccountsAdded(
-        account_addresses);
+        coin, account_addresses);
     base::RunLoop().RunUntilIdle();
     EXPECT_EQ(expected_chain_ids_remaining.size(), 0u);
     EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletLastDiscoveredAssetsAt),
@@ -305,27 +363,28 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
 
   void TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      const std::vector<std::string>& account_addresses,
+      std::map<mojom::CoinType, std::vector<std::string>>& addresses,
       base::OnceCallback<void(base::Time previous, base::Time current)>
           assets_last_discovered_at_test_fn,
       const base::Value::Dict& expected_next_asset_discovery_from_blocks,
       const std::vector<std::string>& expected_token_contract_addresses,
       std::vector<std::string> expected_chain_ids_remaining =
-          GetAssetDiscoverySupportedChainsForTest()) {
+          GetAssetDiscoverySupportedEthChainsForTest()) {
     const base::Time previous_assets_last_discovered_at =
         GetPrefs()->GetTime(kBraveWalletLastDiscoveredAssetsAt);
     asset_discovery_manager_->SetDiscoverAssetsCompletedCallbackForTesting(
         base::BindLambdaForTesting(
             [&](const std::string& chain_id,
                 const std::vector<mojom::BlockchainTokenPtr> discovered_assets,
-                mojom::ProviderError error, const std::string& error_message) {
+                absl::optional<mojom::ProviderError> error,
+                const std::string& error_message) {
               expected_chain_ids_remaining.erase(
                   std::remove(expected_chain_ids_remaining.begin(),
                               expected_chain_ids_remaining.end(), chain_id),
                   expected_chain_ids_remaining.end());
             }));
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(
-        account_addresses);
+        addresses);
     wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
         expected_token_contract_addresses);
     EXPECT_EQ(expected_chain_ids_remaining.size(), 0u);
@@ -363,7 +422,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
+TEST_F(AssetDiscoveryManagerUnitTest, DiscoverEthAssets) {
   auto* blockchain_registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   std::string response;
@@ -685,6 +744,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssets) {
 
 TEST_F(AssetDiscoveryManagerUnitTest,
        DiscoverAssetsOnAllSupportedChainsAccountsAdded) {
+  // Ethereum
   // Send valid requests that yield no results and verify
   // 1. OnDiscoverAssetsCompleted is called exactly once for each supported
   // chain
@@ -697,7 +757,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   const std::string default_response =
       R"({ "jsonrpc":"2.0", "id":1, "result":[] })";
   for (const std::string& supported_chain_id :
-       GetAssetDiscoverySupportedChainsForTest()) {
+       GetAssetDiscoverySupportedEthChainsForTest()) {
     GURL network_url = GetNetwork(supported_chain_id, mojom::CoinType::ETH);
     responses[network_url.spec()] = default_response;
     expected_from_blocks[network_url.spec()] = kEthereumBlockTagEarliest;
@@ -710,8 +770,78 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   SetDiscoverAssetsOnAllSupportedChainsInterceptor(
       responses, expected_from_blocks, expected_to_blocks);
   TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
-      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, assets_last_discovered_at,
-      expected_next_asset_discovery_from_blocks);
+      mojom::CoinType::ETH, {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+      assets_last_discovered_at, expected_next_asset_discovery_from_blocks);
+
+  // Solana
+  auto* blockchain_registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  std::string token_list_json = R"({
+    "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8": {
+      "name": "Wrapped SOL",
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "erc20": false,
+      "symbol": "SOL",
+      "decimals": 9,
+      "chainId": "0x65",
+      "coingeckoId": "solana"
+    },
+    "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b": {
+      "name": "USD Coin",
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "erc20": false,
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": "0x65",
+      "coingeckoId": "usd-coin"
+    }
+  })";
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "5gjGaTE41sPVS1Dzwg43ipdj9NTtApZLcK55ihRuVb6Y"
+        },
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+        }
+      ]
+    },
+    "id": 1
+  })");
+  TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
+      mojom::CoinType::SOL, {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"},
+      assets_last_discovered_at, expected_next_asset_discovery_from_blocks);
 }
 
 TEST_F(AssetDiscoveryManagerUnitTest,
@@ -722,7 +852,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   // 2. kBraveWalletAssetsLastDiscoveredAt pref is updated
   // 3. kBraveWalletNextAssetDiscoveryFromBlocks pref is not updated
   const std::vector<std::string>& supported_chain_ids =
-      GetAssetDiscoverySupportedChainsForTest();
+      GetAssetDiscoverySupportedEthChainsForTest();
   std::map<std::string, std::string> responses;
   std::map<std::string, std::string> expected_from_blocks;
   std::map<std::string, std::string> expected_to_blocks;
@@ -734,11 +864,15 @@ TEST_F(AssetDiscoveryManagerUnitTest,
     expected_to_blocks[network_url.spec()] = kEthereumBlockTagLatest;
   }
 
+  std::map<mojom::CoinType, std::vector<std::string>> addresses = {
+      {mojom::CoinType::ETH, {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}},
+      {mojom::CoinType::SOL, {}}};
+
   base::Value::Dict expected_next_asset_discovery_from_blocks;  // Expect empty
   SetDiscoverAssetsOnAllSupportedChainsInterceptor(
       responses, expected_from_blocks, expected_to_blocks);
   TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+      addresses,
       base::BindLambdaForTesting([&](base::Time previous, base::Time current) {
         EXPECT_TRUE(previous < current);
       }),
@@ -753,7 +887,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   // actually tested since the value is null...)
   expected_next_asset_discovery_from_blocks.clear();
   TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+      addresses,
       base::BindLambdaForTesting([&](base::Time previous, base::Time current) {
         EXPECT_EQ(previous, current);
       }),
@@ -898,7 +1032,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   SetDiscoverAssetsOnAllSupportedChainsInterceptor(
       responses, expected_from_blocks, expected_to_blocks);
   TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+      addresses,
       base::BindLambdaForTesting([&](base::Time previous, base::Time current) {
         EXPECT_TRUE(previous < current);
       }),
@@ -956,12 +1090,171 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   SetDiscoverAssetsOnAllSupportedChainsInterceptor(
       responses, expected_from_blocks, expected_to_blocks);
   TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"},
+      addresses,
       base::BindLambdaForTesting([&](base::Time previous, base::Time current) {
         EXPECT_TRUE(previous < current);
       }),
       expected_next_asset_discovery_from_blocks,
       {"0x6B175474E89094C44Da98b954EedeAC495271d0F"});
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest,
+       MultiChainDiscoverAssetsOnAllSupportedChainsRefresh) {
+  // Add ETH assets to registry
+  std::string eth_token_list = R"({
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef": {
+        "name": "Basic Attention Token",
+        "logo": "bat.svg",
+        "erc20": true,
+        "symbol": "BAT",
+        "chainId": "0x1",
+        "decimals": 18
+      },
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+        "name": "Dai Stablecoin",
+        "logo": "dai.svg",
+        "erc20": true,
+        "symbol": "DAI",
+        "chainId": "0x1",
+        "decimals": 18
+      }})";
+  auto* blockchain_registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  ASSERT_TRUE(
+      ParseTokenList(eth_token_list, &token_list_map, mojom::CoinType::ETH));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+
+  // Set up mock RPC responses with a map from chain_id -> mock response  (ETH
+  // only)
+  std::map<std::string, std::string> responses;
+  std::map<std::string, std::string> expected_from_blocks;
+  std::map<std::string, std::string> expected_to_blocks;
+  const std::string default_response =
+      R"({ "jsonrpc":"2.0", "id":1, "result":[] })";
+  for (const std::string& supported_chain_id :
+       GetAssetDiscoverySupportedEthChainsForTest()) {
+    GURL network_url = GetNetwork(supported_chain_id, mojom::CoinType::ETH);
+    responses[network_url.spec()] = default_response;
+    expected_from_blocks[network_url.spec()] = kEthereumBlockTagEarliest;
+    expected_to_blocks[network_url.spec()] = kEthereumBlockTagLatest;
+  }
+
+  // Create response for Ethereum eth_getLogs request
+  GURL network_url = GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH);
+  responses[network_url.spec()] = R"({
+    "jsonrpc":"2.0",
+    "id":1,
+    "result":[
+      {
+        "address":"0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "blockHash":"0x2961ceb6c16bab72a55f79e394a35f2bf1c62b30446e3537280f7c22c3115e6e",
+        "blockNumber":"0xd6464d",
+        "data":"0x00000000000000000000000000000000000000000000000555aff1f0fae8c000",
+        "logIndex":"0x159",
+        "removed":false,
+        "topics":[
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000503828976d22510aad0201ac7ec88293211d23da",
+          "0x000000000000000000000000b4b2802129071b2b9ebb8cbb01ea1e4d14b34961"
+        ],
+        "transactionHash":"0x2e652b70966c6a05f4b3e68f20d6540b7a5ab712385464a7ccf62774d39b7066",
+        "transactionIndex":"0x9f"
+      }
+    ]
+  })";
+  auto expected_next_asset_discovery_from_blocks =
+      GetPrefs()->GetDict(kBraveWalletNextAssetDiscoveryFromBlocks).Clone();
+  expected_next_asset_discovery_from_blocks.SetByDottedPath(
+      base::StrCat({kEthereumPrefKey, ".", mojom::kMainnetChainId}),
+      "0xd6464e");
+
+  // Add SOL assets to registry
+  std::string sol_token_list_json = R"({
+    "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8": {
+      "name": "Wrapped SOL",
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "erc20": false,
+      "symbol": "SOL",
+      "decimals": 9,
+      "chainId": "0x65",
+      "coingeckoId": "solana"
+    },
+    "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b": {
+      "name": "USD Coin",
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "erc20": false,
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": "0x65",
+      "coingeckoId": "usd-coin"
+    }
+  })";
+  ASSERT_TRUE(ParseTokenList(sol_token_list_json, &token_list_map,
+                             mojom::CoinType::SOL));
+  for (auto& list_pair : token_list_map) {
+    blockchain_registry->UpdateTokenList(list_pair.first,
+                                         std::move(list_pair.second));
+  }
+
+  // Create response for Solana getTokenAccountsByOwner RPC request
+  network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  responses[network_url.spec()] = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "5gjGaTE41sPVS1Dzwg43ipdj9NTtApZLcK55ihRuVb6Y"
+        },
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+        }
+      ]
+    },
+    "id": 1
+  })";
+
+  // Queue the responses for ETH and SOL
+  std::map<mojom::CoinType, std::vector<std::string>> addresses = {
+      {mojom::CoinType::ETH, {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}},
+      {mojom::CoinType::SOL, {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"}}};
+  SetDiscoverAssetsOnAllSupportedChainsInterceptor(
+      responses, expected_from_blocks, expected_to_blocks);
+
+  // Verify all three addresses (1 ETH and 2 SOL are discovered)
+  // and that the next asset discovery from block is updated
+  TestDiscoverAssetsOnAllSupportedChainsRefresh(
+      addresses,
+      base::BindLambdaForTesting([&](base::Time previous, base::Time current) {
+        EXPECT_TRUE(previous < current);
+      }),
+      expected_next_asset_discovery_from_blocks,
+      {"88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8",
+       "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b",
+       "0x6B175474E89094C44Da98b954EedeAC495271d0F"});
 }
 
 TEST_F(AssetDiscoveryManagerUnitTest, KeyringServiceObserver) {
@@ -985,8 +1278,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, KeyringServiceObserver) {
       "erc721":true,
       "symbol":"LilNouns",
       "chainId":"0x1"
-    },
-    "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd":{
+    }, "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd":{
       "name":"JoeToken",
       "logo":"joe.svg",
       "erc20":true,
@@ -1206,6 +1498,270 @@ TEST_F(AssetDiscoveryManagerUnitTest, KeyringServiceObserver) {
       mojom::kMainnetChainId, mojom::CoinType::ETH, GetPrefs());
   EXPECT_EQ(user_assets[user_assets.size() - 1]->symbol, "RAI");
   EXPECT_EQ(user_assets.size(), 6u);
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, DecodeMintAddress) {
+  // Invalid (data too short)
+  absl::optional<std::vector<uint8_t>> data_short = base::Base64Decode("YQ==");
+  ASSERT_TRUE(data_short);
+  absl::optional<SolanaAddress> mint_address =
+      asset_discovery_manager_->DecodeMintAddress(*data_short);
+  ASSERT_FALSE(mint_address);
+
+  // Valid
+  absl::optional<std::vector<uint8_t>> data = base::Base64Decode(
+      "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+"
+      "lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/"
+      "qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      "AAA");
+  ASSERT_TRUE(data);
+  mint_address = asset_discovery_manager_->DecodeMintAddress(*data);
+  ASSERT_TRUE(mint_address);
+  EXPECT_EQ(mint_address.value().ToBase58(),
+            "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8");
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, DiscoverSolAssets) {
+  auto* blockchain_registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  std::string token_list_json = R"({
+    "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8": {
+      "name": "Wrapped SOL",
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "erc20": false,
+      "symbol": "SOL",
+      "decimals": 9,
+      "chainId": "0x65",
+      "coingeckoId": "solana"
+    },
+    "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b": {
+      "name": "USD Coin",
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "erc20": false,
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": "0x65",
+      "coingeckoId": "usd-coin"
+    }
+  })";
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+
+  // Empy account address
+  TestDiscoverSolAssets({}, {});
+
+  // Invalid
+  TestDiscoverSolAssets({"ABC"}, {});
+
+  // Empty response (no tokens found) yields success
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 171155478
+      },
+      "value": []
+    },
+    "id": 1
+  })");
+  TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"}, {});
+
+  // Invalid response (no tokens found) yields
+  SetLimitExceededJsonErrorResponse();
+  TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"}, {});
+
+  // Valid response containing both tokens should add both tokens
+  SetInterceptor(expected_network_url, R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "z6cxAUoRHIupvmezOL4EAsTLlwKTgwxzCg/xcNWSEu42kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "5gjGaTE41sPVS1Dzwg43ipdj9NTtApZLcK55ihRuVb6Y"
+        },
+        {
+          "account": {
+            "data": [
+              "afxiYbRCtH5HgLYFzytARQOXmFT6HhvNzk2Baxua+lM2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "81ZdQjbr7FhEPmcyGJtG8BAUyWxAjb2iSiWFEQn8i8Da"
+        }
+      ]
+    },
+    "id": 1
+  })");
+  TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"},
+                        {"88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8",
+                         "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b"});
+
+  // Making the same call again should not add any tokens (they've already been
+  // added)
+  TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"}, {});
+
+  // Should merge tokens from multiple accounts
+  // (4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF and
+  // 8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB) Owner
+  // 4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF has mints
+  // BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2 and
+  // ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ
+  const std::string first_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "l/QUsV2gleWOBK7DT7McygX06DWutQjr6AinX510aVU2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQluoAsOSueAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 0
+          },
+          "pubkey": "BhZnyGAe58uHHdFQgej8ShuDGy9JL1tbs29Bqx3FRgy1"
+        },
+        {
+          "account": {
+            "data": [
+              "iOBUDkpieWsUu53IBhROGzPicXkIYV2OIGUzsFvIlvU2kEWUG3BArj8SJRSnd1faFt2Tm0Ey/qtGnPdOOlQlugDkC1QCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 0
+          },
+          "pubkey": "3Ra8B4XsnumedGgKvfussaTLxrhyxFAqMkGmst8UqX3k"
+        }
+      ]
+    },
+    "id": 1
+  })";
+
+  // Owner 8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB has mints
+  // 7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs and
+  // 4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g
+  const std::string second_response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.13.5",
+        "slot": 166895942
+      },
+      "value": [
+        {
+          "account": {
+            "data": [
+              "O0NuqIea7HUvvwtwGehJ95pVsBSH6xpS3rvbymg9TMNuN8HO+P8En+NLC+JfUEsxJnxEYiI50JuYlZKuo/DnTAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "56iYTYcGgVj3kQ1eTApSp9BJRAvjNfZ7AFbdyeKfGPLK"
+        },
+        {
+          "account": {
+            "data": [
+              "ZuUYihMIoduQttMfP73KjD3yZ4yBEt/dPRksWjzEV6huN8HO+P8En+NLC+JfUEsxJnxEYiI50JuYlZKuo/DnTCeWHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "base64"
+            ],
+            "executable": false,
+            "lamports": 2039280,
+            "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "rentEpoch": 361
+          },
+          "pubkey": "dUomT6JpMrZioLeLgtLfcUQpqHsA2jiH9vvz8HDsbyZ"
+        }
+      ]
+    },
+    "id": 1
+  })";
+
+  const std::map<std::string, std::string> requests = {
+      {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF", first_response},
+      {"8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB", second_response},
+  };
+  SetInterceptorForDiscoverSolAssets(expected_network_url, requests);
+
+  // Add BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2,
+  // ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ,
+  // 7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs, and
+  // 4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g to token list
+  token_list_json = R"({
+    "BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2": {
+      "name": "Tesla Inc.",
+      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+      "erc20": false,
+      "symbol": "TSLA",
+      "decimals": 8,
+      "chainId": "0x65"
+    },
+    "ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ": {
+      "name": "Apple Inc.",
+      "logo": "8bpRdBGPt354VfABL5xugP3pmYZ2tQjzRcqjg2kmwfbF.png",
+      "erc20": false,
+      "symbol": "AAPL",
+      "decimals": 8,
+      "chainId": "0x65"
+    },
+    "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs": {
+      "name": "Microsoft Corporation",
+      "logo": "3vhcrQfEn8ashuBfE82F3MtEDFcBCEFfFw1ZgM3xj1s8.png",
+      "erc20": false,
+      "symbol": "MSFT",
+      "decimals": 8,
+      "chainId": "0x65"
+    },
+    "4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g": {
+      "name": "MicroStrategy Incorporated.",
+      "logo": "ASwYCbLedk85mRdPnkzrUXbbYbwe26m71af9rzrhC2Qz.png",
+      "erc20": false,
+      "symbol": "MSTR",
+      "decimals": 8,
+      "chainId": "0x65"
+    }
+  })";
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
+  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF",
+                         "8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB"},
+                        {"4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g",
+                         "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
+                         "ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ",
+                         "BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2"});
 }
 
 }  // namespace brave_wallet

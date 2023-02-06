@@ -8,9 +8,7 @@
 #include <libxml/entities.h>
 #include <libxml/tree.h>
 
-#include <map>
 #include <string>
-#include <vector>
 
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -23,7 +21,7 @@ uint32_t graphml_index = 0;
 }
 
 GraphMLAttr::GraphMLAttr(const GraphMLAttrForType for_value,
-                         const std::string& name,
+                         const String& name,
                          const GraphMLAttrType type)
     : id_(++graphml_index), for_(for_value), name_(name), type_(type) {}
 
@@ -37,7 +35,7 @@ void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
   xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
   xmlSetProp(new_node, BAD_CAST "for",
              BAD_CAST GraphMLForTypeToString(for_).c_str());
-  xmlSetProp(new_node, BAD_CAST "attr.name", BAD_CAST name_.c_str());
+  xmlSetProp(new_node, BAD_CAST "attr.name", BAD_CAST name_.Characters8());
   xmlSetProp(new_node, BAD_CAST "attr.type",
              BAD_CAST GraphMLAttrTypeToString(type_).c_str());
 }
@@ -54,6 +52,18 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc,
   CHECK(type_ == kGraphMLAttrTypeString);
   xmlChar* encoded_content =
       xmlEncodeEntitiesReentrant(doc, BAD_CAST value.c_str());
+  xmlNodePtr new_node =
+      xmlNewChild(parent_node, nullptr, BAD_CAST "data", encoded_content);
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
+  xmlFree(encoded_content);
+}
+
+void GraphMLAttr::AddValueNode(xmlDocPtr doc,
+                               xmlNodePtr parent_node,
+                               const String& value) const {
+  CHECK(type_ == kGraphMLAttrTypeString);
+  xmlChar* encoded_content =
+      xmlEncodeEntitiesReentrant(doc, BAD_CAST value.Characters8());
   xmlNodePtr new_node =
       xmlNewChild(parent_node, nullptr, BAD_CAST "data", encoded_content);
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());

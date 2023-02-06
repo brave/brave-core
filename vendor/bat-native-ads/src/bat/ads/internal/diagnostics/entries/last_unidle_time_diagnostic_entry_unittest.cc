@@ -28,7 +28,8 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
   EXPECT_EQ("Last unidle time", diagnostic_entry.GetName());
-  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56 PM", diagnostic_entry.GetValue());
+  EXPECT_EQ("Monday, July 8, 1996 at 12:34:56\u202fPM",
+            diagnostic_entry.GetValue());
 }
 
 TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {

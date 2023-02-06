@@ -9,8 +9,8 @@
 
 namespace ads {
 
-void ForceUnblindedTokensPermissionRule() {
-  privacy::SetUnblindedTokens(10);
+void ForceUnblindedTokensPermissionRuleForTesting() {
+  privacy::SetUnblindedTokens(50);
 }
 
 }  // namespace ads

@@ -107,7 +107,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
       storage.AddProfile(std::move(params));
     }
 
-    profile_manager->MaybeScheduleProfileForDeletion(
+    profile_manager->GetDeleteProfileHelper().MaybeScheduleProfileForDeletion(
         tor_legacy_path, base::DoNothing(),
         ProfileMetrics::DELETE_PROFILE_SETTINGS);
   }
@@ -117,7 +117,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
             .Append(brave::kSessionProfileDir)
             .Append(tor::kTorProfileDir);
     if (base::PathExists(tor_legacy_session_path)) {
-      profile_manager->MaybeScheduleProfileForDeletion(
+      profile_manager->GetDeleteProfileHelper().MaybeScheduleProfileForDeletion(
           tor_legacy_session_path, base::DoNothing(),
           ProfileMetrics::DELETE_PROFILE_SETTINGS);
     }

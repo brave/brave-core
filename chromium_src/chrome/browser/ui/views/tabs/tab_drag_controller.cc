@@ -16,32 +16,26 @@
 #define TabDragController TabDragControllerChromium
 
 // Wraps function calls so that they can work with a child NativeWindow as well.
-#define GetBrowserViewForNativeWindow(local_window)         \
-  GetBrowserViewForNativeWindow(                            \
-      views::Widget::GetWidgetForNativeWindow(local_window) \
-          ->GetTopLevelWidget()                             \
-          ->GetNativeWindow())
-#define ConvertPointToWidget(view, point) \
-  ConvertPointToScreen(view, point);      \
-  views::View::ConvertPointFromScreen(    \
-      view->GetWidget()->GetTopLevelWidget()->GetRootView(), point)
-#define GetRestoredBounds GetTopLevelWidget()->GetRestoredBounds
+#define non_client_view()                                    \
+  non_client_view()                                          \
+      ? source->GetWidget()->non_client_view()->frame_view() \
+      : source->GetWidget()->GetTopLevelWidget()->non_client_view()
 
 // Remove drag threshold when it's vertical tab strip
-#define GetHorizontalDragThreshold()                          \
-  GetHorizontalDragThreshold() -                              \
-      (tabs::features::ShouldShowVerticalTabs(                \
-           BrowserView::GetBrowserViewForNativeWindow(        \
-               GetAttachedBrowserWidget()->GetNativeWindow()) \
-               ->browser())                                   \
-           ? attached_context_->GetHorizontalDragThreshold()  \
+#define GetHorizontalDragThreshold()                                       \
+  GetHorizontalDragThreshold() -                                           \
+      (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
+               tabs::features::ShouldShowVerticalTabs(                     \
+                   BrowserView::GetBrowserViewForNativeWindow(             \
+                       GetAttachedBrowserWidget()->GetNativeWindow())      \
+                       ->browser())                                        \
+           ? attached_context_->GetHorizontalDragThreshold()               \
            : 0)
 
 #include "src/chrome/browser/ui/views/tabs/tab_drag_controller.cc"
 
+#undef non_client_view
 #undef GetHorizontalDragThreshold
-#undef GetRestoredBounds
-#undef ConvertPointToWidget
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController
 
@@ -61,7 +55,10 @@ void TabDragController::Init(TabDragContext* source_context,
   TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                   mouse_offset, source_view_offset,
                                   initial_selection_model, event_source);
-  auto* widget = source_view->GetWidget()->GetTopLevelWidget();
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
+  auto* widget = source_view->GetWidget();
   DCHECK(widget);
   const auto* browser =
       BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
@@ -159,8 +156,16 @@ TabDragController::GetTabGroupForTargetIndex(const std::vector<int>& selected) {
 }
 
 views::Widget* TabDragController::GetAttachedBrowserWidget() {
-  return TabDragControllerChromium::GetAttachedBrowserWidget()
-      ->GetTopLevelWidget();
+  auto* widget = TabDragControllerChromium::GetAttachedBrowserWidget();
+  if (!is_showing_vertical_tabs_)
+    return widget;
+
+  // As vertical tab strip is attached to child widget of browser widget,
+  // we should return top level widget.
+  DCHECK(widget);
+  auto* top_level_widget = widget->GetTopLevelWidget();
+  DCHECK(top_level_widget);
+  return top_level_widget;
 }
 
 TabDragController::Liveness TabDragController::GetLocalProcessWindow(
@@ -171,9 +176,12 @@ TabDragController::Liveness TabDragController::GetLocalProcessWindow(
     // In this case, we need to exclude a widget for vertical tab strip too.
     std::set<gfx::NativeWindow> exclude;
     auto* dragged_widget = attached_context_->GetWidget();
+    DCHECK(dragged_widget);
     if (dragged_widget) {
       exclude.insert(dragged_widget->GetNativeWindow());
-      exclude.insert(dragged_widget->GetTopLevelWidget()->GetNativeWindow());
+      auto* top_level_widget = dragged_widget->GetTopLevelWidget();
+      DCHECK(top_level_widget);
+      exclude.insert(top_level_widget->GetNativeWindow());
     }
     base::WeakPtr<TabDragControllerChromium> ref(weak_factory_.GetWeakPtr());
     *window =
@@ -242,7 +250,8 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     TabDragContext* source,
     const gfx::Point& point_in_screen,
     std::vector<gfx::Rect>* drag_bounds) {
-  // This method is called when creating new browser by detaching tabs.
+  // This method is called when creating new browser by detaching tabs and
+  // when dragging all tabs in maximized window.
   auto bounds = TabDragControllerChromium::CalculateDraggedBrowserBounds(
       source, point_in_screen, drag_bounds);
   if (is_showing_vertical_tabs_) {

@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 declare namespace RewardsInternals {
   export interface ApplicationState {
     rewardsInternalsData: State | undefined
@@ -10,6 +15,7 @@ declare namespace RewardsInternals {
       walletPaymentId: string
       bootStamp: number
       declaredGeo: string
+      walletCreationEnvironment?: Environment
     }
     contributions: ContributionInfo[]
     promotions: Promotion[]
@@ -18,6 +24,7 @@ declare namespace RewardsInternals {
     externalWallet: ExternalWallet
     eventLogs: EventLog[]
     adDiagnostics: AdDiagnostics
+    environment: Environment
   }
 
   export interface ContributionInfo {
@@ -82,4 +89,6 @@ declare namespace RewardsInternals {
     entries: AdDiagnosticsEntry[]
     diagnosticId: string
   }
+
+  type Environment = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').Environment
 }

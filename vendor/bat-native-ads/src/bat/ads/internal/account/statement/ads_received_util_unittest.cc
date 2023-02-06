@@ -50,8 +50,8 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  const int expected_ads_received = 2;
-  EXPECT_EQ(expected_ads_received, ads_received);
+  constexpr int kExpectedAdsReceived = 2;
+  EXPECT_EQ(kExpectedAdsReceived, ads_received);
 }
 
 TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
@@ -78,8 +78,8 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
       GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  const int expected_ads_received = 0;
-  EXPECT_EQ(expected_ads_received, ads_received);
+  constexpr int kExpectedAdsReceived = 0;
+  EXPECT_EQ(kExpectedAdsReceived, ads_received);
 }
 
 TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
@@ -94,8 +94,8 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
       GetAdsReceivedForDateRange(transactions, from_time, to_time);
 
   // Assert
-  const int expected_ads_received = 0;
-  EXPECT_EQ(expected_ads_received, ads_received);
+  constexpr int kExpectedAdsReceived = 0;
+  EXPECT_EQ(kExpectedAdsReceived, ads_received);
 }
 
 }  // namespace ads

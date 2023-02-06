@@ -144,3 +144,26 @@ void BraveMainDelegate::PreSandboxStartup() {
     brave::InitializeResourceBundle();
   }
 }
+
+absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
+    ChromeMainDelegate::InvokedIn invoked_in) {
+  auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
+  BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
+  std::string update_url = GetUpdateURLHost();
+  if (!update_url.empty()) {
+    auto* cmd = base::CommandLine::ForCurrentProcess();
+    std::string current_value;
+    if (cmd->HasSwitch(switches::kComponentUpdater)) {
+      current_value = cmd->GetSwitchValueASCII(switches::kComponentUpdater);
+      cmd->RemoveSwitch(switches::kComponentUpdater);
+    }
+    if (!current_value.empty()) {
+      current_value += ',';
+    }
+
+    command_line.AppendSwitchASCII(
+        switches::kComponentUpdater,
+        (current_value + "url-source=" + update_url).c_str());
+  }
+  return result;
+}

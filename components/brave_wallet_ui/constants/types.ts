@@ -243,12 +243,14 @@ export interface WalletState {
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
+  hiddenNetworkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
   activeOrigin: SerializableOriginInfo
   solFeeEstimates?: SolFeeEstimates
+  hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
@@ -257,14 +259,15 @@ export interface WalletState {
   defaultNetworks: BraveWallet.NetworkInfo[]
   isLoadingCoinMarketData: boolean
   coinMarketData: BraveWallet.CoinMarket[]
-  selectedNetworkFilter: BraveWallet.NetworkInfo
-  selectedAssetFilter: AssetFilterOption
-  selectedAccountFilter: WalletAccountType
+  selectedNetworkFilter: NetworkFilterType
+  selectedAssetFilter: string
+  selectedAccountFilter: string
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
+  isNftPinningFeatureEnabled: boolean
 }
 
 export interface PanelState {
@@ -295,6 +298,7 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -347,6 +351,7 @@ export interface WalletInfoBase {
   accountInfos: AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isNftPinningFeatureEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {
@@ -992,4 +997,12 @@ export type AddressMessageInfo = {
   title: string
   description?: string
   url?: string
+  type?: 'error' | 'warning'
+}
+
+export type AlertType = 'danger' | 'warning' | 'info' | 'success'
+
+export type NetworkFilterType = {
+  chainId: string
+  coin: BraveWallet.CoinType
 }

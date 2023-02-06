@@ -20,7 +20,8 @@ class BraveSharingHubModel : public sharing_hub::SharingHubModel {
   ~BraveSharingHubModel() override;
 
   // SharingHubModel overrides:
-  void GetThirdPartyActionList(std::vector<SharingHubAction>* list) override;
+  void GetThirdPartyActionList(content::WebContents* web_contents,
+                               std::vector<SharingHubAction>* list) override;
 };
 
 }  // namespace sharing_hub

@@ -233,7 +233,13 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_TEXT" desc="A text shown to user when he enabled Brave VPN without DoH and we override settings">
-    Windows has a feature called Smart Multi-Homed Name Resolution, which can expose information about your location and the sites you visit. Now that you’ve enabled Brave VPN, we’ve changed the DNS settings in the browser to protect against this exposure. The settings will remain in effect and locked while VPN is connected. <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
+Windows has a feature called Smart Multi-Homed Name Resolution, which can expose information about your location and the sites you visit.
+
+Brave has a helper service that protects you from this exposure by filtering the way DNS queries are made on your VPN connection.
+
+However, we noticed this helper service is not running - and we don't want to leave you unprotected. We’ve changed the DNS settings in the browser to protect against this exposure. The settings will remain in effect and locked while the VPN is connected.
+
+<ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
   </message>
 
   <message name="IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_CHECKBOX_TEXT" desc="A text shown to user on dialog's checkbpox when he enabled Brave VPN and we override settings">

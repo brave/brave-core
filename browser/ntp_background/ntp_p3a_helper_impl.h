@@ -19,6 +19,7 @@ class PrefService;
 
 namespace brave {
 class BraveP3AService;
+enum class MetricLogType;
 }  // namespace brave
 
 namespace ntp_background_images {
@@ -38,7 +39,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   void SetLastTabURL(const GURL& url) override;
 
-  void OnP3ARotation(bool is_express);
+  void OnP3ARotation(brave::MetricLogType log_type);
 
   void OnP3AMetricSent(const std::string& histogram_name);
 

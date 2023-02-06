@@ -34,19 +34,19 @@ constexpr auto kMargin = gfx::Insets::TLBR(0, 0, 0, 0);
 // Spacing between child views and host views
 constexpr auto kInteriorMargin = gfx::Insets::TLBR(0, 10, 0, 2);
 
-const int kHeaderViewHeight = 22;
+constexpr int kHeaderViewHeight = 22;
 
-const int kControlButtonsSpacing = 10;
+constexpr int kControlButtonsSpacing = 10;
 
 constexpr char kTitleFontName[] = "Roboto";
-const gfx::Font::FontStyle kTitleFontStyle = gfx::Font::NORMAL;
-const int kTitleFontSize = 13;
-const gfx::Font::Weight kTitleFontWeight = gfx::Font::Weight::MEDIUM;
+constexpr gfx::Font::FontStyle kTitleFontStyle = gfx::Font::NORMAL;
+constexpr int kTitleFontSize = 13;
+constexpr gfx::Font::Weight kTitleFontWeight = gfx::Font::Weight::MEDIUM;
 constexpr SkColor kLightModeTitleColor = SkColorSetRGB(0x00, 0x00, 0x00);
 constexpr SkColor kDarkModeTitleColor = SkColorSetRGB(0xe3, 0xe6, 0xec);
 
-const gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
-const gfx::VerticalAlignment kTitleVerticalAlignment = gfx::ALIGN_BOTTOM;
+constexpr gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
+constexpr gfx::VerticalAlignment kTitleVerticalAlignment = gfx::ALIGN_BOTTOM;
 
 constexpr auto kTitleBorderInsets = gfx::Insets::TLBR(11, 10, 3, 0);
 

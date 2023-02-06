@@ -25,6 +25,9 @@ gfx::Size BraveTabSearchButton::CalculatePreferredSize() const {
 SkPath BraveTabSearchButton::GetBorderPath(const gfx::Point& origin,
                                            float scale,
                                            bool extend_to_top) const {
+  if (fill_color_disabled_)
+    return {};
+
   return BraveNewTabButton::GetBorderPath(origin, scale, extend_to_top,
                                           GetCornerRadius(),
                                           GetContentsBounds().size());

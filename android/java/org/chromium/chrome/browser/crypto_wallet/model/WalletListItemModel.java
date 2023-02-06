@@ -59,8 +59,8 @@ public class WalletListItemModel {
     }
 
     public boolean hasNftImageLink() {
-        return isNft() && mNftDataModel != null && mNftDataModel.erc721MetaData != null
-                && !TextUtils.isEmpty(mNftDataModel.erc721MetaData.mImageUrl);
+        return isNft() && mNftDataModel != null && mNftDataModel.nftMetadata != null
+                && !TextUtils.isEmpty(mNftDataModel.nftMetadata.mImageUrl);
     }
 
     public void setTransactionInfo(TransactionInfo txInfo) {

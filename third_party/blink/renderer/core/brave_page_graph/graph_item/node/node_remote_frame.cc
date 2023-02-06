@@ -5,14 +5,13 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_remote_frame.h"
 
-#include <sstream>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 NodeRemoteFrame::NodeRemoteFrame(GraphItemContext* context,
-                                 const std::string& frame_id)
+                                 const String& frame_id)
     : GraphNode(context), frame_id_(frame_id) {}
 
 NodeRemoteFrame::~NodeRemoteFrame() = default;
@@ -22,9 +21,9 @@ ItemName NodeRemoteFrame::GetItemName() const {
 }
 
 ItemDesc NodeRemoteFrame::GetItemDesc() const {
-  std::stringstream builder;
-  builder << GraphNode::GetItemDesc() << " [" << frame_id_ << "]";
-  return builder.str();
+  WTF::TextStream ts;
+  ts << GraphNode::GetItemDesc() << " [" << frame_id_ << "]";
+  return ts.Release();
 }
 
 void NodeRemoteFrame::AddGraphMLAttributes(xmlDocPtr doc,

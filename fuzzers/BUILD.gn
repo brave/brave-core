@@ -1,0 +1,85 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/libfuzzer/fuzzer_test.gni")
+import("//third_party/libprotobuf-mutator/fuzzable_proto_library.gni")
+
+assert(use_libfuzzer)
+
+fuzzer_test("brave_today_parse_feed_bytes_fuzzer") {
+  sources = [ "brave_today/parse_feed_bytes_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_today/rust:rust-rs",
+  ]
+
+  seed_corpus = "brave_today/corpus/parse_feed_bytes_fuzzer/"
+  dict = "//third_party/libxml/fuzz/xml.dict"
+}
+
+fuzzer_test("brave_wallet_utils_fuzzer") {
+  sources = [ "brave_wallet/brave_wallet_utils_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser:utils",
+  ]
+}
+
+fuzzable_proto_library("adblock_fuzzer_proto") {
+  proto_in_dir = "//"
+  import_dirs = [ "//testing/libfuzzer/proto" ]
+
+  sources = [ "adblock/adblock_fuzzer.proto" ]
+
+  deps = [ "//testing/libfuzzer/proto:url_proto" ]
+}
+
+fuzzer_test("adblock_engine_matches_fuzzer") {
+  sources = [ "adblock/adblock_engine_matches_fuzzer.cc" ]
+
+  deps = [
+    ":adblock_fuzzer_proto",
+    "//base",
+    "//base:i18n",
+    "//brave/components/adblock_rust_ffi",
+    "//brave/components/brave_component_updater/browser:browser",
+    "//testing/libfuzzer/proto:url_proto",
+    "//testing/libfuzzer/proto:url_proto_converter",
+    "//third_party/libprotobuf-mutator",
+  ]
+}
+
+fuzzer_test("adblock_engine_useresources_fuzzer") {
+  sources = [ "adblock/adblock_engine_useresources_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/adblock_rust_ffi",
+  ]
+
+  dict = "//testing/libfuzzer/fuzzers/dicts/json.dict"
+}
+
+fuzzer_test("speedreader_rewriter_fuzzer") {
+  sources = [ "speedreader/rewriter_fuzzer.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/speedreader/rust/ffi",
+  ]
+
+  seed_corpus = "speedreader/corpus/rewriter_fuzzer"
+  dict = "//third_party/libxml/src/fuzz/html.dict"
+}
+
+group("brave_fuzzers") {
+  testonly = true
+
+  deps = [
+    ":adblock_engine_matches_fuzzer",
+    ":adblock_engine_useresources_fuzzer",
+    ":brave_today_parse_feed_bytes_fuzzer",
+    ":brave_wallet_utils_fuzzer",
+    ":speedreader_rewriter_fuzzer",
+  ]
+}

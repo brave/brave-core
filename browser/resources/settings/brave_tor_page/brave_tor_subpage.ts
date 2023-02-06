@@ -178,7 +178,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
     // PrefControlMixin checks for a pref being valid, so have to fake it,
     // same as upstream.
-    this.addWebUIListener('tor-enabled-changed', enabled => {
+    this.addWebUiListener('tor-enabled-changed', enabled => {
       this.setTorEnabledPref_(enabled)
     })
     this.browserProxy_.isTorEnabled().then(enabled => {
@@ -192,7 +192,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
       this.browserProxy_.isSnowflakeExtensionAllowed().then(allowed => {
         this.torSnowflakeExtensionAllowed_ = allowed
       })
-      this.addWebUIListener('tor-snowflake-extension-enabled', enabled => {
+      this.addWebUiListener('tor-snowflake-extension-enabled', enabled => {
         this.setTorSnowflakeExtensionEnabledPref_(enabled)
       })
       this.browserProxy_.isSnowflakeExtensionEnabled().then(enabled => {

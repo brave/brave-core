@@ -6,7 +6,6 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_REQUESTS_REQUEST_TRACKER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_REQUESTS_REQUEST_TRACKER_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -16,6 +15,8 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
 namespace brave_page_graph {
 
@@ -32,7 +33,7 @@ struct TrackedRequestRecord : public base::RefCounted<TrackedRequestRecord> {
 struct DocumentRequest {
   // Information available at request start
   InspectorId request_id;
-  std::string url;
+  blink::KURL url;
   bool is_main_frame;
   base::TimeDelta start_timestamp;
 
@@ -52,7 +53,7 @@ class RequestTracker {
       const InspectorId request_id,
       GraphNode* requester,
       NodeResource* resource,
-      const std::string& resource_type);
+      const String& resource_type);
   scoped_refptr<const TrackedRequestRecord> RegisterRequestComplete(
       const InspectorId request_id,
       int64_t encoded_data_length);
@@ -61,7 +62,7 @@ class RequestTracker {
 
   void RegisterDocumentRequestStart(const InspectorId request_id,
                                     const blink::DOMNodeId frame_id,
-                                    const std::string& url,
+                                    const blink::KURL& url,
                                     const bool is_main_frame,
                                     const base::TimeDelta timestamp);
   void RegisterDocumentRequestComplete(const InspectorId request_id,
@@ -71,10 +72,10 @@ class RequestTracker {
   TrackedRequestRecord* GetTrackingRecord(const InspectorId request_id);
 
  private:
-  std::map<InspectorId, scoped_refptr<TrackedRequestRecord>> tracked_requests_;
+  HashMap<InspectorId, scoped_refptr<TrackedRequestRecord>> tracked_requests_;
 
-  std::map<blink::DOMNodeId, InspectorId> document_request_initiators_;
-  std::map<InspectorId, DocumentRequest> document_requests_;
+  HashMap<blink::DOMNodeId, InspectorId> document_request_initiators_;
+  HashMap<InspectorId, DocumentRequest> document_requests_;
 
   // Returns the record from the above map, and cleans up the record
   // if the final requester has been responded to.
@@ -84,7 +85,7 @@ class RequestTracker {
   // This structure is just included for debugging, to make sure the
   // assumptions built into this request tracking system (e.g. that
   // request ids will not repeat, etc.).
-  std::map<InspectorId, const NodeResource*> completed_requests_;
+  HashMap<InspectorId, const NodeResource*> completed_requests_;
 
   // These methods manage writing to and from the above structure.
   void AddTracedRequestToHistory(const TrackedRequest* request);

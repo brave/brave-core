@@ -13,11 +13,26 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 22;
+const int kBraveCurrentDataVersion = 23;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
 namespace {
+
+PrepopulatedEngine MakeBravePrepopulatedEngine(const wchar_t* const name,
+                                               const wchar_t* const keyword,
+                                               const char* const favicon_url,
+                                               const char* const search_url,
+                                               const char* const encoding,
+                                               const char* const suggest_url,
+                                               SearchEngineType type,
+                                               const int id) {
+  return {name,        keyword, favicon_url, search_url, encoding,
+          suggest_url, nullptr, nullptr,     nullptr,    nullptr,
+          nullptr,     nullptr, nullptr,     nullptr,    nullptr,
+          nullptr,     nullptr, nullptr,     0,          nullptr,
+          0,           type,    nullptr,     nullptr,    id};
+}
 
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
@@ -25,6 +40,8 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
         {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
         {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
+        {PREPOPULATED_ENGINE_ID_NAVER, &naver},
+        {PREPOPULATED_ENGINE_ID_DAUM, &daum},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO, &duckduckgo},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, &duckduckgo_de},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
@@ -58,6 +75,8 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.side_search_param,
           engine.side_image_search_param,
           engine.image_search_branding_label,
+          engine.search_intent_params,
+          engine.search_intent_params_size,
           engine.alternate_urls,
           engine.alternate_urls_size,
           engine.type,
@@ -68,31 +87,15 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
 
 }  // namespace
 
-const PrepopulatedEngine duckduckgo = {
+const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
     L"DuckDuckGo",
     L":d",
     "https://duckduckgo.com/favicon.ico",
     "https://duckduckgo.com/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    0,
     SEARCH_ENGINE_DUCKDUCKGO,
-    nullptr,
-    nullptr,
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-};
+    PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
 
 const PrepopulatedEngine duckduckgo_de =
     ModifyEngineParams(duckduckgo,
@@ -113,31 +116,15 @@ const PrepopulatedEngine duckduckgo_au_nz_ie =
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE);
 
 #if BUILDFLAG(IS_ANDROID)
-const PrepopulatedEngine duckduckgo_lite = {
+const PrepopulatedEngine duckduckgo_lite = MakeBravePrepopulatedEngine(
     L"DuckDuckGo Lite",
     L":dl",
     "https://duckduckgo.com/favicon.ico",
     "https://duckduckgo.com/lite/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    0,
     SEARCH_ENGINE_DUCKDUCKGO,
-    nullptr,
-    nullptr,
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
-};
+    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 const PrepopulatedEngine brave_ecosia =
@@ -155,33 +142,17 @@ const PrepopulatedEngine brave_ecosia =
                        nullptr,
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
-const PrepopulatedEngine qwant = {
+const PrepopulatedEngine qwant = MakeBravePrepopulatedEngine(
     L"Qwant",
     L":q",
     "https://www.qwant.com/favicon.ico",
     "https://www.qwant.com/?q={searchTerms}&client=brz-brave",
     "UTF-8",
     "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    0,
     SEARCH_ENGINE_QWANT,
-    nullptr,
-    nullptr,
-    PREPOPULATED_ENGINE_ID_QWANT,
-};
+    PREPOPULATED_ENGINE_ID_QWANT);
 
-const PrepopulatedEngine startpage = {
+const PrepopulatedEngine startpage = MakeBravePrepopulatedEngine(
     L"Startpage",
     L":sp",
     "https://www.startpage.com/favicon.ico",
@@ -190,24 +161,8 @@ const PrepopulatedEngine startpage = {
     "UTF-8",
     "https://www.startpage.com/cgi-bin/"
     "csuggest?query={searchTerms}&limit=10&format=json",
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    0,
     SEARCH_ENGINE_OTHER,
-    nullptr,
-    nullptr,
-    PREPOPULATED_ENGINE_ID_STARTPAGE,
-};
+    PREPOPULATED_ENGINE_ID_STARTPAGE);
 
 const PrepopulatedEngine brave_yandex =
     ModifyEngineParams(yandex_com,
@@ -225,7 +180,7 @@ const PrepopulatedEngine brave_yandex =
                        nullptr,
                        PREPOPULATED_ENGINE_ID_YANDEX);
 
-const PrepopulatedEngine brave_search = {
+const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     L"Brave",
     L":br",
     "https://cdn.search.brave.com/serp/favicon.ico",
@@ -237,24 +192,8 @@ const PrepopulatedEngine brave_search = {
 #endif
     "UTF-8",
     "https://search.brave.com/api/suggest?q={searchTerms}",
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    0,
     SEARCH_ENGINE_OTHER,
-    nullptr,
-    nullptr,
-    PREPOPULATED_ENGINE_ID_BRAVE,
-};
+    PREPOPULATED_ENGINE_ID_BRAVE);
 
 const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
     brave_search,

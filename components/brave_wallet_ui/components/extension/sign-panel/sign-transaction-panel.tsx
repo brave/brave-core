@@ -37,8 +37,7 @@ import {
   PanelTitle,
   MessageBox,
   ButtonRow,
-  WarningTitleRow,
-  WarningIcon
+  WarningTitleRow
 } from './style'
 
 import {
@@ -53,7 +52,8 @@ import {
   WarningTitle,
   WarningText,
   LearnMoreButton,
-  URLText
+  URLText,
+  WarningIcon
 } from '../shared-panel-styles'
 
 import { DetailColumn } from '../transaction-box/style'

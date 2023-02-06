@@ -104,10 +104,12 @@ namespace {
   }
 
   net::CertErrors errors;
-  scoped_refptr<net::ParsedCertificate> extended_cert =
-      scoped_refptr<net::ParsedCertificate>(net::ParsedCertificate::Create(
-          std::move(cert_buffer),
-          net::x509_util::DefaultParseCertificateOptions() /* {} */, &errors));
+  std::shared_ptr<const net::ParsedCertificate> extended_cert =
+      std::shared_ptr<const net::ParsedCertificate>(
+          net::ParsedCertificate::Create(
+              std::move(cert_buffer),
+              net::x509_util::DefaultParseCertificateOptions() /* {} */,
+              &errors));
 
   if (!extended_cert) {
     VLOG(1) << errors.ToDebugString();

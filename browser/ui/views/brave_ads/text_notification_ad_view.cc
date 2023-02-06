@@ -29,37 +29,37 @@ namespace brave_ads {
 
 namespace {
 
-const int kNotificationWidth = 350;
-const int kNotificationHeight = 100;
+constexpr int kNotificationWidth = 350;
+constexpr int kNotificationHeight = 100;
 
 constexpr auto kContainerViewInsideBorderInsets =
     gfx::Insets::TLBR(0, 20, 10, 10);
 
 constexpr gfx::Insets kBodyViewBorderInsets(0);
 
-const gfx::ElideBehavior kTitleElideBehavior = gfx::ELIDE_TAIL;
+constexpr gfx::ElideBehavior kTitleElideBehavior = gfx::ELIDE_TAIL;
 
 constexpr char kBodyFontName[] = "Roboto";
-const gfx::Font::FontStyle kBodyFontStyle = gfx::Font::NORMAL;
-const int kBodyFontSize = 13;
-const gfx::Font::Weight kBodyFontWeight = gfx::Font::Weight::LIGHT;
+constexpr gfx::Font::FontStyle kBodyFontStyle = gfx::Font::NORMAL;
+constexpr int kBodyFontSize = 13;
+constexpr gfx::Font::Weight kBodyFontWeight = gfx::Font::Weight::LIGHT;
 constexpr SkColor kLightModeBodyColor = SkColorSetRGB(0x45, 0x49, 0x55);
 constexpr SkColor kDarkModeBodyColor = SkColorSetRGB(0xd7, 0xdb, 0xe2);
 
-const int kBodyMaximumLines = 2;
+constexpr int kBodyMaximumLines = 2;
 
 #if BUILDFLAG(IS_WIN)
-const int kBodyLineSpacing = 0;
+constexpr int kBodyLineSpacing = 0;
 #elif BUILDFLAG(IS_MAC)
-const int kBodyLineSpacing = 2;
+constexpr int kBodyLineSpacing = 2;
 #elif BUILDFLAG(IS_LINUX)
-const int kBodyLineSpacing = 2;
+constexpr int kBodyLineSpacing = 2;
 #endif
 
-const gfx::HorizontalAlignment kBodyHorizontalAlignment = gfx::ALIGN_LEFT;
-const gfx::VerticalAlignment kBodyVerticalAlignment = gfx::ALIGN_TOP;
+constexpr gfx::HorizontalAlignment kBodyHorizontalAlignment = gfx::ALIGN_LEFT;
+constexpr gfx::VerticalAlignment kBodyVerticalAlignment = gfx::ALIGN_TOP;
 
-const gfx::ElideBehavior kBodyElideBehavior = gfx::ELIDE_TAIL;
+constexpr gfx::ElideBehavior kBodyElideBehavior = gfx::ELIDE_TAIL;
 
 constexpr gfx::Insets kBodyBorderInsets(0);
 

@@ -17,7 +17,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {
@@ -111,7 +111,7 @@ std::string TestLedgerClient::URIEncode(const std::string& value) {
 void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
                                client::LoadURLCallback callback) {
   DCHECK(request);
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
                                 weak_factory_.GetWeakPtr(), std::move(request),
                                 std::move(callback)));
@@ -291,7 +291,7 @@ void TestLedgerClient::ReconcileStampReset() {}
 void TestLedgerClient::RunDBTransaction(
     mojom::DBTransactionPtr transaction,
     client::RunDBTransactionCallback callback) {
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
                                 weak_factory_.GetWeakPtr(),
                                 std::move(transaction), std::move(callback)));

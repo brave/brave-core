@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 

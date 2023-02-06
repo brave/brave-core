@@ -163,9 +163,9 @@ class PublishersControllerTest : public testing::Test {
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    DictionaryPrefUpdate update(profile_.GetPrefs(), prefs::kBraveTodaySources);
+    ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveTodaySources);
     for (const auto& id : publisher_ids)
-      update->SetBoolKey(id, true);
+      update->Set(id, true);
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {

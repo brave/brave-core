@@ -46,6 +46,9 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_reading_list.icon",
       "sidebar_settings.icon",
       "sidebar_trash.icon",
+      "vertical_tab_collapse_button.icon",
+      "vertical_tab_expand_button.icon",
+      "vertical_tab_tab_search_button.icon",
     ]
   }
 

@@ -5,12 +5,11 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/node_resource.h"
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
@@ -24,14 +23,16 @@ ItemName NodeResource::GetItemName() const {
 }
 
 ItemDesc NodeResource::GetItemDesc() const {
-  return GraphNode::GetItemDesc() + " [" + url_ + "]";
+  WTF::TextStream ts;
+  ts << GraphNode::GetItemDesc() << " [" << url_.GetString() << "]";
+  return ts.Release();
 }
 
 void NodeResource::AddGraphMLAttributes(xmlDocPtr doc,
                                         xmlNodePtr parent_node) const {
   GraphNode::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->AddValueNode(doc, parent_node, url_);
+      ->AddValueNode(doc, parent_node, url_.GetString());
 }
 
 bool NodeResource::IsNodeResource() const {

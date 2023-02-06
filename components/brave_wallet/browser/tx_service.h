@@ -75,6 +75,10 @@ class TxService : public KeyedService,
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const std::string& from,
                              GetAllTransactionInfoCallback) override;
+  void GetAllTransactionInfo(mojom::CoinType coin_type,
+                             GetAllTransactionInfoCallback);
+  void GetPendingTransactionsCount(
+      GetPendingTransactionsCountCallback callback) override;
 
   void SpeedupOrCancelTransaction(
       mojom::CoinType coin_type,
@@ -188,6 +192,11 @@ class TxService : public KeyedService,
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
+
+  void OnGetAllTransactionInfo(GetPendingTransactionsCountCallback callback,
+                               size_t counter,
+                               mojom::CoinType coin,
+                               std::vector<mojom::TransactionInfoPtr> result);
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();

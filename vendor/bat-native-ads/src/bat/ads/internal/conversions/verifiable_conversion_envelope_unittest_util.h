@@ -22,7 +22,7 @@ absl::optional<std::string> OpenEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
     const std::string& advertiser_secret_key_base64);
 
-absl::optional<std::string> OpenEvenlopeForUserDataAndAdvertiserSecretKey(
+absl::optional<std::string> OpenEnvelopeForUserDataAndAdvertiserSecretKey(
     const base::Value::Dict& user_data,
     const std::string& advertiser_secret_key);
 

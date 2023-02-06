@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
 import {
-  useDispatch,
   useSelector
 } from 'react-redux'
 
@@ -24,9 +23,6 @@ import {
   WalletState
 } from '../../../constants/types'
 import { RenderTokenFunc } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
-
-// actions
-import { WalletActions } from '../../../common/actions'
 
 // options
 import { AllNetworksOption } from '../../../options/network-filter-options'
@@ -66,11 +62,10 @@ export const FundWalletScreen = () => {
   const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
-  const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const selectedAccount = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccount)
+  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -94,9 +89,11 @@ export const FundWalletScreen = () => {
   const [showAccountSearch, setShowAccountSearch] = React.useState<boolean>(false)
   const [accountSearchText, setAccountSearchText] = React.useState<string>('')
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
+  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
+  const selectedNetwork = selectedAssetNetwork || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -147,7 +144,7 @@ export const FundWalletScreen = () => {
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
-    dispatch(WalletActions.selectAccount(account))
+    setSelectedAccount(account)
   }, [closeAccountSearch])
 
   const onBack = React.useCallback(() => {
@@ -163,12 +160,11 @@ export const FundWalletScreen = () => {
   }, [showBuyOptions, closeAccountSearch, history])
 
   const nextStep = React.useCallback(() => {
-    if (!isNextStepEnabled || !selectedAssetNetwork) {
+    if (!isNextStepEnabled) {
       return
     }
-    dispatch(WalletActions.selectNetwork(selectedAssetNetwork))
     setShowBuyOptions(true)
-  }, [isNextStepEnabled, selectedAssetNetwork])
+  }, [isNextStepEnabled])
 
   const onSubmitBuy = React.useCallback((buyOption: BraveWallet.OnRampProvider) => {
     if (!selectedAsset || !selectedAssetNetwork || !selectedAccount) {
@@ -249,7 +245,7 @@ export const FundWalletScreen = () => {
       accountsForSelectedAssetNetwork.length && // asset is selected & account is available
       selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
     ) {
-      dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
+      setSelectedAccount(accountsForSelectedAssetNetwork[0])
     }
   }, [
     selectedAsset,
@@ -311,7 +307,7 @@ export const FundWalletScreen = () => {
                   selectedAssetInputAmount={buyAmount}
                   inputName='buy'
                   selectedAsset={selectedAsset}
-                  selectedNetwork={selectedAssetNetwork || selectedNetworkFilter}
+                  selectedNetwork={selectedNetwork}
                   autoFocus={true}
                   onShowCurrencySelection={() => setShowFiatSelection(true)}
                 />

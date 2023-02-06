@@ -7,6 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
+#include "base/ranges/algorithm.h"
 
 namespace ads::privacy {
 
@@ -51,13 +52,13 @@ bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
 }
 
 void UnblindedTokens::RemoveTokens(const UnblindedTokenList& unblinded_tokens) {
-  const auto iter = std::remove_if(
-      unblinded_tokens_.begin(), unblinded_tokens_.end(),
-      [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
-        return base::Contains(unblinded_tokens, unblinded_token);
-      });
-
-  unblinded_tokens_.erase(iter, unblinded_tokens_.cend());
+  unblinded_tokens_.erase(
+      base::ranges::remove_if(
+          unblinded_tokens_,
+          [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
+            return base::Contains(unblinded_tokens, unblinded_token);
+          }),
+      unblinded_tokens_.cend());
 }
 
 void UnblindedTokens::RemoveAllTokens() {

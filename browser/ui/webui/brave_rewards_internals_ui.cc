@@ -73,6 +73,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetAdDiagnostics(const base::Value::List& args);
   void OnGetAdDiagnostics(absl::optional<base::Value::List> diagnostics);
   void SetAdDiagnosticId(const base::Value::List& args);
+  void GetEnvironment(const base::Value::List& args);
+  void OnGetEnvironment(ledger::mojom::Environment environment);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
       nullptr;                                            // NOT OWNED
@@ -132,6 +134,10 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.setAdDiagnosticId",
       base::BindRepeating(&RewardsInternalsDOMHandler::SetAdDiagnosticId,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getEnvironment",
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetEnvironment,
+                          base::Unretained(this)));
 }
 
 void RewardsInternalsDOMHandler::Init() {
@@ -171,10 +177,15 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
     const auto* prefs = profile_->GetPrefs();
     const std::string declared_geo =
         prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
+    const int wallet_creation_environment =
+        prefs->GetInteger(::brave_rewards::prefs::kWalletCreationEnvironment);
     info_dict.Set("walletPaymentId", info->payment_id);
     info_dict.Set("isKeyInfoSeedValid", info->is_key_info_seed_valid);
     info_dict.Set("bootStamp", static_cast<double>(info->boot_stamp));
     info_dict.Set("declaredGeo", declared_geo);
+    if (wallet_creation_environment != -1) {
+      info_dict.Set("walletCreationEnvironment", wallet_creation_environment);
+    }
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
                          base::Value(std::move(info_dict)));
@@ -480,6 +491,28 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
 
   PrefService* prefs = profile_->GetPrefs();
   prefs->SetString(ads::prefs::kDiagnosticId, args[0].GetString());
+}
+
+void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  AllowJavascript();
+
+  rewards_service_->GetEnvironment(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetEnvironment,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetEnvironment(
+    ledger::mojom::Environment environment) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  CallJavascriptFunction("brave_rewards_internals.environment",
+                         base::Value(static_cast<int>(environment)));
 }
 
 }  // namespace

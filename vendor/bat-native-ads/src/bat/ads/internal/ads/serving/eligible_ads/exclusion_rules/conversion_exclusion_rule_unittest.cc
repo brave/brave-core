@@ -18,9 +18,11 @@
 namespace ads {
 
 namespace {
-const std::vector<std::string> kCreativeSetIds = {
+
+constexpr const char* kCreativeSetIds[] = {
     "654f10df-fbc4-4a92-8d43-2edf73734a60",
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
+
 }  // namespace
 
 class BatAdsConversionExclusionRuleTest : public UnitTestBase {};
@@ -43,7 +45,7 @@ TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
 TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
 
   AdEventList ad_events;
 
@@ -64,11 +66,10 @@ TEST_F(BatAdsConversionExclusionRuleTest, DoNotAllowAdIfAlreadyConverted) {
 TEST_F(BatAdsConversionExclusionRuleTest,
        AllowAdIfAlreadyConvertedAndExclusionRuleDisabled) {
   // Arrange
-  base::FieldTrialParams kParameters;
-  kParameters["should_exclude_ad_if_converted"] = "false";
+  base::FieldTrialParams params;
+  params["should_exclude_ad_if_converted"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(exclusion_rules::features::kFeature,
-                                kParameters);
+  enabled_features.emplace_back(exclusion_rules::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -77,7 +78,7 @@ TEST_F(BatAdsConversionExclusionRuleTest,
                                                     disabled_features);
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
 
   AdEventList ad_events;
 
@@ -98,10 +99,10 @@ TEST_F(BatAdsConversionExclusionRuleTest,
 TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfNotAlreadyConverted) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad_1.creative_set_id = kCreativeSetIds[0];
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_set_id = kCreativeSetIds.at(1);
+  creative_ad_2.creative_set_id = kCreativeSetIds[1];
 
   AdEventList ad_events;
 

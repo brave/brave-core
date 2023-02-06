@@ -18,6 +18,7 @@ import { SendScreenWrapper } from './send-screen.style'
 import { SendHeader } from '../components/header/header'
 import { Send } from '../send/send'
 import { BuySendSwapDepositNav } from '../../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import { FeatureRequestButton } from '../../../../components/shared/feature-request-button/feature-request-button'
 
 export const SendScreen = () => {
   // State
@@ -47,6 +48,7 @@ export const SendScreen = () => {
         showSelectTokenModal={showSelectTokenModal}
         selectTokenModalRef={selectTokenModalRef}
       />
+      <FeatureRequestButton />
     </SendScreenWrapper>
   )
 }

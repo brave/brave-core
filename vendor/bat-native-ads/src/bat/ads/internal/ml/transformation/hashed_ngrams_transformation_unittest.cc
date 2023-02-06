@@ -17,9 +17,9 @@ class BatAdsHashedNGramsTransformationTest : public UnitTestBase {};
 
 TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
-  const int kDefaultBucketCount = 10'000;
-  const size_t kExpectedElementCount = 10;
-  const std::string kTestString = "tiny";
+  constexpr int kDefaultBucketCount = 10'000;
+  constexpr size_t kExpectedElementCount = 10;
+  constexpr char kTestString[] = "tiny";
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
 
@@ -44,8 +44,8 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
 
 TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Arrange
-  const int kHashBucketCount = 3;
-  const std::string kTestString = "tiny";
+  constexpr int kHashBucketCount = 3;
+  constexpr char kTestString[] = "tiny";
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
 

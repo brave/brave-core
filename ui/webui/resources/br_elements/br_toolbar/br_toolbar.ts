@@ -11,6 +11,7 @@ import 'chrome://resources/br_elements/br_shared_vars.css.js';
 import 'chrome://resources/br_elements/br_shared_style.css.js';
 import './br_toolbar_search_field.js';
 import {getTemplate} from './br_toolbar.html.js'
+import {loadTimeData} from '../../js/load_time_data.js';
 
 const customCurrentWebUINameMap = {
   extensions: 'settings',
@@ -182,20 +183,35 @@ Polymer({
     })
   },
 
+  getLoadTimeDataBoolean: function(value: string) {
+    if (loadTimeData.data_) {
+      return loadTimeData.getBoolean(value)
+    }
+    return window.loadTimeData.getBoolean(value)
+  },
+
+  getLoadTimeDataString: function(value: string) {
+    if (loadTimeData.data_) {
+      return loadTimeData.getString(value)
+    }
+    return window.loadTimeData.getString(value)
+  },
+
   initStrings: function() {
-    this.historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
-    this.settingsTitle = loadTimeData.getString('brToolbarSettingsTitle')
-    this.bookmarksTitle = loadTimeData.getString('brToolbarBookmarksTitle')
-    this.downloadsTitle = loadTimeData.getString('brToolbarDownloadsTitle')
-    this.braveRewardsTitle = loadTimeData.getString('brToolbarRewardsTitle')
-    this.walletsTitle = loadTimeData.getString('brToolbarWalletsTitle')
+    this.historyTitle = this.getLoadTimeDataString('brToolbarHistoryTitle')
+    this.settingsTitle = this.getLoadTimeDataString('brToolbarSettingsTitle')
+    this.bookmarksTitle = this.getLoadTimeDataString('brToolbarBookmarksTitle')
+    this.downloadsTitle = this.getLoadTimeDataString('brToolbarDownloadsTitle')
+    this.braveRewardsTitle = this.getLoadTimeDataString('brToolbarRewardsTitle')
+    this.walletsTitle = this.getLoadTimeDataString('brToolbarWalletsTitle')
   },
 
   /** @override */
   attached: function () {
     this.shouldShowRewardsButton_ =
-      loadTimeData.getBoolean('brToolbarShowRewardsButton')
-    this.isBraveWalletAllowed_ = loadTimeData.getBoolean('isBraveWalletAllowed')
+      this.getLoadTimeDataBoolean('brToolbarShowRewardsButton')
+    this.isBraveWalletAllowed_ =
+      this.getLoadTimeDataBoolean('isBraveWalletAllowed')
     this.initSlotFilledDetection()
     this.initStrings()
     this.initFontLoadDetection()

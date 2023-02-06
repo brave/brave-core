@@ -1,0 +1,12 @@
+diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
+index d6a90f5185a43d66d0fe22e685fb6565c5a49eb8..60f0681b939649a18c9eec5af2077c8e64de2268 100644
+--- a/components/crash/core/app/crashpad.cc
++++ b/components/crash/core/app/crashpad.cc
+@@ -99,6 +99,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+     // as processed by the backend.
+     DCHECK(browser_process || process_type == "Chrome Installer" ||
+            process_type == "notification-helper" ||
++           BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
+            process_type == "GCPW Installer" || process_type == "GCPW DLL");
+ #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+     DCHECK(browser_process);

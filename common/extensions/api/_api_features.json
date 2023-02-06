@@ -56,12 +56,13 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://bookmarks/*",
+      "chrome://bookmarks-side-panel.top-chrome/*",
+      "chrome://brave-shields.top-chrome/*",
       "chrome://read-later.top-chrome/*",
+      "chrome://rewards-panel.top-chrome/*",
       "chrome://tab-strip/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://wallet/*",
-      "chrome://brave-shields.top-chrome/*",
-      "chrome://rewards-panel.top-chrome/*"
+      "chrome://wallet/*"
     ]
   }, {
     "channel": "stable",

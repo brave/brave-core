@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
-     You can obtain one at http://mozilla.org/MPL/2.0/.
+     You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -92,6 +92,7 @@
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
     <color name="brave_wallet_button_pressed">#737ADE</color>
+    <color name="brave_add_widget_button_pressed">#737ADE</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->    
@@ -213,7 +214,7 @@
 
     <color name="rewards_panel_bg_color">#FAFCFF</color>
     <color name="rewards_panel_text_color">#212529</color>
-    <color name="rewards_panel_secondary_text_color">#868E96</color>
+    <color name="rewards_panel_secondary_text_color">#495057</color>
     <color name="rewards_panel_card_bg_color">#FFFFFF</color>
     <color name="rewards_panel_action_color">#4C54D2</color>
     <color name="rewards_panel_verified_button_border">#E9E9F4</color>
@@ -247,6 +248,7 @@
     <color name="rewards_tipping_white_color">#FFFFFF</color>
     <color name="rewards_tipping_publisher_name_color">#F8F9FA</color>
     <color name="rewards_tipping_text_color">#212529</color>
+    <color name="vbat_warning_color">#FFD43B</color>
 
     <color name="brave_rewards_theme_color">#4C54D2</color>
     <color name="cookie_consent_action_color">@color/brave_action_color</color>

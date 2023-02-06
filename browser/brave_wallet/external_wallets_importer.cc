@@ -13,8 +13,8 @@
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "base/task/bind_post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
@@ -297,7 +297,7 @@ void ExternalWalletsImporter::GetLocalStorage(
       base::BindOnce(
           &OnRunWithStorage,
           base::BindPostTask(
-              base::SequencedTaskRunnerHandle::Get(),
+              base::SequencedTaskRunner::GetCurrentDefault(),
               base::BindOnce(&ExternalWalletsImporter::OnGetLocalStorage,
                              weak_ptr_factory_.GetWeakPtr(),
                              std::move(callback)))));

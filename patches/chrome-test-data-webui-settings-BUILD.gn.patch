@@ -1,12 +1,12 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index b02a47bc39c3f0497ba9e2b7b2febb4a0e02b0bd..699e903ce76e6d454641ffecd646e44cda5542c1 100644
+index a26e1550ec7eaa12782102140337567d75aee33a..61e5a3cc991ecab7bddb7afad7eeb52af3e7a0ed 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
-@@ -234,6 +234,7 @@ ts_library("build_ts") {
-     definitions +=
+@@ -206,6 +206,7 @@ build_webui_tests("build") {
+     ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
    }
-+  import("//brave/browser/resources/settings/sources.gni") definitions += brave_settings_ts_definitions
-   deps = [
-     "..:build_ts",
-     "//chrome/browser/resources/settings:build_ts",
++  import("//brave/browser/resources/settings/sources.gni") ts_definitions += brave_settings_ts_definitions
+ 
+   ts_deps = [ "//chrome/browser/resources/settings:build_ts" ]
+ }

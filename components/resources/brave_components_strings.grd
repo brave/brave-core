@@ -642,6 +642,8 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Not connected</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED" desc="">Verified</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED" desc="">Disconnected (Verified)</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT" desc="">Creation environment:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT" desc="">Current environment:</message>
 
       <!-- WebUI brave tip dialog resources -->
       <message name="IDS_BRAVE_REWARDS_TIP_BAT_FUNDS" desc="">BAT Funds</message>
@@ -684,6 +686,7 @@
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_IS_PENDING" desc="">You’ve set up a pending tip!</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE" desc="">for their post</message>
       <message name="IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT" desc="">Tweet about your support</message>
+      <message name="IDS_BRAVE_REWARDS_TIP_YOU_ARE_CURRENTLY_LOGGED_OUT" desc="">You are currently <ph name="BEGIN_LINK">$1</ph>logged out.<ph name="LINK_END">$2</ph></message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc=""> Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
@@ -831,8 +834,8 @@
       <message name="IDS_BRAVE_UI_PROMO_LEARN_MORE" desc="">Learn more</message>
       <message name="IDS_BRAVE_UI_PROMO_DISMISS" desc="">Don't show again</message>
 
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Verify</message>
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Verifying is optional. However, by verifying, you will be able to withdraw your BAT earned from Brave Rewards to a custodial wallet directly.</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Connect to bitFlyer</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Connecting Brave Rewards to a bitFlyer account will let you earn BAT and withdraw your BAT earnings from Brave Rewards.</message>
 
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>

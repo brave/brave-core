@@ -11,10 +11,10 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/widget/widget.h"
 
 #if defined(USE_AURA)
 #include "ui/views/view_constants_aura.h"
@@ -37,7 +37,7 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   // not get focus.
   params.activatable = views::Widget::InitParams::Activatable::kNo;
 
-  auto widget = std::make_unique<views::Widget>();
+  auto widget = std::make_unique<ThemeCopyingWidget>(browser_view->GetWidget());
   widget->Init(std::move(params));
 #if defined(USE_AURA)
   widget->GetNativeView()->SetProperty(views::kHostViewKey, host_view);
@@ -60,7 +60,7 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
     : browser_view_(browser_view),
       host_(host),
       region_view_(AddChildView(std::make_unique<VerticalTabStripRegionView>(
-          browser_view_->browser(),
+          browser_view_,
           browser_view_->tab_strip_region_view()))) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
@@ -162,31 +162,18 @@ void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
 void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
+  // The corner radius value refers to the that of menu widget. Looks fit for
+  // us.
+  // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
   SkPath path;
-  const bool is_vertical_tab_left_most =
-      !static_cast<BraveBrowserView*>(browser_view_)->IsSidebarVisible() ||
-      browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
-          prefs::kSidePanelHorizontalAlignment);
-
-  if (is_vertical_tab_left_most) {
-    // We should clip the bottom-left corner too.
-    // The corner radius value refers to the that of menu widget. Looks fit for
-    // us.
-    // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
-    constexpr int kCornerRadius = 8;
-    path.moveTo(1, 0);
-    path.lineTo(width(), 0);
-    path.lineTo(width(), height() - 1);
-    path.lineTo(1 + kCornerRadius, height() - 1);
-    path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
-                SkPathDirection::kCW, -kCornerRadius, -kCornerRadius);
-    path.close();
-  } else {
-    path.lineTo(width(), 0);
-    path.lineTo(width(), height() - 1);
-    path.lineTo(0, height() - 1);
-    path.close();
-  }
+  constexpr int kCornerRadius = 8;
+  path.moveTo(0, 0);
+  path.lineTo(width(), 0);
+  path.lineTo(width(), height() - 1);
+  path.lineTo(0 + kCornerRadius, height() - 1);
+  path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
+              SkPathDirection::kCW, -kCornerRadius, -kCornerRadius);
+  path.close();
   SetClipPath(path);
 }
 #endif

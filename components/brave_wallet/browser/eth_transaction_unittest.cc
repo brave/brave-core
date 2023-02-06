@@ -116,10 +116,7 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
       &private_key));
 
   HDKey key;
-  key.SetPrivateKey(
-      std::unique_ptr<std::vector<uint8_t>, SecureZeroVectorDeleter<uint8_t>>(
-          new std::vector<uint8_t>(private_key),
-          SecureZeroVectorDeleter<uint8_t>()));
+  key.SetPrivateKey(private_key);
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(
       "0x09", "0x4a817c800", "0x5208",
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",

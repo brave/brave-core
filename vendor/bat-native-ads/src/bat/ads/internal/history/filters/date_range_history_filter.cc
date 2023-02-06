@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/history/filters/date_range_history_filter.h"
 
-#include <algorithm>
+#include "base/ranges/algorithm.h"
 
 namespace ads {
 
@@ -17,14 +17,13 @@ HistoryItemList DateRangeHistoryFilter::Apply(
     const HistoryItemList& history) const {
   HistoryItemList filtered_history = history;
 
-  const auto iter =
-      std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [=](const HistoryItemInfo& history_item) {
-                       return history_item.created_at < from_time_ ||
-                              history_item.created_at > to_time_;
-                     });
-
-  filtered_history.erase(iter, filtered_history.cend());
+  filtered_history.erase(
+      base::ranges::remove_if(filtered_history,
+                              [=](const HistoryItemInfo& history_item) {
+                                return history_item.created_at < from_time_ ||
+                                       history_item.created_at > to_time_;
+                              }),
+      filtered_history.cend());
 
   return filtered_history;
 }

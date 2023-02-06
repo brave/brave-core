@@ -6,8 +6,8 @@
 #include "bat/ads/notification_ad_value_util.h"
 
 #include "base/containers/circular_deque.h"
+#include "base/ranges/algorithm.h"
 #include "base/test/values_test_util.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -91,7 +91,7 @@ TEST_F(BatAdsNotificationAdValueUtilTest, FromListValue) {
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
   const base::circular_deque<NotificationAdInfo> expected_ads = {ad, ad};
-  EXPECT_TRUE(IsEqualContainers(expected_ads, ads));
+  EXPECT_TRUE(base::ranges::equal(expected_ads, ads));
 }
 
 }  // namespace ads

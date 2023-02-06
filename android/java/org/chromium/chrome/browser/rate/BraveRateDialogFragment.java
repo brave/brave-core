@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.rate;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +27,23 @@ import org.chromium.chrome.R;
 public class BraveRateDialogFragment extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "brave_rating_dialog_tag";
     private static final String TAG = "RateDialogFragment";
+    private boolean mIsFromSettings;
 
-    public static BraveRateDialogFragment newInstance() {
-        return new BraveRateDialogFragment();
+    public static BraveRateDialogFragment newInstance(boolean isFromSettings) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(RateUtils.FROM_SETTINGS, isFromSettings);
+
+        BraveRateDialogFragment rateDialogFragment = new BraveRateDialogFragment();
+        rateDialogFragment.setArguments(bundle);
+        return rateDialogFragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getArguments() != null) {
+            mIsFromSettings = getArguments().getBoolean(RateUtils.FROM_SETTINGS);
+        }
     }
 
     @Override
@@ -69,8 +84,10 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
         ImageView happyImageView = view.findViewById(R.id.happyImageView);
         happyImageView.setOnClickListener((v) -> {
             dismiss();
-            BraveAskPlayStoreRatingDialog.showBraveAskPlayStoreRatingDialog(
-                    (AppCompatActivity) getActivity());
+            BraveAskPlayStoreRatingDialog fragment =
+                    BraveAskPlayStoreRatingDialog.newInstance(mIsFromSettings);
+            fragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(),
+                    BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
         });
     }
 
@@ -81,12 +98,5 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
             BraveRateThanksFeedbackDialog.showBraveRateThanksFeedbackDialog(
                     (AppCompatActivity) getActivity());
         });
-    }
-
-    public static void showBraveRatingDialog(AppCompatActivity activity) {
-        if (activity != null) {
-            BraveRateDialogFragment braveRateDialogFragment = BraveRateDialogFragment.newInstance();
-            braveRateDialogFragment.show(activity.getSupportFragmentManager(), TAG_FRAGMENT);
-        }
     }
 }

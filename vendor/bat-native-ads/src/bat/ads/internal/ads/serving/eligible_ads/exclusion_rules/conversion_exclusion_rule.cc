@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
 
-#include <algorithm>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -20,9 +20,8 @@ constexpr int kConversionCap = 1;
 
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
-  const int count = std::count_if(
-      ad_events.cbegin(), ad_events.cend(),
-      [&creative_ad](const AdEventInfo& ad_event) {
+  const int count = base::ranges::count_if(
+      ad_events, [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kConversion &&
                ad_event.creative_set_id == creative_ad.creative_set_id;
       });

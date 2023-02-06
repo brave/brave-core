@@ -328,7 +328,6 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int statsCount = getStatsCount();
         int topSitesCount = getTopSitesCount();
         int newsLoadingCount = shouldDisplayNewsLoading() ? 1 : 0;
-
         if (mIsDisplayNewsOptin) {
             return statsCount + topSitesCount + TWO_ITEMS_SPACE + newsLoadingCount;
         } else if (mIsDisplayNews) {
@@ -468,6 +467,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setNewsLoading(boolean isNewsLoading) {
         mIsNewsLoading = isNewsLoading;
+        if (isNewsLoading) {
+            notifyItemInserted(getStatsCount() + getTopSitesCount() + ONE_ITEM_SPACE);
+        } else {
+            notifyItemRemoved(getStatsCount() + getTopSitesCount() + ONE_ITEM_SPACE);
+        }
         notifyItemRangeChanged(getStatsCount() + getTopSitesCount(), TWO_ITEMS_SPACE);
     }
 

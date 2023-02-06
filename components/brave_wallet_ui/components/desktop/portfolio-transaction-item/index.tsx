@@ -13,7 +13,6 @@ import {
   BraveWallet,
   WalletRoutes
 } from '../../../constants/types'
-import { ParsedTransaction } from '../../../common/hooks/transaction-parser'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
@@ -22,10 +21,15 @@ import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
-import { getLocaleKeyForTxStatus } from '../../../utils/tx-utils'
+import {
+  getGasFeeFiatValue,
+  getTransactionStatusString,
+  ParsedTransactionWithoutFiatValues
+} from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
-import { accountInfoEntityAdaptorInitialState, makeSelectNetworkByIdFromQuery } from '../../../common/slices/entities/account-info.entity'
+import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
 import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 // Hooks
 import { useExplorer } from '../../../common/hooks'
@@ -33,6 +37,7 @@ import {
   useGetAccountInfosRegistryQuery,
   useGetAllNetworksQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetTokenSpotPriceQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 
@@ -65,11 +70,18 @@ import { StatusBubble } from '../../shared/style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
+import { Skeleton, LoadingSkeletonStyleProps } from '../../shared/loading-skeleton/styles'
 
 export interface Props {
-  transaction: ParsedTransaction
+  transaction: ParsedTransactionWithoutFiatValues
   displayAccountName: boolean
   isFocused?: boolean
+}
+
+const skeletonProps: LoadingSkeletonStyleProps = {
+  width: '38px',
+  height: '14px',
+  enableAnimation: true
 }
 
 export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(({
@@ -78,11 +90,10 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   isFocused
 }: Props, forwardedRef) => {
   const {
+    formattedSendCurrencyTotal,
+    gasFee,
     isFilecoinTransaction,
-    isSolanaTransaction,
-    fiatValue,
-    formattedNativeCurrencyTotal,
-    gasFeeFiat
+    isSolanaTransaction
   } = transaction
 
   // routing
@@ -91,29 +102,95 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   // redux
   const dispatch = useDispatch()
 
-  // selectors
-  const selectNetworkById = React.useMemo(makeSelectNetworkByIdFromQuery, [])
-
   // queries
-  const { data: defaultFiatCurrency = '' } = useGetDefaultFiatCurrencyQuery(undefined)
+  const {
+    data: defaultFiatCurrency = '',
+    isLoading: isLoadingDefaultFiatCurrency
+  } = useGetDefaultFiatCurrencyQuery(undefined)
 
-  const { txNetwork } = useGetAllNetworksQuery(undefined, {
-    selectFromResult: (result) => ({
-      txNetwork: selectNetworkById(result, transaction.chainId)
-    }),
+  const {
+    txNetwork,
+    networkAsset,
+    isLoading: isLoadingAllNetworks
+  } = useGetAllNetworksQuery(undefined, {
+    selectFromResult: (result) => {
+      const txNetwork = result.data?.entities[transaction.chainId]
+      return ({
+        ...result,
+        txNetwork,
+        networkAsset: makeNetworkAsset(txNetwork)
+      })
+    },
     skip: !transaction.chainId
   })
 
-  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+  const {
+    userVisibleTokensInfo,
+    isLoading: isLoadingUserVisibleTokens
+  } = useGetUserTokensRegistryQuery(undefined, {
     selectFromResult: result => ({
+      ...result,
       userVisibleTokensInfo: selectAllUserAssetsFromQueryResult(result)
     })
   })
 
   const {
-    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState
+    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
+    isLoading: isLoadingAccountInfos
   } = useGetAccountInfosRegistryQuery(undefined)
   const account = accountInfosRegistry.entities[transaction.accountAddress]
+
+  const {
+    fiatValue,
+    isLoading: isLoadingTokenSpotPrice
+  } = useGetTokenSpotPriceQuery({
+    chainId: transaction.token?.chainId || '',
+    contractAddress: transaction.token?.contractAddress || '',
+    isErc721: transaction.token?.isErc721 || false,
+    symbol: transaction.token?.symbol || '',
+    tokenId: transaction.token?.tokenId || ''
+  }, {
+    skip: !transaction.token || !transaction.value,
+    // TODO: selector
+    selectFromResult: (result) => {
+      const price = result.data?.price || '0'
+      const fiatValue = new Amount(transaction.value)
+        .times(price)
+        .value?.toString() || '0'
+
+      return {
+        ...result,
+        fiatValue
+      }
+    }
+  })
+
+  const {
+    gasFeeFiat,
+    isLoading: isLoadingGasAssetPrice
+  } = useGetTokenSpotPriceQuery({
+    chainId: networkAsset?.chainId || '',
+    contractAddress: networkAsset?.contractAddress || '',
+    isErc721: networkAsset?.isErc721 || false,
+    symbol: networkAsset?.symbol || '',
+    tokenId: networkAsset?.tokenId || ''
+  },
+  {
+    skip: !networkAsset || !gasFee || !txNetwork,
+    // TODO: selector
+    selectFromResult: (res) => {
+      const price = res.data?.price ?? '0'
+      const gasFeeFiat = getGasFeeFiatValue({
+        gasFee,
+        networkSpotPrice: price,
+        txNetwork
+      })
+      return ({
+        ...res,
+        gasFeeFiat
+      })
+    }
+  })
 
   // state
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
@@ -209,16 +286,23 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
   }, [history])
 
-  const onAssetClick = React.useCallback((symbol?: string) => () => {
-    if (!symbol) {
-      return
-    }
+  const onAssetClick = React.useCallback((symbol?: string) =>
+    isLoadingUserVisibleTokens ? undefined : () => {
+      if (!symbol) {
+        return
+      }
 
-    const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
-    if (asset) {
-      onSelectAsset(asset)
-    }
-  }, [onSelectAsset, userVisibleTokensInfo])
+      const asset = findTokenBySymbol(symbol, userVisibleTokensInfo)
+      if (asset) {
+        onSelectAsset(asset)
+      }
+    },
+    [
+      onSelectAsset,
+      userVisibleTokensInfo,
+      isLoadingUserVisibleTokens
+    ]
+  )
 
   // memos
   const fromOrb = React.useMemo(() => {
@@ -385,7 +469,10 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             {/* Display account name only if rendered under Portfolio view */}
             {displayAccountName && account?.name &&
               <DetailTextLight>
-                {account.name}
+                {isLoadingAccountInfos
+                  ? <Skeleton {...skeletonProps} />
+                  : account?.name
+                }
               </DetailTextLight>
             }
 
@@ -416,7 +503,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         <StatusRow>
           <StatusBubble status={transaction.status} />
           <DetailTextDarkBold>
-            {getLocale(getLocaleKeyForTxStatus(transaction.status))}
+            {getTransactionStatusString(transaction.status)}
           </DetailTextDarkBold>
         </StatusRow>
 
@@ -425,9 +512,12 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
           <BalanceColumn>
             <DetailTextDark>
               {/* We need to return a Transaction Time Stamp to calculate Fiat value here */}
-              {formattedTransactionFiatValue}
+              {(isLoadingTokenSpotPrice || isLoadingDefaultFiatCurrency)
+                ? <Skeleton {...skeletonProps} />
+                : formattedTransactionFiatValue || 'NOT FOUND!'
+              }
             </DetailTextDark>
-            <DetailTextLight>{formattedNativeCurrencyTotal}</DetailTextLight>
+            <DetailTextLight>{formattedSendCurrencyTotal}</DetailTextLight>
           </BalanceColumn>
 
           {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
@@ -437,14 +527,18 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <>
                   <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
                   <TransactionFeeTooltipBody>
-                    {
-                      txNetwork && new Amount(transaction.gasFee)
-                        .divideByDecimals(txNetwork.decimals)
-                        .formatAsAsset(6, txNetwork.symbol)
+                    {isLoadingAllNetworks
+                      ? <Skeleton {...skeletonProps} />
+                      : txNetwork && new Amount(transaction.gasFee)
+                          .divideByDecimals(txNetwork.decimals)
+                          .formatAsAsset(6, txNetwork.symbol)
                     }
                   </TransactionFeeTooltipBody>
                   <TransactionFeeTooltipBody>
-                    {formattedGasFeeFiatValue}
+                    {(isLoadingDefaultFiatCurrency || isLoadingGasAssetPrice)
+                      ? <Skeleton {...skeletonProps} />
+                      : formattedGasFeeFiatValue
+                    }
                   </TransactionFeeTooltipBody>
                 </>
               }

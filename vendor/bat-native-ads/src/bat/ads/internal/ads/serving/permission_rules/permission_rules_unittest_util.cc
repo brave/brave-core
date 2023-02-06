@@ -12,11 +12,11 @@
 
 namespace ads {
 
-void ForcePermissionRules() {
-  ForceCatalogPermissionRule();
-  ForceIssuersPermissionRule();
-  ForceUnblindedTokensPermissionRule();
-  ForceUserActivityPermissionRule();
+void ForcePermissionRulesForTesting() {
+  ForceCatalogPermissionRuleForTesting();
+  ForceIssuersPermissionRuleForTesting();
+  ForceUnblindedTokensPermissionRuleForTesting();
+  ForceUserActivityPermissionRuleForTesting();
 }
 
 }  // namespace ads

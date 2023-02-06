@@ -26,6 +26,8 @@ export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
 export const selectedPortfolioTimeline = ({ wallet }: State) => wallet.selectedPortfolioTimeline
 export const assetAutoDiscoveryCompleted = ({ wallet }: State) => wallet.assetAutoDiscoveryCompleted
+export const hasFeeEstimatesError = ({ wallet }: State) =>
+  wallet.hasFeeEstimatesError
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const accounts = ({ wallet }: State) => wallet.accounts
@@ -40,6 +42,7 @@ export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const gasEstimates = ({ wallet }: State) => wallet.gasEstimates
 export const knownTransactions = ({ wallet }: State) => wallet.knownTransactions
 export const networkList = ({ wallet }: State) => wallet.networkList
+export const hiddenNetworkList = ({ wallet }: State) => wallet.hiddenNetworkList
 export const onRampCurrencies = ({ wallet }: State) => wallet.onRampCurrencies
 export const pendingTransactions = ({ wallet }: State) => wallet.pendingTransactions
 export const portfolioPriceHistory = ({ wallet }: State) => wallet.portfolioPriceHistory

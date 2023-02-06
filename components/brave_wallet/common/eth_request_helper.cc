@@ -677,19 +677,32 @@ bool ParseEthSendRawTransactionParams(const std::string& json,
   return true;
 }
 
-bool ParseEthSubscribeParams(const std::string& json, std::string* event_type) {
-  if (!event_type)
+bool ParseEthSubscribeParams(const std::string& json,
+                             std::string* event_type,
+                             base::Value::Dict* filter) {
+  if (filter == nullptr) {
     return false;
+  }
 
   auto list = GetParamsList(json);
-  if (!list || list->size() != 1)
+  if (!list || list->empty() || list->size() > 2) {
     return false;
+  }
 
-  const std::string* event_type_str = (*list)[0].GetIfString();
-  if (!event_type_str)
+  if (!(*list)[0].is_string()) {
     return false;
+  }
 
-  *event_type = *event_type_str;
+  *event_type = (*list)[0].GetString();
+
+  if (list->size() == 2) {
+    if (!(*list)[1].is_dict()) {
+      return false;
+    }
+
+    *filter = std::move((*list)[1].GetDict());
+  }
+
   return true;
 }
 

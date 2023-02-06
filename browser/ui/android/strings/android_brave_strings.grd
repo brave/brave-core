@@ -204,7 +204,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Turn notifications back on if you'd like to keep earning BAT and receiving weekly privacy reports.
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_REWARDS" desc="Text description for When ONLY Brave Rewards is TURNED ON.">
-        Turn notifications back on if you'd like to keep earning BAT
+        Turn notifications back on if you'd like to keep earning BAT.
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_DIALOG_DESCRIPTION_ONLY_PRIVACY" desc="Text description for When ONLY Privacy Report is TURNED ON.">
         Turn notifications back on if you'd like to keep receiving weekly privacy reports.
@@ -453,7 +453,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Turn on Brave News
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_SEARCH" desc="Text for Brave News settings search">
-        Search for site, topic or RSS feed
+        Search for site, topic, or RSS feed
       </message>
       <message name="IDS_POPULAR" desc="Text for Brave News settings popular sources">
         Popular
@@ -461,10 +461,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_POPULAR_SUBTITLE" desc="Text for Brave News settings popular sources subtitle">
         Ranked list of sources
       </message>
-      <message name="IDS_SUGGESTED" desc="Text for Brave News settings suggested">
-        Suggested
+      <message name="IDS_SUGGESTIONS" desc="Text for Brave News settings suggestions">
+        Suggestions
       </message>
-      <message name="IDS_SUGGESTED_SUBTITLE" desc="Text for Brave News settings suggested subtitle">
+      <message name="IDS_SUGGESTIONS_SUBTITLE" desc="Text for Brave News settings suggestions subtitle">
         Some sources you might like
       </message>
       <message name="IDS_CHANNELS" desc="Text for Brave News settings channels">
@@ -1286,6 +1286,9 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
       </message>
+      <message name="IDS_LOGIN_PROVIDER">
+        Log in to your <ph name="WALLET_PROVIDER">%1$s</ph> account
+      </message>
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
       </message>
@@ -1340,9 +1343,6 @@ Are you sure you want to do this?
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_3" desc="Text for block trackers and ads option.">
         Allow all trackers &amp; ads
       </message>
-      <message name="IDS_BLOCK_CROSS_SITE_COOKIES" desc="Title for shields option.">
-        Block cross-site cookies
-      </message>
       <message name="IDS_BLOCK_COOKIES" desc="Title for shields option.">
         Block Cookies
       </message>
@@ -1351,6 +1351,9 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_1" desc="Title for shields option.">
         Block all cookies
+      </message>
+      <message name="IDS_BLOCK_COOKIES_OPTION_2" desc="Title for shields option.">
+        Block cross-site cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_OPTION_3" desc="Title for shields option.">
         Allow all cookies
@@ -1681,6 +1684,12 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
         Plants trees, based in Berlin
+      </message>
+      <message name="IDS_DAUM_DESC" desc="Onboarding SE text">
+        South Korean web portal &amp; search
+      </message>
+      <message name="IDS_NAVER_DESC" desc="Onboarding SE text">
+        South Korean web portal &amp; search
       </message>
       <message name="IDS_BRAVE_DESC" desc="Onboarding SE text">
         Private, independent, user-first
@@ -2036,6 +2045,33 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_BRAVE_WALLET_TOOLBAR_LOCK" desc="Title for brave wallet toolbar lock option.">
       Lock
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOOLBAR" desc="Title for Brave wallet NFT detail screen toolbar.">
+      NFT Detail
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_DESCRIPTION" desc="Description text for Brave wallet NFT asset detail.">
+      Description
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_BLOCKCHAIN" desc="Blockchain text for Brave wallet NFT asset detail.">
+      Blockchain
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_STANDARD" desc="Token standard text for Brave wallet NFT asset detail.">
+      Token Standard
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_ERC_721" desc="Type of NFT token standard." translateable="false">
+      ERC 721
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_SOL_SPL" desc="Type of NFT token standard adopted by Solana." translateable="false">
+      SPL
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_TOKEN_ID" desc="Token ID text for brave wallet NFT asset detail.">
+      Token ID
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_MINT_ADDRESS" desc="Mint address text for brave wallet NFT asset detail.">
+      Mint Address
+    </message>
+    <message name="IDS_BRAVE_WALLET_NFT_IMAGE_NOT_AVAILABLE" desc="Text message for image not available when loading NFT image.">
+      Image not available
     </message>
     <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
       Automatically lock Brave Wallet
@@ -2652,7 +2688,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Auto-Contribute
     </message>
     <message name="IDS_ONE_TIME_TIP" desc="Title text for `One-Time Tip` section in Brave rewards panel">
-      One-Time Tip
+      One-Time Tips
     </message>
     <message name="IDS_MONTHLY_TIPS" desc="Title text for `Monthly Tips` section in Brave rewards panel">
       Monthly Tips
@@ -3332,6 +3368,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ASCII" desc="A title to view an ASCII message if Unicode characters detected">
       View message in ASCII encoding
     </message>
+    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_DOMAIN_SECTION" desc="A domain section template of sign message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Domain:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_DOMAIN_TEXT">%1$s</ph><ph name="BREAK">&lt;br&gt;</ph>
+    </message>
+    <message name="IDS_WALLET_SIGN_MESSAGE_DETAILS_MESSAGE_SECTION" desc="A message section template of sign message details" translateable="false">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Message:<ph name="END_BOLD">&lt;/b&gt;</ph><ph name="BREAK">&lt;br&gt;</ph><ph name="ESCAPED_MESSAGE_TEXT">%1$s</ph>
+    </message>
     <message name="IDS_WALLET_ADD_SOLANA_NFT_CHECKBOX" desc="A title for a Solana NFT custom assets checkbox" translateable="false">
       NFT
     </message>
@@ -3423,7 +3465,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Error: Limited Uphold account functionality
     </message>
     <message name="IDS_LIMITED_FUNCTIONALITY_NOTIFICATION_TEXT" desc="Rewards panel limited functionality notification text">
-      Accourding to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
+      According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
     </message>
     <message name="IDS_BRAVE_ADS_TEXT" desc="Brave ads text">
       Brave Ads
@@ -3460,6 +3502,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_NFTS" desc="NFTs as title">
       NFTs
+    </message>
+    <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
+      Action required: Connect a custodial account or your vBAT will be lost
+    </message>
+    <message name="IDS_VBAT_SUPPORTED_REGION_TEXT" desc="Vbat modal text for supported region">
+      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
+    </message>
+    <message name="IDS_VBAT_UNSUPPORTED_REGION_TITLE" desc="Vbat modal title text for unsupported region">
+      You still have time to contribute your vBAT to your favorite creators
+    </message>
+    <message name="IDS_VBAT_UNSUPPORTED_REGION_TEXT" desc="Vbat modal text for unsupported region">
+      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">%2$s</ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
     </message>
   </messages>
   </release>

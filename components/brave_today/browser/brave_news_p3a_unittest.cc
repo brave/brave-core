@@ -8,6 +8,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -29,6 +30,11 @@ class BraveNewsP3ATest : public testing::Test {
   }
 
   PrefService* GetPrefs() { return &pref_service_; }
+
+  int GetWeeklySum(const char* pref_name) {
+    WeeklyStorage storage(&pref_service_, pref_name);
+    return storage.GetWeeklySum();
+  }
 
   content::BrowserTaskEnvironment task_environment_;
   base::HistogramTester histogram_tester_;
@@ -61,6 +67,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountBasic) {
   RecordAtSessionStart(prefs);
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 8);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 3, 4);
+
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklySessionCount), 7);
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
@@ -76,6 +84,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 4);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 2, 3);
 
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklySessionCount), 3);
+
   task_environment_.AdvanceClock(base::Days(3));
   RecordAtInit(prefs);
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 5);
@@ -85,6 +95,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklySessionCountTimeFade) {
   RecordAtInit(prefs);
   histogram_tester_.ExpectTotalCount(kWeeklySessionCountHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklySessionCountHistogramName, 0, 1);
+
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklySessionCount), 0);
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklyMaxCardVisitsCount) {
@@ -142,6 +154,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
   task_environment_.AdvanceClock(base::Days(2));
   RecordWeeklyDisplayAdsViewedCount(prefs, true);
 
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklyDisplayAdViewedCount), 3);
+
   task_environment_.AdvanceClock(base::Days(2));
   RecordWeeklyDisplayAdsViewedCount(prefs, false);
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 5);
@@ -159,6 +173,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
   histogram_tester_.ExpectTotalCount(kWeeklyDisplayAdsViewedHistogramName, 7);
   histogram_tester_.ExpectBucketCount(kWeeklyDisplayAdsViewedHistogramName, 0,
                                       2);
+
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklyDisplayAdViewedCount), 0);
 }
 
 TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
@@ -179,6 +195,9 @@ TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
 
   RecordWeeklyAddedDirectFeedsCount(prefs, 1);
   RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklyAddedDirectFeedsCount), 4);
+
   histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 6);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 4,
                                       1);
@@ -192,6 +211,8 @@ TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
   histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 8);
   histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 1,
                                       2);
+
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayWeeklyAddedDirectFeedsCount), 1);
 }
 
 TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
@@ -200,10 +221,10 @@ TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 1);
   histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 0, 1);
 
-  DictionaryPrefUpdate update1(prefs, prefs::kBraveTodayDirectFeeds);
-  update1->SetPath("id1", base::Value(base::Value::Type::DICTIONARY));
-  DictionaryPrefUpdate update2(prefs, prefs::kBraveTodayDirectFeeds);
-  update2->SetPath("id2", base::Value(base::Value::Type::DICTIONARY));
+  ScopedDictPrefUpdate update1(prefs, prefs::kBraveTodayDirectFeeds);
+  update1->Set("id1", base::Value::Dict());
+  ScopedDictPrefUpdate update2(prefs, prefs::kBraveTodayDirectFeeds);
+  update2->Set("id2", base::Value::Dict());
 
   RecordDirectFeedsTotal(prefs);
   histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 2);
@@ -226,6 +247,7 @@ TEST_F(BraveNewsP3ATest, TestTotalCardsViewed) {
   histogram_tester_.ExpectBucketCount(kTotalCardViewsHistogramName, 3, 1);
 
   task_environment_.AdvanceClock(base::Days(4));
+  EXPECT_EQ(GetWeeklySum(prefs::kBraveTodayTotalCardViews), 15);
 
   RecordAtSessionStart(prefs);
   RecordTotalCardViews(prefs, 15);

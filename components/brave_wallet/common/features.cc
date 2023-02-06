@@ -14,6 +14,9 @@ namespace features {
 BASE_FEATURE(kNativeBraveWalletFeature,
              "NativeBraveWallet",
              base::FEATURE_ENABLED_BY_DEFAULT);
+const base::FeatureParam<bool> kShowToolbarTxStatus{
+    &kNativeBraveWalletFeature, "show_toolbar_tx_status", true};
+
 BASE_FEATURE(kBraveWalletFilecoinFeature,
              "BraveWalletFilecoin",
 #if BUILDFLAG(IS_ANDROID)
@@ -43,6 +46,10 @@ BASE_FEATURE(kBraveWalletENSL2Feature,
 
 BASE_FEATURE(kBraveWalletSnsFeature,
              "BraveWalletSns",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletNftPinningFeature,
+             "BraveWalletNftPinning",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features

@@ -229,6 +229,9 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="chromeos_ash">
         </if>
 
+      <if expr="not is_android">
+        </if>
+
       <if expr="is_posix">
         </if>
 

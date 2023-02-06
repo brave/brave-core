@@ -47,8 +47,7 @@ void SearchResultAd::TriggerEvent(
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
     ad_viewed_event_queue_.push_front(std::move(ad_mojom));
-    MaybeTriggerAdViewedEventFromQueue();
-    return;
+    return MaybeTriggerAdViewedEventFromQueue();
   }
 
   event_handler_->FireEvent(
@@ -97,14 +96,12 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
           const mojom::SearchResultAdEventType event_type) {
         DCHECK(mojom::IsKnownEnumValue(event_type));
 
-        if (event_type == mojom::SearchResultAdEventType::kViewed) {
-          if (g_defer_triggering_of_ad_viewed_event_for_testing) {
-            g_deferred_search_result_ad_for_testing = this;
-            return;
-          }
-          trigger_ad_viewed_event_in_progress_ = false;
-          MaybeTriggerAdViewedEventFromQueue();
+        if (g_defer_triggering_of_ad_viewed_event_for_testing) {
+          g_deferred_search_result_ad_for_testing = this;
+          return;
         }
+        trigger_ad_viewed_event_in_progress_ = false;
+        MaybeTriggerAdViewedEventFromQueue();
       });
 }
 

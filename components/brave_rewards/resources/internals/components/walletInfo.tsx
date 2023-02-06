@@ -8,6 +8,8 @@ import * as React from 'react'
 import { getLocale } from '../../../../common/locale'
 import { formatDate } from '../utils'
 
+import * as mojom from '../../shared/lib/mojom'
+
 interface Props {
   state: RewardsInternals.State
 }
@@ -20,6 +22,19 @@ const getKeyInfoSeedValidString = (isValid: boolean) => {
   return getLocale('invalid')
 }
 
+const getEnvironmentString = (environment: mojom.Environment | undefined) => {
+  switch (environment) {
+    case mojom.Environment.STAGING:
+      return 'Staging'
+    case mojom.Environment.PRODUCTION:
+      return 'Production'
+    case mojom.Environment.DEVELOPMENT:
+      return 'Development'
+    default:
+      return getLocale('notSet')
+  }
+}
+
 const getInfo = (state: RewardsInternals.State) => {
   return (
     <>
@@ -29,6 +44,21 @@ const getInfo = (state: RewardsInternals.State) => {
       <div>
         {getLocale('walletPaymentId')} {state.info.walletPaymentId || ''}
       </div>
+      {
+        state.info.walletCreationEnvironment !== undefined && (
+          <div>
+            {getLocale('walletCreationEnvironment')} {getEnvironmentString(state.info.walletCreationEnvironment)}
+          </div>
+        )
+      }
+      {
+        state.info.walletCreationEnvironment !== undefined &&
+        state.info.walletCreationEnvironment !== state.environment && (
+          <div style={{ color: 'red' }} >
+            {getLocale('currentEnvironment')} {getEnvironmentString(state.environment)}
+          </div>
+        )
+      }
       <div>
         {getLocale('bootStamp')} {formatDate(state.info.bootStamp * 1000)}
       </div>

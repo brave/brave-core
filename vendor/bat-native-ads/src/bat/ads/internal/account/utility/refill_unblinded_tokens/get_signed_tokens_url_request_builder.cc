@@ -39,7 +39,7 @@ GURL GetSignedTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec =
       base::StringPrintf("%s/v3/confirmation/token/%s?nonce=%s",
                          server::GetNonAnonymousHost().c_str(),
-                         wallet_.id.c_str(), nonce_.c_str());
+                         wallet_.payment_id.c_str(), nonce_.c_str());
   return GURL(spec);
 }
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/prebuild/create_installer_string_rc.py b/chrome/installer/util/prebuild/create_installer_string_rc.py
-index 7c642731c440ce864ac88e251e84e772f6aaace3..bc0cc97fa347f9bc2904396f4b71218a2de556f3 100755
+index 9b174616ccee685ce6e672084795a25b8f067426..509876a90b75a18cb9155abecbc5990940725488 100755
 --- a/chrome/installer/util/prebuild/create_installer_string_rc.py
 +++ b/chrome/installer/util/prebuild/create_installer_string_rc.py
-@@ -92,3 +92,5 @@ MODE_SPECIFIC_STRINGS = {
+@@ -104,3 +104,5 @@ MODE_SPECIFIC_STRINGS = {
      ],
    },
  }

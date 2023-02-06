@@ -36,6 +36,9 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace adblock {
+struct RegexManagerDiscardPolicy;
+}
 namespace brave_shields {
 
 class AdBlockEngine;
@@ -117,6 +120,14 @@ class AdBlockService {
 
   void EnableTag(const std::string& tag, bool enabled);
 
+  // Methods for brave://adblock-internals.
+  using GetDebugInfoCallback =
+      base::OnceCallback<void(base::Value::Dict, base::Value::Dict)>;
+  void GetDebugInfoAsync(GetDebugInfoCallback callback);
+  void DiscardRegex(uint64_t regex_id);
+
+  void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
+
   base::SequencedTaskRunner* GetTaskRunner();
 
   void UseSourceProvidersForTest(AdBlockFiltersProvider* source_provider,
@@ -135,6 +146,10 @@ class AdBlockService {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
   }
+
+  void OnGetDebugInfoFromDefaultEngine(
+      GetDebugInfoCallback callback,
+      base::Value::Dict default_engine_debug_info);
 
   void TagExistsForTest(const std::string& tag,
                         base::OnceCallback<void(bool)> cb);

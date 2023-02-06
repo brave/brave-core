@@ -20,7 +20,7 @@ import ConfirmTransactionPanel from './confirm-transaction-panel/confirm-transac
 import PanelTab from './panel-tab'
 import ConnectHardwareWalletPanel from './connect-hardware-wallet-panel'
 import TransactionDetailBox from './transaction-box'
-import EditGas from './edit-gas'
+import EditGas from './edit-gas/edit-gas'
 import SitePermissions from './site-permissions-panel'
 import ConnectedAccountItem from './connected-account-item'
 import AddSuggestedTokenPanel from './add-suggested-token-panel'

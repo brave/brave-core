@@ -28,6 +28,8 @@ class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
+  static BraveBrowserWindow* From(BrowserWindow*);
+
   virtual void StartTabCycling() {}
 
   // Returns the rectangle info of the Shield's panel.
@@ -45,6 +47,7 @@ class BraveBrowserWindow : public BrowserWindow {
 
 #if defined(TOOLKIT_VIEWS)
   virtual sidebar::Sidebar* InitSidebar();
+  virtual bool HasSelectedURL() const;
 #endif
 
   virtual void ShowBraveVPNBubble() {}

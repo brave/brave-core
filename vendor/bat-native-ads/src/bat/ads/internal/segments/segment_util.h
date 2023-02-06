@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SEGMENTS_SEGMENT_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SEGMENTS_SEGMENT_UTIL_H_
 
-#include <algorithm>
 #include <string>
 
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/segments/segment_alias.h"
 
 namespace ads {
@@ -24,10 +24,8 @@ SegmentList GetSegments(const T& creative_ads) {
     segments.push_back(creative_ad.segment);
   }
 
-  std::sort(segments.begin(), segments.end());
-  const auto iter = std::unique(segments.begin(), segments.end());
-  segments.erase(iter, segments.end());
-
+  base::ranges::sort(segments);
+  segments.erase(base::ranges::unique(segments), segments.cend());
   return segments;
 }
 

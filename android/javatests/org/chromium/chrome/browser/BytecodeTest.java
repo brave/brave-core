@@ -27,11 +27,11 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.jank_tracker.JankTracker;
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
@@ -49,6 +49,8 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.logo.CachedTintedBitmap;
+import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.logo.LogoView;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
@@ -104,6 +106,7 @@ import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
+import org.chromium.components.browser_ui.site_settings.SiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
@@ -125,12 +128,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
  * See classes from 'brave/build/android/bytecode/java/org/brave/bytecode' folder.
  * Classes, methods and fields should be whitelisted in 'brave/android/java/apk_for_test.flags'.
  */
+@Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BytecodeTest {
     @Test
@@ -294,8 +299,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoCoordinator"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
@@ -388,9 +393,6 @@ public class BytecodeTest {
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "resetList", false, null));
         Assert.assertTrue(methodExists(
-                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
-                "getResourceItem", false, null));
-        Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleWebsiteSettings",
                 "getPreferenceKey", false, null));
         Assert.assertTrue(methodExists(
@@ -448,11 +450,6 @@ public class BytecodeTest {
                 "isJavascriptSchemeOrInvalidUrl", true, boolean.class, String.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/IntentHandler",
                 "extractUrlFromIntent", true, String.class, Intent.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoCoordinator",
-                "updateVisibility", true, void.class));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
-                "setWidgetEnabled", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "wrapDialogDismissalCallback", true, Callback.class, Callback.class));
@@ -462,6 +459,8 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl",
                 "isVisibleToUser", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoMediator",
+                "updateVisibility", true, void.class));
     }
 
     @Test
@@ -481,13 +480,13 @@ public class BytecodeTest {
                 "getResourceItem", true,
                 getClassForPath(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                int.class));
+                int.class, SiteSettingsDelegate.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
                 "getResourceItem", true,
                 getClassForPath(
                         "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
-                int.class));
+                int.class, SiteSettingsDelegate.class));
         Assert.assertTrue(methodExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "getAddExceptionDialogMessage", true, String.class));
@@ -713,10 +712,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
-                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Context.class,
-                Callback.class, LogoView.class, boolean.class, Callback.class, Runnable.class,
-                boolean.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoMediator",
+                "org/chromium/chrome/browser/logo/BraveLogoMediator", Context.class, Callback.class,
+                PropertyModel.class, boolean.class, Callback.class, Runnable.class, boolean.class,
+                LogoCoordinator.VisibilityObserver.class, CachedTintedBitmap.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
@@ -912,7 +911,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mAssistantVoiceSearchServiceSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mShouldShowLogo"));
+                fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mLogoModel"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mShouldShowLogo"));
     }
 
     @Test

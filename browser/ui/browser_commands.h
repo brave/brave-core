@@ -10,7 +10,7 @@ class Browser;
 class GURL;
 
 namespace brave {
-
+bool HasSelectedURL(Browser* browser);
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();

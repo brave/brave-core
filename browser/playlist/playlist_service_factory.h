@@ -11,6 +11,11 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
 namespace playlist {
 class PlaylistService;
 class MediaDetectorComponentManager;
@@ -21,6 +26,10 @@ class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
 
   static PlaylistService* GetForBrowserContext(
       content::BrowserContext* context);
+#if BUILDFLAG(IS_ANDROID)
+  static mojo::PendingRemote<mojom::PlaylistService> GetForContext(
+      content::BrowserContext* context);
+#endif  // BUILDFLAG(IS_ANDROID)
   static PlaylistServiceFactory* GetInstance();
 
   PlaylistServiceFactory(const PlaylistServiceFactory&) = delete;

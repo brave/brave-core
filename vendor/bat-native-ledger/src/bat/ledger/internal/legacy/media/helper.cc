@@ -5,10 +5,6 @@
 
 #include "bat/ledger/internal/legacy/media/helper.h"
 
-#include "base/base64.h"
-#include "base/json/json_reader.h"
-#include "bat/ledger/internal/legacy/bat_helper.h"
-
 namespace braveledger_media {
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
@@ -19,24 +15,6 @@ std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
   return type + "_" + mediaId;
 }
 
-void GetTwitchParts(
-    const std::string& query,
-    std::vector<base::flat_map<std::string, std::string>>* parts) {
-  size_t pos = query.find("data=");
-
-  if (std::string::npos == pos || query.length() <= 5) {
-    return;
-  }
-
-  std::string varValue = query.substr(5);
-  std::string decoded;
-  bool succeded = base::Base64Decode(varValue, &decoded);
-  if (succeded) {
-    braveledger_bat_helper::getJSONTwitchProperties(decoded, parts);
-  }
-}
-
-// static
 std::string ExtractData(const std::string& data,
                         const std::string& match_after,
                         const std::string& match_until) {
@@ -66,42 +44,6 @@ std::string ExtractData(const std::string& data,
   }
 
   return match;
-}
-
-void GetVimeoParts(
-    const std::string& query,
-    std::vector<base::flat_map<std::string, std::string>>* parts) {
-  absl::optional<base::Value> data = base::JSONReader::Read(query);
-  if (!data || !data->is_list()) {
-    return;
-  }
-
-  for (const auto& item : data->GetList()) {
-    if (item.is_dict()) {
-      base::flat_map<std::string, std::string> part;
-      const auto* name = item.FindStringKey("name");
-      if (name) {
-        part.emplace("event", *name);
-      }
-
-      const auto clip_id = item.FindIntKey("clip_id");
-      if (clip_id) {
-        part.emplace("video_id", std::to_string(*clip_id));
-      }
-
-      const auto* product = item.FindStringKey("product");
-      if (product) {
-        part.emplace("type", *product);
-      }
-
-      const auto video_time = item.FindDoubleKey("video_time");
-      if (video_time) {
-        part.emplace("time", std::to_string(*video_time));
-      }
-
-      parts->push_back(part);
-    }
-  }
 }
 
 }  // namespace braveledger_media

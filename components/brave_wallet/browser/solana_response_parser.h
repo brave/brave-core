@@ -42,6 +42,8 @@ bool ParseGetAccountInfoPayload(
     absl::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetFeeForMessage(const base::Value& json_value, uint64_t* fee);
 bool ParseGetBlockHeight(const base::Value& json_value, uint64_t* block_height);
+bool ParseGetTokenAccountsByOwner(const base::Value& json_value,
+                                  std::vector<SolanaAccountInfo>* accounts);
 
 base::OnceCallback<absl::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();

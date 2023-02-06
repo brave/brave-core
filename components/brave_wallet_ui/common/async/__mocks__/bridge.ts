@@ -89,11 +89,13 @@ export class MockedWalletApiProxy {
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
-    getAllTokens: async (chainId: string, coin: number) => ({
-      tokens: mockWalletState.fullTokenList.filter(
-        (t) => t.chainId === chainId && t.coin === coin
-      )
-    })
+    getAllTokens: async (chainId: string, coin: number) => {
+      return ({
+        tokens: mockWalletState.fullTokenList.filter(
+          (t) => t.chainId === chainId && t.coin === coin
+        )
+      })
+    }
   }
 
   braveWalletService: Partial<
@@ -153,14 +155,14 @@ export class MockedWalletApiProxy {
       this.store.dispatch(WalletActions.locked())
       alert('wallet locked')
     },
-    getPrivateKeyForKeyringAccount: async (
+    encodePrivateKeyForExport: async (
       address: string,
       password: string,
       coin: number
     ) =>
       password === 'password'
-        ? { privateKey: 'secret-private-key', success: true }
-        : { privateKey: '', success: false },
+        ? { privateKey: 'secret-private-key' }
+        : { privateKey: '' },
     getMnemonicForDefaultKeyring: async (password) => {
       return password === 'password'
         ? { mnemonic: mockedMnemonic }
@@ -227,26 +229,29 @@ export class MockedWalletApiProxy {
   > = {
     getWalletInfo: async () => {
       return {
-        accountInfos: [
-          {
-            hardware: {
-              deviceId: mockAccount.deviceId || '',
-              path: '',
-              vendor: ''
-            },
-            isImported: mockAccount.accountType !== 'Primary',
-            address: mockAccount.address,
-            coin: mockAccount.coin,
-            keyringId: mockAccount.keyringId,
-            name: mockAccount.name
-          }
-        ],
-        favoriteApps: [],
-        isSolanaEnabled: true,
-        isFilecoinEnabled: true,
-        isWalletBackedUp: true,
-        isWalletCreated: true,
-        isWalletLocked: false
+        walletInfo: {
+          accountInfos: [
+            {
+              hardware: {
+                deviceId: mockAccount.deviceId || '',
+                path: '',
+                vendor: ''
+              },
+              isImported: mockAccount.accountType !== 'Primary',
+              address: mockAccount.address,
+              coin: mockAccount.coin,
+              keyringId: mockAccount.keyringId,
+              name: mockAccount.name
+            }
+          ],
+          favoriteApps: [],
+          isSolanaEnabled: true,
+          isFilecoinEnabled: true,
+          isWalletBackedUp: true,
+          isWalletCreated: true,
+          isWalletLocked: false,
+          isNftPinningFeatureEnabled: false
+        }
       }
     }
   }

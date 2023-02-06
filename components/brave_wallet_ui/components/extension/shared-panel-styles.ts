@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import { WalletButton } from '../shared/style'
-import WaringTriangle from '../../assets/svg-icons/warning-triangle.svg'
+import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
 import IThemeProps from 'brave-ui/src/theme/theme-interface'
 
 interface StyleProps {
@@ -199,8 +199,14 @@ export const WarningBoxIcon = styled.div<{
     ? p.theme.color[p.color]
     : p.theme.color.errorIcon
   };
-  -webkit-mask-image: url(${WaringTriangle});
-  mask-image: url(${WaringTriangle});
+  -webkit-mask-image: url(${WarningTriangle});
+  mask-image: url(${WarningTriangle});
+`
+
+export const WarningIcon = styled(WarningBoxIcon)`
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
 `
 
 export const LearnMoreButton = styled(WalletButton)`

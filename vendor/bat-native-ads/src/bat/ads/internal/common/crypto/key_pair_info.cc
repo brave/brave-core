@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/common/crypto/key_pair_info.h"
 
-namespace ads::security {
+namespace ads::crypto {
 
 KeyPairInfo::KeyPairInfo() = default;
 
@@ -28,7 +28,7 @@ bool KeyPairInfo::operator!=(const KeyPairInfo& other) const {
 }
 
 bool KeyPairInfo::IsValid() const {
-  return !(public_key.empty() || secret_key.empty());
+  return !public_key.empty() && !secret_key.empty();
 }
 
-}  // namespace ads::security
+}  // namespace ads::crypto

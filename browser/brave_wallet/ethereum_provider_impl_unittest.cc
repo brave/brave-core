@@ -125,6 +125,15 @@ std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
   return hash;
 }
 
+absl::optional<base::Value> ToValue(const network::ResourceRequest& request) {
+  base::StringPiece request_string(request.request_body->elements()
+                                       ->at(0)
+                                       .As<network::DataElementBytes>()
+                                       .AsStringPiece());
+  return base::JSONReader::Read(request_string,
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+}
+
 }  // namespace
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
@@ -2164,6 +2173,70 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
                                             second_subscription.c_str());
+  request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_FALSE(provider_->eth_logs_tracker_.IsRunning());
+}
+
+TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
+  CreateWallet();
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+
+        if (header_value == "eth_getLogs") {
+          const absl::optional<base::Value> req_body_payload =
+              base::JSONReader::Read(
+                  R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":
+[{"address":["0x1111", "0x1112"],"fromBlock":"0x2211","toBlock":"0xab65",
+"topics":["0x2edc","0xb832","0x8dc8"]}]})",
+                  base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                      base::JSONParserOptions::JSON_PARSE_RFC);
+
+          const auto payload = ToValue(request);
+          EXPECT_EQ(*payload, req_body_payload.value());
+        }
+        url_loader_factory_.AddResponse(
+            request.url.spec(),
+            R"({"id":1,"jsonrpc":"2.0","result":[{"address":"0x91",
+                      "blockHash":"0xe8","blockNumber":"0x10","data":"0x0067",
+                      "logIndex":"0x0","removed":false,
+                      "topics":["0x4b","0x06e","0x085"],
+                      "transactionHash":"0x22f7","transactionIndex":"0x0"}]})");
+      }));
+
+  // Logs subscription with parameters
+  std::string request_payload_json =
+      R"({"id":1,"jsonrpc:": "2.0","method":"eth_subscribe",
+  "params": ["logs", {"address": ["0x1111", "0x1112"], "fromBlock": "0x2211",
+  "toBlock": "0xab65",  "topics":  ["0x2edc", "0xb832", "0x8dc8"]}]})";
+  absl::optional<base::Value> request_payload = base::JSONReader::Read(
+      request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
+  std::string error_message;
+  auto response = CommonRequestOrSendAsync(request_payload.value());
+  EXPECT_EQ(response.first, false);
+  EXPECT_TRUE(response.second.is_string());
+  std::string subscription = *response.second.GetIfString();
+  browser_task_environment_.FastForwardBy(
+      base::Seconds(kLogTrackerDefaultTimeInSeconds));
+  EXPECT_TRUE(observer_->MessageEventFired());
+  base::Value rv = observer_->GetLastMessage();
+  ASSERT_TRUE(rv.is_dict());
+
+  std::string* address = rv.GetDict().FindString("address");
+  EXPECT_EQ(*address, "0x91");
+
+  // The first unsubscribe should not stop the block tracker
+  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+                              "method":"eth_unsubscribe",
+                              "params": ["%s"]})",
+                                            subscription.c_str());
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);

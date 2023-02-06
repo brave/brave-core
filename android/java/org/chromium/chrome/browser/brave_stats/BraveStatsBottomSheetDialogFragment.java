@@ -211,11 +211,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onResume() {
         super.onResume();
-        if (BravePermissionUtils.hasPermission(
-                    getContext(), PermissionConstants.NOTIFICATION_PERMISSION)) {
-            statsNotificationView.setVisibility(View.GONE);
-        } else {
+        if (!BravePermissionUtils.hasPermission(
+                    getContext(), PermissionConstants.NOTIFICATION_PERMISSION)
+                || BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())) {
             statsNotificationView.setVisibility(View.VISIBLE);
+        } else {
+            statsNotificationView.setVisibility(View.GONE);
         }
     }
 
@@ -224,8 +225,9 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         btnDismiss.setOnClickListener(v -> { statsNotificationView.setVisibility(View.GONE); });
         View notificationOnButton = view.findViewById(R.id.notification_on_button);
         notificationOnButton.setOnClickListener(v -> {
-            if (getActivity().shouldShowRequestPermissionRationale(
-                        PermissionConstants.NOTIFICATION_PERMISSION)
+            if (BravePermissionUtils.isGeneralNotificationPermissionBlocked(getActivity())
+                    || getActivity().shouldShowRequestPermissionRationale(
+                            PermissionConstants.NOTIFICATION_PERMISSION)
                     || (!BuildInfo.isAtLeastT() || !BuildInfo.targetsAtLeastT())) {
                 // other than android 13 redirect to
                 // setting page and for android 13 Last time don't allow selected in permission

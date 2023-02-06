@@ -122,7 +122,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
       "%s/v3/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
-      wallet_.id.c_str());
+      wallet_.payment_id.c_str());
   return GURL(spec);
 }
 
@@ -146,7 +146,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
     const {
   base::Value::Dict payload;
-  payload.Set("paymentId", wallet_.id);
+  payload.Set("paymentId", wallet_.payment_id);
 
   std::string json;
   CHECK(base::JSONWriter::Write(payload, &json));

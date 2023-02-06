@@ -25,8 +25,7 @@ class BravePrivacySandboxSettings
   BravePrivacySandboxSettings(std::unique_ptr<Delegate> delegate,
                               HostContentSettingsMap* host_content_settings_map,
                               content_settings::CookieSettings* cookie_settings,
-                              PrefService* pref_service,
-                              bool incognito_profile);
+                              PrefService* pref_service);
   ~BravePrivacySandboxSettings() override;
 
  private:

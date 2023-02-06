@@ -43,6 +43,7 @@ import {
   makeSwitchAccount,
   makeGetTokenPrice
 } from './adapters'
+import { hasEIP1559Support } from '../../../utils/network-utils'
 
 export const Swap = () => {
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
@@ -81,8 +82,7 @@ export const Swap = () => {
     sendSolanaSerializedTransaction,
     getSwapService,
     getERC20Allowance,
-    sendEthTransaction,
-    hasEIP1559Support
+    sendEthTransaction
   } = useLib()
 
   const swapServiceMojo = getSwapService()
@@ -111,7 +111,9 @@ export const Swap = () => {
       getERC20ApproveData: makeGetERC20ApproveData(),
       sendTransaction: makeETHSendTransaction(
         sendEthTransaction,
-        !!selectedNetwork && !!selectedAccount && hasEIP1559Support(selectedAccount, selectedNetwork)
+        !!selectedNetwork &&
+          !!selectedAccount &&
+          hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
       )
     }
   }, [selectedAccount, selectedNetwork])

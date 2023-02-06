@@ -37,4 +37,5 @@ public interface BraveRewardsObserver {
             int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};
     default public void onPublisherBanner(String jsonBannerInfo){};
     default public void onGetPublishersVisitedCount(int count){};
+    default public void onGetUserType(int userType){};
 }

@@ -40,9 +40,7 @@ const ListItem = ({
   renderToken,
   style
 }: ListItemProps) => {
-  const token = data[index] as UserAssetInfoType
-
-  if (!token) {
+  if (!data) {
     console.warn('Token was null at index',
       index,
       data
@@ -51,7 +49,7 @@ const ListItem = ({
 
   return (
     <div style={style}>
-      {token && renderToken({ index, item: token, viewMode: 'list' })}
+      {data && renderToken({ index, item: data, viewMode: 'list' })}
     </div>
   )
 }
@@ -88,6 +86,7 @@ export const VirtualizedTokensList = ({
       children={(itemProps) => (
         <ListItem
           {...itemProps}
+          data={itemProps.data[itemProps.index]}
           renderToken={renderToken}
         />
       )}

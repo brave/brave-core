@@ -11,7 +11,7 @@
 
 namespace ads {
 
-void ForceCatalogPermissionRule() {
+void ForceCatalogPermissionRuleForTesting() {
   SetCatalogId("573c74fa-623a-4a46-adce-e688dfb7e8f5");
   SetCatalogVersion(1);
   SetCatalogPing(base::Hours(2));

@@ -52,6 +52,38 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypes) {
   EXPECT_EQ(typed_hash_v3, typed_hash_v4);
 }
 
+TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodeTypes) {
+  for (const std::string& invalid_json : {
+           R"({
+    "Domain": [
+        { "name": ["AStringArray", "String2"], "type": "string" }
+    ]})",
+           R"({
+    "Domain": [
+        { "name": 1234, "type": "uint2556" }
+    ]})",
+           R"({
+    "Domain": [
+        { "name": { "name": "name" }, "type": "string" }
+    ]})",
+           R"({
+    "Domain": [
+        { "name": "name", "type": 1234 }
+    ]})"}) {
+    SCOPED_TRACE(invalid_json);
+    auto invalid_value = base::JSONReader::Read(
+        invalid_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                          base::JSON_ALLOW_TRAILING_COMMAS);
+    ASSERT_TRUE(invalid_value);
+    std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
+        EthSignTypedDataHelper::Create(invalid_value->GetDict().Clone(),
+                                       EthSignTypedDataHelper::Version::kV4);
+    const std::string invalid_encoded_types_v4 =
+        invalid_types_helper->EncodeTypes("Domain");
+    EXPECT_EQ(invalid_encoded_types_v4, "");
+  }
+}
+
 TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
   const std::string types_json(R"({
     "Mail": [
@@ -308,9 +340,9 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
                                      EthSignTypedDataHelper::Version::kV3);
   ASSERT_TRUE(helper);
 
-  base::ListValue list;
-  list.Append("hello");
-  list.Append("world");
+  base::Value list(base::Value::Type::LIST);
+  list.GetList().Append("hello");
+  list.GetList().Append("world");
 
   // v3 doesn't support array
   EXPECT_FALSE(helper->EncodeField("string[]", list));

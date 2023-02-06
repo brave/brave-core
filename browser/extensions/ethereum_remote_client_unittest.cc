@@ -39,7 +39,7 @@ class BraveWalletUnitTest : public testing::Test {
   }
 
   PrefService* GetPrefs() {
-    return ProfileManager::GetActiveUserProfile()->GetPrefs();
+    return ProfileManager::GetLastUsedProfile()->GetPrefs();
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -131,8 +131,7 @@ TEST_F(BraveWalletUnitTest, TestLoadFromPrefs) {
   std::string cipher_seed;
   std::string nonce;
   ASSERT_TRUE(EthereumRemoteClientService::LoadFromPrefs(
-      ProfileManager::GetActiveUserProfile()->GetPrefs(), &cipher_seed,
-      &nonce));
+      ProfileManager::GetLastUsedProfile()->GetPrefs(), &cipher_seed, &nonce));
 
   constexpr std::array<uint8_t, 12> expected_nonce = {
       200, 153, 224, 40, 58, 249, 156, 33, 152, 207, 177, 12};
@@ -156,7 +155,7 @@ TEST_F(BraveWalletUnitTest, TestSaveToPrefs) {
       213, 68,  187, 103, 16,  138, 166, 0,   6,   128, 179, 64,
       55,  160, 219, 8,   222, 231, 48,  93,  132, 131, 178, 177};
   EthereumRemoteClientService::SaveToPrefs(
-      ProfileManager::GetActiveUserProfile()->GetPrefs(),
+      ProfileManager::GetLastUsedProfile()->GetPrefs(),
       std::string(cipher_seed.begin(), cipher_seed.end()),
       std::string(nonce.begin(), nonce.end()));
 
@@ -166,7 +165,7 @@ TEST_F(BraveWalletUnitTest, TestSaveToPrefs) {
 }
 
 TEST_F(BraveWalletUnitTest, MaybeLoadCryptoWalletsExtension) {
-  auto* profile = ProfileManager::GetActiveUserProfile();
+  auto* profile = ProfileManager::GetLastUsedProfile();
   std::unique_ptr<EthereumRemoteClientService> service(
       new EthereumRemoteClientService(
           profile, std::make_unique<MockEthereumRemoteClientDelegateImpl>()));

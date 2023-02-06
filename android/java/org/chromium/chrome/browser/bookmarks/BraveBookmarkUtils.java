@@ -42,7 +42,6 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 snackbarManager.dismissAllSnackbars();
             }
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
-            bookmarkModel.destroy();
             callback.onResult(existingBookmarkItem.getId());
             return;
         }

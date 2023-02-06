@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-use adblock::engine::Engine;
+use adblock::engine::{Engine, EngineDebugInfo};
 use adblock::lists::FilterListMetadata;
 use adblock::resources::{MimeType, Resource, ResourceType};
+use adblock::regex_manager::RegexManagerDiscardPolicy;
 use core::ptr;
 use libc::size_t;
 use std::ffi::CStr;
@@ -343,6 +344,82 @@ pub unsafe extern "C" fn filter_list_metadata_destroy(metadata: *mut FilterListM
     }
 }
 
+#[no_mangle]
+pub unsafe extern "C" fn get_engine_debug_info(
+  engine: *mut Engine,
+) -> *mut EngineDebugInfo{
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    Box::into_raw(Box::new(engine.get_debug_info()))
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn engine_debug_info_get_attr(
+    debug_info: *mut EngineDebugInfo,
+    compiled_regex_count: *mut size_t,
+    regex_data_size: *mut size_t
+) {
+    assert!(!debug_info.is_null());
+    let info = Box::leak(Box::from_raw(debug_info));
+
+    *compiled_regex_count = info.blocker_debug_info.compiled_regex_count;
+    *regex_data_size = info.blocker_debug_info.regex_data.len();
+}
+
+
+#[no_mangle]
+pub unsafe extern "C" fn engine_debug_info_get_regex_entry(
+    debug_info: *mut EngineDebugInfo,
+    index: size_t,
+    id: *mut u64,
+    regex: *mut *mut c_char,
+    unused_sec: *mut u64,
+    usage_count: *mut usize
+) {
+    assert!(!debug_info.is_null());
+    let info = Box::leak(Box::from_raw(debug_info));
+    let regex_data = &info.blocker_debug_info.regex_data;
+    assert!(index < regex_data.len());
+    let entry = &regex_data[index];
+
+    *id = entry.id;
+    *regex = CString::new(entry.regex.as_deref().unwrap_or(""))
+      .expect("Error: CString::new()")
+      .into_raw();
+    *unused_sec = entry.last_used.elapsed().as_secs();
+    *usage_count = entry.usage_count;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn engine_debug_info_destroy(
+    debug_info: *mut EngineDebugInfo,
+) {
+    if !debug_info.is_null() {
+        drop(Box::from_raw(debug_info));
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn discard_regex(engine: *mut Engine, regex_id: u64) {
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.discard_regex(regex_id);
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn setup_discard_policy(
+    engine: *mut Engine,
+    cleanup_interval_sec: u64,
+    discard_unused_sec: u64
+) {
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.set_regex_discard_policy(RegexManagerDiscardPolicy{
+        cleanup_interval: std::time::Duration::from_secs(cleanup_interval_sec),
+        discard_unused_time: std::time::Duration::from_secs(discard_unused_sec),
+    });
+}
+
 /// Destroy a `*c_char` once you are done with it.
 #[no_mangle]
 pub unsafe extern "C" fn c_char_buffer_destroy(s: *mut c_char) {
@@ -403,12 +480,13 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
 #[cfg(feature = "ios")]
 #[no_mangle]
 pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char) -> *mut c_char {
+    use adblock::lists::{ParseOptions, RuleTypes};
     let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
         ""
     });
     let mut filter_set = adblock::lists::FilterSet::new(true);
-    filter_set.add_filter_list(&rules, Default::default());
+    filter_set.add_filter_list(&rules, ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() });
     // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
     // created in debug mode
     let (cb_rules, _) = filter_set.into_content_blocking().unwrap();

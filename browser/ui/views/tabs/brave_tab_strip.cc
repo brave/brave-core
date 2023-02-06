@@ -9,6 +9,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
@@ -21,6 +22,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -39,8 +41,11 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 BraveTabStrip::~BraveTabStrip() = default;
 
 bool BraveTabStrip::ShouldDrawStrokes() const {
-  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
+  if (ShouldShowVerticalTabs()) {
+    // Prevent root view from drawing lines. For tabs, we're overriding
+    // GetStrokeThickness().
     return false;
+  }
 
   if (!TabStrip::ShouldDrawStrokes())
     return false;
@@ -52,7 +57,7 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   // Set 1.2797f as a minimum ratio to prevent drawing stroke.
   // We don't need the stroke for our default light theme.
   // NOTE: We don't need to check features::kTabOutlinesInLowContrastThemes
-  // enabled state. Althought TabStrip::ShouldDrawStrokes() has related code,
+  // enabled state. Although TabStrip::ShouldDrawStrokes() has related code,
   // that feature is already expired since cr82. See
   // chrome/browser/flag-metadata.json.
   const SkColor background_color = GetTabBackgroundColor(
@@ -62,6 +67,15 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   const float contrast_ratio =
       color_utils::GetContrastRatio(background_color, frame_color);
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
+}
+
+int BraveTabStrip::GetStrokeThickness() const {
+  if (ShouldShowVerticalTabs()) {
+    // Bypass checking ShouldDrawStrokes().
+    return 1;
+  }
+
+  return TabStrip::GetStrokeThickness();
 }
 
 void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
@@ -74,7 +88,7 @@ void BraveTabStrip::MaybeStartDrag(
     TabSlotView* source,
     const ui::LocatedEvent& event,
     const ui::ListSelectionModel& original_selection) {
-  if (tabs::features::ShouldShowVerticalTabs(GetBrowser())) {
+  if (ShouldShowVerticalTabs()) {
     // When it's vertical tab strip, all the dragged tabs are either pinned or
     // unpinned.
     const bool source_is_pinned =
@@ -91,20 +105,37 @@ void BraveTabStrip::MaybeStartDrag(
 
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
 
   if (BrowserView::GetBrowserViewForBrowser(GetBrowser())) {
     UpdateTabContainer();
   } else {
     // Schedule UpdateTabContainer(). At this point, BrowserWindow could still
     // be being created and it could be unbound to Browser.
-    base::SequencedTaskRunnerHandle::Get()->PostTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
                                   base::Unretained(this)));
   }
 }
 
+SkColor BraveTabStrip::GetTabBackgroundColor(
+    TabActive active,
+    BrowserFrameActiveState active_state) const {
+  if (!ShouldShowVerticalTabs())
+    return TabStrip::GetTabBackgroundColor(active, active_state);
+
+  const ui::ColorProvider* cp = GetColorProvider();
+  if (!cp)
+    return gfx::kPlaceholderColor;
+
+  return cp->GetColor(active == TabActive::kActive
+                          ? kColorBraveVerticalTabActiveBackground
+                          : kColorBraveVerticalTabInactiveBackground);
+}
+
 SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()))
+  if (ShouldShowVerticalTabs())
     return SK_ColorTRANSPARENT;
 
   Profile* profile = controller()->GetProfile();
@@ -128,10 +159,10 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
 }
 
 void BraveTabStrip::UpdateTabContainer() {
-  auto* browser = GetBrowser();
-  DCHECK(browser);
-  const bool using_vertical_tabs =
-      tabs::features::ShouldShowVerticalTabs(browser);
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+      << "This should be called only when the flag is on.";
+
+  const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
       using_vertical_tabs ||
       base::FeatureList::IsEnabled(features::kSplitTabStrip);
@@ -223,6 +254,8 @@ void BraveTabStrip::UpdateTabContainer() {
   }
 
   // Update layout of TabContainer
+  auto* browser = GetBrowser();
+  DCHECK(browser);
   if (using_vertical_tabs) {
     auto* browser_view = static_cast<BraveBrowserView*>(
         BrowserView::GetBrowserViewForBrowser(browser));
@@ -255,15 +288,21 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     if (should_use_compound_tab_container) {
-      tab_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
-          ->SetOrientation(views::LayoutOrientation::kVertical);
+      // Upstream's compound tab container lay out its sub containers manually.
+      tab_container_->SetLayoutManager(nullptr);
     }
   }
 }
 
+bool BraveTabStrip::ShouldShowVerticalTabs() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return false;
+
+  return tabs::features::ShouldShowVerticalTabs(GetBrowser());
+}
+
 void BraveTabStrip::Layout() {
-  if (tabs::features::ShouldShowVerticalTabs(GetBrowser()) &&
-      base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+  if (ShouldShowVerticalTabs()) {
     // Chromium implementation limits the height of tab strip, which we don't
     // want.
     auto bounds = GetLocalBounds();

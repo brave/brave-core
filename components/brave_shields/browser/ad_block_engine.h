@@ -64,6 +64,10 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
+  base::Value::Dict GetDebugInfo();
+  void DiscardRegex(uint64_t regex_id);
+  void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
+
   base::Value::Dict UrlCosmeticResources(const std::string& url);
   base::Value::List HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
@@ -102,6 +106,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   friend class ::PerfPredictorTabHelperTest;
 
   std::set<std::string> tags_ GUARDED_BY_CONTEXT(sequence_checker_);
+  absl::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<TestObserver> test_observer_ = nullptr;
 

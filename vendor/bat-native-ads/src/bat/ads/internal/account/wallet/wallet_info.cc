@@ -8,7 +8,7 @@
 namespace ads {
 
 bool WalletInfo::IsValid() const {
-  return !id.empty() && !secret_key.empty();
+  return !payment_id.empty() && !public_key.empty() && !secret_key.empty();
 }
 
 bool WalletInfo::WasUpdated(const WalletInfo& other) const {
@@ -20,7 +20,8 @@ bool WalletInfo::HasChanged(const WalletInfo& other) const {
 }
 
 bool WalletInfo::operator==(const WalletInfo& other) const {
-  return id == other.id && secret_key == other.secret_key;
+  return payment_id == other.payment_id && public_key == other.public_key &&
+         secret_key == other.secret_key;
 }
 
 bool WalletInfo::operator!=(const WalletInfo& other) const {

@@ -3,8 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/installer/util/brave_shell_util.h"
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
+#endif
 #define UninstallProduct UninstallProduct_ChromiumImpl
 
 #include "src/chrome/installer/setup/uninstall.cc"
@@ -49,17 +53,23 @@ InstallStatus UninstallProduct(const ModifyParams& modify_params,
                                const base::CommandLine& cmd_line) {
   DeleteBraveFileKeys(HKEY_CURRENT_USER);
 
-  const InstallerState& installer_state = *modify_params.installer_state;
+  const auto installer_state = modify_params.installer_state;
   const base::FilePath chrome_exe(
-      installer_state.target_path().Append(installer::kChromeExe));
+      installer_state->target_path().Append(installer::kChromeExe));
   const std::wstring suffix(
       ShellUtil::GetCurrentInstallationSuffix(chrome_exe));
-  if (installer_state.system_install() ||
+  if (installer_state->system_install() ||
       (remove_all &&
        ShellUtil::QuickIsChromeRegisteredInHKLM(chrome_exe, suffix))) {
     DeleteBraveFileKeys(HKEY_LOCAL_MACHINE);
   }
-
+  if (installer_state->system_install()) {
+    if (!InstallServiceWorkItem::DeleteService(
+            brave_vpn::GetVpnServiceName(),
+            brave_vpn::kBraveVpnHelperRegistryStoragePath, {}, {})) {
+      LOG(WARNING) << "Failed to delete " << brave_vpn::GetVpnServiceName();
+    }
+  }
   return UninstallProduct_ChromiumImpl(modify_params, remove_all,
                                        force_uninstall, cmd_line);
 }

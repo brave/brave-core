@@ -5,9 +5,34 @@
 
 #include <Cocoa/Cocoa.h>
 
+#include <vector>
+
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "chrome/common/importer/imported_bookmark_entry.h"
+#include "chrome/grit/generated_resources.h"
 #include "chrome/utility/importer/safari_importer.h"
+#include "ui/base/l10n/l10n_util.h"
+
+namespace {
+
+int GetBookmarkGroupFromSafariID() {
+  return IDS_BOOKMARK_GROUP_FROM_SAFARI;
+}
+
+constexpr char16_t kSafariReadingListPath[] = u"com.apple.ReadingList";
+
+void CorrectSafariReadingListPath(
+    std::vector<ImportedBookmarkEntry>& bookmarks) {
+  for (auto& item : bookmarks) {
+    for (auto& folder : item.path) {
+      if (folder == kSafariReadingListPath) {
+        folder = l10n_util::GetStringUTF16(IDS_BOOKMARKS_READING_LIST_GROUP);
+      }
+    }
+  }
+}
+}  // namespace
 
 #define fileSystemRepresentation fileSystemRepresentation];                   \
   int64_t file_size = 0;                                                      \
@@ -15,5 +40,11 @@
     return false;                                                             \
   }                                                                           \
   VLOG(1) << [favicons_db_path fileSystemRepresentation
+
+#undef IDS_BOOKMARK_GROUP_FROM_SAFARI
+#define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()); \
+  CorrectSafariReadingListPath(bookmarks
 #include "src/chrome/utility/importer/safari_importer.mm"
+#undef IDS_BOOKMARK_GROUP_FROM_SAFARI
+#define IDS_BOOKMARK_GROUP_FROM_SAFARI GetBookmarkGroupFromSafariID()
 #undef fileSystemRepresentation

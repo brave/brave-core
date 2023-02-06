@@ -336,27 +336,8 @@ std::string eth_getFilterLogs(const std::string& filter_id) {
   return GetJsonRpcString("eth_getFilterLogs", filter_id);
 }
 
-std::string eth_getLogs(const std::string& from_block_quantity_tag,
-                        const std::string& to_block_quantity_tag,
-                        base::Value::List addresses,
-                        base::Value::List topics,
-                        const std::string& block_hash) {
+std::string eth_getLogs(base::Value::Dict filter_options) {
   base::Value::List params;
-  base::Value::Dict filter_options;
-  // The `address` filter option accepts either a single address, or a list of
-  // addresses (See spec:
-  // https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getlogs). At
-  // time of writing Infura's documentation suggests they only support a single
-  // address, however we have verified they also support a list.
-  if (!addresses.empty()) {
-    filter_options.Set("address", std::move(addresses));
-  }
-  AddKeyIfNotEmpty(&filter_options, "fromBlock", from_block_quantity_tag);
-  AddKeyIfNotEmpty(&filter_options, "toBlock", to_block_quantity_tag);
-  if (!topics.empty()) {
-    filter_options.Set("topics", std::move(topics));
-  }
-  AddKeyIfNotEmpty(&filter_options, "blockhash", block_hash);
   params.Append(std::move(filter_options));
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("eth_getLogs", std::move(params));

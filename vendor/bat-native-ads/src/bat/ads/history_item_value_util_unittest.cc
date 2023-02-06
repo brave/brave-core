@@ -5,10 +5,10 @@
 
 #include "bat/ads/history_item_value_util.h"
 
+#include "base/ranges/algorithm.h"
 #include "base/test/values_test_util.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -54,7 +54,7 @@ TEST_F(BatAdsHistoryItemValueUtilTest, FromValue) {
   const HistoryItemList history_items = HistoryItemsFromValue(*list);
 
   // Assert
-  EXPECT_TRUE(IsEqualContainers(BuildHistoryItems(), history_items));
+  EXPECT_TRUE(base::ranges::equal(BuildHistoryItems(), history_items));
 }
 
 TEST_F(BatAdsHistoryItemValueUtilTest, ToValue) {

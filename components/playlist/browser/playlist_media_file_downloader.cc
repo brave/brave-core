@@ -15,7 +15,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_types.h"
@@ -101,7 +100,7 @@ void PlaylistMediaFileDownloader::ScheduleToDetachCachedFile(
     download_items_to_be_detached_.push_back(std::move(download));
   }
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&PlaylistMediaFileDownloader::DetachCachedFile,
                                 weak_factory_.GetWeakPtr(), item));
 }

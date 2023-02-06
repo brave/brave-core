@@ -11,9 +11,9 @@
 #include "base/system/sys_info.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -23,9 +23,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/testing_profile_manager.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -70,23 +67,23 @@ class BraveStatsUpdaterTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(testing_local_state_.registry());
     task_environment_.AdvanceClock(base::Minutes(30));
 
-    profile_ = CreateBraveAdsProfile();
-    EXPECT_TRUE(profile_.get());
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
+        testing_local_state_.registry());
+    brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(
         testing_local_state_.registry());
     SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
   std::unique_ptr<brave_stats::BraveStatsUpdaterParams> BuildUpdaterParams() {
     return std::make_unique<brave_stats::BraveStatsUpdaterParams>(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
   }
   void SetEnableAds(bool ads_enabled) {
-    GetPrefs()->SetBoolean(ads::prefs::kEnabled, ads_enabled);
+    GetLocalState()->SetBoolean(ads::prefs::kEnabledForLastProfile,
+                                ads_enabled);
   }
 
   void SetCurrentTimeForTest(const base::Time& current_time) {
@@ -97,21 +94,8 @@ class BraveStatsUpdaterTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<Profile> profile_;
 
  private:
-  std::unique_ptr<Profile> CreateBraveAdsProfile() {
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    brave_rewards::RewardsService::RegisterProfilePrefs(prefs->registry());
-    brave_ads::AdsService::RegisterProfilePrefs(prefs->registry());
-    RegisterUserProfilePrefs(prefs->registry());
-
-    TestingProfile::Builder profile_builder;
-    profile_builder.SetPrefService(std::move(prefs));
-    return profile_builder.Build();
-  }
-
   TestingPrefServiceSimple testing_local_state_;
 };
 
@@ -119,8 +103,8 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedYesterday) {
   GetLocalState()->SetString(kLastCheckYMD, kYesterday);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -131,8 +115,8 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedToday) {
   GetLocalState()->SetString(kLastCheckYMD, kToday);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -143,8 +127,8 @@ TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedTomorrow) {
   GetLocalState()->SetString(kLastCheckYMD, kTomorrow);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDailyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -155,8 +139,8 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedLastWeek) {
   GetLocalState()->SetInteger(kLastCheckWOY, kLastWeek);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -167,8 +151,8 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedThisWeek) {
   GetLocalState()->SetInteger(kLastCheckWOY, kThisWeek);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -179,8 +163,8 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededLastCheckedNextWeek) {
   GetLocalState()->SetInteger(kLastCheckWOY, kNextWeek);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -191,8 +175,8 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedLastMonth) {
   GetLocalState()->SetInteger(kLastCheckMonth, kLastMonth);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -203,8 +187,8 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedThisMonth) {
   GetLocalState()->SetInteger(kLastCheckMonth, kThisMonth);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "false");
   brave_stats_updater_params.SavePrefs();
 
@@ -215,8 +199,8 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
   GetLocalState()->SetInteger(kLastCheckMonth, kNextMonth);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetMonthlyParam(), "true");
   brave_stats_updater_params.SavePrefs();
 
@@ -225,39 +209,39 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
 
 TEST_F(BraveStatsUpdaterTest, HasAdsDisabled) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   SetEnableAds(false);
   EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "false");
 }
 
 TEST_F(BraveStatsUpdaterTest, HasAdsEnabled) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   SetEnableAds(true);
   EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "true");
 }
 
 TEST_F(BraveStatsUpdaterTest, HasArchSkip) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), "");
 }
 
 TEST_F(BraveStatsUpdaterTest, HasArchVirt) {
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchVirt, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchVirt, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), "virt");
 }
 
 TEST_F(BraveStatsUpdaterTest, HasArchMetal) {
   auto arch = base::SysInfo::OperatingSystemArchitecture();
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchMetal, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchMetal, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetProcessArchParam(), arch);
 }
 
@@ -279,8 +263,8 @@ TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
   SetCurrentTimeForTest(current_time);
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
             "2018-11-04");
 }
@@ -306,8 +290,8 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetention) {
 
   SetCurrentTimeForTest(dtoi_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   SetCurrentTimeForTest(current_time);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
             "2018-11-04");
@@ -324,8 +308,8 @@ TEST_F(BraveStatsUpdaterTest, GetUpdateURLHasFirstAndDtoi) {
 
   SetCurrentTimeForTest(install_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   SetCurrentTimeForTest(current_time);
 
   GURL response = brave_stats_updater_params.GetUpdateURL(
@@ -384,8 +368,8 @@ TEST_F(BraveStatsUpdaterTest, HasDailyRetentionExpiration) {
 
   SetCurrentTimeForTest(dtoi_time);
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   SetCurrentTimeForTest(current_time);
   EXPECT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(), "null");
 }
@@ -414,7 +398,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
 
     // Make sure that the weekly param was set to true, since this is
     // a new ISO week (#44)
@@ -434,7 +418,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
 
     // Make sure that the weekly param was set to true, since this is
     // a new ISO week (#45)
@@ -454,7 +438,7 @@ TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
 
     SetCurrentTimeForTest(current_time);
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
 
     // Make sure that the weekly param was set to false, since this is
     // still the same ISO week (#45)
@@ -486,7 +470,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
 
     // Make sure that week of installation is previous Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-18");
   }
@@ -508,7 +492,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
     // Make sure that week of installation is today, since today is a
     // Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
@@ -529,7 +513,7 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
 
     // Make sure that week of installation is previous Monday
     brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-        GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip);
+        GetLocalState(), brave_stats::ProcessArch::kArchSkip);
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
@@ -572,8 +556,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
   EXPECT_TRUE(base::Time::FromString("2020-03-30", &last_reported_use));
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
 
   EXPECT_EQ(0b001, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
@@ -587,8 +571,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
   EXPECT_TRUE(base::Time::FromString("2020-03-26", &last_reported_use));
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
 
   EXPECT_EQ(0b011, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
@@ -602,8 +586,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlySameWeek) {
   EXPECT_TRUE(base::Time::FromString("2020-06-30", &last_reported_use));
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(0b101, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -616,8 +600,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlyDiffWeek) {
   EXPECT_TRUE(base::Time::FromString("2020-02-15", &last_reported_use));
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(0b111, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -630,8 +614,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
   EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_reported_use));
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -641,8 +625,8 @@ TEST_F(BraveStatsUpdaterTest, UsageBitstringNeverUsed) {
   base::Time last_use;
 
   brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), GetPrefs(), brave_stats::ProcessArch::kArchSkip, kToday,
-      kThisWeek, kThisMonth);
+      GetLocalState(), brave_stats::ProcessArch::kArchSkip, kToday, kThisWeek,
+      kThisMonth);
   EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
                                                            last_reported_use));
 }
@@ -653,13 +637,15 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   GURL base_url("http://localhost:8080");
   GURL url;
 
+  PrefService* local_state = GetLocalState();
+
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=true&monthly=true"));
   EXPECT_THAT(url.query(), HasSubstr("wallet2=0"));
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
 
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
@@ -668,7 +654,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(6));
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=true&monthly=false"));
@@ -676,7 +662,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
   params = BuildUpdaterParams();
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_THAT(url.query(), HasSubstr("daily=true&weekly=false&monthly=false"));
@@ -705,9 +691,6 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
       &ping_count, &last_url);
   updater.SetStatsUpdatedCallbackForTesting(&cb);
   updater.SetUsageServerForTesting("https://localhost:8443");
-  updater.SetProfilePrefsForTesting(GetPrefs());
-
-  updater.Start();
 
   // daily, monthly, weekly ping
   task_environment_.FastForwardBy(base::Hours(1));

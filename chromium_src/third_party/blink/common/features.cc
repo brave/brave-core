@@ -26,12 +26,18 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFledgeEnforceKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrerender2InBackground, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
@@ -73,6 +79,16 @@ BASE_FEATURE(kBraveTorWindowsHttpsOnly,
 BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Enable EventSource connection pool limit per eTLD+1.
+BASE_FEATURE(kRestrictEventSourcePool,
+             "RestrictEventSourcePool",
+#if BUILDFLAG(IS_ANDROID)
+             base::FEATURE_DISABLED_BY_DEFAULT
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+);
 
 }  // namespace features
 }  // namespace blink

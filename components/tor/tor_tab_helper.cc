@@ -5,7 +5,7 @@
 
 #include "brave/components/tor/tor_tab_helper.h"
 
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace tor {
@@ -31,7 +31,7 @@ void TorTabHelper::DidFinishNavigation(
   // new connection or some fatal errors within tor process
   if (navigation_handle->GetNetErrorCode() != net::ERR_PROXY_CONNECTION_FAILED)
     return;
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&TorTabHelper::ReloadTab, AsWeakPtr(),
                      navigation_handle->GetWebContents()),

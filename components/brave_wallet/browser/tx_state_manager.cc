@@ -97,9 +97,10 @@ TxStateManager::TxStateManager(PrefService* prefs,
 TxStateManager::~TxStateManager() = default;
 
 void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
-  DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::Value::Dict& dict = update.Get()->GetDict();
-  const std::string path = GetTxPrefPathPrefix() + "." + meta.id();
+  ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
+  base::Value::Dict& dict = update.Get();
+  const std::string path =
+      base::JoinString({GetTxPrefPathPrefix(), meta.id()}, ".");
 
   bool is_add = dict.FindByDottedPath(path) == nullptr;
   dict.SetByDottedPath(path, meta.ToValue());
@@ -119,8 +120,8 @@ void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 
 std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
   const auto& dict = prefs_->GetDict(kBraveWalletTransactions);
-  const base::Value::Dict* value =
-      dict.FindDictByDottedPath(GetTxPrefPathPrefix() + "." + id);
+  const base::Value::Dict* value = dict.FindDictByDottedPath(
+      base::JoinString({GetTxPrefPathPrefix(), id}, "."));
   if (!value)
     return nullptr;
 
@@ -128,15 +129,14 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& id) {
 }
 
 void TxStateManager::DeleteTx(const std::string& id) {
-  DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::Value* dict = update.Get();
-  dict->GetDict().RemoveByDottedPath(GetTxPrefPathPrefix() + "." + id);
+  ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
+  update->RemoveByDottedPath(
+      base::JoinString({GetTxPrefPathPrefix(), id}, "."));
 }
 
 void TxStateManager::WipeTxs() {
-  DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::Value* dict = update.Get();
-  dict->GetDict().RemoveByDottedPath(GetTxPrefPathPrefix());
+  ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
+  update->RemoveByDottedPath(GetTxPrefPathPrefix());
 }
 
 std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(

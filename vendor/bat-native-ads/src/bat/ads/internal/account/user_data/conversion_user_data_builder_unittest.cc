@@ -42,7 +42,7 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   // Act
   BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
     const absl::optional<std::string> message =
-        security::OpenEvenlopeForUserDataAndAdvertiserSecretKey(
+        security::OpenEnvelopeForUserDataAndAdvertiserSecretKey(
             user_data, kAdvertiserSecretKey);
     ASSERT_TRUE(message);
 

@@ -24,10 +24,10 @@
 #include "base/logging.h"
 #include "base/process/kill.h"
 #include "base/task/bind_post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "build/build_config.h"
 
 namespace brave {
@@ -196,7 +196,7 @@ void ChildProcessMonitor::Start(
       FROM_HERE,
       base::BindOnce(
           &MonitorChild, child_process_.Handle(),
-          base::BindPostTask(base::SequencedTaskRunnerHandle::Get(),
+          base::BindPostTask(base::SequencedTaskRunner::GetCurrentDefault(),
                              base::BindOnce(&ChildProcessMonitor::OnChildCrash,
                                             weak_ptr_factory_.GetWeakPtr(),
                                             std::move(callback)))));

@@ -106,6 +106,9 @@
   <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
     The tokens you earn this month will begin processing on <ph name="DATE">$1<ex>OCT 12</ex></ph>.
   </message>
+  <message name="IDS_REWARDS_WIDGET_ENABLE_BRAVE_ADS" desc="">
+    Enable Brave Ads
+  </message>
   <message name="IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE" desc="">
     This may vary based on market volatility.
   </message>
@@ -132,12 +135,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
     To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">$2</ph>
-  </message>
-  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT" desc="">
-    You’re earning tokens for viewing this sponsored image.
-  </message>
-  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT" desc="">
-    Earn tokens for viewing this image and support content creators.
   </message>
   <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
     Start using Rewards

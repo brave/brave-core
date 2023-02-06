@@ -5,12 +5,15 @@
 
 #include "bat/ads/internal/ads/serving/targeting/top_segments.h"
 
+#include <iterator>
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/ranges/algorithm.h"
+#include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_builder.h"
@@ -20,13 +23,14 @@
 #include "bat/ads/internal/features/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_constants.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "bat/ads/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
+#include "bat/ads/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -48,7 +52,7 @@ struct ModelCombinationsParamInfo final {
 
 // Expected number of segments for all possible model combinations for both,
 // never processed and previously processed state
-const ModelCombinationsParamInfo kTests[] = {
+constexpr ModelCombinationsParamInfo kTests[] = {
     // Never processed
     {false, false, false, false, 0},
     {false, false, true, false, 0},
@@ -69,6 +73,15 @@ const ModelCombinationsParamInfo kTests[] = {
     {true, true, true, true, 8},
 };
 
+SegmentList GetSegmentList() {
+  SegmentList segments;
+  base::ranges::transform(GetSegments(), std::back_inserter(segments),
+                          [](const base::StringPiece& segment) {
+                            return static_cast<std::string>(segment);
+                          });
+  return segments;
+}
+
 void ProcessEpsilonGreedyBandit() {
   const std::vector<processor::BanditFeedbackInfo> feedbacks = {
       {"science", mojom::NotificationAdEventType::kClicked},
@@ -81,9 +94,10 @@ void ProcessEpsilonGreedyBandit() {
       {"technology & computing", mojom::NotificationAdEventType::kDismissed},
       {"technology & computing", mojom::NotificationAdEventType::kClicked}};
 
-  for (const auto& segment : kSegments) {
+  for (const base::StringPiece segment : GetSegments()) {
     processor::EpsilonGreedyBandit::Process(
-        {segment, mojom::NotificationAdEventType::kDismissed});
+        {static_cast<std::string>(segment),
+         mojom::NotificationAdEventType::kDismissed});
   }
 
   for (const auto& feedback : feedbacks) {
@@ -150,7 +164,7 @@ class BatAdsTopSegmentsTest
 
 TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   const ModelCombinationsParamInfo param(GetParam());
   if (param.previously_processed) {
@@ -163,12 +177,10 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
   std::vector<base::test::FeatureRef> disabled_features;
 
   if (param.epsilon_greedy_bandits_enabled) {
-    const char kEpsilonValue[] = "epsilon_value";
-    base::FieldTrialParams kEpsilonGreedyBanditParameters;
-    // Set bandit to always exploit for deterministic execution
-    kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
-    enabled_features.emplace_back(features::kEpsilonGreedyBandit,
-                                  kEpsilonGreedyBanditParameters);
+    base::FieldTrialParams params;
+    params["epsilon_value"] =
+        "0.0";  // Set bandit to always exploit for deterministic execution
+    enabled_features.emplace_back(features::kEpsilonGreedyBandit, params);
   } else {
     disabled_features.emplace_back(features::kEpsilonGreedyBandit);
   }
@@ -230,21 +242,20 @@ INSTANTIATE_TEST_SUITE_P(BatAdsTopSegmentsTest,
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();
   ProcessPurchaseIntent();
 
-  const char kEpsilonValue[] = "epsilon_value";
-  std::map<std::string, std::string> kEpsilonGreedyBanditParameters;
-  // Set bandit to always exploit for deterministic execution
-  kEpsilonGreedyBanditParameters[kEpsilonValue] = "0.0";
+  std::map<std::string, std::string> params;
+  params["epsilon_value"] =
+      "0.0";  // Set bandit to always exploit for deterministic execution
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kPurchaseIntent, /*default params*/ {}},
-       {features::kEpsilonGreedyBandit, kEpsilonGreedyBanditParameters},
+       {features::kEpsilonGreedyBandit, params},
        {features::kTextClassification, /*default params*/ {}}},
       {});
 
@@ -268,7 +279,7 @@ TEST_F(BatAdsTopSegmentsTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
 TEST_F(BatAdsTopSegmentsTest, GetSegmentsForFieldTrialParticipationPath) {
   // Arrange
-  resource::SetEpsilonGreedyBanditEligibleSegments(kSegments);
+  resource::SetEpsilonGreedyBanditEligibleSegments(GetSegmentList());
 
   ProcessEpsilonGreedyBandit();
   ProcessTextClassification();

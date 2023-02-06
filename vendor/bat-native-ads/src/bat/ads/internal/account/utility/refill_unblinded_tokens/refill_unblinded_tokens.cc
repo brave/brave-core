@@ -19,6 +19,7 @@
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/account/utility/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/net/http/http_status_code.h"
 #include "bat/ads/internal/common/time/time_formatting_util.h"
@@ -327,8 +328,26 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   for (const auto& batch_dleq_proof_unblinded_token :
        *batch_dleq_proof_unblinded_tokens) {
     privacy::UnblindedTokenInfo unblinded_token;
+
     unblinded_token.value = batch_dleq_proof_unblinded_token;
+
     unblinded_token.public_key = public_key;
+
+    const absl::optional<std::string> unblinded_token_base64 =
+        unblinded_token.value.EncodeBase64();
+    if (!unblinded_token_base64) {
+      NOTREACHED();
+      continue;
+    }
+
+    const absl::optional<std::string> signature =
+        crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
+    if (!signature) {
+      NOTREACHED();
+      continue;
+    }
+    unblinded_token.signature = *signature;
+
     DCHECK(IsValid(unblinded_token));
 
     unblinded_tokens.push_back(unblinded_token);

@@ -136,7 +136,7 @@ interface BatAds {
   OnDidCloseTab(int32 tab_id);
 
   // Account
-  OnRewardsWalletDidChange(string payment_id, string seed);
+  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 

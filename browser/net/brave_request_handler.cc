@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
+#include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
@@ -21,7 +22,6 @@
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -78,9 +78,6 @@ void BraveRequestHandler::SetupCallbacks() {
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
-  before_url_request_callbacks_.push_back(callback);
-
 #if BUILDFLAG(ENABLE_IPFS)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     callback = base::BindRepeating(ipfs::OnBeforeURLRequest_IPFSRedirectWork);
@@ -110,6 +107,10 @@ void BraveRequestHandler::SetupCallbacks() {
         base::BindRepeating(brave::OnBeforeStartTransaction_ReduceLanguageWork);
     before_start_transaction_callbacks_.push_back(start_transaction_callback);
   }
+
+  start_transaction_callback =
+      base::BindRepeating(brave::OnBeforeStartTransaction_AdsStatusHeader);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   brave::OnHeadersReceivedCallback headers_received_callback =

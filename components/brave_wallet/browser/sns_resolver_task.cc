@@ -408,7 +408,7 @@ void SnsResolverTask::SetResultForTesting(
 }
 
 void SnsResolverTask::ScheduleWorkOnTask() {
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&SnsResolverTask::WorkOnTask,
                                 weak_ptr_factory_.GetWeakPtr()));
 }

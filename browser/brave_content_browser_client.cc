@@ -15,7 +15,6 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/brave_ads_host.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -34,7 +33,6 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_status_header_throttle.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
@@ -234,19 +232,6 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
           g_brave_browser_process->ad_block_service()),
-      std::move(receiver));
-}
-
-void BindBraveAdsHost(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  auto* profile = Profile::FromBrowserContext(context);
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_ads::BraveAdsHost>(profile, web_contents),
       std::move(receiver));
 }
 
@@ -578,12 +563,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
-    map->Add<brave_ads::mojom::BraveAdsHost>(
-        base::BindRepeating(&BindBraveAdsHost));
-  }
-
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
@@ -763,7 +742,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               g_brave_browser_process->speedreader_rewriter_service(),
               speedreader_service, settings_map, tab_helper->GetWeakPtr(),
               request.url, check_disabled_sites,
-              base::ThreadTaskRunnerHandle::Get());
+              base::SingleThreadTaskRunner::GetCurrentDefault());
       if (throttle)
         result.push_back(std::move(throttle));
     }
@@ -772,17 +751,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     if (isMainFrame) {
       // De-AMP
       if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-              base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
+              base::SingleThreadTaskRunner::GetCurrentDefault(), request,
+              wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
-      }
-
-      brave_ads::AdsService* ads_service =
-          brave_ads::AdsServiceFactory::GetForProfile(
-              Profile::FromBrowserContext(browser_context));
-      if (auto ads_status_header_throttle =
-              brave_ads::AdsStatusHeaderThrottle::MaybeCreateThrottle(
-                  ads_service, request)) {
-        result.push_back(std::move(ads_status_header_throttle));
       }
     }
 

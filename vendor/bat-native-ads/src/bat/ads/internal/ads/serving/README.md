@@ -1,6 +1,6 @@
 # Serving
 
-Deliver ads from the catalog to the user.
+When an ad is served, it is delivered to a specific audience that has been targeted based on demographics, interests, or behaviors. This is done using local machine learning with the browser profile to only place ads in optimal conditions. Ads are anonymously matched to opportunities, and users become partners instead of targets.
 
 | format  | description  |
 |---|---|

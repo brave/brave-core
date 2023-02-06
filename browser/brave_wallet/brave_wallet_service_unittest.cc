@@ -1230,9 +1230,8 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   // Remove network.
   observer_->Reset();
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::Value::List* list =
-        update.Get()->GetDict().FindList(kEthereumPrefKey);
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
+    base::Value::List* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
       auto* chain_id_value = v.FindStringKey("chainId");
       if (!chain_id_value)
@@ -1426,10 +1425,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    auto* user_assets_pref = update.Get()->GetIfDict();
-    base::Value::List user_assets_list;
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
 
+    base::Value::List user_assets_list;
     base::Value::Dict value;
     value.Set("contract_address", "eth");
     value.Set("name", "Ethereum");
@@ -1439,7 +1437,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
     value.Set("decimals", 18);
     value.Set("visible", true);
     user_assets_list.Append(std::move(value));
-    user_assets_pref->Set("goerli", std::move(user_assets_list));
+
+    update->Set("goerli", std::move(user_assets_list));
   }
 
   const auto& pref = GetPrefs()->GetDict(kBraveWalletUserAssetsDeprecated);
@@ -1462,8 +1461,8 @@ TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
   ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
 
   {
-    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
-    auto& old_user_assets_pref = update.Get()->GetDict();
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
+    auto& old_user_assets_pref = update.Get();
 
     base::Value::Dict value;
     value.Set("contract_address", "");
@@ -1859,10 +1858,10 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -1889,8 +1888,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -1917,10 +1915,10 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -1942,8 +1940,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2149,10 +2146,10 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request1),

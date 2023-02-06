@@ -13,7 +13,7 @@
 
     <string-array name="blockCookiesTexts">
         <item>@string/block_cookies_option_1</item>
-        <item>@string/block_cross_site_cookies</item>
+        <item>@string/block_cookies_option_2</item>
         <item>@string/block_cookies_option_3</item>
     </string-array>
 

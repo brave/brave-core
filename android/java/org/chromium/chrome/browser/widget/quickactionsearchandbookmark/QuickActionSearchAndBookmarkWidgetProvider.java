@@ -2,7 +2,7 @@
   Copyright (c) 2022 The Brave Authors. All rights reserved.
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at http://mozilla.org/MPL/2.0/.
+  You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark;
@@ -43,6 +43,8 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
@@ -58,14 +60,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvider {
+    static class QuickActionSearchAndBookmarkWidgetProviderDelegate
+            implements Consumer<SearchActivityPreferences> {
+        public QuickActionSearchAndBookmarkWidgetProviderDelegate() {}
+
+        @Override
+        public void accept(SearchActivityPreferences prefs) {
+            if (prefs == null) prefs = SearchActivityPreferencesManager.getCurrent();
+            updateSearchEngine(prefs.searchEngineName);
+        }
+    }
+
     public static String FROM_SETTINGS = "FROM_SETTINGS";
 
     private static final int TOTAL_TILES = 16;
     private static final int TILES_PER_ROW = 4;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 116;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 184;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 125;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 220;
     private static final int MIN_VISIBLE_HEIGHT_ROW_3 = 252;
     private static final int MIN_VISIBLE_HEIGHT_ROW_4 = 320;
     private static final int DESIRED_ICON_SIZE = 44;
@@ -98,8 +112,21 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             },
     };
 
+    private static QuickActionSearchAndBookmarkWidgetProviderDelegate mDelegate;
+
     public QuickActionSearchAndBookmarkWidgetProvider() {
         ChromeBrowserInitializer.getInstance().handleSynchronousStartup();
+    }
+
+    public static void initializeDelegate() {
+        SearchActivityPreferencesManager.addObserver(getDelegate());
+    }
+
+    private static QuickActionSearchAndBookmarkWidgetProviderDelegate getDelegate() {
+        if (mDelegate == null) {
+            mDelegate = new QuickActionSearchAndBookmarkWidgetProviderDelegate();
+        }
+        return mDelegate;
     }
 
     @Override
@@ -134,6 +161,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     public static void updateSearchEngine(String searchEngine) {
+        if (searchEngine == null) return;
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = getAppWidgetIds(context, appWidgetManager);

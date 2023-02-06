@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_CONTAINERS_CONTAINER_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_CONTAINERS_CONTAINER_UTIL_H_
 
-#include <algorithm>
 #include <iterator>
 #include <vector>
 
@@ -34,54 +33,6 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   }
 
   return result;
-}
-
-template <typename T>
-bool CompareMaps(const T& lhs, const T& rhs) {
-  return lhs.size() == rhs.size() &&
-         std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
-}
-
-// Checks that |c1| and |c2| contain the same number of elements and each
-// element in |c1| is present in |c2| and vice-versa (Uses the == operator for
-// comparing). Returns true if it is the case. Note that this method will return
-// true for (aab, abb)
-template <typename T>
-bool CompareAsSets(const T& c1, const T& c2) {
-  if (c1.size() != c2.size()) {
-    return false;
-  }
-
-  for (size_t i = 0; i < c2.size(); i++) {
-    bool found = false;
-
-    for (size_t j = 0; (j < c2.size()) && !found; j++) {
-      found = found || (c1[i] == c2[j]);
-    }
-
-    if (!found) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-template <typename T>
-std::vector<T> SetIntersection(std::vector<T> lhs, std::vector<T> rhs) {
-  std::sort(lhs.begin(), lhs.end());
-  std::sort(rhs.begin(), rhs.end());
-
-  std::vector<T> intersection;
-  std::set_intersection(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-                        std::back_inserter(intersection));
-
-  return intersection;
-}
-
-template <typename T>
-bool IsEqualContainers(const T& c1, const T& c2) {
-  return std::equal(c1.cbegin(), c1.cend(), c2.cbegin(), c2.cend());
 }
 
 }  // namespace ads

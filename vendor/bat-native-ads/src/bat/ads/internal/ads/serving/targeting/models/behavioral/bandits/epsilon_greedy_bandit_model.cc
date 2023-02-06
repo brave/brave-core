@@ -5,13 +5,13 @@
 
 #include "bat/ads/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/features/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arm_util.h"
@@ -90,9 +90,8 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
   const ArmBucketList unsorted_buckets{arms.cbegin(), arms.cend()};
   ArmBucketList sorted_buckets(arms.size());
-  std::partial_sort_copy(
-      unsorted_buckets.cbegin(), unsorted_buckets.cend(),
-      sorted_buckets.begin(), sorted_buckets.end(),
+  base::ranges::partial_sort_copy(
+      unsorted_buckets, sorted_buckets,
       [](const ArmBucketPair& lhs, const ArmBucketPair& rhs) {
         return lhs.first > rhs.first;
       });

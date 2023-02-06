@@ -107,12 +107,12 @@ std::string HDKeyring::GetDiscoveryAddress(size_t index) const {
   return std::string();
 }
 
-std::string HDKeyring::GetEncodedPrivateKey(const std::string& address) {
+std::string HDKeyring::EncodePrivateKeyForExport(const std::string& address) {
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return std::string();
 
-  return hd_key->GetEncodedPrivateKey();
+  return hd_key->EncodePrivateKeyForExport();
 }
 
 std::vector<uint8_t> HDKeyring::SignMessage(

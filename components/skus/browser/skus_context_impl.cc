@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
@@ -100,7 +100,7 @@ void shim_scheduleWakeup(
   int buffer_ms = 10;
   VLOG(1) << "shim_scheduleWakeup " << (delay_ms + buffer_ms) << " ("
           << delay_ms << "ms plus " << buffer_ms << "ms buffer)";
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
       base::Milliseconds(delay_ms + buffer_ms));

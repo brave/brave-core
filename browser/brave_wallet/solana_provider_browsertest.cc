@@ -235,6 +235,8 @@ class TestTxServiceObserver : public mojom::TxServiceObserver {
     }
   }
 
+  void OnTxServiceReset() override {}
+
   void WaitForNewUnapprovedTx() {
     run_loop_new_unapproved_ = std::make_unique<base::RunLoop>();
     run_loop_new_unapproved_->Run();
@@ -394,11 +396,12 @@ class SolanaProviderTest : public InProcessBrowserTest {
   }
 
   void UserGrantPermission(bool granted) {
-    if (granted)
+    if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
           std::vector<std::string>{kFirstAccount}, web_contents());
-    else
+    } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
+    }
     ASSERT_EQ(EvalJs(web_contents(), "getConnectedAccount()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractString(),
@@ -1146,6 +1149,16 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(),
             base::StrCat({kEncodedSignature, ",", kEncodedSignature}));
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
+  RestoreWallet();
+  AddAccount("Account 1");
+  SetSelectedAccount(kFirstAccount);
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/short_lived_iframes.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  ReloadAndWaitForLoadStop(browser());
 }
 
 }  // namespace brave_wallet

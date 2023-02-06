@@ -27,6 +27,7 @@ import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
 import("//brave/browser/ntp_background/sources.gni")
+import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
@@ -231,11 +232,14 @@ brave_chrome_browser_deps = [
 
 if (is_mac) {
   brave_chrome_browser_sources += [
+    "//brave/browser/brave_app_controller_mac.h",
+    "//brave/browser/brave_app_controller_mac.mm",
     "//brave/browser/brave_browser_main_parts_mac.h",
     "//brave/browser/brave_browser_main_parts_mac.mm",
     "//brave/browser/brave_shell_integration_mac.h",
     "//brave/browser/brave_shell_integration_mac.mm",
   ]
+  brave_chrome_browser_deps += [ "//brave/app:command_ids" ]
 }
 
 if (enable_sparkle) {
@@ -407,6 +411,7 @@ brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_notifications_sources
 brave_chrome_browser_sources += brave_browser_ntp_background_sources
+brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
@@ -440,6 +445,7 @@ brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_notifications_deps
 brave_chrome_browser_deps += brave_browser_ntp_background_deps
+brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps

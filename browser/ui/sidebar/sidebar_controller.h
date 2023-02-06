@@ -73,6 +73,10 @@ class SidebarController : public SidebarService::Observer {
   // Otherwise, load URL in the active tab.
   void IterateOrLoadAtActiveTab(const GURL& url);
 
+  // Try to find a tab that loads |url| from other browsers
+  // and activate it if found.
+  bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
+
   raw_ptr<BraveBrowser> browser_ = nullptr;
   // Interface to view.
   raw_ptr<Sidebar> sidebar_ = nullptr;

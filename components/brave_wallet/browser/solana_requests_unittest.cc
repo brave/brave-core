@@ -100,6 +100,12 @@ TEST(SolanaRequestsUnitTest, getBlockHeight) {
       R"({"id":1,"jsonrpc":"2.0","method":"getBlockHeight","params":[]})");
 }
 
+TEST(SolanaRequestsUnitTest, getTokenAccountsByOwner) {
+  ASSERT_EQ(
+      getTokenAccountsByOwner("pubkey"),
+      R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountsByOwner","params":["pubkey",{"programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"encoding":"base64"}]})");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

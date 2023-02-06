@@ -17,18 +17,17 @@
 namespace ads {
 
 int GetNumberOfTabsOpened(const UserActivityEventList& events) {
-  return std::count_if(
-      events.cbegin(), events.cend(), [](const UserActivityEventInfo& event) {
-        return event.type == UserActivityEventType::kOpenedNewTab;
-      });
+  return base::ranges::count_if(events, [](const UserActivityEventInfo& event) {
+    return event.type == UserActivityEventType::kOpenedNewTab;
+  });
 }
 
 int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
                                   UserActivityEventType event_type) {
-  return std::count_if(events.cbegin(), events.cend(),
-                       [event_type](const UserActivityEventInfo& event) {
-                         return event.type == event_type;
-                       });
+  return base::ranges::count_if(
+      events, [event_type](const UserActivityEventInfo& event) {
+        return event.type == event_type;
+      });
 }
 
 int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,

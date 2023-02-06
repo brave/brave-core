@@ -18,12 +18,15 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl;
+import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl.BraveWalletServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
@@ -34,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PortfolioModel {
+public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public final LiveData<List<NftDataModel>> mNftModels;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<List<NftDataModel>> _mNftModels;
@@ -49,6 +52,8 @@ public class PortfolioModel {
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
     private Context mContext;
+    private MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
+    public LiveData<Boolean> mIsDiscoveringUserAssets;
 
     public PortfolioModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -67,38 +72,72 @@ public class PortfolioModel {
         mSharedData = sharedData;
         _mNftModels = new MutableLiveData<>(Collections.emptyList());
         mNftModels = _mNftModels;
+        _mIsDiscoveringUserAssets = new MutableLiveData<>(false);
+        mIsDiscoveringUserAssets = _mIsDiscoveringUserAssets;
+        addServiceObservers();
     }
 
     // TODO(pav): We should fetch and process all portfolio list here
     public void prepareNftListMetaData(List<BlockchainToken> nftList, NetworkInfo networkInfo,
             PortfolioHelper portfolioHelper) {
         mPortfolioHelper = portfolioHelper;
-        List<BlockchainToken> ercNfts = JavaUtils.filter(nftList, nft -> nft.isErc721);
+        // Filter out and calculate the size of supported NFTs.
+        // The total sum will be used by `MultiResponseHandler` to detect
+        // when `setWhenAllCompletedAction()` can be processed.
+        int erc721NftsSize = JavaUtils.filter(nftList, (nft -> nft.isErc721)).size();
+        int solanaNftsSize = JavaUtils.filter(nftList, (nft -> nft.coin == CoinType.SOL)).size();
         List<NftDataModel> nftDataModels = new ArrayList<>();
         AsyncUtils.MultiResponseHandler nftMetaDataHandler =
-                new AsyncUtils.MultiResponseHandler(ercNfts.size());
+                new AsyncUtils.MultiResponseHandler(erc721NftsSize + solanaNftsSize);
 
-        ArrayList<AsyncUtils.GetNftMetaDataContext> nftMetaDatas = new ArrayList<>();
+        ArrayList<AsyncUtils.BaseGetNftMetadataContext> nftMetadataList = new ArrayList<>();
         for (BlockchainToken userAsset : nftList) {
             if (userAsset.isErc721) {
-                AsyncUtils.GetNftMetaDataContext nftMetaData = new AsyncUtils.GetNftMetaDataContext(
-                        nftMetaDataHandler.singleResponseComplete);
-                nftMetaData.asset = userAsset;
+                AsyncUtils.GetNftErc721MetadataContext nftMetadata =
+                        new AsyncUtils.GetNftErc721MetadataContext(
+                                nftMetaDataHandler.singleResponseComplete);
+                nftMetadata.asset = userAsset;
                 mJsonRpcService.getErc721Metadata(userAsset.contractAddress, userAsset.tokenId,
-                        userAsset.chainId, nftMetaData);
-                nftMetaDatas.add(nftMetaData);
-            } else if (userAsset.isNft) { // other nfts e.g. solana
-                nftDataModels.add(new NftDataModel(userAsset, networkInfo, null));
+                        userAsset.chainId, nftMetadata);
+                nftMetadataList.add(nftMetadata);
+            } else if (userAsset.isNft) {
+                if (userAsset.coin == CoinType.SOL) {
+                    // Solana NFTs.
+                    AsyncUtils.GetNftSolanaMetadataContext nftMetadata =
+                            new AsyncUtils.GetNftSolanaMetadataContext(
+                                    nftMetaDataHandler.singleResponseComplete);
+                    nftMetadata.asset = userAsset;
+                    mJsonRpcService.getSolTokenMetadata(userAsset.contractAddress, nftMetadata);
+                    nftMetadataList.add(nftMetadata);
+
+                } else {
+                    // Other NFTs.
+                    nftDataModels.add(new NftDataModel(userAsset, networkInfo, null));
+                }
             }
         }
         nftMetaDataHandler.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetNftMetaDataContext metaData : nftMetaDatas) {
-                nftDataModels.add(new NftDataModel(metaData.asset, networkInfo,
-                        new Erc721MetaData(metaData.erc721Metadata, metaData.errorCode,
-                                metaData.errorMessage)));
+            for (AsyncUtils.BaseGetNftMetadataContext metadata : nftMetadataList) {
+                nftDataModels.add(new NftDataModel(metadata.asset, networkInfo,
+                        new NftMetadata(metadata.tokenMetadata, metadata.errorCode,
+                                metadata.errorMessage)));
             }
             _mNftModels.postValue(nftDataModels);
         });
+    }
+
+    public void discoverAssetsOnAllSupportedChains() {
+        if (mBraveWalletService == null) return;
+        _mIsDiscoveringUserAssets.postValue(true);
+        mBraveWalletService.discoverAssetsOnAllSupportedChains();
+    }
+
+    private void addServiceObservers() {
+        if (mBraveWalletService != null) {
+            BraveWalletServiceObserverImpl walletServiceObserver =
+                    new BraveWalletServiceObserverImpl(this);
+            mBraveWalletService.addObserver(walletServiceObserver);
+        }
     }
 
     void resetServices(Context context, TxService mTxService, KeyringService mKeyringService,
@@ -115,30 +154,32 @@ public class PortfolioModel {
             this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
             this.mBraveWalletService = mBraveWalletService;
             this.mAssetRatioService = mAssetRatioService;
+            addServiceObservers();
         }
     }
 
-    public class NftDataModel {
+    public static class NftDataModel {
         public BlockchainToken token;
         public NetworkInfo networkInfo;
-        public Erc721MetaData erc721MetaData;
+        public NftMetadata nftMetadata;
 
         public NftDataModel(
-                BlockchainToken token, NetworkInfo networkInfo, Erc721MetaData erc721MetaData) {
+                BlockchainToken token, NetworkInfo networkInfo, NftMetadata nftMetadata) {
             this.token = token;
             this.networkInfo = networkInfo;
-            this.erc721MetaData = erc721MetaData;
+            this.nftMetadata = nftMetadata;
         }
     }
 
-    public class Erc721MetaData implements Serializable {
-        public String mDescription;
+    public static class NftMetadata implements Serializable {
         public String mImageUrl;
         public String mName;
         public int mErrCode;
         public String mErrMsg;
+        // ERC721 only, but it may be present anyway in other standards.
+        public String mDescription;
 
-        public Erc721MetaData(String jsonString, int mErrCode, String mErrMsg) {
+        public NftMetadata(String jsonString, int mErrCode, String mErrMsg) {
             this.mErrCode = mErrCode;
             this.mErrMsg = mErrMsg;
             try {
@@ -150,7 +191,7 @@ public class PortfolioModel {
             }
         }
 
-        public Erc721MetaData(String mDescription, String mImageUrl, String mName) {
+        public NftMetadata(String mDescription, String mImageUrl, String mName) {
             this.mDescription = mDescription;
             this.mImageUrl = mImageUrl;
             this.mName = mName;
@@ -163,5 +204,10 @@ public class PortfolioModel {
             else
                 return AssetUtils.httpifyIpfsUrl(url);
         }
+    }
+
+    @Override
+    public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
+        _mIsDiscoveringUserAssets.postValue(false);
     }
 }

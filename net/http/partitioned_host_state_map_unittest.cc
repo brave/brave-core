@@ -1,4 +1,4 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+#include "base/containers/span.h"
 #include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,13 +16,15 @@ namespace net {
 
 namespace {
 
-using PartitionedMap =
-    PartitionedHostStateMap<std::map<std::string, std::string>>;
+using HostHash = std::array<uint8_t, crypto::kSHA256Length>;
+using PartitionedMap = PartitionedHostStateMap<std::map<HostHash, std::string>>;
 
-std::string HashHost(base::StringPiece canonicalized_host) {
-  char hashed[crypto::kSHA256Length];
-  crypto::SHA256HashString(canonicalized_host, hashed, sizeof(hashed));
-  return std::string(hashed, sizeof(hashed));
+HostHash HashHost(base::StringPiece canonicalized_host) {
+  if (canonicalized_host.empty()) {
+    return {};
+  }
+  return crypto::SHA256Hash(
+      base::as_bytes(base::make_span(canonicalized_host)));
 }
 
 }  // namespace
@@ -51,7 +54,7 @@ TEST(PartitionedHostStateMapTest, WithoutPartitionHash) {
 TEST(PartitionedHostStateMapTest, InvalidPartitionHash) {
   PartitionedMap map;
   // Empty string is an invalid partition. It means it should not be persisted.
-  auto auto_reset_partition_hash = map.SetScopedPartitionHash("");
+  auto auto_reset_partition_hash = map.SetScopedPartitionHash(HashHost(""));
   EXPECT_TRUE(map.HasPartitionHash());
   EXPECT_FALSE(map.IsPartitionHashValid());
 

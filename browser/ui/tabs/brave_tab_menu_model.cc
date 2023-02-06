@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/views/tabs/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -78,6 +79,10 @@ void BraveTabMenuModel::Build(int selected_tab_count) {
 
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+    return;
+
   AddCheckItemWithStringId(CommandShowVerticalTabs,
                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   AddCheckItemWithStringId(CommandShowTitleBar, IDS_TAB_CXMENU_SHOW_TITLE_BAR);

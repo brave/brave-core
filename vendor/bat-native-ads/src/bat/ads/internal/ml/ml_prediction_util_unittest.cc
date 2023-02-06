@@ -19,7 +19,7 @@ class BatAdsMLPredictionUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsMLPredictionUtilTest, SoftmaxTest) {
   // Arrange
-  const double kTolerance = 1e-8;
+  constexpr double kTolerance = 1e-8;
 
   const std::map<std::string, double> group_1 = {
       {"c1", -1.0}, {"c2", 2.0}, {"c3", 3.0}};
@@ -43,7 +43,7 @@ TEST_F(BatAdsMLPredictionUtilTest, SoftmaxTest) {
 
 TEST_F(BatAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
   // Arrange
-  const double kTolerance = 1e-8;
+  constexpr double kTolerance = 1e-8;
 
   const std::map<std::string, double> group_1 = {
       {"c1", 0.0}, {"c2", 1.0}, {"c3", 2.0}};

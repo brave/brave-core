@@ -72,7 +72,6 @@ export const DepositFundsScreen = () => {
   const dispatch = useDispatch()
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const selectedAccount = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccount)
   const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
@@ -89,6 +88,7 @@ export const DepositFundsScreen = () => {
   const [selectedAsset, setSelectedAsset] = React.useState<
     BraveWallet.BlockchainToken | undefined
   >(undefined)
+  const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
@@ -193,7 +193,7 @@ export const DepositFundsScreen = () => {
 
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
-    dispatch(WalletActions.selectAccount(account))
+    setSelectedAccount(account)
     resetCopyState()
   }, [closeAccountSearch, resetCopyState])
 
@@ -215,7 +215,6 @@ export const DepositFundsScreen = () => {
     if (!isNextStepEnabled || !selectedAssetNetwork) {
       return
     }
-    dispatch(WalletActions.selectNetwork(selectedAssetNetwork))
     setShowDepositAddress(true)
   }, [isNextStepEnabled, selectedAssetNetwork])
 
@@ -282,7 +281,7 @@ export const DepositFundsScreen = () => {
       accountsForSelectedAssetNetwork.length && // asset is selected & account is available
       selectedAccount?.coin !== selectedAsset.coin // needs to change accounts to one with correct network
     ) {
-      dispatch(WalletActions.selectAccount(accountsForSelectedAssetNetwork[0]))
+      setSelectedAccount(accountsForSelectedAssetNetwork[0])
     }
   }, [
     selectedAsset,

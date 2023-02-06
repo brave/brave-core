@@ -81,7 +81,7 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
 TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
@@ -103,7 +103,7 @@ TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
 
 TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   // Act
   serving_->MaybeServeAd();

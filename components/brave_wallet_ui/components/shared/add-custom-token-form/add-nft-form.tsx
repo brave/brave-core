@@ -119,6 +119,7 @@ export const AddNftForm = (props: Props) => {
         let token = { ...foundTokenInfoByContractAddress }
         token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
         token.chainId = customAssetsNetwork.chainId
+        token.name = tokenName
         onAddCustomAsset(token)
         onHideForm()
         return
@@ -217,42 +218,38 @@ export const AddNftForm = (props: Props) => {
 
   return (
     <FormWrapper onClick={onHideNetworkDropDown}>
+      <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
+      <SelectNetworkDropdown
+        selectedNetwork={customAssetsNetwork}
+        onClick={onShowNetworkDropDown}
+        showNetworkDropDown={showNetworkDropDown}
+        onSelectCustomNetwork={onSelectCustomNetwork}
+      />
       <FormRow>
         <FormColumn>
-          <InputLabel>{getLocale('braveWalletWatchListTokenAddress')}</InputLabel>
+          <InputLabel>{getLocale('braveWalletWatchListTokenName')}</InputLabel>
+          <Input value={tokenName} onChange={handleTokenNameChanged} />
+        </FormColumn>
+        <FormColumn>
+          <InputLabel>
+            {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+              ? getLocale('braveWalletTokenMintAddress')
+              : getLocale('braveWalletWatchListTokenAddress')}
+          </InputLabel>
           <Input
             value={tokenContractAddress}
             onChange={handleTokenAddressChanged}
           />
         </FormColumn>
-        <FormColumn>
-          <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
-          <SelectNetworkDropdown
-            selectedNetwork={customAssetsNetwork}
-            onClick={onShowNetworkDropDown}
-            showNetworkDropDown={showNetworkDropDown}
-            onSelectCustomNetwork={onSelectCustomNetwork}
-          />
-        </FormColumn>
       </FormRow>
       <FormRow>
         <FormColumn>
-          <InputLabel>{getLocale('braveWalletWatchListTokenName')}</InputLabel>
-          <Input
-            value={tokenName}
-            onChange={handleTokenNameChanged}
-          />
+          <InputLabel>
+            {getLocale('braveWalletWatchListTokenSymbol')}
+          </InputLabel>
+          <Input value={tokenSymbol} onChange={handleTokenSymbolChanged} />
         </FormColumn>
-        <FormColumn>
-          <InputLabel>{getLocale('braveWalletWatchListTokenSymbol')}</InputLabel>
-          <Input
-            value={tokenSymbol}
-            onChange={handleTokenSymbolChanged}
-          />
-        </FormColumn>
-      </FormRow>
-      <FormRow>
-        {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
+        {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
           <FormColumn>
             <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
             <Input
@@ -261,16 +258,16 @@ export const AddNftForm = (props: Props) => {
               type='number'
             />
           </FormColumn>
-        }
+        )}
       </FormRow>
       <>
-        {showTokenIDRequired &&
+        {showTokenIDRequired && (
           <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
-          }
+        )}
       </>
-      {hasError &&
+      {hasError && (
         <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
-      }
+      )}
       <ButtonRow>
         <NavButton
           onSubmit={onClickCancel}

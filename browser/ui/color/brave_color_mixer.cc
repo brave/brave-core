@@ -278,6 +278,11 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
+
+  mixer[kColorBraveVerticalTabSeparator] = {SkColorSetRGB(0xE2, 0xE3, 0xE7)};
+  mixer[kColorBraveVerticalTabActiveBackground] = {SK_ColorWHITE};
+  mixer[kColorBraveVerticalTabInactiveBackground] = {
+      SkColorSetRGB(0xf3, 0xf3, 0xf3)};
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -370,6 +375,12 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
+
+  mixer[kColorBraveVerticalTabSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
+  mixer[kColorBraveVerticalTabActiveBackground] = {
+      SkColorSetRGB(0x18, 0x1A, 0x21)};
+  mixer[kColorBraveVerticalTabInactiveBackground] = {
+      SkColorSetRGB(0x30, 0x34, 0x43)};
 }
 
 // Handling dark or light theme on normal profile.

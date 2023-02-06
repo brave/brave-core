@@ -5,9 +5,8 @@
 
 #include "bat/ads/internal/processors/contextual/text_classification/text_classification_processor.h"
 
-#include <algorithm>
-
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/search_engine/search_engine_results_page_util.h"
 #include "bat/ads/internal/common/search_engine/search_engine_util.h"
@@ -28,14 +27,13 @@ std::string GetTopSegmentFromPageProbabilities(
     const targeting::TextClassificationProbabilityMap& probabilities) {
   DCHECK(!probabilities.empty());
 
-  const auto iter = std::max_element(
-      probabilities.cbegin(), probabilities.cend(),
-      [](const targeting::SegmentProbabilityPair& lhs,
-         const targeting::SegmentProbabilityPair& rhs) -> bool {
-        return lhs.second < rhs.second;
-      });
-
-  return iter->first;
+  return base::ranges::max_element(
+             probabilities,
+             [](const targeting::SegmentProbabilityPair& lhs,
+                const targeting::SegmentProbabilityPair& rhs) {
+               return lhs.second < rhs.second;
+             })
+      ->first;
 }
 
 }  // namespace
@@ -88,7 +86,7 @@ void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void TextClassification::OnResourceDidUpdate(const std::string& id) {
-  if (kLanguageComponentIds.find(id) != kLanguageComponentIds.cend()) {
+  if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }

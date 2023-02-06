@@ -5,11 +5,11 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/user_activity_manager.h"
 
-#include <algorithm>
 #include <string>
 
 #include "absl/types/optional.h"
 #include "base/check_op.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/browser/browser_manager.h"
@@ -104,13 +104,12 @@ UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
 
   const base::Time time = base::Time::Now() - time_window;
 
-  const auto iter =
-      std::remove_if(filtered_history.begin(), filtered_history.end(),
-                     [time](const UserActivityEventInfo& event) {
-                       return event.created_at < time;
-                     });
-
-  filtered_history.erase(iter, filtered_history.cend());
+  filtered_history.erase(
+      base::ranges::remove_if(filtered_history,
+                              [time](const UserActivityEventInfo& event) {
+                                return event.created_at < time;
+                              }),
+      filtered_history.cend());
 
   return filtered_history;
 }

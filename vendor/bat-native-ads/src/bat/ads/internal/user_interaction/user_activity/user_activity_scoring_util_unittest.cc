@@ -21,16 +21,12 @@ class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    base::FieldTrialParams parameters;
-    const char kTriggersParameter[] = "triggers";
-    parameters[kTriggersParameter] = "0D=1.0;08=1.0";
-    const char kTimeWindowParameter[] = "time_window";
-    parameters[kTimeWindowParameter] = "1h";
-    const char kThresholdParameter[] = "threshold";
-    parameters[kThresholdParameter] = "2.0";
+    base::FieldTrialParams params;
+    params["triggers"] = "0D=1.0;08=1.0";
+    params["time_window"] = "1h";
+    params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    enabled_features.emplace_back(user_activity::features::kFeature,
-                                  parameters);
+    enabled_features.emplace_back(user_activity::features::kFeature, params);
 
     const std::vector<base::test::FeatureRef> disabled_features;
 

@@ -16,6 +16,10 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace version_info {
+enum class Channel;
+}  // namespace version_info
+
 class PrefService;
 
 namespace brave_vpn {
@@ -33,7 +37,6 @@ class BraveVPNOSConnectionAPI {
     ~Observer() override = default;
   };
 
-  virtual void SetTargetVpnEntryName(const std::string& name) = 0;
   virtual mojom::ConnectionState GetConnectionState() const = 0;
   virtual void RemoveVPNConnection() = 0;
   virtual void Connect() = 0;
@@ -58,7 +61,8 @@ class BraveVPNOSConnectionAPI {
 // Only BraveBrowserProcess need to use this method.
 std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNOSConnectionAPI(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs);
+    PrefService* local_prefs,
+    version_info::Channel channel);
 
 }  // namespace brave_vpn
 

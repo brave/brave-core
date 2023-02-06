@@ -28,6 +28,7 @@ export const SendContainer = styled(StyledDiv)`
 
 export const SectionBox = styled(StyledDiv) <{
   hasError?: boolean
+  hasWarning?: boolean
   minHeight?: number
   noPadding?: boolean
   boxDirection?: 'row' | 'column'
@@ -37,7 +38,7 @@ export const SectionBox = styled(StyledDiv) <{
   box-sizing: border-box;
   border-radius: 16px;
   border: 1px solid
-    ${(p) => (p.hasError ? p.theme.color.errorBorder : p.theme.color.divider01)};
+    ${(p) => (p.hasError ? p.theme.color.errorBorder : p.hasWarning ? p.theme.color.warningBorder : p.theme.color.divider01)};
   padding: ${(p) => p.noPadding ? '0px' : '16px 16px 16px 8px'};
   width: 100%;
   position: relative;

@@ -22,16 +22,88 @@ export const blockchainTokenEntityAdaptor: BlockchainTokenEntityAdaptor = create
 })
 export type BlockchainTokenEntityAdaptorState = ReturnType<BlockchainTokenEntityAdaptor['getInitialState']> & {
   idsByChainId: Record<EntityId, EntityId[]>
-  tokenIdsByChainId: Record<string, string[]>
+  idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
   visibleTokenIds: string[]
   visibleTokenIdsByChainId: Record<string, string[]>
+  visibleTokenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
 }
+
 export const blockchainTokenEntityAdaptorInitialState: BlockchainTokenEntityAdaptorState = {
   ...blockchainTokenEntityAdaptor.getInitialState(),
   idsByChainId: {},
-  tokenIdsByChainId: {},
+  idsByCoinType: {},
   visibleTokenIds: [],
-  visibleTokenIdsByChainId: {}
+  visibleTokenIdsByChainId: {},
+  visibleTokenIdsByCoinType: {}
+}
+
+export const combineTokenRegistries = (
+  tokensRegistry: BlockchainTokenEntityAdaptorState,
+  userTokensRegistry: BlockchainTokenEntityAdaptorState
+): BlockchainTokenEntityAdaptorState => {
+  const idsByChainId: Record<EntityId, EntityId[]> = {
+    ...tokensRegistry.idsByChainId
+  }
+  Object.keys(userTokensRegistry.idsByChainId).forEach((key) => {
+    idsByChainId[key] = (idsByChainId[key] || []).concat(
+      userTokensRegistry.idsByChainId[key]
+    )
+  })
+
+  const visibleTokenIdsByChainId: Record<string, string[]> = {
+    ...tokensRegistry.visibleTokenIdsByChainId
+  }
+  Object.keys(userTokensRegistry.visibleTokenIdsByChainId).forEach((key) => {
+    visibleTokenIdsByChainId[key] = (
+      visibleTokenIdsByChainId[key] || []
+    ).concat(userTokensRegistry.visibleTokenIdsByChainId[key])
+  })
+
+  const idsByCoinType: Record<BraveWallet.CoinType, EntityId[]> = {
+    ...tokensRegistry.idsByCoinType
+  }
+  Object.keys(userTokensRegistry.idsByCoinType).forEach((key) => {
+    idsByCoinType[key] = (idsByCoinType[key] || []).concat(
+      userTokensRegistry.idsByCoinType[key]
+    )
+  })
+
+  const visibleTokenIdsByCoinType: Record<number, EntityId[]> = {
+    ...tokensRegistry.visibleTokenIdsByCoinType
+  }
+  Object.keys(userTokensRegistry.visibleTokenIdsByCoinType).forEach((key) => {
+    visibleTokenIdsByCoinType[key] = (
+      visibleTokenIdsByCoinType[key] || []
+    ).concat(userTokensRegistry.visibleTokenIdsByCoinType[key])
+  })
+
+  const visibleTokenIds = [
+    ...new Set([
+      ...tokensRegistry.visibleTokenIds,
+      ...userTokensRegistry.visibleTokenIds
+    ])
+  ]
+
+  const ids = [...new Set([...tokensRegistry.ids, ...userTokensRegistry.ids])]
+
+  return blockchainTokenEntityAdaptor.setAll(
+    {
+      ...blockchainTokenEntityAdaptorInitialState,
+      entities: {
+        ...tokensRegistry.entities,
+        ...userTokensRegistry.entities
+      },
+      ids,
+      visibleTokenIds,
+      idsByChainId,
+      visibleTokenIdsByChainId,
+      idsByCoinType,
+      visibleTokenIdsByCoinType
+    },
+    getEntitiesListFromEntityState(tokensRegistry).concat(
+      getEntitiesListFromEntityState(userTokensRegistry)
+    )
+  )
 }
 
 // Tokens Registry Selectors From Root

@@ -6,13 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_SUBDOMAIN_CONSTANTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_SUBDOMAIN_CONSTANTS_H_
 
-#include <string>
-#include <vector>
+#include "base/containers/span.h"
+#include "base/strings/string_piece.h"
 
 namespace ads {
 
-const std::vector<std::string>& GetWikipediaSearchEngineSubdomains();
-const std::vector<std::string>& GetYahooSearchEngineSubdomains();
+base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains();
+base::span<const base::StringPiece> GetYahooSearchEngineSubdomains();
 
 }  // namespace ads
 

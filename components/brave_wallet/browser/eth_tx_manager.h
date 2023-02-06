@@ -48,7 +48,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const std::string& from,
+  void GetAllTransactionInfo(const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
 
   void SpeedupOrCancelTransaction(

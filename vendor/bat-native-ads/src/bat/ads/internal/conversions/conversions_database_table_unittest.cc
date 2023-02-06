@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/conversions/conversions_database_util.h"
 
@@ -49,7 +49,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, EmptySave) {
       [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       });
 }
 
@@ -83,7 +83,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, SaveConversions) {
       [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       });
 }
 
@@ -111,7 +111,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, DoNotSaveDuplicateConversion) {
       [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       });
 }
 
@@ -159,7 +159,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
       [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       });
 }
 
@@ -197,7 +197,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest,
       [&expected_conversions](const bool success,
                               const ConversionList& conversions) {
         ASSERT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_conversions, conversions));
+        EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
       });
 }
 

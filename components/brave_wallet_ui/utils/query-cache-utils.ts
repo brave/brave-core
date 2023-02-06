@@ -5,6 +5,8 @@
 
 import { EntityId, EntityState } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
+import { blockchainTokenEntityAdaptor } from '../common/slices/entities/blockchain-token.entity'
+import { GetBlockchainTokenIdArg } from './asset-utils'
 
 /**
  * Default tags used by the cacher helpers
@@ -184,6 +186,30 @@ export const cacheByIdArgProperty = <T extends string>(type: T) => <
 ): readonly [CacheItem<T, Arg['id']>] | [] => [{ type, id: arg.id }] as const
 
 /**
+ * HOF to create an entity cache for a single item
+ * using the entityId id from the token query argument as the ID.
+ *
+ * @example
+ * ```ts
+ * cacheByBlockchainTokenArg('Todo')(undefined, tokenQueryArg)
+ * // returns:
+ * // [{ type: 'Todo', id: 'tokenEntityIdString' }]
+ * ```
+ */
+export const cacheByBlockchainTokenArg = <T extends string>(type: T) => <
+  Arg extends GetBlockchainTokenIdArg,
+  Result = undefined,
+  Error = undefined
+>(
+  result: Result,
+  error: Error,
+  arg: Arg
+): readonly ['UNKNOWN_ERROR'] | readonly [CacheItem<T, EntityId>] | [] => {
+  const tag = { type, id: blockchainTokenEntityAdaptor.selectId(arg) } as const
+  return error ? (['UNKNOWN_ERROR'] as const) : ([tag] as const)
+}
+
+/**
  * HOF to create an entity cache for a single item using the id property from the query result as the ID.
  *
  * @example
@@ -244,6 +270,7 @@ export const invalidatesUnknownErrors = () => <
  * Utility helpers for common provides/invalidates scenarios
  */
 export const cacher = {
+  cacheByBlockchainTokenArg,
   cacheByIdArg,
   cacheByIdArgProperty,
   cacheByIdResultProperty,

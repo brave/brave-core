@@ -5,7 +5,6 @@
 
 #include "brave/ios/browser/api/certificate/brave_certificate.h"
 #include "base/logging.h"
-#include "base/memory/ref_counted.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/sys_string_conversions.h"
@@ -37,7 +36,7 @@
 
 @interface BraveCertificateModel () {
   base::ScopedCFTypeRef<CFDataRef> cert_data_;
-  scoped_refptr<net::ParsedCertificate> extended_cert_;
+  std::shared_ptr<const net::ParsedCertificate> extended_cert_;
   base::ScopedCFTypeRef<SecKeyRef> public_key_;
 }
 @end
@@ -63,8 +62,8 @@
     }
 
     net::CertErrors errors;
-    extended_cert_ =
-        scoped_refptr<net::ParsedCertificate>(net::ParsedCertificate::Create(
+    extended_cert_ = std::shared_ptr<const net::ParsedCertificate>(
+        net::ParsedCertificate::Create(
             std::move(cert_buffer),
             net::x509_util::DefaultParseCertificateOptions() /* {} */,
             &errors));

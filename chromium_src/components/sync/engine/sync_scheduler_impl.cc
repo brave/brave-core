@@ -36,7 +36,7 @@ void SyncSchedulerImpl::SchedulePermanentlyDeleteAccount(
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&SyncSchedulerImpl::PermanentlyDeleteAccountImpl,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

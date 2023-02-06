@@ -5,24 +5,24 @@
 
 #include "bat/ads/internal/account/wallet/wallet.h"
 
-#include <cstdint>
-#include <vector>
-
-#include "base/strings/string_number_conversions.h"
+#include "base/base64.h"
 #include "bat/ads/internal/common/crypto/crypto_util.h"
+#include "bat/ads/internal/common/crypto/key_pair_info.h"
 
 namespace ads {
 
-bool Wallet::Set(const std::string& id, const std::string& seed) {
-  const std::vector<uint8_t> secret_key =
-      security::GenerateSecretKeyFromSeed(seed);
-  if (secret_key.empty()) {
+bool Wallet::Set(const std::string& payment_id,
+                 const std::vector<uint8_t>& recovery_seed) {
+  const absl::optional<crypto::KeyPairInfo> key_pair =
+      crypto::GenerateSignKeyPairFromSeed(recovery_seed);
+  if (!key_pair || !key_pair->IsValid()) {
     return false;
   }
 
   WalletInfo wallet;
-  wallet.id = id;
-  wallet.secret_key = base::HexEncode(secret_key.data(), secret_key.size());
+  wallet.payment_id = payment_id;
+  wallet.public_key = base::Base64Encode(key_pair->public_key);
+  wallet.secret_key = base::Base64Encode(key_pair->secret_key);
 
   if (!wallet.IsValid()) {
     return false;

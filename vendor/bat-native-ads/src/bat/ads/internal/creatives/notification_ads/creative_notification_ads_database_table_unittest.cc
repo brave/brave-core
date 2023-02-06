@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "bat/ads/internal/common/containers/container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
+#include "bat/ads/internal/common/unittest/unittest_container_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
 #include "bat/ads/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "url/gurl.h"
@@ -107,7 +107,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -204,7 +204,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -255,7 +255,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -338,7 +338,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -388,7 +388,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -438,7 +438,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -537,7 +537,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -612,7 +612,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }
@@ -686,7 +686,7 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableTest,
              const bool success, const SegmentList& /*segments*/,
              const CreativeNotificationAdList& creative_ads) {
             EXPECT_TRUE(success);
-            EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+            EXPECT_TRUE(ContainersEq(expected_creative_ads, creative_ads));
           },
           std::move(expected_creative_ads)));
 }

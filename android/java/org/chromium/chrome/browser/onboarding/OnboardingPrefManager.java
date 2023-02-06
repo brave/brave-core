@@ -84,6 +84,8 @@ public class OnboardingPrefManager {
     private static final String STARTPAGE = "Startpage";
     public static final String YANDEX = "Yandex";
     public static final String ECOSIA = "Ecosia";
+    public static final String DAUM = "Daum";
+    public static final String NAVER = "\ub124\uc774\ubc84";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -273,6 +275,8 @@ public class OnboardingPrefManager {
             put(STARTPAGE, SearchEngineEnum.STARTPAGE);
             put(YANDEX, SearchEngineEnum.YANDEX);
             put(ECOSIA, SearchEngineEnum.ECOSIA);
+            put(DAUM, SearchEngineEnum.DAUM);
+            put(NAVER, SearchEngineEnum.NAVER);
         }
     };
 

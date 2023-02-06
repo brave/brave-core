@@ -8,7 +8,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <vector>
 
 namespace brave_wallet {
 
@@ -21,22 +20,18 @@ void SecureZeroData(void* data, size_t size);
 template <typename T>
 struct SecureZeroAllocator {
   SecureZeroAllocator() = default;
+  ~SecureZeroAllocator() = default;
+  SecureZeroAllocator(const SecureZeroAllocator&) = default;
+  SecureZeroAllocator& operator=(const SecureZeroAllocator&) = default;
+  SecureZeroAllocator(SecureZeroAllocator&&) = default;
+  SecureZeroAllocator& operator=(SecureZeroAllocator&&) = default;
+
   using value_type = T;
   T* allocate(size_t n) {
     return static_cast<T*>(::operator new(n * sizeof(T)));
   }
   void deallocate(T* p, size_t n) {
     SecureZeroData(p, n);
-    ::operator delete(p);
-  }
-};
-
-// Deleter for std::vector to zero out memory when destruct
-template <typename T>
-struct SecureZeroVectorDeleter {
-  SecureZeroVectorDeleter() = default;
-  void operator()(std::vector<T>* p) const {
-    SecureZeroData(p->data(), p->size());
     ::operator delete(p);
   }
 };

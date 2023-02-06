@@ -30,9 +30,10 @@ void FarbleMediaDevices(ExecutionContext* context,
 
 }  // namespace brave
 
-#define BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED                       \
-  if (ExecutionContext* context = resolver->GetExecutionContext()) { \
-    brave::FarbleMediaDevices(context, &media_devices);              \
+#define BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED                        \
+  if (ExecutionContext* context =                                     \
+          ExecutionContext::From(result_tracker->GetScriptState())) { \
+    brave::FarbleMediaDevices(context, &media_devices);               \
   }
 
 #include "src/third_party/blink/renderer/modules/mediastream/media_devices.cc"

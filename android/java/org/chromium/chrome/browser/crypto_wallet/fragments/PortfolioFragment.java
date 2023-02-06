@@ -1,18 +1,21 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,22 +35,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
@@ -92,6 +94,8 @@ public class PortfolioFragment
     private TextView mTvNftTitle;
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
+    private ProgressBar mPbAssetDiscovery;
+    private List<PortfolioModel.NftDataModel> mNftDataModels;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -106,33 +110,30 @@ public class PortfolioFragment
         return null;
     }
 
-    private TxService getTxService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getTxService();
-        }
-
-        return null;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Api33AndPlusBackPressHelper.create(
+                    this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
+        }
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        if (activity != null) {
+            mWalletModel = activity.getWalletModel();
+            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
+            mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
-            mWalletModel = activity.getWalletModel();
-            mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
-        }
         View view = inflater.inflate(R.layout.fragment_portfolio, container, false);
         mRvCoins = view.findViewById(R.id.rvCoins);
         mChartES = view.findViewById(R.id.line_chart);
+        mPbAssetDiscovery = view.findViewById(R.id.frag_port_pb_asset_discovery);
         mRvCoins.addItemDecoration(
                 new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
@@ -198,6 +199,7 @@ public class PortfolioFragment
                 });
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
             if (nftDataModels.isEmpty() || mPortfolioModel.mPortfolioHelper == null) return;
+            mNftDataModels = nftDataModels;
             setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
         });
@@ -209,6 +211,15 @@ public class PortfolioFragment
                         mCurrentPendingTx = mPendingTxs.get(0);
                     }
                     updatePendingTxNotification();
+                });
+        mWalletModel.getCryptoModel().getPortfolioModel().mIsDiscoveringUserAssets.observe(
+                getViewLifecycleOwner(), isDiscoveringUserAssets -> {
+                    if (isDiscoveringUserAssets) {
+                        AndroidUtils.show(mPbAssetDiscovery);
+                    } else {
+                        AndroidUtils.gone(mPbAssetDiscovery);
+                        updatePortfolioGetPendingTx();
+                    }
                 });
 
         mWalletModel.getCryptoModel().getNetworkModel().mNeedToCreateAccountForNetwork.observe(
@@ -337,46 +348,31 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
+
         if (asset.isErc721 || asset.isNft) {
-            // TODO: show nft details of clicked nft
-            return;
+            PortfolioModel.NftDataModel selectedNft = null;
+            for (PortfolioModel.NftDataModel nftDataModel : mNftDataModels) {
+                if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
+                    selectedNft = nftDataModel;
+                    break;
+                }
+            }
+            if (selectedNft == null) {
+                return;
+            }
+
+            Intent intent = NftDetailActivity.getIntent(
+                    getContext(), selectedNetwork.chainId, asset, selectedNft);
+            startActivity(intent);
+        } else {
+            Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
         }
-        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
     private void openNetworkSelection() {
         BraveActivity activity = BraveActivity.getBraveActivity();
         assert activity != null;
         activity.openNetworkSelection();
-    }
-
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioService();
-        }
-
-        return null;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    BraveWalletService getBraveWalletService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletService();
-        } else {
-            assert false;
-        }
-
-        return null;
     }
 
     private void AdjustTrendControls() {
@@ -432,8 +428,6 @@ public class PortfolioFragment
     }
 
     private void updatePortfolioGetPendingTx() {
-        KeyringService keyringService = getKeyringService();
-        assert keyringService != null;
         if (mWalletModel == null) return;
 
         final NetworkInfo selectedNetwork =
@@ -441,8 +435,9 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
-        keyringService.getKeyringInfo(
+        mWalletModel.getKeyringModel().getKeyringPerId(
                 AssetUtils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
+                    if (keyringInfo == null) return;
                     AccountInfo[] accountInfos = new AccountInfo[] {};
                     if (keyringInfo != null) {
                         accountInfos = keyringInfo.accountInfos;

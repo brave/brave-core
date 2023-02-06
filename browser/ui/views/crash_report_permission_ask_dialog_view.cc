@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/constants/pref_names.h"
@@ -246,6 +246,6 @@ void CrashReportPermissionAskDialogView::OnWindowClosing() {
 
   // On macOS, this dialog is not destroyed properly when session crashed bubble
   // is launched directly.
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&ScheduleSessionCrashedBubble));
 }

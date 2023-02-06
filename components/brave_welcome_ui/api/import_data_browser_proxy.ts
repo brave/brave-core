@@ -6,7 +6,7 @@
 // Copied from Chromium
 
 // clang-format off
-import { sendWithPromise } from 'chrome://resources/js/cr.m.js'
+import { sendWithPromise } from 'chrome://resources/js/cr.js'
 // clang-format on
 
 /**
@@ -50,6 +50,15 @@ export interface ImportDataBrowserProxy {
       types: {[type: string]: boolean}) => void
 
   /**
+   * Starts importing data for the specified source browser profiles. The C++
+   * responds with the 'import-data-status-changed' WebUIListener event.
+   * @param types Which types of data to import.
+   */
+  importDataBulk: (
+    sourceBrowserProfileIndex: number[],
+    types: {[type: string]: boolean}) => void
+
+  /**
    * Prompts the user to choose a bookmarks file to import bookmarks from.
    */
   importFromBookmarksFile: () => void
@@ -63,6 +72,11 @@ export class ImportDataBrowserProxyImpl implements ImportDataBrowserProxy {
   importData (
       sourceBrowserProfileIndex: number, types: {[type: string]: boolean}) {
     chrome.send('importData', [sourceBrowserProfileIndex, types])
+  }
+
+  importDataBulk (
+      sourceBrowserProfileIndex: number[], types: {[type: string]: boolean}) {
+    chrome.send('importDataBulk', [sourceBrowserProfileIndex, types])
   }
 
   importFromBookmarksFile () {

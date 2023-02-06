@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
@@ -26,7 +27,7 @@ namespace {
 std::string BuildDigestHeaderValue(const std::string& body) {
   DCHECK(!body.empty());
 
-  const std::vector<uint8_t> body_sha256 = security::Sha256(body);
+  const std::vector<uint8_t> body_sha256 = crypto::Sha256(body);
   const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
 
   return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
@@ -64,7 +65,7 @@ mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
 GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
       "%s/v3/confirmation/token/%s", server::GetNonAnonymousHost().c_str(),
-      wallet_.id.c_str());
+      wallet_.payment_id.c_str());
   return GURL(spec);
 }
 
@@ -98,10 +99,33 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
     const std::string& body) const {
   DCHECK(!body.empty());
 
-  const std::string digest_header_value = BuildDigestHeaderValue(body);
+  const base::flat_map<std::string, std::string> headers = {
+      {"digest", BuildDigestHeaderValue(body)}};
 
-  return security::Sign({{"digest", digest_header_value}}, "primary",
-                        wallet_.secret_key);
+  std::string concatenated_header;
+  std::string concatenated_message;
+
+  unsigned int index = 0;
+  for (const auto& header : headers) {
+    if (index != 0) {
+      concatenated_header += " ";
+      concatenated_message += "\n";
+    }
+
+    concatenated_header += header.first;
+    concatenated_message += header.first + ": " + header.second;
+
+    index++;
+  }
+
+  const absl::optional<std::string> signature_base64 =
+      crypto::Sign(concatenated_message, wallet_.secret_key);
+  if (!signature_base64) {
+    return {};
+  }
+
+  return R"(keyId="primary",algorithm="ed25519",headers=")" +
+         concatenated_header + R"(",signature=")" + *signature_base64 + R"(")";
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {

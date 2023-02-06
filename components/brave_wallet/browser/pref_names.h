@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 
+extern const char kShouldShowWalletSuggestionBadge[];
 extern const char kDefaultEthereumWallet[];
 extern const char kDefaultSolanaWallet[];
 extern const char kDefaultBaseCurrency[];
@@ -59,5 +60,7 @@ extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];
 extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
+extern const char kPinnedNFTAssets[];
+extern const char kAutoPinEnabled[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

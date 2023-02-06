@@ -7,6 +7,7 @@
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_history_url_provider.h"
+#include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
@@ -21,6 +22,7 @@ using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
 #define SearchProvider BraveSearchProvider
 #define HistoryQuickProvider BraveHistoryQuickProvider
 #define HistoryURLProvider BraveHistoryURLProvider
+#define LocalHistoryZeroSuggestProvider BraveLocalHistoryZeroSuggestProvider
 #define BookmarkProvider BraveBookmarkProvider
 #define ShortcutsProvider BraveShortcutsProvider
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
@@ -41,6 +43,7 @@ using brave_search_conversion::IsBraveSearchConversionFetureEnabled;
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 #undef ShortcutsProvider
 #undef BookmarkProvider
+#undef LocalHistoryZeroSuggestProvider
 #undef HistoryURLProvider
 #undef HistoryQuickProvider
 #undef SearchProvider

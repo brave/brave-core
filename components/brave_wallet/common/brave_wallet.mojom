@@ -211,6 +211,96 @@ interface SolanaProvider {
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DictionaryValue result);
 
+  // DO NOT USE: This is supposed to be a temporary solution for us to decide
+  // whether to load wallet-standard js module
+  IsSolanaKeyringCreated() => (bool created);
+};
+
+enum WalletPinServiceErrorCode {
+  // Token not supported for pinning
+  ERR_WRONG_TOKEN = 1,
+  // Token metadata has non-ipfs url
+  ERR_NON_IPFS_TOKEN_URL = 2,
+  // Fetching metadata has failed
+  ERR_FETCH_METADATA_FAILED = 3,
+  ERR_WRONG_METADATA_FORMAT = 4,
+  ERR_ALREADY_PINNED = 5,
+  ERR_NOT_PINNED = 6,
+  ERR_PINNING_FAILED = 7
+};
+
+enum TokenPinStatusCode {
+  STATUS_NOT_PINNED = 1,
+  STATUS_PINNED = 2,
+  STATUS_PINNING_IN_PROGRESS = 3,
+  STATUS_PINNING_FAILED = 4,
+  STATUS_UNPINNING_IN_PROGRESS = 5,
+  STATUS_UNPINNING_FAILED = 6,
+  STATUS_PINNING_PENDING = 7,
+  STATUS_UNPINNING_PENDING = 8
+};
+
+struct PinError {
+  WalletPinServiceErrorCode error_code;
+  string message;
+};
+
+struct TokenPinStatus {
+  // Actual token status
+  TokenPinStatusCode code;
+  // Token error related to the pin status. May be null.
+  PinError? error;
+  // Last time token was validated(checked that data is pinned correctly)
+  mojo_base.mojom.Time validate_time;
+};
+
+struct TokenPinOverview {
+  // Token status for the local pin backend.
+  TokenPinStatus? local;
+  // Token statuses for remote pin backends.
+  map<string, TokenPinStatus> remotes;
+};
+
+// Observers state of the BraveWalletPinService
+interface BraveWalletPinServiceObserver {
+  OnTokenStatusChanged(string? service, BlockchainToken token,
+                       TokenPinStatus status);
+  OnLocalNodeStatusChanged(bool running);
+};
+
+// Low-level interface for token pinning.
+// String service argument is used to select on which pinning
+// service operation should be performed.
+// At the moment we have only local pinning, so use null.
+interface WalletPinService {
+  AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
+
+  // Launches pinning for provided token.
+  // At the moment only local pinning is supported so use null "service" argument.
+  AddPin(BlockchainToken token, string? service) =>(bool result,
+                                                    PinError? error);
+  // Unpins token.
+  RemovePin(BlockchainToken token, string? service) => (bool result,
+                                                        PinError? response);
+  // Returns overview for provided token.
+  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
+                                            PinError? error);
+  // Checks whether token is pinned correctly.
+  Validate(BlockchainToken token, string? service) => (bool result,
+                                                       PinError? error);
+  // Returns whether IPFS localnode is currently running.
+  IsLocalNodeRunning() => (bool result);
+
+  // Returns whether token is supported for pinning.
+  // Note: You should manually check token metadata url to have ipfs:// url.
+  IsTokenSupported(BlockchainToken token) => (bool result);
+};
+
+// Listens for added user tokens and automatically pins them.
+interface WalletAutoPinService {
+  // Enables autopinning, so old and new user tokens may be pinned.
+  SetAutoPinEnabled(bool enabled);
+  IsAutoPinEnabled() => (bool enabled);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -247,8 +337,10 @@ interface PageHandlerFactory {
                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service,
-                    pending_receiver<BraveWalletP3A> brave_wallet_p3a);
-
+                    pending_receiver<BraveWalletP3A> brave_wallet_p3a,
+                    pending_receiver<WalletPinService> brave_wallet_pin_service,
+                    pending_receiver<WalletAutoPinService>
+                        brave_wallet_auto_pin_service);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -483,15 +575,21 @@ struct KeyringInfo {
   array<AccountInfo> account_infos;
 };
 
+struct WalletInfo {
+  bool isWalletCreated;
+  bool isWalletLocked;
+  array<AppItem> favoriteApps;
+  bool isWalletBackedUp;
+  array<AccountInfo> accountInfos;
+  bool isFilecoinEnabled;
+  bool isSolanaEnabled;
+  bool isNftPinningFeatureEnabled;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   // Obtains basic information about the wallet that is needed for first render
-  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
-                      array<AppItem> favoriteApps,
-                      bool isWalletBackedUp,
-                      array<AccountInfo> accountInfos,
-                      bool isFilecoinEnabled,
-                      bool isSolanaEnabled);
+  GetWalletInfo() => (WalletInfo walletInfo);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);
@@ -620,9 +718,9 @@ interface KeyringService {
   // Adds an account to the filecoin(keyring is choosed by network).
   AddFilecoinAccount(string accountName, string fileCoinNetwork) => (bool success);
 
-  // Obtains the private key for the keyring.
-  GetPrivateKeyForKeyringAccount(string address, string password, CoinType coin)
-    => (bool success, string privateKey);
+  // Encodes the private key for exporting.
+  EncodePrivateKeyForExport(string address, string password, CoinType coin)
+    => (string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
   // privateKey can be coin preferred encoding, ex. hex or base58
@@ -930,10 +1028,10 @@ interface JsonRpcService {
                          string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
+  GetERC721Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string response, ProviderError error, string error_message);
+  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
   // ENS lookups
   EnableEnsOffchainLookup();
@@ -941,6 +1039,9 @@ interface JsonRpcService {
 
   // SNS lookups
   SnsGetSolAddr(string domain) => (string address, SolanaProviderError error, string error_message);
+
+  // SNS Domain lookups
+  SnsResolveHost(string domain) => (url.mojom.Url? url, SolanaProviderError error, string error_message);
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
@@ -1052,6 +1153,9 @@ interface TxServiceObserver {
 
   // Fired when a transaction is updated
   OnTransactionStatusChanged(TransactionInfo tx_info);
+
+  // Fired when service is reseted
+  OnTxServiceReset();
 };
 
 // For transaction management such as creation, broadcasting, and storing
@@ -1083,6 +1187,9 @@ interface TxService {
 
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
+
+  // Returns number of pending transactions
+  GetPendingTransactionsCount() => (uint32 count);
 
   // Resets the keyring and the related preferences
   Reset();
@@ -1180,10 +1287,16 @@ interface BraveWalletServiceObserver {
   OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
 };
 
+interface BraveWalletServiceTokenObserver {
+  OnTokenAdded(BlockchainToken token);
+  OnTokenRemoved(BlockchainToken token);
+};
+
 struct SignMessageRequest {
   OriginInfo origin_info;
   int32 id;
   string address;
+  string domain;
   string message;
   bool is_eip712;
   // These fields are for hardware eip712 signing and
@@ -1235,6 +1348,11 @@ union ByteArrayStringUnion {
 interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
+
+  AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
+
+  // Obtains all the user assets.
+  GetAllUserAssets() => (array<BlockchainToken> tokens);
 
   // Obtains the user assets for the specified chain ID and coin type.
   GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);

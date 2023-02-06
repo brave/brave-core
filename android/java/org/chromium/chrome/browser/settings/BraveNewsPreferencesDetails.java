@@ -44,6 +44,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.url.mojom.Url;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     private List<Publisher> mPublisherList;
     private String mBraveNewsPreferencesType;
     private String mSearch = "";
+    private HashMap<String, String> mFeedSearchResultItemFollowMap = new HashMap<>();
 
     @Override
     public View onCreateView(
@@ -84,9 +86,9 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             publisherList = BraveNewsUtils.getPopularSources();
             getActivity().setTitle(R.string.popular);
         } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
-                           BraveNewsPreferencesType.Suggested.toString())) {
-            publisherList = BraveNewsUtils.getSuggestedPublisherList();
-            getActivity().setTitle(R.string.suggested);
+                           BraveNewsPreferencesType.Suggestions.toString())) {
+            publisherList = BraveNewsUtils.getSuggestionsPublisherList();
+            getActivity().setTitle(R.string.suggestions);
         } else if (mBraveNewsPreferencesType.equalsIgnoreCase(
                            BraveNewsPreferencesType.Channels.toString())) {
             getActivity().setTitle(R.string.channels);
@@ -207,11 +209,12 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                             if (publishers != null) {
                                 for (Map.Entry<String, Publisher> entry : publishers.entrySet()) {
                                     Publisher publisher = entry.getValue();
-                                    if (publisher.feedSource.url.equals(feedUrl.url)) {
+                                    if (publisher.feedSource.url.equalsIgnoreCase(feedUrl.url)) {
                                         publisher.userEnabledStatus = UserEnabled.ENABLED;
                                         if (isFromFeed) {
-                                            mAdapter.notifyItemRemoved(position);
-                                            search(isFromFeed);
+                                            updateFeedSearchResultItem(position,
+                                                    publisher.feedSource.url,
+                                                    publisher.publisherId);
                                         } else {
                                             mAdapter.notifyItemChanged(position);
                                         }
@@ -222,6 +225,16 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                         }));
             }
         });
+    }
+
+    @Override
+    public void updateFeedSearchResultItem(int position, String url, String publisherId) {
+        if (mFeedSearchResultItemFollowMap.containsKey(url)) {
+            mFeedSearchResultItemFollowMap.remove(url);
+        } else {
+            mFeedSearchResultItemFollowMap.put(url, publisherId);
+        }
+        mAdapter.setFeedSearchResultItemFollowMap(position, mFeedSearchResultItemFollowMap);
     }
 
     @Override
@@ -243,40 +256,40 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
                                                           : !mSearch.equals(query);
                 mSearch = query;
                 if (queryHasChanged && mSearch.length() > 0) {
-                    search(false);
+                    search();
                 } else if (mSearch.length() == 0) {
                     mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
                     mAdapter.setItems(new ArrayList<Channel>(), new ArrayList<Publisher>(), null,
-                            BraveNewsPreferencesSearchType.Init);
+                            BraveNewsPreferencesSearchType.Init, mFeedSearchResultItemFollowMap);
                 }
             });
         }
     }
 
-    private void search(boolean isFromFeed) {
+    private void search() {
         List<Channel> channelList = BraveNewsUtils.searchChannel(mSearch);
         List<Publisher> publisherList = BraveNewsUtils.searchPublisher(mSearch);
         String feedUrl = mSearch;
         String searchUrl = null;
+        mFeedSearchResultItemFollowMap = new HashMap<>();
         BraveNewsPreferencesSearchType braveNewsPreferencesSearchType =
                 BraveNewsPreferencesSearchType.Init;
 
-        if (!isFromFeed) {
-            if (feedUrl.contains(".")) {
-                if (!feedUrl.contains("://")) {
-                    feedUrl = "https://" + feedUrl;
-                }
-
-                if (URLUtil.isValidUrl(feedUrl)) {
-                    searchUrl = feedUrl;
-
-                    braveNewsPreferencesSearchType = BraveNewsPreferencesSearchType.SearchUrl;
-                }
+        if (feedUrl.contains(".")) {
+            if (!feedUrl.contains("://")) {
+                feedUrl = "https://" + feedUrl;
             }
-            mSearch = searchUrl;
+
+            if (URLUtil.isValidUrl(feedUrl)) {
+                searchUrl = feedUrl;
+
+                braveNewsPreferencesSearchType = BraveNewsPreferencesSearchType.SearchUrl;
+            }
         }
+        mSearch = searchUrl;
         mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
-        mAdapter.setItems(channelList, publisherList, searchUrl, braveNewsPreferencesSearchType);
+        mAdapter.setItems(channelList, publisherList, searchUrl, braveNewsPreferencesSearchType,
+                mFeedSearchResultItemFollowMap);
         mRecyclerView.scrollToPosition(0);
     }
 

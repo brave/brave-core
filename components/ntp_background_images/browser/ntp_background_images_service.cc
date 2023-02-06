@@ -16,7 +16,6 @@
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -167,7 +166,7 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const auto& data = GetSponsoredImagesComponentData(
+  const auto data = GetSponsoredImagesComponentData(
       brave_l10n::GetDefaultISOCountryCodeString());
   if (!data) {
     DVLOG(2) << __func__ << ": Not support NTP SI component for "
@@ -177,9 +176,9 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   DVLOG(2) << __func__ << ": Start NTP SI component";
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_, data->component_base64_public_key,
-      data->component_id,
-      base::StringPrintf("NTP Sponsored Images (%s)", data->region.c_str()),
+      component_update_service_, data->component_base64_public_key.data(),
+      data->component_id.data(),
+      base::StringPrintf("NTP Sponsored Images (%s)", data->region.data()),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
@@ -188,7 +187,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   si_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckImagesComponentUpdate,
-      base::Unretained(this), data->component_id);
+      base::Unretained(this), data->component_id.data());
 
   last_update_check_time_ = base::Time::Now();
   si_update_check_timer_.Start(

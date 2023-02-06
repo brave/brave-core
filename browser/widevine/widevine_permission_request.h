@@ -39,7 +39,9 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
 
   // PermissionRequest overrides:
   std::u16string GetMessageTextFragment() const override;
-  void PermissionDecided(ContentSetting result, bool is_one_time);
+  void PermissionDecided(ContentSetting result,
+                         bool is_one_time,
+                         bool is_final_decision);
   void DeleteRequest();
 
   // It's safe to use this raw |web_contents_| because this request is deleted

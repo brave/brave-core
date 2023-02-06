@@ -69,7 +69,7 @@ TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
 
 TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
-  const size_t kExpectedPredictionSize = 1;
+  constexpr size_t kExpectedPredictionSize = 1;
   const std::map<std::string, VectorData> weights = {
       {"the_only_class", VectorData({0.3, 0.2, 0.25})},
   };
@@ -96,7 +96,7 @@ TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
 
 TEST_F(BatAdsLinearTest, TopPredictionsTest) {
   // Arrange
-  const size_t kPredictionLimits[2] = {2, 1};
+  constexpr size_t kPredictionLimits[2] = {2, 1};
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData({1.0, 0.5, 0.8})},
       {"class_2", VectorData({0.3, 1.0, 0.7})},

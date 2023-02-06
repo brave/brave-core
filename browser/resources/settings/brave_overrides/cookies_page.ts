@@ -7,11 +7,32 @@ import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_o
 
 RegisterPolymerTemplateModifications({
   'settings-cookies-page': (templateContent) => {
-    const blockThirdPartyIncognitoRadioButton = templateContent.getElementById('blockThirdPartyIncognito')
-    if (!blockThirdPartyIncognitoRadioButton) {
-      console.error('[Brave Settings Overrides] Could not find blockThirdPartyIncognito id on cookies page.')
+    const privacySandboxSettings4Template = templateContent.
+      querySelector(`template[if*='!isPrivacySandboxSettings4_']`)
+    if (!privacySandboxSettings4Template) {
+      console.error(
+        '[Brave Settings Overrides] Could not find template with ' +
+        'if*=isPrivacySandboxSettings4_ on cookies page.')
     } else {
-      blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
+      const clearOnExitToggle =
+        privacySandboxSettings4Template.content.getElementById('clearOnExit')
+      if (!clearOnExitToggle) {
+        console.error(
+          '[Brave Settings Overrides] Could not find clearOnExit id ' +
+          'on cookies page.')
+      } else {
+        clearOnExitToggle.setAttribute('sub-label', '')
+      }
+      const blockThirdPartyIncognitoRadioButton =
+        privacySandboxSettings4Template.content.
+          getElementById('blockThirdPartyIncognito')
+      if (!blockThirdPartyIncognitoRadioButton) {
+        console.error(
+          '[Brave Settings Overrides] Could not find ' +
+          'blockThirdPartyIncognito id on cookies page.')
+      } else {
+        blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
+      }
     }
     const networkPredictionToggle = templateContent.getElementById('networkPrediction')
     if (!networkPredictionToggle) {

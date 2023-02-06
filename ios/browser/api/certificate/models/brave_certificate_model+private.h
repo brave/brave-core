@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface BraveCertificatePublicKeyInfo ()
-- (instancetype)initWithCertificate:(net::ParsedCertificate*)certificate
+- (instancetype)initWithCertificate:(const net::ParsedCertificate*)certificate
                             withKey:(SecKeyRef)key;
 @end
 

@@ -35,7 +35,7 @@ std::string GitHub::GetLinkType(const std::string& url) {
     return "";
   }
 
-  return url.find(GITHUB_TLD) != std::string::npos ? GITHUB_MEDIA_TYPE : "";
+  return url.find(GITHUB_DOMAIN) != std::string::npos ? GITHUB_MEDIA_TYPE : "";
 }
 
 // static
@@ -271,7 +271,7 @@ void GitHub::OnMediaPublisherActivity(
 }
 
 void GitHub::OnMediaActivityError(uint64_t window_id) {
-  std::string url = GITHUB_TLD;
+  std::string url = GITHUB_DOMAIN;
   std::string name = GITHUB_MEDIA_TYPE;
 
   DCHECK(!url.empty());

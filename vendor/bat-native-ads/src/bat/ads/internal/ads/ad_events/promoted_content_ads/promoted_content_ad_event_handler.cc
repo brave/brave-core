@@ -21,23 +21,55 @@ namespace ads::promoted_content_ads {
 
 namespace {
 
+bool ShouldDebounceViewedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::PromotedContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::PromotedContentAdEventType::kViewed &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
+}
+
+bool ShouldDebounceClickedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::PromotedContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::PromotedContentAdEventType::kClicked &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
+}
+
+bool WasAdServed(const AdInfo& ad,
+                 const AdEventList& ad_events,
+                 const mojom::PromotedContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::PromotedContentAdEventType::kServed ||
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
+}
+
+bool IsAdPlaced(const AdInfo& ad,
+                const AdEventList& ad_events,
+                const mojom::PromotedContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::PromotedContentAdEventType::kServed ||
+         event_type == mojom::PromotedContentAdEventType::kViewed ||
+         (HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed) &&
+          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
+}
+
 bool ShouldDebounceAdEvent(
     const AdInfo& ad,
     const AdEventList& ad_events,
     const mojom::PromotedContentAdEventType& event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (event_type == mojom::PromotedContentAdEventType::kViewed &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
-    return true;
-  }
-
-  if (event_type == mojom::PromotedContentAdEventType::kClicked &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
-    return true;
-  }
-
-  return false;
+  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
+         ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
+         !IsAdPlaced(ad, ad_events, event_type);
 }
 
 }  // namespace
@@ -66,22 +98,20 @@ void EventHandler::FireEvent(
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid placement "
          "id");
-    FailedToFireEvent(placement_id, creative_instance_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
 
   if (creative_instance_id.empty()) {
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid creative "
          "instance id");
-    FailedToFireEvent(placement_id, creative_instance_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
 
-  if (!PermissionRules::HasPermission()) {
+  if (event_type == mojom::PromotedContentAdEventType::kServed &&
+      !PermissionRules::HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
-    FailedToFireEvent(placement_id, creative_instance_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
 
   const database::table::CreativePromotedContentAds database_table;
@@ -94,14 +124,13 @@ void EventHandler::FireEvent(
                "Failed to fire promoted content ad event due to missing "
                "creative instance id "
                    << creative_instance_id);
-          FailedToFireEvent(placement_id, creative_instance_id, event_type);
-          return;
+          return FailedToFireEvent(placement_id, creative_instance_id,
+                                   event_type);
         }
 
         const PromotedContentAdInfo ad =
             BuildPromotedContentAd(creative_ad, placement_id);
-
-        FireEvent(ad, placement_id, creative_instance_id, event_type);
+        FireEvent(ad, event_type);
       });
 }
 
@@ -109,8 +138,6 @@ void EventHandler::FireEvent(
 
 void EventHandler::FireEvent(
     const PromotedContentAdInfo& ad,
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
@@ -120,27 +147,25 @@ void EventHandler::FireEvent(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Promoted content ad: Failed to get ad events");
-          FailedToFireEvent(placement_id, creative_instance_id, event_type);
-          return;
+          return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                                   event_type);
+        }
+
+        if (!WasAdServed(ad, ad_events, event_type)) {
+          BLOG(1,
+               "Promoted content ad: Not allowed because an ad was not served "
+               "for placement id "
+                   << ad.placement_id);
+          return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                                   event_type);
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Promoted content ad: Not allowed as already fired "
-                      << event_type << " event for this placement id "
-                      << placement_id);
-          FailedToFireEvent(placement_id, creative_instance_id, event_type);
-          return;
-        }
-
-        if (event_type == mojom::PromotedContentAdEventType::kViewed) {
-          // We must fire an ad served event due to promoted content ads not
-          // being delivered by the library
-          const auto served_ad_event =
-              AdEventFactory::Build(mojom::PromotedContentAdEventType::kServed);
-          served_ad_event->FireEvent(ad);
-
-          NotifyPromotedContentAdEvent(
-              ad, mojom::PromotedContentAdEventType::kServed);
+          BLOG(1, "Promoted content ad: Not allowed as debounced "
+                      << event_type << " event for placement id "
+                      << ad.placement_id);
+          return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                                   event_type);
         }
 
         const auto ad_event = AdEventFactory::Build(event_type);

@@ -26,13 +26,15 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   // CompoundTabContainer:
   void SetAvailableWidthCallback(
       base::RepeatingCallback<int()> available_width_callback) override;
-  int GetAvailableWidthForUnpinnedTabContainer(
-      base::RepeatingCallback<int()> available_width_callback) override;
   void TransferTabBetweenContainers(int from_model_index,
                                     int to_model_index) override;
+  void Layout() override;
+  gfx::Size CalculatePreferredSize() const override;
+  gfx::Size GetMinimumSize() const override;
+  views::SizeBounds GetAvailableSize(const views::View* child) const override;
 
  private:
-  void UpdateLayout();
+  bool ShouldShowVerticalTabs() const;
 
   base::raw_ref<TabSlotController> tab_slot_controller_;
 };

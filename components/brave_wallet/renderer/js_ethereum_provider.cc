@@ -35,8 +35,6 @@
 
 namespace {
 
-static base::NoDestructor<std::string> g_provider_script("");
-
 constexpr char kEthereum[] = "ethereum";
 constexpr char kEmit[] = "emit";
 constexpr char kIsBraveWallet[] = "isBraveWallet";
@@ -55,10 +53,10 @@ void JSEthereumProvider::OnIsUnlocked(
     v8::Isolate* isolate,
     bool locked) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   base::Value result = base::Value(!locked);
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result, context);
@@ -74,13 +72,14 @@ void JSEthereumProvider::SendResponse(
     bool force_json_response,
     base::Value formed_response,
     bool success) {
-  if (!render_frame())
+  if (!render_frame()) {
     return;
+  }
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   if (global_callback || force_json_response) {
     auto full_formed_response = brave_wallet::ToProviderResponse(
@@ -112,10 +111,6 @@ void JSEthereumProvider::SendResponse(
 
 JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame) {
-  if (g_provider_script->empty()) {
-    *g_provider_script = LoadDataResource(
-        IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS);
-  }
   EnsureConnected();
 }
 
@@ -125,22 +120,25 @@ gin::WrapperInfo JSEthereumProvider::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                   int32_t world_id) {
-  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL)
+  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
     return;
+  }
   // Close mojo connection from browser to renderer.
   receiver_.reset();
   script_context_released_ = true;
 }
 
 void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
-  if (script_context_released_)
+  if (script_context_released_) {
     return;
+  }
   ConnectEvent();
 }
 
 bool JSEthereumProvider::EnsureConnected() {
-  if (!render_frame())
+  if (!render_frame()) {
     return false;
+  }
 
   if (!ethereum_provider_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker()->GetInterface(
@@ -155,13 +153,14 @@ bool JSEthereumProvider::EnsureConnected() {
 void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                                  content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
-  if (context.IsEmpty())
+  if (context.IsEmpty()) {
     return;
+  }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   // Check window.ethereum existence.
@@ -169,13 +168,15 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
   v8::Local<v8::Value> ethereum_value =
       global->Get(context, gin::StringToV8(isolate, kEthereum))
           .ToLocalChecked();
-  if (!ethereum_value->IsUndefined())
+  if (!ethereum_value->IsUndefined()) {
     return;
+  }
 
   gin::Handle<JSEthereumProvider> provider =
       gin::CreateHandle(isolate, new JSEthereumProvider(render_frame));
-  if (provider.IsEmpty())
+  if (provider.IsEmpty()) {
     return;
+  }
   v8::Local<v8::Value> provider_value = provider.ToV8();
 
   if (!allow_overwrite_window_ethereum_provider) {
@@ -226,7 +227,10 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                          gin::StringToV8(isolate, kIsUnlocked), false);
 
   blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-  ExecuteScript(web_frame, *g_provider_script, kEthereumProviderScript);
+  ExecuteScript(web_frame,
+                LoadDataResource(
+                    IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
+                kEthereumProviderScript);
 }
 
 bool JSEthereumProvider::GetIsBraveWallet() {
@@ -260,8 +264,9 @@ v8::Local<v8::Value> JSEthereumProvider::GetSelectedAddress(
     v8::Isolate* isolate) {
   // Note this does not return the selected account, but it returns the first
   // connected account that was given permissions.
-  if (first_allowed_account_.empty())
+  if (first_allowed_account_.empty()) {
     return v8::Undefined(isolate);
+  }
   return gin::StringToV8(isolate, first_allowed_account_);
 }
 
@@ -296,8 +301,9 @@ const char* JSEthereumProvider::GetTypeName() {
 // 3) ethereum.send(payload: JsonRpcRequest): unknown;
 // Only valid for: eth_accounts, eth_coinbase, eth_uninstallFilter, etc.
 v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
+  }
   v8::Isolate* isolate = args->isolate();
   if (args->Length() == 0) {
     args->ThrowError();
@@ -360,11 +366,12 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
     }
   } else {
     // supported_single_arg_function
-    params = base::Value::ToUniquePtrValue(base::ListValue());
+    params = std::make_unique<base::Value>(base::Value::Type::LIST);
   }
 
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
+  }
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -387,8 +394,9 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
 }
 
 void JSEthereumProvider::SendAsync(gin::Arguments* args) {
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return;
+  }
   v8::Isolate* isolate = args->isolate();
   v8::Local<v8::Value> input;
   v8::Local<v8::Function> callback;
@@ -420,14 +428,16 @@ bool JSEthereumProvider::IsConnected() {
 
 v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
                                                    v8::Local<v8::Value> input) {
-  if (!input->IsObject())
+  if (!input->IsObject()) {
     return v8::Local<v8::Promise>();
+  }
   std::unique_ptr<base::Value> input_value =
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
 
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
+  }
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -469,8 +479,9 @@ void JSEthereumProvider::OnRequestOrSendAsync(
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
+  }
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -493,8 +504,9 @@ v8::Local<v8::Promise> JSEthereumProvider::Enable(v8::Isolate* isolate) {
 }
 
 v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked(v8::Isolate* isolate) {
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
+  }
 
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
@@ -515,12 +527,12 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked(v8::Isolate* isolate) {
 }
 
 void JSEthereumProvider::FireEvent(const std::string& event,
-                                   base::Value event_args) {
-  if (!render_frame())
+                                   base::ValueView event_args) {
+  if (!render_frame()) {
     return;
-  base::Value::List args_list;
-  args_list.Append(event);
-  args_list.Append(std::move(event_args));
+  }
+  base::Value event_name(event);
+  base::ValueView args_list[] = {event_name, event_args};
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
@@ -537,8 +549,9 @@ void JSEthereumProvider::FireEvent(const std::string& event,
 }
 
 void JSEthereumProvider::ConnectEvent() {
-  if (!EnsureConnected())
+  if (!EnsureConnected()) {
     return;
+  }
 
   ethereum_provider_->GetChainId(base::BindOnce(
       &JSEthereumProvider::OnGetChainId, weak_ptr_factory_.GetWeakPtr()));
@@ -547,7 +560,7 @@ void JSEthereumProvider::ConnectEvent() {
 void JSEthereumProvider::OnGetChainId(const std::string& chain_id) {
   base::Value::Dict event_args;
   event_args.Set("chainId", chain_id);
-  FireEvent(kConnectEvent, base::Value(std::move(event_args)));
+  FireEvent(kConnectEvent, event_args);
   is_connected_ = true;
   chain_id_ = chain_id;
 }
@@ -557,8 +570,9 @@ void JSEthereumProvider::DisconnectEvent(const std::string& message) {
 }
 
 void JSEthereumProvider::ChainChangedEvent(const std::string& chain_id) {
-  if (chain_id_ == chain_id)
+  if (chain_id_ == chain_id) {
     return;
+  }
 
   FireEvent(ethereum::kChainChangedEvent, base::Value(chain_id));
   chain_id_ = chain_id;
@@ -566,7 +580,7 @@ void JSEthereumProvider::ChainChangedEvent(const std::string& chain_id) {
 
 void JSEthereumProvider::AccountsChangedEvent(
     const std::vector<std::string>& accounts) {
-  base::ListValue event_args;
+  base::Value::List event_args;
   for (const std::string& account : accounts) {
     event_args.Append(base::Value(account));
   }
@@ -574,7 +588,7 @@ void JSEthereumProvider::AccountsChangedEvent(
   if (accounts.size() > 0) {
     first_allowed_account_ = accounts[0];
   }
-  FireEvent(ethereum::kAccountsChangedEvent, std::move(event_args));
+  FireEvent(ethereum::kAccountsChangedEvent, event_args);
 }
 
 void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
@@ -585,7 +599,7 @@ void JSEthereumProvider::MessageEvent(const std::string& subscription_id,
   data.Set("result", std::move(result));
   event_args.Set("type", "eth_subscription");
   event_args.Set("data", std::move(data));
-  FireEvent(ethereum::kMessageEvent, base::Value(std::move(event_args)));
+  FireEvent(ethereum::kMessageEvent, event_args);
 }
 
 }  // namespace brave_wallet

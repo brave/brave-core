@@ -150,22 +150,24 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
-
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
+  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
@@ -174,22 +176,25 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAdWithConversion(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
   EXPECT_TRUE(did_view_ad_);
   EXPECT_FALSE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
+  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
@@ -199,19 +204,20 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireViewedEventWithConversion) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Act
-  ad_mojom = BuildAd(kPlacementId, kCreativeInstanceId);
-
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
@@ -220,22 +226,28 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kClicked);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
 
   // Assert
-  EXPECT_FALSE(did_serve_ad_);
-  EXPECT_FALSE(did_view_ad_);
+  EXPECT_TRUE(did_serve_ad_);
+  EXPECT_TRUE(did_view_ad_);
   EXPECT_TRUE(did_click_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
+  const SearchResultAdInfo expected_ad = BuildSearchResultAd(ad_mojom);
   EXPECT_EQ(expected_ad, ad_);
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
 }
@@ -243,19 +255,23 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireClickedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
-  mojom::SearchResultAdInfoPtr ad_mojom =
+  const mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kClicked);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
 
   // Act
-  ad_mojom = BuildAd(kPlacementId, kCreativeInstanceId);
-
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kClicked);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kClicked);
 
   // Assert
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
+  EXPECT_EQ(
+      1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
   EXPECT_EQ(
       1, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kClicked));
 }
@@ -267,7 +283,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
       BuildAd(kInvalidPlacementId, kCreativeInstanceId);
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kServed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -275,7 +291,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   EXPECT_FALSE(did_click_ad_);
   EXPECT_TRUE(did_fail_to_fire_event_);
   EXPECT_EQ(
-      0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kViewed));
+      0, GetAdEventCount(AdType::kSearchResultAd, ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
@@ -316,22 +332,29 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest, DoNotFireEventWhenNotPermitted) {
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                            ConfirmationType::kViewed, Now());
-
   const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
-  FireAdEvents(ad_event, ads_per_hour - 1);
+
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo served_ad_event = BuildAdEvent(
+      ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
+  FireAdEvents(served_ad_event, ads_per_hour - 1);
+  const AdEventInfo viewed_ad_event = BuildAdEvent(
+      ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvents(viewed_ad_event, ads_per_hour - 1);
+
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
+  EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
+                                          ConfirmationType::kServed));
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
                                           ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
@@ -341,48 +364,54 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                            ConfirmationType::kViewed, Now());
+                                            ConfirmationType::kServed, Now());
 
   const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_hour, GetAdEventCount(AdType::kSearchResultAd,
-                                          ConfirmationType::kViewed));
+                                          ConfirmationType::kServed));
 }
 
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
-  const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                            ConfirmationType::kViewed, Now());
-
   const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
 
-  FireAdEvents(ad_event, ads_per_day - 1);
+  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const AdEventInfo served_ad_event = BuildAdEvent(
+      ad, AdType::kSearchResultAd, ConfirmationType::kServed, Now());
+  FireAdEvents(served_ad_event, ads_per_day - 1);
+  const AdEventInfo viewed_ad_event = BuildAdEvent(
+      ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
+  FireAdEvents(viewed_ad_event, ads_per_day - 1);
 
   AdvanceClockBy(base::Hours(1));
 
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kServed);
+
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(ad_mojom->Clone(), mojom::SearchResultAdEventType::kViewed);
 
   // Assert
+  EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
+                                         ConfirmationType::kServed));
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
                                          ConfirmationType::kViewed));
   ExpectDepositExistsForCreativeInstanceId(kCreativeInstanceId);
@@ -392,14 +421,14 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
 TEST_F(BatAdsSearchResultAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
-                                            ConfirmationType::kViewed, Now());
+                                            ConfirmationType::kServed, Now());
 
   const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
 
@@ -408,11 +437,11 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed);
+  FireEvent(std::move(ad_mojom), mojom::SearchResultAdEventType::kServed);
 
   // Assert
   EXPECT_EQ(ads_per_day, GetAdEventCount(AdType::kSearchResultAd,
-                                         ConfirmationType::kViewed));
+                                         ConfirmationType::kServed));
 }
 
 }  // namespace ads::search_result_ads

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -23,5 +24,7 @@ export const enum types {
   ON_EVENT_LOGS = '@@rewards_internals/ON_EVENT_LOGS',
   GET_AD_DIAGNOSTICS = '@@rewards_internals/GET_AD_DIAGNOSTICS',
   ON_AD_DIAGNOSTICS = '@@rewards_internals/ON_AD_DIAGNOSTICS',
-  SET_AD_DIAGNOSTIC_ID = '@@rewards_internals/SET_AD_DIAGNOSTIC_ID'
+  SET_AD_DIAGNOSTIC_ID = '@@rewards_internals/SET_AD_DIAGNOSTIC_ID',
+  GET_ENVIRONMENT = '@@rewards_internals/GET_ENVIRONMENT',
+  ON_ENVIRONMENT = '@@rewards_internals/ON_ENVIRONMENT'
 }

@@ -7,8 +7,10 @@
 
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "gin/converter.h"
+#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "v8/include/v8.h"
 
 namespace brave_wallet {
 
@@ -25,15 +27,14 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportEthereumProvider(
   }
 
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   auto* web_frame = render_frame->GetWebFrame();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-
   if (context.IsEmpty()) {
     return;
   }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Value> ethereum_value;
   v8::Local<v8::Object> ethereum_obj;

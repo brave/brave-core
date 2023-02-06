@@ -23,9 +23,9 @@ class BatAdsNormalizationTransformationTest : public UnitTestBase {};
 
 TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
   // Arrange
-  const double kTolerance = 1e-7;
+  constexpr double kTolerance = 1e-7;
 
-  const std::string kTestString = "quite a small test string";
+  constexpr char kTestString[] = "quite a small test string";
   std::unique_ptr<Data> data = std::make_unique<TextData>(kTestString);
 
   const HashedNGramsTransformation hashed_ngrams(10, std::vector<int>{3, 4});
@@ -57,9 +57,9 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
 TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   // Arrange
-  const int kDefaultBucketCount = 10'000;
-  const size_t kExpectedElementCount = 10;
-  const std::string kTestString = "TINY";
+  constexpr int kDefaultBucketCount = 10'000;
+  constexpr size_t kExpectedElementCount = 10;
+  constexpr char kTestString[] = "TINY";
 
   TransformationVector chain;
 

@@ -1,7 +1,7 @@
-// Copyright 2019 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/profile_util.h"
 
@@ -29,11 +29,9 @@ class BraveProfileUtilTest : public testing::Test {
     ASSERT_TRUE(testing_profile_manager_.SetUp(temp_dir_.GetPath()));
   }
 
-  Profile* GetProfile() { return ProfileManager::GetActiveUserProfile(); }
+  Profile* GetProfile() { return ProfileManager::GetLastUsedProfile(); }
 
-  PrefService* GetPrefs() {
-    return ProfileManager::GetActiveUserProfile()->GetPrefs();
-  }
+  PrefService* GetPrefs() { return GetProfile()->GetPrefs(); }
 
   content::BrowserTaskEnvironment task_environment_;
   TestingProfileManager testing_profile_manager_;

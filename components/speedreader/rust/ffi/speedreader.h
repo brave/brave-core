@@ -88,19 +88,9 @@ class SPEEDREADER_EXPORT SpeedReader {
   SpeedReader(const SpeedReader&) = delete;
   void operator=(const SpeedReader&) = delete;
 
-  bool deserialize(const char* data, size_t data_size);
-
   /// Create a buffering `Rewriter`. Output will be accumulated by the
   /// `Rewriter` instance.
   std::unique_ptr<Rewriter> MakeRewriter(const std::string& url);
-
-  /// Create a `Rewriter` that calls provided callback with every new chunk of
-  /// output available.
-  std::unique_ptr<Rewriter> MakeRewriter(const std::string& url,
-                                         void (*output_sink)(const char*,
-                                                             size_t,
-                                                             void*),
-                                         void* output_sink_user_data);
 
  private:
   raw_ptr<C_SpeedReader> raw_ = nullptr;

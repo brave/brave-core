@@ -18,7 +18,7 @@ class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
   // Arrange
-  const std::vector<std::tuple<std::string, std::string>> kSamples = {
+  const std::vector<std::tuple<std::string, std::string>> samples = {
       {R"(<meta property="og:title" content="test">)", "test"},
       {R"(<meta property="og:title" content=" testing   ">)", "testing"},
       {R"(<meta property="og:title" content="test (string) - for 78 unittest 246">)",
@@ -38,7 +38,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
       {" ", {}},
       {{}, {}}};
 
-  for (const auto& [html, expected_text] : kSamples) {
+  for (const auto& [html, expected_text] : samples) {
     // Act
     const std::string text = SanitizeHtml(html);
 
@@ -49,7 +49,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
 
 TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   // Arrange
-  const std::vector<std::tuple<std::string, std::string>> kSamples = {
+  const std::vector<std::tuple<std::string, std::string>> samples = {
       {"test", "test"},
       {" testing   ", "testing"},
       {"test (string) - for 78 unittest 246", "test string for unittest"},
@@ -62,7 +62,7 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
       {" ", {}},
       {{}, {}}};
 
-  for (const auto& [text, expected_sanitized_text] : kSamples) {
+  for (const auto& [text, expected_sanitized_text] : samples) {
     // Act
     const std::string sanitized_text = SanitizeText(text);
 

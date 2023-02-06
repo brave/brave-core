@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -45,6 +46,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/common/buildflags.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
@@ -113,6 +115,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   // early initialize referrals
   brave_referrals_service();
+
+  // initialize ads stats updater helper
+  InitBraveStatsUpdaterHelper();
 
   // early initialize brave stats
   brave_stats_updater();
@@ -299,6 +304,13 @@ void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
 }
 
+void BraveBrowserProcessImpl::InitBraveStatsUpdaterHelper() {
+  if (!brave_stats_updater_helper_) {
+    brave_stats_updater_helper_ =
+        std::make_unique<brave_ads::BraveStatsUpdaterHelper>();
+  }
+}
+
 #if BUILDFLAG(ENABLE_TOR)
 tor::BraveTorClientUpdater* BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
@@ -420,7 +432,7 @@ BraveBrowserProcessImpl::brave_vpn_os_connection_api() {
     return brave_vpn_os_connection_api_.get();
 
   brave_vpn_os_connection_api_ = brave_vpn::CreateBraveVPNOSConnectionAPI(
-      shared_url_loader_factory(), local_state());
+      shared_url_loader_factory(), local_state(), chrome::GetChannel());
   return brave_vpn_os_connection_api_.get();
 }
 #endif

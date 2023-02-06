@@ -42,9 +42,16 @@ extern const char kFileValueName[];
 extern const char kFileMimeType[];
 extern const char kDirectoryMimeType[];
 extern const char kIPFSImportTextMimeType[];
+extern const char kNodeInfoPath[];
+
+// Local pins
+extern const char kAddPinPath[];
+extern const char kRemovePinPath[];
+extern const char kGetPinsPath[];
 
 // Keep it synced with IPFSResolveMethodTypes in
 // browser/resources/settings/brave_ipfs_page/brave_ipfs_page.js
+// GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.privacy.settings
 enum class IPFSResolveMethodTypes {
   IPFS_ASK,
   IPFS_GATEWAY,

@@ -33,7 +33,8 @@ import {
   TransactionProviderError,
   SendFilTransactionParams,
   SendSolTransactionParams,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  NetworkFilterType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
@@ -44,7 +45,6 @@ import {
 
 import getAPIProxy from './bridge'
 import {
-  hasEIP1559Support,
   refreshKeyringInfo,
   refreshNetworkInfo,
   refreshFullNetworkList,
@@ -62,7 +62,11 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-import { getCoinFromTxDataUnion, getNetworkInfo } from '../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  getNetworkInfo,
+  hasEIP1559Support
+} from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
 import { walletApi } from '../slices/api.slice'
 import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
@@ -112,7 +116,7 @@ async function updateAccountInfo (store: Store) {
   const state = getWalletState(store)
   const apiProxy = getAPIProxy()
   const { walletHandler } = apiProxy
-  const walletInfo = await walletHandler.getWalletInfo()
+  const walletInfo = (await walletHandler.getWalletInfo()).walletInfo
   if (state.accounts.length === walletInfo.accountInfos.length) {
     await store.dispatch(WalletActions.refreshAccountInfo(walletInfo))
   } else {
@@ -145,6 +149,13 @@ async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.Coi
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => {
+  await store.dispatch(refreshVisibleTokenInfo())
+  await store.dispatch(refreshBalances())
+  await store.dispatch(refreshPrices())
+})
+
+handler.on(WalletActions.refreshNetworksAndTokens.type, async (store: Store) => {
+  await store.dispatch(refreshFullNetworkList())
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
@@ -257,10 +268,10 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
   })
   const braveWalletService = getAPIProxy().braveWalletService
   const defaultFiat = await braveWalletService.getDefaultBaseCurrency()
-  const defualtCrypo = await braveWalletService.getDefaultBaseCryptocurrency()
+  const defaultCrypto = await braveWalletService.getDefaultBaseCryptocurrency()
   const defaultCurrencies = {
     fiat: defaultFiat.currency,
-    crypto: defualtCrypo.cryptocurrency
+    crypto: defaultCrypto.cryptocurrency
   }
   store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
   // Fetch Balances and Prices
@@ -365,8 +376,13 @@ handler.on(WalletActions.sendTransaction.type, async (
   if (payload.coin === BraveWallet.CoinType.ETH) {
     addResult = await sendEthTransaction({
       ...payload,
-      hasEIP1559Support: !!walletState.selectedNetwork && !!walletState.selectedAccount &&
-        hasEIP1559Support(walletState.selectedAccount, walletState.selectedNetwork)
+      hasEIP1559Support:
+        !!walletState.selectedNetwork &&
+        !!walletState.selectedAccount &&
+        hasEIP1559Support(
+          walletState.selectedAccount.accountType,
+          walletState.selectedNetwork
+        )
     })
   } else if (payload.coin === BraveWallet.CoinType.FIL) {
     addResult = await sendFilTransaction(payload as SendFilTransactionParams)
@@ -504,26 +520,34 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
   const { ethTxManagerProxy, solanaTxManagerProxy } = getAPIProxy()
 
   if (isSolanaTransaction(txInfo)) {
-    const getSolFee = await solanaTxManagerProxy.getEstimatedTxFee(txInfo.id)
-    if (!getSolFee.fee) {
-      console.error('Failed to fetch SOL Fee estimates')
+    const { fee, errorMessage } = await solanaTxManagerProxy.getEstimatedTxFee(
+      txInfo.id
+    )
+    if (!fee) {
+      console.error('Failed to fetch SOL Fee estimates: ' + errorMessage)
+      store.dispatch(WalletActions.setHasFeeEstimatesError(true))
       return
     }
-    store.dispatch(WalletActions.setSolFeeEstimates({ fee: getSolFee.fee }))
+    store.dispatch(WalletActions.setSolFeeEstimates({ fee }))
     return
   }
 
-  if (selectedNetwork && selectedAccount && !hasEIP1559Support(selectedAccount, selectedNetwork)) {
+  if (
+    selectedNetwork &&
+    selectedAccount &&
+    !hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
+  ) {
     return
   }
 
-  const basicEstimates = await ethTxManagerProxy.getGasEstimation1559()
-  if (!basicEstimates.estimation) {
+  const { estimation } = await ethTxManagerProxy.getGasEstimation1559()
+  if (!estimation) {
     console.error('Failed to fetch gas estimates')
+    store.dispatch(WalletActions.setHasFeeEstimatesError(true))
     return
   }
 
-  store.dispatch(WalletActions.setGasEstimates(basicEstimates.estimation))
+  store.dispatch(WalletActions.setGasEstimates(estimation))
 })
 
 handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store: Store, payload: UpdateUnapprovedTransactionGasFieldsType) => {
@@ -534,8 +558,8 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store
   if (isEIP1559) {
     const result = await apiProxy.ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(
       payload.txMetaId,
-      payload.maxPriorityFeePerGas || '',
-      payload.maxFeePerGas || '',
+      payload.maxPriorityFeePerGas || '0x0',
+      payload.maxFeePerGas || '0x0',
       payload.gasLimit
     )
 
@@ -699,13 +723,13 @@ handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetC
   store.dispatch(WalletActions.setCoinMarkets(result))
 })
 
-handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: NetworkFilterType) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
-handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: string) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))

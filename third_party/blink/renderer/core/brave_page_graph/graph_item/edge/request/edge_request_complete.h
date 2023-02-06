@@ -6,11 +6,10 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_COMPLETE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_COMPLETE_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/utilities/response_metadata.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -23,13 +22,13 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
                       NodeResource* out_node,
                       GraphNode* in_node,
                       const InspectorId request_id,
-                      const std::string& resource_type,
+                      const String& resource_type,
                       const ResponseMetadata& metadata,
-                      const std::string& hash);
+                      const String& hash);
 
   ~EdgeRequestComplete() override;
 
-  const std::string& GetResourceType() const { return resource_type_; }
+  const String& GetResourceType() const { return resource_type_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -40,8 +39,8 @@ class EdgeRequestComplete final : public EdgeRequestResponse {
   bool IsEdgeRequestComplete() const override;
 
  private:
-  const std::string resource_type_;
-  const std::string hash_;
+  const String resource_type_;
+  const String hash_;
 };
 
 }  // namespace brave_page_graph

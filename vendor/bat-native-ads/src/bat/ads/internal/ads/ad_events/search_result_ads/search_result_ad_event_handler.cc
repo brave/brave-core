@@ -24,28 +24,61 @@
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "bat/ads/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "bat/ads/public/interfaces/ads.mojom-shared.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 
 namespace ads::search_result_ads {
 
 namespace {
 
+bool ShouldDebounceViewedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kViewed &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed);
+}
+
+bool ShouldDebounceClickedAdEvent(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kClicked &&
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
+}
+
+bool WasAdServed(const AdInfo& ad,
+                 const AdEventList& ad_events,
+                 const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kServed ||
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
+}
+
+bool IsAdPlaced(const AdInfo& ad,
+                const AdEventList& ad_events,
+                const mojom::SearchResultAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::SearchResultAdEventType::kServed ||
+         event_type == mojom::SearchResultAdEventType::kViewed ||
+         (HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed) &&
+          HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed));
+}
+
 bool ShouldDebounceAdEvent(const AdInfo& ad,
                            const AdEventList& ad_events,
                            const mojom::SearchResultAdEventType& event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (event_type == mojom::SearchResultAdEventType::kViewed &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
-    return true;
-  }
-
-  if (event_type == mojom::SearchResultAdEventType::kClicked &&
-      HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked)) {
-    return true;
-  }
-
-  return false;
+  return ShouldDebounceViewedAdEvent(ad, ad_events, event_type) ||
+         ShouldDebounceClickedAdEvent(ad, ad_events, event_type) ||
+         !IsAdPlaced(ad, ad_events, event_type);
 }
 
 }  // namespace
@@ -74,14 +107,13 @@ void EventHandler::FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
 
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire event due to an invalid search result ad");
-    FailedToFireEvent(ad, event_type, callback);
-    return;
+    return FailedToFireEvent(ad, event_type, callback);
   }
 
-  if (!PermissionRules::HasPermission()) {
+  if (event_type == mojom::SearchResultAdEventType::kServed &&
+      !PermissionRules::HasPermission()) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
-    FailedToFireEvent(ad, event_type, callback);
-    return;
+    return FailedToFireEvent(ad, event_type, callback);
   }
 
   switch (event_type) {
@@ -138,8 +170,8 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
 
   if (!success) {
     BLOG(0, "Failed to save deposits state");
-    FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed, callback);
-    return;
+    return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+                             callback);
   }
 
   BLOG(3, "Successfully saved deposits state");
@@ -160,8 +192,8 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
                                      const bool success) const {
   if (!success) {
     BLOG(0, "Failed to save conversions state");
-    FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed, callback);
-    return;
+    return FailedToFireEvent(ad, mojom::SearchResultAdEventType::kViewed,
+                             callback);
   }
 
   BLOG(3, "Successfully saved conversions state");
@@ -175,21 +207,23 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
 
         if (!success) {
           BLOG(1, "Search result ad: Failed to get ad events");
-          FailedToFireEvent(ad, event_type, callback);
-          return;
+          return FailedToFireEvent(ad, event_type, callback);
+        }
+
+        if (!WasAdServed(ad, ad_events, event_type)) {
+          BLOG(1,
+               "Search result ad: Not allowed because an ad was not served "
+               "for placement id "
+                   << ad.placement_id);
+          return FailedToFireEvent(ad, event_type, callback);
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as already fired "
-                      << event_type << " event for this placement id "
+          BLOG(1, "Search result ad: Not allowed as debounced "
+                      << event_type << " event for placement id "
                       << ad.placement_id);
-          FailedToFireEvent(ad, event_type, callback);
-          return;
+          return FailedToFireEvent(ad, event_type, callback);
         }
-
-        // We must fire an ad served event due to search result ads not
-        // being delivered by the library.
-        FireEvent(ad, mojom::SearchResultAdEventType::kServed, callback);
 
         FireEvent(ad, event_type, callback);
       });
@@ -207,16 +241,22 @@ void EventHandler::FireClickedEvent(
 
         if (!success) {
           BLOG(1, "Search result ad: Failed to get ad events");
-          FailedToFireEvent(ad, event_type, callback);
-          return;
+          return FailedToFireEvent(ad, event_type, callback);
+        }
+
+        if (!WasAdServed(ad, ad_events, event_type)) {
+          BLOG(1,
+               "Search result ad: Not allowed because an ad was not served "
+               "for placement id "
+                   << ad.placement_id);
+          return FailedToFireEvent(ad, event_type, callback);
         }
 
         if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Search result ad: Not allowed as already fired "
-                      << event_type << " event for this placement id "
+          BLOG(1, "Search result ad: Not allowed as debounced "
+                      << event_type << " event for placement id "
                       << ad.placement_id);
-          FailedToFireEvent(ad, event_type, callback);
-          return;
+          return FailedToFireEvent(ad, event_type, callback);
         }
 
         FireEvent(ad, event_type, callback);

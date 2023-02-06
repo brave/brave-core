@@ -30,6 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/session_id_generator.h"
 #include "components/ukm/ukm_service.h"
+#import "ios/chrome/app/tests_hook.h"
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
@@ -47,9 +48,11 @@
 #import "ios/chrome/browser/promos_manager/promos_manager_impl.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
+#include "ios/chrome/browser/signin/system_identity_manager.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
 #include "ios/public/provider/chrome/browser/push_notification/push_notification_api.h"
+#import "ios/public/provider/chrome/browser/signin/signin_identity_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
@@ -331,6 +334,21 @@ id<SingleSignOnService> ApplicationContextImpl::GetSSOService() {
     DCHECK(single_sign_on_service_);
   }
   return single_sign_on_service_;
+}
+
+SystemIdentityManager* ApplicationContextImpl::GetSystemIdentityManager() {
+  DCHECK(thread_checker_.CalledOnValidThread());
+  if (!system_identity_manager_) {
+    // Give the opportunity for the test hook to override the factory from
+    // the provider (allowing EG tests to use a fake SystemIdentityManager).
+    system_identity_manager_ = tests_hook::CreateSystemIdentityManager();
+    if (!system_identity_manager_) {
+      system_identity_manager_ =
+          ios::provider::CreateSystemIdentityManager(GetSSOService());
+    }
+    DCHECK(system_identity_manager_);
+  }
+  return system_identity_manager_.get();
 }
 
 segmentation_platform::OTRWebStateObserver*

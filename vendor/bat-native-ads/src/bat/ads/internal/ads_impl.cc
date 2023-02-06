@@ -276,8 +276,8 @@ void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
 }
 
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                       const std::string& seed) {
-  account_->SetWallet(payment_id, seed);
+                                       const std::string& recovery_seed) {
+  account_->SetWallet(payment_id, recovery_seed);
 }
 
 void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
@@ -520,6 +520,7 @@ void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
   }
 
   ConfirmationStateManager::GetInstance()->Initialize(
+      account_->GetWallet(),
       base::BindOnce(&AdsImpl::OnLoadConfirmationState, base::Unretained(this),
                      std::move(callback)));
 }

@@ -50,6 +50,12 @@ export function AdsPanel () {
   const [showModal, setShowModal] = React.useState(false)
   const [showConfig, setShowConfig] = React.useState(false)
 
+  React.useEffect(() => {
+    if (showModal) {
+      actions.getAdsHistory()
+    }
+  }, [showModal])
+
   const { adsData } = data
 
   const canEnable = adsData.adsIsSupported && adsData.adsUIEnabled
@@ -340,14 +346,9 @@ export function AdsPanel () {
       return renderLimited()
     }
 
-    const providerPayoutStatus = () => {
-      if (!externalWallet) {
-        return 'off'
-      }
-      return getProviderPayoutStatus(
-        data.parameters.payoutStatus,
-        externalWallet.provider)
-    }
+    const providerPayoutStatus = getProviderPayoutStatus(
+      data.parameters.payoutStatus,
+      externalWallet ? externalWallet.provider : null)
 
     return (
       <>
@@ -356,7 +357,7 @@ export function AdsPanel () {
             <PaymentStatusView
               earningsLastMonth={adsData.adsEarningsLastMonth}
               nextPaymentDate={adsData.adsNextPaymentDate}
-              providerPayoutStatus={providerPayoutStatus()}
+              providerPayoutStatus={providerPayoutStatus}
             />
           </style.paymentStatus>
         <PanelItem label={getString('adsCurrentEarnings')}>
@@ -389,7 +390,43 @@ export function AdsPanel () {
       flooredDate.setHours(0, 0, 0, 0)
       const flooredDateString = flooredDate.toLocaleDateString()
 
-      for (const detailRow of history.adDetailRows) {
+      for (const { uuid, adContent, categoryContent } of history.adDetailRows) {
+        let { brand } = adContent
+        if (brand.length > 50) {
+          brand = brand.substring(0, 50) + '...'
+        }
+
+        let { brandInfo } = adContent
+        if (brandInfo.length > 50) {
+          brandInfo = brandInfo.substring(0, 50) + '...'
+        }
+
+        const detailRow = {
+          uuid,
+          adContent: {
+            ...adContent,
+            brand,
+            brandInfo,
+            onThumbUpPress: () => actions.toggleAdThumbUp(adContent),
+            onThumbDownPress: () => actions.toggleAdThumbDown(adContent),
+            onMenuSave: () => actions.toggleSavedAd(adContent),
+            onMenuFlag: () => actions.toggleFlaggedAd(adContent)
+          },
+          categoryContent: {
+            ...categoryContent,
+            onOptIn: () => {
+              actions.toggleAdOptIn(
+                categoryContent.category,
+                categoryContent.optAction)
+            },
+            onOptOut: () => {
+              actions.toggleAdOptOut(
+                categoryContent.category,
+                categoryContent.optAction)
+            }
+          }
+        }
+
         const index = groupedHistory.findIndex(
           (item) => item.date === flooredDateString)
 

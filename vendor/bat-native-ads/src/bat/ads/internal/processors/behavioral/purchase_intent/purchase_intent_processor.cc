@@ -5,10 +5,9 @@
 
 #include "bat/ads/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 
-#include <algorithm>
-
 #include "absl/types/optional.h"
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/common/logging_util.h"
@@ -56,17 +55,10 @@ KeywordList ToKeywords(const std::string& value) {
                            base::SPLIT_WANT_NONEMPTY);
 }
 
-bool IsSubset(const KeywordList& keywords_lhs,
-              const KeywordList& keywords_rhs) {
-  KeywordList sorted_keywords_lhs = keywords_lhs;
-  std::sort(sorted_keywords_lhs.begin(), sorted_keywords_lhs.end());
-
-  KeywordList sorted_keywords_rhs = keywords_rhs;
-  std::sort(sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
-
-  return std::includes(sorted_keywords_lhs.cbegin(), sorted_keywords_lhs.cend(),
-                       sorted_keywords_rhs.cbegin(),
-                       sorted_keywords_rhs.cend());
+bool IsSubset(KeywordList keywords_lhs, KeywordList keywords_rhs) {
+  base::ranges::sort(keywords_lhs);
+  base::ranges::sort(keywords_rhs);
+  return base::ranges::includes(keywords_lhs, keywords_rhs);
 }
 
 }  // namespace
@@ -172,13 +164,11 @@ SegmentList PurchaseIntent::GetSegmentsForSearchQuery(
   DCHECK(purchase_intent);
 
   for (const auto& keyword : purchase_intent->segment_keywords) {
-    const KeywordList keywords = ToKeywords(keyword.keywords);
-
     // Intended behavior relies on early return from list traversal and
     // implicitely on the ordering of |segment_keywords_| to ensure specific
     // segments are matched over general segments, e.g. "audi a6" segments
     // should be returned over "audi" segments if possible
-    if (IsSubset(search_query_keywords, keywords)) {
+    if (IsSubset(search_query_keywords, ToKeywords(keyword.keywords))) {
       segments = keyword.segments;
       break;
     }
@@ -213,7 +203,7 @@ void PurchaseIntent::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
+  if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }
 }

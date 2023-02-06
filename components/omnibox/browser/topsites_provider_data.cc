@@ -115,7 +115,7 @@ std::vector<std::string> TopSitesProvider::top_sites_ = {
   "google.pl",
   "ku6.com",
   "bp.blogspot.com",
-  "thepiratebay.se",
+  "thepiratebay.org",
   "dailymotion.com",
   "weather.com",
   "vimeo.com",

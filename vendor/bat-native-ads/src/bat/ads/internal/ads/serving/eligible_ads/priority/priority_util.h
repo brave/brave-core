@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_UTIL_H_
 
-#include <algorithm>
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/ranges/algorithm.h"
 
 namespace ads {
 
@@ -38,8 +38,8 @@ base::flat_map<unsigned int, T> SortCreativeAdsIntoPrioritizedBuckets(
 template <typename T>
 std::pair<unsigned int, T> GetHighestPriorityBucket(
     const base::flat_map<unsigned int, T>& buckets) {
-  const auto iter = std::min_element(
-      buckets.cbegin(), buckets.cend(),
+  const auto iter = base::ranges::min_element(
+      buckets,
       [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
 
   return *iter;

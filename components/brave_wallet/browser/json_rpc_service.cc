@@ -187,6 +187,8 @@ JsonRpcService::JsonRpcService(
     : JsonRpcService(std::move(url_loader_factory), std::move(prefs), nullptr) {
 }
 
+JsonRpcService::JsonRpcService() : weak_ptr_factory_(this) {}
+
 void JsonRpcService::SetAPIRequestHelperForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<APIRequestHelper>(
@@ -216,12 +218,9 @@ void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
   // selected networks
   if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
     const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
-    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    base::Value::Dict* selected_networks = update.Get()->GetIfDict();
-    if (selected_networks) {
-      selected_networks->Set(kEthereumPrefKey, chain_id);
-      prefs->ClearPref(kBraveWalletCurrentChainId);
-    }
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    update->Set(kEthereumPrefKey, chain_id);
+    prefs->ClearPref(kBraveWalletCurrentChainId);
   }
 }
 
@@ -231,8 +230,8 @@ void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
     return;
 
   if (prefs->HasPrefPath(kBraveWalletSelectedNetworks)) {
-    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
-    auto& selected_networks_pref = update.Get()->GetDict();
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    base::Value::Dict& selected_networks_pref = update.Get();
     const std::string* selected_eth_network =
         selected_networks_pref.FindString(kEthereumPrefKey);
     if (!selected_eth_network) {
@@ -262,8 +261,8 @@ void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
   // Show test networks toggle was explictily enabled. Go through coins and
   // remove all test networks from hidden lists.
 
-  DictionaryPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-  base::Value::Dict& dict = update.Get()->GetDict();
+  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  base::Value::Dict& dict = update.Get();
 
   auto* eth_list = dict.EnsureList(kEthereumPrefKey);
   eth_list->EraseValue(base::Value(mojom::kGoerliChainId));
@@ -512,10 +511,8 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
 
   chain_ids_[coin] = chain_id;
   network_urls_[coin] = network_url;
-  DictionaryPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
-  base::Value* dict = update.Get();
-  DCHECK(dict);
-  dict->SetStringKey(GetPrefKeyForCoinType(coin), chain_id);
+  ScopedDictPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
+  update->Set(GetPrefKeyForCoinType(coin), chain_id);
 
   if (!silent) {
     FireNetworkChanged(coin);
@@ -568,9 +565,8 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
   } else {
     // TODO(apaymyshev): move all work with kBraveWalletCustomNetworks into one
     // file.
-    DictionaryPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& item :
-         *update.Get()->GetDict().FindList(kEthereumPrefKey)) {
+    ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    for (base::Value& item : *update->FindList(kEthereumPrefKey)) {
       base::Value::Dict* custom_network = item.GetIfDict();
       if (!custom_network)
         continue;
@@ -1433,14 +1429,14 @@ void JsonRpcService::SnsResolveHost(const std::string& domain,
                                     SnsResolveHostCallback callback) {
   if (!base::FeatureList::IsEnabled(features::kBraveWalletSnsFeature)) {
     std::move(callback).Run(
-        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (!IsValidDomain(domain)) {
     std::move(callback).Run(
-        GURL(), mojom::SolanaProviderError::kInvalidParams,
+        absl::nullopt, mojom::SolanaProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -2172,10 +2168,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 }
 
 void JsonRpcService::EthGetLogs(const std::string& chain_id,
-                                const std::string& from_block,
-                                const std::string& to_block,
-                                base::Value::List contract_addresses,
-                                base::Value::List topics,
+                                base::Value::Dict filter_options,
                                 EthGetLogsCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
@@ -2188,10 +2181,8 @@ void JsonRpcService::EthGetLogs(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnEthGetLogs,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      eth::eth_getLogs(from_block, to_block, std::move(contract_addresses),
-                       std::move(topics), ""),
-      true, network_url, std::move(internal_callback));
+  RequestInternal(eth::eth_getLogs(std::move(filter_options)), true,
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,
@@ -2626,7 +2617,7 @@ void JsonRpcService::GetSolanaSignatureStatuses(
       solana::getSignatureStatuses(tx_signatures), true,
       network_urls_[mojom::CoinType::SOL], std::move(internal_callback),
       base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
-                     std::vector<std::string>({"slot", "confirmations"})));
+                     "", std::vector<std::string>({"slot", "confirmations"})));
 }
 
 void JsonRpcService::OnGetSolanaSignatureStatuses(
@@ -2767,6 +2758,46 @@ void JsonRpcService::OnGetSolanaBlockHeight(
   }
 
   std::move(callback).Run(block_height, mojom::SolanaProviderError::kSuccess,
+                          "");
+}
+
+void JsonRpcService::GetSolanaTokenAccountsByOwner(
+    const SolanaAddress& pubkey,
+    GetSolanaTokenAccountsByOwnerCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaTokenAccountsByOwner,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      solana::getTokenAccountsByOwner(pubkey.ToBase58()), true,
+      network_urls_[mojom::CoinType::SOL], std::move(internal_callback),
+      base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
+                     "/account",
+                     std::vector<std::string>({"lamports", "rentEpoch"})));
+}
+
+void JsonRpcService::OnGetSolanaTokenAccountsByOwner(
+    GetSolanaTokenAccountsByOwnerCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<SolanaAccountInfo> token_accounts;
+  if (!solana::ParseGetTokenAccountsByOwner(api_request_result.value_body(),
+                                            &token_accounts)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run(std::vector<SolanaAccountInfo>(), error,
+                            error_message);
+    return;
+  }
+
+  std::move(callback).Run(token_accounts, mojom::SolanaProviderError::kSuccess,
                           "");
 }
 

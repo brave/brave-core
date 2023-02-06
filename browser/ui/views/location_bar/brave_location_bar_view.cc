@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -37,6 +38,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -95,7 +97,10 @@ void BraveLocationBarView::Init() {
       !browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(
-            browser_->profile(), browser_->tab_strip_model()));
+            browser_->profile(), this, this));
+    brave_news_location_view_->SetVisible(false);
+    views::InkDrop::Get(brave_news_location_view_)
+        ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
 #if BUILDFLAG(ENABLE_TOR)
   onion_location_view_ =
@@ -149,6 +154,10 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     ipfs_location_view_->Update(contents, show_page_actions);
 #endif
 
+  if (brave_news_location_view_) {
+    brave_news_location_view_->Update();
+  }
+
   LocationBarView::Update(contents);
 
   if (!ShouldShowIPFSLocationView())
@@ -192,7 +201,7 @@ void BraveLocationBarView::OnChanged() {
 #endif
 
   if (brave_news_location_view_) {
-    brave_news_location_view_->SetVisible(!hide_page_actions);
+    brave_news_location_view_->Update();
   }
 
   // OnChanged calls Layout
@@ -259,13 +268,16 @@ void BraveLocationBarView::OnThemeChanged() {
   RefreshBackground();
 }
 
-void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
-  LocationBarView::ChildPreferredSizeChanged(child);
-
-  if (child != brave_actions_)
-    return;
-
-  Layout();
+void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
+  LocationBarView::ChildVisibilityChanged(child);
+  // Normally, PageActionIcons are in a container which is always visible, only
+  // the size changes when an icon is shown or hidden. The LocationBarView
+  // does not listen to ChildVisibilityChanged events so we must make we Layout
+  // and re-caculate trailing decorator positions when a child changes.
+  if (base::Contains(GetTrailingViews(), child)) {
+    Layout();
+    SchedulePaint();
+  }
 }
 
 int BraveLocationBarView::GetBorderRadius() const {

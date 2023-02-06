@@ -16,7 +16,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/utf_string_conversions.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -178,6 +178,38 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
   return base::Contains(tags_, tag);
 }
 
+base::Value::Dict AdBlockEngine::GetDebugInfo() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  const auto debug_info_struct = ad_block_client_->getAdblockDebugInfo();
+  base::Value::List regex_list;
+  for (const auto& regex_entry : debug_info_struct.regex_data) {
+    base::Value::Dict regex_info;
+    regex_info.Set("id", base::NumberToString(regex_entry.id));
+    regex_info.Set("regex", regex_entry.regex);
+    regex_info.Set("unused_sec", static_cast<int>(regex_entry.unused_sec));
+    regex_info.Set("usage_count", static_cast<int>(regex_entry.usage_count));
+    regex_list.Append(std::move(regex_info));
+  }
+
+  base::Value::Dict result;
+  result.Set("compiled_regex_count",
+             static_cast<int>(debug_info_struct.compiled_regex_count));
+  result.Set("regex_data", std::move(regex_list));
+  return result;
+}
+
+void AdBlockEngine::DiscardRegex(uint64_t regex_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ad_block_client_->discardRegex(regex_id);
+}
+
+void AdBlockEngine::SetupDiscardPolicy(
+    const adblock::RegexManagerDiscardPolicy& policy) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  regex_discard_policy_ = policy;
+  ad_block_client_->setupDiscardPolicy(policy);
+}
+
 base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   absl::optional<base::Value> result =
@@ -222,6 +254,9 @@ void AdBlockEngine::UpdateAdBlockClient(
     const std::string& resources_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_ = std::move(ad_block_client);
+  if (regex_discard_policy_) {
+    ad_block_client_->setupDiscardPolicy(*regex_discard_policy_);
+  }
   UseResources(resources_json);
   AddKnownTagsToAdBlockInstance();
   if (test_observer_) {

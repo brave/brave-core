@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_START_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_START_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -22,11 +21,11 @@ class EdgeRequestStart final : public EdgeRequest {
                    GraphNode* out_node,
                    NodeResource* in_node,
                    const InspectorId request_id,
-                   const std::string& resource_type);
+                   const String& resource_type);
 
   ~EdgeRequestStart() override;
 
-  const std::string& GetResourceType() const { return resource_type_; }
+  const String& GetResourceType() const { return resource_type_; }
 
   NodeResource* GetResourceNode() const override;
   GraphNode* GetRequestingNode() const override;
@@ -40,7 +39,7 @@ class EdgeRequestStart final : public EdgeRequest {
   bool IsEdgeRequestStart() const override;
 
  private:
-  const std::string resource_type_;
+  const String resource_type_;
 };
 
 }  // namespace brave_page_graph

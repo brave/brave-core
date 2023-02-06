@@ -447,39 +447,55 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
   std::string json(
       R"({"a":[{"key":18446744073709551615},{"key":2},{"key":3}]})");
   EXPECT_EQ(
-      std::string(
-          json::convert_uint64_in_object_array_to_string("/a", "key", json)),
+      std::string(json::convert_uint64_in_object_array_to_string("/a", "",
+                                                                 "key", json)),
       R"({"a":[{"key":"18446744073709551615"},{"key":"2"},{"key":"3"}]})");
 
   json = R"({"a":{"b":[{"key":18446744073709551615},{"key":2}]}})";
   EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
-                "/a/b", "key", json)),
+                "/a/b", "", "key", json)),
             R"({"a":{"b":[{"key":"18446744073709551615"},{"key":"2"}]}})");
 
   // Null value support.
   json = R"({"a":[{"key":18446744073709551615},{"key":null}]})";
   EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
-                "/a", "key", json)),
+                "/a", "", "key", json)),
             R"({"a":[{"key":"18446744073709551615"},{"key":null}]})");
+
+  json = R"({"a":[{"b":{"key":18446744073709551615}},{"b":{"key":null}}]})";
+  EXPECT_EQ(
+      std::string(json::convert_uint64_in_object_array_to_string("/a", "/b",
+                                                                 "key", json)),
+      R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":null}}]})");
 
   // Empty object array, nothing to convert.
   json = R"({"a":[]})";
   EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
-                "/a", "key", json)),
+                "/a", "", "key", json)),
             json);
 
   // Unchanged when path is not found.
   json = R"({"b":[{"key":1},{"key":2}]})";
   EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
-                "/a", "key", json)),
+                "/a", "", "key", json)),
+            json);
+  json = R"({"b":[{"c": {"key":1}},{"c": {"key":2}}]})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a", "", "key", json)),
             json);
 
   // When key is not found in some of the objects in the array, no need to
   // convert those objects.
   json = R"({"a":[{"key":1},{"diff-key":1},{"key":2}]})";
   EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
-                "/a", "key", json)),
+                "/a", "", "key", json)),
             R"({"a":[{"key":"1"},{"diff-key":1},{"key":"2"}]})");
+
+  json = R"({"a":[{"b":{"key":1}},{"b":{"diff-key":1}},{"b":{"key":2}}]})";
+  EXPECT_EQ(
+      std::string(json::convert_uint64_in_object_array_to_string("/a", "/b",
+                                                                 "key", json)),
+      R"({"a":[{"b":{"key":"1"}},{"b":{"diff-key":1}},{"b":{"key":"2"}}]})");
 
   std::vector<std::string> invalid_cases = {
       // Value at path isn't an array.
@@ -494,9 +510,42 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
       R"("{a":[{"key":)" + std::to_string(INT64_MIN) + "}]}"};
   for (const auto& invalid_case : invalid_cases) {
     EXPECT_EQ("", std::string(json::convert_uint64_in_object_array_to_string(
-                      "/a", "key", invalid_case)))
+                      "/a", "", "key", invalid_case)))
         << invalid_case;
   }
+
+  invalid_cases = {
+      // Value at path isn't an array.
+      R"({"a":{[{"key":1},{"key":2}}})",
+      // Value at path isn't an object array.
+      R"({"a":[{"key":1}, [], {"key":2}})",
+      // Value at key is not uint64 or null.
+      R"({"a":[{"b": {"key":"1"}}]})",
+      // UINT64_MAX + 1
+      R"("{a":[{"b": {"key":18446744073709551616}}]})",
+      // INT64_MIN
+      R"("{a":[{"b": {"key":)" + std::to_string(INT64_MIN) + "}}]}"};
+  for (const auto& invalid_case : invalid_cases) {
+    EXPECT_EQ("", std::string(json::convert_uint64_in_object_array_to_string(
+                      "/a", "/b", "key", invalid_case)))
+        << invalid_case;
+  }
+
+  // Object array where key is nested
+  json =
+      R"({"a":[{"b":{"key":18446744073709551615}},{"b":{"key":2}},{"b":{"key":3}}]})";
+  EXPECT_EQ(
+      std::string(json::convert_uint64_in_object_array_to_string("/a", "/b",
+                                                                 "key", json)),
+      R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":"2"}},{"b":{"key":"3"}}]})");
+
+  // Object array where key is nested deeper
+  json =
+      R"({"a":[{"b":{"c":{"key":18446744073709551615}}},{"b":{"c":{"key":2}}}]})";
+  EXPECT_EQ(
+      std::string(json::convert_uint64_in_object_array_to_string("/a", "/b/c",
+                                                                 "key", json)),
+      R"({"a":[{"b":{"c":{"key":"18446744073709551615"}}},{"b":{"c":{"key":"2"}}}]})");
 }
 
 TEST(JsonParser, ConvertAllNumbersToString) {

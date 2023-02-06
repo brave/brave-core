@@ -37,6 +37,10 @@ struct PlaylistItem {
   string author;
   string duration;
   int32 last_played_position;
+
+  // Playlists that contain this item. Could have multiple |Playlist| in case
+  // user copied this item to another list.
+  array<string> parents;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -66,23 +70,31 @@ interface PlaylistService {
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id);
 
+  CopyItemToPlaylist(array<string> item_ids, string playlist_id);
+
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
   ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position);
 
   UpdateItem(PlaylistItem item);
 
-  // Try downloading thumbnail and media files again
+  // Try downloading media files again
   RecoverLocalDataForItem(string id);
 
-  // Removes thumbnail and media files for a item stored in local directory.
+  // Removes media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);
+
+  // Removes media files of all items in a playlist with |playlist_id|.
+  RemoveLocalDataForItemsInPlaylist(string playlist_id);
 
   // Creates a new playlist with given |playlist| and return created Playlist
   // with a new ID of the playlist.
   CreatePlaylist(Playlist playlist) => (Playlist created_list);
 
   RemovePlaylist(string id);
+
+  // Removes all stored data and resets preferences to default values.
+  ResetAll();
 };
 
 // UI-side handler for response from the service.

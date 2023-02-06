@@ -14,6 +14,8 @@
 #define outerWidth outerWidth_ChromiumImpl
 #define screenX screenX_ChromiumImpl
 #define screenY screenY_ChromiumImpl
+#define resizeTo resizeTo_ChromiumImpl
+#define moveTo moveTo_ChromiumImpl
 
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
 
@@ -21,6 +23,8 @@
 #undef outerWidth
 #undef screenX
 #undef screenY
+#undef resizeTo
+#undef moveTo
 
 namespace blink {
 
@@ -88,6 +92,26 @@ int LocalDOMWindow::screenY() const {
   return BlockScreenFingerprinting(context)
              ? FarbleInteger(context, brave::FarbleKey::kWindowScreenY, 0, 0, 8)
              : screenY_ChromiumImpl();
+}
+
+void LocalDOMWindow::resizeTo(int width, int height) const {
+  ExecutionContext* context = GetExecutionContext();
+  if (BlockScreenFingerprinting(context)) {
+    resizeTo_ChromiumImpl(width + outerWidth_ChromiumImpl() - outerWidth(),
+                          height + outerHeight_ChromiumImpl() - outerHeight());
+  } else {
+    resizeTo_ChromiumImpl(width, height);
+  }
+}
+
+void LocalDOMWindow::moveTo(int x, int y) const {
+  ExecutionContext* context = GetExecutionContext();
+  if (BlockScreenFingerprinting(context)) {
+    moveTo_ChromiumImpl(x + screenX_ChromiumImpl() - screenX(),
+                        y + screenY_ChromiumImpl() - screenY());
+  } else {
+    moveTo_ChromiumImpl(x, y);
+  }
 }
 
 }  // namespace blink

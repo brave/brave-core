@@ -16,9 +16,11 @@
 namespace ads {
 
 namespace {
-const std::vector<std::string> kCreativeSetIds = {
+
+constexpr const char* kCreativeSetIds[] = {
     "654f10df-fbc4-4a92-8d43-2edf73734a60",
     "465f10df-fbc4-4a92-8d43-4edf73734a60"};
+
 }  // namespace
 
 class BatAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
@@ -26,7 +28,7 @@ class BatAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
 TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 2;
 
   const AdEventList ad_events;
@@ -42,7 +44,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
 TEST_F(BatAdsTotalMaxExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 2;
 
   AdEventList ad_events;
@@ -64,11 +66,11 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest,
        AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad_1.creative_set_id = kCreativeSetIds[0];
   creative_ad_1.total_max = 2;
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_set_id = kCreativeSetIds.at(1);
+  creative_ad_2.creative_set_id = kCreativeSetIds[1];
 
   AdEventList ad_events;
 
@@ -89,7 +91,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest,
 TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 0;
 
   const AdEventList ad_events;
@@ -105,7 +107,7 @@ TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsZeroCap) {
 TEST_F(BatAdsTotalMaxExclusionRuleTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetIds.at(0);
+  creative_ad.creative_set_id = kCreativeSetIds[0];
   creative_ad.total_max = 2;
 
   AdEventList ad_events;

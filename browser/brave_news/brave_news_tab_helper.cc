@@ -46,15 +46,18 @@ BraveNewsTabHelper::~BraveNewsTabHelper() = default;
 const std::vector<BraveNewsTabHelper::FeedDetails>
 BraveNewsTabHelper::GetAvailableFeeds() {
   std::vector<FeedDetails> feeds;
-
   base::flat_set<GURL> seen_feeds;
-  auto* default_publisher =
-      controller_->publisher_controller()->GetPublisherForSite(
-          GetWebContents().GetLastCommittedURL());
-  if (default_publisher) {
-    seen_feeds.insert(default_publisher->feed_source);
-    feeds.push_back(
-        {default_publisher->feed_source, default_publisher->publisher_name});
+
+  auto current_url = GetWebContents().GetLastCommittedURL();
+  if (!current_url.is_empty() && !current_url.host().empty()) {
+    auto* default_publisher =
+        controller_->publisher_controller()->GetPublisherForSite(current_url);
+
+    if (default_publisher) {
+      seen_feeds.insert(default_publisher->feed_source);
+      feeds.push_back(
+          {default_publisher->feed_source, default_publisher->publisher_name});
+    }
   }
 
   for (const auto& rss_feed : rss_page_feeds_) {

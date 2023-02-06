@@ -172,8 +172,9 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
   const std::string* wallpaper_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 
-  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id,
-                                                         creative_instance_id);
+  view_counter_service_->BrandedWallpaperWillBeDisplayed(
+      wallpaper_id ? *wallpaper_id : "",
+      creative_instance_id ? *creative_instance_id : "");
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,

@@ -13,7 +13,6 @@
 #include "base/files/file_util.h"
 #include "base/guid.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ipfs/import/save_package_observer.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -171,8 +170,8 @@ void IpfsImportController::ImportCurrentPageToIpfs() {
   }
   web_contents_->Stop();
 
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&CreateTempDownloadDirectory,
                      GetDirectoryNameForWebPageImport(web_contents_->GetURL())),
       base::BindOnce(&IpfsImportController::SaveWebPage,

@@ -11,7 +11,11 @@
 
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace ads::privacy {
+namespace ads {
+
+struct WalletInfo;
+
+namespace privacy {
 
 class UnblindedTokens;
 
@@ -20,13 +24,16 @@ UnblindedTokens* GetUnblindedTokens();
 UnblindedTokenList SetUnblindedTokens(int count);
 
 UnblindedTokenInfo CreateUnblindedToken(
-    const std::string& unblinded_token_base64);
+    const std::string& unblinded_token_base64,
+    const WalletInfo& wallet);
 UnblindedTokenList CreateUnblindedTokens(
-    const std::vector<std::string>& unblinded_tokens_base64);
+    const std::vector<std::string>& unblinded_tokens_base64,
+    const WalletInfo& wallet);
 
 UnblindedTokenList GetUnblindedTokens(int count);
 UnblindedTokenInfo GetUnblindedToken();
 
-}  // namespace ads::privacy
+}  // namespace privacy
+}  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKENS_UNITTEST_UTIL_H_

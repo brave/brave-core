@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.app.domain;
 
+import android.text.TextUtils;
+
 import androidx.annotation.UiThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -144,7 +146,9 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     void update() {
-        mBraveWalletService.getSelectedCoin(coinType -> { update(coinType); });
+        if (mBraveWalletService != null) {
+            mBraveWalletService.getSelectedCoin(coinType -> { update(coinType); });
+        }
     }
 
     private void updateSelectedAccountPerOriginOrFirst(KeyringInfo keyringInfo) {
@@ -234,6 +238,21 @@ public class KeyringModel implements KeyringServiceObserver {
         }
 
         return accountInfosFiltered;
+    }
+
+    public void getKeyringPerId(String keyringId, Callbacks.Callback1<KeyringInfo> callback) {
+        if (TextUtils.isEmpty(keyringId)) return;
+        KeyringInfo selectedCoinKeyring = _mSelectedCoinKeyringInfoLiveData.getValue();
+        if (selectedCoinKeyring != null && selectedCoinKeyring.id.equals(keyringId)) {
+            callback.call(selectedCoinKeyring);
+        } else {
+            if (mKeyringService == null) {
+                callback.call(null);
+                return;
+            }
+            mKeyringService.getKeyringInfo(
+                    keyringId, keyringInfo -> { callback.call(keyringInfo); });
+        }
     }
 
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {

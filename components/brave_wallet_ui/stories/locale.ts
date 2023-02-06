@@ -336,6 +336,7 @@ provideStrings({
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
+  braveWalletCustomTokenExistsError: 'This token has already been added to your portfolio.',
   braveWalletAccountSettingsDisclaimer: 'WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.',
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
@@ -456,6 +457,8 @@ provideStrings({
   braveWalletSignWarning: 'Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.',
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
+  braveWalletSignTransactionEIP712MessageTitle: 'Details',
+  braveWalletSignTransactionEIP712MessageDomain: 'Domain',
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',
 
@@ -593,6 +596,9 @@ provideStrings({
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
   braveWalletEditGasLimitError: 'Gas limit must be an integer greater than 0',
+  braveWalletGasFeeLimitLowerThanBaseFeeWarning:
+    'Fee limit is set lower than the base fee. ' +
+    'Your transaction may take a long time or fail.',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',
@@ -612,14 +618,25 @@ provideStrings({
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidSolAddress: 'Not a valid SOL address',
   braveWalletNotValidAddress: 'Not a valid address',
-  braveWalletNotDomain: 'Domain is not registered',
+  braveWalletNotDomain: 'Domain doesn\'t have a linked $ address',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
+  braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
+  braveWalletFailedChecksumDescription: 'Check your address to make sure it’s the right address (e.g. letters with lower or upper case).',
+  braveWalletHowToSolve: 'How can I solve it?',
   braveWalletAddressMissingChecksumInfoWarning: 'This address cannot be verified (missing checksum). Proceed?',
   braveWalletNotValidChecksumAddressError: 'Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
+  braveWalletInvalidRecipientAddress: 'Invalid recipient address',
+  braveWalletChecksumModalTitle: 'How can I find the right address?',
+  braveWalletChecksumModalDescription: 'Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.',
+  braveWalletChecksumModalStepOneTitle: '1. Visit',
+  braveWalletChecksumModalStepOneDescription: 'Visit etherscan and paste the wallet address you want to send tokens. Then enter.',
+  braveWalletChecksumModalStepTwoTitle: '2. Copy and enter ETH address',
+  braveWalletChecksumModalStepTwoDescription: 'Copy and enter the correct address. You can see that some characters have been converted correctly.',
+  braveWalletChecksumModalNeedHelp: 'Need more help?',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
@@ -748,7 +765,7 @@ provideStrings({
   braveWalletSolanaSkipPreflight: 'Skip Preflight:',
 
   // Help Center
-  braveWalletHelpCenter: 'Help Center',
+  braveWalletHelpCenter: 'Help center',
   braveWalletHelpCenterText: 'Need help? See',
 
   // Remove Account Modal
@@ -812,5 +829,7 @@ provideStrings({
   braveWalletTokenDecimalsIsRequiredError:
     'Token decimals of precision value is required',
   braveWalletTokenContractAddress: 'Token Contract Address',
-  braveWalletTokenDecimal: 'Token Decimal'
+  braveWalletTokenDecimal: 'Token Decimal',
+  braveWalletTokenMintAddress: 'Mint address',
+  braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates'
 })

@@ -29,7 +29,7 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
 
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
-  const int kDimensionCount = 6;
+  constexpr int kDimensionCount = 6;
   const std::map<unsigned, double> s_6 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
   const VectorData sparse_data_vector_6(kDimensionCount, s_6);
 
@@ -41,7 +41,7 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
   // Arrange
-  const double kTolerance = 1e-6;
+  constexpr double kTolerance = 1e-6;
 
   const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
@@ -65,7 +65,7 @@ TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
 
 TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
   // Arrange
-  const double kTolerance = 1e-6;
+  constexpr double kTolerance = 1e-6;
 
   // Dense equivalent is [1, 0, 2]
   const std::map<unsigned, double> s_3 = {{0UL, 1.0}, {2UL, 2.0}};
@@ -86,7 +86,7 @@ TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
 
 TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
   // Arrange
-  const double kTolerance = 1e-6;
+  constexpr double kTolerance = 1e-6;
 
   const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
@@ -206,7 +206,7 @@ TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
 }
 
 TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
-  const int kDimensionCount = 6;
+  constexpr int kDimensionCount = 6;
   const std::map<unsigned, double> s_5 = {
       {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}, {10UL, -1.0}, {30UL, 1.0}};
   VectorData sparse_data_vector_5(kDimensionCount, s_5);

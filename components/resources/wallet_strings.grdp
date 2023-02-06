@@ -238,6 +238,7 @@
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ERROR" desc="Visible assets modal failed to add token error">Failed to add custom token, please try again.</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM_TOKEN_EXISTS_ERROR" desc="Error message that is shown when trying to add a token that already exists in your portfolio.">This token has already been added to your portfolio.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID" desc="Visible assets modal tokenId label">Token ID (only for ERC721)</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR" desc="Visible assets modal tokenId error">Token ID is required</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADVANCED" desc="Visible assets modal advanced fields">Advanced</message>
@@ -284,6 +285,8 @@
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE" desc="Sign panel EIP-712 message title">Details</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
@@ -417,14 +420,26 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS" desc="Send input not valid SOL address error">Not a valid SOL address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
-  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="DOMAIN_NAME"><ex>doug.wallet</ex>$1</ph> is not registered</message>
+  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
+  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
+  <message name="IDS_BRAVE_WALLET_HOW_TO_SOLVE" desc="How to solve button text">How can I solve it?</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_WARNING_TITLE" desc="Send input address missing checksum information title">Missing checksum information</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">This address cannot be verified (missing checksum). Proceed?</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR" desc="Send input address has invalid checksum information">Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.</message>
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS" desc="Invalid recipient address error">Invalid recipient address</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE" desc="Invalid checksum modal title">How can I find the right address?</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION" desc="Invalid checksum modal description">Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_TITLE" desc="Invalid checksum modal step one title">1. Visit</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_DESCRIPTION" desc="Invalid checksum modal step one description">Visit etherscan and paste the wallet address you want to send tokens. Then enter</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_TITLE" desc="Invalid checksum modal step two title">2. Copy and enter ETH address</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_DESCRIPTION" desc="Invalid checksum modal step two description">Copy and enter the correct address. You can see that some characters have been converted correctly.</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_NEED_HELP" desc="Invalid checksum modal need more help">Need more help?</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
@@ -620,7 +635,7 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
   <message name="IDS_BRAVE_WALLET_SELECT_CURRENCY" desc="Currency selector title">Select currency</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CURRENCY" desc="Search placeholder for coin search input">Search currencies</message>
-  <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
+  <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help center link label">Help center</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_BRAVE_WALLET_PASSWORD" desc="Prompt for the user to enter their Brave Wallet password">Enter your Brave Wallet password</message>
@@ -815,4 +830,7 @@
   <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR" desc="Error explaining that an invalid or empty token contract address has been entered as a form value">Invalid or empty token contract address</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR" desc="Error message explaining that fee estimates are unavailable for the current pending transaction">Unable to fetch fee estimates</message>
 </grit-part>

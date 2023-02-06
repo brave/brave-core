@@ -253,21 +253,25 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     }
   }
 
-  std::vector<std::string> result;
+  std::vector<std::string> suggestions;
   for (const auto& [publisher_id, score] : scores) {
     // Either the source it was similar to was disabled, or
     // the source is already enabled.
     if (score == 0)
       continue;
-    result.push_back(publisher_id);
+    suggestions.push_back(publisher_id);
   }
 
-  std::sort(result.begin(), result.end(),
+  std::sort(suggestions.begin(), suggestions.end(),
             [scores](const std::string& a_id, const std::string& b_id) {
               return scores.at(a_id) > scores.at(b_id);
             });
 
-  return result;
+  constexpr uint64_t kMaxSuggestions = 15;
+  if (suggestions.size() > kMaxSuggestions)
+    suggestions.resize(kMaxSuggestions);
+
+  return suggestions;
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {

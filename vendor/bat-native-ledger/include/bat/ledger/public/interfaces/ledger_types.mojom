@@ -82,3 +82,9 @@ enum UserType {
   kUnconnected,
   kConnected
 };
+
+enum Environment {
+  STAGING = 0,
+  PRODUCTION = 1,
+  DEVELOPMENT = 2
+};

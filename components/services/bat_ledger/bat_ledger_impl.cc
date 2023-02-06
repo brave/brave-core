@@ -122,15 +122,6 @@ void BatLedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   ledger_->OnBackground(tab_id, current_time);
 }
 
-void BatLedgerImpl::OnPostData(const std::string& url,
-                               const std::string& first_party_url,
-                               const std::string& referrer,
-                               const std::string& post_data,
-                               ledger::mojom::VisitDataPtr visit_data) {
-  ledger_->OnPostData(
-      url, first_party_url, referrer, post_data, std::move(visit_data));
-}
-
 void BatLedgerImpl::OnXHRLoad(
     uint32_t tab_id,
     const std::string& url,
