@@ -201,5 +201,11 @@ BraveWalletIsNativeWalletEnabledFunction::Run() {
       OneArgument(base::Value(::brave_wallet::IsNativeWalletEnabled())));
 }
 
+ExtensionFunction::ResponseAction
+BraveWalletIsNftPinningEnabledFunction::Run() {
+  return RespondNow(
+      OneArgument(base::Value(::brave_wallet::IsNftPinningEnabled())));
+}
+
 }  // namespace api
 }  // namespace extensions
