@@ -1336,7 +1336,7 @@ public class Utils {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public static boolean isBiometricAvailable(Context context) {
         // Only Android versions 9 and above are supported.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
         }
 
