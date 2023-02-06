@@ -1120,6 +1120,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
 TEST_F(PlaylistServiceUnitTest, ResetAll) {
   // Pre-condition: data and preferences are changed
   auto* service = playlist_service();
+  service->thumbnail_downloader_->pause_download_for_testing_ = true;
+  service->media_file_download_manager_->pause_download_for_testing_ = true;
 
   std::string another_playlist_id;
   service->CreatePlaylist(
@@ -1133,9 +1135,9 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   mojom::PlaylistItem prototype_item;
   prototype_item.page_source = GURL("https://foo.com/");
   prototype_item.thumbnail_source = GURL("https://thumbnail.src/");
-  prototype_item.thumbnail_path = GURL("file://thumbnail/path/");
+  prototype_item.thumbnail_path = prototype_item.thumbnail_source;
   prototype_item.media_source = GURL("https://media.src/");
-  prototype_item.media_path = GURL("file://media/path/");
+  prototype_item.media_path = prototype_item.media_source;
   prototype_item.cached = false;
   prototype_item.author = "me";
   for (int i = 0; i < 5; i++) {
@@ -1150,7 +1152,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
-  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, /* cache = */ true,
                                   std::move(items));
   service->GetPlaylist(
       kDefaultPlaylistID,
@@ -1177,6 +1179,13 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 5u);
       }));
 
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return service->thumbnail_downloader_->has_download_requests();
+  }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return service->media_file_download_manager_->has_download_requests();
+  }));
+
   auto* prefs = this->prefs();
   prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist_id);
   prefs->SetBoolean(kPlaylistCacheByDefault, false);
@@ -1192,6 +1201,10 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
 
   // Call the method -----------------------------------------------------------
   service->ResetAll();
+
+  // Check if ResetAll() drops all on-going downloads
+  EXPECT_FALSE(service->thumbnail_downloader_->has_download_requests());
+  EXPECT_FALSE(service->media_file_download_manager_->has_download_requests());
 
   // Check if ResetAll() clears all data ---------------------------------------
   EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).empty());
