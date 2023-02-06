@@ -126,22 +126,28 @@ BlockchainRegistry::GetBuyTokens(
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kWyre) != providers.end()) {
     std::vector<mojom::BlockchainToken> wyre_buy_tokens = GetWyreBuyTokens();
-    buy_tokens.insert(buy_tokens.begin(), wyre_buy_tokens.begin(), wyre_buy_tokens.end());
+    buy_tokens.insert(buy_tokens.begin(), wyre_buy_tokens.begin(),
+                      wyre_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kRamp) != providers.end()) {
     std::vector<mojom::BlockchainToken> ramp_buy_tokens = GetRampBuyTokens();
-    buy_tokens.insert(buy_tokens.begin(), ramp_buy_tokens.begin(), ramp_buy_tokens.end());
+    buy_tokens.insert(buy_tokens.begin(), ramp_buy_tokens.begin(),
+                      ramp_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kSardine) != providers.end()) {
-    std::vector<mojom::BlockchainToken> sardine_buy_tokens = GetSardineBuyTokens();
-    buy_tokens.insert(buy_tokens.begin(), sardine_buy_tokens.begin(), sardine_buy_tokens.end());
+    std::vector<mojom::BlockchainToken> sardine_buy_tokens =
+        GetSardineBuyTokens();
+    buy_tokens.insert(buy_tokens.begin(), sardine_buy_tokens.begin(),
+                      sardine_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kTransak) != providers.end()) {
-    std::vector<mojom::BlockchainToken> transak_buy_tokens = GetTransakBuyTokens();
-    buy_tokens.insert(buy_tokens.begin(), transak_buy_tokens.begin(), transak_buy_tokens.end());
+    std::vector<mojom::BlockchainToken> transak_buy_tokens =
+        GetTransakBuyTokens();
+    buy_tokens.insert(buy_tokens.begin(), transak_buy_tokens.begin(),
+                      transak_buy_tokens.end());
   }
   if (buy_tokens.empty()) {
     return blockchain_buy_tokens;
