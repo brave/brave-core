@@ -145,6 +145,19 @@ GURL GetRequestInitiatingUrlFromRequest(
   return request.request_initiator->GetURL();
 }
 
+// Reloads the top-level tab after the user has made a decision on the
+// permission prompt. Only used for popups, and only if the user has granted the
+// permission.
+void ReloadTab(
+    content::WebContents* contents,
+    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+  DCHECK_EQ(1u, permission_statuses.size());
+  if (contents &&
+      permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
+    contents->GetController().Reload(content::ReloadType::NORMAL, true);
+  }
+}
+
 bool CanCreateWindow(content::RenderFrameHost* opener,
                      const GURL& opener_url,
                      const GURL& target_url) {
@@ -158,8 +171,8 @@ bool CanCreateWindow(content::RenderFrameHost* opener,
       return false;
     }
 
-    return GetPermissionAndMaybeCreatePrompt(contents, opener_url, nullptr,
-                                             base::DoNothing());
+    return GetPermissionAndMaybeCreatePrompt(
+        contents, opener_url, nullptr, base::BindOnce(&ReloadTab, contents));
   }
   // If not applying Google Sign-In permission logic, open window
   return true;

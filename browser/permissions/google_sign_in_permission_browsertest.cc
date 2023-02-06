@@ -47,6 +47,7 @@ const char kThirdPartyTestDomain[] = "b.com";
 
 // Used to identify the buttons on the test page.
 const char kAuthButtonHtmlId[] = "auth-button";
+const char kAuthButtonPopupHtmlId[] = "auth-button-popup";
 
 }  // namespace
 
@@ -401,6 +402,44 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   SetBrowser(incognito_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckBlockedFlow();
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       PopupAuthWindowAllowReloadsTab) {
+  SetGoogleSignInPref(true);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  // Wait for the page to reload after the popup window is closed.
+  content::TestNavigationObserver reload_observer(contents(), 2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  // Have website issue request for Google auth URL in a popup window.
+  ClickButtonWithId(kAuthButtonPopupHtmlId);
+  reload_observer.Wait();
+  EXPECT_TRUE(reload_observer.last_navigation_succeeded());
+  EXPECT_EQ(embedding_url_, reload_observer.last_navigation_url());
+  EXPECT_EQ(1, prompt_factory()->show_count());
+  // Check current status is ALLOW.
+  CheckAllowedFlow(1);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       PopupAuthWindowDenyDoesNotReloadTab) {
+  SetGoogleSignInPref(true);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::DENY_ALL);
+  // Wait for the page to reload after the popup window is closed.
+  content::TestNavigationObserver reload_observer(contents(), 1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  // Have website issue request for Google auth URL in a popup window.
+  ClickButtonWithId(kAuthButtonPopupHtmlId);
+  reload_observer.Wait();
+  EXPECT_TRUE(reload_observer.last_navigation_succeeded());
+  EXPECT_EQ(embedding_url_, reload_observer.last_navigation_url());
+  EXPECT_EQ(1, prompt_factory()->show_count());
+  // Check current status is DENY.
+  CheckBlockedFlow(1);
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
