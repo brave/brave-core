@@ -431,17 +431,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             tokenIdEdit.setEnabled(true);
             addButton.setEnabled(false);
 
-            boolean checked = false;
+            boolean isDuplicateToken = false;
             for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
-                // We can have multiple ERC721 tokens with the same name
-                if (!item.getBlockchainToken().isErc721
+                // We can have multiple ERC721 or Solana NFTs with the same name
+                if (!item.isNft()
                         && (item.getTitle().equals(tokenName)
                                 || item.getSubTitle().equals(tokenSymbol))) {
-                    checked = true;
+                    isDuplicateToken = true;
                     break;
                 }
             }
-            if (checked) {
+            if (isDuplicateToken) {
                 return;
             }
 
