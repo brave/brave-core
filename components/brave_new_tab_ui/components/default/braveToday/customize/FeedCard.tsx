@@ -69,8 +69,8 @@ export default function FeedCard (props: {
   const publisher = usePublisher(props.publisherId)
   const { followed, setFollowed } = usePublisherFollowed(props.publisherId)
 
-  const backgroundColor = publisher.backgroundColor || getCardColor(publisher.feedSource?.url || publisher.publisherId)
-  const { url: coverUrl, setElementRef } = useLazyUnpaddedImageUrl(publisher.coverUrl?.url, {
+  const backgroundColor = publisher?.backgroundColor || getCardColor(publisher?.feedSource?.url || publisher?.publisherId)
+  const { url: coverUrl, setElementRef } = useLazyUnpaddedImageUrl(publisher?.coverUrl?.url, {
     rootElement: document.getElementById('brave-news-configure'),
     rootMargin: '0px 0px 200px 0px',
     useCache: true
@@ -82,7 +82,7 @@ export default function FeedCard (props: {
       <StyledFollowButton following={followed} onClick={() => setFollowed(!followed)} />
     </Card>
     <Name>
-      {publisher.publisherName}
+      {publisher?.publisherName}
     </Name>
   </Flex>
 }

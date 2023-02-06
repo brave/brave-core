@@ -38,7 +38,6 @@ const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
 const CardsSettings = React.lazy(() => import('./settings/cards'))
-const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
@@ -55,7 +54,6 @@ export interface Props {
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
-  toggleShowToday: () => any
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
@@ -69,7 +67,6 @@ export interface Props {
   setColorBackground: (color: string, useRandomColor: boolean) => void
   onEnableRewards: () => void
   showBackgroundImage: boolean
-  showToday: boolean
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
@@ -354,19 +351,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                       setMostVisitedSettings={setMostVisitedSettings}
                     />
                   ) : null
-              }
-              {
-                activeTab === TabType.BraveToday
-                ? (
-                  <BraveTodaySettings
-                    publishers={this.props.todayPublishers}
-                    setPublisherPref={this.props.actions.today.setPublisherPref}
-                    onDisplay={this.props.onDisplayTodaySection}
-                    onClearPrefs={this.props.onClearTodayPrefs}
-                    showToday={this.props.showToday}
-                    toggleShowToday={this.props.toggleShowToday}
-                  />
-                ) : null
               }
               {activeTab === TabType.Clock && <ClockSettings />}
               {
