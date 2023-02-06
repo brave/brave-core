@@ -16,6 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class IOSHistoryNode;
 
+typedef NSInteger DomainMetricTypeIOS
+    NS_TYPED_ENUM NS_SWIFT_NAME(DomainMetricType);
+OBJC_EXPORT DomainMetricTypeIOS const DomainMetricTypeIOSNoMetric;
+OBJC_EXPORT DomainMetricTypeIOS const DomainMetricTypeIOSLast1DayMetric;
+OBJC_EXPORT DomainMetricTypeIOS const DomainMetricTypeIOSLast7DayMetric;
+OBJC_EXPORT DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric;
+
 NS_SWIFT_NAME(HistoryNode)
 OBJC_EXPORT
 @interface IOSHistoryNode : NSObject
@@ -66,6 +73,11 @@ OBJC_EXPORT
                maxCount:(NSUInteger)maxCount
              completion:
                  (void (^)(NSArray<IOSHistoryNode*>* historyResults))completion;
+
+/// Gets a count of unique domains visited as of now based on the `type` passed
+- (void)fetchDomainDiversityForType:(DomainMetricTypeIOS)type
+                         completion:(void (^)(NSInteger count))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
