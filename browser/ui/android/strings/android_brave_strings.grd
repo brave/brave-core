@@ -1277,6 +1277,9 @@ Are you sure you want to do this?
       <message name="IDS_USER_WALLET_GOTO_PROVIDER">
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
       </message>
+      <message name="IDS_LOGIN_PROVIDER">
+        Log in to your <ph name="WALLET_PROVIDER">%1$s</ph> account
+      </message>
       <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
         Not connected
       </message>
