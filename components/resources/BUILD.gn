@@ -105,10 +105,10 @@ repack("resources") {
   sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
 
   if (enable_brave_vpn && !is_android) {
-    deps += [
-      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+    deps += [ "//brave/components/brave_vpn/resources/panel:resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak",
     ]
-    sources += [ "$root_gen_dir/brave/components/brave_vpn/resources/panel/brave_vpn_panel_generated.pak" ]
   }
 
   if (ethereum_remote_client_enabled) {
