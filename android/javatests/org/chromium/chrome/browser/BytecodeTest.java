@@ -617,10 +617,10 @@ public class BytecodeTest {
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
+                OfflineDownloader.class, boolean.class, Callback.class, boolean.class,
+                ObservableSupplier.class, ObservableSupplier.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
