@@ -15,7 +15,7 @@ import BraveCore
 class MockJsonRpcService: BraveWalletJsonRpcService {
   
   private var chainId: String = BraveWallet.MainnetChainId
-  private var networks: [BraveWallet.NetworkInfo] = [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon]
+  private var networks: [BraveWallet.NetworkInfo] = [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCelo]
   private var networkURL: URL?
   private var observers: NSHashTable<BraveWalletJsonRpcServiceObserver> = .weakObjects()
   
@@ -220,6 +220,19 @@ extension BraveWallet.NetworkInfo {
     decimals: 18,
     coin: .eth,
     isEip1559: true
+  )
+  static let mockCelo: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.CeloMainnetChainId,
+    chainName: "Celo Mainnet",
+    blockExplorerUrls: [""],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
+    symbol: "CELO",
+    symbolName: "CELO",
+    decimals: 18,
+    coin: .eth,
+    isEip1559: false
   )
   static let mockSolana: BraveWallet.NetworkInfo = .init(
     chainId: BraveWallet.SolanaMainnet,

@@ -407,7 +407,8 @@ struct SwapCryptoView: View {
           WalletLoadingButton(
             isLoading: swapTokensStore.isMakingTx,
             action: {
-              swapTokensStore.prepareSwap { success in
+              Task { @MainActor in
+                let success = await swapTokensStore.createSwapTransaction()
                 if success {
                   appRatingRequest?()
                 }
