@@ -3494,5 +3494,54 @@ extension Strings {
       value: "Web3 Domains",
       comment: "The header for the options to resolve Solana Name service domain names."
     )
+    public static let ipfsSettingsHeader = NSLocalizedString(
+      "wallet.ipfsSettingsHeader",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "IPFS",
+      comment: "The header of the section under Web3 settings for IPFS NFT gateway setting."
+    )
+    public static let nftGatewayTitle = NSLocalizedString(
+      "wallet.nftGatewayTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Customize NFT Gateway",
+      comment: "The navigation title of the screen for users to customize NFT gateway."
+    )
+    public static let ipfsSettingsFooter = NSLocalizedString(
+      "wallet.ipfsSettingsFooter",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Gateway is used to resolve NFT content in the wallet",
+      comment: "The footer of the section for IPFS NFT gateway setting."
+    )
+    public static let nftGatewayLongDescription = NSLocalizedString(
+      "wallet.nftGatewayLongDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Valid IPFS gateway should be provided. Provided gateway will be checked for the ability to load IPFS resources.",
+      comment: "Description of the NFT Gateway setting"
+    )
+    public static let setGatewayButtonTitle = NSLocalizedString(
+      "wallet.setGatewayButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Set",
+      comment: "Title of the set IPFS gateway button"
+    )
+    public static let wrongGatewayAlertTitle = NSLocalizedString(
+      "wallet.wrongGatewayAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Failed to set gateway",
+      comment: "Title of the wrong IPFS gateway alert"
+    )
+    public static let wrongGatewayAlertDescription = NSLocalizedString(
+      "wallet.wrongGatewayAlertDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Invalid url was provided. Gateway should be able to resolve IPFS resources.",
+      comment: "Description of the wrong IPFS gateway alert"
+    )
   }
 }

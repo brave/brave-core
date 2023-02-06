@@ -67,78 +67,84 @@ struct DappsSettings: View {
       Section(header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
         .foregroundColor(Color(.secondaryBraveLabel))
       ) {
-        HStack {
-          Text(defaultWalletTitle)
-            .foregroundColor(Color(.braveLabel))
-          Spacer()
-          Menu {
-            Picker("", selection: $defaultWallet.value) {
-              ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                Text(walletType.name)
-                  .tag(walletType)
+        Group {
+          HStack {
+            Text(defaultWalletTitle)
+              .foregroundColor(Color(.braveLabel))
+            Spacer()
+            Menu {
+              Picker("", selection: $defaultWallet.value) {
+                ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
+                  Text(walletType.name)
+                    .tag(walletType)
+                }
               }
+              .pickerStyle(.inline)
+            } label: {
+              let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
+              Text(wallet.name)
+                .foregroundColor(Color(.braveBlurpleTint))
             }
-            .pickerStyle(.inline)
-          } label: {
-            let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
-            Text(wallet.name)
-              .foregroundColor(Color(.braveBlurpleTint))
           }
+          Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
+            .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
         }
-        Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
-          .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section(
         header: Text(Strings.Wallet.dappsSettingsConnectedSitesSectionTitle)
       ) {
-        if visibleSiteConnections.isEmpty {
-          HStack {
-            Spacer()
-            Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
-              .foregroundColor(Color(.secondaryBraveLabel))
-              .font(.footnote)
-              .multilineTextAlignment(.center)
-            Spacer()
-          }
-          .padding(.vertical)
-        } else {
-          ForEach(visibleSiteConnections) { siteConnection in
-            NavigationLink(
-              destination: SiteConnectionDetailView(
-                siteConnection: siteConnection,
-                siteConnectionStore: siteConnectionStore
-              )
-            ) {
-              SiteRow(
-                siteConnection: siteConnection
-              )
-              .osAvailabilityModifiers { content in
-                if #available(iOS 15.0, *) {
-                  content
-                    .swipeActions(edge: .trailing) {
-                      Button(role: .destructive, action: {
-                        withAnimation {
-                          siteConnectionStore.removeAllPermissions(from: [siteConnection])
+        Group {
+          if visibleSiteConnections.isEmpty {
+            HStack {
+              Spacer()
+              Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
+                .foregroundColor(Color(.secondaryBraveLabel))
+                .font(.footnote)
+                .multilineTextAlignment(.center)
+              Spacer()
+            }
+            .padding(.vertical)
+          } else {
+            ForEach(visibleSiteConnections) { siteConnection in
+              NavigationLink(
+                destination: SiteConnectionDetailView(
+                  siteConnection: siteConnection,
+                  siteConnectionStore: siteConnectionStore
+                )
+              ) {
+                SiteRow(
+                  siteConnection: siteConnection
+                )
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 15.0, *) {
+                    content
+                      .swipeActions(edge: .trailing) {
+                        Button(role: .destructive, action: {
+                          withAnimation {
+                            siteConnectionStore.removeAllPermissions(from: [siteConnection])
+                          }
+                        }) {
+                          Label(Strings.Wallet.delete, systemImage: "trash")
                         }
-                      }) {
-                        Label(Strings.Wallet.delete, systemImage: "trash")
                       }
-                    }
-                } else {
-                  content
+                  } else {
+                    content
+                  }
                 }
               }
             }
-          }
-          .onDelete { indexes in
-            let visibleSiteConnections = siteConnectionStore.siteConnections
-            let siteConnectionsToRemove = indexes.map { visibleSiteConnections[$0] }
-            withAnimation {
-              siteConnectionStore.removeAllPermissions(from: siteConnectionsToRemove)
+            .onDelete { indexes in
+              let visibleSiteConnections = siteConnectionStore.siteConnections
+              let siteConnectionsToRemove = indexes.map { visibleSiteConnections[$0] }
+              withAnimation {
+                siteConnectionStore.removeAllPermissions(from: siteConnectionsToRemove)
+              }
             }
           }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
     .listStyle(InsetGroupedListStyle())
