@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "base/containers/contains.h"

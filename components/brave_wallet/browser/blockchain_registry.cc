@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 
+#include <set>
 #include <utility>
 
 #include "base/ranges/algorithm.h"
