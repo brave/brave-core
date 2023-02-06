@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
 #include <vector>
 
 #include "base/guid.h"
@@ -67,13 +68,10 @@ void SKUTransaction::Create(mojom::SKUOrderPtr order,
   transaction->amount = order->total_amount;
   transaction->status = mojom::SKUTransactionStatus::CREATED;
 
-  auto save_callback = std::bind(&SKUTransaction::OnTransactionSaved,
-      this,
-      _1,
-      *transaction,
-      destination,
-      wallet_type,
-      callback);
+  DCHECK(!order->contribution_id.empty());
+  auto save_callback =
+      std::bind(&SKUTransaction::OnTransactionSaved, this, _1, *transaction,
+                destination, wallet_type, order->contribution_id, callback);
 
   ledger_->database()->SaveSKUTransaction(transaction->Clone(), save_callback);
 }
@@ -83,6 +81,7 @@ void SKUTransaction::OnTransactionSaved(
     const mojom::SKUTransaction& transaction,
     const std::string& destination,
     const std::string& wallet_type,
+    const std::string& contribution_id,
     ledger::LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
@@ -90,23 +89,18 @@ void SKUTransaction::OnTransactionSaved(
     return;
   }
 
-  auto transfer_callback = std::bind(&SKUTransaction::OnTransfer,
-      this,
-      _1,
-      _2,
-      transaction,
-      callback);
+  auto transfer_callback =
+      std::bind(&SKUTransaction::OnTransfer, this, _1, transaction,
+                contribution_id, destination, callback);
 
-  ledger_->contribution()->TransferFunds(
-      transaction,
-      destination,
-      wallet_type,
-      transfer_callback);
+  ledger_->contribution()->TransferFunds(transaction, destination, wallet_type,
+                                         contribution_id, transfer_callback);
 }
 
 void SKUTransaction::OnTransfer(mojom::Result result,
-                                const std::string& external_transaction_id,
                                 const mojom::SKUTransaction& transaction,
+                                const std::string& contribution_id,
+                                const std::string& destination,
                                 ledger::LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction for order failed " << transaction.order_id);
@@ -114,25 +108,34 @@ void SKUTransaction::OnTransfer(mojom::Result result,
     return;
   }
 
-  if (external_transaction_id.empty()) {
-    callback(mojom::Result::LEDGER_OK);
-    return;
+  ledger_->database()->GetExternalTransaction(
+      contribution_id, destination,
+      base::BindOnce(&SKUTransaction::OnGetExternalTransaction,
+                     base::Unretained(this), std::move(callback), transaction));
+}
+
+void SKUTransaction::OnGetExternalTransaction(
+    ledger::LegacyResultCallback callback,
+    mojom::SKUTransaction&& transaction,
+    base::expected<mojom::ExternalTransactionPtr,
+                   database::GetExternalTransactionError>
+        external_transaction) {
+  if (!external_transaction.has_value()) {
+    return callback(mojom::Result::LEDGER_OK);
   }
 
-  auto transaction_new = transaction;
-  transaction_new.external_transaction_id = external_transaction_id;
+  DCHECK(external_transaction.value());
+
+  transaction.external_transaction_id =
+      std::move(external_transaction.value()->transaction_id);
 
   auto save_callback = std::bind(&SKUTransaction::OnSaveSKUExternalTransaction,
-      this,
-      _1,
-      transaction_new,
-      callback);
+                                 this, _1, transaction, std::move(callback));
 
   // We save SKUTransactionStatus::COMPLETED status in this call
   ledger_->database()->SaveSKUExternalTransaction(
-      transaction.transaction_id,
-      external_transaction_id,
-      save_callback);
+      transaction.transaction_id, transaction.external_transaction_id,
+      std::move(save_callback));
 }
 
 void SKUTransaction::OnSaveSKUExternalTransaction(

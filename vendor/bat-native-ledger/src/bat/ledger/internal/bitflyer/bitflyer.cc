@@ -10,32 +10,23 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
-#include "bat/ledger/internal/bitflyer/bitflyer_transfer.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
+#include "bat/ledger/internal/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "bat/ledger/internal/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
 #include "bat/ledger/internal/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
-namespace {
-const char kFeeMessage[] =
-    "5% transaction fee collected by Brave Software International";
-}  // namespace
-
-namespace ledger {
-namespace bitflyer {
+namespace ledger::bitflyer {
 
 Bitflyer::Bitflyer(LedgerImpl* ledger)
-    : transfer_(std::make_unique<BitflyerTransfer>(ledger)),
-      connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
+    : connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
       get_wallet_(std::make_unique<GetBitFlyerWallet>(ledger)),
+      transfer_(std::make_unique<BitFlyerTransfer>(ledger)),
       bitflyer_server_(std::make_unique<endpoint::BitflyerServer>(ledger)),
       ledger_(ledger) {}
 
@@ -58,31 +49,22 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
                                  ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
-                          amount, "", callback);
-    return;
+    return callback(mojom::Result::LEDGER_ERROR);
   }
 
-  const double fee = (amount * 1.05) - amount;
-  const double reconcile_amount = amount - fee;
+  const double fee = amount * 0.05;
 
-  auto contribution_callback =
-      std::bind(&Bitflyer::ContributionCompleted, this, _1, _2, contribution_id,
-                fee, info->publisher_key, callback);
-
-  Transaction transaction;
-  transaction.address = info->address;
-  transaction.amount = reconcile_amount;
-
-  transfer_->Start(transaction, contribution_callback);
+  transfer_->Run(contribution_id, info->address, amount - fee,
+                 base::BindOnce(&Bitflyer::ContributionCompleted,
+                                base::Unretained(this), std::move(callback),
+                                contribution_id, fee, info->publisher_key));
 }
 
-void Bitflyer::ContributionCompleted(mojom::Result result,
-                                     const std::string& transaction_id,
+void Bitflyer::ContributionCompleted(ledger::LegacyResultCallback callback,
                                      const std::string& contribution_id,
                                      double fee,
                                      const std::string& publisher_key,
-                                     ledger::LegacyResultCallback callback) {
+                                     mojom::Result result) {
   if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -136,13 +118,14 @@ void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
-void Bitflyer::TransferFunds(const double amount,
+void Bitflyer::TransferFunds(double amount,
                              const std::string& address,
-                             client::TransactionCallback callback) {
-  Transaction transaction;
-  transaction.address = address;
-  transaction.amount = amount;
-  transfer_->Start(transaction, callback);
+                             const std::string& contribution_id,
+                             client::LegacyResultCallback callback) {
+  transfer_->Run(contribution_id, address, amount,
+                 base::BindOnce([](client::LegacyResultCallback callback,
+                                   mojom::Result result) { callback(result); },
+                                std::move(callback)));
 }
 
 void Bitflyer::ConnectWallet(
@@ -185,10 +168,9 @@ void Bitflyer::StartTransferFeeTimer(const std::string& fee_id,
                      base::Unretained(this), fee_id, attempts));
 }
 
-void Bitflyer::OnTransferFeeCompleted(const mojom::Result result,
-                                      const std::string& transaction_id,
-                                      const std::string& contribution_id,
-                                      const int attempts) {
+void Bitflyer::OnTransferFeeCompleted(const std::string& contribution_id,
+                                      int attempts,
+                                      mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
@@ -203,17 +185,12 @@ void Bitflyer::OnTransferFeeCompleted(const mojom::Result result,
 }
 
 void Bitflyer::TransferFee(const std::string& contribution_id,
-                           const double amount,
+                           double amount,
                            const int attempts) {
-  auto transfer_callback = std::bind(&Bitflyer::OnTransferFeeCompleted, this,
-                                     _1, _2, contribution_id, attempts);
-
-  Transaction transaction;
-  transaction.address = GetFeeAddress();
-  transaction.amount = amount;
-  transaction.message = kFeeMessage;
-
-  transfer_->Start(transaction, transfer_callback);
+  transfer_->Run(
+      contribution_id, GetFeeAddress(), amount,
+      base::BindOnce(&Bitflyer::OnTransferFeeCompleted, base::Unretained(this),
+                     contribution_id, attempts));
 }
 
 void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
@@ -265,5 +242,4 @@ void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace bitflyer
-}  // namespace ledger
+}  // namespace ledger::bitflyer

@@ -79,7 +79,6 @@ class RewardsBrowserTest;
 
 using GetDebugCallback = base::OnceCallback<void(bool)>;
 using GetReconcileIntervalCallback = base::OnceCallback<void(int32_t)>;
-using GetGeminiRetriesCallback = base::OnceCallback<void(int32_t)>;
 using GetRetryIntervalCallback = base::OnceCallback<void(int32_t)>;
 using GetTestResponseCallback = base::RepeatingCallback<void(
     const std::string& url,
@@ -207,8 +206,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetEnvironment(ledger::mojom::Environment environment);
   void SetDebug(bool debug);
   void GetDebug(GetDebugCallback callback);
-  void SetGeminiRetries(const int32_t retries);
-  void GetGeminiRetries(GetGeminiRetriesCallback callback);
   void SetReconcileInterval(const int32_t interval);
   void GetReconcileInterval(GetReconcileIntervalCallback callback);
   void SetRetryInterval(int32_t interval);

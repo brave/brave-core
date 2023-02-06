@@ -16,10 +16,7 @@ UpholdServer::UpholdServer(LedgerImpl* ledger)
       get_card_(std::make_unique<uphold::GetCard>(ledger)),
       get_me_(std::make_unique<uphold::GetMe>(ledger)),
       post_cards_(std::make_unique<uphold::PostCards>(ledger)),
-      patch_card_(std::make_unique<uphold::PatchCard>(ledger)),
-      post_transaction_(std::make_unique<uphold::PostTransaction>(ledger)),
-      post_transaction_commit_(
-          std::make_unique<uphold::PostTransactionCommit>(ledger)) {}
+      patch_card_(std::make_unique<uphold::PatchCard>(ledger)) {}
 
 UpholdServer::~UpholdServer() = default;
 
@@ -45,14 +42,6 @@ uphold::PostCards* UpholdServer::post_cards() const {
 
 uphold::PatchCard* UpholdServer::patch_card() const {
   return patch_card_.get();
-}
-
-uphold::PostTransaction* UpholdServer::post_transaction() const {
-  return post_transaction_.get();
-}
-
-uphold::PostTransactionCommit* UpholdServer::post_transaction_commit() const {
-  return post_transaction_commit_.get();
 }
 
 }  // namespace endpoint
