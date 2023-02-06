@@ -63,7 +63,22 @@ public class CryptoStore: ObservableObject {
       }
     }
   }
-  @Published private(set) var pendingRequest: PendingRequest?
+  @Published private(set) var pendingRequest: PendingRequest? {
+    didSet {
+      if pendingRequest == nil {
+        isPresentingPendingRequest = false
+        return
+      }
+      // Verify a new request is available
+      guard pendingRequest != oldValue, pendingRequest != nil else { return }
+      // If we set these before the send or swap screens disappear for some reason it may crash
+      // within the SwiftUI runtime or fail to dismiss. Delaying it to give time for the
+      // animation to complete fixes it.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        self.isPresentingPendingRequest = true
+      }
+    }
+  }
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -285,10 +300,6 @@ public class CryptoStore: ObservableObject {
       let pendingTransactions = await fetchPendingTransactions()
       var newPendingRequest: PendingRequest?
       if !pendingTransactions.isEmpty {
-        if self.buySendSwapDestination != nil {
-          // Dismiss any buy send swap open to show the unapproved transactions
-          self.buySendSwapDestination = nil
-        }
         newPendingRequest = .transactions(pendingTransactions)
       } else { // no pending transactions, check for webpage requests
         newPendingRequest = await fetchPendingWebpageRequest()
@@ -296,15 +307,12 @@ public class CryptoStore: ObservableObject {
       // Verify this new `newPendingRequest` isn't the same as the current
       // `pendingRequest` because re-assigning the same request could cause
       // present of a previously dismissed / ignored pending request (#6750).
-      if newPendingRequest?.id != self.pendingRequest?.id {
-        self.pendingRequest = newPendingRequest
+      guard newPendingRequest?.id != self.pendingRequest?.id else { return }
+      if self.buySendSwapDestination != nil && newPendingRequest != nil {
+        // Dismiss any buy send swap open to show the newPendingRequest
+        self.buySendSwapDestination = nil
       }
-      // If we set these before the send or swap screens disappear for some reason it may crash
-      // within the SwiftUI runtime or fail to dismiss. Delaying it to give time for the
-      // animation to complete fixes it.
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        self.isPresentingPendingRequest = self.pendingRequest != nil
-      }
+      self.pendingRequest = newPendingRequest
     }
   }
 
@@ -445,7 +453,12 @@ extension CryptoStore: BraveWalletKeyringServiceObserver {
 
 extension CryptoStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
-    prepare()
+    // if user had just changed networks, there is a potential race condition
+    // blocking presenting pendingRequest here, as Network Selection might still be on screen
+    // by delaying here instead of at present we only delay after chain changes (#6750)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+      self?.prepare()
+    }
   }
   
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {

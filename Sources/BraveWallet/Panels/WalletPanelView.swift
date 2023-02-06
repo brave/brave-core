@@ -483,11 +483,7 @@ struct WalletPanelView: View {
     )
     .onChange(of: cryptoStore.pendingRequest) { newValue in
       if newValue != nil {
-        // if user had just changed networks, there is a potential race condition
-        // blocking present here, as Network Selection might still be on screen
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          presentWalletWithContext(.pendingRequests)
-        }
+        presentWalletWithContext(.pendingRequests)
       }
     }
     .onChange(of: tabDappStore.solConnectedAddresses) { newValue in
