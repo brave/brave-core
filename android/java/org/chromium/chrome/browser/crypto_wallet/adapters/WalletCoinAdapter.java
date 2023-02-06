@@ -241,7 +241,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
-        this.walletListItemModelList = walletListItemModelList;
+        this.walletListItemModelList = removeDuplicates(walletListItemModelList);
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
                 || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
                 || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
@@ -303,6 +303,43 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 break;
             }
         }
+    }
+
+    // Removing duplicates will allow the recycler viewer to render a clean list without showing the
+    // same assets multiple times. Currently, the list of available assets is fetched from Core
+    // API the returns a merged list containing the available assets <b>per ramp provider</b>.
+    // It's not unusual to have the same asset multiple times with a contract address all upper case
+    // from a ramp provider and all lower case from another one. Thus it's important to compare the
+    // contract addresses ignoring case.
+    private List<WalletListItemModel> removeDuplicates(
+            List<WalletListItemModel> walletListItemModelList) {
+        List<WalletListItemModel> result = new ArrayList<>();
+        for (WalletListItemModel item : walletListItemModelList) {
+            if (item.getBlockchainToken() == null) {
+                // If blockchain token is null the item can be safely add without any risk
+                // of duplication.
+                result.add(item);
+                continue;
+            }
+            String contractAddress = item.getBlockchainToken().contractAddress;
+            boolean duplicate = false;
+            for (WalletListItemModel itemResult : result) {
+                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
+                // capitalization.
+                if (contractAddress.equalsIgnoreCase(
+                            itemResult.getBlockchainToken().contractAddress)) {
+                    // Duplicated item detected!
+                    duplicate = true;
+                    break;
+                }
+            }
+            // Do not add duplicated item.
+            if (!duplicate) {
+                result.add(item);
+            }
+        }
+
+        return result;
     }
 
     private void updateSelectedNetwork(int selectedAccountPosition) {
