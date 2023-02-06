@@ -186,6 +186,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"summary", IDS_REWARDS_PANEL_SUMMARY},
     {"tip", IDS_REWARDS_PANEL_TIP},
     {"unverifiedCreator", IDS_REWARDS_PANEL_UNVERIFIED_CREATOR},
+    {"unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE},
     {"verifiedCreator", IDS_REWARDS_PANEL_VERIFIED_CREATOR},
     {"walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK},
     {"walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE},

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -212,11 +213,16 @@ function getUnverifiedNotice (
 
   const text =
     !isPublisherVerified(publisherInfo.status)
-    ? getString('siteBannerNoticeNotRegistered')
-    : formatMessage(getString('siteBannerNoticeText'), [
-        getExternalWalletProviderName(walletInfo!.type),
-        publisherStatusToWalletProviderName(publisherInfo.status)
-      ])
+      ? getString('siteBannerNoticeNotRegistered')
+      : <>
+        {
+          formatMessage(getString('pendingTipTitleRegistered'), [
+            getExternalWalletProviderName(walletInfo!.type),
+            publisherStatusToWalletProviderName(publisherInfo.status)
+          ])
+        }
+        {getString('pendingTipText')}
+      </>
 
   return (
     <style.unverifiedNotice>
