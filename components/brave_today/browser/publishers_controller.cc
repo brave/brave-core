@@ -21,6 +21,7 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
@@ -48,26 +49,22 @@ mojom::Publisher* FindMatchPreferringLocale(
   }
 
   mojom::Publisher* match = nullptr;
-  for (const auto& it : publishers) {
-    auto* publisher = it.second.get();
+  for (const auto& [_, publisher] : publishers) {
     if (!matcher.Run(*publisher)) {
       continue;
     }
 
-    auto locale_it =
-        std::find_if(publisher->locales.begin(), publisher->locales.end(),
-                     [preferred_locale](const auto& locale_info) {
-                       return locale_info->locale == preferred_locale;
-                     });
+    auto locale_it = base::ranges::find(publisher->locales, preferred_locale,
+                                        &mojom::LocaleInfo::locale);
     // If the match is in our preferred locale, return it.
     if (locale_it != publisher->locales.end()) {
-      return publisher;
+      return publisher.get();
     }
 
     // Otherwise, if we don't have a match yet, make this our match (so we
     // prefer whatever we found first).
     if (!match) {
-      match = it.second.get();
+      match = publisher.get();
     }
   }
 
