@@ -40,7 +40,7 @@
     Enable support of Solana Name Service (SNS) in Brave?
   </message>
   <message name="IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH" desc="Main paragraph of SNS opt-in interstitial page.">
-    Brave will be using Coinbase Cloud to resolve .sol domain names. Brave hides your IP address. If you enable this, Coinbase will see that someone is trying to visit these .sol domains but nothing else. See Coinbase Cloud's <ph name="BEGIN_COINBASE_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_COINBASE_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_COINBASE_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_COINBASE_PRIVACY_LINK">&lt;/a&gt;</ph>.
+    Brave will be using Syndica to resolve .sol domain names. Brave hides your IP address. If you enable this, Syndica will see that someone is trying to visit these .sol domains but nothing else. See Syndica's <ph name="BEGIN_SYNDICA_TOU_LINK">&lt;a target="_blank" href="$1"&gt;</ph>terms of use<ph name="END_SYNDICA_TOU_LINK">&lt;/a&gt;</ph> and <ph name="BEGIN_SYNDICA_PRIVACY_LINK">&lt;a target="_blank" href="$2"&gt;</ph>privacy policy<ph name="END_SYNDICA_PRIVACY_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button.">
     Proceed using Infura server
@@ -48,8 +48,8 @@
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_INFURA_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for Infura.">
     Proceed using Infura server
   </message>
-  <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_COINBASE_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for Coinbase.">
-    Proceed using Coinbase Cloud server
+  <message name="IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SYNDICA_BUTTON" desc="The text for the decentralized DNS opt-in interstitial primary button for Syndica.">
+    Proceed using Syndica server
   </message>
   <message name="IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON" desc="The text for the don't proceed button in decentralized DNS opt-in interstitial page.">
     Disable
