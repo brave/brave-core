@@ -14,6 +14,7 @@ extern const char kDefaultSearchProviderByExtension[];
 extern const char kAddOpenSearchEngines[];
 extern const char kBraveDefaultSearchVersion[];
 extern const char kSyncedDefaultPrivateSearchProviderGUID[];
+extern const char kSyncedDefaultPrivateSearchProviderData[];
 
 }  // namespace prefs
 

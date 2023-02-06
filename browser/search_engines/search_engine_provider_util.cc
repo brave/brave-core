@@ -17,10 +17,21 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
 namespace brave {
+
+void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs) {
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      prefs, TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  DCHECK(data);
+  prefs->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                   data->sync_guid);
+  prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+                 TemplateURLDataToDictionary(*data));
+}
 
 bool IsRegionForQwant(Profile* profile) {
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
@@ -38,24 +49,22 @@ void RegisterSearchEngineProviderPrefsForMigration(
 }
 
 void MigrateSearchEngineProviderPrefs(Profile* profile) {
-  auto* preference = profile->GetPrefs()->FindPreference(
-      prefs::kSyncedDefaultPrivateSearchProviderGUID);
-  if (!preference->IsDefaultValue())
-    return;
-
+  auto* prefs = profile->GetPrefs();
   const bool need_migrate =
-      profile->GetPrefs()->GetBoolean(
-          kShowAlternativePrivateSearchEngineProviderToggle) &&
-      profile->GetPrefs()->GetBoolean(
-          kUseAlternativePrivateSearchEngineProvider);
+      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle) &&
+      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider);
 
-  if (!need_migrate)
+  if (!need_migrate) {
+    // Clear and early return when doesn't need migration.
+    prefs->ClearPref(kShowAlternativePrivateSearchEngineProviderToggle);
+    prefs->ClearPref(kUseAlternativePrivateSearchEngineProvider);
     return;
+  }
 
   // If the user has been using DDG in private profile, set DDG as a initial
   // provider.
-  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
-      alt_search_providers = {
+  static constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+      alt_search_providers[] = {
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
           TemplateURLPrepopulateData::
@@ -63,28 +72,57 @@ void MigrateSearchEngineProviderPrefs(Profile* profile) {
 
   std::unique_ptr<TemplateURLData> data;
   for (const auto& id : alt_search_providers) {
-    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        profile->GetPrefs(), id);
+    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, id);
     if (data)
       break;
   }
 
   // There should ALWAYS be one entry
   DCHECK(data);
-  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                                 data->sync_guid);
+  prefs->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                   data->sync_guid);
+  prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+                 TemplateURLDataToDictionary(*data.get()));
 
   // From now on, user will not see DDG toggle button and can control search
   // provider for private window via settings.
-  profile->GetPrefs()->ClearPref(
-      kShowAlternativePrivateSearchEngineProviderToggle);
-  profile->GetPrefs()->ClearPref(kUseAlternativePrivateSearchEngineProvider);
+  prefs->ClearPref(kShowAlternativePrivateSearchEngineProviderToggle);
+  prefs->ClearPref(kUseAlternativePrivateSearchEngineProvider);
 }
 
-void SetDefaultPrivateSearchProvider(Profile* profile) {
-  // If current provider's guid is not valid, set Brave as a default provider.
-  auto* preference = profile->GetPrefs()->FindPreference(
-      prefs::kSyncedDefaultPrivateSearchProviderGUID);
+void UpdateDefaultPrivateSearchProviderData(Profile* profile) {
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  DCHECK(service->loaded());
+
+  auto* prefs = profile->GetPrefs();
+  const std::string private_provider_guid =
+      prefs->GetString(prefs::kSyncedDefaultPrivateSearchProviderGUID);
+
+  if (private_provider_guid.empty()) {
+    // This can happen while resetting whole settings.
+    // In this case, set brave as a default search provider.
+    SetBraveAsDefaultPrivateSearchProvider(prefs);
+    return;
+  }
+
+  // Sync kSyncedDefaultPrivateSearchProviderData with newly updated provider's
+  // one.
+  if (auto* url = service->GetTemplateURLForGUID(private_provider_guid)) {
+    prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+                   TemplateURLDataToDictionary(url->data()));
+    return;
+  }
+
+  // When user delete current private search provder from provider list in
+  // settings page, |private_provider_guid| will not be existed in the list. Use
+  // Brave.
+  SetBraveAsDefaultPrivateSearchProvider(prefs);
+}
+
+void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile) {
+  auto* prefs = profile->GetPrefs();
+  auto* preference =
+      prefs->FindPreference(prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
   if (!preference)
     return;
@@ -92,25 +130,48 @@ void SetDefaultPrivateSearchProvider(Profile* profile) {
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   DCHECK(service->loaded());
 
-  const std::string private_provider_guid = profile->GetPrefs()->GetString(
-      prefs::kSyncedDefaultPrivateSearchProviderGUID);
+  const std::string private_provider_guid =
+      prefs->GetString(prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
-  if (service->GetTemplateURLForGUID(private_provider_guid))
+  // Set Brave as a private window's initial search provider.
+  if (private_provider_guid.empty()) {
+    SetBraveAsDefaultPrivateSearchProvider(prefs);
     return;
+  }
 
-  // If current provider's guid is not valid, It means private search is not set
-  // yet or current provider was deleted from the default list.
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      profile->GetPrefs(),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
-  DCHECK(data);
-  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                                 data->sync_guid);
+  preference =
+      prefs->FindPreference(prefs::kSyncedDefaultPrivateSearchProviderData);
+  // Cache if url data is not yet existed.
+  if (preference->IsDefaultValue()) {
+    if (auto* url = service->GetTemplateURLForGUID(private_provider_guid)) {
+      prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+                     TemplateURLDataToDictionary(url->data()));
+    } else {
+      // This could happen with update default provider list when brave is not
+      // updated for longtime. So it doesn't have any chance to cache url data.
+      // Set Brave as default private search provider.
+      SetBraveAsDefaultPrivateSearchProvider(prefs);
+    }
+    return;
+  }
+
+  // In this case previous default private search provider doesn't exist in
+  // current default provider list. This could happen when default provider list
+  // is updated. Add previous provider to service.
+  if (auto* url = service->GetTemplateURLForGUID(private_provider_guid); !url) {
+    auto private_url_data =
+        TemplateURLDataFromDictionary(preference->GetValue()->GetDict());
+    DCHECK_EQ(private_provider_guid, private_url_data->sync_guid);
+    service->Add(std::make_unique<TemplateURL>(*private_url_data));
+  }
 }
 
-void ClearDefaultPrivateSearchProvider(Profile* profile) {
+void ResetDefaultPrivateSearchProvider(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
   prefs->ClearPref(prefs::kSyncedDefaultPrivateSearchProviderGUID);
+  prefs->ClearPref(prefs::kSyncedDefaultPrivateSearchProviderData);
+
+  PrepareDefaultPrivateSearchProviderDataIfNeeded(profile);
 }
 
 }  // namespace brave
