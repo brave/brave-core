@@ -90,6 +90,7 @@ public class BuyTokenStore: ObservableObject {
     self.prefilledToken = nil
   }
 
+  @MainActor
   func fetchBuyUrl(
     provider: BraveWallet.OnRampProvider,
     account: BraveWallet.AccountInfo
@@ -167,17 +168,6 @@ public class BuyTokenStore: ObservableObject {
     selectedNetwork = await rpcService.network(coin)
     await validatePrefilledToken(on: selectedNetwork) // selectedNetwork may change
     await fetchBuyTokens(network: selectedNetwork)
-  
-    // exclude all buy options that its available buy tokens list does not include the
-    // `selectedBuyToken`
-    orderedSupportedBuyOptions = OrderedSet(orderedSupportedBuyOptions
-      .filter { [weak self] provider in
-      guard let self = self,
-            let tokens = self.buyTokens[provider],
-            let selectedBuyToken = self.selectedBuyToken
-      else { return false }
-      return tokens.includes(selectedBuyToken)
-    })
     
     // check if current selected network supports buy
     if WalletConstants.supportedTestNetworkChainIds.contains(selectedNetwork.chainId) {
