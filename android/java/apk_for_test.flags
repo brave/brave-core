@@ -535,7 +535,6 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListManager {
     <init>(...);
-    *** removeSuggestionsForGroup(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager {
