@@ -1208,11 +1208,11 @@ constexpr char kSolanaPrefKey[] = "solana";
 constexpr char kEthereumBlockTagEarliest[] = "earliest";
 constexpr char kEthereumBlockTagLatest[] = "latest";
 
-const std::set<mojom::BlockchainToken>& GetWyreBuyTokens();
-const std::set<mojom::BlockchainToken>& GetRampBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
-const std::set<mojom::BlockchainToken>& GetSardineBuyTokens();
-const std::set<mojom::BlockchainToken>& GetTransakBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
