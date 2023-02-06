@@ -6,7 +6,6 @@
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
-import { saveIsBraveTodayOptedIn } from '../api/preferences'
 import getBraveNewsController, * as BraveNews from '../api/brave_news'
 import store from '../store'
 import { addFeedListener } from '../api/brave_news/feedListener'
@@ -51,10 +50,6 @@ handler.on<Actions.RefreshPayload>(
     }
   }
 )
-
-handler.on(Actions.optIn.getType(), async () => {
-  saveIsBraveTodayOptedIn(true)
-})
 
 handler.on(Actions.ensureSettingsData.getType(), async (store) => {
   const state = store.getState() as ApplicationState

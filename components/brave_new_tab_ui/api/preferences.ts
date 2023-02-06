@@ -26,10 +26,6 @@ export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
 }
 
-export function saveShowToday (value: boolean): void {
-  sendSavePref('showToday', value)
-}
-
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
@@ -44,10 +40,6 @@ export function saveBrandedWallpaperOptIn (value: boolean): void {
 
 export function saveIsBrandedWallpaperNotificationDismissed (value: boolean): void {
   sendSavePref('isBrandedWallpaperNotificationDismissed', value)
-}
-
-export function saveIsBraveTodayOptedIn (value: boolean): void {
-  sendSavePref('isBraveTodayOptedIn', value)
 }
 
 export function saveSetAllStackWidgets (visible: boolean): void {
