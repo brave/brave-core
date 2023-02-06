@@ -250,6 +250,8 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.rampNetworkProviderName
     case .sardine:
       return Strings.Wallet.sardineProviderName
+    case .transak:
+      return Strings.Wallet.transakProviderName
     default:
       return ""
     }
@@ -261,6 +263,8 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.rampNetworkProviderShortName
     case .sardine:
       return Strings.Wallet.sardineProviderShortName
+    case .transak:
+      return Strings.Wallet.transakProviderShortName
     default:
       return ""
     }
@@ -272,6 +276,8 @@ extension BraveWallet.OnRampProvider {
       return Strings.Wallet.rampNetworkProviderDescription
     case .sardine:
       return Strings.Wallet.sardineProviderDescription
+    case .transak:
+      return Strings.Wallet.transakProviderDescription
     default:
       return ""
     }
@@ -283,6 +289,8 @@ extension BraveWallet.OnRampProvider {
       return "ramp-network-icon"
     case .sardine:
       return "sardine-icon"
+    case .transak:
+      return "transak-icon"
     default:
       return ""
     }

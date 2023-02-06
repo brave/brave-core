@@ -2997,6 +2997,27 @@ extension Strings {
       value: "Instant buy with your bank account. Lower fees.",
       comment: "The description of one of the 'Sardine' provider."
     )
+    public static let transakProviderName = NSLocalizedString(
+      "wallet.transakProviderName",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transak",
+      comment: "The name of one of the on ramp provider."
+    )
+    public static let transakProviderShortName = NSLocalizedString(
+      "wallet.transakProviderShortName",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transak",
+      comment: "The short name of one of the on ramp provider."
+    )
+    public static let transakProviderDescription = NSLocalizedString(
+      "wallet.transakProviderDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Instant buy with your bank account. Lower fees.",
+      comment: "The description of one of the 'Transak' provider."
+    )
     public static let solanaDappTransactionTitle = NSLocalizedString(
       "wallet.solanaDappTransactionTitle",
       tableName: "BraveWallet",
