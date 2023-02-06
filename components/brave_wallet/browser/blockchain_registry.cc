@@ -121,26 +121,26 @@ BlockchainRegistry::GetBuyTokens(
     const std::vector<mojom::OnRampProvider>& providers,
     const std::string& chain_id) {
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens;
-  std::vector<mojom::BlockchainToken> buy_tokens;
+  std::set<mojom::BlockchainToken> buy_tokens;
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kWyre) != providers.end()) {
-    buy_tokens.insert(std::end(buy_tokens), std::begin(GetWyreBuyTokens()),
-                      std::end(GetWyreBuyTokens()));
+    std::set<mojom::BlockchainToken> wyre_buy_tokens = GetWyreBuyTokens();
+    buy_tokens.insert(wyre_buy_tokens.begin(), wyre_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kRamp) != providers.end()) {
-    buy_tokens.insert(std::end(buy_tokens), std::begin(GetRampBuyTokens()),
-                      std::end(GetRampBuyTokens()));
+    std::set<mojom::BlockchainToken> ramp_buy_tokens = GetRampBuyTokens();
+    buy_tokens.insert(ramp_buy_tokens.begin(), ramp_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kSardine) != providers.end()) {
-    buy_tokens.insert(std::end(buy_tokens), std::begin(GetSardineBuyTokens()),
-                      std::end(GetSardineBuyTokens()));
+    std::set<mojom::BlockchainToken> sardine_buy_tokens = GetSardineBuyTokens();              
+    buy_tokens.insert(sardine_buy_tokens.begin(), sardine_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kTransak) != providers.end()) {
-    buy_tokens.insert(std::end(buy_tokens), std::begin(GetTransakBuyTokens()),
-                      std::end(GetTransakBuyTokens()));
+    std::set<mojom::BlockchainToken> transak_buy_tokens = GetTransakBuyTokens();               
+    buy_tokens.insert(transak_buy_tokens.begin(), transak_buy_tokens.end());
   }
   if (buy_tokens.empty()) {
     return blockchain_buy_tokens;

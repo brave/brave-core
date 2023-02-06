@@ -12,8 +12,8 @@
 
 namespace brave_wallet {
 
-const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
-  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+const std::set<mojom::BlockchainToken>& GetWyreBuyTokens() {
+  static base::NoDestructor<std::set<mojom::BlockchainToken>> tokens(
       {{"", "Avalanche", "", false, false, false, "AVAX", 18, true, "", "",
         mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
        {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
@@ -95,8 +95,8 @@ const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
   return *tokens;
 }
 
-const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
-  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+const std::set<mojom::BlockchainToken>& GetRampBuyTokens() {
+  static base::NoDestructor<std::set<mojom::BlockchainToken>> tokens(
       {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"", "BNB", "", true, false, false, "BNB", 18, true, "", "",
@@ -164,8 +164,8 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
   return *tokens;
 }
 
-const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
-  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+const std::set<mojom::BlockchainToken>& GetSardineBuyTokens() {
+  static base::NoDestructor<std::set<mojom::BlockchainToken>> tokens(
       {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9", "AAVE", "aave.png", true,
@@ -251,8 +251,8 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
   return *tokens;
 }
 
-const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
-  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+const std::set<mojom::BlockchainToken>& GetTransakBuyTokens() {
+  static base::NoDestructor<std::set<mojom::BlockchainToken>> tokens(
       {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
