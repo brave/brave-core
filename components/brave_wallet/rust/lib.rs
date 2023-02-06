@@ -1,3 +1,8 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 use core::fmt;
 use curve25519_dalek;
 use ed25519_dalek_bip32::derivation_path::{
@@ -200,7 +205,9 @@ impl Ed25519DalekExtendedSecretKey {
                 .and_then(|d_path| Ok(self.0.derive(&d_path)?)),
         ))
     }
-    fn derive_hardened_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+    fn derive_hardened_child(
+        &self, index: u32
+    ) -> Box<Ed25519DalekExtendedSecretKeyResult> {
         Box::new(Ed25519DalekExtendedSecretKeyResult::from(
             ChildIndex::hardened(index)
                 .map_err(|err| Error::from(err))

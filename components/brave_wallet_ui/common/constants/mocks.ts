@@ -155,7 +155,7 @@ export const mockAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 export const mockSolanaAccount: WalletAccountType = {
@@ -170,7 +170,7 @@ export const mockSolanaAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.SOL,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 export const mockFilecoinAccount: WalletAccountType = {

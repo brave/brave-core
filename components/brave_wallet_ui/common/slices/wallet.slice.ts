@@ -274,19 +274,22 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
-        const accounts = payload.accountInfos.map((info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
-          return {
-            id: `${idx + 1}`,
-            name: info.name,
-            address: info.address,
-            accountType: getAccountType(info),
-            deviceId: info.hardware ? info.hardware.deviceId : '',
-            tokenBalanceRegistry: {},
-            nativeBalanceRegistry: {},
-            coin: info.coin,
-            keyringId: info.keyringId
+        const accounts = payload.accountInfos.map(
+          (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
+            return {
+              id: `${idx + 1}`,
+              name: info.name,
+              address: info.address,
+              accountType: getAccountType(info),
+              deviceId: info.hardware ? info.hardware.deviceId : '',
+              tokenBalanceRegistry: {},
+              nativeBalanceRegistry: {},
+              coin: info.coin,
+              keyringId: info.keyringId
+            }
           }
-        })
+        )
+
         const selectedAccount = payload.selectedAccount
           ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
           : accounts[0]

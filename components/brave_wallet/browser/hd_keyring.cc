@@ -32,7 +32,7 @@ std::vector<AddedAcountInfo> HDKeyring::AddAccounts(size_t number) {
     auto& added_account = accounts_.emplace_back(DeriveAccount(i));
     result.push_back(
         {added_account->GetPath(), GetAddressInternal(added_account.get())});
-    }
+  }
 
   return result;
 }

@@ -11,6 +11,7 @@
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -554,11 +555,11 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   }
 
   if (!path_.empty()) {
-    const std::string node = is_hardened
-                                 ? std::to_string(index - kHardenedOffset) + "'"
-                                 : std::to_string(index);
+    const std::string node =
+        is_hardened ? base::NumberToString(index - kHardenedOffset) + "'"
+                    : base::NumberToString(index);
 
-    hdkey->path_ = path_ + "/" + node;
+    hdkey->path_ = base::StrCat({path_, "/", node});
   }
   hdkey->depth_ = depth_ + 1;
   hdkey->parent_fingerprint_ = fingerprint_;
@@ -622,7 +623,7 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
 
   DCHECK_EQ(path, hd_key->GetPath());
 
-  return std::unique_ptr<HDKeyBase>{hd_key.release()};
+  return hd_key;
 }
 
 std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {

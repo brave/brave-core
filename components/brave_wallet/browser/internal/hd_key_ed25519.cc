@@ -10,6 +10,8 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
@@ -64,7 +66,8 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveHardenedChild(uint32_t index) {
     VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
   }
-  auto child_path = path_ + "/" + std::to_string(index) + "'";
+  auto child_path =
+      base::StrCat({path_, "/", base::NumberToString(index), "'"});
   return std::make_unique<HDKeyEd25519>(std::move(child_path),
                                         std::move(child_private_key));
 }

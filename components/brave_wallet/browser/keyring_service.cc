@@ -400,7 +400,8 @@ std::vector<DerivedAccountInfo> GetDerivedAccountsForKeyring(
     return {};
   }
 
-  // TODO(apaymyshev): store derived accounts as ordered list ot avoid sorting.
+  // TODO(apaymyshev): store derived accounts as an ordered list to avoid
+  // sorting.
 
   // Pair DerivedAccountInfo with parsed path for sorting.
   std::vector<std::pair<DerivedAccountInfo, std::vector<uint32_t>>>

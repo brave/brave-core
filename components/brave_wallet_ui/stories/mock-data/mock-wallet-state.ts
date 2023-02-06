@@ -35,7 +35,7 @@ const mockAccount: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockAccount2: WalletAccountType = {
@@ -53,7 +53,7 @@ const mockAccount2: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockAccount3: WalletAccountType = {
@@ -71,7 +71,7 @@ const mockAccount3: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockCurrency: BraveWallet.OnRampCurrency = {
@@ -322,7 +322,7 @@ export const mockWalletState: WalletState = {
       name: mockAccount.name,
       isImported: false,
       hardware: undefined,
-      keyringId: undefined
+      keyringId: 'default'
     }
   ],
   onRampCurrencies: mockCurrencies,
