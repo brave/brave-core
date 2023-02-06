@@ -5,6 +5,8 @@
 
 import SwiftUI
 import DesignSystem
+import BraveCore
+import OrderedCollections
 
 struct BuyProviderSelectionView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
@@ -15,6 +17,16 @@ struct BuyProviderSelectionView: View {
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
   
+  private var supportedProviders: OrderedSet<BraveWallet.OnRampProvider> {
+    return OrderedSet(buyTokenStore.orderedSupportedBuyOptions
+      .filter { provider in
+        guard let tokens = buyTokenStore.buyTokens[provider],
+              let selectedBuyToken = buyTokenStore.selectedBuyToken
+        else { return false }
+        return tokens.includes(selectedBuyToken)
+      })
+  }
+  
   var body: some View {
     List {
       Section(
@@ -22,7 +34,7 @@ struct BuyProviderSelectionView: View {
           title: Text(Strings.Wallet.providerSelectionSectionHeader)
         )
       ) {
-        ForEach(buyTokenStore.orderedSupportedBuyOptions) { provider in
+        ForEach(supportedProviders) { provider in
           VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 12) {
               Image(provider.iconName, bundle: .module)
