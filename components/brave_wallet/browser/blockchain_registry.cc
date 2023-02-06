@@ -134,12 +134,12 @@ BlockchainRegistry::GetBuyTokens(
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kSardine) != providers.end()) {
-    std::set<mojom::BlockchainToken> sardine_buy_tokens = GetSardineBuyTokens();              
+    std::set<mojom::BlockchainToken> sardine_buy_tokens = GetSardineBuyTokens();
     buy_tokens.insert(sardine_buy_tokens.begin(), sardine_buy_tokens.end());
   }
   if (std::find(providers.begin(), providers.end(),
                 mojom::OnRampProvider::kTransak) != providers.end()) {
-    std::set<mojom::BlockchainToken> transak_buy_tokens = GetTransakBuyTokens();               
+    std::set<mojom::BlockchainToken> transak_buy_tokens = GetTransakBuyTokens();
     buy_tokens.insert(transak_buy_tokens.begin(), transak_buy_tokens.end());
   }
   if (buy_tokens.empty()) {
