@@ -34,6 +34,7 @@ VpnDnsHandler::VpnDnsHandler(BraveVpnDnsDelegate* delegate)
     : delegate_(delegate) {
   DCHECK(delegate_);
 }
+
 VpnDnsHandler::~VpnDnsHandler() {
   CloseWatchers();
 }
@@ -142,6 +143,7 @@ void VpnDnsHandler::UpdateFiltersState() {
         ScheduleExit();
         return;
       }
+      SetFiltersInstalledFlag();
       break;
     case internal::CheckConnectionResult::DISCONNECTED:
       VLOG(1) << "BraveVPN Disconnected, remove filters";
@@ -151,7 +153,7 @@ void VpnDnsHandler::UpdateFiltersState() {
         break;
       }
       // Reset service launch counter if dns filters successfully removed.
-      ResetLaunchCounter();
+      ResetFiltersInstalledFlag();
       ScheduleExit();
       break;
     default:

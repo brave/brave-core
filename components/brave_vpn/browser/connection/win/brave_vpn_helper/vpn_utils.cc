@@ -354,27 +354,25 @@ bool ConfigureServiceAutoRestart(const std::wstring& service_name,
   return true;
 }
 
-void CountSuccessfulLaunch() {
+void SetFiltersInstalledFlag() {
   base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
                         KEY_ALL_ACCESS);
   if (!key.Valid()) {
-    LOG(ERROR) << "Failed to write successful launch counter";
+    VLOG(1) << "Failed to open vpn service storage";
     return;
   }
-  DWORD launch = 0;
-  key.ReadValueDW(kBraveVpnHelperLaunchCounterValue, &launch);
-  launch++;
-  key.WriteValue(kBraveVpnHelperLaunchCounterValue, launch);
+  DWORD launch = 1;
+  key.WriteValue(kBraveVpnHelperFiltersInstalledValue, launch);
 }
 
-void ResetLaunchCounter() {
+void ResetFiltersInstalledFlag() {
   base::win::RegKey key(HKEY_LOCAL_MACHINE, kBraveVpnHelperRegistryStoragePath,
                         KEY_ALL_ACCESS);
   if (!key.Valid()) {
-    LOG(ERROR) << "Failed to reset successful launch counter";
+    VLOG(1) << "Failed to open vpn service storage";
     return;
   }
-  key.DeleteValue(kBraveVpnHelperLaunchCounterValue);
+  key.DeleteValue(kBraveVpnHelperFiltersInstalledValue);
 }
 
 }  // namespace brave_vpn

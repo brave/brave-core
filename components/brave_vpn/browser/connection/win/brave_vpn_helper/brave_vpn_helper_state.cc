@@ -18,37 +18,20 @@
 namespace brave_vpn {
 
 namespace {
-// Helper service has 3 fail actions configured to autorestart the service if
-// crashed. The check happens before the service started and counter set to 1,
-// thus we calculate attempts from 0 -> 2.
-const int kHelperServiceFailActionsNumber = 2;
 
 HRESULT HRESULTFromLastError() {
   const auto error_code = ::GetLastError();
   return (error_code != NO_ERROR) ? HRESULT_FROM_WIN32(error_code) : E_FAIL;
 }
 
-int GetServiceLaunchCounterValue() {
-  base::win::RegKey key(HKEY_LOCAL_MACHINE,
-                        brave_vpn::kBraveVpnHelperRegistryStoragePath,
-                        KEY_READ);
-  if (!key.Valid()) {
-    LOG(ERROR) << "Failed to read the successful launch counter";
-    return 0;
-  }
-  DWORD launch = 0;
-  key.ReadValueDW(kBraveVpnHelperLaunchCounterValue, &launch);
-  return launch;
-}
-
 }  // namespace
 
-bool IsBraveVPNHelperServiceLive() {
+bool IsBraveVPNHelperServiceInstalled() {
   ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
   if (!scm.IsValid()) {
-    LOG(ERROR) << "::OpenSCManager failed. service_name: "
-               << brave_vpn::GetVpnServiceName() << ", error: " << std::hex
-               << HRESULTFromLastError();
+    VLOG(1) << "::OpenSCManager failed. service_name: "
+            << brave_vpn::GetVpnServiceName() << ", error: " << std::hex
+            << HRESULTFromLastError();
     return false;
   }
   ScopedScHandle service(::OpenService(
@@ -56,8 +39,30 @@ bool IsBraveVPNHelperServiceLive() {
 
   // Service registered and has not exceeded the number of auto-configured
   // restarts.
-  return service.IsValid() &&
-         GetServiceLaunchCounterValue() <= kHelperServiceFailActionsNumber;
+  return service.IsValid();
+}
+
+bool IsBraveVPNHelperServiceRunning() {
+  ScopedScHandle scm(::OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT));
+  if (!scm.IsValid()) {
+    VLOG(1) << "::OpenSCManager failed. service_name: "
+            << brave_vpn::GetVpnServiceName() << ", error: " << std::hex
+            << HRESULTFromLastError();
+    return false;
+  }
+  ScopedScHandle service(::OpenService(
+      scm.Get(), brave_vpn::GetVpnServiceName().c_str(), SERVICE_QUERY_STATUS));
+
+  // Service registered and has not exceeded the number of auto-configured
+  // restarts.
+  if (!service.IsValid()) {
+    return false;
+  }
+  SERVICE_STATUS service_status = {0};
+  if (!::QueryServiceStatus(service.Get(), &service_status)) {
+    return false;
+  }
+  return service_status.dwCurrentState == SERVICE_RUNNING;
 }
 
 std::wstring GetBraveVPNConnectionName() {
@@ -74,6 +79,22 @@ std::wstring GetVpnServiceName() {
 std::wstring GetVpnServiceDisplayName() {
   static constexpr wchar_t kBraveVpnServiceDisplayName[] = L" Vpn Service";
   return install_static::GetBaseAppName() + kBraveVpnServiceDisplayName;
+}
+
+bool IsNetworkFiltersInstalled() {
+  base::win::RegKey service_storage_key(
+      HKEY_LOCAL_MACHINE, brave_vpn::kBraveVpnHelperRegistryStoragePath,
+      KEY_READ);
+  if (!service_storage_key.Valid()) {
+    return false;
+  }
+  DWORD current = -1;
+  if (service_storage_key.ReadValueDW(
+          brave_vpn::kBraveVpnHelperFiltersInstalledValue, &current) !=
+      ERROR_SUCCESS) {
+    return false;
+  }
+  return current > 0;
 }
 
 }  // namespace brave_vpn
