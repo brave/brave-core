@@ -46,7 +46,8 @@ NS_SWIFT_NAME(FaviconLoader)
                    sizeInPoints:(FaviconLoaderSize)sizeInPoints
                 minSizeInPoints:(FaviconLoaderSize)minSizeInPoints
                      completion:
-                         (void (^)(FaviconAttributes* attributes))completion;
+                         (void (^)(FaviconLoader* loader,
+                                   FaviconAttributes* attributes))completion;
 @end
 
 NS_ASSUME_NONNULL_END
