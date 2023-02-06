@@ -379,7 +379,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ProgressBar
                         android:indeterminateDrawable="@drawable/progress_indeterminate_orange"

@@ -54,6 +54,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -350,13 +351,8 @@ public class PortfolioFragment
         }
 
         if (asset.isErc721 || asset.isNft) {
-            PortfolioModel.NftDataModel selectedNft = null;
-            for (PortfolioModel.NftDataModel nftDataModel : mNftDataModels) {
-                if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
-                    selectedNft = nftDataModel;
-                    break;
-                }
-            }
+            PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
+                    nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
             if (selectedNft == null) {
                 return;
             }
