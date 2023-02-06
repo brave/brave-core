@@ -82,7 +82,7 @@ public class BraveNotificationPermissionRationaleDialogController
     }
 
     private Callback<Integer> wrapDialogDismissalCallback(Callback<Integer> rationaleCallback) {
-        assert false : "removeSuggestionsForGroup should be redirected to parent in bytecode!";
+        assert false : "wrapDialogDismissalCallback should be redirected to parent in bytecode!";
         return null;
     }
 }
