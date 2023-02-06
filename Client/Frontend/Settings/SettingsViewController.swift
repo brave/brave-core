@@ -50,7 +50,7 @@ class SettingsViewController: TableViewController {
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
-  private let braveCore: BraveCoreMain
+  private let ipfsAPI: IpfsAPI
 
   private let featureSectionUUID: UUID = .init()
   private let walletRowUUID: UUID = .init()
@@ -79,7 +79,7 @@ class SettingsViewController: TableViewController {
     self.p3aUtilities = braveCore.p3aUtils
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
-    self.braveCore = braveCore
+    self.ipfsAPI = braveCore.ipfsAPI
 
     super.init(style: .insetGrouped)
   }
@@ -255,11 +255,6 @@ class SettingsViewController: TableViewController {
           self.navigationController?.pushViewController(controller, animated: true)
         }, image: UIImage(named: "settings-brave-today", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator)
     )
-
-    section.rows.append(Row(text: Strings.BraveIPFS.ipfsSettingsTitle, selection: {
-      let controller = IPFSSettingsViewController(ipfsAPI: self.braveCore.ipfsAPI)
-      self.navigationController?.pushViewController(controller, animated: true)
-    }, image: UIImage(named: "settings-ipfs", in: .module, compatibleWith: nil)!.template, accessory: .disclosureIndicator))
 
     vpnRow = vpnSettingsRow()
     if let vpnRow = vpnRow {
@@ -740,7 +735,7 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.Wallet.web3,
             selection: { [unowned self] in
-              let web3SettingsView = Web3SettingsView(settingsStore: settingsStore, networkStore: cryptoStore?.networkStore, keyringStore: keyringStore)
+              let web3SettingsView = Web3SettingsView(settingsStore: settingsStore, networkStore: cryptoStore?.networkStore, keyringStore: keyringStore, ipfsAPI: ipfsAPI)
               let vc = UIHostingController(rootView: web3SettingsView)
               self.navigationController?.pushViewController(vc, animated: true)
             },

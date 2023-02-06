@@ -14,23 +14,28 @@ public struct Web3SettingsView: View {
   var networkStore: NetworkStore?
   var keyringStore: KeyringStore?
   
+  private let ipfsAPI: IpfsAPI?
+  
   @ObservedObject var enableSNSDomainName = Preferences.Wallet.resolveSNSDomainNames
   
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
   /// If we are showing the modal so the user can enter their password to enable unlock via biometrics.
   @State private var isShowingBiometricsPasswordEntry = false
+  @State private var ipfsNFTGatewayURL: String = ""
   
   private var domainOptions: [Preferences.Wallet.Web3DomainOption] = Preferences.Wallet.Web3DomainOption.allCases
   
   public init(
     settingsStore: SettingsStore? = nil,
     networkStore: NetworkStore? = nil,
-    keyringStore: KeyringStore? = nil
+    keyringStore: KeyringStore? = nil,
+    ipfsAPI: IpfsAPI? = nil
   ) {
     self.settingsStore = settingsStore
     self.networkStore = networkStore
     self.keyringStore = keyringStore
+    self.ipfsAPI = ipfsAPI
   }
   
   public var body: some View {
@@ -45,20 +50,39 @@ public struct Web3SettingsView: View {
           isShowingBiometricsPasswordEntry: $isShowingBiometricsPasswordEntry
         )
       }
-      if WalletFeatureFlags.SNSDomainResolverEnabled {
-        Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {
-          Picker(selection: $enableSNSDomainName.value) {
-            ForEach(Preferences.Wallet.Web3DomainOption.allCases) { option in
-              Text(option.name)
+      if let ipfsAPI { // means users come from the browser not the wallet
+        Section(
+          header: Text(Strings.Wallet.ipfsSettingsHeader),
+          footer: Text(Strings.Wallet.ipfsSettingsFooter)
+        ) {
+          NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: ipfsAPI)) {
+            VStack(alignment: .leading, spacing: 5) {
+              Text(Strings.Wallet.nftGatewayTitle)
+                .foregroundColor(Color(.braveLabel))
+              Text(ipfsNFTGatewayURL)
+                .font(.footnote)
                 .foregroundColor(Color(.secondaryBraveLabel))
-                .tag(option)
             }
-          } label: {
-            Text(Strings.Wallet.web3DomainOptionsTitle)
-              .foregroundColor(Color(.braveLabel))
-              .padding(.vertical, 4)
+            .padding(.top, 5)
+            .padding(.bottom, 5)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        if WalletFeatureFlags.SNSDomainResolverEnabled {
+          Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {
+            Picker(selection: $enableSNSDomainName.value) {
+              ForEach(Preferences.Wallet.Web3DomainOption.allCases) { option in
+                Text(option.name)
+                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .tag(option)
+              }
+            } label: {
+              Text(Strings.Wallet.web3DomainOptionsTitle)
+                .foregroundColor(Color(.braveLabel))
+                .padding(.vertical, 4)
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
         }
       }
     }
@@ -104,6 +128,11 @@ public struct Web3SettingsView: View {
           }
         }
     )
+    .onAppear {
+      if let urlString = ipfsAPI?.nftIpfsGateway?.absoluteString, urlString != ipfsNFTGatewayURL {
+        ipfsNFTGatewayURL = urlString
+      }
+    }
   }
 }
 
@@ -226,6 +255,7 @@ private struct WalletSettingsView: View {
           .foregroundColor(.red)
       } // iOS 15: .role(.destructive)
     }
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
   
   private func toggledBiometricsUnlock(_ enabled: Bool) {
