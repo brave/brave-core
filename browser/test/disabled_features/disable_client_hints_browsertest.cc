@@ -43,7 +43,6 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsResourceWidth_DEPRECATED,
     blink::features::kClientHintsViewportWidth,
     blink::features::kClientHintsViewportWidth_DEPRECATED,
-    blink::features::kPrefersColorSchemeClientHintHeader,
     blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
     // Client hints features
