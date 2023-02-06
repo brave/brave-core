@@ -2191,33 +2191,6 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
 }
 
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
-                               const double amount,
-                               const bool recurring,
-                               ledger::mojom::PublisherInfoPtr publisher) {
-  if (!Connected() || !publisher) {
-    return;
-  }
-  publisher->id = publisher_key;
-
-  ledger_->SavePublisherInfoForTip(
-      std::move(publisher),
-      base::BindOnce(&RewardsServiceImpl::OnTipPublisherSaved, AsWeakPtr(),
-                     publisher_key, amount, recurring));
-}
-
-void RewardsServiceImpl::OnTipPublisherSaved(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring,
-    const ledger::mojom::Result result) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
-    return;
-  }
-
-  OnTip(publisher_key, amount, recurring, base::DoNothing());
-}
-
-void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                                double amount,
                                bool recurring,
                                OnTipCallback callback) {

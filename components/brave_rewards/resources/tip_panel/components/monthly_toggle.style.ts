@@ -5,6 +5,8 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   display: flex;
   gap: 8px;
@@ -14,30 +16,31 @@ export const root = styled.div`
   --toggle-button-height: 24px;
   --toggle-button-width: 40px;
   --toggle-button-handle-margin: 2px;
-  --toggle-button-color: var(--leo-color-interaction-button-primary);
+  --toggle-button-color: ${leo.color.interaction.buttonPrimaryBackground};
 `
 
 export const label = styled.div`
   flex: 1 1 auto;
   font-size: 14px;
   line-height: 24px;
-  color: var(--leo-color-text-primary);
+  color: ${leo.color.text.primary};
 `
 
 export const info = styled.div`
   position: relative;
   height: 17px;
   width: 17px;
-  color: var(--leo-color-icon-default);
+  color: ${leo.color.icon.default};
 
   .tooltip {
     --tooltip-offset: -45px;
     --tooltip-width: 280px;
 
     visibility: hidden;
+    transition: visibility 0s linear 300ms;
     font-size: 14px;
     line-height: 24px;
-    color: var(--leo-color-text-primary);
+    color: ${leo.color.text.primary};
   }
 
   &:hover {

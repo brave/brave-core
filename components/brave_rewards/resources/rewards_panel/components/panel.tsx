@@ -54,6 +54,7 @@ export function Panel () {
     payoutStatus, walletProvider)
 
   function renderFull () {
+    const onSettingsClick = () => host.openRewardsSettings()
     return (
       <>
         <WalletCard
@@ -75,7 +76,7 @@ export function Panel () {
           canTip={Boolean(publisherInfo)}
           activeView={activeView}
           onActiveViewChange={setActiveView}
-          onSettingsClick={host.openRewardsSettings}
+          onSettingsClick={onSettingsClick}
         />
       </>
     )

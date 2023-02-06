@@ -34,8 +34,6 @@ class ContributionExternalWallet {
 
   void OnAC(const mojom::Result result, const std::string& contribution_id);
 
-  void OnSavePendingContribution(const mojom::Result result);
-
   void OnServerPublisherInfo(mojom::ServerPublisherInfoPtr info,
                              const std::string& contribution_id,
                              double amount,

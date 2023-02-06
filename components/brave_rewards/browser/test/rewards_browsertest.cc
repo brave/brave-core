@@ -183,17 +183,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
       "3zsistemi.si");
 
   base::WeakPtr<content::WebContents> site_banner =
-      context_helper_->OpenSiteBanner(
-          rewards_browsertest_util::TipAction::OneTime);
+      context_helper_->OpenSiteBanner();
   auto tip_options =
       rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
-  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 50 }));
-
-  site_banner = context_helper_->OpenSiteBanner(
-      rewards_browsertest_util::TipAction::SetMonthly);
-  tip_options =
-      rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
-  ASSERT_EQ(tip_options, std::vector<double>({ 1, 10, 100 }));
+  ASSERT_EQ(tip_options, std::vector<double>({1, 5, 50}));
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
@@ -204,8 +197,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
       "laurenwags.github.io");
 
   base::WeakPtr<content::WebContents> site_banner =
-      context_helper_->OpenSiteBanner(
-          rewards_browsertest_util::TipAction::OneTime);
+      context_helper_->OpenSiteBanner();
   const auto tip_options =
       rewards_browsertest_util::GetSiteBannerTipOptions(site_banner.get());
 

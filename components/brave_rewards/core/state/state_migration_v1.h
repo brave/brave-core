@@ -33,11 +33,6 @@ class StateMigrationV1 {
   void BalanceReportsSaved(mojom::Result result,
                            ledger::LegacyResultCallback callback);
 
-  void SaveProcessedPublishers(ledger::LegacyResultCallback callback);
-
-  void ProcessedPublisherSaved(mojom::Result result,
-                               ledger::LegacyResultCallback callback);
-
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
   LedgerImpl* ledger_;  // NOT OWNED
   bool legacy_data_migrated_ = false;

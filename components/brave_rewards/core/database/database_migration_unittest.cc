@@ -824,4 +824,11 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
       GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_39) {
+  DatabaseMigration::SetTargetVersionForTesting(39);
+  InitializeDatabaseAtVersion(38);
+  InitializeLedger();
+  EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
+}
+
 }  // namespace ledger

@@ -112,7 +112,6 @@ Contribution::ContributionRequest::~ContributionRequest() = default;
 
 Contribution::Contribution(LedgerImpl* ledger)
     : ledger_(ledger),
-      unverified_(std::make_unique<Unverified>(ledger)),
       unblinded_(std::make_unique<Unblinded>(ledger)),
       sku_(std::make_unique<ContributionSKU>(ledger)),
       monthly_(std::make_unique<ContributionMonthly>(ledger)),
@@ -253,6 +252,9 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
   if (!result.has_value()) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
+    if (queue->type == mojom::RewardsType::ONE_TIME_TIP) {
+      MarkContributionQueueAsComplete(queue->id, false);
+    }
     return;
   }
 
@@ -414,10 +416,6 @@ void Contribution::ContributionCompletedSaved(
                             this, _1, contribution_id);
   ledger_->database()->MarkUnblindedTokensAsSpendable(contribution_id,
                                                       callback);
-}
-
-void Contribution::ContributeUnverifiedPublishers() {
-  unverified_->Contribute();
 }
 
 void Contribution::OneTimeTip(const std::string& publisher_key,

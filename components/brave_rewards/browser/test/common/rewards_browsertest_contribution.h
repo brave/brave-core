@@ -35,20 +35,17 @@ class RewardsBrowserTestContribution
   void TipViaCode(const std::string& publisher_key,
                   const double amount,
                   const ledger::mojom::PublisherStatus status,
-                  const int32_t number_of_contributions = 0,
                   const bool recurring = false);
 
   void TipPublisher(const GURL& url,
-                    rewards_browsertest_util::TipAction tip_action,
+                    bool set_monthly,
                     const int32_t number_of_contributions = 0,
                     const int32_t selection = 0,
                     double custom_amount = 0.0);
 
-  void VerifyTip(
-      const double amount,
-      const bool should_contribute,
-      const bool monthly,
-      const bool via_code = false);
+  void VerifyTip(const double amount,
+                 const bool monthly,
+                 const bool via_code = false);
 
   void AddBalance(const double balance);
 
@@ -71,8 +68,6 @@ class RewardsBrowserTestContribution
   void WaitForACReconcileCompleted();
 
   void IsBalanceCorrect();
-
-  void IsPendingBalanceCorrect();
 
   void WaitForMultipleACReconcileCompleted(
     const int32_t needed);
@@ -100,12 +95,6 @@ class RewardsBrowserTestContribution
  private:
   content::WebContents* contents();
 
-  void WaitForPendingTipToBeSaved();
-
-  void OnPendingContributionSaved(
-      brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result) override;
-
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
       const ledger::mojom::Result result,
@@ -122,19 +111,14 @@ class RewardsBrowserTestContribution
 
   std::string GetStringBalance();
 
-  std::string GetStringPendingBalance();
-
   double balance_ = 0;
   double external_balance_ = 0;
-  double pending_balance_ = 0;
   double reconciled_tip_total_ = 0;
 
   bool tip_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
   ledger::mojom::Result tip_reconcile_status_ =
       ledger::mojom::Result::LEDGER_ERROR;
-  bool pending_tip_saved_ = false;
-  std::unique_ptr<base::RunLoop> wait_for_pending_tip_saved_loop_;
   bool recurring_tip_saved_ = false;
   std::unique_ptr<base::RunLoop> wait_for_recurring_tip_saved_loop_;
   bool multiple_tip_reconcile_completed_ = false;

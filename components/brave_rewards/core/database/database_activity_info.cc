@@ -60,8 +60,9 @@ std::string GenerateActivityFilterQuery(
   }
 
   if (!filter->non_verified) {
-    const std::string status = base::StringPrintf(
-        " AND spi.status != %1d", ledger::mojom::PublisherStatus::NOT_VERIFIED);
+    const std::string status =
+        base::StringPrintf(" AND spi.status != %1d AND spi.address != ''",
+                           ledger::mojom::PublisherStatus::NOT_VERIFIED);
     query += status;
   }
 
@@ -340,7 +341,7 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
       "SELECT COUNT(DISTINCT ai.publisher_id) "
       "FROM %s AS ai INNER JOIN server_publisher_info AS spi "
       "ON spi.publisher_key = ai.publisher_id "
-      "WHERE ai.reconcile_stamp = ? AND spi.status > 1",
+      "WHERE ai.reconcile_stamp = ? AND spi.status > 1 AND spi.address != ''",
       kTableName);
 
   auto command = mojom::DBCommand::New();

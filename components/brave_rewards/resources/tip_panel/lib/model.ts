@@ -7,18 +7,20 @@ import { Optional } from '../../shared/lib/optional'
 import { ExternalWalletProvider } from '../../shared/lib/external_wallet'
 
 export interface CreatorBanner {
+  name: string
   title: string
   description: string
   logo: string
   background: string
   links: Record<string, string>
-  web3URL: string
+  web3Url: string
 }
 
 export interface RewardsUser {
   balance: Optional<number>
   walletProvider: ExternalWalletProvider | null
   walletAuthorized: boolean
+  reconnectUrl: string
 }
 
 export interface RewardsParameters {
@@ -27,9 +29,16 @@ export interface RewardsParameters {
   contributionAmounts: number[]
 }
 
+export type AppError =
+  'load-balance-error' |
+  'load-banner-error' |
+  'load-parameters-error'
+
 export interface ModelState {
   loading: boolean
+  error: AppError | null
   creatorBanner: CreatorBanner
+  creatorVerified: boolean
   creatorWallets: ExternalWalletProvider[]
   rewardsUser: RewardsUser
   rewardsParameters: RewardsParameters
@@ -41,28 +50,29 @@ export type ModelStateListener = (state: ModelState) => void
 export interface Model {
   getState: () => ModelState
   addListener: (callback: ModelStateListener) => () => void
-  onInitialRender: () => void
-  sendContribution: (amount: number, monthly: boolean) => Promise<void>
-  reconnectWallet: () => void
-  shareContribution: () => void
+  sendContribution: (amount: number, monthly: boolean) => Promise<boolean>
 }
 
 export function defaultState (): ModelState {
   return {
     loading: true,
+    error: null,
     creatorBanner: {
+      name: '',
       title: '',
       description: '',
       logo: '',
       background: '',
       links: {},
-      web3URL: ''
+      web3Url: ''
     },
+    creatorVerified: false,
     creatorWallets: [],
     rewardsUser: {
       balance: new Optional(),
       walletProvider: null,
-      walletAuthorized: false
+      walletAuthorized: false,
+      reconnectUrl: ''
     },
     rewardsParameters: {
       exchangeRate: 1,
@@ -78,9 +88,6 @@ export function defaultModel (): Model {
   return {
     getState () { return state },
     addListener () { return () => {} },
-    onInitialRender () {},
-    async sendContribution (amount: number, monthly: boolean) {},
-    reconnectWallet () {},
-    shareContribution () {}
+    async sendContribution (amount: number, monthly: boolean) { return false }
   }
 }

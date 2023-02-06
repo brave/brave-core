@@ -168,8 +168,6 @@ interface Ledger {
 
   GetAllContributions() => (array<ledger.mojom.ContributionInfo> list);
 
-  SavePublisherInfoForTip(ledger.mojom.PublisherInfo info) => (ledger.mojom.Result result);
-
   GetMonthlyReport(ledger.mojom.ActivityMonth month, int32 year) => (ledger.mojom.Result result, ledger.mojom.MonthlyReportInfo report);
 
   GetAllMonthlyReportIds() => (array<string> ids);

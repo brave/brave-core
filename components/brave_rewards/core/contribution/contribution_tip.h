@@ -40,8 +40,6 @@ class ContributionTip {
                     ProcessCallback callback,
                     mojom::Result result);
 
-  void OnPendingTipSaved(mojom::Result result);
-
   LedgerImpl* ledger_;  // NOT OWNED
 };
 

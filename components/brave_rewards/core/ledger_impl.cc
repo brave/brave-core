@@ -613,39 +613,23 @@ void LedgerImpl::GetShareURL(
 
 void LedgerImpl::GetPendingContributions(
     GetPendingContributionsCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->GetPendingContributions(
-        [this, callback = std::move(callback)](
-            std::vector<mojom::PendingContributionInfoPtr> list) mutable {
-          // The publisher status field may be expired. Attempt to refresh
-          // expired publisher status values before executing callback.
-          publisher::RefreshPublisherStatus(this, std::move(list),
-                                            std::move(callback));
-        });
-  });
+  std::move(callback).Run({});
 }
 
 void LedgerImpl::RemovePendingContribution(
     uint64_t id,
     RemovePendingContributionCallback callback) {
-  WhenReady(
-      [this, id, callback = ToLegacyCallback(std::move(callback))]() mutable {
-        database()->RemovePendingContribution(id, std::move(callback));
-      });
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void LedgerImpl::RemoveAllPendingContributions(
     RemovePendingContributionCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->RemoveAllPendingContributions(std::move(callback));
-  });
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
     GetPendingContributionsTotalCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->GetPendingContributionsTotal(std::move(callback));
-  });
+  std::move(callback).Run(0);
 }
 
 void LedgerImpl::FetchBalance(FetchBalanceCallback callback) {
@@ -720,15 +704,6 @@ void LedgerImpl::GetContributionReport(mojom::ActivityMonth month,
 void LedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
   WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
     database()->GetAllContributions(std::move(callback));
-  });
-}
-
-void LedgerImpl::SavePublisherInfoForTip(
-    mojom::PublisherInfoPtr info,
-    SavePublisherInfoForTipCallback callback) {
-  WhenReady([this, info = std::move(info),
-             callback = ToLegacyCallback(std::move(callback))]() mutable {
-    database()->SavePublisherInfo(std::move(info), std::move(callback));
   });
 }
 

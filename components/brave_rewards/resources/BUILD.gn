@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
@@ -16,14 +21,6 @@ pack_web_resources("internals_generated_resources") {
 
   # need webpack and GRD generation first
   deps = [ "internals" ]
-}
-
-pack_web_resources("tip_generated_resources") {
-  resource_name = "brave_rewards_tip"
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
-
-  # need webpack and GRD generation first
-  deps = [ "tip" ]
 }
 
 brave_grit("static_resources") {
@@ -51,11 +48,11 @@ repack("resources") {
   if (!is_android) {
     sources += [
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_panel_generated.pak",
-      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_tip_generated.pak",
+      "$root_gen_dir/brave/components/brave_rewards/resources/tip_panel_generated.pak",
     ]
     public_deps += [
-      ":tip_generated_resources",
       "rewards_panel:brave_rewards_panel_generated",
+      "tip_panel:tip_panel_generated",
     ]
   }
 

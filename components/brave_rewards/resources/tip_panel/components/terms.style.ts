@@ -5,15 +5,17 @@
 
 import styled from 'styled-components'
 
+import * as leo from '@brave/leo/tokens/css'
+
 export const root = styled.div`
   text-align: center;
   font-weight: 400;
   font-size: 11px;
   line-height: 16px;
-  color: var(--leo-color-text-secondary);
+  color: ${leo.color.text.secondary};
 
   a {
-    color: var(--leo-color-text-primary);
+    color: ${leo.color.text.primary};
     text-decoration: none;
   }
 `

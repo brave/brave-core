@@ -295,7 +295,7 @@ function isPublisherURL (url: string) {
   return parsedURL && /^https?:$/.test(parsedURL.protocol)
 }
 
-function defaultPublisherInfo (url: string) {
+function defaultPublisherInfo (url: string): PublisherInfo | null {
   const parsedURL = parseURL(url)
   if (!parsedURL) {
     return null
@@ -304,6 +304,7 @@ function defaultPublisherInfo (url: string) {
   return {
     id: parsedURL.hostname,
     name: parsedURL.hostname,
+    verified: false,
     icon: origin ? `chrome://favicon/size/64@1x/${parsedURL.origin}` : '',
     platform: null,
     attentionScore: 0,
@@ -351,9 +352,11 @@ export async function getPublisherInfo (tabId: number) {
   }
 
   const supportedWalletProviders: ExternalWalletProvider[] = []
+  let verified = true
 
   switch (Number(publisher.status) || 0) {
     case 0: // NOT_VERIFIED
+      verified = false
       break
     case 2: // UPHOLD_VERIFIED
       supportedWalletProviders.push('uphold')
@@ -371,6 +374,7 @@ export async function getPublisherInfo (tabId: number) {
   const info: PublisherInfo = {
     id: publisherKey,
     name: String(publisher.name || ''),
+    verified,
     icon: iconPath ? `chrome://favicon/size/64@1x/${iconPath}` : '',
     platform: getPublisherPlatform(String(publisher.provider || '')),
     attentionScore: Number(publisher.percentage) / 100 || 0,

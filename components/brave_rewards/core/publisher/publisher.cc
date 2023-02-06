@@ -55,35 +55,16 @@ void Publisher::RefreshPublisher(const std::string& publisher_key,
                                  ledger::RefreshPublisherCallback callback) {
   // Bypass cache and unconditionally fetch the latest info
   // for the specified publisher.
-  server_publisher_fetcher_->Fetch(
-      publisher_key, [this, callback](auto server_info) {
-        auto status = server_info ? server_info->status
-                                  : mojom::PublisherStatus::NOT_VERIFIED;
-
-        // If, after refresh, the publisher is now verified
-        // attempt to process any pending contributions for
-        // unverified publishers.
-        switch (status) {
-          case mojom::PublisherStatus::UPHOLD_VERIFIED:
-          case mojom::PublisherStatus::BITFLYER_VERIFIED:
-          case mojom::PublisherStatus::GEMINI_VERIFIED:
-            ledger_->contribution()->ContributeUnverifiedPublishers();
-            break;
-          default:
-            break;
-        }
-
-        callback(status);
-      });
+  server_publisher_fetcher_->Fetch(publisher_key, [callback](auto server_info) {
+    auto status = server_info ? server_info->status
+                              : mojom::PublisherStatus::NOT_VERIFIED;
+    callback(status);
+  });
 }
 
 void Publisher::SetPublisherServerListTimer() {
-  prefix_list_updater_->StartAutoUpdate([this]() {
-    // Attempt to reprocess any contributions for previously
-    // unverified publishers that are now verified.
-    ledger_->contribution()->ContributeUnverifiedPublishers();
-    ledger_->client()->OnPublisherRegistryUpdated();
-  });
+  prefix_list_updater_->StartAutoUpdate(
+      [this]() { ledger_->client()->OnPublisherRegistryUpdated(); });
 }
 
 void Publisher::CalcScoreConsts(const int min_duration_seconds) {

@@ -68,18 +68,6 @@ if (is_android) {
   ]
 
   brave_browser_brave_rewards_deps += [ "//brave/components/brave_ads/browser" ]
-} else {
-  brave_browser_brave_rewards_sources += [
-    "//brave/browser/brave_rewards/tip_dialog.cc",
-    "//brave/browser/brave_rewards/tip_dialog.h",
-  ]
-
-  brave_browser_brave_rewards_deps += [
-    "//brave/common",
-    "//components/guest_view/browser",
-    "//components/web_modal",
-    "//ui/web_dialogs",
-  ]
 }
 
 if (!is_android) {
