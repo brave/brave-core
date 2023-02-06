@@ -838,7 +838,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
         Try Brave Search
       </message>
-      <message name="IDS_DISMISS" desc="Omnibox brave search promo dismiss button text">
+      <message name="IDS_DISMISS_SEARCH_PROMO" desc="Omnibox brave search promo dismiss button text">
         Dismiss
       </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
