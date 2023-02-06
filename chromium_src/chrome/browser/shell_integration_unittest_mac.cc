@@ -10,7 +10,8 @@
 namespace shell_integration {
 
 TEST(BraveShellIntegrationTest, MakeDefaultBrowserTestOnMac) {
-  EXPECT_EQ(SET_DEFAULT_UNATTENDED, GetDefaultWebClientSetPermission());
+  EXPECT_EQ(SET_DEFAULT_UNATTENDED, GetDefaultBrowserSetPermission());
+  EXPECT_EQ(SET_DEFAULT_UNATTENDED, GetDefaultSchemeClientSetPermission());
 }
 
 }  // namespace shell_integration

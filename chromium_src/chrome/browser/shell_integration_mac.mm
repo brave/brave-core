@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/shell_integration.h"
+
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
 #include "base/mac/mac_util.h"
@@ -11,7 +13,6 @@
 #include "build/branding_buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/version_info.h"
-#import "third_party/mozilla/NSWorkspace+Utils.h"
 
 // All above headers copied from original shell_integration_mac.mm are
 // included to prevent below GOOGLE_CHROME_BUILD affect them.
@@ -27,9 +28,13 @@
 
 namespace shell_integration {
 
-DefaultWebClientSetPermission
-GetPlatformSpecificDefaultWebClientSetPermission() {
+namespace internal {
+
+DefaultWebClientSetPermission GetPlatformSpecificDefaultWebClientSetPermission(
+    WebClientSetMethod method) {
   return SET_DEFAULT_UNATTENDED;
 }
+
+}  // namespace internal
 
 }  // shell_integration
