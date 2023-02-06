@@ -1019,6 +1019,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/speedreader",
       "//brave/components/speedreader/common:mojom",
+      "//components/dom_distiller/content/browser",
     ]
   }
 

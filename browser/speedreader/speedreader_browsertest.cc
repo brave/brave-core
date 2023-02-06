@@ -36,6 +36,7 @@
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/dom_distiller/core/dom_distiller_features.h"
 #include "components/dom_distiller/core/url_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -601,9 +602,24 @@ class SpeedReaderFallbackTest : public SpeedReaderBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderFallbackTest, Fallback) {
+  class MockObserver : public dom_distiller::DistillabilityObserver {
+   public:
+    MOCK_METHOD1(OnResult,
+                 void(const dom_distiller::DistillabilityResult& result));
+  };
+
   ToggleSpeedreader();
+
+  base::RunLoop run_loop;
+  MockObserver observer;
+  AddObserver(ActiveWebContents(), &observer);
+  ON_CALL(observer, OnResult(testing::_)).WillByDefault([&]() {
+    run_loop.Quit();
+  });
   NavigateToPageSynchronously(
-      "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html");
+      "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html",
+      WindowOpenDisposition::CURRENT_TAB);
+  run_loop.Run();
 
   EXPECT_FALSE(
       speedreader::PageSupportsDistillation(tab_helper()->PageDistillState()));
