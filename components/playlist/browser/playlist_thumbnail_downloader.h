@@ -30,6 +30,8 @@ class SequencedTaskRunner;
 
 class GURL;
 
+namespace playlist {
+
 class PlaylistThumbnailDownloader {
  public:
   class Delegate {
@@ -52,7 +54,11 @@ class PlaylistThumbnailDownloader {
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
+  bool has_download_requests() const { return ticket_map_.size(); }
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
+
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using TicketMap = base::flat_map<std::string, APIRequestHelper::Ticket>;
 
@@ -77,7 +83,11 @@ class PlaylistThumbnailDownloader {
   std::unique_ptr<api_request_helper::APIRequestHelper> request_helper_;
   TicketMap ticket_map_;
 
+  bool pause_download_for_testing_ = false;
+
   raw_ptr<Delegate> delegate_;
 };
+
+}  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_THUMBNAIL_DOWNLOADER_H_

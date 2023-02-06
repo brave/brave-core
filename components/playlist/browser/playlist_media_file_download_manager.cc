@@ -69,8 +69,10 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
 
   VLOG(2) << __func__ << ": " << current_item_->name;
 
-  media_file_downloader_->DownloadMediaFileForPlaylistItem(current_item_,
-                                                           base_dir_);
+  if (!pause_download_for_testing_) {
+    media_file_downloader_->DownloadMediaFileForPlaylistItem(current_item_,
+                                                             base_dir_);
+  }
 }
 
 mojom::PlaylistItemPtr
@@ -96,6 +98,7 @@ PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
 
 void PlaylistMediaFileDownloadManager::CancelCurrentDownloadingPlaylistItem() {
   media_file_downloader_->RequestCancelCurrentPlaylistGeneration();
+  current_item_.reset();
 }
 
 bool PlaylistMediaFileDownloadManager::IsCurrentDownloadingInProgress() const {

@@ -60,7 +60,11 @@ class PlaylistMediaFileDownloadManager
   void CancelDownloadRequest(const std::string& id);
   void CancelAllDownloadRequests();
 
+  bool has_download_requests() const { return !!current_item_; }
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
+
   // PlaylistMediaFileDownloader::Delegate overrides:
   void OnMediaFileDownloadProgressed(const std::string& id,
                                      int64_t total_bytes,
@@ -84,6 +88,8 @@ class PlaylistMediaFileDownloadManager
   mojom::PlaylistItemPtr current_item_;
 
   std::unique_ptr<PlaylistMediaFileDownloader> media_file_downloader_;
+
+  bool pause_download_for_testing_ = false;
 
   base::WeakPtrFactory<PlaylistMediaFileDownloadManager> weak_factory_{this};
 };
