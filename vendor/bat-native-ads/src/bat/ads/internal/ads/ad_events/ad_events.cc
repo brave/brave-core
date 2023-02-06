@@ -82,20 +82,21 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
 
 void RebuildAdEventHistoryFromDatabase() {
   const database::table::AdEvents database_table;
-  database_table.GetAll([](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Failed to get ad events");
-      return;
-    }
+  database_table.GetAll(
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "Failed to get ad events");
+          return;
+        }
 
-    const std::string& id = GetInstanceId();
+        const std::string& id = GetInstanceId();
 
-    AdsClientHelper::GetInstance()->ResetAdEventHistoryForId(id);
+        AdsClientHelper::GetInstance()->ResetAdEventHistoryForId(id);
 
-    for (const auto& ad_event : ad_events) {
-      RecordAdEvent(ad_event);
-    }
-  });
+        for (const auto& ad_event : ad_events) {
+          RecordAdEvent(ad_event);
+        }
+      }));
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {

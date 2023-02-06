@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_ADS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_ADS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <memory>
 #include <string>
 
 #include "base/check_op.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -27,9 +27,9 @@ class GeoTargets;
 class Segments;
 
 using GetCreativeInlineContentAdCallback =
-    std::function<void(const bool success,
-                       const std::string& creative_instance_id,
-                       const CreativeInlineContentAdInfo& creative_ad)>;
+    base::OnceCallback<void(const bool success,
+                            const std::string& creative_instance_id,
+                            const CreativeInlineContentAdInfo& creative_ad)>;
 
 using GetCreativeInlineContentAdsCallback =
     base::OnceCallback<void(const bool success,

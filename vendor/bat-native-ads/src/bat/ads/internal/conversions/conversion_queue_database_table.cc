@@ -71,12 +71,12 @@ ConversionQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion_queue_item;
 }
 
-void OnGetAll(const GetConversionQueueCallback& callback,
+void OnGetAll(GetConversionQueueCallback callback,
               mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, {});
     return;
   }
 
@@ -88,17 +88,17 @@ void OnGetAll(const GetConversionQueueCallback& callback,
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  callback(/*success*/ true, conversion_queue_items);
+  std::move(callback).Run(/*success*/ true, conversion_queue_items);
 }
 
 void OnGetForCreativeInstanceId(
     const std::string& creative_instance_id,
-    const GetConversionQueueForCreativeInstanceIdCallback& callback,
+    GetConversionQueueForCreativeInstanceIdCallback callback,
     mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -110,7 +110,8 @@ void OnGetForCreativeInstanceId(
     conversion_queue_items.push_back(conversion_queue_item);
   }
 
-  callback(/*success*/ true, creative_instance_id, conversion_queue_items);
+  std::move(callback).Run(/*success*/ true, creative_instance_id,
+                          conversion_queue_items);
 }
 
 void MigrateToV10(mojom::DBTransactionInfo* transaction) {
@@ -337,7 +338,7 @@ void ConversionQueue::GetAll(GetConversionQueueCallback callback) const {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, callback));
+      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
 }
 
 void ConversionQueue::GetUnprocessed(
@@ -380,14 +381,14 @@ void ConversionQueue::GetUnprocessed(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetAll, callback));
+      std::move(transaction), base::BindOnce(&OnGetAll, std::move(callback)));
 }
 
 void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback) const {
   if (creative_instance_id.empty()) {
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -429,8 +430,9 @@ void ConversionQueue::GetForCreativeInstanceId(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
-                                             creative_instance_id, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+                     std::move(callback)));
 }
 
 std::string ConversionQueue::GetTableName() const {

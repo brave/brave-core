@@ -32,7 +32,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    const base::Value::Dict& user_data);
+    base::Value::Dict user_data);
 
 bool IsValid(const ConfirmationInfo& confirmation);
 

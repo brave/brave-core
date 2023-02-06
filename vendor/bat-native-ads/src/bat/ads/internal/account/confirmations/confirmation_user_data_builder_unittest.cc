@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmation_user_data_builder.h"
@@ -56,14 +57,14 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
   // Assert
   const ConfirmationUserDataBuilder user_data_builder(
       Now(), kCreativeInstanceId, ConfirmationType::kViewed);
-  user_data_builder.Build([](const base::Value::Dict& user_data) {
+  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
-  });
+  }));
 }
 
 TEST_F(BatAdsConfirmationUserDataBuilderTest,
@@ -89,14 +90,14 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
   // Assert
   const ConfirmationUserDataBuilder user_data_builder(
       Now(), kCreativeInstanceId, ConfirmationType::kConversion);
-  user_data_builder.Build([](const base::Value::Dict& user_data) {
+  user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
     std::string json;
     ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
         R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"odyssey":"host","platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z","versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
-  });
+  }));
 }
 
 }  // namespace ads

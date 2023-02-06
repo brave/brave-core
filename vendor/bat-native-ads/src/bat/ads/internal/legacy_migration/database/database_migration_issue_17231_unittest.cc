@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_constants.h"
@@ -31,8 +32,8 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
 
   // Act
   database_table.GetAll(
-      [](const bool success,
-         const ConversionQueueItemList& conversion_queue_items) {
+      base::BindOnce([](const bool success,
+                        const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ConversionQueueItemInfo conversion_queue_item;
@@ -53,7 +54,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
         expected_conversion_queue_items.push_back(conversion_queue_item);
 
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      }));
 
   // Assert
 }
@@ -65,8 +66,8 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   AdvanceClockTo(TimeFromString("28 July 2021", /*is_local*/ false));
 
   // Act
-  database_table.GetAll([](const bool success,
-                           const ConversionList& conversions) {
+  database_table.GetAll(base::BindOnce([](const bool success,
+                                          const ConversionList& conversions) {
     ASSERT_TRUE(success);
 
     const std::vector<std::string> creative_set_ids = {
@@ -553,7 +554,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
     }
 
     EXPECT_TRUE(ContainersEq(expected_conversions, conversions));
-  });
+  }));
 
   // Assert
 }

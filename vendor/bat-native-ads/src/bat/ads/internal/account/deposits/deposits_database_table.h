@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
 #include "absl/types/optional.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
@@ -19,8 +19,8 @@
 namespace ads::database::table {
 
 using GetDepositsCallback =
-    std::function<void(const bool success,
-                       const absl::optional<DepositInfo>& deposit)>;
+    base::OnceCallback<void(const bool success,
+                            const absl::optional<DepositInfo>& deposit)>;
 
 class Deposits final : public TableInterface {
  public:

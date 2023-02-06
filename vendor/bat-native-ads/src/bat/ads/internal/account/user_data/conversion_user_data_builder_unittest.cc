@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
@@ -40,15 +41,16 @@ TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
-    const absl::optional<std::string> message =
-        security::OpenEnvelopeForUserDataAndAdvertiserSecretKey(
-            user_data, kAdvertiserSecretKey);
-    ASSERT_TRUE(message);
+  BuildConversion(kCreativeInstanceId,
+                  base::BindOnce([](base::Value::Dict user_data) {
+                    const absl::optional<std::string> message =
+                        security::OpenEnvelopeForUserDataAndAdvertiserSecretKey(
+                            user_data, kAdvertiserSecretKey);
+                    ASSERT_TRUE(message);
 
-    const std::string expected_message = kConversionId;
-    EXPECT_EQ(expected_message, *message);
-  });
+                    const std::string expected_message = kConversionId;
+                    EXPECT_EQ(expected_message, *message);
+                  }));
 
   // Assert
 }
@@ -59,13 +61,15 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kMissingCreativeInstanceId, [](base::Value::Dict user_data) {
-    // Assert
-    const base::Value expected_user_data = base::test::ParseJson("{}");
-    ASSERT_TRUE(expected_user_data.is_dict());
+  BuildConversion(kMissingCreativeInstanceId,
+                  base::BindOnce([](base::Value::Dict user_data) {
+                    // Assert
+                    const base::Value expected_user_data =
+                        base::test::ParseJson("{}");
+                    ASSERT_TRUE(expected_user_data.is_dict());
 
-    EXPECT_EQ(expected_user_data, user_data);
-  });
+                    EXPECT_EQ(expected_user_data, user_data);
+                  }));
 
   // Assert
 }
@@ -77,13 +81,14 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
                                   kEmptyAdvertiserPublicKey);
 
   // Act
-  BuildConversion(kCreativeInstanceId, [](base::Value::Dict user_data) {
-    // Assert
-    const base::Value expected_user_data = base::test::ParseJson("{}");
-    ASSERT_TRUE(expected_user_data.is_dict());
+  BuildConversion(
+      kCreativeInstanceId, base::BindOnce([](base::Value::Dict user_data) {
+        // Assert
+        const base::Value expected_user_data = base::test::ParseJson("{}");
+        ASSERT_TRUE(expected_user_data.is_dict());
 
-    EXPECT_EQ(expected_user_data, user_data);
-  });
+        EXPECT_EQ(expected_user_data, user_data);
+      }));
 
   // Assert
 }

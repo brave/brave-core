@@ -6,13 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_USER_DATA_BUILDER_INTERFACE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_USER_DATA_BUILDER_INTERFACE_H_
 
-#include <functional>
-
+#include "base/functional/callback_forward.h"
 #include "base/values.h"
 
 namespace ads {
 
-using UserDataBuilderCallback = std::function<void(const base::Value::Dict&)>;
+using UserDataBuilderCallback = base::OnceCallback<void(base::Value::Dict)>;
 
 class UserDataBuilderInterface {
  public:

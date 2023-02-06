@@ -62,12 +62,12 @@ ConversionInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return conversion;
 }
 
-void OnGetConversions(const GetConversionsCallback& callback,
+void OnGetConversions(GetConversionsCallback callback,
                       mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
-    callback(/*success*/ false, {});
+    std::move(callback).Run(/*success*/ false, {});
     return;
   }
 
@@ -78,7 +78,7 @@ void OnGetConversions(const GetConversionsCallback& callback,
     conversions.push_back(conversion);
   }
 
-  callback(/*success*/ true, conversions);
+  std::move(callback).Run(/*success*/ true, conversions);
 }
 
 void MigrateToV23(mojom::DBTransactionInfo* transaction) {
@@ -153,7 +153,8 @@ void Conversions::GetAll(GetConversionsCallback callback) const {
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetConversions, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetConversions, std::move(callback)));
 }
 
 void Conversions::PurgeExpired(ResultCallback callback) const {

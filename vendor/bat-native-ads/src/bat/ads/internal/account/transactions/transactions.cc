@@ -39,16 +39,16 @@ TransactionInfo Add(const std::string& creative_instance_id,
   database_table.Save(
       {transaction},
       base::BindOnce(
-          [](const AddCallback& callback, const TransactionInfo& transaction,
+          [](AddCallback callback, const TransactionInfo& transaction,
              const bool success) {
             if (!success) {
-              callback(/*success*/ false, {});
+              std::move(callback).Run(/*success*/ false, {});
               return;
             }
 
-            callback(/*success*/ true, transaction);
+            std::move(callback).Run(/*success*/ true, transaction);
           },
-          callback, transaction));
+          std::move(callback), transaction));
 
   return transaction;
 }
@@ -75,15 +75,15 @@ void GetForDateRange(const base::Time from_time,
 void RemoveAll(RemoveAllCallback callback) {
   const database::table::Transactions database_table;
   database_table.Delete(base::BindOnce(
-      [](const RemoveAllCallback& callback, const bool success) {
+      [](RemoveAllCallback callback, const bool success) {
         if (!success) {
-          callback(/*success*/ false);
+          std::move(callback).Run(/*success*/ false);
           return;
         }
 
-        callback(/*success*/ true);
+        std::move(callback).Run(/*success*/ true);
       },
-      callback));
+      std::move(callback)));
 }
 
 }  // namespace ads::transactions

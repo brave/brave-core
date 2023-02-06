@@ -9,11 +9,13 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
 
 namespace ads {
 
+struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
 
 namespace new_tab_page_ads {
@@ -38,8 +40,18 @@ class EventHandler final : public EventHandlerObserver {
                  mojom::NewTabPageAdEventType event_type);
 
  private:
+  void OnGetForCreativeInstanceId(const std::string& placement_id,
+                                  mojom::NewTabPageAdEventType event_type,
+                                  bool success,
+                                  const std::string& creative_instance_id,
+                                  const CreativeNewTabPageAdInfo& creative_ad);
+
   void FireEvent(const NewTabPageAdInfo& ad,
                  mojom::NewTabPageAdEventType event_type);
+  void OnGetAdEvents(const NewTabPageAdInfo& ad,
+                     mojom::NewTabPageAdEventType event_type,
+                     bool success,
+                     const AdEventList& ad_events);
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
                          mojom::NewTabPageAdEventType event_type) const;

@@ -5,7 +5,11 @@
 
 #include "bat/ads/internal/account/deposits/cash_deposit.h"
 
+#include <utility>
+
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 
@@ -16,20 +20,22 @@ void CashDeposit::GetValue(const std::string& creative_instance_id,
   const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [callback](const bool success,
-                 const absl::optional<DepositInfo>& deposit) {
-        if (!success) {
-          callback(/*success */ false, /* value*/ 0.0);
-          return;
-        }
+      base::BindOnce(
+          [](GetDepositCallback callback, const bool success,
+             const absl::optional<DepositInfo>& deposit) {
+            if (!success) {
+              std::move(callback).Run(/*success */ false, /* value*/ 0.0);
+              return;
+            }
 
-        if (!deposit) {
-          callback(/*success */ false, /* value*/ 0.0);
-          return;
-        }
+            if (!deposit) {
+              std::move(callback).Run(/*success */ false, /* value*/ 0.0);
+              return;
+            }
 
-        callback(/*success*/ true, deposit->value);
-      });
+            std::move(callback).Run(/*success*/ true, deposit->value);
+          },
+          std::move(callback)));
 }
 
 }  // namespace ads
