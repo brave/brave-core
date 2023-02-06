@@ -1121,7 +1121,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         <ph name="INFOBAR_TEXT">%1$s<ex>This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
       </message>
       <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
-        Could not join this sync chain. Account was deleted.
+        Could not join this sync chain. The sync chain was deleted.
       </message>
       <message name="IDS_BRAVE_SYNC_AUTOFILL" desc="Title for preference which enables sync'ing of autofill. [CHAR_LIMIT=32]">
         Addresses, payment info, etc.
