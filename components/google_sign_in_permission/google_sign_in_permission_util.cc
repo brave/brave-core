@@ -35,10 +35,16 @@ constexpr char kGoogleAuthPattern[] =
     "https://accounts.google.com/o/oauth2/auth/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
+bool IsFirebaseAuthUrl(const GURL& gurl) {
+  return GetFirebaseAuthPattern().Matches(gurl);
+}
+
 bool IsGoogleAuthUrl(const GURL& gurl) {
-  // Check if pattern matches the URL.
-  return GetGoogleAuthPattern().Matches(gurl) ||
-         GetFirebaseAuthPattern().Matches(gurl);
+  return GetGoogleAuthPattern().Matches(gurl);
+}
+
+bool RequestMatchesAuthPatterns(const GURL& gurl) {
+  return IsFirebaseAuthUrl(gurl) || IsGoogleAuthUrl(gurl);
 }
 
 }  // namespace
@@ -55,6 +61,26 @@ const ContentSettingsPattern& GetFirebaseAuthPattern() {
   return *firebase_pattern;
 }
 
+// Heuristics to determine if the auth flow uses 3P cookies
+bool AuthFlowUses3PCookies(const GURL& request_url) {
+  if (IsGoogleAuthUrl(request_url)) {
+    // Check `redirect_uri` param in request_url for string "storagerelay"
+    // Ref: manual inspection
+    return request_url.has_query() &&
+           request_url.query_piece().find("redirect_uri=storagerelay") !=
+               std::string::npos;
+  }
+  if (IsFirebaseAuthUrl(request_url)) {
+    // Check if redirect sign-in via authType=signInViaRedirect param
+    // Ref:
+    // https://firebase.google.com/docs/auth/web/redirect-best-practices
+    return request_url.has_query() &&
+           request_url.query_piece().find("authType=signInViaRedirect") !=
+               std::string::npos;
+  }
+  return false;
+}
+
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url) {
   static const base::NoDestructor<GURL> kGoogleAuthUrl([] {
@@ -64,11 +90,12 @@ bool IsGoogleAuthRelatedRequest(const GURL& request_url,
   }());
   return request_url.SchemeIsHTTPOrHTTPS() &&
          request_initiator_url.SchemeIsHTTPOrHTTPS() &&
-         IsGoogleAuthUrl(request_url) &&
-         !IsGoogleAuthUrl(request_initiator_url) &&
+         RequestMatchesAuthPatterns(request_url) &&
+         !RequestMatchesAuthPatterns(request_initiator_url) &&
          !net::registry_controlled_domains::SameDomainOrHost(
              request_initiator_url, *kGoogleAuthUrl,
-             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) &&
+         AuthFlowUses3PCookies(request_url);
 }
 
 bool IsGoogleSignInFeatureEnabled() {
