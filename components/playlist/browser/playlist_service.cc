@@ -812,8 +812,9 @@ void PlaylistService::OnMediaFileDownloadFinished(
   VLOG(2) << __func__ << ": " << item->id << " result path" << media_file_path;
 
   if (media_file_path.empty() && update_media_src_and_retry_on_fail) {
-    VLOG(2) << __func__ << ": " << item->id
-            << " try updating media src and download";
+    VLOG(2) << __func__ << ": downloading " << item->id << " from "
+            << item->media_source.spec()
+            << " failed. Try updating media src and download";
 
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&PlaylistService::RecoverLocalDataForItem,
