@@ -10,6 +10,7 @@ import BraveShared
 import BraveCore
 import BraveNews
 import DesignSystem
+import Growth
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {
@@ -56,6 +57,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     self.actionHandler = actionHandler
 
     super.init()
+    
+    self.recordWeeklyAdsViewedP3A(adViewed: false)
   }
 
   func registerCells(to collectionView: UICollectionView) {
@@ -196,11 +199,12 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
             creativeInstanceId: ad.creativeInstanceID,
             eventType: .viewed
           )
+          self?.recordWeeklyAdsViewedP3A(adViewed: true)
         }
       }
     }
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     iabTrackedCellContexts[indexPath] = nil
     if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
@@ -469,6 +473,27 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
   private func contextMenu(for item: FeedItem, card: FeedCard, indexPath: IndexPath) -> FeedItemMenu {
     return contextMenu(from: { _ in item }, card: card, indexPath: indexPath)
   }
+  
+  private func recordWeeklyAdsViewedP3A(adViewed: Bool) {
+    var storage = P3ATimedStorage<Int>.adsViewedStorage
+    if adViewed {
+      storage.add(value: 1, to: Date())
+    }
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyDisplayAdsViewedCount",
+      buckets: [
+        0,
+        1,
+        .r(2...4),
+        .r(5...12),
+        .r(13...20),
+        .r(21...40),
+        .r(41...80),
+        .r(81...),
+      ],
+      value: storage.combinedValue
+    )
+  }
 }
 
 extension FeedItemView {
@@ -529,4 +554,8 @@ extension FeedItemView {
     brandContainerView.textLabel.text = ad.message
     callToActionButton.setTitle(ad.ctaText, for: .normal)
   }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var adsViewedStorage: Self { .init(name: "ads-viewed", lifetimeInDays: 7) }
 }
