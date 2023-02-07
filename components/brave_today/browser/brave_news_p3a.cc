@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
@@ -22,6 +23,9 @@ namespace brave_news {
 namespace p3a {
 
 namespace {
+
+constexpr uint64_t kMaxViewRate = 5;
+constexpr base::TimeDelta kViewReportInterval = base::Seconds(1);
 
 uint16_t UpdateWeeklyStorageWithValueAndGetMax(PrefService* prefs,
                                                const char* pref_name,
@@ -71,125 +75,132 @@ void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
                                      total_session_count);
 }
 
-void ResetCurrSessionTotalViewsCount(PrefService* prefs) {
-  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews, 0);
-  VLOG(1) << "NewsP3A: reset curr session total card views count";
-}
-
 }  // namespace
 
-void RecordAtSessionStart(PrefService* prefs) {
-  p3a_utils::RecordFeatureUsage(prefs, prefs::kBraveTodayFirstSessionTime,
+NewsP3A::NewsP3A(PrefService* prefs)
+    : prefs_(prefs),
+      raw_session_card_view_count_(0),
+      limited_session_card_view_count_(0),
+      count_report_limiter_(kMaxViewRate,
+                            kViewReportInterval,
+                            base::BindRepeating(&NewsP3A::OnViewReportInterval,
+                                                base::Unretained(this))) {}
+
+NewsP3A::~NewsP3A() = default;
+
+void NewsP3A::RecordAtSessionStart() {
+  raw_session_card_view_count_ = 0;
+  limited_session_card_view_count_ = 0;
+
+  p3a_utils::RecordFeatureUsage(prefs_, prefs::kBraveTodayFirstSessionTime,
                                 prefs::kBraveTodayLastSessionTime);
 
-  RecordLastUsageTime(prefs);
-  RecordNewUserReturning(prefs);
-  RecordDaysInMonthUsedCount(prefs, true);
+  RecordLastUsageTime(prefs_);
+  RecordNewUserReturning(prefs_);
+  RecordDaysInMonthUsedCount(prefs_, true);
 
-  RecordWeeklySessionCount(prefs, true);
-  ResetCurrSessionTotalViewsCount(prefs);
+  RecordWeeklySessionCount(prefs_, true);
 }
 
-void RecordWeeklyMaxCardVisitsCount(
-    PrefService* prefs,
+void NewsP3A::RecordWeeklyMaxCardVisitsCount(
     uint64_t cards_visited_session_total_count) {
   // Track how many Brave Today cards have been viewed per session
   // (each NTP / NTP Message Handler is treated as 1 session).
   constexpr int buckets[] = {0, 1, 3, 6, 10, 15, 100};
   uint64_t max = UpdateWeeklyStorageWithValueAndGetMax(
-      prefs, prefs::kBraveTodayWeeklyCardVisitsCount,
+      prefs_, prefs::kBraveTodayWeeklyCardVisitsCount,
       cards_visited_session_total_count);
   p3a_utils::RecordToHistogramBucket(kWeeklyMaxCardVisitsHistogramName, buckets,
                                      max);
 }
 
-void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
-                                   uint64_t cards_viewed_session_total_count) {
+void NewsP3A::RecordWeeklyMaxCardViewsCount(uint64_t new_card_views) {
+  limited_session_card_view_count_ += new_card_views;
   // Track how many Brave Today cards have been viewed per session
   // (each NTP / NTP Message Handler is treated as 1 session).
   constexpr int buckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
   uint64_t max = UpdateWeeklyStorageWithValueAndGetMax(
-      prefs, prefs::kBraveTodayWeeklyCardViewsCount,
-      cards_viewed_session_total_count);
+      prefs_, prefs::kBraveTodayWeeklyCardViewsCount,
+      limited_session_card_view_count_);
   p3a_utils::RecordToHistogramBucket(kWeeklyMaxCardViewsHistogramName, buckets,
                                      max);
 }
 
-void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
+void NewsP3A::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
   // Store current weekly total in p3a, ready to send on the next upload
   constexpr int buckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
   uint64_t total = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveTodayWeeklyDisplayAdViewedCount, is_add);
+      prefs_, prefs::kBraveTodayWeeklyDisplayAdViewedCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklyDisplayAdsViewedHistogramName,
                                      buckets, total);
 }
 
-void RecordDirectFeedsTotal(PrefService* prefs) {
+void NewsP3A::RecordDirectFeedsTotal() {
   constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
-  const auto& direct_feeds_dict = prefs->GetDict(prefs::kBraveTodayDirectFeeds);
+  const auto& direct_feeds_dict =
+      prefs_->GetDict(prefs::kBraveTodayDirectFeeds);
   std::size_t feed_count = direct_feeds_dict.size();
   p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, buckets,
                                      feed_count);
 }
 
-void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
+void NewsP3A::RecordCardViewMetrics(uint64_t cards_viewed_session_total_count) {
+  DCHECK_GE(cards_viewed_session_total_count, raw_session_card_view_count_);
+  uint64_t new_card_views =
+      cards_viewed_session_total_count - raw_session_card_view_count_;
+  raw_session_card_view_count_ = cards_viewed_session_total_count;
+  count_report_limiter_.Add(new_card_views);
+}
+
+void NewsP3A::RecordWeeklyAddedDirectFeedsCount(int change) {
   constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
   uint64_t weekly_total = AddToWeeklyStorageAndGetSum(
-      prefs, prefs::kBraveTodayWeeklyAddedDirectFeedsCount, change);
+      prefs_, prefs::kBraveTodayWeeklyAddedDirectFeedsCount, change);
 
   p3a_utils::RecordToHistogramBucket(kWeeklyAddedDirectFeedsHistogramName,
                                      buckets, weekly_total);
 }
 
-void RecordTotalCardViews(PrefService* prefs,
-                          uint64_t cards_viewed_session_total_count) {
-  WeeklyStorage total_storage(prefs, prefs::kBraveTodayTotalCardViews);
+void NewsP3A::RecordTotalCardViews(uint64_t new_card_views) {
+  WeeklyStorage total_storage(prefs_, prefs::kBraveTodayTotalCardViews);
 
-  uint64_t stored_curr_session_views =
-      prefs->GetUint64(prefs::kBraveTodayCurrSessionCardViews);
-
-  // Since the front-end repeatedly sends the updated total,
-  // we should subtract the last known total for the current session and
-  // add the new total.
-  total_storage.SubDelta(stored_curr_session_views);
-  total_storage.AddDelta(cards_viewed_session_total_count);
-
-  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews,
-                   cards_viewed_session_total_count);
+  total_storage.AddDelta(new_card_views);
 
   uint64_t total = total_storage.GetWeeklySum();
 
   int buckets[] = {0, 1, 10, 20, 40, 80, 100};
   VLOG(1) << "NewsP3A: total card views update: total = " << total
-          << " curr session = " << cards_viewed_session_total_count;
+          << " curr session = " << new_card_views;
   p3a_utils::RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets,
                                      total);
 }
 
-void RecordAtInit(PrefService* prefs) {
-  ResetCurrSessionTotalViewsCount(prefs);
-
-  RecordLastUsageTime(prefs);
-  RecordNewUserReturning(prefs);
-  RecordDaysInMonthUsedCount(prefs, false);
-
-  RecordDirectFeedsTotal(prefs);
-  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
-  RecordWeeklySessionCount(prefs, false);
-  RecordWeeklyMaxCardVisitsCount(prefs, 0);
-  RecordWeeklyMaxCardViewsCount(prefs, 0);
-  RecordWeeklyDisplayAdsViewedCount(prefs, false);
-  RecordTotalCardViews(prefs, 0);
+void NewsP3A::OnViewReportInterval(uint64_t new_card_views) {
+  RecordWeeklyMaxCardViewsCount(new_card_views);
+  RecordTotalCardViews(new_card_views);
 }
 
-void RegisterProfilePrefs(PrefRegistrySimple* registry) {
+void NewsP3A::RecordAtInit() {
+  RecordLastUsageTime(prefs_);
+  RecordNewUserReturning(prefs_);
+  RecordDaysInMonthUsedCount(prefs_, false);
+
+  RecordDirectFeedsTotal();
+  RecordWeeklyAddedDirectFeedsCount(0);
+  RecordWeeklySessionCount(prefs_, false);
+  RecordWeeklyMaxCardVisitsCount(0);
+  RecordWeeklyMaxCardViewsCount(0);
+  RecordWeeklyDisplayAdsViewedCount(false);
+  RecordTotalCardViews(0);
+}
+
+void NewsP3A::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveTodayWeeklySessionCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardViewsCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardVisitsCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyDisplayAdViewedCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyAddedDirectFeedsCount);
   registry->RegisterListPref(prefs::kBraveTodayTotalCardViews);
-  registry->RegisterUint64Pref(prefs::kBraveTodayCurrSessionCardViews, 0);
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, prefs::kBraveTodayFirstSessionTime,
       prefs::kBraveTodayLastSessionTime, prefs::kBraveTodayUsedSecondDay,

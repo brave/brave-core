@@ -8,6 +8,9 @@
 
 #include <cstdint>
 
+#include "base/memory/raw_ptr.h"
+#include "brave/components/p3a_utils/count_report_limiter.h"
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -34,19 +37,32 @@ constexpr char kLastUsageTimeHistogramName[] = "Brave.Today.LastUsageTime";
 constexpr char kNewUserReturningHistogramName[] =
     "Brave.Today.NewUserReturning";
 
-void RecordAtInit(PrefService* prefs);
-void RecordAtSessionStart(PrefService* prefs);
+class NewsP3A {
+ public:
+  explicit NewsP3A(PrefService* prefs);
+  ~NewsP3A();
 
-void RecordWeeklyMaxCardVisitsCount(PrefService* prefs,
-                                    uint64_t cards_visited_session_total_count);
-void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
-                                   uint64_t cards_viewed_session_total_count);
-void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add);
-void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change);
-void RecordDirectFeedsTotal(PrefService* prefs);
-void RecordTotalCardViews(PrefService* prefs,
-                          uint64_t cards_viewed_session_total_count);
-void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  void RecordAtInit();
+  void RecordAtSessionStart();
+
+  void RecordWeeklyMaxCardVisitsCount(
+      uint64_t cards_visited_session_total_count);
+  void RecordWeeklyDisplayAdsViewedCount(bool is_add);
+  void RecordWeeklyAddedDirectFeedsCount(int change);
+  void RecordDirectFeedsTotal();
+  void RecordCardViewMetrics(uint64_t cards_viewed_session_total_count);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+ private:
+  void OnViewReportInterval(uint64_t new_card_views);
+  void RecordWeeklyMaxCardViewsCount(uint64_t new_card_views);
+  void RecordTotalCardViews(uint64_t new_card_views);
+
+  raw_ptr<PrefService> prefs_;
+  uint64_t raw_session_card_view_count_;
+  uint64_t limited_session_card_view_count_;
+  p3a_utils::CountReportLimiter count_report_limiter_;
+};
 
 }  // namespace p3a
 }  // namespace brave_news

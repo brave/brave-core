@@ -18,6 +18,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
+#include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/channels_controller.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
@@ -162,6 +163,8 @@ class BraveNewsController : public KeyedService,
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
+
+  p3a::NewsP3A news_p3a_;
 
   base::ScopedObservation<PublishersController, PublishersController::Observer>
       publishers_observation_;

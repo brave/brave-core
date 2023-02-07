@@ -1,6 +1,8 @@
 static_library("p3a_utils") {
   sources = [
     "bucket.h",
+    "count_report_limiter.cc",
+    "count_report_limiter.h",
     "feature_usage.cc",
     "feature_usage.h",
   ]

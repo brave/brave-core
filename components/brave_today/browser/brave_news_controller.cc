@@ -70,7 +70,7 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
   registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
 
-  p3a::RegisterProfilePrefs(registry);
+  p3a::NewsP3A::RegisterProfilePrefs(registry);
 }
 
 BraveNewsController::BraveNewsController(
@@ -104,6 +104,7 @@ BraveNewsController::BraveNewsController(
                               &publishers_controller_,
                               &api_request_helper_,
                               history_service),
+      news_p3a_(prefs),
       publishers_observation_(this),
       weak_ptr_factory_(this) {
   DCHECK(prefs_);
@@ -124,7 +125,7 @@ BraveNewsController::BraveNewsController(
 
   publishers_observation_.Observe(&publishers_controller_);
 
-  p3a::RecordAtInit(prefs_);
+  news_p3a_.RecordAtInit();
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();
@@ -289,8 +290,8 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                     std::move(callback)),
                 true);
 
-            p3a::RecordDirectFeedsTotal(controller->prefs_);
-            p3a::RecordWeeklyAddedDirectFeedsCount(controller->prefs_, 1);
+            controller->news_p3a_.RecordDirectFeedsTotal();
+            controller->news_p3a_.RecordWeeklyAddedDirectFeedsCount(1);
           },
           feed_url, std::move(callback), base::Unretained(this)));
 }
@@ -301,8 +302,8 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   // Mark feed as requiring update
   publishers_controller_.EnsurePublishersIsUpdating();
 
-  p3a::RecordDirectFeedsTotal(prefs_);
-  p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
+  news_p3a_.RecordDirectFeedsTotal();
+  news_p3a_.RecordWeeklyAddedDirectFeedsCount(-1);
 
   for (const auto& receiver : publishers_listeners_) {
     auto event = mojom::PublishersEvent::New();
@@ -497,13 +498,12 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
 }
 
 void BraveNewsController::OnInteractionSessionStarted() {
-  p3a::RecordAtSessionStart(prefs_);
+  news_p3a_.RecordAtSessionStart();
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
     uint16_t cards_visited_session_total_count) {
-  p3a::RecordWeeklyMaxCardVisitsCount(prefs_,
-                                      cards_visited_session_total_count);
+  news_p3a_.RecordWeeklyMaxCardVisitsCount(cards_visited_session_total_count);
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -532,8 +532,7 @@ void BraveNewsController::OnPromotedItemVisit(
 
 void BraveNewsController::OnSessionCardViewsCountChanged(
     uint16_t cards_viewed_session_total_count) {
-  p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
-  p3a::RecordTotalCardViews(prefs_, cards_viewed_session_total_count);
+  news_p3a_.RecordCardViewMetrics(cards_viewed_session_total_count);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -585,7 +584,7 @@ void BraveNewsController::OnDisplayAdView(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kViewed);
 
-  p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
+  news_p3a_.RecordWeeklyDisplayAdsViewedCount(true);
 }
 
 void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
