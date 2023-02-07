@@ -33,6 +33,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
   }
 
   func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab) {
+    if tabManager.selectedTab !== tab { return }
     showReaderModeBar(animated: true)
     tab.showContent(true)
   }
