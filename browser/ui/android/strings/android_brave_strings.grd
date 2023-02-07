@@ -2103,20 +2103,17 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_TITLE" desc="Brave Wallet title for Ramp.Network" translateable="false">
       Ramp.Network
     </message>
+    <message name="IDS_BRAVE_WALLET_RAMP_NETWORK_SHORT" desc="Brave Wallet title for Ramp.Network short version" translateable="false">
+      Ramp
+    </message>
     <message name="IDS_BRAVE_WALLET_SARDINE_TITLE" desc="Brave Wallet title for Sardine" translateable="false">
       Sardine
     </message>
-    <message name="IDS_BRAVE_WALLET_TRANSAK_TITLE" desc="Brave Wallet title for Ramp.Network" translateable="false">
+    <message name="IDS_BRAVE_WALLET_TRANSAK_TITLE" desc="Brave Wallet title for Transak" translateable="false">
       Transak
     </message>
-    <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP_NETWORK" desc="Brave Wallet text for Ramp.Network button">
-      Buy with Ramp
-    </message>
-    <message name="IDS_BRAVE_WALLET_BUY_WITH_SARDINE" desc="Brave Wallet text for Sardine button">
-      Buy with Sardine
-    </message>
-    <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Brave Wallet text for Transak button">
-      Buy with Transak
+    <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP_PROVIDER" desc="Brave Wallet text for ramp provider button">
+      Buy with <ph name="RAMP_PROVIDER">%1$s</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_SETTING_TITLE" desc="The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0">
       Clear transaction &amp; nonce info

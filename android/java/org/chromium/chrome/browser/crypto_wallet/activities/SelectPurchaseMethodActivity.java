@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.brave_wallet.mojom.OnRampProvider;
@@ -69,8 +70,11 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
         mTransakLayout = findViewById(R.id.transak_container);
 
         mRampButton = findViewById(R.id.purchase_method_btn_ramp);
+        mRampButton.setText(getRampProviderTextButton(R.string.brave_wallet_ramp_network_short));
         mSardineButton = findViewById(R.id.purchase_method_btn_sardine);
+        mSardineButton.setText(getRampProviderTextButton(R.string.brave_wallet_sardine_title));
         mTransakButton = findViewById(R.id.purchase_method_btn_transak);
+        mTransakButton.setText(getRampProviderTextButton(R.string.brave_wallet_transak_title));
 
         onInitialLayoutInflationComplete();
     }
@@ -109,6 +113,11 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
                                 });
                     });
         }
+    }
+
+    private String getRampProviderTextButton(@StringRes int providerNameResource) {
+        return String.format(getString(R.string.brave_wallet_buy_with_ramp_provider),
+                getString(providerNameResource));
     }
 
     private void setupOnRampService(

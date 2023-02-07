@@ -96,7 +96,6 @@
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
                 android:layout_marginVertical="8dp"
-                android:text="@string/brave_wallet_buy_with_ramp_network"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -152,7 +151,6 @@
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
                 android:layout_marginVertical="8dp"
-                android:text="@string/brave_wallet_buy_with_sardine"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -209,7 +207,6 @@
                 style="@style/BraveWalletButtonHollow"
                 android:layout_gravity="start"
                 android:layout_marginVertical="8dp"
-                android:text="@string/brave_wallet_buy_with_transak"
                 android:textSize="18sp" />
 
         </LinearLayout>
