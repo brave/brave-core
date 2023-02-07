@@ -27,11 +27,12 @@ export const localeStrings = {
   verifiedCreator: 'Verified Creator',
   refreshStatus: 'Refresh Creator verification status',
   pendingTipText: 'For now, any tip you make will remain pending ' +
-                  'and retry automatically for 90 days. $1Learn more$2',
+                  'and retry automatically for 90 days.',
   pendingTipTitle: 'This creator is not signed up yet.',
   pendingTipTitleRegistered: 'You\'re connected to $1, but this creator ' +
                              'is connected to $2. This means your tip ' +
                              'can\'t reach this creator.',
+  unverifiedTextMore: 'Learn more.',
   platformPublisherTitle: '$1 on $2',
   attention: 'Attention',
   sendTip: 'Send Tip',

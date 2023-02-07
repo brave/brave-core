@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -17,8 +18,6 @@ import { RefreshStatusIcon } from './icons/refresh_status_icon'
 import { getExternalWalletProviderName } from '../../shared/lib/external_wallet'
 
 import * as style from './publisher_card.style'
-
-const pendingTipsURL = 'https://brave.com/faq/#unclaimed-funds'
 
 export function PublisherCard () {
   const { getString } = React.useContext(LocaleContext)
@@ -93,16 +92,11 @@ export function PublisherCard () {
         </style.pendingBubbleHeader>
         <style.pendingBubbleText>
           {
-            formatMessage(getString('pendingTipText'), {
-              tags: {
-                $1: content => (
-                  <NewTabLink key='link' href={pendingTipsURL}>
-                    {content}
-                  </NewTabLink>
-                )
-              }
-            })
+            getString('pendingTipText')
           }
+          <NewTabLink href='https://brave.com/faq/#unclaimed-funds'>
+            {getString('unverifiedTextMore')}
+          </NewTabLink>
         </style.pendingBubbleText>
       </style.pendingBubble>
     )
