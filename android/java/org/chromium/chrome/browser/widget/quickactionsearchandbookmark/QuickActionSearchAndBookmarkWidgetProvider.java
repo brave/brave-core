@@ -31,11 +31,17 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.library_loader.ProcessInitException;
+import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
 import org.chromium.chrome.browser.document.ChromeLauncherActivity;
+import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
+import org.chromium.chrome.browser.init.EmptyBrowserParts;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
@@ -52,17 +58,22 @@ import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.webapps.ShortcutSource;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.GURL;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvider {
+    private static final String TAG = "WidgetProvider";
+
     static class QuickActionSearchAndBookmarkWidgetProviderDelegate
             implements Consumer<SearchActivityPreferences> {
         public QuickActionSearchAndBookmarkWidgetProviderDelegate() {}
@@ -113,9 +124,37 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     };
 
     private static QuickActionSearchAndBookmarkWidgetProviderDelegate mDelegate;
+    private static final Object mLock = new Object();
+    private static Set<Runnable> mUpdateAppWidgetsRunnables;
+
+    private boolean mNativeLoaded;
 
     public QuickActionSearchAndBookmarkWidgetProvider() {
-        ChromeBrowserInitializer.getInstance().handleSynchronousStartup();
+        mNativeLoaded = false;
+        QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables =
+                new HashSet<Runnable>();
+        final BrowserParts parts = new EmptyBrowserParts() {
+            @Override
+            public void finishNativeInitialization() {
+                synchronized (QuickActionSearchAndBookmarkWidgetProvider.mLock) {
+                    mNativeLoaded = true;
+                    for (Runnable runnable :
+                            QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables) {
+                        PostTask.postTask(UiThreadTaskTraits.DEFAULT, runnable);
+                    }
+                    QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables.clear();
+                }
+            }
+        };
+
+        try {
+            ChromeBrowserInitializer.getInstance().handlePreNativeStartupAndLoadLibraries(parts);
+
+            ChromeBrowserInitializer.getInstance().handlePostNativeStartup(
+                    true /* isAsync */, parts);
+        } catch (ProcessInitException e) {
+            Log.e(TAG, "Background Launch Error", e);
+        }
     }
 
     public static void initializeDelegate() {
@@ -143,14 +182,38 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        updateAppWidgets(appWidgetIds);
+        runUpdateAppWidgetsWithNative(appWidgetIds);
     }
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-        updateAppWidgets(new int[] {appWidgetId});
+        runUpdateAppWidgetsWithNative(new int[] {appWidgetId});
+    }
+
+    private void runUpdateAppWidgetsWithNative(int[] appWidgetIds) {
+        synchronized (QuickActionSearchAndBookmarkWidgetProvider.mLock) {
+            if (!mNativeLoaded) {
+                QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables.add(
+                        buildStartWithNativeRunnable(appWidgetIds));
+
+                return;
+            }
+        }
+
+        QuickActionSearchAndBookmarkWidgetProvider.updateAppWidgets(appWidgetIds);
+    }
+
+    /** Builds a runnable starting task with native portion. */
+    private Runnable buildStartWithNativeRunnable(final int[] appWidgetIds) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                ThreadUtils.assertOnUiThread();
+                QuickActionSearchAndBookmarkWidgetProvider.updateAppWidgets(appWidgetIds);
+            }
+        };
     }
 
     public static void updateTileIcon(Tile tile) {
