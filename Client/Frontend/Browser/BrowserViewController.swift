@@ -1742,25 +1742,18 @@ public class BrowserViewController: UIViewController {
         }
         break
       }
-
-      let policies = [
-        SecPolicyCreateBasicX509(),
-        SecPolicyCreateSSL(true, tab.webView?.url?.host as CFString?),
-      ]
-
-      SecTrustSetPolicies(serverTrust, policies as CFTypeRef)
-      let queue = DispatchQueue.global()
-      queue.async {
-        SecTrustEvaluateAsyncWithError(serverTrust, queue) { _, secTrustResult, _ in
-          DispatchQueue.main.async {
-            if secTrustResult {
-              tab.secureContentState = .secure
-            } else {
-              tab.secureContentState = .insecure
-            }
-            self.updateURLBar()
-          }
+      
+      let host = tab.webView?.url?.host
+      
+      Task {
+        do {
+          try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
+          tab.secureContentState = .secure
+        } catch {
+          tab.secureContentState = .insecure
         }
+        
+        self.updateURLBar()
       }
     }
   }
