@@ -666,3 +666,11 @@
 -keep class org.chromium.chrome.browser.settings.BravePreferenceFragment {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.notifications.StandardNotificationBuilder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder {
+    public <init>(...);
+}

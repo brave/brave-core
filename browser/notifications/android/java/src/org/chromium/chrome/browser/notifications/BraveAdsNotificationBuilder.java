@@ -2,7 +2,7 @@
  * Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
+ * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package org.chromium.chrome.browser.notifications;
@@ -39,7 +39,7 @@ import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 /**
  * Builds a notification according to BraveAds spec.
  */
-public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
+public class BraveAdsNotificationBuilder extends StandardNotificationBuilder {
     /**
      * The maximum width of action icons in dp units.
      */
@@ -68,32 +68,15 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     private static final int COMPACT_BODY_CONTAINER_HEIGHT_S = 40;
 
-    /**
-     * The amount of padding at the start of the button, either before an icon or before the text.
-     */
-    private static final int BUTTON_PADDING_START_DP = 8;
-
-    /**
-     * The amount of padding between the icon and text of a button. Used only if there is an icon.
-     */
-    private static final int BUTTON_ICON_PADDING_DP = 8;
-
-    /**
-     * The size of the work profile badge (width and height).
-     */
-    private static final int WORK_PROFILE_BADGE_SIZE_DP = 16;
-
-    /**
-     * Material Grey 600 - to be applied to action button icons in the Material theme.
-     */
-    private static final int BUTTON_ICON_COLOR_MATERIAL = 0xff757575;
-
     private static Bitmap sBraveIcon;
 
     private final Context mContext;
 
+    private boolean mIsBraveAdsNotification;
+
     public BraveAdsNotificationBuilder(Context context) {
-        super(context.getResources());
+        super(context);
+
         mContext = context;
     }
 
@@ -105,11 +88,16 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     @Override
     public NotificationBuilderBase setChannelId(String channelId) {
-        return super.setChannelId(BraveChannelDefinitions.ChannelId.BRAVE_ADS);
+        return super.setChannelId(
+                mIsBraveAdsNotification ? BraveChannelDefinitions.ChannelId.BRAVE_ADS : channelId);
     }
 
     @Override
     public NotificationWrapper build(NotificationMetadata metadata) {
+        if (!mIsBraveAdsNotification) {
+            return super.build(metadata);
+        }
+
         // A note about RemoteViews and updating notifications. When a notification is passed to the
         // {@code NotificationManager} with the same tag and id as a previous notification, an
         // in-place update will be performed. In that case, the actions of all new
@@ -135,7 +123,6 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
             view.setImageViewBitmap(R.id.icon, getBraveIcon());
             view.setViewPadding(R.id.title, 0, scaledPadding, 0, 0);
             view.setViewPadding(R.id.body_container, 0, scaledPadding, 0, scaledPadding);
-            // addWorkProfileBadge(view);
         }
 
         // Support following custom notification changes on Android 12:
@@ -227,32 +214,6 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
     }
 
     /**
-     * Shows the work profile badge if it is needed.
-     */
-    private void addWorkProfileBadge(RemoteViews view) {
-        Resources resources = mContext.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        int size = dpToPx(metrics, WORK_PROFILE_BADGE_SIZE_DP);
-        int[] colors = new int[size * size];
-
-        // Create an immutable bitmap, so that it can not be reused for painting a badge into it.
-        Bitmap bitmap = Bitmap.createBitmap(colors, size, size, Bitmap.Config.ARGB_8888);
-
-        Drawable inputDrawable = new BitmapDrawable(resources, bitmap);
-        Drawable outputDrawable =
-                mContext.getPackageManager().getUserBadgedDrawableForDensity(inputDrawable,
-                        Process.myUserHandle(), null /* badgeLocation */, metrics.densityDpi);
-
-        // The input bitmap is immutable, so the output drawable will be a different instance from
-        // the input drawable if the work profile badge was applied.
-        if (inputDrawable != outputDrawable && outputDrawable instanceof BitmapDrawable) {
-            view.setImageViewBitmap(
-                    R.id.work_profile_badge, ((BitmapDrawable) outputDrawable).getBitmap());
-            view.setViewVisibility(R.id.work_profile_badge, View.VISIBLE);
-        }
-    }
-
-    /**
      * Scales down the maximum number of displayed lines in the body text if font scaling is greater
      * than 1.0. Never scales up the number of lines, as on some devices the notification text is
      * rendered in dp units (which do not scale) and additional lines could lead to cropping at the
@@ -289,10 +250,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         return dpToPx(metrics, paddingScale * MAX_SCALABLE_PADDING_DP);
     }
 
-    /**
-     * Converts a px value to a dp value.
-     */
-    private static int pxToDp(float value, DisplayMetrics metrics) {
-        return Math.round(value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+    public void setIsBraveAdsNotification(boolean isBraveAdsNotification) {
+        mIsBraveAdsNotification = isBraveAdsNotification;
     }
 }
