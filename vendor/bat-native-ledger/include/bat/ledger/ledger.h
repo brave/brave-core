@@ -23,7 +23,6 @@
 namespace ledger {
 
 extern mojom::Environment _environment;
-extern int gemini_retries;
 extern bool is_debug;
 extern bool is_testing;
 extern int state_migration_target_version_for_testing;

@@ -215,7 +215,7 @@ ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   DCHECK(ads_service_);
 
   absl::optional<ads::NewTabPageAdInfo> ad_info =
-      ads_service_->GetPrefetchedNewTabPageAd();
+      ads_service_->GetPrefetchedNewTabPageAdForDisplay();
   if (!ad_info) {
     return absl::nullopt;
   }

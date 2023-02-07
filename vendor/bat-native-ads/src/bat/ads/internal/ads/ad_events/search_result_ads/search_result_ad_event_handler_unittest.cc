@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
 #include "bat/ads/internal/account/deposits/deposits_database_table.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_info.h"
@@ -75,21 +76,24 @@ void ExpectDepositExistsForCreativeInstanceId(
   const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [](const bool success, const absl::optional<DepositInfo>& deposit) {
-        ASSERT_TRUE(success);
+      base::BindOnce(
+          [](const bool success, const absl::optional<DepositInfo>& deposit) {
+            ASSERT_TRUE(success);
 
-        EXPECT_TRUE(deposit);
-      });
+            EXPECT_TRUE(deposit);
+          }));
 }
 
 void ExpectConversionCountEquals(const size_t expected_count) {
   const database::table::Conversions database_table;
-  database_table.GetAll(
-      [expected_count](const bool success, const ConversionList& conversions) {
+  database_table.GetAll(base::BindOnce(
+      [](const size_t expected_count, const bool success,
+         const ConversionList& conversions) {
         ASSERT_TRUE(success);
 
         EXPECT_EQ(expected_count, conversions.size());
-      });
+      },
+      expected_count));
 }
 
 }  // namespace
@@ -114,8 +118,8 @@ class BatAdsSearchResultAdEventHandlerTest : public EventHandlerObserver,
                  const mojom::SearchResultAdEventType event_type) {
     event_handler_->FireEvent(
         std::move(ad_mojom), event_type,
-        [](const bool success, const std::string& placement_id,
-           const mojom::SearchResultAdEventType event_type) {});
+        base::BindOnce([](const bool success, const std::string& placement_id,
+                          const mojom::SearchResultAdEventType event_type) {}));
   }
 
   void OnSearchResultAdServed(const SearchResultAdInfo& ad) override {

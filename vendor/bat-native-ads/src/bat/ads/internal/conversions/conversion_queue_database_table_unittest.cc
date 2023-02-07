@@ -6,6 +6,7 @@
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
@@ -66,13 +67,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
   const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -97,13 +99,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info, info};
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -147,13 +150,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -191,12 +195,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
 
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
-      [&expected_conversion_queue_items](
-          const bool success, const std::string& /*creative_instance_id*/,
-          const ConversionQueueItemList& conversion_queue_items) {
-        ASSERT_TRUE(success);
-        EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      base::BindOnce(
+          [](const ConversionQueueItemList& expected_conversion_queue_items,
+             const bool success, const std::string& /*creative_instance_id*/,
+             const ConversionQueueItemList& conversion_queue_items) {
+            ASSERT_TRUE(success);
+            EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
+          },
+          expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -230,13 +236,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
-  database_table_->GetUnprocessed(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetUnprocessed(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -279,13 +286,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemList expected_conversion_queue_items = {
       info_2, info_3, info_1};
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
@@ -319,13 +327,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -373,13 +382,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
@@ -413,13 +423,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
   // Assert
   const ConversionQueueItemList expected_conversion_queue_items = {info_2};
 
-  database_table_->GetUnprocessed(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetUnprocessed(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest,
@@ -467,13 +478,14 @@ TEST_F(BatAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemList expected_conversion_queue_items =
       conversion_queue_items;
 
-  database_table_->GetAll(
-      [&expected_conversion_queue_items](
-          const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
+  database_table_->GetAll(base::BindOnce(
+      [](const ConversionQueueItemList& expected_conversion_queue_items,
+         const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
         EXPECT_EQ(expected_conversion_queue_items, conversion_queue_items);
-      });
+      },
+      expected_conversion_queue_items));
 }
 
 TEST_F(BatAdsConversionQueueDatabaseTableTest, TableName) {

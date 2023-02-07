@@ -5,11 +5,15 @@
 
 #include "bat/ads/internal/account/deposits/non_cash_deposit.h"
 
+#include <utility>
+
+#include "base/functional/callback.h"
+
 namespace ads {
 
 void NonCashDeposit::GetValue(const std::string& /*creative_instance_id*/,
                               GetDepositCallback callback) {
-  callback(/*success */ true, /* value*/ 0.0);
+  std::move(callback).Run(/*success */ true, /* value*/ 0.0);
 }
 
 }  // namespace ads

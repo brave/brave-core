@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { StyledButton, StyledDiv } from '../../shared.styles'
+import { StyledButton, StyledDiv, Row } from '../../shared.styles'
 
 import {
   AssetIconProps,
@@ -66,4 +66,10 @@ export const IconsWrapper = styled.div`
   flex-direction: row;
   position: relative;
   margin-right: 16px;
+`
+
+export const IconAndName = styled(Row)`
+  width: 80%;
+  overflow: hidden;
+  white-space: pre-line;
 `

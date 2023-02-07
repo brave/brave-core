@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/base64url.h"
@@ -40,7 +41,7 @@ constexpr char kVerificationSignatureKey[] = "signature";
 absl::optional<OptedInInfo> CreateOptedIn(
     privacy::TokenGeneratorInterface* token_generator,
     const ConfirmationInfo& confirmation,
-    const base::Value::Dict& user_data) {
+    base::Value::Dict user_data) {
   DCHECK(token_generator);
   DCHECK(ShouldRewardUser());
 
@@ -73,7 +74,7 @@ absl::optional<OptedInInfo> CreateOptedIn(
   opted_in.unblinded_token = *unblinded_token;
 
   // User data
-  opted_in.user_data = user_data.Clone();
+  opted_in.user_data = std::move(user_data);
 
   // Credential
   ConfirmationInfo new_confirmation = confirmation;
@@ -106,7 +107,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    const base::Value::Dict& user_data) {
+    base::Value::Dict user_data) {
   DCHECK(token_generator);
   DCHECK(!created_at.is_null());
   DCHECK(!transaction_id.empty());
@@ -126,7 +127,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   }
 
   const absl::optional<OptedInInfo> opted_in =
-      CreateOptedIn(token_generator, confirmation, user_data);
+      CreateOptedIn(token_generator, confirmation, std::move(user_data));
   if (!opted_in) {
     BLOG(0, "Failed to create opted-in");
     return absl::nullopt;

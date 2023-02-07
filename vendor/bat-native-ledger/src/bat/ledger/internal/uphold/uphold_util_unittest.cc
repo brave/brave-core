@@ -89,7 +89,7 @@ TEST_F(UpholdUtilTest, GetLoginUrl) {
       base::StrCat(
           {"https://uphold.com/authorize/", BUILDFLAG(UPHOLD_CLIENT_ID),
            "?scope=cards:read cards:write user:read "
-           "transactions:transfer:application "
+           "transactions:read transactions:transfer:application "
            "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 
   // staging
@@ -101,7 +101,7 @@ TEST_F(UpholdUtilTest, GetLoginUrl) {
           {"https://wallet-sandbox.uphold.com/authorize/",
            BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
            "?scope=cards:read cards:write user:read "
-           "transactions:transfer:application "
+           "transactions:read transactions:transfer:application "
            "transactions:transfer:others&intention=login&state=rdfdsfsdfsdf"}));
 }
 
@@ -182,7 +182,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
                     BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
                     "?scope=cards:read cards:write user:read "
-                    "transactions:transfer:application "
+                    "transactions:read transactions:transfer:application "
                     "transactions:transfer:others&intention=login&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
@@ -196,7 +196,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
                     BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
                     "?scope=cards:read cards:write user:read "
-                    "transactions:transfer:application "
+                    "transactions:read transactions:transfer:application "
                     "transactions:transfer:others&intention=login&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
@@ -210,7 +210,7 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
       base::StrCat({"https://wallet-sandbox.uphold.com/authorize/",
                     BUILDFLAG(UPHOLD_STAGING_CLIENT_ID),
                     "?scope=cards:read cards:write user:read "
-                    "transactions:transfer:application "
+                    "transactions:read transactions:transfer:application "
                     "transactions:transfer:others&intention=login&state="}));
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 }

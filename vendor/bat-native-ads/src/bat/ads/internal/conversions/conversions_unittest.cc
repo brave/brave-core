@@ -5,6 +5,9 @@
 
 #include "bat/ads/internal/conversions/conversions.h"
 
+#include <utility>
+
+#include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
@@ -81,11 +84,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
@@ -116,15 +120,18 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -159,11 +166,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
@@ -197,15 +205,18 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -237,11 +248,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
@@ -272,15 +284,18 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -315,11 +330,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
@@ -353,15 +369,18 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -394,11 +413,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
@@ -430,15 +450,18 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -475,11 +498,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -516,15 +540,18 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -556,11 +583,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -592,11 +620,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
@@ -630,15 +659,18 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
@@ -672,15 +704,18 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -712,11 +747,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
@@ -747,15 +783,18 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -790,11 +829,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
@@ -828,15 +868,18 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1UL, ad_events.size());
 
-        const AdEventInfo& ad_event = ad_events.front();
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
@@ -893,19 +936,22 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
 
   ad_events_database_table_->GetIf(
       condition,
-      [&conversions](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      base::BindOnce(
+          [](const ConversionList& conversions, const bool success,
+             const AdEventList& ad_events) {
+            ASSERT_TRUE(success);
 
-        EXPECT_EQ(2UL, ad_events.size());
+            EXPECT_EQ(2UL, ad_events.size());
 
-        const ConversionInfo& conversion_1 = conversions.at(0);
-        const AdEventInfo& ad_event_1 = ad_events.at(1);
-        EXPECT_EQ(conversion_1.creative_set_id, ad_event_1.creative_set_id);
+            const ConversionInfo& conversion_1 = conversions.at(0);
+            const AdEventInfo& ad_event_1 = ad_events.at(1);
+            EXPECT_EQ(conversion_1.creative_set_id, ad_event_1.creative_set_id);
 
-        const ConversionInfo& conversion_2 = conversions.at(1);
-        const AdEventInfo& ad_event_2 = ad_events.at(0);
-        EXPECT_EQ(conversion_2.creative_set_id, ad_event_2.creative_set_id);
-      });
+            const ConversionInfo& conversion_2 = conversions.at(1);
+            const AdEventInfo& ad_event_2 = ad_events.at(0);
+            EXPECT_EQ(conversion_2.creative_set_id, ad_event_2.creative_set_id);
+          },
+          std::move(conversions)));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
@@ -938,15 +984,18 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
@@ -994,11 +1043,12 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
@@ -1028,11 +1078,12 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
@@ -1052,11 +1103,12 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
       "confirmation_type = 'conversion'";
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -1089,15 +1141,18 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest,
@@ -1128,11 +1183,12 @@ TEST_F(BatAdsConversionsTest,
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
@@ -1164,15 +1220,18 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
@@ -1204,11 +1263,12 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition, [](const bool success, const AdEventList& ad_events) {
+      condition,
+      base::BindOnce([](const bool success, const AdEventList& ad_events) {
         ASSERT_TRUE(success);
 
         EXPECT_TRUE(ad_events.empty());
-      });
+      }));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
@@ -1241,15 +1301,18 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
@@ -1282,15 +1345,18 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
@@ -1323,15 +1389,18 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
       conversion.creative_set_id.c_str());
 
   ad_events_database_table_->GetIf(
-      condition,
-      [&conversion](const bool success, const AdEventList& ad_events) {
-        ASSERT_TRUE(success);
+      condition, base::BindOnce(
+                     [](const ConversionInfo& conversion, const bool success,
+                        const AdEventList& ad_events) {
+                       ASSERT_TRUE(success);
 
-        EXPECT_EQ(1UL, ad_events.size());
-        const AdEventInfo& ad_event = ad_events.front();
+                       EXPECT_EQ(1UL, ad_events.size());
+                       const AdEventInfo& ad_event = ad_events.front();
 
-        EXPECT_EQ(conversion.creative_set_id, ad_event.creative_set_id);
-      });
+                       EXPECT_EQ(conversion.creative_set_id,
+                                 ad_event.creative_set_id);
+                     },
+                     std::move(conversion)));
 }
 
 TEST_F(BatAdsConversionsTest, ExtractConversionId) {
@@ -1361,13 +1430,13 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Act
   conversions_->MaybeConvert(
       {GURL("https://foo.bar/"), GURL("https://brave.com/thankyou")},
-      R"~(<html><meta name="ad-conversion-id" content="abc123"></html>)~",
+      R"(<html><meta name="ad-conversion-id" content="abc123"></html>)",
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(
-      [conversion](const bool success,
-                   const ConversionQueueItemList& conversion_queue_items) {
+  conversion_queue_database_table_->GetAll(base::BindOnce(
+      [](const ConversionInfo& conversion, const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
@@ -1381,7 +1450,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
 
         const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
-      });
+      },
+      conversion));
 }
 
 TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
@@ -1417,9 +1487,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(
-      [conversion](const bool success,
-                   const ConversionQueueItemList& conversion_queue_items) {
+  conversion_queue_database_table_->GetAll(base::BindOnce(
+      [](const ConversionInfo& conversion, const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
@@ -1433,7 +1503,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
 
         const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
-      });
+      },
+      conversion));
 }
 
 TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
@@ -1470,9 +1541,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
       resource.get()->id_patterns);
 
   // Assert
-  conversion_queue_database_table_->GetAll(
-      [conversion](const bool success,
-                   const ConversionQueueItemList& conversion_queue_items) {
+  conversion_queue_database_table_->GetAll(base::BindOnce(
+      [](const ConversionInfo& conversion, const bool success,
+         const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
         ASSERT_EQ(1UL, conversion_queue_items.size());
@@ -1486,7 +1557,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
 
         const std::string expected_conversion_id = "abc123";
         EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
-      });
+      },
+      conversion));
 }
 
 }  // namespace ads

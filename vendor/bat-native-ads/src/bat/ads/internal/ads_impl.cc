@@ -15,7 +15,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/inline_content_ad.h"
 #include "bat/ads/internal/ads/new_tab_page_ad.h"
@@ -143,14 +142,12 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   account_->AddObserver(this);
   conversions_->AddObserver(this);
-  database_manager_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
-  database_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
 }
 
@@ -377,6 +374,8 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
               return;
             }
 
+            RebuildAdEventHistoryFromDatabase();
+
             BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
             std::move(callback).Run(/*success*/ true);
           },
@@ -460,6 +459,33 @@ void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
     FailedToInitialize(std::move(callback));
     return;
   }
+
+  PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::OnPurgeExpiredAdEvents,
+                                      base::Unretained(this),
+                                      std::move(callback)));
+}
+
+void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
+                                     const bool success) {
+  if (!success) {
+    FailedToInitialize(std::move(callback));
+    return;
+  }
+
+  PurgeOrphanedAdEvents(
+      mojom::AdType::kNewTabPageAd,
+      base::BindOnce(&AdsImpl::OnPurgeOrphanedAdEvents, base::Unretained(this),
+                     std::move(callback)));
+}
+
+void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
+                                      const bool success) {
+  if (!success) {
+    FailedToInitialize(std::move(callback));
+    return;
+  }
+
+  RebuildAdEventHistoryFromDatabase();
 
   conversions::Migrate(base::BindOnce(&AdsImpl::OnMigrateConversions,
                                       base::Unretained(this),
@@ -583,10 +609,6 @@ void AdsImpl::OnConversion(
   account_->Deposit(conversion_queue_item.creative_instance_id,
                     conversion_queue_item.ad_type,
                     ConfirmationType::kConversion);
-}
-
-void AdsImpl::OnDatabaseIsReady() {
-  PurgeExpiredAdEvents();
 }
 
 void AdsImpl::OnDidTransferAd(const AdInfo& ad) {

@@ -83,7 +83,7 @@ class MockAdsService : public AdsService {
                     const std::string&,
                     ads::mojom::InlineContentAdEventType));
 
-  MOCK_METHOD0(GetPrefetchedNewTabPageAd,
+  MOCK_METHOD0(GetPrefetchedNewTabPageAdForDisplay,
                absl::optional<ads::NewTabPageAdInfo>());
   MOCK_METHOD0(PrefetchNewTabPageAd, void());
   MOCK_METHOD3(TriggerNewTabPageAdEvent,

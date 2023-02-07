@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"
@@ -40,22 +42,27 @@ void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   user_data::GetConversion(
       creative_instance_id_, confirmation_type_,
-      [=](base::Value::Dict user_data) {
-        user_data.Merge(user_data::GetBuildChannel());
-        user_data.Merge(user_data::GetCatalog());
-        user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
-        user_data.Merge(user_data::GetDiagnosticId());
-        user_data.Merge(user_data::GetLocale());
-        user_data.Merge(user_data::GetMutated());
-        user_data.Merge(user_data::GetOdyssey());
-        user_data.Merge(user_data::GetPlatform());
-        user_data.Merge(user_data::GetRotatingHash(creative_instance_id_));
-        user_data.Merge(user_data::GetStudies());
-        user_data.Merge(user_data::GetSystemTimestamp());
-        user_data.Merge(user_data::GetVersionNumber());
+      base::BindOnce(&ConfirmationUserDataBuilder::OnGetConversion,
+                     base::Unretained(this), std::move(callback)));
+}
 
-        callback(user_data);
-      });
+void ConfirmationUserDataBuilder::OnGetConversion(
+    UserDataBuilderCallback callback,
+    base::Value::Dict user_data) const {
+  user_data.Merge(user_data::GetBuildChannel());
+  user_data.Merge(user_data::GetCatalog());
+  user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
+  user_data.Merge(user_data::GetDiagnosticId());
+  user_data.Merge(user_data::GetLocale());
+  user_data.Merge(user_data::GetMutated());
+  user_data.Merge(user_data::GetOdyssey());
+  user_data.Merge(user_data::GetPlatform());
+  user_data.Merge(user_data::GetRotatingHash(creative_instance_id_));
+  user_data.Merge(user_data::GetStudies());
+  user_data.Merge(user_data::GetSystemTimestamp());
+  user_data.Merge(user_data::GetVersionNumber());
+
+  std::move(callback).Run(std::move(user_data));
 }
 
 }  // namespace ads

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/deposits/non_cash_deposit.h"
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -23,10 +24,10 @@ TEST_F(BatAdsNonCashDepositTest, GetValue) {
 
   // Act
   deposit.GetValue(kCreativeInstanceId,
-                   [](const bool success, const double value) {
+                   base::BindOnce([](const bool success, const double value) {
                      EXPECT_TRUE(success);
                      EXPECT_EQ(0.0, value);
-                   });
+                   }));
 
   // Assert
 }

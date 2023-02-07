@@ -29,8 +29,6 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad);
 
-void PurgeExpiredAdEvents();
-
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_AD_EVENTS_AD_EVENT_UTIL_H_

@@ -15,6 +15,8 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
+namespace playlist {
+
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
@@ -55,6 +57,11 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
     const base::FilePath& target_thumbnail_path) {
   VLOG(2) << __func__ << " " << id << " : " << thumbnail_url.spec();
   CancelDownloadRequest(id);
+
+  if (pause_download_for_testing_) {
+    ticket_map_[id] = {};
+    return;
+  }
 
   auto ticket = request_helper_->Download(
       thumbnail_url, {}, {}, true, target_thumbnail_path,
@@ -130,3 +137,5 @@ void PlaylistThumbnailDownloader::OnRenameFilePerFormat(
       id, result ? new_path : new_path.RemoveExtension());
 }
 #endif
+
+}  // namespace playlist

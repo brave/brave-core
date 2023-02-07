@@ -6,12 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_ADS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -28,14 +28,14 @@ class GeoTargets;
 class Segments;
 
 using GetCreativePromotedContentAdCallback =
-    std::function<void(const bool,
-                       const std::string& creative_instance_id,
-                       const CreativePromotedContentAdInfo&)>;
+    base::OnceCallback<void(const bool,
+                            const std::string& creative_instance_id,
+                            const CreativePromotedContentAdInfo&)>;
 
 using GetCreativePromotedContentAdsCallback =
-    std::function<void(const bool,
-                       const std::vector<std::string>&,
-                       const CreativePromotedContentAdList&)>;
+    base::OnceCallback<void(const bool,
+                            const std::vector<std::string>&,
+                            const CreativePromotedContentAdList&)>;
 
 class CreativePromotedContentAds final : public TableInterface {
  public:

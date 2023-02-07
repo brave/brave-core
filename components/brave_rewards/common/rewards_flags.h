@@ -26,7 +26,6 @@ struct RewardsFlags {
   bool persist_logs = false;
   absl::optional<int> reconcile_interval;
   absl::optional<int> retry_interval;
-  absl::optional<int> gemini_retries;
   absl::optional<int> country_id;
 };
 

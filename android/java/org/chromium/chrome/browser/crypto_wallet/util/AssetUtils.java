@@ -64,6 +64,20 @@ public class AssetUtils {
                     && token.contractAddress.equalsIgnoreCase(contractAddress)
                     && token.chainId.equals(chainId);
         }
+
+        public static boolean isSameNFT(
+                BlockchainToken token, String tokenId, String contractAddress) {
+            if (token.isErc721) {
+                return token.tokenId.equals(tokenId);
+            } else if (token.isNft) { // Solana
+                return token.contractAddress.equals(contractAddress);
+            }
+            return false;
+        }
+
+        public static boolean isSameNFT(BlockchainToken token1, BlockchainToken token2) {
+            return isSameNFT(token1, token2.tokenId, token2.contractAddress);
+        }
     }
 
     public static boolean isAuroraAddress(String contractAddress, String chainId) {

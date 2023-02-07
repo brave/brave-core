@@ -245,10 +245,30 @@
               >
                 [[item.subscription_url]]
               </span>
-              <span inner-h-t-m-l="[[getStatus_(
-                item.last_update_attempt,
-                item.last_successful_update_attempt,
-                item.last_updated_pretty_text)]]"></span>
+              <!--
+                /* "Last updated" column can have four distinct states:
+                * No update ever attempted: fine to show blank
+                * Update attempted and failed, and never succeeded previously: show
+                * "Download failure"
+                * Update attempted and failed, but succeeded previously: show
+                * "Download failure since + last updated time"
+                * Update attempted and succeeded: show the last updated time
+                */
+              -->
+              <span>
+                <template is="dom-if" if="[[isEqual_(item.last_update_attempt, 0)]]">
+                  <span>—</span>
+                </template>
+                <template is="dom-if" if="[[isEqual_(item.last_successful_update_attempt, 0)]]">
+                  <mark>[[i18n('adblockSubscribeUrlDownloadFailed')]]</mark>
+                </template>
+                <template is="dom-if" if="[[isFailedUpdate_(item)]]">
+                  <span>[[item.last_updated_pretty_text]] <mark>[[i18n('adblockSubscribeUrlUpdateFailed')]]</mark></span>
+                </template>
+                <template is="dom-if" if="[[isLastAttemptFailed_(item)]]">
+                  <span>[[item.last_updated_pretty_text]]</span>
+                </template>
+              </span>
               <adblock-subscribe-dropdown
                 on-update-subscription="handleUpdateSubscription_"
                 on-view-subscription="handleViewSubscription_"

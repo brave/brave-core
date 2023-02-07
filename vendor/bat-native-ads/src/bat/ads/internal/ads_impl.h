@@ -18,7 +18,6 @@
 #include "bat/ads/history_sort_types.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/database/database_manager_observer.h"
 #include "bat/ads/internal/transfer/transfer_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "bat/ads/public/interfaces/ads.mojom-shared.h"
@@ -88,7 +87,6 @@ struct NotificationAdInfo;
 class AdsImpl final : public Ads,
                       public AccountObserver,
                       public ConversionsObserver,
-                      public DatabaseManagerObserver,
                       public TransferObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
@@ -197,6 +195,8 @@ class AdsImpl final : public Ads,
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);
   void OnCreateOrOpenDatabase(InitializeCallback callback, bool success);
+  void OnPurgeExpiredAdEvents(InitializeCallback callback, bool success);
+  void OnPurgeOrphanedAdEvents(InitializeCallback callback, bool success);
   void OnMigrateConversions(InitializeCallback callback, bool success);
   void OnMigrateRewards(InitializeCallback callback, bool success);
   void OnMigrateClientState(InitializeCallback callback, bool success);
@@ -215,9 +215,6 @@ class AdsImpl final : public Ads,
   // ConversionsObserver:
   void OnConversion(
       const ConversionQueueItemInfo& conversion_queue_item) override;
-
-  // DatabaseManagerObserver:
-  void OnDatabaseIsReady() override;
 
   // TransferObserver:
   void OnDidTransferAd(const AdInfo& ad) override;

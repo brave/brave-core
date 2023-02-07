@@ -75,8 +75,6 @@ RewardsFlags Parse(const std::string& input) {
       flags.reconcile_interval = ReadPositiveInt(value);
     } else if (name == "retry-interval") {
       flags.retry_interval = ReadPositiveInt(value);
-    } else if (name == "gemini-retries") {
-      flags.gemini_retries = ReadInt(value, [](int v) { return v >= 0; });
     } else if (name == "persist-logs") {
       flags.persist_logs = ReadBoolFlag(value);
     } else if (name == "countryid") {

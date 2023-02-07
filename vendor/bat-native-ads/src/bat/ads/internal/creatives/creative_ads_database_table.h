@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/creatives/creative_ad_info.h"
 #include "bat/ads/internal/database/database_table_interface.h"
@@ -17,9 +17,9 @@
 namespace ads::database::table {
 
 using GetCreativeAdCallback =
-    std::function<void(const bool success,
-                       const std::string& creative_instance_id,
-                       const CreativeAdInfo& ad)>;
+    base::OnceCallback<void(const bool success,
+                            const std::string& creative_instance_id,
+                            const CreativeAdInfo& ad)>;
 
 class CreativeAds final : public TableInterface {
  public:

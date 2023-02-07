@@ -19,8 +19,7 @@ namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
 constexpr char kPublicKey[] = "5LmgyD6OG0qcVeRgTzk3IWbzSWjemE4KpjTRtRW4eRk=";
 constexpr char kSecretKey[] =
-    "oyd1rHNB5xHU6TzPSO/MUUfUJNHiol1ExFHMMKV/"
-    "7dvkuaDIPo4bSpxV5GBPOTchZvNJaN6YTgqmNNG1Fbh5GQ==";
+    R"(oyd1rHNB5xHU6TzPSO/MUUfUJNHiol1ExFHMMKV/7dvkuaDIPo4bSpxV5GBPOTchZvNJaN6YTgqmNNG1Fbh5GQ==)";
 
 }  // namespace
 

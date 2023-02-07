@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -61,13 +62,13 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   return text_embedding_html_event;
 }
 
-void OnGetTextEmbeddingHtmlEvents(
-    const GetTextEmbeddingHtmlEventsCallback& callback,
-    mojom::DBCommandResponseInfoPtr response) {
+void OnGetTextEmbeddingHtmlEvents(GetTextEmbeddingHtmlEventsCallback callback,
+                                  mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get embeddings");
-    callback(/* success */ false, /* text_embedding_html_events */ {});
+    std::move(callback).Run(/* success */ false,
+                            /* text_embedding_html_events */ {});
     return;
   }
 
@@ -79,7 +80,7 @@ void OnGetTextEmbeddingHtmlEvents(
     text_embedding_html_events.push_back(text_embedding_html_event);
   }
 
-  callback(/* success */ true, text_embedding_html_events);
+  std::move(callback).Run(/* success */ true, text_embedding_html_events);
 }
 
 void RunTransaction(const std::string& query,
@@ -101,7 +102,7 @@ void RunTransaction(const std::string& query,
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnGetTextEmbeddingHtmlEvents, callback));
+      base::BindOnce(&OnGetTextEmbeddingHtmlEvents, std::move(callback)));
 }
 
 void MigrateToV25(mojom::DBTransactionInfo* transaction) {

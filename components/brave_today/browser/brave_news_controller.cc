@@ -638,6 +638,16 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
       timer_prefetch_.Start(FROM_HERE, base::Minutes(1), this,
                             &BraveNewsController::Prefetch);
     }
+
+    GetPublishers(base::BindOnce(
+        [](BraveNewsController* controller, Publishers publishers) {
+          auto event = brave_news::mojom::PublishersEvent::New();
+          event->addedOrUpdated = std::move(publishers);
+          for (const auto& listener : controller->publishers_listeners_) {
+            listener->Changed(event->Clone());
+          }
+        },
+        base::Unretained(this)));
   } else {
     VLOG(1) << "STOPPING TIMERS";
     timer_feed_update_.Stop();

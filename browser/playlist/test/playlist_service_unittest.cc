@@ -84,6 +84,31 @@ class MockObserver : public PlaylistServiceObserver {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// FakeDownloadRequestmanager
+//
+class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
+ public:
+  FakeDownloadRequestManager()
+      : PlaylistDownloadRequestManager(nullptr, nullptr) {}
+  ~FakeDownloadRequestManager() override = default;
+
+  // PlaylistDownloadRequestManager:
+  void GetMediaFilesFromPage(Request request) override {
+    std::vector<mojom::PlaylistItemPtr> result;
+    result.push_back(item_.Clone());
+    std::move(request.callback).Run(std::move(result));
+  }
+
+  // Used to mock media discovery behavior
+  void SetItemToDiscover(mojom::PlaylistItemPtr item) {
+    item_ = std::move(item);
+  }
+
+ private:
+  mojom::PlaylistItemPtr item_;
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // PlaylistServiceUnitTest fixture
 class PlaylistServiceUnitTest : public testing::Test {
  public:
@@ -359,6 +384,11 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
 
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
   auto* service = playlist_service();
+  service->download_request_manager_ =
+      std::make_unique<FakeDownloadRequestManager>();
+  auto* fake_download_request_manager =
+      static_cast<FakeDownloadRequestManager*>(
+          service->download_request_manager_.get());
 
   // Pre-condition: create a playlist item with invalid media file.
   // Then the item should be aborted.
@@ -382,6 +412,8 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params->id = id;
+
+    fake_download_request_manager->SetItemToDiscover(params.Clone());
     service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
@@ -408,7 +440,9 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
         .Times(testing::AtMost(1));
 
     service->AddObserverForTest(&observer);
-    service->RecoverLocalDataForItem(id);
+    service->RecoverLocalDataForItem(
+        id,
+        /*update_media_src_before_recovery*/ false);
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserverForTest(&observer);
@@ -434,10 +468,12 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           auto media_src = https_server()->GetURL("/valid_media_file_1");
           item->media_source = media_src;
           item->media_path = media_src;
-          service->UpdatePlaylistItemValue(
-              id, base::Value(ConvertPlaylistItemToValue(item)));
 
-          service->RecoverLocalDataForItem(id);
+          // PlaylistService should update media source to the valid url, and
+          // try recovering from the url.
+          fake_download_request_manager->SetItemToDiscover(item.Clone());
+          service->RecoverLocalDataForItem(
+              id, /*update_media_src_before_recovery=*/true);
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
 
@@ -681,7 +717,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
         EXPECT_EQ(1UL, items.size());
 
         const auto& item = items.front();
-        service->RecoverLocalDataForItem(item->id);
+        service->RecoverLocalDataForItem(
+            item->id, /*update_media_src_before_recovery*/ false);
 
         base::FilePath media_path;
         ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));
@@ -1120,6 +1157,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
 TEST_F(PlaylistServiceUnitTest, ResetAll) {
   // Pre-condition: data and preferences are changed
   auto* service = playlist_service();
+  service->thumbnail_downloader_->pause_download_for_testing_ = true;
+  service->media_file_download_manager_->pause_download_for_testing_ = true;
 
   std::string another_playlist_id;
   service->CreatePlaylist(
@@ -1133,9 +1172,9 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   mojom::PlaylistItem prototype_item;
   prototype_item.page_source = GURL("https://foo.com/");
   prototype_item.thumbnail_source = GURL("https://thumbnail.src/");
-  prototype_item.thumbnail_path = GURL("file://thumbnail/path/");
+  prototype_item.thumbnail_path = prototype_item.thumbnail_source;
   prototype_item.media_source = GURL("https://media.src/");
-  prototype_item.media_path = GURL("file://media/path/");
+  prototype_item.media_path = prototype_item.media_source;
   prototype_item.cached = false;
   prototype_item.author = "me";
   for (int i = 0; i < 5; i++) {
@@ -1150,7 +1189,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
-  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
+  service->AddMediaFilesFromItems(kDefaultPlaylistID, /* cache = */ true,
                                   std::move(items));
   service->GetPlaylist(
       kDefaultPlaylistID,
@@ -1177,6 +1216,13 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 5u);
       }));
 
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return service->thumbnail_downloader_->has_download_requests();
+  }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return service->media_file_download_manager_->has_download_requests();
+  }));
+
   auto* prefs = this->prefs();
   prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist_id);
   prefs->SetBoolean(kPlaylistCacheByDefault, false);
@@ -1192,6 +1238,10 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
 
   // Call the method -----------------------------------------------------------
   service->ResetAll();
+
+  // Check if ResetAll() drops all on-going downloads
+  EXPECT_FALSE(service->thumbnail_downloader_->has_download_requests());
+  EXPECT_FALSE(service->media_file_download_manager_->has_download_requests());
 
   // Check if ResetAll() clears all data ---------------------------------------
   EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).empty());

@@ -6,22 +6,21 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_H_
 
-#include <functional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/values.h"
-
 namespace ads {
 
 class ConfirmationType;
 
 namespace user_data {
 
-using ConversionCallback = std::function<void(base::Value::Dict)>;
+using ConversionCallback = base::OnceCallback<void(base::Value::Dict)>;
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,
-                   const ConversionCallback& callback);
+                   ConversionCallback callback);
 
 }  // namespace user_data
 }  // namespace ads

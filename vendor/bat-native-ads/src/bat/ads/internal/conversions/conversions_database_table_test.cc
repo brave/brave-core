@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -34,10 +35,11 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
 
   // Assert
   const database::table::Conversions conversions;
-  conversions.GetAll([](const bool success, const ConversionList& conversions) {
-    EXPECT_TRUE(success);
-    EXPECT_EQ(2UL, conversions.size());
-  });
+  conversions.GetAll(
+      base::BindOnce([](const bool success, const ConversionList& conversions) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(2UL, conversions.size());
+      }));
 }
 
 }  // namespace ads
