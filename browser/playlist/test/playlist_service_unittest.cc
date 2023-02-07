@@ -84,6 +84,31 @@ class MockObserver : public PlaylistServiceObserver {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// FakeDownloadRequestmanager
+//
+class FakeDownloadRequestManager : public PlaylistDownloadRequestManager {
+ public:
+  FakeDownloadRequestManager()
+      : PlaylistDownloadRequestManager(nullptr, nullptr) {}
+  ~FakeDownloadRequestManager() override = default;
+
+  // PlaylistDownloadRequestManager:
+  void GetMediaFilesFromPage(Request request) override {
+    std::vector<mojom::PlaylistItemPtr> result;
+    result.push_back(item_.Clone());
+    std::move(request.callback).Run(std::move(result));
+  }
+
+  // Used to mock media discovery behavior
+  void SetItemToDiscover(mojom::PlaylistItemPtr item) {
+    item_ = std::move(item);
+  }
+
+ private:
+  mojom::PlaylistItemPtr item_;
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // PlaylistServiceUnitTest fixture
 class PlaylistServiceUnitTest : public testing::Test {
  public:
@@ -359,6 +384,11 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
 
 TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
   auto* service = playlist_service();
+  service->download_request_manager_ =
+      std::make_unique<FakeDownloadRequestManager>();
+  auto* fake_download_request_manager =
+      static_cast<FakeDownloadRequestManager*>(
+          service->download_request_manager_.get());
 
   // Pre-condition: create a playlist item with invalid media file.
   // Then the item should be aborted.
@@ -382,6 +412,8 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
 
     auto params = GetValidCreateParamsForIncompleteMediaFileList();
     params->id = id;
+
+    fake_download_request_manager->SetItemToDiscover(params.Clone());
     service->CreatePlaylistItem(std::move(params), /* cache = */ true);
 
     WaitUntil(
@@ -408,7 +440,9 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
         .Times(testing::AtMost(1));
 
     service->AddObserverForTest(&observer);
-    service->RecoverLocalDataForItem(id);
+    service->RecoverLocalDataForItem(
+        id,
+        /*update_media_src_before_recovery*/ false);
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserverForTest(&observer);
@@ -434,10 +468,12 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           auto media_src = https_server()->GetURL("/valid_media_file_1");
           item->media_source = media_src;
           item->media_path = media_src;
-          service->UpdatePlaylistItemValue(
-              id, base::Value(ConvertPlaylistItemToValue(item)));
 
-          service->RecoverLocalDataForItem(id);
+          // PlaylistService should update media source to the valid url, and
+          // try recovering from the url.
+          fake_download_request_manager->SetItemToDiscover(item.Clone());
+          service->RecoverLocalDataForItem(
+              id, /*update_media_src_before_recovery=*/true);
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
 
@@ -681,7 +717,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
         EXPECT_EQ(1UL, items.size());
 
         const auto& item = items.front();
-        service->RecoverLocalDataForItem(item->id);
+        service->RecoverLocalDataForItem(
+            item->id, /*update_media_src_before_recovery*/ false);
 
         base::FilePath media_path;
         ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));

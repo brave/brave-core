@@ -57,7 +57,7 @@ class API {
   }
 
   recoverLocalData (playlistItemId: string) {
-    this.#pageHandler.recoverLocalDataForItem(playlistItemId)
+    this.#pageHandler.recoverLocalDataForItem(playlistItemId, /* updatePageUrlBeforeRecovery= */false)
   }
 
   removeLocalData (playlistItemId: string) {
