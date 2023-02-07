@@ -7,6 +7,7 @@ import Foundation
 import Shared
 import UIKit
 import DesignSystem
+import Favicon
 
 class TabCell: UICollectionViewCell {
 
@@ -47,7 +48,7 @@ class TabCell: UICollectionViewCell {
     }
 
     titleLabel.text = tab.displayTitle
-    favicon.image = UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
+    favicon.image = Favicon.defaultImage
 
     if !tab.displayTitle.isEmpty {
       accessibilityLabel = tab.displayTitle
@@ -61,20 +62,16 @@ class TabCell: UICollectionViewCell {
     isAccessibilityElement = true
     accessibilityHint = Strings.tabTrayCellCloseAccessibilityHint
 
-    favicon.clearMonogramFavicon()
+    favicon.image = nil
+    favicon.cancelFaviconLoad()
 
     // Tab may not be restored and so may not include a tab URL yet...
-    if let favicon = tab.displayFavicon, let url = favicon.url.asURL {
-      WebImageCacheManager.shared.load(
-        from: url,
-        completion: { [weak self] image, _, _, _, loadedURL in
-          guard url == loadedURL else { return }
-          self?.favicon.image = image ?? FaviconFetcher.defaultFaviconImage
-        })
+    if let displayFavicon = tab.displayFavicon {
+      favicon.image = displayFavicon.image ?? Favicon.defaultImage
     } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
       favicon.loadFavicon(for: url)
     } else {
-      favicon.image = UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
+      favicon.image = Favicon.defaultImage
     }
 
     screenshotView.image = tab.screenshot

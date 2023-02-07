@@ -13,48 +13,6 @@ public func == <T>(lhs: T, rhs: T) -> Bool where T: Identifiable {
   return lhs.id == rhs.id
 }
 
-public enum IconType: Int {
-  case icon, appleIcon, appleIconPrecomposed, guess, local, noneFound
-
-  public func isPreferredTo(_ other: IconType) -> Bool {
-    return rank > other.rank
-  }
-
-  fileprivate var rank: Int {
-    switch self {
-    case .appleIconPrecomposed:
-      return 5
-    case .appleIcon:
-      return 4
-    case .icon:
-      return 3
-    case .local:
-      return 2
-    case .guess:
-      return 1
-    case .noneFound:
-      return 0
-    }
-  }
-}
-
-open class Favicon: Identifiable {
-  open var id: Int?
-
-  public let url: String
-  public let date: Date
-  open var width: Int?
-  open var height: Int?
-  public let type: IconType?
-
-  // BRAVE TODO: consider removing `type` optional
-  public init(url: String, date: Date = Date(), type: IconType? = nil) {
-    self.url = url
-    self.date = date
-    self.type = type
-  }
-}
-
 // TODO: Site shouldn't have all of these optional decorators. Include those in the
 // cursor results, perhaps as a tuple.
 open class Site: Identifiable, Hashable {
@@ -91,8 +49,6 @@ open class Site: Identifiable, Hashable {
   public let url: String
   public let title: String
   open var metadata: PageMetadata?
-  // Sites may have multiple favicons. We'll return the largest.
-  open var icon: Favicon?
   open private(set) var siteType: SiteType
 
   public convenience init(url: String, title: String) {

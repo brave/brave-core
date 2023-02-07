@@ -27,6 +27,7 @@ import os.log
 #if canImport(BraveTalk)
 import BraveTalk
 #endif
+import Favicon
 import Onboarding
 import Growth
 
@@ -245,7 +246,7 @@ public class BrowserViewController: UIViewController {
   var isOnboardingOrFullScreenCalloutPresented = false
 
   private(set) var widgetBookmarksFRC: NSFetchedResultsController<Favorite>?
-  var widgetFaviconFetchers: [FaviconFetcher] = []
+  var widgetFaviconFetchers: [Task<Favicon, Error>] = []
   let deviceCheckClient: DeviceCheckClient?
   
   #if canImport(BraveTalk)
@@ -2440,6 +2441,7 @@ extension BrowserViewController: TabDelegate {
       DeAmpScriptHandler(tab: tab),
       SiteStateListenerScriptHandler(tab: tab),
       CosmeticFiltersScriptHandler(tab: tab),
+      FaviconScriptHandler(tab: tab),
       
       tab.contentBlocker,
       tab.requestBlockingContentHelper,

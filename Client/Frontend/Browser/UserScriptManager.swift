@@ -19,6 +19,7 @@ class UserScriptManager {
   static let walletSolanaNameSpace = "W\(ScriptLoader.uniqueID)"
   
   private let alwaysEnabledScripts: [ScriptType] = [
+    .faviconFetcher,
     .rewardsReporting,
     .playlist,
     .resourceDownloader,
@@ -82,6 +83,7 @@ class UserScriptManager {
   }()
   
   enum ScriptType: String, CaseIterable {
+    case faviconFetcher
     case cookieBlocking
     case rewardsReporting
     case mediaBackgroundPlay
@@ -111,6 +113,7 @@ class UserScriptManager {
       case .solanaProvider: return SolanaProviderScriptHandler.userScript
         
       // Always enabled scripts
+      case .faviconFetcher: return FaviconScriptHandler.userScript
       case .rewardsReporting: return RewardsReportingScriptHandler.userScript
       case .playlist: return PlaylistScriptHandler.userScript
       case .resourceDownloader: return ResourceDownloadScriptHandler.userScript

@@ -198,11 +198,6 @@ public class Migration {
   }
 
   public static func postCoreDataInitMigrations() {
-    if !Preferences.Migration.removeLargeFaviconsMigrationCompleted.value {
-      FaviconMO.clearTooLargeFavicons()
-      Preferences.Migration.removeLargeFaviconsMigrationCompleted.value = true
-    }
-
     if !Preferences.Migration.playlistV2FoldersInitialMigrationCompleted.value {
       movePlaylistV2Items()
     }
@@ -249,8 +244,6 @@ fileprivate extension Preferences {
       Option<Bool>(key: "migration.playlistv2-folders-initial-migration-2-completed", default: false)
     static let playlistV2SharedFoldersInitialMigrationCompleted =
       Option<Bool>(key: "migration.playlistv2-sharedfolders-initial-migration-2-completed", default: false)
-    static let removeLargeFaviconsMigrationCompleted =
-      Option<Bool>(key: "migration.remove-large-favicons", default: false)
     // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
     // It should be called only for users who have not completed the migration beforehand.
     // The reason for second migration flag is to first do file system migrations like moving database files,

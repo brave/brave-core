@@ -8,6 +8,7 @@ import WidgetKit
 import SwiftUI
 import BraveShared
 import BraveWidgetsModels
+import Favicon
 
 struct LockScreenFavoriteWidget: Widget {
   var body: some WidgetConfiguration {
@@ -26,7 +27,7 @@ struct LockScreenFavoriteWidget: Widget {
 
 private struct LockScreenFavoriteEntry: TimelineEntry {
   var date: Date
-  var favorite: BraveShared.WidgetFavorite?
+  var favorite: WidgetFavorite?
 }
 
 private struct LockScreenFavoriteProvider: IntentTimelineProvider {
@@ -56,20 +57,9 @@ private struct LockScreenFavoriteView: View {
     if let fav = entry.favorite {
       Group {
         if let attributes = fav.favicon, let image = attributes.image {
-          let includePadding: Bool = {
-            let contentModePadding: Bool = {
-              switch attributes.contentMode {
-              case .scaleToFill, .scaleAspectFit, .scaleAspectFill:
-                return false
-              default:
-                return true
-              }
-            }()
-            return contentModePadding || attributes.backgroundColor != nil || attributes.includePadding
-          }()
-          FaviconImage(image: image, contentMode: attributes.contentMode, includePadding: false) // includePadding forced to false here since we are providing our own padding below
-            .padding(includePadding ? 6 : 0)
-            .background((attributes.backgroundColor.map { Color($0) } ?? Color(white: 1)))
+          FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false) // includePadding forced to false here since we are providing our own padding below
+            .padding(6)
+            .background(Color(attributes.backgroundColor))
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .padding(12)
             .background(Color.black)
@@ -123,9 +113,8 @@ struct LockScreenFavoriteViewWidget_Previews: PreviewProvider {
             title: "Brave",
             favicon: .init(
               image: nil,
-              backgroundColor: .white,
-              contentMode: .scaleAspectFit,
-              includePadding: false
+              isMonogramImage: false,
+              backgroundColor: .white
             )
           )
         )
@@ -139,9 +128,8 @@ struct LockScreenFavoriteViewWidget_Previews: PreviewProvider {
             title: "Wikipedia",
             favicon: .init(
               image: mockImage,
-              backgroundColor: nil,
-              contentMode: .scaleAspectFit,
-              includePadding: false
+              isMonogramImage: false,
+              backgroundColor: .clear
             )
           )
         )

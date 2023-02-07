@@ -622,7 +622,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
         cell.imageView?.image = UIImage()
-        cell.imageView?.loadFavicon(for: site.tileURL, cachedOnly: true)
+        cell.imageView?.loadFavicon(for: site.tileURL)
         cell.backgroundColor = .secondaryBraveBackground
       }
         

@@ -8,12 +8,24 @@ import Shared
 import BraveShared
 import Data
 import BraveUI
+import Favicon
+
+private class FaviconHelper: ObservableObject {
+  @Published var image: UIImage?
+  private var faviconTask: Task<Void, Error>?
+
+  func load(url: URL) {
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      self.image = favicon.image
+    }
+  }
+}
 
 struct FaviconImage: View {
   let url: URL?
-  
-  // FIXME: Generalize the playlist favicon loader.
-  @StateObject private var faviconLoader = PlaylistFolderImageLoader()
+  @StateObject private var faviconLoader = FaviconHelper()
   
   init(url: String?) {
     if let url = url {
@@ -31,7 +43,7 @@ struct FaviconImage: View {
       .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
       .onAppear {
         if let url = url {
-          faviconLoader.load(domainUrl: url)
+          faviconLoader.load(url: url)
         }
       }
   }

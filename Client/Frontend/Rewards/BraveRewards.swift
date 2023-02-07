@@ -170,14 +170,13 @@ public class BraveRewards: NSObject {
   func reportTabUpdated(
     tab: Tab,
     url: URL,
-    faviconURL: URL?,
     isSelected: Bool,
     isPrivate: Bool
   ) {
     let tabId = Int(tab.rewardsId)
     if isSelected {
       ledger?.selectedTabId = UInt32(tabId)
-      tabRetrieved(tabId, url: url, faviconURL: faviconURL, html: nil)
+      tabRetrieved(tabId, url: url, html: nil)
     }
     ads.reportTabUpdated(tabId, url: url, redirectedFrom: tab.redirectURLs, isSelected: isSelected, isPrivate: isPrivate)
   }
@@ -189,12 +188,11 @@ public class BraveRewards: NSObject {
   func reportLoadedPage(
     url: URL,
     redirectionURLs: [URL]?,
-    faviconURL: URL?,
     tabId: Int,
     html: String,
     adsInnerText: String?
   ) {
-    tabRetrieved(tabId, url: url, faviconURL: faviconURL, html: html)
+    tabRetrieved(tabId, url: url, html: html)
     if let innerText = adsInnerText {
       ads.reportLoadedPage(
         with: url,
@@ -249,8 +247,8 @@ public class BraveRewards: NSObject {
     ledger?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
   }
 
-  private func tabRetrieved(_ tabId: Int, url: URL, faviconURL: URL?, html: String?) {
-    ledger?.fetchPublisherActivity(from: url, faviconURL: faviconURL, publisherBlob: html, tabId: UInt64(tabId))
+  private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {
+    ledger?.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: html, tabId: UInt64(tabId))
   }
 }
 

@@ -10,12 +10,13 @@ import CoreData
 import Shared
 import BraveShared
 import BraveUI
+import Favicon
 
 class PlaylistFolderImageLoader: ObservableObject {
   @Published var image: UIImage?
 
   private let renderer = PlaylistThumbnailRenderer()
-  private let fetcher = FavIconImageRenderer()
+  private var faviconTask: Task<Void, Error>?
 
   func load(thumbnail: PlaylistItem) {
     guard let mediaSrc = thumbnail.mediaSrc,
@@ -40,12 +41,15 @@ class PlaylistFolderImageLoader: ObservableObject {
   }
 
   func load(domainUrl: URL) {
-    fetcher.loadIcon(siteURL: domainUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing) { [weak self] image in
-      self?.image = image
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      let favicon = try await FaviconFetcher.loadIcon(url: domainUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      self.image = favicon.image
     }
   }
 
   private func loadImage(url: URL, isFavIcon: Bool) {
+    renderer.cancel()
     renderer.loadThumbnail(
       assetUrl: isFavIcon ? nil : url,
       favIconUrl: isFavIcon ? url : nil,

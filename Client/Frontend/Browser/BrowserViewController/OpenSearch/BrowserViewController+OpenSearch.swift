@@ -7,6 +7,7 @@ import Shared
 import Storage
 import UIKit
 import WebKit
+import Favicon
 import os.log
 
 // MARK: - OpenSearch
@@ -151,48 +152,14 @@ extension BrowserViewController {
       url = constructedReferenceURL
     }
 
-    downloadOpenSearchXML(url, reference: reference, title: title, iconURL: tabManager.selectedTab?.displayFavicon?.url)
+    downloadOpenSearchXML(url, reference: reference, title: title, favicon: tabManager.selectedTab?.displayFavicon)
   }
 
-  func downloadOpenSearchXML(_ url: URL, reference: String, title: String, iconURL: String?) {
+  func downloadOpenSearchXML(_ url: URL, reference: String, title: String, favicon: Favicon?) {
     customSearchEngineButton.action = .loading
 
-    var searchEngineIcon = UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
-
-    if let faviconURLString = tabManager.selectedTab?.displayFavicon?.url,
-      let iconURL = URL(string: faviconURLString) {
-
-      // Try to fetch Engine Icon using cache manager
-      WebImageCacheManager.shared.load(
-        from: iconURL,
-        completion: { [weak self] (image, _, error, _, _) in
-          if error != nil {
-            URLSession.shared.dataTask(
-              with: iconURL,
-              completionHandler: { [weak self] data, response, error in
-                guard let data = data else { return }
-
-                if let downloadedImage = UIImage(data: data) {
-                  searchEngineIcon = downloadedImage
-                  WebImageCacheManager.shared.cacheImage(image: downloadedImage, data: data, url: iconURL)
-                }
-
-                self?.createSearchEngine(url, reference: reference, icon: searchEngineIcon)
-              }
-            ).resume()
-          } else {
-            // In case fetch fails use default icon and do not block addition of this engine
-            if let favIcon = image {
-              searchEngineIcon = favIcon
-            }
-
-            self?.createSearchEngine(url, reference: reference, icon: searchEngineIcon)
-          }
-
-        })
-    } else {
-      createSearchEngine(url, reference: reference, icon: searchEngineIcon)
-    }
+    let searchEngineIcon = favicon?.image ?? Favicon.defaultImage
+    createSearchEngine(url, reference: reference, icon: searchEngineIcon)
   }
 
   private func createSearchEngine(_ url: URL, reference: String, icon: UIImage) {
