@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
+<translation id="2524310205387880526">Αξιολογήστε το Brave</translation>
 <translation id="915758461293673891">Ποσό φιλοδωρήματος:</translation>
 <translation id="1420756770787071946">Υποστήριξη αυτού του δημιουργού</translation>
 <translation id="4147995007712611681">Ρυθμίσατε ένα φιλοδώρημα που εκκρεμεί!</translation>
@@ -10,8 +11,8 @@
 <translation id="1305714751384738456">Δεν κερδίζετε Ανταμοιβές Brave</translation>
 <translation id="1483391942610220726">Δεν λαμβάνετε Αναφορές απορρήτου</translation>
 <translation id="4683790942451502796">Ενεργοποιήστε ξανά τις ειδοποιήσεις εάν θέλετε να συνεχίσετε να κερδίζετε BAT και να λαμβάνετε εβδομαδιαίες αναφορές απορρήτου.</translation>
-<translation id="1462722717055895108">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να κερδίζετε BAT</translation>
-<translation id="5457255168064266494">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να λαμβάνετε εβδομαδιαίες αναφορές απορρήτου.</translation>
+<translation id="8618359751943259593">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να κερδίζετε BAT</translation>
+<translation id="760355165169399836">Ενεργοποιήστε ξανά τις ειδοποιήσεις αν θέλετε να συνεχίσετε να λαμβάνετε εβδομαδιαίες αναφορές απορρήτου.</translation>
 <translation id="6268959058971634697">Δεν κερδίζετε Ανταμοιβές</translation>
 <translation id="1088637159642753509">Ενεργοποιήστε τις ειδοποιήσεις συσκευής για να κερδίζετε Ανταμοιβές Brave και να βλέπετε τις Αναφορές απορρήτου.</translation>
 <translation id="312404770066229090">Ενεργοποιήστε τις ειδοποιήσεις συσκευής για να κερδίζετε Ανταμοιβές Brave.</translation>
@@ -76,12 +77,23 @@
 <translation id="7534079972563542000">Ασταμάτητοι τομείς</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> Τιμή (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Υπηρεσία ονόματος Ethereum</translation>
+<translation id="531747189990625622">Υπηρεσία ονόματος Solana</translation>
 <translation id="3894650624018948468">Μέθοδος επίλυσης</translation>
 <translation id="2356070529366658676">Να γίνεται ερώτηση</translation>
 <translation id="4176463684765177261">Απενεργοποιημένη</translation>
 <translation id="59174027418879706">Ενεργοποιημένο</translation>
 <translation id="6252490671914511928">Οι κορυφαίες ιστορίες σήμερα σε μια εντελώς ιδιωτική ροή, μόνο για εσάς.</translation>
+<translation id="8300751939969131609">Ενεργοποιήστε το Brave News, για να μην χάσετε ούτε μία είδηση</translation>
 <translation id="7266075701303521777">Το Brave News υποστηρίζεται από διαφημίσεις με εντελώς ιδιωτικές και ανώνυμες διαφημίσεις που αντιστοιχίζονται στη συσκευή σας.</translation>
+<translation id="7699565323725789472">Ακολουθήστε τις αγαπημένες σας πηγές, σε μία μόνο ροή. Ανοίξτε απλώς μια καρτέλα στο Brave, κάντε κύλιση προς τα κάτω και… voila!\nΤο Brave News λειτουργεί με ιδιωτικές, ανωνυμοποιημένες διαφημίσεις.</translation>
+<translation id="1765217911817124376">Ενεργοποίηση Ειδήσεων Brave</translation>
+<translation id="8981973962043893066">Αναζήτηση για ιστότοπο, θέμα ή ροή RSS</translation>
+<translation id="3225021799163709119">Δημοφιλή</translation>
+<translation id="4750394297954878236">Προτάσεις</translation>
+<translation id="1498364270401875204">Κανάλια</translation>
+<translation id="8032569120109842252">Παρακολούθηση</translation>
+<translation id="4108314971463891922">Παρακολούθηση</translation>
+<translation id="3861486700625780712">Κατάργηση παρακολούθησης</translation>
 <translation id="4541978218358617681">Διαφήμιση</translation>
 <translation id="7823038307453615214">Εμφάνιση Brave News</translation>
 <translation id="6527303717912515753">Κοινοποίηση</translation>
@@ -133,7 +145,7 @@
 <translation id="7370959926683925817">Αποκλεισμός διαφημίσεων. Αποθήκευση δεδομένων. Κάθε μέρα.</translation>
 <translation id="7281027579943912834">Με το Brave ως προεπιλογή, κάθε σύνδεσμος που πατάτε λαμβάνει την προστασία αποκλεισμού διαφημίσεων του Brave. Κάθε σελίδα, βίντεο και ροή.</translation>
 <translation id="5148943178722443958">Βοηθήστε μας να κάνουμε το Brave καλύτερο.</translation>
-<translation id="6188781052835527980">Στείλτε ανώνυμες αναφορές διαγνωστικών, σε περίπτωση σφάλματος ή παγώματος.</translation>
+<translation id="6718362830686703942">Στείλτε αναφορές διαγνωστικών, σε περίπτωση σφάλματος ή παγώματος.</translation>
 <translation id="1929905278861178845">Κοινοποιήστε εντελώς ιδιωτικές και ανώνυμες πληροφορίες σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave.</translation>
 <translation id="2877653791257935258">Πληκτρολογήστε ένα όνομα ιστοτόπου ή μια διεύθυνση URL</translation>
 <translation id="5329830149661250028">Δείτε τη διαφορά Brave: Χωρίς διαφημίσεις. Χωρίς ιχνηλάτες. Πολύ πιο γρήγορη φόρτωση σελίδας.</translation>
@@ -144,6 +156,7 @@
 <translation id="7256200875155794202">Αποκλείστηκαν <ph name="BIG_TECH"/> και άλλες διαφημίσεις &amp; ιχνηλάτες</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> διαφημίσεις &amp; ιχνηλάτες που αποκλείστηκαν</translation>
 <translation id="8281886186245836920">Παράβλεψη</translation>
+<translation id="1377600615067678409">Παράλειψη για τώρα</translation>
 <translation id="6165508094623778733">Μάθετε περισσότερα</translation>
 <translation id="986879628471635371">Αντιμετώπιση προβλημάτων κατά τη φόρτωση</translation>
 <translation id="5808759341041733958">Επιλογή προεπιλεγμένης μηχανής αναζήτησης</translation>
@@ -201,23 +214,15 @@
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="1165667598801520610">Προσθήκη κεφαλαίων</translation>
 <translation id="8428213095426709021">Ρυθμίσεις</translation>
 <translation id="6020176662032623904">Επαληθευμένος δημιουργός</translation>
 <translation id="2369994359029526515">Μη επαληθευμένος δημιουργός</translation>
 <translation id="6112368337882254910">Αυτόματη συνεισφορά</translation>
-<translation id="13853865024308201">Διεκδικήστε</translation>
+<translation id="7861645265922445992">Διεκδικήστε Ανταμοιβές</translation>
 <translation id="8494748383523030337">Το υπόλοιπό σας</translation>
 <translation id="4781696154289395607">Συνεισφέρατε <ph name="BAT_VALUE"/> BAT.</translation>
-<translation id="7997676409547731821">Η προγραμματισμένη μηνιαία πληρωμή σας για την Αυτόματη συνεισφορά και τα μηνιαία φιλοδωρήματα δεν μπόρεσαν να ολοκληρωθούν εξαιτίας ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.</translation>
-<translation id="5306913077198665897">Παρουσιάστηκε πρόβλημα κατά την επεξεργασία του φιλοδωρήματός σας, δοκιμάστε ξανά.</translation>
 <translation id="2429828319207652823">Παρουσιάστηκε σφάλμα κατά την επεξεργασία της συνεισφοράς σας.</translation>
-<translation id="3453206261112715431">Δωρεάν επιχορήγηση token</translation>
-<translation id="6417420737057016607">Διαφημίσεις Brave</translation>
-<translation id="5497435273900537730">Μια δωρεάν <ph name="TOKEN"/> επιχορήγηση είναι διαθέσιμη.</translation>
-<translation id="8689997599821157251">Έχετε κερδίσει</translation>
-<translation id="7550470870580166294">Ανεπαρκείς πόροι</translation>
-<translation id="2775064702681588061">Ο λογαριασμός σας Ανταμοιβών Brave αναμένει μια κατάθεση.</translation>
+<translation id="2221902203895354376">Είναι διαθέσιμη μια επιχορήγηση token!</translation>
 <translation id="2323069945529668668">Ωχ!</translation>
 <translation id="7510166204621526816">Ο διακομιστής Ανταμοιβών Brave δεν ανταποκρίνεται. Θα το επιδιορθώσουμε το συντομότερο δυνατόν.</translation>
 <translation id="683765328936486920">στο YouTube</translation>
@@ -297,8 +302,7 @@
 <translation id="6199596294742117349">Αυτή είναι μία Ιδιωτική καρτέλα</translation>
 <translation id="5858455511731621847">Αν και οι ιστότοποι που επισκέπτεστε σε ιδιωτικές καρτέλες δεν αποθηκεύονται σε τοπικό επίπεδο, δεν σας κάνουν ανώνυμους ή αόρατους στον ISP σας, στον εργοδότη σας ή στους ιστότοπους που επισκέπτεστε.</translation>
 <translation id="5789441016350810005">Διαφημίσεις Brave που αποστέλλονται όταν το πρόγραμμα περιήγησης βρίσκεται στο παρασκήνιο</translation>
-<translation id="3690140184638701871">Συνεισφορές &amp; φιλοδωρήματα</translation>
-<translation id="844921671123185605">Έχει γίνει επεξεργασία των μηνιαίων φιλοδωρημάτων σας!</translation>
+<translation id="2892744985635833293">Τα μηνιαία σας φιλοδωρήματα έχουν υποβληθεί σε επεξεργασία.</translation>
 <translation id="3124090095880236567">Ενεργοποιήστε τις Διαφημίσεις</translation>
 <translation id="2975780980638932742">Έφτασαν οι Διαφημίσεις Brave!</translation>
 <translation id="7541582550122501404">Εκκρεμής συνεισφορά</translation>
@@ -307,6 +311,8 @@
 <translation id="7781069478569868053">Νέα καρτέλα σελίδας</translation>
 <translation id="8522669544471808198">Εμφάνιση εικόνων φόντου</translation>
 <translation id="3870475560794762985">Εμφάνιση επιχορηγούμενων εικόνων</translation>
+<translation id="8643377320501056697">Εμφάνιση Κορυφαίων Ιστοσελίδων</translation>
+<translation id="7275773481201277457">Εμφάνιση στατιστικών Brave</translation>
 <translation id="8297488609722895137">Φωτογραφία από <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Πατώντας την επιλογή "Έναρξη χρήσης των Ανταμοιβών Brave", συμφωνείτε με τους<ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Πληρωθείτε για να δείτε αυτήν την εικόνα φόντου.</translation>
@@ -314,8 +320,8 @@
 <translation id="2927095357213611519">Μπορείτε να υποστηρίξετε δημιουργούς ιστού με token.\nΚερδίστε token βλέποντας διαφημίσεις που σέβονται την ιδιωτικότητα.</translation>
 <translation id="213787746370741250">Άνοιγμα καρτελών σε Προσαρμοσμένες καρτέλες</translation>
 <translation id="2394961582378297792">Αποσυνδέθηκε</translation>
-<translation id="6181762795539107980">Μη επαληθευμένο</translation>
-<translation id="4569155249847375786">Επαληθευμένο</translation>
+<translation id="5308380583665731573">Σύνδεση</translation>
+<translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="8673913984316081937">Η επαλήθευση του πορτοφολιού σας είναι προαιρετική</translation>
 <translation id="8558636200953226885">Αλλά, αν επαληθεύσετε, μπορείτε...</translation>
 <translation id="8697510149346635496">Κάνετε ανάληψη των ΒΑΤ που κερδίσατε από την προβολή διαφημίσεων, που σέβονται το απόρρητο</translation>
@@ -327,25 +333,15 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Η Uphold πιθανόν να σας ζητήσει να επαληθεύσετε την ταυτότητά σας, ανάλογα με τις υπηρεσίες που ζητήσατε.</translation>
 <translation id="3200197118442451932">Η Brave Software Inc. δεν επεξεργάζεται, αποθηκεύει ή αποκτά πρόσβαση σε καμία από τις προσωπικές πληροφορίες τις οποίες παρέχετε στο<ph name="WALLET_PROVIDER"/> όταν δημιουργείτε λογαριασμό μαζί τους.</translation>
-<translation id="2193391216824305230">Πορτοφόλι χρήστη</translation>
 <translation id="1665118090708049096">Μετάβαση στον <ph name="WALLET_PROVIDER"/> λογαριασμό μου</translation>
-<translation id="1948959999802743233">Αποσύνδεση από <ph name="WALLET_PROVIDER"/></translation>
-<translation id="6239274080752256452">Ανάληψη κεφαλαίων</translation>
 <translation id="8874184842967597500">Δεν υπάρχει σύνδεση</translation>
 <translation id="2495032782748793764">Προεπιλογή Brave</translation>
 <translation id="9132378787893584761">Μοιραστείτε το Brave με τους φίλους σας!</translation>
 <translation id="717952606991220586">Ωχ, κάτι πήγε λάθος. Προσπαθήστε ξανά αργότερα.</translation>
-<translation id="2524310205387880526">Αξιολογήστε το Brave</translation>
 <translation id="987264212798334818">Γενικά</translation>
 <translation id="1116694919640316211">Σχετικά με</translation>
-<translation id="6680650203439190394">Τιμή</translation>
-<translation id="2635089463885398597">Πώς θα αξιολογούσατε την εμπειρία σας με το Brave;</translation>
-<translation id="141901961143729572">Μοιραστείτε τις σκέψεις σας</translation>
 <translation id="7961015016161918242">Ποτέ</translation>
 <translation id="1275213816424141989">Ίσως αργότερα</translation>
-<translation id="6991128190741664836">Αργότερα</translation>
-<translation id="8851456134224363571">Σπουδαία! Θα σας ήταν εύκολο να μας αφήσετε μία αξιολόγηση στο Play Store;</translation>
-<translation id="8668962040900592974">Πείτε μας πώς μπορούμε να γίνουμε καλύτεροι</translation>
 <translation id="4406937629441301400">Κερδίστε token όταν προβάλλετε αυτήν την εικόνα και στηρίξτε με τη σειρά σας τους δημιουργούς. <ph name="LEARN_MORE"/></translation>
 <translation id="1992363542751124282">Κερδίστε token για την προβολή αυτής της εικόνας. Πατήστε Ξεκινήστε να χρησιμοποιείτε τις Ανταμοιβές Brave για να διεκδικήσετε το μερίδιό σας.</translation>
 <translation id="6632345639591919543">Κερδίζετε token όταν προβάλλετε αυτήν την εικόνα.\n<ph name="LEARN_MORE"/></translation>
@@ -382,7 +378,6 @@
 <translation id="76550953340008122">Ευχαριστούμε που ενημερώσατε τους προγραμματιστές του Brave ότι υπάρχει κάποιο πρόβλημα μ' αυτόν τον ιστότοπο. Θα κάνουμε το καλύτερο δυνατό για να το διορθώσουμε!</translation>
 <translation id="650318023204990401">Ρυθμίσεις για προχωρημένους</translation>
 <translation id="1275664486910646411">Εμφάνιση κορυφαίων ιστότοπων στην αυτόματη συμπλήρωση</translation>
-<translation id="5516010970279932133">Εμφάνιση προτεινόμενων ιστότοπων στην αυτόματη συμπλήρωση</translation>
 <translation id="5370478469168390143">Αποθήκευση δεδομένων Online</translation>
 <translation id="1118508688433541158">Περιηγηθείτε πιο γρήγορα και αποκλείστε τις διαφημίσεις με το Brave</translation>
 <translation id="7427391215172269363">Κάθε μέρα γλιτώνω δεδομένα με την περιήγηση στον ιστό με το Brave.</translation>
@@ -430,7 +425,6 @@
 <translation id="2718046830255553131">Τα δεδομένα αναφορών απορρήτου διαγράφηκαν.</translation>
 <translation id="8376263745431603066">Ενεργοποίηση "Νυχτερινής λειτουργίας" (Πειραματικό)</translation>
 <translation id="1383876407941801731">Αναζήτηση</translation>
-<translation id="8446884382197647889">Μάθετε περισσότερα</translation>
 <translation id="13296465911709339">Το κείμενό σας αντιγράφηκε στο πρόχειρο.</translation>
 <translation id="2735834606413553397">Η δημόσια διεύθυνση αντιγράφηκε στο πρόχειρο.</translation>
 <translation id="2977461003134694205">Στατιστικά απορρήτου</translation>
@@ -444,28 +438,15 @@
 <translation id="7930505144430343145">Καλώς ήρθατε στις Ανταμοιβές Brave!</translation>
 <translation id="3477340970981564961">Σε αντίθεση με τις παραδοσιακές διαφημίσεις, οι Ιδιωτικές διαφημίσεις Brave σας ανταμείβουν με token για την υποστήριξη δημιουργών περιεχομένου, διατηρώντας ταυτόχρονα ιδιωτικά τα προσωπικά σας στοιχεία.</translation>
 <translation id="6973095375773523904">Πού εμφανίζονται οι διαφημίσεις;</translation>
-<translation id="7556325460112047619">Οι Ιδιωτικές διαφημίσεις Brave εμφανίζονται ως κανονικές ειδοποιήσεις. Εσείς ελέγχετε πόσο συχνά βλέπετε αυτές τις διαφημίσεις στις ρυθμίσεις.</translation>
-<translation id="6897083627729802351">Πότε λαμβάνετε τις ανταμοιβές;</translation>
-<translation id="310863932297733723">Τα κερδισμένα token που αποκτήσατε από τις Ιδιωτικές διαφημίσεις Brave κατά τη διάρκεια του τρέχοντος μήνα θα είναι διαθέσιμα στις 5 του επόμενου μήνα.</translation>
 <translation id="7712287524451429139">Η επιστροφή έγινε εύκολη</translation>
 <translation id="105037569026952831">Οι δημιουργοί λαμβάνουν αυτόματα τις συνεισφορές σας σε token με βάση τα επίπεδα ενεργού ενδιαφέροντος, τα οποία μετράμε ως "Προσοχή".</translation>
 <translation id="5323267338679539010">Πείτε ευχαριστώ με φιλοδωρήματα</translation>
-<translation id="6730444165801605682">Το φιλοδώρημα είναι ένας τρόπος να ενθαρρύνετε και να υποστηρίξετε προσωπικά περιεχόμενο ή δημιουργούς που αγαπάτε απόλυτα. Δώστε φιλοδωρήματα!</translation>
-<translation id="7509452925943421624">Τι μπορείτε να κάνετε με τα token;</translation>
-<translation id="5876169128756792273">Τα token μπορούν να χρησιμοποιηθούν όχι μόνο για την υποστήριξη των δημιουργών. Θα μπορείτε να αγοράσετε ψηφιακό περιεχόμενο και άλλα προϊόντα όταν αρχίσουν να συμμετέχουν έμποροι.</translation>
-<translation id="1402530520078693620">Τέλος, ας σας βοηθήσουμε να ρυθμίσετε τις βασικές ρυθμίσεις</translation>
 <translation id="3494356595346329740">Ξεκινήστε να χρησιμοποιείτε τις Ανταμοιβές Brave</translation>
 <translation id="3115702351969988294">Πόσο συχνά θέλετε να βλέπετε διαφημίσεις;</translation>
-<translation id="3474670199029510295">(Διαφημίσεις ανά ώρα)</translation>
-<translation id="66599604460581068">Πόση υποστήριξη θέλετε να δώσετε στους αγαπημένους σας δημιουργούς;</translation>
-<translation id="3164498053837913829">(από τα κέρδη των διαφημίσεών σας)</translation>
 <translation id="827315274423079662">Γιούπι! Είστε πανέτοιμοι!</translation>
 <translation id="3895246934788932488">Χρησιμοποιώντας τις Ανταμοιβές Brave, προστατεύετε το απόρρητό σας και βοηθάτε ώστε να γίνει το διαδίκτυο ένα καλύτερο μέρος για όλους. Αυτό είναι υπέροχο!</translation>
 <translation id="5705882733397021510">Πίσω</translation>
 <translation id="3985567919248057638">Ας κάνουμε μια γρήγορη περιήγηση</translation>
-<translation id="2434574859640694129">Όταν πάρετε την πρώτη πληρωμή διαφημίσεων, μπορείτε να επιστρέψετε και να ενημερώσετε αυτόν τον δημιουργό!</translation>
-<translation id="207242986925259074">Γρήγορη ανανεωτική περιήγηση</translation>
-<translation id="8342862030112839977">Η 1η πληρωμή ανταμοιβών σας θα γίνει την:</translation>
 <translation id="7889432931837317731">Αυτόματο άνοιγμα όταν είναι εφικτό</translation>
 <translation id="8967385052772844086">Εμφάνιση πλήρους Αναφοράς απορρήτου</translation>
 <translation id="6864343534748973390">Το πιο δημοφιλές</translation>
@@ -480,15 +461,6 @@
 <translation id="5187052478998910855">Χρειάζεστε μια ανανέωση για τις Ανταμοιβές;</translation>
 <translation id="8622329973403382303">Κάντε μια γρήγορη περιήγηση για να εξασκηθείτε στη λειτουργία του και να καταγραφείτε στην ιστορία ως Ροκ Σταρ των Ανταμοιβών!</translation>
 <translation id="3479552764303398839">Όχι τώρα</translation>
-<translation id="4956847150856741762">1</translation>
-<translation id="5196716972587102051">2</translation>
-<translation id="7839580021124293374">3</translation>
-<translation id="2918322085844739869">4</translation>
-<translation id="7267186368513450821">5</translation>
-<translation id="6972003925509023890">1 BAT</translation>
-<translation id="2222442600106681391">2 BAT</translation>
-<translation id="5615587419952694404">3 BAT</translation>
-<translation id="8867821173176188875">5 BAT</translation>
 <translation id="8792121506918889955">Πολιτική διαχείρισης IP WebRTC</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>
 <translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
@@ -589,9 +561,12 @@
 <translation id="5050890334032852465">Αποθήκευση λίστας παρακολούθησης λογαριασμού</translation>
 <translation id="7755766175599167100">Αναζήτηση token</translation>
 <translation id="3835223348537121988">Υπόλοιπο:</translation>
-<translation id="7420359180991315365">Συνεχίστε στο Wyre</translation>
+<translation id="6888491517683356528">Συνεχίστε στο Ramp</translation>
 <translation id="8488282162676695335">Πορτοφόλι Brave</translation>
 <translation id="3784455785234192852">Κλείδωμα</translation>
+<translation id="3866249974567520381">Περιγραφή</translation>
+<translation id="4378475168089649292">Blockchain</translation>
+<translation id="9033453977881595182">Αναγνωριστικό token</translation>
 <translation id="8239147115686034860">Αυτόματο κλείδωμα του Πορτοφολιού Brave</translation>
 <translation id="414639769490080648">Ο αριθμός των λεπτών για αναμονή έως ότου το Πορτοφόλι Brave κλειδωθεί αυτόματα</translation>
 <translation id="4993345308607970390">Επαναφορά Πορτοφολιού Brave</translation>
@@ -768,7 +743,6 @@
 <translation id="8971278306757462297">Η διεύθυνση παραλήπτη είναι η δική σας διεύθυνση</translation>
 <translation id="749944179568745958">Μη έγκυρη διεύθυνση ΕΤΗ</translation>
 <translation id="3506416339268164412">Η διεύθυνση παραλήπτη αποτελεί τη διεύθυνση συμβολαίου ενός token</translation>
-<translation id="1543259266592091784">Προσθέστε κεφάλαια</translation>
 <translation id="3494964159182650590">Σύνοψη Ανταμοιβών</translation>
 <translation id="590733288489975971">Ανταμοιβές από Διαφημίσεις</translation>
 <translation id="207268487070188114">Εφάπαξ φιλοδώρημα</translation>
@@ -810,11 +784,9 @@
 <translation id="8853725596990766789">Αλλαγή ποσού</translation>
 <translation id="5233638681132016545">Νέα καρτέλα</translation>
 <translation id="8006088103295786154">Πρόσβαση στο Πορτοφόλι Brave</translation>
-<translation id="5308380583665731573">Σύνδεση</translation>
 <translation id="8030169304546394654">Αποσυνδέθηκε</translation>
 <translation id="3423275441470187644">Εμπιστοσύνη</translation>
 <translation id="2391762656119864333">Ανάκληση</translation>
-<translation id="3368922792935385530">Σε σύνδεση</translation>
 <translation id="3432029672560911238">Λογαριασμός χρήστη</translation>
 <translation id="5753378322046059140">Αλλαγή λογαριασμού</translation>
 <translation id="3897092660631435901">Μενού</translation>
@@ -865,7 +837,6 @@
 <translation id="6044189892950611565">Κανάλι ειδοποιήσεων για το πρόγραμμα περιήγησης Brave</translation>
 <translation id="1173919438868967364">Επιλέξτε λογαριασμό</translation>
 <translation id="8922793255489232731">Δεν ήταν δυνατή η αντιστοίχιση ζώνης ώρας για : <ph name="VALUE"/></translation>
-<translation id="8643377320501056697">Εμφάνιση Κορυφαίων Ιστοσελίδων</translation>
 <translation id="6471216025161697462">Με σύνδεση σε <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Δοκιμή</translation>
 <translation id="7733890291091968191">Εμφάνιση ειδοποιήσεων Web3</translation>
@@ -951,7 +922,7 @@
 <translation id="2862978891748913252">Επιλέξτε τη χώρα σας</translation>
 <translation id="3832588024105436400">Επιλέξτε τη χώρα σας για να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας.<ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Η περιοχή σας για τις Ανταμοιβές Brave ορίστηκε σε <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="3180990265682133881">Δυστυχώς, παρουσιάστηκε σφάλμα κατά την προσπάθεια ορισμού της χώρας σας. Προσπαθήστε ξανά.</translation>
+<translation id="909076461795862330">Δυστυχώς, παρουσιάστηκε σφάλμα κατά την προσπάθεια ρύθμισης των Ανταμοιβών Brave. Προσπαθήστε ξανά.</translation>
 <translation id="7352651011704765696">Κάτι πήγε στραβά</translation>
 <translation id="7144878232160441200">Προσπαθήστε ξανά</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
@@ -978,4 +949,19 @@
 <translation id="6662142137695589205">Συνδέστε τη συνδρομή σας VPN</translation>
 <translation id="2674077112509133024">Επεκτείνετε την προστασία σας με Τείχος προστασίας Brave + VPN</translation>
 <translation id="6365389672683343144">Η συνδρομή σας Brave VPN μπορεί να προστατεύσει έως και 5 συσκευές Android, iOS και υπολογιστές. Συνδέστε απλώς τη συνδρομή σας στο Google Play με τον λογαριασμό σας Brave.</translation>
+<translation id="6278643716658443228">Ρυθμίσεις ανταμοιβών</translation>
+<translation id="579702532610384533">Επανάληψη σύνδεσης</translation>
+<translation id="1619753851206150396">Έχετε αποσυνδεθεί</translation>
+<translation id="8208669151660770401">Αυτό μπορεί να συμβαίνει με σκοπό την προστασία του λογαριασμού σας. Κάντε κλικ παρακάτω για να συνδεθείτε ξανά τώρα.</translation>
+<translation id="2099354965137813181">Το μηνιαίο φιλοδώρημα απέτυχε</translation>
+<translation id="9074594632540931067">Σφάλμα: BAT μη διαθέσιμο</translation>
+<translation id="5382684862562314222">Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.</translation>
+<translation id="6996157559236886133">Σφάλμα: Περιορισμένη λειτουργικότητα λογαριασμού Uphold</translation>
+<translation id="6417420737057016607">Διαφημίσεις Brave</translation>
+<translation id="5425006356459378415">Οι Ανταμοιβές Brave δεν είναι διαθέσιμες</translation>
+<translation id="833643743158564518">Οι νέες εγγραφές για τις Ανταμοιβές Brave είναι απενεργοποιημένες προς το παρόν στην περιοχή σας. Ωστόσο, μπορείτε πάντα να προσπαθήσετε ξανά αργότερα. <ph name="LEARN_MORE"/></translation>
+<translation id="8528916244724490964">Όλα τα δίκτυα</translation>
+<translation id="2781668117338732220">Δευτερεύοντα δίκτυα</translation>
+<translation id="6309721369749814582">Ο τομέας <ph name="DOMAIN"/> δεν είναι καταχωρημένος</translation>
+<translation id="3586775666459823714">NFT</translation>
 </translationbundle>

@@ -15,7 +15,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8905049883018921395">Če je vklopljeno, Brave sprosti pomnilnik z neaktivnih zavihkov. Tako imajo aktivni zavihki in druge aplikacije več računalniških sredstev, Brave pa je še naprej hiter. Neaktivni zavihki znova postanejo aktivni, ko se vrnete nanje. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Varčevanje s pomnilnikom je pospešilo Brave</translation>
 <translation id="4798342026247191171">Nastavitev novega profila v Braveu</translation>
-<translation id="6361779936989026201">Pomočnik Brave v Braveu</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
 <translation id="8132634101975074716">Prijavljeni ste v Brave.</translation>
 <translation id="4168469784091952813">Kar najbolje izkoristite Brave</translation>
@@ -74,6 +73,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8208853227947884571">Brave je posodobljen</translation>
 <translation id="5122472867956731189">Če vam spletno mesto poskusi ukrasti geslo ali če prenašate škodljivo datoteko, lahko Brave prav tako pošlje URL-je, vključno z delčki vsebine strani, Varnemu brskanju.</translation>
 <translation id="2953892977076487219">Brave poskuša urejati gesla.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave je povezan z napravo HID}one{Brave je povezan z napravami HID}two{Brave je povezan z napravami HID}few{Brave je povezan z napravami HID}other{Brave je povezan z napravami HID}}</translation>
 <translation id="8755404239607088219">Brave ne more preveriti gesel. Poskusite pozneje.</translation>
 <translation id="8880183781256147665">Dodajanje v Brave ...</translation>
 <translation id="3038232873781883849">Čakanje na namestitev …</translation>
@@ -102,7 +102,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bližnjica <ph name="SHORTCUT"/> omogoča preklop med profili v Braveu</translation>
 <translation id="8703492925273919597">Zaprite vsa okna Bravea in poskusite znova.</translation>
-<translation id="5350485513372498152">Pomočnik Brave v Braveu lahko dokonča dejanja na spletnih mestih namesto vas.</translation>
 <translation id="4061445349373849749">Zaradi zaščite vaše varnosti samodejno izbrišemo vaša zanimanja, starejša od 4 tednov. Ko brskate naprej, se zanimanje morda znova prikaže na seznamu. Odstranite lahko tudi zanimanja, za katera ne želite, da jih Brave predlaga.</translation>
 <translation id="691208314680168371">Zgodovina brskanja, evidenca spletnih mest, ki ste jih obiskali s Braveom v tej napravi.</translation>
 <translation id="1384923383737428730">V računalniku je nameščena škodljiva programska oprema. Brave jo lahko odstrani, obnovi vaše nastavitve in onemogoči razširitve, da bo brskalnik spet normalno deloval.</translation>

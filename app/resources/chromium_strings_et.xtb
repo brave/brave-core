@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Kui see on sisse lülitatud, vabastab Brave inaktiivsete vahelehtede mälu. See annab aktiivsetele vahelehtedele ja muudele rakendustele rohkem arvutiressursse ja tagab Bravei kiiruse. Teie inaktiivsed vahelehed muutuvad automaatselt aktiivseks niipea, kui nendele naasete. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Mälusäästja muutis Bravei kiiremaks</translation>
 <translation id="4798342026247191171">Uue Bravei profiili seadistamine</translation>
-<translation id="6361779936989026201">Brave'i assistent Braveis</translation>
 <translation id="113959764510199339">Brave püüab paroole kuvada.</translation>
 <translation id="8132634101975074716">Olete Bravei sisse logitud.</translation>
 <translation id="4168469784091952813">Kasutage Bravei kõiki funktsioone</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave on ajakohane</translation>
 <translation id="5122472867956731189">Kui sait üritab teie parooli varastada või laadite alla kahjuliku faili, võib Brave saata URL-id ja lehe sisu osad teenusele Brave'i ohutu sirvimine.</translation>
 <translation id="2953892977076487219">Brave üritab paroole muuta.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave on ühendatud HID-seadmega}other{Brave on ühendatud HID-seadmetega}}</translation>
 <translation id="8755404239607088219">Brave ei saa teie paroole kontrollida. Proovige hiljem uuesti.</translation>
 <translation id="8880183781256147665">Bravei lisamine ...</translation>
 <translation id="3038232873781883849">Installimise ootamine …</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">See kustutab seadmest <ph name="ITEMS_COUNT"/> üksust. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bravei profiilide vahel vahetamiseks vajutage klahve <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">Sulgege kõik Bravei aknad ja proovige uuesti.</translation>
-<translation id="5350485513372498152">Brave'i assistent Braveis saab veebisaitidel teie eest toiminguid teha</translation>
 <translation id="4061445349373849749">Teie privaatsuse kaitsmiseks kustutame automaatselt teie huvid, mis on vanemad kui 4 nädalat. Kui jätkate sirvimist, võib huvi uuesti loendis ilmuda. Võite ka eemaldada huvid, mida te ei soovi lasta Braveil arvesse võtta.</translation>
 <translation id="691208314680168371">Teie sirvimisajalugu, selles seadmes Braveiga külastatud saitide andmed.</translation>
 <translation id="1384923383737428730">Teie arvutis on kahjulik tarkvara. Brave saab selle eemaldada, taastada teie seaded ja keelata laiendused, et brauser töötaks jälle normaalselt.</translation>
