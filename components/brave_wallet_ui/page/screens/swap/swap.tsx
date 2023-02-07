@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 
 import { NetworkInfo, Swap as SwapInterface } from '@brave/swap-interface'
 import '@brave/swap-interface/dist/style.css'
@@ -23,7 +22,7 @@ import {
 import { useLib } from '../../../common/hooks'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
 // Components
 import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
@@ -122,11 +121,6 @@ export const Swap = () => {
     }
   }, [])
 
-  let history = useHistory()
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.Portfolio)
-  }, [history])
-
   return (
     <div>
       <BuySendSwapDepositNav isTab={true} isSwap={true} />
@@ -154,7 +148,6 @@ export const Swap = () => {
           getTokenPrice={makeGetTokenPrice(defaultFiatCurrency)}
           supportedNetworks={supportedNetworks}
           defaultBaseCurrency={defaultFiatCurrency}
-          routeBackToWallet={goBack}
           isWalletConnected={true}
           isReady={!!selectedNetwork}
         />
