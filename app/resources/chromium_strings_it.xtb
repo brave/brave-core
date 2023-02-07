@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Se attivi l'opzione, Brave libera spazio dalle schede non attive. In questo modo le schede attive e altre app hanno più risorse per il computer e mantengono Brave veloce. Le schede inattive si riattivano automaticamente quando ci torni. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Risparmio memoria ha reso Brave più veloce</translation>
 <translation id="4798342026247191171">Configura il tuo nuovo profilo di Brave</translation>
-<translation id="6361779936989026201">Assistente Brave in Brave</translation>
 <translation id="113959764510199339">Brave sta cercando di visualizzare le password.</translation>
 <translation id="8132634101975074716">Hai eseguito l'accesso a Brave.</translation>
 <translation id="4168469784091952813">Puoi goderti al meglio l'esperienza di Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave è aggiornato</translation>
 <translation id="5122472867956731189">Se un sito cerca di rubare la tua password o se scarichi un file dannoso, Brave potrebbe anche inviare gli URL, inclusi frammenti dei contenuti delle pagine, a Navigazione sicura</translation>
 <translation id="2953892977076487219">Brave sta cercando di modificare le password.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave è connesso a un dispositivo HID}other{Brave è connesso ai dispositivi HID}}</translation>
 <translation id="8755404239607088219">Brave non può controllare le tue password. Riprova più tardi.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="3038232873781883849">In attesa dell'installazione…</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Verranno eliminati <ph name="ITEMS_COUNT"/> elementi da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">La scorciatoia <ph name="SHORTCUT"/> consente di passare da un profilo Brave all'altro</translation>
 <translation id="8703492925273919597">Chiudi tutte le finestre di Brave e riprova.</translation>
-<translation id="5350485513372498152">L'Assistente Brave in Brave può completare azioni per te sui siti web</translation>
 <translation id="4061445349373849749">Per tutelare la tua privacy, eliminiamo automaticamente i tuoi interessi risalenti a più di 4 settimane prima della data corrente. Mentre continui a navigare, un interesse potrebbe essere nuovamente visualizzato nell'elenco. Puoi anche rimuovere gli interessi che non vuoi che Brave prenda in considerazione.</translation>
 <translation id="691208314680168371">La cronologia di navigazione, ossia un record dei siti visitati da Brave sul dispositivo in uso.</translation>
 <translation id="1384923383737428730">È stato rilevato software dannoso sul tuo computer. Brave può rimuoverlo, ripristinare le tue impostazioni e disattivare le estensioni per ristabilire il normale funzionamento del browser.</translation>

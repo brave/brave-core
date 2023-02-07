@@ -26,7 +26,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
 <translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="9005883459983913482">Okna Tor</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="6924909138923993900">Nové připojení Tor pro tento web</translation>
@@ -41,6 +40,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1725356094208762656">Otevřít v Toru</translation>
 <translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
 <translation id="7473245612074035141">Začít nastavení</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="3975865347033939965">Nelze spustit službu synchronizace, Brave Sync není spuštěna</translation>
 <translation id="4450893287417543264">Znovu neukazovat</translation>
 <translation id="4595286989346610620">Zkontrolujte podrobnosti</translation>
@@ -114,7 +114,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="9194637241566114638">Pomozte zlepšit <ph name="SEARCH_NAME"/> odesíláním anonymních údajů o použití.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Vyhledávání Brave</translation>
 <translation id="8184318863960255706">Další informace</translation>
-<translation id="6965382102122355670">OK</translation>
 <translation id="780301667611848630">Ne, děkuji</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
@@ -123,8 +122,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
-<translation id="7986278174934557414">Skrýt ikonu bočního panelu</translation>
-<translation id="6915291874524466201">Skrýt ikonu bočního panelu</translation>
+<translation id="4233010476457917696">Zobrazit postranní lištu</translation>
+<translation id="5404213409401164238">Zobrazit postranní panel</translation>
 <translation id="9149866541089851383">Upravit...</translation>
 <translation id="1181037720776840403">Odebrat</translation>
 <translation id="7513769021866698486">Upravit položku</translation>
@@ -133,7 +132,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5877900074358050101">Název položky na postranním panelu</translation>
 <translation id="1613695740874407223">Adresa URL položky na postranním panelu</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
-<translation id="5404213409401164238">Zobrazit postranní panel</translation>
 <translation id="7561196759112975576">Vždy</translation>
 <translation id="7060352228894039151">Po přejetí myší</translation>
 <translation id="7961015016161918242">Nikdy</translation>
@@ -177,10 +175,14 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3987546108749866209">Používat vertikální karty</translation>
 <translation id="5860254591544742609">Zobrazit lištu s názvem</translation>
 <translation id="399928467800528208">Obnovit přejetím myší</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Vypnout zvuk karty}few{Vypnout zvuk karet}many{Vypnout zvuk karet}other{Vypnout zvuk karet}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Zapnout zvuk karty}few{Zapnout zvuk karet}many{Zapnout zvuk karet}other{Zapnout zvuk karet}}</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
 <translation id="2523967823495420116">Používat vertikální karty</translation>
 <translation id="8888603463702767599">Zobrazit lištu s názvem</translation>
 <translation id="2058818256505091369">Obnovit přejetím myší</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Vypnout zvuk karty}few{Vypnout zvuk karet}many{Vypnout zvuk karet}other{Vypnout zvuk karet}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Zapnout zvuk karty}few{Zapnout zvuk karet}many{Zapnout zvuk karet}other{Zapnout zvuk karet}}</translation>
 <translation id="4235920711083356755">Zobrazit tlačítko VPN</translation>
 <translation id="4070612712151038707">Zobrazit tlačítko VPN v panelu nástrojů</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +235,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4096343215397759358">Karta s náhledem</translation>
 <translation id="5297085818601043899">Nápověda</translation>
 <translation id="2396127686705429331">Zobrazit tlačítko záložek</translation>
-<translation id="2369560305991805099">Zobrazit tlačítko na bočním panelu</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
 <translation id="2858138569776157458">Top weby</translation>
-<translation id="65774893852758517">Navrhované stránky</translation>
 <translation id="7859704718976024901">Historie procházení</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
@@ -392,7 +392,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4485276108749547761">S tímto kódem zacházejte jako s heslem. Pokud se k němu někdo dostane, bude moci číst a upravovat vaše synchronizovaná data.</translation>
 <translation id="3034163433136515805">Zobrazit QR kód</translation>
 <translation id="5373825572723282843">Zadat synchronizační kód</translation>
-<translation id="5734745018569675530">Napište slova poskytnutého synchronizačního řetězového kódu do kolonky níže.</translation>
 <translation id="1061533051865606843">Přidat nové zařízení</translation>
 <translation id="5093410893656857925">Zvolte typ zařízení</translation>
 <translation id="4581190919849683048">S jakým typem zařízení chcete synchronizovat?</translation>
@@ -465,7 +464,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
-<translation id="1241283133946520352">Sítě</translation>
 <translation id="5975930666279943472">Vymazat transakce peněženky a informace o nonce</translation>
 <translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
 <translation id="4993345308607970390">Resetovat peněženku Brave</translation>

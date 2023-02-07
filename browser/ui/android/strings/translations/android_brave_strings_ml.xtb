@@ -8,6 +8,7 @@
 <translation id="2356070529366658676">ചോദിക്കുക</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
 <translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
+<translation id="4750394297954878236">നിർദ്ദേശങ്ങൾ</translation>
 <translation id="6527303717912515753">പങ്കിടുക</translation>
 <translation id="410351446219883937">സ്വയം പ്ലേചെയ്യൽ</translation>
 <translation id="7445411102860286510">മ്യൂട്ടുചെയ്‌ത വീഡിയോകൾ സ്വയം പ്ലേ ചെയ്യാൻ സൈറ്റുകളെ അനുവദിക്കുക (ശുപാർശചെയ്‌തിരിക്കുന്നു)</translation>
@@ -33,15 +34,15 @@
 <translation id="1056898198331236512">മുന്നറിയിപ്പ്</translation>
 <translation id="1426410128494586442">അതെ</translation>
 <translation id="6336451774241870485">പുതിയ അദൃശ്യ ടാബ്</translation>
+<translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
+<translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
 <translation id="987264212798334818">പൊതുവായ</translation>
 <translation id="1116694919640316211">വിവരം</translation>
-<translation id="6680650203439190394">റേറ്റ് ചെയ്യുക</translation>
 <translation id="7961015016161918242">ഒരിക്കലും</translation>
 <translation id="5657156137487675418">എല്ലാ കുക്കികളും അനുവദിക്കൂ</translation>
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="1383876407941801731">തിരയുക</translation>
-<translation id="8446884382197647889">കൂടുതലറിയുക</translation>
 <translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
@@ -58,6 +59,7 @@
 <translation id="6979737339423435258">എല്ലാ സമയത്തും</translation>
 <translation id="3819257035322786455">ബാക്കപ്പ്</translation>
 <translation id="4522570452068850558">വിശദാംശങ്ങൾ</translation>
+<translation id="3866249974567520381">വിവരണം</translation>
 <translation id="3435896845095436175">തയ്യാറാക്കുക</translation>
 <translation id="7805768142964895445">നില</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
@@ -81,9 +83,7 @@
 <translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="2653659639078652383">സമര്‍പ്പിക്കൂ</translation>
 <translation id="5233638681132016545">പുതിയ ടാബ്</translation>
-<translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
 <translation id="2391762656119864333">റദ്ദാക്കുക</translation>
-<translation id="3368922792935385530">ബന്ധിപ്പിച്ചു</translation>
 <translation id="385051799172605136">പിന്നോട്ട്</translation>
 <translation id="3355936511340229503">കണക്ഷന്‍ പിശക്.</translation>
 <translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>

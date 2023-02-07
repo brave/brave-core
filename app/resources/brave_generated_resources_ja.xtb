@@ -26,7 +26,6 @@
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
 <translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
 <translation id="9005883459983913482">Torウィンドウ</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="6924909138923993900">このサイトに新しくTor接続する</translation>
@@ -41,6 +40,7 @@
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
+<translation id="6965382102122355670">はい</translation>
 <translation id="3975865347033939965">Syncサービスを開始できませんでした。</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="4595286989346610620">詳細を確認する</translation>
@@ -114,9 +114,8 @@
 <translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">詳細</translation>
-<translation id="6965382102122355670">はい</translation>
 <translation id="780301667611848630">いいえ</translation>
-<translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
+<translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="6040143037577758943">近い</translation>
@@ -124,8 +123,8 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
-<translation id="7986278174934557414">サイドパネルのアイコンを非表示</translation>
-<translation id="6915291874524466201">サイドパネルのアイコンを非表示</translation>
+<translation id="4233010476457917696">サイドバーを表示</translation>
+<translation id="5404213409401164238">サイドバーを表示</translation>
 <translation id="9149866541089851383">編集...</translation>
 <translation id="1181037720776840403">削除</translation>
 <translation id="7513769021866698486">アイテムを編集</translation>
@@ -134,7 +133,6 @@
 <translation id="5877900074358050101">サイドバーアイテムのタイトル</translation>
 <translation id="1613695740874407223">サイドバーアイテムのURL</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
-<translation id="5404213409401164238">サイドバーを表示</translation>
 <translation id="7561196759112975576">常に表示</translation>
 <translation id="7060352228894039151">マウスオーバーで表示</translation>
 <translation id="7961015016161918242">使用しない</translation>
@@ -167,6 +165,7 @@
 <translation id="8731422418734770661">暗号資産ウォレットを設定</translation>
 <translation id="8199661191594897555">暗号資産ウォレットを開始してリロード</translation>
 <translation id="8428213095426709021">設定</translation>
+<translation id="193368604235852218">Web3</translation>
 <translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
@@ -178,10 +177,14 @@
 <translation id="3987546108749866209">垂直タブを使用</translation>
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="399928467800528208">マウスオーバーでフロート</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{タブのミュートを解除}other{タブのミュートを解除}}</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="2523967823495420116">垂直タブを使用</translation>
 <translation id="8888603463702767599">タイトルバーを表示</translation>
 <translation id="2058818256505091369">マウスオーバーでフロート</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{タブのミュートを解除}other{タブのミュートを解除}}</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -234,11 +237,9 @@
 <translation id="4096343215397759358">プレビュー付きカード</translation>
 <translation id="5297085818601043899">ツールヒント</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
-<translation id="2369560305991805099">サイドパネルのボタンを表示</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="2858138569776157458">トップサイトをサイト候補に含める</translation>
-<translation id="65774893852758517">Braveによる予測をサイト候補に含める</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
@@ -394,7 +395,6 @@
 <translation id="4485276108749547761">このコードはパスワードのように厳重に扱ってください。第三者に入手された場合、第三者があなたの同期されたデータを読み取って変更することが可能になります。</translation>
 <translation id="3034163433136515805">QR コードを見る</translation>
 <translation id="5373825572723282843">同期コードを入力</translation>
-<translation id="5734745018569675530">与えられた同期チェーンコードワードを以下のフォームに入力してください。</translation>
 <translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="5093410893656857925">デバイスの種類を選んでください</translation>
 <translation id="4581190919849683048">同期したいデバイスの種類はどれですか？</translation>
@@ -467,7 +467,6 @@
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
-<translation id="1241283133946520352">ネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="4993345308607970390">Braveウォレットをリセット</translation>

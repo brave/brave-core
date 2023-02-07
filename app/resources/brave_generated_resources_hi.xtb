@@ -27,7 +27,6 @@
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
 <translation id="8988939298652262600">Brave सुरक्षा और बचाव के लिए एक्सटेंशन की समीक्षा नहीं करता है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="9005883459983913482">Tor विंडोज़</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="6924909138923993900">इस साइट के लिए नया टॉर कनेक्शन</translation>
@@ -42,6 +41,9 @@
 <translation id="1725356094208762656">Tor में खोलें</translation>
 <translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
 <translation id="7473245612074035141">सेटअप शुरू करें</translation>
+<translation id="496896260395129787">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> तो फिर से अकाउंट बनाएँ</translation>
+<translation id="6965382102122355670">ठीक</translation>
 <translation id="3975865347033939965">सिंक सेवा शुरू नहीं की जा सकी, Brave सिंक काम नहीं कर रहा है</translation>
 <translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
 <translation id="4595286989346610620">ब्यौरा देखें</translation>
@@ -115,7 +117,6 @@
 <translation id="9194637241566114638">इस्तेमाल से जुड़े गुमनाम डेटा को भेज कर <ph name="SEARCH_NAME"/> को बेहतर बनाने में मदद करें. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave सर्च</translation>
 <translation id="8184318863960255706">अधिक जानकारी</translation>
-<translation id="6965382102122355670">ठीक</translation>
 <translation id="780301667611848630">जी नहीं, रहने दें</translation>
 <translation id="1162706247109707219">'ठीक है' पर क्लिक करने का मतलब है कि आप समझते हैं कि जब तक आप Windows 10 या उसके बाद के वर्ज़न पर अपडेट नहीं करेंगे, आपको Brave इंस्टॉल करने के बाद ज़रूरी सिक्योरिटी फ़िक्स नहीं मिलेंगे. यह चेतावनी दोबारा नहीं दिखाई जाएगी.</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
@@ -125,8 +126,12 @@
 <translation id="4174337572777167894">वेब डिस्कवरी प्रोजेक्ट</translation>
 <translation id="8659271182272561965">कुछ अनाम सर्च में योगदान करें &amp; Brave Search को बेहतर बनाने के लिए ब्राउज़िंग डेटा.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
-<translation id="7986278174934557414">साइड पैनल आइकन को छिपाएँ</translation>
-<translation id="6915291874524466201">साइड पैनल आइकन को छिपाएँ</translation>
+<translation id="4375473250631001683">साइडबार आइकन को छिपाएँ</translation>
+<translation id="2613033293035359003">साइडबार छिपाएँ</translation>
+<translation id="4233010476457917696">साइडबार दिखाएं</translation>
+<translation id="7829322605042304637">साइडबार आइकन को छिपाएँ</translation>
+<translation id="7349915168363514678">साइडबार छिपाएँ</translation>
+<translation id="5404213409401164238">साइडबार दिखाएं</translation>
 <translation id="9149866541089851383">संपादित करें...</translation>
 <translation id="1181037720776840403">हटाएं</translation>
 <translation id="7513769021866698486">आइटम में बदलाव करें</translation>
@@ -135,7 +140,9 @@
 <translation id="5877900074358050101">साइडबार आइटम का शीर्षक</translation>
 <translation id="1613695740874407223">साइडबार आइटम का url</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
-<translation id="5404213409401164238">साइडबार दिखाएं</translation>
+<translation id="5977931179408079967">पोजिशन</translation>
+<translation id="3790384768741064842">दाईं ओर ले जाएँ</translation>
+<translation id="7444424316576061724">बाईं ओर ले जाएँ</translation>
 <translation id="7561196759112975576">हमेशा</translation>
 <translation id="7060352228894039151">माउसओवर पर</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
@@ -168,6 +175,8 @@
 <translation id="8731422418734770661">क्रिप्टो वॉलेट् सेट करें</translation>
 <translation id="8199661191594897555">क्रिप्टो वॉलेट शुरू करें और पुनः लोड करें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 डोमेन</translation>
 <translation id="72868071984333667">IPFS और गोपनीयता के बारे में और जानें</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
@@ -179,10 +188,14 @@
 <translation id="3987546108749866209">वर्टिकल टैब का इस्तेमाल करें</translation>
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
 <translation id="399928467800528208">माउसओवर के दौरान फ़्लोट की सुविधा</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{टैब म्यूट करें}one{टैब म्यूट करें}other{टैब म्यूट करें}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{टैब अनम्‍यूट करें}one{टैब अनम्‍यूट करें}other{टैब अनम्‍यूट करें}}</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
 <translation id="2523967823495420116">वर्टिकल टैब का इस्तेमाल करें</translation>
 <translation id="8888603463702767599">टाइटल बार दिखाएँ</translation>
 <translation id="2058818256505091369">माउसओवर के दौरान फ़्लोट की सुविधा</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{टैब म्यूट करें}one{टैब म्यूट करें}other{टैब म्यूट करें}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{टैब अनम्‍यूट करें}one{टैब अनम्‍यूट करें}other{टैब अनम्‍यूट करें}}</translation>
 <translation id="4235920711083356755">VPN बटन दिखाएं</translation>
 <translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -268,11 +281,9 @@ Binance
 <translation id="4096343215397759358">प्रीव्यू के साथ कार्ड</translation>
 <translation id="5297085818601043899">टूलटिप</translation>
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
-<translation id="2369560305991805099">साइड पैनल बटन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
 <translation id="2858138569776157458">मुख्य साइटें</translation>
-<translation id="65774893852758517">सुझाई गईं साइट</translation>
 <translation id="7859704718976024901">ब्राउज़िंग इतिहास</translation>
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
@@ -283,6 +294,8 @@ Binance
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
 <translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
+<translation id="2422927186524098759">साइडबार</translation>
+<translation id="832432428796481785">साइडबार बटन दिखाएँ</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
 <translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
 <translation id="2970343821770026391">डैशबोर्ड</translation>
@@ -306,6 +319,8 @@ Binance
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
 <translation id="7630031867325944356">AMP और इससे मिलते-जुलते वर्ज़न के बजाय पब्लिशर पेज के URL पसंद करता है.</translation>
+<translation id="920638232916443453">अपने-आप दूसरे पेज पर ले जाने वाले ट्रैकिंग URL</translation>
+<translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
 <translation id="7607166182943595829">मेरी भाषा प्राथमिकताओं के आधार पर साइट को मेरे फ़िंगरप्रिंट लेने से रोकें</translation>
 <translation id="3497934980362703405">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
 <translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
@@ -398,6 +413,7 @@ Binance
 <translation id="4332558599726753990">सिंक सेटअप</translation>
 <translation id="2187778349654214731">शुरू करने के लिए, आप जिन उपकरणों को सिंक करना चाहते हैं आपको उन सभी में Brave इनस्टॉल करना आवश्यक है। फ़िर, उन्हें सिंक कोड के साथ सुरक्षित रूप से लिंक करें।</translation>
 <translation id="7530575064080939974">अपने सिंक किए गए उपकरणों को प्रबंधित करें</translation>
+<translation id="8668872235103666008">आपके डिवाइस पर Brave को सिंक नहीं कर पाए</translation>
 <translation id="7575156386943878014">सिंक प्रबंधक</translation>
 <translation id="1755198127524719638">सिंक सेटिंग</translation>
 <translation id="7558480201297099157">प्रबंधित करें कि आप किन सूचनाओं को डिवाइसों के बीच सिंक करना चाहते हैं। ये सेटिंग्स केवल इस डिवाइस को प्रभावित करती हैं।</translation>
@@ -427,7 +443,7 @@ Binance
 <translation id="4485276108749547761">इस कोड को पासवर्ड की तरह इस्तेमाल करें। अगर किसी को इसके बारे में पता है, तो वे आपके सिंक किए गए डाटा को पढ़ और संशोधित कर सकते हैं।</translation>
 <translation id="3034163433136515805">QR कोड देखें</translation>
 <translation id="5373825572723282843">सिंक कोड दर्ज करें</translation>
-<translation id="5734745018569675530">नीचे दिए गए फॉर्म में आपको पहुँचाया गया सिंक चेन कोड दर्ज़ करें।</translation>
+<translation id="1265244359514651398">नीचे अपना सिंक चेन पासफ़्रेज़ डालें.</translation>
 <translation id="1061533051865606843">नए डिवाइस जोड़ें</translation>
 <translation id="5093410893656857925">डिवाइस प्रकार चुनें</translation>
 <translation id="4581190919849683048">आप किस प्रकार के उपकरण से सिंक करना चाहेंगे?</translation>
@@ -435,6 +451,7 @@ Binance
 <translation id="3995714999835224798">यह कोड अमान्य है</translation>
 <translation id="4432071071853308688">यह कोड खाली है</translation>
 <translation id="955848693465029904">इंटर्नल सिंक के सेटअप में गड़बड़ी हुई</translation>
+<translation id="7456398316301207582">इंटर्नल अकाउंट को मिटाने में कोई गड़बड़ी हुई</translation>
 <translation id="859506441384380749">यह कोड Brave के पुराने पिछड़े संस्करण से जेनरेट किया गया था, कृपया पहले अपने अन्य डिवाइस को अपग्रेड करें</translation>
 <translation id="3132642509209154999">यह कोड समाप्त हो गया है. कृपया अपने दूसरे डिवाइस पर एक नया कोड जेनरेट करें और दोबारा कोशिश करें.</translation>
 <translation id="2859229680945501779">यह कोड अमान्य है। कृपया जांच लें कि आपके डिवाइस पर टाइम और टाइमज़ोन सही ढंग से सेट हैं.</translation>
@@ -447,6 +464,18 @@ Binance
 
     क्या आप सचमुच ऐसा करना चाहते हैं?</translation>
 <translation id="7443185843787879670">Brave आपके ऑपरेटिंग सिस्टम की सेफ़ स्टोरेज को ऐक्सेस नहीं कर पाया. पासवर्ड और कुकीज़ जैसे डेटा को सुरक्षित करने के लिए इसका इस्तेमाल किया जाता है; Brave सिंक के लिए आपनी ब्राउज़र प्रोफ़ाइल को डिवाइस के बीच कनेक्ट करना भी ज़रूरी है. इसका मतलब है कि Brave सिंक नहीं चल रहा है. इस समस्या को हल करने के लिए, कृपया <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave सिंक ट्रबलशूटिंग गाइड<ph name="END_LINK_SYNC_GUIDE"/> देखें.</translation>
+<translation id="6802736947576520626">लगता है कि यह सिंक एन्क्रिप्शन की उस की से अलग है जिसका इस्तेमाल आपने पहली बार Brave सिंक को सेट अप करते समय किया था. इसका सबसे आसान तरीका है अपने किसी ओर सिंक डिवाइस के पासफ़्रेज का इस्तेमाल करके सिंक चेन को रीसेट करना और फिर से शामिल होना.</translation>
+<translation id="4889767840132638381">सिंक चेन को रीसेट करें और फिर से शामिल हों.</translation>
+<translation id="1680065323266179640">सिंक अकाउंट को मिटाएँ</translation>
+<translation id="9064376100690171155">अकाउंट को स्थायी तौर पर मिटाएँ</translation>
+<translation id="228906529296554286">अपना अकाउंट मिटाने से Brave के सर्वर पर आपका एन्क्रिप्ट किया हुआ डेटा हट जाएगा और आपके कनेक्ट किए हुए सभी डिवाइस पर सिंक बंद हो जाएगा.</translation>
+<translation id="7578652532113583362">हालाँकि इससे उन डिवाइस पर लोकल तौर पर स्टोर किया गया डेटा नहीं मिटेगा.</translation>
+<translation id="2516405584294312544">मिटाने की यह प्रक्रिया स्थायी होगी और डेटा को वापस नहीं पाया जा सकेगा. अगर आप फिर से
+  सिंक इस्तेमाल करने के बारे में सोचते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से जोड़ना होगा.</translation>
+<translation id="4860996720371753023">अकाउंट मिटाया जा रहा है...</translation>
+<translation id="8199291899164865593">इस सिंक चेन में शामिल नहीं हो सकते. अकाउंट मिट चुका है.</translation>
+<translation id="5633907266617216186">पते, भुगतान की जानकारी. वगैरह.</translation>
+<translation id="294985549514492876">वेब ऐप (PWA)</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
@@ -500,7 +529,7 @@ Binance
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
-<translation id="1241283133946520352">नेटवर्क</translation>
+<translation id="856371974127598760">वॉलेट नेटवर्क</translation>
 <translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
@@ -538,6 +567,8 @@ Binance
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2234108191702901162">नेटवर्क नहीं जोड़ा जा सका</translation>
 <translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> को मिटाना चाहते हैं?</translation>
+<translation id="3316326558572563182">एक्टिव नेटवर्क हमेशा वॉलेट नेटवर्क की लिस्ट में दिखाई देते हैं</translation>
+<translation id="232693303726691609">वॉलेट नेटवर्क लिस्ट में नेटवर्क दिखाएँ/छिपाएँ</translation>
 <translation id="7893578599666249602">क्या आप <ph name="KEY_NAME"/> को वाकई रीसेट करना चाहते हैं.</translation>
 <translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
@@ -591,6 +622,7 @@ Binance
 <translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
 <translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
 <translation id="7120553802660696133">आखिरी टैब को बंद करते समय विंडो को भी बंद करें</translation>
+<translation id="7984721311211272523">टैब स्पीकर के आइकन में म्यूट का फ़ंक्शन बंद करें</translation>
 <translation id="6624718837376802990">अवतार ईडी रिवार्ड्स</translation>
 <translation id="6617313057407561765">अवतार ईडी ब्रेव</translation>
 <translation id="6754445808455578019">अवतार ईडी ओसियन</translation>

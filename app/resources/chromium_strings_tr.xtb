@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Bu ayar açık olduğunda Brave, etkin olmayan sekmelerdeki belleği boşaltır. Böylece, etkin sekmeler ile diğer uygulamalar daha fazla bilgisayar kaynağına sahip olur ve Brave hızlı çalışmaya devam eder. Geri döndüğünüz etkin olmayan sekmeler otomatik olarak tekrar etkin hale gelir. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Bellek Tasarrufu Sayesinde Brave Artık Daha Hızlı</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi oluşturun</translation>
-<translation id="6361779936989026201">Brave'da Brave Asistan</translation>
 <translation id="113959764510199339">Brave, şifreleri göstermeye çalışıyor.</translation>
 <translation id="8132634101975074716">Brave'da oturum açtınız!</translation>
 <translation id="4168469784091952813">Brave'dan en iyi şekilde yararlanabilirsiniz</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave güncel durumda</translation>
 <translation id="5122472867956731189">Brave, bir sitenin şifrenizi çalmaya çalışması veya zararlı bir dosya indirmeniz halinde de Güvenli Tarama'ya sayfa içeriğinden parçalarla birlikte URL'ler gönderebilir.</translation>
 <translation id="2953892977076487219">Brave şifreleri düzenlemeye çalışıyor.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave bir HID cihazına bağlı}other{Brave, HID cihazlarına bağlı}}</translation>
 <translation id="8755404239607088219">Brave, şifrelerinizi kontrol edemiyor. Daha sonra tekrar deneyin.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
 <translation id="3038232873781883849">Yüklenmesi bekleniyor...</translation>
@@ -98,7 +98,6 @@
 <translation id="5853262807109651878">Bu işlem, <ph name="ITEMS_COUNT"/> öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/>, Brave profilleri arasında geçiş yapabilir</translation>
 <translation id="8703492925273919597">Lütfen tüm Brave pencerelerini kapatıp tekrar deneyin.</translation>
-<translation id="5350485513372498152">Brave'daki Brave Asistan sizin için web sitelerindeki işlemleri tamamlayabilir</translation>
 <translation id="4061445349373849749">Gizliliğinizi korumak için 4 haftadan eski ilgi alanlarınızı otomatik olarak sileriz. Siz internette gezindikçe ilgi alanları tekrar listede görünmeye başlayabilir. Dilerseniz Brave'un dikkate almasını istemediğiniz ilgi alanlarını kaldırabilirsiniz.</translation>
 <translation id="691208314680168371">Tarama geçmişiniz, bu cihazda Brave'u kullanarak ziyaret ettiğiniz sitelerin kaydı.</translation>
 <translation id="1384923383737428730">Bilgisayarınızda zararlı yazılım var. Brave, tarayıcınızın tekrar normal şekilde çalışmasını sağlamak için bunu kaldırabilir, ayarlarınızı geri yükleyebilir ve uzantıları devre dışı bırakabilir.</translation>

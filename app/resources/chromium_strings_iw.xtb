@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">‏כשההגדרה מופעלת, Brave מפנה מקום בזיכרון שמוקצה לכרטיסיות לא פעילות. כך, לכרטיסיות הפעילות ולאפליקציות אחרות יש יותר משאבים מהמחשב ו-Brave פועל מהר. כשחוזרים לכרטיסיות הלא פעילות, הן מופעלות מחדש באופן אוטומטי. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">‏Brave פועל מהר יותר בזכות מצב החיסכון בזיכרון</translation>
 <translation id="4798342026247191171">‏הגדרת הפרופיל החדש שלך ב-Brave</translation>
-<translation id="6361779936989026201">‏Brave Assistant ב-Brave</translation>
 <translation id="113959764510199339">‏Brave מנסה להציג סיסמאות.</translation>
 <translation id="8132634101975074716">‏נכנסת ל-Brave!</translation>
 <translation id="4168469784091952813">‏אפשר ליהנות מהמיטב של Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">‏Brave‏ מעודכן</translation>
 <translation id="5122472867956731189">‏אם באתר כלשהו מתבצע ניסיון לגנוב את הסיסמה שלך, או אם המערכת מזהה הורדה של קובץ מזיק, Brave עשוי גם לשלוח כתובות URL לבדיקה באמצעות 'גלישה בטוחה'. הנתונים שנשלחים לבדיקה כוללים ביטים מתוכן של דפים</translation>
 <translation id="2953892977076487219">‏Brave מנסה לערוך את הסיסמאות.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{‏Brave מחובר להתקן HID}one{‏Brave מחובר להתקני HID}two{‏Brave מחובר להתקני HID}other{‏Brave מחובר להתקני HID}}</translation>
 <translation id="8755404239607088219">‏Brave לא יכול לבדוק את הסיסמאות שלך. כדאי לנסות שוב מאוחר יותר.</translation>
 <translation id="8880183781256147665">‏מתבצעת הוספה ל-Brave...</translation>
 <translation id="3038232873781883849">בהמתנה להתקנה…</translation>
@@ -98,7 +98,6 @@
 <translation id="5853262807109651878">‏פעולה זו תמחק <ph name="ITEMS_COUNT"/> פריטים מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, יש להיכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">‏ניתן לעבור בין פרופילים של Brave באמצעות <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">‏יש לסגור את כל חלונות Brave ולנסות שוב.</translation>
-<translation id="5350485513372498152">‏Brave Assistant ב-Brave יכולה להשלים עבורך פעולות באתרים</translation>
 <translation id="4061445349373849749">‏כדי להגן על הפרטיות שלך, תחומי עניין שהוגדרו לפני יותר מ-4 שבועות נמחקים אוטומטית. עם המשך הגלישה, תחום עניין כלשהו עשוי להופיע שוב ברשימה. יש גם אפשרות להסיר תחומי עניין מ-Brave כדי שלא יילקחו בחשבון.</translation>
 <translation id="691208314680168371">‏היסטוריית הגלישה – תיעוד האתרים שביקרת בהם באמצעות Brave במכשיר הזה.</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
