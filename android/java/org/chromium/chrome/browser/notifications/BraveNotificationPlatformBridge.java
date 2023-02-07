@@ -77,8 +77,19 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             vibrationPattern = EMPTY_VIBRATION_PATTERN;
         }
 
-        return super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
-                profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
-                vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
+        NotificationBuilderBase result =
+                super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
+                        profileId, incognito, vibrateEnabled, title, body, image, icon, badge,
+                        vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
+
+        assert result
+                instanceof BraveAdsNotificationBuilder
+            : "Bytecode changes for BraveAdsNotificationBuilder were not applied!";
+        if (result instanceof BraveAdsNotificationBuilder) {
+            ((BraveAdsNotificationBuilder) result)
+                    .setIsBraveAdsNotification(mNotificationType == NotificationType.BRAVE_ADS);
+        }
+
+        return result;
     }
 }

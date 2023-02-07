@@ -720,6 +720,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
                 Context.class, ModalDialogManager.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
+                "org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder",
+                Context.class));
     }
 
     @Test
