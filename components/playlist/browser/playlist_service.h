@@ -210,6 +210,7 @@ class PlaylistService : public KeyedService,
                                 bool update_media_src_and_retry_caching_on_fail,
                                 bool directory_ready);
 
+  std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
