@@ -2041,7 +2041,7 @@ Are you sure you want to do this?
       Balance:
     </message>
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
-      Select purchase method
+      Select Purchase Method
     </message>
     <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
       Brave Wallet
