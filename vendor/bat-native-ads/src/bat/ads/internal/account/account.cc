@@ -402,14 +402,9 @@ void Account::OnDidRefillUnblindedTokens() {
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  const bool should_show_tooltip_notification = false;
-#else   // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  const bool should_show_tooltip_notification = true;
-#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.payment_id, captcha_id, should_show_tooltip_notification);
+      wallet.payment_id, captcha_id);
 }
 
 }  // namespace ads

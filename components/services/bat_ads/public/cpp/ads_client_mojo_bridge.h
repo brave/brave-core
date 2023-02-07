@@ -96,10 +96,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient {
 
   void GetScheduledCaptcha(const std::string& payment_id,
                            GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(
-      const std::string& payment_id,
-      const std::string& captcha_id,
-      bool should_show_tooltip_notification) override;
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
   void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
