@@ -1044,7 +1044,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Enterprise;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Enterprise.entitlements";
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_MODULE_NAME = Client;
@@ -1192,7 +1192,7 @@
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2013,7 +2013,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Release (AppStore).entitlements";
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2101,7 +2101,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Dev;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_MODULE_NAME = Client;
@@ -2185,7 +2185,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Beta;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Beta.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_MODULE_NAME = Client;
@@ -2268,7 +2268,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Local;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/iOS/Entitlements/Debug.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "../Client/Frontend/Preview\\ Content";
+				DEVELOPMENT_ASSET_PATHS = "../Sources/Brave/Frontend/Preview\\ Content";
 				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_MODULE_NAME = Client;

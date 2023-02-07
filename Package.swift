@@ -59,7 +59,7 @@ var package = Package(
   targets: [
     .target(
       name: "HTTPSE",
-      path: "Client/WebFilters/ShieldStats/Httpse",
+      resources: [.copy("httpse.leveldb.tgz")],
       cxxSettings: [
         .headerSearchPath("include"),
         .headerSearchPath("ThirdParty/**"),
@@ -351,9 +351,7 @@ var braveTarget: PackageDescription.Target = .target(
     .product(name: "Lottie", package: "lottie-ios"),
     .product(name: "Collections", package: "swift-collections"),
   ],
-  path: "Client",
   exclude: [
-    "WebFilters/ShieldStats/Httpse",
     "Frontend/UserContent/UserScripts/AllFrames",
     "Frontend/UserContent/UserScripts/MainFrame",
     "Frontend/UserContent/UserScripts/Sandboxed",
@@ -370,7 +368,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/MainFrameAtDocumentStart.js"),
     .copy("Assets/MainFrameAtDocumentStartSandboxed.js"),
     .copy("Assets/SessionRestore.html"),
-    .copy("Assets/top_sites.json"),
     .copy("Assets/Fonts/FiraSans-Bold.ttf"),
     .copy("Assets/Fonts/FiraSans-BoldItalic.ttf"),
     .copy("Assets/Fonts/FiraSans-Book.ttf"),
@@ -399,7 +396,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Interstitial Pages/Styles/InterstitialStyles.css"),
     .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
     .copy("Assets/SearchPlugins"),
-    .copy("Assets/TopSites"),
     .copy("Frontend/Reader/Reader.css"),
     .copy("Frontend/Reader/Reader.html"),
     .copy("Frontend/Reader/ReaderViewLoading.html"),
@@ -449,7 +445,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
     .copy("WebFilters/ContentBlocker/Lists/upgrade-http.json"),
     .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
-    .copy("WebFilters/ShieldStats/Httpse/httpse.leveldb.tgz"),
   ],
   plugins: ["LoggerPlugin"]
 )
