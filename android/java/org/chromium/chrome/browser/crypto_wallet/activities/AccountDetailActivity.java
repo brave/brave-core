@@ -277,6 +277,7 @@ public class AccountDetailActivity
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
         accountInfo.coin = mCoinType;
+        accountInfo.keyringId = AssetUtils.getKeyringForCoinType(mCoinType);
         return accountInfo;
     }
 

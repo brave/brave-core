@@ -194,6 +194,7 @@ handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, p
   const found = await findHardwareAccountInfo(payload.accountAddress)
   if (found && found.hardware) {
     const info: BraveWallet.HardwareInfo = found.hardware
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     await cancelHardwareOperation(info.vendor as HardwareVendor, payload.coinType)
   }
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
@@ -444,6 +445,7 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Ser
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     info.vendor as HardwareVendor,
     info.path,
     messageData
@@ -514,6 +516,7 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
 
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.rawMessage, messageData.coin, () => {
     store.dispatch(PanelActions.signTransaction([messageData]))
   })
@@ -575,6 +578,7 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   // Send serialized requests to hardware keyring to sign.
   let payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
   for (const rawMessage of messageData.rawMessages) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin, () => {
       store.dispatch(PanelActions.signAllTransactions([messageData]))
     })
