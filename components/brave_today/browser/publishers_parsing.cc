@@ -22,23 +22,6 @@ mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
                                      const base::Value& locale_entry) {
   auto result = mojom::LocaleInfo::New();
 
-  // TODO(fallaciousreasoining): Remove this branch after sources.global.json
-  // has been updated. https://github.com/brave/brave-browser/issues/26307
-  if (locale_entry.is_string()) {
-    result->locale = locale_entry.GetString();
-
-    // We consider '0' to be unranked, as mojo doesn't support nullable
-    // primitives.
-    result->rank = publisher_dict.FindInt("rank").value_or(0);
-    auto* channels_raw = publisher_dict.FindList("channels");
-    if (channels_raw) {
-      for (const auto& channel : *channels_raw)
-        result->channels.push_back(channel.GetString());
-    }
-
-    return result;
-  }
-
   const auto& locale_dict = locale_entry.GetDict();
   result->locale = *locale_dict.FindString("locale");
   result->rank = locale_dict.FindInt("rank").value_or(0);
