@@ -287,8 +287,13 @@ class PlaylistListViewController: UIViewController {
       lastPlayedItemTime = initialItem != nil ? initialItemOffset : Preferences.Playlist.lastPlayedItemTime.value
     }
     
-    autoPlayEnabled = initialItem != nil ? true : loadingState != .loading ? Preferences.Playlist.firstLoadAutoPlay.value : false
-    if !autoPlayEnabled {
+    // Auto-play is based on loading state and preference only
+    autoPlayEnabled = loadingState != .loading ? Preferences.Playlist.firstLoadAutoPlay.value : false
+    
+    // Should load determines if the player should load the item, but does not "auto-play" it!
+    let shouldLoad = initialItem != nil ? true : autoPlayEnabled
+    
+    if !shouldLoad {
       delegate?.showStaticImage(image: nil)
       delegate?.stopPlaying()
       return
