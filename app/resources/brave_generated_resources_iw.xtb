@@ -25,7 +25,6 @@
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
 <translation id="8988939298652262600">Brave אינו בודק את האבטחה והבטיחות של הרחבות. התקן/י הרחבה זו רק אם יש לך אמון במפתח.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") לא נתמך ב-Brave.</translation>
 <translation id="9005883459983913482">חלונות Tor</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="6924909138923993900">חיבור Tor חדש לאתר זה</translation>
@@ -40,6 +39,11 @@
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
+<translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון,
+<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>
+ליצור מחדש את החשבון</translation>
+<translation id="6965382102122355670">אישור</translation>
 <translation id="3975865347033939965">לא ניתן היה להפעיל את שירות הסנכרון, Brave Sync אינו פועל</translation>
 <translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="4595286989346610620">בדוק פרטים</translation>
@@ -113,8 +117,8 @@
 <translation id="9194637241566114638">עזרו לשפר את <ph name="SEARCH_NAME"/> על-ידי שליחת נתוני שימוש אנונימיים. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">חיפוש Brave</translation>
 <translation id="8184318863960255706">מידע נוסף</translation>
-<translation id="6965382102122355670">אישור</translation>
 <translation id="780301667611848630">לא תודה</translation>
+<translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="6040143037577758943">סגירה</translation>
@@ -122,8 +126,12 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
-<translation id="7986278174934557414">הסתרת סמל הלוח הצדדי</translation>
-<translation id="6915291874524466201">הסתרת סמל הלוח הצדדי</translation>
+<translation id="4375473250631001683">הסתר סמל סרגל צד</translation>
+<translation id="2613033293035359003">הסתר סרגל צידי</translation>
+<translation id="4233010476457917696">הצג סרגל צידי</translation>
+<translation id="7829322605042304637">הסתר סמל סרגל צד</translation>
+<translation id="7349915168363514678">הסתר סרגל צידי</translation>
+<translation id="5404213409401164238">הצג סרגל צידי</translation>
 <translation id="9149866541089851383">ערוך...</translation>
 <translation id="1181037720776840403">הסרה</translation>
 <translation id="7513769021866698486">עריכת פריט</translation>
@@ -132,7 +140,9 @@
 <translation id="5877900074358050101">כותרת הפריט בסרגל הצד</translation>
 <translation id="1613695740874407223">קישור הפריט בסרגל הצד</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
-<translation id="5404213409401164238">הצג סרגל צידי</translation>
+<translation id="5977931179408079967">עמדה</translation>
+<translation id="3790384768741064842">העבר ימינה</translation>
+<translation id="7444424316576061724">העבר שמאלה</translation>
 <translation id="7561196759112975576">תמיד</translation>
 <translation id="7060352228894039151">במעבר עם העכבר</translation>
 <translation id="7961015016161918242">אף פעם</translation>
@@ -165,6 +175,8 @@
 <translation id="8731422418734770661">הגדר ארנקי קריפטו</translation>
 <translation id="8199661191594897555">התחל ארנקי קריפטו וטען מחדש</translation>
 <translation id="8428213095426709021">הגדרות</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 Domains</translation>
 <translation id="72868071984333667">למידע נוסף על IPFS ופרטיות</translation>
 <translation id="4552520379838695057">מצטערים, עמוד זה חסר.</translation>
 <translation id="2609895996619941644">האם ברצונכם לבדוק אם גרסה שמורה זמינה ב-Wayback Machine?</translation>
@@ -175,10 +187,14 @@
 <translation id="3987546108749866209">השתמשו בכרטיסיות אנכיות</translation>
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
 <translation id="399928467800528208">הדגשה לאחר מעבר עם העכבר</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{ביטול השתקת הכרטיסייה}two{ביטול השתקת הכרטיסיות}many{ביטול השתקת הכרטיסיות}other{ביטול השתקת הכרטיסיות}}</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2523967823495420116">השתמשו בכרטיסיות אנכיות</translation>
 <translation id="8888603463702767599">הצגת שורת הכותרת</translation>
 <translation id="2058818256505091369">הדגשה לאחר מעבר עם העכבר</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{השתקת הכרטיסייה}two{השתקת הכרטיסיות}many{השתקת הכרטיסיות}other{השתקת הכרטיסיות}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{ביטול השתקת הכרטיסייה}two{ביטול השתקת הכרטיסיות}many{ביטול השתקת הכרטיסיות}other{ביטול השתקת הכרטיסיות}}</translation>
 <translation id="4235920711083356755">הצג את לחצן VPN</translation>
 <translation id="4070612712151038707">מציג את לחצן VPN בסרגל הכלים</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -231,11 +247,9 @@
 <translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
 <translation id="5297085818601043899">טיפים לכלי עבודה</translation>
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
-<translation id="2369560305991805099">הצגת כפתור הלוח הצדדי</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="2858138569776157458">אתרים נבחרים</translation>
-<translation id="65774893852758517">אתרים מומלצים</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="8820817407110198400">סרגל הסימניות</translation>
 <translation id="6333347122924254968">הצגו את סמליל תגמולי Brave בשורת הכתובת</translation>
@@ -246,6 +260,8 @@
 <translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">מאמרים נטענים באופן אוטומטי במצב קריאה, כדי לחסוך לך זמן</translation>
+<translation id="2422927186524098759">סרגל צידי</translation>
+<translation id="832432428796481785">הצג כפתור הסרגל הצידי</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
 <translation id="1988804048511540801">דף לשונית חדשה מוצג</translation>
 <translation id="2970343821770026391">דשבורד</translation>
@@ -269,6 +285,8 @@
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
 <translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
 <translation id="7630031867325944356">העדיפו כתובות אתרים של דפי בעלי אתרים, במקום AMP וגרסאות דומות.</translation>
+<translation id="920638232916443453">כתובות אתרים למעקב להפניה אוטומטית</translation>
+<translation id="1118970888826017401">אפשר תמיכה בעקיפה של כתובות אתרים למעקב אחר הפניות מחדש.</translation>
 <translation id="7607166182943595829">חסימת האפשרות של אתרים ליצור טביעת אצבע שלי בהתאם להעדפות השפה</translation>
 <translation id="3497934980362703405">הפעלת ההגדרה תקטין את יכולתם של אתרים שונים ללמוד על העדפות השפה שלך.</translation>
 <translation id="2133317862976486547">חסימת עוקבים &amp; פרסומות</translation>
@@ -360,6 +378,7 @@
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
 <translation id="2187778349654214731">על מנת להתחיל, עליך להתקין את Brave בכל המכשירים שהנך מתכננ/ת לסנכרן. לאחר מכן, קשר/י אותם יחד באופן מאובטח עם קוד סנכרון.</translation>
 <translation id="7530575064080939974">נהל/י את המכשירים המסונכרנים שלך</translation>
+<translation id="8668872235103666008">לא ניתן היה לסנכרן את Brave במכשירים שלך</translation>
 <translation id="7575156386943878014">מנהל הסנכרון</translation>
 <translation id="1755198127524719638">הגדרות סנכרון</translation>
 <translation id="7558480201297099157">נהל/י את המידע שברצונך לסנכרן בין מכשירים. הגדרות אלה משפיעות על מכשיר זה בלבד.</translation>
@@ -389,7 +408,7 @@
 <translation id="4485276108749547761">התייחסו לקוד זה כאל ססמה. אם מישהו ישיג אותו, הוא יוכל לקרוא ולשנות את הנתונים המסונכרנים שלכם.</translation>
 <translation id="3034163433136515805">הצג קוד QR</translation>
 <translation id="5373825572723282843">הזינו קוד סנכרון</translation>
-<translation id="5734745018569675530">הקלידו את מילות הקוד של שרשרת הסנכרון שקיבלתם, בטופס שלהלן.</translation>
+<translation id="1265244359514651398">הזן את ביטוי הסיסמה של שרשרת הסנכרון שלך למטה.</translation>
 <translation id="1061533051865606843">הוסף התקן חדש</translation>
 <translation id="5093410893656857925">בחרו סוג מכשיר</translation>
 <translation id="4581190919849683048">עם איזה סוג מכשיר ברצונך לסנכרן?</translation>
@@ -397,6 +416,7 @@
 <translation id="3995714999835224798">הקוד אינו חוקי</translation>
 <translation id="4432071071853308688">הקוד הזה ריק</translation>
 <translation id="955848693465029904">שגיאה בהגדרת סנכרון פנימי</translation>
+<translation id="7456398316301207582">שגיאת מחיקת חשבון פנימי</translation>
 <translation id="859506441384380749">הקוד יוצר בידי גרסה של Brave שהוצאה משימוש, יש לשדרג את המכשיר האחר תחילה.</translation>
 <translation id="3132642509209154999">פג תוקפו של הקוד. יש לייצור קוד חדש במכשיר השני ולנסות שוב.</translation>
 <translation id="2859229680945501779">קוד זה אינו חוקי. אנא בדקו שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלכם.</translation>
@@ -409,6 +429,17 @@
 
 ברצונך לעשות זאת בוודאות?</translation>
 <translation id="7443185843787879670">Brave לא הצליח לגשת לאחסון הבטוח של מערכת ההפעלה שלך המשמש לאבטחת נתונים, כגון סיסמאות וקובצי Cookie; האחסון גם נדרש עבור Brave Sync לצורך חיבור פרופיל הדפדפן שלך בין מכשירים. משמעות הדבר היא Brave Sync לא פועל. כדי לפתור בעיה זו, עיין ב<ph name="BEGIN_LINK_SYNC_GUIDE"/>מדריך לפתרון בעיות של Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">נראה שמפתח ההצפנה של הסנכרון שונה מזה שבו השתמשת בעת הגדרת Brave Sync לראשונה. התיקון הקל ביותר כאן הוא לאפס ולהצטרף מחדש לשרשרת הסנכרון באמצעות משפט הסיסמה מאחד המכשירים המסונכרנים האחרים שלך.</translation>
+<translation id="4889767840132638381">אפס והצטרף מחדש לשרשרת הסנכרון</translation>
+<translation id="1680065323266179640">מחק חשבון מסונכרן</translation>
+<translation id="9064376100690171155">מחק חשבון לצמיתות</translation>
+<translation id="228906529296554286">מחיקת החשבון שלך תסיר את הנתונים המוצפנים שלך משרתי Brave ותשבית את הסנכרון בכל המכשירים המחוברים שלך.</translation>
+<translation id="7578652532113583362">עם זאת, זה לא ימחק את הנתונים המאוחסנים באופן מקומי במכשירים אלה.</translation>
+<translation id="2516405584294312544">המחיקה הזו היא לצמיתות ואין דרך לשחזר את הנתונים. אם תחליט להתחיל להשתמש שוב בסינכרון, תצטרך ליצור חשבון חדש ולהוסיף מחדש כל מכשיר אחד אחד.</translation>
+<translation id="4860996720371753023">מחיקת החשבון מתבצעת...</translation>
+<translation id="8199291899164865593">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. החשבון נמחק.</translation>
+<translation id="5633907266617216186">כתובות, פרטי תשלום וכו'.</translation>
+<translation id="294985549514492876">Web apps (PWAs)</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
 <translation id="842628013524824194">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת</translation>
@@ -463,7 +494,7 @@
 <translation id="1834467296210148203">הצג את סמל Brave Wallet בסרגל הכלים</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
-<translation id="1241283133946520352">רשתות</translation>
+<translation id="856371974127598760">Wallet Networks</translation>
 <translation id="5975930666279943472">נקו מידע על עסקאות בארנק ומידע על חוסר</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
@@ -501,6 +532,8 @@
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2234108191702901162">לא ניתן להוסיף רשת</translation>
 <translation id="8996633027318264334">האם ברצונך למחוק את <ph name="KEY_NAME"/>?</translation>
+<translation id="3316326558572563182">רשת פעילה תמיד גלויה ברשימת רשתות הארנק</translation>
+<translation id="232693303726691609">הצג/הסתר רשת ברשימת רשתות הארנק</translation>
 <translation id="7893578599666249602">בטוח/ה שברצונך לאפס את <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>
 <translation id="9170907049676078643">שיטה לפתרון משאבי IPFS</translation>
@@ -554,6 +587,7 @@
 <translation id="2775956301559569472">הצג הודעת Wayback Machine בדפי 404</translation>
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
 <translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
+<translation id="7984721311211272523">השבת את פונקציית ההשתקה בסמלי רמקול כרטיסיות</translation>
 <translation id="6624718837376802990">תגמולי אווטאר Edgy</translation>
 <translation id="6617313057407561765">אווטאר Edgy Brave</translation>
 <translation id="6754445808455578019">אווטאר Edgy אוקיינוס</translation>

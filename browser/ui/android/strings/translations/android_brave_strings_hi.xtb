@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
+<translation id="2524310205387880526">Brave का मूल्यांकन करें</translation>
 <translation id="915758461293673891">योगदान की राशि:</translation>
 <translation id="1420756770787071946">इस क्रिएटर का सपोर्ट करें</translation>
 <translation id="4147995007712611681">आपने एक पेंडिंग टिप सेट अप की है!</translation>
@@ -10,8 +11,8 @@
 <translation id="1305714751384738456">आप Brave रिवॉर्ड नहीं कमा रहे हैं</translation>
 <translation id="1483391942610220726">आपको गोपनीयता रिपोर्ट नहीं मिल रही हैं</translation>
 <translation id="4683790942451502796">अगर आप BAT कमाना और साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
-<translation id="1462722717055895108">अगर आप BAT कमाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें</translation>
-<translation id="5457255168064266494">अगर आप साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
+<translation id="8618359751943259593">अगर आप BAT कमाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें</translation>
+<translation id="760355165169399836">अगर आप साप्ताहिक गोपनीयता रिपोर्ट पाना जारी रखना चाहते हैं, तो नोटिफ़िकेशन को फिर से चालू करें.</translation>
 <translation id="6268959058971634697">आप कोई रिवॉर्ड नहीं कमा रहे हैं</translation>
 <translation id="1088637159642753509">Brave रिवॉर्ड पाने और गोपनीयता रिपोर्ट देखने के लिए डिवाइस नोटिफ़िकेशन चालू करें.</translation>
 <translation id="312404770066229090">Brave रिवॉर्ड कमाने के लिए डिवाइस नोटिफ़िकेशन को चालू करें.</translation>
@@ -53,6 +54,8 @@
 <translation id="2278950434998763147">सामान्य HTTP के बजाय सुरक्षित HTTPS कनेक्शन का उपयोग करके कुछ साइटें खोलता है.</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
 <translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
+<translation id="920638232916443453">अपने-आप दूसरे पेज पर ले जाने वाले ट्रैकिंग URL</translation>
+<translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
 <translation id="7714773920987474116">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
@@ -76,12 +79,23 @@
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
 <translation id="3872060236937011862"><ph name="ASSET_NAME"/> मूल्य (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Ethereum नाम सेवा</translation>
+<translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">हल निकालने का तरीका</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="4176463684765177261">अक्षम</translation>
 <translation id="59174027418879706">सक्रिय</translation>
 <translation id="6252490671914511928">आज की शीर्ष कहानियाँ पूरी तरह से प्राइवेट फ़ीड में, सिर्फ आपके लिए.</translation>
+<translation id="8300751939969131609">Brave न्यूज़ चालू करें और कभी भी कोई स्टोरी छूटने न दें</translation>
 <translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
+<translation id="7699565323725789472">एक ही फ़ीड में अपने पसंदीदा सोर्स को फ़ॉलो करें. बस Brave में एक टैब खोलें, नीचे स्क्रॉल करें और… लुत्फ़ उठाएँ!\nBrave न्यूज़ को गुप्त और अनाम विज्ञापन से मदद मिलती है.</translation>
+<translation id="1765217911817124376">Brave न्यूज़ शुरू करें</translation>
+<translation id="8981973962043893066">साइट, विषय या RSS फ़ीड सर्च करें</translation>
+<translation id="3225021799163709119">मशहूर</translation>
+<translation id="4750394297954878236">सुझाव</translation>
+<translation id="1498364270401875204">चैनल</translation>
+<translation id="8032569120109842252">फ़ॉलो कर रहे हैं</translation>
+<translation id="4108314971463891922">फ़ॉलो करें</translation>
+<translation id="3861486700625780712">अनफ़ॉलो करें</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
 <translation id="7823038307453615214">Brave न्यूज़ दिखाएँ</translation>
 <translation id="6527303717912515753">शेयर करें</translation>
@@ -133,7 +147,7 @@
 <translation id="7370959926683925817">विज्ञापनों को ब्लॉक करें. डेटा बचाएँ. हर एक दिन.</translation>
 <translation id="7281027579943912834">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, आप जिस भी लिंक पर टैप करते हैं वह Brave के विज्ञापन-ब्लॉक से सुरक्षित होता है, हर पेज, वीडियो और स्ट्रीम.</translation>
 <translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
-<translation id="6188781052835527980">अगर आप क्रैश या फ़्रीज़ का सामना करते हैं, तो अनाम डायग्नोस्टिक रिपोर्ट भेजें.</translation>
+<translation id="6718362830686703942">अचानक बंद होने या अटकने पर डायग्नोस्टिक रिपोर्ट भेजें.</translation>
 <translation id="1929905278861178845">Brave के यूज़र जिन सुविधाओं का इस्तेमाल कर रहे हैं, उन प्रोडक्ट के बारे में पूरी तरह से गोपनीय और अनाम जानकारी शेयर करें.</translation>
 <translation id="2877653791257935258">किसी वेबसाइट का नाम या URL टाइप करें</translation>
 <translation id="5329830149661250028">Brave का कमाल देखें : कोई विज्ञापन नहीं. कोई ट्रैकर नहीं. बहुत तेज़ी से पेज का खुलना.</translation>
@@ -144,6 +158,7 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> और अन्य विज्ञापन ट्रैकर ब्लॉक किए गए हैं</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> विज्ञापन और ट्रैकर ब्लॉक किए गए</translation>
 <translation id="8281886186245836920">अभी नहीं</translation>
+<translation id="1377600615067678409">अभी के लिए रहने दो</translation>
 <translation id="6165508094623778733">ज़्यादा जानें</translation>
 <translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
 <translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
@@ -201,23 +216,15 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="1165667598801520610">फंड्स जोड़ें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
 <translation id="2369994359029526515">नहीं वेरिफ़ाइड क्रिएटर</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="13853865024308201">दावा</translation>
+<translation id="7861645265922445992">रिवार्ड्स क्लेम करें</translation>
 <translation id="8494748383523030337">आपकी राशि</translation>
 <translation id="4781696154289395607">आपने <ph name="BAT_VALUE"/> BAT का योगदान दिया है।</translation>
-<translation id="7997676409547731821">स्वतः-योगदान और मासिक टिप्स के लिए आपका निर्धारित मासिक भुगतान अपर्याप्त धन के कारण पूरा नहीं हो सका। हम 30 दिनों में दोबारा प्रयास करेंगे।</translation>
-<translation id="5306913077198665897">आपके टिप को संसाधित करने में कुछ गड़बड़ हुई, कृपया दोबारा प्रयास करें।</translation>
 <translation id="2429828319207652823">आपके योगदान को प्रोसैस करने में एक समस्या थी।</translation>
-<translation id="3453206261112715431">मुफ़्त टोकन अनुदान</translation>
-<translation id="6417420737057016607">ब्रेव विज्ञापन</translation>
-<translation id="5497435273900537730">एक मुफ़्त <ph name="TOKEN"/> अनुदान उपलब्ध है।</translation>
-<translation id="8689997599821157251">आपने अर्जित किया है</translation>
-<translation id="7550470870580166294">अपर्याप्त धन</translation>
-<translation id="2775064702681588061">आपका Brave Rewards खाता धनराशि की प्रतीक्षा कर रहा है।</translation>
+<translation id="2221902203895354376">टोकन ग्रांट्स उपलब्ध है!</translation>
 <translation id="2323069945529668668">उह ओह!</translation>
 <translation id="7510166204621526816">ब्रेव इनाम सर्वर जवाब नहीं दे रहा है. हम इसे जल्द से जल्द ठीक करने का प्रयास करेंगे.</translation>
 <translation id="683765328936486920">YouTube पर</translation>
@@ -241,6 +248,9 @@
 <translation id="5241263629636958324">क्लिपबोर्ड में कॉपी किया गया</translation>
 <translation id="5817918615728894473">युग्‍मित करें</translation>
 <translation id="7090325819305486658">डाटा वरीयता</translation>
+<translation id="1680065323266179640">सिंक अकाउंट को मिटाएँ</translation>
+<translation id="3792563952903751704">अपना अकाउंट मिटाने से Brave के सर्वर पर आपका एन्क्रिप्ट किया हुआ डेटा हट जाएगा और आपके कनेक्ट किए हुए सभी डिवाइस पर सिंक बंद हो जाएगा. हालाँकि इससे उन डिवाइस पर लोकल तौर पर स्टोर किया गया डेटा नहीं मिटेगा.
+मिटाने की यह प्रक्रिया स्थायी होगी और डेटा को वापस नहीं पाया जा सकेगा. अगर आप फिर से सिंक इस्तेमाल करने के बारे में सोचते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से जोड़ना होगा.</translation>
 <translation id="728334460283296316">डिवाइस हटाएं</translation>
 <translation id="1178128181015923849">क्या आप वास्तव में डिवाइस '<ph name="DEVICE_NAME"/>' को हटाना चाहते हैं?</translation>
 <translation id="7745082336226088126">सिंक कोड को स्कैन या दर्ज करें</translation>
@@ -296,8 +306,7 @@
 <translation id="6199596294742117349">यह एक निजी टैब है</translation>
 <translation id="5858455511731621847">भले ही आप निजी टैब में देखी जाने वाली साइटों को स्थानीय रूप से सेव नहीं करते हैं, लेकिन वे आपको आपके आईएसपी, आपके नियोक्ता, या आपके द्वारा देखी जा रही साइटों के लिए आपको गुमनाम या अदृश्य नहीं बनाते हैं।</translation>
 <translation id="5789441016350810005">ब्राउज़र के बैकग्राउंड होने पर Brave विज्ञापन भेजे जाते हैं</translation>
-<translation id="3690140184638701871">योगदान और amp;amp; टिप</translation>
-<translation id="844921671123185605">आपके मासिक टिप को प्रोसेस कर दिया गया हैं!</translation>
+<translation id="2892744985635833293">आपका मासिक योगदान प्रोसेस हो गया है.</translation>
 <translation id="3124090095880236567">विज्ञापन शुरू करें</translation>
 <translation id="2975780980638932742">Brave विज्ञापन आ गए है!</translation>
 <translation id="7541582550122501404">लंबित योगदान</translation>
@@ -306,6 +315,8 @@
 <translation id="7781069478569868053">नया टैब पेज</translation>
 <translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
 <translation id="3870475560794762985">प्रायोजित इमेज दिखाएँ</translation>
+<translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
+<translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/> के द्वारा फ़ोटो</translation>
 <translation id="4761229094276239865">टैप करके ब्रेव रिवार्ड्स का उपयोग शुरू करें, आप <ph name="TERMS_OF_SERVICE"/>.से सहमत हैं।</translation>
 <translation id="3794079107601824147">इस बैकग्राउंड इमेज को देखने के लिए भुगतान प्राप्त करें।</translation>
@@ -313,8 +324,8 @@
 <translation id="2927095357213611519">आप टोकन से वेब रचनाकारों की सहायता कर सकते हैं।\nगोपनीयता सम्बंधित विज्ञापन देखकर टोकर अर्जित करें।</translation>
 <translation id="213787746370741250">कस्टम टैब में टैब शुरू करें</translation>
 <translation id="2394961582378297792">लॉग आउट हुआ</translation>
-<translation id="6181762795539107980">वेरिफ़ाई नहीं किया गया है</translation>
-<translation id="4569155249847375786">सत्यापित है</translation>
+<translation id="5308380583665731573">जुडिये</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
 <translation id="8673913984316081937">आपके वॉलेट का सत्यापन वैकल्पिक है</translation>
 <translation id="8558636200953226885">लेकिन यदि आप सत्यापित करते हैं, तो आप कर सकते हैं...</translation>
 <translation id="8697510149346635496">BAT को वापस लें जो आप गोपनीयता-सम्मान वाले विज्ञापन देखने से कमाते हैं</translation>
@@ -326,25 +337,15 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
 <translation id="3200197118442451932">जब आप Brave पर अपना अकाउंट बनाते हैं तो Brave Software Inc. आपकी किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप <ph name="WALLET_PROVIDER"/> को अपना अकाउंट बनाते समय देते हैं.</translation>
-<translation id="2193391216824305230">उपयोगकर्ता का वॉलेट</translation>
 <translation id="1665118090708049096">मेरे <ph name="WALLET_PROVIDER"/>अकाउंट पर जाएँ</translation>
-<translation id="1948959999802743233"><ph name="WALLET_PROVIDER"/> से डिस्कनेक्ट करें</translation>
-<translation id="6239274080752256452">धनराशि निकाले</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
 <translation id="2495032782748793764">Brave डिफ़ॉल्ट</translation>
 <translation id="9132378787893584761">Brave को अपने दोस्तों के साथ शेयर करें!</translation>
 <translation id="717952606991220586">ओह, कुछ गड़बड़ी है। कृपया पुनः प्रयास करें।</translation>
-<translation id="2524310205387880526">Brave का मूल्यांकन करें</translation>
 <translation id="987264212798334818">सामान्य</translation>
 <translation id="1116694919640316211">इसके बारे में</translation>
-<translation id="6680650203439190394">शुल्क</translation>
-<translation id="2635089463885398597">आप Brave के साथ अपने अनुभव का मूल्यांकन कैसे करेंगे?</translation>
-<translation id="141901961143729572">अपने विचारों को शेयर करें</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="1275213816424141989">शायद बाद में</translation>
-<translation id="6991128190741664836">बाद में</translation>
-<translation id="8851456134224363571">बहुत अच्छे! क्या आप हमें Play Store पर रेटिंग दे सकते हैं?</translation>
-<translation id="8668962040900592974">हमें बताएँ कि हम और बेहतर कैसे बन सकते हैं</translation>
 <translation id="4406937629441301400">इस इमेज को देखने के लिए टोकन अर्जित करें और इसे आगे निर्मातों को भुगतान करें। <ph name="LEARN_MORE"/></translation>
 <translation id="1992363542751124282">इस छवि को देखने के लिए टोकन कमाएँ। अपने हिस्से का दावा करने के लिए ब्रेव रिवार्ड्स का उपयोग करना शुरू  करें पर टैप करें।</translation>
 <translation id="6632345639591919543">आप इस इमेज को देखने के लिए टोकन अर्जित कर रहे हैं।\n<ph name="LEARN_MORE"/></translation>
@@ -381,7 +382,6 @@
 <translation id="76550953340008122">इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
 <translation id="1275664486910646411">ऑटोकम्पलीट में शीर्ष साइटें दिखाएँ</translation>
-<translation id="5516010970279932133">ऑटोकम्पलीट में सुझाए गए साइट दिखाएँ</translation>
 <translation id="5370478469168390143">डेटा ऑनलाइन सेव करें</translation>
 <translation id="1118508688433541158">Brave के साथ तेजी से ब्राउज़ करें और विज्ञापन ब्लॉक करें</translation>
 <translation id="7427391215172269363">हरदिन मैं Brave से वेब ब्राउज़ करके डेटा बचाता हूँ.</translation>
@@ -429,7 +429,6 @@
 <translation id="2718046830255553131">गोपनीयता रिपोर्ट डेटा को साफ़ कर दिया गया है।</translation>
 <translation id="8376263745431603066">"नाइट मोड" सक्रीय करें (प्रायोगिक)</translation>
 <translation id="1383876407941801731">खोज</translation>
-<translation id="8446884382197647889">अधिक जानकारी प्राप्त करें</translation>
 <translation id="13296465911709339">आपके टेक्स्ट को क्लिपबोर्ड पर कॉपी किया गया है।</translation>
 <translation id="2735834606413553397">सार्वजनिक पते को क्लिपबोर्ड पर कॉपी कर लिया गया है.</translation>
 <translation id="2977461003134694205">गोपनीयता आँकड़े</translation>
@@ -443,28 +442,15 @@
 <translation id="7930505144430343145">ब्रेव रिवार्ड्स में आपका स्वागत है!</translation>
 <translation id="3477340970981564961">Brave निजी विज्ञापन आपकी व्यक्तिगत जानकारी को गोपनीय रखते हुए, सामग्री रचनाकारों का समर्थन करने के लिए आपको पारंपरिक विज्ञापनों के विपरीत पुरस्कार के रूप में टोकन प्रदान करते हैं।</translation>
 <translation id="6973095375773523904">विज्ञापन कहाँँ दिखाए जाते हैं?</translation>
-<translation id="7556325460112047619">Brave निजी विज्ञापन एक सामान्य सूचना के रूप में दिखाई देंगे। आप विज्ञापनों को कितनी बार देखें, इसे आप सेटिंग्स से नियंत्रित कर सकते हैं।</translation>
-<translation id="6897083627729802351">आप रिवार्ड्स कब प्राप्त करते हैं?</translation>
-<translation id="310863932297733723">वर्तमान पूरे महीने में Brave प्राइवेट विज्ञापनों से अर्जित आपके टोकन अगले महीने की 5 तारीख को आ जाएँगे।</translation>
 <translation id="7712287524451429139">वापस देना सरल बना दिया गया है</translation>
 <translation id="105037569026952831">निर्माता आपकी व्यस्तता के स्तरों के आधार पर आपके टोकन योगदान को स्वचालित रूप से प्राप्त करते हैं जिसकी हम 'अटेंशन' के रूप में गणना करते हैं।</translation>
 <translation id="5323267338679539010">सुझावों के साथ धन्यवाद कहें</translation>
-<translation id="6730444165801605682">टिप देना सामग्री या निर्माताओं को व्यक्तिगत रूप से प्रोत्साहित करने और समर्थन करने का एक तरीका है जिन्हे आप बहुत पसंद करते है। टिप देते रहें!</translation>
-<translation id="7509452925943421624">आप टोकन के साथ क्या कर सकते हैं?</translation>
-<translation id="5876169128756792273">टोकन का उपयोग निर्मातों की सहायता से परे भी किया जा सकता है। आप डिजिटल सामग्री और अन्य वस्तुएँ खरीद सकते हैं क्योंकि व्यापारी ऑनबोर्ड आते हैं।</translation>
-<translation id="1402530520078693620">अंत में, बेसिक सेटिंग के साथ शुरू करने के लिए तैयार हो जाइए</translation>
 <translation id="3494356595346329740">आप इसे बाद में बदल सकते हैं।</translation>
 <translation id="3115702351969988294">आप कितनी बार एड देखना चाहते हैं?</translation>
-<translation id="3474670199029510295">(प्रति घंटे विज्ञापन)</translation>
-<translation id="66599604460581068">आप अपने पसंदीदा रचनाकारों को कितना समर्थन देना चाहते हैं?</translation>
-<translation id="3164498053837913829">(आपकी एड्स से हुई कमाई में से)</translation>
 <translation id="827315274423079662">वूहू, आप पूरी तरह से तैयार हैं!</translation>
 <translation id="3895246934788932488">ब्रेव रिवार्ड्स का उपयोग करके, आप अपनी गोपनीयता की रक्षा कर रहे हैं और वेब को सभी के लिए बेहतर जगह बनाने में मदद कर रहे हैं। और यह बहुत बढ़िया है!</translation>
 <translation id="5705882733397021510">वापस जाएँ</translation>
 <translation id="3985567919248057638">आइए जल्दी से देखते हैं</translation>
-<translation id="2434574859640694129">आप अपने विज्ञापन का पहला भुगतान प्राप्त करने के बाद वापस आ सकते हैं और इस निर्माता को टिप दे सकते हैं!</translation>
-<translation id="207242986925259074">क्विक रिफ्रेशर टूर</translation>
-<translation id="8342862030112839977">आपका पहला रिवार्ड्स पेआउट इस तिथि तक आएगा:</translation>
 <translation id="7889432931837317731">अगर संभव हो तो स्वचालित रूप से खोलें</translation>
 <translation id="8967385052772844086">पूरी गोपनीयता रिपोर्ट देखें</translation>
 <translation id="6864343534748973390">सबसे लोकप्रिय</translation>
@@ -479,15 +465,6 @@
 <translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
 <translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
-<translation id="4956847150856741762">1</translation>
-<translation id="5196716972587102051">2</translation>
-<translation id="7839580021124293374">3</translation>
-<translation id="2918322085844739869">4</translation>
-<translation id="7267186368513450821">5</translation>
-<translation id="6972003925509023890">1 BAT</translation>
-<translation id="2222442600106681391">2 BAT</translation>
-<translation id="5615587419952694404">3 BAT</translation>
-<translation id="8867821173176188875">5 BAT</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
@@ -588,9 +565,12 @@
 <translation id="5050890334032852465">अकाउंट वॉचलिस्ट सेव करें</translation>
 <translation id="7755766175599167100">टोकन सर्च करें</translation>
 <translation id="3835223348537121988">बैलेंस</translation>
-<translation id="7420359180991315365">Wyre को जारी रखें</translation>
+<translation id="6888491517683356528">Ramp पर जाएँ</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
+<translation id="3866249974567520381">वर्णन</translation>
+<translation id="4378475168089649292">ब्लॉकचेन</translation>
+<translation id="9033453977881595182">टोकन  ID</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
@@ -767,7 +747,6 @@
 <translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
-<translation id="1543259266592091784">धनराशि जोड़ें</translation>
 <translation id="3494964159182650590">रिवॉर्ड के बारे में जानकारी</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
 <translation id="207268487070188114">1- टाइम टिप</translation>
@@ -809,11 +788,9 @@
 <translation id="8853725596990766789">राशि बदलें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
 <translation id="8006088103295786154">Brave वॉलेट को ऐक्सेस करें</translation>
-<translation id="5308380583665731573">कनेक्ट करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट हो गया है</translation>
 <translation id="3423275441470187644">भरोसा</translation>
 <translation id="2391762656119864333">निरस्‍त करें</translation>
-<translation id="3368922792935385530">कनेक्टेड</translation>
 <translation id="3432029672560911238">यूज़र अकाउंट</translation>
 <translation id="5753378322046059140">अकाउंट स्विच करें</translation>
 <translation id="3897092660631435901">मेनू</translation>
@@ -864,7 +841,6 @@
 <translation id="6044189892950611565">Brave Browser के लिए नोटिफ़िकेशन चैनल</translation>
 <translation id="1173919438868967364">अकाउंट चुनें</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> : के लिए मिलता-जुलता टाइमज़ोन नहीं मिला</translation>
-<translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
 <translation id="1968852757206592413">ट्रायल</translation>
 <translation id="7733890291091968191">Web3 के नोटिफ़िकेशन दिखाएँ</translation>
@@ -950,7 +926,7 @@
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3832588024105436400">अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प औऱ विज्ञापन दिखा सकें. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">आपके Brave रिवॉर्ड क्षेत्र को <ph name="COUNTRY_NAME"/> पर सेट कर दिया गया है.</translation>
-<translation id="3180990265682133881">बदकिस्मती से आपका देश सेट करते समय कोई गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.</translation>
+<translation id="909076461795862330">बदकिस्तमी से Brave रिवॉर्ड को सेट अप करने में गड़बड़ी हुई थी. कृपया फिर से कोशिश करें.</translation>
 <translation id="7352651011704765696">कुछ गलत हो गया</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -977,4 +953,22 @@
 <translation id="6662142137695589205">अपनी VPN की सदस्यता को लिंक करें</translation>
 <translation id="2674077112509133024">अपनी Brave Firewall + VPN की सुरक्षा को बढ़ाएँ</translation>
 <translation id="6365389672683343144">आपकी Brave VPN की सदस्यता Android, iOS और डेक्सटॉप पर 5 डिवाइस तक की सुरक्षा कर सकती है. बस अपनी Google Play की सदस्यता को अपने Brave अकाउंट से लिंक करें.</translation>
+<translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
+<translation id="6845311459433734326">एक कस्टोडियल अकाउंट कनेक्ट करें ताकि आप BAT कमा सकें और अपने रिवॉर्ड निकाल सकें</translation>
+<translation id="928980476243133540">मैं यह बाद में कर लूँगा/लूँगी</translation>
+<translation id="579702532610384533">रिकनेक्ट</translation>
+<translation id="1619753851206150396">आप लॉग आउट हो गए हैं</translation>
+<translation id="8208669151660770401">ऐसा आपके अकाउंट को सुरक्षित रखने के लिए हो सकता है. अभी रीकनेक्ट करने के लिए नीचे क्लिक करें.</translation>
+<translation id="2099354965137813181">मासिक योगदान नहीं दिया जा सका</translation>
+<translation id="9074594632540931067">एरर: बैट अनुपलब्ध है</translation>
+<translation id="5382684862562314222">आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.</translation>
+<translation id="6996157559236886133">गड़बड़ी: सीमित Uphold अकाउंट सुविधाएँ</translation>
+<translation id="6417420737057016607">Brave विज्ञापन</translation>
+<translation id="5425006356459378415">Brave रिवॉर्ड उपलब्ध नहीं हैं</translation>
+<translation id="833643743158564518">अभी आपके क्षेत्र में Brave रिवॉर्ड के लिए नए साइन अप बंद हैं. हालाँकि आप बाद में फिर से कोशिश कर सकते हैं. <ph name="LEARN_MORE"/></translation>
+<translation id="8528916244724490964">सभी नेटवर्क</translation>
+<translation id="2781668117338732220">सेकंडरी नेटवर्क</translation>
+<translation id="6309721369749814582">डोमेन <ph name="DOMAIN"/> रजिस्टर नहीं किया गया है</translation>
+<translation id="4071347720273751665">ऐसा लगता है कि आपने कोई ENS पता डाला है. हमें इस अनुरोध को हल करने के लिए एक थर्ड पार्टी सहायक का इस्तेमाल करना होगा, जो आपके IP पते और डोमेन को देख पाएगा. <ph name="LEARN_MORE"/></translation>
+<translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Kun tämä on päällä, Brave vapauttaa muistia ei-aktiivisilta välilehdiltä. Näin aktiiviset välilehdet ja muut sovellukset voivat käyttää enemmän tietokoneen resursseja ja Brave pysyy nopeana. Ei-aktiiviset välilehdet aktivoituvat automaattisesti, kun palaat niihin. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Muistinsäästö nopeuttaa Braveia</translation>
 <translation id="4798342026247191171">Luo uusi Brave-profiili</translation>
-<translation id="6361779936989026201">Brave Assistant Braveissa</translation>
 <translation id="113959764510199339">Brave yrittää näyttää salasanat.</translation>
 <translation id="8132634101975074716">Olet kirjautunut Braveiin!</translation>
 <translation id="4168469784091952813">Saat eniten irti Braveista</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
 <translation id="5122472867956731189">Jos sivusto yrittää varastaa salasanaasi tai jos lataat haitallisen tiedoston, Brave voi myös lähettää Selaussuojan tarkistettavaksi URL-osoitteita, myös osia sivujen sisällöstä</translation>
 <translation id="2953892977076487219">Brave yrittää muuttaa salasanoja.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave on yhdistetty HID-laitteeseen}other{Brave on yhdistetty HID-laitteisiin}}</translation>
 <translation id="8755404239607088219">Brave ei voi tarkistaa salasanojasi. Yritä myöhemmin uudelleen.</translation>
 <translation id="8880183781256147665">Lisätään Braveiin...</translation>
 <translation id="3038232873781883849">Asennetaan…</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Valitsemalla <ph name="SHORTCUT"/> voit vaihdella eri Brave-profiilien välillä</translation>
 <translation id="8703492925273919597">Sulje kaikki Brave-ikkunat ja yritä uudelleen.</translation>
-<translation id="5350485513372498152">Bravein Brave Assistant voi tehdä asioita puolestasi eri sivustoilla</translation>
 <translation id="4061445349373849749">Yksityisyytesi suojaamiseksi poistamme automaattisesti yli neljä viikkoa vanhat kiinnostuksen kohteet. Kun jatkat selaamista, kiinnostuksen kohde voi näkyä listalla uudelleen. Voit myös poistaa kiinnostuksen kohteet, joita et halua Bravein ottavan huomioon.</translation>
 <translation id="691208314680168371">Selaushistoriaasi eli tietoa sivuista, jotka olet avannut Braveissa tällä laitteella</translation>
 <translation id="1384923383737428730">Tietokoneellasi on haitallinen ohjelmisto. Brave voi poistaa sen, palauttaa asetuksesi ja poistaa laajennukset käytöstä, jotta selaimesi toimii taas normaalisti.</translation>

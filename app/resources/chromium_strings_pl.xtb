@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Gdy to ustawienie jest włączone, Brave zwalnia pamięć z nieaktywnych kart. Dzięki temu aktywne karty i inne aplikacje mają więcej zasobów komputerowych, a Brave działa szybciej. Nieaktywne karty zostaną automatycznie włączone, gdy ponownie je otworzysz. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Oszczędzanie pamięci przyspieszyło działanie Brave</translation>
 <translation id="4798342026247191171">Skonfiguruj nowy profil w Brave</translation>
-<translation id="6361779936989026201">Asystent Brave w Brave</translation>
 <translation id="113959764510199339">Brave próbuje pokazać hasła.</translation>
 <translation id="8132634101975074716">Jesteś zalogowany w Brave.</translation>
 <translation id="4168469784091952813">Możesz w pełni wykorzystać możliwości Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Masz aktualną wersję Brave</translation>
 <translation id="5122472867956731189">Jeśli strona próbuje wykraść Twoje hasło lub pobierasz szkodliwy plik, Brave może też wysłać URL wraz z fragmentami zawartości strony do usługi Bezpieczne przeglądanie.</translation>
 <translation id="2953892977076487219">Brave próbuje edytować hasła.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Przeglądarka Brave jest połączona z urządzeniem HID}few{Przeglądarka Brave jest połączona z urządzeniami HID}many{Przeglądarka Brave jest połączona z urządzeniami HID}other{Przeglądarka Brave jest połączona z urządzeniami HID}}</translation>
 <translation id="8755404239607088219">Brave nie może sprawdzić Twoich haseł. Spróbuj później.</translation>
 <translation id="8880183781256147665">Dodawanie do Brave...</translation>
 <translation id="3038232873781883849">Czekam na instalację…</translation>
@@ -98,7 +98,6 @@
 <translation id="5853262807109651878">Spowoduje to usunięcie <ph name="ITEMS_COUNT"/> elementów z tego urządzenia. Aby później odzyskać dane, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Profile Brave przełącza skrót <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">Zamknij wszystkie okna Brave i spróbuj ponownie.</translation>
-<translation id="5350485513372498152">Asystent Brave w Brave może wykonywać za Ciebie działania na różnych stronach internetowych</translation>
 <translation id="4061445349373849749">Aby chronić Twoją prywatność, automatycznie usuwamy Twoje zainteresowania, które są starsze niż 4 tygodnie. Podczas dalszego przeglądania zainteresowanie może się pojawić ponownie na liście. Możesz też usunąć zainteresowania, których Brave ma nie brać pod uwagę.</translation>
 <translation id="691208314680168371">Twoja historia przeglądania, czyli rejestr witryn, które odwiedzasz w Brave na tym urządzeniu.</translation>
 <translation id="1384923383737428730">Masz na komputerze szkodliwe oprogramowanie. Brave może je usunąć, przywrócić Twoje ustawienia i wyłączyć rozszerzenia, by przeglądarka znów działała normalnie.</translation>

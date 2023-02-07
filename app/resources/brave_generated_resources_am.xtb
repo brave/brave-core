@@ -26,7 +26,6 @@
 <translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ይፍቀዱ;</translation>
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
 <translation id="8988939298652262600">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አያጣራም። ይህን ቅጥያ መጫን ያለብዎ ገንቢውን የሚያምኑት ከሆነ ብቻ ነው።</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="9005883459983913482">የቶር መስኮቶች</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="6924909138923993900">ለዚህ ጣቢያ አዲስ የ ቶር ግንኙነት</translation>
@@ -41,6 +40,7 @@
 <translation id="1725356094208762656">ቶር ውስጥ ይክፈቱ</translation>
 <translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
+<translation id="6965382102122355670">እሺ</translation>
 <translation id="3975865347033939965">የማመሳሰል አገልግሎት ሊጀመር አልቻለም፣ Brave Sync እየሰራ አይደለም።</translation>
 <translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="4595286989346610620">ዝርዝሮችን ይፈትሹ</translation>
@@ -117,7 +117,6 @@
 <translation id="9194637241566114638">ስም-አልባ የአጠቃቀም ዳታዎችን በመላክ <ph name="MORE_INFO"/><ph name="SEARCH_NAME"/> በማሻሻል ላይ ድጋፍ ያድርጉ።</translation>
 <translation id="7404610376221341525">የ Brave ፍለጋ</translation>
 <translation id="8184318863960255706">ተጨማሪ መረጃ</translation>
-<translation id="6965382102122355670">እሺ</translation>
 <translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
@@ -126,8 +125,8 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
 <translation id="1516554614404600536">Brave  መሣሪያ ጠቃሚ ምክር</translation>
-<translation id="7986278174934557414">የጎን አምድ አዶን ደብቅ</translation>
-<translation id="6915291874524466201">የጎን አምድ አዶን ደብቅ</translation>
+<translation id="4233010476457917696">የጎን አሞሌን አሳይ</translation>
+<translation id="5404213409401164238">Sidebar አሳይ</translation>
 <translation id="9149866541089851383">አርትዕ…</translation>
 <translation id="1181037720776840403">አስወግድ</translation>
 <translation id="7513769021866698486">ንጥሉን ያርትዑ</translation>
@@ -136,7 +135,6 @@
 <translation id="5877900074358050101">የጎን አምድ ንጥል ርዕስ</translation>
 <translation id="1613695740874407223">የጎን አምድ ንጥል url</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
-<translation id="5404213409401164238">Sidebar አሳይ</translation>
 <translation id="7561196759112975576">ሁልጊዜ</translation>
 <translation id="7060352228894039151">በ ማውዝኦቨር</translation>
 <translation id="7961015016161918242">በፍጹም</translation>
@@ -180,10 +178,14 @@
 <translation id="3987546108749866209">አቀባዊ ትሮችን ተጠቀም</translation>
 <translation id="5860254591544742609">የርዕስ አሞሌ አሳይ</translation>
 <translation id="399928467800528208">ማውስ ላዩ ላይ ሲያንዣብብ ይንሳፈፍ</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{ትር ላይ ድምጸ-ከል አድርግ}one{ትሮች ላይ ድምጸ-ከል አድርግ}other{ትሮች ላይ ድምጸ-ከል አድርግ}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{የትር ድምጸ-ከል አንሳ}one{የትሮች ድምጸ-ከል አንሳ}other{የትሮች ድምጸ-ከል አንሳ}}</translation>
 <translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="2523967823495420116">አቀባዊ ትሮችን ተጠቀም</translation>
 <translation id="8888603463702767599">የርዕስ አሞሌ አሳይ</translation>
 <translation id="2058818256505091369">ማውስ ላዩ ላይ ሲያንዣብብ ይንሳፈፍ</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{ትር ላይ ድምጸ-ከል አድርግ}one{ትሮች ላይ ድምጸ-ከል አድርግ}other{ትሮች ላይ ድምጸ-ከል አድርግ}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{የትር ድምጸ-ከል አንሳ}one{የትሮች ድምጸ-ከል አንሳ}other{የትሮች ድምጸ-ከል አንሳ}}</translation>
 <translation id="4235920711083356755">የ VPN ቁልፍን ማሳየት</translation>
 <translation id="4070612712151038707">በቱልባር ውስጥ የ VPN ቁልፍን ያሳያል</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -236,11 +238,9 @@
 <translation id="4096343215397759358">ካርድ ከቅድመ እይታ ጋር</translation>
 <translation id="5297085818601043899">አጭር መረጃ</translation>
 <translation id="2396127686705429331">የዕልባቶች አዝራር አሳይ</translation>
-<translation id="2369560305991805099">የጎን አምዱን አዝራር አሳይ</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
 <translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
-<translation id="65774893852758517">የተጠቆሙ ጣቢያዎች</translation>
 <translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
@@ -395,7 +395,6 @@
 <translation id="4485276108749547761">ይህን ኮድ እንደ ይለፍ ቃል ይያዙት። አንድ ሰው ከደረሰበት፣ የተመሳሰለ ውሂብዎን ሊያነብ እና ሊያሻሽል ይችላል።</translation>
 <translation id="3034163433136515805">QR ኮድን ይመልከቱ</translation>
 <translation id="5373825572723282843">የማመሳሰያ ኮዱን ያስገቡ</translation>
-<translation id="5734745018569675530">የተሰጠዎትን የሲንክ ሰንሰለት ኮድ ከዚህ በታች ባለው ፎርም ላይ ያስገቡ።</translation>
 <translation id="1061533051865606843">አዲስ መሳሪያ ይጨምሩ</translation>
 <translation id="5093410893656857925">የመሳሪያውን አይነት ይምረጡ</translation>
 <translation id="4581190919849683048">ከየትኛው መሣሪያ ጋር ማመሳሰል ይፈልጋሉ?</translation>
@@ -466,7 +465,6 @@
 <translation id="1834467296210148203">የመሳሪያ አሞሌ ላይ የብሬቭን ቦርሳ አዶን አሳይ</translation>
 <translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
-<translation id="1241283133946520352">አውታረ መረቦች</translation>
 <translation id="5975930666279943472">የኪስ ቦርሳ ግብይት እና የአንድ ጊዜ መረጃ ያጽዱ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
 <translation id="4993345308607970390">የ Brave ን ዋሌት እንደገና ያስጀምሩ</translation>

@@ -15,7 +15,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="8905049883018921395">Cuando esta opción está activada, Brave libera memoria de las pestañas inactivas. Esto proporciona más recursos informáticos a las pestañas activas y a otras aplicaciones, y permite que Brave siga funcionando con rapidez. Tus pestañas inactivas volverán a activarse automáticamente cuando vuelvas a ellas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Ahorro de memoria ha hecho que Brave sea más rápido</translation>
 <translation id="4798342026247191171">Configura tu nuevo perfil de Brave</translation>
-<translation id="6361779936989026201">Asistente de Brave en Brave</translation>
 <translation id="113959764510199339">Brave está intentando mostrar contraseñas.</translation>
 <translation id="8132634101975074716">Has iniciado sesión en Brave</translation>
 <translation id="4168469784091952813">Puedes disfrutar al máximo de Brave</translation>
@@ -74,6 +73,7 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="8208853227947884571">Brave está actualizado</translation>
 <translation id="5122472867956731189">Si un sitio intenta robarte tu contraseña o si descargas un archivo dañino, es posible que Brave también envíe URLs, incluidos fragmentos de contenido de la página, a Navegación segura.</translation>
 <translation id="2953892977076487219">Brave está intentando cambiar contraseñas.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave está conectado a un dispositivo HID}other{Brave está conectado a dispositivos HID}}</translation>
 <translation id="8755404239607088219">Brave no puede comprobar tus contraseñas. Vuelve a intentarlo más tarde.</translation>
 <translation id="8880183781256147665">Añadiendo a Brave...</translation>
 <translation id="3038232873781883849">Esperando para instalar...</translation>
@@ -102,7 +102,6 @@ Es posible que algunas funciones no estén disponibles y que no se guarden los c
 <translation id="5853262807109651878">Se eliminarán <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Usa <ph name="SHORTCUT"/> para cambiar de un perfil de Brave a otro</translation>
 <translation id="8703492925273919597">Cierra todas las ventanas de Brave e inténtalo de nuevo.</translation>
-<translation id="5350485513372498152">El Asistente de Brave en Brave puede realizar acciones por ti en sitios web</translation>
 <translation id="4061445349373849749">Para proteger tu privacidad, eliminamos automáticamente tus intereses si tienen una antigüedad superior a 4 semanas. A medida que sigas navegando, es posible que un interés vuelva a aparecer en la lista. También puedes eliminar los intereses que no quieras que Brave tenga en cuenta.</translation>
 <translation id="691208314680168371">Tu historial de navegación, un registro de los sitios que has visitado usando Brave en este dispositivo.</translation>
 <translation id="1384923383737428730">Se ha detectado software dañino en tu ordenador. Brave puede eliminarlo, restaurar tu configuración y desactivar las extensiones para que el navegador vuelva a funcionar con normalidad.</translation>

@@ -26,7 +26,6 @@
 <translation id="4988333904713528597">Να επιτρέπεται πάντα η αυτόματη αναπαραγωγή στο <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης αναπαραγωγής</translation>
 <translation id="8988939298652262600">Το Brave δεν εξετάζει τις επεκτάσεις για ασφάλεια και προστασία. Εγκαταστήστε αυτήν την επέκταση μόνο αν εμπιστεύεστε τον προγραμματιστή.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="9005883459983913482">Παράθυρα Tor</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="6924909138923993900">Νέα σύνδεση Tor γι' αυτόν τον ιστότοπο</translation>
@@ -41,6 +40,7 @@
 <translation id="1725356094208762656">Άνοιγμα σε Tor</translation>
 <translation id="3396347744975515056">Ο συγχρονισμός Brave έχει αναβαθμιστεί και απαιτεί ρύθμιση</translation>
 <translation id="7473245612074035141">Έναρξη ρύθμισης</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="3975865347033939965">Δεν ήταν δυνατή η εκκίνηση της υπηρεσίας συγχρονισμού, ο Συγχρονισμός Brave δεν εκτελείται</translation>
 <translation id="4450893287417543264">Να μην εμφανιστεί ξανά</translation>
 <translation id="4595286989346610620">Ελέγξτε τις λεπτομέρειες</translation>
@@ -114,7 +114,6 @@
 <translation id="9194637241566114638">Βοηθήστε μας να βελτιώσουμε το <ph name="SEARCH_NAME"/> στέλνοντας ανώνυμα δεδομένα χρήσης. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Αναζήτηση Brave</translation>
 <translation id="8184318863960255706">Περισσότερες πληροφορίες</translation>
-<translation id="6965382102122355670">OK</translation>
 <translation id="780301667611848630">Όχι, ευχαριστώ</translation>
 <translation id="1162706247109707219">Κάνοντας κλικ στο OK, αναγνωρίζετε ότι η εγκατάσταση του Brave ΔΕΝ θα λάβει κρίσιμες επιδιορθώσεις ασφαλείας μέχρι να ενημερώσετε τα Windows 10 ή νεότερη έκδοση. Αυτή η προειδοποίηση ΔΕΝ θα εμφανιστεί ξανά.</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
@@ -124,8 +123,8 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Συνεισφέρετε σε κάποια ανώνυμη αναζήτηση &amp; περιήγηση δεδομένων για τη βελτίωση της Αναζήτησης Brave.</translation>
 <translation id="1516554614404600536">Συμβουλή εργαλείου Brave</translation>
-<translation id="7986278174934557414">Απόκρυψη του εικονιδίου πλαϊνού πλαισίου</translation>
-<translation id="6915291874524466201">Απόκρυψη του εικονιδίου πλαϊνού πλαισίου</translation>
+<translation id="4233010476457917696">Εμφάνιση πλευρικής γραμμής</translation>
+<translation id="5404213409401164238">Εμφάνιση Πλευρικής γραμμής</translation>
 <translation id="9149866541089851383">Επεξεργασία...</translation>
 <translation id="1181037720776840403">Κατάργηση</translation>
 <translation id="7513769021866698486">Επεξεργασία στοιχείου</translation>
@@ -134,7 +133,6 @@
 <translation id="5877900074358050101">Τίτλος στοιχείου πλαϊνής γραμμής</translation>
 <translation id="1613695740874407223">URL στοιχείου πλαϊνής γραμμής</translation>
 <translation id="4877147287319222750">Προσθήκη στην Πλευρική γραμμή</translation>
-<translation id="5404213409401164238">Εμφάνιση Πλευρικής γραμμής</translation>
 <translation id="7561196759112975576">Πάντα</translation>
 <translation id="7060352228894039151">Με πέρασμα του ποντικιού από πάνω</translation>
 <translation id="7961015016161918242">Ποτέ</translation>
@@ -178,10 +176,14 @@
 <translation id="3987546108749866209">Χρήση κατακόρυφων καρτελών</translation>
 <translation id="5860254591544742609">Εμφάνιση γραμμής τίτλου</translation>
 <translation id="399928467800528208">Αιώρηση με πέρασμα του ποντικιού από πάνω</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
 <translation id="2336228925368920074">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 <translation id="2523967823495420116">Χρήση κατακόρυφων καρτελών</translation>
 <translation id="8888603463702767599">Εμφάνιση γραμμής τίτλου</translation>
 <translation id="2058818256505091369">Αιώρηση με πέρασμα του ποντικιού από πάνω</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
 <translation id="4235920711083356755">Εμφάνιση κουμπιού VPN</translation>
 <translation id="4070612712151038707">Εμφανίζει το κουμπί VPN στη γραμμή εργαλείων</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -234,11 +236,9 @@
 <translation id="4096343215397759358">Κάρτα με προεπισκόπηση</translation>
 <translation id="5297085818601043899">Επεξήγηση εργαλείου</translation>
 <translation id="2396127686705429331">Εμφάνιση κουμπιού σελιδοδεικτών</translation>
-<translation id="2369560305991805099">Εμφάνιση κουμπιού πλαϊνού πλαισίου</translation>
 <translation id="2814998458708016836">Χρησιμοποιήστε πλατιά γραμμή διευθύνσεων</translation>
 <translation id="4109670531935487117">Εμφάνιση προτάσεων αυτόματης συμπλήρωσης στη γραμμή διευθύνσεων</translation>
 <translation id="2858138569776157458">Κορυφαίοι ιστότοποι</translation>
-<translation id="65774893852758517">Προτεινόμενοι ιστότοποι</translation>
 <translation id="7859704718976024901">Ιστορικό περιήγησης</translation>
 <translation id="8820817407110198400">Γραμμή σελιδοδεικτών</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
@@ -393,7 +393,6 @@
 <translation id="4485276108749547761">Αντιμετωπίστε αυτόν τον κωδικό σαν κωδικό πρόσβασης. Εάν κάποιος τον αποκτήσει, μπορεί να διαβάσει και να τροποποιήσει τα συγχρονισμένα δεδομένα σας.</translation>
 <translation id="3034163433136515805">Δείτε τον κωδικό QR</translation>
 <translation id="5373825572723282843">Εισαγάγετε έναν κωδικό συγχρονισμού</translation>
-<translation id="5734745018569675530">Πληκτρολογήστε τις παρεχόμενες λέξεις του κωδικού συγχρονισμού αλυσίδας στην παρακάτω φόρμα.</translation>
 <translation id="1061533051865606843">Προσθήκη νέας συσκευής</translation>
 <translation id="5093410893656857925">Επιλέξτε τύπο συσκευής</translation>
 <translation id="4581190919849683048">Με ποιον τύπο συσκευής θέλετε να κάνετε συγχρονισμό;</translation>
@@ -466,7 +465,6 @@
 <translation id="1834467296210148203">Εμφάνιση του εικονιδίου του Πορτοφολιού Brave στη γραμμή εργαλείων</translation>
 <translation id="8239147115686034860">Αυτόματο κλείδωμα του Πορτοφολιού Brave</translation>
 <translation id="414639769490080648">Ο αριθμός των λεπτών για αναμονή έως ότου το Πορτοφόλι Brave κλειδωθεί αυτόματα</translation>
-<translation id="1241283133946520352">Δίκτυα</translation>
 <translation id="5975930666279943472">Διαγραφή συναλλαγών πορτοφολιού και πληροφοριών nonce</translation>
 <translation id="5693968582510626466">Η διαγραφή συναλλαγών μπορεί να είναι χρήσιμη για προγραμματιστές ή κατά τη διαγραφή της κατάστασης σε έναν τοπικό διακομιστή</translation>
 <translation id="4993345308607970390">Επαναφορά Πορτοφολιού Brave</translation>

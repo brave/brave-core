@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Când opțiunea este activată, Brave eliberează memorie din filele inactive. Astfel, filele active și alte aplicații beneficiază de mai multe resurse ale computerului și Brave funcționează rapid. Filele inactive se reactivează automat când revii la ele. <ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Datorită Economisirii memoriei, Brave este mai rapid</translation>
 <translation id="4798342026247191171">Configurează noul profil Brave</translation>
-<translation id="6361779936989026201">Asistentul Brave în Brave</translation>
 <translation id="113959764510199339">Brave încearcă să afișeze parolele.</translation>
 <translation id="8132634101975074716">V-ați conectat la Brave!</translation>
 <translation id="4168469784091952813">Poți profita din plin de Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave este actualizat</translation>
 <translation id="5122472867956731189">Dacă un site încearcă să îți fure parola sau descarci un fișier dăunător, Brave poate să trimită adresele URL, inclusiv fragmente din conținutul paginilor, către funcția Navigare sigură</translation>
 <translation id="2953892977076487219">Brave încearcă să modifice parolele.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave este conectat la un dispozitiv HID}few{Brave este conectat la dispozitive HID}other{Brave este conectat la dispozitive HID}}</translation>
 <translation id="8755404239607088219">Brave nu îți poate verifica parolele. Încearcă din nou mai târziu.</translation>
 <translation id="8880183781256147665">Se adaugă la Brave...</translation>
 <translation id="3038232873781883849">Se așteaptă instalarea…</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Astfel, se vor șterge <ph name="ITEMS_COUNT"/> elemente de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> poate comuta între profilurile Brave</translation>
 <translation id="8703492925273919597">Închideți toate ferestrele Brave și încercați din nou.</translation>
-<translation id="5350485513372498152">În Brave, Asistentul Brave poate să realizeze pentru tine acțiuni pe site-uri</translation>
 <translation id="4061445349373849749">Pentru a-ți proteja confidențialitatea, ștergem automat categoriile de interese mai vechi de patru săptămâni. Pe măsură ce navighezi, o categorie de interese poate să reapară în listă. Sau poți elimina categoriile de interese pe care nu dorești ca Brave să le ia în considerare.</translation>
 <translation id="691208314680168371">istoricul tău de navigare, o evidență a site-urilor pe care le-ai accesat folosind Brave pe acest dispozitiv;</translation>
 <translation id="1384923383737428730">Ai software dăunător pe computer. Brave poate să îl elimine, să restabilească setările și să dezactiveze extensiile pentru ca browserul să funcționeze normal din nou.</translation>
