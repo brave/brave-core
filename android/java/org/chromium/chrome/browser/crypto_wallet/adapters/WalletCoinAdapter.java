@@ -245,7 +245,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
                 || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
                 || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
-            walletListItemModelListCopy.addAll(walletListItemModelList);
+            walletListItemModelListCopy.addAll(this.walletListItemModelList);
             mCheckedPositions.clear();
         }
         for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
