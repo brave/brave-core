@@ -101,13 +101,13 @@ yubikit.log
 .env.*
 
 # Packed Scripts
-Client/Assets/__firefox__.js
-Client/Assets/AllFramesAtDocumentStart.js
-Client/Assets/AllFramesAtDocumentEnd.js
-Client/Assets/MainFrameAtDocumentStart.js
-Client/Assets/MainFrameAtDocumentEnd.js
-Client/Assets/AllFramesAtDocumentStartSandboxed.js
-Client/Assets/AllFramesAtDocumentEndSandboxed.js
-Client/Assets/MainFrameAtDocumentStartSandboxed.js
-Client/Assets/MainFrameAtDocumentEndSandboxed.js
-Client/Assets/*LICENSE.txt
+Sources/Brave/Assets/__firefox__.js
+Sources/Brave/Assets/AllFramesAtDocumentStart.js
+Sources/Brave/Assets/AllFramesAtDocumentEnd.js
+Sources/Brave/Assets/MainFrameAtDocumentStart.js
+Sources/Brave/Assets/MainFrameAtDocumentEnd.js
+Sources/Brave/Assets/AllFramesAtDocumentStartSandboxed.js
+Sources/Brave/Assets/AllFramesAtDocumentEndSandboxed.js
+Sources/Brave/Assets/MainFrameAtDocumentStartSandboxed.js
+Sources/Brave/Assets/MainFrameAtDocumentEndSandboxed.js
+Sources/Brave/Assets/*LICENSE.txt

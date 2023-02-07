@@ -20,7 +20,8 @@ public class HttpsEverywhereStats: LocalAdblockResourceProtocol {
   fileprivate init() {}
 
   public func startLoading() {
-    loadLocalData(name: HttpsEverywhereStats.levelDbFileName, type: "tgz") { data in
+    guard let bundle = Bundle(path: Bundle.main.bundlePath.appending("/Brave_HTTPSE.bundle")) else { return }
+    loadLocalData(name: HttpsEverywhereStats.levelDbFileName, type: "tgz", bundle: bundle) { data in
       setData(data: data)
     }
   }
