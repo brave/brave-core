@@ -398,7 +398,8 @@ void ApplicationContextImpl::CreateGCMDriver() {
 PromosManager* ApplicationContextImpl::GetPromosManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   if (IsFullscreenPromosManagerEnabled() && !promos_manager_) {
-    promos_manager_ = std::make_unique<PromosManagerImpl>(GetLocalState());
+    promos_manager_ = std::make_unique<PromosManagerImpl>(
+        GetLocalState(), base::DefaultClock::GetInstance());
   }
   return promos_manager_.get();
 }
