@@ -6,6 +6,7 @@
 import Foundation
 import WebKit
 import Shared
+import BraveShared
 
 enum InternalPageSchemeHandlerError: Error {
   case badURL
@@ -76,15 +77,11 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
   }
 
   public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-    guard var url = urlSchemeTask.request.url else {
+    guard let url = urlSchemeTask.request.url else {
       urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.badURL)
       return
     }
-
-    while url.pathComponents.count > 2 {
-      url = url.deletingLastPathComponent()
-    }
-    
+      
     let path = url.path.starts(with: "/") ? String(url.path.dropFirst()) : url.path
 
     // For non-main doc URL, try load it as a resource
