@@ -212,7 +212,12 @@ BraveSpoofCheckerLookalikeURLMatchType const
              suggestedURL:nil];
   }
 
-  if (ShouldBlockLookalikeUrlNavigation(match_type)) {
+  // GetActionForMatchType checks gradual rollout which currently only controls
+  // Safety Tips. Since Safety Tips aren't implemented on iOS, ignore gradual
+  // rollout checks by passing null proto and unknown channel.
+  if (GetActionForMatchType(nullptr, version_info::Channel::UNKNOWN,
+                            navigated_domain.domain_and_registry, match_type) ==
+      lookalikes::LookalikeActionType::kRecordMetrics) {
     return [[BraveURLSpoofCheckerResult alloc]
         initWithMatchType:match_type
              suggestedURL:net::NSURLWithGURL(suggested_url)];
