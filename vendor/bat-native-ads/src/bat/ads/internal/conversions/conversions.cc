@@ -151,9 +151,8 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
                                         const ConversionInfo& conversion) {
   AdEventList filtered_ad_events;
 
-  std::copy_if(
-      ad_events.cbegin(), ad_events.cend(),
-      std::back_inserter(filtered_ad_events),
+  base::ranges::copy_if(
+      ad_events, std::back_inserter(filtered_ad_events),
       [&conversion](const AdEventInfo& ad_event) {
         if (ad_event.creative_set_id != conversion.creative_set_id) {
           return false;
@@ -183,16 +182,16 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
                                  const ConversionList& conversions) {
   ConversionList filtered_conversions;
 
-  std::copy_if(conversions.cbegin(), conversions.cend(),
-               std::back_inserter(filtered_conversions),
-               [&redirect_chain](const ConversionInfo& conversion) {
-                 const auto iter = base::ranges::find_if(
-                     redirect_chain, [&conversion](const GURL& url) {
-                       return MatchUrlPattern(url, conversion.url_pattern);
-                     });
+  base::ranges::copy_if(conversions, std::back_inserter(filtered_conversions),
+                        [&redirect_chain](const ConversionInfo& conversion) {
+                          const auto iter = base::ranges::find_if(
+                              redirect_chain, [&conversion](const GURL& url) {
+                                return MatchUrlPattern(url,
+                                                       conversion.url_pattern);
+                              });
 
-                 return iter != redirect_chain.cend();
-               });
+                          return iter != redirect_chain.cend();
+                        });
 
   return filtered_conversions;
 }
