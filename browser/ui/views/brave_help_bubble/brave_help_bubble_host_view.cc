@@ -11,6 +11,7 @@
 #include "third_party/skia/include/core/SkPoint.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/animation/animation.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/transform_util.h"
 #include "ui/views/animation/animation_builder.h"
@@ -88,7 +89,9 @@ void BraveHelpBubbleHostView::Show() {
   SetPaintToLayer();
   layer()->SetFillsBoundsOpaquely(false);
   SetSize({kWidth, kHeight});
-  SchedulePulsingAnimation(layer());
+  if (!gfx::Animation::PrefersReducedMotion()) {
+    SchedulePulsingAnimation(layer());
+  }
   SetVisible(true);
 }
 
