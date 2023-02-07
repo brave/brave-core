@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Kad je to uključeno, Brave oslobađa memoriju neaktivnih kartica. Time se aktivnim karticama i drugim aplikacijama daje više računalnih resursa, a Brave ostaje brz. Neaktivne kartice automatski će se ponovo aktivirati kada se vratite na njih. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Štednja memorije učinila je Brave bržim</translation>
 <translation id="4798342026247191171">Postavite novi profil u Braveu</translation>
-<translation id="6361779936989026201">Brave asistent u Braveu</translation>
 <translation id="113959764510199339">Brave pokušava prikazati zaporke.</translation>
 <translation id="8132634101975074716">Prijavljeni ste na Brave!</translation>
 <translation id="4168469784091952813">Iskoristite sve prednosti Bravea</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave je ažuran</translation>
 <translation id="5122472867956731189">Ako neka web-lokacija pokuša ukrasti vašu zaporku ili ako preuzmete štetnu datoteku, Brave također može sigurnom pregledavanju poslati URL-ove, uključujući dijelove sadržaja web-stranice</translation>
 <translation id="2953892977076487219">Brave pokušava urediti zaporke.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave je povezan s HID uređajem}one{Brave je povezan s HID uređajima}few{Brave je povezan s HID uređajima}other{Brave je povezan s HID uređajima}}</translation>
 <translation id="8755404239607088219">Brave ne može provjeriti vaše zaporke. Pokušajte ponovno kasnije.</translation>
 <translation id="8880183781256147665">Dodavanje u preglednik Brave...</translation>
 <translation id="3038232873781883849">Čekanje na instaliranje...</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Time će se izbrisati sljedeći broj stavki s uređaja: <ph name="ITEMS_COUNT"/>. TDa biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Pomoću prečaca <ph name="SHORTCUT"/> možete se prebacivati između profila u Braveu</translation>
 <translation id="8703492925273919597">Zatvorite sve prozore preglednika Brave i pokušajte ponovo.</translation>
-<translation id="5350485513372498152">Brave asistent u Braveu može izvršavati radnje na web-lokacijama za vas</translation>
 <translation id="4061445349373849749">Da bismo zaštitili vašu privatnost, automatski brišemo vaše interese starije od četiri tjedna. Tijekom vašeg daljnjeg pregledavanja neki se interes može ponovo pojaviti na popisu. Možete i ukloniti interese za koje ne želite da ih Brave razmatra.</translation>
 <translation id="691208314680168371">Vaša povijest pregledavanja, zapisnik web-lokacija koje ste posjetili u Braveu na ovom uređaju.</translation>
 <translation id="1384923383737428730">Na računalu imate štetni softver. Brave ga može ukloniti, vratiti vaše postavke i onemogućiti proširenja kako bi vaš preglednik ponovo funkcionirao normalno.</translation>

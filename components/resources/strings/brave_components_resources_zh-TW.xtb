@@ -63,7 +63,6 @@
 <translation id="6811221529729056895">立即試用 Brave 搜尋</translation>
 <translation id="5525668735313040116">以無痕模式搜尋網路</translation>
 <translation id="3446024864193919737">顯示 Brave Rewards</translation>
-<translation id="6274899614137380422">顯示幣安</translation>
 <translation id="5585019845078534178">卡片</translation>
 <translation id="3870475560794762985">顯示贊助影像</translation>
 <translation id="8466529005131466476">您可以透過查看贊助網站賺取收益。</translation>
@@ -102,8 +101,6 @@
 <translation id="1776831331757823105">時鐘</translation>
 <translation id="7791543448312431591">新增</translation>
 <translation id="7679334366167089823">為觀看尊重隱私權廣告而賺取代幣。</translation>
-<translation id="2236818903653027036">使用瀏覽器在 Binance 上直接交易加密貨幣。</translation>
-<translation id="6508379561970983105">使用瀏覽器在 Gemini 上直接交易加密貨幣。</translation>
 <translation id="7191394989411626168">透過關閉卡片，所有目前可見的卡片都會被隱藏。但您可能仍會被通知新的卡片。</translation>
 <translation id="6820526586005233839">已暫停 Brave 廣告</translation>
 <translation id="5190407395832551012">為了防止 Brave Rewards 遭到濫用，我們會隨機要求使用者解決驗證碼。點擊“「解決」”即可恢復廣告。</translation>
@@ -171,31 +168,8 @@
 <translation id="7616645803364270729">電子郵件、Twitter 等</translation>
 <translation id="5299848999918506028">感謝！</translation>
 <translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
-<translation id="2974339193389078578">Brave 帶來全新網際網路體驗</translation>
-<translation id="7735138632831241257">準備好使用專為保護您隱私的瀏覽器，享受更快速且更安全的瀏覽體驗。</translation>
-<translation id="6001839398155993679">開始吧</translation>
-<translation id="4225189922025976867">透過觀看 Brave 的私人廣告<ph name="BEGIN_BOLD"/>賺取代幣<ph name="END_BOLD"/>，並自動支持內容創作者。</translation>
-<translation id="5477721706074111257">按一下即表示您同意 <ph name="BEGIN_LINK"/>服務條款<ph name="END_LINK"/> 和 <ph name="BEGIN_LINK"/>隱私權政策<ph name="END_LINK"/>。</translation>
-<translation id="3505541710659461355">您可以隨時在設定中關閉此功能。</translation>
-<translation id="2965798296974325760">開始使用獎勵</translation>
-<translation id="3958088479270651626">匯入書籤和設定</translation>
-<translation id="2609701960545338618">透過從舊的瀏覽器匯入書籤與設定來建立您的常用瀏覽環境。進階匯入選項可以在設定中找到。</translation>
-<translation id="8275038454117074363">匯入</translation>
-<translation id="2088479175984386785">匯入從……</translation>
-<translation id="5540323067375019678">管理您的防護</translation>
-<translation id="3278033011827237847">當開啟 Brave 防護進行瀏覽時，可以阻止侵犯隱私的廣告與追蹤器。如果網頁看起來沒辦法正常運作的話才將其關閉。</translation>
-<translation id="3366308997091824722">防護設定</translation>
-<translation id="4764692524839457597">預設</translation>
-<translation id="3108122610701115301">設為預設值</translation>
-<translation id="2469440407442116729">選擇一個搜索引擎</translation>
-<translation id="438216590634144114">選擇從網址列搜尋網頁時想使用的預設搜尋引擎。</translation>
-<translation id="5804484488647369316">設定預設搜尋引擎</translation>
-<translation id="3829010735958850433">略過迎賓導覽</translation>
-<translation id="1201402288615127009">繼續</translation>
-<translation id="7954950242989581218">安全瀏覽</translation>
-<translation id="2188651882929633653">Brave Shields 封鎖整個網路上嘗試追蹤您的可怕事物—包括大部分的廣告。如果網站似乎無法正常運作，請將 Shields 設為「關閉」。Brave 使用<ph name="BEGIN_LINK_P3A"/>完全隱密產品分析<ph name="END_LINK_P3A"/>估計特定功能的整體使用情況。您可以在<ph name="BEGIN_LINK_P3A_SETTINGS"/>設定<ph name="END_LINK_P3A_SETTINGS"/>中關閉此功能。</translation>
 <translation id="4851215387785619212">Brave 私密廣告</translation>
-<translation id="3114984266384096064">透過觀看 Brave 私密廣告來賺取 [[currency]]。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
+<translation id="6480303618073442141">Brave Private Ads 的設計低調隱密。此服務會依據您的興趣投放廣告，但不會擷取您裝置上的任何個人資料或瀏覽歷程記錄。最棒的是，只要使用 Brave Private Ads，即可靠著觀看廣告輕鬆賺取 BAT (<ph name="BEGIN_LINK"/>基本注意力代幣<ph name="END_LINK"/>)。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="3742599705619405136">一種自動資助發行者和內容創作者的方式。設定每月付款並正常瀏覽。您造訪的 Brave 驗證網站會根據 Brave 測量到您的注意度自動收到您的捐助。</translation>
 <translation id="3325399124634342726">本月當前收入（估計）</translation>
@@ -214,7 +188,7 @@
 <translation id="2356652719351432565">區域廣告相關度</translation>
 <translation id="3216275550298493597">這能讓 Brave 向您顯示所在區域特有的廣告。</translation>
 <translation id="8446884382197647889">更多資訊</translation>
-<translation id="6209514229703649203">自動偵測為 [[adsSubdivisionTarget]]</translation>
+<translation id="3783399046165388366">自動偵測為 <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">自動偵測</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -229,9 +203,6 @@
 <translation id="7577100371127227294">每月小費</translation>
 <translation id="178390304006113804">設定每月固定小費，持續支持您最愛的創作者。</translation>
 <translation id="3302159320447117425">尚未設定每月小費。</translation>
-<translation id="1617202384704994799">即將推出。</translation>
-<translation id="2241248417273918295">每月支付收益。</translation>
-<translation id="68906705461077250">設定您想要的頻率來增加或減少收益。</translation>
 <translation id="1847863811689960237">獎賞你所喜愛的內容創作者。</translation>
 <translation id="4129489167302464118">您的每月支付會散佈給您所造訪的網站。</translation>
 <translation id="4898632353264854950">您似乎將要瀏覽的網站</translation>
@@ -251,9 +222,6 @@
 <translation id="8610523985422563960">1 分鐘</translation>
 <translation id="2807328214759298515">高達</translation>
 <translation id="9031738692126722094">啟用在這些網站打賞內文</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="6032511312767282174">GitHub</translation>
-<translation id="2635094637295383009">Twitter</translation>
 <translation id="7583327070390027131">下次給每月小費的日期</translation>
 <translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME"/>。到https://brave.com/tips 看看吧。</translation>
 <translation id="5916536234616514390">我喜歡 <ph name="HASHTAG"/>Brave 讓我支持創作者！我剛支付 <ph name="HASHTAG2"/>BAT 的小費給 <ph name="NAME"/>。如果對方在 <ph name="DATE"/>前於 https://creators.brave.com 完成驗證，就能該筆小費！</translation>
@@ -287,20 +255,19 @@
 <translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
 <translation id="3274650021044762770">驗證瀏覽器請求以將 Brave 獎勵連結至您的 <ph name="PROVIDER"/> 帳戶時發生問題。您可以<ph name="BEGIN_LINK"/>聯絡支援團隊<ph name="END_LINK"/>，尋求進一步協助。</translation>
 <translation id="1316066811927496401">錯誤：無法驗證請求</translation>
-<translation id="1737873393693460829">開啟 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
+<translation id="8167256685618982116">開啟 <ph name="TITLE"/> 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
 <translation id="4123948149985772126">選擇帳戶提供者</translation>
 <translation id="2916515880661220182">如果您已擁有保管帳戶，系統會提示您連結該帳戶。若未連結，您將能建立保管帳戶。</translation>
 <translation id="2054853229650377447">請注意：在您授權後，保管人將可檢視您的交易，例如他們會看到收據和您的小費金額。</translation>
-<translation id="2147158325758481862">可選擇進行驗證</translation>
-<translation id="8228649055483250005">錢包保管提供商須驗證建立錢包人士之身份，包括使用附有照片的身份證。</translation>
-<translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> 當您與錢包保管合作夥伴建立帳戶時，不會處理、儲存或訪問任何個人資料。</translation>
-<translation id="6682919029276027868">不過，您目前的 Brave 獎勵功能受限。透過錢包保管合作夥伴進行驗證，您可以：</translation>
-<translation id="9064931634458501855">自由地存款及提款</translation>
-<translation id="3222002542796906461">直接在帳戶中接收您的獎勵</translation>
+<translation id="121894865378699201">準備要開始賺取 BAT 了嗎？</translation>
+<translation id="4478996292566912629">託管帳戶服務商依規定必須驗證您的身分，您可能需要提交附照片的身分證件。 請參閱我們的 <ph name="BEGIN_LINK"/>Brave Rewards 隱私權政策<ph name="END_LINK"/>。</translation>
+<translation id="7730415569603152862">將託管帳戶與 Rewards 個人資料連結具有以下好處：</translation>
+<translation id="5785531043735482053">儲存、管理和提領 BAT 收益</translation>
+<translation id="5155452078869279096">使用購買的 BAT 為帳戶加值</translation>
+<translation id="5497001757280825146">給最愛的網站和創作者小費</translation>
 <translation id="1233129511866436960">詳細瞭解地區和支援資訊</translation>
 <translation id="7329170127335794328">目前您的所在區域尚不可用</translation>
 <translation id="8304979233901023264">我已閱讀並同意 Brave’s <ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>私隱政策<ph name="PP_LINK_END"/>。</translation>
-<translation id="2359808026110333948">繼續</translation>
 <translation id="1892970806832316900">暫緩至 <ph name="DATE"/></translation>
 <translation id="7849926087559412554">糟糕！您的瀏覽器無法接收 Brave 私密廣告。</translation>
 <translation id="5177429570315095022">您的瀏覽器需要更新，才能繼續看到廣告。</translation>
@@ -383,7 +350,6 @@
 <translation id="3363158483789327529">尚未建立獎勵個人資料</translation>
 <translation id="476272015919848174">獎勵付款 ID：</translation>
 <translation id="9008441690901662695">獎勵狀態：</translation>
-<translation id="2851097645709765545">無錢包</translation>
 <translation id="8874184842967597500">未連線</translation>
 <translation id="4569155249847375786">已驗證</translation>
 <translation id="6521149675246672063">切斷連線（經驗證）</translation>
@@ -392,6 +358,7 @@
 <translation id="6582097696555842139">取消每月小費</translation>
 <translation id="9087994290002662101">變更金額</translation>
 <translation id="2521187434582281933">確定取消每月小費</translation>
+<translation id="2359808026110333948">繼續</translation>
 <translation id="915758461293673891">小費金額：</translation>
 <translation id="78017292973022384">您已取消每月定期捐贈小費給這位創作者。</translation>
 <translation id="534368327994110883">您目前正在支援此創作者</translation>
@@ -408,7 +375,7 @@
 <translation id="4492470488449820476">最低小費金額為 <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="9088057605518918276">已設定每月小費。</translation>
 <translation id="6306631474379759382">下次給小費的日期：</translation>
-<translation id="3593485149443019592">代幣不足。請<ph name="LINK_BEGIN"/>增加資金<ph name="LINK_END"/>。</translation>
+<translation id="4647657427328119430">代幣不足。</translation>
 <translation id="3586352807094428968">Brave 會收取小費的 5% 作為手續費。</translation>
 <translation id="207268487070188114">一次性小費</translation>
 <translation id="69861679024013299">一次性小費金額：</translation>
@@ -418,6 +385,9 @@
 <translation id="1420756770787071946">支援此創作者</translation>
 <translation id="3271043362279673449">感謝支援！</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>注意：<ph name="BOLD_END"/>系統可能需要幾分鐘的時間來處理您的小費</translation>
+<translation id="6516984207843289176">連結帳戶</translation>
+<translation id="8775519284782574752">只要連結託管帳戶，就可以開始賺取 BAT 及給創作者小費。</translation>
+<translation id="6485607335663409274">想要給最愛的創作者小費嗎？</translation>
 <translation id="3312470408978098625">您的一次性小費已傳送。</translation>
 <translation id="839058704683989763">您已設定小費，小費尚待處理中！</translation>
 <translation id="5096821444729034955">給他們的貼文</translation>
@@ -456,6 +426,7 @@
 <translation id="8802504113265057166">到期日前未使用的 [[currency]] 將自動退回 Brave User Growth Pool。</translation>
 <translation id="279567716178902927">經費到期日</translation>
 <translation id="1389143276807887637">匯入</translation>
+<translation id="3810973564298564668">管理</translation>
 <translation id="6302422639282249274">管理 Brave 獎賞</translation>
 <translation id="211044356803193224">每月給小費！</translation>
 <translation id="2487641031722095938">您的幸運日！</translation>
@@ -502,8 +473,9 @@
 <translation id="5317144262906129592">您可以藉由發送打賞來支持這位內容創作者。這是感謝他們提供優質內容的方式。</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="3659457123782988823">您確定要重設您的 Brave 獎勵嗎？</translation>
-<translation id="4048187103708861555">如果您重設您的 Brave 獎勵，您的 <ph name="BAT_AMOUNT"/> 和其他獎勵資料將永久遺失。請確保您已<ph name="LINK_BEGIN"/>完成驗證<ph name="LINK_END"/>，以便保留您的 BAT。</translation>
-<translation id="3548849774726860833">如果您重設您的 Brave 獎勵，您的獎勵資料將永久遺失。</translation>
+<translation id="1666001796278936721">重設會刪除目前的 Brave Rewards 個人資料，之後您需要重新設定 Brave Rewards 個人資料，從頭開始。為了保險起見，請在繼續操作之前<ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/>重設的相關說明。</translation>
+<translation id="94095197509579227">注意：這個月目前預估已有 <ph name="BAT_AMOUNT"/> 的收益，重設將會損失這些收益。</translation>
+<translation id="4806029412510565611">我瞭解目前的 Brave Rewards 個人資料和 Brave Rewards 資料將從我的裝置刪除，我已詳閱<ph name="LINK_BEGIN"/>與重設相關的支援文章<ph name="LINK_END"/>。</translation>
 <translation id="4914597931214386232">代幣經費已領</translation>
 <translation id="3494964159182650590">Rewards 摘要</translation>
 <translation id="2913994227901456490">查看全部 [[numItems]] 個項目</translation>
@@ -526,7 +498,7 @@
 <translation id="6727483290601442544">查看詳情</translation>
 <translation id="4206899127409458763">建立您的 Brave 獎勵個人資料</translation>
 <translation id="1988679729106502285">注意：</translation>
-<translation id="4047340292178074200">此創作者尚未設定從您的獎勵錢包保管服務接收小費。您提供的任何小費都會先處於擱置狀態，並在 90 天內自動重試。</translation>
+<translation id="942863887222585572">您連結的是 <ph name="USER_PROVIDER"/>，但這位創作者連結的是 <ph name="CREATOR_PROVIDER"/>，也就是說創作者收不到您給的小費。目前您給的小費會持續處於待處理狀態，並會自動重試 90 天。</translation>
 <translation id="5530734056858418442">此創作者尚未註冊。您提供的任何小費都會先處於擱置狀態，並在 90 天內自動重試。</translation>
 <translation id="3197752845651180812">預定的捐助</translation>
 <translation id="6964891561514920613">顯示所有預定的捐助</translation>
@@ -552,75 +524,11 @@
 <translation id="6915065518766963119">* 需要 Uphold 驗證。</translation>
 <translation id="7703007724342399482">利用 Uphold 卡獲得 2% 虛擬貨幣回饋</translation>
 <translation id="1109729143147368573">將您的加密貨幣和其他資產，花用在全世界近五千萬的商業和自動櫃員機上。花用加密貨幣來取得加密貨幣！</translation>
-<translation id="7840362246306242214">可在 Uphold 進行美國股票交易</translation>
-<translation id="3345432088196080137">只要投資 $1 就可以買入股票與交易所買賣基金，如 AAPL、TSLA 與 AMZN</translation>
 <translation id="3787061634640932557">編輯卡片</translation>
 <translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="5977237145327845546">與您的好友與同事開始私人視訊通話。</translation>
 <translation id="8863928195533744356">開始通話</translation>
 <translation id="3651550649176056334">關於您的資料</translation>
-<translation id="223536150967420869">購買</translation>
-<translation id="5110244215256675209">購買加密貨幣</translation>
-<translation id="5749014321384313843">我想要花費……</translation>
-<translation id="5395343599598218467">與幣安進行交易</translation>
-<translation id="1714829281959608206">啟用幣安連線以檢視幣安的帳戶餘額並交易交密貨幣。</translation>
-<translation id="5431354435912389886">啟用幣安連線</translation>
-<translation id="907179430004809517">不了，謝謝</translation>
-<translation id="5005595188773471616">淨值 (BTC)</translation>
-<translation id="5445249883546575080">BTC</translation>
-<translation id="1366855498335432549">存款</translation>
-<translation id="6861530353669876440">交易</translation>
-<translation id="6941688859692009361">說明。</translation>
-<translation id="271200872751201315">輸入無效。</translation>
-<translation id="4983019953897853258">正在驗證您的憑證……</translation>
-<translation id="4166140875593399362">您確定您想要解除連線嗎？</translation>
-<translation id="4283459172790213529">解除連線將會抹除您的小工具設定。您將必須重新驗證才能重新連線。</translation>
-<translation id="4804818685124855865">解除連線</translation>
-<translation id="6001220899443166468">已解除連線帳戶</translation>
-<translation id="8151638057146502721">設定</translation>
-<translation id="7384441892795736634">重新整理資料</translation>
-<translation id="5308380583665731573">連線</translation>
-<translation id="7942389053031334372">您轉換了</translation>
-<translation id="3348017612272241424">無法轉換</translation>
-<translation id="3909193058140362331">無法處理轉換。請再試一次。</translation>
-<translation id="5721542149042740780">您輸入的金額超過目前可用餘額。</translation>
-<translation id="7144878232160441200">重試</translation>
-<translation id="6896758677409633944">複製</translation>
-<translation id="7431764818502638140">資訊不可用</translation>
-<translation id="6409345078064530735">存款地址</translation>
-<translation id="7153116947319792513">存款通知</translation>
-<translation id="1383876407941801731">搜尋</translation>
-<translation id="3781412534383755121">要轉換的最低金額是：</translation>
-<translation id="6432284126416751397">確認轉換</translation>
-<translation id="1301340234286078471">轉換</translation>
-<translation id="6680650203439190394">匯率</translation>
-<translation id="7742417737698031726">手續費</translation>
-<translation id="2122225204180056042">您將會收到</translation>
-<translation id="8131740175452115882">確認</translation>
-<translation id="8688672835843460752">可用</translation>
-<translation id="4584930231524505442">我想要轉換……</translation>
-<translation id="6755546361496900700">預覽轉換</translation>
-<translation id="2956070106555335453">摘要</translation>
-<translation id="439104575421522802">工作階段已過期</translation>
-<translation id="8558560988211507902">您的幣安存取權杖已過期。請重新連線以繼續使用小工具。</translation>
-<translation id="8120782981043104657">使用 Gemini 購買加密貨幣</translation>
-<translation id="4011891158762138243">連線至 Gemini 以查看您的餘額並以 45 種以上的加密貨幣進行交易。</translation>
-<translation id="7604416013180651887">連線到 Gemini</translation>
-<translation id="2349109114223854255">您的 Gemini 取用代幣已過期而無法刷新。請重新連線。</translation>
-<translation id="4848984536030986115">無法進行交易</translation>
-<translation id="7097088316781182926">確認交易</translation>
-<translation id="3488255243387417752">賣出</translation>
-<translation id="7969910554171263591">取得報價</translation>
-<translation id="1848737374354350807">餘額：</translation>
-<translation id="8285358301500391177">買進</translation>
-<translation id="8675476238074172660">賣出中</translation>
-<translation id="3081546448594005997">您買進了</translation>
-<translation id="8810136648184657966">您賣出了</translation>
-<translation id="1833248467354516560">單價</translation>
-<translation id="4763179765154524864">總計花出</translation>
-<translation id="8851480289992540512">總計收到</translation>
-<translation id="824449983246282560">您的帳號中沒有任何餘額。請造訪 Gemini 購買。</translation>
-<translation id="8624961452383848703">我想要轉換……</translation>
 <translation id="1544192797660353713">錢包</translation>
 <translation id="616639131065447379">歡迎使用 Brave 加密錢包</translation>
 <translation id="1740464057879304704">Crypto Wallets 讓您使用 Brave 的加密貨幣和相關資產。Crypto Wallets 支援 ETH 和 BAT 等以太坊權杖及收藏品，而且讓您使用 Ðapps 和其他智能合約。這一切都是專門提供給熟悉以太坊和其他區塊鏈系統的人——或是樂於學習它們的人。</translation>
@@ -629,29 +537,19 @@
 <translation id="8327818101454798856">所以如果您想支持您最愛的網站，請到那裡。</translation>
 <translation id="412480955826088549">正在下載元件……</translation>
 <translation id="4894106830958548828">我了解</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">檢視市場並從 crypto.com 購買加密貨幣。</translation>
-<translation id="4292334826913000023">顯示價格</translation>
-<translation id="5001098083058405168">取得 2% 的存款回饋</translation>
-<translation id="7336377875970208451">停止支付交易費用</translation>
-<translation id="5889002303959545585">購買比特幣</translation>
-<translation id="7243082596932212589">檢視 Crypto.com 的市場</translation>
-<translation id="2258222996838418990">7d Graph</translation>
-<translation id="5337526542182802976">支援的配對</translation>
-<translation id="1164622162816276433">24HR Volume</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">在 Brave 中啟用支援 Unstoppable Domains？</translation>
-<translation id="689573545156113164">Brave 會使用 Infura 將以太坊 JSON-RPC 呼叫發送至 Unstoppable Domains 的智慧型合約，藉此解析 .crypto (以及 .x、.coin、.nft、.dao、.wallet、.blockchain、.bitcoin、.zil) 網域名稱查詢請求。如果您啟用此功能，Infura 將能看見您嘗試造訪的特定網域，但無法看見其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>與<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="3647533686160055812">Brave 會使用 Infura 解析 Unstoppable Domains 的 .crypto (以及 .x、.nft、.dao、.wallet、.blockchain、.bitcoin、.zil) 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用此功能，Infura 只會看到有人正在嘗試造訪這些網域，不會看到其他資料。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
 <translation id="6513892817556267573">以太坊域名服務</translation>
 <translation id="4335039108389860301">在 Brave 中啟用支援以太坊域名服務 (ENS)？</translation>
-<translation id="8328137586971750853">Brave 會使用 Infura 將以太坊 JSON-RPC 呼叫發送至 Ethereum Name Service 的智慧型合約，藉此解析 .eth 網域名稱查詢請求。如果您啟用此功能，Infura 將能看見您嘗試造訪的 .eth 網域，但無法看見其他網域。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>與<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
+<translation id="4609973808011229683">Brave 會使用 Infura 解析以太坊域名服務 (ENS) 的 .eth 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用此功能，Infura 只會看到有人正在嘗試造訪 .eth 網域，不會看到其他資料。請參閱 Infura 的<ph name="BEGIN_INFURA_TOU_LINK"/>使用條款<ph name="END_INFURA_TOU_LINK"/>和<ph name="BEGIN_INFURA_PRIVACY_LINK"/>隱私權政策<ph name="END_INFURA_PRIVACY_LINK"/>。</translation>
 <translation id="807404806385418949">以太坊服務鏈下查找</translation>
 <translation id="4049590838234508776">在 Brave 中啟用以太坊域名服務 (ENS) 鏈下查找支援？</translation>
-<translation id="1769433806670482329">Brave 會使用鏈下閘道解析 .eth 網域名稱查詢請求。若啟用此功能，第三方閘道將能看見您嘗試造訪的 .eth 網域，但無法看到其他網域。<ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>深入瞭解<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
+<translation id="5944991147217767764">這個 .eth 網域名稱會儲存於鏈下，由第三方閘道解析。如果您啟用 ENS 鏈下查詢功能，第三方閘道將看到您正在嘗試造訪 .eth 網域。<ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>深入瞭解<ph name="END_BRAVE_LEARN_MORE_LINK"/>。</translation>
 <translation id="4047002754575891955">繼續鏈下查找</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">是否要在 Brave 中啟用 Solana Name Service (SNS)？</translation>
-<translation id="954404755605517948">Brave 會使用 Coinbase Cloud 將 Solana JSON-RPC 呼叫發送至 Solana Name Service 的程式，藉此解析 .sol 網域名稱查詢請求。如果啟用此功能，Coinbase Cloud 將能看見您嘗試造訪的 .sol 網域，但無法看見其他網域。請參閱 Coinbase Cloud 的<ph name="BEGIN_COINBASE_TOU_LINK"/>使用條款<ph name="END_COINBASE_TOU_LINK"/>與<ph name="BEGIN_COINBASE_PRIVACY_LINK"/>隱私權政策<ph name="END_COINBASE_PRIVACY_LINK"/>。</translation>
+<translation id="2350552210396418924">Brave 會使用 Coinbase Cloud 解析 .sol 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用此功能，Coinbase 只會看到有人正在嘗試造訪 .sol 網域，不會看到其他資料。請參閱 Coinbase Cloud 的<ph name="BEGIN_COINBASE_TOU_LINK"/>使用條款<ph name="END_COINBASE_TOU_LINK"/>和<ph name="BEGIN_COINBASE_PRIVACY_LINK"/>隱私權政策<ph name="END_COINBASE_PRIVACY_LINK"/>。</translation>
 <translation id="7378412287463452336">使用 Infura 伺服器繼續操作</translation>
 <translation id="2313603121968571839">使用 Coinbase Cloud 伺服器繼續操作</translation>
 <translation id="2356070529366658676">詢問</translation>
@@ -744,16 +642,21 @@
 <translation id="5878420576943709750">您 <ph name="AMOUNT"/> 的 <ph name="MONTH"/>獎勵即將入帳。敬請留意！</translation>
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>登入 <ph name="PROVIDER"/><ph name="END_BOLD"/> 以查看您的餘額</translation>
 <translation id="2659764755126740206">到我的<ph name="PROVIDER"/>帳戶</translation>
-<translation id="1165667598801520610">增加資金</translation>
 <translation id="2394961582378297792">已登出</translation>
-<translation id="6080167751812750226">取消連結 <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">預估收益</translation>
 <translation id="7934950257968365573">登入您的 <ph name="PROVIDER"/> 帳戶</translation>
 <translation id="2613359062756190460">一次性小費</translation>
 <translation id="590733288489975971">廣告獎勵</translation>
-<translation id="6181762795539107980">未驗證</translation>
+<translation id="5308380583665731573">連線</translation>
 <translation id="3026978804849658576">檢視聲明</translation>
+<translation id="3368922792935385530">已連線</translation>
 <translation id="8494748383523030337">您的餘額</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>準備要開始賺取 BAT 了嗎？<ph name="BOLD_END"/>只要將託管帳戶與 Rewards 個人資料連結即可。如果您沒有帳戶，可以立即建立。</translation>
+<translation id="1772961321862399863">若要賺取 BAT，使用者必須將託管帳戶與 Brave Rewards 連結。不過，您所在的地區沒有保管人可供您使用，因此您無法賺取收益。目前開啟 Brave Rewards 的話，可自動支持創作者。</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
+      other {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
+    }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>獎勵：<ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">您的 <ph name="MONTH"/>廣告獎勵已入帳！</translation>
 <translation id="7861645265922445992">領取獎勵</translation>
@@ -769,20 +672,25 @@
 <translation id="6278643716658443228">Rewards 設定</translation>
 <translation id="2862978891748913252">選擇您的國家/地區</translation>
 <translation id="3717922248131893262">如繼續使用 Brave 獎勵，請選擇您的國家/地區，我們將向您展示合適的選項和廣告。<ph name="LINK_BEGIN"/>私隱政策<ph name="LINK_END"/></translation>
-<translation id="6777169449483742979">藉由檢視此提議的影像，您可以賺取代幣</translation>
-<translation id="5486114327664215175">透過檢視此影像來賺取代幣，並支持內容創作者。</translation>
+<translation id="2965798296974325760">開始使用獎勵</translation>
 <translation id="2940863921746574646">代幣餘額</translation>
 <translation id="2221902203895354376">獲得一枚代幣獎勵！</translation>
+<translation id="2956070106555335453">摘要</translation>
 <translation id="2369994359029526515">未驗證的創作者</translation>
 <translation id="6020176662032623904">已驗證的創作者</translation>
-<translation id="6504037373121113545">您給的任何小費都會處於待處理狀態，並在 90 天內自動重試。<ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">重新整理創作者驗證狀態</translation>
+<translation id="8946576491316456643">目前您給的小費會持續處於待處理狀態，並會自動重試 90 天。<ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">此創作者尚未註冊。</translation>
-<translation id="4025327308776090280">此創作者尚未設定從您的獎勵錢包保管服務接收小費。</translation>
+<translation id="3573568055713372419">您連結的是 <ph name="USER_PROVIDER"/>，但此創作者連結的是 <ph name="CREATOR_PROVIDER"/>，也就是說創作者收不到您給的小費。</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/> 上的 <ph name="NAME"/></translation>
 <translation id="7335371657242627509">包含在自動捐獻中</translation>
 <translation id="6965382102122355670">確定</translation>
 <translation id="6727102863431372879">設定</translation>
 <translation id="8853725596990766789">變更金額</translation>
+<translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
+<translation id="1609556006143307897">您正在支持內容創作者</translation>
+<translation id="6605147707233193230">開啟以立即支持內容創作者</translation>
+<translation id="5430495762768325224">深入瞭解 BAT</translation>
 <translation id="1258144146756156541">確認您是真人</translation>
 <translation id="1555514580945108302">嗯…不太對。再試一次。</translation>
 <translation id="8078414184292711961">將 BAT 圖示拖曳至<ph name="HINT"/>目標。</translation>
@@ -793,21 +701,16 @@
 <translation id="717952606991220586">哎呀，發生了些問題。 請稍後再試。</translation>
 <translation id="7210234701206674260">「Brave 報酬」發生問題了。請待會再試一次。</translation>
 <translation id="579702532610384533">重新連線</translation>
-<translation id="7550470870580166294">資金不足</translation>
-<translation id="2775064702681588061">您的 Brave Rewards 帳號正在等待存款。</translation>
 <translation id="3358400027937159351">您已贊助 <ph name="AMOUNT"/>。</translation>
 <translation id="1619753851206150396">您已登出</translation>
 <translation id="5142174225142816130">為了確保您帳戶的安全，可能會發生這種情況。請點擊下方按鈕以立刻重新連線。</translation>
 <translation id="1677961202754619328">Uphold 指出，您的 Uphold 帳戶目前受到部分限制。請登入您的 Uphold 帳戶，查看是否還有任何通知或其他帳戶規定有待完成，然後再試一次。</translation>
-<translation id="2807965672895914288">由於資金不足，您無法完成預定的每月自動捐款和每月打賞。 我們會在 30 天後再試一次。</translation>
 <translation id="2429828319207652823">處理您的捐贈時出現問題。</translation>
-<translation id="2099354965137813181">每月小費支付失敗</translation>
+<translation id="6390041270339783491">每月捐款失敗</translation>
 <translation id="19033035059466563">捐款與小費</translation>
 <translation id="2892744985635833293">您的每月小費已進入處理程序。</translation>
 <translation id="5768819429931807686">待處理的捐款</translation>
 <translation id="7855913851082138664">創作者 <ph name="PUBLISHER_NAME"/> 近期已完成驗證。</translation>
-<translation id="6194996600967335044">資金不足</translation>
-<translation id="2795080275268642520">您有因為資金不足而產生的擱置中的小費</translation>
 <translation id="2529827670795983639">看起來這沒用，Brave 廣告將維持暫停。如果您需要驗證碼方面的協助，請與我們聯絡。</translation>
 <translation id="261607053214862521">已超過嘗試次數上限</translation>
 <translation id="2323171459178104277">解決了！</translation>
@@ -828,9 +731,13 @@
 <translation id="8622329973403382303">快速瀏覽，以溫習它如何以獎勵搖滾明星的身分名垂千古！</translation>
 <translation id="4331886860862592203">選擇國家/地區</translation>
 <translation id="3115702351969988294">您想多常看到廣告？</translation>
-<translation id="7532131110478098401">（每小時幾則廣告）</translation>
-<translation id="2951964054390325080">您想給您最支持的創作者多少支持？</translation>
-<translation id="3164498053837913829">（從您的廣告收入）</translation>
+<translation id="9006929295045381749">{ADS_PER_HOUR, plural,
+      =1 {每小時 # 個廣告}
+      other {每小時 # 個廣告}
+    }</translation>
+<translation id="6129810595598072828">檢視越多私人廣告，賺取越多獎勵</translation>
+<translation id="8871481223725076571">檢視更多廣告，支持更多創作者</translation>
+<translation id="9215691564467955056">您可以稍後到設定中變更這項設定。</translation>
 <translation id="6318696841371191107">快速瀏覽</translation>
 <translation id="8465790416279415448">繼續操作即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
 <translation id="5705882733397021510">返回</translation>
@@ -840,25 +747,16 @@
 <translation id="7930505144430343145">歡迎使用 Brave Rewards！</translation>
 <translation id="3477340970981564961">與傳統廣告不同，Brave 的私人廣告用代幣獎勵您以支持內容創作者，同時為您的個人資訊保密。</translation>
 <translation id="6973095375773523904">廣告會在哪裡顯示？</translation>
-<translation id="7556325460112047619">Brave 的私人廣告會以一般通知顯示。您可以在設定中控制看到這些廣告的頻率。</translation>
-<translation id="6897083627729802351">您何時獲得獎勵？</translation>
-<translation id="310863932297733723">本月您從 Brave 的私人廣告贏取的代幣，將在下個月的 5 日抵達。</translation>
+<translation id="4328028439561659455">Brave Private Ads 會以通知形式顯示於您的畫面。您可以控制看到這些廣告的頻率。</translation>
 <translation id="7712287524451429139">回饋毫不費力</translation>
 <translation id="105037569026952831">創作者會根據您的參與程度，我們將其衡量為「注意力」，自動收到您的代幣捐款。</translation>
 <translation id="5323267338679539010">用小費說謝謝</translation>
 <translation id="6042317056594735519">給小費是一種個人鼓勵或支持您喜歡的內容或創作者的方式。取得小費！</translation>
-<translation id="7509452925943421624">您可以使用代幣做什麼？</translation>
-<translation id="5876169128756792273">代幣可用於支持創作者以外的用途。隨著商家加入行列，您可以購買數位內容和其他商品。</translation>
-<translation id="1402530520078693620">最後，讓我們協助您完成基本設定</translation>
-<translation id="3494356595346329740">您稍後可以變更此設定。</translation>
+<translation id="4215679190414901888">現在就來開始設定吧</translation>
 <translation id="827315274423079662">喔耶，您已就緒！</translation>
 <translation id="8268038362451312235">透過使用 Brave 獎勵，您正在協助使網際網路成為適合所有人的更美好的地方。真是太棒了！</translation>
-<translation id="2318949593486441832">您必須驗證 Brave 獎勵，才能提領您觀看廣告所賺取的 BAT。</translation>
-<translation id="9168436347345867845">稍後再執行</translation>
-<translation id="7193761697942491145">驗證 Brave 獎勵</translation>
-<translation id="6609621505400013054">bitFlyer 錢包是由 bitFlyer, Inc. 管理的服務</translation>
-<translation id="4361456403643555676">驗證您的 Brave 獎勵並將其連結至 bitFlyer 帳戶，您將能更輕鬆地儲存並管理透過 Brave 獎勵賺取的代幣</translation>
-<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>關於如何將您的 Brave 瀏覽器連結到您的 bitFlyer 帳號。</translation>
+<translation id="6845311459433734326">連結託管帳戶就能賺取 BAT 並提領獎勵</translation>
+<translation id="1443125272907895958">稍後再說</translation>
 <translation id="1015443539415537847">很抱歉，Brave 獎勵目前無法使用</translation>
 <translation id="5007776270364097327">很抱歉，您所在的區域目前似乎無法使用 Brave 獎勵。</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/></translation>
@@ -879,6 +777,7 @@
 <translation id="9161147058107529840">預期的單一物件參數。</translation>
 <translation id="1875861420974447980">此鏈 ID 已有人使用</translation>
 <translation id="167698752210114155">發生內部錯誤</translation>
+<translation id="8945668490056243760">不支援的訂閱類型</translation>
 <translation id="2326876601333401685">不支援這種 RPC 方法。</translation>
 <translation id="1128992132632883337">發生回應剖析錯誤</translation>
 <translation id="5382339341735118861">發生一般要求處理錯誤</translation>
@@ -923,6 +822,7 @@
 <translation id="8246868867733222286">最大的 NFT 市場。購買、銷售及發現罕見的數位項目</translation>
 <translation id="8375074247703832257">Rarible</translation>
 <translation id="7826627294887983832">建立與銷售數位藝術品</translation>
+<translation id="1383876407941801731">搜尋</translation>
 <translation id="8767749833522980474">加密</translation>
 <translation id="944736176598169208">獎勵</translation>
 <translation id="6122742277607781713">投資組合</translation>
@@ -938,12 +838,14 @@
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6598532182053592167">新增加密幣</translation>
+<translation id="1848737374354350807">餘額：</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> (位於<ph name="NETWORK"/>)</translation>
 <translation id="629730747756840877">帳戶</translation>
 <translation id="3959969108528118741">擁有者</translation>
 <translation id="3891414008432200754">價格</translation>
 <translation id="2267753748892043616">新增帳號</translation>
 <translation id="5061574358754621254">價格資料由 CoinGecko 提供</translation>
+<translation id="223536150967420869">購買</translation>
 <translation id="1483493594462132177">發送</translation>
 <translation id="538450413584738399">交換貨幣</translation>
 <translation id="9113988219764868805">傳送代幣</translation>
@@ -951,6 +853,7 @@
 <translation id="3453833142586986467">選取代幣</translation>
 <translation id="554732459168975059">選取 NFT</translation>
 <translation id="5313430503143128212">選取要傳送的代幣</translation>
+<translation id="5784485862926111563">選取要傳送的 NFT</translation>
 <translation id="2791691551852500015">輸入收款人位址</translation>
 <translation id="570080709303714420">一半</translation>
 <translation id="2784548701748328827">最大</translation>
@@ -960,6 +863,10 @@
 <translation id="5009335307032488349">依名稱和 ID 搜尋 NFT</translation>
 <translation id="6295954645230084874"><ph name="NETWORK"/> 不支援購買</translation>
 <translation id="9209024278910716955">特定網路不支援購買程序</translation>
+<translation id="4982630604810554641">正在搜尋網域…</translation>
+<translation id="5467044307473123584">Brave 支援使用鏈下交易閘道解析 .eth 網域。</translation>
+<translation id="4896417414446851895">您似乎輸入的是 ENS 位址。我們需要使用第三方解析程式來解析此要求，這麼做可能會看見您的 IP 位址和網域。</translation>
+<translation id="8646078615727397565">使用 ENS 網域</translation>
 <translation id="4171338820961522154"><ph name="NETWORK"/> 不支援兌幣</translation>
 <translation id="1191686659164947414">交易可能超前</translation>
 <translation id="632241521608275119">滑點容許範圍</translation>
@@ -972,7 +879,9 @@
 <translation id="712738518060477110">報價包含 <ph name="SWAP_FEE_PERCENTAGE"/> Brave 手續費。</translation>
 <translation id="8368540604723748428">小數位過多</translation>
 <translation id="6575120282593094155">您還沒有 <ph name="ACCOUNT_TYPE"/> 帳戶，要現在建立嗎？</translation>
+<translation id="1201402288615127009">繼續</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
+<translation id="6896758677409633944">複製</translation>
 <translation id="2704606927547763573">已複製</translation>
 <translation id="6042308850641462728">更多</translation>
 <translation id="768236965975208017">安全、多鏈，而且非常容易使用。點擊幾下即可使用 Brave 錢包</translation>
@@ -1034,6 +943,7 @@
 <translation id="6577166808959668729">支援 Solana 區塊鏈上的 SLP 相容資產</translation>
 <translation id="4541295941776129088">存放 FIL 資產</translation>
 <translation id="8500387257977999003">私密金鑰 <ph name="PROTOCOL"/></translation>
+<translation id="8275038454117074363">匯入</translation>
 <translation id="232925166623833246">從硬體錢包匯入</translation>
 <translation id="4324198334837993695">硬體</translation>
 <translation id="3067168166931605141">帳戶名稱</translation>
@@ -1080,6 +990,7 @@
 <translation id="2416098547200943834">注意：私密金鑰以十六進位編碼 JSON 提供，內含私密金鑰和通訊協定資訊。<ph name="LINK_START"/>深入瞭解<ph name="LINK_END"/>。</translation>
 <translation id="7657130382217527063">注意：私密金鑰必須以十六進位編碼 JSON 提供，內含私密金鑰和通訊協定資訊。<ph name="LINK_START"/>深入瞭解<ph name="LINK_END"/>。</translation>
 <translation id="42126664696688958">匯出</translation>
+<translation id="1366855498335432549">存款</translation>
 <translation id="2902856457593699108">顯示密鑰</translation>
 <translation id="8033497299373164724">隱藏密鑰</translation>
 <translation id="2702143907607790516">更新帳戶名稱失敗，請再試一次。</translation>
@@ -1126,6 +1037,7 @@
 <translation id="9065203028668620118">編輯</translation>
 <translation id="7968982339740310781">檢視詳情</translation>
 <translation id="6452181791372256707">拒絕</translation>
+<translation id="8131740175452115882">確認</translation>
 <translation id="8904889345035514635">目前津貼</translation>
 <translation id="7073918978411974168">提議的津貼</translation>
 <translation id="9019403281000653275">已請求無限制核准</translation>
@@ -1151,9 +1063,9 @@
 <translation id="793994607260936590">第一</translation>
 <translation id="4709524402122994378">交易紀錄</translation>
 <translation id="4591079278963448049">尚未與任何代幣帳戶建立關聯。您需使用小額 SOL 建立帳戶及存入資金。</translation>
-<translation id="3368922792935385530">已連線</translation>
 <translation id="523862956770478816">網站權限</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> 個帳戶已連線</translation>
+<translation id="4804818685124855865">解除連線</translation>
 <translation id="4305817255990598646">切換</translation>
 <translation id="3423275441470187644">信任</translation>
 <translation id="2391762656119864333">撤銷</translation>
@@ -1196,6 +1108,7 @@
 <translation id="2331676293859649642">已確認</translation>
 <translation id="1165039591588034296">錯誤</translation>
 <translation id="8373210463207847451">丟棄</translation>
+<translation id="8214232307424031138">已簽署</translation>
 <translation id="9065572743819293042">最近交易</translation>
 <translation id="4235538284468006757">交易詳細資訊</translation>
 <translation id="7488671812634887146">加速</translation>
@@ -1290,17 +1203,23 @@
 <translation id="3898731124813934210">以 Wyre 購買</translation>
 <translation id="5522073372365069684">以 Ramp 購買</translation>
 <translation id="7902920577183739843">以 Sardine 購買</translation>
+<translation id="6534275647567011533">以 Transak 購買</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">使用 Visa 或 Mastercard 購買加密貨幣。</translation>
 <translation id="3101839349578102016">使用您的銀行帳戶即時購買。手續費較低。</translation>
 <translation id="8528916244724490964">所有網路</translation>
 <translation id="4038403584813842767">餘額 ↑</translation>
 <translation id="1695096446857675822">餘額 ↓</translation>
+<translation id="8151187584908138100">名稱 ↓</translation>
+<translation id="883138507248906253">名稱 ↑</translation>
 <translation id="7198018180583855568">所有帳戶</translation>
 <translation id="6954150712710630841">交易已提交</translation>
 <translation id="905855245798176174">交易已成功發送至網路，等待確認。</translation>
+<translation id="619697073289995370">已簽署的交易</translation>
+<translation id="7493732383203109611">交易已完成簽署，將由 DApp 傳送到網路</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> 回傳至您的錢包</translation>
 <translation id="4577432071459867390">交易已失敗</translation>
 <translation id="4359235192593147041">交易因價格波動大而失敗。增加滑點忍耐度，以在更大價格波動下取得成功。</translation>
@@ -1319,6 +1238,7 @@
 <translation id="9104177294757104789">發送 <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">交換 <ph name="MAKER"/> 到 <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">次要網路</translation>
+<translation id="282560918037172384">測試網路</translation>
 <translation id="2816106784624007524">Gas 上限必須為大於 0 的整數</translation>
 <translation id="3354376789153561654">請指定「收款人」交易資料</translation>
 <translation id="8728991256628663004">「付款人」交易資料必須是有效的 Filecoin 位址</translation>
@@ -1506,6 +1426,50 @@
 <translation id="3033638954295674319">擷取 NFT 詳細資料時發生錯誤，請稍後再試。</translation>
 <translation id="2540568096903252632">輸入密碼以繼續</translation>
 <translation id="3356580495013324916">輸入您的 Brave 錢包密碼，以開始備份錢包。</translation>
+<translation id="7545441766078366279">核准 <ph name="TOKEN"/></translation>
+<translation id="3115303896544539834"><ph name="TOKEN"/> 餘額不足</translation>
+<translation id="4937657825850660613">一半</translation>
+<translation id="7639814793732182496">最大值</translation>
+<translation id="6584782231358487640">輸入金額</translation>
+<translation id="2335903728876796191">尋找最適合的價格</translation>
+<translation id="3835223348537121988">餘額：</translation>
+<translation id="5709875713144853427">選取要交換的代幣</translation>
+<translation id="720404198240859011">顯示沒有餘額的代幣</translation>
+<translation id="4886690455791686940">隱藏餘額歸零的代幣</translation>
+<translation id="381485723922188688">選項</translation>
+<translation id="6680650203439190394">匯率</translation>
+<translation id="2538996898605796431">價格影響</translation>
+<translation id="8007404171238546456">滑價後收到的最低金額</translation>
+<translation id="767199001998615704">網路費</translation>
+<translation id="7057870207229052478">Brave 費</translation>
+<translation id="3624518972158401291">免費</translation>
+<translation id="5038255447967558645">流動性提供者</translation>
+<translation id="8450638959928932199">交換並傳送</translation>
+<translation id="476816352791390168">不收取額外費用！</translation>
+<translation id="5319981934425923365">我確認上方的位址正確無誤</translation>
+<translation id="7480629155329718561">輸入收款人的以太坊位址</translation>
+<translation id="4967749818080339523">選取帳戶</translation>
+<translation id="3887241807965836390">傳送到我的帳戶</translation>
+<translation id="3079716946572942356">傳送到其他位址</translation>
+<translation id="8044899503464538266">慢</translation>
+<translation id="3569512916300900704">平均</translation>
+<translation id="7019805045859631636">快</translation>
+<translation id="1826671530876539299">交換設定</translation>
+<translation id="6778140392042462129">交易所</translation>
+<translation id="6173494033320397682">僅限直接路由</translation>
+<translation id="2440960581098655899">確保只採用直接路由，並停用分割交易</translation>
+<translation id="6245314729809503023">Brave 使用前 60 大代幣作為中介路由，以達最佳效能</translation>
+<translation id="2379187373676242615">比 CoinGecko 便宜 <ph name="VALUE"/>%</translation>
+<translation id="5351867352310722022">與 CoinGecko 相差不到 <ph name="VALUE"/>%</translation>
+<translation id="7695501918490163821">比 CoinGecko 貴 <ph name="VALUE"/>%</translation>
+<translation id="6065708195277841442">連結錢包</translation>
+<translation id="4029551149873989025">切換網路</translation>
+<translation id="7561262633951061138">最佳</translation>
+<translation id="3143110700666266545">此應用程式使用以下第三方 API：</translation>
+<translation id="8411419545176806786">Brave Swap 使用 0x 作為 DEX 彙總工具，以支援 EVM 網路。0x 會處理以太坊錢包位址和 IP 位址，以完成交易 (包括取得報價)。0x 只會將此資料用於處理交易。</translation>
+<translation id="7467728126359974661">Brave Swap 使用 Jupiter 作為 DEX 彙總工具，以支援 Solana 網路。Jupiter 會處理 Solana 錢包位址和 IP 位址，以完成交易 (包括取得報價)。Jupiter 只會將此資料用於處理交易。</translation>
+<translation id="8497751359931572880">按此處可查看 0x 隱私權政策。</translation>
+<translation id="4904748904130272182">按此處可查看 Jupiter 隱私權政策。</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1607,6 +1571,7 @@
 <translation id="264682546981571963">不想再收到 Cookie 同意通知了嗎？</translation>
 <translation id="4986297793092101884">Brave 已經封鎖了第三方 Cookie。我們也可以封鎖 Cookie 同意通知。</translation>
 <translation id="535688588637568715">是，封鎖 Cookie 同意通知</translation>
+<translation id="2808175374672429053">Brave Shields 不允許使用萬用字元。</translation>
 <translation id="6294662480095808915">讓隱私成為標配。</translation>
 <translation id="4366423156486478559">您的每次點選都能獲得 Brave 充分保護。只要將 Brave 設為預設瀏覽器，就能以私密方式瀏覽網路內容。</translation>
 <translation id="3830912418080848377">匯入設定</translation>
@@ -1679,21 +1644,4 @@
 <translation id="1657858090675311947">不必再警告我這項風險。</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="9061845622728745852">時區：</translation>
-<translation id="7586151660465233733"><ph name="SITE_NAME"/> 上的更多市場</translation>
-<translation id="952067063131306699">檢視市場並在 FTX 上交易加密貨幣</translation>
-<translation id="5963745988819586370">市場</translation>
-<translation id="3795943412467785186">連結 FTX 帳號並檢視帳號餘額、探索期貨市場並轉換加密貨幣。</translation>
-<translation id="926958206891985289">檢視期貨市場</translation>
-<translation id="6804537228302563756">連結帳號</translation>
-<translation id="5019698312620117604">24 小時價格歷史</translation>
-<translation id="8720719072204443171">24 小時成交量</translation>
-<translation id="7723176927437578611">繼續</translation>
-<translation id="2983078329159689577">正在提交……</translation>
-<translation id="6641102760094059194">確認 (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
-<translation id="2280055104463448482">轉換成功！</translation>
-<translation id="7590653073560839711">您需要至少一種貨幣的餘額才能執行轉換。</translation>
-<translation id="4390079506197726228">可用的 <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
-<translation id="6973157709854838218">隱藏顯示餘額</translation>
-<translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
-<translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
 </translationbundle>

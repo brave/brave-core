@@ -15,7 +15,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="8905049883018921395">Keď je táto možnosť zapnutá, Brave bude uvoľňovať pamäť z neaktívnych kariet. Aktívne karty a ďalšie aplikácie tak získajú viac zdrojov počítača a prehliadač Brave zostane rýchly. Neaktívne karty sa automaticky znova aktivujú, keď na ne prejdete. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Šetrič pamäte zrýchlil Brave</translation>
 <translation id="4798342026247191171">Nastavte si nový profil prehliadača Brave</translation>
-<translation id="6361779936989026201">Asistent Brave v prehliadači Brave</translation>
 <translation id="113959764510199339">Prehliadač Brave sa snaží zobraziť heslá.</translation>
 <translation id="8132634101975074716">Ste prihlásený/-á do prehliadača Brave.</translation>
 <translation id="4168469784091952813">Môžete naplno využívať Brave</translation>
@@ -74,6 +73,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="8208853227947884571">Prehliadač Brave bol aktualizovaný</translation>
 <translation id="5122472867956731189">Ak sa vám určitý web pokúsi ukradnúť heslo alebo stiahnete škodlivý súbor, Brave môže odoslať Bezpečnému prehliadaniu aj webové adresy vrátane častí obsahu stránok</translation>
 <translation id="2953892977076487219">Brave sa pokúša upraviť heslá.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Prehliadač Brave je pripojený k zariadeniu HID}few{Prehliadač Brave je pripojený k zariadeniam HID}many{Prehliadač Brave je pripojený k zariadeniam HID}other{Prehliadač Brave je pripojený k zariadeniam HID}}</translation>
 <translation id="8755404239607088219">Brave nemôže skontrolovať heslá. Skúste to neskôr.</translation>
 <translation id="8880183781256147665">Pridáva sa do prehliadača Brave...</translation>
 <translation id="3038232873781883849">Čaká sa na inštaláciu…</translation>
@@ -102,7 +102,6 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="5853262807109651878">Táto akcia odstráni zo zariadenia niekoľko položiek (počet: <ph name="ITEMS_COUNT"/>). Ak budete chcieť svoje údaje neskôr opäť načítať, prihláste sa do prehliadača Brave ako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Skratkou <ph name="SHORTCUT"/> môžete prepínať profily prehliadača Brave</translation>
 <translation id="8703492925273919597">Zatvorte všetky okná prehliadača Brave a skúste to znova.</translation>
-<translation id="5350485513372498152">Asistent Brave v prehliadači Brave môže za vás dokončiť akcie na weboch</translation>
 <translation id="4061445349373849749">V rámci ochrany vášho súkromia automaticky odstraňujeme záujmy, ktoré sú staršie ako štyri týždne. Pri ďalšom prehliadaní sa v zozname môže znova zobraziť určitý záujem. Prípadne môžete odstrániť záujmy, ktoré nemá Brave posudzovať.</translation>
 <translation id="691208314680168371">Vaša história prehliadania, teda záznam webov, ktoré ste navštívili pomocou prehliadača Brave v tomto zariadení.</translation>
 <translation id="1384923383737428730">V počítači máte škodlivý softvér. Brave ho môže odstrániť, obnoviť nastavenia a deaktivovať rozšírenia, aby prehliadač znova normálne fungoval.</translation>

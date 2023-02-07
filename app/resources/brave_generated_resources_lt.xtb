@@ -26,7 +26,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
 <translation id="8988939298652262600">„Brave“ netikrina šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="9005883459983913482">„Tor“ langai</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
 <translation id="6924909138923993900">Nauja „Tor“ jungtis šioje svetainėje</translation>
@@ -41,6 +40,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1725356094208762656">Atverti „Tor“ lange</translation>
 <translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
 <translation id="7473245612074035141">Pradėti sąranką</translation>
+<translation id="6965382102122355670">Gerai</translation>
 <translation id="3975865347033939965">Nepavyko paleisti sinchronizavimo paslaugos, „Brave“ sinchronizavimas neveikia</translation>
 <translation id="4450893287417543264">Neberodyti</translation>
 <translation id="4595286989346610620">Patikrinkite išsamią informaciją</translation>
@@ -114,7 +114,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="9194637241566114638">Padėkite tobulinti <ph name="SEARCH_NAME"/> siųsdami anoniminius naudojimo duomenis  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">„Brave“ paieška</translation>
 <translation id="8184318863960255706">Daugiau informacijos</translation>
-<translation id="6965382102122355670">Gerai</translation>
 <translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
@@ -123,8 +122,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
 <translation id="1516554614404600536">„Brave“ patarimas apie įrankį</translation>
-<translation id="7986278174934557414">Slėpti šoninio skydelio piktogramą</translation>
-<translation id="6915291874524466201">Slėpti šoninio skydelio piktogramą</translation>
+<translation id="4233010476457917696">Rodyti šoninę juostą</translation>
+<translation id="5404213409401164238">Rodyti šoninę juostą</translation>
 <translation id="9149866541089851383">Redaguoti...</translation>
 <translation id="1181037720776840403">Pašalinti</translation>
 <translation id="7513769021866698486">Redaguoti elementą</translation>
@@ -133,7 +132,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="5877900074358050101">Šoninės juostos elemento pavadinimas</translation>
 <translation id="1613695740874407223">Šoninės juostos elemento URL adresas</translation>
 <translation id="4877147287319222750">Pridėti į šoninę juostą</translation>
-<translation id="5404213409401164238">Rodyti šoninę juostą</translation>
 <translation id="7561196759112975576">Visada</translation>
 <translation id="7060352228894039151">Užvedus pelę</translation>
 <translation id="7961015016161918242">Niekada</translation>
@@ -177,10 +175,14 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3987546108749866209">Vertikalus skirtukų išdėstymas</translation>
 <translation id="5860254591544742609">Rodyti pavadinimo juostą</translation>
 <translation id="399928467800528208">Įgalinti slankiuosius skirtukus nuvedus pelės žymeklį</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Nutildyti skirtuko garsą}one{Nutildyti skirtukų garsą}few{Nutildyti skirtukų garsą}many{Nutildyti skirtukų garsą}other{Nutildyti skirtukų garsą}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Įjungti skirtuko garsą}one{Įjungti skirtukų garsą}few{Įjungti skirtukų garsą}many{Įjungti skirtukų garsą}other{Įjungti skirtukų garsą}}</translation>
 <translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
 <translation id="2523967823495420116">Vertikalus skirtukų išdėstymas</translation>
 <translation id="8888603463702767599">Rodyti pavadinimo juostą</translation>
 <translation id="2058818256505091369">Įgalinti slankiuosius skirtukus nuvedus pelės žymeklį</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Nutildyti skirtuko garsą}one{Nutildyti skirtukų garsą}few{Nutildyti skirtukų garsą}many{Nutildyti skirtukų garsą}other{Nutildyti skirtukų garsą}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Įjungti skirtuko garsą}one{Įjungti skirtukų garsą}few{Įjungti skirtukų garsą}many{Įjungti skirtukų garsą}other{Įjungti skirtukų garsą}}</translation>
 <translation id="4235920711083356755">Rodyti VPN mygtuką</translation>
 <translation id="4070612712151038707">Rodomas VPN mygtukas įrankių juostoje</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +235,9 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4096343215397759358">Kortelė su peržiūra</translation>
 <translation id="5297085818601043899">Patarimas</translation>
 <translation id="2396127686705429331">Rodyti žymių mygtuką</translation>
-<translation id="2369560305991805099">Rodyti šoninio skydelio mygtuką</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="4109670531935487117">Adreso juostoje rodyti automatinio užbaigimo pasiūlymus</translation>
 <translation id="2858138569776157458">Popul. svet.</translation>
-<translation id="65774893852758517">Siūlomos svetainės</translation>
 <translation id="7859704718976024901">Naršymo istorija</translation>
 <translation id="8820817407110198400">Žymių juosta</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
@@ -392,7 +392,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4485276108749547761">Elkitės su šiuo kodu kaip su slaptažodžiu. Jei jį sužinos kitas asmuo, galės skaityti ir keisti jūsų sinchronizuotus duomenis.</translation>
 <translation id="3034163433136515805">Žr. QR kodą</translation>
 <translation id="5373825572723282843">Įvesti sinchronizavimo kodą</translation>
-<translation id="5734745018569675530">Formoje suvesk sinchronizavimo grandinės žodinį kodą.</translation>
 <translation id="1061533051865606843">Pridėti naują prietaisą</translation>
 <translation id="5093410893656857925">Pasirink prietaiso tipą</translation>
 <translation id="4581190919849683048">Su kokio tipo įrenginiu norėtumėte sinchronizuoti?</translation>
@@ -465,7 +464,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="1834467296210148203">Rodyti „Brave Wallet“ piktogramą įrankių juostoje</translation>
 <translation id="8239147115686034860">Automatiškai užrakinti „Brave“ piniginę</translation>
 <translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
-<translation id="1241283133946520352">Tinklai</translation>
 <translation id="5975930666279943472">Išvalyti piniginės operacijų ir operacijos numerių informaciją</translation>
 <translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
 <translation id="4993345308607970390">Atkurti „Brave“ piniginę</translation>

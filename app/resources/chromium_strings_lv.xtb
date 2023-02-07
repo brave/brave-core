@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Ja funkcija ir ieslēgta, pārlūkā Brave neaktīvās cilnēs tiek atbrīvota atmiņa. Tādējādi aktīvajām cilnēm un citām lietotnēm tiek nodrošināts vairāk datora resursu un tiek uzlabots Brave darbības ātrums. Neaktīvās cilnes atkal tiek automātiski aktivizētas, kad tās atverat. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="4658574652223735641">Atmiņas taupīšana nodrošināja ātrāku Brave darbību</translation>
 <translation id="4798342026247191171">Jaunā Brave profila iestatīšana</translation>
-<translation id="6361779936989026201">Brave asistents pārlūkprogrammā Brave</translation>
 <translation id="113959764510199339">Brave mēģina rādīt paroles.</translation>
 <translation id="8132634101975074716">Esat pierakstījies operētājsistēmā Brave!</translation>
 <translation id="4168469784091952813">Varat pilnvērtīgi izmantot pārlūku Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave ir atjaunināts</translation>
 <translation id="5122472867956731189">Ja kādā vietnē tiek mēģināts nozagt jūsu paroli vai ja jūs lejupielādējat kaitīgu failu, Brave var arī nosūtīt attiecīgos URL, tostarp lapas satura fragmentus, uz funkciju Droša pārlūkošana.</translation>
 <translation id="2953892977076487219">Brave mēģina rediģēt paroles.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Pārlūkā Brave ir izveidots savienojums ar HID ierīci}zero{Pārlūkā Brave ir izveidots savienojums ar HID ierīcēm}one{Pārlūkā Brave ir izveidots savienojums ar HID ierīcēm}other{Pārlūkā Brave ir izveidots savienojums ar HID ierīcēm}}</translation>
 <translation id="8755404239607088219">Pārlūkprogrammā Brave nevar pārbaudīt jūsu paroles. Vēlāk mēģiniet vēlreiz.</translation>
 <translation id="8880183781256147665">Notiek pievienošana pārlūkam Brave...</translation>
 <translation id="3038232873781883849">Gaida, lai instalētu...</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Veicot šo darbību, no šīs ierīces tiks dzēsts(-i) <ph name="ITEMS_COUNT"/> vienums(-i). Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Lai pārslēgtos starp Brave profiliem, izmantojiet īsinājumtaustiņu <ph name="SHORTCUT"/>.</translation>
 <translation id="8703492925273919597">Aizveriet visus Brave logus un mēģiniet vēlreiz.</translation>
-<translation id="5350485513372498152">Brave asistents pārlūkprogrammā Brave var veikt darbības vietnēs jūsu vārdā.</translation>
 <translation id="4061445349373849749">Lai aizsargātu jūsu konfidencialitāti, mēs automātiski dzēšam intereses, kas ir glabātas ilgāk par četrām nedēļām. Intereses var tikt atkārtoti pievienotas sarakstam, kad turpināsiet pārlūkošanu. Varat arī noņemt intereses, ja nevēlaties, lai Brave tās apsvērtu.</translation>
 <translation id="691208314680168371">Jūsu pārlūkošanas vēsture, kurā tiek reģistrētas vietnes, ko šajā ierīcē apmeklējat ar pārlūku Brave.</translation>
 <translation id="1384923383737428730">Jūsu datorā ir kaitīga programmatūra. Pārlūkprogramma Brave var to noņemt, atjaunot jūsu iestatījumus un atspējot paplašinājumus, lai atkal pareizi darbotos.</translation>

@@ -15,7 +15,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="8905049883018921395">Pan fydd ymlaen, mae Brave yn rhyddhau cof o dabiau anweithredol. Mae hyn yn rhoi mwy o adnoddau cyfrifiadurol i dabiau gweithredol ac apiau eraill ac yn cadw Brave yn gyflym. Mae eich tabiau anweithredol yn dod yn weithredol eto yn awtomatig pan fyddwch yn dychwelyd atynt. <ph name="BEGIN_LINK"/>Dysgu rhagor<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Mae Arbedwr Cof wedi gwneud Brave yn Gyflymach</translation>
 <translation id="4798342026247191171">Gosod eich proffil Brave newydd</translation>
-<translation id="6361779936989026201">Brave Assistant yn Brave</translation>
 <translation id="113959764510199339">Mae Brave yn ceisio dangos cyfrineiriau.</translation>
 <translation id="8132634101975074716">Rydych wedi mewngofnodi i Brave!</translation>
 <translation id="4168469784091952813">Gallwch fwynhau'r mwyaf allan o Brave</translation>
@@ -74,6 +73,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="8208853227947884571">Mae Brave yn gyfoes</translation>
 <translation id="5122472867956731189">Os yw gwefan yn ceisio dwyn eich cyfrinair, neu pan fyddwch yn lawrlwytho ffeil niweidiol, gall Brave hefyd anfon cyfeiriadau URL, gan gynnwys darnau o gynnwys tudalen, i Pori'n Ddiogel</translation>
 <translation id="2953892977076487219">Mae Brave yn ceisio golygu cyfrineiriau.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Mae Brave wedi'i gysylltu â dyfais HID}zero{Mae Brave wedi'i gysylltu â dyfeisiau HID}two{Mae Brave wedi'i gysylltu â dyfeisiau HID}few{Mae Brave wedi'i gysylltu â dyfeisiau HID}many{Mae Brave wedi'i gysylltu â dyfeisiau HID}other{Mae Brave wedi'i gysylltu â dyfeisiau HID}}</translation>
 <translation id="8755404239607088219">Ni all Brave wirio'ch cyfrineiriau. Rhowch gynnig arall arni'n nes ymlaen.</translation>
 <translation id="8880183781256147665">Wrthi'n ychwanegu at Brave...</translation>
 <translation id="3038232873781883849">Wrthi'n aros i osod...</translation>
@@ -102,7 +102,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="5853262807109651878">Bydd hyn yn dileu <ph name="ITEMS_COUNT"/> eitem o'r ddyfais hon. I adfer eich data yn nes ymlaen, mewngofnodwch i Brave fel <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Gall <ph name="SHORTCUT"/> newid rhwng proffiliau Brave</translation>
 <translation id="8703492925273919597">Caewch bob ffenestr Brave a rhowch gynnig arall arni.</translation>
-<translation id="5350485513372498152">Gall Brave Assistant yn Brave gwblhau gweithredoedd i chi ar draws gwefannau</translation>
 <translation id="4061445349373849749">Er mwyn amddiffyn eich preifatrwydd, rydym yn awtoddileu eich diddordebau sy'n hŷn na 4 wythnos. Wrth i chi barhau i bori, mae'n bosib y bydd diddordeb yn ymddangos ar y rhestr eto. Neu gallwch gael gwared ar ddiddordebau nad ydych am i Brave eu hystyried.</translation>
 <translation id="691208314680168371">Eich hanes pori, cofnod o wefannau rydych wedi ymweld â nhw drwy ddefnyddio Brave ar y ddyfais hon.</translation>
 <translation id="1384923383737428730">Mae meddalwedd niweidiol ar eich cyfrifiadur. Gall Brave ei thynnu, adfer eich gosodiadau, ac analluogi estyniadau i wneud i'ch porwr weithio fel arfer eto.</translation>

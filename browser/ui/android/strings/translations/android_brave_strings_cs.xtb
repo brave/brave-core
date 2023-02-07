@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="2524310205387880526">Ohodnotit Brave</translation>
 <translation id="915758461293673891">Výše příspěvku:</translation>
 <translation id="1420756770787071946">Podpořit tohoto tvůrce</translation>
 <translation id="4147995007712611681">Nastavili jste čekající tip!</translation>
@@ -10,8 +11,8 @@
 <translation id="1305714751384738456">Nevyděláváte si žádné odměny Brave</translation>
 <translation id="1483391942610220726">Nedostáváte hlášení o ochraně soukromí</translation>
 <translation id="4683790942451502796">Pokud si přejete i nadále vydělávat odměny v BAT a dostávat týdenní zprávy o ochraně soukromí, oznámení opět zapněte.</translation>
-<translation id="1462722717055895108">Pokud si přejete i nadále vydělávat odměny v BAT, oznámení opět zapněte.</translation>
-<translation id="5457255168064266494">Pokud si přejete i nadále dostávat týdenní zprávy o ochraně soukromí, oznámení opět zapněte.</translation>
+<translation id="8618359751943259593">Pokud si přejete i nadále vydělávat odměny v BAT, oznámení opět zapněte.</translation>
+<translation id="760355165169399836">Pokud si přejete i nadále dostávat týdenní zprávy o ochraně soukromí, oznámení opět zapněte.</translation>
 <translation id="6268959058971634697">Nevyděláváte si žádné odměny</translation>
 <translation id="1088637159642753509">Pokud si přejete vydělávat odměny Brave a dostávat týdenní zprávy o ochraně soukromí, zapněte oznámení v zařízení.</translation>
 <translation id="312404770066229090">Pokud si přejete vydělávat odměny Brave, zapněte oznámení v zařízení.</translation>
@@ -76,12 +77,23 @@
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="3872060236937011862">Cena <ph name="ASSET_NAME"/> (<ph name="ASSET_SYMBOL"/>)</translation>
 <translation id="6513892817556267573">Služba Ethereum Name Service</translation>
+<translation id="531747189990625622">Služba Solana Name Service</translation>
 <translation id="3894650624018948468">Metoda řešení</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="4176463684765177261">Zakázáno</translation>
 <translation id="59174027418879706">Aktivní</translation>
 <translation id="6252490671914511928">Nejdůležitější příběhy dnešního dne ve zcela soukromém kanálu jen pro vás.</translation>
+<translation id="8300751939969131609">Zapněte si zprávy Brave a nenechte si ujít žádný příběh</translation>
 <translation id="7266075701303521777">Službu zpráv Brave podporují reklamy, které jsou zcela soukromé a anonymizované a odpovídají vašemu zařízení.</translation>
+<translation id="7699565323725789472">Sledujte své oblíbené zdroje v jediném kanálu. Stačí otevřít kartu v Brave, sjet dolů a… voila!\nZpravodajská služba Brave News je podporována příjmy z reklamy. Reklamy jsou anonymizované a respektují ochranu soukromí.</translation>
+<translation id="1765217911817124376">Zapnout zprávy Brave</translation>
+<translation id="8981973962043893066">Hledat stránky, témata nebo kanály RSS</translation>
+<translation id="3225021799163709119">Populární</translation>
+<translation id="4750394297954878236">Návrhy</translation>
+<translation id="1498364270401875204">Kanály</translation>
+<translation id="8032569120109842252">Sleduje</translation>
+<translation id="4108314971463891922">Sledovat</translation>
+<translation id="3861486700625780712">Nesledovat</translation>
 <translation id="4541978218358617681">Reklama</translation>
 <translation id="7823038307453615214">Zobrazit zprávy Brave</translation>
 <translation id="6527303717912515753">Sdílet</translation>
@@ -133,7 +145,7 @@
 <translation id="7370959926683925817">Blokování reklam. Zabezpečení dat. Každý den.</translation>
 <translation id="7281027579943912834">Pokud máte Brave nastavenou jako výchozí, každý odkaz, na který klepnete, získá ad-block Brave. Každá stránka, video i stream.</translation>
 <translation id="5148943178722443958">Pomozte vylepšit Brave.</translation>
-<translation id="6188781052835527980">Pakliže vám prohlížeč spadne nebo zamrzne, odešlete nám anonymní diagnostické údaje.</translation>
+<translation id="6718362830686703942">Pokud dojde k pádu nebo zamrznutí, odešlete diagnostické hlášení.</translation>
 <translation id="1929905278861178845">Sdílejte zcela soukromé a anonymní produktové informace o tom, jaké funkce uživatelé Brave používají.</translation>
 <translation id="2877653791257935258">Napište název nebo adresu URL webové stránky.</translation>
 <translation id="5329830149661250028">Brave je jiný: Žádné reklamy. Žádné trackery. Výrazně rychlejší načítání stránek.</translation>
@@ -144,6 +156,7 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> a další reklamy &amp; zablokované trackery</translation>
 <translation id="3092683655478890840">Počet zablokovaných reklam a trackerů: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Přeskočit</translation>
+<translation id="1377600615067678409">Nyní přeskočit</translation>
 <translation id="6165508094623778733">Zjistěte více.</translation>
 <translation id="986879628471635371">Seznámení s odstraňováním problémů</translation>
 <translation id="5808759341041733958">Zvolte si výchozí vyhledávač</translation>
@@ -201,23 +214,15 @@
 <translation id="3960619311638643872">VPN síť Brave</translation>
 <translation id="1772301834467143364">Zprávy Brave</translation>
 <translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
-<translation id="1165667598801520610">Přidat prostředky</translation>
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="6020176662032623904">Ověřený autor</translation>
 <translation id="2369994359029526515">Neověřený autor</translation>
 <translation id="6112368337882254910">Automatický příspěvek</translation>
-<translation id="13853865024308201">Nárokovat</translation>
+<translation id="7861645265922445992">Převzít Odměny</translation>
 <translation id="8494748383523030337">Váš zůstatek</translation>
 <translation id="4781696154289395607">Přispěli jste <ph name="BAT_VALUE"/> BAT.</translation>
-<translation id="7997676409547731821">Vaše naplánovaná měsíční platba za automatický příspěvek a měsíční příspěvky nemohly být dokončeny z důvodu nedostatku prostředků. Zkusíme to znovu za 30 dní.</translation>
-<translation id="5306913077198665897">Při zpracování vašeho příspěvku došlo k problému. Zkuste to znovu.</translation>
 <translation id="2429828319207652823">Při zpracování vašeho příspěvku došlo k problému.</translation>
-<translation id="3453206261112715431">Bezplatný žetonový grant</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5497435273900537730">Je dostupný příspěvek volných <ph name="TOKEN"/>.</translation>
-<translation id="8689997599821157251">Získali jste</translation>
-<translation id="7550470870580166294">Nedostatečné finance</translation>
-<translation id="2775064702681588061">Váš účet Brave Rewards čeká na převod prostředků.</translation>
+<translation id="2221902203895354376">K dispozici je udělení tokenu!</translation>
 <translation id="2323069945529668668">Jejda!</translation>
 <translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -297,8 +302,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6199596294742117349">Toto je soukromá karta</translation>
 <translation id="5858455511731621847">Přestože weby, které navštívíte na soukromých kartách, nejsou ukládány ve vašem zařízení, pro vašeho poskytovatele internetových služeb, zaměstnavatele nebo stránky, které navštěvujete, nejste anonymní ani neviditelní.</translation>
 <translation id="5789441016350810005">Brave Ads odesílané, když je prohlížeč na pozadí</translation>
-<translation id="3690140184638701871">Příspěvky a dýška</translation>
-<translation id="844921671123185605">Vaše měsíční dýška byla zpracována!</translation>
+<translation id="2892744985635833293">Váš měsíční příspěvek byl zpracován!</translation>
 <translation id="3124090095880236567">Zapněte Ads</translation>
 <translation id="2975780980638932742">Brave Ads jsou tady!</translation>
 <translation id="7541582550122501404">Příspěvek čeká na vyřízení</translation>
@@ -307,6 +311,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7781069478569868053">Stránka nové karty</translation>
 <translation id="8522669544471808198">Zobrazit pozadí</translation>
 <translation id="3870475560794762985">Zobrazit sponzorované obrázky</translation>
+<translation id="8643377320501056697">Ukázat Top stránky</translation>
+<translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
 <translation id="8297488609722895137">Fotka od: <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Klepnutím na Začít používat Brave Rewards souhlasíte s dokumentem <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Dostávejte za prohlížení tohoto pozadí zaplaceno.</translation>
@@ -314,8 +320,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2927095357213611519">Žetony můžete podpořit tvůrce stránek.\nVydělejte si známky prohlížením reklam, které berou ohled na soukromí.</translation>
 <translation id="213787746370741250">Otevírat panely ve Vlastních panelech</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
-<translation id="6181762795539107980">Neověřeno</translation>
-<translation id="4569155249847375786">Ověřeno</translation>
+<translation id="5308380583665731573">Propojit</translation>
+<translation id="3368922792935385530">Připojeno</translation>
 <translation id="8673913984316081937">Ověřování vaší peněženky je volitelné</translation>
 <translation id="8558636200953226885">Pokud však provedete ověření, můžete...</translation>
 <translation id="8697510149346635496">Vyberte si BAT, které vyděláte zobrazováním reklam dodržujících soukromí.</translation>
@@ -327,25 +333,15 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Společnost Uphold může v závislosti na požadovaných službách vyžadovat ověření vaší totožnosti.</translation>
 <translation id="3200197118442451932">Společnost Brave Software Inc. nezpracovává, neukládá ani nepřistupuje k žádným osobním údajům, které poskytnete službě <ph name="WALLET_PROVIDER"/>, když si u ní vytvoříte účet.</translation>
-<translation id="2193391216824305230">Uživatelská peněženka</translation>
 <translation id="1665118090708049096">Přejít do mého účtu <ph name="WALLET_PROVIDER"/></translation>
-<translation id="1948959999802743233">Odpojit se od <ph name="WALLET_PROVIDER"/></translation>
-<translation id="6239274080752256452">Výběr prostředků</translation>
 <translation id="8874184842967597500">Nepřipojeno</translation>
 <translation id="2495032782748793764">Brave Výchozí</translation>
 <translation id="9132378787893584761">Sdílejte Brave se svými přáteli!</translation>
 <translation id="717952606991220586">Jejda, něco se pokazilo. Zkuste to, prosím, později.</translation>
-<translation id="2524310205387880526">Ohodnotit Brave</translation>
 <translation id="987264212798334818">Všeobecné</translation>
 <translation id="1116694919640316211">About</translation>
-<translation id="6680650203439190394">Ohodnotit</translation>
-<translation id="2635089463885398597">Jak byste ohodnotili vaši zkušenost s Brave?</translation>
-<translation id="141901961143729572">Sdílet svoje dojmy</translation>
 <translation id="7961015016161918242">Nikdy</translation>
 <translation id="1275213816424141989">Možná později</translation>
-<translation id="6991128190741664836">Později</translation>
-<translation id="8851456134224363571">Skvělé! Nevadilo by vám zanechat nám hodnocení na Play Store?</translation>
-<translation id="8668962040900592974">Dejte nám vědět, jak se můžeme zlepšit</translation>
 <translation id="4406937629441301400">Získávejte žetony za zobrazení tohoto obrázku a zhodnoťte jej tvůrcům. <ph name="LEARN_MORE"/></translation>
 <translation id="1992363542751124282">Vydělejte si za zhlédnutí tohoto obrázku tokeny. Klepněte na Začít používat Brave Rewards a získejte svůj podíl.</translation>
 <translation id="6632345639591919543">Získáváte žetony za zobrazení tohoto obrázku.\n<ph name="LEARN_MORE"/></translation>
@@ -382,7 +378,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
 <translation id="1275664486910646411">Ukazovat nejoblíbenější stránky v automatickém dokončení</translation>
-<translation id="5516010970279932133">Ukazovat navržené stránky v automatickém dokončení</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
 <translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Brave</translation>
 <translation id="7427391215172269363">Každý den ukládám data procházením webu přes prohlížeč Brave.</translation>
@@ -430,7 +425,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2718046830255553131">Data hlášení o porušení soukromí byla vymazána.</translation>
 <translation id="8376263745431603066">Zapnout Noční režim (experimentální)</translation>
 <translation id="1383876407941801731">Hledat</translation>
-<translation id="8446884382197647889">Zjistit více</translation>
 <translation id="13296465911709339">Váš text byl zkopírován do schránky.</translation>
 <translation id="2735834606413553397">Veřejná adresa byla zkopírována do schránky.</translation>
 <translation id="2977461003134694205">Statistiky soukromí</translation>
@@ -444,28 +438,15 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7930505144430343145">Vítejte v Brave Rewards!</translation>
 <translation id="3477340970981564961">Brave Private Ads vás na rozdíl od běžných reklam odměňují tokeny k podpoře tvůrců obsahu, ale zároveň udržuje vaše osobní informace v soukromí.</translation>
 <translation id="6973095375773523904">Kde se zobrazují reklamy?</translation>
-<translation id="7556325460112047619">Brave Private Ads se zobrazí jako normální oznámení.  V nastavení můžete změnit, jak často se tyto reklamy budou zobrazovat.</translation>
-<translation id="6897083627729802351">Kdy obdržíte odměnu?</translation>
-<translation id="310863932297733723">Vaše vydělané tokeny z Brave Private Ads z aktuálního měsíce dorazí 5. dne následujícího měsíce.</translation>
 <translation id="7712287524451429139">Odměňování bez námahy</translation>
 <translation id="105037569026952831">Tvůrci získávají vaše příspěvky v podobě tokenů automaticky na základě vašich úrovní zapojení, které měříme jako „pozornost“.</translation>
 <translation id="5323267338679539010">Poděkujte prostřednictvím příspěvků</translation>
-<translation id="6730444165801605682">Spropitné je nástroj, se kterým lze osobně povzbudit a podpořit obsah nebo autory, které máte opravdu rádi.  Začněte se spropitným!</translation>
-<translation id="7509452925943421624">Co můžete s tokeny dělat?</translation>
-<translation id="5876169128756792273">Tokeny lze použít i nad rámec podpory tvůrců.  Jakmile se přidají obchodníci, můžete si za ně koupit digitální obsah a další zboží.</translation>
-<translation id="1402530520078693620">A nakonec společně provedeme základní nastavení</translation>
 <translation id="3494356595346329740">Toto můžete později změnit.</translation>
 <translation id="3115702351969988294">Jak často chcete vídat reklamy?</translation>
-<translation id="3474670199029510295">(Počet reklam za hodinu)</translation>
-<translation id="66599604460581068">Do jaké míry chcete své oblíbené tvůrce podpořit?</translation>
-<translation id="3164498053837913829">(z vašich výdělků za reklamy)</translation>
 <translation id="827315274423079662">Hurá, vše bylo nastaveno!</translation>
 <translation id="3895246934788932488">Používáním Brave Rewards chráníte své soukromí a napomáháte tomu, aby se internet stával pro všechny lepším místem. A to je prostě senzační!</translation>
 <translation id="5705882733397021510">Přejít zpět</translation>
 <translation id="3985567919248057638">Udělejme si krátkou prohlídku</translation>
-<translation id="2434574859640694129">Až dostanete první výplatu z reklam, můžete se vrátit a dát tomuto tvůrci příspěvek!</translation>
-<translation id="207242986925259074">Rychlá prohlídka pro osvěžení</translation>
-<translation id="8342862030112839977">Vaše první výplata z Rewards dorazí:</translation>
 <translation id="7889432931837317731">Pokud to lze, tak automaticky otevřít</translation>
 <translation id="8967385052772844086">Zobrazit celou zprávu o ochraně osobních údajů</translation>
 <translation id="6864343534748973390">Nejpopulárnější</translation>
@@ -480,15 +461,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
 <translation id="3479552764303398839">Teď ne</translation>
-<translation id="4956847150856741762">1</translation>
-<translation id="5196716972587102051">2</translation>
-<translation id="7839580021124293374">3</translation>
-<translation id="2918322085844739869">4</translation>
-<translation id="7267186368513450821">5</translation>
-<translation id="6972003925509023890">1 BAT</translation>
-<translation id="2222442600106681391">2 BAT</translation>
-<translation id="5615587419952694404">3 BAT</translation>
-<translation id="8867821173176188875">5 BAT</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
@@ -589,9 +561,11 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5050890334032852465">Uložit seznam sledování účtu</translation>
 <translation id="7755766175599167100">Hledat tokeny</translation>
 <translation id="3835223348537121988">Zůstatek:</translation>
-<translation id="7420359180991315365">Pokračovat do Wyre</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="3784455785234192852">Uzamknout</translation>
+<translation id="3866249974567520381">Popis</translation>
+<translation id="4378475168089649292">Blockchain</translation>
+<translation id="9033453977881595182">ID tokenu</translation>
 <translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="4993345308607970390">Resetovat peněženku Brave</translation>
@@ -768,7 +742,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8971278306757462297">Příjmová adresa je vaše vlastní adresa</translation>
 <translation id="749944179568745958">Neplatná adresa ETH</translation>
 <translation id="3506416339268164412">Příjmová adresa je smluvní adresa tokenu</translation>
-<translation id="1543259266592091784">Přidat prostředky</translation>
 <translation id="3494964159182650590">Přehled odměn</translation>
 <translation id="590733288489975971">Odměny z reklam</translation>
 <translation id="207268487070188114">Jednorázová spropitné</translation>
@@ -810,11 +783,9 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="8853725596990766789">Změnit částku</translation>
 <translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Otevřít peněženku Brave</translation>
-<translation id="5308380583665731573">Connect</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
 <translation id="3423275441470187644">Důvěra</translation>
 <translation id="2391762656119864333">Zrušit</translation>
-<translation id="3368922792935385530">Připojeno</translation>
 <translation id="3432029672560911238">Uživatelský účet</translation>
 <translation id="5753378322046059140">Přepnout účet</translation>
 <translation id="3897092660631435901">Menu</translation>
@@ -865,7 +836,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6044189892950611565">Kanál oznámení pro prohlížeč Brave</translation>
 <translation id="1173919438868967364">Zvolit účet</translation>
 <translation id="8922793255489232731">Nepodařilo se získat odpovídající časové pásmo pro: <ph name="VALUE"/></translation>
-<translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="6471216025161697462">Připojeno k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Zkušební období</translation>
 <translation id="7733890291091968191">Zobrazit oznámení Web3</translation>
@@ -951,7 +921,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2862978891748913252">Zvolte svou zemi</translation>
 <translation id="3832588024105436400">Vyberte svou zemi, abychom vám mohli zobrazit správné možnosti a reklamy pro váš region. <ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Váš region Brave Rewards byl nastaven na <ph name="COUNTRY_NAME"/>.</translation>
-<translation id="3180990265682133881">Při pokusu o nastavení země bohužel došlo k chybě. Zkuste to prosím znovu.</translation>
+<translation id="909076461795862330">Při pokusu o nastavení Brave Rewards došlo bohužel k chybě. Zkuste to prosím znovu.</translation>
 <translation id="7352651011704765696">Došlo k chybě</translation>
 <translation id="7144878232160441200">Opakovat</translation>
 <translation id="6040143037577758943">Zavřít</translation>
@@ -978,4 +948,19 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6662142137695589205">Propojit předplatné VPN</translation>
 <translation id="2674077112509133024">Rozšiřte ochranu Brave Firewall + VPN</translation>
 <translation id="6365389672683343144">Vaše předplatné Brave VPN může chránit až 5 zařízení se systémem Android, iOS nebo osobních počítačů. Stačí propojit předplatné Google Play s účtem Brave.</translation>
+<translation id="6278643716658443228">Nastavení odměn</translation>
+<translation id="579702532610384533">Znovu připojit</translation>
+<translation id="1619753851206150396">Jste odhlášeni</translation>
+<translation id="8208669151660770401">To se může stát, aby váš účet zůstával zabezpečený. Kliknutím níže se znovu připojíte.</translation>
+<translation id="2099354965137813181">Chyba měsíčního příspěvku</translation>
+<translation id="9074594632540931067">Chyba: BAT není dostupný</translation>
+<translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
+<translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
+<translation id="6417420737057016607">Reklamy Brave</translation>
+<translation id="5425006356459378415">Brave Rewards nejsou k dispozici</translation>
+<translation id="833643743158564518">Nové registrace do odměn Brave Rewards nejsou v tuto chvíli ve vašem regionu povoleny. Vždy to však můžete zkusit později. <ph name="LEARN_MORE"/></translation>
+<translation id="8528916244724490964">Všechny sítě</translation>
+<translation id="2781668117338732220">Sekundární sítě</translation>
+<translation id="6309721369749814582">Doména <ph name="DOMAIN"/> není zaregistrována.</translation>
+<translation id="3586775666459823714">NFT</translation>
 </translationbundle>
