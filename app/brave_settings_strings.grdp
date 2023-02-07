@@ -205,7 +205,7 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
     Shields Down
-  </message>  
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
   </message>
@@ -297,10 +297,6 @@
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
     Enable custom filters that block regional and language-specific trackers and Annoyances.
-  </message>
-  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC" desc="Long description describing what Content Filtering does">
-    Enable custom filters that block regional and language-specific trackers and
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Annoyances<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
     Add custom filter lists
@@ -835,7 +831,7 @@
   </message>
   <message name="IDS_SETTINGS_TOR_SNOWFLAKE_INSTALL_FAILED" desc="">
     The Snowflake extension necessary for this functionality could not be downloaded. Please check your Internet connection and try again.
-  </message>  
+  </message>
   <message name="IDS_SETTINGS_TOR_SELECT_BUILT_IN_RADIO" desc="">
     Select a built-in bridge
   </message>
