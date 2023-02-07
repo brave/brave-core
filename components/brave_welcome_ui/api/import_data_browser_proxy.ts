@@ -47,7 +47,7 @@ export interface ImportDataBrowserProxy {
    */
   importData: (
       sourceBrowserProfileIndex: number,
-      types: {[type: string]: boolean}) => void
+      types: { [type: string]: boolean }) => void
 
   /**
    * Starts importing data for the specified source browser profiles. The C++
@@ -56,7 +56,7 @@ export interface ImportDataBrowserProxy {
    */
   importDataBulk: (
     sourceBrowserProfileIndex: number[],
-    types: {[type: string]: boolean}) => void
+    types: { [type: string]: boolean }) => void
 
   /**
    * Prompts the user to choose a bookmarks file to import bookmarks from.
@@ -70,12 +70,12 @@ export class ImportDataBrowserProxyImpl implements ImportDataBrowserProxy {
   }
 
   importData (
-      sourceBrowserProfileIndex: number, types: {[type: string]: boolean}) {
+      sourceBrowserProfileIndex: number, types: { [type: string]: boolean }) {
     chrome.send('importData', [sourceBrowserProfileIndex, types])
   }
 
   importDataBulk (
-      sourceBrowserProfileIndex: number[], types: {[type: string]: boolean}) {
+      sourceBrowserProfileIndex: number[], types: { [type: string]: boolean }) {
     chrome.send('importDataBulk', [sourceBrowserProfileIndex, types])
   }
 
@@ -92,4 +92,4 @@ export class ImportDataBrowserProxyImpl implements ImportDataBrowserProxy {
   }
 }
 
-let instance: ImportDataBrowserProxy|null = null
+let instance: ImportDataBrowserProxy | null = null

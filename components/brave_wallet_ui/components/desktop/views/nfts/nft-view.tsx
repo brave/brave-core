@@ -19,7 +19,7 @@ import { AllNetworksOption } from '../../../../options/network-filter-options'
 export const NftView = () => {
   // redux
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState}) => wallet.userVisibleTokensInfo)
+  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
 
   const nonFungibleTokens = React.useMemo(() => {

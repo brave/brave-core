@@ -150,7 +150,7 @@ export const DividerText = styled.span`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const PercentBubble = styled.div<{ isDown?: boolean}>`
+export const PercentBubble = styled.div<{ isDown?: boolean }>`
   display: flex;
   align-items: center;
   justify-conent: center;

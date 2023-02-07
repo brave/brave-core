@@ -22,7 +22,7 @@ interface Props {
   onRemoveValue?: (value: NewTab.BackgroundWallpaper) => void
 }
 
-const StyledRemoveButton = styled.div<{hovered: boolean}>`
+const StyledRemoveButton = styled.div<{ hovered: boolean }>`
   position: absolute;
   top: 10px;
   right: 10px;

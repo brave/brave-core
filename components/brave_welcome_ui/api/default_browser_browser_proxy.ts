@@ -53,4 +53,4 @@ export class DefaultBrowserBrowserProxyImpl implements DefaultBrowserBrowserProx
   }
 }
 
-let instance: DefaultBrowserBrowserProxy|null = null
+let instance: DefaultBrowserBrowserProxy | null = null

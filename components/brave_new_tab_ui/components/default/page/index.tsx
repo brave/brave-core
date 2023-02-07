@@ -478,7 +478,7 @@ export const IconButtonContainer = styled('div')<IconButtonContainerProps>`
   }
 `
 
-export const OverrideReadabilityColor = createGlobalStyle<{override: boolean}>`
+export const OverrideReadabilityColor = createGlobalStyle<{ override: boolean }>`
   :root {
     ${p => p.override && css`
       --override-readability-color-rgb: 0, 0, 0;

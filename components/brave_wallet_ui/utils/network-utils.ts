@@ -56,7 +56,7 @@ type TxDataPresence = {
   ethTxData?: Partial<BraveWallet.TxDataUnion['ethTxData']> | undefined
   ethTxData1559?: Partial<BraveWallet.TxDataUnion['ethTxData1559']> | undefined
   solanaTxData?:
-    | Partial<BraveWallet.TxDataUnion['solanaTxData']>
+                 | Partial<BraveWallet.TxDataUnion['solanaTxData']>
     | SerializableSolanaTxData
     | undefined
   filTxData?: Partial<BraveWallet.TxDataUnion['filTxData']> | undefined
