@@ -79,15 +79,24 @@ extension BrowserViewController: WKNavigationDelegate {
     }
   }
 
-  // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present. Otherwise
-  // it could just be a visit to a regular page on maps.apple.com.
-  fileprivate func isAppleMapsURL(_ url: URL) -> Bool {
+  // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present.
+  // Otherwise it could just be a visit to a regular page on maps.apple.com.
+  // Exchaging https/https scheme with maps in order to open URLS properly on Apple Maps
+  fileprivate func isAppleMapsURL(_ url: URL) -> (enabled: Bool, url: URL)? {
     if url.scheme == "http" || url.scheme == "https" {
       if url.host == "maps.apple.com" && url.query != nil {
-        return true
+        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+          return nil
+        }
+        urlComponents.scheme = "maps"
+
+        if let url = urlComponents.url {
+          return (true, url)
+        }
+        return nil
       }
     }
-    return false
+    return (false, url)
   }
 
   // Recognize a iTunes Store URL. These all trigger the native apps. Note that appstore.com and phobos.apple.com
@@ -159,12 +168,12 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
-    // instead of being loaded in the webview. Note that there is no point in calling canOpenURL() here, because
-    // iOS will always say yes. TODO Is this the same as isWhitelisted?
-
-    if isAppleMapsURL(url) {
+    // instead of being loaded in the webview.
+    // In addition we are exchaging actual scheme with "maps" scheme
+    // So the Apple maps URLs will open properly
+    if let mapsURL = isAppleMapsURL(url), mapsURL.enabled {
       // Do not allow opening external URLs from child tabs
-      handleExternalURL(url, tab: tab, navigationAction: navigationAction)
+      handleExternalURL(mapsURL.url, tab: tab, navigationAction: navigationAction)
       return (.cancel, preferences)
     }
 
@@ -711,15 +720,24 @@ extension BrowserViewController {
       return
     }
     
+    var alertTitle = Strings.openExternalAppURLGenericTitle
+
     // We do not want certain schemes to be opened externally when called from subframes.
-    if ["tel", "sms"].contains(url.scheme) && !isMainFrame {
-      return
+    // And tel / sms dialog should not be shown for non-active tabs #6687
+    if ["tel", "sms"].contains(url.scheme) {
+      if !isMainFrame || tab?.url?.host != topToolbar.currentURL?.host {
+        return
+      }
+        
+      if let displayHost = tab?.url?.withoutWWW.host {
+        alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+      }
     }
     
     view.endEditing(true)
     let popup = AlertPopupView(
       imageView: nil,
-      title: Strings.openExternalAppURLTitle,
+      title: alertTitle,
       message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
       titleWeight: .semibold,
       titleSize: 21
