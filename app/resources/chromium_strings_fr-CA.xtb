@@ -15,7 +15,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="8905049883018921395">Lorsque ce mode est activé, Brave libère de la mémoire à partir des onglets inactifs. Cela donne aux onglets actifs et aux autres applications plus de ressources informatiques, et assure la rapidité de Brave. Vos onglets inactifs redeviennent automatiquement actifs lorsque vous y revenez. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">L'Économiseur de mémoire a rendu Brave plus rapide</translation>
 <translation id="4798342026247191171">Configurer votre nouveau profil Brave</translation>
-<translation id="6361779936989026201">Assistant Brave dans Brave</translation>
 <translation id="113959764510199339">Brave essaie d'afficher les mots de passe.</translation>
 <translation id="8132634101975074716">Vous êtes connecté à Brave!</translation>
 <translation id="4168469784091952813">Vous pouvez profiter au maximum de Brave</translation>
@@ -74,6 +73,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="8208853227947884571">Brave est à jour</translation>
 <translation id="5122472867956731189">Si un site tente de voler votre mot de passe ou si vous téléchargez un fichier dangereux, Brave peut également envoyer les URL concernées, y compris des extraits du contenu de pages, à la navigation sécurisée</translation>
 <translation id="2953892977076487219">Brave essaie de modifier les mots de passe.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave est connecté à un appareil HID}one{Brave est connecté à un appareil HID}other{Brave est connecté aux appareils HID}}</translation>
 <translation id="8755404239607088219">Brave ne peut pas vérifier vos mots de passe. Réessayez plus tard.</translation>
 <translation id="8880183781256147665">Ajout à Brave en cours...</translation>
 <translation id="3038232873781883849">Installation en attente…</translation>
@@ -102,7 +102,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="5853262807109651878">Cette action entraînera la suppression de <ph name="ITEMS_COUNT"/> éléments de cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> permet de basculer entre les profils Brave</translation>
 <translation id="8703492925273919597">Veuillez fermer toutes les fenêtres Brave et essayer de nouveau.</translation>
-<translation id="5350485513372498152">L'Assistant Brave dans Brave peut effectuer des actions dans différents sites Web pour vous</translation>
 <translation id="4061445349373849749">Afin de protéger votre confidentialité, nous supprimons automatiquement vos centres d'intérêt ayant plus de quatre semaines. Au fur et à mesure que vous naviguez, un centre d'intérêt peut réapparaître sur la liste. Vous pouvez également retirer des centres d'intérêt si vous ne voulez pas que Brave les prenne en compte.</translation>
 <translation id="691208314680168371">Votre historique de navigation, soit un enregistrement des sites que vous avez visités à l'aide de Brave sur cet appareil.</translation>
 <translation id="1384923383737428730">Nous avons trouvé un logiciel nuisible sur votre ordinateur. Brave peut le supprimer, restaurer vos paramètres et désactiver les extensions pour que votre navigateur puisse fonctionner normalement de nouveau.</translation>

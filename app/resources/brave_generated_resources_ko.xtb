@@ -26,7 +26,6 @@
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
 <translation id="8988939298652262600">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="9005883459983913482">Tor 창</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="6924909138923993900">이 사이트용 새 Tor 연결</translation>
@@ -41,6 +40,9 @@
 <translation id="1725356094208762656">Tor에서 열기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되어서 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
+<translation id="496896260395129787">다른 디바이스에서 이 Brave Sync 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
+<translation id="6965382102122355670">좋습니다</translation>
 <translation id="3975865347033939965">동기화 서비스를 시작할 수 없습니다. Brave Sync가 미실행 중입니다.</translation>
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="4595286989346610620">세부정보 확인</translation>
@@ -114,7 +116,6 @@
 <translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 검색</translation>
 <translation id="8184318863960255706">추가 정보</translation>
-<translation id="6965382102122355670">좋습니다</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="1162706247109707219">확인을 클릭하면 Windows 10 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
@@ -124,8 +125,12 @@
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
-<translation id="7986278174934557414">측면 패널 아이콘 숨기기</translation>
-<translation id="6915291874524466201">측면 패널 아이콘 숨기기</translation>
+<translation id="4375473250631001683">사이드바 아이콘 숨기기</translation>
+<translation id="2613033293035359003">사이드바 숨기기</translation>
+<translation id="4233010476457917696">사이드바 표시</translation>
+<translation id="7829322605042304637">사이드바 아이콘 숨기기</translation>
+<translation id="7349915168363514678">사이드바 숨기기</translation>
+<translation id="5404213409401164238">사이드바 표시</translation>
 <translation id="9149866541089851383">수정...</translation>
 <translation id="1181037720776840403">삭제</translation>
 <translation id="7513769021866698486">항목 편집</translation>
@@ -134,7 +139,9 @@
 <translation id="5877900074358050101">사이드바 항목 제목</translation>
 <translation id="1613695740874407223">사이드바 항목 URL</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
-<translation id="5404213409401164238">사이드바 표시</translation>
+<translation id="5977931179408079967">위치</translation>
+<translation id="3790384768741064842">오른쪽으로 이동</translation>
+<translation id="7444424316576061724">왼쪽으로 이동</translation>
 <translation id="7561196759112975576">항상</translation>
 <translation id="7060352228894039151">온마우스오버</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
@@ -167,6 +174,8 @@
 <translation id="8731422418734770661">Crypto 월렛 설정</translation>
 <translation id="8199661191594897555">암호 지갑을 시작하고 새로고침</translation>
 <translation id="8428213095426709021">설정</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 도메인</translation>
 <translation id="72868071984333667">IPFS와 프라이버시에 대해 더 알아보기</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
@@ -178,10 +187,14 @@
 <translation id="3987546108749866209">세로 탭 사용</translation>
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="399928467800528208">마우스오버 위로 플로팅</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{탭 숨기기}other{탭 숨기기}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{탭 숨기기 취소}other{탭 숨기기 취소}}</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
 <translation id="2523967823495420116">세로 탭 사용</translation>
 <translation id="8888603463702767599">제목 바 표시</translation>
 <translation id="2058818256505091369">마우스오버 위로 플로팅</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{탭 숨기기}other{탭 숨기기}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{탭 숨기기 취소}other{탭 숨기기 취소}}</translation>
 <translation id="4235920711083356755">VPN 버튼 표시</translation>
 <translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -234,11 +247,9 @@
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
 <translation id="5297085818601043899">툴팁</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
-<translation id="2369560305991805099">측면 패널 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
 <translation id="2858138569776157458">인기 사이트</translation>
-<translation id="65774893852758517">추천 사이트</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
@@ -249,6 +260,8 @@
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
+<translation id="2422927186524098759">사이드바</translation>
+<translation id="832432428796481785">사이드바 버튼 표시</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="1988804048511540801">새 탭 페이지 표시</translation>
 <translation id="2970343821770026391">대시보드</translation>
@@ -272,6 +285,8 @@
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
 <translation id="7630031867325944356">AMP와 이와 유사한 버전 대신 게시자 페이지 URL을 선호합니다.</translation>
+<translation id="920638232916443453">추적 URL 자동 리디렉션</translation>
+<translation id="1118970888826017401">최상위 리디렉션 추적 URL 바이패싱 지원 활성화.</translation>
 <translation id="7607166182943595829">언어 환경 설정을 기반으로 사이트가 지문을 남기지 못하게 합니다.</translation>
 <translation id="3497934980362703405">이 설정을 활성화하면 언어 환경설정에 대해 웹사이트가 수집하는 데이터의 양을 줄입니다.</translation>
 <translation id="2133317862976486547">추적기 &amp; 광고 차단</translation>
@@ -363,6 +378,7 @@
 <translation id="4332558599726753990">동기화 설정</translation>
 <translation id="2187778349654214731">시작하려면 동기화할 모든 장치에 Brave를 설치해야 합니다. 그런 다음 동기화 코드를 사용하여 안전하게 연결하세요.</translation>
 <translation id="7530575064080939974">동기화된 장치 관리</translation>
+<translation id="8668872235103666008">디바이스에 Brave를 동기화할 수 없음</translation>
 <translation id="7575156386943878014">동기화 관리자</translation>
 <translation id="1755198127524719638">동기화 설정</translation>
 <translation id="7558480201297099157">장치 간 동기화하고 싶은 정보를 관리합니다. 이 설정은 이 장치에만 영향을 끼칩니다.</translation>
@@ -392,7 +408,7 @@
 <translation id="4485276108749547761">이 코드를 암호처럼 취급하세요. 만약 누군가가 손에 넣는다면 동기화된 사용자의 데이터를 읽고 수정할 수 있습니다.</translation>
 <translation id="3034163433136515805">QR 코드 보기</translation>
 <translation id="5373825572723282843">동기화 코드 입력</translation>
-<translation id="5734745018569675530">아래 양식에 귀하께서 제공받은 동기화 체인 코드 단어들을 입력하세요.</translation>
+<translation id="1265244359514651398">아래에 동기화 체인 암호를 입력하세요.</translation>
 <translation id="1061533051865606843">새 장치 추가하기</translation>
 <translation id="5093410893656857925">장치 형태를 고르세요</translation>
 <translation id="4581190919849683048">동기화하려는 장치 유형은?</translation>
@@ -400,6 +416,7 @@
 <translation id="3995714999835224798">유효하지 않은 코드</translation>
 <translation id="4432071071853308688">코드가 비어 있음</translation>
 <translation id="955848693465029904">내부 동기화 셋업 오류</translation>
+<translation id="7456398316301207582">내부 계정 삭제 오류</translation>
 <translation id="859506441384380749">이 코드는 더 이상 지원되지 않는 Brave 구버전에서 생성되었습니다. 다른 기기를 먼저 업그레이드하세요.</translation>
 <translation id="3132642509209154999">만료된 코드입니다. 다른 기기에서 새 코드를 생성하고 다시 시도하세요.</translation>
 <translation id="2859229680945501779">유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.</translation>
@@ -412,6 +429,18 @@
 
     계속하시겠습니까?</translation>
 <translation id="7443185843787879670">Brave가 운영체제의 안전한 스토리지에 액세스할 수 없습니다. 이 영역은 비밀번호와 쿠키 등의 데이터를 보호하는 데 사용되며, 또한 Brave Sync가 디바이스 간에 브라우저 프로필을 연결하는 데에도 필요합니다. 따라서, Brave Sync가 실행되고 있지 않습니다. 이 문제를 해결하려면 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync 문제 해결 가이드<ph name="END_LINK_SYNC_GUIDE"/>를 참조하세요.</translation>
+<translation id="6802736947576520626">동기화 암호화 키가 귀하가 Brave Sync를 처음 셋업할 때와 달라진 것 같습니다. 가장 쉬운 해결 방법은 초기화하고 동기화되어 있는 다른 디바이스에서 가져온 암호로 동기화 체인에 다시 참여하는 것입니다.</translation>
+<translation id="4889767840132638381">초기화하고 동기화 체인 다시 참여하기</translation>
+<translation id="1680065323266179640">동기화 계정 삭제</translation>
+<translation id="9064376100690171155">계정 영구 삭제</translation>
+<translation id="228906529296554286">계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다.</translation>
+<translation id="7578652532113583362">이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.</translation>
+<translation id="2516405584294312544">삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면
+    새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
+<translation id="4860996720371753023">계정 삭제 진행 중...</translation>
+<translation id="8199291899164865593">이 동기화 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.</translation>
+<translation id="5633907266617216186">주소, 결제 정보 등</translation>
+<translation id="294985549514492876">웹 앱(PWA)</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="842628013524824194">일반 창 - 주소 표시줄에 검색 엔진 사용</translation>
@@ -465,7 +494,7 @@
 <translation id="1834467296210148203">툴바에 Brave 월렛 아이콘 표시</translation>
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
-<translation id="1241283133946520352">네트워크</translation>
+<translation id="856371974127598760">월렛 네트워크</translation>
 <translation id="5975930666279943472">월렛 트랜잭션 및 임시 정보 지우기</translation>
 <translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
 <translation id="4993345308607970390">Brave 월렛 초기화</translation>
@@ -503,6 +532,8 @@
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2234108191702901162">네트워크를 추가할 수 없음</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>를 삭제하시겠습니까?</translation>
+<translation id="3316326558572563182">활성 네트워크를 월렛 네트워크 목록에 항상 표시</translation>
+<translation id="232693303726691609">월렛 네트워크 목록에 네트워크 표시/숨기기</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>을(를) 초기화하시겠습니까?</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
 <translation id="9170907049676078643">IPFS 리소스 리졸빙에 사용하는 방법</translation>
@@ -556,6 +587,7 @@
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
+<translation id="7984721311211272523">탭 스피커 아이콘에서 음소거 기능 비활성화</translation>
 <translation id="6624718837376802990">아바타 에지 리워드</translation>
 <translation id="6617313057407561765">아바타 에지 브레이브</translation>
 <translation id="6754445808455578019">아바타 에지 오션</translation>

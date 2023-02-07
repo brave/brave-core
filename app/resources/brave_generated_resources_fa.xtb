@@ -25,7 +25,6 @@
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="8988939298652262600">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. فقط درصورتی‌که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
 <translation id="9005883459983913482">پنجره های Tor</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
 <translation id="6924909138923993900">اتصال Tor جدید برای این سایت</translation>
@@ -40,6 +39,9 @@
 <translation id="1725356094208762656">باز کردن در Tor</translation>
 <translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
 <translation id="7473245612074035141">شروع راه‌اندازی</translation>
+<translation id="496896260395129787">این حساب Brave Sync از طریق دستگاه دیگری حذف شده است. اگر شما قصد غیرفعال کردن Sync را نداشتید،<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>حساب را مجدداً بسازید</translation>
+<translation id="6965382102122355670">قبول</translation>
 <translation id="3975865347033939965">سرویس همگام‌سازی راه‌اندازی نشد، Brave Sync اجرا نمی‌شود</translation>
 <translation id="4450893287417543264">دیگر نشان داده نشود</translation>
 <translation id="4595286989346610620">جزئیات را بررسی کنید</translation>
@@ -113,8 +115,8 @@
 <translation id="9194637241566114638">با ارسال داده‌های استفاده ناشناس، به بهبود <ph name="SEARCH_NAME"/> کمک کنید. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">جستجوی Brave</translation>
 <translation id="8184318863960255706">اطلاعات بیشتر</translation>
-<translation id="6965382102122355670">قبول</translation>
 <translation id="780301667611848630">نه متشکرم</translation>
+<translation id="1162706247109707219">با کلیک کردن بر روی گزینه OK، شما می‌پذیرید که تا زمانی که به ویندوز 10 یا بعد از آن به روزرسانی انجام نداده‌اید، Brave نصب شده شما قادر به دریافت اصلاحات امنیتی مهم نخواهد بود. این هشدار مجدداً نشان داده نمی‌شود.</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -122,8 +124,12 @@
 <translation id="4174337572777167894">پروژه کشف وب</translation>
 <translation id="8659271182272561965">در جستجوی ناشناس مشارکت کنید تا داده‌های جستجو و مرور را برای جستجوی Brave پالایش کنید.</translation>
 <translation id="1516554614404600536">نکته‌ابزار Brave</translation>
-<translation id="7986278174934557414">مخفی کردن آیکون دریچه کناری</translation>
-<translation id="6915291874524466201">مخفی کردن آیکون دریچه کناری</translation>
+<translation id="4375473250631001683">مخفی کردن آیکون دریچه کناری</translation>
+<translation id="2613033293035359003">مخفی کردن دریچه کناری</translation>
+<translation id="4233010476457917696">نمایش نوار جانبی</translation>
+<translation id="7829322605042304637">مخفی کردن آیکون دریچه کناری</translation>
+<translation id="7349915168363514678">مخفی کردن دریچه کناری</translation>
+<translation id="5404213409401164238">نمایش نوار جانبی</translation>
 <translation id="9149866541089851383">ویرایش...</translation>
 <translation id="1181037720776840403">حذف</translation>
 <translation id="7513769021866698486">ویرایش مورد</translation>
@@ -132,7 +138,9 @@
 <translation id="5877900074358050101">عنوان مورد نوار کناری</translation>
 <translation id="1613695740874407223">نشانی وب مورد نوار کناری</translation>
 <translation id="4877147287319222750">افزودن به نوار جانبی</translation>
-<translation id="5404213409401164238">نمایش نوار جانبی</translation>
+<translation id="5977931179408079967">موقعیت</translation>
+<translation id="3790384768741064842">حرکت به سمت راست</translation>
+<translation id="7444424316576061724">حرکت به سمت چپ</translation>
 <translation id="7561196759112975576">همیشه</translation>
 <translation id="7060352228894039151">با حرکت ماوس</translation>
 <translation id="7961015016161918242">هرگز</translation>
@@ -165,6 +173,8 @@
 <translation id="8731422418734770661">راه‌اندازی Crypto Wallets</translation>
 <translation id="8199661191594897555">راه‌اندازی «کیف پول‌های رمزگذاری‌شده» و بارگیری مجدد</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">دامنه‌های Web3</translation>
 <translation id="72868071984333667">درباره IPFS و حریم‌خصوصی بیشتر بدانید</translation>
 <translation id="4552520379838695057">متأسفیم، آن صفحه یافت نمی‌شود.</translation>
 <translation id="2609895996619941644">می‌خواهید بررسی کنید که آیا نسخه ذخیره‌شده‌ای در Wayback Machine موجود است؟</translation>
@@ -176,10 +186,14 @@
 <translation id="3987546108749866209">استفاده از زبانه‌های عمودی</translation>
 <translation id="5860254591544742609">نمایش نوار عنوان</translation>
 <translation id="399928467800528208">شناور با حرکت ماوس</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{بی‌صدا کردن برگه}one{بی‌صدا کردن برگه‌ها}other{بی‌صدا کردن برگه‌ها}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{باصدا کردن برگه}one{باصدا کردن برگه‌ها}other{باصدا کردن برگه‌ها}}</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2523967823495420116">استفاده از زبانه‌های عمودی</translation>
 <translation id="8888603463702767599">نمایش نوار عنوان</translation>
 <translation id="2058818256505091369">شناور با حرکت ماوس</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{بی‌صدا کردن برگه}one{بی‌صدا کردن برگه‌ها}other{بی‌صدا کردن برگه‌ها}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{باصدا کردن برگه}one{باصدا کردن برگه‌ها}other{باصدا کردن برگه‌ها}}</translation>
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -232,11 +246,9 @@
 <translation id="4096343215397759358">کارت با پیش نمایش</translation>
 <translation id="5297085818601043899">راهنمای ابزار</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
-<translation id="2369560305991805099">نشان دادن دکمه نوار کناری</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
 <translation id="2858138569776157458">سایت‌های برتر</translation>
-<translation id="65774893852758517">سایت‌های پیشنهادی</translation>
 <translation id="7859704718976024901">سابقه مرور</translation>
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
@@ -247,6 +259,8 @@
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="1013121820689882118">تندخوان</translation>
 <translation id="2025435450953474282">مقالات به‌طور خودکار در حالت پرونده‌خوان بارگیری می‌شوند و در زمان شما صرفه‌جویی می‌شود</translation>
+<translation id="2422927186524098759">دریچه کناری</translation>
+<translation id="832432428796481785">نمایش دکمه دریچه کناری</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="1988804048511540801">صفحه برگه جدید نشان می‌دهد</translation>
 <translation id="2970343821770026391">داشبورد</translation>
@@ -270,6 +284,8 @@
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
 <translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
 <translation id="7630031867325944356">به جای AMP و نسخه‌های مشابه، نشانی‌های وب صفحه ناشر را ترجیح دهید.</translation>
+<translation id="920638232916443453">تغییر مسیر خودکار ردیابی نشانی‌های وب‌سایت</translation>
+<translation id="1118970888826017401">پشتیبانی را برای دور زدن بالاترین درجه تغییر مسیر ردیابی نشانی‌های وب‌سایت فعال کنید.</translation>
 <translation id="7607166182943595829">ممانعت از سایت‌ها برای گرفتن اثرانگشتم بر اساس اولویت‌های زبانی من</translation>
 <translation id="3497934980362703405">فعال کردن این تنظیم،‌ مقدار اطلاعاتی را که سایت‌ها می‌توانند درباره اولویت‌های زبانی شما به‌دست آورند، کاهش می‌دهد.</translation>
 <translation id="2133317862976486547">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
@@ -362,6 +378,7 @@
 <translation id="4332558599726753990">راه‌اندازی همگام‌سازی</translation>
 <translation id="2187778349654214731">برای شروع، باید در همه دستگاه‌هایی که قصد همگام‌سازی‌شان را دارید، Brave را نصب کنید، سپس با کد همگام‌سازی آنها را به‌صورت امن به هم پیوند دهید.</translation>
 <translation id="7530575064080939974">مدیریت دستگاه‌های همگام‌سازی‌شده خود</translation>
+<translation id="8668872235103666008">امکان همگام سازی Brave با دستگاه‌های شما وجود ندارد</translation>
 <translation id="7575156386943878014">مدیر همگام‌سازی</translation>
 <translation id="1755198127524719638">تنظیمات همگام‌سازی</translation>
 <translation id="7558480201297099157">اطلاعاتی را که می‌خواهید بین دستگاه‌ها همگام‌سازی شود مدیریت کنید. این تنظیمات فقط در این دستگاه اعمال می‌شوند.</translation>
@@ -391,7 +408,7 @@
 <translation id="4485276108749547761">این کد را مانند گذرواژه در نظر بگیرید. اگر کسی به آن دسترسی پیدا کند، می‌تواند داده‌های همگام‌سازی‌شده شما را بخواند و تغییر دهد.</translation>
 <translation id="3034163433136515805">مشاهده کد QR</translation>
 <translation id="5373825572723282843">وارد کردن کد همگام‌سازی</translation>
-<translation id="5734745018569675530">کدواژگان زنجیره همگام‌سازی دریافتی‌تان را در فرم زیر تایپ کنید.</translation>
+<translation id="1265244359514651398">کدواژگان زنجیره همگام‌سازی‌تان را در زیر وارد کنید.</translation>
 <translation id="1061533051865606843">افزودن دستگاه جدید</translation>
 <translation id="5093410893656857925">نوع دستگاه را انتخاب کنید</translation>
 <translation id="4581190919849683048">مایل به همگام‌سازی با چه نوع دستگاهی هستید؟</translation>
@@ -399,6 +416,7 @@
 <translation id="3995714999835224798">این کد نامعتبر است</translation>
 <translation id="4432071071853308688">این کد خالی است</translation>
 <translation id="955848693465029904">خطای راه‌اندازی همگام‌سازی داخلی</translation>
+<translation id="7456398316301207582">خطا در حذف حساب داخلی</translation>
 <translation id="859506441384380749">این کد توسط نسخه منسوخ Brave ایجاد شده است، لطفاً ابتدا دستگاه دیگر خود را ارتقا دهید</translation>
 <translation id="3132642509209154999">این کد منقضی شده است. لطفاً کد جدیدی در دستگاه دیگرتان ایجاد و دوباره تلاش کنید.</translation>
 <translation id="2859229680945501779">این کد نامعتبر است. لطفاً بررسی کنید که زمان و منطقه زمانی در دستگاهتان درست تنظیم شده باشند.</translation>
@@ -411,6 +429,18 @@
 
 مطمئنید می‌خواهید این کار را انجام دهید؟</translation>
 <translation id="7443185843787879670">Brave نتوانست به فضای ذخیره سازی ایمن سیستم عامل شما دسترسی پیدا کند. این چیزی است که برای ایمن سازی داده هایی مانند رمز عبور و کوکی ها استفاده می شود. همچنین برای Brave Sync برای اتصال نمایه مرورگر شما بین دستگاه ها لازم است. این بدان معناست که Brave Sync اجرا نمی شود. برای حل این مشکل، لطفاً به مراجعه کنید.<ph name="BEGIN_LINK_SYNC_GUIDE"/>راهنمای عیب‌یابی Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">به نظر می‌رسد که کلید واژه همگام‌سازی شده با تنظیمات اولیه Brave Sync همخوانی ندارد. آسان‌ترین روش برای حل این مسئله، بازنشانی مجدد و استفاده از عبارت عبور موجود بر روی دستگاه همگام‌سازی‌شده‌ی دیگری به منظور پیوستن محدد به زنجیره همگام‌سازی است.</translation>
+<translation id="4889767840132638381">بازنشانی و پیوستن مجدد به زنجیره همگام‌سازی</translation>
+<translation id="1680065323266179640">حذف حساب Sync</translation>
+<translation id="9064376100690171155">حذف حساب برای همیشه</translation>
+<translation id="228906529296554286">با حذف حسابتان، داده‌های رمزی شما از روی سرور‌های Brave حذف خواهد شد و Sync بر روی تمامی دستگاه‌های متصلتان غیرفعال می‌شود.</translation>
+<translation id="7578652532113583362">اگرچه این کار باعث حذف شدن داده‌های ذخیره‌شده محلی بر روی آن دستگاه‌ها نخواهد شد.</translation>
+<translation id="2516405584294312544">این حذف حساب دائمی است و هیچ راهی برای برگرداندن داده‌ها وجود ندارد. شما باید تصمیم بگیرید
+ برای شروع استفاده مجدد از Sync، به ساخت یک حساب جدید و افزودن مجدد همه‌ی دستگاه‌ها یکی پس از دیگری نیاز دارید.</translation>
+<translation id="4860996720371753023">حذف حساب در حال پردازش است...</translation>
+<translation id="8199291899164865593">امکان پیوستن به این زنجیره همگام‌سازی وجود ندارد. حساب کاربری پاک شده است.</translation>
+<translation id="5633907266617216186">آدرس‌ها، اطلاعات پرداخت و غیره.</translation>
+<translation id="294985549514492876">اپلیکیشن‌های ‎(PWAs) Web‏</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="842628013524824194">پنجره عادی - موتور جستجو استفاده‌شده در نوار نشانی</translation>
@@ -464,7 +494,7 @@
 <translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
-<translation id="1241283133946520352">شبکه ها</translation>
+<translation id="856371974127598760">شبکه‌های کیف پول</translation>
 <translation id="5975930666279943472">پاک کردن اطلاعات نانس و تراکنش کیف پول</translation>
 <translation id="5693968582510626466">ممکن است پاک کردن تراکنش‌ها برای توسعه‌دهندگان یا هنگام پاک کردن وضعیت در سرور محلی مفید باشد</translation>
 <translation id="4993345308607970390">بازنشانی کیف پول Brave</translation>
@@ -502,6 +532,8 @@
 <translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
 <translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
 <translation id="8996633027318264334">واقعاً می‌خواهید <ph name="KEY_NAME"/> را حذف کنید؟</translation>
+<translation id="3316326558572563182">شبکه فعال همیشه در لیست کیف پول شبکه قابل مشاهده است</translation>
+<translation id="232693303726691609">نمایش/مخفی کردن شبکه در لیست کیف پول شبکه</translation>
 <translation id="7893578599666249602">واقعاً می‌خواهید <ph name="KEY_NAME"/> را بازنشانی کنید؟</translation>
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
 <translation id="9170907049676078643">روشی برای تحلیل منابع IPFS</translation>
@@ -555,6 +587,7 @@
 <translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
 <translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
+<translation id="7984721311211272523">غیرفعال کردن عملکرد بی‌صدا در آیکون‌های صفحه بلندگو</translation>
 <translation id="6624718837376802990">آواتار پاداش‌های نوآورانه</translation>
 <translation id="6617313057407561765">آواتار نوآورانه Brave</translation>
 <translation id="6754445808455578019">آواتار نوآورانه اقیانوس</translation>

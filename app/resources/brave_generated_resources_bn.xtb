@@ -26,7 +26,6 @@
 <translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
 <translation id="8988939298652262600">Brave সুরক্ষা এবং নিরাপত্তার জন্য এক্সটেনশনগুলো পর্যালোচনা করে না। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই এক্সটেনশনটি ইনস্টল করুন।</translation>
-<translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="9005883459983913482">Tor উইন্ডোগুলি</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="6924909138923993900">এই সাইটের জন্য নতুন টর সংযোগ</translation>
@@ -41,6 +40,9 @@
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
+<translation id="496896260395129787">এই Brave সিঙ্ক অ্যাকাউন্টটি অন্য ডিভাইস থেকে মোছা হয়েছে। আপনি সিঙ্ক বন্ধ করতে না চাইলে, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>আবার অ্যাকাউন্ট তৈরি করুন</translation>
+<translation id="6965382102122355670">ঠিক আছে</translation>
 <translation id="3975865347033939965">সিঙ্ক পরিষেবা শুরু করা যায়নি, Brave সিঙ্ক চলছে না</translation>
 <translation id="4450893287417543264">আবার দেখাবেন না</translation>
 <translation id="4595286989346610620">বিস্তারিত চেক করুন</translation>
@@ -114,8 +116,8 @@
 <translation id="9194637241566114638">বেনামী ব্যবহারের ডেটা পাঠিয়ে <ph name="SEARCH_NAME"/> উন্নত করতে সহায়তা করুন।  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave সার্চ</translation>
 <translation id="8184318863960255706">আরও তথ্য</translation>
-<translation id="6965382102122355670">ঠিক আছে</translation>
 <translation id="780301667611848630">না থাক</translation>
+<translation id="1162706247109707219">‘ঠিক আছে’ ক্লিক করার মাধ্যমে, আপনি স্বীকার করেন যে, আপনি Windows 10 বা পরবর্তীতে ভার্সনে আপডেট না করা পর্যন্ত আপনার Brave-এর ইনস্টলেশন গুরুত্বপূর্ণ নিরাপত্তা সংক্রান্ত সমাধান পাবেন না। এই সতর্কতা আর দেখানো হবে না।</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
@@ -123,8 +125,12 @@
 <translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
 <translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
-<translation id="7986278174934557414">সাইড প্যানেল আইকন লুকান</translation>
-<translation id="6915291874524466201">সাইড প্যানেল আইকন লুকান</translation>
+<translation id="4375473250631001683">সাইডবার আইকন লুকান</translation>
+<translation id="2613033293035359003">সাইডবার লুকান</translation>
+<translation id="4233010476457917696">সাইডবার দেখান</translation>
+<translation id="7829322605042304637">সাইডবার আইকন লুকান</translation>
+<translation id="7349915168363514678">সাইডবার লুকান</translation>
+<translation id="5404213409401164238">সাইডবার দেখান</translation>
 <translation id="9149866541089851383">সম্পাদনা...</translation>
 <translation id="1181037720776840403">সরান</translation>
 <translation id="7513769021866698486">আইটেম এডিট করুন</translation>
@@ -133,7 +139,9 @@
 <translation id="5877900074358050101">সাইডবার আইটেম শিরোনাম</translation>
 <translation id="1613695740874407223">সাইডবার আইটেম url</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
-<translation id="5404213409401164238">সাইডবার দেখান</translation>
+<translation id="5977931179408079967">পজিশন</translation>
+<translation id="3790384768741064842">ডান দিকে সরান</translation>
+<translation id="7444424316576061724">বামে সরান</translation>
 <translation id="7561196759112975576">সবসময়য়</translation>
 <translation id="7060352228894039151">মাউসওভারে</translation>
 <translation id="7961015016161918242">কখনই নয়</translation>
@@ -166,6 +174,8 @@
 <translation id="8731422418734770661">ক্রিপ্টো ওয়ালেট সেট আপ করুন</translation>
 <translation id="8199661191594897555">ক্রিপ্টো ওয়ালেটগুলি শুরু করুন এবং আবার লোড করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 ডোমেইন</translation>
 <translation id="72868071984333667">IPFS এবং গোপনীয়তা সম্পর্কে আরও জানুন</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
@@ -177,10 +187,14 @@
 <translation id="3987546108749866209">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="399928467800528208">মাউসওভারে ফ্লোট করুন</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="8888603463702767599">টাইটেল বার দেখান</translation>
 <translation id="2058818256505091369">মাউসওভারে ফ্লোট করুন</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
 <translation id="4235920711083356755">VPN বোতাম দেখান</translation>
 <translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +247,9 @@
 <translation id="4096343215397759358">পূর্বরূপ সহ কার্ড</translation>
 <translation id="5297085818601043899">টুলটিপ</translation>
 <translation id="2396127686705429331">বুকমার্ক বোতাম দেখান</translation>
-<translation id="2369560305991805099">সাইড প্যানেল বোতাম দেখান</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="4109670531935487117">ঠিকানা বারে স্বয়ংসম্পূর্ণ পরামর্শ দেখান</translation>
 <translation id="2858138569776157458">সেরা সাইট</translation>
-<translation id="65774893852758517">প্রস্তাবিত সাইট</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
 <translation id="8820817407110198400">বুকমার্ক বার</translation>
 <translation id="6333347122924254968">ঠিকানা বারে Brave পুরস্কারসমূহ দেখান</translation>
@@ -248,6 +260,8 @@
 <translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="1013121820689882118">স্পীডরিডার</translation>
 <translation id="2025435450953474282">রিডার মোডে নিবন্ধগুলি স্বয়ংক্রিয়ভাবে লোড হয় যা আপনার সময় বাঁচায়</translation>
+<translation id="2422927186524098759">সাইডবার</translation>
+<translation id="832432428796481785">সাইডবার বোতাম দেখান</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="1988804048511540801">নতুন ট্যাব পেজ দেখায়</translation>
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
@@ -271,6 +285,8 @@
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
 <translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
 <translation id="7630031867325944356">AMP এবং অনুরূপ সংস্করণের পরিবর্তে প্রকাশক পৃষ্ঠার URL পছন্দ করুন।</translation>
+<translation id="920638232916443453">অটো-রিডাইরেক্ট ট্র্যাকিং URLs</translation>
+<translation id="1118970888826017401">সেরা-মানের রিডাইরেক্ট ট্র্যাকিং URLs বাইপাস করে সহায়তা চালু করুন।</translation>
 <translation id="7607166182943595829">অআমার ভাষার পছন্দগুলির উপর ভিত্ত করে সাইটগুলিকে আঙুলের ছাপ মূদ্রণ করা থেকে বাধা দেয়</translation>
 <translation id="3497934980362703405">এই সেটিং সক্ষম করা ওয়েব সাইটগুলিকে আপনার ভাষার পছন্দগুলি সম্পর্কে জানার পরিমাণকে কমায়।</translation>
 <translation id="2133317862976486547">ট্র্যাকারগুলি &amp; বিজ্ঞাপন ব্লকিং</translation>
@@ -363,6 +379,7 @@
 <translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
 <translation id="2187778349654214731">শুরু করতে আপনি সিঙ্ক করার পরিকল্পনা করেছেন এমন সমস্ত ডিভাইসে আপনাকে Brave ইনস্টল করতে হবে। তারপর, একটি সিঙ্ক কোডের দ্বারা সেগুলিকে নিরাপদে লিঙ্ক করুন।</translation>
 <translation id="7530575064080939974">আপনার সিঙ্ক হওয়া ডিভাইসগুলি পরিচালনা করুন</translation>
+<translation id="8668872235103666008">আপনার ডিভাইসে Brave সিঙ্ক করা যায়নি</translation>
 <translation id="7575156386943878014">সিঙ্ক পরিচালক</translation>
 <translation id="1755198127524719638">সিঙ্ক সেটিংস দেখুন</translation>
 <translation id="7558480201297099157">আপনি ডিভাইসগুলির মধ্যে কোন তথ্য সিঙ্ক করতে চান তা পরিচালনা করুন। এই সেটিংস কেবলমাত্র এই ডিভাইসটিকে প্রভাবিত করে।</translation>
@@ -392,7 +409,7 @@
 <translation id="4485276108749547761">এই কোডটি একটি পাসওয়ার্ডের মতো গণ্য করুন। যদি কেউ এটি ধরে রাখেন তবে তারা আপনার সিঙ্ক হওয়া ডেটাটি পড়তে এবং সংশোধন করতে পারবেন।</translation>
 <translation id="3034163433136515805">QR কোড দেখুন</translation>
 <translation id="5373825572723282843">একটি sync কোড প্রবেশ করুন</translation>
-<translation id="5734745018569675530">আপনি যে sync শৃঙ্খল কোডটি সরবরাহ করেছেন সেটি নীচের ফর্মে কথায় টাইপ করুন।</translation>
+<translation id="1265244359514651398">নিচে আপনার সিঙ্ক চেন পাসফ্রেজ লিখুন।</translation>
 <translation id="1061533051865606843">নতুন ডিভাইস যোগ করুন</translation>
 <translation id="5093410893656857925">ডিভাইসের ধরন পছন্দ করুন</translation>
 <translation id="4581190919849683048">আপনি কোন প্রকারের ডিভাইসের সাথে সিঙ্ক করতে চান?</translation>
@@ -400,6 +417,7 @@
 <translation id="3995714999835224798">এই কোডটি অবৈধ</translation>
 <translation id="4432071071853308688">কোডটি খালি</translation>
 <translation id="955848693465029904">অভ্যন্তরীণ সিঙ্ক সেটআপ ত্রুটি</translation>
+<translation id="7456398316301207582">অভ্যন্তরীণ অ্যাকাউন্ট মোছার সময় ত্রুটি</translation>
 <translation id="859506441384380749">এই কোডটি Brave-এর একটি অবমূল্যায়ন সংস্করণ দ্বারা তৈরি করা হয়েছে, অনুগ্রহ করে প্রথমে আপনার অন্য ডিভাইস আপগ্রেড করুন</translation>
 <translation id="3132642509209154999">এই কোডটির মেয়াদ শেষ হয়েছে। অনুগ্রহ করে আপনার অন্য ডিভাইসে একটি নতুন তৈরি করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="2859229680945501779">এই কোডটি অকার্যকর। আপনার ডিভাইসে সময় এবং টাইমজোন সঠিকভাবে সেট করা আছে কিনা অনুগ্রহ করে তা চেক করে নিন।</translation>
@@ -412,6 +430,18 @@
 
     আপনি কি এটি করার ব্যাপারে নিশ্চিত?</translation>
 <translation id="7443185843787879670">Brave আপনার অপারেটিং সিস্টেমের নিরাপদ স্টোরেজ প্রবেশ করতে পারেনি। এটি পাসওয়ার্ড এবং কুকির মতো ডেটা সুরক্ষিত করতে ব্যবহৃত হয়; ডিভাইসগুলির মধ্যে আপনার ব্রাউজার প্রোফাইল সংযোগ করার জন্য Brave সিঙ্কের জন্যও এটি প্রয়োজনীয়। এর মানে Brave সিঙ্ক চলছে না। এই সমস্যাটি সমাধান করতে, অনুগ্রহ করে <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave সিঙ্কের সমস্যা সমাধানের নির্দেশিকা দেখুন<ph name="END_LINK_SYNC_GUIDE"/>।</translation>
+<translation id="6802736947576520626">Brave সিঙ্কের প্রথম সেট আপ করার সময় যে কী ব্যবহার করা হয়েছিল তা সিঙ্ক এনক্রিপশন কীয়ের থেকে আলাদা বলে মনে হচ্ছে। সিঙ্ক চেন রিসেট করে আবার এতে যোগ দেওয়ার সহজ সমাধান হল সিঙ্ক করা অন্য একটি ডিভাইস থেকে পাসফ্রেজ ব্যবহার করা।</translation>
+<translation id="4889767840132638381">সিঙ্ক চেন রিসেট করে আবার এতে যোগ দিন</translation>
+<translation id="1680065323266179640">সিঙ্ক অ্যাকাউন্ট মুছুন</translation>
+<translation id="9064376100690171155">চিরস্থায়ীভাবে অ্যাকাউন্ট মুছুন</translation>
+<translation id="228906529296554286">আপনার অ্যাকাউন্ট মুছলে তা Brave সার্ভার থেকে আপনার এনক্রিপ্টেড ডেটা মুছে দেবে এবং আপনার সমস্ত সংযুক্ত ডিভাইসে সিঙ্ক করা বন্ধ করবে।</translation>
+<translation id="7578652532113583362">এটি সেই ডেটা মুছবে না যা স্থানীয়ভাবে সেই ডিভাইসে সঞ্চয় করা আছে।</translation>
+<translation id="2516405584294312544">এটি চিরস্থায়ীভাবে মোছা হবে এবং ডেটা পুনরুদ্ধার করার কোনো উপায় থাকবে না। আপনি আবার সিঙ্ক
+    করার সিদ্ধান্ত নিলে, আপনাকে একটি নতুন অ্যাকাউন্ট তৈরি করতে হবে এবং এক এক করে প্রত্যেকটি ডিভাইস আবার যোগ করতে হবে।</translation>
+<translation id="4860996720371753023">অ্যাকাউন্ট মোছার কাজ চলছে...</translation>
+<translation id="8199291899164865593">এই সিঙ্ক চেনে যোগ দিতে পারেনি। অ্যাকাউন্ট মোছা হয়েছে।</translation>
+<translation id="5633907266617216186">অ্যাড্রেস, পেমেন্টের তথ্য ইত্যাদি।</translation>
+<translation id="294985549514492876">ওয়েব অ্যাপ (PWAs)</translation>
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
 <translation id="842628013524824194">সাধারণ উইন্ডো - ঠিকানা বারে সার্চ ইঞ্জিন ব্যবহার করা হয়েছে</translation>
@@ -465,7 +495,7 @@
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
-<translation id="1241283133946520352">নেটওয়ার্কসমূহ</translation>
+<translation id="856371974127598760">ওয়ালেট নেটওয়ার্ক</translation>
 <translation id="5975930666279943472">ওয়ালেটের লেনদেন এবং বর্তমান তথ্য সাফ করুন</translation>
 <translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
 <translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
@@ -503,6 +533,8 @@
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
 <translation id="8996633027318264334">আপনি কি সত্যিই <ph name="KEY_NAME"/> মুছতে চান?</translation>
+<translation id="3316326558572563182">ওয়ালেটের নেটওয়ার্ক লিস্টে অ্যাক্টিভ নেটওয়ার্ক সব সময় দেখা যাবে</translation>
+<translation id="232693303726691609">ওয়ালেটের নেটওয়ার্ক লিস্টে নেটওয়ার্ক দেখান/লুকান</translation>
 <translation id="7893578599666249602">আপনি কি সত্যিই <ph name="KEY_NAME"/> মুছতে চান?</translation>
 <translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
@@ -556,6 +588,7 @@
 <translation id="2775956301559569472">404 পৃষ্ঠায় ওয়েব্যাক মেশিন প্রম্পট দেখান</translation>
 <translation id="3095201688102519917">বিবিধ ট্যাব সহ কোনও উইন্ডো বন্ধ করার আগে আমাকে জানান</translation>
 <translation id="7120553802660696133">শেষ ট্যাব বন্ধ করার সময় উইন্ডো বন্ধ করুন</translation>
+<translation id="7984721311211272523">ট্যাব স্পিকার আইকনে মিউট ফাংশন বন্ধ করুন</translation>
 <translation id="6624718837376802990">অবতার এজি পুরস্কারসমূহ</translation>
 <translation id="6617313057407561765">অবতার এজি ব্রেভ</translation>
 <translation id="6754445808455578019">অবতার এজি ওসান</translation>

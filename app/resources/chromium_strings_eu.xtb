@@ -15,7 +15,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8905049883018921395">Aktibatuta dagoenean, Brave-ek tokia egiten du fitxa inaktiboen memorian. Horrela, fitxa aktiboek eta gainerako aplikazioek ordenagailuaren baliabide gehiago izango dituzte, eta bizkorrago ibiliko da Brave. Fitxa inaktiboak haietara itzultzen zarenean aktibatuko dira berriro. <ph name="BEGIN_LINK"/>Lortu informazio gehiago<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Memoria-aurreztaileak Brave bizkortu du</translation>
 <translation id="4798342026247191171">Konfiguratu Brave-eko profil berria</translation>
-<translation id="6361779936989026201">Brave-ren Laguntzailea Brave-en</translation>
 <translation id="113959764510199339">Brave pasahitzak erakusten saiatzen ari da.</translation>
 <translation id="8132634101975074716">Brave-en saioa hasi duzu.</translation>
 <translation id="4168469784091952813">Atera ahalik eta etekin handiena Brave-i</translation>
@@ -74,6 +73,7 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8208853227947884571">Eguneratuta dago Brave</translation>
 <translation id="5122472867956731189">Webguneren bat pasahitza lapurtzen saiatzen bada edo fitxategi kaltegarriren bat deskargatzen baduzu, baliteke Brave-ek URLak ere bidaltzea (orriko edukiaren zati batzuk barne) Arakatze segurua eginbideari.</translation>
 <translation id="2953892977076487219">Pasahitzak editatzen saiatzen ari da Brave.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave HID gailu batera konektatuta dago}other{Brave HID gailuetara konektatuta dago}}</translation>
 <translation id="8755404239607088219">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu geroago.</translation>
 <translation id="8880183781256147665">Brave-era gehitzen…</translation>
 <translation id="3038232873781883849">Instalatzeko zain…</translation>
@@ -102,7 +102,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="5853262807109651878">Gailuko <ph name="ITEMS_COUNT"/> elementu ezabatuko dira. Geroago datuak eskuratu nahi izanez gero, hasi saioa Brave-en <ph name="USER_EMAIL"/> gisa.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> da Brave-eko profil batetik bestera aldatzeko lasterbidea</translation>
 <translation id="8703492925273919597">Itxi Brave leiho guztiak eta saiatu berriro.</translation>
-<translation id="5350485513372498152">Webguneetan ekintzak egin ditzake Brave-eko Brave-ren Laguntzailea zerbitzuak</translation>
 <translation id="4061445349373849749">Zure pribatutasuna babesteko, lau aste baino gehiago dituzten interesak automatikoki ezabatzen ditugu. Arakatzen jarraitu ahala, baliteke interes bat berriro agertzea zerrendan. Bestela, Brave-ek aintzat hartzea nahi ez duzun interesak ken ditzakezu.</translation>
 <translation id="691208314680168371">Zure arakatze-historia eta gailu hau erabili bitartean Brave-en bidez bisitatutako webguneen erregistro bat.</translation>
 <translation id="1384923383737428730">Software kaltegarria duzu ordenagailuan. Brave-ek hura kendu, ezarpenak leheneratu eta luzapenak desgai ditzake, arakatzaileak ohiko moduan funtziona dezan berriro.</translation>

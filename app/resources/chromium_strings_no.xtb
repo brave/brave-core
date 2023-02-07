@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Når dette er på, frigjør Brave minne fra inaktive faner. Dette gir aktive faner og andre apper flere datamaskinressurser og holder Brave rask. De inaktive fanene dine blir automatisk aktive igjen når du går tilbake til dem. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Minnesparing har gjort Brave raskere</translation>
 <translation id="4798342026247191171">Konfigurer den nye Brave-profilen din</translation>
-<translation id="6361779936989026201">Brave-assistenten i Brave</translation>
 <translation id="113959764510199339">Brave prøver å vise passord.</translation>
 <translation id="8132634101975074716">Du er logget på Brave.</translation>
 <translation id="4168469784091952813">Du kan få mest mulig ut av Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave er oppdatert</translation>
 <translation id="5122472867956731189">Hvis nettsteder prøver å stjele passordet ditt, eller når du laster ned skadelige filer, kan Brave også sende nettadresser, inkludert deler av sideinnholdet, til Safe Browsing</translation>
 <translation id="2953892977076487219">Brave prøver å redigere passord.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave er koblet til en HID-enhet}other{Brave er koblet til HID-enheter}}</translation>
 <translation id="8755404239607088219">Brave kan ikke sjekke passordene dine. Prøv på nytt senere.</translation>
 <translation id="8880183781256147665">Legger til i Brave …</translation>
 <translation id="3038232873781883849">Venter på installering</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bruk <ph name="SHORTCUT"/> til å bytte mellom Brave-profiler</translation>
 <translation id="8703492925273919597">Lukk alle Brave-vinduer og prøv på nytt.</translation>
-<translation id="5350485513372498152">Brave-assistenten i Brave kan utføre handlinger for deg på ulike nettsteder</translation>
 <translation id="4061445349373849749">For å beskytte personvernet ditt sletter vi automatisk interessene dine som er eldre enn fire uker. Når du fortsetter å surfe, kan det hende at interesser havner på listen igjen. Alternativt kan du fjerne interesse du ikke vil at Brave skal vurdere.</translation>
 <translation id="691208314680168371">Nettleserloggen din, som er en logg over nettsteder du har besøkt med Brave på denne enheten.</translation>
 <translation id="1384923383737428730">Det finnes skadelig programvare på datamaskinen din. Brave kan fjerne den, gjenopprette innstillingene dine og deaktivere utvidelser for å få nettleseren til å fungere som normalt igjen.</translation>

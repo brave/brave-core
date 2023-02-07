@@ -15,7 +15,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8905049883018921395">Aktiv olduqda, Brave yaddaşı qeyri-aktiv tablardan təmizləyir. Bu, aktiv tablara və digər tətbiqlərə daha çox kompüter resursları verir və Brave'u sürətli edir. Onlara qayıtdığınız zaman qeyri-aktiv tablarınız avtomatik olaraq yenidən aktivləşir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Yaddaşa Qənaət Brave'u daha sürətli etdi</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi ayarlayın</translation>
-<translation id="6361779936989026201">Brave Assistent Brave'da</translation>
 <translation id="113959764510199339">Brave parolları göstərməyə çalışır.</translation>
 <translation id="8132634101975074716">Brave'a daxil oldunuz!</translation>
 <translation id="4168469784091952813">Brave'dan maksimum yararlana bilərsiniz</translation>
@@ -83,6 +82,7 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="8208853227947884571">Brave güncəldir</translation>
 <translation id="5122472867956731189">Sayt parolunuzu oğurlamağa çalışdıqda və ya zərərli fayl endirdiyinizdə Brave səhifə məzmunundan kiçik nümunələr də daxil olmaqla, URL'ləri Təhlükəsiz Baxışa göndərə bilər</translation>
 <translation id="2953892977076487219">Brave parolları redaktə etməyə çalışır.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave HID cihazına qoşulub}other{Brave HID cihazlarına qoşulub}}</translation>
 <translation id="8755404239607088219">Brave parollarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
 <translation id="8880183781256147665">Xrom durub ...</translation>
 <translation id="3038232873781883849">Quraşdırılması gözlənilir...</translation>
@@ -110,7 +110,6 @@ Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq o
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> element bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> Brave profilləri arasında keçid edə bilər</translation>
 <translation id="8703492925273919597">Bütün Brave pəncərələrini bağlayın və yenidən cəhd edin.</translation>
-<translation id="5350485513372498152">Brave'da Brave Assistent sizin üçün vebsaytlarda əməliyyatlar icra edə bilər</translation>
 <translation id="4061445349373849749">Məxfiliyinizi qorumaq üçün 4 həftədən köhnə maraqlarınızı avtomatik silirik. Baxmağa davam etdikcə, maraq siyahıda yenidən görünə bilər. Və ya Brave'un nəzərə almasını istəmədiyiniz maraqları silə bilərsiniz.</translation>
 <translation id="691208314680168371">Baxış tarixçəniz, bu cihazda Brave istifadə edərək ziyarət etdiyiniz saytların qeydi.</translation>
 <translation id="1384923383737428730">Kompüterdə zərərli proqram təminatı var. Brauzerin normal şəkldə işləməsi üçün Brave onu silə, ayarları bərpa edə və artırmaları deaktiv edə bilər.</translation>
