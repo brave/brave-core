@@ -30,6 +30,9 @@ void WaitForEvent(HANDLE event,
                   SERVICE_NOTIFY* service_notify) {
   if (NotifyServiceStatusChange(service, SERVICE_NOTIFY_STOPPED,
                                 service_notify) != ERROR_SUCCESS) {
+    // Assuming the service is not in good state if we are unable to subscribe
+    // and fire the stop event to make fallback.
+    SetEvent(event);
     return;
   }
 
