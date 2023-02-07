@@ -125,25 +125,16 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     return this.i18nAdvanced(id, { substitutions: [ link ]})
   }
 
-  getStatus_(last_update_attempt, last_successful_update_attempt, last_updated_pretty_text) {
-    /* "Last updated" column can have four distinct states:
-    * No update ever attempted: fine to show blank
-    * Update attempted and failed, and never succeeded previously: show
-    * "Download failure"
-    * Update attempted and failed, but succeeded previously: show
-    * "Download failure since + last updated time"
-    * Update attempted and succeeded: show the last updated time
-    */
+  isEqual_(lhs, rhs) {
+    return lhs === rhs
+  }
 
-    if (last_update_attempt === 0) {
-      return '—'
-    } else if (last_successful_update_attempt === 0) {
-      return `<mark>${this.i18n('adblockSubscribeUrlDownloadFailed')}<mark>`
-    } else if (last_successful_update_attempt !== last_update_attempt) {
-      return `${last_updated_pretty_text} <mark>${this.i18n('adblockSubscribeUrlUpdateFailed')}</mark>`
-    } else {
-      return last_updated_pretty_text
-    }
+  isFailedUpdate_(item) {
+    return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt !== item.last_update_attempt
+  }
+
+  isLastAttemptFailed_(item) {
+    return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt === item.last_update_attempt
   }
 }
 
