@@ -311,6 +311,10 @@ constexpr char kBraveWalletNftPinningFeatureName[] = "Enable NFT pinning";
 constexpr char kBraveWalletNftPinningFeatureDescription[] =
     "Enable NFT pinning for Brave Wallet";
 
+constexpr char kBraveWalletPanelV2FeatureName[] = "Enable Panel v2";
+constexpr char kBraveWalletPanelV2FeatureDescription[] =
+    "Enable Panel v2 for Brave Wallet";
+
 constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
@@ -536,6 +540,12 @@ constexpr char kRestrictEventSourcePoolDescription[] =
      flag_descriptions::kBraveWalletNftPinningFeatureDescription,              \
      kOsDesktop,                                                               \
      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletNftPinningFeature) \
+    },                                                                         \
+    {"enable-panel-v2",                                                        \
+     flag_descriptions::kBraveWalletPanelV2FeatureName,                        \
+     flag_descriptions::kBraveWalletPanelV2FeatureDescription,                 \
+     kOsDesktop,                                                               \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletPanelV2Feature)    \
     },                                                                         \
     {"native-brave-wallet",                                                    \
      flag_descriptions::kNativeBraveWalletName,                                \

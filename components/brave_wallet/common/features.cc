@@ -52,5 +52,9 @@ BASE_FEATURE(kBraveWalletNftPinningFeature,
              "BraveWalletNftPinning",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletPanelV2Feature,
+             "BraveWalletPanelV2",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace brave_wallet

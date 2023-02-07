@@ -578,6 +578,7 @@ struct WalletInfo {
   bool isFilecoinEnabled;
   bool isSolanaEnabled;
   bool isNftPinningFeatureEnabled;
+  bool IsPanelV2FeatureEnabled;
 };
 
 // Browser-side handler for common panel / page things

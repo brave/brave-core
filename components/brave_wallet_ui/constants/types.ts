@@ -268,6 +268,7 @@ export interface WalletState {
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isNftPinningFeatureEnabled: boolean
+  isPanelV2FeatureEnabled: boolean
 }
 
 export interface PanelState {
@@ -341,6 +342,7 @@ export interface WalletInfoBase {
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
   isNftPinningFeatureEnabled: boolean
+  isPanelV2FeatureEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {

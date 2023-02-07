@@ -131,7 +131,8 @@ const defaultState: WalletState = {
   selectedCurrency: undefined,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
-  isNftPinningFeatureEnabled: false
+  isNftPinningFeatureEnabled: false,
+  isPanelV2FeatureEnabled: false
 }
 
 // async actions
@@ -304,6 +305,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = selectedAccount
         state.isNftPinningFeatureEnabled =
           payload.isNftPinningFeatureEnabled
+        state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
       },
 
       isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
