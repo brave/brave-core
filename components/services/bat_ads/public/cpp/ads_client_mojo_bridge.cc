@@ -177,10 +177,8 @@ void AdsClientMojoBridge::GetScheduledCaptcha(
 
 void AdsClientMojoBridge::ShowScheduledCaptchaNotification(
     const std::string& payment_id,
-    const std::string& captcha_id,
-    const bool should_show_tooltip_notification) {
-  ads_client_->ShowScheduledCaptchaNotification(
-      payment_id, captcha_id, should_show_tooltip_notification);
+    const std::string& captcha_id) {
+  ads_client_->ShowScheduledCaptchaNotification(payment_id, captcha_id);
 }
 
 void AdsClientMojoBridge::ClearScheduledCaptcha() {
