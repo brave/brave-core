@@ -97,7 +97,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   BrowserList* _otr_browserList;
   ChromeBrowserState* _mainBrowserState;
   scoped_refptr<p3a::P3AService> _p3a_service;
-  scoped_refptr<brave::HistogramsBraveizer> _histogram_braveizer;
+  scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -465,7 +465,7 @@ static bool CustomLogHandler(int severity,
       p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
   _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());
-  _histogram_braveizer = brave::HistogramsBraveizer::Create();
+  _histogram_braveizer = p3a::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
