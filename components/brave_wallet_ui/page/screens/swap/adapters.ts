@@ -82,7 +82,6 @@ export function makeNetworkInfo (network: BraveWallet.NetworkInfo): NetworkInfo 
 
 export function makeWalletAccount (account: WalletAccountType): WalletAccount {
   return {
-    id: account.address,
     name: account.name,
     address: account.address,
     coin: account.coin
@@ -307,6 +306,7 @@ export function makeSwitchNetwork () {
   async function switchNetwork (network: NetworkInfo) {
     const { jsonRpcService } = getAPIProxy()
     await jsonRpcService.setNetwork(network.chainId, network.coin)
+    return undefined
   }
 
   return switchNetwork
