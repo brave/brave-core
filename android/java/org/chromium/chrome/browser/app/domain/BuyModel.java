@@ -17,6 +17,7 @@ import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.mojo.bindings.Callbacks.Callback1;
 
 import java.util.Locale;
@@ -25,7 +26,6 @@ public class BuyModel {
     public static final int[] SUPPORTED_RAMP_PROVIDERS = {
             OnRampProvider.RAMP, OnRampProvider.SARDINE, OnRampProvider.TRANSAK};
 
-    private static final String CURRENCY_CODE_USD = "USD";
     private final Object mLock = new Object();
     private AssetRatioService mAssetRatioService;
     private BlockchainRegistry mBlockchainRegistry;
@@ -51,8 +51,8 @@ public class BuyModel {
             // Ramp.Network is a special case that requires a modified asset symbol.
             symbol = AssetUtils.mapToRampNetworkSymbol(chainId, symbol, contractAddress);
         }
-        mAssetRatioService.getBuyUrlV1(
-                onRampProvider, chainId, from, symbol, amount, CURRENCY_CODE_USD, (url, error) -> {
+        mAssetRatioService.getBuyUrlV1(onRampProvider, chainId, from, symbol, amount,
+                WalletConstants.CURRENCY_CODE_USD, (url, error) -> {
                     if (error != null && !error.isEmpty()) {
                         callback.OnUrlReady(null);
                         return;
