@@ -37,6 +37,13 @@ bool ServiceMain::InitWithCommandLine(const base::CommandLine* command_line) {
     LOG(ERROR) << "No positional parameters expected.";
     return false;
   }
+
+  // Crash itself if crash-me was used.
+  if (command_line->HasSwitch(kBraveVpnHelperCrashMe)) {
+    CHECK(!command_line->HasSwitch(kBraveVpnHelperCrashMe))
+        << "--crash-me was used.";
+  }
+
   // Run interactively if needed.
   if (command_line->HasSwitch(kConsoleSwitchName)) {
     run_routine_ = &ServiceMain::RunInteractive;
