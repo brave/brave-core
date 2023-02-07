@@ -9,7 +9,7 @@ import Intents
 
 public class LockScreenFavoriteIntentHandler: NSObject, LockScreenFavoriteConfigurationIntentHandling {
   public func provideFavoriteOptionsCollection(
-    for intent: BraveWidgetsModels.LockScreenFavoriteConfigurationIntent
+    for intent: LockScreenFavoriteConfigurationIntent
   ) async throws -> INObjectCollection<FavoriteEntry> {
     let favs = FavoritesWidgetData.loadWidgetData() ?? []
     let entries: [FavoriteEntry] = favs.map { fav in

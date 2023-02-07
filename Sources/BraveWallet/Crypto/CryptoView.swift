@@ -22,19 +22,15 @@ public struct CryptoView: View {
   var openWalletURLAction: ((URL) -> Void)?
   
   var appRatingRequestAction: (() -> Void)?
-  
-  var faviconRenderer: WalletFaviconRenderer
 
   public init(
     walletStore: WalletStore,
     keyringStore: KeyringStore,
-    presentingContext: PresentingContext,
-    faviconRenderer: WalletFaviconRenderer
+    presentingContext: PresentingContext
   ) {
     self.walletStore = walletStore
     self.keyringStore = keyringStore
     self.presentingContext = presentingContext
-    self.faviconRenderer = faviconRenderer
   }
 
   private enum VisibleScreen: Equatable {
@@ -259,10 +255,6 @@ public struct CryptoView: View {
       .init(action: { [appRatingRequestAction] in
         appRatingRequestAction?()
       }))
-    .environment(
-      \.faviconRenderer,
-       faviconRenderer
-    )
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
         dismissAction?()

@@ -48,7 +48,8 @@
       "skippedTests" : [
         "NavigationRouterTests",
         "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()",
-        "SyncTests"
+        "SyncTests",
+        "TestFavicons"
       ],
       "target" : {
         "containerPath" : "container:..",

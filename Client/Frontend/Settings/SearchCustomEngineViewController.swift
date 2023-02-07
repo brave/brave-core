@@ -12,6 +12,7 @@ import SnapKit
 import Fuzi
 import Storage
 import Data
+import Favicon
 import os.log
 
 class SearchCustomEngineViewController: UIViewController {
@@ -69,7 +70,7 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private var fetcher: FaviconFetcher?
+  private var faviconTask: Task<Void, Error>?
 
   fileprivate var faviconImage: UIImage?
 
@@ -388,12 +389,15 @@ extension SearchCustomEngineViewController {
       return
     }
 
-    fetcher = FaviconFetcher(siteURL: url, kind: .favicon)
-
-    fetcher?.load { [weak self] _, attributes in
-      guard let self = self else { return }
-
-      self.faviconImage = attributes.image ?? UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      do {
+        let icon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self.faviconImage = icon.image ?? Favicon.defaultImage
+      } catch {
+        self.faviconImage = Favicon.defaultImage
+      }
+      
       self.openSearchEngine = searchEngineDetails
     }
   }
@@ -459,7 +463,7 @@ extension SearchCustomEngineViewController {
       return
     }
 
-    var engineImage = UIImage(named: "defaultFavicon", in: .module, compatibleWith: nil)!
+    var engineImage = Favicon.defaultImage
 
     guard let hostUrl = host else {
       let engine = OpenSearchEngine(shortName: name, image: engineImage, searchTemplate: template, isCustomEngine: true)
@@ -468,15 +472,14 @@ extension SearchCustomEngineViewController {
       return
     }
 
-    fetcher = FaviconFetcher(siteURL: hostUrl, kind: .favicon)
-
-    fetcher?.load { siteUrl, attributes in
-      if let image = attributes.image {
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      let favicon = try? await FaviconFetcher.loadIcon(url: hostUrl, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+      if let image = favicon?.image {
         engineImage = image
       }
-
+      
       let engine = OpenSearchEngine(shortName: name, image: engineImage, searchTemplate: template, isCustomEngine: true)
-
       completion(engine, nil)
     }
   }

@@ -6,6 +6,8 @@
 import Foundation
 import CoreData
 import BraveShared
+import Favicon
+import BraveWidgetsModels
 
 extension BrowserViewController: NSFetchedResultsControllerDelegate {
   public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -17,37 +19,38 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
     try? frc.performFetch()
 
     if let favs = frc.fetchedObjects {
-      let group = DispatchGroup()
-      var favData: [Int: WidgetFavorite] = [:]
-
-      // MUST copy `favs` array.
-      // If we don't, operating on `favs` is undefined behaviour on iOS 14! - Brandon T.
-      // This causes a terribly difficult to find bug on iOS 14 (dangling pointer).
-      // See also: https://bugs.swift.org/browse/SR-12288
-      for (index, fav) in Array(favs).prefix(16).enumerated() {
-        if let url = fav.url?.asURL {
-          group.enter()
-          let fetcher = FaviconFetcher(siteURL: url, kind: .largeIcon, persistentCheckOverride: true)
-          widgetFaviconFetchers.append(fetcher)
-          fetcher.load { _, attributes in
-            favData[index] = .init(url: url, title: fav.title, favicon: attributes)
-            group.leave()
-          }
+      Task { @MainActor in
+        struct IndexedWidgetFavorite {
+          let index: Int
+          let favorite: WidgetFavorite
         }
-      }
 
-      group.notify(queue: .main) { [self] in
-        widgetFaviconFetchers.removeAll()
-        // While we get favorites from the database in correct order,
-        // filling it with favicon data is an async operation.
-        // To preserve favorites order
-        // we add index number to each item then use it to sort it back.
-        let sortedData =
-          favData
-          .sorted { $0.key < $1.key }
-          .map { $0.value }
-
-        FavoritesWidgetData.updateWidgetData(sortedData)
+        let widgets = await withTaskGroup(of: IndexedWidgetFavorite.self, returning: [WidgetFavorite].self) { group in
+          // MUST copy `favs` array.
+          // If we don't, operating on `favs` is undefined behaviour on iOS 14! - Brandon T.
+          // This causes a terribly difficult to find bug on iOS 14 (dangling pointer).
+          // See also: https://bugs.swift.org/browse/SR-12288
+          for (index, fav) in Array(favs).prefix(16).enumerated() {
+            guard let url = fav.url?.asURL else {
+              continue
+            }
+            
+            let title = fav.title
+            
+            group.addTask {
+              let favicon = try? await FaviconFetcher.loadIcon(url: url, kind: .largeIcon, persistent: true)
+              return IndexedWidgetFavorite(index: index, favorite: .init(url: url, title: title, favicon: favicon))
+            }
+          }
+          
+          var results = [IndexedWidgetFavorite]()
+          for await result in group {
+            results.append(result)
+          }
+          return results.sorted { $0.index < $1.index }.map { $0.favorite }
+        }
+        
+        FavoritesWidgetData.updateWidgetData(widgets)
       }
     }
   }

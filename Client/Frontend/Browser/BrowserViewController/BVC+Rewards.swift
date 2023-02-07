@@ -12,6 +12,7 @@ import Onboarding
 import Storage
 import WebKit
 import os.log
+import Favicon
 
 // TODO: Move this log to the Rewards/Ads target once we move Rewards/Ads files.
 let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
@@ -230,13 +231,12 @@ extension Tab {
     }
 
     group.notify(queue: .main) {
-      let faviconURL = URL(string: self.displayFavicon?.url ?? "")
-      if faviconURL == nil {
+      if self.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
       }
       rewards.reportLoadedPage(
         url: url, redirectionURLs: urls.isEmpty ? [url] : urls,
-        faviconURL: faviconURL, tabId: Int(self.rewardsId),
+        tabId: Int(self.rewardsId),
         html: htmlBlob ?? "", adsInnerText: classifierText)
     }
   }

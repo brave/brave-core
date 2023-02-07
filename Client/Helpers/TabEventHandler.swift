@@ -4,6 +4,7 @@
 
 import Foundation
 import Storage
+import Favicon
 
 /**
  * A handler can be a plain old swift object. It does not need to extend any
@@ -61,7 +62,7 @@ import Storage
 protocol TabEventHandler {
   func tab(_ tab: Tab, didChangeURL url: URL)
   func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata)
-  func tab(_ tab: Tab, didLoadFavicon favicon: Favicon?, with: Data?)
+  func tab(_ tab: Tab, didLoadFavicon favicon: Favicon?)
   func tabDidGainFocus(_ tab: Tab)
   func tabDidLoseFocus(_ tab: Tab)
   func tabDidClose(_ tab: Tab)
@@ -73,7 +74,7 @@ protocol TabEventHandler {
 extension TabEventHandler {
   func tab(_ tab: Tab, didChangeURL url: URL) {}
   func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {}
-  func tab(_ tab: Tab, didLoadFavicon favicon: Favicon?, with: Data?) {}
+  func tab(_ tab: Tab, didLoadFavicon favicon: Favicon?) {}
   func tabDidGainFocus(_ tab: Tab) {}
   func tabDidLoseFocus(_ tab: Tab) {}
   func tabDidClose(_ tab: Tab) {}
@@ -93,7 +94,7 @@ enum TabEventLabel: String {
 enum TabEvent {
   case didChangeURL(URL)
   case didLoadPageMetadata(PageMetadata)
-  case didLoadFavicon(Favicon?, with: Data?)
+  case didLoadFavicon(Favicon?)
   case didGainFocus
   case didLoseFocus
   case didClose
@@ -124,8 +125,8 @@ enum TabEvent {
       handler.tab(tab, didChangeURL: url)
     case .didLoadPageMetadata(let metadata):
       handler.tab(tab, didLoadPageMetadata: metadata)
-    case .didLoadFavicon(let favicon, let data):
-      handler.tab(tab, didLoadFavicon: favicon, with: data)
+    case .didLoadFavicon(let favicon):
+      handler.tab(tab, didLoadFavicon: favicon)
     case .didGainFocus:
       handler.tabDidGainFocus(tab)
     case .didLoseFocus:

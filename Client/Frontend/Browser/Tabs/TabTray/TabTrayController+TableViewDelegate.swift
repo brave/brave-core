@@ -6,6 +6,7 @@
 import BraveShared
 import Data
 import UIKit
+import Favicon
 
 extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
 
@@ -44,7 +45,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
     
     cell.imageIconView.do {
       $0.contentMode = .scaleAspectFit
-      $0.image = FaviconFetcher.defaultFaviconImage
+      $0.image = Favicon.defaultImage
       $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
       $0.layer.borderWidth = BraveUX.faviconBorderWidth
       $0.layer.cornerRadius = 6
@@ -54,8 +55,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
       // TODO: Remove Domain creation and load FavIcon method swap the method with brave-core fetch #5312
       $0.loadFavicon(
         for: distantTab.url,
-        fallbackMonogramCharacter: distantTab.title?.first,
-        cachedOnly: true)
+        monogramFallbackCharacter: distantTab.title?.first)
     }
   }
   

@@ -10,6 +10,7 @@ import BraveUI
 import DesignSystem
 import BraveShared
 import Data
+import Favicon
 
 private struct PlaylistRedactedHeaderView: View {
   var title: String?
@@ -131,7 +132,7 @@ class PlaylistCellRedacted: UITableViewCell {
                                                                                                          title: nil,
                                                                                                          details: nil,
                                                                                                          contentSize: .zero))
-  private var faviconRenderer: FavIconImageRenderer?
+  private var faviconTask: Task<Void, Error>?
   private static let cache = NSCache<NSString, UIImage>()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -160,17 +161,24 @@ class PlaylistCellRedacted: UITableViewCell {
     
     let cacheKey = url.baseDomain ?? url.absoluteString
     if let image = PlaylistCellRedacted.cache.object(forKey: cacheKey as NSString) {
-      faviconRenderer = nil
+      faviconTask = nil
       hostingController.rootView.thumbnail = image
       return
     }
     
-    faviconRenderer = FavIconImageRenderer()
-    faviconRenderer?.loadIcon(siteURL: url, persistent: false) { [weak self] image in
-      if let image = image {
-        PlaylistCellRedacted.cache.setObject(image, forKey: cacheKey as NSString)
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      do {
+        let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: false)
+        if let image = favicon.image {
+          PlaylistCellRedacted.cache.setObject(image, forKey: cacheKey as NSString)
+          hostingController.rootView.thumbnail = image
+        } else {
+          hostingController.rootView.thumbnail = Favicon.defaultImage
+        }
+      } catch {
+        hostingController.rootView.thumbnail = Favicon.defaultImage
       }
-      self?.hostingController.rootView.thumbnail = image
     }
   }
   

@@ -9,6 +9,7 @@ import BraveShared
 import WebKit
 import BraveCore
 import BraveNews
+import Favicon
 import os.log
 
 // A base protocol for something that can be cleared.
@@ -86,6 +87,7 @@ class CacheClearable: Clearable {
     WebImageCacheManager.shared.clearMemoryCache()
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
+    FaviconFetcher.clearCache()
     
     await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
   }

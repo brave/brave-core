@@ -8,6 +8,7 @@ import Storage
 @testable import Brave
 import Shared
 import Data
+import Favicon
 
 class TestFavicons: ProfileTest {
   
@@ -17,17 +18,17 @@ class TestFavicons: ProfileTest {
     DataController.shared.initializeOnce()
   }
 
-  func testBundledFavicons() {
-    let fetcher = FaviconFetcher(siteURL: URL(string: "http://www.google.de")!, kind: .favicon)
-    XCTAssertNotNil(fetcher.bundledIcon)
-    let fetcher2 = FaviconFetcher(siteURL: URL(string: "http://vancouver.craigslist.ca")!, kind: .favicon)
-    XCTAssertNotNil(fetcher2.bundledIcon)
+  func testBundledFavicons() async throws {
+    let favicon = try await BundledFaviconRenderer.loadIcon(url: URL(string: "http://www.google.de")!)
+    XCTAssertNotNil(favicon.image)
+    let favicon2 = try await BundledFaviconRenderer.loadIcon(url: URL(string: "http://vancouver.craigslist.ca")!)
+    XCTAssertNotNil(favicon2.image)
   }
 
   func testImageViewLoad() {
     let expectation = XCTestExpectation(description: "favicon.load")
     let imageView = UIImageView()
-    imageView.loadFavicon(for: URL(string: "http://www.google.de")!) {
+    imageView.loadFavicon(for: URL(string: "http://www.google.de")!, monogramFallbackCharacter: nil) { _ in 
       // Should be a default icon therefore not truly async
       XCTAssertNotNil(imageView.image)
       expectation.fulfill()
@@ -46,9 +47,8 @@ class TestFavicons: ProfileTest {
     context.fillPath()
     image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
-    FaviconFetcher.isIconBackgroundTransparentAroundEdges(image) { isTransparent in
-      dispatchPrecondition(condition: .onQueue(.main))
-      XCTAssert(isTransparent)
+    DispatchQueue.main.async {
+      XCTAssert(image.hasTransparentEdges)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 5.0)
@@ -65,9 +65,8 @@ class TestFavicons: ProfileTest {
     context.fillPath()
     image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
-    FaviconFetcher.isIconBackgroundTransparentAroundEdges(image) { isTransparent in
-      dispatchPrecondition(condition: .onQueue(.main))
-      XCTAssertFalse(isTransparent)
+    DispatchQueue.main.async {
+      XCTAssert(image.hasTransparentEdges)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 15.0)
@@ -76,9 +75,8 @@ class TestFavicons: ProfileTest {
   func testIconTransparencyDoesntCrashWithEmptyImage() {
     let expectation = XCTestExpectation(description: "favicon.transparent.3")
     let image = UIImage()
-    FaviconFetcher.isIconBackgroundTransparentAroundEdges(image) { isTransparent in
-      dispatchPrecondition(condition: .onQueue(.main))
-      XCTAssertFalse(isTransparent)
+    DispatchQueue.main.async {
+      XCTAssert(image.hasTransparentEdges)
       expectation.fulfill()
     }
     wait(for: [expectation], timeout: 5.0)

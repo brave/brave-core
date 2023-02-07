@@ -118,7 +118,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
       // favicon info. Since all favorites should have persisted
       // Domain's, we leave `persistent` as true
       let domain = fav.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
-      cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: fav.title?.first)
+      cell.imageView.loadFavicon(siteURL: url, monogramFallbackCharacter: fav.title?.first)
     }
     cell.accessibilityLabel = cell.textLabel.text
   }

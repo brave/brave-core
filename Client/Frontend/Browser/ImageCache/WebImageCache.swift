@@ -62,16 +62,8 @@ final public class WebImageCache: ImageCacheProtocol {
 
     let imageOperation = webImageManager.loadImage(with: url, options: SDWebImageOptions(webImageOptions), context: webImageContext, progress: progressBlock) { image, data, error, webImageCacheType, _, imageURL in
       let key = self.webImageManager.cacheKey(for: url)
-      if let image = image {
-        let maxSize = CGFloat(FaviconMO.maxSize)
-        if image.size.width > maxSize || image.size.height > maxSize {
-          Logger.module.warning("Favicon size too big, not storing it in cache.")
-          return
-        }
-
-        if !self.isPrivate {
-          self.webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
-        }
+      if let image = image, !self.isPrivate {
+        self.webImageManager.imageCache.store(image, imageData: data, forKey: key, cacheType: .all)
       }
 
       let cacheType = self.mapImageCacheType(from: webImageCacheType)

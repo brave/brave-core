@@ -150,11 +150,6 @@ extension Fetchable {
   static func getFetchRequest() -> NSFetchRequest<Self> {
     var selfName = String(describing: self)
 
-    // This is a hack until FaviconMO won't be renamed to Favicon.
-    if selfName.contains("FaviconMO") {
-      selfName = "Favicon"
-    }
-
     // Legacy reasons, pre sync-v2 we used CoreData for both bookmarks and favorites.
     if selfName.contains("Favorite") {
       selfName = "Bookmark"

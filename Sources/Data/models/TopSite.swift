@@ -12,5 +12,4 @@ final class TopSite: NSManagedObject, CRUD {
   @NSManaged var order: Int16
   @NSManaged var notifications: Int16
   @NSManaged var createdOn: Date?
-  @NSManaged var favicon: FaviconMO?
 }

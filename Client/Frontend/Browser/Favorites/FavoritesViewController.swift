@@ -683,7 +683,8 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         // favicon info. Since all favorites should have persisted
         // Domain's, we leave `persistent` as true
         let domain = favorite.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
-        cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: favorite.title?.first)
+        cell.imageView.loadFavicon(siteURL: url,
+                                   monogramFallbackCharacter: favorite.title?.first)
       }
       cell.accessibilityLabel = cell.textLabel.text
 

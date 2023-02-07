@@ -1,31 +1,12 @@
 import SwiftUI
-
-public protocol WalletFaviconRenderer {
-  func loadIcon(siteURL: URL, persistent: Bool, completion: ((UIImage?) -> Void)?)
-}
-
-private class UnimplementedFaviconRenderer: WalletFaviconRenderer {
-  public func loadIcon(siteURL: URL, persistent: Bool, completion: ((UIImage?) -> Void)?) {
-    assertionFailure("FaviconRenderer not passed into environment, some favicons will fail to load.")
-  }
-}
-
-struct FaviconRendererKey: EnvironmentKey {
-  public static var defaultValue: WalletFaviconRenderer = UnimplementedFaviconRenderer()
-}
-
-extension EnvironmentValues {
-  var faviconRenderer: WalletFaviconRenderer {
-    get { self[FaviconRendererKey.self] }
-    set { self[FaviconRendererKey.self] = newValue }
-  }
-}
+import BraveShared
+import Favicon
 
 struct FaviconReader<Content: View>: View {
   let url: URL
   @State private var image: UIImage?
   private var content: (_ image: UIImage?) -> Content
-  @Environment(\.faviconRenderer) private var renderer: WalletFaviconRenderer
+  @State private var faviconTask: Task<Void, Error>?
 
   init(
     url: URL,
@@ -38,18 +19,26 @@ struct FaviconReader<Content: View>: View {
   var body: some View {
     content(image)
       .onAppear {
-        load(url, transaction: Transaction(), using: renderer)
+        load(url, transaction: Transaction())
       }
       .onChange(of: url) { newValue in
-        load(newValue, transaction: Transaction(), using: renderer)
+        load(newValue, transaction: Transaction())
       }
   }
   
-  private func load(_ url: URL?, transaction: Transaction, using renderer: WalletFaviconRenderer) {
+  private func load(_ url: URL?, transaction: Transaction) {
     guard let url = url else { return }
-    renderer.loadIcon(siteURL: url, persistent: true) { image in
-      withTransaction(transaction) {
-        self.image = image
+    faviconTask?.cancel()
+    faviconTask = Task { @MainActor in
+      do {
+        let favicon = try await FaviconFetcher.loadIcon(url: url, kind: .largeIcon, persistent: true)
+        withTransaction(transaction) {
+          self.image = favicon.image
+        }
+      } catch {
+        withTransaction(transaction) {
+          self.image = nil
+        }
       }
     }
   }

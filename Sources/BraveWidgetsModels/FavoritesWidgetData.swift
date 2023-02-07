@@ -7,14 +7,15 @@ import Foundation
 import SDWebImage
 import Shared
 import WidgetKit
+import Favicon
 import os.log
 
 public struct WidgetFavorite: Codable {
   public var url: URL
   public var title: String?
-  public var favicon: FaviconAttributes?
+  public var favicon: Favicon?
 
-  public init(url: URL, title: String?, favicon: FaviconAttributes) {
+  public init(url: URL, title: String?, favicon: Favicon?) {
     self.url = url
     self.title = title
     self.favicon = favicon

@@ -11,6 +11,7 @@ import Data
 import CoreData
 import BraveCore
 import BraveWallet
+import Favicon
 import os.log
 import Growth
 
@@ -351,19 +352,18 @@ class TabManager: NSObject {
     guard let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
 
     if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-      let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
-      if previousFaviconURL == nil && !previousTabUrl.isLocal {
+      if previousTab.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
-        tab: previousTab, url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
+        tab: previousTab, url: previousTabUrl, isSelected: false,
         isPrivate: previousTab.isPrivate)
-      let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
-      if faviconURL == nil && !newTabUrl.isLocal {
+
+      if newSelectedTab.displayFavicon == nil && !newTabUrl.isLocal {
         adsRewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
       }
       rewards?.reportTabUpdated(
-        tab: newSelectedTab, url: newTabUrl, faviconURL: faviconURL, isSelected: true,
+        tab: newSelectedTab, url: newTabUrl, isSelected: true,
         isPrivate: newSelectedTab.isPrivate)
     }
   }
@@ -962,11 +962,11 @@ class TabManager: NSObject {
       // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
       tab.url = nil
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-      if let url = URL(string: urlString),
-        let faviconURL = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing).favicon?.url {
-        let icon = Favicon(url: faviconURL, date: Date())
-        icon.width = 1
-        tab.favicons.append(icon)
+      if let url = URL(string: urlString) {
+        Task { @MainActor in
+          let favicon = try await FaviconFetcher.loadIcon(url: url, kind: .smallIcon, persistent: !isPrivateBrowsing)
+          tab.favicons.append(favicon)
+        }
       }
 
       // Set the UUID for the tab, asynchronously fetch the UIImage, then store

@@ -27,6 +27,7 @@ var package = Package(
     .library(name: "Strings", targets: ["Strings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .library(name: "BraveNews", targets: ["BraveNews"]),
+    .library(name: "Favicon", targets: ["Favicon"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "Growth", targets: ["Growth"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
@@ -165,9 +166,9 @@ var package = Package(
     ),
     .target(
       name: "BraveWidgetsModels",
-      dependencies: ["BraveShared"],
-      sources: ["BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift"],
-      plugins: ["IntentBuilderPlugin"]
+      dependencies: ["Favicon"],
+      sources: ["BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift", "FavoritesWidgetData.swift"],
+      plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
     ),
     .target(name: "BraveSharedTestUtils"),
     .target(name: "DataTestsUtils", dependencies: ["Data", "BraveShared"]),
@@ -241,6 +242,20 @@ var package = Package(
       .copy("opml-test-files/states.opml"),
     ]),
     .target(name: "CodableHelpers"),
+    .target(
+      name: "Favicon",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "Shared",
+        "SDWebImage",
+      ],
+      resources: [
+        .copy("Assets/top_sites.json"),
+        .copy("Assets/TopSites")
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
@@ -267,6 +282,7 @@ var package = Package(
       dependencies: [
         "BraveWallet",
         "DataTestsUtils",
+        "Favicon",
         .product(name: "CustomDump", package: "swift-custom-dump")
       ]
     ),
@@ -421,6 +437,7 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
+    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/PlaylistScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/ResourceDownloaderScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/SelectorsPollerScript.js"),
