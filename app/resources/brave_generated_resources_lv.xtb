@@ -25,7 +25,6 @@
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
 <translation id="8988939298652262600">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="9005883459983913482">Tor logi</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="6924909138923993900">Jauns Tor savienojums šai vietnei</translation>
@@ -40,6 +39,7 @@
 <translation id="1725356094208762656">Atvērt Tor</translation>
 <translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
 <translation id="7473245612074035141">Sākt iestatīšanu</translation>
+<translation id="6965382102122355670">Labi</translation>
 <translation id="3975865347033939965">Sinhronizācijas pakalpojumu nevarēja palaist, Brave Sync nedarbojas</translation>
 <translation id="4450893287417543264">Vairs nerādīt</translation>
 <translation id="4595286989346610620">Pārbaudiet informāciju</translation>
@@ -113,7 +113,6 @@
 <translation id="9194637241566114638">Palīdziet uzlabot <ph name="SEARCH_NAME"/>, sūtot anonīmus lietojuma datus.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave meklēšana</translation>
 <translation id="8184318863960255706">Plašāka informācija</translation>
-<translation id="6965382102122355670">Labi</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
@@ -122,8 +121,8 @@
 <translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
 <translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
-<translation id="7986278174934557414">Paslēpt sānu paneļa ikonu</translation>
-<translation id="6915291874524466201">Paslēpt sānu paneļa ikonu</translation>
+<translation id="4233010476457917696">Rādīt sānjoslu</translation>
+<translation id="5404213409401164238">Rādīt sānjoslu</translation>
 <translation id="9149866541089851383">Rediģēt ...</translation>
 <translation id="1181037720776840403">Noņemt</translation>
 <translation id="7513769021866698486">Rediģēt vienumu</translation>
@@ -132,7 +131,6 @@
 <translation id="5877900074358050101">Sānjoslas vienuma nosaukums</translation>
 <translation id="1613695740874407223">Sānjoslas vienuma URL</translation>
 <translation id="4877147287319222750">Pievienot sānjoslai</translation>
-<translation id="5404213409401164238">Rādīt sānjoslu</translation>
 <translation id="7561196759112975576">Vienmēr</translation>
 <translation id="7060352228894039151">Uzbraucot ar peles kursoru</translation>
 <translation id="7961015016161918242">Nekad</translation>
@@ -176,10 +174,14 @@
 <translation id="3987546108749866209">Lietot cilnes vertikāli</translation>
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
 <translation id="399928467800528208">Peldināt zem kursora</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Nerādīt cilni}zero{Nerādīt cilnes}one{Nerādīt cilnes}other{Nerādīt cilnes}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Rādīt cilni}zero{Rādīt cilnes}one{Rādīt cilnes}other{Rādīt cilnes}}</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2523967823495420116">Lietot cilnes vertikāli</translation>
 <translation id="8888603463702767599">Rādīt virsrakstjoslu</translation>
 <translation id="2058818256505091369">Peldināt zem kursora</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Nerādīt cilni}zero{Nerādīt cilnes}one{Nerādīt cilnes}other{Nerādīt cilnes}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Rādīt cilni}zero{Rādīt cilnes}one{Rādīt cilnes}other{Rādīt cilnes}}</translation>
 <translation id="4235920711083356755">Rādīt VPN pogu</translation>
 <translation id="4070612712151038707">Rāda VPN pogu rīkjoslā</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -232,11 +234,9 @@
 <translation id="4096343215397759358">Karte ar priekšskatījumu</translation>
 <translation id="5297085818601043899">Rīka padoms</translation>
 <translation id="2396127686705429331">Parādīt grāmatzīmju pogu</translation>
-<translation id="2369560305991805099">Parādīt sānu paneļa pogu</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="4109670531935487117">Rādīt automātiskās pabeigšanas ieteikumus adrešu joslā</translation>
 <translation id="2858138569776157458">Populāras</translation>
-<translation id="65774893852758517">Ieteiktās vietnes</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
@@ -391,7 +391,6 @@
 <translation id="4485276108749547761">Uztveriet šo kodu kā paroli. Ja kāda persona tam piekļūst, šī persona var lasīt un pārveidot jūsu sinhronizētos datus.</translation>
 <translation id="3034163433136515805">Skatiet QR kodu</translation>
 <translation id="5373825572723282843">Ievadiet sinhronizācijas kodu</translation>
-<translation id="5734745018569675530">Ievadiet norādītos sinhronizācijas ķēdes koda vārdus lodziņā zemāk.</translation>
 <translation id="1061533051865606843">Pievienot jaunu ierīci</translation>
 <translation id="5093410893656857925">Izvēlieties ierīces veidu</translation>
 <translation id="4581190919849683048">Kāda veida ierīci jūs vēlaties sinhronizēt?</translation>
@@ -464,7 +463,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
 <translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
-<translation id="1241283133946520352">Tīkli</translation>
 <translation id="5975930666279943472">Notīrīt maka darījumu un aktuālo informāciju</translation>
 <translation id="5693968582510626466">Darījumu notīrīšana var būt noderīga izstrādātājiem vai, lai notīrītu vietējā servera statusu</translation>
 <translation id="4993345308607970390">Atiestatīt Brave maku</translation>
