@@ -32,12 +32,12 @@
 namespace brave_vpn {
 
 namespace {
-const char kCloudflareDnsProviderURL[] =
+constexpr char kCloudflareDnsProviderURL[] =
     "https://chrome.cloudflare-dns.com/dns-query";
 
 // Timer to recheck the service launch after some time and fallback to DoH if
 // the service was not launched.
-const int kHelperServiceStartTimeoutSec = 3;
+constexpr int kHelperServiceStartTimeoutSec = 3;
 
 void SkipDNSDialog(PrefService* prefs, bool checked) {
   if (!prefs)

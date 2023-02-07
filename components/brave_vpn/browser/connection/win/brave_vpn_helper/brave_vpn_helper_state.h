@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_STATE_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_CONNECTION_WIN_BRAVE_VPN_HELPER_BRAVE_VPN_HELPER_STATE_H_
 
-#include <windows.h>
 #include <string>
 
 namespace brave_vpn {
 
-bool SubscribeForServiceStop(HANDLE event);
 bool IsBraveVPNHelperServiceInstalled();
 bool IsBraveVPNHelperServiceRunning();
 bool IsNetworkFiltersInstalled();

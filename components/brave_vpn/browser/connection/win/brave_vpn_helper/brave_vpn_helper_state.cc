@@ -82,6 +82,7 @@ std::wstring GetVpnServiceDisplayName() {
 }
 
 bool IsNetworkFiltersInstalled() {
+  DCHECK(IsBraveVPNHelperServiceInstalled());
   base::win::RegKey service_storage_key(
       HKEY_LOCAL_MACHINE, brave_vpn::kBraveVpnHelperRegistryStoragePath,
       KEY_READ);
