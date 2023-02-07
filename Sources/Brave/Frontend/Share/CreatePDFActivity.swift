@@ -8,15 +8,11 @@ import Shared
 import WebKit
 import os.log
 
-#if compiler(>=5.3)
-
 /// An activity that will create a PDF of a given web page
 class CreatePDFActivity: UIActivity {
-  private let callback: (Data) -> Void
-  private let webView: WKWebView
+  private let callback: () -> Void
 
-  init(webView: WKWebView, _ callback: @escaping (Data) -> Void) {
-    self.webView = webView
+  init(callback: @escaping () -> Void) {
     self.callback = callback
     super.init()
   }
@@ -30,25 +26,11 @@ class CreatePDFActivity: UIActivity {
   }
 
   override func perform() {
-    webView.createPDF { [weak self] result in
-      dispatchPrecondition(condition: .onQueue(.main))
-      guard let self = self else {
-        return
-      }
-      switch result {
-      case .success(let data):
-        self.callback(data)
-        self.activityDidFinish(true)
-      case .failure(let error):
-        Logger.module.error("Failed to create PDF with error: \(error.localizedDescription)")
-        self.activityDidFinish(false)
-      }
-    }
+    callback()
+    activityDidFinish(true)
   }
 
   override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
     return true
   }
 }
-
-#endif

@@ -2009,28 +2009,39 @@ public class BrowserViewController: UIViewController {
       }
 
       if let webView = tab?.webView, tab?.temporaryDocument == nil {
-        let createPDFActivity = CreatePDFActivity(webView: webView) { [weak self] pdfData in
-          guard let self = self else { return }
-          // Create a valid filename
-          let validFilenameSet = CharacterSet(charactersIn: ":/")
-            .union(.newlines)
-            .union(.controlCharacters)
-            .union(.illegalCharacters)
-          let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
-          let url = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent("\(filename ?? "Untitled").pdf")
-          do {
-            try pdfData.write(to: url)
-            let pdfActivityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-            if let popoverPresentationController = pdfActivityController.popoverPresentationController {
-              popoverPresentationController.sourceView = sourceView
-              popoverPresentationController.sourceRect = sourceRect
-              popoverPresentationController.permittedArrowDirections = arrowDirection
-              popoverPresentationController.delegate = self
+        let createPDFActivity = CreatePDFActivity() {
+          webView.createPDF { [weak self] result in
+            dispatchPrecondition(condition: .onQueue(.main))
+            guard let self = self else {
+              return
             }
-            self.present(pdfActivityController, animated: true)
-          } catch {
-            Logger.module.error("Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)")
+            switch result {
+            case .success(let pdfData):
+              // Create a valid filename
+              let validFilenameSet = CharacterSet(charactersIn: ":/")
+                .union(.newlines)
+                .union(.controlCharacters)
+                .union(.illegalCharacters)
+              let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
+              let url = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent("\(filename ?? "Untitled").pdf")
+              do {
+                try pdfData.write(to: url)
+                let pdfActivityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+                if let popoverPresentationController = pdfActivityController.popoverPresentationController {
+                  popoverPresentationController.sourceView = sourceView
+                  popoverPresentationController.sourceRect = sourceRect
+                  popoverPresentationController.permittedArrowDirections = arrowDirection
+                  popoverPresentationController.delegate = self
+                }
+                self.present(pdfActivityController, animated: true)
+              } catch {
+                Logger.module.error("Failed to write PDF to disk: \(error.localizedDescription, privacy: .public)")
+              }
+              
+            case .failure(let error):
+              Logger.module.error("Failed to create PDF with error: \(error.localizedDescription)")
+            }
           }
         }
         activities.append(createPDFActivity)
