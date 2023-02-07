@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/command_line.h"
 #include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_functions.h"
@@ -72,15 +71,15 @@ class P3AServiceTest : public testing::Test {
           StoreJsonMetricInMap(request, request.url);
           url_loader_factory_.AddResponse(request.url.spec(), "{}");
         }));
+
+    config_.p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config_.p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config_.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
   }
 
   void SetUpP3AService() {
-    P3AConfig config;
-    config.p3a_json_upload_url = GURL(kTestP3AJsonHost);
-    config.p2a_json_upload_url = GURL(kTestP2AJsonHost);
-    config.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
     p3a_service_ = scoped_refptr(new P3AService(
-        &local_state_, "release", "2049-01-01", std::move(config)));
+        &local_state_, "release", "2049-01-01", P3AConfig(config_)));
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
@@ -120,6 +119,8 @@ class P3AServiceTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  P3AConfig config_;
   scoped_refptr<P3AService> p3a_service_;
   TestingPrefServiceSimple local_state_;
 
@@ -259,8 +260,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
 
 TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   // Increase upload interval to reduce test time (less tasks to execute)
-  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  config_.average_upload_interval = base::Seconds(6000);
   SetUpP3AService();
 
   std::vector<std::string> test_histograms(
