@@ -308,9 +308,9 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     // Removing duplicates will allow the recycler viewer to render a clean list without showing the
     // same assets multiple times. Currently, the list of available assets is fetched from Core
     // API the returns a merged list containing the available assets <b>per ramp provider</b>.
-    // It's not unusual to have the same asset multiple times with a contract address all upper case
-    // from a ramp provider and all lower case from another one. Thus it's important to compare the
-    // contract addresses ignoring case.
+    // It's not unusual to have the same asset multiple times with the same contract address all
+    // upper case from a ramp provider and all lower case from another one. Thus it's important to
+    // compare the contract addresses ignoring case.
     private List<WalletListItemModel> removeDuplicates(
             List<WalletListItemModel> walletListItemModelList) {
         List<WalletListItemModel> result = new ArrayList<>();
