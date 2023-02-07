@@ -89,7 +89,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
 #if BUILDFLAG(IS_ANDROID)
     &android_webview::features::kWebViewAppsPackageNamesServerSideAllowlist,
-    &android_webview::features::kWebViewClientHintsControllerDelegate,
     &android_webview::features::kWebViewEnumerateDevicesCache,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
