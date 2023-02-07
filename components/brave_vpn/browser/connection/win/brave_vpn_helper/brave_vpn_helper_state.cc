@@ -7,12 +7,14 @@
 
 #include <windows.h>
 
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/win/registry.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
 
 namespace brave_vpn {
@@ -96,6 +98,19 @@ bool IsNetworkFiltersInstalled() {
     return false;
   }
   return current > 0;
+}
+
+// The service starts under sytem user so we save crashes to
+// %PROGRAMDATA%\BraveSoftware\{service name}\Crashpad
+base::FilePath GetVpnServiceProfileDir() {
+  auto program_data = install_static::GetEnvironmentString("PROGRAMDATA");
+  if (program_data.empty()) {
+    return base::FilePath();
+  }
+  base::FilePath common_app_data(base::UTF8ToWide(program_data));
+  common_app_data = common_app_data.Append(install_static::kCompanyPathName);
+  common_app_data = common_app_data.Append(brave_vpn::GetVpnServiceName());
+  return common_app_data;
 }
 
 }  // namespace brave_vpn
