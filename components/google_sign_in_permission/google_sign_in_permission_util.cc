@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -176,7 +177,7 @@ GURL GetRequestInitiatingUrlFromRequest(
 // permission prompt. Only used for popups, and only if the user has granted the
 // permission.
 void ReloadTab(
-    content::WebContents* contents,
+    base::WeakPtr<content::WebContents> contents,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   if (contents &&
@@ -199,7 +200,8 @@ bool CanCreateWindow(content::RenderFrameHost* opener,
     }
 
     return GetPermissionAndMaybeCreatePrompt(
-        contents, opener_url, nullptr, base::BindOnce(&ReloadTab, contents));
+        contents, opener_url, nullptr,
+        base::BindOnce(&ReloadTab, contents->GetWeakPtr()));
   }
   // If not applying Google Sign-In permission logic, open window
   return true;
