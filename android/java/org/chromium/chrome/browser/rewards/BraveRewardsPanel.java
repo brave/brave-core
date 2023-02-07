@@ -234,6 +234,7 @@ public class BraveRewardsPanel
     private ViewGroup mBraveRewardsUnverifiedView;
 
     private LinearLayout mWalletBalanceLayout;
+    private FrameLayout mLoggedOutStateLayout;
     private LinearLayout mAdsStatementLayout;
     private View mWalletBalanceProgress;
     private View mAdsStatementProgress;
@@ -357,6 +358,29 @@ public class BraveRewardsPanel
         mRewardsMainLayout.setVisibility(View.VISIBLE);
 
         mWalletBalanceLayout = mPopupView.findViewById(R.id.wallet_balance_layout);
+        mLoggedOutStateLayout = mPopupView.findViewById(R.id.logged_out_state_layout);
+        TextView loggedOutStateText =
+                mLoggedOutStateLayout.findViewById(R.id.logged_out_state_text);
+        loggedOutStateText.setText(String.format(
+                mActivity.getResources().getString(R.string.logged_out_state_dialog_text),
+                getWalletString(mBraveRewardsNativeWorker.getExternalWalletType())));
+        mWalletBalanceLayout.setVisibility(
+                (mExternalWallet != null && mExternalWallet.getStatus() == WalletStatus.LOGGED_OUT)
+                        ? View.GONE
+                        : View.VISIBLE);
+        mLoggedOutStateLayout.setVisibility(
+                (mExternalWallet != null && mExternalWallet.getStatus() == WalletStatus.LOGGED_OUT)
+                        ? View.VISIBLE
+                        : View.GONE);
+        mLoggedOutStateLayout.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mExternalWallet != null) {
+                    TabUtils.openUrlInNewTab(false, mExternalWallet.getLoginUrl());
+                }
+                dismiss();
+            }
+        }));
         mAdsStatementLayout = mPopupView.findViewById(R.id.ads_statement_layout);
         mWalletBalanceProgress = mPopupView.findViewById(R.id.wallet_balance_progress);
         mAdsStatementProgress = mPopupView.findViewById(R.id.ads_statement_progress);
@@ -1836,6 +1860,16 @@ public class BraveRewardsPanel
                     String.format(mPopupView.getResources().getString(
                                           R.string.rewards_panel_unverified_creator_section_text),
                             count));
+        }
+    }
+
+    private String getWalletString(String walletType) {
+        if (walletType.equals(BraveWalletProvider.UPHOLD)) {
+            return mActivity.getResources().getString(R.string.uphold);
+        } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
+            return mActivity.getResources().getString(R.string.gemini);
+        } else {
+            return mActivity.getResources().getString(R.string.bitflyer);
         }
     }
 
