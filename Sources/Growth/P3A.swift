@@ -87,13 +87,15 @@ public func UmaHistogramRecordLastFeatureUsage(
 public struct P3AFeatureUsage {
   public let name: String
   public let histogram: String
+  public let returningUserHistogram: String?
   
   public let firstUsageOption: Preferences.Option<Date?>
   public let lastUsageOption: Preferences.Option<Date?>
   
-  public init(name: String, histogram: String) {
+  public init(name: String, histogram: String, returningUserHistogram: String? = nil) {
     self.name = name
     self.histogram = histogram
+    self.returningUserHistogram = returningUserHistogram
     self.firstUsageOption = .init(key: "p3a.feature-usage.\(name).first", default: nil)
     self.lastUsageOption = .init(key: "p3a.feature-usage.\(name).last", default: nil)
   }
@@ -112,6 +114,50 @@ public struct P3AFeatureUsage {
     }
     lastUsageOption.value = calendar.startOfDay(for: now)
     recordHistogram()
+  }
+  
+  public func recordReturningUsageMetric() {
+    guard let name = returningUserHistogram else { return }
+    enum Answer: Int, CaseIterable {
+      case neverUsed = 0
+      case usedButImNotAFirstTimeUserThisWeek
+      case firstTimeUserThisWeekButDidntReturnDuringWeek
+      case firstTimeUserThisWeekAndUsedItTheFollowingDay
+      case firstTimeUserThisWeekAndUsedItThisWeek
+    }
+    guard let firstUsage = firstUsageOption.value,
+          let lastUsage = lastUsageOption.value else {
+      UmaHistogramEnumeration(name, sample: Answer.neverUsed)
+      return
+    }
+    let calendar = Calendar.current
+    guard let firstUsageCutoff = calendar.date(byAdding: .day, value: 7, to: firstUsage) else {
+      return
+    }
+    let today = calendar.startOfDay(for: Date())
+    // Check if we're passed the first week
+    if today > firstUsageCutoff {
+      // Used it after the first week
+      if lastUsage > firstUsageCutoff {
+        UmaHistogramEnumeration(name, sample: Answer.usedButImNotAFirstTimeUserThisWeek)
+        return
+      }
+    } else {
+      // Today's the last day of the week, and the user did not return
+      if today == firstUsageCutoff, lastUsage == firstUsage {
+        UmaHistogramEnumeration(name, sample: Answer.firstTimeUserThisWeekButDidntReturnDuringWeek)
+        return
+      }
+      // First usage happened after yesterday, meaning we used it the following day
+      if let yesterday = calendar.date(byAdding: .day, value: -1, to: today), lastUsage > yesterday {
+        UmaHistogramEnumeration(name, sample: Answer.firstTimeUserThisWeekAndUsedItTheFollowingDay)
+        return
+      }
+      if lastUsage < firstUsageCutoff {
+        UmaHistogramEnumeration(name, sample: Answer.firstTimeUserThisWeekAndUsedItThisWeek)
+        return
+      }
+    }
   }
 }
 

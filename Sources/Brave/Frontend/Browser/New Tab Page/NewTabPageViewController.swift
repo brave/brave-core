@@ -231,6 +231,7 @@ class NewTabPageViewController: UIViewController {
       braveNewsFeatureUsage.recordHistogram()
       recordBraveNewsDaysUsedP3A()
     }
+    braveNewsFeatureUsage.recordReturningUsageMetric()
   }
 
   @available(*, unavailable)
@@ -824,7 +825,11 @@ class NewTabPageViewController: UIViewController {
   
   // MARK: - P3A
   
-  private var braveNewsFeatureUsage = P3AFeatureUsage(name: "brave-news-usage", histogram: "Brave.Today.LastUsageTime")
+  private var braveNewsFeatureUsage = P3AFeatureUsage(
+    name: "brave-news-usage",
+    histogram: "Brave.Today.LastUsageTime",
+    returningUserHistogram: "Brave.Today.NewUserReturning"
+  )
   private var braveNewsDaysUsedStorage = P3ATimedStorage<Int>(name: "brave-news-days-used", lifetimeInDays: 30)
 }
 
@@ -920,6 +925,7 @@ extension NewTabPageViewController {
     // Usage over the past month
     braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
     recordBraveNewsDaysUsedP3A()
+    braveNewsFeatureUsage.recordReturningUsageMetric()
   }
   
   private func recordBraveNewsDaysUsedP3A() {
