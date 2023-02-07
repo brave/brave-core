@@ -226,6 +226,11 @@ class NewTabPageViewController: UIViewController {
       }
       .store(in: &cancellables)
     NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
+    
+    if isBraveNewsVisible && Preferences.BraveNews.isEnabled.value {
+      braveNewsFeatureUsage.recordHistogram()
+      recordBraveNewsDaysUsedP3A()
+    }
   }
 
   @available(*, unavailable)
@@ -816,6 +821,11 @@ class NewTabPageViewController: UIViewController {
     )
     present(container, animated: true)
   }
+  
+  // MARK: - P3A
+  
+  private var braveNewsFeatureUsage = P3AFeatureUsage(name: "brave-news-usage", histogram: "Brave.Today.LastUsageTime")
+  private var braveNewsDaysUsedStorage = P3ATimedStorage<Int>(name: "brave-news-days-used", lifetimeInDays: 30)
 }
 
 extension NewTabPageViewController: PreferencesObserver {
@@ -883,6 +893,10 @@ extension NewTabPageViewController {
           }
         }
       }
+      
+      if scrollView.contentOffset.y >= todayStart {
+        recordBraveNewsUsageP3A()
+      }
     }
   }
 
@@ -891,6 +905,38 @@ extension NewTabPageViewController {
     // Offset of where Brave News starts
     let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
     collectionView.contentOffset.y = todayStart
+  }
+  
+  private func recordBraveNewsUsageP3A() {
+    if !isBraveNewsVisible || !Preferences.BraveNews.isEnabled.value ||
+        Calendar.current.startOfDay(for: Date()) == braveNewsFeatureUsage.lastUsageOption.value {
+      // Don't have Brave News enabled, or already recorded todays usage, no need to do it again
+      return
+    }
+    
+    // Usage
+    braveNewsFeatureUsage.recordUsage()
+    
+    // Usage over the past month
+    braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
+    recordBraveNewsDaysUsedP3A()
+  }
+  
+  private func recordBraveNewsDaysUsedP3A() {
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.DaysInMonthUsedCount",
+      buckets: [
+        0,
+        1,
+        2,
+        .r(3...5),
+        .r(6...10),
+        .r(11...15),
+        .r(16...20),
+        .r(21...),
+      ],
+      value: braveNewsDaysUsedStorage.combinedValue
+    )
   }
 }
 

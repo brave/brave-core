@@ -86,10 +86,10 @@ public func UmaHistogramRecordLastFeatureUsage(
 
 public struct P3AFeatureUsage {
   public let name: String
-  public let histogram: String?
+  public let histogram: String
   
-  let firstUsageOption: Preferences.Option<Date?>
-  let lastUsageOption: Preferences.Option<Date?>
+  public let firstUsageOption: Preferences.Option<Date?>
+  public let lastUsageOption: Preferences.Option<Date?>
   
   public init(name: String, histogram: String) {
     self.name = name
@@ -98,11 +98,12 @@ public struct P3AFeatureUsage {
     self.lastUsageOption = .init(key: "p3a.feature-usage.\(name).last", default: nil)
   }
   
+  public func recordHistogram() {
+    // Record last usage to bucket if there's an associated p3a question
+    UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
+  }
+  
   public func recordUsage() {
-    if let histogram {
-      // Record last usage to bucket if there's an associated p3a question
-      UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
-    }
     // Update usage prefs
     let calendar = Calendar.current
     let now = Date()
@@ -110,6 +111,7 @@ public struct P3AFeatureUsage {
       firstUsageOption.value = calendar.startOfDay(for: now)
     }
     lastUsageOption.value = calendar.startOfDay(for: now)
+    recordHistogram()
   }
 }
 
