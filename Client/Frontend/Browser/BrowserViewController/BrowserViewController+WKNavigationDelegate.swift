@@ -552,11 +552,6 @@ extension BrowserViewController: WKNavigationDelegate {
         return (.performDefaultHandling, nil)
       }
       
-      // If this is a request to our local web server, use our private credentials.
-      if challenge.protectionSpace.host == "localhost" && challenge.protectionSpace.port == Int(WebServer.sharedInstance.server.port) {
-        return (.useCredential, WebServer.sharedInstance.credentials)
-      }
-      
       // The challenge may come from a background tab, so ensure it's the one visible.
       tabManager.selectTab(tab)
       

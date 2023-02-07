@@ -10,6 +10,7 @@ import MobileCoreServices
 import Data
 import Shared
 import BraveShared
+import BraveCore
 import Storage
 import os.log
 
@@ -700,20 +701,40 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     return .allow
   }
 
-  func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust,
-      let cert = SecTrustGetCertificateAtIndex(trust, 0), certStore?.containsCertificate(cert, forOrigin: origin) == true {
-      completionHandler(.useCredential, URLCredential(trust: trust))
-      return
+       let trust = challenge.protectionSpace.serverTrust,
+       let cert = SecTrustGetCertificateAtIndex(trust, 0), await certStore?.containsCertificate(cert, forOrigin: origin) == true {
+      return (.useCredential, URLCredential(trust: trust))
+    }
+    
+    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+       let serverTrust = challenge.protectionSpace.serverTrust {
+      let host = challenge.protectionSpace.host
+      let port = challenge.protectionSpace.port
+      
+      let result = BraveCertificateUtility.verifyTrust(serverTrust,
+                                                       host: host,
+                                                       port: port)
+      let certificateChain = (0..<SecTrustGetCertificateCount(serverTrust))
+        .compactMap { SecTrustGetCertificateAtIndex(serverTrust, $0) }
+      
+      if result == 0 {
+        return (.useCredential, URLCredential(trust: serverTrust))
+      }
+      
+      if result == Int32.min {
+        return (.performDefaultHandling, nil)
+      }
+      
+      return (.cancelAuthenticationChallenge, nil)
     }
 
     guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
-      completionHandler(.performDefaultHandling, nil)
-      return
+      return (.performDefaultHandling, nil)
     }
 
-    completionHandler(.rejectProtectionSpace, nil)
+    return (.cancelAuthenticationChallenge, nil)
   }
 }

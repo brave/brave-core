@@ -67,33 +67,42 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let trust = webView.serverTrust ?? getServerTrustForErrorPage() else {
       return
     }
+    
+    let host = webView.url?.host
 
-    let serverCertificates = Array(
-      (0..<SecTrustGetCertificateCount(trust))
-        .compactMap { SecTrustGetCertificateAtIndex(trust, $0) })  // Should be `OrderedSet`
-
-    // TODO: Instead of showing only the first cert in the chain,
-    // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
-    if let serverCertificate = serverCertificates.first,
-      let certificate = BraveCertificateModel(certificate: serverCertificate) {
-      BraveCertificateUtils.evaluateTrust(trust, for: webView.url?.host) { error in
-        if let error = error {
+    Task.detached {
+      let serverCertificates = Array(
+        (0..<SecTrustGetCertificateCount(trust))
+          .compactMap { SecTrustGetCertificateAtIndex(trust, $0) })  // Should be `OrderedSet`
+      
+      // TODO: Instead of showing only the first cert in the chain,
+      // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
+      if let serverCertificate = serverCertificates.first,
+         let certificate = BraveCertificateModel(certificate: serverCertificate) {
+        
+        var errorDescription: String?
+        
+        do {
+          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
+        } catch {
           Logger.module.error("\(error.localizedDescription)")
+
+          // Remove the common-name from the first part of the error message
+          // This is because the certificate viewer already displays it.
+          // If it doesn't match, it won't be removed, so this is fine.
+          errorDescription = error.localizedDescription
+          if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ") ??
+              errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ") {
+            errorDescription = errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
+          }
         }
         
-        // Remove the common-name from the first part of the error message
-        // This is because the certificate viewer already displays it.
-        // If it doesn't match, it won't be removed, so this is fine.
-        var errorDescription = error?.localizedDescription
-        if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ") ??
-            errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ") {
-          errorDescription = errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
+        await MainActor.run { [errorDescription] in
+          let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
+          let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .preferredContentSize)
+          popover.addsConvenientDismissalMargins = true
+          popover.present(from: self.topToolbar.locationView.lockImageView.imageView!, on: self)
         }
-        
-        let certificateViewController = CertificateViewController(certificate: certificate, evaluationError: errorDescription)
-        let popover = PopoverController(contentController: certificateViewController, contentSizeBehavior: .preferredContentSize)
-        popover.addsConvenientDismissalMargins = true
-        popover.present(from: self.topToolbar.locationView.lockImageView.imageView!, on: self)
       }
     }
   }

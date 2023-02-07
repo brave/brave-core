@@ -169,6 +169,7 @@ public extension BraveCertificateUtils {
 public enum BraveCertificateUtilError: LocalizedError {
   case noCertificatesProvided
   case cannotCreateServerTrust
+  case trustEvaluationFailed
   
   public var errorDescription: String? {
     switch self {
@@ -176,6 +177,8 @@ public enum BraveCertificateUtilError: LocalizedError {
       return "Cannot Create Server Trust - No Certificates Provided"
     case .cannotCreateServerTrust:
       return "Cannot Create Server Trust"
+    case .trustEvaluationFailed:
+      return "Trust Evaluation Failed"
     }
   }
 }
@@ -201,30 +204,26 @@ public extension BraveCertificateUtils {
     return serverTrust!
   }
   
-  static func evaluateTrust(_ trust: SecTrust, for host: String?, completion: @escaping (_ error: NSError?) -> Void) {
+  static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
     let policies = [
       SecPolicyCreateBasicX509(),
       SecPolicyCreateSSL(true, host as CFString?),
     ]
 
     SecTrustSetPolicies(trust, policies as CFTypeRef)
-    let queue = DispatchQueue.global()
-    queue.async {
-      let result = SecTrustEvaluateAsyncWithError(trust, queue) { _, isTrusted, error in
-        DispatchQueue.main.async {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+      let queue = DispatchQueue.global()
+      queue.async {
+        let result = SecTrustEvaluateAsyncWithError(trust, queue) { _, isTrusted, error in
           if let error = error {
-            completion(error as Error as NSError)
+            continuation.resume(throwing: error as Error)
           } else {
-            completion(nil)
+            continuation.resume()
           }
         }
-      }
-      
-      if result != errSecSuccess {
-        DispatchQueue.main.async {
-          completion(NSError(domain: NSOSStatusErrorDomain,
-                             code: -1,
-                             userInfo: [NSLocalizedDescriptionKey: "Trust Evaluation Failed"]))
+        
+        if result != errSecSuccess {
+          continuation.resume(throwing: BraveCertificateUtilError.trustEvaluationFailed)
         }
       }
     }
