@@ -40,11 +40,15 @@ class OnboardingTabHelper
   bool CanHighlightBraveShields();
   void ShowBraveHelpBubbleView();
   std::string GetTextForOnboardingShieldsBubble();
+  void CleanUp();
 
   raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
       nullptr;
   bool browser_has_active_bubble_ = false;
-  base::OneShotTimer timer_delay_;
+  base::OneShotTimer timer_;
+  base::ScopedObservation<permissions::PermissionRequestManager,
+                          permissions::PermissionRequestManager::Observer>
+      permission_request_manager_observation_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

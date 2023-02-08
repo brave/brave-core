@@ -33,18 +33,14 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
   OnboardingTabHelper::CreateForWebContents(web_contents);
 }
 
-OnboardingTabHelper::~OnboardingTabHelper() {
-  Observe(nullptr);
-  permission_request_manager_ = nullptr;
-  timer_delay_.Stop();
-}
+OnboardingTabHelper::~OnboardingTabHelper() = default;
 
 OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {
   permission_request_manager_ =
       permissions::PermissionRequestManager::FromWebContents(web_contents);
-  permission_request_manager_->AddObserver(this);
+  permission_request_manager_observation_.Observe(permission_request_manager_);
 }
 
 void OnboardingTabHelper::DidStopLoading() {
@@ -61,14 +57,13 @@ void OnboardingTabHelper::DidStopLoading() {
   // Avoid concurrent execution of permissions bubble checks and shields checks
   // to prevent displaying two active bubbles on the screen.
   // Add a delay to increase the likelihood of not interfering with the checks.
-  timer_delay_.Start(
+  timer_.Start(
       FROM_HERE, base::Seconds(1), this,
       &OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble);
 }
 
 void OnboardingTabHelper::WebContentsDestroyed() {
-  permission_request_manager_->RemoveObserver(this);
-  timer_delay_.Reset();
+  CleanUp();
 }
 
 void OnboardingTabHelper::OnPromptAdded() {
@@ -127,7 +122,7 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
   g_browser_process->local_state()->SetBoolean(
       onboarding::prefs::kOnboardingIsShieldsHighlighted, true);
 
-  Observe(nullptr);
+  CleanUp();
 }
 
 std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
@@ -159,6 +154,15 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
 
   return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);
+}
+
+void OnboardingTabHelper::CleanUp() {
+  Observe(nullptr);
+  permission_request_manager_observation_.Reset();
+
+  if (timer_.IsRunning()) {
+    timer_.Stop();
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(OnboardingTabHelper);
