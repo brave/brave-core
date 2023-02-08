@@ -28,8 +28,11 @@ VOID CALLBACK OnServiceStoppedCallback(PVOID pParameter) {
 void WaitForEvent(HANDLE event,
                   SC_HANDLE service,
                   SERVICE_NOTIFY* service_notify) {
-  if (NotifyServiceStatusChange(service, SERVICE_NOTIFY_STOPPED,
-                                service_notify) != ERROR_SUCCESS) {
+  auto result = NotifyServiceStatusChange(service, SERVICE_NOTIFY_STOPPED,
+                                          service_notify);
+  if (result != ERROR_SUCCESS) {
+    VLOG(1) << "Unable to subscribe for service notifications:"
+            << logging::SystemErrorCodeToString(result);
     // If we're unable to subscribe to status changes for this service,
     // the service may be in a bad state.
     // We can immediately signal to trigger the DoH fallback behavior.
