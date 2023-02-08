@@ -16,7 +16,8 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="add_to_playlist_button"
         android:title="@string/add_to_playlist_button"
-        android:summary="@string/add_to_playlist_button_summary" />
+        android:summary="@string/add_to_playlist_button_summary"
+        android:enabled="false" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="auto_play"

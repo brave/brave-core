@@ -3602,9 +3602,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VIEW_ACTION" desc="View action text">
       View
     </message>
-    <message name="IDS_SAVED" desc="Saved text">
-      Saved
-    </message>
     <message name="IDS_ADDED_TO_PLAYLIST" desc="Added to specific playlist text">
       Added to '<ph name="PLAYLIST_NAME">%1$s</ph>'
     </message>
@@ -3670,6 +3667,162 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WIFI_ONLY_TEXT" desc="Auto save media option text">
       Wifi Only
+    </message>
+    <message name="IDS_PLAYLIST_FEATURE_TEXT" desc="Playlist feature text">
+      Playlist
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_TOOLBAR_TEXT" desc="Toolbar create button text">
+      Create
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_YOUR_FIRST_TEXT" desc="Create your first playlist text">
+      Create your first playlist
+    </message>
+    <message name="IDS_PLAYLIST_FIRST_MESSAGE_TEXT" desc="Playlist first message text">
+      Make a playlist of your favorite audio and videos and play anytime, anywhere. Even offline.
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_TEXT" desc="Create playlist text">
+      Create a Playlist
+    </message>
+    <message name="IDS_PLAYLIST_SKIP_TEXT" desc="Playlist skip button text">
+      Skip
+    </message>
+    <message name="IDS_PLAYLIST_PLAY_LATER" desc="Play later text">
+      Play Later
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_AND_ADD" desc="Browse and add button text">
+      Browse and add
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_AND_ADD_MESSAGE" desc="Browse and add button description text">
+      Add any media from any website. Look for the + button in your address bar and tap it to add.
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_FOR_MEDIA" desc="Browse for media text">
+      Browse for media
+    </message>
+    <message name="IDS_PLAYLIST_NEW_TEXT" desc="New playlist text">
+      New Playlist
+    </message>
+    <message name="IDS_PLAYLIST_NAME_TEXT" desc="Playlist name text">
+      Playlist name
+    </message>
+    <message name="IDS_PLAYLIST_UNTITLED_TEXT" desc="Untitled playlist text">
+      Untitled Playlist
+    </message>
+    <message name="IDS_PLAYLIST_CANCEL" desc="Playlist cancel button text">
+      Cancel
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_DATA" desc="Playlist remove data button text">
+      Remove Data
+    </message>
+    <message name="IDS_PLAYLIST_NUMBER_SELECTED" desc="Playlist selected item text">
+      <ph name="NUMBER">%1$s</ph> Selected
+    </message>
+    <message name="IDS_PLAYLIST_NUMBER_ITEMS" desc="Number of items text">
+      <ph name="NUMBER">%1$s</ph> items
+    </message>
+    <message name="IDS_PLAYLIST_PLAY_ALL" desc="Play all text">
+      Play All
+    </message>
+    <message name="IDS_PLAYLIST_SHUFFLE" desc="Shuffle button text">
+      Shuffle
+    </message>
+    <message name="IDS_PLAYLIST_RECENTLY_PLAYED" desc="Recently played text">
+      Recently played
+    </message>
+    <message name="IDS_PLAYLIST_NEXT" desc="Playlist next button text">
+      Next
+    </message>
+    <message name="IDS_PLAYLIST_TAP_LONG_PRESS_OR_DRAG" desc="Onboarding toast text">
+      Tap, long press or drag
+    </message>
+    <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="Add to playlist button text">
+      Add to Playlist
+    </message>
+    <message name="IDS_PLAYLIST_PLAYLISTS_TEXT" desc="Playlists section text">
+      Playlists
+    </message>
+    <message name="IDS_PLAYLIST_ADD_MEDIA" desc="Add media menu item text">
+      Add media
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_1" desc="Playlist onboarding text">
+      Save videos with Brave Playlist and watch later, even offline
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_1" desc="Playlist onboarding text">
+      Make playlists of your favorite audio and videos, and play anytime, anywhere.
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_2" desc="Playlist onboarding text">
+      Long press any video or audio to add to Playlist
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_2" desc="Playlist onboarding text">
+      Lorem ipsum dolor sit amet et vitae lorem un provisio et laurete
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_3" desc="Playlist onboarding text">
+      Or tap the Playlist button when it appears
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_3" desc="Playlist onboarding text">
+      Playlist button appears when there’s media to add. Long press it for options. You can even hide it.
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_PLAYLIST" desc="Open playlist menu item text">
+      Open Playlist
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_PLAYLIST_SETTINGS" desc="Open playlist settings menu item text">
+      Open Playlist Settings
+    </message>
+    <message name="IDS_PLAYLIST_HIDE_PLAYLIST_BUTTON" desc="Hide playlist menu item text">
+      Hide Playlist button
+    </message>
+    <message name="IDS_PLAYLIST_TRY_IT" desc="Onboarding try it button text">
+      Try it!
+    </message>
+    <message name="IDS_PLAYLIST_EDIT_TEXT" desc="playlist edit button text">
+      Edit
+    </message>
+    <message name="IDS_PLAYLIST_RENAME_TEXT" desc="playlist rename section text">
+      Rename
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_OFFLINE_DATA" desc="Playlist menu text">
+      Remove playlist offline data
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_ALL_OFFLINE_DATA" desc="Playlist menu text">
+      Remove all offline data
+    </message>
+    <message name="IDS_PLAYLIST_DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE" desc="Playlist menu text">
+      Download playlist for offline use
+    </message>
+    <message name="IDS_PLAYLIST_DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE" desc="Playlist menu text">
+      Download all playlists for offline use
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_PLAYLIST" desc="Playlist menu text">
+      Delete playlist
+    </message>
+    <message name="IDS_PLAYLIST_MOVE_ITEM" desc="Move button text">
+      Move
+    </message>
+    <message name="IDS_PLAYLIST_COPY_ITEM" desc="Copy button text">
+      Copy
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_ITEM_OFFLINE_DATA" desc="Playlist menu text">
+      Delete item\'s offline data
+    </message>
+    <message name="IDS_PLAYLIST_SHARE_ITEM" desc="Playlist menu text">
+      Share
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_IN_NEW_TAB" desc="Playlist menu text">
+      Open in new tab
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_IN_PRIVATE_TAB" desc="Playlist menu text">
+      Open in private tab
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_ITEM" desc="Playlist menu text">
+      Delete
+    </message>
+    <message name="IDS_PLAYLIST_PERCENTAGE_TEXT">
+      <ph name="PERCENTAGE">%1$s</ph> %%
+    </message>
+    <message name="IDS_PLAYLIST_TIME_TEXT">
+      <ph name="TIME_TEXT">%1$s</ph>:
+    </message>
+    <message name="IDS_PLAYLIST_DURATION_TEXT">
+      <ph name="HOUR_TEXT">%1$s</ph><ph name="MINUTE_TEXT">%2$s</ph><ph name="SECOND_TEXT">%3$s</ph>
     </message>
   </messages>
   </release>

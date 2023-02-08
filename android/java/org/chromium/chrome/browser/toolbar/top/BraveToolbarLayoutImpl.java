@@ -56,6 +56,7 @@ import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
+import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistViewUtils;
 
 import org.chromium.base.ApiCompatibilityUtils;
@@ -592,8 +593,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
                         && mPlaylistService != null) {
                     // TODO DEEP : find contents from the page and show the playlist button
-                    mPlaylistService.getDefaultPlaylistId(defaultPlaylistId -> {
-                        Log.e(PlaylistUtils.TAG, "Default Playlist : " + defaultPlaylistId);
+                    mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+                        Log.e(PlaylistUtils.TAG, "Default Playlist : " + defaultPlaylist.id);
                     });
                     mPlaylistService.findMediaFilesFromActiveTab(playlistItems -> {
                         Log.e(PlaylistUtils.TAG, "Inside condition");
@@ -697,8 +698,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.OPEN_PLAYLIST) {
-                        mPlaylistService.getDefaultPlaylistId(defaultPlaylistId -> {
-                            PlaylistUtils.openPlaylistActivity(getContext(), defaultPlaylistId);
+                        mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+                            PlaylistUtils.openPlaylistActivity(getContext(), defaultPlaylist.id);
                         });
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.PLAYLIST_SETTINGS) {
@@ -714,33 +715,33 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             if (SharedPreferencesManager.getInstance().readBoolean(
                         BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
-                PlaylistViewUtils.showPlaylistButton(braveActivity, viewGroup,
-                        playlistOptionsListener,
-                        SharedPreferencesManager.getInstance().readBoolean(
-                                PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true));
-                SharedPreferencesManager.getInstance().writeBoolean(
-                        PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+                PlaylistViewUtils.showPlaylistButton(
+                        braveActivity, viewGroup, playlistOptionsListener);
             }
         }
     }
 
     private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
         if (mPlaylistService != null) {
-            mPlaylistService.getDefaultPlaylistId(defaultPlaylistId -> {
-                mPlaylistService.addMediaFilesFromPageToPlaylist(defaultPlaylistId, contentUrl);
+            mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+                mPlaylistService.addMediaFilesFromPageToPlaylist(defaultPlaylist.id, contentUrl);
                 SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
                         getContext().getResources().getString(R.string.view_action),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                PlaylistUtils.openPlaylistActivity(getContext(), defaultPlaylistId);
+                                PlaylistUtils.openPlaylistActivity(
+                                        getContext(), defaultPlaylist.id);
                             }
                         });
 
                 PlaylistViewUtils.showSnackBarWithActions(viewGroup,
                         String.format(
                                 getContext().getResources().getString(R.string.added_to_playlist),
-                                getContext().getResources().getString(R.string.saved)),
+                                defaultPlaylist.id.equals(ConstantUtils.DEFAULT_PLAYLIST)
+                                        ? getContext().getResources().getString(
+                                                R.string.playlist_play_later)
+                                        : defaultPlaylist.name),
                         snackBarActionModel);
             });
         }

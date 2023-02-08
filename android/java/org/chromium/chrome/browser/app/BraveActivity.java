@@ -36,6 +36,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
+import com.brave.playlist.util.PreferenceUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -362,10 +363,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openBraveWallet(false, false, false);
         } else if (id == R.id.brave_playlist_id) {
             if (SharedPreferencesManager.getInstance().readBoolean(
-                        PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                        PreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
                 PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
                 SharedPreferencesManager.getInstance().writeBoolean(
-                        PlaylistUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+                        PreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             } else {
                 PlaylistUtils.openPlaylistActivity(BraveActivity.this, "all");
             }

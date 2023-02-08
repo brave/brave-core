@@ -14,14 +14,18 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistResetPreference;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistService;
 
-public class BravePlaylistPreferences
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class BravePlaylistPreferences extends BravePreferenceFragment
+        implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     private static final String PREF_PLAYLIST_PREFERENCE_SCREEN = "playlist_preference_screen";
     public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
     public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";
@@ -36,6 +40,8 @@ public class BravePlaylistPreferences
     private Preference mAutoSaveMediaForOfflinePreference;
     private ChromeSwitchPreference mStartPlaybackSwitch;
     private BravePlaylistResetPreference mResetPlaylist;
+
+    private PlaylistService mPlaylistService;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -75,6 +81,30 @@ public class BravePlaylistPreferences
 
         updatePlaylistSettingsState(
                 SharedPreferencesManager.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
+        initPlaylistService();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+        }
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mPlaylistService.close();
+        mPlaylistService = null;
+        initPlaylistService();
+    }
+
+    private void initPlaylistService() {
+        if (mPlaylistService != null) {
+            return;
+        }
+
+        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
     }
 
     @Override
@@ -125,6 +155,10 @@ public class BravePlaylistPreferences
         } else if (PREF_START_PLAYBACK.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     PREF_START_PLAYBACK, (boolean) newValue);
+        } else if (PREF_RESET_PLAYLIST.equals(key)) {
+            if (mPlaylistService != null) {
+                // TODO Deep appl;y reset
+            }
         }
 
         return true;

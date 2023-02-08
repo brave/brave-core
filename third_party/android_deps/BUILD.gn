@@ -106,6 +106,7 @@ android_aar_prebuilt("com_brave_playlist_java") {
   ]
   bytecode_rewriter_target =
       "//build/android/bytecode:fragment_activity_replacer"
+  resource_overlay = true
 }
 
 android_aar_prebuilt("com_google_android_exoplayer_exoplayer_core_java") {

@@ -157,7 +157,7 @@ class PlaylistService : public KeyedService,
   void RenamePlaylist(const std::string& playlist_id,
                       const std::string& playlist_name,
                       RenamePlaylistCallback callback) override;
-  void GetDefaultPlaylistId(GetDefaultPlaylistIdCallback callback) override;
+  void GetDefaultPlaylist(GetDefaultPlaylistCallback callback) override;
   void SetDefaultPlaylistId(const std::string& playlist_id) override;
   void GetPlaylistCacheByDefault(
       GetPlaylistCacheByDefaultCallback callback) override;

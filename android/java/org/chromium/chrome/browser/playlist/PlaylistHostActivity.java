@@ -168,6 +168,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                     && playlistOptionsModel.getPlaylistModel() != null) {
                                 mPlaylistService.removeLocalDataForItemsInPlaylist(
                                         playlistOptionsModel.getPlaylistModel().getId());
+                                loadPlaylist(playlistOptionsModel.getPlaylistModel().getId());
                             }
                         } else if (option == PlaylistOptions.DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE) {
                             Log.e(PlaylistUtils.TAG,
@@ -210,6 +211,14 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 == PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
                             Log.e(PlaylistUtils.TAG,
                                     "PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE");
+                            if (mPlaylistService != null
+                                    && playlistOptionsModel.getPlaylistModel() != null) {
+                                for (PlaylistItemModel playlistItemModel :
+                                        playlistOptionsModel.getPlaylistModel().getItems()) {
+                                    mPlaylistService.recoverLocalDataForItem(
+                                            playlistItemModel.getId());
+                                }
+                            }
                         }
                     }
                 });
@@ -277,6 +286,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItemObject.put("cached", playlistItem.cached);
                         playlistItemObject.put("author", playlistItem.author);
                         playlistItemObject.put("duration", playlistItem.duration);
+                        playlistItemObject.put(
+                                "last_played_position", playlistItem.lastPlayedPosition);
                         playlistItemsJsonArray.put(playlistItemObject);
                     }
                     playlistJson.put("items", playlistItemsJsonArray);
@@ -332,6 +343,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             playlistItemObject.put("cached", playlistItem.cached);
                             playlistItemObject.put("author", playlistItem.author);
                             playlistItemObject.put("duration", playlistItem.duration);
+                            playlistItemObject.put(
+                                    "last_played_position", playlistItem.lastPlayedPosition);
                             playlistItemsJsonArray.put(playlistItemObject);
                         }
                         playlistJsonObject.put("items", playlistItemsJsonArray);

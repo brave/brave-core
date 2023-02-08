@@ -102,7 +102,7 @@ interface PlaylistService {
 
   RenamePlaylist(string playlist_id, string playlist_name) => (Playlist updated_playlist);
 
-  GetDefaultPlaylistId() => (string playlist_id);
+  GetDefaultPlaylist() => (Playlist defaultPlaylist);
   SetDefaultPlaylistId(string playlist_id);
 
   GetPlaylistCacheByDefault() => (bool is_enabled);
