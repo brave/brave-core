@@ -49,7 +49,7 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
   info.Set("torProxyURI", tor_launcher_factory_->GetTorProxyURI());
   info.Set("isTorConnected", tor_launcher_factory_->IsTorConnected());
   web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorGeneralInfo",
-                                         base::Value(std::move(info)));
+                                         info);
 }
 
 void TorInternalsDOMHandler::HandleGetTorLog(const base::Value::List& args) {

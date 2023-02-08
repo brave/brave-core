@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -340,14 +341,14 @@ void BraveNewTabMessageHandler::HandleGetPreferences(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
+  ResolveJavascriptCallback(args[0], data);
 }
 
 void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
+  ResolveJavascriptCallback(args[0], data);
 }
 
 void BraveNewTabMessageHandler::HandleGetPrivateProperties(
@@ -355,15 +356,14 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], base::Value(std::move(data)));
+  ResolveJavascriptCallback(args[0], data);
 }
 
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
     const base::Value::List& args) {
   AllowJavascript();
 
-  base::Value data = GetAdsDataDictionary();
-  ResolveJavascriptCallback(args[0], std::move(data));
+  ResolveJavascriptCallback(args[0], GetAdsDataDictionary());
 }
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
@@ -488,7 +488,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   base::Value::Dict wallpaper;
 
   if (!service) {
-    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
+    ResolveJavascriptCallback(args[0], wallpaper);
     return;
   }
 
@@ -496,7 +496,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       service->GetCurrentWallpaperForDisplay();
 
   if (!data) {
-    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
+    ResolveJavascriptCallback(args[0], wallpaper);
     return;
   }
 
@@ -507,7 +507,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
   if (is_background.value()) {
     wallpaper.Set(kBackgroundWallpaperKey, std::move(*data));
-    ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
+    ResolveJavascriptCallback(args[0], wallpaper);
     return;
   }
 
@@ -530,7 +530,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
-  ResolveJavascriptCallback(args[0], base::Value(std::move(wallpaper)));
+  ResolveJavascriptCallback(args[0], wallpaper);
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(
@@ -544,22 +544,22 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
-  FireWebUIListener("private-tab-data-updated", base::Value(std::move(data)));
+  FireWebUIListener("private-tab-data-updated", data);
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
-  FireWebUIListener("stats-updated", base::Value(std::move(data)));
+  FireWebUIListener("stats-updated", data);
 }
 
 void BraveNewTabMessageHandler::OnPreferencesChanged() {
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
-  FireWebUIListener("preferences-changed", base::Value(std::move(data)));
+  FireWebUIListener("preferences-changed", data);
 }
 
-base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
+base::Value::Dict BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   base::Value::Dict ads_data;
 
   bool needs_browser_update_to_see_ads = false;
@@ -569,10 +569,9 @@ base::Value BraveNewTabMessageHandler::GetAdsDataDictionary() const {
   }
   ads_data.Set(kNeedsBrowserUpgradeToServeAds, needs_browser_update_to_see_ads);
 
-  return base::Value(std::move(ads_data));
+  return ads_data;
 }
 
 void BraveNewTabMessageHandler::OnNeedsBrowserUpgradeToServeAds() {
-  base::Value data = GetAdsDataDictionary();
-  FireWebUIListener("new-tab-ads-data-updated", std::move(data));
+  FireWebUIListener("new-tab-ads-data-updated", GetAdsDataDictionary());
 }

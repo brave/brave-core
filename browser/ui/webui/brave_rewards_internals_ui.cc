@@ -188,7 +188,7 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
     }
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
-                         base::Value(std::move(info_dict)));
+                         info_dict);
 }
 
 void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
@@ -222,8 +222,7 @@ void RewardsInternalsDOMHandler::OnGetBalance(
     balance_value.Set("wallets", std::move(wallets));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.balance",
-                         base::Value(std::move(balance_value)));
+  CallJavascriptFunction("brave_rewards_internals.balance", balance_value);
 }
 
 void RewardsInternalsDOMHandler::GetContributions(
@@ -268,8 +267,7 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     list.Append(std::move(contribution));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.contributions",
-                         base::Value(std::move(list)));
+  CallJavascriptFunction("brave_rewards_internals.contributions", list);
 }
 
 void RewardsInternalsDOMHandler::GetPromotions(const base::Value::List& args) {
@@ -305,8 +303,7 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
     promotions.Append(std::move(dict));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.promotions",
-                         base::Value(std::move(promotions)));
+  CallJavascriptFunction("brave_rewards_internals.promotions", promotions);
 }
 
 void RewardsInternalsDOMHandler::GetPartialLog(const base::Value::List& args) {
@@ -401,8 +398,7 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     data.Set("type", wallet->type);
   }
 
-  CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet", data);
 }
 
 void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
@@ -434,8 +430,7 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
     data.Append(std::move(item));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.eventLogs",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards_internals.eventLogs", data);
 }
 
 void RewardsInternalsDOMHandler::GetAdDiagnostics(
@@ -478,8 +473,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
     diagnostics.Set("entries", std::move(*diagnosticsEntries));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.adDiagnostics",
-                         base::Value(std::move(diagnostics)));
+  CallJavascriptFunction("brave_rewards_internals.adDiagnostics", diagnostics);
 }
 
 void RewardsInternalsDOMHandler::SetAdDiagnosticId(

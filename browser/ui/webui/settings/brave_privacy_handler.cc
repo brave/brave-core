@@ -111,7 +111,7 @@ void BravePrivacyHandler::GetLocalStateBooleanEnabled(
   bool enabled = local_state->GetBoolean(path);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(enabled));
+  ResolveJavascriptCallback(args[0], base::Value(enabled));
 }
 
 void BravePrivacyHandler::SetStatsUsagePingEnabled(
