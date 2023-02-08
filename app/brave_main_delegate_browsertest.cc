@@ -179,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
 #if !BUILDFLAG(IS_ANDROID)
-    &permissions::features::kPermissionsPostPromptSurvey,
+    &permissions::features::kPermissionsPromptSurvey,
     &permissions::features::kRecordPermissionExpirationTimestamps,
 #endif
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
