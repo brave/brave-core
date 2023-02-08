@@ -81,13 +81,6 @@ constexpr BravePrepopulatedEngineID kBraveEnginesAUIE[] = {
     PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesKR[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_NAVER,
-    PREPOPULATED_ENGINE_ID_DAUM,
-    PREPOPULATED_ENGINE_ID_GOOGLE,
-};
-
 constexpr BravePrepopulatedEngineID kBraveEnginesNZ[] = {
     PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
     PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_QWANT,
@@ -132,7 +125,6 @@ constexpr auto kDefaultEnginesByCountryIdMap =
           kBraveEnginesWithEcosia},
          {country_codes::CountryCharsToCountryID('K', 'G'),
           kBraveEnginesWithYandex},
-         {country_codes::CountryCharsToCountryID('K', 'R'), kBraveEnginesKR},
          {country_codes::CountryCharsToCountryID('K', 'Z'),
           kBraveEnginesWithYandex},
          {country_codes::CountryCharsToCountryID('L', 'U'),
@@ -398,62 +390,8 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('I', 'N'),
            PREPOPULATED_ENGINE_ID_BRAVE},
       });
-  static constexpr auto kContentV23 =
-      base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
-          {country_codes::CountryCharsToCountryID('A', 'M'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'Z'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('B', 'Y'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('C', 'A'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('D', 'E'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('F', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('G', 'B'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('K', 'G'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('K', 'Z'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('M', 'D'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('R', 'U'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('T', 'J'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('T', 'M'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('U', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('U', 'Z'),
-           PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryCharsToCountryID('A', 'T'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('E', 'S'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('M', 'X'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('A', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('B', 'R'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryCharsToCountryID('I', 'N'),
-           PREPOPULATED_ENGINE_ID_BRAVE},
-          // Added values in this version bellow
-          {country_codes::CountryCharsToCountryID('K', 'R'),
-           PREPOPULATED_ENGINE_ID_NAVER},
-      });
 
-  if (version > 22) {
-    auto* it = kContentV23.find(country_id);
-    if (it == kContentV23.end()) {
-      return default_v6;
-    }
-    return it->second;
-  } else if (version > 21) {
+  if (version > 21) {
     auto* it = kContentV22.find(country_id);
     if (it == kContentV22.end()) {
       return default_v6;
