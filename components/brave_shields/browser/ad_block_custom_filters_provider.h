@@ -27,6 +27,10 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   AdBlockCustomFiltersProvider& operator=(const AdBlockCustomFiltersProvider&) =
       delete;
 
+  void HideElementOnHost(const std::string& css_selector,
+                         const std::string& host);
+  void CreateSiteExemption(const std::string& host);
+
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
 

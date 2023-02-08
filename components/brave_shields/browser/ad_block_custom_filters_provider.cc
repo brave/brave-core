@@ -25,6 +25,21 @@ AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {
   AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(this);
 }
 
+void AdBlockCustomFiltersProvider::HideElementOnHost(
+    const std::string& css_selector,
+    const std::string& host) {
+  std::string custom_filters = GetCustomFilters();
+  UpdateCustomFilters(custom_filters + '\n' + host + "##" + css_selector +
+                      '\n');
+}
+
+void AdBlockCustomFiltersProvider::CreateSiteExemption(
+    const std::string& host) {
+  std::string custom_filters = GetCustomFilters();
+  UpdateCustomFilters(custom_filters + '\n' + "@@||" + host +
+                      "^$first-party\n");
+}
+
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
