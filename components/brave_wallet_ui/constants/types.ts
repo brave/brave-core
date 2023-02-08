@@ -990,3 +990,5 @@ export type NetworkFilterType = {
   chainId: string
   coin: BraveWallet.CoinType
 }
+
+export type SortingOrder = 'ascending' | 'descending'

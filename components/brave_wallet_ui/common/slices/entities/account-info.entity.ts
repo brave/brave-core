@@ -11,6 +11,7 @@ import {
 
 import { BraveWallet, WalletAccountTypeName } from '../../../constants/types'
 import { RootStoreState } from '../../../page/store'
+import { getAccountId } from '../../../utils/account-utils'
 import { walletApi } from '../api.slice'
 import {
   EntityByIdFromRegistryResultSelectorFactory,
@@ -29,7 +30,7 @@ export type AccountInfoEntityAdaptor =
 
 export const accountInfoEntityAdaptor: AccountInfoEntityAdaptor =
   createEntityAdapter<AccountInfoEntity>({
-    selectId: (accountInfo) => accountInfo.address.toLowerCase()
+    selectId: getAccountId
   })
 
 export const accountInfoEntityAdaptorInitialState = accountInfoEntityAdaptor.getInitialState()

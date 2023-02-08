@@ -422,7 +422,10 @@ export function createWalletApi (
 
             // normalize list into a registry
             const normalizedNetworksState = networkEntityAdapter.setAll(
-              networkEntityInitialState,
+              {
+                ...networkEntityInitialState,
+                idsByCoinType
+              },
               networksList
             )
             return {
@@ -1289,6 +1292,7 @@ export function createWalletApi (
           extraOptions,
           baseQuery
         ) => {
+          const isFil = coinType === BraveWallet.CoinType.FIL
           try {
             const { txService } = baseQuery(undefined).data
 
@@ -1302,16 +1306,31 @@ export function createWalletApi (
               walletApi.endpoints.getAllNetworks.initiate(undefined)
             ).unwrap()
 
-            // user tokens
-            const userTokensRegistry: BlockchainTokenEntityAdaptorState =
-              await dispatch(
-                walletApi.endpoints.getUserTokensRegistry.initiate(undefined)
-              ).unwrap()
+            // user tokens (skipped for FIL accounts)
+            let userTokensRegistry: BlockchainTokenEntityAdaptorState =
+              blockchainTokenEntityAdaptorInitialState
+            try {
+              userTokensRegistry = isFil
+                ? await dispatch(
+                  walletApi.endpoints.getUserTokensRegistry.initiate(undefined)
+                  ).unwrap()
+                : blockchainTokenEntityAdaptorInitialState
+            } catch (error) {
+              console.log(error)
+            }
 
-            // known tokens
-            let tokensRegistry = await dispatch(
-              walletApi.endpoints.getTokensRegistry.initiate(undefined)
-            ).unwrap()
+            // known tokens (skipped for FIL accounts)
+            let tokensRegistry: BlockchainTokenEntityAdaptorState =
+              blockchainTokenEntityAdaptorInitialState
+            try {
+              tokensRegistry = isFil
+                ? await dispatch(
+                  walletApi.endpoints.getTokensRegistry.initiate(undefined)
+                  ).unwrap()
+                : blockchainTokenEntityAdaptorInitialState
+            } catch (error) {
+              console.log(error)
+            }
 
             // combined token registry
             const combinedTokenRegistry = combineTokenRegistries(
@@ -1346,7 +1365,7 @@ export function createWalletApi (
 
                   // track txs by chain
                   if (idsByChainId[parsedTx.chainId]) {
-                    idsByChainId[parsedTx.chainId].push()
+                    idsByChainId[parsedTx.chainId].push(tx.id)
                   } else {
                     idsByChainId[parsedTx.chainId] = [tx.id]
                   }
@@ -1358,7 +1377,7 @@ export function createWalletApi (
                     pendingIds.push(tx.id)
                     // track pending txs by chain
                     if (pendingIdsByChainId[parsedTx.chainId]) {
-                      pendingIdsByChainId[parsedTx.chainId].push()
+                      pendingIdsByChainId[parsedTx.chainId].push(tx.id)
                     } else {
                       pendingIdsByChainId[parsedTx.chainId] = [tx.id]
                     }
@@ -1370,7 +1389,12 @@ export function createWalletApi (
 
             const state: TransactionEntityState =
               transactionEntityAdapter.setAll(
-                transactionEntityInitialState,
+                {
+                  ...transactionEntityInitialState,
+                  idsByChainId,
+                  pendingIds,
+                  pendingIdsByChainId
+                },
                 parsedTransactionsWithoutPrices
               )
 
@@ -2674,11 +2698,16 @@ export const parseTransactionWithoutPricesAsync = async ({
   )
 
   // network fees
-  const solFeeEstimates: string = isSolanaTransaction(tx)
-    ? await dispatch(
-        walletApi.endpoints.getSolanaEstimatedFee.initiate(tx.id)
-      ).unwrap()
-    : '0'
+  let solFeeEstimates: string = '0'
+  try {
+    solFeeEstimates = isSolanaTransaction(tx)
+      ? await dispatch(
+          walletApi.endpoints.getSolanaEstimatedFee.initiate(tx.id)
+        ).unwrap()
+      : '0'
+  } catch (error) {
+    console.error(error)
+  }
 
   const to = getTransactionToAddress(tx)
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
