@@ -55,7 +55,7 @@ export const ConfirmPasswordModal = () => {
     const { address, coin, hardware } = accountToRemove
 
     if (hardware) {
-      dispatch(WalletPageActions.removeHardwareAccount({ address, coin, password }))
+      dispatch(WalletPageActions.removeHardwareAccount({ address, coin }))
     }
 
     if (!hardware) {

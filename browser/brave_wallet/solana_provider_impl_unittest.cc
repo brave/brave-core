@@ -207,7 +207,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
   std::string GetAddressByIndex(
       size_t index,
       const std::string& id = mojom::kSolanaKeyringId) {
-    CHECK(!keyring_service_->IsLocked());
+    CHECK(!keyring_service_->IsLockedSync());
     return keyring_service_->GetHDKeyringById(id)->GetAddress(index);
   }
 
@@ -228,13 +228,11 @@ class SolanaProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
-  bool RemoveHardwareAccount(const std::string& address,
-                             const std::string& password) {
+  bool RemoveHardwareAccount(const std::string& address) {
     bool success;
     base::RunLoop run_loop;
     keyring_service_->RemoveHardwareAccount(
-        address, password, mojom::CoinType::SOL,
-        base::BindLambdaForTesting([&](bool v) {
+        address, mojom::CoinType::SOL, base::BindLambdaForTesting([&](bool v) {
           success = v;
           run_loop.Quit();
         }));
@@ -644,7 +642,7 @@ TEST_F(SolanaProviderImplUnitTest,
   ASSERT_TRUE(IsConnected());
 
   // Remove selected hardware account.
-  EXPECT_TRUE(RemoveHardwareAccount(kHardwareAccountAddr, "brave"));
+  EXPECT_TRUE(RemoveHardwareAccount(kHardwareAccountAddr));
   EXPECT_TRUE(observer_->AccountChangedFired());
   // Account is empty because GetSelectedAccount returns absl::nullopt.
   EXPECT_TRUE(observer_->GetAccount().empty());
