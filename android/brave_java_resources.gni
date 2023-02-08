@@ -698,6 +698,7 @@ brave_java_resources = [
   "java/res/drawable/rect_round_corners_12.xml",
   "java/res/drawable/rect_up_round_corners_12.xml",
   "java/res/drawable/rewards_button_orange.xml",
+  "java/res/drawable/rewards_logged_out_state_gradient_bg.xml",
   "java/res/drawable/rewards_panel_notification_date_bg.xml",
   "java/res/drawable/rewards_panel_unverified_off_bg.xml",
   "java/res/drawable/rewards_settings_gradient_bg.xml",
