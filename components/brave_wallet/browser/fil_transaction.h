@@ -36,6 +36,7 @@ class FilTransaction {
   FilAddress to() const { return to_; }
   const FilAddress& from() const { return from_; }
   std::string value() const { return value_; }
+  std::string chain_id() const { return chain_id_; }
 
   void set_to(const FilAddress& to) { to_ = to; }
   void set_from(const FilAddress& from) { from_ = from; }
@@ -49,6 +50,7 @@ class FilTransaction {
   }
   void set_gas_limit(int64_t gas_limit) { gas_limit_ = gas_limit; }
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
+  void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
 
   absl::optional<std::string> GetMessageToSign() const;
   base::Value::Dict ToValue() const;
@@ -71,6 +73,7 @@ class FilTransaction {
   std::string value_;
 
   std::string signature_;
+  std::string chain_id_;
 
  private:
   FilTransaction(absl::optional<uint64_t> nonce,

@@ -124,6 +124,8 @@ void FilTxManager::AddUnapprovedTransaction(
   }
 
   auto tx_ptr = std::make_unique<FilTransaction>(*tx);
+  tx_ptr->set_chain_id(json_rpc_service_->GetChainId(mojom::CoinType::FIL));
+
   const std::string gas_fee_cap = tx->gas_fee_cap();
   const std::string gas_premium = tx->gas_premium();
   auto gas_limit = tx->gas_limit();

@@ -99,6 +99,7 @@ class SolanaTransaction {
   absl::optional<SolanaTransaction::SendOptions> send_options() const {
     return send_options_;
   }
+  std::string chain_id() const { return chain_id_; }
 
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;
@@ -115,6 +116,7 @@ class SolanaTransaction {
   void set_sign_tx_param(mojom::SolanaSignTransactionParamPtr sign_tx_param) {
     sign_tx_param_ = std::move(sign_tx_param);
   }
+  void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
@@ -143,6 +145,8 @@ class SolanaTransaction {
   // Currently might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.
   absl::optional<SendOptions> send_options_;
+
+  std::string chain_id_;
 };
 
 }  // namespace brave_wallet

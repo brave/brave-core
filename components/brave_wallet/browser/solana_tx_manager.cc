@@ -67,6 +67,8 @@ void SolanaTxManager::AddUnapprovedTransaction(
     return;
   }
 
+  tx->set_chain_id(json_rpc_service_->GetChainId(mojom::CoinType::SOL));
+
   SolanaTxMeta meta(std::move(tx));
   meta.set_id(TxMeta::GenerateMetaID());
   meta.set_from(from);

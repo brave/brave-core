@@ -82,6 +82,7 @@ export function makeNetworkInfo (network: BraveWallet.NetworkInfo): NetworkInfo 
 
 export function makeWalletAccount (account: WalletAccountType): WalletAccount {
   return {
+    id: "",
     name: account.name,
     address: account.address,
     coin: account.coin

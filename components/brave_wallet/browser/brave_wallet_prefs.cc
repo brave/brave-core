@@ -258,6 +258,24 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 12/2022
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
+
+  if(!prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)){
+    auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
+    prefs->ClearPref(kBraveWalletTransactions);
+    if (!transactions.empty()) {
+
+      for(auto txs : transactions){
+        if(*txs || !txs.second.is_dict())
+          continue;
+
+
+      }
+
+      ScopedDictPrefUpdate update(prefs, kBraveWalletTransactions);
+      update->Set(kEthereumPrefKey, std::move(transactions));
+    }
+    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
+  }
 }
 
 }  // namespace brave_wallet

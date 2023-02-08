@@ -122,7 +122,8 @@ base::Value::Dict FilTransaction::ToValue() const {
   dict.Set("To", to_.EncodeAsString());
   dict.Set("From", from_.EncodeAsString());
   dict.Set("Value", value_);
-  return dict;
+  dict.Set("chain_id", chain_id);
+ return dict;
 }
 
 // static
@@ -173,6 +174,12 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
   if (!tx_value)
     return absl::nullopt;
   tx.value_ = *tx_value;
+
+  const auto* chain_id_string = value.FindString("chain_id"); 
+  if(chain_id_string){
+    tx.set_chain_id(*chain_id_string);
+  }
+
   return tx;
 }
 

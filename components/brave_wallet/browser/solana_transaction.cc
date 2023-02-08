@@ -25,6 +25,7 @@ constexpr char kSignature[] = "signature";
 constexpr char kSignatures[] = "signatures";
 constexpr char kSignTxParam[] = "sign_tx_param";
 constexpr char kEncodedSerializedMsg[] = "encoded_serialized_msg";
+constexpr char kChainIdParam[] = "chain_id";
 
 // Below are using camel cases so we can handle the parameters from dApp
 // requests directly with the same key.
@@ -363,6 +364,7 @@ base::Value::Dict SolanaTransaction::ToValue() const {
 
     dict.Set(kSignTxParam, std::move(sign_tx_param_dict));
   }
+  dict.Set(kChainIdParam, chain_id_);
 
   return dict;
 }
@@ -455,6 +457,11 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
     }
     sign_tx_param->signatures = std::move(signatures);
     tx->set_sign_tx_param(std::move(sign_tx_param));
+  }
+
+  const auto* chain_id_string = value.FindString(kChainIdParam); 
+  if(chain_id_string){
+    tx->set_chain_id(*chain_id_string);
   }
 
   return tx;
