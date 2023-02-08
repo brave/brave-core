@@ -249,7 +249,6 @@ export interface WalletState {
   defaultSolanaWallet: BraveWallet.DefaultWallet
   activeOrigin: SerializableOriginInfo
   solFeeEstimates?: SolFeeEstimates
-  hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean

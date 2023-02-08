@@ -4,18 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// utils
+import { useSelector } from 'react-redux'
+import { WalletState } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-
-// hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-import {
-  useGetDefaultFiatCurrencyQuery //
-} from '../../../common/slices/api.slice'
-
-// style
 import {
   TransactionTitle,
   TransactionTypeText,
@@ -25,8 +18,6 @@ import {
   EditButton
 } from './style'
 import { WarningBoxTitleRow } from '../shared-panel-styles'
-import { Skeleton } from '../../shared/loading-skeleton/styles'
-import { Column } from '../../shared/style'
 
 interface TransactionInfoProps {
   onToggleEditGas?: () => void
@@ -41,28 +32,22 @@ export const TransactionInfo = ({
     isSolanaTransaction,
     isFilecoinTransaction,
     transactionsNetwork,
-    sendOptions,
-    hasFeeEstimatesError
+    sendOptions
   } = usePendingTransactions()
 
-  // queries
+  // redux
   const {
-    isLoading: isLoadingDefaultFiatCurrency,
-    data: defaultFiatCurrency = 'usd'
-  } = useGetDefaultFiatCurrencyQuery()
+    defaultCurrencies
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   // exit early if no details
   if (!transactionDetails) {
     return null
   }
 
-  const isLoadingGasFee = transactionDetails.gasFee === ''
-  const isLoadingGasFeeFiat =
-    isLoadingDefaultFiatCurrency || transactionDetails.gasFeeFiat === ''
-
   /**
    * This will need updating if we ever switch to using per-locale formatting,
-   * since `.` isn't always the decimal separator
+   * since `.` isnt always the decimal seperator
   */
   const transactionValueParts = (
     (!isERC721SafeTransferFrom && !isERC721TransferFrom)
@@ -84,202 +69,139 @@ export const TransactionInfo = ({
   </span>
 
   // render
-  return (
-    <>
-      {!isFilecoinTransaction && (
-        <SectionRow>
-          <TransactionTitle>
-            {isSolanaTransaction
-              ? getLocale('braveWalletConfirmTransactionTransactionFee')
-              : getLocale('braveWalletConfirmTransactionGasFee')}
-          </TransactionTitle>
-
-          {!isSolanaTransaction && onToggleEditGas && (
-            <EditButton onClick={onToggleEditGas}>
-              {getLocale('braveWalletAllowSpendEditButton')}
-            </EditButton>
-          )}
-        </SectionRow>
-      )}
-
-      {isFilecoinTransaction && (
-        <>
-          {transactionDetails.gasPremium && (
-            <SectionColumn>
-              <TransactionTitle>Gas Premium</TransactionTitle>
-              <TransactionTypeText>
-                {transactionsNetwork &&
-                  new Amount(transactionDetails.gasPremium)
-                    .divideByDecimals(transactionsNetwork.decimals)
-                    .formatAsAsset(6, transactionsNetwork.symbol)}
-              </TransactionTypeText>
-            </SectionColumn>
-          )}
-
-          {transactionDetails.gasLimit && (
-            <SectionColumn>
-              <TransactionTitle>Gas Limit</TransactionTitle>
-              <TransactionTypeText>
-                {transactionsNetwork &&
-                  new Amount(transactionDetails.gasLimit)
-                    .divideByDecimals(transactionsNetwork.decimals)
-                    .formatAsAsset(6, transactionsNetwork.symbol)}
-              </TransactionTypeText>
-            </SectionColumn>
-          )}
-
-          {transactionDetails.gasFeeCap && (
-            <SectionColumn>
-              <TransactionTitle>Gas Fee Cap</TransactionTitle>
-              <TransactionTypeText>
-                {transactionsNetwork &&
-                  new Amount(transactionDetails.gasFeeCap)
-                    .divideByDecimals(transactionsNetwork.decimals)
-                    .formatAsAsset(6, transactionsNetwork.symbol)}
-              </TransactionTypeText>
-            </SectionColumn>
-          )}
-        </>
-      )}
-
-      {hasFeeEstimatesError ? (
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-        </TransactionText>
-      ) : isLoadingGasFee ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
-      ) : (
-        <TransactionTypeText>
-          {(transactionsNetwork &&
-            new Amount(transactionDetails.gasFee)
-              .divideByDecimals(transactionsNetwork.decimals)
-              .formatAsAsset(6, transactionsNetwork.symbol)) ||
-            ''}
-        </TransactionTypeText>
-      )}
-
-      {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
-      ) : (
-        <TransactionText>
-          {new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
-            defaultFiatCurrency
-          )}
-        </TransactionText>
-      )}
-      <Divider />
-      <WarningBoxTitleRow>
+  return <>
+    {!isFilecoinTransaction &&
+      <SectionRow>
         <TransactionTitle>
-          {getLocale('braveWalletConfirmTransactionTotal')}{' '}
-          {!isFilecoinTransaction && (
-            <>
-              {isSolanaTransaction
-                ? getLocale('braveWalletConfirmTransactionAmountFee')
-                : getLocale('braveWalletConfirmTransactionAmountGas')}
-            </>
-          )}
+          {
+            isSolanaTransaction
+              ? getLocale('braveWalletConfirmTransactionTransactionFee')
+              : getLocale('braveWalletConfirmTransactionGasFee')
+          }
         </TransactionTitle>
-      </WarningBoxTitleRow>
-      <TransactionTypeText>
-        {transactionValueText} {transactionDetails.symbol}
-      </TransactionTypeText>
-      {!isFilecoinTransaction &&
-        (hasFeeEstimatesError ? (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletTransactionHasFeeEstimatesError')}
-          </TransactionText>
-        ) : isLoadingGasFee ? (
-          <Column
-            fullHeight
-            fullWidth
-            alignItems={'flex-start'}
-            justifyContent='flex-start'
-          >
-            <Skeleton width={'40px'} height={'12px'} enableAnimation />
-          </Column>
-        ) : (
-          <TransactionTypeText>
-            +{' '}
-            {transactionsNetwork &&
-              new Amount(transactionDetails.gasFee)
+
+        {!isSolanaTransaction && onToggleEditGas &&
+          <EditButton onClick={onToggleEditGas}>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </EditButton>
+        }
+      </SectionRow>
+    }
+
+    {isFilecoinTransaction &&
+      <>
+        {transactionDetails.gasPremium &&
+          <SectionColumn>
+            <TransactionTitle>Gas Premium</TransactionTitle>
+            <TransactionTypeText>
+              {transactionsNetwork && new Amount(transactionDetails.gasPremium)
                 .divideByDecimals(transactionsNetwork.decimals)
                 .formatAsAsset(6, transactionsNetwork.symbol)}
-          </TransactionTypeText>
-        ))}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
 
-      {hasFeeEstimatesError ? null : isLoadingGasFeeFiat ? (
-        <Column
-          fullHeight
-          fullWidth
-          alignItems={'flex-start'}
-          justifyContent='flex-start'
-        >
-          <Skeleton width={'40px'} height={'12px'} enableAnimation />
-        </Column>
-      ) : (
-        <TransactionText hasError={false}>
-          {new Amount(transactionDetails.fiatTotal).formatAsFiat(
-            defaultFiatCurrency
-          )}
-        </TransactionText>
-      )}
+        {transactionDetails.gasLimit &&
+          <SectionColumn>
+            <TransactionTitle>Gas Limit</TransactionTitle>
+            <TransactionTypeText>
+              {transactionsNetwork && new Amount(transactionDetails.gasLimit)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
 
-      {transactionDetails.insufficientFundsForGasError && (
-        <TransactionText hasError={true}>
-          {getLocale('braveWalletSwapInsufficientFundsForGas')}
-        </TransactionText>
-      )}
-      {transactionDetails.insufficientFundsForGasError === false &&
-        transactionDetails.insufficientFundsError && (
-          <TransactionText hasError={true}>
-            {getLocale('braveWalletSwapInsufficientBalance')}
-          </TransactionText>
-        )}
-      {sendOptions && <Divider />}
-      {!!Number(sendOptions?.maxRetries?.maxRetries) && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaMaxRetries')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {Number(sendOptions?.maxRetries?.maxRetries)}
-          </TransactionTypeText>
-        </>
-      )}
-      {sendOptions?.preflightCommitment && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaPreflightCommitment')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {sendOptions.preflightCommitment}
-          </TransactionTypeText>
-        </>
-      )}
-      {sendOptions?.skipPreflight && (
-        <>
-          <TransactionTitle>
-            {getLocale('braveWalletSolanaSkipPreflight')}
-          </TransactionTitle>
-          <TransactionTypeText>
-            {sendOptions.skipPreflight.skipPreflight.toString()}
-          </TransactionTypeText>
-        </>
-      )}
-    </>
-  )
+        {transactionDetails.gasFeeCap &&
+          <SectionColumn>
+            <TransactionTitle>Gas Fee Cap</TransactionTitle>
+            <TransactionTypeText>
+              {transactionsNetwork && new Amount(transactionDetails.gasFeeCap)
+                .divideByDecimals(transactionsNetwork.decimals)
+                .formatAsAsset(6, transactionsNetwork.symbol)}
+            </TransactionTypeText>
+          </SectionColumn>
+        }
+      </>
+    }
+
+    <TransactionTypeText>
+      {transactionsNetwork && new Amount(transactionDetails.gasFee)
+        .divideByDecimals(transactionsNetwork.decimals)
+        .formatAsAsset(6, transactionsNetwork.symbol)}
+    </TransactionTypeText>
+
+    <TransactionText>
+      {new Amount(transactionDetails.gasFeeFiat)
+        .formatAsFiat(defaultCurrencies.fiat)}
+    </TransactionText>
+
+    <Divider />
+
+    <WarningBoxTitleRow>
+      <TransactionTitle>
+        {getLocale('braveWalletConfirmTransactionTotal')}
+        {' '}
+        {!isFilecoinTransaction &&
+          <>
+            ({
+              isSolanaTransaction
+                ? getLocale('braveWalletConfirmTransactionAmountFee')
+                : getLocale('braveWalletConfirmTransactionAmountGas')
+            })
+          </>
+        }
+      </TransactionTitle>
+    </WarningBoxTitleRow>
+
+    <TransactionTypeText>
+      {transactionValueText} {transactionDetails.symbol}
+    </TransactionTypeText>
+    {!isFilecoinTransaction &&
+      <TransactionTypeText>
+        + {transactionsNetwork && new Amount(transactionDetails.gasFee)
+          .divideByDecimals(transactionsNetwork.decimals)
+          .formatAsAsset(6, transactionsNetwork.symbol)}
+      </TransactionTypeText>
+    }
+
+    <TransactionText hasError={false}>
+      {new Amount(transactionDetails.fiatTotal).formatAsFiat(defaultCurrencies.fiat)}
+    </TransactionText>
+
+    {transactionDetails.insufficientFundsForGasError &&
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientFundsForGas')}
+      </TransactionText>
+    }
+
+    {transactionDetails.insufficientFundsForGasError === false &&
+      transactionDetails.insufficientFundsError &&
+      <TransactionText hasError={true}>
+        {getLocale('braveWalletSwapInsufficientBalance')}
+      </TransactionText>
+    }
+
+    {sendOptions &&
+      <Divider />
+    }
+    {sendOptions?.maxRetries &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaMaxRetries')}</TransactionTitle>
+        <TransactionTypeText>{Number(sendOptions.maxRetries.maxRetries)}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.preflightCommitment &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaPreflightCommitment')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.preflightCommitment}</TransactionTypeText>
+      </>
+    }
+    {sendOptions?.skipPreflight &&
+      <>
+        <TransactionTitle>{getLocale('braveWalletSolanaSkipPreflight')}</TransactionTitle>
+        <TransactionTypeText>{sendOptions.skipPreflight.skipPreflight.toString()}</TransactionTypeText>
+      </>
+    }
+  </>
 }

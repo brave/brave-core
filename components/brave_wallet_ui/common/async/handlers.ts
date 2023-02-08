@@ -520,15 +520,12 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
   const { ethTxManagerProxy, solanaTxManagerProxy } = getAPIProxy()
 
   if (isSolanaTransaction(txInfo)) {
-    const { fee, errorMessage } = await solanaTxManagerProxy.getEstimatedTxFee(
-      txInfo.id
-    )
-    if (!fee) {
-      console.error('Failed to fetch SOL Fee estimates: ' + errorMessage)
-      store.dispatch(WalletActions.setHasFeeEstimatesError(true))
+    const getSolFee = await solanaTxManagerProxy.getEstimatedTxFee(txInfo.id)
+    if (!getSolFee.fee) {
+      console.error('Failed to fetch SOL Fee estimates')
       return
     }
-    store.dispatch(WalletActions.setSolFeeEstimates({ fee }))
+    store.dispatch(WalletActions.setSolFeeEstimates({ fee: getSolFee.fee }))
     return
   }
 
@@ -540,14 +537,13 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     return
   }
 
-  const { estimation } = await ethTxManagerProxy.getGasEstimation1559()
-  if (!estimation) {
+  const basicEstimates = await ethTxManagerProxy.getGasEstimation1559()
+  if (!basicEstimates.estimation) {
     console.error('Failed to fetch gas estimates')
-    store.dispatch(WalletActions.setHasFeeEstimatesError(true))
     return
   }
 
-  store.dispatch(WalletActions.setGasEstimates(estimation))
+  store.dispatch(WalletActions.setGasEstimates(basicEstimates.estimation))
 })
 
 handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store: Store, payload: UpdateUnapprovedTransactionGasFieldsType) => {

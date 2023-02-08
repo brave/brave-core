@@ -444,7 +444,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
-        state.hasFeeEstimatesError = false
         state.gasEstimates = payload
       },
 
@@ -477,15 +476,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       setSolFeeEstimates (state: WalletState, { payload }: PayloadAction<SolFeeEstimates>) {
-        state.hasFeeEstimatesError = false
         state.solFeeEstimates = payload
-      },
-
-      setHasFeeEstimatesError: (
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) => {
-        state.hasFeeEstimatesError = payload
       },
 
       setTransactionProviderError (state: WalletState, { payload }: PayloadAction<SetTransactionProviderErrorType>) {

@@ -830,6 +830,5 @@ provideStrings({
     'Token decimals of precision value is required',
   braveWalletTokenContractAddress: 'Token Contract Address',
   braveWalletTokenDecimal: 'Token Decimal',
-  braveWalletTokenMintAddress: 'Mint address',
-  braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates'
+  braveWalletTokenMintAddress: 'Mint address'
 })
