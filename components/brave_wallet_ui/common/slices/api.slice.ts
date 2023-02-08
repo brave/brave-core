@@ -350,7 +350,10 @@ export function createWalletApi (
 
             // normalize list into a registry
             const normalizedNetworksState = networkEntityAdapter.setAll(
-              networkEntityInitalState,
+              {
+                ...networkEntityInitalState,
+                idsByCoinType
+              },
               networksList
             )
             return {
