@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/ui/views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.h"
+#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -24,13 +25,19 @@
 #include "chrome/grit/chromium_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_vpn {
 
 namespace {
-const char kCloudflareDnsProviderURL[] =
+constexpr char kCloudflareDnsProviderURL[] =
     "https://chrome.cloudflare-dns.com/dns-query";
+
+// Timer to recheck the service launch after some time and fallback to DoH if
+// the service was not launched.
+constexpr int kHelperServiceStartTimeoutSec = 3;
 
 void SkipDNSDialog(PrefService* prefs, bool checked) {
   if (!prefs)
@@ -99,15 +106,65 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
   if (dns_helper_live_for_testing_.has_value()) {
     return dns_helper_live_for_testing_.value();
   }
-  // If BraveVpnHelper is live we should not override DNS because it will be
+  // If the service is not installed we should override DNS because it will be
   // handled by the service.
-  return brave_vpn::IsBraveVPNHelperServiceLive();
+
+  if (!IsBraveVPNHelperServiceInstalled()) {
+    return false;
+  }
+  if (!IsBraveVPNHelperServiceRunning()) {
+    content::GetUIThreadTaskRunner({})->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&BraveVpnDnsObserverService::OnCheckIfServiceStarted,
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::Seconds(kHelperServiceStartTimeoutSec));
+    // The service can be stopped and this is valid state, not started yet,
+    // crashed once and restarting and so on.
+    return true;
+  }
+  RunServiceWatcher();
+  return IsNetworkFiltersInstalled();
+}
+
+void BraveVpnDnsObserverService::RunServiceWatcher() {
+  service_watcher_.reset(new ServiceWatcher());
+  if (!service_watcher_->Subscribe(
+          brave_vpn::GetVpnServiceName(), SERVICE_NOTIFY_STOPPED,
+          base::BindOnce(&BraveVpnDnsObserverService::OnServiceStopped,
+                         weak_ptr_factory_.GetWeakPtr()))) {
+    VLOG(1) << "Unable to set service watcher";
+  }
+}
+
+void BraveVpnDnsObserverService::OnServiceStopped() {
+  // Postpone check because the service can be restarted by the system due to
+  // configured failure actions.
+  content::GetUIThreadTaskRunner({})->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVpnDnsObserverService::OnCheckIfServiceStarted,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::Seconds(kHelperServiceStartTimeoutSec));
+}
+
+bool BraveVpnDnsObserverService::IsVPNConnected() const {
+  return connection_state_.has_value() &&
+         connection_state_.value() ==
+             brave_vpn::mojom::ConnectionState::CONNECTED;
+}
+
+void BraveVpnDnsObserverService::OnCheckIfServiceStarted() {
+  if (!IsVPNConnected()) {
+    return;
+  }
+  // Checking if the service was not launched or filters were not set.
+  if (!IsNetworkFiltersInstalled() || !IsBraveVPNHelperServiceRunning()) {
+    LockDNS();
+    return;
+  }
+  RunServiceWatcher();
 }
 
 void BraveVpnDnsObserverService::LockDNS() {
-  if (IsDNSHelperLive()) {
-    return;
-  }
   auto old_dns_config =
       SystemNetworkContextManager::GetStubResolverConfigReader()
           ->GetSecureDnsConfiguration(false);
@@ -134,7 +191,11 @@ void BraveVpnDnsObserverService::LockDNS() {
 
 void BraveVpnDnsObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
+  connection_state_ = state;
   if (state == brave_vpn::mojom::ConnectionState::CONNECTED) {
+    if (IsDNSHelperLive()) {
+      return;
+    }
     LockDNS();
   } else if (state == brave_vpn::mojom::ConnectionState::DISCONNECTED) {
     UnlockDNS();

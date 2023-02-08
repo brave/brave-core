@@ -18,7 +18,6 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
-#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
 
 namespace brave_vpn {
 namespace {
@@ -88,7 +87,6 @@ void ServiceMain::ServiceMainImpl() {
     return;
   }
   SetServiceStatus(SERVICE_RUNNING);
-  CountSuccessfulLaunch();
   service_status_.dwWin32ExitCode = ERROR_SUCCESS;
   service_status_.dwCheckPoint = 0;
   service_status_.dwWaitHint = 0;

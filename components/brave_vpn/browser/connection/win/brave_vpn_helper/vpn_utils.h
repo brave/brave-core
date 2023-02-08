@@ -10,10 +10,10 @@
 #include <string>
 
 namespace brave_vpn {
-// Increases helper's launch counter in the registry.
-void CountSuccessfulLaunch();
-// Resets helper's launch counter in the registry.
-void ResetLaunchCounter();
+// Sets helper's flag to indicate filters successfully installed.
+void SetFiltersInstalledFlag();
+// Resets helper's filters installed flag.
+void ResetFiltersInstalledFlag();
 // Register and setup DNS filters layer to the system, if the layer is already
 // registered reuses existing.
 bool AddWpmFilters(HANDLE engine_handle, const std::string& name);
