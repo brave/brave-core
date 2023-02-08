@@ -1057,8 +1057,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE" desc="In Title Case: The name of the Search Lens for Image command in the content area context menu">
             Search Image with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Google Lens</ex></ph>
           </message>
-           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE_ALT_TEXT" desc="The name of the Search Lens for Image command in the content area context menu">
-            Search inside image with <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph>
+           <message name="IDS_CONTENT_CONTEXT_SEARCHLENSFORIMAGE_ALT_TEXT" desc="In Title Case: The name of the Search Lens for Image command in the content area context menu">
+            Search Inside Image with <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
             Search Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave</ex></ph>
@@ -6516,7 +6516,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Brave Colors
       </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_CHANGE_THEME_LABEL" desc="The label for the action button for changing Brave theme in the New Tab Page customize chrome side panel.">
-        Change Theme
+        Change theme
       </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_RESET_TO_CLASSIC_CHROME_LABEL" desc="The label for the button for resetting theme back to classic chrome in the New Tab Page customize chrome side panel.">
         Reset to Classic Brave
