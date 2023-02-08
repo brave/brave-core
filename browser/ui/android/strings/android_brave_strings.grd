@@ -384,7 +384,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Features
       </message>
       <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
-        Brave Shields &amp; privacy
+        Brave Shields &amp; Privacy
       </message>
       <message name="IDS_BRAVE_SEARCH_ENGINES" desc="Label for the settings related to the search engines">
         Search engines
