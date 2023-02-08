@@ -3,11 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// types
 import {
   BraveWallet,
   SerializableSolanaTxData,
   WalletAccountTypeName
 } from '../constants/types'
+
+// utils
+import { isFilecoinTransaction } from './tx-utils'
 
 export const emptyNetwork: BraveWallet.NetworkInfo = {
   chainId: '',
@@ -52,7 +56,7 @@ export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: Bra
   return network[0] ?? emptyNetwork
 }
 
-type TxDataPresence = {
+export type TxDataPresence = {
   ethTxData?: Partial<BraveWallet.TxDataUnion['ethTxData']> | undefined
   ethTxData1559?: Partial<BraveWallet.TxDataUnion['ethTxData1559']> | undefined
   solanaTxData?:
@@ -76,19 +80,35 @@ export const getNetworkFromTXDataUnion = <
   networks: N[],
   selectedNetwork?: N | undefined
 ): N | undefined => {
-  const coin = getCoinFromTxDataUnion(txDataUnion)
-  return networks.find((network) => {
-    switch (network.coin) {
-      case BraveWallet.CoinType.ETH:
-        return network.chainId === txDataUnion.ethTxData1559?.chainId
+  const tx = { txDataUnion }
+  const coin = getCoinFromTxDataUnion(tx.txDataUnion)
 
-      // TODO: find a way to get non-ETH chainIds
-      case BraveWallet.CoinType.SOL:
-      case BraveWallet.CoinType.FIL:
-      default:
-        return network.coin === coin
-    }
-  }) ?? selectedNetwork
+  const isFilTx = isFilecoinTransaction(tx)
+  const isFilTestNetTx = tx.txDataUnion.filTxData?.from?.startsWith(
+    BraveWallet.FILECOIN_TESTNET
+  )
+
+  return (
+    networks.find((network) => {
+      switch (network.coin) {
+        case BraveWallet.CoinType.ETH:
+          return network.chainId === txDataUnion.ethTxData1559?.chainId
+
+        case BraveWallet.CoinType.FIL:
+          // fil addresses on testnet start with 't'
+          return isFilTestNetTx
+            ? network.chainId === BraveWallet.FILECOIN_TESTNET
+            : isFilTx
+            ? network.chainId === BraveWallet.FILECOIN_MAINNET
+            : network.coin === coin
+
+        // TODO: find a way to get SOL chainIds
+        case BraveWallet.CoinType.SOL:
+        default:
+          return network.coin === coin
+      }
+    }) ?? selectedNetwork
+  )
 }
 
 export function getFilecoinKeyringIdFromNetwork (

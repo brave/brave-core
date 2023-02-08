@@ -91,3 +91,7 @@ export const getAddressLabelFromRegistry = (
     reduceAddress(address)
   )
 }
+
+export const getAccountId = (account: { address: string }) => {
+  return account.address
+}

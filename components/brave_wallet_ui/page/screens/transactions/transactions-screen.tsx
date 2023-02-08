@@ -21,13 +21,17 @@ import { AllAccountsOption } from '../../../options/account-filter-options'
 import { getLocale } from 'brave-ui'
 import {
   AccountInfoEntity,
+  accountInfoEntityAdaptor,
   accountInfoEntityAdaptorInitialState,
   selectAllAccountInfosFromQuery
 } from '../../../common/slices/entities/account-info.entity'
-import { networkEntityInitialState } from '../../../common/slices/entities/network.entity'
+import {
+  networkEntityAdapter,
+  networkEntityInitialState
+} from '../../../common/slices/entities/network.entity'
 import { ParsedTransactionWithoutFiatValues } from '../../../utils/tx-utils'
 import {
-  transactionEntityAdapter,
+  combineTransactionRegistries,
   transactionEntityInitialState,
   TransactionEntityState
 } from '../../../common/slices/entities/transaction.entity'
@@ -109,14 +113,21 @@ export const TransactionsScreen: React.FC = () => {
   } = React.useMemo(() => {
     const searchParams = new URLSearchParams(history.location.search)
     return {
-      address: searchParams.get('address')?.toLowerCase(),
-      chainId: searchParams.get('chainId')?.toLowerCase(),
-      transactionId: searchParams.get('transactionId')?.toLowerCase()
+      address: searchParams.get('address'),
+      chainId: searchParams.get('chainId'),
+      transactionId: searchParams.get('transactionId')
     }
   }, [history.location.search])
 
-  const foundAccountFromParam = address ? accountInfosRegistry.entities[address] : undefined
-  const foundNetworkFromParam = chainId ? networksRegistry.entities[chainId] : undefined
+  const foundAccountFromParam = address ? accountInfosRegistry.entities[
+    accountInfoEntityAdaptor.selectId({ address })
+  ] : undefined
+
+  const foundNetworkFromParam = chainId
+    ? chainId === AllNetworksOption.chainId
+      ? AllNetworksOption
+      : networksRegistry.entities[networkEntityAdapter.selectId({ chainId })]
+    : undefined
 
   const fetchTxsForAccounts = React.useCallback((accounts: Array<Pick<AccountInfoEntity, 'address' | 'coin'>>) => {
     setIsLoadingTxsList(true)
@@ -124,20 +135,15 @@ export const TransactionsScreen: React.FC = () => {
     Promise.all(
       accounts.map(({ coin, address }) => {
         return fetchAllTransactionsForAddressCoinType({
-          address: address.toLowerCase(),
+          address: address,
           coinType: coin
         }).unwrap()
       }
     ))
-    .then(res => {
-      const combinedRegistry = res.reduce(
-        (combinedRegistry, registry) =>
-          transactionEntityAdapter.upsertMany(
-            combinedRegistry,
-            getEntitiesListFromEntityState(registry)
-          ),
-        transactionEntityInitialState
-      )
+    .then(registries => {
+      const combinedRegistry: TransactionEntityState =
+        combineTransactionRegistries(transactionEntityInitialState, registries)
+
       setCombinedTxEntityState(combinedRegistry)
       setIsLoadingTxsList(false)
     })
@@ -241,6 +247,7 @@ export const TransactionsScreen: React.FC = () => {
         <AccountFilterSelector
           selectedAccount={foundAccountFromParam || AllAccountsOption}
           onSelectAccount={onSelectAccount}
+          selectedNetwork={foundNetworkFromParam || AllNetworksOption}
         />
         <NetworkFilterSelector
           selectedAccount={foundAccountFromParam || AllAccountsOption}
