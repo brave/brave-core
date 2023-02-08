@@ -26,20 +26,25 @@
 namespace {
 const char kUserDataDir[] = "user-data-dir";
 const char kProcessType[] = "type";
+const char kLogFile[] = "log-file";
 }  // namespace
 
 int main(int argc, char* argv[]) {
   // Initialize the CommandLine singleton from the environment.
-  base::CommandLine::Init(0, nullptr);
-
+  base::CommandLine::Init(argc, argv);
+  auto* command_line = base::CommandLine::ForCurrentProcess();
   logging::LoggingSettings settings;
   settings.logging_dest =
       logging::LOG_TO_SYSTEM_DEBUG_LOG | logging::LOG_TO_STDERR;
+  base::FilePath log_file_path;
+  if (command_line->HasSwitch(kLogFile)) {
+    settings.logging_dest |= logging::LOG_TO_FILE;
+    log_file_path = command_line->GetSwitchValuePath(kLogFile);
+    settings.log_file_path = log_file_path.value().c_str();
+  }
   logging::InitLogging(settings);
-
   // The exit manager is in charge of calling the dtors of singletons.
   base::AtExitManager exit_manager;
-  auto* command_line = base::CommandLine::ForCurrentProcess();
   std::string process_type = command_line->GetSwitchValueASCII(kProcessType);
 
   BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
