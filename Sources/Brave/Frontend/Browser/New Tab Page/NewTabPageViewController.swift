@@ -227,11 +227,13 @@ class NewTabPageViewController: UIViewController {
       .store(in: &cancellables)
     NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
     
+    let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
     if isBraveNewsVisible && Preferences.BraveNews.isEnabled.value {
       braveNewsFeatureUsage.recordHistogram()
       recordBraveNewsDaysUsedP3A()
     }
     braveNewsFeatureUsage.recordReturningUsageMetric()
+    recordNewTabCreatedP3A()
   }
 
   @available(*, unavailable)
@@ -822,15 +824,6 @@ class NewTabPageViewController: UIViewController {
     )
     present(container, animated: true)
   }
-  
-  // MARK: - P3A
-  
-  private var braveNewsFeatureUsage = P3AFeatureUsage(
-    name: "brave-news-usage",
-    histogram: "Brave.Today.LastUsageTime",
-    returningUserHistogram: "Brave.Today.NewUserReturning"
-  )
-  private var braveNewsDaysUsedStorage = P3ATimedStorage<Int>(name: "brave-news-days-used", lifetimeInDays: 30)
 }
 
 extension NewTabPageViewController: PreferencesObserver {
@@ -912,7 +905,10 @@ extension NewTabPageViewController {
     collectionView.contentOffset.y = todayStart
   }
   
+  // MARK: - P3A
+  
   private func recordBraveNewsUsageP3A() {
+    let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
     if !isBraveNewsVisible || !Preferences.BraveNews.isEnabled.value ||
         Calendar.current.startOfDay(for: Date()) == braveNewsFeatureUsage.lastUsageOption.value {
       // Don't have Brave News enabled, or already recorded todays usage, no need to do it again
@@ -921,14 +917,16 @@ extension NewTabPageViewController {
     
     // Usage
     braveNewsFeatureUsage.recordUsage()
+    braveNewsFeatureUsage.recordReturningUsageMetric()
     
     // Usage over the past month
+    var braveNewsDaysUsedStorage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
     braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
     recordBraveNewsDaysUsedP3A()
-    braveNewsFeatureUsage.recordReturningUsageMetric()
   }
   
   private func recordBraveNewsDaysUsedP3A() {
+    let storage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
     UmaHistogramRecordValueToBucket(
       "Brave.Today.DaysInMonthUsedCount",
       buckets: [
@@ -941,7 +939,26 @@ extension NewTabPageViewController {
         .r(16...20),
         .r(21...),
       ],
-      value: braveNewsDaysUsedStorage.combinedValue
+      value: storage.combinedValue
+    )
+  }
+  
+  private func recordNewTabCreatedP3A() {
+    var storage = P3ATimedStorage<Int>.newTabsCreatedStorage
+    storage.add(value: 1, to: Date())
+    guard let answer = storage.maximumDaysCombinedValue else { return }
+    UmaHistogramRecordValueToBucket(
+      "Brave.NTP.NewTabsCreated",
+      buckets: [
+        0,
+        .r(1...3),
+        .r(4...8),
+        .r(9...20),
+        .r(21...50),
+        .r(51...100),
+        .r(101...),
+      ],
+      value: answer
     )
   }
 }
@@ -1141,4 +1158,17 @@ extension NewTabPageViewController {
       return true
     }
   }
+}
+
+extension P3AFeatureUsage {
+  fileprivate static var braveNewsFeatureUsage: Self = .init(
+    name: "brave-news-usage",
+    histogram: "Brave.Today.LastUsageTime",
+    returningUserHistogram: "Brave.Today.NewUserReturning"
+  )
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
+  fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
 }
