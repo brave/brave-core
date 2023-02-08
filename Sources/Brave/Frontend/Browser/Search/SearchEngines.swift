@@ -68,6 +68,7 @@ public class SearchEngines {
     self.disabledEngineNames = getDisabledEngineNames()
     self.orderedEngines = getOrderedEngines()
     self.recordSearchEngineP3A()
+    self.recordSearchEngineChangedP3A(from: defaultEngine(forType: .standard))
   }
 
   public func searchEngineSetup() {
@@ -114,6 +115,7 @@ public class SearchEngines {
 
   /// Updates selected default engine, order of remaining search engines remains intact.
   func updateDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
+    let originalEngine = defaultEngine(forType: type)
     type.option.value = engine
 
     // The default engine is always enabled.
@@ -135,6 +137,7 @@ public class SearchEngines {
     
     if type == .standard {
       recordSearchEngineP3A()
+      recordSearchEngineChangedP3A(from: originalEngine)
     }
   }
 
@@ -437,37 +440,81 @@ public class SearchEngines {
   
   // MARK: - P3A
   
-  private func recordSearchEngineP3A() {
-    enum Answer: Int, CaseIterable {
-      case other = 0
-      case google = 1
-      case duckduckgo = 2
-      case startpage = 3
-      case bing = 4
-      case qwant = 5
-      case yandex = 6
-      case ecosia = 7
-      case braveSearch = 8
-    }
-    let answer: Answer = {
-      let engine = defaultEngine(forType: .standard)
+  private enum P3ASearchEngineID: Int, CaseIterable, Codable {
+    case other = 0
+    case google = 1
+    case duckduckgo = 2
+    case startpage = 3
+    case bing = 4
+    case qwant = 5
+    case yandex = 6
+    case ecosia = 7
+    case braveSearch = 8
+    
+    init(engine: OpenSearchEngine) {
       guard let defaultEngineID = InitialSearchEngines.SearchEngineID.allCases.first(where: {
         $0.openSearchReference == engine.referenceURL
       }) else {
-        return .other
+        self = .other
+        return
       }
       switch defaultEngineID {
-      case .google: return .google
-      case .duckduckgo: return .duckduckgo
-      case .startpage: return .startpage
-      case .bing: return .bing
-      case .qwant: return .qwant
-      case .yandex: return .yandex
-      case .ecosia: return .ecosia
-      case .braveSearch: return .braveSearch
+      case .google: self = .google
+      case .duckduckgo: self = .duckduckgo
+      case .startpage: self = .startpage
+      case .bing: self = .bing
+      case .qwant: self = .qwant
+      case .yandex: self = .yandex
+      case .ecosia: self = .ecosia
+      case .braveSearch: self = .braveSearch
       }
-    }()
+    }
+  }
+  
+  private func recordSearchEngineP3A() {
+    let engine = defaultEngine(forType: .standard)
+    let answer = P3ASearchEngineID(engine: engine)
     // Q20 Which is your currently selected search engine
     UmaHistogramEnumeration("Brave.Search.DefaultEngine.4", sample: answer)
+  }
+  
+  private func recordSearchEngineChangedP3A(from previousEngine: OpenSearchEngine) {
+    enum Answer: Int, CaseIterable {
+      case noChange = 0
+      case braveToGoogle = 1
+      case braveToDuckDuckGo = 2
+      case braveToOther = 3
+      case googleToBrave = 4
+      case duckDuckGoToBrave = 5
+      case otherToBrave = 6
+      case otherToOther = 7
+    }
+    struct Change: Codable {
+      var from: P3ASearchEngineID
+      var to: P3ASearchEngineID
+    }
+    let from: P3ASearchEngineID = .init(engine: previousEngine)
+    let to: P3ASearchEngineID = .init(engine: defaultEngine(forType: .standard))
+    
+    var storage = P3ATimedStorage<Change>(name: "search-engine-change", lifetimeInDays: 7)
+    if from != to {
+      storage.append(value: .init(from: from, to: to))
+    }
+    
+    let answer: Answer = {
+      guard let firstEngineSwitch = storage.records.first?.value.from, firstEngineSwitch != to else {
+        return .noChange
+      }
+      switch (firstEngineSwitch, to) {
+      case (.braveSearch, .google): return .braveToGoogle
+      case (.braveSearch, .duckduckgo): return .braveToDuckDuckGo
+      case (.braveSearch, _): return .braveToOther
+      case (.google, .braveSearch): return .googleToBrave
+      case (.duckduckgo, .braveSearch): return .duckDuckGoToBrave
+      case (_, .braveSearch): return .otherToBrave
+      default: return .otherToOther
+      }
+    }()
+    UmaHistogramEnumeration("Brave.Search.SwitchEngine", sample: answer)
   }
 }
