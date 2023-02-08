@@ -42,7 +42,8 @@ export const TransactionInfo = ({
     isFilecoinTransaction,
     transactionsNetwork,
     sendOptions,
-    hasFeeEstimatesError
+    hasFeeEstimatesError,
+    isLoadingGasFee
   } = usePendingTransactions()
 
   // queries
@@ -56,9 +57,7 @@ export const TransactionInfo = ({
     return null
   }
 
-  const isLoadingGasFee = transactionDetails.gasFee === ''
-  const isLoadingGasFeeFiat =
-    isLoadingDefaultFiatCurrency || transactionDetails.gasFeeFiat === ''
+  const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency || isLoadingGasFee
 
   /**
    * This will need updating if we ever switch to using per-locale formatting,

@@ -537,6 +537,7 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     selectedAccount &&
     !hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
   ) {
+    store.dispatch(WalletActions.setHasFeeEstimatesError(false))
     return
   }
 
