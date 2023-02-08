@@ -456,6 +456,27 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   run_loop4.Run();
 }
 
+TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens.
+  base::RunLoop run_loop;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Basic Attention Token");
+            EXPECT_EQ(token_list[1]->name, "Ethereum");
+
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+}
+
 TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();

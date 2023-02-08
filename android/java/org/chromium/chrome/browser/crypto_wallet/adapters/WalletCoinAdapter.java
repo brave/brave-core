@@ -316,7 +316,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         List<WalletListItemModel> result = new ArrayList<>();
         for (WalletListItemModel item : walletListItemModelList) {
             if (item.getBlockchainToken() == null) {
-                // If blockchain token is null the item can be safely add without any risk
+                // If blockchain token is null the item can be safely added without any risk
                 // of duplication.
                 result.add(item);
                 continue;

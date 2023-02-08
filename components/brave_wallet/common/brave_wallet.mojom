@@ -670,8 +670,9 @@ interface BlockchainRegistry {
   GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
   // Below APIs are Ethereum only for the moment.
-  // Obtains all tokens for the Buy UI
+  // Obtains all tokens for a single provider for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
+  // Obtains all tokens for multiple providers for the Buy UI 
   GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets.
