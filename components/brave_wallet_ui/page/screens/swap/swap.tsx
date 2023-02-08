@@ -63,7 +63,7 @@ export const Swap = () => {
 
   const tokensList = React.useMemo(() => {
     return [
-      ...userVisibleTokensInfo.filter(asset => asset.isErc20),
+      ...userVisibleTokensInfo.filter(asset => asset.contractAddress !== ''),
       ...fullTokenList.filter(
         asset =>
           !userVisibleTokensInfo.some(
