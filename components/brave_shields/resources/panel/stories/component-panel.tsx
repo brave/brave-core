@@ -13,7 +13,7 @@ import shieldsDarkTheme from '../theme/shields-dark'
 import shieldsLightTheme from '../theme/shields-light'
 import ThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import DataContext from '../state/context'
-import { AdBlockMode, FingerprintMode, CookieBlockMode } from '../api/panel_browser_api'
+import { AdBlockMode, FingerprintMode, CookieBlockMode, HttpsUpgradeMode } from '../api/panel_browser_api'
 import { ViewType } from '../state/component_types'
 import { getLocale } from '../../../../common/locale'
 
@@ -67,6 +67,7 @@ export default {
           fingerprintMode: FingerprintMode.ALLOW,
           cookieBlockMode: CookieBlockMode.ALLOW,
           isHttpsEverywhereEnabled: true,
+          httpsUpgradeMode: HttpsUpgradeMode.DISABLED,
           isNoscriptEnabled: false
         },
         viewType: ViewType.Main

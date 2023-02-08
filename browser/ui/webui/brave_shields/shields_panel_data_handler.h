@@ -43,6 +43,7 @@ class ShieldsPanelDataHandler
   void SetAdBlockMode(AdBlockMode callback) override;
   void SetFingerprintMode(FingerprintMode mode) override;
   void SetCookieBlockMode(CookieBlockMode mode) override;
+  void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;

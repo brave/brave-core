@@ -94,6 +94,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
+  brave::MigrateHttpsUpgradeSettings(profile);
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
@@ -132,8 +133,8 @@ bool BraveProfileManager::IsAllowedProfilePath(
 }
 
 bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
-                         bool incognito,
-                         ProfileLoadedCallback callback) {
+                                            bool incognito,
+                                            ProfileLoadedCallback callback) {
 #if BUILDFLAG(ENABLE_TOR)
   // Prevent legacy tor session profile to be loaded so we won't hit
   // DCHECK(!GetProfileAttributesWithPath(...)). Workaround for legacy tor guest
