@@ -180,7 +180,10 @@ export const usePendingTransactions = () => {
           : getLocale('braveWalletSend')
     , [isSolanaDappTransaction, transactionDetails?.isSwap])
 
-  const isLoadingGasFee = transactionDetails?.gasFee === ''
+  const isLoadingGasFee =
+    // FIL has gas info provided by txDataUnion
+    !transactionDetails?.isFilecoinTransaction &&
+    transactionDetails?.gasFee === ''
 
   const isConfirmButtonDisabled = React.useMemo(() => {
     if (hasFeeEstimatesError || isLoadingGasFee) {
@@ -293,6 +296,7 @@ export const usePendingTransactions = () => {
     groupTransactions,
     selectedPendingTransactionGroupIndex,
     hasFeeEstimatesError,
-    selectedPendingTransaction: transactionInfo
+    selectedPendingTransaction: transactionInfo,
+    isLoadingGasFee
   }
 }
