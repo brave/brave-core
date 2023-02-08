@@ -16,7 +16,8 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace content {
 class RenderFrameHost;
@@ -57,7 +58,7 @@ class SearchResultAdHandler final {
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
   bool should_trigger_viewed_event_ = true;
 
-  absl::optional<base::flat_map<GURL, ads::mojom::SearchResultAdInfoPtr>>
+  absl::optional<base::flat_map<std::string, ads::mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};

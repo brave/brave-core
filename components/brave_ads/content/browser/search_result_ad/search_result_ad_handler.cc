@@ -11,10 +11,12 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
+#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "url/url_constants.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -70,20 +72,23 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
   DCHECK(ads_service_);
-  if (!ads_service_->IsEnabled() || !search_result_ads_ ||
-      !navigation_url.is_valid() ||
-      !navigation_url.SchemeIs(url::kHttpsScheme)) {
+  if (!ads_service_->IsEnabled() || !search_result_ads_) {
     return;
   }
 
-  auto it = search_result_ads_->find(navigation_url);
+  const absl::optional<std::string> placement_id =
+      GetPlacementIdFromSearchResultAdClickedUrl(navigation_url);
+  if (placement_id.value_or("").empty()) {
+    return;
+  }
+
+  auto it = search_result_ads_->find(*placement_id);
   if (it == search_result_ads_->end()) {
     return;
   }
 
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad = it->second;
-  if (!search_result_ad || !search_result_ad->target_url.is_valid() ||
-      !search_result_ad->target_url.SchemeIs(url::kHttpsScheme)) {
+  if (!search_result_ad) {
     return;
   }
 
@@ -104,7 +109,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
       ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
 
   if (search_result_ads_ && should_trigger_viewed_event_) {
-    for (const auto& [key, search_result_ad] : *search_result_ads_) {
+    for (const auto& [placement_id, search_result_ad] : *search_result_ads_) {
       DCHECK(search_result_ad);
 
       ads_service_->TriggerSearchResultAdEvent(

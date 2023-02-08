@@ -12,7 +12,7 @@
           "data-creative-set-id": "data-creative-set-id-1",
           "data-campaign-id": "data-campaign-id-1",
           "data-advertiser-id": "data-advertiser-id-1",
-          "data-landing-page": "https://foo.com:REPLACE_WITH_HTTP_PORT/simple.html",
+          "data-landing-page": "https://foo.com/page-1",
           "data-headline-text": "data-headline-text-1",
           "data-description": "data-description-1",
           "data-rewards-value": 1.5,
@@ -27,7 +27,7 @@
           "data-creative-set-id": "data-creative-set-id-2",
           "data-campaign-id": "data-campaign-id-2",
           "data-advertiser-id": "data-advertiser-id-2",
-          "data-landing-page": "https://bar.com:REPLACE_WITH_HTTP_PORT/simple.html",
+          "data-landing-page": "https://foo.com/page-2",
           "data-headline-text": "data-headline-text-2",
           "data-description": "data-description-2",
           "data-rewards-value": 2.5,
@@ -42,13 +42,15 @@
 </head>
 <body>
   <div id="ad_frame_1" >
-    <a id="ad_link_1" href="https://foo.com:REPLACE_WITH_HTTP_PORT/simple.html">
+    <a id='ad_link_1'
+      href='https://search.brave.com/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-1'>
       Click me
     </a>
   </div>
   <div id="ad_frame_2">
-    <a id="ad_link_2" href="https://bar.com:REPLACE_WITH_HTTP_PORT/simple.html" target="_blank"
-      rel="noopener noreferrer">
+    <a id='ad_link_2'
+      href='https://search.brave.com/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-2'
+      target="_blank" rel="noopener noreferrer">
       Click me
     </a>
   </div>

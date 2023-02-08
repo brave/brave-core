@@ -16,22 +16,16 @@ namespace brave_ads {
 TEST(SearchResultAdConvertingTest, ValidWebPage) {
   std::vector<::schema_org::mojom::EntityPtr> entities =
       CreateTestWebPageEntities();
-  const SearchResultAdMap ads =
+  const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
-  EXPECT_EQ(ads.size(), 1U);
+  EXPECT_EQ(search_result_ads.size(), 1U);
   const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
-      ads.at(GURL(kTestWebPageTargetUrl));
+      search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
+  ASSERT_TRUE(search_result_ad->conversion.get());
 
-  EXPECT_EQ(search_result_ad->target_url, GURL(kTestWebPageTargetUrl));
-  EXPECT_EQ(search_result_ad->value, 0.5);
-  EXPECT_EQ(
-      static_cast<size_t>(search_result_ad->conversion->observation_window),
-      1U);
-
-  EXPECT_EQ(search_result_ad->creative_instance_id,
-            kTestWebPageCreativeInstanceId);
-  EXPECT_EQ(search_result_ad->placement_id, "value0");
+  EXPECT_EQ(search_result_ad->placement_id, kTestWebPagePlacementId);
+  EXPECT_EQ(search_result_ad->creative_instance_id, "value0");
   EXPECT_EQ(search_result_ad->creative_set_id, "value1");
   EXPECT_EQ(search_result_ad->campaign_id, "value2");
   EXPECT_EQ(search_result_ad->advertiser_id, "value3");
@@ -40,32 +34,37 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
   EXPECT_EQ(search_result_ad->conversion->type, "value6");
   EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
   EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "value8");
+  EXPECT_EQ(search_result_ad->target_url, GURL("https://brave.com"));
+  EXPECT_EQ(search_result_ad->value, 0.5);
+  EXPECT_EQ(
+      static_cast<size_t>(search_result_ad->conversion->observation_window),
+      1U);
 }
 
 TEST(SearchResultAdConvertingTest, NotValidWebPage) {
   {
     std::vector<::schema_org::mojom::EntityPtr> entities;
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities();
     entities[0]->type = "Not-Product";
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities();
     entities[0]->properties.clear();
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -73,9 +72,9 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
         CreateTestWebPageEntities();
     auto& property = entities[0]->properties[0];
     property->name = "not-creatives";
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -83,9 +82,9 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
         CreateTestWebPageEntities();
     auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewEntityValues({});
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -93,24 +92,13 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
         CreateTestWebPageEntities();
     auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 }
 
-TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
-  {
-    std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
-    auto& property = entities[0]->properties[0];
-    auto& ad_entity = property->values->get_entity_values()[0];
-    ad_entity->type = "Not-SearchResultAd";
-    const SearchResultAdMap ads =
-        ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
-  }
-
+TEST(SearchResultAdConvertingTest, AdEntityExtraProperty) {
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities();
@@ -124,9 +112,9 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityExtraProperty) {
         schema_org::mojom::Values::NewStringValues({"extra-value"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_FALSE(ads.empty());
+    EXPECT_FALSE(search_result_ads.empty());
   }
 }
 
@@ -135,13 +123,24 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityPropertySkipped) {
   for (int index = 0; index < kSearchResultAdAttributesCount; ++index) {
     std::vector<::schema_org::mojom::EntityPtr> entities =
         CreateTestWebPageEntities(index);
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 }
 
 TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
+  {
+    std::vector<::schema_org::mojom::EntityPtr> entities =
+        CreateTestWebPageEntities();
+    auto& property = entities[0]->properties[0];
+    auto& ad_entity = property->values->get_entity_values()[0];
+    ad_entity->type = "Not-SearchResultAd";
+    const auto search_result_ads =
+        ConvertWebPageEntitiesToSearchResultAds(entities);
+    EXPECT_TRUE(search_result_ads.empty());
+  }
+
   {
     // Skip "data-landing-page".
     std::vector<::schema_org::mojom::EntityPtr> entities =
@@ -153,12 +152,12 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
         schema_org::mojom::Property::New();
     extra_property->name = "data-landing-page";
     extra_property->values =
-        schema_org::mojom::Values::NewStringValues({kTestWebPageTargetUrl});
+        schema_org::mojom::Values::NewStringValues({"https://brave.com"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -175,9 +174,9 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
         schema_org::mojom::Values::NewStringValues({"0-5"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -193,9 +192,9 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     extra_property->values = schema_org::mojom::Values::NewStringValues({"1"});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 
   {
@@ -211,9 +210,9 @@ TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
     extra_property->values = schema_org::mojom::Values::NewLongValues({101});
     ad_entity->properties.push_back(std::move(extra_property));
 
-    const SearchResultAdMap ads =
+    const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
-    EXPECT_TRUE(ads.empty());
+    EXPECT_TRUE(search_result_ads.empty());
   }
 }
 

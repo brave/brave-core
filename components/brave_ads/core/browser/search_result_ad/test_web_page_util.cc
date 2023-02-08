@@ -73,7 +73,7 @@ class TestWebPageEntitiesConstructor final {
 
   schema_org::mojom::EntityPtr CreateCreativeEntity() {
     constexpr const char* kSearchResultAdStringAttributes[] = {
-        "data-placement-id",
+        "data-creative-instance-id",
         "data-creative-set-id",
         "data-campaign-id",
         "data-advertiser-id",
@@ -86,10 +86,10 @@ class TestWebPageEntitiesConstructor final {
     schema_org::mojom::EntityPtr entity = schema_org::mojom::Entity::New();
     entity->type = "SearchResultAd";
 
-    AddProperty<std::string>(&entity->properties, "data-creative-instance-id",
-                             kTestWebPageCreativeInstanceId);
+    AddProperty<std::string>(&entity->properties, "data-placement-id",
+                             kTestWebPagePlacementId);
     AddProperty<std::string>(&entity->properties, "data-landing-page",
-                             kTestWebPageTargetUrl);
+                             "https://brave.com");
     AddProperty<std::string>(&entity->properties, "data-rewards-value", "0.5");
     AddProperty<int64_t>(&entity->properties,
                          "data-conversion-observation-window-value", 1);

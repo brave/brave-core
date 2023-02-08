@@ -16,11 +16,15 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 using ads::mojom::ConversionInfo;
 using ads::mojom::ConversionInfoPtr;
 using ads::mojom::SearchResultAdInfo;
 using ads::mojom::SearchResultAdInfoPtr;
+
+using SearchResultAdMap =
+    base::flat_map<std::string, ads::mojom::SearchResultAdInfoPtr>;
 
 namespace brave_ads {
 
@@ -243,8 +247,8 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
     return;
   }
 
-  GURL target_url = search_result_ad->target_url;
-  search_result_ads->emplace(std::move(target_url),
+  std::string placement_id = search_result_ad->placement_id;
+  search_result_ads->emplace(std::move(placement_id),
                              std::move(search_result_ad));
 }
 
@@ -270,8 +274,7 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
     return;
   }
 
-  for (const auto& search_result_ad_pair : search_result_ads) {
-    const auto& search_result_ad = search_result_ad_pair.second;
+  for (const auto& [placement_id, search_result_ad] : search_result_ads) {
     VLOG(6) << "Converted search result ad with \"" << kDataPlacementId
             << "\": " << search_result_ad->placement_id << "\n"
             << "  \"" << kDataCreativeInstanceId

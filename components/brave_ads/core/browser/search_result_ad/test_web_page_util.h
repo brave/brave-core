@@ -12,8 +12,7 @@
 
 namespace brave_ads {
 
-constexpr char kTestWebPageCreativeInstanceId[] = "creative_instance_id";
-constexpr char kTestWebPageTargetUrl[] = "https://brave.com";
+constexpr char kTestWebPagePlacementId[] = "placement-id";
 
 std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
     int attribute_index_to_skip = -1);
