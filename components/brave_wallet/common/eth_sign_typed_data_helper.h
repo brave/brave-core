@@ -50,6 +50,8 @@ class EthSignTypedDataHelper {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypes);
+  FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest,
+                           InvalidEncodeTypes);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays);
   FRIEND_TEST_ALL_PREFIXES(EthSignedTypedDataHelperUnitTest, EncodeField);
 
