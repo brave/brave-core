@@ -161,6 +161,7 @@ void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile) {
   if (auto* url = service->GetTemplateURLForGUID(private_provider_guid); !url) {
     auto private_url_data =
         TemplateURLDataFromDictionary(preference->GetValue()->GetDict());
+    private_url_data->id = kInvalidTemplateURLID;
     DCHECK_EQ(private_provider_guid, private_url_data->sync_guid);
     service->Add(std::make_unique<TemplateURL>(*private_url_data));
   }
