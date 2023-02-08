@@ -31,7 +31,7 @@ class ServiceWatcher {
   ScopedScHandle scm_;
   ScopedScHandle service_;
   SERVICE_NOTIFY service_notify_{0};
-  base::WaitableEvent service_stoped_event_;
+  base::WaitableEvent service_stopped_event_;
   base::WaitableEventWatcher service_watcher_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WeakPtrFactory<ServiceWatcher> weak_ptr_factory_{this};

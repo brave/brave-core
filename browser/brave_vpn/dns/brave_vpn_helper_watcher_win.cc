@@ -17,12 +17,12 @@
 namespace {
 
 VOID CALLBACK OnServiceStoppedCallback(PVOID pParameter) {
-  SERVICE_NOTIFY* service_notfiy =
+  SERVICE_NOTIFY* service_notify =
       reinterpret_cast<SERVICE_NOTIFY*>(pParameter);
-  if (!service_notfiy || !service_notfiy->pContext) {
+  if (!service_notify || !service_notify->pContext) {
     return;
   }
-  SetEvent(service_notfiy->pContext);
+  SetEvent(service_notify->pContext);
 }
 
 void WaitForEvent(HANDLE event,
@@ -30,8 +30,9 @@ void WaitForEvent(HANDLE event,
                   SERVICE_NOTIFY* service_notify) {
   if (NotifyServiceStatusChange(service, SERVICE_NOTIFY_STOPPED,
                                 service_notify) != ERROR_SUCCESS) {
-    // Assuming the service is not in good state if we are unable to subscribe
-    // and fire the stop event to make fallback.
+    // If we're unable to subscribe to status changes for this service,
+    // the service may be in a bad state.
+    // We can immediately signal to trigger the DoH fallback behavior.
     SetEvent(event);
     return;
   }
@@ -72,14 +73,14 @@ bool ServiceWatcher::Subscribe(const std::wstring& service_name,
   service_notify_ = {
       .dwVersion = SERVICE_NOTIFY_STATUS_CHANGE,
       .pfnNotifyCallback = (PFN_SC_NOTIFY_CALLBACK)&OnServiceStoppedCallback,
-      .pContext = service_stoped_event_.handle()};
+      .pContext = service_stopped_event_.handle()};
 
   task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&WaitForEvent, service_stoped_event_.handle(),
+      FROM_HERE, base::BindOnce(&WaitForEvent, service_stopped_event_.handle(),
                                 service_.get(), &service_notify_));
 
   service_watcher_.StartWatching(
-      &service_stoped_event_,
+      &service_stopped_event_,
       base::BindOnce(&ServiceWatcher::OnServiceSignaled,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       task_runner_);
