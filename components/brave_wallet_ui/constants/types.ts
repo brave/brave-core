@@ -999,3 +999,5 @@ export type AddressMessageInfo = {
 }
 
 export type AlertType = 'danger' | 'warning' | 'info' | 'success'
+
+export type SortingOrder = 'ascending' | 'descending'

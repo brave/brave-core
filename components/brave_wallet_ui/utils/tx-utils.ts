@@ -16,7 +16,8 @@ import {
   SerializableTransactionInfo,
   TimeDelta,
   SerializableTimeDelta,
-  SerializableOriginInfo
+  SerializableOriginInfo,
+  SortingOrder
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -32,7 +33,7 @@ import {
 } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
-import { getCoinFromTxDataUnion } from './network-utils'
+import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
 import { computeFiatAmount, findAssetPrice } from './pricing-utils'
@@ -43,8 +44,6 @@ import {
   makeSerializableOriginInfo
 } from './model-serialization-utils'
 import { weiToEther } from './web3-utils'
-
-type Order = 'ascending' | 'descending'
 
 export type TransactionInfo = BraveWallet.TransactionInfo | SerializableTransactionInfo
 
@@ -159,7 +158,7 @@ export const sortTransactionByDate = <
   T extends { createdTime: TimeDelta | SerializableTimeDelta }
 >(
   transactions: T[],
-  order: Order = 'ascending'
+  order: SortingOrder = 'ascending'
 ): T[] => {
   return [...transactions].sort(transactionSortByDateComparer<T>(order))
 }
@@ -189,7 +188,7 @@ export const getTransactionStatusString = (statusId: number) => {
 
 export const transactionSortByDateComparer = <
   T extends { createdTime: TimeDelta | SerializableTimeDelta }
-> (order: Order = 'ascending'): ((a: T, b: T) => number) | undefined => {
+> (order: SortingOrder = 'ascending'): ((a: T, b: T) => number) | undefined => {
   return function (x: T, y: T) {
     return order === 'ascending'
       ? Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
@@ -240,8 +239,18 @@ export function isSolanaDappTransaction (tx: TransactionInfo): tx is SolanaTrans
   )
 }
 
-export function isFilecoinTransaction (tx: TransactionInfo): tx is FileCoinTransactionInfo {
+export const isFilecoinTransaction = (tx: {
+  txDataUnion: TxDataPresence
+}): tx is FileCoinTransactionInfo => {
   return tx.txDataUnion.filTxData !== undefined
+}
+
+export const isFilecoinTestnetTx = (tx: {
+  txDataUnion: TxDataPresence
+}): boolean => {
+  return tx.txDataUnion?.filTxData?.from?.startsWith(
+    BraveWallet.FILECOIN_TESTNET
+  ) || false
 }
 
 export const getToAddressesFromSolanaTransaction = (
