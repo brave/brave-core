@@ -24,7 +24,11 @@ import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
-import { accountInfoEntityAdaptorInitialState, makeSelectNetworkByIdFromQuery } from '../../../common/slices/entities/account-info.entity'
+import {
+  accountInfoEntityAdaptor,
+  accountInfoEntityAdaptorInitialState,
+  makeSelectNetworkByIdFromQuery
+} from '../../../common/slices/entities/account-info.entity'
 import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
 
 // Hooks
@@ -113,7 +117,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const {
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState
   } = useGetAccountInfosRegistryQuery(undefined)
-  const account = accountInfosRegistry.entities[transaction.accountAddress]
+
+  const account =
+    accountInfosRegistry.entities[
+      accountInfoEntityAdaptor.selectId({ address: transaction.accountAddress })
+    ]
 
   // state
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
@@ -191,7 +199,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       return
     }
 
-    const account = accountInfosRegistry.entities[address]
+    const account = accountInfosRegistry.entities[
+      accountInfoEntityAdaptor.selectId({ address })
+    ]
 
     if (account !== undefined) {
       onSelectAccount(account)
