@@ -12,6 +12,7 @@
 
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/libxml_utils.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -35,35 +36,28 @@ void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
   xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
   xmlSetProp(new_node, BAD_CAST "for",
              BAD_CAST GraphMLForTypeToString(for_).c_str());
-  xmlSetProp(new_node, BAD_CAST "attr.name", BAD_CAST name_.Characters8());
+  xmlSetProp(new_node, BAD_CAST "attr.name", XmlUtf8String(name_).get());
   xmlSetProp(new_node, BAD_CAST "attr.type",
              BAD_CAST GraphMLAttrTypeToString(type_).c_str());
 }
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
-                               const char* value) const {
-  AddValueNode(doc, parent_node, std::string(value));
-}
-
-void GraphMLAttr::AddValueNode(xmlDocPtr doc,
-                               xmlNodePtr parent_node,
-                               const std::string& value) const {
-  CHECK(type_ == kGraphMLAttrTypeString);
-  xmlChar* encoded_content =
-      xmlEncodeEntitiesReentrant(doc, BAD_CAST value.c_str());
-  xmlNodePtr new_node =
-      xmlNewChild(parent_node, nullptr, BAD_CAST "data", encoded_content);
-  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
-  xmlFree(encoded_content);
+                               base::StringPiece value) const {
+  AddValueNodeXmlChar(doc, parent_node, XmlUtf8String(value).get());
 }
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc,
                                xmlNodePtr parent_node,
                                const String& value) const {
+  AddValueNodeXmlChar(doc, parent_node, XmlUtf8String(value).get());
+}
+
+void GraphMLAttr::AddValueNodeXmlChar(xmlDocPtr doc,
+                                      xmlNodePtr parent_node,
+                                      const xmlChar* value) const {
   CHECK(type_ == kGraphMLAttrTypeString);
-  xmlChar* encoded_content =
-      xmlEncodeEntitiesReentrant(doc, BAD_CAST value.Characters8());
+  xmlChar* encoded_content = xmlEncodeEntitiesReentrant(doc, value);
   xmlNodePtr new_node =
       xmlNewChild(parent_node, nullptr, BAD_CAST "data", encoded_content);
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
