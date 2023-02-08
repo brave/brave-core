@@ -194,11 +194,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                                  value);
   }
 
-  bool GetGoogleSignInPref() {
-    return browser()->profile()->GetPrefs()->GetBoolean(
-        kGoogleLoginControlType);
-  }
-
   void ClickButtonWithId(const std::string& id) {
     std::string click_script = content::JsReplace(
         R"(
@@ -346,32 +341,26 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllowGoogle) {
-  SetGoogleSignInPref(true);
   CheckAskAndAcceptFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDenyGoogle) {
-  SetGoogleSignInPref(true);
   CheckAskAndDenyFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, Default) {
-  SetGoogleSignInPref(true);
   CheckCurrentStatusIsAsk();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllowFirebase) {
-  SetGoogleSignInPref(true);
   CheckAskAndAcceptFlow(kFirebaseAuthButtonHtmlId);
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDenyFirebase) {
-  SetGoogleSignInPref(true);
   CheckAskAndDenyFlow(kFirebaseAuthButtonHtmlId);
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissGoogle) {
-  SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
@@ -385,7 +374,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissGoogle) {
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissFirebase) {
-  SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
@@ -398,34 +386,21 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissFirebase) {
   EXPECT_EQ(1, prompt_factory()->show_count());
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefTurnedOff) {
-  SetGoogleSignInPref(false);
-  CheckPrefOffFlow();
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       kGoogleLoginControlTypePrefIsOff) {
+  CheckCurrentStatusIsAsk();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, GoogleAuthButNoParam) {
-  SetGoogleSignInPref(true);
   CheckPrefOffFlow(kGoogleAuthButtonWithoutParamHtmlId);
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, FirebaseAuthButNoParam) {
-  SetGoogleSignInPref(true);
   CheckPrefOffFlow(kFirebaseAuthButtonDiffParamHtmlId);
-}
-
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefOffInheritedInIncognito) {
-  // Allowed permission for a website is inherited in incognito
-  SetGoogleSignInPref(false);
-  Profile* profile = browser()->profile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
-  SetBrowser(incognito_browser);
-  SetPromptFactory(GetPermissionRequestManager());
-  CheckPrefOffFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
   // Allowed permission for a website is inherited in incognito
-  SetGoogleSignInPref(true);
   CheckAskAndAcceptFlow();
   Profile* profile = browser()->profile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
@@ -436,7 +411,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   // Blocked permission for a website is inherited in incognito
-  SetGoogleSignInPref(true);
   CheckAskAndDenyFlow();
   Profile* profile = browser()->profile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
@@ -447,7 +421,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
                        PopupAuthWindowAllowReloadsTab) {
-  SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::ACCEPT_ALL);
@@ -466,7 +439,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
                        PopupAuthWindowDenyDoesNotReloadTab) {
-  SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DENY_ALL);
@@ -485,7 +457,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   // Permission set in Incognito does not leak back to normal mode.
-  SetGoogleSignInPref(true);
   Browser* original_browser = browser();
   Browser* incognito_browser = CreateIncognitoBrowser();
   SetBrowser(incognito_browser);
@@ -499,7 +470,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
 
 // No prompt shown when current website is a google.com domain
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, GoogleDomain) {
-  SetGoogleSignInPref(true);
   EXPECT_EQ(0, prompt_factory()->show_count());
   // Go to website that is a google.com domain.
   auto google_domain =

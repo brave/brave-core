@@ -625,13 +625,13 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   const bool google_sign_in_flag_enabled =
       google_sign_in_permission::IsGoogleSignInFeatureEnabled();
-  const bool google_sign_in_pref_enabled =
-      google_sign_in_permission::IsGoogleSignInPrefEnabled(prefs_);
 
-  // If Google Sign-In permission feature flag is disabled (default on),
+  // If Google Sign-In permission feature flag is disabled,
   // we add 3p cookie exception globally for Google/Firebase auth domains.
   // TODO(ssahib): Remove this once we no longer need to support the flag.
-  if (!google_sign_in_flag_enabled && google_sign_in_pref_enabled) {
+  if (!google_sign_in_flag_enabled &&
+      prefs_->FindPreference(kGoogleLoginControlType) &&
+      prefs_->GetBoolean(kGoogleLoginControlType)) {
     // kGoogleLoginControlType preference adds an exception for
     // accounts.google.com to access cookies in 3p context to allow login using
     // google oauth. The exception is added before all overrides to allow google
@@ -659,7 +659,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
         {.expiration = base::Time(), .session_model = SessionModel::Durable});
     rules.emplace_back(CloneRule(firebase_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
-  } else if (google_sign_in_pref_enabled) {
+  } else if (google_sign_in_flag_enabled) {
+    // Google Sign-In feature:
     // Add per-site cookie exception for Google/Firebase auth domains.
     // Get all sites that have BRAVE_GOOGLE_SIGN_IN turned on, and add exception
     // for them
