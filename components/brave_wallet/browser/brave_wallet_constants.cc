@@ -233,7 +233,7 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
        {"0x0000000000085d4780b73119b644ae5ecd22b376", "TrueUSD", "tusd.png",
         true, false, false, "TUSD", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
-       {"0x0000000000085d4780B73119b644AE5ecd22b376", "The Sandbox", "sand.png",
+       {"0x3845badAde8e6dFF049820680d1F14bD3903a5d0", "The Sandbox", "sand.png",
         true, false, false, "SAND", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
        {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png",
