@@ -52,7 +52,7 @@ function InsertGoogleSignInSubpage (
       } else {
         googleSignInDefault.setAttribute(
           'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlock'))
+          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
         googleSignInDefault.setAttribute(
           'toggle-on-label',
           I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
