@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin: 8px 0px;
+  padding: 8px 0;
 `
 
 export const NameAndIcon = styled(WalletButton)`
@@ -22,7 +22,7 @@ export const NameAndIcon = styled(WalletButton)`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  width: 60%;
+  max-width: 80%;
   cursor: pointer;
   outline: none;
   background: none;
@@ -34,6 +34,9 @@ export const NameAndSymbol = styled.div`
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
+  width: 90%;
+  overflow: hidden;
+  white-space: pre-line;
 `
 
 export const AssetName = styled.span`
@@ -43,6 +46,7 @@ export const AssetName = styled.span`
   letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+  text-align: left;
 `
 
 export const AssetSymbol = styled.span`
@@ -51,6 +55,7 @@ export const AssetSymbol = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
+  text-align: left;
 `
 
 export const Balance = styled.div`
