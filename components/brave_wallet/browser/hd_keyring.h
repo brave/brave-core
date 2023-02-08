@@ -21,6 +21,11 @@ namespace brave_wallet {
 
 class EthTransaction;
 
+struct AddedAcountInfo {
+  std::string path;
+  std::string address;
+};
+
 class HDKeyring {
  public:
   HDKeyring();
@@ -31,11 +36,9 @@ class HDKeyring {
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
-  virtual void AddAccounts(size_t number);
+  std::vector<AddedAcountInfo> AddAccounts(size_t number);
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
-  absl::optional<size_t> GetAccountIndex(const std::string& address) const;
-  size_t GetAccountsNumber() const;
   // Only support removing accounts from the back to prevents gaps
   void RemoveAccount();
 
@@ -60,13 +63,16 @@ class HDKeyring {
  protected:
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddressInternal(HDKeyBase* hd_key) const = 0;
+  virtual std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const = 0;
+
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKeyBase> hd_key);
   HDKeyBase* GetHDKeyFromAddress(const std::string& address);
 
   std::unique_ptr<HDKeyBase> root_;
-  std::unique_ptr<HDKeyBase> master_key_;
   std::vector<std::unique_ptr<HDKeyBase>> accounts_;
+  // TODO(apaymyshev): make separate abstraction for imported keys as they are
+  // not HD keys.
   // (address, key)
   base::flat_map<std::string, std::unique_ptr<HDKeyBase>> imported_accounts_;
 

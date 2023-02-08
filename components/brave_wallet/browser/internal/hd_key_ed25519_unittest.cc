@@ -18,6 +18,7 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
 
   // m
   auto master_key_base = HDKeyEd25519::GenerateFromSeed(bytes);
+  EXPECT_EQ(master_key_base->GetPath(), "m");
   HDKeyEd25519* master_key = static_cast<HDKeyEd25519*>(master_key_base.get());
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(master_key->GetPrivateKeyBytes())),
@@ -31,6 +32,7 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
   // m/0'/1'/2'/2'/1000000000'
   auto child_base =
       master_key->DeriveChildFromPath("m/0'/1'/2'/2'/1000000000'");
+  EXPECT_EQ(child_base->GetPath(), "m/0'/1'/2'/2'/1000000000'");
   HDKeyEd25519* child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793");
@@ -40,7 +42,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "3sVsV9myuRDg4rio4n3ftoP3NsUDzjVk6i8WiTg9veDsiALQjt9QEfUckJkutYUgzm"
             "wwz55D49JUDFic5Fu2gDjX");
   // m/0'
-  child_base = master_key->DeriveChild(0);
+  child_base = master_key->DeriveHardenedChild(0);
+  EXPECT_EQ(child_base->GetPath(), "m/0'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "68e0fe46dfb67e368c75379acec591dad19df3cde26e63b93a8e704f1dade7a3");
@@ -50,7 +53,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "36crUN2YvuPXEpRXNmdtv5W1veeXHZvMqSe4Egqu4Ski9FHtbdizagf9Kfj8e7sD4S"
             "e5YCqQQ2vpUuKGycM8WhF9");
   // m/0'/1'
-  child_base = child->DeriveChild(1);
+  child_base = child->DeriveHardenedChild(1);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/1'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "b1d0bad404bf35da785a64ca1ac54b2617211d2777696fbffaf208f746ae84f2");
@@ -60,7 +64,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "4ZCMMnibQjY732c95g1bK5aWzZpR3H1HAqGMeh1B4xpcUWkpxJyUVfwqVBjft1bpRA"
             "WjiJTaUUPWFJEqKWn6cVZp");
   // m/0'/1'/2'
-  child_base = child->DeriveChild(2);
+  child_base = child->DeriveHardenedChild(2);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/1'/2'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "92a5b23c0b8a99e37d07df3fb9966917f5d06e02ddbd909c7e184371463e9fc9");
@@ -70,7 +75,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "3w45HeUP7x8DhVFxmUwsww19XUdxNZeTuMQQBFJCXAaGtYLvjUVvWovNX7aKpjp5pa"
             "YERPr1jgWEvGeemRm2bCBJ");
   // m/0'/1'/2'/2'
-  child_base = child->DeriveChild(2);
+  child_base = child->DeriveHardenedChild(2);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/1'/2'/2'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "30d1dc7e5fc04c31219ab25a27ae00b50f6fd66622f6e9c913253d6511d1e662");
@@ -80,7 +86,8 @@ TEST(HDKeyEd25519UnitTest, TestVector1) {
             "ycUieXQauHN9msp7beGkDcUPwF4g3YhzqUXwVihv8PJbF96Eyeh1PFTxhzP4AaXt5U"
             "QCR3mVsrs8AiPCKMCLs2s");
   // m/0'/1'/2'/2'/1000000000'
-  child_base = child->DeriveChild(1000000000);
+  child_base = child->DeriveHardenedChild(1000000000);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/1'/2'/2'/1000000000'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "8f94d394a8e8fd6b1bc2f3f49f5c47e385281d5c17e65324b0f62483e37e8793");
@@ -101,6 +108,7 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
 
   // m
   auto master_key_base = HDKeyEd25519::GenerateFromSeed(bytes);
+  EXPECT_EQ(master_key_base->GetPath(), "m");
   HDKeyEd25519* master_key = static_cast<HDKeyEd25519*>(master_key_base.get());
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(master_key->GetPrivateKeyBytes())),
@@ -113,6 +121,7 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
   // m/0'/2147483647'/1'/2147483646'/2'
   auto child_base =
       master_key->DeriveChildFromPath("m/0'/2147483647'/1'/2147483646'/2'");
+  EXPECT_EQ(child_base->GetPath(), "m/0'/2147483647'/1'/2147483646'/2'");
   HDKeyEd25519* child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d");
@@ -122,7 +131,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
             "2hhXd52y2dVVJGUkr6kikm3LcMQcPSwhWaB1GDU7nAMRWXbjAuG1G9mjdSETpAEAJ1"
             "vV9nQrvhARxQDc6iEEbpU7");
   // m/0'
-  child_base = master_key->DeriveChild(0);
+  child_base = master_key->DeriveHardenedChild(0);
+  EXPECT_EQ(child_base->GetPath(), "m/0'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "1559eb2bbec5790b0c65d8693e4d0875b1747f4970ae8b650486ed7470845635");
@@ -132,7 +142,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
             "Rm2NBwPiLaJoWaetGVz9Jy1T477CS2FfM4Q5JmWgCLRhX54T8zHX57RH6LgR2kRXTc"
             "DwPVMAQi4nxFVH2DJiXkA");
   // m/0'/2147483647'
-  child_base = child->DeriveChild(2147483647);
+  child_base = child->DeriveHardenedChild(2147483647);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/2147483647'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "ea4f5bfe8694d8bb74b7b59404632fd5968b774ed545e810de9c32a4fb4192f4");
@@ -142,7 +153,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
             "5gi27AKyRrB5rvX9yPT39WpRak9B5QAXSZLvFDoqb7nQGhKLTqhTLeUgax4FVGGurZ"
             "PQNjRX6N9sn4o7f5rSAeWG");
   // m/0'/2147483647'/1'
-  child_base = child->DeriveChild(1);
+  child_base = child->DeriveHardenedChild(1);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/2147483647'/1'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "3757c7577170179c7868353ada796c839135b3d30554bbb74a4b1e4a5a58505c");
@@ -152,7 +164,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
             "27BCpwH2qcy7ANSVAisHjBN3CQyfzKyV4qcSet2YP1X5aCsoKS9kwcxqvJdVNcBWN3"
             "xuKFviozGBrUsbhXumYa9z");
   // m/0'/2147483647'/1'/2147483646'
-  child_base = child->DeriveChild(2147483646);
+  child_base = child->DeriveHardenedChild(2147483646);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/2147483647'/1'/2147483646'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "5837736c89570de861ebc173b1086da4f505d4adb387c6a1b1342d5e4ac9ec72");
@@ -162,7 +175,8 @@ TEST(HDKeyEd25519UnitTest, TestVector2) {
             "2mJCNeA9JefF3B2gikqrR22BWa2ETCZNwijZvDn7XktHRVYj7sXhTt93sr7SqkBUp8"
             "h2pLb6V3nzpYN4mB9paeDQ");
   // m/0'/2147483647'/1'/2147483646'/2'
-  child_base = child->DeriveChild(2);
+  child_base = child->DeriveHardenedChild(2);
+  EXPECT_EQ(child_base->GetPath(), "m/0'/2147483647'/1'/2147483646'/2'");
   child = static_cast<HDKeyEd25519*>(child_base.get());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(child->GetPrivateKeyBytes())),
             "551d333177df541ad876a60ea71f00447931c0a9da16f227c11ea080d7391b8d");
@@ -188,7 +202,7 @@ TEST(HDKeyEd25519UnitTest, Errors) {
   EXPECT_FALSE(child2);
 
   // index is too big for hardened index
-  auto child3 = master_key->DeriveChild(0x80000000);
+  auto child3 = master_key->DeriveHardenedChild(0x80000000);
   EXPECT_FALSE(child3);
 }
 
@@ -237,6 +251,7 @@ TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
             "YbQtaJQKLXET9jVjepWXe");
   EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),
             "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+  EXPECT_EQ(master_key->GetPath(), "");
 
   // 31 bytes
   private_key.clear();

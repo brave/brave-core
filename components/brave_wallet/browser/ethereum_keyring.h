@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETHEREUM_KEYRING_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -50,6 +51,7 @@ class EthereumKeyring : public HDKeyring {
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key) const override;
+  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
 };
 
 }  // namespace brave_wallet

@@ -60,12 +60,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static const base::Value* GetPrefForKeyring(const PrefService& profile_prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static base::Value::Dict& GetPrefForKeyringUpdate(PrefService* profile_prefs,
-                                                    const std::string& key,
-                                                    const std::string& id);
-  static std::vector<std::string> GetAvailableKeyringsFromPrefs(
-      PrefService* profile_prefs);
-  // If keyring dicionary for id doesn't exist, it will be created.
+  // For testing only.
   static void SetPrefForKeyring(PrefService* profile_prefs,
                                 const std::string& key,
                                 base::Value value,
@@ -79,48 +74,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                        base::span<const uint8_t> bytes,
                                        const std::string& id);
 
-  // Account path will be used as key in kAccountMetas
-  static void SetAccountMetaForKeyring(
-      PrefService* profile_prefs,
-      const std::string& account_path,
-      const absl::optional<std::string> name,
-      const absl::optional<std::string> address,
-      const std::string& id);
   static absl::optional<std::string> GetKeyringIdForCoinNonFIL(
       mojom::CoinType coin);
-  static std::string GetAccountNameForKeyring(const PrefService& profile_prefs,
-                                              const std::string& account_path,
-                                              const std::string& id);
-  static std::string GetAccountAddressForKeyring(
-      const PrefService& profile_prefs,
-      const std::string& account_path,
-      const std::string& id);
-
-  static std::string GetAccountPathByIndex(
-      size_t index,
-      const std::string& keyring_id = mojom::kDefaultKeyringId);
-
-  struct ImportedAccountInfo {
-    ImportedAccountInfo(const std::string& account_name,
-                        const std::string& account_address,
-                        const std::string& encrypted_private_key,
-                        mojom::CoinType coin);
-    ~ImportedAccountInfo();
-    ImportedAccountInfo(const ImportedAccountInfo& other);
-    std::string account_name;
-    std::string account_address;
-    std::string encrypted_private_key;
-    mojom::CoinType coin;
-  };
-  static void SetImportedAccountForKeyring(PrefService* profile_prefs,
-                                           const ImportedAccountInfo& info,
-                                           const std::string& id);
-  static std::vector<ImportedAccountInfo> GetImportedAccountsForKeyring(
-      const PrefService& profile_prefs,
-      const std::string& id);
-  static void RemoveImportedAccountForKeyring(PrefService* profile_prefs,
-                                              const std::string& address,
-                                              const std::string& id);
 
   mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
@@ -200,7 +155,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void Reset(bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id) const;
-  bool IsHardwareAccount(const std::string& account) const;
+  bool IsHardwareAccount(const std::string& keyring_id,
+                         const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -356,7 +312,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& private_key);
   bool IsKeyringExist(const std::string& keyring_id) const;
   bool LazilyCreateKeyring(const std::string& keyring_id);
-  size_t GetAccountMetasNumberForKeyring(const std::string& id) const;
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       const std::string& id) const;

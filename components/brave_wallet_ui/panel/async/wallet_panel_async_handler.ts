@@ -12,7 +12,6 @@ import {
   WalletPanelState,
   PanelState,
   WalletState,
-  HardwareInfo,
   WalletRoutes,
   SerializableTransactionInfo,
   SerializableSignMessageRequest,
@@ -194,7 +193,8 @@ handler.on(PanelActions.cancelConnectToSite.type, async (store: Store, payload: 
 handler.on(PanelActions.cancelConnectHardwareWallet.type, async (store: Store, payload: CancelConnectHardwareWalletPayload) => {
   const found = await findHardwareAccountInfo(payload.accountAddress)
   if (found && found.hardware) {
-    const info: HardwareInfo = found.hardware
+    const info: BraveWallet.HardwareInfo = found.hardware
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     await cancelHardwareOperation(info.vendor as HardwareVendor, payload.coinType)
   }
   // Navigating to main panel view will unmount ConnectHardwareWalletPanel
@@ -207,7 +207,7 @@ handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, tx
   if (!found || !found.hardware) {
     return
   }
-  const hardwareAccount: HardwareInfo = found.hardware
+  const hardwareAccount: BraveWallet.HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
@@ -445,6 +445,7 @@ handler.on(PanelActions.signMessageHardware.type, async (store, messageData: Ser
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
   const signed = await signMessageWithHardwareKeyring(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     info.vendor as HardwareVendor,
     info.path,
     messageData
@@ -515,6 +516,7 @@ handler.on(PanelActions.signTransactionHardware.type, async (store, messageData:
 
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.rawMessage, messageData.coin, () => {
     store.dispatch(PanelActions.signTransaction([messageData]))
   })
@@ -576,6 +578,7 @@ handler.on(PanelActions.signAllTransactionsHardware.type, async (store, messageD
   // Send serialized requests to hardware keyring to sign.
   let payload: SignAllTransactionsProcessedPayload = { approved: true, id: messageData.id, signatures: [] }
   for (const rawMessage of messageData.rawMessages) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const signed = await signRawTransactionWithHardwareKeyring(info.vendor as HardwareVendor, info.path, rawMessage, messageData.coin, () => {
       store.dispatch(PanelActions.signAllTransactions([messageData]))
     })

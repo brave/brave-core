@@ -955,7 +955,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
   }
 
   base::Value formed_response;
-  if (!keyring_service_->IsHardwareAccount(address)) {
+  if (!keyring_service_->IsHardwareAccount(mojom::kDefaultKeyringId, address)) {
     auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
         address, message, is_eip712);
     if (!signature_with_err.signature) {

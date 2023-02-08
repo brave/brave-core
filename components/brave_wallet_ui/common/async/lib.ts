@@ -13,7 +13,6 @@ import {
   BraveWallet,
   BalancePayload,
   WalletAccountType,
-  AccountInfo,
   BraveKeyrings,
   GetBlockchainTokenInfoReturnInfo,
   SupportedCoinTypes,
@@ -197,7 +196,9 @@ export async function getBlockchainTokenInfo (contractAddress: string): Promise<
   return (await apiProxy.assetRatioService.getTokenInfo(contractAddress))
 }
 
-export async function findHardwareAccountInfo (address: string): Promise<AccountInfo | false> {
+export async function findHardwareAccountInfo (
+  address: string
+): Promise<BraveWallet.AccountInfo | false> {
   const apiProxy = getAPIProxy()
   const result = (await apiProxy.walletHandler.getWalletInfo()).walletInfo
   for (const account of result.accountInfos) {

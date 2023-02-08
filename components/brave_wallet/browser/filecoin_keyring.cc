@@ -199,4 +199,11 @@ absl::optional<std::string> FilecoinKeyring::SignTransaction(
   return tx->GetSignedTransaction(hd_key->GetPrivateKeyBytes());
 }
 
+std::unique_ptr<HDKeyBase> FilecoinKeyring::DeriveAccount(
+    uint32_t index) const {
+  // Mainnet m/44'/461'/0'/0/{index}
+  // Testnet m/44'/1'/0'/0/{index}
+  return root_->DeriveNormalChild(index);
+}
+
 }  // namespace brave_wallet

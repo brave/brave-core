@@ -562,9 +562,7 @@ struct AccountInfo {
   bool is_imported;
   HardwareInfo? hardware;
   CoinType coin;
-  // Keyring, account is attached on.
-  // Used for separate filecoin networks in the UI.
-  string? keyring_id;
+  string keyring_id;
 };
 
 struct KeyringInfo {

@@ -15,21 +15,26 @@ HDKeyring::~HDKeyring() = default;
 void HDKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                    const std::string& hd_path) {
   if (!seed.empty()) {
-    std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromSeed(seed);
-    master_key_ = std::unique_ptr<HDKeyBase>{hd_key.release()};
-    if (master_key_) {
-      root_ = master_key_->DeriveChildFromPath(hd_path);
+    if (auto master_key = HDKey::GenerateFromSeed(seed)) {
+      root_ = master_key->DeriveChildFromPath(hd_path);
     }
   }
 }
 
-void HDKeyring::AddAccounts(size_t number) {
+std::vector<AddedAcountInfo> HDKeyring::AddAccounts(size_t number) {
+  std::vector<AddedAcountInfo> result;
+  if (!root_) {
+    return result;
+  }
+
   size_t cur_accounts_number = accounts_.size();
   for (size_t i = cur_accounts_number; i < cur_accounts_number + number; ++i) {
-    if (root_) {
-      accounts_.push_back(root_->DeriveChild(i));
-    }
+    auto& added_account = accounts_.emplace_back(DeriveAccount(i));
+    result.push_back(
+        {added_account->GetPath(), GetAddressInternal(added_account.get())});
   }
+
+  return result;
 }
 
 std::vector<std::string> HDKeyring::GetAccounts() const {
@@ -38,20 +43,6 @@ std::vector<std::string> HDKeyring::GetAccounts() const {
     addresses.push_back(GetAddress(i));
   }
   return addresses;
-}
-
-absl::optional<size_t> HDKeyring::GetAccountIndex(
-    const std::string& address) const {
-  for (size_t i = 0; i < accounts_.size(); ++i) {
-    if (GetAddress(i) == address) {
-      return i;
-    }
-  }
-  return absl::nullopt;
-}
-
-size_t HDKeyring::GetAccountsNumber() const {
-  return accounts_.size();
 }
 
 void HDKeyring::RemoveAccount() {
@@ -101,7 +92,7 @@ std::string HDKeyring::GetAddress(size_t index) const {
 }
 
 std::string HDKeyring::GetDiscoveryAddress(size_t index) const {
-  if (auto key = root_->DeriveChild(index)) {
+  if (auto key = DeriveAccount(index)) {
     return GetAddressInternal(key.get());
   }
   return std::string();
