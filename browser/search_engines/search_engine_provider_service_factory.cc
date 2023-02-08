@@ -87,4 +87,8 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
   registry->RegisterStringPref(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                std::string(),
                                user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+  registry->RegisterDictionaryPref(
+      prefs::kSyncedDefaultPrivateSearchProviderData,
+      base::Value(base::Value::Type::DICT),
+      user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 }

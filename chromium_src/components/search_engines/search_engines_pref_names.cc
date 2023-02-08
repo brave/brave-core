@@ -13,4 +13,6 @@ const char kAddOpenSearchEngines[] = "brave.other_search_engines_enabled";
 const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
 const char kSyncedDefaultPrivateSearchProviderGUID[] =
     "brave.default_private_search_provider_guid";
+const char kSyncedDefaultPrivateSearchProviderData[] =
+    "brave.default_private_search_provider_data";
 }  // namespace prefs
