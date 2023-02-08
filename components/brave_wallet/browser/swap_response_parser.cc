@@ -24,6 +24,24 @@ constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
 constexpr char kJupiterNoRoutesMessage[] =
     "No routes found for the input and output mints";
 
+absl::optional<double> ParsePriceImpactPct(const base::Value& value) {
+  // null value is considered as 0 price impact.
+  if (value.is_none()) {
+    return 0.0;
+  }
+
+  double result;
+  if (value.is_string()) {
+    if (!base::StringToDouble(value.GetString(), &result)) {
+      return absl::nullopt;
+    }
+
+    return result;
+  }
+
+  return absl::nullopt;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -205,6 +223,7 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
   //      ],
   //      "timeTaken": "0.044471802000089156"
   //    }
+
   auto quote_value =
       swap_responses::JupiterQuoteResponse::FromValue(json_value);
   if (!quote_value)
@@ -224,9 +243,12 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
       return nullptr;
     route.swap_mode = route_value.swap_mode;
 
-    if (!base::StringToDouble(route_value.price_impact_pct,
-                              &route.price_impact_pct))
+    const auto& route_price_impact_pct =
+        ParsePriceImpactPct(route_value.price_impact_pct);
+    if (!route_price_impact_pct) {
       return nullptr;
+    }
+    route.price_impact_pct = *route_price_impact_pct;
 
     for (const auto& market_info_value : route_value.market_infos) {
       mojom::JupiterMarketInfo market_info;
@@ -243,9 +265,13 @@ mojom::JupiterQuotePtr ParseJupiterQuote(const base::Value& json_value) {
       if (!base::StringToUint64(market_info_value.out_amount,
                                 &market_info.out_amount))
         return nullptr;
-      if (!base::StringToDouble(market_info_value.price_impact_pct,
-                                &market_info.price_impact_pct))
+
+      const auto& market_info_price_impact_pct =
+          ParsePriceImpactPct(market_info_value.price_impact_pct);
+      if (!market_info_price_impact_pct) {
         return nullptr;
+      }
+      market_info.price_impact_pct = *market_info_price_impact_pct;
 
       // Parse lpFee->amount field as a JSON integer field, since the
       // values are typically very small, and intermediate conversion to string
