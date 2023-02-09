@@ -32,9 +32,10 @@ import {
   AssetIcon,
   NameColumn,
   Spacer,
-  NetworkDescriptionText
+  NetworkDescriptionText,
+  ButtonArea
 } from './style'
-import { IconsWrapper, NetworkIconWrapper } from '../../shared/style'
+import { IconsWrapper, NetworkIconWrapper, SellButton, SellButtonRow } from '../../shared/style'
 import { useSelector } from 'react-redux'
 
 interface Props {
@@ -43,6 +44,9 @@ interface Props {
   token: BraveWallet.BlockchainToken
   hideBalances?: boolean
   isPanel?: boolean
+  isAccountDetails?: boolean
+  isSellSupported?: boolean
+  showSellModal?: () => void
 }
 
 export const PortfolioAssetItem = ({
@@ -50,7 +54,10 @@ export const PortfolioAssetItem = ({
   action,
   token,
   hideBalances,
-  isPanel
+  isPanel,
+  isAccountDetails,
+  isSellSupported,
+  showSellModal
 }: Props) => {
   // redux
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
@@ -101,6 +108,10 @@ export const PortfolioAssetItem = ({
     return token.symbol
   }, [tokensNetwork, token])
 
+  const isAssetsBalanceZero = React.useMemo(() => {
+    return new Amount(assetBalance).isZero()
+  }, [assetBalance])
+
   // effects
   React.useEffect(() => {
     // Randow value between 100 & 250
@@ -118,70 +129,79 @@ export const PortfolioAssetItem = ({
   return (
     <>
       {token.visible &&
-        <StyledWrapper disabled={isLoading} onClick={action}>
-          <NameAndIcon>
-            <IconsWrapper>
-              {!token.logo
-                ? <LoadingSkeleton
-                  circle={true}
-                  width={40}
-                  height={40}
-                />
-                : <>
-                  <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-                  {tokensNetwork && token.contractAddress !== '' && !isPanel &&
-                    <NetworkIconWrapper>
-                      <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
-                    </NetworkIconWrapper>
-                  }
-                </>
-              }
-            </IconsWrapper>
-            <NameColumn>
-              {!token.name && !token.symbol
-                ? <>
-                  <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
-                  <Spacer />
-                  <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
-                </>
-                : <>
-                  <AssetName>
-                    {token.name} {
-                      token.isErc721 && token.tokenId
-                        ? '#' + new Amount(token.tokenId).toNumber()
-                        : ''
+        <StyledWrapper>
+          <ButtonArea disabled={isLoading} rightMargin={isAccountDetails ? 10 : 0} onClick={action}>
+            <NameAndIcon>
+              <IconsWrapper>
+                {!token.logo
+                  ? <LoadingSkeleton
+                    circle={true}
+                    width={40}
+                    height={40}
+                  />
+                  : <>
+                    <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+                    {tokensNetwork && token.contractAddress !== '' && !isPanel &&
+                      <NetworkIconWrapper>
+                        <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                      </NetworkIconWrapper>
                     }
-                  </AssetName>
-                  <NetworkDescriptionText>{NetworkDescription}</NetworkDescriptionText>
-                </>
-              }
-            </NameColumn>
-          </NameAndIcon>
-          <BalanceColumn>
-            <WithHideBalancePlaceholder
-              size='small'
-              hideBalances={hideBalances ?? false}
-            >
+                  </>
+                }
+              </IconsWrapper>
+              <NameColumn>
+                {!token.name && !token.symbol
+                  ? <>
+                    <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
+                    <Spacer />
+                    <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
+                  </>
+                  : <>
+                    <AssetName>
+                      {token.name} {
+                        token.isErc721 && token.tokenId
+                          ? '#' + new Amount(token.tokenId).toNumber()
+                          : ''
+                      }
+                    </AssetName>
+                    <NetworkDescriptionText>{NetworkDescription}</NetworkDescriptionText>
+                  </>
+                }
+              </NameColumn>
+            </NameAndIcon>
+            <BalanceColumn>
+              <WithHideBalancePlaceholder
+                size='small'
+                hideBalances={hideBalances ?? false}
+              >
 
-              {!isNonFungibleToken &&
-                <>
-                  {formattedFiatBalance ? (
-                    <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
-                  ) : (
-                    <>
-                      <LoadingSkeleton width={60} height={18} />
-                      <Spacer />
-                    </>
-                  )}
-                </>
+                {!isNonFungibleToken &&
+                  <>
+                    {formattedFiatBalance ? (
+                      <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
+                    ) : (
+                      <>
+                        <LoadingSkeleton width={60} height={18} />
+                        <Spacer />
+                      </>
+                    )}
+                  </>
+                }
+                {formattedAssetBalance ? (
+                  <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+                ) : (
+                  <LoadingSkeleton width={60} height={18} />
+                )}
+              </WithHideBalancePlaceholder>
+            </BalanceColumn>
+          </ButtonArea>
+          {isAccountDetails &&
+            <SellButtonRow>
+              {isSellSupported && !isAssetsBalanceZero &&
+                <SellButton onClick={showSellModal}>{getLocale('braveWalletSell')}</SellButton>
               }
-              {formattedAssetBalance ? (
-                <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
-              ) : (
-                <LoadingSkeleton width={60} height={18} />
-              )}
-            </WithHideBalancePlaceholder>
-          </BalanceColumn>
+            </SellButtonRow>
+          }
         </StyledWrapper>
       }
     </>

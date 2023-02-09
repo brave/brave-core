@@ -498,6 +498,45 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   }
 }
 
+TEST(BlockchainRegistryUnitTest, GetSellTokens) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  // Get Ramp sell tokens
+  base::RunLoop run_loop1;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
+            run_loop1.Quit();
+          }));
+  run_loop1.Run();
+
+  base::RunLoop run_loop2;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kPolygonMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Polygon");
+            run_loop2.Quit();
+          }));
+  run_loop2.Run();
+
+  base::RunLoop run_loop3;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kSolanaMainnet,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Solana");
+            run_loop3.Quit();
+          }));
+  run_loop3.Run();
+}
+
 TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();

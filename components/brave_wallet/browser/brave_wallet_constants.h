@@ -34,6 +34,8 @@ constexpr char kImageSourceHost[] = "erc-token-images";
 constexpr char kWyreID[] = "AC_MGNVBGHPA9T";
 constexpr char kWyreBaseUrl[] = "https://pay.sendwyre.com";
 constexpr char kRampBaseUrl[] = "https://buy.ramp.network";
+constexpr char kOffRampEnabledFlows[] = "ONRAMP,OFFRAMP";
+constexpr char kOffRampDefaultFlow[] = "OFFRAMP";
 constexpr char kRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 constexpr char kSardineStorefrontBaseURL[] = "https://crypto.sardine.ai";
 constexpr char kSardineClientTokensURL[] =
@@ -158,6 +160,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSend", IDS_BRAVE_WALLET_SEND},
     {"braveWalletSwap", IDS_BRAVE_WALLET_SWAP},
     {"braveWalletReset", IDS_BRAVE_WALLET_RESET},
+    {"braveWalletSell", IDS_BRAVE_WALLET_SELL},
+    {"braveWalletNotEnoughBalance", IDS_BRAVE_WALLET_NOT_ENOUGH_BALANCE},
     {"braveWalletSendToken", IDS_BRAVE_WALLET_SEND_TOKEN},
     {"braveWalletSendNFT", IDS_BRAVE_WALLET_SEND_NFT},
     {"braveWalletSelectToken", IDS_BRAVE_WALLET_SELECT_TOKEN},
@@ -756,6 +760,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNotValidFilAddress", IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS},
     {"braveWalletBuyWithWyre", IDS_BRAVE_WALLET_BUY_WITH_WYRE},
     {"braveWalletBuyWithRamp", IDS_BRAVE_WALLET_BUY_WITH_RAMP},
+    {"braveWalletSellWithProvider", IDS_BRAVE_WALLET_SELL_WITH_PROVIDER},
     {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
     {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
@@ -1214,6 +1219,7 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
 const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens();
+const std::vector<mojom::BlockchainToken>& GetRampSellTokens();
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&

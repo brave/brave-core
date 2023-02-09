@@ -7,7 +7,7 @@ import styled from 'styled-components'
 interface StyleProps {
   isPlaceholder: boolean
   panelBackground?: string
-  size: 'big' | 'small'
+  size: 'big' | 'medium' | 'small'
   marginLeft: number
   marginRight: number
 }
@@ -17,7 +17,7 @@ export const IconWrapper = styled.div<StyleProps>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: ${(p) => p.size === 'big' ? '40px' : '24px'};
+  width: ${(p) => p.size === 'big' ? '40px' : p.size === 'medium' ? '32px' : '24px'};
   height: ${(p) => p.isPlaceholder ? p.size === 'big' ? '40px' : '24px' : 'auto'};
   border-radius: ${(p) => p.isPlaceholder ? '100%' : '0px'};
   margin-right: ${(p) => `${p.marginRight}px`};

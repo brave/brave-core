@@ -655,6 +655,10 @@ enum OnRampProvider {
   kTransak = 3
 };
 
+enum OffRampProvider {
+  kRamp = 1
+};
+
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup.
@@ -671,6 +675,9 @@ interface BlockchainRegistry {
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
   // Obtains all tokens for multiple providers for the Buy UI 
   GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
+
+  // Obtains all tokens for the Sell UI
+  GetSellTokens(OffRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets.
   GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
@@ -809,6 +816,9 @@ interface KeyringService {
 interface AssetRatioService {
   // Obtains the URL for buying assets specifying currency
   GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+
+  // Obtains the URL for selling assets specifying currency
+  GetSellUrl(OffRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
 
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
