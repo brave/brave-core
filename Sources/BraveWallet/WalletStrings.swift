@@ -1674,6 +1674,13 @@ extension Strings {
       value: "Settings",
       comment: "The title of the settings option inside the menu when user clicks the three dots button beside assets search button."
     )
+    public static let helpCenter = NSLocalizedString(
+      "wallet.helpCenter",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Help Center",
+      comment: "The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel."
+    )
     public static let swapDexAggrigatorNote = NSLocalizedString(
       "wallet.swapDexAggrigatorNote",
       tableName: "BraveWallet",
