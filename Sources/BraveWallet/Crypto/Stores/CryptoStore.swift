@@ -20,7 +20,7 @@ enum PendingRequest: Equatable {
 extension PendingRequest: Identifiable {
   var id: String {
     switch self {
-    case .transactions: return "transactions"
+    case let .transactions(transactions): return "transactions-\(transactions.map(\.id))"
     case let .addChain(request): return "addChain-\(request.networkInfo.chainId)"
     case let .switchChain(chainRequest): return "switchChain-\(chainRequest.chainId)"
     case let .addSuggestedToken(tokenRequest): return "addSuggestedToken-\(tokenRequest.token.id)"
