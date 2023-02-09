@@ -6,6 +6,10 @@
 import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+// selectors
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
+
 // utils
 import {
   BraveWallet,
@@ -61,7 +65,7 @@ export const AddNftForm = (props: Props) => {
   const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
 
   // redux networks
-  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   // Form States
   const [tokenName, setTokenName] = React.useState<string>(selectedAsset?.name || '')
