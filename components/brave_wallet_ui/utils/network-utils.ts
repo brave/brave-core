@@ -55,8 +55,7 @@ export const getTokensNetwork = (networks: BraveWallet.NetworkInfo[], token: Bra
 type TxDataPresence = {
   ethTxData?: Partial<BraveWallet.TxDataUnion['ethTxData']> | undefined
   ethTxData1559?: Partial<BraveWallet.TxDataUnion['ethTxData1559']> | undefined
-  solanaTxData?:
-                 | Partial<BraveWallet.TxDataUnion['solanaTxData']>
+  solanaTxData?: Partial<BraveWallet.TxDataUnion['solanaTxData']>
     | SerializableSolanaTxData
     | undefined
   filTxData?: Partial<BraveWallet.TxDataUnion['filTxData']> | undefined
