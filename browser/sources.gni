@@ -68,6 +68,8 @@ brave_chrome_browser_visibility = [
 ]
 
 brave_chrome_browser_sources = [
+  "//brave/browser/brave_browser_features.cc",
+  "//brave/browser/brave_browser_features.h",
   "//brave/browser/brave_browser_main_extra_parts.cc",
   "//brave/browser/brave_browser_main_extra_parts.h",
   "//brave/browser/brave_browser_main_parts.cc",

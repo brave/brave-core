@@ -259,7 +259,7 @@
 # which we filter for privacy reasons.
 -FileSystemAccessBrowserTest.SafeBrowsing
 
-# These tests fail because of the Ephemeral Storage (they pass with 
+# These tests fail because of the Ephemeral Storage (they pass with
 # kBraveEphemeralStorage feature disabled).
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
@@ -287,7 +287,7 @@
 # is coming from Brave extension?
 -PrivacyBudgetBrowserTestWithTestRecorderParameterized/PrivacyBudgetBrowserTestWithTestRecorder.RecordingFeaturesCalledInWorker/*
 
-# This test times out because we Disable "Use a prediction service to load 
+# This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref).
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/PredictionManagerBrowserTest.*
@@ -436,6 +436,9 @@
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
 -MetricIntegrationTest.FirstInputDelay
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
+
+# Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
+-ContinueWhereILeftOffTest.SessionCookies
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
