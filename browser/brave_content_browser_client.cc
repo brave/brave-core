@@ -614,7 +614,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
+#if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   if (speedreader::IsSpeedreaderPanelV2Enabled()) {
     content::RegisterWebUIControllerInterfaceBinder<
         speedreader::mojom::PanelFactory, SpeedreaderPanelUI>(map);

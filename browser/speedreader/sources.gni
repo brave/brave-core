@@ -24,4 +24,11 @@ if (enable_speedreader) {
     "//components/keyed_service/core",
     "//content/public/browser",
   ]
+
+  if (is_android) {
+    brave_browser_speedreader_sources +=
+        [ "//brave/browser/android/speedreader/speedreader_utils.cc" ]
+
+    brave_browser_speedreader_deps += [ "//brave/build/android:jni_headers" ]
+  }
 }

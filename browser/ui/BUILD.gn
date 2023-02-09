@@ -500,7 +500,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_speedreader) {
+  if (enable_speedreader && !is_android) {
     deps += [ "//brave/components/speedreader" ]
 
     sources += [
