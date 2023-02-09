@@ -136,22 +136,13 @@ bool PlaylistService::AddItemsToPlaylist(
       continue;
     }
 
-    auto new_item = mojom::PlaylistItem::New();
-    new_item->id = new_item_id;
-    playlist->items.push_back(std::move(new_item));
-
     // Update the item's parent lists.
-    // This callback will be run in sync. So it's safe to bind raw ptr of this.
-    GetPlaylistItem(
-        new_item_id,
-        base::BindOnce(
-            [](PlaylistService* service, const std::string& playlist_id,
-               mojom::PlaylistItemPtr item) {
-              item->parents.push_back(playlist_id);
-              service->UpdatePlaylistItemValue(
-                  item->id, base::Value(ConvertPlaylistItemToValue(item)));
-            },
-            this, playlist_id));
+    auto new_item = GetPlaylistItem(new_item_id);
+    new_item->parents.push_back(playlist_id);
+    UpdatePlaylistItemValue(new_item->id,
+                            base::Value(ConvertPlaylistItemToValue(new_item)));
+
+    playlist->items.push_back(std::move(new_item));
   }
 
   playlists_update->Set(playlist_id, ConvertPlaylistToValue(playlist));
@@ -286,12 +277,33 @@ void PlaylistService::AddMediaFilesFromItems(
   if (items.empty())
     return;
 
-  base::ranges::for_each(items, [this, cache](const auto& item) {
+  base::flat_set<GURL> already_added_media;
+  base::ranges::transform(
+      GetAllPlaylistItems(),
+      std::inserter(already_added_media, already_added_media.end()),
+      [](const auto& item) { return item->media_source; });
+
+  std::vector<mojom::PlaylistItemPtr> filtered_items;
+  base::ranges::for_each(
+      items, [&already_added_media, &filtered_items](auto& item) {
+        if (already_added_media.count(item->media_source)) {
+          DVLOG(2) << "Skipping creating item: [id] " << item->id
+                   << " [media url]:" << item->media_source
+                   << " - The media source is already added";
+          return;
+        }
+        filtered_items.push_back(std::move(item));
+      });
+  if (filtered_items.empty()) {
+    return;
+  }
+
+  base::ranges::for_each(filtered_items, [this, cache](auto& item) {
     CreatePlaylistItem(item, cache);
   });
 
   std::vector<std::string> ids;
-  base::ranges::transform(items, std::back_inserter(ids),
+  base::ranges::transform(filtered_items, std::back_inserter(ids),
                           [](const auto& item) { return item->id; });
   AddItemsToPlaylist(
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, ids);
@@ -376,12 +388,15 @@ void PlaylistService::GetPlaylist(const std::string& id,
 
 void PlaylistService::GetAllPlaylistItems(
     GetAllPlaylistItemsCallback callback) {
+  std::move(callback).Run(GetAllPlaylistItems());
+}
+
+std::vector<mojom::PlaylistItemPtr> PlaylistService::GetAllPlaylistItems() {
   std::vector<mojom::PlaylistItemPtr> items;
   for (const auto it : prefs_->GetDict(kPlaylistItemsPref)) {
     items.push_back(ConvertValueToPlaylistItem(it.second.GetDict()));
   }
-
-  std::move(callback).Run(std::move(items));
+  return items;
 }
 
 void PlaylistService::GetPlaylistItem(const std::string& id,
