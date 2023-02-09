@@ -401,3 +401,26 @@ TEST_F(BraveShieldsDataControllerTest, SetBraveShieldsEnabledAsDefaultValue) {
                   ->GetDict("profile.content_settings.exceptions.braveShields")
                   .empty());
 }
+
+TEST_F(BraveShieldsDataControllerTest, AllowedOnceScripts) {
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 0u);
+  GetShieldsDataController()->AllowScriptsOnce(
+      std::vector<std::string>({"https://url1.com/script.js"}));
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 1u);
+  GetShieldsDataController()->AllowScriptsOnce(
+      std::vector<std::string>({"https://url2.com/script.js"}));
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 2u);
+  GetShieldsDataController()->HandleItemAllowedOnce(
+      brave_shields::kJavaScript, "https://url3.com/script.js");
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 3u);
+
+  // Making sure we exclude duplicates
+  GetShieldsDataController()->AllowScriptsOnce(
+      std::vector<std::string>({"https://url2.com/script.js"}));
+  GetShieldsDataController()->HandleItemAllowedOnce(
+      brave_shields::kJavaScript, "https://url3.com/script.js");
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 3u);
+
+  GetShieldsDataController()->ClearAllResourcesList();
+  EXPECT_EQ(GetShieldsDataController()->GetAllowedJsList().size(), 0u);
+}
