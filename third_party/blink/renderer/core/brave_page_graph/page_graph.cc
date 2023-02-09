@@ -198,10 +198,18 @@ PageGraph* GetPageGraphFromIsolate(v8::Isolate* isolate) {
   }
   blink::LocalFrame* frame = window->GetFrame();
   if (!frame) {
+    frame = window->GetDisconnectedFrame();
+  }
+  if (!frame) {
     return nullptr;
   }
 
-  return blink::PageGraph::From(*frame);
+  if (auto* top_local_frame =
+          blink::DynamicTo<blink::LocalFrame>(&frame->Tree().Top())) {
+    return blink::PageGraph::From(*top_local_frame);
+  } else {
+    return blink::PageGraph::From(*frame);
+  }
 }
 
 class V8PageGraphDelegate : public v8::page_graph::PageGraphDelegate {
