@@ -23,8 +23,8 @@ using ads::mojom::ConversionInfoPtr;
 using ads::mojom::SearchResultAdInfo;
 using ads::mojom::SearchResultAdInfoPtr;
 
-using SearchResultAdMap =
-    base::flat_map<std::string, ads::mojom::SearchResultAdInfoPtr>;
+using SearchResultAdMap = base::flat_map</*placement_id*/ std::string,
+                                         ads::mojom::SearchResultAdInfoPtr>;
 
 namespace brave_ads {
 
@@ -275,7 +275,7 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
   }
 
   for (const auto& [placement_id, search_result_ad] : search_result_ads) {
-    VLOG(6) << "Converted search result ad with \"" << kDataPlacementId
+    VLOG(6) << "A search result ad was delivered:\n \"" << kDataPlacementId
             << "\": " << search_result_ad->placement_id << "\n"
             << "  \"" << kDataCreativeInstanceId
             << "\": " << search_result_ad->creative_instance_id << "\n"

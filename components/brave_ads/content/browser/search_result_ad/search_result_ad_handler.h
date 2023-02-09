@@ -58,7 +58,8 @@ class SearchResultAdHandler final {
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
   bool should_trigger_viewed_event_ = true;
 
-  absl::optional<base::flat_map<std::string, ads::mojom::SearchResultAdInfoPtr>>
+  absl::optional<base::flat_map</*placement_id*/ std::string,
+                                ads::mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};

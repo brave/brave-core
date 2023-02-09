@@ -15,7 +15,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kSearchResultAdClickedPath[] = "/a/redirect";
-constexpr char kPlacementIdParameterName[] = "placement_id";
+constexpr char kPlacementIdQueryKey[] = "placement_id";
 
 }  // namespace
 
@@ -27,15 +27,17 @@ absl::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
     return {};
   }
 
-  base::StringPiece query_str = url.query_piece();
-  url::Component query(0, static_cast<int>(query_str.length()));
-  url::Component key;
-  url::Component value;
-  while (url::ExtractQueryKeyValue(query_str.data(), &query, &key, &value)) {
-    base::StringPiece key_str = query_str.substr(key.begin, key.len);
-    if (key_str == kPlacementIdParameterName) {
-      base::StringPiece value_str = query_str.substr(value.begin, value.len);
-      return static_cast<std::string>(value_str);
+  url::Component query(0, static_cast<int>(url.query_piece().length()));
+  url::Component query_key;
+  url::Component query_value;
+  while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &query_key,
+                                   &query_value)) {
+    base::StringPiece key =
+        url.query_piece().substr(query_key.begin, query_key.len);
+    if (key == kPlacementIdQueryKey) {
+      base::StringPiece value =
+          url.query_piece().substr(query_value.begin, query_value.len);
+      return static_cast<std::string>(value);
     }
   }
 

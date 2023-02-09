@@ -78,16 +78,16 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
 
   const absl::optional<std::string> placement_id =
       GetPlacementIdFromSearchResultAdClickedUrl(navigation_url);
-  if (placement_id.value_or("").empty()) {
+  if (!placement_id || placement_id->empty()) {
     return;
   }
 
-  auto it = search_result_ads_->find(*placement_id);
-  if (it == search_result_ads_->end()) {
+  auto iter = search_result_ads_->find(*placement_id);
+  if (iter == search_result_ads_->end()) {
     return;
   }
 
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = it->second;
+  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
