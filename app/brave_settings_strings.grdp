@@ -328,8 +328,8 @@
   <message name="IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL" desc="Label for button that adds filter lists URL">
     Add
   </message>
-  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER" desc="List URL header label for custom filters table">
-    List URL
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_TITLE_HEADER" desc="List URL header label for custom filters table">
+    List title
   </message>
   <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER" desc="Last updated header label for custom filters table">
     Last updated
