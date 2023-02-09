@@ -80,6 +80,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage_root.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage_sessionstorage.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/libxml_utils.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
@@ -180,6 +181,7 @@ using brave_page_graph::NodeTrackerFilter;
 using brave_page_graph::NormalizeUrl;
 using brave_page_graph::ScriptId;
 using brave_page_graph::TrackedRequest;
+using brave_page_graph::XmlUtf8String;
 
 namespace blink {
 
@@ -196,10 +198,18 @@ PageGraph* GetPageGraphFromIsolate(v8::Isolate* isolate) {
   }
   blink::LocalFrame* frame = window->GetFrame();
   if (!frame) {
+    frame = window->GetDisconnectedFrame();
+  }
+  if (!frame) {
     return nullptr;
   }
 
-  return blink::PageGraph::From(*frame);
+  if (auto* top_local_frame =
+          blink::DynamicTo<blink::LocalFrame>(&frame->Tree().Top())) {
+    return blink::PageGraph::From(*top_local_frame);
+  } else {
+    return blink::PageGraph::From(*frame);
+  }
 }
 
 class V8PageGraphDelegate : public v8::page_graph::PageGraphDelegate {
@@ -986,7 +996,7 @@ String PageGraph::ToGraphML() const {
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "is_root",
                   BAD_CAST(IsRootFrame() ? "true" : "false"));
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "frame_id",
-                  BAD_CAST frame_id_.Characters8());
+                  XmlUtf8String(frame_id_).get());
 
   xmlNodePtr time_container_node =
       xmlNewChild(desc_container_node, nullptr, BAD_CAST "time", nullptr);

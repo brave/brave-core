@@ -15,7 +15,9 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/graphics/dom_node_id.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "third_party/blink/renderer/platform/wtf/hash_functions.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
+#include "third_party/blink/renderer/platform/wtf/hash_traits.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
@@ -167,6 +169,12 @@ enum class StorageLocation {
   kSessionStorage,
 };
 CORE_EXPORT std::string StorageLocationToString(const StorageLocation location);
+
+template <typename KeyArg, typename MappedArg>
+using ZeroBasedHashMap = HashMap<KeyArg,
+                                 MappedArg,
+                                 WTF::DefaultHash<KeyArg>,
+                                 WTF::UnsignedWithZeroKeyHashTraits<KeyArg>>;
 
 }  // namespace brave_page_graph
 
