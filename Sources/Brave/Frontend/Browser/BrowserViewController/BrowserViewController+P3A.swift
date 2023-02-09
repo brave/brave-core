@@ -90,11 +90,17 @@ extension BrowserViewController {
       ],
       value: braveVPNDaysInMonthUsedStorage.combinedValue
     )
+    
+    usage.recordReturningUsageMetric()
   }
 }
 
 extension P3AFeatureUsage {
-  fileprivate static let braveVPNUsage: Self = .init(name: "vpn-usage", histogram: "Brave.VPN.LastUsageTime")
+  fileprivate static let braveVPNUsage: Self = .init(
+    name: "vpn-usage",
+    histogram: "Brave.VPN.LastUsageTime",
+    returningUserHistogram: "Brave.VPN.NewUserReturning"
+  )
 }
 
 extension P3ATimedStorage where Value == Int {
