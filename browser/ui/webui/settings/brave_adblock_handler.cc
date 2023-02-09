@@ -271,6 +271,14 @@ base::Value::List BraveAdBlockHandler::GetSubscriptions() {
     dict.Set("last_successful_update_attempt",
              subscription.last_successful_update_attempt.ToJsTime());
     dict.Set("last_updated_pretty_text", time_str);
+    if (subscription.homepage) {
+      dict.Set("homepage", *subscription.homepage);
+    }
+    if (subscription.title && !subscription.title->empty()) {
+      dict.Set("title", *subscription.title);
+    } else {
+      dict.Set("title", subscription.subscription_url.spec());
+    }
 
     list_value.Append(std::move(dict));
   }
