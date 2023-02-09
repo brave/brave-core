@@ -19,6 +19,8 @@ struct CryptoPagesView: View {
   @State private var isShowingSearch: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
 
+  @Environment(\.openWalletURLAction) private var openWalletURL
+
   var body: some View {
     _CryptoPagesView(
       keyringStore: keyringStore,
@@ -99,6 +101,9 @@ struct CryptoPagesView: View {
           Button(action: { isShowingSettings = true }) {
             Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
+          }
+          Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
+            Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
           }
         } label: {
           Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, systemImage: "ellipsis.circle")

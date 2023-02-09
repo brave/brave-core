@@ -25,6 +25,7 @@ public struct WalletPanelContainerView: View {
   var origin: URLOrigin
   var presentWalletWithContext: ((PresentingContext) -> Void)?
   var presentBuySendSwap: (() -> Void)?
+  var openWalletURLAction: ((URL) -> Void)?
   /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
   var buySendSwapBackground: InvisibleUIView = .init()
   
@@ -151,6 +152,11 @@ public struct WalletPanelContainerView: View {
         presentWalletWithContext?(.panelUnlockOrSetup)
       }
     }
+    .environment(
+      \.openWalletURLAction,
+      .init(action: { [openWalletURLAction] url in
+        openWalletURLAction?(url)
+      }))
   }
 }
 
@@ -166,6 +172,7 @@ struct WalletPanelView: View {
   var presentBuySendSwap: () -> Void
   var buySendSwapBackground: InvisibleUIView
   
+  @Environment(\.openWalletURLAction) private var openWalletURL
   @Environment(\.pixelLength) private var pixelLength
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
@@ -324,6 +331,9 @@ struct WalletPanelView: View {
       Divider()
       Button(action: { presentWalletWithContext(.settings) }) {
         Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
+      }
+      Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
+        Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
       }
     } label: {
       Image(systemName: "ellipsis")

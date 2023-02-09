@@ -35,6 +35,11 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       guard let self = self else { return }
       self.delegate?.walletPanel(self, presentWalletWithContext: context, walletStore: walletStore)
     }
+    rootView.openWalletURLAction = { [unowned self] url in
+      (presentingViewController ?? self).dismiss(animated: true) {
+        self.delegate?.openWalletURL(url)
+      }
+    }
     rootView.presentBuySendSwap = { [weak self] in
       guard let self = self, let store = walletStore.cryptoStore else { return }
       let controller = FixedHeightHostingPanModalController(

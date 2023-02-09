@@ -18,6 +18,9 @@ struct WalletConstants {
   
   /// The origin used for transactions/requests from Brave Wallet.
   static let braveWalletOrigin: URLOrigin = .init(url: URL(string: "chrome://wallet")!)
+  
+  /// The url to Brave Help Center for Wallet.
+  static let braveWalletSupportURL = URL(string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [
