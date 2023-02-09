@@ -299,7 +299,7 @@ void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {
     return;
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(
+  if (!tabs::features::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::OnPaintBackground(canvas);
     return;
