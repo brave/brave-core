@@ -107,10 +107,9 @@ base::FilePath GetVpnServiceProfileDir() {
   if (program_data.empty()) {
     return base::FilePath();
   }
-  base::FilePath common_app_data(base::UTF8ToWide(program_data));
-  common_app_data = common_app_data.Append(install_static::kCompanyPathName);
-  common_app_data = common_app_data.Append(brave_vpn::GetVpnServiceName());
-  return common_app_data;
+  return base::FilePath(base::UTF8ToWide(program_data))
+      .Append(install_static::kCompanyPathName)
+      .Append(brave_vpn::GetVpnServiceName());
 }
 
 }  // namespace brave_vpn

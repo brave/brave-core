@@ -12,7 +12,6 @@
 #include "base/file_version_info.h"
 #include "base/logging.h"
 #include "base/notreached.h"
-#include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
@@ -55,11 +54,11 @@ void BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
   }
   install_static::InitializeProductDetailsForPrimaryModule();
   crash_reporter::SetCrashReporterClient(instance);
-  std::wstring vpn_data_dir = brave_vpn::GetVpnServiceProfileDir().value();
 
   crash_reporter::InitializeCrashpadWithEmbeddedHandler(
       true, kBraveVPNHelperProcessType,
-      install_static::WideToUTF8(vpn_data_dir), base::FilePath());
+      install_static::WideToUTF8(brave_vpn::GetVpnServiceProfileDir().value()),
+      base::FilePath());
 }
 
 bool BraveVPNHelperCrashReporterClient::ShouldCreatePipeName(
