@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
@@ -27,6 +28,7 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
@@ -324,6 +326,30 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   DCHECK(device_info_service);
 
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
+}
+
+void BraveSyncWorker::SetJoinSyncChainCallback(
+    base::OnceCallback<void(const bool&)> callback) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
+
+  if (!sync_service) {
+    return;
+  }
+
+  sync_service->SetJoinChainResultCallback(base::BindOnce(std::move(callback)));
+}
+
+void BraveSyncWorker::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const syncer::SyncProtocolError&)> callback) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
+
+  if (!sync_service) {
+    return;
+  }
+
+  sync_service->PermanentlyDeleteAccount(base::BindOnce(std::move(callback)));
 }
 
 syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
