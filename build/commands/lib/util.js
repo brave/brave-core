@@ -49,8 +49,7 @@ async function applyPatches() {
     s => s.path = path.join('third_party', 'catapult', s.path))
   devtoolsFrontendPatchStatus.forEach(
     s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
-  const allPatchStatus =
-    chromiumPatchStatus.concat(v8PatchStatus).concat(catapultPatchStatus).concat(devtoolsFrontendPatchStatus)
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus]
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
