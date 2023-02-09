@@ -45,6 +45,10 @@ void HttpsUpgradeExceptionsService::LoadHTTPSUpgradeExceptions(
 
 void HttpsUpgradeExceptionsService::OnDATFileDataReady(
     const std::string& contents) {
+  if (contents.empty()) {
+    // We don't have the file yet.
+    return;
+  }
   std::vector<std::string> lines = base::SplitString(
       contents, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   for (const auto& line : lines) {
