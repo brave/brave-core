@@ -8,9 +8,9 @@
 #include <memory>
 #include <string>
 
-#include "base/check.h"
 #include "base/debug/leak_annotations.h"
 #include "base/file_version_info.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -54,12 +54,11 @@ void BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
   }
   install_static::InitializeProductDetailsForPrimaryModule();
   crash_reporter::SetCrashReporterClient(instance);
-  std::wstring user_data_dir;
-  install_static::GetUserDataDirectory(&user_data_dir, nullptr);
 
   crash_reporter::InitializeCrashpadWithEmbeddedHandler(
       true, kBraveVPNHelperProcessType,
-      install_static::WideToUTF8(user_data_dir), base::FilePath());
+      install_static::WideToUTF8(brave_vpn::GetVpnServiceProfileDir().value()),
+      base::FilePath());
 }
 
 bool BraveVPNHelperCrashReporterClient::ShouldCreatePipeName(
@@ -124,18 +123,19 @@ int BraveVPNHelperCrashReporterClient::GetResultCodeRespawnFailed() {
 
 bool BraveVPNHelperCrashReporterClient::GetCrashDumpLocation(
     std::wstring* crash_dir) {
-  *crash_dir = install_static::GetCrashDumpLocation();
-  return !crash_dir->empty();
+  auto profile_dir = brave_vpn::GetVpnServiceProfileDir();
+  *crash_dir = (profile_dir.Append(L"Crashpad")).value();
+  return !profile_dir.empty();
 }
 
 bool BraveVPNHelperCrashReporterClient::GetCrashMetricsLocation(
     std::wstring* metrics_dir) {
-  install_static::GetUserDataDirectory(metrics_dir, nullptr);
+  *metrics_dir = brave_vpn::GetVpnServiceProfileDir().value();
   return !metrics_dir->empty();
 }
 
 bool BraveVPNHelperCrashReporterClient::IsRunningUnattended() {
-  return true;
+  return false;
 }
 
 bool BraveVPNHelperCrashReporterClient::GetCollectStatsConsent() {
