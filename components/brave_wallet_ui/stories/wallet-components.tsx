@@ -24,7 +24,6 @@ import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { mockNetwork } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
-import { IpfsDetailsModal } from '../components/desktop/ipfs-details-modal/ipfs-details-modal'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -146,7 +145,7 @@ export const _NftIpfsBanner = () => {
 
   return (
     <div style={{ width: '855px' }}>
-      {showBanner && <NftIpfsBanner onDismiss={onDismiss} status='uploading' />}
+      {showBanner && <NftIpfsBanner onDismiss={onDismiss} />}
     </div>
   )
 }
@@ -209,21 +208,11 @@ _NftDetails.story = {
 export const _NftPinningStatus = () => {
   return (
     <NftPinningStatus
-      pinningStatusCode='failed'
+      pinningStatusCode={1}
     />
   )
 }
 
 _NftPinningStatus.story = {
   title: 'NFT Pinning Status'
-}
-
-export const _IpfsDetailsModal = () => {
-  return (
-    <IpfsDetailsModal />
-  )
-}
-
-_IpfsDetailsModal.story = {
-  title: 'IPFS Details Modal'
 }
