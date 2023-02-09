@@ -591,6 +591,7 @@ public class BrowserViewController: UIViewController {
     AppReviewManager.shared.processMainCriteria(for: .daysInUse)
     
     maybeRecordInitialShieldsP3A()
+    recordVPNUsageP3A(vpnEnabled: BraveVPN.isConnected)
   }
 
   private func setupAdsNotificationHandler() {
@@ -759,6 +760,10 @@ public class BrowserViewController: UIViewController {
   @objc func vpnConfigChanged() {
     // Load latest changes to the vpn.
     NEVPNManager.shared().loadFromPreferences { _ in }
+    
+    if case .purchased(let enabled) = BraveVPN.vpnState, enabled {
+      recordVPNUsageP3A(vpnEnabled: true)
+    }
   }
 
   @objc func appDidBecomeActiveNotification() {

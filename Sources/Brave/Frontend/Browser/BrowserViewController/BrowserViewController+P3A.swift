@@ -64,6 +64,19 @@ extension BrowserViewController {
     let amountOfDataSavedInMB = dataSavedStorage.combinedValue / 1024 / 1024
     UmaHistogramRecordValueToBucket("Brave.Savings.BandwidthSavingsMB", buckets: buckets, value: amountOfDataSavedInMB)
   }
+  
+  func recordVPNUsageP3A(vpnEnabled: Bool) {
+    var usage = P3AFeatureUsage.braveVPNUsage
+    if vpnEnabled {
+      usage.recordUsage()
+    } else {
+      usage.recordHistogram()
+    }
+  }
+}
+
+extension P3AFeatureUsage {
+  fileprivate static let braveVPNUsage: Self = .init(name: "vpn-usage", histogram: "Brave.VPN.LastUsageTime")
 }
 
 extension P3ATimedStorage where Value == Int {
