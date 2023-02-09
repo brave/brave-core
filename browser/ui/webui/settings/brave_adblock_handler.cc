@@ -102,14 +102,11 @@ void BraveAdBlockHandler::OnServiceUpdateEvent() {
 
 void BraveAdBlockHandler::GetRegionalLists(const base::Value::List& args) {
   AllowJavascript();
-  auto callback_id = args[0].GetString();
-
   auto regional_lists = g_brave_browser_process->ad_block_service()
                             ->regional_service_manager()
                             ->GetRegionalLists();
 
-  ResolveJavascriptCallback(base::Value(callback_id),
-                            base::Value(std::move(regional_lists)));
+  ResolveJavascriptCallback(args[0], regional_lists);
 }
 
 void BraveAdBlockHandler::EnableFilterList(const base::Value::List& args) {
@@ -128,22 +125,16 @@ void BraveAdBlockHandler::EnableFilterList(const base::Value::List& args) {
 
 void BraveAdBlockHandler::GetListSubscriptions(const base::Value::List& args) {
   AllowJavascript();
-  auto callback_id = args[0].GetString();
-
-  ResolveJavascriptCallback(base::Value(callback_id),
-                            base::Value(GetSubscriptions()));
+  ResolveJavascriptCallback(args[0], GetSubscriptions());
 }
 
 void BraveAdBlockHandler::GetCustomFilters(const base::Value::List& args) {
   AllowJavascript();
-  auto callback_id = args[0].GetString();
-
   const std::string custom_filters = g_brave_browser_process->ad_block_service()
                                          ->custom_filters_provider()
                                          ->GetCustomFilters();
 
-  ResolveJavascriptCallback(base::Value(callback_id),
-                            base::Value(custom_filters));
+  ResolveJavascriptCallback(args[0], base::Value(custom_filters));
 }
 
 void BraveAdBlockHandler::AddSubscription(const base::Value::List& args) {
@@ -252,8 +243,7 @@ void BraveAdBlockHandler::UpdateCustomFilters(const base::Value::List& args) {
 }
 
 void BraveAdBlockHandler::RefreshSubscriptionsList() {
-  FireWebUIListener("brave_adblock.onGetListSubscriptions",
-                    base::Value(GetSubscriptions()));
+  FireWebUIListener("brave_adblock.onGetListSubscriptions", GetSubscriptions());
 }
 
 base::Value::List BraveAdBlockHandler::GetSubscriptions() {

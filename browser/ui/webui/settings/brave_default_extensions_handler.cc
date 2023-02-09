@@ -459,7 +459,7 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
-  ResolveJavascriptCallback(args[0], base::Value(::GetResolveMethodList()));
+  ResolveJavascriptCallback(args[0], ::GetResolveMethodList());
 }
 
 void BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList(

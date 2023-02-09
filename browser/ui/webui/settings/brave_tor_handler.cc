@@ -355,7 +355,7 @@ void BraveTorHandler::ResolveBridgesCaptcha(const base::Value::List& args) {
   AllowJavascript();
 
   if (!request_) {
-    RejectJavascriptCallback(args[0].Clone(), base::Value());
+    RejectJavascriptCallback(args[0], base::Value());
     return;
   }
 

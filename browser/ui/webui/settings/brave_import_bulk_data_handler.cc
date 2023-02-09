@@ -113,7 +113,7 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
     int browser_index = it.GetInt();
     importing_profiles_.insert(browser_index);
     base::Value::List single_profile_args;
-    single_profile_args.Append(base::Value(browser_index));
+    single_profile_args.Append(browser_index);
     single_profile_args.Append(args[1].Clone());
     BraveImportDataHandler::HandleImportData(single_profile_args);
   }

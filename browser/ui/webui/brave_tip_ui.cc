@@ -209,7 +209,7 @@ void TipMessageHandler::OnReconcileComplete(
   data.Set("result", static_cast<int>(result));
   data.Set("type", static_cast<int>(type));
 
-  FireWebUIListener("reconcileCompleted", base::Value(std::move(data)));
+  FireWebUIListener("reconcileCompleted", data);
 }
 
 void TipMessageHandler::OnUnblindedTokensReady(
@@ -405,7 +405,7 @@ void TipMessageHandler::GetRewardsParametersCallback(
     data.Set("payoutStatus", std::move(payout_status));
   }
 
-  FireWebUIListener("rewardsParametersUpdated", base::Value(std::move(data)));
+  FireWebUIListener("rewardsParametersUpdated", data);
 }
 
 void TipMessageHandler::GetRecurringTipsCallback(
@@ -422,7 +422,7 @@ void TipMessageHandler::GetRecurringTipsCallback(
     publishers.Append(std::move(publisher));
   }
 
-  FireWebUIListener("recurringTipsUpdated", base::Value(std::move(publishers)));
+  FireWebUIListener("recurringTipsUpdated", publishers);
 }
 
 void TipMessageHandler::GetPublisherBannerCallback(
@@ -449,7 +449,7 @@ void TipMessageHandler::GetPublisherBannerCallback(
     }
     result.Set("links", std::move(links));
 
-    FireWebUIListener("publisherBannerUpdated", base::Value(std::move(result)));
+    FireWebUIListener("publisherBannerUpdated", result);
   }
 }
 
@@ -509,7 +509,7 @@ void TipMessageHandler::FetchBalanceCallback(
     data.Set("balance", std::move(balance_value));
   }
 
-  FireWebUIListener("balanceUpdated", base::Value(std::move(data)));
+  FireWebUIListener("balanceUpdated", data);
 }
 
 void TipMessageHandler::OnGetExternalWallet(GetExternalWalletResult result) {
@@ -523,7 +523,7 @@ void TipMessageHandler::OnGetExternalWallet(GetExternalWalletResult result) {
     data.Set("status", static_cast<int>(wallet->status));
   }
 
-  FireWebUIListener("externalWalletUpdated", base::Value(std::move(data)));
+  FireWebUIListener("externalWalletUpdated", data);
 }
 
 }  // namespace

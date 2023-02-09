@@ -51,12 +51,11 @@ void BraveSearchEnginesHandler::OnModelChanged() {
 void BraveSearchEnginesHandler::HandleGetPrivateSearchEnginesList(
     const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
-  const base::Value& callback_id = args[0];
   AllowJavascript();
-  ResolveJavascriptCallback(callback_id, GetPrivateSearchEnginesList());
+  ResolveJavascriptCallback(args[0], GetPrivateSearchEnginesList());
 }
 
-base::Value BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
+base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
   // Construct list with normal profile's default list.
   // Normal and Private profile use same default list.
   int last_default_engine_index =
@@ -77,7 +76,7 @@ base::Value BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     defaults.Append(std::move(dict));
   }
 
-  return base::Value(std::move(defaults));
+  return defaults;
 }
 
 base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {
