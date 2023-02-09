@@ -177,15 +177,15 @@ export const TokenLists = ({
     return <>
       {sortedFungibleTokensList.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
       {!assetAutoDiscoveryCompleted && !hideAutoDiscovery &&
-				<PortfolioAssetItemLoadingSkeleton />
+        <PortfolioAssetItemLoadingSkeleton />
       }
       {nonFungibleTokens.length !== 0 &&
-				<>
-					<Spacer />
-					<DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-					<SubDivider />
+        <>
+          <Spacer />
+          <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+          <SubDivider />
           {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
-				</>
+        </>
       }
     </>
   }, [
@@ -220,11 +220,11 @@ export const TokenLists = ({
         <NetworkFilterSelector networkListSubset={networks} />
 
         {!hideAssetFilter &&
-					<AssetFilterSelector />
+          <AssetFilterSelector />
         }
 
         {!hideAccountFilter &&
-					<AccountFilterSelector />
+          <AccountFilterSelector />
         }
 
       </FilterTokenRow>
@@ -239,13 +239,13 @@ export const TokenLists = ({
       }
 
       {!hideAddButton &&
-				<ButtonRow>
-					<AddButton
-						buttonType='secondary'
-						onSubmit={showAddAssetsModal}
-						text={getLocale('braveWalletAccountsEditVisibleAssets')}
-					/>
-				</ButtonRow>
+        <ButtonRow>
+          <AddButton
+            buttonType='secondary'
+            onSubmit={showAddAssetsModal}
+            text={getLocale('braveWalletAccountsEditVisibleAssets')}
+          />
+        </ButtonRow>
       }
     </>
   )
