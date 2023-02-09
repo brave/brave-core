@@ -82,9 +82,11 @@ void BraveImportBulkDataHandler::PrepareProfile(
             // Asynchronously creates a new profile in the next available
             // multiprofile directory. Directories are named "profile_1",
             // "profile_2", etc., in sequence of creation.
+            DCHECK_LT(profiles::GetModernAvatarIconStartIndex(),
+                      profiles::GetDefaultAvatarIconCount());
             auto avatar_index =
                 base::RandInt(profiles::GetModernAvatarIconStartIndex(),
-                              profiles::GetDefaultAvatarIconCount());
+                              profiles::GetDefaultAvatarIconCount() - 1);
             ProfileManager::CreateMultiProfileAsync(
                 name, avatar_index, false,
                 base::BindOnce(
