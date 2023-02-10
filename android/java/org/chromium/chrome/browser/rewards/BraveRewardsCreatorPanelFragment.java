@@ -42,12 +42,11 @@ import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsPublisher;
-import org.chromium.chrome.browser.BraveRewardsPublisher.PublisherStatus;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.ledger.mojom.PublisherStatus;
 import org.chromium.ledger.mojom.WalletStatus;
 
 import java.math.RoundingMode;
@@ -200,13 +199,9 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
     }
 
     private void showVerifiedIcon(View view) {
-        @PublisherStatus
         int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
 
-        if (pubStatus == BraveRewardsPublisher.CONNECTED
-                || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
+        if (pubStatus != PublisherStatus.NOT_VERIFIED) {
             view.findViewById(R.id.publisher_favicon_verified).setVisibility(View.VISIBLE);
         }
     }
@@ -276,20 +271,18 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                 Log.e(TAG, "BraveRewardsCreatorPanelFragment" + e.getMessage());
             }
         }
-        @PublisherStatus
         int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId_);
         setPublisherNoteText(pubStatus, walletStatus);
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setPublisherNoteText(@PublisherStatus int pubStatus, int walletStatus) {
+    private void setPublisherNoteText(int pubStatus, int walletStatus) {
         String notePart1 = "";
         String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
         if (walletStatus == WalletStatus.NOT_CONNECTED) {
-            if (pubStatus == BraveRewardsPublisher.CONNECTED
-                    || pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                    || pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
-                    || pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED) {
+            if (pubStatus == PublisherStatus.UPHOLD_VERIFIED
+                    || pubStatus == PublisherStatus.BITFLYER_VERIFIED
+                    || pubStatus == PublisherStatus.GEMINI_VERIFIED) {
                 Log.d(TAG, "User is unverified and publisher is verified");
             } else {
                 notePart1 = getResources().getString(
@@ -297,16 +290,15 @@ public class BraveRewardsCreatorPanelFragment extends Fragment
                 Log.d(TAG, "User is unverified and publisher is unverified");
             }
         } else {
-            if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
+            if (pubStatus == PublisherStatus.NOT_VERIFIED) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_unverified_notice_text);
                 Log.d(TAG, "User is verified and publisher is unverified");
-            } else if (pubStatus == BraveRewardsPublisher.CONNECTED
-                    || (pubStatus == BraveRewardsPublisher.UPHOLD_VERIFIED
-                            && !walletType.equals(BraveWalletProvider.UPHOLD))
-                    || (pubStatus == BraveRewardsPublisher.BITFLYER_VERIFIED
+            } else if ((pubStatus == PublisherStatus.UPHOLD_VERIFIED
+                               && !walletType.equals(BraveWalletProvider.UPHOLD))
+                    || (pubStatus == PublisherStatus.BITFLYER_VERIFIED
                             && !walletType.equals(BraveWalletProvider.BITFLYER))
-                    || (pubStatus == BraveRewardsPublisher.GEMINI_VERIFIED
+                    || (pubStatus == PublisherStatus.GEMINI_VERIFIED
                             && !walletType.equals(BraveWalletProvider.GEMINI))) {
                 notePart1 = getResources().getString(
                         R.string.brave_ui_site_banner_different_verified_notice_text);
