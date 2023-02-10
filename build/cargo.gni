@@ -128,9 +128,13 @@ template("cargo_build") {
 
     if (is_mac) {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
-    } else if (is_ios) {
+    }
+
+    if (is_ios) {
       args += [ "--ios_deployment_target=" + ios_deployment_target ]
       args += [ "--features=" + "ios" ]
+    } else {
+      args += [ "--features=" + "chromium" ]
     }
 
     if (defined(_rustflags)) {
