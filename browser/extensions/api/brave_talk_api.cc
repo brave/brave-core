@@ -21,7 +21,7 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  return RespondNow(OneArgument(base::Value(true)));
+  return RespondNow(WithArguments(true));
 }
 
 }  // namespace api

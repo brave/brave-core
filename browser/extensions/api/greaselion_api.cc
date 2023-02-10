@@ -22,7 +22,7 @@ GreaselionIsGreaselionExtensionFunction::Run() {
   ::greaselion::GreaselionService* greaselion_service =
       ::greaselion::GreaselionServiceFactory::GetForBrowserContext(profile);
   if (!greaselion_service) {
-    return RespondNow(OneArgument(base::Value(false)));
+    return RespondNow(WithArguments(false));
   }
 
   std::unique_ptr<greaselion::IsGreaselionExtension::Params> params(
@@ -30,7 +30,7 @@ GreaselionIsGreaselionExtensionFunction::Run() {
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   bool result = greaselion_service->IsGreaselionExtension(params->id);
-  return RespondNow(OneArgument(base::Value(result)));
+  return RespondNow(WithArguments(result));
 }
 
 }  // namespace api
