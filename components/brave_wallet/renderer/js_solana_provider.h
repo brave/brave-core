@@ -57,6 +57,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
   // RenderFrameObserver implementation.
   void OnDestruct() override {}
+  void DidFinishLoad() override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
                                 int32_t world_id) override;
 
@@ -100,8 +101,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   // Deprecated
   // (solanaWeb3.Transaction[]) => Promise<solanaWeb3.Transaction[]>
   v8::Local<v8::Promise> SignAllTransactions(gin::Arguments* arguments);
-
-  void WalletStandardInit(gin::Arguments* arguments);
 
   void FireEvent(const std::string& event,
                  std::vector<v8::Local<v8::Value>>&& event_args);
@@ -177,6 +176,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   v8::Local<v8::Value> CreateTransaction(
       v8::Local<v8::Context> context,
       const std::vector<uint8_t> serialized_tx);
+
+  void OnIsSolanaKeyringCreated(bool created);
 
   bool wallet_standard_loaded_ = false;
   v8::Global<v8::Value> solana_web3_module_;
