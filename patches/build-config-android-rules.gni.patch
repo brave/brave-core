@@ -1,8 +1,8 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index 64c6e06a2175023b68193c1aa8c4194805a16d62..837b3237e3dfffd0279de78084aa22d3fe09d40a 100644
+index 59da7e06bfdd416387599ceff23e95e6ddcabb49..a54554c79bd731dfd3c6ad9f8753e8ad60fc53c4 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
-@@ -574,6 +574,7 @@ if (enable_java_templates && is_android) {
+@@ -580,6 +580,7 @@ if (enable_java_templates && is_android) {
    #     ]
    #   }
    template("java_cpp_enum") {
@@ -10,7 +10,7 @@ index 64c6e06a2175023b68193c1aa8c4194805a16d62..837b3237e3dfffd0279de78084aa22d3
      action_with_pydeps(target_name) {
        forward_variables_from(invoker, TESTONLY_AND_VISIBILITY + [ "sources" ])
  
-@@ -749,6 +750,7 @@ if (enable_java_templates && is_android) {
+@@ -755,6 +756,7 @@ if (enable_java_templates && is_android) {
    #     output = "$target_gen_dir/AndroidManifest.xml"
    #   }
    template("jinja_template") {

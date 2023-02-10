@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 1dadcc3f156ad64af9e3bef1fd81a93ff5e036f4..2cfaa8e2621a03ee48a26c26525f01177aceab7a 100644
+index 8db7d5241fef7d222576603be717f137401654b8..ccd7b5ef50e5078860c8d151e15b22d4edcdae7a 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -71,7 +71,7 @@ index 1dadcc3f156ad64af9e3bef1fd81a93ff5e036f4..2cfaa8e2621a03ee48a26c26525f0117
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -333,6 +347,7 @@ by a child template that "extends" this file.
+@@ -339,6 +353,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -79,7 +79,7 @@ index 1dadcc3f156ad64af9e3bef1fd81a93ff5e036f4..2cfaa8e2621a03ee48a26c26525f0117
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1188,6 +1203,7 @@ by a child template that "extends" this file.
+@@ -1194,6 +1209,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -87,7 +87,7 @@ index 1dadcc3f156ad64af9e3bef1fd81a93ff5e036f4..2cfaa8e2621a03ee48a26c26525f0117
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1265,6 +1281,7 @@ by a child template that "extends" this file.
+@@ -1271,6 +1287,7 @@ by a child template that "extends" this file.
            android:value="allow_front_facing_motion_tracking_6dof," />
        {% endblock base_application_extra_arcore_definitions %}
  
