@@ -14,6 +14,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
@@ -460,8 +462,70 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  // Get Wyre, Ramp, Sardine and Transak buy tokens.
-  base::RunLoop run_loop;
+  std::vector<mojom::BlockchainToken> buy_tokens;
+  for (const auto& v : {GetWyreBuyTokens(), GetRampBuyTokens(),
+                        GetSardineBuyTokens(), GetTransakBuyTokens()}) {
+    buy_tokens.insert(buy_tokens.end(), v.begin(), v.end());
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> mainnet_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kMainnetChainId) {
+      mainnet_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> polygon_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kPolygonMainnetChainId) {
+      polygon_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> avalanche_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kAvalancheMainnetChainId) {
+      avalanche_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> binance_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kBinanceSmartChainMainnetChainId) {
+      binance_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> solana_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kSolanaMainnet) {
+      solana_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> celo_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kCeloMainnetChainId) {
+      celo_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> optimism_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kOptimismMainnetChainId) {
+      optimism_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  std::vector<mojom::BlockchainTokenPtr> arbitrum_buy_tokens;
+  for (auto token : buy_tokens) {
+    if (token.chain_id == mojom::kArbitrumMainnetChainId) {
+      arbitrum_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+    }
+  }
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Mainnet.
+  base::RunLoop run_loop1;
   registry->GetProvidersBuyTokens(
       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
        mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
@@ -469,12 +533,140 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             EXPECT_NE(token_list.size(), 0UL);
-            EXPECT_EQ(token_list[0]->name, "Basic Attention Token");
-            EXPECT_EQ(token_list[1]->name, "Ethereum");
+            EXPECT_NE(mainnet_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(mainnet_buy_tokens.begin(),
+                                   mainnet_buy_tokens.end(), token_list.begin(),
+                                   token_list.end()));
 
-            run_loop.Quit();
+            run_loop1.Quit();
           }));
-  run_loop.Run();
+  run_loop1.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Polygon.
+  base::RunLoop run_loop2;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kPolygonMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(polygon_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(polygon_buy_tokens.begin(),
+                                   polygon_buy_tokens.end(), token_list.begin(),
+                                   token_list.end()));
+
+            run_loop2.Quit();
+          }));
+  run_loop2.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Avalanche.
+  base::RunLoop run_loop3;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kAvalancheMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(avalanche_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(avalanche_buy_tokens.begin(),
+                                   avalanche_buy_tokens.end(),
+                                   token_list.begin(), token_list.end()));
+
+            run_loop3.Quit();
+          }));
+  run_loop3.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Binance.
+  base::RunLoop run_loop4;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kBinanceSmartChainMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(binance_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(binance_buy_tokens.begin(),
+                                   binance_buy_tokens.end(), token_list.begin(),
+                                   token_list.end()));
+
+            run_loop4.Quit();
+          }));
+  run_loop4.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Solana.
+  base::RunLoop run_loop5;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kSolanaMainnet,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(solana_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(solana_buy_tokens.begin(),
+                                   solana_buy_tokens.end(), token_list.begin(),
+                                   token_list.end()));
+
+            run_loop5.Quit();
+          }));
+  run_loop5.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Celo.
+  base::RunLoop run_loop6;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kCeloMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(celo_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(celo_buy_tokens.begin(),
+                                   celo_buy_tokens.end(), token_list.begin(),
+                                   token_list.end()));
+
+            run_loop6.Quit();
+          }));
+  run_loop6.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Optimism.
+  base::RunLoop run_loop7;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kOptimismMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(optimism_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(optimism_buy_tokens.begin(),
+                                   optimism_buy_tokens.end(),
+                                   token_list.begin(), token_list.end()));
+
+            run_loop7.Quit();
+          }));
+  run_loop7.Run();
+
+  // Get Wyre, Ramp, Sardine and Transak buy tokens for Arbitrum.
+  base::RunLoop run_loop8;
+  registry->GetProvidersBuyTokens(
+      {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+       mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak},
+      mojom::kArbitrumMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_NE(arbitrum_buy_tokens.size(), 0UL);
+            EXPECT_TRUE(std::equal(arbitrum_buy_tokens.begin(),
+                                   arbitrum_buy_tokens.end(),
+                                   token_list.begin(), token_list.end()));
+
+            run_loop8.Quit();
+          }));
+  run_loop8.Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
