@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/google/google_update_win.cc b/chrome/browser/google/google_update_win.cc
+index aaa77dd5bc36b7b29894938aefe4060855f0d2e0..72d895ca655761e1abe172e64e2f948cade74567 100644
+--- a/chrome/browser/google/google_update_win.cc
++++ b/chrome/browser/google/google_update_win.cc
+@@ -182,8 +182,10 @@ HRESULT CreateGoogleUpdate3WebClass(
+   if (!system_level_install ||
+       !install_update_if_possible ||
+       !IsElevationRequiredForSystemLevelUpdates()) {
+-    hresult = ::CoGetClassObject(google_update_clsid, CLSCTX_ALL, nullptr,
+-                                 IID_PPV_ARGS(&class_factory));
++    hresult = ::CoGetClassObject(google_update_clsid,
++                                 CLSCTX_LOCAL_SERVER |
++                                 CLSCTX_ACTIVATE_32_BIT_SERVER,
++                                 nullptr, IID_PPV_ARGS(&class_factory));
+   } else {
+     // With older versions of GoogleUpdate, a system-level update requires Admin
+     // privileges. Elevate while instantiating the MachineClass.
