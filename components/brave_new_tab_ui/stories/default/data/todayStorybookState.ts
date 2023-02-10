@@ -14,6 +14,7 @@ export default function getTodayState (): BraveNewsState {
     isUpdateAvailable: boolean('Is Today update available?', false),
     currentPageIndex: 10,
     cardsViewed: 0,
+    cardsViewedDelta: 0,
     cardsVisited: 0,
     publishers: hasDataError ? undefined : publishers,
     feed: hasDataError ? undefined : feed

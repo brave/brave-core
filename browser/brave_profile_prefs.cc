@@ -17,6 +17,7 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -189,6 +190,8 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 
   brave_rewards::RewardsService::RegisterProfilePrefsForMigration(registry);
+
+  brave_news::p3a::RegisterProfilePrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)

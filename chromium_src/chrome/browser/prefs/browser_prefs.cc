@@ -9,6 +9,7 @@
 #include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
+#include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -149,6 +150,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   profile->GetPrefs()->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
+
+  brave_news::p3a::MigrateObsoleteProfilePrefs(profile->GetPrefs());
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

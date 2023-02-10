@@ -15,8 +15,6 @@ namespace brave_news {
 namespace p3a {
 
 extern const char kWeeklySessionCountHistogramName[];
-extern const char kWeeklyMaxCardVisitsHistogramName[];
-extern const char kWeeklyMaxCardViewsHistogramName[];
 extern const char kTotalCardViewsHistogramName[];
 extern const char kWeeklyDisplayAdsViewedHistogramName[];
 extern const char kDirectFeedsTotalHistogramName[];
@@ -30,17 +28,16 @@ extern const char kUsageDailyHistogramName[];
 void RecordAtInit(PrefService* prefs);
 void RecordAtSessionStart(PrefService* prefs);
 
-void RecordWeeklyMaxCardVisitsCount(PrefService* prefs,
-                                    uint64_t cards_visited_session_total_count);
-void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
-                                   uint64_t cards_viewed_session_total_count);
 void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add);
 void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change);
 void RecordDirectFeedsTotal(PrefService* prefs);
-void RecordTotalCardViews(PrefService* prefs,
-                          uint64_t cards_viewed_session_total_count);
+
+void RecordTotalCardViews(PrefService* prefs, uint64_t count_delta);
 void RecordFeatureEnabledChange(PrefService* prefs);
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
 }  // namespace p3a
 }  // namespace brave_news

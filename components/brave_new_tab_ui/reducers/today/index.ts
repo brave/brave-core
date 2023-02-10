@@ -14,7 +14,10 @@ export type BraveNewsState = {
   hasInteracted: boolean
   // How many pages have been displayed so far for the current data
   currentPageIndex: number
+  // Number of total cards viewed in session
   cardsViewed: number
+  // Number of new cards viewed since last state update
+  cardsViewedDelta: number
   cardsVisited: number
   // Feed data
   feed?: BraveNews.Feed
@@ -36,6 +39,7 @@ const defaultState: BraveNewsState = {
   hasInteracted: false,
   currentPageIndex: 0,
   cardsViewed: 0,
+  cardsViewedDelta: 0,
   cardsVisited: 0
 }
 // Get previously-clicked article from history state
@@ -114,11 +118,16 @@ reducer.on(Actions.readFeedItem, (state, payload) => {
 reducer.on(Actions.feedItemViewedCountChanged, (state, payload) => {
   // Only care if we're scrolling to new depths
   if (state.cardsViewed >= payload) {
-    return state
+    return {
+      ...state,
+      cardsViewedDelta: 0
+    }
   }
+  const cardsViewedDelta = payload - state.cardsViewed
   return {
     ...state,
-    cardsViewed: payload
+    cardsViewed: payload,
+    cardsViewedDelta
   }
 })
 

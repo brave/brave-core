@@ -532,6 +532,7 @@ public class BraveNewTabPageLayout
                         if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0
                                 && lastVisibleItemPosition >= newsFeedPosition
                                 && lastVisibleItemPosition > mPrevVisibleNewsCardPosition) {
+                            short newCardViews = 0;
                             for (int i = mPrevVisibleNewsCardPosition + 1;
                                     i <= lastVisibleItemPosition; i++) {
                                 int itemCardPosition = i - newsFeedPosition;
@@ -543,14 +544,17 @@ public class BraveNewTabPageLayout
                                         List<FeedItemCard> feedItems = itemsCard.getFeedItems();
                                         // Two items are shown as two cards side by side,
                                         // and three or more items is shown as one card as a list
-                                        mNewsSessionCardViews +=
-                                                feedItems != null && feedItems.size() == 2 ? 2 : 1;
+                                        newCardViews =
+                                                (short) (feedItems != null && feedItems.size() == 2
+                                                                ? 2
+                                                                : 1);
+                                        mNewsSessionCardViews += newCardViews;
                                     }
                                 }
                             }
                             if (mBraveNewsController != null) {
                                 mBraveNewsController.onSessionCardViewsCountChanged(
-                                        (short) mNewsSessionCardViews);
+                                        (short) mNewsSessionCardViews, newCardViews);
                             }
                             mPrevVisibleNewsCardPosition = lastVisibleItemPosition;
                         }
