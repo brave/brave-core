@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index f2f997a4b981c07fd0f6f518cad3b53d612ee824..e92f3e016ad7d3713bfac3690a30edbcd7c3a081 100644
+index 165d7d98805130fac378a19026973ee8ff2eecf0..5ecf83185f153c5c753a6fbd8c238f7a45b13acb 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
-@@ -73,4 +73,5 @@ build_webui("build") {
-     optimize_webui_resource_paths_rewrites =
-         [ "bookmarks.rollup.js|bookmarks.js" ]
+@@ -71,4 +71,5 @@ build_webui("build") {
+     optimize_webui_host = "bookmarks"
+     optimize_webui_in_files = [ "bookmarks.js" ]
    }
 +  import("//brave/browser/resources/bookmarks/sources.gni") non_web_component_files += brave_bookmarks_non_web_component_files exclude_preprocess_files = brave_bookmarks_local_files preprocess_deps = brave_bookmarks_preprocess_extra_deps
  }

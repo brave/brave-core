@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index 3e5ef539e4614dda3c95d6a6506a9642dae361e9..6cb808e20913dcc1d77e6e681406b748213b6dd6 100644
+index ea36bfd7500d63977b4ce1ec7f6cf7103e0ade49..75ab6126dfd98234b619af1fd944aea2c598b8a6 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
-@@ -75,4 +75,5 @@ build_webui("build") {
-       "lazy_load.rollup.js|lazy_load.js",
+@@ -68,4 +68,5 @@ build_webui("build") {
+       "lazy_load.js",
      ]
    }
 +  import("//brave/browser/resources/history/sources.gni") web_component_files += brave_history_web_component_files non_web_component_files += brave_history_non_web_component_files exclude_preprocess_files = brave_history_local_files preprocess_deps = brave_history_preprocess_extra_deps
