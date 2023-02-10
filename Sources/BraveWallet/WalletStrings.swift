@@ -2409,6 +2409,20 @@ extension Strings {
       value: "Your signature is being requested",
       comment: "A subtitle of the view shown over a dapps website that requests the user sign a message."
     )
+    public static let signatureRequestDomainTitle = NSLocalizedString(
+      "wallet.signatureRequestDomainTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Domain",
+      comment: "A title displayed inside the text view in Signature Request View above the request's domain information."
+    )
+    public static let signatureRequestMessageTitle = NSLocalizedString(
+      "wallet.signatureRequestMessageTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Message",
+      comment: "A title displayed inside the text view in Signature Request View above the request's message."
+    )
     public static let sign = NSLocalizedString(
       "wallet.sign",
       tableName: "BraveWallet",

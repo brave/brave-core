@@ -536,11 +536,16 @@ struct TransactionConfirmationView: View {
 /// so we have to fallback to UIKit for this
 struct StaticTextView: UIViewRepresentable {
   var text: String
+  var attributedText: NSAttributedString?
   var isMonospaced: Bool = true
 
   func makeUIView(context: Context) -> UITextView {
     let textView = UITextView()
-    textView.text = text
+    if let attributedText {
+      textView.attributedText = attributedText
+    } else {
+      textView.text = text
+    }
     textView.isEditable = false
     textView.backgroundColor = .tertiaryBraveGroupedBackground
     textView.font = {
@@ -556,7 +561,11 @@ struct StaticTextView: UIViewRepresentable {
     return textView
   }
   func updateUIView(_ uiView: UITextView, context: Context) {
-    uiView.text = text
+    if let attributedText {
+      uiView.attributedText = attributedText
+    } else {
+      uiView.text = text
+    }
   }
 }
 
