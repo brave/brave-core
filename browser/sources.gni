@@ -31,7 +31,6 @@ import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
-import("//brave/browser/sharing_hub/sources.gni")
 import("//brave/browser/skus/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
@@ -426,7 +425,6 @@ brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
-brave_chrome_browser_sources += brave_browser_sharing_hub_sources
 brave_chrome_browser_sources += brave_browser_brave_referrals_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
