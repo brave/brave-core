@@ -3,7 +3,7 @@ action("generate_tsconfig") {
   deps = [
     # Ensure chrome://resources/js file and typescript definitions are
     # generated
-    "//ui/webui/resources:library",
+    "//ui/webui/resources/js:build_ts",
   ]
   inputs = [
     "gen-tsconfig.js",
