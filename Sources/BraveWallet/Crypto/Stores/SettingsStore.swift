@@ -16,8 +16,6 @@ public class SettingsStore: ObservableObject {
       keyringService.setAutoLockMinutes(autoLockInterval.value) { _ in }
     }
   }
-  
-  @Published var isDefaultKeyringCreated: Bool = false
 
   /// If we should attempt to unlock via biometrics (Face ID / Touch ID)
   var isBiometricsUnlockEnabled: Bool {
@@ -60,10 +58,6 @@ public class SettingsStore: ObservableObject {
     walletService.add(self)
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = CurrencyCode(code: currencyCode)
-    }
-    
-    keyringService.keyringInfo(BraveWallet.DefaultKeyringId) { [self] keyringInfo in
-      self.isDefaultKeyringCreated = keyringInfo.isKeyringCreated
     }
   }
 
@@ -109,9 +103,6 @@ extension SettingsStore: BraveWalletKeyringServiceObserver {
   }
   
   public func keyringReset() {
-    keyringService.keyringInfo(BraveWallet.DefaultKeyringId) { [self] keyringInfo in
-      self.isDefaultKeyringCreated = keyringInfo.isKeyringCreated
-    }
   }
   
   public func locked() {
