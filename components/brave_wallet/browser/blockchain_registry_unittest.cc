@@ -490,12 +490,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
         chain,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-              EXPECT_NE(token_list.size(), 0UL);
-              EXPECT_NE(expected_tokens.size(), 0UL);
-              EXPECT_TRUE(std::equal(expected_tokens.begin(),
-                                     expected_tokens.end(), token_list.begin(),
-                                     token_list.end()))
-                  << chain;
+              EXPECT_EQ(expected_tokens, token_list) << chain;
 
               run_loop.Quit();
             }));
