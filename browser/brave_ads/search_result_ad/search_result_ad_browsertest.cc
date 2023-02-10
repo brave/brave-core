@@ -214,6 +214,8 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
   bool CheckSampleSearchAdMetadata(
       const ads::mojom::SearchResultAdInfoPtr& search_result_ad,
       size_t ad_index) {
+    EXPECT_TRUE(search_result_ad);
+
     const std::string index =
         base::StrCat({"-", base::NumberToString(ad_index)});
     if (search_result_ad->placement_id !=
@@ -237,16 +239,21 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
               base::StrCat({"data-description", index}));
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
-    EXPECT_EQ(search_result_ad->conversion->type,
-              base::StrCat({"data-conversion-type-value", index}));
-    EXPECT_EQ(search_result_ad->conversion->url_pattern,
-              base::StrCat({"data-conversion-url-pattern-value", index}));
-    EXPECT_EQ(
-        search_result_ad->conversion->advertiser_public_key,
-        base::StrCat({"data-conversion-advertiser-public-key-value", index}));
-    EXPECT_EQ(
-        static_cast<size_t>(search_result_ad->conversion->observation_window),
-        ad_index);
+    if (ad_index == 2) {
+      EXPECT_FALSE(search_result_ad->conversion);
+    } else {
+      EXPECT_TRUE(search_result_ad->conversion);
+      EXPECT_EQ(search_result_ad->conversion->type,
+                base::StrCat({"data-conversion-type-value", index}));
+      EXPECT_EQ(search_result_ad->conversion->url_pattern,
+                base::StrCat({"data-conversion-url-pattern-value", index}));
+      EXPECT_EQ(
+          search_result_ad->conversion->advertiser_public_key,
+          base::StrCat({"data-conversion-advertiser-public-key-value", index}));
+      EXPECT_EQ(
+          static_cast<size_t>(search_result_ad->conversion->observation_window),
+          ad_index);
+    }
 
     return true;
   }
@@ -255,28 +262,34 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
+    auto run_loop3 = std::make_unique<base::RunLoop>();
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kServed))
-        .Times(2);
+        .Times(3);
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kViewed))
-        .Times(2)
+        .Times(3)
         .WillRepeatedly(
-            [this, &run_loop1, &run_loop2](
+            [this, &run_loop1, &run_loop2, &run_loop3](
                 ads::mojom::SearchResultAdInfoPtr ad_mojom,
                 const ads::mojom::SearchResultAdEventType event_type) {
               const bool is_search_result_ad_1 =
                   CheckSampleSearchAdMetadata(ad_mojom, 1);
               const bool is_search_result_ad_2 =
                   CheckSampleSearchAdMetadata(ad_mojom, 2);
-              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+              const bool is_search_result_ad_3 =
+                  CheckSampleSearchAdMetadata(ad_mojom, 3);
+              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2 ||
+                          is_search_result_ad_3);
 
               if (is_search_result_ad_1) {
                 run_loop1->Quit();
               } else if (is_search_result_ad_2) {
                 run_loop2->Quit();
+              } else if (is_search_result_ad_3) {
+                run_loop3->Quit();
               }
             });
 
@@ -288,6 +301,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
 
     run_loop1->Run();
     run_loop2->Run();
+    run_loop3->Run();
 
     return web_contents;
   }

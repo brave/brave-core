@@ -7,14 +7,25 @@
 
 #include <string>
 #include <utility>
-#include <vector>
 
+#include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
 namespace {
+
+constexpr const char* kSearchResultAdStringAttributes[] = {
+    "data-creative-instance-id",
+    "data-creative-set-id",
+    "data-campaign-id",
+    "data-advertiser-id",
+    "data-headline-text",
+    "data-description",
+    "data-conversion-type-value",
+    "data-conversion-url-pattern-value",
+    "data-conversion-advertiser-public-key-value"};
 
 schema_org::mojom::ValuesPtr CreateVectorValuesPtr(std::string value) {
   return schema_org::mojom::Values::NewStringValues({std::move(value)});
@@ -26,8 +37,9 @@ schema_org::mojom::ValuesPtr CreateVectorValuesPtr(int64_t value) {
 
 class TestWebPageEntitiesConstructor final {
  public:
-  explicit TestWebPageEntitiesConstructor(int attribute_index_to_skip)
-      : attribute_index_to_skip_(attribute_index_to_skip) {
+  explicit TestWebPageEntitiesConstructor(
+      std::vector<base::StringPiece> attributes_to_skip)
+      : attributes_to_skip_(std::move(attributes_to_skip)) {
     web_page_entities_ = CreateWebPageEntities();
   }
 
@@ -59,10 +71,10 @@ class TestWebPageEntitiesConstructor final {
   void AddProperty(std::vector<schema_org::mojom::PropertyPtr>* properties,
                    base::StringPiece name,
                    T value) {
-    const int index = current_attribute_index_++;
-    if (index == attribute_index_to_skip_) {
+    if (base::Contains(attributes_to_skip_, name)) {
       return;
     }
+
     schema_org::mojom::PropertyPtr property =
         schema_org::mojom::Property::New();
     property->name = static_cast<std::string>(name);
@@ -72,17 +84,6 @@ class TestWebPageEntitiesConstructor final {
   }
 
   schema_org::mojom::EntityPtr CreateCreativeEntity() {
-    constexpr const char* kSearchResultAdStringAttributes[] = {
-        "data-creative-instance-id",
-        "data-creative-set-id",
-        "data-campaign-id",
-        "data-advertiser-id",
-        "data-headline-text",
-        "data-description",
-        "data-conversion-type-value",
-        "data-conversion-url-pattern-value",
-        "data-conversion-advertiser-public-key-value"};
-
     schema_org::mojom::EntityPtr entity = schema_org::mojom::Entity::New();
     entity->type = "SearchResultAd";
 
@@ -106,15 +107,14 @@ class TestWebPageEntitiesConstructor final {
   }
 
   std::vector<::schema_org::mojom::EntityPtr> web_page_entities_;
-  int current_attribute_index_ = 0;
-  int attribute_index_to_skip_ = -1;
+  std::vector<base::StringPiece> attributes_to_skip_;
 };
 
 }  // namespace
 
 std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
-    int attribute_index_to_skip) {
-  TestWebPageEntitiesConstructor constructor(attribute_index_to_skip);
+    std::vector<base::StringPiece> attributes_to_skip) {
+  TestWebPageEntitiesConstructor constructor(std::move(attributes_to_skip));
   return constructor.GetTestWebPageEntities();
 }
 

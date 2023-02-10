@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/strings/string_piece_forward.h"
 #include "components/schema_org/common/metadata.mojom.h"
 
 namespace brave_ads {
@@ -15,7 +16,7 @@ namespace brave_ads {
 constexpr char kTestWebPagePlacementId[] = "placement-id";
 
 std::vector<::schema_org::mojom::EntityPtr> CreateTestWebPageEntities(
-    int attribute_index_to_skip = -1);
+    std::vector<base::StringPiece> attributes_to_skip = {});
 
 }  // namespace brave_ads
 
