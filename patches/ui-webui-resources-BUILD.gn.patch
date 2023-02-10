@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index ed6eb9641ff5bb3a25d475929daf04811c10c009..855cdaf9a6d3e3329ad1807e5da0b2acf56f07af 100644
+index 522e3c252dac3890a80eb335db62a2c38097d5bc..01dfa8141d99539fedd76adacd540f7fc848e064 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -120,6 +120,7 @@ generate_grd("build_grd") {
+@@ -115,6 +115,7 @@ generate_grd("build_grd") {
        "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
      ]
    }
