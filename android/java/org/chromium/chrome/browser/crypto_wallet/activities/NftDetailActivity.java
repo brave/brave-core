@@ -254,6 +254,9 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
                     public boolean onResourceReady(Drawable resource, Object model,
                             Target<Drawable> target, DataSource dataSource,
                             boolean isFirstResource) {
+                        if (ImageLoader.isSvg(imageUrl)) {
+                            ImageLoader.setSoftwareLayerType(target);
+                        }
                         target.onResourceReady(
                                 resource, new DrawableCrossFadeTransition(250, true));
                         return true;

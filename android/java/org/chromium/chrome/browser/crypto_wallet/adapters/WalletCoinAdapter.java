@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -22,6 +23,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -198,7 +204,26 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 if (walletListItemModel.hasNftImageLink()
                         && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                     String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.createLoadNftRequest(url, context, false).into(holder.iconImg);
+                    ImageLoader.createLoadNftRequest(url, context, false)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(GlideException glideException,
+                                        Object model, Target<Drawable> target,
+                                        boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model,
+                                        Target<Drawable> target, DataSource dataSource,
+                                        boolean isFirstResource) {
+                                    if (ImageLoader.isSvg(url)) {
+                                        ImageLoader.setSoftwareLayerType(target);
+                                    }
+                                    return false;
+                                }
+                            })
+                            .into(holder.iconImg);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                             walletListItemModel.getBlockchainToken().contractAddress,

@@ -18,6 +18,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,21 @@ public class ImageLoader {
         if (isCircular) {
             request = request.circleCrop();
         }
-        return request.priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        // SVG type is not serializable, so the only disk cache applicable is `DATA`.
+        request = request.diskCacheStrategy(
+                isSvg(url) ? DiskCacheStrategy.DATA : DiskCacheStrategy.ALL);
+        return request.priority(Priority.IMMEDIATE);
+    }
+
+    /**
+     * For SVG images updates the {@link ImageView} to be software rendered, because {@link
+     * com.caverock.androidsvg.SVG SVG}/{@link android.graphics.Picture Picture} can't render on a
+     * hardware backed {@link android.graphics.Canvas Canvas}.
+     */
+    public static void setSoftwareLayerType(Target<Drawable> target) {
+        ImageView view = ((ImageViewTarget<?>) target).getView();
+        view.setLayerType(ImageView.LAYER_TYPE_SOFTWARE, null);
     }
 
     public static boolean isSupported(String url) {
