@@ -1,15 +1,13 @@
 diff --git a/tools/typescript/ts_library.gni b/tools/typescript/ts_library.gni
-index 90e8188a965d4199d4adc72327077efa7d64549b..1461c8d85e95285c3a210635cc877b7a89a87550 100644
+index a55c3ab6e029d5ecbc1bde6f3519b07d63531c33..5dd97347f7228355cd3b74af346c93413820eb90 100644
 --- a/tools/typescript/ts_library.gni
 +++ b/tools/typescript/ts_library.gni
-@@ -116,8 +116,12 @@ template("ts_library") {
+@@ -138,6 +138,10 @@ template("ts_library") {
+     }
+ 
      path_mappings = [
-       "chrome://resources/*|" +
-           rebase_path("$root_gen_dir/ui/webui/resources/tsc/*", target_gen_dir),
 +      "chrome://resources/brave/*|" +
 +          rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/*", target_gen_dir),
-       "//resources/*|" +
-           rebase_path("$root_gen_dir/ui/webui/resources/tsc/*", target_gen_dir),
 +      "//resources/brave/*|" +
 +          rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/*", target_gen_dir),
        "chrome://resources/polymer/v3_0/*|" +
