@@ -42,11 +42,11 @@ export const MainContent = styled.div`
   width: 100%;
   margin: 0 20px;
   max-width: 1117px;
-  
+
   @media (max-width: 768px) {
     padding: 0 20px;
   }
-  
+
   @media (max-width: 1024px) {
     padding: 0 20px;
   }
@@ -63,10 +63,10 @@ export const CloseButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 20px;
   background-color: transparent;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   outline: none;
   border: none;
-  margin-left: auto
+  margin-left: auto;
 `
 
 export const CloseIcon = styled.div`
@@ -75,10 +75,10 @@ export const CloseIcon = styled.div`
   align-items: center;
   width: 18px;
   height: 18px;
-  background-color: ${p => p.theme.palette.white};
+  background-color: ${(p) => p.theme.palette.white};
   -webkit-mask-image: url(${Close});
   mask-image: url(${Close});
-  margin-left: 10px; 
+  margin-left: 10px;
 `
 
 export const HeadingWrapper = styled.div`
@@ -96,7 +96,6 @@ export const HeadingWrapper = styled.div`
   @media (max-width: 1024px) {
     margin: 0 50px 16px;
   }
-
 `
 
 export const Heading = styled.h1`
@@ -105,7 +104,7 @@ export const Heading = styled.h1`
   font-weight: 600;
   font-size: 18px;
   line-height: 26px;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   margin: 0;
   padding: 0;
 `
@@ -116,12 +115,12 @@ export const IpfsIcon = styled.div`
   align-items: center;
   width: 56px;
   height: 56px;
-  background-color: ${p => p.theme.palette.white};
+  background-color: ${(p) => p.theme.palette.white};
   -webkit-mask-image: url(${Ipfs});
   mask-image: url(${Ipfs});
   mask-repeat: no-repeat;
   mask-size: 56px;
-  margin-right: 16px; 
+  margin-right: 16px;
 `
 
 export const Section = styled.section`
@@ -131,7 +130,6 @@ export const Section = styled.section`
   justify-content: space-between;
   gap: 36px;
   margin: 50px 20px 20px 0;
-
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -145,7 +143,7 @@ export const LeftWrapper = styled.div`
   justify-content: flex-start;
   flex: 1;
   flex-basis: 522px;
-  
+
   @media (max-width: 768px) {
     flex-basis: 0;
   }
@@ -159,7 +157,6 @@ export const RightWrapper = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-
 `
 
 export const SectionText = styled.h2`
@@ -168,10 +165,9 @@ export const SectionText = styled.h2`
   font-weight: 600;
   font-size: 38px;
   line-height: 60px;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   margin: 0;
   padding: 0;
-
 `
 
 export const Description = styled.span`
@@ -181,7 +177,7 @@ export const Description = styled.span`
   font-size: 14px;
   line-height: 32px;
   text-align: left;
-  color: ${p => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   margin: 0;
   padding: 0;
 `
@@ -197,8 +193,8 @@ export const ActionButton = styled(WalletButton)`
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  background-color: ${p => p.theme.palette.white};
-  color: ${p => p.theme.palette.blurple500};
+  background-color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.blurple500};
   padding: 13px 24px;
   border-radius: 48px;
   outline: none;
@@ -217,7 +213,7 @@ export const CheckNftsButton = styled(WalletButton)`
   line-height: 20px;
   text-align: center;
   background-color: transparent;
-  color: ${p => p.theme.palette.blurple300};
+  color: ${(p) => p.theme.palette.blurple300};
   outline: none;
   border: none;
   margin-top: 37px;
@@ -231,7 +227,7 @@ export const BenefitHeading = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 0;
   margin: 0 0 15px 0;
 `
@@ -245,7 +241,7 @@ export const BenefitsList = styled.ul`
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
-    color: #AEB1C2;
+    color: #aeb1c2;
     margin-bottom: 8px;
   }
 `

@@ -11,7 +11,10 @@ import Close from '../../../assets/svg-icons/close.svg'
 import { WalletButton } from '../../shared/style'
 import { BraveWallet } from '../../../constants/types'
 
-const getBackground = (p: BraveThemedStyledProps<any>, status: BraveWallet.TokenPinStatusCode) => {
+const getBackground = (
+  p: BraveThemedStyledProps<any>,
+  status: BraveWallet.TokenPinStatusCode
+) => {
   switch (status) {
     case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
       return '#FFFCF0'
@@ -36,13 +39,15 @@ export const StyledWrapper = styled.div`
   position: relative;
 `
 
-export const ContentWrapper = styled.div<{ pinningStatus: BraveWallet.TokenPinStatusCode }>`
+export const ContentWrapper = styled.div<{
+  pinningStatus: BraveWallet.TokenPinStatusCode
+}>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-shrink: 0;
   gap: 4px;
-  background: ${p => getBackground(p, p.pinningStatus)};
+  background: ${(p) => getBackground(p, p.pinningStatus)};
   border-radius: 4px;
   padding: 2px 4px;
   font-family: 'Poppins';
@@ -50,8 +55,12 @@ export const ContentWrapper = styled.div<{ pinningStatus: BraveWallet.TokenPinSt
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${p => p.theme.palette.text02};
-  margin-top: ${p => p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ? '16px' : 0}
+  color: ${(p) => p.theme.palette.text02};
+  margin-top: ${(p) =>
+    p.pinningStatus ===
+    BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
+      ? '16px'
+      : 0};
 `
 
 export const StatusIcon = styled.div`
@@ -66,13 +75,13 @@ export const StatusIcon = styled.div`
 export const UploadIcon = styled(StatusIcon)`
   mask-image: url(${Upload});
   -webkit-mask-image: url(${Upload});
-  background-color: #FEBF17;  
+  background-color: #febf17;
 `
 
 export const CloseIcon = styled(StatusIcon)`
   mask-image: url(${Close});
   -webkit-mask-image: url(${Close});
-  background-color: #E32444;  
+  background-color: #e32444;
 `
 
 export const CheckIcon = styled(StatusIcon)`
@@ -80,7 +89,7 @@ export const CheckIcon = styled(StatusIcon)`
   height: 14px;
   mask-image: url(${Check});
   -webkit-mask-image: url(${Check});
-  background-color: #4DC661;  
+  background-color: #4dc661;
 `
 
 export const ReportButton = styled(WalletButton)`
@@ -93,7 +102,7 @@ export const ReportButton = styled(WalletButton)`
   font-size: 12px;
   line-height: 18px;
   border: none;
-  color: #4C54D2;
+  color: #4c54d2;
   outline: none;
   border: none;
   background: transparent;
@@ -105,7 +114,7 @@ export const Text = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${p => p.theme.color.text02}
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const ReasonsTooltipWrapper = styled.div`
@@ -115,7 +124,7 @@ export const ReasonsTooltipWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   z-index: 3;
-  background-color: ${p => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background01};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   width: 246px;
   border-radius: 6px;
@@ -137,7 +146,7 @@ export const TooltipHeading = styled.div`
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${p => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const TooltipList = styled.ul`
@@ -153,16 +162,16 @@ export const TooltipList = styled.ul`
     line-height: 18px;
     padding: 0;
     margin: 0;
-    color: ${p => p.theme.color.text01};
+    color: ${(p) => p.theme.color.text01};
   }
 `
 
 export const ArrowDown = styled.div`
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid ${p => p.theme.color.background01};
+  border-top: 8px solid ${(p) => p.theme.color.background01};
   position: absolute;
   left: 56px;
   bottom: -8px;

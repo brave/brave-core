@@ -37,7 +37,7 @@ export const NftGrid = styled.div`
 export const EmptyStateText = styled.div`
   text-align: center;
   padding: 30px 0;
-  color: ${p => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   font-size: 14px;
   font-family: Poppins;
 `
@@ -45,10 +45,10 @@ export const EmptyStateText = styled.div`
 export const IpfsButton = styled(WalletButton)`
   display: flex;
   align-items: center;
-  justify-content:center ;
+  justify-content: center;
   background-color: transparent;
   border-radius: 6px;
-  border: 1px solid ${p => p.theme.color.interactive08};
+  border: 1px solid ${(p) => p.theme.color.interactive08};
   padding: 6px;
   align-self: flex-start;
 `
@@ -64,8 +64,8 @@ export const IpfsIcon = styled.div`
   mask-repeat: no-repeat;
   background-color: #495057;
   cursor: pointer;
-  
+
   &:hover {
-    background-color: #469EA2;
+    background-color: #469ea2;
   }
 `

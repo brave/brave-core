@@ -15,7 +15,7 @@ export const StyledWrapper = styled.div<{ size: string }>`
   height: ${p => p.size};
 `
 
-export const GifWrapper = styled.div<{ size?: string}>`
+export const GifWrapper = styled.div<{ size?: string }>`
   display: flex;
   position: relative;
   align-items: center;
@@ -40,7 +40,7 @@ const BannerLeftIcon = styled.div`
   background-color: ${(p) => p.theme.palette.white};
 `
 
-export const Ipfs = styled(BannerLeftIcon)<{ size?: string}>`
+export const Ipfs = styled(BannerLeftIcon)<{ size?: string }>`
   -webkit-mask-image: url(${IpfsIcon});
   mask-image: url(${IpfsIcon});
   mask-repeat: no-repeat;

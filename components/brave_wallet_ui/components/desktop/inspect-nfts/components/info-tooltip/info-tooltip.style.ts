@@ -11,7 +11,7 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   z-index: 3;
-  background-color: #1E2029;
+  background-color: #1e2029;
   width: 238px;
   height: 125px;
   border-radius: 6px;
@@ -35,15 +35,15 @@ export const TooltipText = styled.p`
   letter-spacing: 0.01em;
   padding: 0;
   margin: 0;
-  color: #F6F6FA;
+  color: #f6f6fa;
 `
 
 export const ArrowUp = styled.div`
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid #1E2029;
+  border-bottom: 8px solid #1e2029;
   position: absolute;
   right: 74px;
   top: -8px;

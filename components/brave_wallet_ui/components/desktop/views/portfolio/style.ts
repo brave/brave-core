@@ -59,7 +59,7 @@ export const ButtonRow = styled.div<{ noMargin?: boolean }>`
   margin: ${(p) => p.noMargin ? '0px' : '20px 0px'};
 `
 
-export const BalanceRow = styled.div<{ gap?: string}>`
+export const BalanceRow = styled.div<{ gap?: string }>`
   display: flex;
   flex-direction: row;
   align-items: center;
