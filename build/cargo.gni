@@ -1,6 +1,7 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/rust/config.gni")
 import("//build/config/clang/clang.gni")
@@ -33,7 +34,10 @@ template("rust_ffi") {
 
     deps = [ "//brave/build/rust:rust_lib" ]
     if (is_apple) {
-      deps += [ "//brave/build/rust:generate_unexport_list" ]
+      deps += [
+        "//base",  # for rust_eh_personality_impl
+        "//brave/build/rust:generate_unexport_list",
+      ]
     }
     if (defined(invoker.deps)) {
       deps += invoker.deps
@@ -44,9 +48,6 @@ template("rust_ffi") {
       public_deps += invoker.public_deps
     }
 
-    if (is_clang) {
-      configs -= [ "//build/config/clang:find_bad_constructs" ]
-    }
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [ "//build/config/compiler:no_chromium_code" ]
 
@@ -93,6 +94,7 @@ template("cargo_build") {
   cargo_build_target = target_name + "_cargo_build"
 
   _rustflags = default_rustflags
+
   if (defined(invoker.rustflags)) {
     _rustflags += invoker.rustflags
   }
@@ -100,8 +102,23 @@ template("cargo_build") {
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
-    inputs = [ "//brave/script/cargo.py" ]
+    cargo_bin = "$rustup_home/bin/cargo"
+    if (is_win) {
+      cargo_bin = cargo_bin + ".exe"
+    }
 
+    force_rebuild_inputs = [
+      script,
+      cargo_bin,
+    ]
+
+    if (is_apple) {
+      toolchain_home =
+          "$rustup_home/toolchains/$brave_rust_version-x86_64-apple-darwin"
+      std_src_home = "$toolchain_home/lib/rustlib/src/rust/library/std/src"
+      force_rebuild_inputs += [ "$std_src_home/personality/gcc.rs" ]
+    }
+    inputs = force_rebuild_inputs
     forward_variables_from(invoker, "*", [ "inputs" ])
 
     if (defined(invoker.inputs)) {
@@ -115,22 +132,40 @@ template("cargo_build") {
     }
 
     args = [
-      "--rustup_path=" + rustup_path,
+      "--exe=" + rebase_path(cargo_bin),
+      "--rustup_home=" + rebase_path(rustup_home),
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(rust_lib_build_path, root_build_dir),
       "--target=" + target,
-      "--toolchain=" +
-          rustc_toolchain,  # defined by //brave/build/rust/config.gni,
       "--clang_bin_path=" + rebase_path("$clang_base_path/bin"),
       "--is_debug=$is_debug",
       "--profile=$cargo_profile",
     ]
+
+    # See exclude_unwind_tables
+    # TODO(bridiver) Investigate whether we should use unwind on android
+    if (is_official_build) {
+      args += [ "--panic=abort" ]
+    } else {
+      args += [ "--panic=unwind" ]
+    }
+
+    if (rustc_toolchain != "") {
+      args += [ "--toolchain=$rustc_toolchain" ]
+    }
 
     if (is_mac) {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
     } else if (is_ios) {
       args += [ "--ios_deployment_target=" + ios_deployment_target ]
       args += [ "--features=" + "ios" ]
+    }
+
+    foreach(input, force_rebuild_inputs) {
+      args += [
+        "--inputs",
+        rebase_path(input),
+      ]
     }
 
     if (defined(_rustflags)) {
@@ -170,8 +205,8 @@ template("cargo_cbindgen") {
     outputs = [ output ]
 
     args = [
-      "--rustup_path=" + rustup_path,
-      "--cargo_path=" + rustup_path,
+      "--rustup_home=" + rebase_path(rustup_home),
+      "--cargo_home=" + rebase_path(rustup_home),
       "--config=" + rebase_path(config, root_build_dir),
       "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
       "--output=" + rebase_path(output, root_build_dir),

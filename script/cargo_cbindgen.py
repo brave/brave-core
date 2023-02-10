@@ -1,25 +1,23 @@
 #!/usr/bin/env python
+
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
 import os
 import sys
 import subprocess
-import shutil
-
-from deps_config import RUST_DEPS_PACKAGE_VERSION
-
 
 def run(args):
     # Set environment variables for rustup
     env = os.environ.copy()
 
-    rustup_home = os.path.join(args.rustup_path, RUST_DEPS_PACKAGE_VERSION)
+    rustup_home = args.rustup_home
     env["RUSTUP_HOME"] = rustup_home
 
-    cargo_home = os.path.join(args.cargo_path, RUST_DEPS_PACKAGE_VERSION)
+    cargo_home = args.cargo_home
     env["CARGO_HOME"] = cargo_home
 
     rustup_bin = os.path.abspath(os.path.join(rustup_home, "bin"))
@@ -28,7 +26,6 @@ def run(args):
     )
     env["PATH"] = rustup_bin + os.pathsep + env["PATH"]
 
-    # Install the tool
     cargo_args = []
     cargo_args.append(cbindgen_bin)
     cargo_args.append("--config")
@@ -46,8 +43,8 @@ def run(args):
 def parse_args():
     parser = argparse.ArgumentParser(description="Cargo cbindgen")
 
-    parser.add_argument("--rustup_path", required=True)
-    parser.add_argument("--cargo_path", required=True)
+    parser.add_argument("--rustup_home", required=True)
+    parser.add_argument("--cargo_home", required=True)
     parser.add_argument("--path", required=True)
     parser.add_argument("--config", required=True)
     parser.add_argument("--output", required=True)
