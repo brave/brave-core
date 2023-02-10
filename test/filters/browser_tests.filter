@@ -259,7 +259,7 @@
 # which we filter for privacy reasons.
 -FileSystemAccessBrowserTest.SafeBrowsing
 
-# These tests fail because of the Ephemeral Storage (they pass with 
+# These tests fail because of the Ephemeral Storage (they pass with
 # kBraveEphemeralStorage feature disabled).
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
@@ -287,7 +287,7 @@
 # is coming from Brave extension?
 -PrivacyBudgetBrowserTestWithTestRecorderParameterized/PrivacyBudgetBrowserTestWithTestRecorder.RecordingFeaturesCalledInWorker/*
 
-# This test times out because we Disable "Use a prediction service to load 
+# This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref).
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/PredictionManagerBrowserTest.*
@@ -412,6 +412,10 @@
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
 -FirstRunFlowControllerDiceBrowserTest.SignInAndSync
+
+# Disable crashy upstream tests until they're fixed.
+# https://bugs.chromium.org/p/chromium/issues/detail?id=1414668
+-OriginTrialsBrowserTest.*
 
 # These tests fail because we intentionally disable prefs::kEnableMediaRouter
 -All/CastMirroringServiceHostBrowserTestTabSwitcher.SwitchTabSource/*
