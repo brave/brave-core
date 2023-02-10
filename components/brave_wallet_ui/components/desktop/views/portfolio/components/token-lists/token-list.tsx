@@ -59,16 +59,16 @@ interface Props {
 }
 
 export const TokenLists = ({
-  userAssetList,
-  networks,
-  renderToken,
-  hideAddButton,
-  enableScroll,
-  maxListHeight,
-  hideAssetFilter,
-  hideAccountFilter,
-  hideAutoDiscovery
-}: Props) => {
+                             userAssetList,
+                             networks,
+                             renderToken,
+                             hideAddButton,
+                             enableScroll,
+                             maxListHeight,
+                             hideAssetFilter,
+                             hideAccountFilter,
+                             hideAutoDiscovery
+                           }: Props) => {
   // routing
   const history = useHistory()
 

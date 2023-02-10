@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
+import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 
 export const StyledWrapper = styled.div`
   display: grid;
@@ -28,6 +29,7 @@ export const NFTButton = styled(WalletButton)`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  position: relative;
   box-sizing: border-box;
   flex-direction: column;
   cursor: pointer;
@@ -35,7 +37,8 @@ export const NFTButton = styled(WalletButton)`
   background: none;
   border: none;
   margin: 0px;
-  padding: 0px;
+  padding: 2px;
+  overflow: hidden;
   &:last-child {
     margin-right: 0px;
   }
@@ -43,7 +46,7 @@ export const NFTButton = styled(WalletButton)`
 
 export const IconWrapper = styled.div`
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   padding-top: 100%;
 `
@@ -67,4 +70,32 @@ export const NFTText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-top: 6px;
+  max-width: 99%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
+
+export const NFTSymbol = styled.span`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${p => p.theme.color.text03};
+  margin-top: 4px;
+`
+
+export const PinnedIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  background-image: url(${Ipfs});
+  background-repeat: no-repeat;
+  z-index: 2;
 `

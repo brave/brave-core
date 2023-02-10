@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, useHistory, useParams, Switch, Redirect } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Route, useHistory, useLocation, useParams, Switch, Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 // actions
 import { AccountsTabState } from '../../../../page/reducers/accounts-tab-reducer'
@@ -39,6 +39,14 @@ import { NftView } from '../nfts/nft-view'
 import { ConfirmPasswordModal } from '../../popup-modals/confirm-password-modal/confirm-password-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
+import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
+import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
+import { WalletPageActions } from '../../../../page/actions'
+import { useNftPin } from '../../../../common/hooks/nft-pin'
+import { BannerWrapper } from '../../../shared/style'
+import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -66,11 +74,16 @@ const CryptoView = (props: Props) => {
 
   // hooks
   useBalanceUpdater()
+  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
   const showAccountModal = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.showAccountModal)
   const selectedAccount = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.selectedAccount)
+
+  const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
+
+  const dispatch = useDispatch()
 
   // state
   // const [hideNav, setHideNav] = React.useState<boolean>(false)
@@ -80,6 +93,7 @@ const CryptoView = (props: Props) => {
 
   // routing
   const history = useHistory()
+  const location = useLocation()
   const { category } = useParams<ParamsType>()
 
   // methods
@@ -133,6 +147,18 @@ const CryptoView = (props: Props) => {
     () => onShowVisibleAssetsModal(false),
     [onShowVisibleAssetsModal]
   )
+
+  const onClose = React.useCallback(() => {
+    history.push(WalletRoutes.Nfts)
+  }, [])
+
+  const onBack = React.useCallback(() => {
+    if (location.key) {
+      history.goBack()
+    } else {
+      history.push(WalletRoutes.Nfts)
+    }
+  }, [location.key])
 
   const showBanner = React.useMemo((): boolean => {
     return (
@@ -189,8 +215,25 @@ const CryptoView = (props: Props) => {
     onSelectTab,
     onShowBackup,
     showBackupWarning,
-    showMore
+    showMore,
+    isIpfsBannerVisible
   ])
+
+  const ipfsBanner = React.useMemo(() => (
+    <>
+      {isNftPinningFeatureEnabled && isIpfsBannerVisible &&
+        <BannerWrapper>
+          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
+        </BannerWrapper>
+      }
+    </>
+  ), [isNftPinningFeatureEnabled, isIpfsBannerVisible])
+
+  // effects
+  React.useEffect(() => {
+    dispatch(WalletPageActions.getLocalIpfsNodeStatus())
+    dispatch(WalletPageActions.getIsAutoPinEnabled())
+  }, [])
 
   // render
   return (
@@ -208,6 +251,7 @@ const CryptoView = (props: Props) => {
 
         <Route path={WalletRoutes.Portfolio}>
           {nav}
+          {ipfsBanner}
           <PortfolioOverview />
         </Route>
 
@@ -244,7 +288,8 @@ const CryptoView = (props: Props) => {
         {/* NFTs */}
         <Route path={WalletRoutes.Nfts} exact={true}>
           {nav}
-          <NftView />
+          {ipfsBanner}
+          <NftView onToggleShowIpfsBanner={onToggleShowIpfsBanner} />
         </Route>
 
         {/* Transactions */}
@@ -252,6 +297,26 @@ const CryptoView = (props: Props) => {
           {nav}
           <TransactionsScreen />
         </Route>
+
+        {/* NFT Pinning onboarding page */}
+        <Route
+          path={WalletRoutes.LocalIpfsNode}
+          exact={true}
+          render={(props) => isNftPinningFeatureEnabled
+            ? <LocalIpfsNodeScreen onClose={onClose} {...props} />
+            : <Redirect to={WalletRoutes.Portfolio}/>
+          }
+        />
+
+        {/* NFT Pinning inspect pinnable page */}
+        <Route
+          path={WalletRoutes.InspectNfts}
+          exact={true}
+          render={(props) => isNftPinningFeatureEnabled
+            ? <InspectNftsScreen onClose={onClose} onBack={onBack} {...props} />
+            : <Redirect to={WalletRoutes.Portfolio} />
+          }
+        />
 
         <Redirect to={sessionRoute || WalletRoutes.Portfolio} />
 

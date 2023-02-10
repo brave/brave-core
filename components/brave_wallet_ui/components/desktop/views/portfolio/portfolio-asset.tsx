@@ -36,7 +36,9 @@ import {
   UpdateNFtMetadataMessage,
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
-  braveNftDisplayOrigin
+  braveNftDisplayOrigin,
+  IframeSize,
+  UpdateNftPinningStatus
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
@@ -67,6 +69,7 @@ import {
   useUnsafePageSelector,
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
+import { useNftPin } from '../../../../common/hooks/nft-pin'
 
 // Styled Components
 import {
@@ -100,6 +103,7 @@ import { WalletActions } from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -119,6 +123,7 @@ export const PortfolioAsset = (props: Props) => {
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
+  const [iframeHeight, setIframeHeight] = React.useState<string>('440px')
 
   // routing
   const history = useHistory()
@@ -152,9 +157,11 @@ export const PortfolioAsset = (props: Props) => {
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
+  const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
+  const { getNftPinningStatus } = useNftPin()
 
   // memos
   // This will scrape all the user's accounts and combine the asset balances for a single asset
@@ -366,6 +373,13 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
+  const currentNftPinningStatus = React.useMemo(() => {
+    if (isNftAsset && selectedAsset) {
+      return getNftPinningStatus(selectedAsset)
+    }
+    return undefined
+  }, [isNftAsset, selectedAsset])
+
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
     history.push(WalletRoutes.AddAccountModal)
@@ -483,6 +497,11 @@ export const PortfolioAsset = (props: Props) => {
       const { payload } = message as ToggleNftModal
       setshowNftModal(payload)
     }
+
+    if (message.command === NftUiCommand.IframeSize) {
+      const { payload } = message as IframeSize
+      setIframeHeight(payload.height + 10 + 'px')
+    }
   }, [])
 
   const onSelectBuy = React.useCallback(() => {
@@ -559,12 +578,20 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
+    if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
+      const command: UpdateNftPinningStatus = {
+        command: NftUiCommand.UpdateNftPinningStatus,
+        payload: currentNftPinningStatus
+      }
+      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
+    }
+
     // check if selectedAsset has an icon
     if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
       // update asset logo
       dispatch(WalletActions.updateUserAsset({ ...selectedAsset, logo: nftMetadata?.imageURL || '' }))
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -596,8 +623,9 @@ export const PortfolioAsset = (props: Props) => {
   return (
     <StyledWrapper onClick={onHideMore}>
       <TopRow>
-        <BalanceRow>
+        <BalanceRow gap='16px'>
           <BackButton onSubmit={goBack} />
+          {isNftAsset && currentNftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED && <IpfsNodeStatus />}
         </BalanceRow>
         <BalanceRow>
           {!isNftAsset &&
@@ -728,6 +756,7 @@ export const PortfolioAsset = (props: Props) => {
         sandbox="allow-scripts allow-popups allow-same-origin"
         src='chrome-untrusted://nft-display'
         allowFullScreen
+        style={{ height: iframeHeight }}
       />
 
       {showNftModal && nftMetadata?.imageURL &&

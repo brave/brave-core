@@ -487,6 +487,9 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CID" desc="NFT detail CID category">CID</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image location or address</message>
   <message name="IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED" desc="The error message when request for method 'eth_chainId' on custom network url failed">Request for method 'eth_chainId' on <ph name="URL">$1<ex>https://some.network/rpc/</ex></ph> failed</message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
     This network is already added.
@@ -832,4 +835,30 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
   <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR" desc="Error message explaining that fee estimates are unavailable for the current pending transaction">Unable to fetch fee estimates</message>
+
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available?</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">By running IPFS on your computer you can:</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Ensure your NFT data stays online and it cannot be tempered with.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Get content back using content identifier(CID) from an incorrect data.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_THREE" desc="Nft Pinning 3rd benefit">Participate proof of authenticity and make IPFS network rich and healthy.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Keep my NFTs always online</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Enable NFt pinning button text">Enable NFT pinning</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">A big step toward becoming part of web3</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Run IPFS node and keep your NFTs always online</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">Today's centralized internet model doesn't work in space. On today’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">Check which NFTs of mine can be pinned</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">You’re running IPFS node. File is being fetched to local IPFS node.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> out of <ph name="PINNABLE">$2<ex>3</ex></ph> NFTs have been successfully pinned to IPFS.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> out of <ph name="TOTAL">$2<ex>3</ex></ph> are available!</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS" desc="Local IPFS node running status text">You're running IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_NOT_RUNNING_STATUS" desc="Local IPFS node not running status text">Local IPFS node is not running</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED" desc="IPFS pinning status description when pinning failed">Cannot be pinned to your local IPFS node</message>
 </grit-part>

@@ -6,33 +6,38 @@
 import * as React from 'react'
 
 // Types
-import { UserAssetInfoType } from 'components/brave_wallet_ui/constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, httpifyIpfsUrl } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
-import { NftIcon } from '../../../../../shared/nft-icon/nft-icon'
+
+// selectors
+import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../../common/selectors'
+
+// components
+import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
 
 // Styled Components
 import {
   NFTButton,
   NFTText,
   IconWrapper,
-  DIVForClickableArea
+  DIVForClickableArea,
+  NFTSymbol
 } from './style'
+import { Row } from '../../../../../shared/style'
+import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
 interface Props {
-  token: UserAssetInfoType
+  token: BraveWallet.BlockchainToken
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
   const { token, onSelectAsset } = props
-  const tokenImageURL = stripERC20TokenImageURL(token.asset.logo)
 
-  const remoteImage = React.useMemo(() => {
-    return httpifyIpfsUrl(tokenImageURL)
-  }, [tokenImageURL])
+  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   return (
     <NFTButton
@@ -40,9 +45,16 @@ export const NFTGridViewItem = (props: Props) => {
     >
       <IconWrapper>
         <DIVForClickableArea />
-        <NftIcon icon={remoteImage} responsive={true} />
+        <NftIconWithNetworkIcon
+          icon={token.logo}
+          responsive={true}
+          tokensNetwork={getTokensNetwork(networkList, token)}
+        />
       </IconWrapper>
-      <NFTText>{token.asset.name} {token.asset.tokenId ? '#' + new Amount(token.asset.tokenId).toNumber() : ''}</NFTText>
+      <Row alignItems='center' justifyContent='space-between' gap='14px' margin='6px 0 0 0'>
+        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
+      </Row>
+      <NFTSymbol>{token.symbol}</NFTSymbol>
     </NFTButton>
   )
 }

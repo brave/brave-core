@@ -94,6 +94,7 @@ export const Description = styled.span`
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
+  width: 60%;
 `
 
 export const TabRow = styled.div`

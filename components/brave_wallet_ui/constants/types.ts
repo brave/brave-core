@@ -6,6 +6,7 @@
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
+import { NftsPinningStatusType } from '../page/constants/action_types'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -297,6 +298,8 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  enablingAutoPin: boolean
+  isAutoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
@@ -315,6 +318,8 @@ export interface PageState {
   importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
+  nftsPinningStatus: NftsPinningStatusType
+  isLocalIpfsNodeRunning: boolean
 }
 
 export interface WalletPageState {
@@ -780,6 +785,10 @@ export enum WalletRoutes {
 
   // send
   Send = '/send',
+
+  // NFT Pining
+  LocalIpfsNode = '/crypto/local-ipfs-node',
+  InspectNfts = '/crypto/inspect-nfts'
 }
 
 export const WalletOrigin = 'chrome://wallet'
