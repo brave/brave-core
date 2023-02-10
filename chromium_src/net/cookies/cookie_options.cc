@@ -37,7 +37,7 @@ void FillEphemeralStorageParams(
   }
   cookie_options->set_should_use_ephemeral_storage(
       cookie_access_delegate->ShouldUseEphemeralStorage(
-          url, site_for_cookies, net::CookieSettingOverride::kNone,
+          url, site_for_cookies, net::CookieSettingOverride(),
           top_frame_origin));
   if (cookie_options->should_use_ephemeral_storage()) {
     cookie_options->set_site_for_cookies(site_for_cookies);
