@@ -27,11 +27,11 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const wchar_t* const name,
                                                const char* const suggest_url,
                                                SearchEngineType type,
                                                const int id) {
-  return {name,        keyword, favicon_url, search_url, encoding,
-          suggest_url, nullptr, nullptr,     nullptr,    nullptr,
-          nullptr,     nullptr, nullptr,     nullptr,    nullptr,
-          nullptr,     nullptr, nullptr,     0,          nullptr,
-          0,           type,    nullptr,     nullptr,    id};
+  return {name,    keyword, favicon_url, search_url, encoding, suggest_url,
+          nullptr, nullptr, nullptr,     nullptr,    nullptr,  nullptr,
+          nullptr, nullptr, nullptr,     nullptr,    nullptr,  nullptr,
+          nullptr, nullptr, nullptr,     0,          nullptr,  0,
+          type,    nullptr, nullptr,     id};
 }
 
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
@@ -65,6 +65,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.encoding,
           suggest_url ? suggest_url : engine.suggest_url,
           image_url ? image_url : engine.image_url,
+          engine.image_translate_url,
           engine.new_tab_url,
           engine.contextual_search_url,
           engine.logo_url,
@@ -74,6 +75,8 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.image_url_post_params,
           engine.side_search_param,
           engine.side_image_search_param,
+          engine.image_translate_source_language_param_key,
+          engine.image_translate_target_language_param_key,
           engine.image_search_branding_label,
           engine.search_intent_params,
           engine.search_intent_params_size,
