@@ -1,24 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import { ComponentType } from 'react'
 import styled from 'styled-components'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
-
-export const StyledContent = styled('div')<{}>`
-  font-size: 14px;
-  font-family: Poppins, sans-serif;
-  letter-spacing: 0;
-  color: ${p => p.theme.color.text};
-  line-height: 26px;
-  margin-bottom: 25px;
-`
-
-export const StyledDoneWrapper = styled('div')<{}>`
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-`
 
 export const StyledActionsWrapper = styled('div')<{}>`
   margin-top: 40px;

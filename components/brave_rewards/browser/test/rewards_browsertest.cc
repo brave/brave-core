@@ -290,9 +290,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
 
   rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id='settings-modal-tabs-1']");
-
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='reset-text']",
       "By resetting, your current Brave Rewards profile will be deleted");
@@ -309,9 +306,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),
       "#modal");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id='settings-modal-tabs-1']");
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='funds-warning-text']",

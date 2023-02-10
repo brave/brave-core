@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -54,9 +55,9 @@ export const deletePromotion = (promotionId: string) => action(types.DELETE_PROM
   promotionId
 })
 
-export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
+export const onModalResetClose = () => action(types.ON_MODAL_RESET_CLOSE)
 
-export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
+export const onModalResetOpen = () => action(types.ON_MODAL_RESET_OPEN)
 
 export const onModalConnectClose = () => action(types.ON_MODAL_CONNECT_CLOSE)
 

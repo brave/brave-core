@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -70,18 +71,18 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state[key] = value
       break
     }
-    case types.ON_MODAL_BACKUP_CLOSE: {
+    case types.ON_MODAL_RESET_CLOSE: {
       let ui = state.ui
-      ui.modalBackup = false
+      ui.modalReset = false
       state = {
         ...state,
         ui
       }
       break
     }
-    case types.ON_MODAL_BACKUP_OPEN: {
+    case types.ON_MODAL_RESET_OPEN: {
       let ui = state.ui
-      ui.modalBackup = true
+      ui.modalReset = true
       state = {
         ...state,
         ui
