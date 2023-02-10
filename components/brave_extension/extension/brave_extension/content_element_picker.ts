@@ -413,7 +413,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       // Append the hostname and forward to the background script
       chrome.runtime.sendMessage({
         type: 'cosmeticFilterCreate',
-        host: window.location.host,
         selector: msg.selector
       })
       quitElementPicker()
