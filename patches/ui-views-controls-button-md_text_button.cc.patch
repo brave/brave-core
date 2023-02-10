@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/button/md_text_button.cc b/ui/views/controls/button/md_text_button.cc
-index f4d8b90bf65ed999bbff54eee293823247585fd5..5a837245cf7759d91e4144d74bf8ce78579b4837 100644
+index 6204764165f758e1eac6a7e717c0fb2312745457..3321e4fd9f776895e06a601ffbdf1efbc0bd3db8 100644
 --- a/ui/views/controls/button/md_text_button.cc
 +++ b/ui/views/controls/button/md_text_button.cc
-@@ -280,6 +280,7 @@ void MdTextButton::UpdateColors() {
+@@ -295,6 +295,7 @@ void MdTextButton::UpdateColors() {
      UpdateTextColor();
      UpdateBackgroundColor();
      SchedulePaint();
