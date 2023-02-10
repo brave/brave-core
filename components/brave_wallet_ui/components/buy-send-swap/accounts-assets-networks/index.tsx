@@ -51,7 +51,7 @@ export const AccountsAssetsNetworks = (props: Props) => {
   const {
     accounts,
     selectedAccount
-  } = useSelector((state: {wallet: WalletState}) => {
+  } = useSelector((state: { wallet: WalletState }) => {
     return state.wallet
   })
   const dispatch = useDispatch()

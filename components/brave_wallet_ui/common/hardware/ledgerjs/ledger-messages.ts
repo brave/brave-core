@@ -60,7 +60,7 @@ export type LedgerError = LedgerResponsePayload & {
 // are reversed. The Ledger *Response messages will have a payload field
 // of type *ResponsePayload, whereas Trezor will have a *ResponsePayload
 // messages with a payload field of type *Response.
-export type UnlockResponse= CommandMessage & {
+export type UnlockResponse = CommandMessage & {
   payload: LedgerResponsePayload | LedgerError
 }
 export type UnlockCommand = CommandMessage & {
@@ -81,6 +81,6 @@ export type AuthorizationSuccessCommand = CommandMessage & {
 export type LedgerFrameCommand = UnlockCommand | AuthorizationRequiredCommand | AuthorizationSuccessCommand | SolLedgerFrameCommand | EthLedgerFrameCommand | FilLedgerFrameCommand
 export type LedgerFrameResponse = UnlockResponse | SolLedgerFrameResponse | EthLedgerFrameResponse | FilLedgerFrameResponse
 
-type LedgerCommandHandler <T>= ((command: LedgerFrameCommand) => Promise<T>)
-type LedgerCommandResponseHandler <T>= ((response: T) => void)
-export type LedgerCommandHandlerUnion <T>= LedgerCommandHandler<T> | LedgerCommandResponseHandler<T>
+type LedgerCommandHandler <T> = ((command: LedgerFrameCommand) => Promise<T>)
+type LedgerCommandResponseHandler <T> = ((response: T) => void)
+export type LedgerCommandHandlerUnion <T> = LedgerCommandHandler<T> | LedgerCommandResponseHandler<T>

@@ -36,8 +36,8 @@ export interface Props {
 
 export const SwapHeader = ({ onChangeSwapView }: Props) => {
   // redux
-  const selectedAccount = useSelector(({ wallet }: {wallet: WalletState}) => wallet.selectedAccount)
-  const selectedNetwork = useSelector(({ wallet }: {wallet: WalletState}) => wallet.selectedNetwork)
+  const selectedAccount = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccount)
+  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
 
   // methods
   const onShowAccounts = React.useCallback(() => {

@@ -76,7 +76,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
     }
   }
 
-  private readonly summary: Record<SummaryType, {color: TokenType, translation: string}> = {
+  private readonly summary: Record<SummaryType, { color: TokenType, translation: string }> = {
     grant: {
       color: 'earning',
       translation: 'tokenGrantClaimed'

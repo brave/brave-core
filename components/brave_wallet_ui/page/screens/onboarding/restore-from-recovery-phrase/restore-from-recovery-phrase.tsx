@@ -67,8 +67,7 @@ const RESTORE_FROM_EXTENSION_STEPS: RestoreFromOtherWalletSteps[] = [
 ]
 
 interface Props {
-  restoreFrom:
-  | 'metamask'
+  restoreFrom: 'metamask'
   | 'metamask-seed'
   | 'legacy'
   | 'legacy-seed'

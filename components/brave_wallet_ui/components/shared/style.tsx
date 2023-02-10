@@ -446,7 +446,7 @@ export const NetworkIconWrapper = styled.div`
 `
 
 // Graphics
-export const WalletWelcomeGraphic = styled.div<{scale?: CSSProperties['scale']}>`
+export const WalletWelcomeGraphic = styled.div<{ scale?: CSSProperties['scale'] }>`
   width: 350px;
   height: 264px;
   background: url(${BraveWalletWithCoins});

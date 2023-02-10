@@ -75,7 +75,7 @@ export function deserializeOrigin (origin: SerializableOrigin): BraveWallet.Orig
 }
 
 export function revertSerializableOriginInfoProp <
-  G extends any,
+  G,
   T extends WithSerializableOriginInfo<ObjWithOriginInfo<G>>
 > (obj: T) {
   return {

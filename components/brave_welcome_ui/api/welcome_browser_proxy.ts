@@ -61,4 +61,4 @@ export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
   }
 }
 
-let instance: WelcomeBrowserProxyImpl|null = null
+let instance: WelcomeBrowserProxyImpl | null = null
