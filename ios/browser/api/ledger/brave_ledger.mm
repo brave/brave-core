@@ -167,8 +167,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self savePrefs];
     }
 
-    if (!self.prefs[@"parameters.wallet_provider_regions"]) {
-      self.prefs[@"parameters.wallet_provider_regions"] = @{};
+    NSString* walletProviderRegionsKey = @"parameters.wallet_provider_regions";
+    if (!self.prefs[walletProviderRegionsKey] ||
+        ![self.prefs[walletProviderRegionsKey] isKindOfClass:NSString.class]) {
+      self.prefs[walletProviderRegionsKey] = @"{}";
     }
 
     [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
