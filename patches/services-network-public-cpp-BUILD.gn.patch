@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index d23e85462ba39b3f0003431f8301c18e1d43bb14..dc58c49ec5b570b714911c5d25c04f5f92258f09 100644
+index 77d7476eccc0b2215262fb14d4b49595c9c9976c..c70a85854973b76a1b6a9ebad95856cb6e1feeca 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -183,6 +183,7 @@ component("cpp") {
+@@ -185,6 +185,7 @@ component("cpp") {
      "//services/proxy_resolver/public/mojom",
    ]
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index a4dc6c351d3f272223a2ff86440b124872162d1e..32e2690f013ce0715bbad4e8919b077798966b52 100644
+index 3a38740880265a0102ba86b08dd7aaa5db3442f2..1b200cb7159b554aa3223b9357f66e353de25c92 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
 @@ -1201,3 +1201,4 @@ chrome_java_sources = [

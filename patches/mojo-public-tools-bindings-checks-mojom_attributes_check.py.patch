@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/checks/mojom_attributes_check.py b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
-index 32edbbfd7ce023647f7af62c7f72af004dc073ee..3e8a3c6248dfc23a7e5ec7b85e3671840cba9d6d 100644
+index 3a2d2a3bffc898ad083e0c8d191159e4d56ff39f..77b1598edc88ef6272c8a71711847831a18ab476 100644
 --- a/mojo/public/tools/bindings/checks/mojom_attributes_check.py
 +++ b/mojo/public/tools/bindings/checks/mojom_attributes_check.py
 @@ -7,6 +7,7 @@ import mojom.generate.check as check
