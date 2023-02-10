@@ -22,7 +22,7 @@
         android:layout_marginTop="24dp"
         android:textSize="20sp"
         android:fontFamily="@font/poppins_600"
-        android:textColor="@color/rewards_panel_secondary_text_color"/>
+        android:textColor="@color/rewards_panel_text_color"/>
 
       <TextView
         android:id="@+id/text_view"
