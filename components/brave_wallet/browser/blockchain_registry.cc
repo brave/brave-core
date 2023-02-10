@@ -130,6 +130,8 @@ std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
       buy_tokens = &GetSardineBuyTokens();
     } else if (provider == mojom::OnRampProvider::kTransak) {
       buy_tokens = &GetTransakBuyTokens();
+    } else {
+      continue;
     }
 
     for (const auto& token : *buy_tokens) {
@@ -145,18 +147,14 @@ std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
 void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
                                       const std::string& chain_id,
                                       GetBuyTokensCallback callback) {
-  std::vector<mojom::BlockchainTokenPtr> blockchain_buy_tokens =
-      GetBuyTokens({provider}, chain_id);
-  std::move(callback).Run(std::move(blockchain_buy_tokens));
+  std::move(callback).Run(GetBuyTokens({provider}, chain_id));
 }
 
 void BlockchainRegistry::GetProvidersBuyTokens(
     const std::vector<mojom::OnRampProvider>& providers,
     const std::string& chain_id,
     GetProvidersBuyTokensCallback callback) {
-  std::vector<mojom::BlockchainTokenPtr> blockchain_buy_tokens =
-      GetBuyTokens(providers, chain_id);
-  std::move(callback).Run(std::move(blockchain_buy_tokens));
+  std::move(callback).Run(GetBuyTokens(providers, chain_id));
 }
 
 // TODO(muliswilliam) - Remove this function when iOS and Android no longer
