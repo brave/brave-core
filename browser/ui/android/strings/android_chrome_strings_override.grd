@@ -117,6 +117,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates Private mode is active, within a list of notification categories. [CHAR_LIMIT=32]">
         Private
       </message>
+      <message name="IDS_IMPROVE_SEARCH_SUGGESTIONS_SUMMARY" desc="Summary for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
+        When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.
+      </message>
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism.">
         Lock Private tabs when you leave Brave
       </message>
