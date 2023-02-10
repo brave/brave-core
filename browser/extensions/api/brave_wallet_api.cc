@@ -99,7 +99,7 @@ BraveWalletShouldPromptForSetupFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool should_prompt =
       !profile->GetPrefs()->GetBoolean(kERCOptedIntoCryptoWallets);
-  return RespondNow(OneArgument(base::Value(should_prompt)));
+  return RespondNow(WithArguments(should_prompt));
 }
 
 ExtensionFunction::ResponseAction
@@ -122,19 +122,19 @@ BraveWalletGetWalletSeedFunction::Run() {
 
   blob.assign(derived.begin(), derived.end());
 
-  return RespondNow(OneArgument(base::Value(blob)));
+  return RespondNow(WithArguments(base::Value(blob)));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletGetProjectIDFunction::Run() {
   std::string project_id = extensions::GetInfuraProjectID();
-  return RespondNow(OneArgument(base::Value(project_id)));
+  return RespondNow(WithArguments(project_id));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletGetBraveKeyFunction::Run() {
   std::string brave_key = extensions::GetBraveKey();
-  return RespondNow(OneArgument(base::Value(brave_key)));
+  return RespondNow(WithArguments(brave_key));
 }
 
 ExtensionFunction::ResponseAction
@@ -161,7 +161,7 @@ BraveWalletGetWeb3ProviderFunction::Run() {
       default_wallet == ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     extension_id = ethereum_remote_client_extension_id;
   }
-  return RespondNow(OneArgument(base::Value(extension_id)));
+  return RespondNow(WithArguments(extension_id));
 }
 
 ExtensionFunction::ResponseAction
@@ -192,13 +192,12 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
                               ::brave_wallet::mojom::DefaultWallet::None));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
-  return RespondNow(OneArgument(base::Value(json_string)));
+  return RespondNow(WithArguments(json_string));
 }
 
 ExtensionFunction::ResponseAction
 BraveWalletIsNativeWalletEnabledFunction::Run() {
-  return RespondNow(
-      OneArgument(base::Value(::brave_wallet::IsNativeWalletEnabled())));
+  return RespondNow(WithArguments(::brave_wallet::IsNativeWalletEnabled()));
 }
 
 }  // namespace api
