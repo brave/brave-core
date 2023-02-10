@@ -816,7 +816,7 @@ provideStrings({
   braveNftsTabImportNft: 'Import NFT',
   braveNftsTabEmptyStateHeading: 'No NFTs here yet.',
   braveNftsTabEmptyStateSubHeading: 'Ready to add some? Just click the button below to import.',
-  braveNftsTabEmptyStateDisclaimer: 'Note that Brave Wallet currently only supports the ERC721 token standard.',
+  braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',

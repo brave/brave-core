@@ -16,7 +16,8 @@ import {
   SubHeading,
   ImportButton
 } from './nfts-empty-state.style'
-import EmptyStateGraphic from '../../../../../../assets/png-icons/nft-empty-state.png'
+import EmptyStateGraphicLight from '../../../../../../assets/png-icons/nft-empty-state-light.png'
+import EmptyStateGraphicDark from '../../../../../../assets/png-icons/nft-empty-state-dark.png'
 
 interface Props {
   onImportNft: () => void
@@ -24,7 +25,7 @@ interface Props {
 
 export const NftsEmptyState = ({ onImportNft }: Props) => (
   <StyledWrapper>
-    <EmptyStateImage src={EmptyStateGraphic} />
+    <EmptyStateImage src={window.matchMedia('(prefers-color-scheme: dark)').matches ? EmptyStateGraphicDark : EmptyStateGraphicLight} />
     <Heading>{getLocale('braveNftsTabEmptyStateHeading')}</Heading>
     <SubHeading>{getLocale('braveNftsTabEmptyStateSubHeading')}</SubHeading>
     <ImportButton onClick={onImportNft}>{getLocale('braveNftsTabImportNft')}</ImportButton>

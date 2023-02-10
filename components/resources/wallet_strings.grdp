@@ -836,5 +836,5 @@
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_IMPORT_NFT" desc="NFT tab import NFT dropdown item">Import NFT</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING" desc="NFT tab empty state heading">No NFTs here yet.</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
-  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Note that Brave Wallet currently only supports the ERC721 token standard.</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
 </grit-part>
