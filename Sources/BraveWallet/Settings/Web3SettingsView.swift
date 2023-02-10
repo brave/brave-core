@@ -40,7 +40,7 @@ public struct Web3SettingsView: View {
   
   public var body: some View {
     List {
-      if let settingsStore, let networkStore, let keyringStore, settingsStore.isDefaultKeyringCreated {
+      if let settingsStore = settingsStore, let networkStore = networkStore, let keyringStore = keyringStore, keyringStore.isDefaultKeyringCreated {
         WalletSettingsView(
           settingsStore: settingsStore,
           networkStore: networkStore,

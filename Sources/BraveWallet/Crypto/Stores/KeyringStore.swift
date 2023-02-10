@@ -93,6 +93,9 @@ public class KeyringStore: ObservableObject {
   }
   /// All available `KeyringInfo` for all supported coin type
   @Published var allKeyrings: [BraveWallet.KeyringInfo] = []
+  /// Indicates if default keyring has been created. This value used for display wallet related settings if default
+  /// keyring has been created
+  @Published var isDefaultKeyringCreated: Bool = false
   /// All `AccountInfo` for all available keyrings
   var allAccounts: [BraveWallet.AccountInfo] {
     allKeyrings.flatMap(\.accountInfos)
@@ -154,6 +157,7 @@ public class KeyringStore: ObservableObject {
       self.defaultAccounts = await keyringService.defaultAccounts(for: WalletConstants.supportedCoinTypes)
       if let defaultKeyring = allKeyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) {
         self.defaultKeyring = defaultKeyring
+        self.isDefaultKeyringCreated = defaultKeyring.isKeyringCreated
       }
       self.allKeyrings = allKeyrings
       if let selectedAccountKeyring = allKeyrings.first(where: { $0.coin == selectedCoin }) {
