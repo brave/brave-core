@@ -16,9 +16,9 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
-#include "components/sync/protocol/sync_protocol_error.h"
 
 class ChromeBrowserState;
 struct SyncProtocolError;
@@ -95,11 +95,10 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);
-  void SetJoinSyncChainCallback(
-      base::OnceCallback<void(const bool&)> callback);
+  void SetJoinSyncChainCallback(base::OnceCallback<void(const bool&)> callback);
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const syncer::SyncProtocolError&)> callback);
-      
+
  private:
   // syncer::SyncServiceObserver implementation.
 

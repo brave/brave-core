@@ -11,16 +11,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, SyncJoinError) {
-  SyncJoinErrorSuccess = 0,
-  SyncJoinErrorThrottled,
-  SyncJoinErrorPartialFailure,
-  SyncJoinErrorDataObsolete,
-  SyncJoinErrorEncryptionObsolete,
-  SyncJoinErrorUnknown
-};
-
 @class BraveSyncInternalsController;
+
+typedef NSInteger BraveSyncAPISyncProtocolErrorResult
+    NS_TYPED_ENUM NS_SWIFT_NAME(BraveSyncAPI.SyncProtocolErrorResult);
+
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultSuccess;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultThrottled;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultPartialFailure;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDataObsolete;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultEncryptionObsolete;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultUnknown;
 
 typedef NSInteger BraveSyncAPIQrCodeDataValidationResult NS_TYPED_ENUM
     NS_SWIFT_NAME(BraveSyncAPI.QrCodeDataValidationResult);
@@ -69,10 +76,8 @@ OBJC_EXPORT
 
 - (void)setJoinSyncChain:(void (^)(bool))completion;
 
-- (void)permanentlyDeleteAccount:(void (^)(bool))completion;
-
-  void PermanentlyDeleteAccount(
-      base::OnceCallback<void(const syncer::SyncProtocolError&)> callback);
+- (void)permanentlyDeleteAccount:
+    (void (^)(BraveSyncAPISyncProtocolErrorResult))completion;
 
 - (void)deleteDevice:(NSString*)guid;
 

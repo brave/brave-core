@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
+
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_validator.h"
@@ -22,13 +23,16 @@
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
+
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
+
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
@@ -36,11 +40,34 @@
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+// MARK: - BraveSyncAPISyncProtocolErrorResult
+
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultSuccess =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::SYNC_SUCCESS);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultThrottled =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultPartialFailure =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::PARTIAL_FAILURE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDataObsolete = static_cast<NSInteger>(
+        syncer::SyncProtocolErrorType::CLIENT_DATA_OBSOLETE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultEncryptionObsolete =
+        static_cast<NSInteger>(
+            syncer::SyncProtocolErrorType::ENCRYPTION_OBSOLETE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultUnknown =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::UNKNOWN_ERROR);
 
 // MARK: - QrCodeDataValidationResult
 
@@ -65,22 +92,22 @@ BraveSyncAPIQrCodeDataValidationResult const
 
 // MARK: - TimeLimitedWords::ValidationStatus
 
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
-    BraveSyncAPIWordsValidationStatusValid = static_cast<NSInteger>(
+BraveSyncAPIWordsValidationStatus const BraveSyncAPIWordsValidationStatusValid =
+    static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kValid);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusNotValidPureWords = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kNotValidPureWords);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusVersionDeprecated = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kVersionDeprecated);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusExpired = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kExpired);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusValidForTooLong = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kValidForTooLong);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
@@ -291,37 +318,46 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 }
 
 - (void)setJoinSyncChain:(void (^)(bool success))completion {
-  // auto join_sync_chain = ^(void (^callback)(BOOL)) {
-  //   _worker->SetJoinSyncChainCallback(base::BindOnce(callback));
-  // };
+  _worker->SetJoinSyncChainCallback(
+      base::BindOnce([](void (^completion)(bool),
+                        const bool& success) {
+                          VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
+                                          << success;
+                          completion(success); },
+                     completion));
 
   // web::GetUIThreadTaskRunner({})->PostTask(
-  //   FROM_HERE, base::BindOnce(join_sync_chain, completion));
-
-  // _worker->SetJoinSyncChainCallback(base::BindOnce(^(const bool success) {
-  //   completion(success);
-  // }));
-
-
-  _worker->SetJoinSyncCallback(base::BindOnce([completion](bool success, void(*completion)()) {
-   completion();
-  }, completion);
+  //     FROM_HERE,
+  //     base::BindOnce(
+  //         &BraveSyncWorker::SetJoinSyncChainCallback,
+  //         base::Unretained(_worker.get()),
+  //         base::BindOnce([](void (^completion)(bool),
+  //                           const bool& success) { completion(success); },
+  //                        completion)));
 }
 
-
-- (void)permanentlyDeleteAccount:(void (^)(SyncJoinError))completion {
-
-  // auto permenantly_delete_account = ^(void (^callback)(syncer::SyncProtocolError)) {
-  //   _worker->PermanentlyDeleteAccount(base::BindOnce(callback));
-  // };
+- (void)permanentlyDeleteAccount:
+    (void (^)(BraveSyncAPISyncProtocolErrorResult))completion {
+  _worker->PermanentlyDeleteAccount(base::BindOnce(
+      [](void (^completion)(BraveSyncAPISyncProtocolErrorResult),
+         const syncer::SyncProtocolError& error) {
+        completion(
+            static_cast<BraveSyncAPISyncProtocolErrorResult>(error.error_type));
+      },
+      completion));
 
   // web::GetUIThreadTaskRunner({})->PostTask(
-  //   FROM_HERE, base::BindOnce(permenantly_delete_account, completion));
-
-
-  _worker->PermanentlyDeleteAccount(base::BindOnce([completion](bool success, void(*completion)()) {
-   completion(SyncJoinErrorSuccess);
-  }, completion);
+  //     FROM_HERE,
+  //     base::BindOnce(
+  //         &BraveSyncWorker::PermanentlyDeleteAccount,
+  //         base::Unretained(_worker.get()),
+  //         base::BindOnce(
+  //             [](void (^completion)(BraveSyncAPISyncProtocolErrorResult),
+  //                const syncer::SyncProtocolError& error) {
+  //               completion(static_cast<BraveSyncAPISyncProtocolErrorResult>(
+  //                   error.error_type));
+  //             },
+  //             completion)));
 }
 
 - (void)deleteDevice:(NSString*)guid {
