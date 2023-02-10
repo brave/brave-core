@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/bind.h"
 #include "base/compiler_specific.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
@@ -35,6 +36,7 @@
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -286,6 +288,40 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 
 - (void)resetSync {
   _worker->ResetSync();
+}
+
+- (void)setJoinSyncChain:(void (^)(bool success))completion {
+  // auto join_sync_chain = ^(void (^callback)(BOOL)) {
+  //   _worker->SetJoinSyncChainCallback(base::BindOnce(callback));
+  // };
+
+  // web::GetUIThreadTaskRunner({})->PostTask(
+  //   FROM_HERE, base::BindOnce(join_sync_chain, completion));
+
+  // _worker->SetJoinSyncChainCallback(base::BindOnce(^(const bool success) {
+  //   completion(success);
+  // }));
+
+
+  _worker->SetJoinSyncCallback(base::BindOnce([completion](bool success, void(*completion)()) {
+   completion();
+  }, completion);
+}
+
+
+- (void)permanentlyDeleteAccount:(void (^)(SyncJoinError))completion {
+
+  // auto permenantly_delete_account = ^(void (^callback)(syncer::SyncProtocolError)) {
+  //   _worker->PermanentlyDeleteAccount(base::BindOnce(callback));
+  // };
+
+  // web::GetUIThreadTaskRunner({})->PostTask(
+  //   FROM_HERE, base::BindOnce(permenantly_delete_account, completion));
+
+
+  _worker->PermanentlyDeleteAccount(base::BindOnce([completion](bool success, void(*completion)()) {
+   completion(SyncJoinErrorSuccess);
+  }, completion);
 }
 
 - (void)deleteDevice:(NSString*)guid {

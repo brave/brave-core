@@ -11,6 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, SyncJoinError) {
+  SyncJoinErrorSuccess = 0,
+  SyncJoinErrorThrottled,
+  SyncJoinErrorPartialFailure,
+  SyncJoinErrorDataObsolete,
+  SyncJoinErrorEncryptionObsolete,
+  SyncJoinErrorUnknown
+};
+
 @class BraveSyncInternalsController;
 
 typedef NSInteger BraveSyncAPIQrCodeDataValidationResult NS_TYPED_ENUM
@@ -57,6 +66,13 @@ OBJC_EXPORT
 - (void)setSetupComplete;
 
 - (void)resetSync;
+
+- (void)setJoinSyncChain:(void (^)(bool))completion;
+
+- (void)permanentlyDeleteAccount:(void (^)(bool))completion;
+
+  void PermanentlyDeleteAccount(
+      base::OnceCallback<void(const syncer::SyncProtocolError&)> callback);
 
 - (void)deleteDevice:(NSString*)guid;
 
