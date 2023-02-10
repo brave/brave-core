@@ -61,7 +61,7 @@ const char kBraveWalletNextAssetDiscoveryFromBlocks[] =
 const char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
 const char kBraveWalletTransactionsChainIdMigrated[] =
-    "brave.wallet.ethereum_transactions.chain_id_migrated";    
+    "brave.wallet.transactions.chain_id_migrated";    
 
 // DEPRECATED
 const char kShowWalletTestNetworksDeprecated[] =
@@ -78,3 +78,6 @@ const char kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated";
 const char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
 const char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
+const char kBraveWalletSolanaTransactions[] = "brave.wallet.transactions.solana";
+const char kBraveWalletFileCoinTransactions[] = "brave.wallet.transactions.filecoin";
+

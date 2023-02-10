@@ -122,7 +122,7 @@ base::Value::Dict FilTransaction::ToValue() const {
   dict.Set("To", to_.EncodeAsString());
   dict.Set("From", from_.EncodeAsString());
   dict.Set("Value", value_);
-  dict.Set("chain_id", chain_id);
+  dict.Set("chain_id", chain_id_);
  return dict;
 }
 

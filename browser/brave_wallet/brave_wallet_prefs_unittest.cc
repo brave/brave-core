@@ -274,4 +274,20 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
 }
 
+/*
+TEST_F(BraveWalletPrefsUnitTest,
+       MigrateBraveWalletTransactionsChainId) {
+
+  ASSERT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));
+
+  auto* pref = GetPrefs()->FindPreference(kBraveWalletTransactions);
+  ASSERT_TRUE(pref && pref->IsDefaultValue());
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_TRUE(pref && pref->IsDefaultValue());
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
+
+}
+*/
 }  // namespace brave_wallet

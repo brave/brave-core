@@ -260,21 +260,56 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 
   if(!prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)){
-    auto transactions = prefs->GetDict(kBraveWalletTransactions).Clone();
-    prefs->ClearPref(kBraveWalletTransactions);
-    if (!transactions.empty()) {
+    auto sol_network_ids = prefs->GetDict(kBraveWalletSolanaTransactions).Clone();
+    auto fil_network_ids = prefs->GetDict(kBraveWalletFileCoinTransactions).Clone();
 
-      for(auto txs : transactions){
-        if(*txs || !txs.second.is_dict())
-          continue;
+    auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
+                            const mojom::CoinType& coin) {
 
+      for(auto tnid : *tx_by_network_ids){
+          auto chain_id = GetChainId(prefs, coin, tnid.first);
+          
+          if(!chain_id.has_value())
+            continue;
 
+          auto* txs = tnid.second.GetIfDict();
+
+          if (!txs || txs->empty()) {
+            return;
+          }
+
+          for (auto tx : *txs) {
+            auto* ptx = tx.second.GetIfDict();
+
+            if (!ptx)
+              continue;
+
+            auto* ptx_tr = ptx->FindDict("tx");
+
+            if (!ptx_tr)
+              continue;
+
+            ptx_tr->Set("chain_id", chain_id.value());
+          }
       }
+     };
 
-      ScopedDictPrefUpdate update(prefs, kBraveWalletTransactions);
-      update->Set(kEthereumPrefKey, std::move(transactions));
+    if (!sol_network_ids.empty()) {
+      set_chain_id(&sol_network_ids, mojom::CoinType::SOL);
     }
+
+    if (!fil_network_ids.empty()) {
+      set_chain_id(&fil_network_ids, mojom::CoinType::FIL);
+    }
+
+    ScopedDictPrefUpdate sol_txs_update(prefs, kBraveWalletSolanaTransactions);
+    sol_txs_update->Set(kBraveWalletSolanaTransactions, std::move(sol_network_ids));
+
+    ScopedDictPrefUpdate fil_txs_update(prefs, kBraveWalletFileCoinTransactions);
+    fil_txs_update->Set(kBraveWalletFileCoinTransactions, std::move(fil_network_ids));
+
     prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
+
   }
 }
 
