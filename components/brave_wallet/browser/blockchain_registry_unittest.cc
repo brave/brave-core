@@ -14,6 +14,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
@@ -454,6 +456,46 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
             run_loop4.Quit();
           }));
   run_loop4.Run();
+}
+
+TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+
+  std::vector<mojom::BlockchainToken> buy_tokens;
+  for (const auto& v : {GetWyreBuyTokens(), GetRampBuyTokens(),
+                        GetSardineBuyTokens(), GetTransakBuyTokens()}) {
+    buy_tokens.insert(buy_tokens.end(), v.begin(), v.end());
+  }
+
+  const char* chains[] = {
+      mojom::kMainnetChainId,          mojom::kPolygonMainnetChainId,
+      mojom::kAvalancheMainnetChainId, mojom::kBinanceSmartChainMainnetChainId,
+      mojom::kSolanaMainnet,           mojom::kCeloMainnetChainId,
+      mojom::kArbitrumMainnetChainId};
+
+  for (auto* chain : chains) {
+    std::vector<mojom::BlockchainTokenPtr> expected_tokens;
+    for (const auto& token : buy_tokens) {
+      if (token.chain_id == chain) {
+        expected_tokens.push_back(mojom::BlockchainToken::New(token));
+      }
+    }
+
+    base::RunLoop run_loop;
+    registry->GetProvidersBuyTokens(
+        {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+         mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak,
+         mojom::OnRampProvider::kTransak /* test duplicate provider */},
+        chain,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+              EXPECT_EQ(expected_tokens, token_list) << chain;
+
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
 }
 
 TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
