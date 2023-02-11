@@ -10,6 +10,7 @@
 # https://github.com/brave/brave-browser/issues/25726
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
+-All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
@@ -34,6 +35,9 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -SavedTabGroupModelListenerTest.CreatesRemovesBrowserListener
 -SavedTabGroupModelListenerTest.GetTabStripModelWithTabGroupId
+-SaveIbanBubbleControllerImplTest.LocalIbanSavedSuccessfully
+-UserNotesPageHandlerTest.CurrentTabUrlChangedWithNavigation
+-UserNotesPageHandlerTest.CurrentTabUrlChangedWithTabStripModelChanged
 
 # These tests crash due to TestingBraveBrowserProcess::extension_whitelist_service()
 # having NOTREACHED which causes an immediate crash
@@ -76,9 +80,12 @@
 -RenderViewContextMenuPrefsTest.LensImageSearchEnabled
 -RenderViewContextMenuPrefsTest.LensImageSearchEnabledFor3pDse
 -RenderViewContextMenuPrefsTest.LensImageSearchForProgressiveWebApp
+-RenderViewContextMenuPrefsTest.LensImageSearchNoBrowser
 -RenderViewContextMenuPrefsTest.LensImageSearchNonImage
--All/SearchProviderRequestTest.SendRequestWithURL/*
--All/SearchProviderRequestTest.SendRequestWithoutURL/*
+-SearchProviderRequestTest.SendRequestWithURL
+-SearchProviderRequestTest.SendRequestWithURL/*
+-SearchProviderRequestTest.SendRequestWithoutURL
+-SearchProviderRequestTest.SendRequestWithoutURL/*
 
 # The following tests are disabled for BraveRenderViewContextMenu::InitMenu
 # attempting to check Tor statuses, which dereferences an uninitialised
@@ -134,9 +141,41 @@
 
 # These tests fail because we disable DIPS via dips::kFeature
 -All/DIPSDatabaseAllColumnTest.*/*
+-All/DIPSDatabaseErrorHistogramsTest.*/*
 -All/DIPSDatabaseGarbageCollectionTest.*/*
 -All/DIPSDatabaseInteractionTest.*/*
 -DIPSDatabaseHistogramTest.*
+-DIPSServiceHistogramTest.*
+-DIPSServiceStateRemovalTest.*
+
+# These tests fail a CalledOnValidSequence check when calling
+# TorProfileServiceFactory::IsTorDisabled
+-All/CustomizeChromePageHandlerSetThemeTest.*/*
+-CustomizeChromePageHandlerTest.*
+-CustomizeChromePageHandlerWithModulesTest.*
+-SavedTabGroupKeyedServiceUnitTest.*
+
+# These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
+# of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
+# content_settings::ParseContentSettingValue
+# https://github.com/brave/brave-browser/issues/25733
+-SiteSettingsPermissionsHandlerTest.HandleAcknowledgeRevokedUnusedSitePermissionsList
+-SiteSettingsPermissionsHandlerTest.HandleAllowPermissionsAgainForUnusedSite
+
+# These tests fail because we disable the media router via
+# prefs::kEnableMediaRouter
+-MediaDialogViewWithRemotePlaybackTest.BuildDeviceSelectorView_RemotePlaybackSource
+-MediaRouterActionControllerUnitTest.*
+-MediaRouterEnabledTest.*
+-MediaRouterUIServiceFactoryUnitTest.*
+-MediaRouterViewsUITest.*
+
+# This test is disabled because the Brave NTP doesn't support this feature
+-NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
+
+# This test is disabled because Brave overrides how underlines are drawn for tab
+# groups
+-All/TabGroupViewsTest.UnderlineBoundsWhenTabsAreNotVisible/1
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -165,7 +204,6 @@
 -All/PreinstalledWebAppManagerTest.ReplacementExtensionBlockedByPolicy/*
 -All/RulesetManagerTest.*
 -All/SearchProviderCommandLineOverrideTest.CommandLineOverrides/*
--All/SearchProviderTest.*
 -All/SingleRulesetTest.*
 -All/TabSharingInfoBarDelegateTest.*
 -All/TabStripTest.*
@@ -302,6 +340,7 @@
 -ExtensionServiceTestSimple.*
 -ExtensionServiceTestWithInstall.*
 -ExtensionsMenuItemViewTest.*
+-ExtensionsMenuMainPageViewUnitTest.*
 -ExtensionsMenuViewUnitTest.*
 -ExtensionSourcePriorityTest.*
 -ExtensionsTabbedMenuViewUnitTest.*
@@ -359,10 +398,6 @@
 -MediaGalleriesPermissionControllerTest.*
 -MediaGalleriesPreferencesTest.*
 -MediaNotificationServiceCastTest.*
--MediaRouterActionControllerUnitTest.*
--MediaRouterEnabledTest.*
--MediaRouterUIServiceFactoryUnitTest.*
--MediaRouterViewsUITest.*
 -MediaStreamFocusDelegateTest.*
 -MediaToolbarButtonContextualMenuTest.*
 -MetricsWebContentsObserverTest.*
@@ -448,6 +483,7 @@
 -SearchIPCRouterPolicyTest.*
 -SearchIPCRouterTest.*
 -SearchProviderCommandLineOverrideTest.*
+-SearchProviderTest.*
 -SearchTest.*
 -SendTabToSelfDesktopUtilTest.*
 -SendTabToSelfSubMenuModelTest.*
