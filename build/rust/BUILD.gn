@@ -14,7 +14,9 @@ if (is_apple) {
 }
 
 config("strip_rust_symbols") {
-  if (is_apple && !is_component_build) {
+  # should match verify_chrome_framework_order
+  if (is_apple && !is_component_build && chrome_pgo_phase != 1 &&
+      !using_sanitizer) {
     ldflags = [
       # prevent export of all rust symbols
       "-Wl,-unexported_symbols_list," +
