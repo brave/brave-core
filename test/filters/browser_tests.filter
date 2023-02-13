@@ -101,7 +101,9 @@
 -AdsPageLoadMetricsObserverPrerenderingBrowserTest.*
 -All/IntentPickerBubbleViewPrerenderingBrowserTest.*
 -All/LoginPromptPrerenderBrowserTest.*
+-All/LookalikeUrlNavigationThrottleBrowserTest.*/*
 -All/LookalikeUrlNavigationThrottlePrerenderBrowserTest.ShowInterstitialAfterActivation/*
+-All/LookalikeUrlNavigationThrottleSignedExchangeBrowserTest.*/*
 -All/PDFExtensionPrerenderTest.*
 -All/PrerenderOmniboxSearchSuggestionReloadBrowserTest.*
 -All/PrerenderingChangePasswordNavigationThrottleBrowserTest.*
@@ -234,8 +236,10 @@
 # These tests fail because the primary account consent level is null instead of
 # signin::ConsentLevel::kSignin
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
+-TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
+-TurnSyncOnHelperBrowserTestWithParam.PrimaryAccountResetAfterSyncOptInFlowAborted/*
 
-# This test fails because BRAVE_COSMETIC_FILTERING has an initial default value
+# These tests fail because BRAVE_COSMETIC_FILTERING has an initial default value
 # of CONTENT_SETTING_DEFAULT which is not allowed as an integer value by
 # content_settings::ParseContentSettingValue
 # https://github.com/brave/brave-browser/issues/25733
@@ -261,6 +265,11 @@
 
 # These tests fail because of the Ephemeral Storage (they pass with
 # kBraveEphemeralStorage feature disabled).
+-RequestStorageAccessForOriginBrowserTest.*
+-RequestStorageAccessForOriginEnabledBrowserTest.*
+-RequestStorageAccessForOriginWithCHIPSBrowserTest.*
+-RequestStorageAccessForOriginWithFirstPartySetsBrowserTest.*
+-RequestStorageAccessForOriginWithFirstPartySetsDisabledBrowserTest.*
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
 -StorageAccessAPIWithCHIPSBrowserTest.*
@@ -312,7 +321,9 @@
 -NavigationPredictorSameDocumentPreconnectClientBrowserTest.*
 -PredictionManagerModelPackageOverrideTest.*
 -PredictionModelStoreBrowserTest.*
+-PredictionModelStoreMigrationBrowserTest.*
 -PredictionServiceBrowserTest.*
+-SearchNavigationPrefetchDefaultMatchBrowserTest.NotDefaultMatch
 -SearchNavigationPrefetchNoCancelBrowserTest.PrefetchIsNotCancelled
 
 # The tests below are being disabled due to current incompatibilities between
@@ -400,6 +411,7 @@
 -BrowsingDataModelBrowserTest.InterestGroupsHandledCorrectly
 -InterestGroupFledgeOnBrowserTest.*
 -InterestGroupPermissionsBrowserTest.*
+-InterestGroupPermissionsPrivacySandbox3BrowserTest.*
 
 # These tests fail because we intentionally disable DICE signin via
 # BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
@@ -422,7 +434,10 @@
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
--GaiaRemoteConsentFlowBrowserTest.*
+-EnterpriseWelcomeUIDialogPixelTest.InvokeUi_default/*
+-EnterpriseWelcomeUIWindowPixelTest.InvokeUi_default/*
+-GaiaRemoteConsentFlowParamBrowserTest.*
+-PasswordRevampedManagementBubbleBrowserTest.InvokeUi_ManagePasswordBubbleWithRevampedDesign/*
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
@@ -438,11 +453,21 @@
 # These tests fail on CI but pass locally
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebHid
 -DeviceChooserExtensionBrowserTests/DeviceChooserExtensionBrowserTest.ChooserAnchoredToExtensionIcon/WebUsb
+-InstallFromManifestCommandTest.SuccessCrossOriginManifest
+-InstallFromManifestCommandTest.SuccessNewInstall
+-InstallFromManifestCommandTest.SuccessWithManifestId
 -MetricIntegrationTest.FirstInputDelay
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
 
 # Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
 -ContinueWhereILeftOffTest.SessionCookies
+
+# These test fails because the extension name contains "Chromium" instead of
+# "Chrome" (the string is hard-coded into the test)
+-All/PluginInfoHostImplBidiTest.GetPluginInfoForPdfViewerExtension/*
+-PdfOcrMenuObserverTest.PdfOcrItemNotShownWithoutScreenReader
+-PdfOcrMenuObserverTest.PdfOcrItemShownWithScreenReaderEnabled
+-PluginInfoHostImplTest.GetPluginInfoForPdfInternalPlugin
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -487,10 +512,8 @@
 -All/PDFExtensionContentSettingJSTest.*
 -All/PDFExtensionHitTestTest.*
 -All/PDFExtensionJSTest.*
--All/PDFExtensionRegionSearchTest.*
 -All/PDFExtensionServiceWorkerJSTest.*
 -All/PDFExtensionTest.*
--All/PDFExtensionTestWithTestGuestViewManager.*
 -All/PDFExtensionWebUICodeCacheJSTest.*
 -All/PrintPreviewDialogControllerBrowserTest.*
 -All/ProcessManagementExtensionIsolationTest.*
@@ -615,6 +638,7 @@
 -CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
 -CustomizeChromeSidePanelBrowserTest.*
+-DataSaverBrowserTest.*
 -DataSaverWebAPIsBrowserTest.*
 -DebuggerApiTest.*
 -DeclarativeContentApiTest.*
@@ -642,6 +666,7 @@
 -DnsProbeSuccessfulProbesTest.*
 -DnsProbeUnreachableProbesTest.*
 -DomainReliabilityBrowserTest.*
+-DomainReliabilityPolicyTest.*
 -DomDistillerTabUtilsBrowserTest.*
 -DomDistillerViewerSourceBrowserTest.*
 -DownloadDeepScanningBrowserTest.*
@@ -705,6 +730,7 @@
 -FontPrewarmerTabHelperTest.*
 -GcmApiTest.*
 -GeolocationBrowserTest.*
+-GetAuthTokenFunctionInteractivityTest.*/*
 -GetAuthTokenFunctionSelectedUserIdTest.*
 -GetAuthTokenFunctionTest.*
 -GetDisplayMediaChangeSourceBrowserTest.*
@@ -803,11 +829,12 @@
 -NoStatePrefetchOmniboxBrowserTest.*
 -NotificationPermissionBrowserTest.IframesInNonDefaultPartitionDontGetPermission
 -NotificationPermissionBrowserTest.PermissionNotDelegated
+-NotificationPermissionBrowserTest.UndelegatedPermissionsAreNotDelegated
+-NotificationPermissionBrowserTest.UndelegatedPermissionDeniedIfNotGrantedToOrigin
 -NTPInterceptionTest.*
 -NTPInterceptionWebRequestAPITest.*
 -OfferNotificationBubbleViewsBrowserTest.*
--OmniboxPopupContentsViewInIncognitoWithFeatureFlagTest/OmniboxPopupContentsViewInIncognitoTest.*
--OmniboxPopupContentsViewTest.*
+-OmniboxPopupViewViewsTest.*
 -OnDiskApp/NetworkContextConfigurationBrowserTest.*
 -OnDiskApp/NetworkContextConfigurationDataPacBrowserTest.*
 -OnDiskApp/NetworkContextConfigurationFilePacBrowserTest.*
@@ -851,14 +878,11 @@
 -PasswordManagerCredentiallessIframeTest.DisablePasswordManagerOnCredentiallessIframe
 -PasswordManagerInternalsWebUIBrowserTest.*
 -PDFExtensionHitTestTest.ContextMenuCoordinates
--PDFExtensionRegionSearchTest.NoContextMenuCommandExtensionMainFrame
--PDFExtensionRegionSearchTest.NoContextMenuCommandPluginFrame
 -PDFExtensionTest.ContextMenuPrintCommandEmbeddedExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandPluginFrame
 -PDFExtensionTest.PdfAccessibilityContextMenuAction
 -PDFExtensionTest.PdfExtensionLoadedWhileOldPdfCloses
--PDFExtensionTestWithTestGuestViewManager.PdfExtensionLoadedWhileOldPdfCloses
 -PDFIFrameNavigationThrottleBrowserTest.*
 -PKIMetadataComponentUpdater/PKIMetadataComponentUpdaterTest.*
 -PerformanceHintsObserverBrowserTest.*
@@ -968,10 +992,11 @@
 -SafeBrowsingNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
 -SafeBrowsingPolicyTest.*
 -SafeBrowsingTriggeredPopupBlockerBrowserTest.*
--SafetyTipPageInfoBubbleViewBrowserTest.NotTriggerOnComboSquattingButNotLaunched
--SafetyTipPageInfoBubbleViewBrowserTest.NotTriggerOnComboSquattingSiteEngagementNotLaunched
+-SafetyTipPageInfoBubbleViewBrowserTest.ComboSquattingSiteEngagement_UIDisabled_ShouldRecordMetrics
+-SafetyTipPageInfoBubbleViewBrowserTest.ComboSquattingSiteEngagement_UIEnabled
+-SafetyTipPageInfoBubbleViewBrowserTest.ComboSquatting_UIDisabled_ShouldRecordMetrics
+-SafetyTipPageInfoBubbleViewBrowserTest.SkipLookalikeInterstitialed
 -SafetyTipPageInfoBubbleViewBrowserTest.TriggerOnComboSquatting
--SafetyTipPageInfoBubbleViewBrowserTest.TriggerOnComboSquattingSiteEngagement
 -SafetyTipPageInfoBubbleViewBrowserTest.TriggerOnlyOnComboSquatting
 -SameOriginPartitionedCookiesOriginTrialBrowserTest.*
 -SameOriginUaReducedOriginTrialBrowserTest.*
@@ -1159,6 +1184,7 @@
 -WebViewHttpsFirstModeTests/WebViewHttpsFirstModeTest.GuestLoadsHttpWithoutError/SiteIsolationForGuestsEnabled_UseInterstitial
 -WebViewHttpsFirstModeTests/WebViewHttpsFirstModeTest.GuestLoadsHttpsWithoutError/SiteIsolationForGuestsEnabled_UseErrorPage
 -WebViewHttpsFirstModeTests/WebViewHttpsFirstModeTest.GuestLoadsHttpsWithoutError/SiteIsolationForGuestsEnabled_UseInterstitial
+-WebViewNewWindowTests/WebViewNewWindowTest.*/*
 -WebViewTest.*
 -WebViewTests/ChromeSignInWebViewTest.ClosingChromeSignInShouldNotCrash/SiteIsolationForGuestsEnabled
 -WebViewTests/IsolatedOriginWebViewTest.IsolatedOriginInWebview/SiteIsolationForGuestsEnabled

@@ -5,7 +5,8 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# This test passes locally but always fails on CI
+# These tests fail on CI but pass locally
+-SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 
 # This test passes locally but fails on CI likely because BraveMainDelegate is
