@@ -7,8 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/common/adblock_domain_resolver.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -53,22 +52,17 @@
                                 tabHost:(NSString*)tabHost
                            isThirdParty:(bool)isThirdParty
                            resourceType:(NSString*)resourceType {
-  bool did_match_rule = false;
-  bool did_match_exception = false;
-  bool did_match_important = false;
-  std::string redirect = "";
-  std::string rewritten_url = "";
-  adblock_engine->matches(
+  auto engine_result = adblock_engine->matches(
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
-      base::SysNSStringToUTF8(tabHost), isThirdParty,
-      base::SysNSStringToUTF8(resourceType), &did_match_rule,
-      &did_match_exception, &did_match_important, &redirect, &rewritten_url);
+      base::SysNSStringToUTF8(tabHost), base::SysNSStringToUTF8(resourceType),
+      isThirdParty, false, false);
   auto result = [[AdblockEngineMatchResult alloc] init];
-  result.didMatchRule = did_match_rule;
-  result.didMatchException = did_match_exception;
-  result.didMatchImportant = did_match_important;
-  result.redirect = base::SysUTF8ToNSString(redirect);
-  result.rewrittenURL = base::SysUTF8ToNSString(rewritten_url);
+  result.didMatchRule = engine_result.value.matched;
+  result.didMatchException = engine_result.value.has_exception;
+  result.didMatchImportant = engine_result.value.important;
+  result.redirect = base::SysUTF8ToNSString(engine_result.value.redirect.value);
+  result.rewrittenURL =
+      base::SysUTF8ToNSString(engine_result.value.rewritten_url.value);
   return result;
 }
 
@@ -77,44 +71,46 @@
                          tabHost:(NSString*)tabHost
                     isThirdParty:(bool)isThirdParty
                     resourceType:(NSString*)resourceType {
-  return base::SysUTF8ToNSString(adblock_engine->getCspDirectives(
+  return base::SysUTF8ToNSString(adblock_engine->get_csp_directives(
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
-      base::SysNSStringToUTF8(tabHost), isThirdParty,
-      base::SysNSStringToUTF8(resourceType)));
+      base::SysNSStringToUTF8(tabHost), base::SysNSStringToUTF8(resourceType),
+      isThirdParty));
 }
 
 - (bool)deserialize:(NSData*)data {
-  return adblock_engine->deserialize(static_cast<const char*>(data.bytes),
-                                     data.length);
+  auto result = adblock_engine->deserialize(
+      static_cast<const char*>(data.bytes), data.length);
+  return result.result_kind == adblock::ResultKind::Success;
 }
 
 - (void)addTag:(NSString*)tag {
-  adblock_engine->addTag(base::SysNSStringToUTF8(tag));
+  adblock_engine->enable_tag(base::SysNSStringToUTF8(tag));
 }
 
 - (void)removeTag:(NSString*)tag {
-  adblock_engine->removeTag(base::SysNSStringToUTF8(tag));
+  adblock_engine->disable_tag(base::SysNSStringToUTF8(tag));
 }
 
 - (bool)tagExists:(NSString*)tag {
-  return adblock_engine->tagExists(base::SysNSStringToUTF8(tag));
+  return adblock_engine->tag_exists(base::SysNSStringToUTF8(tag)).value;
 }
 
 - (void)addResourceWithKey:(NSString*)key
                contentType:(NSString*)contentType
                       data:(NSString*)data {
-  adblock_engine->addResource(base::SysNSStringToUTF8(key),
-                              base::SysNSStringToUTF8(contentType),
-                              base::SysNSStringToUTF8(data));
+  adblock_engine->add_resource(base::SysNSStringToUTF8(key),
+                               base::SysNSStringToUTF8(contentType),
+                               base::SysNSStringToUTF8(data));
 }
 
 - (void)useResources:(NSString*)resources {
-  adblock_engine->useResources(base::SysNSStringToUTF8(resources));
+  adblock_engine->use_resources(base::SysNSStringToUTF8(resources));
 }
 
 - (NSString*)cosmeticResourcesForURL:(NSString*)url {
   return base::SysUTF8ToNSString(
-      adblock_engine->urlCosmeticResources(base::SysNSStringToUTF8(url)));
+      adblock_engine->url_cosmetic_resources(base::SysNSStringToUTF8(url))
+          .value);
 }
 
 - (NSString*)
@@ -127,18 +123,13 @@
       brave::ns_to_vector<std::string>(exceptions)));
 }
 
-+ (bool)setDomainResolver:(DomainResolverCallback)domainResolver {
-  return adblock::SetDomainResolver(domainResolver);
-}
++ (bool)setDomainResolver {
+  return adblock::set_domain_resolver();
 
-+ (DomainResolverCallback)defaultDomainResolver {
-  return brave_shields::AdBlockServiceDomainResolver;
-}
+  +(NSString*)contentBlockerRulesFromFilterSet : (NSString*)filterSet truncated
+      : (bool*)truncated {
+    return base::SysUTF8ToNSString(adblock::ConvertRulesToContentBlockingRules(
+        base::SysNSStringToUTF8(filterSet), truncated));
+  }
 
-+ (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet
-                                    truncated:(bool*)truncated {
-  return base::SysUTF8ToNSString(adblock::ConvertRulesToContentBlockingRules(
-      base::SysNSStringToUTF8(filterSet), truncated));
-}
-
-@end
+  @end

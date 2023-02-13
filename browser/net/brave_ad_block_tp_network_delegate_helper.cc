@@ -17,6 +17,7 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -189,21 +190,26 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-  std::string rewritten_url;
-
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
-  g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-      url_to_check, ctx->resource_type, source_host,
-      ctx->aggressive_blocking || force_aggressive,
-      &previous_result.did_match_rule, &previous_result.did_match_exception,
-      &previous_result.did_match_important, &ctx->mock_data_url,
-      &rewritten_url);
+  auto adblock_result =
+      g_brave_browser_process->ad_block_service()->ShouldStartRequest(
+          url_to_check, ctx->resource_type, source_host,
+          ctx->aggressive_blocking || force_aggressive,
+          previous_result.did_match_rule, previous_result.did_match_exception,
+          previous_result.did_match_important);
 
-  if (GURL(rewritten_url).is_valid() &&
+  if (adblock_result.rewritten_url.has_value &&
+      GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
       (ctx->method == "GET" || ctx->method == "HEAD" ||
        ctx->method == "OPTIONS")) {
-    ctx->new_url_spec = rewritten_url;
+    ctx->new_url_spec = std::string(adblock_result.rewritten_url.value);
   }
+
+  ctx->mock_data_url = std::string(adblock_result.redirect.value);
+
+  previous_result.did_match_rule = adblock_result.matched;
+  previous_result.did_match_important = adblock_result.important;
+  previous_result.did_match_exception = adblock_result.has_exception;
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&

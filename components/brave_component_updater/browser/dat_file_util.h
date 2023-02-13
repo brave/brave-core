@@ -21,34 +21,6 @@ std::string GetDATFileAsString(const base::FilePath& file_path);
 
 DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path);
 
-template <typename T>
-using LoadDATFileDataResult =
-    std::pair<std::unique_ptr<T>, brave_component_updater::DATFileDataBuffer>;
-
-template <typename T>
-LoadDATFileDataResult<T> LoadDATFileData(const base::FilePath& dat_file_path) {
-  DATFileDataBuffer buffer = ReadDATFileData(dat_file_path);
-  std::unique_ptr<T> client;
-  client = std::make_unique<T>();
-  if (buffer.empty() ||
-      !client->deserialize(reinterpret_cast<char*>(&buffer.front()),
-                           buffer.size()))
-    client.reset();
-  return LoadDATFileDataResult<T>(std::move(client), std::move(buffer));
-}
-
-template <typename T>
-LoadDATFileDataResult<T> LoadRawFileData(const base::FilePath& dat_file_path) {
-  DATFileDataBuffer buffer = ReadDATFileData(dat_file_path);
-  std::unique_ptr<T> client;
-
-  if (!buffer.empty())
-    client = std::make_unique<T>(reinterpret_cast<char*>(&buffer.front()),
-                                 buffer.size());
-
-  return LoadDATFileDataResult<T>(std::move(client), std::move(buffer));
-}
-
 }  // namespace brave_component_updater
 
 #endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_

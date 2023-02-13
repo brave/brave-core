@@ -10,8 +10,8 @@
 
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
-#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/fuzzers/adblock/adblock_fuzzer.pb.h"
 #include "testing/libfuzzer/proto/lpm_interface.h"
 #include "testing/libfuzzer/proto/url_proto_converter.h"
@@ -64,32 +64,28 @@ std::string ResourceTypeToString(adblock_fuzzer::ResourceType resource_type) {
 }
 
 struct Environment {
-  Environment()
-      : engine(brave_component_updater::LoadDATFileData<adblock::Engine>(
-            base::FilePath::FromASCII("rs-ABPFilterParserData.dat"))) {
+  Environment() : engine(adblock::new_engine()) {
     CHECK(base::i18n::InitializeICU());
+    auto result = engine->deserialize(brave_component_updater::ReadDATFileData(
+        base::FilePath::FromASCII("rs-ABPFilterParserData.dat")));
+    CHECK(result);
+    CHECK(adblock::set_domain_resolver());
   }
 
-  brave_component_updater::LoadDATFileDataResult<adblock::Engine> engine;
+  rust::Box<adblock::Engine> engine;
 };
 
 // Make sure 'rs-ABPFilterParserData.dat' file exists in the working directory
 // before running the adblock_engine_matches_fuzzer executable.
 DEFINE_PROTO_FUZZER(const adblock_fuzzer::EngineMatches& input) {
   static Environment env;
-  bool did_match_rule = false;
-  bool did_match_exception = false;
-  bool did_match_important = false;
-  std::string redirect, rewritten_url;
-
   const auto url = url_proto::Convert(input.url());
   if (::getenv("LPM_DUMP_NATIVE_INPUT")) {
     std::cout << url << std::endl;
   }
 
-  env.engine.first->matches(
-      url, (input.url().has_host() ? input.url().host() : url),
-      url_proto::Convert(input.tab_host()), input.is_third_party(),
-      ResourceTypeToString(input.resource_type()), &did_match_rule,
-      &did_match_exception, &did_match_important, &redirect, &rewritten_url);
+  env.engine->matches(url, (input.url().has_host() ? input.url().host() : url),
+                      url_proto::Convert(input.tab_host()),
+                      ResourceTypeToString(input.resource_type()),
+                      input.is_third_party(), false, false);
 }

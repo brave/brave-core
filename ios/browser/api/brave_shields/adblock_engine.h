@@ -10,10 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (*DomainResolverCallback)(const char* _Nullable host,
-                                       uint32_t* _Nullable start,
-                                       uint32_t* _Nullable end);
-
 OBJC_EXPORT
 NS_SWIFT_NAME(AdblockEngine.MatchResult)
 @interface AdblockEngineMatchResult : NSObject
@@ -96,16 +92,12 @@ OBJC_EXPORT
 /// This is required to be able to use any adblocking functionality.
 ///
 /// Returns true on success, false if a callback was already set previously.
-+ (bool)setDomainResolver:(DomainResolverCallback)domainResolver;
-
-/// The default domain resolver.
-@property(class, readonly) DomainResolverCallback defaultDomainResolver;
++ (bool)setDomainResolver;
 
 /// Converts ABP rules/filter sets into Content Blocker rules that can be used
 /// with ``WKWebView``
 + (NSString*)contentBlockerRulesFromFilterSet:(NSString*)filterSet
                                     truncated:(bool*)truncated;
-
 @end
 
 NS_ASSUME_NONNULL_END
