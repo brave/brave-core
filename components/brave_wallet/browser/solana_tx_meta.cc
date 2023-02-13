@@ -33,6 +33,7 @@ base::Value::Dict SolanaTxMeta::ToValue() const {
 }
 
 mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
+    VLOG(5) << "SolanaTxMeta::ToTransactionInfo() chain_id_:" << chain_id_;
   return mojom::TransactionInfo::New(
       id_, from_, tx_hash_,
       mojom::TxDataUnion::NewSolanaTxData(tx_->ToSolanaTxData()), status_,
@@ -41,7 +42,7 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_);
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_, chain_id_);
 }
 
 }  // namespace brave_wallet

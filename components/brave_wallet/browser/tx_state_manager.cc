@@ -85,6 +85,11 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
     meta->set_group_id(*group_id);
   }
 
+  const auto* chain_id_string = value.FindString("chain_id"); 
+  if(chain_id_string){
+    meta->set_chain_id(*chain_id_string);
+  }
+
   return true;
 }
 
@@ -97,6 +102,7 @@ TxStateManager::TxStateManager(PrefService* prefs,
 TxStateManager::~TxStateManager() = default;
 
 void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
+  VLOG(5) << "TxStateManager::AddOrUpdateTx meta.chain_id_:" << meta.chain_id();
   ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value::Dict& dict = update.Get();
   const std::string path =

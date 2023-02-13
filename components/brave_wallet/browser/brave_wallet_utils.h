@@ -163,6 +163,11 @@ absl::optional<std::string> GetChainId(PrefService* prefs,
                                        const mojom::CoinType& coin,
                                        const std::string& network_id);
 
+// Resolves chain_id from network_id (including custom networks).
+absl::optional<std::string> GetChainIdByNetworkId(PrefService* prefs,
+                                       const mojom::CoinType& coin,
+                                       const std::string& network_id);
+
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium
 // version and not the Brave version because that way no extra entropy

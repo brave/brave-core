@@ -1189,6 +1189,41 @@ absl::optional<std::string> GetChainId(PrefService* prefs,
   return absl::nullopt;
 }
 
+absl::optional<std::string> GetChainIdByNetworkId(PrefService* prefs,
+                                       const mojom::CoinType& coin,
+                                       const std::string& network_id) {
+  if (network_id.empty())
+    return "";
+  
+  VLOG(5) << "****************************************" ;
+  std::vector<mojom::NetworkInfoPtr> networks = GetAllChains(prefs, coin);
+  absl::optional<std::string> chain_id;
+  for (const auto& network : networks) {
+    
+    std::string id = GetKnownNetworkId(coin, network->chain_id);
+    VLOG(5) << "GetAllChains ### chain_name:" << network->chain_name << " chain_id_:" << network->chain_id << " id:" << id;
+    if (id == network_id){
+      VLOG(5) << "1 GetChainId() network_id:" << network_id << " coin:" << coin << " chain_name:" << network->chain_name << " chain_id_:" << network->chain_id << " id:" << id;
+       chain_id = network->chain_id;
+    }
+  }
+  VLOG(5) << "****************************************" ;
+
+  if(!chain_id){
+    for (const auto& network : GetAllCustomChains(prefs, coin)) {
+      std::string id = GetNetworkId(prefs, coin, network->chain_id);
+      VLOG(5) << "2 GetChainId() network_id:" << network_id << " coin:" << coin << " chain_name:" << network->chain_name << " chain_id_:" << network->chain_id << " id:" << id;
+      if (id == network_id) {
+        chain_id = network->chain_id;
+      }  
+    }
+  }
+
+  return chain_id;
+}
+
+
+
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kDefaultEthereumWallet));

@@ -170,6 +170,13 @@ void RegisterProfilePrefsForMigration(
 
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
+
+  // Added 02/2022
+  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+  registry->RegisterDictionaryPref(kBraveWalletEthereumTransactions);
+  registry->RegisterDictionaryPref(kBraveWalletSolanaTransactions);
+  registry->RegisterDictionaryPref(kBraveWalletFileCoinTransactions);
+
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -257,6 +264,66 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 12/2022
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
+
+  // Added 02/2022
+  if(!prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)){
+    VLOG(5) << "Migrate Flag:" << kBraveWalletTransactionsChainIdMigrated;
+
+    ScopedDictPrefUpdate eth_txs_update(prefs, kBraveWalletEthereumTransactions);
+    auto& eth_network_ids = eth_txs_update.Get();
+
+    ScopedDictPrefUpdate sol_txs_update(prefs, kBraveWalletSolanaTransactions);
+    auto& sol_network_ids = sol_txs_update.Get();
+
+    ScopedDictPrefUpdate fil_txs_update(prefs, kBraveWalletFileCoinTransactions);
+    auto& fil_network_ids = fil_txs_update.Get();
+
+    VLOG(5) << "Networks: \r\neth:" << eth_network_ids.DebugString() << "\r\nSOL:" << sol_network_ids.DebugString() << "\r\nFIL:" << fil_network_ids.DebugString();
+
+    auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
+                            const mojom::CoinType& coin) {
+
+      for(auto tnid : *tx_by_network_ids){
+          auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
+          
+          if(!chain_id.has_value())
+            continue;
+
+          auto* txs = tnid.second.GetIfDict();
+
+          if (!txs || txs->empty()) {
+            return;
+          }
+
+          for (auto tx : *txs) {
+            auto* ptx = tx.second.GetIfDict();
+
+            if (!ptx)
+              continue;
+
+            ptx->Set("chain_id", chain_id.value());
+
+            VLOG(5) << "Migration: " << tnid.first << " Set chainId:" << chain_id.value();
+          }
+      }
+     };
+
+    if (!eth_network_ids.empty()) {
+      set_chain_id(&eth_network_ids, mojom::CoinType::ETH);
+    }
+
+    if (!sol_network_ids.empty()) {
+      set_chain_id(&sol_network_ids, mojom::CoinType::SOL);
+    }
+
+    if (!fil_network_ids.empty()) {
+      set_chain_id(&fil_network_ids, mojom::CoinType::FIL);
+    }
+
+    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
+
+     VLOG(5) << "Migration finished.";
+  }
 }
 
 }  // namespace brave_wallet
