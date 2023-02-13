@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 
 /// A set of 2 items
-public struct FeedPair: Equatable {
+public struct FeedPair: Hashable {
   /// The first item
   public var first: FeedItem
   /// The second item
@@ -20,7 +20,7 @@ public struct FeedPair: Equatable {
 }
 
 /// A container for one or many `FeedItem`s
-public enum FeedCard: Equatable {
+public enum FeedCard: Hashable {
   /// A sponsored image to display
   case sponsor(_ feed: FeedItem)
   /// A group of deals/offers displayed horizontally

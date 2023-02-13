@@ -46,6 +46,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
   let rewards: BraveRewards
   var sectionDidChange: (() -> Void)?
   var actionHandler: (Action) -> Void
+  
+  private var viewedCards: Set<FeedCard> = []
 
   init(
     dataSource: FeedDataSource,
@@ -59,6 +61,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     super.init()
     
     self.recordWeeklyAdsViewedP3A(adViewed: false)
+    self.recordWeeklyCardsViewedP3A(cardViewed: false)
   }
 
   func registerCells(to collectionView: UICollectionView) {
@@ -182,6 +185,15 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       cell.content.graphicAnimationView.play()
     }
     if let card = dataSource.state.cards?[safe: indexPath.item] {
+      if !viewedCards.contains(card) && collectionView.contentOffset.y > 0 {
+        if indexPath.item == 1, let firstCard = dataSource.state.cards?.first, !viewedCards.contains(firstCard), card != firstCard {
+          // Since we don't record the peeking card we want to make sure that it counts once its in view
+          recordWeeklyCardsViewedP3A(cardViewed: true)
+          viewedCards.insert(firstCard)
+        }
+        recordWeeklyCardsViewedP3A(cardViewed: true)
+        viewedCards.insert(card)
+      }
       if case .partner(let item) = card,
         let creativeInstanceID = item.content.creativeInstanceID {
         iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
@@ -474,6 +486,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     return contextMenu(from: { _ in item }, card: card, indexPath: indexPath)
   }
   
+  // MARK: - P3A
+  
   private func recordWeeklyAdsViewedP3A(adViewed: Bool) {
     var storage = P3ATimedStorage<Int>.adsViewedStorage
     if adViewed {
@@ -490,6 +504,27 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         .r(21...40),
         .r(41...80),
         .r(81...),
+      ],
+      value: storage.combinedValue
+    )
+  }
+  
+  private func recordWeeklyCardsViewedP3A(cardViewed: Bool) {
+    var storage = P3ATimedStorage<Int>.cardsViewCount
+    if cardViewed {
+      storage.add(value: 1, to: Date())
+    }
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyTotalCardViews",
+      buckets: [
+        0,
+        1,
+        .r(2...10),
+        .r(11...20),
+        .r(21...40),
+        .r(41...80),
+        .r(81...100),
+        .r(101...),
       ],
       value: storage.combinedValue
     )
@@ -558,4 +593,5 @@ extension FeedItemView {
 
 extension P3ATimedStorage where Value == Int {
   fileprivate static var adsViewedStorage: Self { .init(name: "ads-viewed", lifetimeInDays: 7) }
+  fileprivate static var cardsViewCount: Self { .init(name: "news-cards-view-count", lifetimeInDays: 7) }
 }
