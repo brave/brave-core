@@ -57,6 +57,15 @@ extension String {
     return self
   }
   
+  /// Strip prefix if it exists, ex. 'solana:'
+  var strippedSOLAddress: String {
+    let prefixesToRemove = ["solana:", "Solana:"]
+    for prefix in prefixesToRemove where self.hasPrefix(prefix) {
+      return String(self.dropFirst(prefix.count))
+    }
+    return self
+  }
+
   /// Insert zero-width space every character inside this string
   var zwspOutput: String {
     return map {

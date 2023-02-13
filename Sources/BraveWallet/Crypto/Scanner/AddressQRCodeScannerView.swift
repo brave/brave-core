@@ -250,6 +250,8 @@ extension AddressQRCodeScannerViewController: AVCaptureMetadataOutputObjectsDele
       } else {
         isErrorPresented = true
       }
+    case .sol:
+      foundAddress(stringValue.strippedSOLAddress)
     default:
       foundAddress(stringValue)
     }
