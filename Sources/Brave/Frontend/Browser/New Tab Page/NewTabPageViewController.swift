@@ -513,6 +513,8 @@ class NewTabPageViewController: UIViewController {
   }
 
   // MARK: - Brave News
+  
+  private var newsArticlesOpened: Set<FeedItem.ID> = []
 
   private func handleBraveNewsAction(_ action: BraveNewsSectionProvider.Action) {
     switch action {
@@ -590,6 +592,9 @@ class NewTabPageViewController: UIViewController {
       let openBraveNewsActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .openBraveNews)
       self.userActivity = openBraveNewsActivity
       openBraveNewsActivity.becomeCurrent()
+      // Record P3A
+      newsArticlesOpened.insert(item.id)
+      recordBraveNewsArticlesVisitedP3A()
     case .itemAction(.toggledSource, let context):
       let isHidden = feedDataSource.isSourceHidden(context.item.source)
       feedDataSource.toggleSourceHidden(context.item.source, hidden: !isHidden)
@@ -967,6 +972,25 @@ extension NewTabPageViewController {
     )
   }
   
+  private func recordBraveNewsArticlesVisitedP3A() {
+    // Count is per NTP session, sends max value of the week
+    var storage = P3ATimedStorage<Int>.braveNewsVisitedArticlesCount
+    storage.replaceTodaysRecordsIfLargest(value: newsArticlesOpened.count)
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyMaxCardVisitsCount",
+      buckets: [
+        0, // won't ever be sent
+        1,
+        .r(2...3),
+        .r(4...6),
+        .r(7...10),
+        .r(11...15),
+        .r(16...),
+      ],
+      value: storage.maximumDaysCombinedValue
+    )
+  }
+  
   private func recordNewTabCreatedP3A() {
     var newTabsStorage = P3ATimedStorage<Int>.newTabsCreatedStorage
     var sponsoredStorage = P3ATimedStorage<Int>.sponsoredNewTabsCreatedStorage
@@ -1219,6 +1243,7 @@ extension P3AFeatureUsage {
 extension P3ATimedStorage where Value == Int {
   fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
   fileprivate static var braveNewsWeeklyCount: Self { .init(name: "brave-news-weekly-usage", lifetimeInDays: 7) }
+  fileprivate static var braveNewsVisitedArticlesCount: Self { .init(name: "brave-news-weekly-clicked", lifetimeInDays: 7) }
   fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
   fileprivate static var sponsoredNewTabsCreatedStorage: Self { .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7) }
 }
