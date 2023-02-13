@@ -152,7 +152,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     break;
                 }
             }
-        } catch (NullPointerException exc) {
+        } catch (Exception exc) {
             // There could be uninitialized parts on early stages. Just ignore it the exception,
             // it's better comparing to crashing
         }
