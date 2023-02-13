@@ -291,7 +291,7 @@
     "@types/react-redux": "7.1.16",
     "@types/react-window": "1.8.5",
     "@types/recharts": "1.8.24",
-    "@types/redux-logger": "3.0.8",
+    "@types/redux-logger": "3.0.9",
     "@types/styled-components": "5.1.9",
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "acorn": "8.0.5",
