@@ -8,7 +8,7 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-async-trait = "0.1.61"
+async-trait = "0.1.64"
 skus = { path = "../lib", default_features = false, features = ["wasm"] }
 futures-util-preview = "0.3.0-alpha.17"
 js-sys = "0.3"
