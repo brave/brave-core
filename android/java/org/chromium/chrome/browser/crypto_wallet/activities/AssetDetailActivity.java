@@ -57,6 +57,7 @@ import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -323,8 +324,9 @@ public class AssetDetailActivity
                             LiveDataUtil.observeOnce(
                                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                                     allNetworks -> {
-                                        Utils.getTxExtraInfo(this, allNetworks, selectedNetwork,
-                                                accountInfos, new BlockchainToken[] {mAsset}, false,
+                                        Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
+                                                selectedNetwork, accountInfos,
+                                                new BlockchainToken[] {mAsset}, false,
                                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                                         blockchainTokensBalances) -> {
                                                     thisAssetItemModel.setBlockchainToken(mAsset);
