@@ -22,13 +22,19 @@
 #define UpdateBackgroundColor              \
   UpdateBackgroundColor_Unused();          \
                                            \
- protected:                                \
   virtual void UpdateColorsForBrave() = 0; \
   virtual void UpdateIconForBrave() = 0;   \
   void UpdateBackgroundColor
 
+#define UpdateTextColor \
+  UnUsed() {}           \
+                        \
+ protected:             \
+  virtual void UpdateTextColor
+
 #include "src/ui/views/controls/button/md_text_button.h"  // IWYU pragma: export
 
+#undef UpdateTextColor
 #undef UpdateBackgroundColor
 #undef MdTextButton
 
@@ -66,6 +72,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
 
   // MdTextButtonBase:
   void UpdateBackgroundColor() override;
+  void UpdateTextColor() override;
   void UpdateColorsForBrave() override;
   void UpdateIconForBrave() override;
 
