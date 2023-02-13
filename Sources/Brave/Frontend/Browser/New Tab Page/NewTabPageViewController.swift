@@ -234,6 +234,7 @@ class NewTabPageViewController: UIViewController {
     }
     braveNewsFeatureUsage.recordReturningUsageMetric()
     recordNewTabCreatedP3A()
+    recordBraveNewsWeeklyUsageCountP3A()
   }
 
   @available(*, unavailable)
@@ -918,11 +919,34 @@ extension NewTabPageViewController {
     // Usage
     braveNewsFeatureUsage.recordUsage()
     braveNewsFeatureUsage.recordReturningUsageMetric()
+    var braveNewsWeeklyCount = P3ATimedStorage<Int>.braveNewsWeeklyCount
+    braveNewsWeeklyCount.add(value: 1, to: Date())
     
     // Usage over the past month
     var braveNewsDaysUsedStorage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
     braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
     recordBraveNewsDaysUsedP3A()
+    
+    // Weekly usage
+    recordBraveNewsWeeklyUsageCountP3A()
+  }
+  
+  private func recordBraveNewsWeeklyUsageCountP3A() {
+    let storage = P3ATimedStorage<Int>.braveNewsWeeklyCount
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklySessionCount",
+      buckets: [
+        0,
+        1,
+        .r(2...3),
+        .r(4...7),
+        .r(8...12),
+        .r(13...18),
+        .r(19...25),
+        .r(26...),
+      ],
+      value: storage.combinedValue
+    )
   }
   
   private func recordBraveNewsDaysUsedP3A() {
@@ -1194,6 +1218,7 @@ extension P3AFeatureUsage {
 
 extension P3ATimedStorage where Value == Int {
   fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
+  fileprivate static var braveNewsWeeklyCount: Self { .init(name: "brave-news-weekly-usage", lifetimeInDays: 7) }
   fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
   fileprivate static var sponsoredNewTabsCreatedStorage: Self { .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7) }
 }
