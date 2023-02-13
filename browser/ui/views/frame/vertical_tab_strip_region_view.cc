@@ -45,7 +45,6 @@
 
 namespace {
 
-constexpr SkColor kHeaderButtonColor = SkColorSetRGB(0x6B, 0x70, 0x84);
 constexpr int kHeaderInset = 4;
 
 // Inherits NewTabButton in order to synchronize ink drop effect with
@@ -66,17 +65,23 @@ class ToggleButton : public BraveNewTabButton {
     // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
     SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
-
-    expand_icon_ =
-        gfx::CreateVectorIcon(kVerticalTabExpandButtonIcon, kHeaderButtonColor);
-    collapse_icon_ = gfx::CreateVectorIcon(kVerticalTabCollapseButtonIcon,
-                                           kHeaderButtonColor);
   }
   ~ToggleButton() override = default;
 
   constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
   // views::Button:
+  void OnThemeChanged() override {
+    Button::OnThemeChanged();
+    auto* cp = GetColorProvider();
+    DCHECK(cp);
+
+    auto color = cp->GetColor(kColorBraveVerticalTabHeaderButtonColor);
+    expand_icon_ = gfx::CreateVectorIcon(kVerticalTabExpandButtonIcon, color);
+    collapse_icon_ =
+        gfx::CreateVectorIcon(kVerticalTabCollapseButtonIcon, color);
+  }
+
   void PaintIcon(gfx::Canvas* canvas) override {
     const bool expanded =
         region_view_->state() == VerticalTabStripRegionView::State::kExpanded;
@@ -226,9 +231,9 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
     tab_search_button_->FrameColorsChanged();
     tab_search_button_->SetImageModel(
         views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kVerticalTabTabSearchButtonIcon,
-                                       kHeaderButtonColor));
-
+        ui::ImageModel::FromVectorIcon(
+            kVerticalTabTabSearchButtonIcon,
+            kColorBraveVerticalTabHeaderButtonColor));
     SetBackground(views::CreateSolidBackground(
         GetColorProvider()->GetColor(kColorToolbar)));
   }
