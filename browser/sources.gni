@@ -273,7 +273,7 @@ if (ethereum_remote_client_enabled) {
 
 if (is_android) {
   brave_chrome_browser_sources += [
-    "//brave/browser/android/brave_stats_updater_android.cc",
+    "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
   ]
@@ -284,6 +284,7 @@ if (is_android) {
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android/preferences",
+    "//brave/browser/android/safe_browsing:buildflags",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",

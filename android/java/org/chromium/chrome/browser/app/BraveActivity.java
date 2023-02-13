@@ -310,6 +310,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             updateWalletBadgeVisibility();
         }
 
+        BraveSafeBrowsingApiHandler.getInstance().setDelegate(
+                BraveActivityJni.get().getSafeBrowsingApiKey(), this);
         // We can store a state of that flag as a browser has to be restarted
         // when the flag state is changed in any case
         mSafeBrowsingFlagEnabled =
@@ -806,8 +808,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
-        BraveSafeBrowsingApiHandler.getInstance().setDelegate(
-                BraveConfig.SAFEBROWSING_API_KEY, this);
     }
 
     @Override
@@ -1884,6 +1884,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @NativeMethods
     interface Natives {
         void restartStatsUpdater();
+        String getSafeBrowsingApiKey();
     }
 
     @Override
