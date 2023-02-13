@@ -1,16 +1,16 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 
 // Assets
-import DayIcon from '../../../assets/day-icon.svg'
-import NightIcon from '../../../assets/night-icon.svg'
+import DayIcon from '../../../send/assets/assets/day-icon.svg'
+import NightIcon from '../../../send/assets/assets/night-icon.svg'
 
 // Shared Styles
-import { StyledButton, StyledDiv } from '../../../shared.styles'
+import { StyledButton, StyledDiv } from '../../../send/shared.styles'
 
 export const Button = styled(StyledButton)`
   background-color: ${(p) => p.theme.color.background01};

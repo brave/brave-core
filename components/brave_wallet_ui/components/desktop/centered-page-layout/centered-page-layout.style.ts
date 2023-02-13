@@ -18,12 +18,12 @@ export const StyledWrapper = styled('div')`
   overflow-y: auto;
  `
 
-export const StyledContent = styled('div')`
+export const StyledContent = styled('div') <{ isTabView?: boolean }>`
   width: 456px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 32px;
+  padding-top: ${(p) => p.isTabView ? 0 : 32}px;
   padding-bottom: 0px;
  `

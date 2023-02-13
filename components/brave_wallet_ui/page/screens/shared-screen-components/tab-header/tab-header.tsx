@@ -1,21 +1,27 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 // Utils
-import { getLocale } from '../../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
-import { HeaderWrapper, BraveLogo } from './header.style'
-import { HorizontalDivider, Row, Text } from '../../shared.styles'
+import { HeaderWrapper, BraveLogo } from './tab-header.style'
+import { HorizontalDivider, Row, Text } from '../../send/shared.styles'
 
 // Components
 // import { ToggleThemeButton } from './toggle-theme-button/toggle-theme-button'
 
-export const SendHeader = () => {
+interface Props {
+  title: string
+}
+
+export const TabHeader = (props: Props) => {
+  const { title } = props
+
   // render
   return (
     <HeaderWrapper>
@@ -23,7 +29,7 @@ export const SendHeader = () => {
         <BraveLogo />
         <HorizontalDivider height={22} marginRight={12} />
         <Text textSize='18px' textColor='text02' isBold={true}>
-          {getLocale('braveWalletSend')}
+          {getLocale(title)}
         </Text>
       </Row>
       {/* Disabling Theme Toggle until we can make it work correctly with brave-core */}
@@ -32,4 +38,4 @@ export const SendHeader = () => {
   )
 }
 
-export default SendHeader
+export default TabHeader

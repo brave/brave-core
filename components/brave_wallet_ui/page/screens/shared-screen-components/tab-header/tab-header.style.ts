@@ -1,16 +1,16 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 
 // Assets
-import BraveLogoLight from '../../assets/brave-logo-light.svg'
-import BraveLogoDark from '../../assets/brave-logo-dark.svg'
+import BraveLogoLight from '../../send/assets/brave-logo-light.svg'
+import BraveLogoDark from '../../send/assets/brave-logo-dark.svg'
 
 // Shared Styles
-import { StyledDiv } from '../../shared.styles'
+import { StyledDiv } from '../../send/shared.styles'
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -20,7 +20,9 @@ export const HeaderWrapper = styled.div`
   padding: 16px 32px 0px 32px;
   margin-bottom: 45px;
   top: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  width: 100vw;
   box-sizing: border-box;
   position: fixed;
   z-index: 10;

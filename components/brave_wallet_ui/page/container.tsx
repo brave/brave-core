@@ -139,15 +139,15 @@ export const Container = () => {
     if (
       walletLocation.includes(WalletRoutes.Accounts) ||
       walletLocation.includes(WalletRoutes.Backup) ||
-      walletLocation.includes(WalletRoutes.DepositFundsPage) ||
-      walletLocation.includes(WalletRoutes.FundWalletPage) ||
+      walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
+      walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Nfts) ||
       walletLocation.includes(WalletRoutes.Swap) ||
       walletLocation.includes(WalletRoutes.Send) ||
       walletLocation.includes(WalletRoutes.LocalIpfsNode ||
-      walletLocation.includes(WalletRoutes.InspectNfts))
+        walletLocation.includes(WalletRoutes.InspectNfts))
     ) {
       setSessionRoute(walletLocation)
     }
@@ -209,13 +209,17 @@ export const Container = () => {
                 <OnboardingSuccess />
               </Route>
 
-              <Route path={WalletRoutes.FundWalletPage} exact>
-                <FundWalletScreen />
-              </Route>
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.FundWalletPage} exact>
+                  <FundWalletScreen />
+                </Route>
+              }
 
-              <Route path={WalletRoutes.DepositFundsPage} exact>
-                <DepositFundsScreen />
-              </Route>
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.DepositFundsPage} exact>
+                  <DepositFundsScreen />
+                </Route>
+              }
 
               <Route path={WalletRoutes.Restore} exact={true}>
                 <SimplePageWrapper>
