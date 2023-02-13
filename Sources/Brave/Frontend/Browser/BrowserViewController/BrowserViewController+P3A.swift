@@ -67,11 +67,29 @@ extension BrowserViewController {
   
   func recordVPNUsageP3A(vpnEnabled: Bool) {
     var usage = P3AFeatureUsage.braveVPNUsage
+    var braveVPNDaysInMonthUsedStorage = P3ATimedStorage<Int>.braveVPNDaysInMonthUsedStorage
+    
     if vpnEnabled {
       usage.recordUsage()
+      braveVPNDaysInMonthUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
     } else {
       usage.recordHistogram()
     }
+    
+    UmaHistogramRecordValueToBucket(
+      "Brave.VPN.DaysInMonthUsed",
+      buckets: [
+        0,
+        1,
+        2,
+        .r(3...5),
+        .r(6...10),
+        .r(11...15),
+        .r(16...20),
+        .r(21...),
+      ],
+      value: braveVPNDaysInMonthUsedStorage.combinedValue
+    )
   }
 }
 
@@ -82,4 +100,5 @@ extension P3AFeatureUsage {
 extension P3ATimedStorage where Value == Int {
   /// Holds timed storage for question 21 (`Brave.Savings.BandwidthSavingsMB`)
   fileprivate static var dataSavedStorage: Self { .init(name: "data-saved", lifetimeInDays: 7) }
+  fileprivate static var braveVPNDaysInMonthUsedStorage: Self { .init(name: "vpn-days-in-month-used", lifetimeInDays: 30) }
 }
