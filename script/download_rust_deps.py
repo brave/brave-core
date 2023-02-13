@@ -158,7 +158,11 @@ def main():
         # https://github.com/rust-lang/rust/issues/102754#issuecomment-1421438735
         patch_file = os.path.join(BRAVE_CORE_ROOT, 'build', 'rust',
                                   'gcc.rs.patch')
-        if not os.path.exists(patch_file + '.orig'):
+        backup_file = os.path.join(rustup_home, 'toolchains',
+                                   rust_version + '-x86_64-apple-darwin', 'lib',
+                                   'rustlib', 'src', 'rust', 'library', 'std',
+                                   'src', 'personality', 'gcc.rs.orig')
+        if not os.path.exists(backup_file):
             try:
                 subprocess.check_call([
                     'patch', '-b', '--no-backup-if-mismatch', '-i', patch_file
