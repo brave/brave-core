@@ -17,8 +17,10 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
+#include "brave/third_party/bitcoin-core/src/src/bech32.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
+#include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
 #include "crypto/sha2.h"
@@ -85,6 +87,22 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
   }
 
   return true;
+}
+
+std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input) {
+  // BoringSSL in chromium doesn't have ripemd implementation built in BUILD.gn
+  // only header
+  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
+
+  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
+      crypto::SHA256Hash(input);
+  DCHECK(!sha256hash.empty());
+
+  CRIPEMD160()
+      .Write(sha256hash.data(), sha256hash.size())
+      .Finalize(result.data());
+
+  return result;
 }
 
 }  // namespace
@@ -364,8 +382,9 @@ void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPrivateExtendedKey() const {
-  return Serialize(MAINNET_PRIVATE, private_key_);
+std::string HDKey::GetPrivateExtendedKey(
+    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXprv*/) const {
+  return Serialize(version, private_key_);
 }
 
 std::string HDKey::EncodePrivateKeyForExport() const {
@@ -374,6 +393,11 @@ std::string HDKey::EncodePrivateKeyForExport() const {
 
 std::vector<uint8_t> HDKey::GetPrivateKeyBytes() const {
   return std::vector<uint8_t>(private_key_.begin(), private_key_.end());
+}
+
+std::vector<uint8_t> HDKey::GetPublicKeyBytes() const {
+  DCHECK(!public_key_.empty());
+  return public_key_;
 }
 
 void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
@@ -396,8 +420,22 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPublicExtendedKey() const {
-  return Serialize(MAINNET_PUBLIC, public_key_);
+std::string HDKey::GetPublicExtendedKey(
+    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXpub*/) const {
+  return Serialize(version, public_key_);
+}
+
+// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
+std::string HDKey::GetSegwitAddress() const {
+  auto hash160 = Hash160(public_key_);
+  std::vector<unsigned char> input;
+  input.reserve(33);   // 1 + (160 / 5)
+  input.push_back(0);  // the witness version
+  ConvertBits<8, 5, true>([&](unsigned char c) { input.push_back(c); },
+                          hash160.begin(), hash160.end());
+
+  // TODO(apaymyshev): support testnet
+  return bech32::Encode("bc", input);
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -749,7 +787,7 @@ void HDKey::GeneratePublicKey() {
 }
 
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
-std::string HDKey::Serialize(uint32_t version,
+std::string HDKey::Serialize(ExtendedKeyVersion version,
                              base::span<const uint8_t> key) const {
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(32 or 33)
@@ -757,10 +795,12 @@ std::string HDKey::Serialize(uint32_t version,
 
   buf.reserve(SERIALIZATION_LEN);
 
-  buf.push_back((version >> 24) & 0xFF);
-  buf.push_back((version >> 16) & 0xFF);
-  buf.push_back((version >> 8) & 0xFF);
-  buf.push_back((version >> 0) & 0xFF);
+  uint32_t version_uint32 = static_cast<uint32_t>(version);
+
+  buf.push_back((version_uint32 >> 24) & 0xFF);
+  buf.push_back((version_uint32 >> 16) & 0xFF);
+  buf.push_back((version_uint32 >> 8) & 0xFF);
+  buf.push_back((version_uint32 >> 0) & 0xFF);
 
   buf.push_back(depth_);
 
@@ -776,31 +816,21 @@ std::string HDKey::Serialize(uint32_t version,
 
   buf.insert(buf.end(), chain_code_.begin(), chain_code_.end());
   if (key.size() == 32) {
+    DCHECK(version == ExtendedKeyVersion::kXprv ||
+           version == ExtendedKeyVersion::kYprv ||
+           version == ExtendedKeyVersion::kZprv);
     // 32-bytes private key is padded with a zero byte.
     buf.insert(buf.end(), 0);
   } else {
+    DCHECK(version == ExtendedKeyVersion::kXpub ||
+           version == ExtendedKeyVersion::kYpub ||
+           version == ExtendedKeyVersion::kZpub);
     DCHECK_EQ(key.size(), 33u);
   }
   buf.insert(buf.end(), key.begin(), key.end());
 
   DCHECK(buf.size() == SERIALIZATION_LEN);
   return EncodeBase58Check(buf);
-}
-
-const std::vector<uint8_t> HDKey::Hash160(const std::vector<uint8_t>& input) {
-  // BoringSSL in chromium doesn't have ripemd implementation built in BUILD.gn
-  // only header
-  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
-
-  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
-      crypto::SHA256Hash(input);
-  DCHECK(!sha256hash.empty());
-
-  CRIPEMD160()
-      .Write(sha256hash.data(), sha256hash.size())
-      .Finalize(result.data());
-
-  return result;
 }
 
 }  // namespace brave_wallet

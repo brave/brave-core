@@ -6,20 +6,24 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
+#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 namespace {
-bool IsPublicKeyEmpty(const std::vector<uint8_t> public_key) {
+bool IsPublicKeyEmpty(const std::vector<uint8_t>& public_key) {
   for (const uint8_t& byte : public_key) {
     if (byte != 0x00)
       return false;
   }
   return true;
 }
+
 std::string GetHexAddr(const HDKey* key) {
   const std::vector<uint8_t> public_key = key->GetUncompressedPublicKey();
   // trim the header byte 0x04
@@ -28,6 +32,16 @@ std::string GetHexAddr(const HDKey* key) {
   EthAddress addr = EthAddress::FromPublicKey(pubkey_no_header);
   return addr.ToHex();
 }
+
+std::string GetWifCompressedPrivateKey(std::vector<uint8_t> private_key) {
+  private_key.insert(private_key.begin(), 0x80);  // Version Byte.
+  private_key.push_back(0x01);                    // Compression Byte.
+  auto sha256hash = crypto::SHA256Hash(crypto::SHA256Hash(private_key));
+  private_key.insert(private_key.end(), sha256hash.begin(),
+                     sha256hash.begin() + 4);  // Checksum.
+  return Base58Encode(private_key);
+}
+
 }  // namespace
 
 TEST(HDKeyUnitTest, GenerateFromSeed) {
@@ -563,6 +577,75 @@ TEST(HDKeyUnitTest, GenerateFromV3UTC) {
   ASSERT_TRUE(hd_key2);
   EXPECT_EQ(GetHexAddr(hd_key2.get()),
             "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
+}
+
+// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#examples
+TEST(HDKeyUnitTest, GetSegwitAddress) {
+  std::vector<uint8_t> pirvate_key_bytes(32, 0);
+  pirvate_key_bytes.back() = 1;
+  std::unique_ptr<HDKey> hdkey =
+      HDKey::GenerateFromPrivateKey(pirvate_key_bytes);
+  EXPECT_EQ(
+      base::HexEncode(hdkey->GetPublicKeyBytes()),
+      "0279BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798");
+  EXPECT_EQ(hdkey->GetSegwitAddress(),
+            "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4");
+  // TODO(apaymyshev): support testnet and P2WSH.
+}
+
+// https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
+TEST(HDKeyUnitTest, Bip84TestVectors) {
+  auto seed = MnemonicToSeed(
+      "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
+      "abandon abandon about",
+      "");
+
+  ASSERT_TRUE(seed);
+
+  std::unique_ptr<HDKey> m_key = HDKey::GenerateFromSeed(*seed);
+  EXPECT_EQ(m_key->GetPrivateExtendedKey(ExtendedKeyVersion::kZprv),
+            "zprvAWgYBBk7JR8Gjrh4UJQ2uJdG1r3WNRRfURiABBE3RvMXYSrRJL62XuezvGdPvG"
+            "6GFBZduosCc1YP5wixPox7zhZLfiUm8aunE96BBa4Kei5");
+  EXPECT_EQ(m_key->GetPublicExtendedKey(ExtendedKeyVersion::kZpub),
+            "zpub6jftahH18ngZxLmXaKw3GSZzZsszmt9WqedkyZdezFtWRFBZqsQH5hyUmb4pCE"
+            "eZGmVfQuP5bedXTB8is6fTv19U1GQRyQUKQGUTzyHACMF");
+
+  auto base = m_key->DeriveChildFromPath("m/84'/0'/0'");
+  EXPECT_EQ(static_cast<HDKey*>(base.get())
+                ->GetPrivateExtendedKey(ExtendedKeyVersion::kZprv),
+            "zprvAdG4iTXWBoARxkkzNpNh8r6Qag3irQB8PzEMkAFeTRXxHpbF9z4QgEvBRmfvqW"
+            "vGp42t42nvgGpNgYSJA9iefm1yYNZKEm7z6qUWCroSQnE");
+  EXPECT_EQ(static_cast<HDKey*>(base.get())
+                ->GetPublicExtendedKey(ExtendedKeyVersion::kZpub),
+            "zpub6rFR7y4Q2AijBEqTUquhVz398htDFrtymD9xYYfG1m4wAcvPhXNfE3EfH1r1AD"
+            "qtfSdVCToUG868RvUUkgDKf31mGDtKsAYz2oz2AGutZYs");
+
+  base = m_key->DeriveChildFromPath("m/84'/0'/0'/0/0");
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+            "KyZpNDKnfs94vbrwhJneDi77V6jF64PWPF8x5cdJb8ifgg2DUc9d");
+  EXPECT_EQ(
+      base::HexEncode(base->GetPublicKeyBytes()),
+      "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
+  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(),
+            "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
+
+  base = m_key->DeriveChildFromPath("m/84'/0'/0'/0/1");
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+            "Kxpf5b8p3qX56DKEe5NqWbNUP9MnqoRFzZwHRtsFqhzuvUJsYZCy");
+  EXPECT_EQ(
+      base::HexEncode(base->GetPublicKeyBytes()),
+      "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
+  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(),
+            "bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g");
+
+  base = m_key->DeriveChildFromPath("m/84'/0'/0'/1/0");
+  EXPECT_EQ(GetWifCompressedPrivateKey(base->GetPrivateKeyBytes()),
+            "KxuoxufJL5csa1Wieb2kp29VNdn92Us8CoaUG3aGtPtcF3AzeXvF");
+  EXPECT_EQ(
+      base::HexEncode(base->GetPublicKeyBytes()),
+      "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
+  EXPECT_EQ(static_cast<HDKey*>(base.get())->GetSegwitAddress(),
+            "bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el");
 }
 
 }  // namespace brave_wallet

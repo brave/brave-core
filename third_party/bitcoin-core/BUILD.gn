@@ -36,12 +36,14 @@ static_library("bitcoin-core") {
   sources = [
     "src/src/base58.cpp",
     "src/src/base58.h",
+    "src/src/bech32.cpp",
+    "src/src/bech32.h",
     "src/src/crypto/ripemd160.cpp",
     "src/src/crypto/ripemd160.h",
+    "src/src/util/strencodings.h",
   ]
 
   sources += [
-    "//brave/chromium_src/brave/third_party/bitcoin-core/src/src/serialize.h",
     "src/src/attributes.h",
     "src/src/crypto/common.h",
     "src/src/crypto/hmac_sha512.cpp",
@@ -52,8 +54,8 @@ static_library("bitcoin-core") {
     "src/src/crypto/sha512.h",
     "src/src/hash.cpp",
     "src/src/hash.h",
+    "src/src/serialize.h",
     "src/src/span.h",
-    "src/src/util/strencodings.h",
   ]
 
   deps = [ "//base" ]

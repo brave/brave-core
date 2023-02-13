@@ -171,6 +171,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
       case BraveWalletCoinTypeFil:
         // Currently not supported
         return {std::make_pair(@"", 0)};
+      case BraveWalletCoinTypeBtc:
+        // Currently not supported
+        return {std::make_pair(@"", 0)};
     }
     return {std::make_pair(@"", 0)};
   }

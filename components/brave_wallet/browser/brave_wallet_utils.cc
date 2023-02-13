@@ -708,6 +708,11 @@ bool ShouldShowTxStatusInToolbar() {
   return brave_wallet::features::kShowToolbarTxStatus.Get();
 }
 
+bool IsBitcoinEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletBitcoinFeature);
+}
+
 std::vector<brave_wallet::mojom::NetworkInfoPtr>
 GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
@@ -1387,6 +1392,8 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
+    case mojom::CoinType::BTC:
+      return kBitcoinPrefKey;
     case mojom::CoinType::ETH:
       return kEthereumPrefKey;
     case mojom::CoinType::FIL:
@@ -1458,6 +1465,8 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
     return mojom::CoinType::FIL;
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     return mojom::CoinType::SOL;
+  } else if (keyring_id == mojom::kBitcoinKeyringId) {
+    return mojom::CoinType::BTC;
   }
 
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);

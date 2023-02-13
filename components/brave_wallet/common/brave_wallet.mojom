@@ -528,6 +528,8 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+const string kBitcoinKeyringId = "bitcoin";
+
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
 const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
 
@@ -931,6 +933,7 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
 enum CoinType {
+  BTC = 1,
   ETH = 60,
   FIL = 461,
   SOL = 501
