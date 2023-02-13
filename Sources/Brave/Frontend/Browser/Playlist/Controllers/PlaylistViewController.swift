@@ -384,6 +384,26 @@ class PlaylistViewController: UIViewController {
         self.playerView.controlsView.repeatButton.setImage(UIImage(named: "playlist_repeat_all", in: .module, compatibleWith: nil)!, for: .normal)
       }
     }.store(in: &playerStateObservers)
+    
+    player.publisher(for: .previousTrack).sink { [weak self] _ in
+      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      self.onPreviousTrack(self.playerView, isUserInitiated: true)
+    }.store(in: &playerStateObservers)
+
+    player.publisher(for: .nextTrack).sink { [weak self] _ in
+      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      self.onNextTrack(self.playerView, isUserInitiated: true)
+    }.store(in: &playerStateObservers)
+    
+    player.publisher(for: .seekBackward).sink { [weak self] _ in
+      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      self.seekBackwards(self.playerView)
+    }.store(in: &playerStateObservers)
+    
+    player.publisher(for: .seekForward).sink { [weak self] _ in
+      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
+      self.seekForwards(self.playerView)
+    }.store(in: &playerStateObservers)
 
     player.publisher(for: .finishedPlaying).sink { [weak self] event in
       guard let self = self,
