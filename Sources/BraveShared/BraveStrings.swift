@@ -1052,6 +1052,10 @@ extension Strings {
   public static let versionTemplate = NSLocalizedString("VersionTemplate", tableName: "BraveShared", bundle: .module, value: "Version %@ (%@)", comment: "Version number of Brave shown in settings")
   public static let deviceTemplate = NSLocalizedString("DeviceTemplate", tableName: "BraveShared", bundle: .module, value: "Device %@ (%@)", comment: "Current device model and iOS version copied to clipboard.")
   public static let copyAppInfoToClipboard = NSLocalizedString("CopyAppInfoToClipboard", tableName: "BraveShared", bundle: .module, value: "Copy app info to clipboard.", comment: "Copy app info to clipboard action sheet action.")
+  public static let copyAppSizeInfoToClipboard =
+  NSLocalizedString("copyAppSizeInfoToClipboard", tableName: "BraveShared",
+                    bundle: .module, value: "Copy app size info to clipboard.",
+                    comment: "Copy app info to clipboard action sheet action.")
   public static let blockThirdPartyCookies = NSLocalizedString("Block3rdPartyCookies", tableName: "BraveShared", bundle: .module, value: "Block 3rd party cookies", comment: "cookie settings option")
   public static let blockAllCookies = NSLocalizedString("BlockAllCookies", tableName: "BraveShared", bundle: .module, value: "Block all Cookies", comment: "Title for setting to block all website cookies.")
   public static let blockAllCookiesAction = NSLocalizedString("BlockAllCookiesAction", tableName: "BraveShared", bundle: .module, value: "Block All", comment: "block all cookies settings action title")
