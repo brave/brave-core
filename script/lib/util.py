@@ -278,35 +278,6 @@ def parse_version(version):
     return vs
 
 
-def boto_path_dirs():
-    return [
-        os.path.join(BOTO_DIR, 'build', 'lib'),
-        os.path.join(BOTO_DIR, 'build', 'lib.linux-x86_64-2.7')
-    ]
-
-
-def run_boto_script(access_key, secret_key, script_name, *args):
-    env = os.environ.copy()
-    env['AWS_ACCESS_KEY_ID'] = access_key
-    env['AWS_SECRET_ACCESS_KEY'] = secret_key
-    env['PYTHONPATH'] = os.path.pathsep.join(
-        [env.get('PYTHONPATH', '')] + boto_path_dirs())
-
-    boto = os.path.join(BOTO_DIR, 'bin', script_name)
-    execute([sys.executable, boto] + list(args), env)
-
-
-def s3put(bucket, access_key, secret_key, prefix, key_prefix, files):
-    args = [
-        '--bucket', bucket,
-        '--prefix', prefix,
-        '--key_prefix', key_prefix,
-        '--grant', 'public-read'
-    ] + files
-
-    run_boto_script(access_key, secret_key, 's3put', *args)
-
-
 def import_vs_env(target_arch):
     if sys.platform != 'win32':
         return
