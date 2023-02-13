@@ -42,6 +42,10 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(IS_LINUX)
+#include "chrome/common/pref_names.h"
+#endif
+
 namespace {
 constexpr int kLocationBarMaxWidth = 1080;
 
@@ -163,6 +167,12 @@ void BraveToolbarView::Init() {
         profile->GetOriginalProfile()->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
+#if BUILDFLAG(IS_LINUX)
+    use_custom_chrome_frame_.Init(
+        prefs::kUseCustomChromeFrame, profile->GetOriginalProfile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
+                            base::Unretained(this)));
+#endif  // BUILDFLAG(IS_LINUX)
     UpdateHorizontalPadding();
   }
 

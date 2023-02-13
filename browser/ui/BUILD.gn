@@ -333,6 +333,13 @@ source_set("ui") {
       ]
     }
 
+    if (is_linux) {
+      sources += [
+        "views/frame/brave_browser_frame_view_linux_native.cc",
+        "views/frame/brave_browser_frame_view_linux_native.h",
+      ]
+    }
+
     if (is_mac) {
       sources += [
         "views/frame/brave_browser_frame_mac.h",

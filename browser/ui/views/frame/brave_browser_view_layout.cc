@@ -42,10 +42,12 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
   gfx::Rect vertical_tab_strip_bounds = vertical_layout_rect_;
   vertical_tab_strip_bounds.set_y(views_next_to_vertical_tabs.front()->y());
   gfx::Insets insets;
+#if !BUILDFLAG(IS_LINUX)
   if (contents_separator_ &&
       views_next_to_vertical_tabs.front() == bookmark_bar_) {
     insets.set_top(contents_separator_->GetPreferredSize().height());
   }
+#endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_MAC)
   // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
