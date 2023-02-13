@@ -10,6 +10,7 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/models/image_model.h"
@@ -131,6 +132,34 @@ class BraveTextButtonHighlightPathGenerator
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override;
 };
+
+// This function was removed from chrome_typography_provider.cc in
+// https://chromium.googlesource.com/chromium/src/+/852890e because it pushed
+// the Harmony colors to native theme. Trying to override colors there would be
+// more inconvenient. Instead, restoring this function here so that we know when
+// to fall onto Chromium code.
+bool ShouldIgnoreHarmonySpec(const views::View& view) {
+#if BUILDFLAG(IS_MAC)
+  return false;
+#else
+  const ui::NativeTheme* theme = view.GetNativeTheme();
+  DCHECK(theme);
+  if (theme->UserHasContrastPreference()) {
+    return true;
+  }
+  if (theme->ShouldUseDarkColors()) {
+    return false;
+  }
+
+  // TODO(pbos): Revisit this check. Both GG900 and black are considered
+  // "default black" as the common theme uses GG900 as primary color.
+  const SkColor test_color =
+      view.GetColorProvider()->GetColor(ui::kColorLabelForeground);
+  const bool label_color_is_black =
+      test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
+  return !label_color_is_black;
+#endif  // BUILDFLAG(IS_MAC)
+}
 
 }  // namespace
 
