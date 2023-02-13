@@ -7,6 +7,7 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
@@ -25,10 +26,6 @@
 
 namespace tabs {
 namespace features {
-
-BASE_FEATURE(kBraveVerticalTabs,
-             "BraveVerticalTabs",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,

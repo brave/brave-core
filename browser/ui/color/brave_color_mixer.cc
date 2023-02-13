@@ -11,6 +11,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/tabs/brave_vertical_tab_color_mixer.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -280,7 +281,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    tabs::AddBraveVerticalTabLightThemeColorMixer(provider, key);
+  }
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -374,7 +377,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       GetToolbarInkDropColor(mixer)};
 
-  tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    tabs::AddBraveVerticalTabDarkThemeColorMixer(provider, key);
+  }
 }
 
 // Handling dark or light theme on normal profile.
