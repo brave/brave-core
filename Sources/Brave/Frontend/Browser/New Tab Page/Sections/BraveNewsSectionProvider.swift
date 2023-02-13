@@ -188,11 +188,12 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       if !viewedCards.contains(card) && collectionView.contentOffset.y > 0 {
         if indexPath.item == 1, let firstCard = dataSource.state.cards?.first, !viewedCards.contains(firstCard), card != firstCard {
           // Since we don't record the peeking card we want to make sure that it counts once its in view
-          recordWeeklyCardsViewedP3A(cardViewed: true)
           viewedCards.insert(firstCard)
+          recordWeeklyCardsViewedP3A(cardViewed: true)
         }
-        recordWeeklyCardsViewedP3A(cardViewed: true)
         viewedCards.insert(card)
+        recordWeeklyCardsViewedP3A(cardViewed: true)
+        recordWeeklyMaxRowsViewedP3A()
       }
       if case .partner(let item) = card,
         let creativeInstanceID = item.content.creativeInstanceID {
@@ -529,6 +530,25 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       value: storage.combinedValue
     )
   }
+  
+  private func recordWeeklyMaxRowsViewedP3A() {
+    var storage = P3ATimedStorage<Int>.rowsViewedCount
+    storage.replaceTodaysRecordsIfLargest(value: viewedCards.count)
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyMaxCardViewsCount",
+      buckets: [
+        0, // won't ever be sent
+        1,
+        .r(2...4),
+        .r(5...12),
+        .r(13...20),
+        .r(21...40),
+        .r(41...80),
+        .r(81...),
+      ],
+      value: storage.maximumDaysCombinedValue
+    )
+  }
 }
 
 extension FeedItemView {
@@ -594,4 +614,5 @@ extension FeedItemView {
 extension P3ATimedStorage where Value == Int {
   fileprivate static var adsViewedStorage: Self { .init(name: "ads-viewed", lifetimeInDays: 7) }
   fileprivate static var cardsViewCount: Self { .init(name: "news-cards-view-count", lifetimeInDays: 7) }
+  fileprivate static var rowsViewedCount: Self { .init(name: "news-cards-rows-count", lifetimeInDays: 7) }
 }
