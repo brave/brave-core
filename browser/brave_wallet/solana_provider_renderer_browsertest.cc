@@ -403,11 +403,6 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
   }
 
-  void IsSolanaKeyringCreated(
-      IsSolanaKeyringCreatedCallback callback) override {
-    std::move(callback).Run(true);
-  }
-
   void SetError(SolanaProviderError error, const std::string& error_message) {
     error_ = error;
     error_message_ = error_message;
@@ -641,7 +636,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
     for (const std::string& method :
          {"on", "off", "emit", "removeListener", "removeAllListeners",
           "connect", "disconnect", "signAndSendTransaction", "signMessage",
-          "request", "signTransaction", "signAllTransactions"}) {
+          "request", "signTransaction", "signAllTransactions",
+          "walletStandardInit"}) {
       SCOPED_TRACE(method);
       auto result = EvalJs(web_contents(browser()),
                            NonWriteableScriptMethod(provider, method),
