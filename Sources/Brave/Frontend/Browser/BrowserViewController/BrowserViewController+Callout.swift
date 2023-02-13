@@ -32,6 +32,8 @@ extension BrowserViewController {
   }
   
   func presentBottomBarCallout() {
+    guard traitCollection.userInterfaceIdiom == .phone else { return }
+    
     // Check the blockCookieConsentNotices callout can be shown
     guard shouldShowCallout(calloutType: .blockCookieConsentNotices) else {
       return
