@@ -74,7 +74,7 @@ const CryptoView = (props: Props) => {
 
   // hooks
   useBalanceUpdater()
-  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
+  const { isIpfsBannerVisible, nonFungibleTokens, onToggleShowIpfsBanner } = useNftPin()
 
   // accounts tab state
   const accountToRemove = useSelector(({ accountsTab }: { accountsTab: AccountsTabState }) => accountsTab.accountToRemove)
@@ -221,13 +221,13 @@ const CryptoView = (props: Props) => {
 
   const ipfsBanner = React.useMemo(() => (
     <>
-      {isNftPinningFeatureEnabled && isIpfsBannerVisible &&
+      {isNftPinningFeatureEnabled && isIpfsBannerVisible && nonFungibleTokens.length > 0 &&
         <BannerWrapper>
           <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
         </BannerWrapper>
       }
     </>
-  ), [isNftPinningFeatureEnabled, isIpfsBannerVisible])
+  ), [isNftPinningFeatureEnabled, isIpfsBannerVisible, nonFungibleTokens])
 
   // effects
   React.useEffect(() => {

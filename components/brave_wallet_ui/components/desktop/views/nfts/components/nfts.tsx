@@ -12,6 +12,9 @@ import {
   WalletRoutes
 } from '../../../../../constants/types'
 
+// hooks
+import { useNftPin } from '../../../../../common/hooks/nft-pin'
+
 // selectors
 import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../../common/selectors'
@@ -56,6 +59,7 @@ export const Nfts = (props: Props) => {
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
+  const { nonFungibleTokens } = useNftPin()
 
   // methods
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +109,7 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
-        {isNftPinningFeatureEnabled &&
+        {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 &&
           <IpfsButton onClick={onClickIpfsButton}>
             <IpfsIcon />
           </IpfsButton>
