@@ -1254,13 +1254,7 @@ public class BraveNewTabPageLayout
             wallpaperRetrievedCallback = new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
         @Override
         public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
-            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-                if (BraveActivity.getBraveActivity() != null && mTabProvider.get() != null
-                        && !mTabProvider.get().isIncognito()) {
-                    BraveActivity.getBraveActivity().setBackground(bgWallpaper);
-                }
-
-            } else {
+            if (mBgImageView != null) {
                 mBgImageView.setImageBitmap(bgWallpaper);
             }
         }
