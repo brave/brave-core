@@ -88,7 +88,7 @@ export const NFTGridViewItem = (props: Props) => {
             tokensNetwork={getTokensNetwork(networkList, token)}
           />
         </IconWrapper>
-        <NFTText>{token.name} {asset.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
+        <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
         <NFTSymbol>{token.symbol}</NFTSymbol>
       </NFTWrapper>
       {showEditModal &&
