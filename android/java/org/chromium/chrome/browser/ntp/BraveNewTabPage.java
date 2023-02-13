@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.xsurface.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
