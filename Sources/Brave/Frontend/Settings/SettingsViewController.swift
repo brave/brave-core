@@ -594,8 +594,14 @@ class SettingsViewController: TableViewController {
             let copyDebugInfoAction = UIAlertAction(title: Strings.copyAppInfoToClipboard, style: .default) { _ in
               UIPasteboard.general.strings = [version, coreVersion, deviceModel]
             }
+            
+            let copyAppInfoAction = UIAlertAction(title: Strings.copyAppSizeInfoToClipboard, style: .default) { _ in
+              UIPasteboard.general.setSecureString(AppStorageDebugComposer.compose(),
+                                                   expirationDate: Date().addingTimeInterval(2.minutes))
+            }
 
             actionSheet.addAction(copyDebugInfoAction)
+            actionSheet.addAction(copyAppInfoAction)
             actionSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
             self.navigationController?.present(actionSheet, animated: true, completion: nil)
           }, cellClass: MultilineValue1Cell.self),
