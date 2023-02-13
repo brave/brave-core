@@ -12,6 +12,10 @@ import {
   WalletRoutes
 } from '../../../../../constants/types'
 
+// selectors
+import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../common/selectors'
+
 // actions
 import { WalletPageActions } from '../../../../../page/actions'
 
@@ -28,6 +32,8 @@ import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-gr
 import {
   StyledWrapper,
   FilterTokenRow,
+  IpfsButton,
+  IpfsIcon,
   NftGrid,
   AddIcon,
   AddButton
@@ -69,6 +75,10 @@ export const Nfts = (props: Props) => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
 
+  const onClickIpfsButton = React.useCallback(() => {
+    onToggleShowIpfsBanner()
+  }, [onToggleShowIpfsBanner])
+
   const toggleShowAddNftModal = React.useCallback(() => {
     setShowAddNftModal(value => !value)
   }, [])
@@ -106,6 +116,11 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
+        {isNftPinningFeatureEnabled &&
+          <IpfsButton onClick={onClickIpfsButton}>
+            <IpfsIcon />
+          </IpfsButton>
+        }
         <AddButton onClick={toggleShowAddNftModal}>
           <AddIcon />
         </AddButton>

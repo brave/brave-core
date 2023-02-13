@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { WalletButton } from '../../../../../shared/style'
+import Ipfs from '../../../../../../assets/svg-icons/nft-ipfs/ipfs-color.svg'
 import MoreVertical from '../../../../../../assets/svg-icons/more-vertical.svg'
 
 export const StyledWrapper = styled.div`
@@ -43,7 +44,6 @@ export const NFTWrapper = styled.div`
     margin-right: 0px;
   }
   z-index: 1;
-  position: relative;
 `
 
 export const IconWrapper = styled.div`

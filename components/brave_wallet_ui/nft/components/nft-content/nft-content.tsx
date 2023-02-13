@@ -14,6 +14,7 @@ import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
 
 import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
+import { PinningStatusType } from '../../../page/constants/action_types'
 
 interface Props {
   isLoading?: boolean
