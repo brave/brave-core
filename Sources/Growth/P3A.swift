@@ -287,11 +287,11 @@ extension P3ATimedStorage where Value: AdditiveArithmetic & Comparable {
     return max(.zero, values.reduce(.zero, { $0 + $1 }))
   }
   /// Groups and combines the values of each day's values recorded then returns the largest value in that set
-  public var maximumDaysCombinedValue: Value? {
+  public var maximumDaysCombinedValue: Value {
     return Dictionary(grouping: records, by: { Calendar.current.startOfDay(for: $0.date) })
       .mapValues({ return $0.reduce(.zero, { $0 + $1.value }) })
       .values
-      .max()
+      .max() ?? .zero
   }
   /// Adds the given value to a record with the same date in the current data set.
   ///

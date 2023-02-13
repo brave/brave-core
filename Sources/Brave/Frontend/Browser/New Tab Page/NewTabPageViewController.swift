@@ -944,9 +944,16 @@ extension NewTabPageViewController {
   }
   
   private func recordNewTabCreatedP3A() {
-    var storage = P3ATimedStorage<Int>.newTabsCreatedStorage
-    storage.add(value: 1, to: Date())
-    guard let answer = storage.maximumDaysCombinedValue else { return }
+    var newTabsStorage = P3ATimedStorage<Int>.newTabsCreatedStorage
+    var sponsoredStorage = P3ATimedStorage<Int>.sponsoredNewTabsCreatedStorage
+    
+    newTabsStorage.add(value: 1, to: Date())
+    let newTabsCreatedAnswer = newTabsStorage.maximumDaysCombinedValue
+    
+    if case .withBrandLogo = background.currentBackground?.type {
+      sponsoredStorage.add(value: 1, to: Date())
+    }
+    
     UmaHistogramRecordValueToBucket(
       "Brave.NTP.NewTabsCreated",
       buckets: [
@@ -958,8 +965,25 @@ extension NewTabPageViewController {
         .r(51...100),
         .r(101...),
       ],
-      value: answer
+      value: newTabsCreatedAnswer
     )
+    
+    if newTabsCreatedAnswer > 0 {
+      let sponsoredPercent = Int((Double(sponsoredStorage.maximumDaysCombinedValue) / Double(newTabsCreatedAnswer)) * 100.0)
+      UmaHistogramRecordValueToBucket(
+        "Brave.NTP.SponsoredNewTabsCreated",
+        buckets: [
+          0,
+          .r(0..<10),
+          .r(10..<20),
+          .r(20..<30),
+          .r(30..<40),
+          .r(40..<50),
+          .r(50...)
+        ],
+        value: sponsoredPercent
+      )
+    }
   }
 }
 
@@ -1171,4 +1195,5 @@ extension P3AFeatureUsage {
 extension P3ATimedStorage where Value == Int {
   fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
   fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
+  fileprivate static var sponsoredNewTabsCreatedStorage: Self { .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7) }
 }
