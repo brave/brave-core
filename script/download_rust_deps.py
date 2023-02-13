@@ -9,6 +9,7 @@
 import argparse
 import ast
 import os
+import shutil
 import subprocess
 import sys
 
@@ -156,21 +157,13 @@ def main():
             rustup_home)
         # patch gcc.rs.patch
         # https://github.com/rust-lang/rust/issues/102754#issuecomment-1421438735
-        patch_file = os.path.join(BRAVE_CORE_ROOT, 'build', 'rust',
-                                  'gcc.rs.patch')
-        backup_file = os.path.join(rustup_home, 'toolchains',
-                                   rust_version + '-x86_64-apple-darwin', 'lib',
-                                   'rustlib', 'src', 'rust', 'library', 'std',
-                                   'src', 'personality', 'gcc.rs.orig')
-        if not os.path.exists(backup_file):
-            try:
-                subprocess.check_call([
-                    'patch', '-b', '--no-backup-if-mismatch', '-i', patch_file
-                ],
-                                      env=os.environ)
-            except subprocess.CalledProcessError as e:
-                print(e.output)
-                raise e
+        patched_file = os.path.join(BRAVE_CORE_ROOT, 'build', 'rust',
+                                    'gcc.rs.patched')
+        orig_file = os.path.join(rustup_home, 'toolchains',
+                                 rust_version + '-x86_64-apple-darwin', 'lib',
+                                 'rustlib', 'src', 'rust', 'library', 'std',
+                                 'src', 'personality', 'gcc.rs')
+        shutil.copyfile(patched_file, orig_file)
 
     cxx_path = os.path.abspath(
         os.path.join(CHROMIUM_ROOT, 'third_party', 'rust', 'cxx', 'v1'))
