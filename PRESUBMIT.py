@@ -58,9 +58,10 @@ def CheckPatchFormatted(input_api, output_api):
     if not is_format_required or input_api.PRESUBMIT_FIX:
         # Use Prettier to format other file types.
         files_to_check = (
-            r'.+\.js$',
-            r'.+\.ts$',
-            r'.+\.tsx$',
+            # Enable when files will be formatted.
+            # r'.+\.js$',
+            # r'.+\.ts$',
+            # r'.+\.tsx$',
         )
         files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
 
