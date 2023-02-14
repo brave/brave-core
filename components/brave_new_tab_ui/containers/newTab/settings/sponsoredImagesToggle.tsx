@@ -11,7 +11,7 @@ import { SettingsText } from '../../../components/default'
 import { Toggle } from '../../../components/toggle'
 
 // Assets
-import InfoIcon from '../../../components/default/settings/assets/info-icon.svg'
+import { SponsoredImageInfoIcon } from './icons/sponsoredImageInfo'
 
 // Utilities
 import { getLocale } from '../../../../common/locale'
@@ -25,94 +25,239 @@ interface Props {
   rewardsEnabled: boolean
   adsEnabled: boolean
   canSupportAds: boolean
+  isExternalWalletConnected: boolean
 }
-
-const Container = styled.div`
-  background-color: var(--info-background);
-  border-radius: 8px;
-  padding: 8px;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`
 
 const ToggleRow = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px;
-  border-radius: 10px;
+  padding: 8px 0px;
   background-color: var(--background1);
 `
 
-const DescriptionRow = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-rows: fit-content(16px) 1fr;
-  grid-template-columns: 16px 1fr;
-  padding: 0 8px;
-  gap: 8px;
-  color: #339AF0;
+const ControlsContainer = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const InfoIcon = styled.span`
+  position: relative;
+  margin: 0px 18px;
+
+  > .icon {
+    height: 17px;
+    width: auto;
+    vertical-align: middle;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: 100%;
+    inset-inline-start: -200px;
+    width: 264px;
+    padding-bottom: 12px;
+    display: none;
+  }
+
+  &:hover .tooltip {
+    display: initial;
+  }
+
+  &:focus .tooltip {
+    display: initial;
+  }
+
+  &:focus {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
+`
+
+const InfoIconTooltip = styled.div`
+  position: relative;
+  background: var(--background1);
+  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
+  border-radius: 6px;
   font-family: var(--brave-font-family-non-serif);
   letter-spacing: 0.01em;
-  margin-bottom: 7px;
+  padding: 24px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    inset-inline-start: 201px;
+    background: inherit;
+    height: 15px;
+    width: 15px;
+    transform: rotate(45deg);
+  }
 `
 
-const DescriptionIcon = styled.div`
-  background: url(${InfoIcon}) no-repeat;
-  background-size: 16px 16px;
-  background-position: center;
-`
-
-const DescriptionTitle = styled.div`
+const InfoIconTooltipTitle = styled.div`
   font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 8px;
+`
+
+const InfoIconTooltipBody = styled.div`
+  font-weight: 400;
   font-size: 12px;
   line-height: 18px;
 `
 
+const Container = styled.div`
+  background-color: var(--info-background);
+  border-radius: 8px;
+  padding: 24px 24px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+`
+
+const DescriptionRow = styled.div`
+  width: 100%;
+  color: var(--text1);
+  font-family: var(--brave-font-family-non-serif);
+  letter-spacing: 0.01em;
+  margin-bottom: 16px;
+`
+
+const DescriptionTitle = styled.div`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 4px;
+`
+
 const DescriptionBody = styled.div`
-  grid-column: 2;
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 17px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
 `
 
 const EnableRewardsButton = styled.button`
-  width: 236px;
-  height: 40px;
+  height: 36px;
   background: var(--interactive5);
-  border-radius: 48px;
+  border-radius: 1000px;
   border-width: 0;
   color: white;
   cursor: pointer;
-  margin-bottom: 8px;
+  padding: 10px 20px;
   font-family: var(--brave-font-family-non-serif);
   font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  align-self: start;
 `
 
-export default function SponsoredImageToggle ({ onChange, onEnableRewards, checked, disabled, rewardsEnabled: rewardEnabled, adsEnabled, canSupportAds }: Props) {
-  const showRewardButton = checked && !disabled && (!rewardEnabled || (!adsEnabled && canSupportAds))
+function getInfoTooltipText (checked: boolean, rewardsEnabled: boolean) {
+  if (!checked) {
+    return rewardsEnabled
+      ? getLocale('sponsoredImageOffRewardsOnDescription')
+      : getLocale('sponsoredImageRewardsOffDescription')
+  }
+
+  return getLocale('sponsoredImageOnDescription')
+}
+
+function getDescriptionText (rewardsEnabled: boolean,
+  isExternalWalletConnected: boolean) {
+  if (!rewardsEnabled) {
+    return getLocale('sponsoredImageRewardsOffDescription')
+  }
+
+  if (!isExternalWalletConnected) {
+    return getLocale('sponsoredImageOnRewardsOnNoCustodianDescription')
+  }
+
+  return getLocale('sponsoredImageOnAdsOff')
+}
+
+function getButtonText (rewardsEnabled: boolean,
+  isExternalWalletConnected: boolean) {
+  if (!rewardsEnabled) {
+    return getLocale('sponsoredImageEnableRewards')
+  }
+
+  if (!isExternalWalletConnected) {
+    return getLocale('braveRewardsTitle')
+  }
+
+  return getLocale('rewardsEnableBraveAds')
+}
+
+export default function SponsoredImageToggle (
+  {
+    onChange, onEnableRewards, checked, disabled, rewardsEnabled, adsEnabled,
+    canSupportAds, isExternalWalletConnected
+  }: Props) {
+  // Info icon is shown when:
+  // 1. SI toggle is off
+  // 2. Rewards is enabled (with a custodian connected) and Ads is enabled
+  const showInfoIcon =
+    !disabled &&
+    (!checked || (rewardsEnabled && isExternalWalletConnected && adsEnabled))
+
+  // Description is shown when SI toggle is on and:
+  // 1. Rewards is not enabled (to show the button to enable Rewards)
+  // 2. Rewards custodian is not connected (to show the button to go to Rewards)
+  // 3. Ads is not enabled (to show the button to enable Ads)
+  const showDescription =
+    !disabled &&
+    checked &&
+    (!rewardsEnabled ||
+      !isExternalWalletConnected ||
+      (!adsEnabled && canSupportAds)
+    )
+
   return (
-    <Container>
+    <div>
       <ToggleRow>
         <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
-        <Toggle onChange={onChange} checked={checked} disabled={disabled} size='small' />
+        <ControlsContainer>
+          {showInfoIcon &&
+            <InfoIcon title='' tabIndex={0}>
+              {SponsoredImageInfoIcon}
+              <div className='tooltip'>
+                <InfoIconTooltip>
+                  <InfoIconTooltipTitle>
+                    {checked
+                      ? getLocale('sponsoredImageEarningTitle')
+                      : getLocale('sponsoredImageNotEarningTitle')}
+                  </InfoIconTooltipTitle>
+                  <InfoIconTooltipBody>
+                    {getInfoTooltipText(checked, rewardsEnabled)}
+                  </InfoIconTooltipBody>
+                </InfoIconTooltip>
+              </div>
+            </InfoIcon>
+          }
+          <Toggle onChange={onChange} checked={checked} disabled={disabled}
+            size='large' />
+        </ControlsContainer>
       </ToggleRow>
-      <DescriptionRow>
-        <DescriptionIcon/>
-        <DescriptionTitle>
-          {!checked || showRewardButton ? getLocale('sponsoredImageOn') : getLocale('sponsoredImageOff')}
-        </DescriptionTitle>
-        <DescriptionBody>
-          {!checked || showRewardButton ? getLocale('sponsoredImageOnDescription') : getLocale('sponsoredImageOffDescription')}
-        </DescriptionBody>
-      </DescriptionRow>
-      {showRewardButton &&
-        <EnableRewardsButton onClick={onEnableRewards}>
-            {getLocale('rewardsStartUsingRewards')}
-        </EnableRewardsButton>}
-    </Container>
+      {showDescription &&
+        <Container>
+          <DescriptionRow>
+            <DescriptionTitle>
+              {getLocale('sponsoredImageNotEarningTitle')}
+            </DescriptionTitle>
+            <DescriptionBody>
+              {getDescriptionText(rewardsEnabled, isExternalWalletConnected)}
+            </DescriptionBody>
+          </DescriptionRow>
+          <EnableRewardsButton onClick={onEnableRewards} title=''>
+            {getButtonText(rewardsEnabled, isExternalWalletConnected)}
+          </EnableRewardsButton>
+        </Container>
+      }
+    </div>
   )
 }
