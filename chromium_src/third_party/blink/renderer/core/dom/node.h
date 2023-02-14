@@ -44,7 +44,7 @@ struct PostConstructionCallbackTrait<
   static void Call(blink::Node* object) { object->NodeConstructed(); }
 };
 
-// If Node is derived from ActiveScriptWrappable we need to call both
+// If Node is derived from ActiveScriptWrappable<> we need to call both
 // PostConstructionCallbacks.
 template <typename T>
 struct PostConstructionCallbackTrait<
@@ -53,8 +53,24 @@ struct PostConstructionCallbackTrait<
         std::is_base_of<blink::Node, T>::value &&
             HasActiveScriptWrappableBaseConstructed<T>::value,
         void>::type> {
+  template <typename U>
+  struct class_of {};
+
+  template <typename U, typename R>
+  struct class_of<R(U::*)> {
+    using type = U;
+  };
+
   static void Call(T* object) {
-    PostConstructionCallbackTrait_ChromiumImpl<T, void>::Call(object);
+    // Ensure we use a proper ActiveScriptWrappable<> post construction trait.
+    using ActiveScriptWrappableType = typename class_of<
+        decltype(&T::ActiveScriptWrappableBaseConstructed)>::type;
+    static_assert(
+        std::is_base_of<blink::ActiveScriptWrappableBase,
+                        ActiveScriptWrappableType>::value &&
+        !std::is_base_of<blink::Node, ActiveScriptWrappableType>::value);
+    PostConstructionCallbackTrait<ActiveScriptWrappableType>::Call(object);
+
     PostConstructionCallbackTrait<blink::Node>::Call(object);
   }
 };
