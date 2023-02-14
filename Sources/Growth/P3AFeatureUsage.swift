@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveShared
+import OSLog
 
 /// Handles recording usage of a particular feature
 ///
@@ -43,6 +44,7 @@ public struct P3AFeatureUsage {
   public func recordHistogram() {
     // Record last usage to bucket if there's an associated p3a question
     UmaHistogramRecordLastFeatureUsage(histogram, option: lastUsageOption)
+    Logger.module.info("Recorded P3A feature usage histogram: \(histogram)")
   }
   
   /// Updates the usage and records a histogram with that new usage
@@ -51,12 +53,13 @@ public struct P3AFeatureUsage {
   public func recordUsage() {
     // Update usage prefs
     let calendar = Calendar(identifier: .gregorian)
-    let now = date()
+    let now = calendar.startOfDay(for: date())
     if firstUsageOption.value == nil {
-      firstUsageOption.value = calendar.startOfDay(for: now)
+      firstUsageOption.value = now
     }
-    lastUsageOption.value = calendar.startOfDay(for: now)
+    lastUsageOption.value = now
     recordHistogram()
+    Logger.module.info("Recorded P3A feature usage for \(name): \(now)")
   }
   
   enum ReturningUserState: Int, CaseIterable {
@@ -96,6 +99,8 @@ public struct P3AFeatureUsage {
   /// Records a typical returning usage metric histogram if you've set `returningUserHistogram`
   public func recordReturningUsageMetric() {
     guard let name = returningUserHistogram else { return }
+    let returningUserState = returningUserState
     UmaHistogramEnumeration(name, sample: returningUserState)
+    Logger.module.info("Recorded P3A returning usage for \(name): \(String(describing: returningUserState))")
   }
 }
