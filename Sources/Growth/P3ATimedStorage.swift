@@ -63,12 +63,14 @@ public struct P3ATimedStorage<Value: Codable> {
   }
   
   fileprivate var cutoffTime: Date {
-    Calendar.current.date(
+    calendar.date(
       byAdding: .day,
       value: -lifetimeInDays,
-      to: Calendar.current.startOfDay(for: date())
+      to: calendar.startOfDay(for: date())
     ) ?? Date()
   }
+  
+  fileprivate let calendar: Calendar = .init(identifier: .gregorian)
   
   /// Purges any records that are outside of the lifetime
   private mutating func purge() {
@@ -111,8 +113,8 @@ extension P3ATimedStorage where Value: Comparable {
   }
   /// Appends a value if the value given is larger than any value recorded today
   public mutating func replaceTodaysRecordsIfLargest(value: Value) {
-    let today = Calendar.current.startOfDay(for: date())
-    let todaysRecords = records.filter({ Calendar.current.startOfDay(for: $0.date) == today })
+    let today = calendar.startOfDay(for: date())
+    let todaysRecords = records.filter({ calendar.startOfDay(for: $0.date) == today })
     guard let maxValue = todaysRecords.map(\.value).max() else {
       append(value: value)
       return
@@ -133,7 +135,7 @@ extension P3ATimedStorage where Value: AdditiveArithmetic & Comparable {
   }
   /// Groups and combines the values of each day's values recorded then returns the largest value in that set
   public var maximumDaysCombinedValue: Value {
-    return Dictionary(grouping: records, by: { Calendar.current.startOfDay(for: $0.date) })
+    return Dictionary(grouping: records, by: { calendar.startOfDay(for: $0.date) })
       .mapValues({ return $0.reduce(.zero, { $0 + $1.value }) })
       .values
       .max() ?? .zero
@@ -147,7 +149,7 @@ extension P3ATimedStorage where Value: AdditiveArithmetic & Comparable {
   /// that will contain the same date
   public mutating func add(value: Value, to date: Date) {
     defer { save() }
-    let date = Calendar.current.startOfDay(for: date)
+    let date = calendar.startOfDay(for: date)
     if let index = records.firstIndex(where: { $0.date == date }) {
       records[index].value += value
     } else if date > cutoffTime {
