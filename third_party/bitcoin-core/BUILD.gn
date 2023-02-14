@@ -44,6 +44,7 @@ static_library("bitcoin-core") {
   ]
 
   sources += [
+    "//brave/chromium_src/brave/third_party/bitcoin-core/src/src/serialize.h",
     "src/src/attributes.h",
     "src/src/crypto/common.h",
     "src/src/crypto/hmac_sha512.cpp",
@@ -54,7 +55,6 @@ static_library("bitcoin-core") {
     "src/src/crypto/sha512.h",
     "src/src/hash.cpp",
     "src/src/hash.h",
-    "src/src/serialize.h",
     "src/src/span.h",
   ]
 

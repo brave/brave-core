@@ -36,9 +36,7 @@ namespace {
 constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
 constexpr uint32_t kHardenedOffset = 0x80000000;
-#define SERIALIZATION_LEN 78
-#define MAINNET_PUBLIC 0x0488B21E
-#define MAINNET_PRIVATE 0x0488ADE4
+constexpr size_t kSerializationLength = 78;
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -148,7 +146,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
 
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
-  std::vector<unsigned char> decoded_key(SERIALIZATION_LEN);
+  std::vector<unsigned char> decoded_key(kSerializationLength);
   if (!DecodeBase58Check(key, decoded_key, decoded_key.size())) {
     LOG(ERROR) << __func__ << ": DecodeBase58Check failed";
     return nullptr;
@@ -159,8 +157,8 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   const uint8_t* ptr = buf.data();
-  int32_t version = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
-  DCHECK(version == MAINNET_PUBLIC || version == MAINNET_PRIVATE);
+  auto version = static_cast<ExtendedKeyVersion>(ptr[0] << 24 | ptr[1] << 16 |
+                                                 ptr[2] << 8 | ptr[3] << 0);
   ptr += sizeof(version);
 
   uint8_t depth = *ptr;
@@ -183,11 +181,11 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   hdkey->SetChainCode(chain_code);
 
   if (*ptr == 0x00) {
-    DCHECK_EQ(version, MAINNET_PRIVATE);
+    DCHECK_EQ(version, ExtendedKeyVersion::kXprv);
     ptr += 1;  // Skip first zero byte which is not part of private key.
     hdkey->SetPrivateKey(base::make_span(ptr, ptr + 32));
   } else {
-    DCHECK_EQ(version, MAINNET_PUBLIC);
+    DCHECK_EQ(version, ExtendedKeyVersion::kXpub);
     std::vector<uint8_t> public_key(ptr, ptr + 33);
     hdkey->SetPublicKey(public_key);
   }
@@ -793,7 +791,7 @@ std::string HDKey::Serialize(ExtendedKeyVersion version,
   // key(32 or 33)
   SecureVector buf;
 
-  buf.reserve(SERIALIZATION_LEN);
+  buf.reserve(kSerializationLength);
 
   uint32_t version_uint32 = static_cast<uint32_t>(version);
 
@@ -829,7 +827,7 @@ std::string HDKey::Serialize(ExtendedKeyVersion version,
   }
   buf.insert(buf.end(), key.begin(), key.end());
 
-  DCHECK(buf.size() == SERIALIZATION_LEN);
+  DCHECK(buf.size() == kSerializationLength);
   return EncodeBase58Check(buf);
 }
 
