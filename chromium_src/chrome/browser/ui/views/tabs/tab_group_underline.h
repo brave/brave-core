@@ -13,7 +13,7 @@
   friend class BraveTabGroupUnderline; \
   virtual SkPath GetPath
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_underline.h"
+#include "src/chrome/browser/ui/views/tabs/tab_group_underline.h"  // IWYU pragma: export
 
 #undef GetPath
 #undef GetInsetsForUnderline

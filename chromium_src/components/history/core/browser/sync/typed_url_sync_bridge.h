@@ -15,7 +15,7 @@
   friend class BraveTypedURLSyncBridgeTest;                        \
   bool ShouldSyncVisit
 
-#include "src/components/history/core/browser/sync/typed_url_sync_bridge.h"
+#include "src/components/history/core/browser/sync/typed_url_sync_bridge.h"  // IWYU pragma: export
 
 #undef ShouldSyncVisit
 

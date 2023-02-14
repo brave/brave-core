@@ -10,7 +10,7 @@
   GetShadowInsets();    \
   static int GetShadowElevation
 
-#include "src/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
+#include "src/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"  // IWYU pragma: export
 
 #undef GetShadowInsets
 

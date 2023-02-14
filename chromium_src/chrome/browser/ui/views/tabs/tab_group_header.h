@@ -11,7 +11,7 @@
   friend class BraveTabGroupHeader
 #define VisualsChanged virtual VisualsChanged
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_header.h"
+#include "src/chrome/browser/ui/views/tabs/tab_group_header.h"  // IWYU pragma: export
 
 #undef VisualsChanged
 #undef TabGroupEditorBubbleViewDialogBrowserTest

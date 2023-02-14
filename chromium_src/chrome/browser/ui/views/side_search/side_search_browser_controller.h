@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 #define SidePanel BraveSidePanel
-#include "src/chrome/browser/ui/views/side_search/side_search_browser_controller.h"
+#include "src/chrome/browser/ui/views/side_search/side_search_browser_controller.h"  // IWYU pragma: export
 #undef SidePanel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_SEARCH_SIDE_SEARCH_BROWSER_CONTROLLER_H_

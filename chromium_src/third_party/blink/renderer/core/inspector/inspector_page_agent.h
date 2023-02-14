@@ -15,7 +15,7 @@
       int node_id, std::unique_ptr<protocol::Array<String>>* report) override; \
   protocol::Response clearCompilationCache
 
-#include "src/third_party/blink/renderer/core/inspector/inspector_page_agent.h"
+#include "src/third_party/blink/renderer/core/inspector/inspector_page_agent.h"  // IWYU pragma: export
 
 #undef clearCompilationCache
 

@@ -11,7 +11,7 @@
   action_flags_;                     \
   jboolean IsIncognito_ChromiumImpl( \
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj)
-#include "src/chrome/browser/ui/android/infobars/translate_compact_infobar.h"
+#include "src/chrome/browser/ui/android/infobars/translate_compact_infobar.h"  // IWYU pragma: export
 #undef action_flags_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_ANDROID_INFOBARS_TRANSLATE_COMPACT_INFOBAR_H_

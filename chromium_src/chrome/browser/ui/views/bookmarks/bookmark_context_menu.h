@@ -12,7 +12,7 @@
 #define close_on_remove_ \
   close_on_remove_;      \
   friend class BraveBookmarkContextMenu
-#include "src/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h"
+#include "src/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h"  // IWYU pragma: export
 #undef BookmarkContextMenuController
 #undef close_on_remove_
 

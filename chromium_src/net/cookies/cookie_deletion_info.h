@@ -9,7 +9,7 @@
 #define BRAVE_COOKIE_DELETION_INFO_H \
   absl::optional<std::string> ephemeral_storage_domain;
 
-#include "src/net/cookies/cookie_deletion_info.h"
+#include "src/net/cookies/cookie_deletion_info.h"  // IWYU pragma: export
 
 #undef BRAVE_COOKIE_DELETION_INFO_H
 

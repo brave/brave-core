@@ -14,7 +14,7 @@
 
 #define NonLabelWidth virtual NonLabelWidth
 
-#include "src/chrome/browser/ui/views/infobars/confirm_infobar.h"
+#include "src/chrome/browser/ui/views/infobars/confirm_infobar.h"  // IWYU pragma: export
 
 #undef NonLabelWidth
 #undef GetDelegate

@@ -20,7 +20,7 @@
  public:                                                                       \
   int UpdateIdealBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
+#include "src/chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"  // IWYU pragma: export
 
 #undef UpdateIdealBounds
 

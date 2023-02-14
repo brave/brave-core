@@ -9,7 +9,7 @@
 #define IsOffTheRecord \
   IsTor() const;       \
   virtual bool IsOffTheRecord
-#include "src/content/public/browser/browser_context.h"
+#include "src/content/public/browser/browser_context.h"  // IWYU pragma: export
 #undef IsOffTheRecord
 
 #include <string>

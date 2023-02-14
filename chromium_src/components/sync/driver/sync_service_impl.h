@@ -27,7 +27,7 @@
 #define Initialize virtual Initialize
 #define ResetEngine virtual ResetEngine
 
-#include "src/components/sync/driver/sync_service_impl.h"
+#include "src/components/sync/driver/sync_service_impl.h"  // IWYU pragma: export
 
 #undef ResetEngine
 #undef Initialize

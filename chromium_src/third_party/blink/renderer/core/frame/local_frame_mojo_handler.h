@@ -13,7 +13,7 @@
       final;                                                              \
   void CopyImageAt
 
-#include "src/third_party/blink/renderer/core/frame/local_frame_mojo_handler.h"
+#include "src/third_party/blink/renderer/core/frame/local_frame_mojo_handler.h"  // IWYU pragma: export
 
 #undef CopyImageAt
 

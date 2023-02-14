@@ -15,7 +15,7 @@
 #define PostConstructionCallbackTrait PostConstructionCallbackTrait_ChromiumImpl
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
+#include "src/third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef PostConstructionCallbackTrait

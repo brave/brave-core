@@ -13,7 +13,7 @@
 
 #define CloseButtonPressed virtual CloseButtonPressed
 
-#include "src/chrome/browser/ui/views/infobars/infobar_view.h"
+#include "src/chrome/browser/ui/views/infobars/infobar_view.h"  // IWYU pragma: export
 
 #undef CloseButtonPressed
 #undef RecalculateHeight

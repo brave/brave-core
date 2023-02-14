@@ -12,7 +12,7 @@
   WillFailRequest_ChromiumImpl(); \
   content::NavigationThrottle::ThrottleCheckResult WillFailRequest
 
-#include "src/chrome/browser/ssl/https_only_mode_navigation_throttle.h"
+#include "src/chrome/browser/ssl/https_only_mode_navigation_throttle.h"  // IWYU pragma: export
 
 #undef WillFailRequest
 

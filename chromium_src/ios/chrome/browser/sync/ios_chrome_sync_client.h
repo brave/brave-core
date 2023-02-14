@@ -14,7 +14,7 @@ using IOSChromeSyncClient_BraveImpl = IOSChromeSyncClient;
   component_factory_;      \
   friend IOSChromeSyncClient_BraveImpl
 
-#include "src/ios/chrome/browser/sync/ios_chrome_sync_client.h"
+#include "src/ios/chrome/browser/sync/ios_chrome_sync_client.h"  // IWYU pragma: export
 #undef component_factory_
 #undef IOSChromeSyncClient
 

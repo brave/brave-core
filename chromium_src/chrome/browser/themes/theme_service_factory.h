@@ -14,7 +14,7 @@
       content::BrowserContext* context) const override; \
   bool ServiceIsCreatedWithBrowserContext
 
-#include "src/chrome/browser/themes/theme_service_factory.h"
+#include "src/chrome/browser/themes/theme_service_factory.h"  // IWYU pragma: export
 
 #undef ServiceIsCreatedWithBrowserContext
 

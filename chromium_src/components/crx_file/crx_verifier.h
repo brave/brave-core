@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CRX_FILE_CRX_VERIFIER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CRX_FILE_CRX_VERIFIER_H_
 
-#include "src/components/crx_file/crx_verifier.h"
+#include "src/components/crx_file/crx_verifier.h"  // IWYU pragma: export
 
 namespace crx_file {
 

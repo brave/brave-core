@@ -26,6 +26,6 @@ NET_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
 }  // namespace features
 }  // namespace net
 
-#include "src/net/base/features.h"
+#include "src/net/base/features.h"  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_FEATURES_H_

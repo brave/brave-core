@@ -12,7 +12,7 @@
 #include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
 #define OpaqueBrowserFrameView BraveOpaqueBrowserFrameView
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_linux.h"
+#include "src/chrome/browser/ui/views/frame/browser_frame_view_linux.h"  // IWYU pragma: export
 
 #undef OpaqueBrowserFrameView
 

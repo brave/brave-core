@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_BINDINGS_MODULES_V8_V8_CANVAS_CONTEXT_CREATION_ATTRIBUTES_MODULE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_BINDINGS_MODULES_V8_V8_CANVAS_CONTEXT_CREATION_ATTRIBUTES_MODULE_H_
 
-#include "../gen/third_party/blink/renderer/bindings/modules/v8/v8_canvas_context_creation_attributes_module.h"
+#include "../gen/third_party/blink/renderer/bindings/modules/v8/v8_canvas_context_creation_attributes_module.h"  // IWYU pragma: export
 
 #include "third_party/blink/renderer/modules/modules_export.h"
 

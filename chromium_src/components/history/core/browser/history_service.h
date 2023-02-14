@@ -15,7 +15,7 @@ class BraveHistoryQuickProviderTest;
   friend class ::BraveHistoryQuickProviderTest; \
   void CleanupUnused
 
-#include "src/components/history/core/browser/history_service.h"
+#include "src/components/history/core/browser/history_service.h"  // IWYU pragma: export
 
 #undef Cleanup
 

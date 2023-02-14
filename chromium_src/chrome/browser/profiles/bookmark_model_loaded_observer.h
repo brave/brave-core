@@ -11,6 +11,6 @@
   friend class BraveBookmarkModelLoadedObserver; \
                                                  \
  public:
-#include "src/chrome/browser/profiles/bookmark_model_loaded_observer.h"
+#include "src/chrome/browser/profiles/bookmark_model_loaded_observer.h"  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_BOOKMARK_MODEL_LOADED_OBSERVER_H_

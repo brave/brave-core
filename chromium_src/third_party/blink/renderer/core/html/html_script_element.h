@@ -10,7 +10,7 @@
   supports_ChromiumImpl(ScriptState*, const AtomicString&); \
   static bool supports
 
-#include "src/third_party/blink/renderer/core/html/html_script_element.h"
+#include "src/third_party/blink/renderer/core/html/html_script_element.h"  // IWYU pragma: export
 #undef supports
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_HTML_HTML_SCRIPT_ELEMENT_H_

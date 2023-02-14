@@ -10,7 +10,7 @@
   SetEnabled(bool enabled) {} \
   virtual void GetGCMStatistics
 
-#include "src/components/gcm_driver/gcm_driver.h"
+#include "src/components/gcm_driver/gcm_driver.h"  // IWYU pragma: export
 
 #undef GetGCMStatistics
 

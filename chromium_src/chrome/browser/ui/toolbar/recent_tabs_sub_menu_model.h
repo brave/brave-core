@@ -14,7 +14,7 @@
   friend class BraveRecentTabsSubMenuModel;        \
                                                    \
  public:
-#include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"
+#include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.h"  // IWYU pragma: export
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_RECENT_TABS_SUB_MENU_MODEL_H_

@@ -8,7 +8,7 @@
 
 #include "build/build_config.h"
 
-#include "src/chrome/browser/first_run/first_run_dialog.h"
+#include "src/chrome/browser/first_run/first_run_dialog.h"  // IWYU pragma: export
 
 #if BUILDFLAG(IS_WIN)
 

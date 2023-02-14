@@ -12,7 +12,7 @@
   friend class BraveSearchProviderTest; \
   virtual void DoHistoryQuery
 
-#include "src/components/omnibox/browser/search_provider.h"
+#include "src/components/omnibox/browser/search_provider.h"  // IWYU pragma: export
 
 #undef DoHistoryQuery
 

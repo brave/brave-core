@@ -8,7 +8,7 @@
 
 #define HatsService HatsService_ChromiumImpl
 #define CanShowSurvey virtual CanShowSurvey
-#include "src/chrome/browser/ui/hats/hats_service.h"
+#include "src/chrome/browser/ui/hats/hats_service.h"  // IWYU pragma: export
 #undef CanShowSurvey
 #undef HatsService
 

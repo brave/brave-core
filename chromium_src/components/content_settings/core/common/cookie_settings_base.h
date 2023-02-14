@@ -75,7 +75,7 @@ struct CookieSettingWithBraveMetadata {
  public:                                                                       \
   bool IsCookieSessionOnly
 
-#include "src/components/content_settings/core/common/cookie_settings_base.h"
+#include "src/components/content_settings/core/common/cookie_settings_base.h"  // IWYU pragma: export
 
 #undef IsCookieSessionOnly
 

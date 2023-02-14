@@ -10,7 +10,7 @@
   NetworkIsolationKey;      \
   friend class HSTSPartitionHashHelper
 
-#include "src/net/base/schemeful_site.h"
+#include "src/net/base/schemeful_site.h"  // IWYU pragma: export
 
 #undef NetworkIsolationKey
 

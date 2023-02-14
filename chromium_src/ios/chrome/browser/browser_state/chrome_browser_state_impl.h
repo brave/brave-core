@@ -12,7 +12,7 @@
   GetPolicyConnector_ChromiumImpl(); \
   BrowserStatePolicyConnector* GetPolicyConnector
 
-#include "src/ios/chrome/browser/browser_state/chrome_browser_state_impl.h"
+#include "src/ios/chrome/browser/browser_state/chrome_browser_state_impl.h"  // IWYU pragma: export
 #undef GetPolicyConnector
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_BROWSER_STATE_CHROME_BROWSER_STATE_IMPL_H_

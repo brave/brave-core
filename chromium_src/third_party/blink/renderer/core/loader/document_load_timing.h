@@ -10,7 +10,7 @@
   MonotonicTimeToZeroBasedDocumentTime(base::TimeTicks) const; \
   base::TimeDelta MonotonicTimeToZeroBasedDocumentTime_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/loader/document_load_timing.h"
+#include "src/third_party/blink/renderer/core/loader/document_load_timing.h"  // IWYU pragma: export
 
 #undef MonotonicTimeToZeroBasedDocumentTime
 

@@ -11,7 +11,7 @@
 
 #define SidePanelToolbarButton SidePanelToolbarButton_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
+#include "src/chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"  // IWYU pragma: export
 
 #undef SidePanelToolbarButton
 

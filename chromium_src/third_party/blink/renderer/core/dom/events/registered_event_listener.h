@@ -22,7 +22,7 @@
   void SetBlockedEventWarningEmitted
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/dom/events/registered_event_listener.h"
+#include "src/third_party/blink/renderer/core/dom/events/registered_event_listener.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef SetBlockedEventWarningEmitted
