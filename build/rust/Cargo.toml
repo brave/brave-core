@@ -28,3 +28,4 @@ path = "lib.rs"
 
 [features]
 ios = ["adblock-ffi/ios"]
+chromium = ["adblock-ffi/single_thread_optimizations"]
