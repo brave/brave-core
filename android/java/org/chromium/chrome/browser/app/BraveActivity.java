@@ -1137,7 +1137,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                                 if (viewGroup != null && highlightView != null) {
                                     viewGroup.removeView(highlightView);
                                 }
-                                maybeShowNotificationPermissionRetionale();
                             })
                             .modal(true)
                             .contentView(R.layout.brave_onboarding_searchbox)
@@ -1156,7 +1155,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }, 500);
     }
 
-    private void maybeShowNotificationPermissionRetionale() {
+    public void maybeShowNotificationPermissionRetionale() {
         NotificationPermissionController mNotificationPermissionController =
                 new NotificationPermissionController(getWindowAndroid(),
                         new NotificationPermissionRationaleDialogController(
