@@ -123,7 +123,7 @@ export const PortfolioAsset = (props: Props) => {
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
-  const [iframeHeight, setIframeHeight] = React.useState<string>('440px')
+  const [iframeHeight, setIframeHeight] = React.useState<string>('0px')
 
   // routing
   const history = useHistory()
