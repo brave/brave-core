@@ -14,8 +14,9 @@
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -65,16 +66,15 @@ bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
     return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
 
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::features::ShouldShowVerticalTabs(controller_->browser());
+    return tabs::utils::ShouldShowVerticalTabs(controller_->browser());
 
   if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
-    return tabs::features::ShouldShowWindowTitleForVerticalTabs(
+    return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
         controller_->browser());
   }
 
   if (command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::features::IsFloatingVerticalTabsEnabled(
-        controller_->browser());
+    return tabs::utils::IsFloatingVerticalTabsEnabled(controller_->browser());
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
@@ -93,11 +93,11 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
     return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::features::SupportsVerticalTabs(controller_->browser());
+    return tabs::utils::SupportsVerticalTabs(controller_->browser());
 
   if (command_id == BraveTabMenuModel::CommandShowTitleBar ||
       command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::features::ShouldShowVerticalTabs(controller_->browser());
+    return tabs::utils::ShouldShowVerticalTabs(controller_->browser());
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);

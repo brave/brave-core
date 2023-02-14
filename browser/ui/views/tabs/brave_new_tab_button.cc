@@ -10,7 +10,8 @@
 #include <utility>
 
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -57,8 +58,9 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   const auto insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     size.set_height(kHeightForVerticalTabs);
+  }
 
   return size;
 }
@@ -102,7 +104,7 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   const int chromium_offset = GetCornerRadius();
   // Shim base implementation's painting
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     DCHECK(text_);
     const bool should_align_icon_center = text_->bounds().IsEmpty();
     auto contents_bounds = GetContentsBounds();
@@ -132,8 +134,9 @@ void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
 
 gfx::Insets BraveNewTabButton::GetInsets() const {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser()))
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     return {};
+  }
 
   // Give an additional left margin to make more space from tab.
   // TabStripRegionView::UpdateNewTabButtonBorder() gives this button's inset.
@@ -147,7 +150,7 @@ void BraveNewTabButton::PaintFill(gfx::Canvas* canvas) const {
     return;
   }
 
-  if (!tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {
     NewTabButton::PaintFill(canvas);
     return;
   }
@@ -199,7 +202,7 @@ void BraveNewTabButton::Layout() {
 
   DCHECK(text_ && shortcut_text_);
   const bool show_vertical_tabs =
-      tabs::features::ShouldShowVerticalTabs(tab_strip_->GetBrowser());
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser());
   text_->SetVisible(show_vertical_tabs);
   shortcut_text_->SetVisible(show_vertical_tabs);
   if (!text_->GetVisible())

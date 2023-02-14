@@ -7,7 +7,8 @@
 
 #include <vector>
 
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -25,7 +26,7 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "vertical_tab_strip_host_ should be set only when this flag is on";
 
-  if (!tabs::features::ShouldShowVerticalTabs(browser_view_->browser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     vertical_tab_strip_host_->SetBorder(nullptr);
     vertical_tab_strip_host_->SetBoundsRect({});
     return;
@@ -78,7 +79,7 @@ int BraveBrowserViewLayout::LayoutTabStripRegion(int top) {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return BrowserViewLayout::LayoutTabStripRegion(top);
 
-  if (tabs::features::ShouldShowVerticalTabs(browser_view_->browser())) {
+  if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     // In case we're using vertical tabstrip, we can decide the position
     // after we finish laying out views in top container.
     return top;

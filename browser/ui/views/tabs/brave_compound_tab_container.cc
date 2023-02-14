@@ -10,8 +10,9 @@
 #include <vector>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
@@ -36,8 +37,7 @@ void BraveCompoundTabContainer::SetAvailableWidthCallback(
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()) &&
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
       available_width_callback) {
     pinned_tab_container_->SetAvailableWidthCallback(
         base::BindRepeating(&views::View::width, base::Unretained(this)));
@@ -144,7 +144,7 @@ gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
 views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
     const views::View* child) const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::features::ShouldShowVerticalTabs(
+      !tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     return CompoundTabContainer::GetAvailableSize(child);
   }
@@ -155,7 +155,7 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
 
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
   return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-         tabs::features::ShouldShowVerticalTabs(
+         tabs::utils::ShouldShowVerticalTabs(
              tab_slot_controller_->GetBrowser());
 }
 

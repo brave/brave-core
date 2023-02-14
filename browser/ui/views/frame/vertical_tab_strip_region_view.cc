@@ -13,10 +13,11 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -45,7 +46,6 @@
 
 namespace {
 
-constexpr SkColor kHeaderButtonColor = SkColorSetRGB(0x6B, 0x70, 0x84);
 constexpr int kHeaderInset = 4;
 
 // Inherits NewTabButton in order to synchronize ink drop effect with
@@ -66,17 +66,23 @@ class ToggleButton : public BraveNewTabButton {
     // https://github.com/brave/brave-browser/issues/24717
     SetProperty(views::kSkipAccessibilityPaintChecks, true);
     SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
-
-    expand_icon_ =
-        gfx::CreateVectorIcon(kVerticalTabExpandButtonIcon, kHeaderButtonColor);
-    collapse_icon_ = gfx::CreateVectorIcon(kVerticalTabCollapseButtonIcon,
-                                           kHeaderButtonColor);
   }
   ~ToggleButton() override = default;
 
   constexpr static int GetIconWidth() { return tabs::kVerticalTabHeight; }
 
   // views::Button:
+  void OnThemeChanged() override {
+    Button::OnThemeChanged();
+    auto* cp = GetColorProvider();
+    DCHECK(cp);
+
+    auto color = cp->GetColor(kColorBraveVerticalTabHeaderButtonColor);
+    expand_icon_ = gfx::CreateVectorIcon(kVerticalTabExpandButtonIcon, color);
+    collapse_icon_ =
+        gfx::CreateVectorIcon(kVerticalTabCollapseButtonIcon, color);
+  }
+
   void PaintIcon(gfx::Canvas* canvas) override {
     const bool expanded =
         region_view_->state() == VerticalTabStripRegionView::State::kExpanded;
@@ -226,9 +232,9 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
     tab_search_button_->FrameColorsChanged();
     tab_search_button_->SetImageModel(
         views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kVerticalTabTabSearchButtonIcon,
-                                       kHeaderButtonColor));
-
+        ui::ImageModel::FromVectorIcon(
+            kVerticalTabTabSearchButtonIcon,
+            kColorBraveVerticalTabHeaderButtonColor));
     SetBackground(views::CreateSolidBackground(
         GetColorProvider()->GetColor(kColorToolbar)));
   }
@@ -419,7 +425,7 @@ void VerticalTabStripRegionView::Layout() {
     scroll_view_->ClipHeightTo(0, scroll_viewport_height);
 
   if (base::FeatureList::IsEnabled(features::kScrollableTabStrip) &&
-      tabs::features::ShouldShowVerticalTabs(browser_)) {
+      tabs::utils::ShouldShowVerticalTabs(browser_)) {
     scroll_contents_view_->SetSize(
         {scroll_view_->width(), scroll_view_->height()});
     auto* nested_scroll_view = GetTabStripScrollContainer()->scroll_view_.get();
@@ -435,7 +441,7 @@ void VerticalTabStripRegionView::Layout() {
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  if (tabs::features::ShouldShowVerticalTabs(browser_) && !in_destruction) {
+  if (tabs::utils::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
       original_parent_of_region_view_->RemoveChildView(region_view_);
@@ -514,8 +520,9 @@ void VerticalTabStripRegionView::OnMouseExited(const ui::MouseEvent& event) {
 }
 
 void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
-  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_))
+  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
     return;
+  }
 
   // During tab dragging, this could be already expanded.
   if (state_ == State::kExpanded)
@@ -541,16 +548,14 @@ void VerticalTabStripRegionView::OnTabStripModelChanged(
 }
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
-  const bool is_vertical_tabs =
-      tabs::features::ShouldShowVerticalTabs(browser_);
+  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
   auto* original_ntb = region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
-  const bool is_vertical_tabs =
-      tabs::features::ShouldShowVerticalTabs(browser_);
+  const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
   if (auto* tab_search_button = region_view_->tab_search_button())
     tab_search_button->SetVisible(!is_vertical_tabs);
 }
@@ -560,7 +565,7 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
 }
 
 void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
-  if (!tabs::features::IsFloatingVerticalTabsEnabled(browser_)) {
+  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
     if (state_ == State::kFloating)
       SetState(State::kCollapsed);
     return;
@@ -572,8 +577,9 @@ void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state) const {
-  if (!tabs::features::ShouldShowVerticalTabs(browser_))
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
     return {};
+  }
 
   if (IsTabFullscreen())
     return {};
@@ -622,8 +628,9 @@ void VerticalTabStripRegionView::ScheduleFloatingModeTimer() {
 }
 
 void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
-  if (!tabs::features::ShouldShowVerticalTabs(browser_))
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
     return;
+  }
 
   auto active_index = browser_->tab_strip_model()->active_index();
   if (active_index == TabStripModel::kNoTab) {

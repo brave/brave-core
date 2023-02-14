@@ -9,6 +9,7 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
@@ -50,10 +51,6 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/views/tabs/features.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -435,12 +432,10 @@ constexpr char kBraveHttpsByDefaultDescription[] =
     "Attempt to connect to all websites using HTTPS before falling back to "
     "HTTP.";
 
-#if defined(TOOLKIT_VIEWS)
 constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
 constexpr char kBraveVerticalTabsDescription[] =
     "Move tab strip to be a vertical panel on the side of the window instead "
     "of horizontal at the top of the window.";
-#endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(IS_ANDROID)
 constexpr char kBraveBackgroundVideoPlaybackName[] =
@@ -631,7 +626,7 @@ constexpr char kRestrictEventSourcePoolDescription[] =
      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs)},
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
-#endif  // defined(TOOLKIT_VIEWS)
+#endif
 
 #if BUILDFLAG(IS_LINUX)
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES              \

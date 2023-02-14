@@ -1,29 +1,17 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
-#define BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_UTILS_H_
+#define BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_UTILS_H_
 
 #include <utility>
-
-#include "base/compiler_specific.h"
-#include "base/feature_list.h"
 
 class Browser;
 class BrowserFrame;
 
-namespace tabs {
-namespace features {
-
-BASE_DECLARE_FEATURE(kBraveVerticalTabs);
-
-#if BUILDFLAG(IS_LINUX)
-// This flag controls the behavior of browser_default::kScrollEventChangesTab,
-// which is true only when it's Linux.
-BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
-#endif  // BUILDFLAG(IS_LINUX)
+namespace tabs::utils {
 
 // Returns true if the current |browser| might ever support vertical tabs.
 bool SupportsVerticalTabs(const Browser* browser);
@@ -42,7 +30,6 @@ bool IsFloatingVerticalTabsEnabled(const Browser* browser);
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     const BrowserFrame* frame);
 
-}  // namespace features
-}  // namespace tabs
+}  // namespace tabs::utils
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_FEATURES_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_UTILS_H_
