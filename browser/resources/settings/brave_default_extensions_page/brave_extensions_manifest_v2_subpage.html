@@ -1,69 +1,56 @@
 <style include="cr-shared-style">
-  #errorToast {
-    background-color: #fff;
-    bottom: 0;
-    box-shadow: 0 -2px 2px 0 var(--shadow-color);
-    box-sizing: border-box;
-    left: 0;
-    opacity: 1;
+  #errorMessage {
+    align-items: center;
+    background: rgb(255, 225, 147);
+    border-radius: 8px;
+    box-shadow: 0 10px 32px var(--shadow-color);
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    left: 50%;
     padding: 16px;
     position: fixed;
-    transform: translate(0);
-    transition: all 225ms var(--ease-in-out);
-    width: 100%;
-    z-index: 10;
+    top: 62px;
+    transform: translateX(-50%);
+    width: 726px;
   }
 
-  @media (prefers-color-scheme: dark) {
-    #errorToast {
-      background-color: rgb(22, 23, 25);
-    }
+  .exclamation-icon {
+    background-image: url(images/warning_triangle.svg);
+    height: 20px;
+    width: 20px;
   }
 
-  #errorToast .flex:last-child {
-    text-align: right;  /* csschecker-disable-line left-right */
+  .toast {
+    color: rgb(29, 31, 37);
+    cursor: default;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 24px;
   }
 
-  .flex {
-    align-self: center;
-    flex: 1 1 auto;
-  }
-
-  .flex-container {
-    display: flex;
-    padding: 8px 1em;
-  }
-
-  .error-message {
-    font-size: .9375rem;
-    line-height: 1.4;
-  }
-
-  button.primary {
-    background: var(--interactive-color);
-    border: 0;
-    border-radius: 3px;
-    color: white;
-    font-size: .875rem;
-    padding: 14px 38px;
+  .close {
+    color: rgb(107, 112, 132);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03rem;
+    line-height: 16px;
+    margin-inline-start: auto;
+    padding: 9px 0;
   }
 </style>
 
 <template is="dom-repeat" items="[[braveV2Extensions_]]">
   <settings-toggle-button id="[[item.id]]" class="cr-row" label="[[item.name]]" sub-label="[[item.description]]"
-    on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]"
-    disabled="[[installInProgress_]]">
+    on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]" pref="[[itemPref_(item.enabled)]]"
+    no-pref-set disabled="[[installInProgress_]]">
   </settings-toggle-button>
 </template>
 <template is="dom-if" if="{{showErrorToast_}}">
-  <div id="errorToast">
-    <div class="flex-container">
-      <div class="flex error-message" jstcache="0">{{toastMessage_}}</div>
-      <div class="flex">
-        <button id="closeToast" class="primary" tabindex="9" on-click="closeToast_">
-          $i18n{extensionsV2ToastConfirmButtonLabel}
-        </button>
-      </div>
-    </div>
+  <div id="errorMessage">
+    <div class="exclamation-icon"></div>
+    <div class="toast">{{toastMessage_}}</div>
+    <div class="close" on-click="closeToast_">$i18n{extensionsV2ToastConfirmButtonLabel}</div>
   </div>
 </template>

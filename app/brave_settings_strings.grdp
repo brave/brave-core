@@ -908,28 +908,28 @@
     The following Manifest V2 extensions are no longer available in the Chrome Web Store, but still supported in Brave. Click to download and install.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
-    OK
+    Close
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME" desc="Manifest V2 extension toggle's label">
-    Enable NoScript
+    Enable NoScript&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_DESC" desc="Manifest V2 extension toggle's sub label">
     NoScript is a Manifest V2 extension that allows you to block and unblock individual scripts running or attempting to run on a given page.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME" desc="Manifest V2 extension toggle's label">
-    Enable uBlock Origin
+    Enable uBlock Origin&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_DESC" desc="Manifest V2 extension toggle's sub label">
     uBlock Origin is a Manifest V2 extension that provides ad blocking features and controls specific to uBlock.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME" desc="Manifest V2 extension toggle's label">
-    Enable uMatrix
+    Enable uMatrix&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_DESC" desc="Manifest V2 extension toggle's sub label">
     uMatrix is a Manifest V2 extension that provides point-and-click matrix-based firewall, with many privacy-enhancing tools.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME" desc="Manifest V2 extension toggle's label">
-    Enable AdBlock
+    Enable AdBlock&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC" desc="Manifest V2 extension toggle's sub label">
     AdGuard is a Manifest V2 extension that effectively blocks all types of ads on all web pages, even on Facebook, YouTube and others.
