@@ -328,10 +328,10 @@ struct WalletPanelView: View {
       Button(action: { keyringStore.lock() }) {
         Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
       }
-      Divider()
       Button(action: { presentWalletWithContext(.settings) }) {
         Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
       }
+      Divider()
       Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
         Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
       }

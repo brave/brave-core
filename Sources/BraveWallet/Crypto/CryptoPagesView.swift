@@ -97,11 +97,11 @@ struct CryptoPagesView: View {
             Label(Strings.Wallet.lock, braveSystemImage: "brave.lock")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
-          Divider()
           Button(action: { isShowingSettings = true }) {
             Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
+          Divider()
           Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
             Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
           }
