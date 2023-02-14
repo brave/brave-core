@@ -16,11 +16,14 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -170,6 +173,26 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
   EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
 
   GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(url, web_contents->GetVisibleURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SearchResultAdTest, AggressiveAdBlockingMode) {
+  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
+
+  auto* settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  brave_shields::SetCosmeticFilteringControlType(
+      settings_map, brave_shields::ControlType::BLOCK, url);
+  brave_shields::SetAdControlType(settings_map,
+                                  brave_shields::ControlType::BLOCK, url);
+
+  EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _)).Times(0);
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

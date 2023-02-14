@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece.h"
 #include "base/test/scoped_feature_list.h"
@@ -14,6 +15,10 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/test_web_page_util.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -60,9 +65,23 @@ class SearchResultAdHandlerTest : public ::testing::Test {
         mojo::Remote<blink::mojom::DocumentMetadata>(), std::move(web_page));
   }
 
+  void SetUp() override {
+    HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    settings_map_ = base::MakeRefCounted<HostContentSettingsMap>(
+        &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
+        false /* restore_session */, false /* should_record_metrics */);
+  }
+
+  void TearDown() override { settings_map_->ShutdownOnUIThread(); }
+
+  HostContentSettingsMap* settings_map() { return settings_map_.get(); }
+
  protected:
-  MockAdsService ads_service_;
+  content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_;
+  MockAdsService ads_service_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  scoped_refptr<HostContentSettingsMap> settings_map_;
 };
 
 TEST_F(SearchResultAdHandlerTest,
@@ -71,7 +90,7 @@ TEST_F(SearchResultAdHandlerTest,
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
 
   EXPECT_FALSE(search_result_ad_handler.get());
@@ -81,7 +100,8 @@ TEST_F(SearchResultAdHandlerTest,
        IncognitoModeMaybeCreateSearchResultAdHandler) {
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          nullptr, GURL(kAllowedDomain), /*should_trigger_viewed_event*/ true);
+          nullptr, GURL(kAllowedDomain), settings_map(),
+          /*should_trigger_viewed_event*/ true);
 
   EXPECT_FALSE(search_result_ad_handler.get());
 }
@@ -92,10 +112,59 @@ TEST_F(SearchResultAdHandlerTest,
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kNotAllowedDomain),
+          &ads_service_, GURL(kNotAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
 
   EXPECT_FALSE(search_result_ad_handler.get());
+}
+
+TEST_F(SearchResultAdHandlerTest,
+       CosmeticFilteringMaybeCreateSearchResultAdHandler) {
+  const GURL url = GURL(kAllowedDomain);
+  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+
+  // Aggressively block ads.
+  brave_shields::SetCosmeticFilteringControlType(
+      settings_map(), brave_shields::ControlType::BLOCK, url);
+  brave_shields::SetAdControlType(settings_map(),
+                                  brave_shields::ControlType::BLOCK, url);
+  auto search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, url, settings_map(),
+          /*should_trigger_viewed_event*/ true);
+  EXPECT_FALSE(search_result_ad_handler.get());
+
+  // Disable aggressive mode.
+  brave_shields::SetCosmeticFilteringControlType(
+      settings_map(), brave_shields::ControlType::BLOCK_THIRD_PARTY, url);
+  search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, url, settings_map(),
+          /*should_trigger_viewed_event*/ true);
+  EXPECT_TRUE(search_result_ad_handler.get());
+  brave_shields::SetCosmeticFilteringControlType(
+      settings_map(), brave_shields::ControlType::BLOCK, url);
+
+  // Allow ads.
+  brave_shields::SetAdControlType(settings_map(),
+                                  brave_shields::ControlType::ALLOW, url);
+  search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, url, settings_map(),
+          /*should_trigger_viewed_event*/ true);
+  EXPECT_TRUE(search_result_ad_handler.get());
+  brave_shields::SetAdControlType(settings_map(),
+                                  brave_shields::ControlType::BLOCK, url);
+
+  // Disable Brave Shields.
+  brave_shields::SetAdControlType(settings_map(),
+                                  brave_shields::ControlType::BLOCK, url);
+  brave_shields::SetBraveShieldsEnabled(settings_map(), false, url);
+  search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, url, settings_map(),
+          /*should_trigger_viewed_event*/ true);
+  EXPECT_TRUE(search_result_ad_handler.get());
 }
 
 TEST_F(SearchResultAdHandlerTest, NullWebPage) {
@@ -111,7 +180,7 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -135,7 +204,7 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -159,7 +228,7 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -186,7 +255,7 @@ TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -204,7 +273,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
   Mock::VerifyAndClearExpectations(&ads_service_);
@@ -241,7 +310,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -267,7 +336,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ false);
   ASSERT_TRUE(search_result_ad_handler.get());
 
@@ -293,7 +362,7 @@ TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          &ads_service_, GURL(kAllowedDomain),
+          &ads_service_, GURL(kAllowedDomain), settings_map(),
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 

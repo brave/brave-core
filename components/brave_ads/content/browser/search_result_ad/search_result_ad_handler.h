@@ -18,6 +18,7 @@
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 
 class GURL;
+class HostContentSettingsMap;
 
 namespace content {
 class RenderFrameHost;
@@ -39,6 +40,7 @@ class SearchResultAdHandler final {
   static std::unique_ptr<SearchResultAdHandler>
   MaybeCreateSearchResultAdHandler(AdsService* ads_service,
                                    const GURL& url,
+                                   HostContentSettingsMap* settings_map,
                                    bool should_trigger_viewed_event);
 
   void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host);

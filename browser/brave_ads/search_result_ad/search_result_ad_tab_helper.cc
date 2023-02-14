@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -76,6 +77,8 @@ void SearchResultAdTabHelper::DidFinishNavigation(
 
   MaybeProcessSearchResultAdClickedEvent(navigation_handle);
 
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
+      web_contents()->GetBrowserContext());
   const bool should_trigger_viewed_event =
       navigation_handle->GetRestoreType() ==
           content::RestoreType::kNotRestored &&
@@ -83,7 +86,7 @@ void SearchResultAdTabHelper::DidFinishNavigation(
         ui::PAGE_TRANSITION_FORWARD_BACK);
   search_result_ad_handler_ =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
-          GetAdsService(), navigation_handle->GetURL(),
+          GetAdsService(), navigation_handle->GetURL(), settings_map,
           should_trigger_viewed_event);
 }
 

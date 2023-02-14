@@ -13,12 +13,37 @@
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
+
+namespace {
+
+bool IsSearchResultAdBlocked(HostContentSettingsMap* settings_map,
+                             const GURL& site_url) {
+  DCHECK(settings_map);
+
+  if (!brave_shields::GetBraveShieldsEnabled(settings_map, site_url)) {
+    return false;
+  }
+
+  const brave_shields::ControlType control_type_ad =
+      brave_shields::GetAdControlType(settings_map, site_url);
+  if (control_type_ad == brave_shields::ControlType::ALLOW) {
+    return false;
+  }
+
+  const brave_shields::ControlType control_type_cosmetic =
+      brave_shields::GetCosmeticFilteringControlType(settings_map, site_url);
+  return control_type_cosmetic == brave_shields::ControlType::BLOCK;
+}
+
+}  // namespace
 
 SearchResultAdHandler::SearchResultAdHandler(
     AdsService* ads_service,
@@ -35,11 +60,13 @@ std::unique_ptr<SearchResultAdHandler>
 SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     AdsService* ads_service,
     const GURL& url,
+    HostContentSettingsMap* settings_map,
     const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
           features::kSupportBraveSearchResultAdConfirmationEvents) ||
-      !brave_search::IsAllowedHost(url)) {
+      !brave_search::IsAllowedHost(url) ||
+      IsSearchResultAdBlocked(settings_map, url)) {
     return {};
   }
 
