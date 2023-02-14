@@ -711,7 +711,6 @@
       <message name="IDS_BRAVE_UI_ADS_SAVE_AD">Save</message>
       <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
-      <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TRANSACTION" desc="">Auto-Contribute [[processor]]</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
@@ -736,8 +735,6 @@
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
-      <message name="IDS_BRAVE_UI_MANAGE" desc="">Manage</message>
-      <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Brave Rewards</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
@@ -780,10 +777,9 @@
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
+      <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure your BAT in case you need to do a clean reinstall of the browser or reformat your device, and would like to enjoy other benefits such as adding or withdrawing your BAT, we recommend <ph name="LINK_BEGIN">$1</ph>verifying<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>

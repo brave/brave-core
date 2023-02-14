@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -140,7 +141,7 @@ export function Settings () {
     )
   }
 
-  const onManageClick = () => { actions.onModalBackupOpen() }
+  const onManageClick = () => { actions.onModalResetOpen() }
 
   function renderUnsupportedRegionNotice () {
     return (
@@ -228,7 +229,7 @@ export function Settings () {
                     onClick={onManageClick}
                     data-test-id='manage-wallet-button'
                   >
-                    <SettingsIcon />{getString('manage')}
+                    <SettingsIcon />{getString('reset')}
                   </button>
                 </style.manageAction>
             }
