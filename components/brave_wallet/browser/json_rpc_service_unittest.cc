@@ -1178,6 +1178,32 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetERC20TokenBalances(
+      const std::vector<std::string>& token_contract_addresses,
+      const std::string& user_address,
+      const std::string& chain_id,
+      std::vector<mojom::ERC20BalanceResultPtr> expected_results,
+      mojom::ProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetERC20TokenBalances(
+        token_contract_addresses, user_address, chain_id,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::ERC20BalanceResultPtr> results,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(results.size(), expected_results.size());
+              for (size_t i = 0; i < results.size(); i++) {
+                EXPECT_EQ(results[i]->contract_address,
+                          expected_results[i]->contract_address);
+                EXPECT_EQ(results[i]->balance, expected_results[i]->balance);
+              }
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
   void TestGetSolanaBalance(uint64_t expected_balance,
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
@@ -2583,6 +2609,92 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
                      ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalances) {
+  // Invalid token contract addresses yields invalid params
+  TestGetERC20TokenBalances(
+      std::vector<std::string>(), "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961",
+      mojom::kMainnetChainId, {}, mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Unsupported chain ID yields invalid params
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kGoerliChainId, {},
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Invalid user address yields invalid calldata, which yields invalid params
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "", mojom::kMainnetChainId, {}, mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid input should succeed.
+  // 1. Test with 1 token contract address that successfully fetches a balance
+  // (0x0d8775f648430679a709e98d2b0cb6250d2887ef BAT)
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000006e83695ab1f893c00"
+  })");
+  std::vector<mojom::ERC20BalanceResultPtr> expected_results;
+  mojom::ERC20BalanceResultPtr result = mojom::ERC20BalanceResult::New();
+  result->contract_address = "0x0d8775f648430679a709e98d2b0cb6250d2887ef";
+  result->balance =
+      "0x000000000000000000000000000000000000000000000006e83695ab1f893c00";
+  expected_results.push_back(std::move(result));
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kMainnetChainId,
+      std::move(expected_results), mojom::ProviderError::kSuccess, "");
+
+  // Valid request leading to timeout yields internal error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kMainnetChainId, {},
+      mojom::ProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid request yields invalid json response yields parsing error
+  SetInvalidJsonInterceptor();
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kMainnetChainId, {},
+      mojom::ProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid request, valid json response, but invalid RLP encoded data yields
+  // parsing error
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0xinvalid"
+  })");
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kMainnetChainId, {},
+      mojom::ProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid request, valid json response, but unexpected RLP encoded data
+  // (mismatch between provided contract addresses supplied (1) in params vs.
+  // returned balances (3)) yields internal error
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_call", "", R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000006e83695ab1f893c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000"
+  })");
+  TestGetERC20TokenBalances(
+      std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kMainnetChainId, {},
+      mojom::ProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 class UDGetManyCallHandler : public EthCallHandler {

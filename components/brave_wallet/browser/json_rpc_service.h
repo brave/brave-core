@@ -168,6 +168,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& spender_address,
                               GetERC20TokenAllowanceCallback callback) override;
 
+  void GetERC20TokenBalances(
+      const std::vector<std::string>& token_contract_addresses,
+      const std::string& user_address,
+      const std::string& chain_id,
+      GetERC20TokenBalancesCallback callback) override;
+
   using UnstoppableDomainsResolveDnsCallback =
       base::OnceCallback<void(const GURL& url,
                               mojom::ProviderError error,
@@ -454,6 +460,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               APIRequestResult api_request_result);
   void OnGetERC20TokenAllowance(GetERC20TokenAllowanceCallback callback,
                                 APIRequestResult api_request_result);
+  void OnGetERC20TokenBalances(
+      const std::vector<std::string>& token_contract_addresses,
+      GetERC20TokenBalancesCallback callback,
+      APIRequestResult api_request_result);
   void OnUnstoppableDomainsResolveDns(const std::string& domain,
                                       const std::string& chain_id,
                                       APIRequestResult api_request_result);
