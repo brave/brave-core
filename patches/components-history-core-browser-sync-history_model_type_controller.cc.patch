@@ -1,0 +1,36 @@
+diff --git a/components/history/core/browser/sync/history_model_type_controller.cc b/components/history/core/browser/sync/history_model_type_controller.cc
+index 69fef4e3fe0795be2f699394b7a30dc482e2b3bd..fba2bbc15a18f813b92ed3d947e6211316669cf9 100644
+--- a/components/history/core/browser/sync/history_model_type_controller.cc
++++ b/components/history/core/browser/sync/history_model_type_controller.cc
+@@ -32,6 +32,7 @@ GetDelegateFromHistoryService(syncer::ModelType model_type,
+   return history_service->GetHistorySyncControllerDelegate();
+ }
+ 
++#define BRAVE_GET_PRECONDITION_STATE_FROM_MANAGED_STATUS if (true) return syncer::DataTypeController::PreconditionState::kPreconditionsMet;
+ syncer::DataTypeController::PreconditionState
+ GetPreconditionStateFromManagedStatus(
+     const signin::AccountManagedStatusFinder* finder) {
+@@ -41,6 +42,7 @@ GetPreconditionStateFromManagedStatus(
+     return syncer::DataTypeController::PreconditionState::kMustStopAndKeepData;
+   }
+ 
++  BRAVE_GET_PRECONDITION_STATE_FROM_MANAGED_STATUS
+   switch (finder->GetOutcome()) {
+     case signin::AccountManagedStatusFinder::Outcome::kNonEnterprise:
+     case signin::AccountManagedStatusFinder::Outcome::kEnterpriseGoogleDotCom:
+@@ -117,6 +119,7 @@ HistoryModelTypeController::HistoryModelTypeController(
+ 
+ HistoryModelTypeController::~HistoryModelTypeController() = default;
+ 
++#define BRAVE_HISTORY_MODEL_TYPE_CONTROLLER_GET_PRECONDITION_STATE if (false)
+ syncer::DataTypeController::PreconditionState
+ HistoryModelTypeController::GetPreconditionState() const {
+   if (!base::FeatureList::IsEnabled(syncer::kSyncEnableHistoryDataType)) {
+@@ -131,6 +134,7 @@ HistoryModelTypeController::GetPreconditionState() const {
+   DCHECK_EQ(type(), syncer::HISTORY);
+ 
+   // syncer::HISTORY doesn't support custom passphrase encryption.
++  BRAVE_HISTORY_MODEL_TYPE_CONTROLLER_GET_PRECONDITION_STATE
+   if (helper_.sync_service()->GetUserSettings()->IsEncryptEverythingEnabled()) {
+     return PreconditionState::kMustStopAndClearData;
+   }
