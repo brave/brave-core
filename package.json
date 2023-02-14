@@ -297,7 +297,7 @@
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
     "brave-ui": "github:brave/brave-ui#e4c049880199ac652b8f69610b8b70d1cd6d906f",
-    "chalk": "4.1.0",
+    "chalk": "4.1.2",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
     "csstype": "2.6.15",
