@@ -63,7 +63,7 @@ public func UmaHistogramRecordLastFeatureUsage(
   option: Preferences.Option<Date?>,
   alternativeBuckets: [Bucket]? = nil
 ) {
-  let calendar = Calendar.current
+  let calendar = Calendar(identifier: .gregorian)
   guard let lastUsageDate = option.value,
         let numberOfDays = calendar.dateComponents(
           [.day],

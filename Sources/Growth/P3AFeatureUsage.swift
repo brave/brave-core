@@ -50,7 +50,7 @@ public struct P3AFeatureUsage {
   /// This method also sets the first usage preference if one has not been set yet.
   public func recordUsage() {
     // Update usage prefs
-    let calendar = Calendar.current
+    let calendar = Calendar(identifier: .gregorian)
     let now = date()
     if firstUsageOption.value == nil {
       firstUsageOption.value = calendar.startOfDay(for: now)
@@ -68,7 +68,7 @@ public struct P3AFeatureUsage {
   }
   
   var returningUserState: ReturningUserState {
-    let calendar = Calendar.current
+    let calendar = Calendar(identifier: .gregorian)
     guard let firstUsage = firstUsageOption.value,
           let lastUsage = lastUsageOption.value,
           let firstUsageCutoff = calendar.date(byAdding: .day, value: 7, to: firstUsage) else {

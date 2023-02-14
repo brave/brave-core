@@ -34,8 +34,8 @@ class P3AFeatureUsageTests: XCTestCase {
     feature.date = { lastUsageDate }
     feature.recordUsage()
     // Dates are set as start of day
-    XCTAssertEqual(feature.firstUsageOption.value, Calendar.current.startOfDay(for: firstUsageDate))
-    XCTAssertEqual(feature.lastUsageOption.value, Calendar.current.startOfDay(for: lastUsageDate))
+    XCTAssertEqual(feature.firstUsageOption.value, Calendar(identifier: .gregorian).startOfDay(for: firstUsageDate))
+    XCTAssertEqual(feature.lastUsageOption.value, Calendar(identifier: .gregorian).startOfDay(for: lastUsageDate))
   }
   
   func testReturningUserNeverUsed() {
