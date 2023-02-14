@@ -9,7 +9,7 @@
 #include <type_traits>
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
-#include "third_party/blink/renderer/platform/bindings/active_script_wrappable_base.h"
+#include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
 
 #define MarkAncestorsWithChildNeedsStyleInvalidation             \
   NotUsed();                                                     \
@@ -39,23 +39,22 @@ struct PostConstructionCallbackTrait<
     T,
     typename std::enable_if<
         std::is_base_of<blink::Node, T>::value &&
-            !std::is_base_of<blink::ActiveScriptWrappableBase, T>::value,
+            !HasActiveScriptWrappableBaseConstructed<T>::value,
         void>::type> {
   static void Call(blink::Node* object) { object->NodeConstructed(); }
 };
 
-// If Node is derived from ActiveScriptWrappableBase we need to call both
+// If Node is derived from ActiveScriptWrappable we need to call both
 // PostConstructionCallbacks.
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
     typename std::enable_if<
         std::is_base_of<blink::Node, T>::value &&
-            std::is_base_of<blink::ActiveScriptWrappableBase, T>::value,
+            HasActiveScriptWrappableBaseConstructed<T>::value,
         void>::type> {
   static void Call(T* object) {
-    PostConstructionCallbackTrait<blink::ActiveScriptWrappableBase>::Call(
-        object);
+    PostConstructionCallbackTrait_ChromiumImpl<T, void>::Call(object);
     PostConstructionCallbackTrait<blink::Node>::Call(object);
   }
 };
