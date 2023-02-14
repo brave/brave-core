@@ -77,6 +77,8 @@ public class SearchEngineOnboardingFragment extends Fragment {
     private void refreshData() {
         TemplateUrlService templateUrlService =
                 BraveTemplateUrlServiceFactory.getForProfile(mProfile);
+        assert templateUrlService != null; // Non-private profile shall always have the service
+        if (templateUrlService == null) return;
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
                 BraveSearchEngineUtils.getTemplateUrlByShortName(
