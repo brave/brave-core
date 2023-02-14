@@ -7,10 +7,11 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -152,19 +153,19 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
   // Pre-conditions
   // The default orientation is horizontal.
-  ASSERT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
   ASSERT_EQ(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 
   // Show vertical tab strip. This will move tabstrip to its own widget.
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
   EXPECT_NE(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 
   // Hide vertical tab strip and restore to the horizontal tabstrip.
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(tabs::features::ShouldShowVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->tabstrip()->GetWidget());
 }
@@ -177,15 +178,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
                                                true);
 #endif
   // Pre-condition: Window title is "hidden" by default on vertical tabs
-  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
-  ASSERT_FALSE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+  ASSERT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   ASSERT_FALSE(browser_view()->ShouldShowWindowTitle());
   ASSERT_FALSE(IsWindowTitleViewVisible());
 
   // Show window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
   browser_non_client_frame_view()->Layout();
-  EXPECT_TRUE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
+  EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
   EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
             0);
@@ -194,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
   browser_non_client_frame_view()->Layout();
-  EXPECT_FALSE(tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()));
+  EXPECT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowTitle());
 #if !BUILDFLAG(IS_LINUX)
   // TODO(sko) For now, we can't hide window title bar entirely on Linux.
@@ -248,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
 
   // Pre-condition: Floating mode is enabled by default.
   using State = VerticalTabStripRegionView::State;
-  ASSERT_TRUE(tabs::features::IsFloatingVerticalTabsEnabled(browser()));
+  ASSERT_TRUE(tabs::utils::IsFloatingVerticalTabsEnabled(browser()));
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
   ASSERT_TRUE(widget_delegate_view);

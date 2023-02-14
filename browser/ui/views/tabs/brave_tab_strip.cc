@@ -11,6 +11,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -18,7 +19,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -298,7 +299,7 @@ bool BraveTabStrip::ShouldShowVerticalTabs() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return false;
 
-  return tabs::features::ShouldShowVerticalTabs(GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
 
 void BraveTabStrip::Layout() {

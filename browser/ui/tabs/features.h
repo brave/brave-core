@@ -7,10 +7,15 @@
 #define BRAVE_BROWSER_UI_TABS_FEATURES_H_
 
 #include "base/feature_list.h"
-
 namespace tabs::features {
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabs);
+
+#if BUILDFLAG(IS_LINUX)
+// This flag controls the behavior of browser_default::kScrollEventChangesTab,
+// which is true only when it's Linux.
+BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
+#endif  // BUILDFLAG(IS_LINUX)
 
 }  // namespace tabs::features
 

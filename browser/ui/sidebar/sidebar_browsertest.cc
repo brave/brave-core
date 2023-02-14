@@ -13,13 +13,14 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -341,7 +342,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
 

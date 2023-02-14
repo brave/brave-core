@@ -5,8 +5,9 @@
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
 #define BRAVE_GM2_TAB_STYLE_H \
@@ -171,8 +172,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
-  return tabs::features::ShouldShowVerticalTabs(
-      tab()->controller()->GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(tab()->controller()->GetBrowser());
 }
 
 }  // namespace

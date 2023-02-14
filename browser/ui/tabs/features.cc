@@ -11,4 +11,10 @@ BASE_FEATURE(kBraveVerticalTabs,
              "BraveVerticalTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_LINUX)
+BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
+             "BraveChangeActiveTabOnScrollEvent",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_LINUX)
+
 }  // namespace tabs::features

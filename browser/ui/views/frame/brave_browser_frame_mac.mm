@@ -5,7 +5,8 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 
@@ -26,8 +27,8 @@ void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
     return;
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(browser_)) {
-    if (!tabs::features::ShouldShowWindowTitleForVerticalTabs(browser_)) {
+  if (tabs::utils::ShouldShowVerticalTabs(browser_)) {
+    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_)) {
       // In this case, titlbar height should be the same as toolbar height.
       *titlebar_height = browser_view_->toolbar()->GetPreferredSize().height();
       *override_titlebar_height = true;

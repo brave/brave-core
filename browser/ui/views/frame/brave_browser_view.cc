@@ -14,6 +14,7 @@
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
@@ -23,7 +24,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
@@ -174,7 +175,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   const bool supports_vertical_tabs =
       base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-      tabs::features::SupportsVerticalTabs(browser_.get());
+      tabs::utils::SupportsVerticalTabs(browser_.get());
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
@@ -306,8 +307,9 @@ bool BraveBrowserView::GetTabStripVisible() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return BrowserView::GetTabStripVisible();
 
-  if (tabs::features::ShouldShowVerticalTabs(browser()))
+  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
     return false;
+  }
 
   return BrowserView::GetTabStripVisible();
 }
@@ -317,8 +319,9 @@ bool BraveBrowserView::GetSupportsTitle() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return BrowserView::GetSupportsTitle();
 
-  if (tabs::features::SupportsVerticalTabs(browser()))
+  if (tabs::utils::SupportsVerticalTabs(browser())) {
     return true;
+  }
 
   return BrowserView::GetSupportsTitle();
 }
@@ -530,8 +533,9 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return false;
 
-  if (tabs::features::ShouldShowWindowTitleForVerticalTabs(browser()))
+  if (tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
     return true;
+  }
 
   return false;
 }

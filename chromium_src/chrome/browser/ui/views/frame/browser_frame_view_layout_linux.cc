@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/check_is_test.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/window/caption_button_layout_constants.h"
 
@@ -19,8 +20,7 @@ int BrowserFrameViewLayoutLinux::NonClientTopHeight(bool restored) const {
     return OpaqueBrowserFrameViewLayout::NonClientTopHeight(restored);
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(
-          view_->browser_view()->browser())) {
+  if (tabs::utils::ShouldShowVerticalTabs(view_->browser_view()->browser())) {
     if (!view_->ShouldShowCaptionButtons()) {
       // In this case, the window manager might be forcibly providing system
       // window title or it's in fullscreen mode. We shouldn't show title bar

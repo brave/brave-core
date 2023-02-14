@@ -1,9 +1,9 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -24,14 +24,7 @@
 #include "ui/views/window/caption_button_layout_constants.h"
 #endif
 
-namespace tabs {
-namespace features {
-
-#if BUILDFLAG(IS_LINUX)
-BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
-             "BraveChangeActiveTabOnScrollEvent",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#endif  // BUILDFLAG(IS_LINUX)
+namespace tabs::utils {
 
 bool SupportsVerticalTabs(const Browser* browser) {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
@@ -47,24 +40,27 @@ bool SupportsVerticalTabs(const Browser* browser) {
 }
 
 bool ShouldShowVerticalTabs(const Browser* browser) {
-  if (!SupportsVerticalTabs(browser))
+  if (!SupportsVerticalTabs(browser)) {
     return false;
+  }
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsEnabled);
 }
 
 bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
-  if (!ShouldShowVerticalTabs(browser))
+  if (!ShouldShowVerticalTabs(browser)) {
     return false;
+  }
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
 
 bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
-  if (!ShouldShowVerticalTabs(browser))
+  if (!ShouldShowVerticalTabs(browser)) {
     return false;
+  }
 
   return browser->profile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsFloatingEnabled);
@@ -102,8 +98,9 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   const ui::ThemeProvider* tp = frame->GetThemeProvider();
   DCHECK(tp);
   for (auto image_id : {IDR_MINIMIZE, IDR_MAXIMIZE, IDR_CLOSE}) {
-    if (const gfx::ImageSkia* image = tp->GetImageSkiaNamed(image_id))
+    if (const gfx::ImageSkia* image = tp->GetImageSkiaNamed(image_id)) {
       width += image->width();
+    }
   }
   return {0, width};
 #else
@@ -111,5 +108,4 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 #endif
 }
 
-}  // namespace features
-}  // namespace tabs
+}  // namespace tabs::utils
