@@ -55,18 +55,23 @@ def run_cargo(command, args):
         cargo_args = []
         cargo_args.append(cargo_exe)
         cargo_args.append(command)
-        # use deployment target as a proxy for mac/ios target_os
-        if (args.mac_deployment_target is not None
-                or args.ios_deployment_target is not None):
-            cargo_args.append("-Z")
-            cargo_args.append("build-std=panic_" + args.panic + ",std")
         if args.profile == "release":
             cargo_args.append("--release")
         cargo_args.append("--manifest-path=" + args.manifest_path)
         cargo_args.append("--target-dir=" + args.build_path)
         cargo_args.append("--target=" + args.target)
-        if command == "build" and args.features is not None:
+        if command == "rustc" and args.features is not None:
             cargo_args.append("--features=" + args.features)
+        # use deployment target as a proxy for mac/ios target_os
+        if (args.mac_deployment_target is not None
+                or args.ios_deployment_target is not None):
+            cargo_args.append("-Z")
+            cargo_args.append("build-std=panic_" + args.panic + ",std")
+        if command == "rustc":
+            cargo_args.append('--lib')
+            cargo_args.append('--crate-type=staticlib')
+            cargo_args.append('--')
+            cargo_args += rust_flags
         subprocess.check_call(cargo_args, env=env)
 
     except subprocess.CalledProcessError as e:
@@ -98,7 +103,7 @@ def build(args):
         run_cargo('clean', args)
 
     try:
-        run_cargo('build', args)
+        run_cargo('rustc', args)
         with open(build_args_cache_file, "w", encoding="utf8") as f:
             json.dump(args.__dict__, f)
 
