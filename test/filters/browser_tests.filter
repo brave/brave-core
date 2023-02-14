@@ -441,6 +441,9 @@
 -MetricIntegrationTest.FirstInputDelay
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
 
+# Brave disables Session Cookies restore when ContinueWhereILeftOff is enabled.
+-ContinueWhereILeftOffTest.SessionCookies
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*

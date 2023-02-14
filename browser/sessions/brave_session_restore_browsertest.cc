@@ -1,9 +1,12 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/command_line.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -12,6 +15,9 @@
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/session_types.h"
 #include "content/public/test/browser_test.h"
+#include "net/dns/mock_host_resolver.h"
+#include "services/network/public/cpp/network_switches.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 using BraveSesstionRestoreBrowserTest = InProcessBrowserTest;
 
@@ -53,3 +59,61 @@ IN_PROC_BROWSER_TEST_F(BraveSesstionRestoreBrowserTest, Serialization) {
       }));
   loop.Run();
 }
+
+class SessionCookiesCleanupOnSessionRestoreBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  SessionCookiesCleanupOnSessionRestoreBrowserTest() {
+    if (ShouldCleanupSessionCookies()) {
+      scoped_feature_list_.InitAndEnableFeature(
+          features::kBraveCleanupSessionCookiesOnSessionRestore);
+    } else {
+      scoped_feature_list_.InitAndDisableFeature(
+          features::kBraveCleanupSessionCookiesOnSessionRestore);
+    }
+  }
+
+  bool ShouldCleanupSessionCookies() const { return GetParam(); }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    ASSERT_TRUE(embedded_test_server()->Start());
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        base::StringPrintf("MAP *:80 127.0.0.1:%d",
+                           embedded_test_server()->port()));
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(SessionCookiesCleanupOnSessionRestoreBrowserTest,
+                       PRE_CleanupSessionCookies) {
+  auto* rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL("http://a.test/empty.html"));
+  ASSERT_TRUE(rfh);
+  ASSERT_TRUE(content::ExecJs(rfh, "document.cookie = 'bar=session'"));
+}
+
+IN_PROC_BROWSER_TEST_P(SessionCookiesCleanupOnSessionRestoreBrowserTest,
+                       CleanupSessionCookies) {
+  auto* rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL("http://a.test/empty.html"));
+  ASSERT_TRUE(rfh);
+  if (ShouldCleanupSessionCookies()) {
+    EXPECT_EQ("", content::EvalJs(rfh, "document.cookie"));
+  } else {
+    EXPECT_EQ("bar=session", content::EvalJs(rfh, "document.cookie"));
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(,
+                         SessionCookiesCleanupOnSessionRestoreBrowserTest,
+                         testing::Bool());
