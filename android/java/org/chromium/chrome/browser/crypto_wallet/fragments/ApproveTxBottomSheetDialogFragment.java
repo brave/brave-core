@@ -69,6 +69,7 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.GURL;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -310,7 +311,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                                                          .mCryptoNetworks,
                                                 allNetworks -> {
                                                     Utils.getTxExtraInfo(
-                                                            (BraveWalletBaseActivity) getActivity(),
+                                                            new WeakReference<>(
+                                                                    (BraveWalletBaseActivity)
+                                                                            getActivity()),
                                                             allNetworks, selectedNetwork, accounts,
                                                             filterByTokens, false,
                                                             (assetPrices, fullTokenList,
