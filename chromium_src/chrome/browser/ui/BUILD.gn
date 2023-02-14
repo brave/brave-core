@@ -10,7 +10,10 @@ group("ui") {
   deps = [ "//brave/components/brave_vpn/common/buildflags" ]
 
   if (toolkit_views) {
-    deps += [ "//brave/components/sidebar" ]
+    deps += [
+      "//brave/components/ai_chat",
+      "//brave/components/sidebar",
+    ]
   }
 
   if (enable_brave_webtorrent) {

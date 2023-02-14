@@ -517,6 +517,10 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
       return gfx::CreateVectorIcon(kMediaToolbarButtonIcon, kBuiltInIconSize,
                                    base_button_color);
     }
+    case sidebar::SidebarItem::BuiltInItemType::kChatUI: {
+      return gfx::CreateVectorIcon(kSidebarChatIcon, kBuiltInIconSize,
+                                   base_button_color);
+    }
     case sidebar::SidebarItem::BuiltInItemType::kNone:
       NOTREACHED();
       return gfx::ImageSkia();

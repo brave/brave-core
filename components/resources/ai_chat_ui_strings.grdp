@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
+    Brave AI
+  </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
+    The summarizer feature is currently available only for select articles and other long-form web pages.
+  </message>
+  <message name="IDS_CHAT_UI_ACCEPT_BUTTON_LABEL" desc="Label for button to accept agreement">
+    Accept and begin
+  </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content">
+    Summarize
+  </message>
+  <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A one-liner title to describe what ChatUI is">
+    About Brave AI
+  </message>
+   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION" desc="A paragraph to describe what ChatUI is">
+    Brave AI is a series of machine-learning powered tools built into both the Brave browser (e.g. in sidebar) and Brave Search (e.g. in the search results page). Brave AI can generate useful summaries of content you're reading or summary answers to your search queries, and a chat-like interface to ask follow-up questions.
+  </message>
+  <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
+    Ask Brave AI
+  </message>
+  <message name="IDS_CHAT_UI_LOADING_LABEL" desc="A label shown when the UI is loading or generating a response">
+    Generating…
+  </message>
+</grit-part>

@@ -106,8 +106,10 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ai_chat/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/components/ai_chat/ai_chat_utils.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #endif
 
@@ -421,6 +423,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
+  if (ai_chat::IsAIChatEnabled()) {
+    ai_chat::prefs::RegisterProfilePrefs(registry);
+  }
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);

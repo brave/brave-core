@@ -21,6 +21,7 @@ static_library("sidebar") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat",
     "//brave/components/brave_wallet/common:common_utils",
     "//brave/components/constants:constants",
     "//brave/components/l10n/common",

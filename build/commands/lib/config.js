@@ -193,6 +193,7 @@ const Config = function () {
   this.use_goma = getNPMConfig(['brave_use_goma']) || false
   this.goma_offline = false
   this.use_libfuzzer = false
+  this.brave_ai_chat_endpoint = getNPMConfig(['brave_ai_chat_endpoint']) || ''
 
   if (process.env.GOMA_DIR !== undefined) {
     this.realGomaDir = process.env.GOMA_DIR
@@ -341,6 +342,7 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_updater: this.isOfficialBuild(),
     enable_update_notifications: this.isOfficialBuild(),
+    brave_ai_chat_endpoint: this.brave_ai_chat_endpoint,
     ...this.extraGnArgs,
   }
 

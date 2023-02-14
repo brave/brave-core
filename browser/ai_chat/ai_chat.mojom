@@ -1,0 +1,37 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+enum CharacterType {
+  HUMAN,
+  ASSISTANT
+};
+
+enum ConversationTurnVisibility {
+  VISIBLE,
+  HIDDEN
+};
+
+struct ConversationTurn {
+  CharacterType character_type;
+  ConversationTurnVisibility visibility;
+  string text;
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PageHandler {
+  SetClientPage(pending_remote<ChatUIPage> page);
+  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  SubmitHumanConversationEntry(string input);
+  RequestSummary();
+  MarkAgreementAccepted();
+};
+
+interface ChatUIPage {
+  OnConversationHistoryUpdate();
+  OnAPIRequestInProgress(bool in_progress);
+  OnContentSummarizationFailed();
+};
