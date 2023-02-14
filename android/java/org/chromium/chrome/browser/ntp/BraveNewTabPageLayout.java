@@ -422,6 +422,8 @@ public class BraveNewTabPageLayout
             mNtpAdapter.setDisplayNews(mIsDisplayNews);
         }
 
+        if (mNtpAdapter == null) return;
+
         if (mIsDisplayNews) {
             boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
             boolean isFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
