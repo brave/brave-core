@@ -5,20 +5,20 @@
 
 #include "brave/third_party/blink/renderer/modules/brave/navigator_brave.h"
 
-#include "third_party/blink/renderer/core/frame/navigator.h"
 #include "brave/third_party/blink/renderer/modules/brave/brave.h"
+#include "third_party/blink/renderer/core/execution_context/navigator_base.h"
 
 namespace blink {
 
-NavigatorBrave::NavigatorBrave(Navigator& navigator)
-    : Supplement<Navigator>(navigator) {}
+NavigatorBrave::NavigatorBrave(NavigatorBase& navigator)
+    : Supplement<NavigatorBase>(navigator) {}
 
 // static
 const char NavigatorBrave::kSupplementName[] = "NavigatorBrave";
 
-NavigatorBrave& NavigatorBrave::From(Navigator& navigator) {
+NavigatorBrave& NavigatorBrave::From(NavigatorBase& navigator) {
   NavigatorBrave* supplement =
-      Supplement<Navigator>::From<NavigatorBrave>(navigator);
+      Supplement<NavigatorBase>::From<NavigatorBrave>(navigator);
   if (!supplement) {
     supplement = MakeGarbageCollected<NavigatorBrave>(navigator);
     ProvideTo(navigator, supplement);
@@ -26,7 +26,7 @@ NavigatorBrave& NavigatorBrave::From(Navigator& navigator) {
   return *supplement;
 }
 
-Brave* NavigatorBrave::brave(Navigator& navigator) {
+Brave* NavigatorBrave::brave(NavigatorBase& navigator) {
   return NavigatorBrave::From(navigator).brave();
 }
 
@@ -39,7 +39,7 @@ Brave* NavigatorBrave::brave() {
 
 void NavigatorBrave::Trace(blink::Visitor* visitor) const {
   visitor->Trace(brave_);
-  Supplement<Navigator>::Trace(visitor);
+  Supplement<NavigatorBase>::Trace(visitor);
 }
 
 }  // namespace blink
