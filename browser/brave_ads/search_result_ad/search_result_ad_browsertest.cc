@@ -43,14 +43,11 @@ using testing::Return;
 
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
-constexpr const char* kTargetDomains[] = {"foo.com", "bar.com"};
+constexpr char kClickRedirectPath[] = "/a/redirect";
+constexpr char kTargetDomain[] = "example.com";
 constexpr char kTargetPath[] = "/simple.html";
-constexpr char kTargetPathWithRedirect[] = "/target-with-redirect";
-constexpr char kRedirectedDomain[] = "example.com";
 constexpr char kSearchResultUrlPath[] =
     "/brave_ads/search_result_ad_sample.html";
-constexpr char kSearchResultWithRedirectUrlPath[] =
-    "/brave_ads/search_result_ad_with_redirect.html";
 
 SearchResultAdTabHelper* GetSearchResultAdTabHelper(Browser* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
@@ -113,16 +110,6 @@ class SearchResultAdTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  GURL GetTargetUrl(int ad_index, bool will_redirect) const {
-    std::string path = kTargetPath;
-    if (will_redirect) {
-      path = base::StrCat(
-          {kTargetPathWithRedirect, "-", base::NumberToString(ad_index)});
-    }
-
-    return https_server_->GetURL(kTargetDomains[ad_index - 1], path);
-  }
-
   GURL GetURL(base::StringPiece domain, const std::string& path) const {
     base::StringPairs replacements;
     replacements.emplace_back(std::make_pair(
@@ -139,13 +126,11 @@ class SearchResultAdTest : public InProcessBrowserTest {
     const GURL url = request.GetURL();
     const base::StringPiece path = url.path_piece();
 
-    if (!base::StartsWith(path, kTargetPathWithRedirect)) {
+    if (!base::StartsWith(path, kClickRedirectPath)) {
       return nullptr;
     }
 
-    const GURL target_url =
-        https_server_->GetURL(kRedirectedDomain, kTargetPath);
-
+    const GURL target_url = https_server_->GetURL(kTargetDomain, kTargetPath);
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
@@ -220,20 +205,17 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, IncognitoBrowser) {
   observer.Wait();
 }
 
-class SampleSearchResultAdTest : public SearchResultAdTest,
-                                 public testing::WithParamInterface<bool> {
+class SampleSearchResultAdTest : public SearchResultAdTest {
  public:
-  bool IsRedirecting() const { return GetParam(); }
-
   GURL GetSearchResultUrl() const {
-    return GetURL(kAllowedDomain, IsRedirecting()
-                                      ? kSearchResultWithRedirectUrlPath
-                                      : kSearchResultUrlPath);
+    return GetURL(kAllowedDomain, kSearchResultUrlPath);
   }
 
   bool CheckSampleSearchAdMetadata(
       const ads::mojom::SearchResultAdInfoPtr& search_result_ad,
       size_t ad_index) {
+    EXPECT_TRUE(search_result_ad);
+
     const std::string index =
         base::StrCat({"-", base::NumberToString(ad_index)});
     if (search_result_ad->placement_id !=
@@ -250,23 +232,28 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
     EXPECT_EQ(search_result_ad->advertiser_id,
               base::StrCat({"data-advertiser-id", index}));
     EXPECT_EQ(search_result_ad->target_url,
-              GetTargetUrl(ad_index, IsRedirecting()));
+              GURL(base::StrCat({"https://foo.com/page", index})));
     EXPECT_EQ(search_result_ad->headline_text,
               base::StrCat({"data-headline-text", index}));
     EXPECT_EQ(search_result_ad->description,
               base::StrCat({"data-description", index}));
     EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
 
-    EXPECT_EQ(search_result_ad->conversion->type,
-              base::StrCat({"data-conversion-type-value", index}));
-    EXPECT_EQ(search_result_ad->conversion->url_pattern,
-              base::StrCat({"data-conversion-url-pattern-value", index}));
-    EXPECT_EQ(
-        search_result_ad->conversion->advertiser_public_key,
-        base::StrCat({"data-conversion-advertiser-public-key-value", index}));
-    EXPECT_EQ(
-        static_cast<size_t>(search_result_ad->conversion->observation_window),
-        ad_index);
+    if (ad_index == 2) {
+      EXPECT_FALSE(search_result_ad->conversion);
+    } else {
+      EXPECT_TRUE(search_result_ad->conversion);
+      EXPECT_EQ(search_result_ad->conversion->type,
+                base::StrCat({"data-conversion-type-value", index}));
+      EXPECT_EQ(search_result_ad->conversion->url_pattern,
+                base::StrCat({"data-conversion-url-pattern-value", index}));
+      EXPECT_EQ(
+          search_result_ad->conversion->advertiser_public_key,
+          base::StrCat({"data-conversion-advertiser-public-key-value", index}));
+      EXPECT_EQ(
+          static_cast<size_t>(search_result_ad->conversion->observation_window),
+          ad_index);
+    }
 
     return true;
   }
@@ -275,28 +262,34 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
+    auto run_loop3 = std::make_unique<base::RunLoop>();
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kServed))
-        .Times(2);
+        .Times(3);
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kViewed))
-        .Times(2)
+        .Times(3)
         .WillRepeatedly(
-            [this, &run_loop1, &run_loop2](
+            [this, &run_loop1, &run_loop2, &run_loop3](
                 ads::mojom::SearchResultAdInfoPtr ad_mojom,
                 const ads::mojom::SearchResultAdEventType event_type) {
               const bool is_search_result_ad_1 =
                   CheckSampleSearchAdMetadata(ad_mojom, 1);
               const bool is_search_result_ad_2 =
                   CheckSampleSearchAdMetadata(ad_mojom, 2);
-              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+              const bool is_search_result_ad_3 =
+                  CheckSampleSearchAdMetadata(ad_mojom, 3);
+              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2 ||
+                          is_search_result_ad_3);
 
               if (is_search_result_ad_1) {
                 run_loop1->Quit();
               } else if (is_search_result_ad_2) {
                 run_loop2->Quit();
+              } else if (is_search_result_ad_3) {
+                run_loop3->Quit();
               }
             });
 
@@ -308,12 +301,13 @@ class SampleSearchResultAdTest : public SearchResultAdTest,
 
     run_loop1->Run();
     run_loop2->Run();
+    run_loop3->Run();
 
     return web_contents;
   }
 };
 
-IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
+IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
   EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
@@ -336,7 +330,7 @@ IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest,
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
+IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
   ScopedTestingAdsServiceSetter scoped_setter(ads_service());
   EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
 
@@ -358,7 +352,5 @@ IN_PROC_BROWSER_TEST_P(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
                               "document.getElementById('ad_link_2').click();"));
   run_loop.Run();
 }
-
-INSTANTIATE_TEST_SUITE_P(, SampleSearchResultAdTest, testing::Bool());
 
 }  // namespace brave_ads
