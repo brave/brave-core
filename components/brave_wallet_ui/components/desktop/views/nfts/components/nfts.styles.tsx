@@ -8,6 +8,13 @@ import { WalletButton } from '../../../../shared/style'
 import Ipfs from '../../../../../assets/svg-icons/nft-ipfs/ipfs.svg'
 import PlusIcon from '../../../../../assets/svg-icons/plus-icon.svg'
 
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+`
+
 export const FilterTokenRow = styled.div`
   display: flex;
   align-items: center;
