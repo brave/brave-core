@@ -174,9 +174,17 @@ reducer.on(Actions.isUpdateAvailable, (state, payload) => {
 reducer.on(Actions.refresh, (state, payload) => {
   state = {
     ...state,
-    isFetching: true,
-    articleScrollTo: undefined
+    isFetching: true
   }
+  // When hitting the refresh button and subsequently rendering
+  // a new feed, we don't want to scroll again to a
+  // previously-clicked feed item.
+  const isFirstFetch = !state.feed
+  if (!isFirstFetch) {
+    state.articleScrollTo = undefined
+  }
+  // When hasInteracted is true, subsequent user event triggers know not to
+  // record an analytics event to mark that a News session has started.
   if (payload && payload.isFirstInteraction) {
     state.hasInteracted = true
   }
