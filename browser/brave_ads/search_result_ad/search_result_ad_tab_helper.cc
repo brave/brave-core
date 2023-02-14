@@ -77,7 +77,10 @@ void SearchResultAdTabHelper::DidFinishNavigation(
   MaybeProcessSearchResultAdClickedEvent(navigation_handle);
 
   const bool should_trigger_viewed_event =
-      navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
+      navigation_handle->GetRestoreType() ==
+          content::RestoreType::kNotRestored &&
+      !(navigation_handle->GetPageTransition() &
+        ui::PAGE_TRANSITION_FORWARD_BACK);
   search_result_ad_handler_ =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
           GetAdsService(), navigation_handle->GetURL(),

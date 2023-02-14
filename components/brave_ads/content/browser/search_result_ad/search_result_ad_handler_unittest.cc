@@ -5,7 +5,10 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
+#include "base/strings/strcat.h"
+#include "base/strings/string_piece.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
@@ -25,11 +28,20 @@ using testing::Return;
 
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
+constexpr char kSearchResultAdClickUrl[] =
+    "https://search.brave.com/a/redirect?";
+constexpr char kPlacementId[] = "placement_id";
 
-blink::mojom::WebPagePtr CreateTestWebPage() {
+blink::mojom::WebPagePtr CreateTestWebPage(
+    std::vector<base::StringPiece> attributes_to_skip = {}) {
   blink::mojom::WebPagePtr web_page = blink::mojom::WebPage::New();
-  web_page->entities = CreateTestWebPageEntities();
+  web_page->entities = CreateTestWebPageEntities(std::move(attributes_to_skip));
   return web_page;
+}
+
+GURL GetSearchResultAdClickedUrl() {
+  return GURL(base::StrCat(
+      {kSearchResultAdClickUrl, kPlacementId, "=", kTestWebPagePlacementId}));
 }
 
 }  // namespace
@@ -86,7 +98,31 @@ TEST_F(SearchResultAdHandlerTest,
   EXPECT_FALSE(search_result_ad_handler.get());
 }
 
-TEST_F(SearchResultAdHandlerTest, BraveAdsEmpty) {
+TEST_F(SearchResultAdHandlerTest, NullWebPage) {
+  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kViewed))
+      .Times(0);
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kClicked))
+      .Times(0);
+
+  auto search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, GURL(kAllowedDomain),
+          /*should_trigger_viewed_event*/ true);
+  ASSERT_TRUE(search_result_ad_handler.get());
+
+  SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
+                                           blink::mojom::WebPagePtr());
+
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
+      GetSearchResultAdClickedUrl());
+}
+
+TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
   EXPECT_CALL(ads_service_,
               TriggerSearchResultAdEvent(
@@ -107,7 +143,60 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsEmpty) {
                                            blink::mojom::WebPage::New());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTestWebPageTargetUrl));
+      GetSearchResultAdClickedUrl());
+}
+
+TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
+  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kViewed))
+      .Times(0);
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kClicked))
+      .Times(0);
+
+  auto search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, GURL(kAllowedDomain),
+          /*should_trigger_viewed_event*/ true);
+  ASSERT_TRUE(search_result_ad_handler.get());
+
+  // "data-rewards-value" is missed.
+  SimulateOnRetrieveSearchResultAdEntities(
+      search_result_ad_handler.get(),
+      CreateTestWebPage({"data-rewards-value"}));
+
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
+      GetSearchResultAdClickedUrl());
+}
+
+TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
+  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kServed));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kViewed));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kClicked));
+
+  auto search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, GURL(kAllowedDomain),
+          /*should_trigger_viewed_event*/ true);
+  ASSERT_TRUE(search_result_ad_handler.get());
+
+  // "data-conversion-type-value" is missed.
+  SimulateOnRetrieveSearchResultAdEntities(
+      search_result_ad_handler.get(),
+      CreateTestWebPage({"data-conversion-type-value"}));
+
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
+      GetSearchResultAdClickedUrl());
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
@@ -134,7 +223,7 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTestWebPageTargetUrl));
+      GetSearchResultAdClickedUrl());
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
@@ -160,10 +249,10 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTestWebPageTargetUrl));
+      GetSearchResultAdClickedUrl());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTestWebPageTargetUrl));
+      GetSearchResultAdClickedUrl());
 }
 
 TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
@@ -186,7 +275,39 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
                                            CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
-      GURL(kTestWebPageTargetUrl));
+      GetSearchResultAdClickedUrl());
+}
+
+TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
+  EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kServed));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kViewed));
+  EXPECT_CALL(ads_service_,
+              TriggerSearchResultAdEvent(
+                  _, ads::mojom::SearchResultAdEventType::kClicked))
+      .Times(0);
+
+  auto search_result_ad_handler =
+      SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
+          &ads_service_, GURL(kAllowedDomain),
+          /*should_trigger_viewed_event*/ true);
+  ASSERT_TRUE(search_result_ad_handler.get());
+
+  SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
+                                           CreateTestWebPage());
+
+  GURL url(base::StrCat({kSearchResultAdClickUrl, kPlacementId}));
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(url);
+
+  url = GURL(base::StrCat({kSearchResultAdClickUrl, "not_placement_id=id"}));
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(url);
+
+  url = GURL(base::StrCat({kSearchResultAdClickUrl}));
+  search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(url);
 }
 
 }  // namespace brave_ads

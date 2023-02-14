@@ -7,10 +7,13 @@ static_library("browser") {
   sources = [
     "search_result_ad/search_result_ad_converting_util.cc",
     "search_result_ad/search_result_ad_converting_util.h",
+    "search_result_ad/search_result_ad_util.cc",
+    "search_result_ad/search_result_ad_util.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_search/common/",
     "//url",
   ]
 

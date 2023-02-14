@@ -10,17 +10,22 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "url/gurl.h"
 
 using ads::mojom::ConversionInfo;
 using ads::mojom::ConversionInfoPtr;
 using ads::mojom::SearchResultAdInfo;
 using ads::mojom::SearchResultAdInfoPtr;
+
+using SearchResultAdMap = base::flat_map</*placement_id*/ std::string,
+                                         ads::mojom::SearchResultAdInfoPtr>;
 
 namespace brave_ads {
 
@@ -48,12 +53,15 @@ constexpr char kDataConversionAdvertiserPublicKeyValue[] =
 constexpr char kDataConversionObservationWindowValue[] =
     "data-conversion-observation-window-value";
 
-constexpr auto kSearchResultAdAttributes =
+constexpr auto kSearchResultAdRequiredAttributes =
     base::MakeFixedFlatSet<base::StringPiece>(
         {kDataPlacementId, kDataCreativeInstanceId, kDataCreativeSetId,
          kDataCampaignId, kDataAdvertiserId, kDataLandingPage,
-         kDataHeadlineText, kDataDescription, kDataRewardsValue,
-         kDataConversionTypeValue, kDataConversionUrlPatternValue,
+         kDataHeadlineText, kDataDescription, kDataRewardsValue});
+
+constexpr auto kSearchResultAdConversionAttributes =
+    base::MakeFixedFlatSet<base::StringPiece>(
+        {kDataConversionTypeValue, kDataConversionUrlPatternValue,
          kDataConversionAdvertiserPublicKeyValue,
          kDataConversionObservationWindowValue});
 
@@ -130,7 +138,6 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
                          SearchResultAdInfo* search_result_ad) {
   DCHECK(ad_property);
   DCHECK(search_result_ad);
-  DCHECK(search_result_ad->conversion);
 
   const std::string& name = ad_property->name;
   if (name == kDataPlacementId) {
@@ -169,23 +176,31 @@ bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
     return GetDoubleValue(ad_property, &search_result_ad->value);
   }
 
+  NOTREACHED();
+
+  return false;
+}
+
+bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
+                           ConversionInfo* conversion) {
+  DCHECK(ad_property);
+  DCHECK(conversion);
+
+  const std::string& name = ad_property->name;
   if (name == kDataConversionTypeValue) {
-    return GetStringValue(ad_property, &search_result_ad->conversion->type);
+    return GetStringValue(ad_property, &conversion->type);
   }
 
   if (name == kDataConversionUrlPatternValue) {
-    return GetStringValue(ad_property,
-                          &search_result_ad->conversion->url_pattern);
+    return GetStringValue(ad_property, &conversion->url_pattern);
   }
 
   if (name == kDataConversionAdvertiserPublicKeyValue) {
-    return GetStringValue(ad_property,
-                          &search_result_ad->conversion->advertiser_public_key);
+    return GetStringValue(ad_property, &conversion->advertiser_public_key);
   }
 
   if (name == kDataConversionObservationWindowValue) {
-    return GetIntValue(ad_property,
-                       &search_result_ad->conversion->observation_window);
+    return GetIntValue(ad_property, &conversion->observation_window);
   }
 
   NOTREACHED();
@@ -203,48 +218,67 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
   }
 
   SearchResultAdInfoPtr search_result_ad = SearchResultAdInfo::New();
-  search_result_ad->conversion = ConversionInfo::New();
+  ConversionInfoPtr conversion = ConversionInfo::New();
 
   base::flat_set<base::StringPiece> found_attributes;
+  base::flat_set<base::StringPiece> found_conversion_attributes;
   for (const auto& ad_property : entity->properties) {
     if (!ad_property) {
       return;
     }
 
-    const auto* it = base::ranges::find(kSearchResultAdAttributes,
-                                        base::StringPiece(ad_property->name));
-
-    // Unknown search result ad attribute specified.
-    if (it == kSearchResultAdAttributes.end()) {
-      continue;
-    }
-    found_attributes.insert(*it);
-
-    if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
-      VLOG(6) << "Cannot read search result ad attribute value: "
-              << ad_property->name;
-      return;
+    const base::StringPiece property_name = ad_property->name;
+    if (base::Contains(kSearchResultAdRequiredAttributes, property_name)) {
+      if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
+        VLOG(6) << "Cannot read search result ad attribute value: "
+                << property_name;
+        return;
+      }
+      found_attributes.insert(property_name);
+    } else if (base::Contains(kSearchResultAdConversionAttributes,
+                              property_name)) {
+      if (!SetConversionProperty(ad_property, conversion.get())) {
+        VLOG(6) << "Cannot read search result ad attribute value: "
+                << property_name;
+        return;
+      }
+      found_conversion_attributes.insert(property_name);
     }
   }
 
-  // Not all of attributes were specified.
-  if (found_attributes.size() != kSearchResultAdAttributes.size()) {
-    if (VLOG_IS_ON(6)) {
-      std::vector<base::StringPiece> absent_attributes;
-      base::ranges::set_difference(
-          kSearchResultAdAttributes.cbegin(), kSearchResultAdAttributes.cend(),
-          found_attributes.cbegin(), found_attributes.cend(),
-          std::back_inserter(absent_attributes));
+  std::vector<base::StringPiece> absent_attributes;
+  base::ranges::set_difference(
+      kSearchResultAdRequiredAttributes.cbegin(),
+      kSearchResultAdRequiredAttributes.cend(), found_attributes.cbegin(),
+      found_attributes.cend(), std::back_inserter(absent_attributes));
 
-      VLOG(6) << "Some of search result ad attributes were not specified: "
-              << base::JoinString(absent_attributes, ", ");
-    }
-
+  // Not all of required attributes were specified.
+  if (!absent_attributes.empty()) {
+    VLOG(6) << "Some of search result ad attributes were not specified: "
+            << base::JoinString(absent_attributes, ", ");
     return;
   }
 
-  GURL target_url = search_result_ad->target_url;
-  search_result_ads->emplace(std::move(target_url),
+  if (!found_conversion_attributes.empty()) {
+    std::vector<base::StringPiece> absent_conversion_attributes;
+    base::ranges::set_difference(
+        kSearchResultAdConversionAttributes.cbegin(),
+        kSearchResultAdConversionAttributes.cend(),
+        found_conversion_attributes.cbegin(),
+        found_conversion_attributes.cend(),
+        std::back_inserter(absent_conversion_attributes));
+    // Check if all of conversion attributes were specified.
+    if (absent_conversion_attributes.empty()) {
+      search_result_ad->conversion = std::move(conversion);
+    } else {
+      VLOG(6) << "Some of search result ad conversion attributes were not "
+                 "specified: "
+              << base::JoinString(absent_conversion_attributes, ", ");
+    }
+  }
+
+  std::string placement_id = search_result_ad->placement_id;
+  search_result_ads->emplace(std::move(placement_id),
                              std::move(search_result_ad));
 }
 
@@ -270,35 +304,31 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
     return;
   }
 
-  for (const auto& search_result_ad_pair : search_result_ads) {
-    const auto& search_result_ad = search_result_ad_pair.second;
-    VLOG(6) << "Converted search result ad with \"" << kDataPlacementId
-            << "\": " << search_result_ad->placement_id << "\n"
-            << "  \"" << kDataCreativeInstanceId
-            << "\": " << search_result_ad->creative_instance_id << "\n"
-            << "  \"" << kDataCreativeSetId
-            << "\": " << search_result_ad->creative_set_id << "\n"
-            << "  \"" << kDataCampaignId
-            << "\": " << search_result_ad->campaign_id << "\n"
-            << "  \"" << kDataAdvertiserId
-            << "\": " << search_result_ad->advertiser_id << "\n"
-            << "  \"" << kDataLandingPage
-            << "\": " << search_result_ad->target_url << "\n"
-            << "  \"" << kDataHeadlineText
-            << "\": " << search_result_ad->headline_text << "\n"
-            << "  \"" << kDataDescription
-            << "\": " << search_result_ad->description << "\n"
-            << "  \"" << kDataRewardsValue << "\": " << search_result_ad->value
-            << "\n"
-            << "  \"" << kDataConversionTypeValue
-            << "\": " << search_result_ad->conversion->type << "\n"
-            << "  \"" << kDataConversionUrlPatternValue
-            << "\": " << search_result_ad->conversion->url_pattern << "\n"
-            << "  \"" << kDataConversionAdvertiserPublicKeyValue
-            << "\": " << search_result_ad->conversion->advertiser_public_key
-            << "\n"
-            << "  \"" << kDataConversionObservationWindowValue
-            << "\": " << search_result_ad->conversion->observation_window;
+  for (const auto& [placement_id, search_result_ad] : search_result_ads) {
+    VLOG(6) << "A search result ad was delivered:\n  \"" << kDataPlacementId
+            << "\": " << search_result_ad->placement_id << "\n  \""
+            << kDataCreativeInstanceId
+            << "\": " << search_result_ad->creative_instance_id << "\n  \""
+            << kDataCreativeSetId << "\": " << search_result_ad->creative_set_id
+            << "\n  \"" << kDataCampaignId
+            << "\": " << search_result_ad->campaign_id << "\n  \""
+            << kDataAdvertiserId << "\": " << search_result_ad->advertiser_id
+            << "\n  \"" << kDataLandingPage
+            << "\": " << search_result_ad->target_url << "\n  \""
+            << kDataHeadlineText << "\": " << search_result_ad->headline_text
+            << "\n  \"" << kDataDescription
+            << "\": " << search_result_ad->description << "\n  \""
+            << kDataRewardsValue << "\": " << search_result_ad->value;
+    if (search_result_ad->conversion) {
+      VLOG(6) << "Conversion attributes:\n  \"" << kDataConversionTypeValue
+              << "\": " << search_result_ad->conversion->type << "\n  \""
+              << kDataConversionUrlPatternValue
+              << "\": " << search_result_ad->conversion->url_pattern << "\n  \""
+              << kDataConversionAdvertiserPublicKeyValue
+              << "\": " << search_result_ad->conversion->advertiser_public_key
+              << "\n  \"" << kDataConversionObservationWindowValue
+              << "\": " << search_result_ad->conversion->observation_window;
+    }
   }
 }
 
