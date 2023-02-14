@@ -150,9 +150,6 @@ void RegisterProfilePrefsForMigration(
   // Added 05/2021
   registry->RegisterBooleanPref(kBraveNewsIntroDismissed, false);
 
-  // Added 01/2022
-  registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Added 11/2022
   registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
@@ -179,6 +176,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
 #endif
+
+  // Added Feb 2023
+  registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -193,7 +193,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);

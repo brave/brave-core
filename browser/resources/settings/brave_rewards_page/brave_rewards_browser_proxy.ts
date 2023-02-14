@@ -5,12 +5,18 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
+import { loadTimeData } from '../i18n_setup.js';
+
 export interface BraveRewardsBrowserProxy {
   getAdsData(): Promise<any>
   getRewardsEnabled(): Promise<boolean>
   getRewardsParameters(): Promise<any>
   getUserType(): Promise<boolean>
   isAutoContributeSupported(): Promise<boolean>
+  wasInlineTipButtonsEnabledAtStartup(): boolean
+  wasInlineTipTwitterEnabledAtStartup(): boolean
+  wasInlineTipRedditEnabledAtStartup(): boolean
+  wasInlineTipGithubEnabledAtStartup(): boolean
 }
 
 /**
@@ -40,6 +46,22 @@ export class BraveRewardsBrowserProxyImpl implements BraveRewardsBrowserProxy {
   isAutoContributeSupported () {
     return new Promise<boolean>((resolve) => chrome.braveRewards.isAutoContributeSupported(
       (supported) => { resolve(supported) }))
+  }
+
+  wasInlineTipButtonsEnabledAtStartup() {
+    return loadTimeData.getBoolean('inlineTipButtonsEnabled')
+  }
+
+  wasInlineTipTwitterEnabledAtStartup() {
+    return loadTimeData.getBoolean('inlineTipTwitterEnabled')
+  }
+
+  wasInlineTipRedditEnabledAtStartup() {
+    return loadTimeData.getBoolean('inlineTipRedditEnabled')
+  }
+
+  wasInlineTipGithubEnabledAtStartup() {
+    return loadTimeData.getBoolean('inlineTipGithubEnabled')
   }
 
   static getInstance() {

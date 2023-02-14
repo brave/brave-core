@@ -64,7 +64,8 @@ void BraveActionsContainer::Init() {
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
-      brave_rewards::prefs::kShowButton, browser_->profile()->GetPrefs(),
+      brave_rewards::prefs::kShowLocationBarButton,
+      browser_->profile()->GetPrefs(),
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
           base::Unretained(this)));
@@ -75,7 +76,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
     return false;
   }
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kShowButton);
+  return prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton);
 }
 
 void BraveActionsContainer::AddActionViewForShields() {

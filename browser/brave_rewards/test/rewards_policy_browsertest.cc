@@ -132,7 +132,8 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsIconIsHidden) {
   ASSERT_NE(brave_location_bar_view, nullptr);
   const auto* brave_actions = brave_location_bar_view->brave_actions_.get();
   ASSERT_NE(brave_actions, nullptr);
-  EXPECT_TRUE(prefs()->GetBoolean(brave_rewards::prefs::kShowButton));
+  EXPECT_TRUE(
+      prefs()->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
   if (IsBraveRewardsDisabledTest()) {
     EXPECT_FALSE(brave_actions->rewards_action_btn_->GetVisible());
   } else {
