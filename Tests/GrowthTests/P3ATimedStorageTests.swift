@@ -392,4 +392,23 @@ class P3ATimedStorageTests: XCTestCase {
     XCTAssertEqual(newStorage.records.count, 3)
     XCTAssertEqual(newStorage.combinedValue, 4)
   }
+  
+  func testMaximumDaysCombinedValue() {
+    var storage = P3ATimedStorage<Int>(name: "testMaximumDaysCombinedValue", lifetimeInDays: 7)
+    storage.reset()
+    
+    let lowestValue = 20
+    let lowValue = 50
+    let highValue = 75
+    
+    storage.append(value: lowestValue)
+    storage.date = { Date().addingTimeInterval(1.days) }
+    storage.append(value: lowValue)
+    storage.append(value: lowValue)
+    storage.date = { Date().addingTimeInterval(2.days) }
+    storage.append(value: highValue)
+    
+    // 2 low values added in one day are higher than the high value
+    XCTAssertEqual(storage.maximumDaysCombinedValue, lowValue * 2)
+  }
 }
