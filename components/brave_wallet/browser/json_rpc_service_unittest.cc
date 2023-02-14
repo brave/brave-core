@@ -1069,6 +1069,27 @@ class JsonRpcServiceUnitTest : public testing::Test {
     return result;
   }
 
+  void TestGetCode(const std::string& address,
+                   mojom::CoinType coin,
+                   const std::string& chain_id,
+                   const std::string& expected_bytecode,
+                   mojom::ProviderError expected_error,
+                   const std::string& expected_error_message) {
+    absl::optional<std::string> result;
+    base::RunLoop run_loop;
+    json_rpc_service_->GetCode(
+        address, coin, chain_id,
+        base::BindLambdaForTesting([&](const std::string& bytecode,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          EXPECT_EQ(bytecode, expected_bytecode);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void TestGetERC1155TokenBalance(const std::string& contract,
                                   const std::string& token_id,
                                   const std::string& account_address,
@@ -2300,6 +2321,45 @@ TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
       base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetCode) {
+  // Contract code response
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_getCode", "",
+                 // Result has code that was intentionally truncated
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x6060604\"}");
+  TestGetCode("0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+              mojom::CoinType::ETH, mojom::kMainnetChainId, "0x6060604",
+              mojom::ProviderError::kSuccess, "");
+
+  // EOA response
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_getCode", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x\"}");
+  TestGetCode("0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+              mojom::CoinType::ETH, mojom::kMainnetChainId, "0x",
+              mojom::ProviderError::kSuccess, "");
+
+  // Processes error results OK
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+                 "eth_getCode", "",
+                 MakeJsonRpcErrorResponse(
+                     static_cast<int>(mojom::ProviderError::kInternalError),
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+  TestGetCode("0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+              mojom::CoinType::ETH, mojom::kMainnetChainId, "",
+              mojom::ProviderError::kInternalError,
+              l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Processes invalid chain IDs OK
+  SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::SOL),
+                 "eth_getCode", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x\"}");
+  TestGetCode("0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+              mojom::CoinType::SOL, mojom::kLocalhostChainId, "",
+              mojom::ProviderError::kInvalidParams,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetBalance) {

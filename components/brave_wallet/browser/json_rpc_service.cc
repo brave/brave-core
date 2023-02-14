@@ -676,6 +676,25 @@ void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
                   std::move(internal_callback));
 }
 
+void JsonRpcService::GetCode(const std::string& address,
+                             mojom::CoinType coin,
+                             const std::string& chain_id,
+                             GetCodeCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, coin);
+  if (coin != mojom::CoinType::ETH || !network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetCode, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback));
+  RequestInternal(eth::eth_getCode(address, "latest"), true, network_url,
+                  std::move(internal_callback));
+}
+
 void JsonRpcService::OnGetFilStateSearchMsgLimited(
     GetFilStateSearchMsgLimitedCallback callback,
     const std::string& cid,
@@ -1093,6 +1112,27 @@ void JsonRpcService::OnGetERC20TokenBalance(
   }
 
   std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
+}
+
+void JsonRpcService::OnGetCode(GetCodeCallback callback,
+                               APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Result is 0x when the address was an EOA
+  auto result = ParseSingleStringResult(api_request_result.value_body());
+  if (!result) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetERC20TokenAllowance(
