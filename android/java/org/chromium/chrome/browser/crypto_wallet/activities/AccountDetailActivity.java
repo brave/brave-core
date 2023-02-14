@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -176,8 +177,8 @@ public class AccountDetailActivity
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                     allNetworks -> {
-                        Utils.getTxExtraInfo(this, allNetworks, selectedNetwork, accounts, null,
-                                false,
+                        Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
+                                selectedNetwork, accounts, null, false,
                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                         blockchainTokensBalances) -> {
                                     for (AccountInfo accountInfo : accounts) {

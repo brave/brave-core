@@ -104,10 +104,10 @@ public class PortfolioHelper {
 
     public void calculateBalances(Runnable runWhenDone) {
         resetResultData();
-        if (mActivity == null) return;
+        if (mActivity.get() == null || mActivity.get().isFinishing()) return;
 
-        Utils.getTxExtraInfo(mActivity.get(), mCryptoNetworks, mSelectedNetwork, mAccountInfos,
-                null, true,
+        Utils.getTxExtraInfo(mActivity, mCryptoNetworks, mSelectedNetwork, mAccountInfos, null,
+                true,
                 (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
                     mUserAssets = userAssetsList;
 
@@ -188,7 +188,7 @@ public class PortfolioHelper {
             priceHistoryContext.userAsset = userAsset;
             pricesHistoryContexts.add(priceHistoryContext);
 
-            if (mActivity.get() != null)
+            if (mActivity.get() != null && !mActivity.get().isFinishing())
                 mActivity.get().getAssetRatioService().getPriceHistory(
                         userAsset.symbol.toLowerCase(Locale.getDefault()), "usd",
                         mFiatHistoryTimeframe, priceHistoryContext);
