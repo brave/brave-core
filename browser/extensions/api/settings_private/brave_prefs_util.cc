@@ -310,6 +310,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
+  // NFT pinning pref
+  (*s_brave_allowlist)[kAutoPinEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_allowlist;
 }
 

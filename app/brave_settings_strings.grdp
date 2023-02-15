@@ -954,6 +954,13 @@
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
   </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING" desc="Enable NFT pinning">
+    Automatically pin NFTs
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
+    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
+    Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset Brave Wallet
   </message>

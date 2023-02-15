@@ -150,6 +150,23 @@
           }
         ]
       }, {
+          "name": "isNftPinningEnabled",
+          "type": "function",
+          "description": "Determine if the nft pinning is enabled",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "function",
+              "description": "Function called with a boolean indicating if the nft pinning is enabled",
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": "boolean"
+                }
+              ]
+            }
+          ]
+      }, {
         "name": "loadUI",
         "type": "function",
         "description": "Called when brave://wallet WebUI wants to load the real UI",
