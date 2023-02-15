@@ -53,6 +53,7 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -123,6 +124,7 @@ import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
+import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController.RationaleDelegate;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
@@ -1139,10 +1141,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void maybeShowNotificationPermissionRetionale() {
+        Supplier<RationaleDelegate> rationaleUIDelegateSupplier = ()
+                -> new NotificationPermissionRationaleDialogController(
+                        this, getModalDialogManager());
         NotificationPermissionController mNotificationPermissionController =
-                new NotificationPermissionController(getWindowAndroid(),
-                        new NotificationPermissionRationaleDialogController(
-                                this, getModalDialogManager()));
+                new NotificationPermissionController(
+                        getWindowAndroid(), rationaleUIDelegateSupplier);
         NotificationPermissionController.attach(
                 getWindowAndroid(), mNotificationPermissionController);
         mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
