@@ -25,7 +25,7 @@ import { IconWrapper, PlaceholderText } from './style'
 import { getNetworkLogo } from '../../../options/asset-options'
 
 interface Config {
-  size: 'big' | 'small'
+  size: 'big' | 'medium' | 'small'
   marginLeft?: number
   marginRight?: number
 }

@@ -30,3 +30,17 @@ export const computeFiatAmount = (
     .divideByDecimals(asset.decimals) // Wei → ETH conversion
     .times(price)
 }
+
+export const computeFiatAmountToAssetValue = (
+  fiatAmount: string,
+  spotPrices: BraveWallet.AssetPrice[],
+  assetSymbol: string
+): Amount => {
+  const price = findAssetPrice(spotPrices, assetSymbol)
+
+  if (!price || !fiatAmount) {
+    return Amount.empty()
+  }
+
+  return new Amount(fiatAmount).div(price).times(1)
+}

@@ -255,6 +255,35 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
   }
 }
 
+void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
+                                   const std::string& chain_id,
+                                   const std::string& address,
+                                   const std::string& symbol,
+                                   const std::string& amount,
+                                   const std::string& currency_code,
+                                   GetSellUrlCallback callback) {
+  std::string url;
+  if (provider == mojom::OffRampProvider::kRamp) {
+    GURL off_ramp_url = GURL(kRampBaseUrl);
+    off_ramp_url =
+        net::AppendQueryParameter(off_ramp_url, "userAddress", address);
+    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "enabledFlows",
+                                             kOffRampEnabledFlows);
+    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "defaultFlow",
+                                             kOffRampDefaultFlow);
+    off_ramp_url =
+        net::AppendQueryParameter(off_ramp_url, "offrampAsset", symbol);
+    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "fiatValue", amount);
+    off_ramp_url =
+        net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
+    off_ramp_url =
+        net::AppendQueryParameter(off_ramp_url, "hostApiKey", kRampID);
+    std::move(callback).Run(off_ramp_url.spec(), absl::nullopt);
+  } else {
+    std::move(callback).Run(url, "UNSUPPORTED_OFFRAMP_PROVIDER");
+  }
+}
+
 void AssetRatioService::GetPrice(
     const std::vector<std::string>& from_assets,
     const std::vector<std::string>& to_assets,

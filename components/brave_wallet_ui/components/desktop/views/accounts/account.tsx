@@ -55,6 +55,7 @@ import { PortfolioAssetItemLoadingSkeleton } from '../../portfolio-asset-item/po
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import { AccountListItemOptionButton } from '../../account-list-item/account-list-item-option-button'
+import { SellAssetModal } from '../../popup-modals/sell-asset-modal/sell-asset-modal'
 
 // options
 import { AccountButtonOptions } from '../../../../options/account-list-button-options'
@@ -62,6 +63,7 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import { useGetAllNetworksQuery, useGetTokensRegistryQuery, useGetUserTokensRegistryQuery } from '../../../../common/slices/api.slice'
+import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -109,6 +111,20 @@ export const Account = ({
 
   // custom hooks
   const scrollIntoView = useScrollIntoView()
+
+  const {
+    allSellAssetOptions,
+    getAllSellAssetOptions,
+    showSellModal,
+    setShowSellModal,
+    selectedSellAsset,
+    setSelectedSellAsset,
+    sellAmount,
+    setSellAmount,
+    selectedSellAssetNetwork,
+    openSellAssetLink,
+    checkIsAssetSellSupported
+  } = useMultiChainSellAssets()
 
   // memos
   const selectedAccount = React.useMemo(() => {
@@ -232,6 +248,24 @@ export const Account = ({
     }
   }, [checkIsTransactionFocused, scrollIntoView])
 
+  const onClickShowSellModal = React.useCallback((token: BraveWallet.BlockchainToken) => {
+    setShowSellModal(true)
+    setSelectedSellAsset(token)
+  }, [setSelectedSellAsset, setShowSellModal])
+
+  const onOpenSellAssetLink = React.useCallback(() => {
+    if (selectedAccount?.address) {
+      openSellAssetLink({ sellAddress: selectedAccount.address, sellAsset: selectedSellAsset })
+    }
+  }, [selectedSellAsset, selectedAccount?.address, openSellAssetLink])
+
+  // Effects
+  React.useEffect(() => {
+    if (allSellAssetOptions.length === 0) {
+      getAllSellAssetOptions()
+    }
+  }, [allSellAssetOptions.length, getAllSellAssetOptions])
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
@@ -273,6 +307,9 @@ export const Account = ({
           key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
           assetBalance={getBalance(selectedAccount, item)}
           token={item}
+          isAccountDetails={true}
+          showSellModal={() => onClickShowSellModal(item)}
+          isSellSupported={checkIsAssetSellSupported(item)}
         />
       )}
 
@@ -321,6 +358,18 @@ export const Account = ({
           <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
         </TransactionPlaceholderContainer>
       )}
+      {showSellModal && selectedSellAsset &&
+        <SellAssetModal
+          selectedAsset={selectedSellAsset}
+          selectedAssetsNetwork={selectedSellAssetNetwork}
+          onClose={() => setShowSellModal(false)}
+          sellAmount={sellAmount}
+          setSellAmount={setSellAmount}
+          openSellAssetLink={onOpenSellAssetLink}
+          showSellModal={showSellModal}
+          sellAssetBalance={getBalance(selectedAccount, selectedSellAsset)}
+        />
+      }
     </StyledWrapper>
   )
 }

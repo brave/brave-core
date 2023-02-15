@@ -21,7 +21,8 @@ import {
   SendFilTransactionParams,
   SendSolTransactionParams,
   SolanaSerializedTransactionParams,
-  SupportedOnRampNetworks
+  SupportedOnRampNetworks,
+  SupportedOffRampNetworks
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -238,6 +239,31 @@ export async function getBuyAssetUrl (args: {
   return url
 }
 
+export async function getSellAssetUrl (args: {
+  asset: BraveWallet.BlockchainToken
+  offRampProvider: BraveWallet.OffRampProvider
+  chainId: string
+  address: string
+  amount: string
+  currencyCode: string
+}) {
+  const { assetRatioService } = getAPIProxy()
+  const { url, error } = await assetRatioService.getSellUrl(
+    args.offRampProvider,
+    args.chainId,
+    args.address,
+    args.asset.symbol,
+    args.amount,
+    args.currencyCode
+  )
+
+  if (error) {
+    console.log(`Failed to get sell URL: ${error}`)
+  }
+
+  return url
+}
+
 export const getTokenList = async (
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
 ): Promise<{ tokens: BraveWallet.BlockchainToken[] }> => {
@@ -331,6 +357,47 @@ export const getAllBuyAssets = async (): Promise<{
       ...sortedRampOptions,
       ...sortedSardineOptions,
       ...sortedTransakOptions
+    ])
+  }
+
+  return results
+}
+
+export const getAllSellAssets = async (): Promise<{
+  rampAssetOptions: BraveWallet.BlockchainToken[]
+  allAssetOptions: BraveWallet.BlockchainToken[]
+}> => {
+  const { blockchainRegistry } = getAPIProxy()
+  const { kRamp } = BraveWallet.OffRampProvider
+
+  const rampAssetsPromises = await Promise.all(
+    SupportedOffRampNetworks.map(chainId => blockchainRegistry.getSellTokens(kRamp, chainId))
+  )
+
+  // add token logos
+  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
+    .flatMap(p => p.tokens)
+    .map(addLogoToToken)
+
+  // separate native assets from tokens
+  const {
+    tokens: rampTokenOptions,
+    nativeAssets: rampNativeAssetOptions
+  } = getNativeTokensFromList(rampAssetOptions)
+
+  // separate BAT from other tokens
+  const {
+    bat: rampBatTokens,
+    nonBat: rampNonBatTokens
+  } = getBatTokensFromList(rampTokenOptions)
+
+  // moves Gas coins and BAT to front of list
+  const sortedRampOptions = [...rampNativeAssetOptions, ...rampBatTokens, ...rampNonBatTokens]
+
+  const results = {
+    rampAssetOptions: sortedRampOptions,
+    allAssetOptions: getUniqueAssets([
+      ...sortedRampOptions
     ])
   }
 

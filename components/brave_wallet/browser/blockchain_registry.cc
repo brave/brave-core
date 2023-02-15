@@ -157,6 +157,30 @@ void BlockchainRegistry::GetProvidersBuyTokens(
   std::move(callback).Run(GetBuyTokens(providers, chain_id));
 }
 
+void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
+                                       const std::string& chain_id,
+                                       GetSellTokensCallback callback) {
+  std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
+  const std::vector<mojom::BlockchainToken>* sell_tokens = nullptr;
+  if (provider == mojom::OffRampProvider::kRamp) {
+    sell_tokens = &GetRampSellTokens();
+  }
+
+  if (sell_tokens == nullptr) {
+    std::move(callback).Run(std::move(blockchain_sell_tokens));
+    return;
+  }
+
+  for (const auto& token : *sell_tokens) {
+    if (token.chain_id != chain_id) {
+      continue;
+    }
+
+    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(token));
+  }
+  std::move(callback).Run(std::move(blockchain_sell_tokens));
+}
+
 // TODO(muliswilliam) - Remove this function when iOS and Android no longer
 // depend on it https://github.com/brave/brave-browser/issues/23503
 void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,

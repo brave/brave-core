@@ -53,6 +53,15 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                    const std::string& currency_code,
                    GetBuyUrlV1Callback callback) override;
 
+  // Get sell URL for off-ramps
+  void GetSellUrl(mojom::OffRampProvider provider,
+                  const std::string& chain_id,
+                  const std::string& address,
+                  const std::string& symbol,
+                  const std::string& amount,
+                  const std::string& currency_code,
+                  GetSellUrlCallback callback) override;
+
   // mojom::AssetRatioService
   void GetPrice(const std::vector<std::string>& from_assets,
                 const std::vector<std::string>& to_assets,
