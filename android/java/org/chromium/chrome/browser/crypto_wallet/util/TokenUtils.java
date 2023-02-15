@@ -111,6 +111,7 @@ public class TokenUtils {
             BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
             TokenType tokenType, boolean userAssetsOnly,
             Callbacks.Callback1<BlockchainToken[]> callback) {
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly)
             getUserAssetsFiltered(braveWalletService, selectedNetwork, coinType, tokenType,
                     userAssets -> { callback.call(userAssets); });

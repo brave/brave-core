@@ -104,6 +104,7 @@ import org.chromium.url.GURL;
 import java.io.InputStream;
 import java.lang.Number;
 import java.lang.NumberFormatException;
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -1509,19 +1510,26 @@ public class Utils {
 
     // Please only use this function when you need all the info (tokens, prices and balances) at the
     // same time!
-    public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo[] allNetworks,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+    public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
+            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
+        BraveWalletBaseActivity activity = activityRef.get();
+        if (activity == null || activity.isFinishing()) return;
         BraveWalletService braveWalletService = activity.getBraveWalletService();
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         AssetRatioService assetRatioService = activity.getAssetRatioService();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
-        assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
-                && jsonRpcService != null;
-
         BraveWalletP3a braveWalletP3A = activity.getBraveWalletP3A();
+        assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
+                && jsonRpcService != null
+                && braveWalletP3A != null : "Invalid service initialization";
+
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry, assetRatioService,
+                    jsonRpcService, braveWalletP3A))
+            return;
+
         AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(4);
 
         TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
@@ -1558,7 +1566,7 @@ public class Utils {
                             new AsyncUtils.GetP3ABalancesContext(
                                     multiResponse.singleResponseComplete);
                     BalanceHelper.getP3ABalances(
-                            activity, allNetworks, selectedNetwork, getP3ABalancesContext);
+                            activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
 
                     multiResponse.setWhenAllCompletedAction(() -> {
                         // P3A active accounts
