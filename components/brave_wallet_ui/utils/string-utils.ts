@@ -28,15 +28,18 @@ export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
 
 export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')
 
-export const getRampNetworkPrefix = (chainId: string) => {
+export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
   switch (chainId) {
-    case BraveWallet.MAINNET_CHAIN_ID: return ''
+    // Offramp uses ETH prefix
+    case BraveWallet.MAINNET_CHAIN_ID: return isOfframp ? 'ETH' : ''
     case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return 'AVAXC'
     case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: return 'BSC'
     case BraveWallet.POLYGON_MAINNET_CHAIN_ID: return 'MATIC'
     case BraveWallet.SOLANA_MAINNET: return 'SOLANA'
     case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: return 'OPTIMISM'
-    case BraveWallet.CELO_MAINNET_CHAIN_ID: return ''
+    // Offramp uses CELO prefix
+    case BraveWallet.CELO_MAINNET_CHAIN_ID: return isOfframp ? 'CELO' : ''
+    case BraveWallet.FANTOM_MAINNET_CHAIN_ID: return 'FANTOM'
     case BraveWallet.FILECOIN_MAINNET: return 'FILECOIN'
     default: return ''
   }

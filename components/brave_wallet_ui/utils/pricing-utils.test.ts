@@ -10,7 +10,8 @@ import { mockAssetPrices } from '../common/constants/mocks'
 import { mockBasicAttentionToken } from '../stories/mock-data/mock-asset-options'
 import {
   computeFiatAmount,
-  findAssetPrice
+  findAssetPrice,
+  computeFiatAmountToAssetValue
 } from './pricing-utils'
 
 describe('findAssetPrice', () => {
@@ -35,5 +36,19 @@ describe('computeFiatAmount', () => {
         { symbol, decimals, value: '20' }
       ).format()
     ).toBe('0.0000000000000000176')
+  })
+})
+
+describe('computeFiatAmountToAssetValue', () => {
+  it('should find and convert the fiat amoount to token value', () => {
+    const { symbol } = mockBasicAttentionToken
+
+    expect(
+      computeFiatAmountToAssetValue(
+        '200',
+        mockAssetPrices,
+        symbol
+      ).format(6)
+    ).toBe('227.273')
   })
 })

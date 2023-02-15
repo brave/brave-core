@@ -39,6 +39,7 @@ import {
   CopyIcon,
   AddressAndButtonRow
 } from './style'
+import { SellButtonRow, SellButton } from '../../shared/style'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -51,6 +52,8 @@ interface Props {
   name: string
   hideBalances?: boolean
   isNft?: boolean
+  isSellSupported: boolean
+  showSellModal: () => void
 }
 
 export const PortfolioAccountItem = (props: Props) => {
@@ -64,7 +67,9 @@ export const PortfolioAccountItem = (props: Props) => {
     hideBalances,
     name,
     spotPrices,
-    isNft
+    isNft,
+    isSellSupported,
+    showSellModal
   } = props
 
   // Routing
@@ -91,6 +96,10 @@ export const PortfolioAccountItem = (props: Props) => {
   const fiatBalance: Amount = React.useMemo(() => {
     return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
   }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])
+
+  const isAssetsBalanceZero = React.useMemo(() => {
+    return new Amount(assetBalance).isZero()
+  }, [assetBalance])
 
   // Methods
   const onHideAccountPopup = React.useCallback(() => {
@@ -132,6 +141,11 @@ export const PortfolioAccountItem = (props: Props) => {
             <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
+        <SellButtonRow>
+          {isSellSupported && !isAssetsBalanceZero &&
+            <SellButton onClick={showSellModal}>{getLocale('braveWalletSell')}</SellButton>
+          }
+        </SellButtonRow>
         <MoreButton onClick={() => setShowAccountPopup(true)}>
           <MoreIcon />
         </MoreButton>

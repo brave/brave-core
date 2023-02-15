@@ -86,6 +86,8 @@ provideStrings({
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
   braveWalletReset: 'Reset',
+  braveWalletSell: 'Sell',
+  braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletBuyNotSupportedTooltip: 'Buy not supported',
   braveWalletSwapNotSupportedTooltip: 'Swap not supported',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
@@ -440,6 +442,7 @@ provideStrings({
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
+  braveWalletSellWithProvider: 'Sell with $1',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
