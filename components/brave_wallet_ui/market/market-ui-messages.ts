@@ -66,7 +66,7 @@ export type UpdateDepositableAssetsMessage = MarketCommandMessage & {
 }
 
 export const sendMessageToMarketUiFrame = (targetWindow: Window | null, message: MarketCommandMessage) => {
-  if (targetWindow && isComponentInStorybook()) {
+  if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveMarketUiOrigin)
   }
 }
