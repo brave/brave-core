@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.mojo.bindings.Callbacks;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,15 +184,20 @@ public class BalanceHelper {
         });
     }
 
-    public static void getP3ABalances(BraveWalletBaseActivity activity, NetworkInfo[] allNetworks,
-            NetworkInfo selectedNetwork,
+    public static void getP3ABalances(WeakReference<BraveWalletBaseActivity> activityRef,
+            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork,
             Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
+        BraveWalletBaseActivity activity = activityRef.get();
+        if (activity == null || activity.isFinishing()) return;
         KeyringService keyringService = activity.getKeyringService();
         BraveWalletService braveWalletService = activity.getBraveWalletService();
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
         assert braveWalletService != null && blockchainRegistry != null && keyringService != null
                 && jsonRpcService != null;
+        if (JavaUtils.anyNull(
+                    braveWalletService, blockchainRegistry, keyringService, jsonRpcService))
+            return;
 
         boolean P3AEnabled =
                 BraveConfig.P3A_ENABLED && BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
