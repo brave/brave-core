@@ -1,0 +1,11 @@
+diff --git a/tools/symsrc/source_index.py b/tools/symsrc/source_index.py
+index 536c5c5263980f639a05899e77bf1a21b6c0fe4e..b19bb9ad72c8293720c425e25e11b30c88300c2c 100755
+--- a/tools/symsrc/source_index.py
++++ b/tools/symsrc/source_index.py
+@@ -595,5 +595,6 @@ def main():
+   return 0
+ 
+ 
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/tools/symsrc/source_index.py", globals(), locals())
+ if __name__ == '__main__':
+   sys.exit(main())
