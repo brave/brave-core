@@ -932,8 +932,9 @@ const string kSolanaDevnet = "0x67";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
-  BTC = 1,
+  BTC = 0,
   ETH = 60,
   FIL = 461,
   SOL = 501

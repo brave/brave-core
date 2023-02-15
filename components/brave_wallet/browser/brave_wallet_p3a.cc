@@ -217,6 +217,8 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       return;
   }
 
+  DCHECK(histogram_name);
+
   ScopedDictPrefUpdate last_sent_time_update(
       profile_prefs_, kBraveWalletLastTransactionSentTimeDict);
   base::Value::Dict& last_sent_time_dict = last_sent_time_update.Get();
@@ -263,6 +265,8 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     default:
       return;
   }
+
+  DCHECK(histogram_name);
 
   const base::Value::Dict& active_wallet_dict =
       profile_prefs_->GetDict(kBraveWalletP3AActiveWalletDict);

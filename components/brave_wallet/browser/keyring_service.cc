@@ -570,7 +570,8 @@ HDKeyring* KeyringService::CreateKeyring(const std::string& keyring_id,
                                          const std::string& password) {
   if (keyring_id != mojom::kDefaultKeyringId &&
       !IsFilecoinKeyringId(keyring_id) &&
-      keyring_id != mojom::kSolanaKeyringId) {
+      keyring_id != mojom::kSolanaKeyringId &&
+      keyring_id != mojom::kBitcoinKeyringId) {
     VLOG(1) << "Unknown keyring id " << keyring_id;
     return nullptr;
   }
