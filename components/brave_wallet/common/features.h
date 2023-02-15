@@ -17,6 +17,7 @@ extern const base::FeatureParam<bool> kShowToolbarTxStatus;
 BASE_DECLARE_FEATURE(kBraveWalletFilecoinFeature);
 BASE_DECLARE_FEATURE(kBraveWalletSolanaFeature);
 BASE_DECLARE_FEATURE(kBraveWalletNftPinningFeature);
+BASE_DECLARE_FEATURE(kBraveWalletPanelV2Feature);
 extern const base::FeatureParam<bool> kCreateDefaultSolanaAccount;
 BASE_DECLARE_FEATURE(kBraveWalletSolanaProviderFeature);
 BASE_DECLARE_FEATURE(kBraveWalletDappsSupportFeature);
