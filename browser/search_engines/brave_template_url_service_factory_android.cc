@@ -36,5 +36,10 @@ JNI_BraveTemplateUrlServiceFactory_GetTemplateUrlServiceByProfile(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  return GetTemplateUrlService(profile)->GetJavaObject();
+  TemplateURLService* template_url_service = GetTemplateUrlService(profile);
+  if (template_url_service) {
+    return template_url_service->GetJavaObject();
+  } else {
+    return nullptr;
+  }
 }
