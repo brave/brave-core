@@ -101,6 +101,8 @@ extension Preferences {
     public static let seenDataMigrationFailureError = Option<Bool>(key: "rewards.seen-data-migration-failure-error", default: false)
     public static let migratedLegacyWallet = Option<Bool>(key: "rewards.migrated-legacy-wallet", default: false)
     public static let adaptiveCaptchaFailureCount = Option<Int>(key: "rewards.adaptive-captcha-failure-count", default: 0)
+    public static let adsEnabledTimestamp = Option<Date?>(key: "rewards.ads.last-time-enabled", default: nil)
+    public static let adsDisabledTimestamp = Option<Date?>(key: "rewards.ads.last-time-disabled", default: nil)
 
     public enum EnvironmentOverride: Int {
       case none

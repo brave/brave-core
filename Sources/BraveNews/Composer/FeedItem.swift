@@ -6,7 +6,7 @@
 import Foundation
 import CodableHelpers
 
-public struct FeedItem: Hashable, Comparable {
+public struct FeedItem: Identifiable, Hashable, Comparable {
   public var score: Double
   public var content: Content
   public var source: Source
@@ -18,6 +18,10 @@ public struct FeedItem: Hashable, Comparable {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(content.urlHash)
     hasher.combine(source.id)
+  }
+  
+  public var id: String {
+    "\(content.urlHash)-\(source.id)"
   }
   
   public static func == (lhs: Self, rhs: Self) -> Bool {

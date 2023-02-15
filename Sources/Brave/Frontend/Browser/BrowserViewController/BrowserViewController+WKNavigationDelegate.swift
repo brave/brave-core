@@ -12,6 +12,7 @@ import BraveUI
 import BraveWallet
 import os.log
 import Favicon
+import Growth
 
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
@@ -648,6 +649,8 @@ extension BrowserViewController: WKNavigationDelegate {
     // Added this method to determine long press menu actions better
     // Since these actions are depending on tabmanager opened WebsiteCount
     updateToolbarUsingTabManager(tabManager)
+    
+    recordFinishedPageLoadP3A()
   }
 
   public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
@@ -702,6 +705,24 @@ extension BrowserViewController: WKNavigationDelegate {
 // MARK: WKNavigationDelegateHelper
 
 extension BrowserViewController {
+  fileprivate func recordFinishedPageLoadP3A() {
+    var storage = P3ATimedStorage<Int>.pagesLoadedStorage
+    storage.add(value: 1, to: Date())
+    UmaHistogramRecordValueToBucket(
+      "Brave.Core.PagesLoaded",
+      buckets: [
+        0,
+        .r(1...10),
+        .r(11...50),
+        .r(51...100),
+        .r(101...500),
+        .r(501...1000),
+        .r(1001...),
+      ],
+      value: storage.combinedValue
+    )
+  }
+  
   private func tab(for webView: WKWebView) -> Tab? {
     tabManager[webView] ?? (webView as? TabWebView)?.tab
   }
@@ -997,4 +1018,8 @@ extension BrowserViewController: WKUIDelegate {
     }
     self.toolbarVisibilityViewModel.toolbarState = .expanded
   }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var pagesLoadedStorage: Self { .init(name: "paged-loaded", lifetimeInDays: 7) }
 }

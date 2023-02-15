@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import BraveUI
 import SwiftUI
+import Growth
 
 struct MenuItemHeaderView: View {
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
@@ -142,6 +143,24 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationBar.isTranslucent = false
+    recordMenuOpenedP3A()
+  }
+  
+  private func recordMenuOpenedP3A() {
+    var storage = P3ATimedStorage<Int>.menuPresentedStorage
+    storage.add(value: 1, to: Date())
+    UmaHistogramRecordValueToBucket(
+      "Brave.Toolbar.MenuOpens",
+      buckets: [
+        0,
+        .r(1...5),
+        .r(6...15),
+        .r(16...29),
+        .r(30...49),
+        .r(50...),
+      ],
+      value: storage.combinedValue
+    )
   }
 
   override func viewSafeAreaInsetsDidChange() {
@@ -357,4 +376,8 @@ class ColorAwareNavigationController: UINavigationController {
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return statusBarStyle
   }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var menuPresentedStorage: Self { .init(name: "menu-presented", lifetimeInDays: 7) }
 }
