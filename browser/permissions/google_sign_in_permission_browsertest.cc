@@ -219,8 +219,7 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
               content_setting);
     EXPECT_EQ(cookie_settings()->GetCookieSetting(
                   GURL(kAccountsGoogleUrl), embedding_url_,
-                  net::CookieSettingOverrides(), nullptr,
-                  content_settings::CookieSettingsBase::QueryReason::kCookies),
+                  net::CookieSettingOverrides(), nullptr),
               cookie_setting);
   }
 
