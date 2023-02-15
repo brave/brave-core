@@ -87,7 +87,6 @@ test("brave_unit_tests") {
   configs += [
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
-    "//chrome/test:pdb_larger_than_4gb",
   ]
 
   sources = [
@@ -674,7 +673,6 @@ test("brave_browser_tests") {
     "//brave/vendor/bat-native-ledger:internal_config",
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
-    "//chrome/test:pdb_larger_than_4gb",
   ]
 
   sources = [
