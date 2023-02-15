@@ -116,10 +116,7 @@ class ADBLOCK_EXPORT Engine {
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
   const std::string urlCosmeticResources(const std::string& url);
-  const std::string hiddenClassIdSelectors(
-      const std::vector<std::string>& classes,
-      const std::vector<std::string>& ids,
-      const std::vector<std::string>& exceptions);
+  const std::string hiddenClassIdSelectors(const std::string& json);
   AdblockDebugInfo getAdblockDebugInfo();
   void discardRegex(uint64_t regex_id);
   void setupDiscardPolicy(const RegexManagerDiscardPolicy& policy);

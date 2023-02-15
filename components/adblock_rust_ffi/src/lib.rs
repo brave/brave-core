@@ -13,6 +13,16 @@ use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::c_char;
 use std::string::String;
+use serde::Deserialize;
+use std::collections::HashSet;
+
+/// An object that deserializes the string json data passed to hidden class method
+#[derive(Deserialize, Debug)]
+pub struct HiddenClassRequest {
+  pub ids: Vec<String>,
+  pub classes: Vec<String>,
+  pub exceptions: HashSet<String>,
+}
 
 /// An external callback that receives a hostname and two out-parameters for start and end
 /// position. The callback should fill the start and end positions with the start and end indices
@@ -450,28 +460,18 @@ pub unsafe extern "C" fn engine_url_cosmetic_resources(
 #[no_mangle]
 pub unsafe extern "C" fn engine_hidden_class_id_selectors(
     engine: *mut Engine,
-    classes: *const *const c_char,
-    classes_size: size_t,
-    ids: *const *const c_char,
-    ids_size: size_t,
-    exceptions: *const *const c_char,
-    exceptions_size: size_t,
+    json: *const c_char
 ) -> *mut c_char {
-    let classes = std::slice::from_raw_parts(classes, classes_size);
-    let classes: Vec<String> = (0..classes_size)
-        .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
-        .collect();
-    let ids = std::slice::from_raw_parts(ids, ids_size);
-    let ids: Vec<String> = (0..ids_size)
-        .map(|index| CStr::from_ptr(ids[index]).to_str().unwrap().to_owned())
-        .collect();
-    let exceptions = std::slice::from_raw_parts(exceptions, exceptions_size);
-    let exceptions: std::collections::HashSet<String> = (0..exceptions_size)
-        .map(|index| CStr::from_ptr(exceptions[index]).to_str().unwrap().to_owned())
-        .collect();
+let json = { CStr::from_ptr(json) };
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let stylesheet = engine.hidden_class_id_selectors(&classes, &ids, &exceptions);
+    let json = json.to_str().unwrap();
+    let request: HiddenClassRequest = serde_json::from_str(json).unwrap(); 
+
+    let stylesheet = engine.hidden_class_id_selectors(
+        &request.classes, &request.ids, &request.exceptions
+    );
+
     CString::new(serde_json::to_string(&stylesheet).unwrap_or_else(|_| "".into()))
         .expect("Error: CString::new()")
         .into_raw()

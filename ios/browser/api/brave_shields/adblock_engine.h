@@ -85,10 +85,8 @@ OBJC_EXPORT
 ///
 /// The leading '.' or '#' character should not be provided
 - (NSString*)
-    stylesheetForCosmeticRulesIncludingClasses:(NSArray<NSString*>*)classes
-                                           ids:(NSArray<NSString*>*)ids
-                                    exceptions:(NSArray<NSString*>*)exceptions
-    NS_SWIFT_NAME(stylesheetForCosmeticRulesIncluding(classes:ids:exceptions:));
+    stylesheetForCosmeticRulesFromJSON:(NSString*)json
+    NS_SWIFT_NAME(stylesheetForCosmeticRules(fromJSON:));
 
 /// Passes a callback to the adblock library, allowing it to be used for domain
 /// resolution.

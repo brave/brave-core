@@ -164,31 +164,8 @@ const std::string Engine::urlCosmeticResources(const std::string& url) {
   return resources_json;
 }
 
-const std::string Engine::hiddenClassIdSelectors(
-    const std::vector<std::string>& classes,
-    const std::vector<std::string>& ids,
-    const std::vector<std::string>& exceptions) {
-  std::vector<const char*> classes_raw;
-  classes_raw.reserve(classes.size());
-  for (const auto& classe : classes) {
-    classes_raw.push_back(classe.c_str());
-  }
-
-  std::vector<const char*> ids_raw;
-  ids_raw.reserve(ids.size());
-  for (const auto& id : ids) {
-    ids_raw.push_back(id.c_str());
-  }
-
-  std::vector<const char*> exceptions_raw;
-  exceptions_raw.reserve(exceptions.size());
-  for (const auto& exception : exceptions) {
-    exceptions_raw.push_back(exception.c_str());
-  }
-
-  char* stylesheet_raw = engine_hidden_class_id_selectors(
-      raw, classes_raw.data(), classes.size(), ids_raw.data(), ids.size(),
-      exceptions_raw.data(), exceptions.size());
+const std::string Engine::hiddenClassIdSelectors(const std::string& json) {
+  char* stylesheet_raw = engine_hidden_class_id_selectors(raw, json.c_str());
   const std::string stylesheet = std::string(stylesheet_raw);
 
   c_char_buffer_destroy(stylesheet_raw);

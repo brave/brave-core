@@ -229,12 +229,7 @@ char* engine_url_cosmetic_resources(struct C_Engine* engine, const char* url);
  * The leading '.' or '#' character should not be provided
  */
 char* engine_hidden_class_id_selectors(struct C_Engine* engine,
-                                       const char* const* classes,
-                                       size_t classes_size,
-                                       const char* const* ids,
-                                       size_t ids_size,
-                                       const char* const* exceptions,
-                                       size_t exceptions_size);
+                                       const char* json);
 
 #if BUILDFLAG(IS_IOS)
 char* convert_rules_to_content_blocking(const char* rules);

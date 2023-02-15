@@ -118,13 +118,9 @@
 }
 
 - (NSString*)
-    stylesheetForCosmeticRulesIncludingClasses:(NSArray<NSString*>*)classes
-                                           ids:(NSArray<NSString*>*)ids
-                                    exceptions:(NSArray<NSString*>*)exceptions {
-  return base::SysUTF8ToNSString(adblock_engine->hiddenClassIdSelectors(
-      brave::ns_to_vector<std::string>(classes),
-      brave::ns_to_vector<std::string>(ids),
-      brave::ns_to_vector<std::string>(exceptions)));
+    stylesheetForCosmeticRulesFromJSON:(NSString*)json {
+  return base::SysUTF8ToNSString(
+      adblock_engine->hiddenClassIdSelectors(base::SysNSStringToUTF8(json)));
 }
 
 + (bool)setDomainResolver:(DomainResolverCallback)domainResolver {
