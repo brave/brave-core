@@ -14,7 +14,7 @@ namespace {
 std::vector<v8::page_graph::ExecutingScript>
 GetExecutingScriptsImpl(Isolate* isolate, bool all, bool include_position) {
   std::vector<v8::page_graph::ExecutingScript> result;
-  JavaScriptFrameIterator it(isolate);
+  JavaScriptStackFrameIterator it(isolate);
   while (!it.done()) {
     JavaScriptFrame* frame = it.frame();
     std::vector<SharedFunctionInfo> functions;
