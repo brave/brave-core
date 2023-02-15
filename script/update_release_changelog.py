@@ -62,7 +62,15 @@ def main():
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
-    tag_changelog_txt = render_markdown(changelog_txt, version, logging)
+    rn_regex = re.compile(
+        r'^## .*?' + version.replace(".", "\\.") + r'.*?$\n+(.*?)\n+^##\s',
+        flags=re.DOTALL | re.MULTILINE)
+    match = rn_regex.search(changelog_txt)
+    if match:
+        tag_changelog_txt = '# Release Notes\n\n{}'.format(match.group(1))
+    else:
+        logging.error("Unable to locate release notes!")
+        exit(1)
 
     # BRAVE_REPO is defined in lib/helpers.py
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
