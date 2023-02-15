@@ -43,9 +43,7 @@ class BraveToolbarView : public ToolbarView,
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
-  void ShowBookmarkBubble(const GURL& url,
-                          bool already_bookmarked,
-                          bookmarks::BookmarkBubbleObserver* observer) override;
+  void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
 
