@@ -42,6 +42,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/ui/web_page_background_color_tab_helper.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
 
@@ -84,6 +85,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
+  WebPageBackgroundColorTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsDataController::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
 #endif

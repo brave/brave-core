@@ -112,6 +112,8 @@ source_set("ui") {
       "toolbar/brave_bookmark_sub_menu_model.cc",
       "toolbar/brave_bookmark_sub_menu_model.h",
       "toolbar/brave_recent_tabs_sub_menu_model.h",
+      "web_page_background_color_tab_helper.cc",
+      "web_page_background_color_tab_helper.h",
       "webui/brave_rewards/rewards_panel_handler.cc",
       "webui/brave_rewards/rewards_panel_handler.h",
       "webui/brave_rewards/rewards_panel_ui.cc",
