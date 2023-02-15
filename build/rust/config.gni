@@ -8,7 +8,6 @@ import("//build/config/clang/clang.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/config.gni")
 import("//build/config/rust.gni")
-import("//build/config/sysroot.gni")
 
 declare_args() {
   rustup_home = "//brave/build/rustup/$brave_rust_version"
@@ -36,6 +35,7 @@ default_rustflags = [
   "-Zdep-info-omit-d-target",
   "-Zmacro-backtrace",
   "-Zremap-cwd-prefix=.",
+  "--cap-lints=allow",
 ]
 
 if (enable_rust_lto) {
@@ -68,8 +68,12 @@ if (symbol_level == 1) {
 
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
+  if (is_component_build) {
+    default_rustflags += [ "-Ctarget-feature=-crt-static" ]
+  } else {
+    default_rustflags += [ "-Ctarget-feature=+crt-static" ]
+  }
   if (current_cpu == "x86") {
-    default_rustflags += [ "--codegen target-feature=+crt-static" ]
     rustc_target = "i686-pc-windows-msvc"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-pc-windows-msvc"
@@ -87,10 +91,6 @@ if (is_win) {
     rustc_target = "x86_64-unknown-linux-gnu"
   } else if (current_cpu == "arm64") {
     rustc_target = "aarch64-unknown-linux-gnu"
-  }
-  if (use_sysroot) {
-    default_rustflags += [ "-C link-arg=--sysroot=$sysroot" ]
-    default_rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
   }
 } else if (is_android) {
   if (current_cpu == "arm") {

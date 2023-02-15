@@ -179,8 +179,10 @@ def main():
     tools = [{
         "name": "cbindgen",
         "version": "0.14.2",
+        "locked": True,
     }, {
         "name": "cxxbridge-cmd",
+        "locked": True,
         "version": cxx_version,
     }, {
         "name": "cargo-audit",

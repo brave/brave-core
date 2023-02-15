@@ -110,6 +110,8 @@ template("cargo_build") {
     force_rebuild_inputs = [
       script,
       cargo_bin,
+      "Cargo.toml",
+      "Cargo.lock",
     ]
 
     if (is_apple) {
