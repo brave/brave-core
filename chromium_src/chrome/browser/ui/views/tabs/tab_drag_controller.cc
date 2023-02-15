@@ -40,9 +40,6 @@
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController
 
-#include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-
 TabDragController::TabDragController() = default;
 
 TabDragController::~TabDragController() = default;
