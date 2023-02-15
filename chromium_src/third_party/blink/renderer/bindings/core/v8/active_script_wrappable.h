@@ -30,10 +30,10 @@ template <typename T, typename>
 struct PostConstructionCallbackTrait;
 
 template <class, class = void>
-struct is_post_construction_callback : std::false_type {};
+struct HasActiveScriptWrappableBaseConstructed : std::false_type {};
 
 template <class T>
-struct is_post_construction_callback<
+struct HasActiveScriptWrappableBaseConstructed<
     T,
     std::void_t<
         decltype(std::declval<T>().ActiveScriptWrappableBaseConstructed())>>
@@ -43,7 +43,7 @@ struct is_post_construction_callback<
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
-    typename std::enable_if<is_post_construction_callback<T>::value &&
+    typename std::enable_if<HasActiveScriptWrappableBaseConstructed<T>::value &&
                                 !std::is_base_of<blink::Node, T>::value,
                             void>::type> {
   static void Call(T* object) {
