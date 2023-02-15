@@ -528,8 +528,10 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     if isBookmarksBeingSearched {
       return true
     } else {
-      fetchedBookmarkItem = bookmarksFRC?.object(at: indexPath)
-      return fetchedBookmarkItem?.canBeDeleted ?? false
+      if let fetchedBookmarkItem = bookmarksFRC?.object(at: indexPath), fetchedBookmarkItem.bookmarkNode.isValid {
+        return fetchedBookmarkItem.canBeDeleted
+      }
+      return false
     }
   }
 
