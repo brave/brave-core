@@ -13,17 +13,25 @@
 
 namespace extensions {
 
-BraveExtensionService::BraveExtensionService(Profile* profile,
+BraveExtensionService::BraveExtensionService(
+    Profile* profile,
     const base::CommandLine* command_line,
     const base::FilePath& install_directory,
+    const base::FilePath& unpacked_install_directory,
     ExtensionPrefs* extension_prefs,
     Blocklist* blocklist,
     bool autoupdate_enabled,
     bool extensions_enabled,
-    base::OneShotEvent* ready) :
-    ExtensionService(profile, command_line, install_directory, extension_prefs,
-        blocklist, autoupdate_enabled, extensions_enabled, ready) {
-}
+    base::OneShotEvent* ready)
+    : ExtensionService(profile,
+                       command_line,
+                       install_directory,
+                       unpacked_install_directory,
+                       extension_prefs,
+                       blocklist,
+                       autoupdate_enabled,
+                       extensions_enabled,
+                       ready) {}
 
 BraveExtensionService::~BraveExtensionService() = default;
 
