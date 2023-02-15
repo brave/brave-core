@@ -59,8 +59,9 @@ class TestEventsListener : public mojom::SolanaEventsListener {
 
   void AccountChangedEvent(
       const absl::optional<std::string>& account) override {
-    if (account.has_value())
+    if (account.has_value()) {
       account_ = *account;
+    }
     account_changed_fired_ = true;
   }
 
@@ -155,8 +156,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
     brave_wallet_service_->GetPendingSignMessageRequests(
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
-              for (const auto& request : requests)
+              for (const auto& request : requests) {
                 requests_out.push_back(request.Clone());
+              }
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -264,10 +266,12 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        const std::string& public_key) {
-          if (error_out)
+          if (error_out) {
             *error_out = error;
-          if (error_message_out)
+          }
+          if (error_message_out) {
             *error_message_out = error_message;
+          }
           account = public_key;
           run_loop.Quit();
         }));
@@ -291,13 +295,16 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        base::Value::Dict result) {
-          if (error_out)
+          if (error_out) {
             *error_out = error;
-          if (error_message_out)
+          }
+          if (error_message_out) {
             *error_message_out = error_message;
+          }
           const std::string* signature = result.FindString("signature");
-          if (signature)
+          if (signature) {
             signature_out = *signature;
+          }
           run_loop.Quit();
         }));
 
@@ -411,8 +418,9 @@ class SolanaProviderImplUnitTest : public testing::Test {
                             const std::string& expected_error_message) {
     base::Value::Dict result_out;
     auto value = base::JSONReader::Read(json);
-    if (!value)
+    if (!value) {
       return result_out;
+    }
     base::RunLoop run_loop;
     provider_->Request(
         value->GetDict().Clone(),
@@ -597,16 +605,33 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
   EXPECT_TRUE(account_creation_callback_called);
+  EXPECT_TRUE(provider_->account_creation_shown_);
 
+  provider_->account_creation_shown_ = false;
   account_creation_callback_called = false;
   SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
       [&]() { account_creation_callback_called = true; }));
   // No solana account
+  CreateWallet();
+  keyring_service_->RemoveSelectedAccountForCoin(mojom::CoinType::SOL,
+                                                 mojom::kSolanaKeyringId);
   account = Connect(absl::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
   EXPECT_TRUE(account_creation_callback_called);
+  EXPECT_TRUE(provider_->account_creation_shown_);
+
+  // It should be shown at most once.
+  account_creation_callback_called = false;
+  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
+      [&]() { account_creation_callback_called = true; }));
+  account = Connect(absl::nullopt, &error, &error_message);
+  EXPECT_TRUE(account.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
+  EXPECT_FALSE(IsConnected());
+  EXPECT_FALSE(account_creation_callback_called);
+  EXPECT_TRUE(provider_->account_creation_shown_);
 }
 
 TEST_F(SolanaProviderImplUnitTest, Disconnect) {
