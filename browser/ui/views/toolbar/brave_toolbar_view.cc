@@ -303,10 +303,8 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   }
 }
 
-void BraveToolbarView::ShowBookmarkBubble(
-    const GURL& url,
-    bool already_bookmarked,
-    bookmarks::BookmarkBubbleObserver* observer) {
+void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
+                                          bool already_bookmarked) {
   // Show BookmarkBubble attached to Brave's bookmark button
   // or the location bar if there is no bookmark button
   // (i.e. in non-normal display mode).
@@ -318,8 +316,8 @@ void BraveToolbarView::ShowBookmarkBubble(
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
-                                 observer, std::move(delegate),
-                                 browser_->profile(), url, already_bookmarked);
+                                 std::move(delegate), browser_->profile(), url,
+                                 already_bookmarked);
 }
 
 void BraveToolbarView::ViewHierarchyChanged(
