@@ -1435,6 +1435,16 @@ public class BrowserViewController: UIViewController {
 
   /// Shows a vpn screen based on vpn state.
   public func presentCorrespondingVPNViewController() {
+    if BraveSkusManager.keepShowingSessionExpiredState {
+      let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { [unowned self] _ in
+        self.openURLInNewTab(BraveUX.braveAccountMainURL, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+                             isPrivileged: false)
+      })
+      
+      present(alert, animated: true)
+      return
+    }
+    
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
     let nav = SettingsNavigationController(rootViewController: vc)
     nav.navigationBar.topItem?.leftBarButtonItem =

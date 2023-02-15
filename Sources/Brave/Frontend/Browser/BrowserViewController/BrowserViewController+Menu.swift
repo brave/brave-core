@@ -27,6 +27,11 @@ extension BrowserViewController {
           let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()
+        }, displayAlert: { [unowned menuController] alert in
+          menuController.present(alert, animated: true)
+        }, openURL: { [weak self] url in
+          self?.openURLInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+                               isPrivileged: false)
         })
     }
   }
@@ -51,6 +56,13 @@ extension BrowserViewController {
           let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()
+        }, displayAlert: { [unowned self] alert in
+          self.popToBVC()
+          self.present(alert, animated: true)
+        }, openURL: { [unowned self] url in
+          self.openURLInNewTab(url,
+                               isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
+                               isPrivileged: false)
         }
       )
 

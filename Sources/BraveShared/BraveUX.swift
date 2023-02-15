@@ -6,6 +6,7 @@ import UIKit
 public struct BraveUX {
   public static let braveCommunityURL = URL(string: "https://community.brave.com/")!
   public static let braveVPNFaqURL = URL(string: "https://support.brave.com/hc/en-us/articles/360045045952")!
+  public static let braveAccountMainURL = URL(string: "https://account.brave.com")!
   public static let braveVPNLinkReceiptProd =
     URL(string: "https://account.brave.com/?intent=connect-receipt&product=vpn")!
   public static let braveVPNLinkReceiptStaging =
