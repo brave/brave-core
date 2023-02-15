@@ -1165,6 +1165,8 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       </if>
-    </messages>
+    <if expr="is_android">
+      </if>
+  </messages>
 </release>
 </grit>
