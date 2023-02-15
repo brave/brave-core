@@ -39,10 +39,12 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/ssl_host_state_delegate.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "gmock/gmock.h"
 #include "net/base/features.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -348,6 +350,59 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 }
 
+IN_PROC_BROWSER_TEST_F(BraveTorTest, HttpAllowlistIsolation) {
+  // Normal window
+  Profile* main_profile = browser()->profile();
+  auto* main_storage_partition = main_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* main_state =
+      main_profile->GetSSLHostStateDelegate();
+
+  // Incognito window
+  Browser* incognito_browser = CreateIncognitoBrowser(nullptr);
+  Profile* incognito_profile = incognito_browser->profile();
+  auto* incognito_storage_partition =
+      incognito_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* incognito_state =
+      incognito_profile->GetSSLHostStateDelegate();
+
+  // Tor window
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  DownloadTorClient();
+  auto tor = WaitForTorLaunched();
+  Profile* tor_profile = tor.tor_profile;
+  auto* tor_storage_partition = tor_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* tor_state =
+      tor_profile->GetSSLHostStateDelegate();
+
+  // Confirm that main, incognito, and tor profiles are all different.
+  EXPECT_NE(main_profile, incognito_profile);
+  EXPECT_NE(main_profile, tor_profile);
+  EXPECT_NE(incognito_profile, tor_profile);
+
+  // Test domains, one to "allow http" for each profile.
+  std::string host1("example1.test");
+  std::string host2("example2.test");
+  std::string host3("example3.test");
+  main_state->AllowHttpForHost(host1, main_storage_partition);
+  incognito_state->AllowHttpForHost(host2, incognito_storage_partition);
+  tor_state->AllowHttpForHost(host3, tor_storage_partition);
+
+  // Check that each domain was added to the correct allowlist and
+  // there is no leaking between the three profiles.
+  EXPECT_TRUE(main_state->IsHttpAllowedForHost(host1, main_storage_partition));
+  EXPECT_FALSE(incognito_state->IsHttpAllowedForHost(
+      host1, incognito_storage_partition));
+  EXPECT_FALSE(tor_state->IsHttpAllowedForHost(host1, tor_storage_partition));
+  EXPECT_FALSE(main_state->IsHttpAllowedForHost(host2, main_storage_partition));
+  EXPECT_TRUE(incognito_state->IsHttpAllowedForHost(
+      host2, incognito_storage_partition));
+  EXPECT_FALSE(tor_state->IsHttpAllowedForHost(host2, tor_storage_partition));
+  EXPECT_FALSE(main_state->IsHttpAllowedForHost(host3, main_storage_partition));
+  EXPECT_FALSE(incognito_state->IsHttpAllowedForHost(
+      host3, incognito_storage_partition));
+  EXPECT_TRUE(tor_state->IsHttpAllowedForHost(host3, tor_storage_partition));
+}
+
 class BraveTorTest_EnableTorHttpsOnlyFlag
     : public BraveTorTest,
       public ::testing::WithParamInterface<bool> {
@@ -382,15 +437,8 @@ IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
 
   Profile* tor_profile = OpenTorWindow();
   PrefService* prefs = tor_profile->GetPrefs();
-  if (IsBraveHttpsByDefaultEnabled()) {
-    // Check that HTTPS-Only Mode is not enabled for the Tor window,
-    // because we already force HTTPS upgrade when the HTTPS by Default
-    // flag is enabled.
-    EXPECT_FALSE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
-  } else {
-    // Check that HTTPS-Only Mode has been enabled for the Tor window.
-    EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
-  }
+  // Check that HTTPS-Only Mode has been enabled for the Tor window.
+  EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
 }
 
 INSTANTIATE_TEST_SUITE_P(BraveTorTest_EnableTorHttpsOnlyFlag,
