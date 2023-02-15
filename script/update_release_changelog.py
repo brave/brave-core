@@ -62,9 +62,9 @@ def main():
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
-    rn_regex = re.compile(
-        r'^## .*?' + version.replace(".", "\\.") + r'.*?$\n+(.*?)\n+^##\s',
-        flags=re.DOTALL | re.MULTILINE)
+    rn_regex = re.compile(r'^## .*?' + version.replace(".", "\\.") +
+                          r'.*?$\n+(.*?)\n+^##\s',
+                          flags=re.DOTALL | re.MULTILINE)
     match = rn_regex.search(changelog_txt)
     if match:
         tag_changelog_txt = '# Release Notes\n\n{}'.format(match.group(1))
