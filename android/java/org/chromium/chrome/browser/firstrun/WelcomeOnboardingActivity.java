@@ -53,7 +53,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
     private boolean mIsTablet;
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
 
     private View mVLeafAlignTop;
@@ -167,15 +167,22 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             int margin = mIsTablet ? 100 : 0;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
-            setFadeInAnimation(mTvWelcome, 200);
-            mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
+            if (mTvWelcome != null) {
+                mTvWelcome.animate().alpha(1f).setDuration(200).withEndAction(
+                        () -> mTvWelcome.setVisibility(View.VISIBLE));
+            }
+            if (mIvBrave != null) {
+                mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
+            }
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mTvWelcome.animate()
-                            .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
-                            .setDuration(3000)
-                            .start();
+                    if (mTvWelcome != null) {
+                        mTvWelcome.animate()
+                                .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
+                                .setDuration(3000)
+                                .start();
+                    }
                 }
             }, 200);
 
@@ -190,7 +197,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 mBtnPositive.setText(getResources().getString(R.string.continue_text));
                 mBtnNegative.setVisibility(View.GONE);
             }
-            mTvWelcome.setVisibility(View.GONE);
+            if (mTvWelcome != null) {
+                mTvWelcome.setVisibility(View.GONE);
+            }
             mLayoutCard.setVisibility(View.VISIBLE);
             mIvArrowDown.setVisibility(View.VISIBLE);
 
@@ -281,28 +290,26 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private void setFadeInAnimation(View view, int duration) {
-        view.animate().alpha(1f).setDuration(duration).withEndAction(
-                () -> view.setVisibility(View.VISIBLE));
-    }
-
     private void setLeafAnimation(View leafAlignView, ImageView leafView, float scale,
             float leafMargin, boolean isTopLeaf) {
-        if (leafMargin > 0) {
+        if (leafMargin > 0 && leafAlignView != null) {
             int margin = (int) dpToPx(this, leafMargin);
             Animation animation = new Animation() {
                 @Override
                 protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    ViewGroup.MarginLayoutParams layoutParams =
-                            (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
-                    if (isTopLeaf) {
-                        layoutParams.bottomMargin = margin
-                                - (int) ((margin - layoutParams.bottomMargin) * interpolatedTime);
-                    } else {
-                        layoutParams.topMargin = margin
-                                - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+                    if (leafAlignView != null) {
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
+                        if (isTopLeaf) {
+                            layoutParams.bottomMargin = margin
+                                    - (int) ((margin - layoutParams.bottomMargin)
+                                            * interpolatedTime);
+                        } else {
+                            layoutParams.topMargin = margin
+                                    - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+                        }
+                        leafAlignView.setLayoutParams(layoutParams);
                     }
-                    leafAlignView.setLayoutParams(layoutParams);
                 }
             };
             animation.setDuration(800);
@@ -315,12 +322,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
             BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
         }
+        if (isActivityFinishingOrDestroyed()) return;
         nextOnboardingStep();
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void finishNativeInitializationPostWork() {
@@ -347,7 +355,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     public void triggerLayoutInflation() {
         super.triggerLayoutInflation();
 
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this, getChildAccountStatusSupplier()) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();
