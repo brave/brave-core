@@ -2879,6 +2879,26 @@ extension Strings {
       NSLocalizedString("vpn.contactFormEmailNotConfiguredBody", tableName: "BraveShared", bundle: .module,
         value: "Can't send email. Please check your email configuration.",
         comment: "Button name to send contact form.")
+    
+    public static let sessionExpiredTitle =
+      NSLocalizedString("vpn.sessionExpiredTitle", tableName: "BraveShared", bundle: .module,
+        value: "Session expired",
+        comment: "Alert title to show when the VPN session has expired")
+    
+    public static let sessionExpiredDescription =
+      NSLocalizedString("vpn.sessionExpiredDescription", tableName: "BraveShared", bundle: .module,
+        value: "Please login to your Brave Account to refresh your VPN session.",
+        comment: "Alert description to show when the VPN session has expired")
+    
+    public static let sessionExpiredLoginButton =
+      NSLocalizedString("vpn.sessionExpiredLoginButton", tableName: "BraveShared", bundle: .module,
+        value: "Login",
+        comment: "Login button to fix the vpn session expiration issue")
+    
+    public static let sessionExpiredDismissButton =
+      NSLocalizedString("vpn.sessionExpiredDismissButton", tableName: "BraveShared", bundle: .module,
+        value: "Dismiss",
+        comment: "Dismiss button to close the alert showing that the vpn session has expired")
   }
 }
 

@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 import SwiftUI
 import BraveUI
 import BraveVPN
@@ -21,6 +22,10 @@ struct VPNMenuButton: View {
   /// A closure executed when VPN is toggled and status is installed. This will be used to set
   /// current activity for user
   var enableInstalledVPN: () -> Void
+  /// A closure executed when the parent must display some alert
+  var displayAlert: (UIAlertController) -> Void
+  /// A closure to open a URL.
+  var openURL: (URL) -> Void
 
   @State private var isVPNStatusChanging: Bool = BraveVPN.reconnectPending
   @State private var isVPNEnabled = BraveVPN.isConnected
@@ -34,6 +39,15 @@ struct VPNMenuButton: View {
   }
 
   private func toggleVPN(_ enabled: Bool) {
+    if BraveSkusManager.keepShowingSessionExpiredState {
+      let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { _ in
+        openURL(BraveUX.braveAccountMainURL)
+      })
+      
+      displayAlert(alert)
+      return
+    }
+    
     let vpnState = BraveVPN.vpnState
 
     if !VPNProductInfo.isComplete {

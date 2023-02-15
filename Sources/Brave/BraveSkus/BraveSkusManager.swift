@@ -106,15 +106,18 @@ public class BraveSkusManager {
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         let credentialSummaryJson = try jsonDecoder.decode(CredentialSummary.self, from: data)
         
-        if credentialSummaryJson.isValid {
-          
+        switch credentialSummaryJson.state {
+        case .valid:
           if Preferences.VPN.skusCredential.value == nil {
             Logger.module.debug("The credential does NOT exists, calling prepareCredentialsPresentation")
             self?.prepareCredentialsPresentation(for: domain, path: "*", resultCredential: nil)
           } else {
             Logger.module.debug("The credential exists, NOT calling prepareCredentialsPresentation")
           }
-        } else {
+        case .sessionExpired:
+          Logger.module.debug("This credential session has expired")
+          Self.keepShowingSessionExpiredState = true
+        case .invalid:
           if !credentialSummaryJson.active {
             Logger.module.debug("The credential summary is not active")
           }
@@ -138,8 +141,16 @@ public class BraveSkusManager {
     let remainingCredentialCount: Int
     // The json for credential summary has additional fields. They are not used in the app at the moment.
     
-    var isValid: Bool {
-      active && remainingCredentialCount > 0
+    enum State {
+      case valid
+      case invalid
+      case sessionExpired
+    }
+    
+    var state: State {
+      if active && remainingCredentialCount > 0 { return .valid }
+      if active && remainingCredentialCount == 0 { return .sessionExpired }
+      return .invalid
     }
     
     init(from decoder: Decoder) throws {
@@ -154,5 +165,21 @@ public class BraveSkusManager {
       
       self.expiresAt = expiresAt
     }
+  }
+  
+  // MARK: - Session Expired state
+  /// An in-memory flag that will show a "session expired" prompt to the user in the current browsing session.
+  public static var keepShowingSessionExpiredState = false
+  
+  public static func sessionExpiredStateAlert(loginCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+    let alert = UIAlertController(title: Strings.VPN.sessionExpiredTitle, message: Strings.VPN.sessionExpiredDescription, preferredStyle: .alert)
+    
+    let loginButton = UIAlertAction(title: Strings.VPN.sessionExpiredLoginButton, style: .default,
+                                    handler: loginCallback)
+    let dismissButton = UIAlertAction(title: Strings.VPN.sessionExpiredDismissButton, style: .cancel)
+    alert.addAction(loginButton)
+    alert.addAction(dismissButton)
+    
+    return alert
   }
 }
