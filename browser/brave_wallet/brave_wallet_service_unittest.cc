@@ -569,24 +569,16 @@ class BraveWalletServiceUnitTest : public testing::Test {
     ASSERT_NE(valid_password, nullptr);
     ASSERT_NE(valid_mnemonic, nullptr);
 
-    keyring_service_->Lock();
-    // Check new password
-    base::RunLoop run_loop;
-    keyring_service_->Unlock(new_password,
-                             base::BindLambdaForTesting([&](bool success) {
-                               *valid_password = success;
-                               run_loop.Quit();
-                             }));
-    run_loop.Run();
+    *valid_password = keyring_service_->ValidatePasswordInternal(new_password);
 
-    base::RunLoop run_loop2;
+    base::RunLoop run_loop;
     keyring_service_->GetMnemonicForDefaultKeyring(
         new_password,
         base::BindLambdaForTesting([&](const std::string& mnemonic) {
           *valid_mnemonic = (mnemonic == in_mnemonic);
-          run_loop2.Quit();
+          run_loop.Quit();
         }));
-    run_loop2.Run();
+    run_loop.Run();
   }
 
   void CheckAddresses(const std::vector<std::string>& addresses,

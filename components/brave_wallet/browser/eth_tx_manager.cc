@@ -546,7 +546,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
     return;
   }
   meta->tx()->set_nonce(nonce);
-  DCHECK(!keyring_service_->IsLocked());
+  DCHECK(!keyring_service_->IsLocked(mojom::kDefaultKeyringId));
   keyring_service_->SignTransactionByDefaultKeyring(meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);

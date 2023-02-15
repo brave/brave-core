@@ -124,7 +124,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
   void RemoveHardwareAccount(const std::string& address,
-                             const std::string& password,
                              mojom::CoinType coin,
                              RemoveHardwareAccountCallback callback) override;
   void RemoveImportedAccount(const std::string& address,
@@ -198,7 +197,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddAccountsWithDefaultName(size_t number);
 
-  bool IsLocked(const std::string& keyring_id = mojom::kDefaultKeyringId) const;
+  bool IsLocked(const std::string& keyring_id) const;
+  bool IsLockedSync() const;
   bool HasPendingUnlockRequest() const;
   void RequestUnlock();
   absl::optional<std::string> GetSelectedAccount(mojom::CoinType coin) const;
@@ -269,6 +269,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            KeyringServiceObserver);
 
+  friend class BraveWalletServiceUnitTest;
   friend class EthereumProviderImplUnitTest;
   friend class SolanaProviderImplUnitTest;
   friend class KeyringServiceAccountDiscoveryUnitTest;

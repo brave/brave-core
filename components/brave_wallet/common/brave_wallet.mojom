@@ -770,7 +770,7 @@ interface KeyringService {
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, string password, CoinType coin) => (bool success);
+  RemoveHardwareAccount(string address, CoinType coin) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();

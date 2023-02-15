@@ -225,7 +225,6 @@ handler.on(WalletPageActions.removeHardwareAccount.type, async (store: Store, pa
   const { keyringService } = getWalletPageApiProxy()
   const { success } = await keyringService.removeHardwareAccount(
     payload.address,
-    payload.password,
     payload.coin
   )
 

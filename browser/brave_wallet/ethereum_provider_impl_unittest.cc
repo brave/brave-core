@@ -419,9 +419,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   KeyringService* keyring_service() { return keyring_service_; }
   EthereumProviderImpl* provider() { return provider_.get(); }
   std::string from(size_t from_index = 0) {
-    CHECK(!keyring_service_->IsLocked());
+    CHECK(!keyring_service_->IsLockedSync());
     return keyring_service()
-        ->GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
+        ->GetHDKeyringById(mojom::kDefaultKeyringId)
         ->GetAddress(from_index);
   }
   std::string from_lower(size_t from_index = 0) {

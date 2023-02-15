@@ -113,8 +113,8 @@ class TestKeyringServiceObserver
     keyring_restored_.insert(keyring_id);
   }
   void KeyringReset() override { keyring_reset_fired_ = true; }
-  void Locked() override {}
-  void Unlocked() override {}
+  void Locked() override { locked_fired_ = true; }
+  void Unlocked() override { unlocked_fired_ = true; }
   void BackedUp() override {}
 
   void SelectedAccountChanged(mojom::CoinType coin) override {
@@ -135,6 +135,8 @@ class TestKeyringServiceObserver
   bool AccountsChangedFired() { return accounts_changed_fired_count_ > 0; }
   int AccountsChangedFiredCount() { return accounts_changed_fired_count_; }
   bool KeyringResetFired() { return keyring_reset_fired_; }
+  bool LockedFired() { return locked_fired_; }
+  bool UnlockedFired() { return unlocked_fired_; }
   bool IsKeyringCreated(const std::string& keyring_id) {
     return keyring_created_.contains(keyring_id);
   }
@@ -156,6 +158,8 @@ class TestKeyringServiceObserver
     auto_lock_minutes_changed_fired_ = false;
     accounts_changed_fired_count_ = 0;
     keyring_reset_fired_ = false;
+    locked_fired_ = false;
+    unlocked_fired_ = false;
     selected_account_change_fired_.clear();
     keyring_created_.clear();
     keyring_restored_.clear();
@@ -167,6 +171,8 @@ class TestKeyringServiceObserver
   bool auto_lock_minutes_changed_fired_ = false;
   int accounts_changed_fired_count_ = 0;
   bool keyring_reset_fired_ = false;
+  bool locked_fired_ = false;
+  bool unlocked_fired_ = false;
   base::flat_set<mojom::CoinType> selected_account_change_fired_;
   base::flat_set<std::string> keyring_created_;
   base::flat_set<std::string> keyring_restored_;
@@ -393,11 +399,10 @@ class KeyringServiceUnitTest : public testing::Test {
 
   static bool RemoveHardwareAccount(KeyringService* service,
                                     const std::string& address,
-                                    const std::string& password,
                                     mojom::CoinType coin) {
     bool success;
     base::RunLoop run_loop;
-    service->RemoveHardwareAccount(address, password, coin,
+    service->RemoveHardwareAccount(address, coin,
                                    base::BindLambdaForTesting([&](bool v) {
                                      success = v;
                                      run_loop.Quit();
@@ -1193,10 +1198,10 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     // wrong password
     EXPECT_FALSE(Unlock(&service, "brave123"));
-    ASSERT_TRUE(service.IsLocked());
+    ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
     // empty password
     EXPECT_FALSE(Unlock(&service, ""));
-    ASSERT_TRUE(service.IsLocked());
+    ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   }
 }
 
@@ -1221,12 +1226,12 @@ TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
 
   // unlock with wrong password
   ASSERT_FALSE(Unlock(&service, kPasswordBrave123));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   EXPECT_TRUE(GetMnemonicForDefaultKeyring(kPasswordBrave, &service).empty());
 
   ASSERT_TRUE(Unlock(&service, kPasswordBrave));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Can only get mnemonic when password is correct.
   EXPECT_TRUE(
@@ -1305,45 +1310,25 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
 
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    // No encryptor
+    // No encryptor but there is no keyring created so they should be unlocked.
+    // And Lock() has no effect here.
     service.Lock();
-    EXPECT_TRUE(service.IsLocked());
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
-
-    EXPECT_TRUE(
-        service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
-    EXPECT_FALSE(service.IsLocked());
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
-
-    EXPECT_TRUE(
-        service.CreateEncryptorForKeyring("123", mojom::kFilecoinKeyringId));
-    EXPECT_FALSE(service.IsLocked());
-    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
-
-    EXPECT_TRUE(
-        service.CreateEncryptorForKeyring("123", mojom::kSolanaKeyringId));
-    EXPECT_FALSE(service.IsLocked());
+    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
     EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
     EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
-
-    // No default keyring
-    service.Lock();
-    EXPECT_TRUE(service.IsLocked());
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+    EXPECT_FALSE(service.IsLockedSync());
   }
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    TestKeyringServiceObserver observer;
+    service.AddObserver(observer.GetReceiver());
     ASSERT_NE(
         service.CreateKeyring(brave_wallet::mojom::kDefaultKeyringId, "brave"),
         nullptr);
     ASSERT_TRUE(AddAccount(&service, "ETH Account 1", mojom::CoinType::ETH));
-    EXPECT_FALSE(service.IsLocked());
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
     ASSERT_NE(
         service.CreateKeyring(brave_wallet::mojom::kFilecoinKeyringId, "brave"),
         nullptr);
@@ -1358,9 +1343,14 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
 
     service.Lock();
-    EXPECT_TRUE(service.IsLocked());
+    // wait for observer
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(observer.LockedFired());
+    observer.Reset();
+    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
     EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
     EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+    EXPECT_TRUE(service.IsLockedSync());
     EXPECT_FALSE(
         service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId));
     EXPECT_FALSE(
@@ -1369,14 +1359,24 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
         service.GetHDKeyringById(brave_wallet::mojom::kSolanaKeyringId));
 
     EXPECT_FALSE(Unlock(&service, "abc"));
-    EXPECT_TRUE(service.IsLocked());
+    // wait for observer
+    base::RunLoop().RunUntilIdle();
+    EXPECT_FALSE(observer.UnlockedFired());
+    observer.Reset();
+    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
     EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
     EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+    EXPECT_TRUE(service.IsLockedSync());
 
     EXPECT_TRUE(Unlock(&service, "brave"));
-    EXPECT_FALSE(service.IsLocked());
+    // wait for observer
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(observer.UnlockedFired());
+    observer.Reset();
+    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
     EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
     EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
+    EXPECT_FALSE(service.IsLockedSync());
   }
 }
 
@@ -2192,12 +2192,14 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   TestKeyringServiceObserver observer;
   service.AddObserver(observer.GetReceiver());
 
-  ASSERT_TRUE(CreateWallet(&service, "brave"));
-  auto* default_keyring =
-      service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId);
-  std::string first_account = default_keyring->GetAddress(0);
-  EXPECT_FALSE(
-      service.IsHardwareAccount(mojom::kDefaultKeyringId, first_account));
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinTestnetKeyringId));
+  EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
+  // Wallet is unlocked when there is no accounts of any types.
+  EXPECT_FALSE(service.IsLockedSync());
+
+  // We don't need to create wallet to use hardware accounts
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
@@ -2224,10 +2226,26 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
   EXPECT_FALSE(observer.AccountsChangedFired());
   service.AddHardwareAccounts(std::move(new_accounts));
+
+  // ETH and FIL have hardware accounts
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+  EXPECT_EQ(*service.GetSelectedAccount(mojom::CoinType::ETH), "0x111");
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+  EXPECT_EQ(*service.GetFilecoinSelectedAccount(mojom::kFilecoinMainnet),
+            "0x264");
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinTestnetKeyringId));
+  EXPECT_EQ(*service.GetFilecoinSelectedAccount(mojom::kFilecoinTestnet),
+            "0xFILTEST");
+  // SOL doesn't have any type of accounts
+  EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
+  EXPECT_FALSE(service.GetSelectedAccount(mojom::CoinType::SOL));
+
   EXPECT_TRUE(service.IsHardwareAccount(mojom::kDefaultKeyringId, "0x111"));
   EXPECT_FALSE(service.IsHardwareAccount(mojom::kSolanaKeyringId, "0x111"));
   EXPECT_TRUE(service.IsHardwareAccount(mojom::kFilecoinKeyringId, "0x264"));
   EXPECT_FALSE(service.IsHardwareAccount(mojom::kDefaultKeyringId, "0x264"));
+  // Wallet is unlocked when the user has only hardware accounts
+  EXPECT_FALSE(service.IsLockedSync());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2248,28 +2266,28 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
         brave_wallet::mojom::kDefaultKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
           const auto& accounts = keyring_info->account_infos;
-          EXPECT_EQ(accounts.size(), 4u);
+          EXPECT_EQ(accounts.size(), 3u);
 
-          EXPECT_EQ(accounts[1]->address, "0x111");
-          EXPECT_EQ(accounts[1]->name, "name 1");
+          EXPECT_EQ(accounts[0]->address, "0x111");
+          EXPECT_EQ(accounts[0]->name, "name 1");
+          EXPECT_EQ(accounts[0]->is_imported, false);
+          ASSERT_TRUE(accounts[0]->hardware);
+          EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
+          EXPECT_EQ(accounts[0]->coin, mojom::CoinType::ETH);
+
+          EXPECT_EQ(accounts[1]->address, "0x222");
+          EXPECT_EQ(accounts[1]->name, "name 4");
           EXPECT_EQ(accounts[1]->is_imported, false);
           ASSERT_TRUE(accounts[1]->hardware);
           EXPECT_EQ(accounts[1]->hardware->device_id, "device1");
           EXPECT_EQ(accounts[1]->coin, mojom::CoinType::ETH);
 
-          EXPECT_EQ(accounts[2]->address, "0x222");
-          EXPECT_EQ(accounts[2]->name, "name 4");
+          EXPECT_EQ(accounts[2]->address, "0xEA0");
+          EXPECT_EQ(accounts[2]->name, "name 3");
           EXPECT_EQ(accounts[2]->is_imported, false);
           ASSERT_TRUE(accounts[2]->hardware);
-          EXPECT_EQ(accounts[2]->hardware->device_id, "device1");
+          EXPECT_EQ(accounts[2]->hardware->device_id, "device2");
           EXPECT_EQ(accounts[2]->coin, mojom::CoinType::ETH);
-
-          EXPECT_EQ(accounts[3]->address, "0xEA0");
-          EXPECT_EQ(accounts[3]->name, "name 3");
-          EXPECT_EQ(accounts[3]->is_imported, false);
-          ASSERT_TRUE(accounts[3]->hardware);
-          EXPECT_EQ(accounts[3]->hardware->device_id, "device2");
-          EXPECT_EQ(accounts[3]->coin, mojom::CoinType::ETH);
 
           run_loop.Quit();
         }));
@@ -2303,7 +2321,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
     run_loop.Run();
   }
   {
-    // Checking Filecoin keyring accounts
+    // Checking Filecoin keyring testnet accounts
     base::RunLoop run_loop;
     service.GetKeyringInfo(
         brave_wallet::mojom::kFilecoinTestnetKeyringId,
@@ -2324,20 +2342,12 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   }
   ASSERT_FALSE(observer.AccountsChangedFired());
 
-  EXPECT_FALSE(RemoveHardwareAccount(&service, "", kPasswordBrave,
-                                     mojom::CoinType::ETH));
+  EXPECT_FALSE(RemoveHardwareAccount(&service, "", mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(observer.AccountsChangedFired());
   observer.Reset();
 
-  EXPECT_FALSE(RemoveHardwareAccount(&service, "0x111", kPasswordBrave123,
-                                     mojom::CoinType::ETH));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(observer.AccountsChangedFired());
-  observer.Reset();
-
-  EXPECT_TRUE(RemoveHardwareAccount(&service, "0x111", kPasswordBrave,
-                                    mojom::CoinType::ETH));
+  EXPECT_TRUE(RemoveHardwareAccount(&service, "0x111", mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2369,8 +2379,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
               "filecoin_testnet.hardware.device2.account_metas.0xFILTEST"));
 
   ASSERT_FALSE(observer.AccountsChangedFired());
-  EXPECT_TRUE(RemoveHardwareAccount(&service, "0xEA0", kPasswordBrave,
-                                    mojom::CoinType::ETH));
+  EXPECT_TRUE(RemoveHardwareAccount(&service, "0xEA0", mojom::CoinType::ETH));
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
@@ -2381,14 +2390,14 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
         const auto& accounts = keyring_info->account_infos;
-        EXPECT_EQ(accounts.size(), size_t(2));
+        EXPECT_EQ(accounts.size(), size_t(1));
 
-        EXPECT_EQ(accounts[1]->address, "0x222");
-        EXPECT_EQ(accounts[1]->name, "name 4");
-        EXPECT_EQ(accounts[1]->is_imported, false);
-        ASSERT_TRUE(accounts[1]->hardware);
-        EXPECT_EQ(accounts[1]->hardware->device_id, "device1");
-        EXPECT_EQ(accounts[1]->coin, mojom::CoinType::ETH);
+        EXPECT_EQ(accounts[0]->address, "0x222");
+        EXPECT_EQ(accounts[0]->name, "name 4");
+        EXPECT_EQ(accounts[0]->is_imported, false);
+        ASSERT_TRUE(accounts[0]->hardware);
+        EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
+        EXPECT_EQ(accounts[0]->coin, mojom::CoinType::ETH);
 
         callback_called = true;
       }));
@@ -2396,8 +2405,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   EXPECT_TRUE(callback_called);
   ASSERT_FALSE(observer.AccountsChangedFired());
 
-  EXPECT_TRUE(RemoveHardwareAccount(&service, "0x222", kPasswordBrave,
-                                    mojom::CoinType::ETH));
+  EXPECT_TRUE(RemoveHardwareAccount(&service, "0x222", mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2411,8 +2419,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
                    ->GetDict(kBraveWalletKeyrings)
                    .FindByDottedPath("default.hardware.device2"));
 
-  EXPECT_TRUE(RemoveHardwareAccount(&service, "0xFIL", kPasswordBrave,
-                                    mojom::CoinType::FIL));
+  EXPECT_TRUE(RemoveHardwareAccount(&service, "0xFIL", mojom::CoinType::FIL));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2421,8 +2428,8 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
           ->GetDict(kBraveWalletKeyrings)
           .FindByDottedPath("filecoin.hardware.device2.account_metas.0xFIL"));
 
-  EXPECT_TRUE(RemoveHardwareAccount(&service, "0xFILTEST", kPasswordBrave,
-                                    mojom::CoinType::FIL));
+  EXPECT_TRUE(
+      RemoveHardwareAccount(&service, "0xFILTEST", mojom::CoinType::FIL));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();
@@ -2431,75 +2438,93 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
           ->GetDict(kBraveWalletKeyrings)
           .FindByDottedPath(
               "filecoin_testnet.hardware.device2.account_metas.0xFILTEST"));
+
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+  auto* default_keyring = service.GetHDKeyringById(mojom::kDefaultKeyringId);
+  std::string first_account = default_keyring->GetAddress(0);
+  EXPECT_FALSE(
+      service.IsHardwareAccount(mojom::kDefaultKeyringId, first_account));
+
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+  // Selected account changed when creating wallet
+  EXPECT_EQ(*service.GetSelectedAccount(mojom::CoinType::ETH), first_account);
+
+  service.Lock();
+  EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+  EXPECT_FALSE(service.IsLocked(mojom::kFilecoinTestnetKeyringId));
+  EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+  // Wallet is locked when the user has both software and hardware accounts
+  EXPECT_TRUE(service.IsLockedSync());
 }
 
 TEST_F(KeyringServiceUnitTest, AutoLock) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   absl::optional<std::string> mnemonic = CreateWallet(&service, "brave");
   ASSERT_TRUE(mnemonic.has_value());
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Should not be locked yet after 4 minutes
   task_environment_.FastForwardBy(base::Minutes(4));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // After the 5th minute, it should be locked
   task_environment_.FastForwardBy(base::Minutes(1));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   // Locking after it is auto locked won't cause a crash
   service.Lock();
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Unlocking will reset the timer
   EXPECT_TRUE(Unlock(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(5));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Locking before the timer fires won't cause any problems after the
   // timer fires.
   EXPECT_TRUE(Unlock(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(1));
   service.Lock();
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(4));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Restoring keyring will auto lock too
   service.Reset();
   ASSERT_TRUE(RestoreWallet(&service, *mnemonic, "brave", false));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(6));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Changing the auto lock pref should reset the timer
   EXPECT_TRUE(Unlock(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(4));
   GetPrefs()->SetInteger(kBraveWalletAutoLockMinutes, 3);
   task_environment_.FastForwardBy(base::Minutes(2));
-  EXPECT_FALSE(service.IsLocked());
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(1));
-  EXPECT_TRUE(service.IsLocked());
+  EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Changing the auto lock pref should reset the timer even if higher
   // for simplicity of logic
   EXPECT_TRUE(Unlock(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(2));
-  EXPECT_FALSE(service.IsLocked());
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   GetPrefs()->SetInteger(kBraveWalletAutoLockMinutes, 10);
   task_environment_.FastForwardBy(base::Minutes(9));
-  EXPECT_FALSE(service.IsLocked());
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(1));
-  EXPECT_TRUE(service.IsLocked());
+  EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   // Notifying of user interaction should keep the wallet unlocked
   task_environment_.FastForwardBy(base::Minutes(4));
@@ -2507,9 +2532,9 @@ TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
   task_environment_.FastForwardBy(base::Minutes(1));
   service.NotifyUserInteraction();
   task_environment_.FastForwardBy(base::Minutes(4));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
   task_environment_.FastForwardBy(base::Minutes(1));
-  ASSERT_TRUE(service.IsLocked());
+  ASSERT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, SelectAddedAccount) {
@@ -2586,7 +2611,7 @@ TEST_F(KeyringServiceUnitTest, SelectAddedFilecoinAccount) {
 TEST_F(KeyringServiceUnitTest, SelectImportedFilecoinAccount) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
 #if !BUILDFLAG(IS_ANDROID)
   ImportFilecoinAccount(&service, "fil m acc 1",
@@ -2817,8 +2842,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_TRUE(observer.SelectedAccountChangedFired(mojom::CoinType::FIL));
   observer.Reset();
 
-  EXPECT_TRUE(RemoveHardwareAccount(&service, hardware_account, kPasswordBrave,
-                                    mojom::CoinType::ETH));
+  EXPECT_TRUE(
+      RemoveHardwareAccount(&service, hardware_account, mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.SelectedAccountChangedFired(mojom::CoinType::ETH));
   observer.Reset();
@@ -2834,7 +2859,7 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   base::RunLoop().RunUntilIdle();
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   ASSERT_TRUE(AddAccount(&service, "AccountAAAAH", mojom::CoinType::ETH));
 
@@ -2862,7 +2887,7 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
   // HDKeyringUnitTest.SignMessage already tests the correctness of signature
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
-  ASSERT_FALSE(service.IsLocked());
+  ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
   std::string account1;
   {
@@ -4411,14 +4436,14 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   // Locked on start by default.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   }
 
   // Unlocked on start with right password.
   {
     cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    EXPECT_FALSE(service.IsLocked());
+    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
     cmdline->RemoveSwitch(switches::kDevWalletPassword);
   }
 
@@ -4426,7 +4451,7 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   {
     cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
     cmdline->RemoveSwitch(switches::kDevWalletPassword);
   }
 }
