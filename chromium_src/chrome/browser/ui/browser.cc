@@ -23,8 +23,11 @@
 #if !BUILDFLAG(IS_ANDROID)
 #define BookmarkTabHelper BraveBookmarkTabHelper
 #endif
+#define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 
 #include "src/chrome/browser/ui/browser.cc"
+
+#undef BrowserTabStripModelDelegate
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController

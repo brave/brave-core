@@ -44,6 +44,8 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #else
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
@@ -132,6 +134,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
   BraveSyncAlertsServiceFactory::GetInstance();
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    SharedPinnedTabServiceFactory::GetInstance();
+  }
+#endif
 }
 
 }  // namespace brave

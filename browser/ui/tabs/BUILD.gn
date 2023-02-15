@@ -19,6 +19,10 @@ source_set("tabs") {
       "brave_vertical_tab_color_mixer.h",
       "features.cc",
       "features.h",
+      "shared_pinned_tab_service.cc",
+      "shared_pinned_tab_service.h",
+      "shared_pinned_tab_service_factory.cc",
+      "shared_pinned_tab_service_factory.h",
     ]
 
     deps = [

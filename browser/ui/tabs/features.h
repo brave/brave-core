@@ -17,6 +17,8 @@ BASE_DECLARE_FEATURE(kBraveVerticalTabs);
 BASE_DECLARE_FEATURE(kBraveChangeActiveTabOnScrollEvent);
 #endif  // BUILDFLAG(IS_LINUX)
 
+BASE_DECLARE_FEATURE(kBraveSharedPinnedTabs);
+
 }  // namespace tabs::features
 
 #endif  // BRAVE_BROWSER_UI_TABS_FEATURES_H_
