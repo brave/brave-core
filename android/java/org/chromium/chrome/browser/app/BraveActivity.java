@@ -1155,10 +1155,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void maybeShowNotificationPermissionRetionale() {
+        Supplier<RationaleDelegate> rationaleUIDelegateSupplier = ()
+                -> new NotificationPermissionRationaleDialogController(
+                        this, getModalDialogManager());
         NotificationPermissionController mNotificationPermissionController =
-                new NotificationPermissionController(getWindowAndroid(),
-                        new NotificationPermissionRationaleDialogController(
-                                this, getModalDialogManager()));
+                new NotificationPermissionController(
+                        getWindowAndroid(), rationaleUIDelegateSupplier);
         NotificationPermissionController.attach(
                 getWindowAndroid(), mNotificationPermissionController);
         mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
