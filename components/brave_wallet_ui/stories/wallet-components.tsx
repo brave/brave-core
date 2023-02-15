@@ -24,6 +24,7 @@ import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockNFTMetadata } from './mock-data/mock-nft-metadata'
 import { mockNetwork } from '../common/constants/mocks'
 import { NftPinningStatus } from '../components/desktop/nft-pinning-status/nft-pinning-status'
+import { NftsEmptyState } from '../components/desktop/views/nfts/components/nfts-empty-state/nfts-empty-state'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -215,4 +216,12 @@ export const _NftPinningStatus = () => {
 
 _NftPinningStatus.story = {
   title: 'NFT Pinning Status'
+}
+
+export const _NftsEmptyState = () => {
+  return (
+    <NftsEmptyState
+      onImportNft={() => console.log('On import NFT')}
+    />
+  )
 }

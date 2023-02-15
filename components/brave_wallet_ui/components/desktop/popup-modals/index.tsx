@@ -10,7 +10,8 @@ import {
   Header,
   Title,
   CloseButton,
-  Modal
+  Modal,
+  Divider
 } from './style'
 
 export interface Props {
@@ -18,12 +19,13 @@ export interface Props {
   onClose: () => void
   title: string
   width?: string
+  showDivider?: boolean
 }
 
 const ESC_KEY = 'Escape'
 
 const PopupModal = (props: Props) => {
-  const { title, width, onClose, children } = props
+  const { title, width, onClose, children, showDivider } = props
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === ESC_KEY) {
@@ -46,6 +48,7 @@ const PopupModal = (props: Props) => {
           <Title>{title}</Title>
           <CloseButton onClick={onClose}/>
         </Header>
+        {showDivider && <Divider />}
         {children}
       </Modal>
     </StyledWrapper>

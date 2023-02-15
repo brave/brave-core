@@ -68,3 +68,10 @@ export const CloseButton = styled(WalletButton)`
   outline: none;
   border: none;
 `
+
+export const Divider = styled.div`
+  display: flex;
+  width: 100%;
+  border-bottom: 2px solid ${p => p.theme.color.divider01};
+  padding-bottom: 6px;
+`

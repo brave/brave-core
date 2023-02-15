@@ -589,7 +589,11 @@ export const PortfolioAsset = (props: Props) => {
     // check if selectedAsset has an icon
     if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
       // update asset logo
-      dispatch(WalletActions.updateUserAsset({ ...selectedAsset, logo: nftMetadata?.imageURL || '' }))
+      const updated = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
+      dispatch(WalletActions.updateUserAsset({
+        existing: selectedAsset,
+        updated
+      }))
     }
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus])
 

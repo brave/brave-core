@@ -19,7 +19,8 @@ import {
   GetCoinMarketPayload,
   RetryTransactionPayload,
   SpeedupTransactionPayload,
-  CancelTransactionPayload
+  CancelTransactionPayload,
+  UpdateUsetAssetType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -333,13 +334,28 @@ handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveW
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
-handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
+handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: UpdateUsetAssetType) => {
   const { braveWalletService } = getAPIProxy()
-  const deleteResult = await braveWalletService.removeUserAsset(payload)
+  const { existing, updated } = payload
+  // fetch NFT metadata if tokenId or contract address has changed
+  if ((updated.isNft || updated.isErc721) && (updated.tokenId !== existing.tokenId || updated.contractAddress !== existing.contractAddress)) {
+    const result = await getNFTMetadata(updated)
+    if (!result?.error) {
+      try {
+        const nftMetadata = result?.response && JSON.parse(result.response)
+        updated.logo = nftMetadata?.image || ''
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  const deleteResult = await braveWalletService.removeUserAsset(existing)
   if (deleteResult.success) {
-    const addResult = await braveWalletService.addUserAsset(payload)
+    const addResult = await braveWalletService.addUserAsset(updated)
     if (addResult.success) {
       refreshBalancesPricesAndHistory(store)
+      refreshVisibleTokenInfo()
     }
   }
 })
