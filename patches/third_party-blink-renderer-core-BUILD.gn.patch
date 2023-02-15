@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index 051dc72d218b080051ce832b4baf96e438f434a1..5652b71cc63b61698ea85032d240c0d49d698458 100644
+index 93cf8e0af281272ce1e0db7c3dd0605f5d1610c2..8c8a5e9f5cf3786aec87ea29a273c588e797dc7c 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
-@@ -370,6 +370,7 @@ component("core") {
+@@ -391,6 +391,7 @@ component("core") {
        "Carbon.framework",
      ]
    }

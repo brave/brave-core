@@ -1,8 +1,8 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 8ed736b5c0690ce9f517b66e240a8ad4bee0bd4f..02469d893512d16956385467af7faa438acec5d0 100644
+index 83bf5406e613da22a444278372f5315a2d06de3e..1581640704c76a3c52b3511d8cf1ecc6335b0577 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -659,6 +659,7 @@ config("internal_config_base") {
+@@ -660,6 +660,7 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]
