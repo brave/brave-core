@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import os.log
+import BraveShared
 
 /// For adding a sample to an enumerated histogram
 public func UmaHistogramEnumeration<E: RawRepresentable & CaseIterable>(
@@ -51,4 +52,34 @@ public func UmaHistogramRecordValueToBucket(
     return
   }
   UmaHistogramExactLinear(name, answer, buckets.count + 1)
+}
+
+/// Adds a sample to record info around the last time a feature was used.
+///
+/// By default this uses the 7 standard buckets used in many P3A questions but alternative ones can be passed
+/// in to use if needed.
+public func UmaHistogramRecordLastFeatureUsage(
+  _ name: String,
+  option: Preferences.Option<Date?>,
+  alternativeBuckets: [Bucket]? = nil
+) {
+  let calendar = Calendar(identifier: .gregorian)
+  guard let lastUsageDate = option.value,
+        let numberOfDays = calendar.dateComponents(
+          [.day],
+          from: lastUsageDate,
+          to: Date()
+        ).day
+  else {
+    return
+  }
+  let buckets: [Bucket] = alternativeBuckets ?? [
+    .r(0...6),
+    .r(7...13),
+    .r(14...20),
+    .r(21...27),
+    .r(28...59),
+    .r(60...)
+  ]
+  UmaHistogramRecordValueToBucket(name, buckets: buckets, value: numberOfDays)
 }

@@ -58,6 +58,7 @@ extension FeedDataSource {
       feedUrl: feedUrl)
     setNeedsReloadCards()
     recordTotalExternalFeedsP3A()
+    recordExternalFeedCountChange(1)
     objectWillChange.send()
     return true
   }
@@ -72,6 +73,7 @@ extension FeedDataSource {
     FeedSourceOverride.resetStatus(forId: location.id)
     setNeedsReloadCards()
     recordTotalExternalFeedsP3A()
+    recordExternalFeedCountChange(-1)
     objectWillChange.send()
   }
 
@@ -124,6 +126,17 @@ extension FeedDataSource {
         value: rssFeedLocations.count
       )
     }
+  }
+  
+  func recordExternalFeedCountChange(_ delta: Int) {
+    // Q48 How many external feeds did you add last week?
+    var storage = P3ATimedStorage<Int>.rssFeedCountStorage
+    storage.add(value: delta, to: Date())
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyAddedDirectFeedsCount",
+      buckets: [0, 1, 2, 3, 4, 5, .r(6...10), .r(11...)],
+      value: storage.combinedValue
+    )
   }
 }
 
@@ -297,4 +310,8 @@ extension Feed {
       return feed.title
     }
   }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var rssFeedCountStorage: Self { .init(name: "rss-feeds-added", lifetimeInDays: 7) }
 }

@@ -226,6 +226,15 @@ class NewTabPageViewController: UIViewController {
       }
       .store(in: &cancellables)
     NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
+    
+    let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
+    if isBraveNewsVisible && Preferences.BraveNews.isEnabled.value {
+      braveNewsFeatureUsage.recordHistogram()
+      recordBraveNewsDaysUsedP3A()
+    }
+    braveNewsFeatureUsage.recordReturningUsageMetric()
+    recordNewTabCreatedP3A()
+    recordBraveNewsWeeklyUsageCountP3A()
   }
 
   @available(*, unavailable)
@@ -504,6 +513,8 @@ class NewTabPageViewController: UIViewController {
   }
 
   // MARK: - Brave News
+  
+  private var newsArticlesOpened: Set<FeedItem.ID> = []
 
   private func handleBraveNewsAction(_ action: BraveNewsSectionProvider.Action) {
     switch action {
@@ -581,6 +592,9 @@ class NewTabPageViewController: UIViewController {
       let openBraveNewsActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .openBraveNews)
       self.userActivity = openBraveNewsActivity
       openBraveNewsActivity.becomeCurrent()
+      // Record P3A
+      newsArticlesOpened.insert(item.id)
+      recordBraveNewsArticlesVisitedP3A()
     case .itemAction(.toggledSource, let context):
       let isHidden = feedDataSource.isSourceHidden(context.item.source)
       feedDataSource.toggleSourceHidden(context.item.source, hidden: !isHidden)
@@ -883,6 +897,10 @@ extension NewTabPageViewController {
           }
         }
       }
+      
+      if scrollView.contentOffset.y >= todayStart {
+        recordBraveNewsUsageP3A()
+      }
     }
   }
 
@@ -891,6 +909,129 @@ extension NewTabPageViewController {
     // Offset of where Brave News starts
     let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
     collectionView.contentOffset.y = todayStart
+  }
+  
+  // MARK: - P3A
+  
+  private func recordBraveNewsUsageP3A() {
+    let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
+    if !isBraveNewsVisible || !Preferences.BraveNews.isEnabled.value ||
+        Calendar.current.startOfDay(for: Date()) == braveNewsFeatureUsage.lastUsageOption.value {
+      // Don't have Brave News enabled, or already recorded todays usage, no need to do it again
+      return
+    }
+    
+    // Usage
+    braveNewsFeatureUsage.recordUsage()
+    braveNewsFeatureUsage.recordReturningUsageMetric()
+    var braveNewsWeeklyCount = P3ATimedStorage<Int>.braveNewsWeeklyCount
+    braveNewsWeeklyCount.add(value: 1, to: Date())
+    
+    // Usage over the past month
+    var braveNewsDaysUsedStorage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
+    braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
+    recordBraveNewsDaysUsedP3A()
+    
+    // Weekly usage
+    recordBraveNewsWeeklyUsageCountP3A()
+  }
+  
+  private func recordBraveNewsWeeklyUsageCountP3A() {
+    let storage = P3ATimedStorage<Int>.braveNewsWeeklyCount
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklySessionCount",
+      buckets: [
+        0,
+        1,
+        .r(2...3),
+        .r(4...7),
+        .r(8...12),
+        .r(13...18),
+        .r(19...25),
+        .r(26...),
+      ],
+      value: storage.combinedValue
+    )
+  }
+  
+  private func recordBraveNewsDaysUsedP3A() {
+    let storage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.DaysInMonthUsedCount",
+      buckets: [
+        0,
+        1,
+        2,
+        .r(3...5),
+        .r(6...10),
+        .r(11...15),
+        .r(16...20),
+        .r(21...),
+      ],
+      value: storage.combinedValue
+    )
+  }
+  
+  private func recordBraveNewsArticlesVisitedP3A() {
+    // Count is per NTP session, sends max value of the week
+    var storage = P3ATimedStorage<Int>.braveNewsVisitedArticlesCount
+    storage.replaceTodaysRecordsIfLargest(value: newsArticlesOpened.count)
+    UmaHistogramRecordValueToBucket(
+      "Brave.Today.WeeklyMaxCardVisitsCount",
+      buckets: [
+        0, // won't ever be sent
+        1,
+        .r(2...3),
+        .r(4...6),
+        .r(7...10),
+        .r(11...15),
+        .r(16...),
+      ],
+      value: storage.maximumDaysCombinedValue
+    )
+  }
+  
+  private func recordNewTabCreatedP3A() {
+    var newTabsStorage = P3ATimedStorage<Int>.newTabsCreatedStorage
+    var sponsoredStorage = P3ATimedStorage<Int>.sponsoredNewTabsCreatedStorage
+    
+    newTabsStorage.add(value: 1, to: Date())
+    let newTabsCreatedAnswer = newTabsStorage.maximumDaysCombinedValue
+    
+    if case .withBrandLogo = background.currentBackground?.type {
+      sponsoredStorage.add(value: 1, to: Date())
+    }
+    
+    UmaHistogramRecordValueToBucket(
+      "Brave.NTP.NewTabsCreated",
+      buckets: [
+        0,
+        .r(1...3),
+        .r(4...8),
+        .r(9...20),
+        .r(21...50),
+        .r(51...100),
+        .r(101...),
+      ],
+      value: newTabsCreatedAnswer
+    )
+    
+    if newTabsCreatedAnswer > 0 {
+      let sponsoredPercent = Int((Double(sponsoredStorage.maximumDaysCombinedValue) / Double(newTabsCreatedAnswer)) * 100.0)
+      UmaHistogramRecordValueToBucket(
+        "Brave.NTP.SponsoredNewTabsCreated",
+        buckets: [
+          0,
+          .r(0..<10),
+          .r(10..<20),
+          .r(20..<30),
+          .r(30..<40),
+          .r(40..<50),
+          .r(50...)
+        ],
+        value: sponsoredPercent
+      )
+    }
   }
 }
 
@@ -1089,4 +1230,20 @@ extension NewTabPageViewController {
       return true
     }
   }
+}
+
+extension P3AFeatureUsage {
+  fileprivate static var braveNewsFeatureUsage: Self = .init(
+    name: "brave-news-usage",
+    histogram: "Brave.Today.LastUsageTime",
+    returningUserHistogram: "Brave.Today.NewUserReturning"
+  )
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
+  fileprivate static var braveNewsWeeklyCount: Self { .init(name: "brave-news-weekly-usage", lifetimeInDays: 7) }
+  fileprivate static var braveNewsVisitedArticlesCount: Self { .init(name: "brave-news-weekly-clicked", lifetimeInDays: 7) }
+  fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
+  fileprivate static var sponsoredNewTabsCreatedStorage: Self { .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7) }
 }
