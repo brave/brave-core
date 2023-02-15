@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 2c43e6bd401cb04f08ca86e8980d20f4ddd80c9c..25ee8758ef680ceae3654fea87ac2e77c2ec5d42 100644
+index 51aca4179bafb38dc09dfd6b1197f8896c7a59ce..ad457b824a971931010be1a4d1a2dc9d04932aff 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -365,6 +365,7 @@ void GetChromeProgIdEntries(
@@ -29,11 +29,11 @@ index 2c43e6bd401cb04f08ca86e8980d20f4ddd80c9c..25ee8758ef680ceae3654fea87ac2e77
 @@ -1739,8 +1742,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
- const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",
+ const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"http", L"https",
 +                                                            BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS
-                                                             L"https", nullptr};
+                                                             nullptr};
  const wchar_t* ShellUtil::kPotentialProtocolAssociations[] = {
 +    BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
-     L"ftp", L"http",  L"https", L"irc", L"mailto", L"mms",    L"news", L"nntp",
-     L"sms", L"smsto", L"snews", L"tel", L"urn",    L"webcal", nullptr};
+     L"http", L"https", L"irc",   L"mailto", L"mms", L"news",   L"nntp",
+     L"sms",  L"smsto", L"snews", L"tel",    L"urn", L"webcal", nullptr};
  const wchar_t* ShellUtil::kRegUrlProtocol = L"URL Protocol";
