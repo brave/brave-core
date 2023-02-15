@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index 7af36d24c46e7ac69cfe4dd9356739f63f45438a..96aebe5514c318163653d6bed5a9854c0e1ad6fb 100644
+index 3b900b752e2b6432974f943410d542905f523870..424e2861e67aab5680de0e3a0010ab4538144763 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
 @@ -84,7 +84,7 @@ class ComponentLoader {
@@ -11,15 +11,15 @@ index 7af36d24c46e7ac69cfe4dd9356739f63f45438a..96aebe5514c318163653d6bed5a9854c
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
-@@ -130,6 +130,7 @@ class ComponentLoader {
-   }
+@@ -133,6 +133,7 @@ class ComponentLoader {
+   void set_profile_for_testing(Profile* profile) { profile_ = profile; }
  
   private:
 +  friend class BraveComponentLoader;
    FRIEND_TEST_ALL_PREFIXES(ComponentLoaderTest, ParseManifest);
  
    // Information about a registered component extension.
-@@ -175,6 +176,7 @@ class ComponentLoader {
+@@ -178,6 +179,7 @@ class ComponentLoader {
    void AddDefaultComponentExtensionsWithBackgroundPagesForKioskMode();
  
  #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
