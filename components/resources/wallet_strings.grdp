@@ -809,10 +809,9 @@
   <message name="IDS_BRAVE_SWAP_HELP_CENTER" desc="Help center">Help Center</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_POLICY" desc="Privacy policy">Privacy Policy</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_DESCRIPTION" desc="Privacy policy description">This app uses the following third-party APIs:</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_DISCLAIMER" desc="0x swap privacy policy disclaimer">Brave Swap uses 0x as a DEX aggregator for supported EVM networks. 0x will process the Ethereum wallet address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_DISCLAIMER" desc="Jupiter swap privacy policy disclaimer">Brave Swap uses Jupiter as a DEX aggregator for Solana network. Jupiter will process the Solana wallet address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_V2_DISCLAIMER" desc="Swap V2 privacy policy disclaimer">Brave Swap uses <ph name="AGGREGATOR">$1<ex>0x</ex></ph> as a DEX aggregator for supported <ph name="NETWORKS">$2<ex>EVM</ex></ph> networks. <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will process the <ph name="NETWORK">$3<ex>Ethereum</ex></ph> wallet address and IP address to fulfill a transaction (including getting quotes). <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_SWAP_V2_PRIVACY" desc="Swap V2 full privacy policy link text">Click here for <ph name="AGGREGATOR">$1<ex>0x</ex></ph> Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_CHANGE_NETWORK" desc="Swap change network dropdown">Change network</message>
   <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">Activity</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR" desc="Error explaining that a network has not been selected">Network is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR" desc="Error explaining that a Token name value has not been entered">Token name is required</message>
