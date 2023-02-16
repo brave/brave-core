@@ -9,7 +9,7 @@
 #include <type_traits>
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
-#include "third_party/blink/renderer/platform/bindings/active_script_wrappable_base.h"
+#include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
 
 #define MarkAncestorsWithChildNeedsStyleInvalidation             \
   NotUsed();                                                     \
@@ -39,23 +39,38 @@ struct PostConstructionCallbackTrait<
     T,
     typename std::enable_if<
         std::is_base_of<blink::Node, T>::value &&
-            !std::is_base_of<blink::ActiveScriptWrappableBase, T>::value,
+            !HasActiveScriptWrappableBaseConstructed<T>::value,
         void>::type> {
   static void Call(blink::Node* object) { object->NodeConstructed(); }
 };
 
-// If Node is derived from ActiveScriptWrappableBase we need to call both
+// If Node is derived from ActiveScriptWrappable<> we need to call both
 // PostConstructionCallbacks.
 template <typename T>
 struct PostConstructionCallbackTrait<
     T,
     typename std::enable_if<
         std::is_base_of<blink::Node, T>::value &&
-            std::is_base_of<blink::ActiveScriptWrappableBase, T>::value,
+            HasActiveScriptWrappableBaseConstructed<T>::value,
         void>::type> {
+  template <typename U>
+  struct class_of {};
+
+  template <typename U, typename R>
+  struct class_of<R(U::*)> {
+    using type = U;
+  };
+
   static void Call(T* object) {
-    PostConstructionCallbackTrait<blink::ActiveScriptWrappableBase>::Call(
-        object);
+    // Ensure we use a proper ActiveScriptWrappable<> post construction trait.
+    using ActiveScriptWrappableType = typename class_of<
+        decltype(&T::ActiveScriptWrappableBaseConstructed)>::type;
+    static_assert(
+        std::is_base_of<blink::ActiveScriptWrappableBase,
+                        ActiveScriptWrappableType>::value &&
+        !std::is_base_of<blink::Node, ActiveScriptWrappableType>::value);
+    PostConstructionCallbackTrait<ActiveScriptWrappableType>::Call(object);
+
     PostConstructionCallbackTrait<blink::Node>::Call(object);
   }
 };
