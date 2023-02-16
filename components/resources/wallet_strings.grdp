@@ -125,7 +125,7 @@
   <message name="IDS_BRAVE_WALLET_BUTTON_NEXT" desc="General Next button">Next</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_GOT_IT" desc="Acknowledgement Next button">Got it</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
-  <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_COPIED" desc="Confirmation that text has been copied to clipboard">Copied!</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_CLOSE" desc="General Close button">Close</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_MORE" desc="General More button">More</message>
@@ -161,7 +161,7 @@
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_BUTTON" desc="Lock screen unlock button">Unlock</message>
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_ERROR" desc="Lock screen wrong password error">Incorrect password</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SETTINGS" desc="Wallet popup settings button">Settings</message>
-  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock Wallet</message>
+  <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
@@ -238,6 +238,7 @@
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ERROR" desc="Visible assets modal failed to add token error">Failed to add custom token, please try again.</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM_TOKEN_EXISTS_ERROR" desc="Error message that is shown when trying to add a token that already exists in your portfolio.">This token has already been added to your portfolio.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID" desc="Visible assets modal tokenId label">Token ID (only for ERC721)</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR" desc="Visible assets modal tokenId error">Token ID is required</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADVANCED" desc="Visible assets modal advanced fields">Advanced</message>
@@ -427,6 +428,7 @@
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS" desc="Invalid recipient address error">Invalid recipient address</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
@@ -518,7 +520,7 @@
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Aseet Filter Selector High to Low">Balance ↓</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_A_TO_Z" desc="Aseet Filter Selector A to Z">Name ↓</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_Z_TO_A" desc="Aseet Filter Selector Z to A">Name ↑</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All Accounts</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All accounts</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_TITLE" desc="Transaction signed title">Transaction signed</message>
@@ -731,6 +733,8 @@
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL" desc="Label for view on explorer menu item">View on block explorer</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_VIEW_HIDE_TOKEN_LABEL" desc="Label for hide token menu item">Hide <ph name="SYMBOL"><ex>BAT</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_HIDE_TOKEN_MODAL_TITLE" desc="Modal title for hide token modal">Hide token?</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_CONTRACT_ADDRESS" desc="Token details modal Contract Address label">Token Contract Address</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_DECIMAL" desc="Token details modal Token Decimal label">Token Decimal</message>
   <message name="IDS_BRAVE_WALLET_MAKE_TOKEN_VISIBLE_INSTRUCTIONS" desc="Instructions for making a token visible">You can make this asset visible again in the future by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_HIDING_TOKEN" desc="Text for confirm hide token action in hide token modal">Hide</message>
   <message name="IDS_BRAVE_WALLET_CANCEL_HIDING_TOKEN" desc="Text for cancel hide token action in hide token modal">Cancel</message>
@@ -805,8 +809,15 @@
   <message name="IDS_BRAVE_SWAP_HELP_CENTER" desc="Help center">Help Center</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_POLICY" desc="Privacy policy">Privacy Policy</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_DESCRIPTION" desc="Privacy policy description">This app uses the following third-party APIs:</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_DISCLAIMER" desc="0x swap privacy policy disclaimer">Brave Swap uses 0x as a DEX aggregator for supported EVM networks. 0x will process the Ethereum wallet address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_DISCLAIMER" desc="Jupiter swap privacy policy disclaimer">Brave Swap uses Jupiter as a DEX aggregator for Solana network. Jupiter will process the Solana wallet address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_V2_DISCLAIMER" desc="Swap V2 privacy policy disclaimer">Brave Swap uses <ph name="AGGREGATOR">$1<ex>0x</ex></ph> as a DEX aggregator for supported <ph name="NETWORKS">$2<ex>EVM</ex></ph> networks. <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will process the <ph name="NETWORK">$3<ex>Ethereum</ex></ph> wallet address and IP address to fulfill a transaction (including getting quotes). <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_SWAP_V2_PRIVACY" desc="Swap V2 full privacy policy link text">Click here for <ph name="AGGREGATOR">$1<ex>0x</ex></ph> Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_CHANGE_NETWORK" desc="Swap change network dropdown">Change network</message>
+  <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">Activity</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR" desc="Error explaining that a network has not been selected">Network is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR" desc="Error explaining that a Token name value has not been entered">Token name is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_TOKEN_CONTRACT_ADDRESS_ERROR" desc="Error explaining that an invalid or empty token contract address has been entered as a form value">Invalid or empty token contract address</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_SYMBOL_IS_REQUIRED_ERROR" desc="Error explaining that a Token symbol value has not been entered">Token symbol is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
+  <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
 </grit-part>
