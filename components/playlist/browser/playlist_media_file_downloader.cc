@@ -6,6 +6,7 @@
 #include "brave/components/playlist/browser/playlist_media_file_downloader.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -22,6 +23,7 @@
 #include "components/download/public/common/download_item_impl.h"
 #include "components/download/public/common/download_task_runner.h"
 #include "components/download/public/common/in_progress_download_manager.h"
+#include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/download_request_utils.h"
 #include "content/public/browser/storage_partition.h"
@@ -56,10 +58,8 @@ PlaylistMediaFileDownloader::PlaylistMediaFileDownloader(
     content::BrowserContext* context,
     base::FilePath::StringType media_file_name)
     : delegate_(delegate),
-      url_loader_factory_(
-          context->content::BrowserContext::GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()),
-      media_file_name_(media_file_name) {}
+      media_file_name_(media_file_name),
+      context_(context) {}
 
 PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
   ResetDownloadStatus();
@@ -155,8 +155,7 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
         }),
         base::BindRepeating(&content::DownloadRequestUtils::IsURLSafe),
         /*wake_lock_provider_binder*/ base::NullCallback());
-    manager->set_url_loader_factory(url_loader_factory_);
-    DCHECK(url_loader_factory_);
+
     download_manager_ = std::move(manager);
     download_manager_observation_.Observe(download_manager_.get());
   }
@@ -229,8 +228,17 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
   params->set_guid(current_item_->id);
   params->set_transient(true);
   params->set_require_safety_checks(false);
-  DCHECK(download_manager_->CanDownload(params.get()));
-  download_manager_->DownloadUrl(std::move(params));
+
+  auto loader =
+      url.SchemeIsBlob()
+          ? content::ChromeBlobStorageContext::URLLoaderFactoryForUrl(
+                context_->GetStoragePartitionForUrl(url), url)
+          : context_->content::BrowserContext::GetDefaultStoragePartition()
+                ->GetURLLoaderFactoryForBrowserProcess();
+  download_manager_->BeginDownload(std::move(params), loader->Clone(),
+                                   /*is_new_download=*/true, std::string(),
+                                   /*tab_url=*/GURL(),
+                                   /*tab_referrer_url=*/GURL());
 }
 
 void PlaylistMediaFileDownloader::OnMediaFileDownloaded(base::FilePath path) {
