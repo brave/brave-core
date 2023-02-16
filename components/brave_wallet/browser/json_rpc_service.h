@@ -112,6 +112,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::CoinType coin,
                   const std::string& chaind_id,
                   GetBalanceCallback callback) override;
+  void GetCode(const std::string& address,
+               mojom::CoinType coin,
+               const std::string& chain_id,
+               GetCodeCallback callback) override;
   using GetFilBlockHeightCallback =
       base::OnceCallback<void(uint64_t height,
                               mojom::FilecoinProviderError error,
@@ -455,6 +459,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        APIRequestResult api_request_result);
   void OnFilGetBalance(GetBalanceCallback callback,
                        APIRequestResult api_request_result);
+  void OnGetCode(GetCodeCallback callback, APIRequestResult api_request_result);
   void OnEthGetTransactionCount(GetTxCountCallback callback,
                                 APIRequestResult api_request_result);
   void OnFilGetTransactionCount(GetFilTxCountCallback callback,

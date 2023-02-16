@@ -1039,6 +1039,9 @@ interface JsonRpcService {
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
   GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
 
+  // Obtains the associated bytecode for the contract
+  GetCode(string address, CoinType coin, string chain_id) => (string bytecode, ProviderError error, string error_message);
+
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
                        string address,
