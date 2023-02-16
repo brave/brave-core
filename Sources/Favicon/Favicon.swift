@@ -19,6 +19,10 @@ public class Favicon: Codable {
   public static let `default` = Favicon(image: Favicon.defaultImage,
                                         isMonogramImage: false,
                                         backgroundColor: .clear)
+  
+  public var hasTransparentBackground: Bool {
+    backgroundColor.rgba == UIColor.clear.rgba
+  }
 
   public init(image: UIImage?, isMonogramImage: Bool, backgroundColor: UIColor) {
     self.image = image

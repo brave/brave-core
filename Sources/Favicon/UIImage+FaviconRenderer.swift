@@ -100,12 +100,22 @@ extension UIImage {
 extension UIImage {
   /// Renders an image to a canvas with a background colour and passing
   @MainActor
-  static func renderImage(_ image: UIImage, backgroundColor: UIColor?) async -> Favicon {
+  static func renderFavicon(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
     if let cgImage = image.cgImage {
-      let padding = image.hasTransparentEdges ? 4.0 : 0.0
+      let hasTransparentEdges = image.hasTransparentEdges
+      
+      var padding = hasTransparentEdges ? 4.0 : 0.0
+      var idealSize = image.size
+      if shouldScale && max(idealSize.width, idealSize.height) < 64.0 && min(idealSize.width, idealSize.height) > 0 {
+        let ratio = 64.0 / min(idealSize.width, idealSize.height)
+        idealSize.width *= ratio
+        idealSize.height *= ratio
+        padding = hasTransparentEdges ? 10.0 : 0.0
+      }
+        
       let size = CGSize(
-        width: image.size.width + padding,
-        height: image.size.height + padding)
+        width: idealSize.width + padding,
+        height: idealSize.height + padding)
 
       let finalImage = await drawOnImageContext(size: size, { context, rect in
         context.cgContext.saveGState()
@@ -147,13 +157,14 @@ extension UIImage {
     label.textColor = solidTextColor
     label.backgroundColor = solidBackgroundColor
     label.minimumScaleFactor = 0.5
+    label.font = .systemFont(ofSize: imageSize.height / 2.0)
 
     let text = (monogramString ?? FaviconUtils.monogramLetter(
         for: url,
         fallbackCharacter: nil
       )) as NSString
 
-    let padding = 4.0
+    let padding = 28.0
     let finalImage = await drawOnImageContext(size: imageSize) { context, rect in
       guard let font = label.font else { return }
       var fontSize = font.pointSize

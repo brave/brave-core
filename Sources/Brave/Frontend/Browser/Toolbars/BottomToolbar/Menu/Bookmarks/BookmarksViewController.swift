@@ -413,10 +413,14 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         func setFavicon(cell: UITableViewCell, item: Bookmarkv2) {
           cell.imageView?.clearMonogramFavicon()
 
-          if let icon = item.bookmarkNode.icon {
+          if let urlString = item.url, let url = URL(string: urlString) {
+            cell.imageView?.loadFavicon(for: url, monogramFallbackCharacter: item.title?.first) { [weak cell] favicon in
+              if favicon?.isMonogramImage == true, let icon = item.bookmarkNode.icon {
+                cell?.imageView?.image = icon
+              }
+            }
+          } else if let icon = item.bookmarkNode.icon {
             cell.imageView?.image = icon
-          } else if let urlString = item.url, let url = URL(string: urlString) {
-            cell.imageView?.loadFavicon(for: url, monogramFallbackCharacter: item.title?.first)
           } else {
             cell.imageView?.clearMonogramFavicon()
             cell.imageView?.image = Favicon.defaultImage

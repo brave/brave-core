@@ -54,12 +54,30 @@ public class FaviconFetcher {
     // Fetch Bundled or Custom icons
     // If there is an error, we'll try to fetch the cached icons
     if let favicon = try? await BundledFaviconRenderer.loadIcon(url: url) {
-      storeInCache(favicon, for: url, persistent: persistent)
       try Task.checkCancellation()
       return favicon
     }
 
     throw FaviconError.noImagesFound
+  }
+  
+  @MainActor
+  public static func monogramIcon(url: URL, monogramString: Character? = nil) async throws -> Favicon {
+    // Render the Monogram on a UIImage
+    guard let attributes = BraveCore.FaviconAttributes.withDefaultImage() else {
+      throw FaviconError.noImagesFound
+    }
+    
+    let textColor = !attributes.isDefaultBackgroundColor ? attributes.textColor : nil
+    let backColor = !attributes.isDefaultBackgroundColor ? attributes.backgroundColor : nil
+    var monogramText = attributes.monogramString
+    if let monogramString = monogramString {
+      monogramText = String(monogramString)
+    }
+    
+    let favicon = await UIImage.renderMonogram(url, textColor: textColor, backgroundColor: backColor, monogramString: monogramText)
+    try Task.checkCancellation()
+    return favicon
   }
 
   private static func cacheURL(for url: URL) -> URL {
@@ -67,7 +85,7 @@ public class FaviconFetcher {
     // But they won't have a favicon for their domain
     // In this case, we want to store the favicon for the entire domain regardless of query parameters or fragmented parts
     // Example: `https://app.uniswap.org/` has no favicon, but `https://app.uniswap.org/#/swap?chain=mainnet` does.
-    return URLOrigin(url: url).url ?? url
+    return url.domainURL
   }
 
   private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) {

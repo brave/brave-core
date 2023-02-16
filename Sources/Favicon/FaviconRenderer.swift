@@ -28,7 +28,7 @@ class FaviconRenderer {
 
     if let image = attributes.faviconImage {
       // Render the Favicon on a UIImage
-      let favicon = await UIImage.renderImage(image, backgroundColor: attributes.backgroundColor)
+      let favicon = await UIImage.renderFavicon(image, backgroundColor: attributes.backgroundColor, shouldScale: true)
       try Task.checkCancellation()
       return favicon
     } else {
