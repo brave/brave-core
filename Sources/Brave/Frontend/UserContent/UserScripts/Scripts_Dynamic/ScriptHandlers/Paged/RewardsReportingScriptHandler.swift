@@ -69,16 +69,7 @@ class RewardsReportingScriptHandler: TabContentScript {
 
         guard let url = URL(string: content.url) else { return }
         let refURL = URL(string: content.referrerUrl ?? "")
-
-        if content.method.lowercased() == "post" {
-          if let postData = content.data?.removingPercentEncoding, let data = postData.data(using: .utf8) {
-            if BraveLedger.isMediaURL(url, firstPartyURL: tabURL, referrerURL: refURL) {
-              rewards.reportPostData(data, url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
-            }
-          }
-        } else {
-          rewards.reportXHRLoad(url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
-        }
+        rewards.reportXHRLoad(url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
       }
     } catch {
       adsRewardsLog.error("Failed to parse message from rewards reporting JS: \(error.localizedDescription)")

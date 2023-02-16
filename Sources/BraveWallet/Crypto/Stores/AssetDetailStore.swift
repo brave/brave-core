@@ -301,6 +301,8 @@ extension AssetDetailStore: BraveWalletTxServiceObserver {
   func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
     update()
   }
+  func onTxServiceReset() {
+  }  
 }
 
 extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {

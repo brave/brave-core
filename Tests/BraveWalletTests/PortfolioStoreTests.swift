@@ -108,14 +108,14 @@ class PortfolioStoreTests: XCTestCase {
       completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "") // sol nft balance
     }
     rpcService._erc721Metadata = { _, _, _, completion in
-      completion(
-      """
+      let metadata = """
       {
         "image": "mock.image.url",
         "name": "mock nft name",
         "description": "mock nft description"
       }
-      """, .success, "")
+      """
+      completion("", metadata, .success, "")
     }
     rpcService._solTokenMetadata = { _, completion in
       completion(

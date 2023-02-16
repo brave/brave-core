@@ -228,17 +228,6 @@ public class BraveRewards: NSObject {
     )
   }
 
-  /// Report posting data to a form
-  func reportPostData(_ data: Data, url: URL, tabId: Int, firstPartyURL: URL, referrerURL: URL?) {
-    ledger?.reportPost(
-      data,
-      url: url,
-      tabId: UInt32(tabId),
-      firstPartyURL: firstPartyURL,
-      referrerURL: referrerURL
-    )
-  }
-
   /// Report that media has started on a tab with a given id
   func reportMediaStarted(tabId: Int) {
     ads.reportMediaStarted(tabId: tabId)

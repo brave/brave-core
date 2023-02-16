@@ -43,14 +43,14 @@ class SendTokenStoreTests: XCTestCase {
       completion(snsGetSolAddr, .success, "")
     }
     rpcService._erc721Metadata = { _, _, _, completion in
-      completion(
-      """
+      let metadata = """
       {
         "image": "mock.image.url",
         "name": "mock nft name",
         "description": "mock nft description"
       }
-      """, .success, "")
+      """
+      completion("", metadata, .success, "")
     }
     rpcService._solTokenMetadata = { _, completion in
       completion(
@@ -345,7 +345,7 @@ class SendTokenStoreTests: XCTestCase {
     }
     rpcService._addObserver = { _ in }
     rpcService._erc721Metadata = { _, _, _, completion in
-      completion("", .internalError, "")
+      completion("", "", .internalError, "")
     }
 
     let walletService = BraveWallet.TestBraveWalletService()

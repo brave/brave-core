@@ -315,8 +315,8 @@ public class KeyringStore: ObservableObject {
   }
 
   func privateKey(for account: BraveWallet.AccountInfo, password: String, completion: @escaping (String?) -> Void) {
-    keyringService.privateKey(forKeyringAccount: account.address, password: password, coin: account.coin) { success, key in
-      completion(success ? key : nil)
+    keyringService.encodePrivateKey(forExport: account.address, password: password, coin: account.coin) { key in
+      completion(key.isEmpty ? nil : key)
     }
   }
 

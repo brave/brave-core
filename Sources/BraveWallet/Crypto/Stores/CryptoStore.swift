@@ -422,6 +422,9 @@ extension CryptoStore: BraveWalletTxServiceObserver {
   public func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
     prepare()
   }
+  public func onTxServiceReset() {
+    prepare()
+  }
 }
 
 extension CryptoStore: BraveWalletKeyringServiceObserver {
