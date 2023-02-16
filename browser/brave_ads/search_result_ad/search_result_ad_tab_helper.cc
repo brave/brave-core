@@ -5,12 +5,17 @@
 
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 
+#include <utility>
+
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -19,7 +24,21 @@
 namespace brave_ads {
 
 namespace {
+
 AdsService* g_ads_service_for_testing = nullptr;
+
+constexpr char kCheckForAdWithDataPlacementIdVisible[] =
+    R"(
+        (function () {
+          const element = document.querySelector('div[data-placement-id="$1"]');
+          if (!element) {
+            return false;
+          }
+          const style = window.getComputedStyle(element);
+          return style.display !== 'none' && style.visibility !== 'hidden';
+        })()
+    )";
+
 }  // namespace
 
 SearchResultAdTabHelper::SearchResultAdTabHelper(
@@ -88,10 +107,14 @@ void SearchResultAdTabHelper::DidFinishNavigation(
 }
 
 void SearchResultAdTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  content::RenderFrameHost* render_frame_host =
-      web_contents()->GetPrimaryMainFrame();
   if (search_result_ad_handler_) {
-    search_result_ad_handler_->MaybeRetrieveSearchResultAd(render_frame_host);
+    content::RenderFrameHost* render_frame_host =
+        web_contents()->GetPrimaryMainFrame();
+
+    search_result_ad_handler_->MaybeRetrieveSearchResultAd(
+        render_frame_host,
+        base::BindOnce(&SearchResultAdTabHelper::OnRetrieveSearchResultAd,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -134,6 +157,42 @@ void SearchResultAdTabHelper::MaybeProcessSearchResultAdClickedEvent(
   const GURL target_url = navigation_handle->GetRedirectChain()[0];
   search_result_ad_tab_helper->MaybeTriggerSearchResultAdClickedEvent(
       target_url);
+}
+
+void SearchResultAdTabHelper::OnRetrieveSearchResultAd(
+    std::vector<std::string> placement_ids) {
+  if (!search_result_ad_handler_ || placement_ids.empty()) {
+    return;
+  }
+
+  for (const auto& placement_id : placement_ids) {
+    if (placement_id.empty() || base::Contains(placement_id, '\"')) {
+      continue;
+    }
+    const std::string script = base::ReplaceStringPlaceholders(
+        kCheckForAdWithDataPlacementIdVisible, {placement_id}, nullptr);
+    content::RenderFrameHost* render_frame_host =
+        web_contents()->GetPrimaryMainFrame();
+    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+        base::ASCIIToUTF16(script),
+        base::BindOnce(
+            &SearchResultAdTabHelper::OnCheckForAdWithDataPlacementIdVisible,
+            weak_factory_.GetWeakPtr(), placement_id),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+}
+
+void SearchResultAdTabHelper::OnCheckForAdWithDataPlacementIdVisible(
+    const std::string& placement_id,
+    base::Value value) {
+  if (!search_result_ad_handler_ || !value.is_bool()) {
+    return;
+  }
+
+  if (value.GetBool()) {
+    search_result_ad_handler_->MaybeTriggerSearchResultAdViewedEvent(
+        placement_id);
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SearchResultAdTabHelper);

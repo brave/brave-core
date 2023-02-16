@@ -54,21 +54,39 @@
             "data-conversion-url-pattern-value": "data-conversion-url-pattern-value-3",
             "data-conversion-advertiser-public-key-value": "data-conversion-advertiser-public-key-value-3",
             "data-conversion-observation-window-value": 3
+          }, {
+            "@type": "SearchResultAd",
+            "data-placement-id": "data-placement-id-4",
+            "data-creative-instance-id": "data-creative-instance-id-4",
+            "data-creative-set-id": "data-creative-set-id-4",
+            "data-campaign-id": "data-campaign-id-4",
+            "data-advertiser-id": "data-advertiser-id-4",
+            "data-landing-page": "https://foo.com/page-4",
+            "data-headline-text": "data-headline-text-4",
+            "data-description": "data-description-4",
+            "data-rewards-value": 4.5
           }
         ]
       }
     </script>
 </head>
 <body>
-  <div id="ad_frame_1" >
+  <div id="ad_frame_1" data-placement-id="data-placement-id-1">
     <a id='ad_link_1'
       href='https://search.brave.com:REPLACE_WITH_HTTP_PORT/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-1'>
       Click me
     </a>
   </div>
-  <div id="ad_frame_2">
+  <div id="ad_frame_2" data-placement-id="data-placement-id-2">
     <a id='ad_link_2'
       href='https://search.brave.com:REPLACE_WITH_HTTP_PORT/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-2'
+      target="_blank" rel="noopener noreferrer">
+      Click me
+    </a>
+  </div>
+  <div id="ad_frame_3" data-placement-id="data-placement-id-3" style="display:none">
+    <a id='ad_link_3'
+      href='https://search.brave.com:REPLACE_WITH_HTTP_PORT/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-3'
       target="_blank" rel="noopener noreferrer">
       Click me
     </a>

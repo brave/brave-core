@@ -7,8 +7,8 @@
       "creatives": [
         {
           "@type": "SearchResultAd",
-          "missing-data-placement-id": "data-placement-id-1",
-          "data-creative-instance-id": "data-creative-instance-id-1",
+          "data-placement-id": "data-placement-id-1",
+          "missing-data-creative-instance-id": "data-creative-instance-id-1",
           "data-creative-set-id": "data-creative-set-id-1",
           "data-campaign-id": "data-campaign-id-1",
           "data-advertiser-id": "data-advertiser-id-1",
@@ -26,9 +26,11 @@
   </script>
 </head>
 <body>
-  <a id='ad_link_1'
-    href='https://search.brave.com:REPLACE_WITH_HTTP_PORT/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-1'>
-    Click me
-  </a>
+  <div id="ad_frame_1" data-placement-id="data-placement-id-1">
+    <a id='ad_link_1'
+      href='https://search.brave.com:REPLACE_WITH_HTTP_PORT/a/redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id=data-placement-id-1'>
+      Click me
+    </a>
+  </div>
 </body>
 </html>

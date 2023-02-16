@@ -8,7 +8,9 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -59,7 +61,14 @@ class SearchResultAdTabHelper
   void MaybeProcessSearchResultAdClickedEvent(
       content::NavigationHandle* navigation_handle);
 
+  void OnRetrieveSearchResultAd(std::vector<std::string> placement_ids);
+
+  void OnCheckForAdWithDataPlacementIdVisible(const std::string& placement_id,
+                                              base::Value value);
+
   std::unique_ptr<SearchResultAdHandler> search_result_ad_handler_;
+
+  base::WeakPtrFactory<SearchResultAdTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
