@@ -26,7 +26,7 @@ public class BundledFaviconRenderer {
     }
 
     // Render the Favicon on a UIImage
-    return await UIImage.renderImage(icon.image, backgroundColor: icon.backgroundColor)
+    return await UIImage.renderFavicon(icon.image, backgroundColor: icon.backgroundColor, shouldScale: false)
   }
 
   // MARK: - Custom Icons

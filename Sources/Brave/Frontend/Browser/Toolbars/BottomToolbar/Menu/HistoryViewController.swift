@@ -246,7 +246,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         forUrl: historyItem.url,
         persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
 
-      if let url = domain.url?.asURL {
+      if domain.url?.asURL != nil {
         cell.imageView?.loadFavicon(for: historyItem.url, monogramFallbackCharacter: historyItem.title?.first)
       } else {
         cell.imageView?.clearMonogramFavicon()

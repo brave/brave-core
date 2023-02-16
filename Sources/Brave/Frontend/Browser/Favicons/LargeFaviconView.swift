@@ -22,12 +22,12 @@ class LargeFaviconView: UIView {
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor
         self.imageView.contentMode = .scaleAspectFit
-        self.backgroundView.isHidden = favicon.backgroundColor != .clear || favicon.isMonogramImage
+        self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
       } catch {
-        self.imageView.image = nil
+        self.imageView.image = try? await FaviconFetcher.monogramIcon(url: siteURL).image ?? Favicon.defaultImage
         self.backgroundColor = nil
         self.imageView.contentMode = .scaleAspectFit
-        self.backgroundView.isHidden = true
+        self.backgroundView.isHidden = false
       }
     }
   }

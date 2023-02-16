@@ -1370,6 +1370,13 @@
     "background_color": "#5009a7",
     "domain": "yahoo.com"
   },
+  {	
+    "title": "yahoo-jp",	
+    "url": "https://yahoo.co.jp/",	
+    "image_url": "yahoo-jp.png",	
+    "background_color": "#ffffff",	
+    "domain": "yahoo.co.jp"	
+  },
   {
     "title": "yelp",
     "url": "https://yelp.com/",
@@ -1390,5 +1397,12 @@
     "image_url": "zillow-com.png",
     "background_color": "#98c554",
     "domain": "zillow.com"
+  },
+  {	
+    "title": "brave-support",	
+    "url": "https://brave.com/msupport/",	
+    "image_url": "brave-support.png",	
+    "background_color": "#495057",	
+    "domain": "brave.com"	
   }
 ]
