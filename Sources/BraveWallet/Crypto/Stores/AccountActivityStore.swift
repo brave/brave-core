@@ -320,6 +320,8 @@ extension AccountActivityStore: BraveWalletTxServiceObserver {
   }
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
   }
+  func onTxServiceReset() {
+  }
 }
 
 extension AccountActivityStore: BraveWalletBraveWalletServiceObserver {

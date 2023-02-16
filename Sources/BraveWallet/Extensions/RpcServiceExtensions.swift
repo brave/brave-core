@@ -281,7 +281,8 @@ extension BraveWalletJsonRpcService {
   @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken) async -> NFTMetadata? {
     var metaDataString = ""
     if token.isErc721 {
-      let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
+      let (_, metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
+      
       if result != .success {
         Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
       }
@@ -308,7 +309,8 @@ extension BraveWalletJsonRpcService {
         group.addTask { @MainActor in
           var metaDataString = ""
           if token.isErc721 {
-            let (metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
+            let (_, metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
+
             if result != .success {
               Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
             }

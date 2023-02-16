@@ -600,6 +600,9 @@ extension TransactionConfirmationStore: BraveWalletTxServiceObserver {
       }
     }
   }
+
+  public func onTxServiceReset() {
+  }
 }
 
 extension TransactionConfirmationStore: BraveWalletBraveWalletServiceObserver {

@@ -44,6 +44,10 @@ class MockTxService: BraveWalletTxService {
     completion(false, "", "Error Message")
   }
 
+  func pendingTransactionsCount(_ completion: @escaping (UInt32) -> Void) {
+    completion(UInt32(txs.count))
+  }
+  
   func reset() {
   }
 
