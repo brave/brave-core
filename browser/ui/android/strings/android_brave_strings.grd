@@ -1148,6 +1148,27 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_VIEW_BOOKMARKS_MENU" desc="View Bookmarks menu item text for the bookmark button.">
         View Bookmarks
       </message>
+      <message name="IDS_IMPORT_BOOKMARKS" desc="Import Bookmarks menu item text for the bookmark.">
+        Import bookmarks
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS" desc="Export Bookmarks menu item text for the bookmark.">
+        Export bookmarks
+      </message>
+      <!-- <message name="IDS_IMPORT_BOOKMARKS_SELECT_FILE" desc="Import Bookmarks file chooser text">
+        Select a File to Import bookmarks
+      </message> -->
+      <message name="IDS_IMPORT_BOOKMARKS_SUCCESS" desc="Import Bookmarks success text message.">
+        Bookmarks imported successfully.
+      </message>
+      <message name="IDS_IMPORT_BOOKMARKS_FAILED" desc="Import Bookmarks failed text message.">
+        Bookmark import failed.
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS_FAILED" desc="Export Bookmarks failed text message.">
+        Bookmark export failed.
+      </message>
+      <message name="IDS_EXPORT_BOOKMARKS_SUCCESS" desc="Export Bookmarks success text message.">
+        Bookmarks exported successfully.
+      </message>
       <!-- Sync Infobar -->
       <message name="IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE" desc="Message text shown to users who used a previous version of Brave Sync and need to perform setup again for the new version.">
         Brave Sync has been upgraded and requires setup

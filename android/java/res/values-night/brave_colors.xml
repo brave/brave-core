@@ -164,6 +164,10 @@
 
     <color name="bookmark_menu_text_color">#C2C4CF</color>
     <color name="bookmark_menu_bg_color">#2E3039</color>
+    <color name="bookmark_import_export_toast_bg_color">#1E2025</color>
+    <color name="bookmark_import_export_dialog_title_color">#EDEEF1</color>
+    <color name="bookmark_import_export_dialog_secondary_color">#878DA6</color>
+    <color name="bookmark_import_export_dialog_button_color">#AAA8F7</color>
 
     <color name="notification_volume_icon_color">#F0F2FF</color>
     <color name="notification_bat1_icon_color">#A0A5EB</color>

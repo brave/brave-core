@@ -1,0 +1,95 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
+index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..dfe868817b6c0f4eb68a884da156377d183da4ad 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
+@@ -11,6 +11,7 @@ import android.util.Pair;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+ import androidx.annotation.VisibleForTesting;
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ import com.google.common.primitives.UnsignedLongs;
+ import com.google.protobuf.InvalidProtocolBufferException;
+@@ -22,6 +23,7 @@ import org.chromium.base.annotations.CalledByNative;
+ import org.chromium.base.annotations.NativeMethods;
+ import org.chromium.base.metrics.RecordHistogram;
+ import org.chromium.base.metrics.RecordUserAction;
++import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.commerce.ShoppingServiceFactory;
+ import org.chromium.chrome.browser.partnerbookmarks.PartnerBookmarksShim;
+ import org.chromium.chrome.browser.profiles.Profile;
+@@ -39,6 +41,7 @@ import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
+ import org.chromium.components.power_bookmarks.PowerBookmarkType;
+ import org.chromium.components.power_bookmarks.ShoppingSpecifics;
+ import org.chromium.content_public.browser.WebContents;
++import org.chromium.ui.base.WindowAndroid;
+ import org.chromium.url.GURL;
+ 
+ import java.util.ArrayList;
+@@ -58,6 +61,7 @@ class BookmarkBridge {
+             new ObserverList<BookmarkModelObserver>();
+     private ShoppingService mShoppingService;
+     private SubscriptionsObserver mSubscriptionsObserver;
++    private WindowAndroid mWindowAndroid;
+ 
+     /**
+      * Handler to fetch the bookmarks, titles, urls and folder hierarchy.
+@@ -1005,6 +1009,48 @@ class BookmarkBridge {
+         return pairList;
+     }
+ 
++    @CalledByNative
++    public void bookmarksImported(boolean isSuccess) {
++        if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
++                && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
++            ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
++                @Override
++                public void run() {
++                    BraveBookmarkUtils.showBookmarkImportExportDialog(
++                            (AppCompatActivity) mWindowAndroid.getContext().get(), true, isSuccess);
++                    ((AppCompatActivity) mWindowAndroid.getContext().get()).recreate();
++                }
++            });
++        }
++    }
++
++    @CalledByNative
++    public void bookmarksExported(boolean isSuccess) {
++        if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
++                && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
++            ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
++                @Override
++                public void run() {
++                    BraveBookmarkUtils.showBookmarkImportExportDialog(
++                            (AppCompatActivity) mWindowAndroid.getContext().get(), false,
++                            isSuccess);
++                }
++            });
++        }
++    }
++
++    public void importBookmarks(WindowAndroid windowAndroid, String importFilePath) {
++        mWindowAndroid = windowAndroid;
++        BookmarkBridgeJni.get().importBookmarks(
++                mNativeBookmarkBridge, BookmarkBridge.this, windowAndroid, importFilePath);
++    }
++
++    public void exportBookmarks(WindowAndroid windowAndroid, String exportFilePath) {
++        mWindowAndroid = windowAndroid;
++        BookmarkBridgeJni.get().exportBookmarks(
++                mNativeBookmarkBridge, BookmarkBridge.this, windowAndroid, exportFilePath);
++    }
++
+     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+     @NativeMethods
+     public interface Natives {
+@@ -1082,5 +1128,9 @@ class BookmarkBridge {
+         void reorderChildren(long nativeBookmarkBridge, BookmarkBridge caller, BookmarkId parent,
+                 long[] orderedNodes);
+         boolean isBookmarked(long nativeBookmarkBridge, GURL url);
++        void importBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, WindowAndroid window,
++                String importFilePath);
++        void exportBookmarks(long nativeBookmarkBridge, BookmarkBridge caller, WindowAndroid window,
++                String exportFilePath);
+     }
+ }

@@ -11,6 +11,14 @@ brave_utility_sources = [
   "//brave/utility/brave_content_utility_client.cc",
   "//brave/utility/brave_content_utility_client.h",
 ]
+
+if (is_android) {
+  brave_utility_sources += [
+    "importer/bookmark_html_reader.cc",
+    "importer/bookmark_html_reader.h",
+  ]
+}
+
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [

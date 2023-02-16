@@ -16,6 +16,11 @@ public class BraveClassAdapter {
         chain = new BraveAutocompleteCoordinatorClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
         chain = new BraveAutofillPopupBridgeClassAdapter(chain);
+        chain = new BraveBookmarkActionBarClassAdapter(chain);
+        chain = new BraveBookmarkActivityClassAdapter(chain);
+        chain = new BraveBookmarkDelegateClassAdapter(chain);
+        chain = new BraveBookmarkManagerClassAdapter(chain);
+        chain = new BraveBookmarkPageClassAdapter(chain);
         chain = new BraveBookmarkUtilsClassAdapter(chain);
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);

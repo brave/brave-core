@@ -192,6 +192,7 @@ brave_chrome_browser_deps = [
   "//chrome/browser/ui",
   "//chrome/common",
   "//chrome/common:channel_info",
+  "//chrome/utility",
   "//components/account_id",
   "//components/autofill/core/common",
   "//components/browsing_data/core",
@@ -288,6 +289,10 @@ if (is_android) {
     "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
+    "bookmarks/bookmark_html_writer.cc",
+    "bookmarks/bookmark_html_writer.h",
+    "importer/profile_writer.cc",
+    "importer/profile_writer.h",
   ]
 
   brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
