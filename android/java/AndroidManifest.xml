@@ -159,6 +159,13 @@
     android:exported="false">
 </activity>
 
+<activity 
+    android:name="org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:exported="false"
+    android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"/>
+
 <meta-data
         android:name="com.google.android.play.billingclient.version"
         android:value="4.0.0" />

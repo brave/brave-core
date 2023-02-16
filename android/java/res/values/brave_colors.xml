@@ -285,6 +285,10 @@
 
     <color name="bookmark_menu_text_color">#484B4E</color>
     <color name="bookmark_menu_bg_color">@android:color/white</color>
+    <color name="bookmark_import_export_toast_bg_color">@android:color/white</color>
+    <color name="bookmark_import_export_dialog_title_color">#1C1E26</color>
+    <color name="bookmark_import_export_dialog_secondary_color">#666D89</color>
+    <color name="bookmark_import_export_dialog_button_color">#423EEE</color>
 
     <color name="notification_volume_icon_color">#D1E8EB</color>
     <color name="notification_bat1_icon_color">#FEDED6</color>
