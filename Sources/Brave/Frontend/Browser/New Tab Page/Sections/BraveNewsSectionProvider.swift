@@ -182,7 +182,12 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
     if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveNewsOptInView> {
-      cell.content.graphicAnimationView.play()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        // Seems like there is a CoreGraphics glitch somewhere here after we create a new tab it starts
+        // playing too quickly before the tab tray animation is done, so it doesn't play... possibly a Lottie
+        // bug
+        cell.content.graphicAnimationView.play()
+      }
     }
     if let card = dataSource.state.cards?[safe: indexPath.item] {
       if !viewedCards.contains(card) && collectionView.contentOffset.y > 0 {
