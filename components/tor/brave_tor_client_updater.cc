@@ -93,6 +93,17 @@ const char kTorClientComponentBase64PublicKey[] =
     "xwIDAQAB";
 #elif BUILDFLAG(IS_LINUX)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
+#if defined(ARCH_CPU_ARM64)
+static const char kTorClientComponentId[] = "fmmldihckdnognaabhligdpckkeancng";
+static const char kTorClientComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqb14fggDpbjZtv3HKmR"
+    "UTnvfDTcqVbVZo0DdCHQi6SwxDlRweGwsvsHuy9U37VBr41ha/neemQGf+5qkWgY"
+    "y+mzzAkb5ZtrHkBSOOsZdyO9WEj7GwXuAx9FvcxG2zPpA/CvagnC14VhMyUFLL8v"
+    "XdfHYPmQOtIVdW3eR0G/4JP/mTbnAEkipQfxrDMtDVpX+FDB+Zy5yEMGKWHRLcdH"
+    "bHUgb/VhB9ppt0LKRjM44KSpyPDlYquXNcn3WFmxHoVm7PZ3LTAn3eSNZrT4ptmo"
+    "KveT4LgWtObrHoZtrg+/LnHAi1GYf8PHrRc+o/FptobOWoUN5lt8NvhLjv85ERBt"
+    "rQIDAQAB";
+#else
 const char kTorClientComponentId[] = "biahpgbdmdkfgndcmfiipgcebobojjkp";
 const char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseuq8dXKawkZC7RSE7xb"
@@ -102,6 +113,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "+UuLHE7cxPhnsNd/52uY3Lod3GhxvDoXKYx9kWlzBjxB53A2eLBCDIwwCpqS4/Ib"
     "RSJhvF33KQT8YM+7V1MitwB49klP4aEWPXwOlFHmn9Dkmlx2RbO7S0tRcH9UH4LK"
     "2QIDAQAB";
+#endif
 #endif
 
 BraveTorClientUpdater::BraveTorClientUpdater(
