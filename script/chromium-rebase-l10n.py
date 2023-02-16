@@ -160,6 +160,9 @@ def main():
         elem1 = xml_tree.xpath(
             '//part[@file="settings_chromium_strings.grdp"]')[0]
         elem1.set('file', 'settings_brave_strings.grdp')
+        elem1 = xml_tree.xpath(
+            '//message[@name="IDS_INSTALL_OS_NOT_SUPPORTED"]')[0]
+        elem1.text = elem1.text.replace('Windows 7', 'Windows 10')
 
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]
