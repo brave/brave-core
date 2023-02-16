@@ -25,7 +25,7 @@ import { loadTimeData } from '../../common/loadTimeData'
 import { getTypedSolanaTxInstructions, SolanaParamsWithLamports, TypedSolanaInstructionWithParams } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
-import { getCoinFromTxDataUnion } from './network-utils'
+import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
 import { computeFiatAmount, findAssetPrice } from './pricing-utils'
@@ -125,8 +125,18 @@ export function isSolanaDappTransaction (tx: TransactionInfo): tx is SolanaTrans
   )
 }
 
-export function isFilecoinTransaction (tx: TransactionInfo): tx is FileCoinTransactionInfo {
+export const isFilecoinTransaction = (tx: {
+  txDataUnion: TxDataPresence
+}): tx is FileCoinTransactionInfo => {
   return tx.txDataUnion.filTxData !== undefined
+}
+
+export const isFilecoinTestnetTx = (tx: {
+  txDataUnion: TxDataPresence
+}): boolean => {
+  return tx.txDataUnion?.filTxData?.from?.startsWith(
+    BraveWallet.FILECOIN_TESTNET
+  ) || false
 }
 
 export const getToAddressesFromSolanaTransaction = (
