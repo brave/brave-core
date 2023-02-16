@@ -56,16 +56,21 @@ struct SignatureRequestView: View {
     let metrics = UIFontMetrics(forTextStyle: .body)
     let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
     let regularFont = metrics.scaledFont(for: UIFont.systemFont(ofSize: desc.pointSize, weight: .regular))
+    let regularAttributes: [NSAttributedString.Key: Any] = [
+      .font: regularFont, .foregroundColor: UIColor.braveLabel]
     if currentRequest.domain.isEmpty {
-      // if we don't show domain, we don't need the full title
-      return NSAttributedString(string: requestMessage, attributes: [.font: regularFont])
+      // if we don't show domain, we don't need the titles so we
+      // can fallback to `requestDisplayText` string for perf reasons
+      return nil
     }
     let boldFont = metrics.scaledFont(for: UIFont.systemFont(ofSize: desc.pointSize, weight: .bold))
+    let boldAttributes: [NSAttributedString.Key: Any] = [
+      .font: boldFont, .foregroundColor: UIColor.braveLabel]
     
-    let domainTitle = NSAttributedString(string: "\(Strings.Wallet.signatureRequestDomainTitle):\n", attributes: [.font: boldFont])
-    let domain = NSAttributedString(string: requestDomain, attributes: [.font: regularFont])
-    let messageTitle = NSAttributedString(string: "\n\(Strings.Wallet.signatureRequestMessageTitle):\n", attributes: [.font: boldFont])
-    let message = NSAttributedString(string: requestMessage, attributes: [.font: regularFont])
+    let domainTitle = NSAttributedString(string: "\(Strings.Wallet.signatureRequestDomainTitle):\n", attributes: boldAttributes)
+    let domain = NSAttributedString(string: requestDomain, attributes: regularAttributes)
+    let messageTitle = NSAttributedString(string: "\n\(Strings.Wallet.signatureRequestMessageTitle):\n", attributes: boldAttributes)
+    let message = NSAttributedString(string: requestMessage, attributes: regularAttributes)
     
     let attrString = NSMutableAttributedString(attributedString: domainTitle)
     attrString.append(domain)
