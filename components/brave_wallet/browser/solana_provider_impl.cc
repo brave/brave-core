@@ -78,7 +78,10 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value::Dict> arg,
   if (!account) {
     // Prompt users to create a Solana account. If wallet is not setup, users
     // will be lead to onboarding first.
-    delegate_->ShowAccountCreation(mojom::CoinType::SOL);
+    if (!account_creation_shown_) {
+      delegate_->ShowAccountCreation(mojom::CoinType::SOL);
+      account_creation_shown_ = true;
+    }
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                             "");
@@ -119,18 +122,20 @@ void SolanaProviderImpl::Disconnect() {
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (account)
+  if (account) {
     delegate_->RemoveSolanaConnectedAccount(*account);
+  }
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (!account)
+  if (!account) {
     std::move(callback).Run(false);
-  else
+  } else {
     std::move(callback).Run(IsAccountConnected(*account));
+  }
 }
 
 void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
@@ -140,10 +145,11 @@ void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
     std::move(callback).Run("");
     return;
   }
-  if (IsAccountConnected(*account))
+  if (IsAccountConnected(*account)) {
     std::move(callback).Run(*account);
-  else
+  } else {
     std::move(callback).Run("");
+  }
 }
 
 absl::optional<std::pair<SolanaMessage, std::vector<uint8_t>>>
@@ -157,8 +163,9 @@ SolanaProviderImpl::GetDeserializedMessage(
   }
 
   auto msg = SolanaMessage::Deserialize(message_bytes);
-  if (!msg)
+  if (!msg) {
     return absl::nullopt;
+  }
 
   // Note: We cannot check Base58Encode(msg->Serialize()) is equal to the
   // original encoded message passed in because the order of accounts with the
@@ -421,12 +428,14 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
   auto tx_status = tx_info->tx_status;
   if (tx_status != mojom::TransactionStatus::Submitted &&
       tx_status != mojom::TransactionStatus::Rejected &&
-      tx_status != mojom::TransactionStatus::Error)
+      tx_status != mojom::TransactionStatus::Error) {
     return;
+  }
 
   std::string tx_meta_id = tx_info->id;
-  if (!sign_and_send_tx_callbacks_.contains(tx_meta_id))
+  if (!sign_and_send_tx_callbacks_.contains(tx_meta_id)) {
     return;
+  }
 
   auto callback = std::move(sign_and_send_tx_callbacks_[tx_meta_id]);
   base::Value::Dict result;
@@ -477,10 +486,11 @@ void SolanaProviderImpl::SignMessage(
     return;
   }
   std::string message;
-  if (display_encoding && *display_encoding == "hex")
+  if (display_encoding && *display_encoding == "hex") {
     message = base::StrCat({"0x", base::HexEncode(blob_msg)});
-  else
+  } else {
     message = std::string(blob_msg.begin(), blob_msg.end());
+  }
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, *account, "", message, false,
       absl::nullopt, absl::nullopt, blob_msg, mojom::CoinType::SOL);
@@ -517,8 +527,9 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
 
   if (*method == solana::kConnect) {
     absl::optional<base::Value::Dict> option = absl::nullopt;
-    if (params)
+    if (params) {
       option = std::move(*params);
+    }
     Connect(std::move(option),
             base::BindOnce(&SolanaProviderImpl::OnRequestConnect,
                            weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -551,8 +562,9 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
     }
     base::Value::Dict* options_dict = params->FindDict(kOptions);
     absl::optional<base::Value::Dict> options = absl::nullopt;
-    if (options_dict)
+    if (options_dict) {
       options = std::move(*options_dict);
+    }
     SignAndSendTransaction(
         mojom::SolanaSignTransactionParam::New(
             *message, std::vector<mojom::SignaturePubkeyPairPtr>()),
@@ -571,8 +583,9 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
     for (const auto& message : *messages) {
       auto param = mojom::SolanaSignTransactionParam::New();
       const std::string* encoded_serialized_msg = message.GetIfString();
-      if (encoded_serialized_msg)
+      if (encoded_serialized_msg) {
         param->encoded_serialized_msg = *encoded_serialized_msg;
+      }
       sign_params.push_back(std::move(param));
     }
     SignAllTransactions(
@@ -590,8 +603,9 @@ void SolanaProviderImpl::Request(base::Value::Dict arg,
     }
     const std::string* display_str = params->FindString("display");
     absl::optional<std::string> display = absl::nullopt;
-    if (display_str)
+    if (display_str) {
       display = *display_str;
+    }
     SignMessage(*message, std::move(display), std::move(callback));
   } else {
     std::move(callback).Run(
@@ -706,8 +720,9 @@ void SolanaProviderImpl::OnRequestConnect(RequestCallback callback,
                                           const std::string& error_message,
                                           const std::string& public_key) {
   base::Value::Dict result;
-  if (error == mojom::SolanaProviderError::kSuccess)
+  if (error == mojom::SolanaProviderError::kSuccess) {
     result.Set(kPublicKey, public_key);
+  }
   std::move(callback).Run(error, error_message, std::move(result));
 }
 
@@ -757,16 +772,18 @@ void SolanaProviderImpl::Unlocked() {
 }
 
 void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
-  if (!events_listener_.is_bound() || coin != mojom::CoinType::SOL)
+  if (!events_listener_.is_bound() || coin != mojom::CoinType::SOL) {
     return;
+  }
 
   DCHECK(keyring_service_);
   absl::optional<std::string> account =
       keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
-  if (account && IsAccountConnected(*account))
+  if (account && IsAccountConnected(*account)) {
     events_listener_->AccountChangedEvent(account);
-  else
+  } else {
     events_listener_->AccountChangedEvent(absl::nullopt);
+  }
 }
 
 }  // namespace brave_wallet

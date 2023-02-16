@@ -268,6 +268,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                            RestoreWalletTwice);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            KeyringServiceObserver);
+  FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
+                           ConnectWithNoSolanaAccount);
 
   friend class BraveWalletServiceUnitTest;
   friend class EthereumProviderImplUnitTest;
