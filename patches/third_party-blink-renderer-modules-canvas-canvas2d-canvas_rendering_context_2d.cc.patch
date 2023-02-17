@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index bb80974a3ce8e96b6319a6e007411f8ecc018daf..8f2df69c7946e5a0479c7934206f23cf5c58c307 100644
+index cf228122e8bf4f15e90b701e453dfa9776251c3d..4f44237313a74ef2136cc658645f3e9f7d21fd51 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 @@ -946,6 +946,7 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
