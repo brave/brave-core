@@ -118,12 +118,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // early initialize referrals
   brave_referrals_service();
 
-  // initialize ads stats updater helper
-  InitBraveStatsUpdaterHelper();
-
-  // early initialize brave stats
-  brave_stats_updater();
-
   // Disabled on mobile platforms, see for instance issues/6176
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   // Create P3A Service early to catch more histograms. The full initialization
@@ -131,6 +125,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   brave_p3a_service();
   histogram_braveizer_ = brave::HistogramsBraveizer::Create();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+  // initialize ads stats updater helper
+  InitBraveStatsUpdaterHelper();
+
+  // early initialize brave stats
+  brave_stats_updater();
 
   // early initialize menu metrics
   menu_metrics();

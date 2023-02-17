@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
 
 namespace misc_metrics {
+extern const char kMiscMetricsBrowserUsageList[];
 extern const char kMiscMetricsMenuDismissStorage[];
 extern const char kMiscMetricsMenuGroupActionCounts[];
 extern const char kMiscMetricsMenuShownStorage[];
