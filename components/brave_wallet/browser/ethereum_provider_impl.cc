@@ -485,7 +485,8 @@ void EthereumProviderImpl::OnAddUnapprovedTransaction(
 void EthereumProviderImpl::SignMessage(const std::string& address,
                                        const std::string& message,
                                        RequestCallback callback,
-                                       base::Value id) {
+                                       base::Value id,
+                                       bool is_eth_sign) {
   bool reject = false;
   if (!EthAddress::IsValidAddress(address) || !IsValidHexString(message)) {
     base::Value formed_response = GetProviderErrorDictionary(
@@ -516,11 +517,12 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
       false,
-      base::BindOnce(
-          &EthereumProviderImpl::ContinueSignMessage,
-          weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(), "",
-          message_str, std::move(message_bytes), absl::nullopt, absl::nullopt,
-          false, std::move(callback), std::move(id), delegate_->GetOrigin()));
+      base::BindOnce(&EthereumProviderImpl::ContinueSignMessage,
+                     weak_factory_.GetWeakPtr(),
+                     checksum_address.ToChecksumAddress(), "", message_str,
+                     std::move(message_bytes), absl::nullopt, absl::nullopt,
+                     false, is_eth_sign, std::move(callback), std::move(id),
+                     delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::RecoverAddress(const std::string& message,
@@ -875,7 +877,7 @@ void EthereumProviderImpl::SignTypedMessage(
           weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(),
           domain_string, message, std::move(*message_to_sign),
           base::HexEncode(domain_hash), base::HexEncode(primary_hash), true,
-          std::move(callback), std::move(id), delegate_->GetOrigin()));
+          false, std::move(callback), std::move(id), delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::ContinueSignMessage(
@@ -886,6 +888,7 @@ void EthereumProviderImpl::ContinueSignMessage(
     const absl::optional<std::string>& domain_hash,
     const absl::optional<std::string>& primary_hash,
     bool is_eip712,
+    bool is_eth_sign,
     RequestCallback callback,
     base::Value id,
     const url::Origin& origin,
@@ -922,7 +925,7 @@ void EthereumProviderImpl::ContinueSignMessage(
       base::BindOnce(&EthereumProviderImpl::OnSignMessageRequestProcessed,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      std::move(id), address, std::move(message_to_sign),
-                     is_eip712));
+                     is_eip712, is_eth_sign));
   delegate_->ShowPanel();
 }
 
@@ -932,6 +935,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     const std::string& address,
     std::vector<uint8_t>&& message,
     bool is_eip712,
+    bool is_eth_sign,
     bool approved,
     mojom::ByteArrayStringUnionPtr signature,
     const absl::optional<std::string>& error) {
@@ -975,6 +979,11 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
     } else {
       formed_response = base::Value(signature->get_str());
     }
+  }
+
+  if (!reject) {
+    brave_wallet_service_->GetBraveWalletP3A()->ReportEthSignatureForP3A(
+        is_eth_sign);
   }
 
   std::move(callback).Run(std::move(id), std::move(formed_response), reject, "",
@@ -1145,7 +1154,8 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
                          std::move(id));
       return;
     }
-    SignMessage(address, message, std::move(callback), std::move(id));
+    SignMessage(address, message, std::move(callback), std::move(id),
+                method == kEthSign);
   } else if (method == kPersonalEcRecover) {
     std::string message;
     std::string signature;

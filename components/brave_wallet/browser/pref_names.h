@@ -43,6 +43,8 @@ extern const char kBraveWalletP3AFirstUnlockTime[];
 extern const char kBraveWalletP3ALastUnlockTime[];
 extern const char kBraveWalletP3AUsedSecondDay[];
 
+extern const char kBraveWalletP3ATotalSignMonthlyStorage[];
+extern const char kBraveWalletP3AEthSignMonthlyStorage[];
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
 extern const char kBraveWalletNextAssetDiscoveryFromBlocks[];

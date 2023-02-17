@@ -175,9 +175,8 @@ constexpr inline auto kCollectedTypicalHistograms =
 
 constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
-    // Please remove following placeholder metric once
-    // static slow metrics are added
-    "Brave.P3A.ExampleSlowMetric"
+    "Brave.Wallet.Signatures",
+    "Brave.Wallet.SignatureType",
 });
 
 constexpr inline auto kCollectedExpressHistograms =

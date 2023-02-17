@@ -80,7 +80,8 @@ class EthereumProviderImpl final
   void SignMessage(const std::string& address,
                    const std::string& message,
                    RequestCallback callback,
-                   base::Value id);
+                   base::Value id,
+                   bool is_eth_sign);
 
   // Used for personal_ecRecover
   void RecoverAddress(const std::string& message,
@@ -257,6 +258,7 @@ class EthereumProviderImpl final
                            const absl::optional<std::string>& domain_hash,
                            const absl::optional<std::string>& primary_hash,
                            bool is_eip712,
+                           bool is_eth_sign,
                            RequestCallback callback,
                            base::Value id,
                            const url::Origin& origin,
@@ -321,6 +323,7 @@ class EthereumProviderImpl final
                                      const std::string& address,
                                      std::vector<uint8_t>&& message,
                                      bool is_eip712,
+                                     bool is_eth_sign,
                                      bool approved,
                                      mojom::ByteArrayStringUnionPtr signature,
                                      const absl::optional<std::string>& error);

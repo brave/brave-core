@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "brave/components/time_period_storage/monthly_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -45,11 +46,16 @@ const char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
 const char kBraveWalletLastUsageTimeHistogramName[] =
     "Brave.Wallet.LastUsageTime";
+const char kBraveWalletSignaturesHistogramName[] = "Brave.Wallet.Signatures";
+const char kBraveWalletSignatureTypeHistogramName[] =
+    "Brave.Wallet.SignatureType";
 
 namespace {
 
 constexpr int kRefreshP3AFrequencyHours = 24;
 constexpr int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
+constexpr uint64_t kSignatureTotalBuckets[] = {0, 4, 9};
+constexpr double kSignatureTypeBuckets[] = {0.0, 0.25, 0.5, 0.75, 1.0};
 const char* kTimePrefsToMigrateToLocalState[] = {
     kBraveWalletLastUnlockTime, kBraveWalletP3AFirstReportTime,
     kBraveWalletP3ALastReportTime, kBraveWalletP3AFirstUnlockTime,
@@ -82,6 +88,15 @@ void RecordDefaultSolanaWalletSetting(PrefService* pref_service) {
   auto default_wallet = pref_service->GetInteger(kDefaultSolanaWallet);
   UMA_HISTOGRAM_EXACT_LINEAR(kDefaultSolanaWalletHistogramName, default_wallet,
                              max_bucket);
+}
+
+void ReportEthSignatureMetrics(uint64_t total_sum, uint64_t eth_sign_sum) {
+  p3a_utils::RecordToHistogramBucket(kBraveWalletSignaturesHistogramName,
+                                     kSignatureTotalBuckets, total_sum);
+  double eth_sign_ratio =
+      total_sum > 0 ? static_cast<double>(eth_sign_sum) / total_sum : 0.0;
+  p3a_utils::RecordToHistogramBucket(kBraveWalletSignatureTypeHistogramName,
+                                     kSignatureTypeBuckets, eth_sign_ratio);
 }
 
 }  // namespace
@@ -237,6 +252,19 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
   base::UmaHistogramExactLinear(histogram_name, answer, 2);
 }
 
+void BraveWalletP3A::ReportEthSignatureForP3A(bool is_eth_sign) {
+  MonthlyStorage total_storage(local_state_,
+                               kBraveWalletP3ATotalSignMonthlyStorage);
+  MonthlyStorage eth_sign_storage(local_state_,
+                                  kBraveWalletP3AEthSignMonthlyStorage);
+  total_storage.AddDelta(1);
+  if (is_eth_sign) {
+    eth_sign_storage.AddDelta(1);
+  }
+  ReportEthSignatureMetrics(total_storage.GetMonthlySum(),
+                            eth_sign_storage.GetMonthlySum());
+}
+
 void BraveWalletP3A::RecordActiveWalletCount(int count,
                                              mojom::CoinType coin_type) {
   DCHECK_GE(count, 0);
@@ -308,6 +336,11 @@ void BraveWalletP3A::OnUpdateTimerFired() {
   ReportTransactionSent(mojom::CoinType::ETH, false);
   ReportTransactionSent(mojom::CoinType::FIL, false);
   ReportTransactionSent(mojom::CoinType::SOL, false);
+  ReportEthSignatureMetrics(
+      MonthlyStorage(local_state_, kBraveWalletP3ATotalSignMonthlyStorage)
+          .GetMonthlySum(),
+      MonthlyStorage(local_state_, kBraveWalletP3AEthSignMonthlyStorage)
+          .GetMonthlySum());
 }
 
 void BraveWalletP3A::WriteUsageStatsToHistogram(base::Time wallet_last_used,

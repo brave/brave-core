@@ -222,4 +222,39 @@ TEST_F(BraveWalletP3AUnitTest, EthProvider) {
   histogram_tester_->ExpectBucketCount(kEthProviderHistogramName, 1, 1);
 }
 
+TEST_F(BraveWalletP3AUnitTest, Signatures) {
+  task_environment_.FastForwardBy(base::Days(45));
+  histogram_tester_->ExpectUniqueSample(kBraveWalletSignaturesHistogramName, 0,
+                                        46);
+  histogram_tester_->ExpectUniqueSample(kBraveWalletSignatureTypeHistogramName,
+                                        0, 46);
+
+  wallet_p3a_->ReportEthSignatureForP3A(false);
+  wallet_p3a_->ReportEthSignatureForP3A(false);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignaturesHistogramName, 1,
+                                       2);
+  histogram_tester_->ExpectUniqueSample(kBraveWalletSignatureTypeHistogramName,
+                                        0, 48);
+
+  wallet_p3a_->ReportEthSignatureForP3A(true);
+  wallet_p3a_->ReportEthSignatureForP3A(true);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignaturesHistogramName, 1,
+                                       4);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignatureTypeHistogramName,
+                                       2, 2);
+
+  wallet_p3a_->ReportEthSignatureForP3A(true);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignaturesHistogramName, 2,
+                                       1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignatureTypeHistogramName,
+                                       3, 1);
+
+  task_environment_.FastForwardBy(base::Days(30));
+
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignaturesHistogramName, 0,
+                                       47);
+  histogram_tester_->ExpectBucketCount(kBraveWalletSignatureTypeHistogramName,
+                                       0, 49);
+}
+
 }  // namespace brave_wallet

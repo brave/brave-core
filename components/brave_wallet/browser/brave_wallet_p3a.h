@@ -33,6 +33,8 @@ extern const char kFilActiveAccountHistogramName[];
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
+extern const char kBraveWalletSignaturesHistogramName[];
+extern const char kBraveWalletSignatureTypeHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
@@ -66,6 +68,7 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
+  void ReportEthSignatureForP3A(bool is_eth_sign);
 
   // KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override;

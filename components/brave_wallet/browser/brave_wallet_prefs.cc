@@ -77,6 +77,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+  registry->RegisterListPref(kBraveWalletP3ATotalSignMonthlyStorage);
+  registry->RegisterListPref(kBraveWalletP3AEthSignMonthlyStorage);
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
