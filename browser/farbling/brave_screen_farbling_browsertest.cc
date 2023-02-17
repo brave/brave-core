@@ -70,10 +70,10 @@ class WidgetBoundsChangeWaiter final : public views::WidgetObserver {
 
  private:
   bool BoundsChangeMeetsThreshold(const gfx::Rect& rect) const {
-    return std::abs(rect.x() - initial_bounds_.x()) >= threshold_ &&
-           std::abs(rect.y() - initial_bounds_.y()) >= threshold_ &&
-           std::abs(rect.width() - initial_bounds_.width()) >= threshold_ &&
-           std::abs(rect.height() - initial_bounds_.height()) >= threshold_;
+    return (std::abs(rect.x() - initial_bounds_.x()) >= threshold_ &&
+            std::abs(rect.y() - initial_bounds_.y()) >= threshold_) ||
+           (std::abs(rect.width() - initial_bounds_.width()) >= threshold_ &&
+            std::abs(rect.height() - initial_bounds_.height()) >= threshold_);
   }
 
   const raw_ptr<views::Widget> widget_;
@@ -305,25 +305,28 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           EXPECT_LE(parent_bounds.width(), child_bounds.width());
           EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
-        /*
-        TODO(aedelstein): Fix intermittent failures here.
         if (!test_iframe) {
-          auto bounds_before = popup->window()->GetBounds();
           auto* widget = views::Widget::GetWidgetForNativeWindow(
               popup->window()->GetNativeWindow());
+
+          auto bounds_before = popup->window()->GetBounds();
           auto waiter = WidgetBoundsChangeWaiter(widget, 10);
           ASSERT_TRUE(
               ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
-          ASSERT_TRUE(ExecJs(popup_contents,
-                             "resizeTo(outerWidth + 13, outerHeight + 14)"));
           waiter.Wait();
           auto bounds_after = popup->window()->GetBounds();
           EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
           EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
-          EXPECT_EQ(13, bounds_after.width() - bounds_before.width());
-          EXPECT_EQ(14, bounds_after.height() - bounds_before.height());
+
+          bounds_before = popup->window()->GetBounds();
+          auto waiter2 = WidgetBoundsChangeWaiter(widget, 10);
+          ASSERT_TRUE(ExecJs(popup_contents,
+                             "resizeTo(outerWidth - 13, outerHeight - 14)"));
+          waiter2.Wait();
+          bounds_after = popup->window()->GetBounds();
+          EXPECT_EQ(-13, bounds_after.width() - bounds_before.width());
+          EXPECT_EQ(-14, bounds_after.height() - bounds_before.height());
         }
-        */
       }
     }
   }
