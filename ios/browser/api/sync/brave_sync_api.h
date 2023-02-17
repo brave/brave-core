@@ -19,7 +19,17 @@ typedef NSInteger BraveSyncAPISyncProtocolErrorResult
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultSuccess;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultNotMyBirthday;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultClearPending;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultTransientError;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultMigrationDone;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDisabledByAdmin;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultPartialFailure;
 OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const

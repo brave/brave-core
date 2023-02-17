@@ -53,8 +53,23 @@ BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultSuccess =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::SYNC_SUCCESS);
 BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultNotMyBirthday =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::NOT_MY_BIRTHDAY);
+BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultThrottled =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultClearPending =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::CLEAR_PENDING);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultTransientError =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::TRANSIENT_ERROR);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultMigrationDone =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::MIGRATION_DONE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDisabledByAdmin = static_cast<NSInteger>(
+        syncer::SyncProtocolErrorType::DISABLED_BY_ADMIN);
 BraveSyncAPISyncProtocolErrorResult const
     BraveSyncAPISyncProtocolErrorResultPartialFailure =
         static_cast<NSInteger>(syncer::SyncProtocolErrorType::PARTIAL_FAILURE);
@@ -318,22 +333,12 @@ BraveSyncAPIWordsValidationStatus const
 }
 
 - (void)setJoinSyncChain:(void (^)(bool success))completion {
-  _worker->SetJoinSyncChainCallback(
-      base::BindOnce([](void (^completion)(bool),
-                        const bool& success) {
-                          VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
-                                          << success;
-                          completion(success); },
-                     completion));
-
-  // web::GetUIThreadTaskRunner({})->PostTask(
-  //     FROM_HERE,
-  //     base::BindOnce(
-  //         &BraveSyncWorker::SetJoinSyncChainCallback,
-  //         base::Unretained(_worker.get()),
-  //         base::BindOnce([](void (^completion)(bool),
-  //                           const bool& success) { completion(success); },
-  //                        completion)));
+  _worker->SetJoinSyncChainCallback(base::BindOnce(
+      [](void (^completion)(bool), const bool& success) {
+        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for " << success;
+        completion(success);
+      },
+      completion));
 }
 
 - (void)permanentlyDeleteAccount:
@@ -345,19 +350,6 @@ BraveSyncAPIWordsValidationStatus const
             static_cast<BraveSyncAPISyncProtocolErrorResult>(error.error_type));
       },
       completion));
-
-  // web::GetUIThreadTaskRunner({})->PostTask(
-  //     FROM_HERE,
-  //     base::BindOnce(
-  //         &BraveSyncWorker::PermanentlyDeleteAccount,
-  //         base::Unretained(_worker.get()),
-  //         base::BindOnce(
-  //             [](void (^completion)(BraveSyncAPISyncProtocolErrorResult),
-  //                const syncer::SyncProtocolError& error) {
-  //               completion(static_cast<BraveSyncAPISyncProtocolErrorResult>(
-  //                   error.error_type));
-  //             },
-  //             completion)));
 }
 
 - (void)deleteDevice:(NSString*)guid {
