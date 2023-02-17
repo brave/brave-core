@@ -608,4 +608,21 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
 }
 
+TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  registry->UpdateTokenList(std::move(token_list_map));
+
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; i++) {
+    token_list_map = registry->GetEthTokenListMap({mojom::kMainnetChainId});
+    EXPECT_EQ(token_list_map.size(), 1UL);
+    EXPECT_EQ(token_list_map[mojom::kMainnetChainId].size(), 2UL);
+  }
+}
+
 }  // namespace brave_wallet

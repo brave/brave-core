@@ -144,6 +144,33 @@ std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
   return blockchain_buy_tokens;
 }
 
+TokenListMap BlockchainRegistry::GetEthTokenListMap(
+    const std::vector<std::string>& chain_ids) {
+  // Create a copy of token_list_map with only the chain_ids we want
+  TokenListMap token_list_map_copy;
+  for (const auto& chain_id : chain_ids) {
+    const auto key = GetTokenListKey(mojom::CoinType::ETH, chain_id);
+    // Skip if the key is not in the map.
+    if (!token_list_map_.contains(key)) {
+      continue;
+    }
+
+    // Otherwise, clone the vector of tokens.
+    const auto& tokens = token_list_map_[key];
+    std::vector<brave_wallet::mojom::BlockchainTokenPtr> tokens_copy(
+        tokens.size());
+    std::transform(
+        tokens.begin(), tokens.end(), tokens_copy.begin(),
+        [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
+            -> brave_wallet::mojom::BlockchainTokenPtr {
+          return current_token.Clone();
+        });
+    token_list_map_copy[chain_id] = std::move(tokens_copy);
+  }
+
+  return token_list_map_copy;
+}
+
 void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
                                       const std::string& chain_id,
                                       GetBuyTokensCallback callback) {

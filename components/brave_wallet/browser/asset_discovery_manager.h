@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -53,22 +54,13 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
   void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   using APIRequestResult = api_request_helper::APIRequestResult;
-  using EthGetLogsCallback =
-      base::OnceCallback<void(const std::vector<Log>& logs,
-                              base::Value rawlogs,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
   using DiscoverAssetsCompletedCallbackForTesting =
       base::RepeatingCallback<void(
-          const std::string& chain_id,
-          std::vector<mojom::BlockchainTokenPtr> discovered_assets_for_chain,
-          absl::optional<mojom::ProviderError> error,
-          const std::string& error_message)>;
+          std::vector<mojom::BlockchainTokenPtr> discovered_assets_for_chain)>;
+
   // Called by frontend via BraveWalletService.
   // Subject to client side rate limiting based on
-  // kBraveWalletLastDiscoveredAssetsAt pref value. Only runs eth_getLogs
-  // against block range between
-  // kBraveWalletNextAssetDiscoveryFromBlocks pref and "latest" for ETH chains.
+  // kBraveWalletLastDiscoveredAssetsAt pref value.
   void DiscoverAssetsOnAllSupportedChainsRefresh(
       std::map<mojom::CoinType, std::vector<std::string>>& account_addresses);
 
@@ -84,9 +76,10 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
 
  private:
   friend class AssetDiscoveryManagerUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest, DiscoverEthAssets);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            DiscoverAssetsOnAllSupportedChainsRefresh);
+  FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
+                           GetAssetDiscoverySupportedEthChains);
 
   const std::vector<std::string>& GetAssetDiscoverySupportedEthChains();
 
@@ -109,29 +102,26 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
       const base::flat_set<std::string>& discovered_contract_addresses,
       std::vector<mojom::BlockchainTokenPtr> sol_token_registry);
 
-  void DiscoverEthAssets(const std::string& chain_id,
-                         mojom::CoinType coin,
-                         const std::vector<std::string>& account_addresses,
-                         bool triggered_by_accounts_added,
-                         const std::string& from_block,
-                         const std::string& to_block);
+  void DiscoverEthAssets(const std::vector<std::string>& account_addresses,
+                         bool triggered_by_accounts_added);
 
-  void OnGetEthTokenRegistry(const std::string& chain_id,
-                             const std::vector<std::string>& account_addresses,
-                             std::vector<mojom::BlockchainTokenPtr> user_assets,
-                             bool triggered_by_accounts_added,
-                             const std::string& from_block,
-                             const std::string& to_block,
-                             std::vector<mojom::BlockchainTokenPtr> token_list);
-
-  void OnGetTokenTransferLogs(
-      base::flat_map<std::string, mojom::BlockchainTokenPtr>& tokens_to_search,
-      bool triggered_by_accounts_added,
+  void OnGetERC20TokenBalances(
+      base::OnceCallback<void(std::map<std::string, std::vector<std::string>>)>
+          barrier_callback,
       const std::string& chain_id,
-      const std::vector<Log>& logs,
-      base::Value rawlogs,
+      bool triggered_by_accounts_added,
+      const std::vector<std::string>& contract_addresses,
+      std::vector<mojom::ERC20BalanceResultPtr> balance_results,
       mojom::ProviderError error,
       const std::string& error_message);
+
+  void MergeDiscoveredEthAssets(
+      base::flat_map<std::string,
+                     base::flat_map<std::string, mojom::BlockchainTokenPtr>>
+          chain_id_to_contract_address_to_token,
+      bool triggered_by_accounts_added,
+      const std::vector<std::map<std::string, std::vector<std::string>>>&
+          discovered_assets);
 
   // CompleteDiscoverAssets signals that the discover assets request has
   // completed for a given chain_id
@@ -142,9 +132,14 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
       const std::string& error_message,
       bool triggered_by_accounts_added);
 
+  // CompleteDiscoverAssets signals that the discover assets request has
+  // completed for a given chain_id x account_address combination.
+  void CompleteDiscoverAssets(
+      std::vector<mojom::BlockchainTokenPtr> discovered_assets,
+      bool triggered_by_accounts_added);
+
   // Triggered by when KeyringService emits AccountsAdded event.
-  // Rate limits will be ignored, and eth_getLogs query
-  // will run against all blocks, "earliest" to "latest".
+  // Rate limits will be ignored.
   void DiscoverAssetsOnAllSupportedChainsAccountsAdded(
       mojom::CoinType coin,
       const std::vector<std::string>& account_addresses);
@@ -155,16 +150,16 @@ class AssetDiscoveryManager : public mojom::KeyringServiceObserver {
   static absl::optional<SolanaAddress> DecodeMintAddress(
       const std::vector<uint8_t>& data);
 
-  // remaining_chains_ is the number of chain IDs remaining for an in-flight
-  // DiscoverAssetsOnAllSupportedChainsRefresh call to be completed.
-  // When no call is in-flight, remaining_chains_ is 0.  When a call is
+  // remaining_buckets_ is the number of 'buckets' of requets remaining for an
+  // in-flight DiscoverAssetsOnAllSupportedChainsRefresh call to be completed.
+  // When no call is in-flight, remaining_buckets_ is 0.  When a call is
   // in-flight, remaining_chains_ is > 0 and the AssetDiscoverManager will
   // refuse to process additional  DiscoverAssetsOnAllSupportedChainsRefresh
   // calls.
   //
   // DiscoverAssetsOnAllSupportedChainsAccountsAdded does not read from or write
   // to remaining_chains_ and thus those calls will always processed.
-  int remaining_chains_ = 0;
+  int remaining_buckets_ = 0;
   std::vector<mojom::BlockchainTokenPtr> discovered_assets_;
   std::vector<std::string> supported_chains_for_testing_;
   DiscoverAssetsCompletedCallbackForTesting
