@@ -139,7 +139,8 @@ TEST(SolanaInstructionUnitTest, FromToValue) {
           {
             "name": "lamports",
             "localized_name": "Lamports",
-            "value": "10000000"
+            "value": "10000000",
+            "type": 2
           }
         ],
         "sys_ins_type": "2"
@@ -179,8 +180,9 @@ TEST(SolanaInstructionUnitTest, FromMojomSolanaInstructions) {
   mojom_account_metas2.push_back(mojom_account_meta1.Clone());
 
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
-  mojom_params.emplace_back(
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000"));
+  mojom_params.emplace_back(mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
       static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
@@ -235,8 +237,9 @@ TEST(SolanaInstructionUnitTest, ToMojomSolanaInstruction) {
             mojom::SolanaAccountMeta::New(pubkey2, false, true));
   EXPECT_EQ(mojom_instruction->data, data);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
-  mojom_params.emplace_back(
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000"));
+  mojom_params.emplace_back(mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64));
   EXPECT_EQ(
       mojom_instruction->decoded_data,
       mojom::DecodedSolanaInstructionData::New(
