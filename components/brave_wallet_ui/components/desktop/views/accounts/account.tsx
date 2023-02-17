@@ -109,14 +109,15 @@ export const Account = ({
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(WalletSelectors.assetAutoDiscoveryCompleted)
 
+  // state
+  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
+
   // custom hooks
   const scrollIntoView = useScrollIntoView()
 
   const {
     allSellAssetOptions,
     getAllSellAssetOptions,
-    showSellModal,
-    setShowSellModal,
     selectedSellAsset,
     setSelectedSellAsset,
     sellAmount,

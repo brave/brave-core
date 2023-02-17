@@ -76,8 +76,6 @@ export const AccountsAndTransactionsList = ({
 
   // hooks
   const {
-    showSellModal,
-    setShowSellModal,
     allSellAssetOptions,
     getAllSellAssetOptions,
     checkIsAssetSellSupported,
@@ -89,6 +87,7 @@ export const AccountsAndTransactionsList = ({
   // state
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const [selectedSellAccount, setSelectedSellAccount] = React.useState<WalletAccountType>()
+  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
 
   const isNonFungibleToken = React.useMemo(() => {
     return selectedAsset?.isErc721 || selectedAsset?.isNft
