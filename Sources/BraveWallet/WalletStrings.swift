@@ -3316,7 +3316,7 @@ extension Strings {
       "wallet.solanaInstructionAccounts",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Program Id",
+      value: "Accounts",
       comment: "The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\""
     )
     public static let solanaInstructionData = NSLocalizedString(
