@@ -32,6 +32,7 @@ bool IsNftPinningEnabled();
 bool IsPanelV2Enabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
+bool IsBitcoinEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes

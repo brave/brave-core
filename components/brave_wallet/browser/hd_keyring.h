@@ -80,6 +80,7 @@ class HDKeyring {
   FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, ConstructRootHDKey);
   FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);
   FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);
+  FRIEND_TEST_ALL_PREFIXES(BitcoinKeyringUnitTest, TestVectors);
 };
 
 }  // namespace brave_wallet

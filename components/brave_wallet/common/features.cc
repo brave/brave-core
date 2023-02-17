@@ -56,5 +56,9 @@ BASE_FEATURE(kBraveWalletPanelV2Feature,
              "BraveWalletPanelV2",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWalletBitcoinFeature,
+             "BraveWalletBitcoin",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace brave_wallet
