@@ -38,11 +38,13 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
   for (base::FilePath current = traversal.Next(); !current.empty();
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
-    if (RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                       "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+|\\w+-\\w+-brave-\\d+"))
+    if (RE2::FullMatch(
+            file_info.GetName().MaybeAsASCII(),
+            "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+|\\w+-\\w+-brave-\\d+")) {
       executable_path = current;
-    else if (file_info.GetName().MaybeAsASCII() == "tor-torrc")
+    } else if (file_info.GetName().MaybeAsASCII() == "tor-torrc") {
       torrc_path = current;
+    }
 
     if (!executable_path.empty() && !torrc_path.empty())
       break;
