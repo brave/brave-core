@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
-index fdc822c67f896677a68b6efb9f9a12c183a302e1..ff9ae15903ef45af5e65abcb1706bda8de9effad 100644
+index 21e3e63ef4da4bc627910329766d3b3dec91f1be..5e71e79f42a69fd8dd3cb145be65bfef12dd4c90 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.cc
 @@ -197,6 +197,7 @@ SidePanelRegistry* SidePanelCoordinator::GetGlobalSidePanelRegistry(
@@ -10,7 +10,7 @@ index fdc822c67f896677a68b6efb9f9a12c183a302e1..ff9ae15903ef45af5e65abcb1706bda8
    if (entry_id.has_value()) {
      Show(SidePanelEntry::Key(entry_id.value()), open_trigger);
    } else {
-@@ -584,6 +585,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
+@@ -580,6 +581,7 @@ std::unique_ptr<views::View> SidePanelCoordinator::CreateHeader() {
            ChromeDistanceMetric::DISTANCE_SIDE_PANEL_HEADER_VECTOR_ICON_SIZE)));
    header_close_button->SetFocusBehavior(views::View::FocusBehavior::ALWAYS);
  
