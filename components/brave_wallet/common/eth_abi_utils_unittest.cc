@@ -708,7 +708,7 @@ TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
 TEST(EthAbiTupleEncoderTest, EncodeCall) {
   std::vector<uint8_t> data(33, 0xbb);
   auto selector_bytes = ToBytes("f400d2f8");
-  Span4 selector(selector_bytes.begin(), 4);
+  Span4 selector(selector_bytes.begin(), 4u);
   // f(bytes,bytes)
   EXPECT_EQ(
       "f400d2f8"
@@ -739,7 +739,7 @@ TEST(EthAbiTupleEncoderTest, EncodeCall) {
       "f400d2f8"
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       ToHex(TupleEncoder()
-                .AddFixedBytes(Span32(data.begin(), 32))
+                .AddFixedBytes(Span32(data.begin(), 32u))
                 .EncodeWithSelector(selector))
           .substr(2));
 }
