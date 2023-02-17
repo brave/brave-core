@@ -47,6 +47,14 @@ bool BraveOmniboxViewViews::SelectedTextIsURL() {
   return GetURLToCopy().has_value();
 }
 
+void BraveOmniboxViewViews::CleanAndCopySelectedURL() {
+  auto url_to_copy = GetURLToCopy();
+  if (!url_to_copy.has_value()) {
+    return;
+  }
+  CopySanitizedURL(url_to_copy.value());
+}
+
 void BraveOmniboxViewViews::CopySanitizedURL(const GURL& url) {
   OnBeforePossibleChange();
   brave::CopySanitizedURL(chrome::FindLastActive(), url);

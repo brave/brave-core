@@ -285,4 +285,13 @@ bool HasSelectedURL(Browser* browser) {
   return brave_browser_window && brave_browser_window->HasSelectedURL();
 }
 
+void CleanAndCopySelectedURL(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
+  if (brave_browser_window) {
+    brave_browser_window->CleanAndCopySelectedURL();
+  }
+}
 }  // namespace brave
