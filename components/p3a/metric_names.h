@@ -33,6 +33,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Core.PagesLoaded",
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
+    "Brave.Core.WeeklyUsage",
     "Brave.Core.WindowCount.2",
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus",

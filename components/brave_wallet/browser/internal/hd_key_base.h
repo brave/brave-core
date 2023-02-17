@@ -44,6 +44,7 @@ class HDKeyBase {
 
   virtual std::string EncodePrivateKeyForExport() const = 0;
   virtual std::vector<uint8_t> GetPrivateKeyBytes() const = 0;
+  virtual std::vector<uint8_t> GetPublicKeyBytes() const = 0;
 };
 }  // namespace brave_wallet
 

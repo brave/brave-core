@@ -5,6 +5,8 @@
 
 static_library("misc_metrics") {
   sources = [
+    "general_browser_usage.cc",
+    "general_browser_usage.h",
     "menu_metrics.cc",
     "menu_metrics.h",
     "page_metrics_service.cc",

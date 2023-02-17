@@ -23,6 +23,7 @@ BASE_DECLARE_FEATURE(kBraveWalletSolanaProviderFeature);
 BASE_DECLARE_FEATURE(kBraveWalletDappsSupportFeature);
 BASE_DECLARE_FEATURE(kBraveWalletENSL2Feature);
 BASE_DECLARE_FEATURE(kBraveWalletSnsFeature);
+BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 
 }  // namespace features
 }  // namespace brave_wallet

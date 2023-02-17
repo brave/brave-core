@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -136,6 +137,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::MenuMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
   brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(registry);
+  misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 }
 
 }  // namespace brave

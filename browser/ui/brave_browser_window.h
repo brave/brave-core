@@ -48,6 +48,7 @@ class BraveBrowserWindow : public BrowserWindow {
 #if defined(TOOLKIT_VIEWS)
   virtual sidebar::Sidebar* InitSidebar();
   virtual bool HasSelectedURL() const;
+  virtual void CleanAndCopySelectedURL();
 #endif
 
   virtual void ShowBraveVPNBubble() {}

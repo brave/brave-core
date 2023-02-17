@@ -11,6 +11,7 @@ class GURL;
 
 namespace brave {
 bool HasSelectedURL(Browser* browser);
+void CleanAndCopySelectedURL(Browser* browser);
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();

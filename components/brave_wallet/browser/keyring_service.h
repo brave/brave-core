@@ -227,6 +227,15 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
+  absl::optional<std::string> GetBitcoinReceivingAddress(
+      const std::string& keyring_id,
+      uint32_t account_index,
+      uint32_t receiving_index);
+  absl::optional<std::string> GetBitcoinChangeAddress(
+      const std::string& keyring_id,
+      uint32_t account_index,
+      uint32_t change_index);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateSaltForKeyring);
@@ -329,13 +338,14 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                                                  bool force_create = false);
   bool CreateEncryptorForKeyring(const std::string& password,
                                  const std::string& id);
-  bool CreateKeyringInternal(const std::string& keyring_id,
-                             const std::string& mnemonic,
-                             bool is_legacy_brave_wallet);
+  HDKeyring* CreateKeyringInternal(const std::string& keyring_id,
+                                   const std::string& mnemonic,
+                                   bool is_legacy_brave_wallet);
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success
   HDKeyring* CreateKeyring(const std::string& keyring_id,
+                           const std::string& mnemonic,
                            const std::string& password);
   // Restore default keyring from backup seed phrase
   HDKeyring* RestoreKeyring(const std::string& keyring_id,

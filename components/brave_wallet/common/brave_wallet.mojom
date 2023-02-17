@@ -528,6 +528,8 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+const string kBitcoinKeyringId = "bitcoin";
+
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
 const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
 
@@ -930,7 +932,9 @@ const string kSolanaDevnet = "0x67";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
+  BTC = 0,
   ETH = 60,
   FIL = 461,
   SOL = 501

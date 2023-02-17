@@ -55,6 +55,7 @@ import {
   refreshBalances,
   refreshVisibleTokenInfo,
   refreshPrices,
+  refreshPortfolioFilterOptions,
   sendEthTransaction,
   sendFilTransaction,
   sendSolTransaction,
@@ -160,6 +161,7 @@ handler.on(WalletActions.refreshNetworksAndTokens.type, async (store: Store) => 
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
+  await store.dispatch(refreshPortfolioFilterOptions())
 })
 
 handler.on(WalletActions.initialize.type, async (store) => {
@@ -281,6 +283,7 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
     await store.dispatch(refreshNetworkInfo())
     await store.dispatch(refreshVisibleTokenInfo())
     await store.dispatch(refreshBalances())
+    await store.dispatch(refreshPortfolioFilterOptions())
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
     await braveWalletService.discoverAssetsOnAllSupportedChains()

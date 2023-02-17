@@ -1207,6 +1207,7 @@ constexpr char kERC1155MetadataInterfaceId[] = "0x0e89341c";
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
+constexpr char kBitcoinPrefKey[] = "bitcoin";
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";
 constexpr char kSolanaPrefKey[] = "solana";

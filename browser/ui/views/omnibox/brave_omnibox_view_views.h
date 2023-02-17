@@ -20,6 +20,7 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   ~BraveOmniboxViewViews() override;
 
   bool SelectedTextIsURL();
+  void CleanAndCopySelectedURL();
 
  protected:
   absl::optional<GURL> GetURLToCopy();
