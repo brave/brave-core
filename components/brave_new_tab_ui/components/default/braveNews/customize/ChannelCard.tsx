@@ -8,7 +8,7 @@ import * as React from 'react'
 import Flex from '../../../Flex'
 import FollowButton from './FollowButton'
 import { useChannelSubscribed } from './Context'
-import { channels } from './Icons'
+import { channelIcons } from './Icons'
 import { getLocale } from '$web-common/locale'
 
 export const getTranslatedChannelName = (channelName: string) => {
@@ -48,6 +48,8 @@ const Container = styled(Flex)`
 `
 
 const IconContainer = styled.div`
+  --leo-icon-size: 16px;
+
   width: 32px;
   height: 32px;
   padding: 8px;
@@ -65,7 +67,6 @@ interface Props {
 
 export default function ChannelCard ({ channelName }: Props) {
   const { subscribed, setSubscribed } = useChannelSubscribed(channelName)
-  const icon = channels[channelName] ?? channels.default
   return <Container
     direction='column'
     justify='center'
@@ -74,7 +75,9 @@ export default function ChannelCard ({ channelName }: Props) {
     data-channel-card-is-followed={subscribed}
   >
     <SubscribeButton following={subscribed} onClick={() => setSubscribed(!subscribed)} />
-    <IconContainer>{icon}</IconContainer>
+    <IconContainer>
+      {channelIcons[channelName] ?? channelIcons.default}
+    </IconContainer>
     {getTranslatedChannelName(channelName)}
   </Container>
 }
