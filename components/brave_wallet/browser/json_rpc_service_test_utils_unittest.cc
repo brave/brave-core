@@ -23,9 +23,10 @@ std::string ParseRpcJsonResult(const std::string& json) {
   absl::optional<base::Value> value = base::JSONReader::Read(json);
   EXPECT_TRUE(value);
   EXPECT_TRUE(value->is_dict());
-  EXPECT_THAT(*value,
+  EXPECT_THAT(value->GetDict(),
               base::test::DictionaryHasValue("jsonrpc", base::Value("2.0")));
-  EXPECT_THAT(*value, base::test::DictionaryHasValue("id", base::Value(1)));
+  EXPECT_THAT(value->GetDict(),
+              base::test::DictionaryHasValue("id", base::Value(1)));
   auto* result = value->GetDict().FindString("result");
   EXPECT_TRUE(result);
   EXPECT_THAT(*result, testing::StartsWith("0x"));
