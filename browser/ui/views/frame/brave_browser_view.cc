@@ -395,6 +395,18 @@ bool BraveBrowserView::HasSelectedURL() const {
   return brave_omnibox_view && brave_omnibox_view->SelectedTextIsURL();
 }
 
+void BraveBrowserView::CleanAndCopySelectedURL() {
+  if (!GetLocationBarView()) {
+    return;
+  }
+  auto* brave_omnibox_view =
+      static_cast<BraveOmniboxViewViews*>(GetLocationBarView()->omnibox_view());
+  if (!brave_omnibox_view) {
+    return;
+  }
+  brave_omnibox_view->CleanAndCopySelectedURL();
+}
+
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
 }
