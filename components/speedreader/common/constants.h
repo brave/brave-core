@@ -12,9 +12,6 @@
 
 namespace speedreader {
 
-constexpr const int kIsolatedWorldId =
-    content::ISOLATED_WORLD_ID_CONTENT_END + 9;
-
 constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSpeedreader", IDS_SPEEDREADER_BRAND_LABEL_2},
     {"braveSpeedreaderAlwaysLoadLabel", IDS_SPEEDREADER_ALWAYS_LOAD_LABEL},

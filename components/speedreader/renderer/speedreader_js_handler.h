@@ -21,7 +21,8 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler> {
   SpeedreaderJSHandler(const SpeedreaderJSHandler&) = delete;
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
 
-  static void Install(base::WeakPtr<SpeedreaderRenderFrameObserver> owner);
+  static void Install(base::WeakPtr<SpeedreaderRenderFrameObserver> owner,
+                      int32_t isolated_world_id);
 
  private:
   explicit SpeedreaderJSHandler(

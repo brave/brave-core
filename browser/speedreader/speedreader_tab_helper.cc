@@ -29,6 +29,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -530,8 +531,8 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
                                                       link_text, nullptr);
 
-  render_frame_host->ExecuteJavaScriptInIsolatedWorld(script, base::DoNothing(),
-                                                      kIsolatedWorldId);
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -583,7 +584,7 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       nullptr);
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), kIsolatedWorldId);
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);
