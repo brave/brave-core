@@ -1599,6 +1599,18 @@ enum SolanaTokenInstruction {
   kInitializeMint2 = 20,
 };
 
+// Solana instruction parameter names shared between C++ backend and UI.
+// Note: UI can add names they need here, and please update
+// solana_instruction_data_decoder.cc to use the same constant.
+const string kLamports = "lamports";
+const string kAmount = "amount";
+const string kDecimals = "decimals";
+const string kFromAccount = "from_account";
+const string kToAccount = "to_account";
+const string kSigners = "signers";
+const string kNonceAccount = "nonce_account";
+const string kNewAccount = "new_account";
+
 enum SolanaInstructionParamType {
   kUint8 = 0,
   kUint32 = 1,
