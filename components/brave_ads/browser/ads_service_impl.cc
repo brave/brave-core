@@ -52,11 +52,11 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
+#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
-#include "brave/components/brave_today/common/features.h"
-#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
@@ -426,8 +426,8 @@ void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
 
 bool AdsServiceImpl::UserHasOptedIn() const {
   return base::FeatureList::IsEnabled(
-             brave_today::features::kBraveNewsFeature) &&
-         GetBooleanPref(brave_news::prefs::kBraveTodayOptedIn) &&
+             brave_news::features::kBraveNewsFeature) &&
+         GetBooleanPref(brave_news::prefs::kBraveNewsOptedIn) &&
          GetBooleanPref(brave_news::prefs::kNewTabPageShowToday);
 }
 
@@ -665,8 +665,8 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
-      brave_news::prefs::kBraveTodayOptedIn,
-      base::BindRepeating(&AdsServiceImpl::OnBraveTodayOptedInPrefChanged,
+      brave_news::prefs::kBraveNewsOptedIn,
+      base::BindRepeating(&AdsServiceImpl::OnBraveNewsOptedInPrefChanged,
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
@@ -687,7 +687,7 @@ void AdsServiceImpl::OnIdleTimeThresholdPrefChanged() {
   CheckIdleStateAfterDelay();
 }
 
-void AdsServiceImpl::OnBraveTodayOptedInPrefChanged() {
+void AdsServiceImpl::OnBraveNewsOptedInPrefChanged() {
   if (!CanStartBatAdsService()) {
     return Shutdown();
   }

@@ -19,7 +19,7 @@
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -117,7 +117,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     brave_news::BraveNewsControllerFactory::GetForContext(profile);
   }
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);

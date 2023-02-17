@@ -8,7 +8,7 @@ import {
   BraveNewsControllerRemote,
   FeedListenerInterface,
   FeedListenerReceiver
-} from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
+} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 
 export const addFeedListener = (listener: (feedHash: string) => void) =>
   new (class implements FeedListenerInterface {

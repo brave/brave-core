@@ -21,7 +21,7 @@ import {
 
 import { getLocale } from '../../../common/locale'
 import { Publishers } from '../../api/brave_news'
-import { BraveNewsContext } from '../../components/default/braveToday/customize/Context'
+import { BraveNewsContext } from '../../components/default/braveNews/customize/Context'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -30,7 +30,7 @@ import BraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import CardsIcon from './settings/icons/cards.svg'
-import TodayIcon from './settings/icons/braveToday.svg'
+import TodayIcon from './settings/icons/braveNews.svg'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -84,7 +84,7 @@ export enum TabType {
   BackgroundImage = 'backgroundImage',
   BraveStats = 'braveStats',
   TopSites = 'topSites',
-  BraveToday = 'braveToday',
+  BraveNews = 'braveNews',
   Clock = 'clock',
   Cards = 'cards'
 }
@@ -107,7 +107,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.allTabTypes = [...Object.values(TabType)]
     if (!props.featureFlagBraveNewsEnabled) {
       this.allTabTypes.splice(
-        this.allTabTypes.indexOf(TabType.BraveToday), 1
+        this.allTabTypes.indexOf(TabType.BraveNews), 1
       )
     }
     this.allTabTypesWithoutBackground = [...this.allTabTypes]
@@ -184,7 +184,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   setActiveTab (activeTab: TabType) {
-    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
+    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveNews) {
       this.context.setCustomizePage('news')
       return
     }
@@ -212,7 +212,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       case TabType.TopSites:
         srcUrl = TopSitesIcon
         break
-      case TabType.BraveToday:
+      case TabType.BraveNews:
         srcUrl = TodayIcon
         break
       case TabType.Clock:
@@ -236,8 +236,8 @@ export default class Settings extends React.PureComponent<Props, State> {
         return 'statsTitle'
       case TabType.TopSites:
         return 'topSitesTitle'
-      case TabType.BraveToday:
-        return 'braveTodayTitle'
+      case TabType.BraveNews:
+        return 'braveNewsTitle'
       case TabType.Clock:
         return 'clockTitle'
       case TabType.Cards:

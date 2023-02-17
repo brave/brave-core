@@ -9,7 +9,7 @@ import {
   PublishersListenerInterface,
   PublishersListenerReceiver,
   UserEnabled
-} from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
+} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from '.'
 import { CachingWrapper } from './magicCache'
 

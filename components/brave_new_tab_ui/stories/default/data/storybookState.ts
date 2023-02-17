@@ -98,7 +98,7 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     braveTalkSupported: boolean('Brave Talk supported?', true),
     braveTalkPromptDismissed: !boolean('Brave Talk prompt?', false),
     hideAllWidgets: boolean('Hide all widgets?', false),
-    isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
+    isBraveNewsOptedIn: boolean('Brave News opted-in?', false),
     textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' }, 'ltr'),
     stats: {
       ...state.stats,

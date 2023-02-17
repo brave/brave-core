@@ -23,8 +23,8 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -85,8 +85,8 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
                 prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.Set("isBraveTodayOptedIn",
-                prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
+  pref_data.Set("isBraveNewsOptedIn",
+                prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
   return pref_data;
@@ -279,7 +279,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   }
   // News
   pref_change_registrar_.Add(
-      brave_news::prefs::kBraveTodayOptedIn,
+      brave_news::prefs::kBraveNewsOptedIn,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   // New Tab Page preferences
@@ -421,8 +421,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
     settingsKey = brave_news::prefs::kNewTabPageShowToday;
-  } else if (settingsKeyInput == "isBraveTodayOptedIn") {
-    settingsKey = brave_news::prefs::kBraveTodayOptedIn;
+  } else if (settingsKeyInput == "isBraveNewsOptedIn") {
+    settingsKey = brave_news::prefs::kBraveNewsOptedIn;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {

@@ -7,7 +7,7 @@ import { createReducer } from 'redux-act'
 import * as Actions from '../../actions/today_actions'
 import * as BraveNews from '../../api/brave_news'
 
-export type BraveTodayState = {
+export type BraveNewsState = {
   // Are we in the middle of checking for new data
   isFetching: boolean | string
   isUpdateAvailable: boolean
@@ -30,7 +30,7 @@ function storeInHistoryState (data: Object) {
   history.pushState(newHistoryState, document.title)
 }
 
-const defaultState: BraveTodayState = {
+const defaultState: BraveNewsState = {
   isFetching: true,
   isUpdateAvailable: false,
   hasInteracted: false,
@@ -59,10 +59,10 @@ if (history.state && (history.state.todayArticle || history.state.todayAdPositio
 }
 
 // TODO(petemill): Make sure we don't keep scrolling to the scrolled-to article
-// if it gets removed and rendered again (e.g. if brave today is toggled off and on).
+// if it gets removed and rendered again (e.g. if Brave News is toggled off and on).
 // Reset to defaultState when Today is turned off or refreshed.
 
-const reducer = createReducer<BraveTodayState>({}, defaultState)
+const reducer = createReducer<BraveNewsState>({}, defaultState)
 
 export default reducer
 

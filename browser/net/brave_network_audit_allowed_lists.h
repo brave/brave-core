@@ -47,7 +47,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
     // brave A/B testing
     "https://variations.brave.com/seed",
 
-    // Brave Today (production)
+    // Brave News (production)
     "https://brave-today-cdn.brave.com/",
 
     // Brave's Privacy-focused CDN

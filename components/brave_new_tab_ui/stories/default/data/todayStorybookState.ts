@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { boolean } from '@storybook/addon-knobs'
-import { BraveTodayState } from '../../../reducers/today'
+import { BraveNewsState } from '../../../reducers/today'
 import { feed, publishers } from './mockBraveNewsController'
 
-export default function getTodayState (): BraveTodayState {
+export default function getTodayState (): BraveNewsState {
   const hasDataError = boolean('Today data fetch error?', false)
   return {
     isFetching: boolean('Today is fetching?', false),

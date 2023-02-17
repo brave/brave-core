@@ -284,7 +284,7 @@
         Try it out
       </message>
 
-      <message name="IDS_BRAVE_TODAY_TITLE" translateable="false" desc="Title for Brave News news feed section">
+      <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Brave News news feed section">
         Brave News
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING" desc="The text displayed while a feed is being subscribed or unsubscribed">
@@ -308,34 +308,34 @@
       <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
         Manage Feeds
       </message>
-      <message name="IDS_BRAVE_TODAY_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
+      <message name="IDS_BRAVE_NEWS_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
         Fetching…
       </message>
-      <message name="IDS_BRAVE_TODAY_ACTION_REFRESH" desc="Button text to refresh the feed content">
+      <message name="IDS_BRAVE_NEWS_ACTION_REFRESH" desc="Button text to refresh the feed content">
         Load new content
       </message>
-      <message name="IDS_BRAVE_TODAY_SCROLL_HINT" desc="Indicator text that Brave News content must be scrolled down to. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_SCROLL_HINT" desc="Indicator text that Brave News content must be scrolled down to. Do not translate the title Brave News.">
         Scroll for Brave News
       </message>
-      <message name="IDS_BRAVE_TODAY_RESET_ACTION" desc="Button text to reset all Brave News publisher options. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_RESET_ACTION" desc="Button text to reset all Brave News publisher options. Do not translate the title Brave News.">
         Reset Brave News sources
       </message>
-      <message name="IDS_BRAVE_TODAY_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave News settings. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave News settings. Do not translate the title Brave News.">
         Reset all your Brave News publisher choices to their default?
       </message>
-      <message name="IDS_BRAVE_TODAY_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
+      <message name="IDS_BRAVE_NEWS_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
         All sources
       </message>
-      <message name="IDS_BRAVE_TODAY_SOURCES_TITLE" desc="Title for the list of source publishers in Brave News settings">
+      <message name="IDS_BRAVE_NEWS_SOURCES_TITLE" desc="Title for the list of source publishers in Brave News settings">
         Sources
       </message>
-      <message name="IDS_BRAVE_TODAY_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
+      <message name="IDS_BRAVE_NEWS_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
         Disable content from <ph name="PUBLISHER_NAME">$1<ex>The New York Times</ex></ph>
       </message>
-      <message name="IDS_BRAVE_TODAY_PROMOTED" desc="Label for promoted content">
+      <message name="IDS_BRAVE_NEWS_PROMOTED" desc="Label for promoted content">
         Promoted
       </message>
-      <message name="IDS_BRAVE_TODAY_DISPLAY_AD_LABEL" desc="Label for an advertisement">
+      <message name="IDS_BRAVE_NEWS_DISPLAY_AD_LABEL" desc="Label for an advertisement">
         Ad
       </message>
 

@@ -9,7 +9,7 @@ brave-wallet-cxx = { path = "../../components/brave_wallet/rust" }
 challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
-brave-news-cxx = { path = "../../components/brave_today/rust" }
+brave-news-cxx = { path = "../../components/brave_news/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
 

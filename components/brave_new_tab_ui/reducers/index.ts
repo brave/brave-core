@@ -11,10 +11,10 @@ import newTabStateReducer from './new_tab_reducer'
 import gridSitesReducer from './grid_sites_reducer'
 import rewardsReducer from './rewards_reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
-import todayReducer, { BraveTodayState } from './today'
+import todayReducer, { BraveNewsState } from './today'
 
 export type ApplicationState = NewTab.ApplicationState & {
-  today: BraveTodayState
+  today: BraveNewsState
 }
 
 export const newTabReducers = (state: NewTab.State | undefined, action: any) => {

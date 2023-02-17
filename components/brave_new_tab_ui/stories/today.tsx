@@ -6,11 +6,11 @@
 import * as React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/BraveCoreThemeProvider'
-import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
-import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
-import BraveTodayOptInCard from '../components/default/braveToday/cards/cardOptIn'
-import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
-import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
+import BraveNewsLoadingCard from '../components/default/braveNews/cards/cardLoading'
+import BraveNewsErrorCard from '../components/default/braveNews/cards/cardError'
+import BraveNewsOptInCard from '../components/default/braveNews/cards/cardOptIn'
+import PublisherMeta from '../components/default/braveNews/cards/PublisherMeta'
+import DisplayAdCard from '../components/default/braveNews/cards/displayAd'
 import * as BraveNews from '../api/brave_news'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import './todayStrings'
@@ -18,7 +18,7 @@ import './todayStrings'
 const onClick = () => alert('clicked')
 
 export default {
-  title: 'New Tab/Brave Today',
+  title: 'New Tab/Brave News',
   decorators: [
     (Story: any) => <ThemeProvider><Story /></ThemeProvider>,
     (Story: any) => (
@@ -93,15 +93,15 @@ export const Publisher = () => (
 )
 
 export const Loading = () => (
-  <BraveTodayLoadingCard />
+  <BraveNewsLoadingCard />
 )
 
 export const Error = () => (
-  <BraveTodayErrorCard onRefresh={() => console.log('refresh clicked')} />
+  <BraveNewsErrorCard onRefresh={() => console.log('refresh clicked')} />
 )
 
 export const OptIn = () => (
-  <BraveTodayOptInCard onOptIn={() => console.log('opt-in clicked')} onDisable={() => console.log('disable clicked')} />
+  <BraveNewsOptInCard onOptIn={() => console.log('opt-in clicked')} onDisable={() => console.log('disable clicked')} />
 )
 
 const handleDisplayAdVisit = () => alert('handle visit')

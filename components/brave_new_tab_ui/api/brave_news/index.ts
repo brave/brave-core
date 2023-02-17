@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as BraveNews from 'gen/brave/components/brave_today/common/brave_news.mojom.m.js'
+import * as BraveNews from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
 // Provide access to all the generated types
-export * from 'gen/brave/components/brave_today/common/brave_news.mojom.m.js'
+export * from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
 
 // Provide easy access to types which mojom functions return but aren't
 // defined as a struct.

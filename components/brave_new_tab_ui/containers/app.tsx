@@ -22,13 +22,13 @@ import { getActionsForDispatch } from '../api/getActions'
 // Types
 import { NewTabActions } from '../constants/new_tab_types'
 import { ApplicationState } from '../reducers'
-import { BraveTodayState } from '../reducers/today'
+import { BraveNewsState } from '../reducers/today'
 
 interface Props {
   actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  braveTodayData: BraveTodayState
+  braveNewsData: BraveNewsState
 }
 
 const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
@@ -36,7 +36,7 @@ const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
 }
 
 function DefaultPage (props: Props) {
-  const { newTabData, braveTodayData, gridSitesData, actions } = props
+  const { newTabData, braveNewsData, gridSitesData, actions } = props
 
   // don't render if user prefers an empty page
   if (props.newTabData.showEmptyPage && !props.newTabData.isIncognito) {
@@ -46,7 +46,7 @@ function DefaultPage (props: Props) {
   return (
     <NewTabPage
       newTabData={newTabData}
-      todayData={braveTodayData}
+      todayData={braveNewsData}
       gridSitesData={gridSitesData}
       actions={actions}
       saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
@@ -67,7 +67,7 @@ function DefaultPage (props: Props) {
 const mapStateToProps = (state: ApplicationState): Partial<Props> => ({
   newTabData: state.newTabData,
   gridSitesData: state.gridSitesData,
-  braveTodayData: state.today
+  braveNewsData: state.today
 })
 
 const mapDispatchToProps = (dispatch: Dispatch): Partial<Props> => {

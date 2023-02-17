@@ -5,12 +5,12 @@
 import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
-  braveTodayDisableSourceCommand: 'Disable content from $1',
-  braveTodayIntroTitle: 'Today\'s top stories in a completely private feed, just for you.',
-  braveTodayIntroDescription: 'Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.',
-  braveTodayOptInActionLabel: 'Show Brave News',
-  braveTodayOptOutActionLabel: 'No thanks',
-  braveTodayScrollHint: 'Scroll for Brave News',
+  braveNewsDisableSourceCommand: 'Disable content from $1',
+  braveNewsIntroTitle: 'Today\'s top stories in a completely private feed, just for you.',
+  braveNewsIntroDescription: 'Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.',
+  braveNewsOptInActionLabel: 'Show Brave News',
+  braveNewsOptOutActionLabel: 'No thanks',
+  braveNewsScrollHint: 'Scroll for Brave News',
   braveNewsIntroTitle: 'Turn on Brave News, and never miss a story',
   braveNewsIntroDescription: 'Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and…voila!',
   braveNewsIntroDescriptionTwo: 'Brave News is ad-supported with private, anonymized ads. $1Learn more.$2.'

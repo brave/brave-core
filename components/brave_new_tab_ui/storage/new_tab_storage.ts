@@ -32,7 +32,7 @@ export const defaultState: NewTab.State = {
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
-  isBraveTodayOptedIn: false,
+  isBraveNewsOptedIn: false,
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,

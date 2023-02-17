@@ -8,7 +8,7 @@ import {
   Channel,
   ChannelsListenerInterface,
   ChannelsListenerReceiver
-} from 'gen/brave/components/brave_today/common/brave_news.mojom.m'
+} from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from '.'
 import { CachingWrapper } from './magicCache'
 
