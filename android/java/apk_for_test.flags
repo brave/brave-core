@@ -671,6 +671,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder {
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationBuilder {
     public <init>(...);
 }

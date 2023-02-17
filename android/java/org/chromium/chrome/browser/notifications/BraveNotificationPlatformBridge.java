@@ -83,11 +83,11 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
                         vibrationPattern, timestamp, renotify, silent, actions, webApkPackage);
 
         assert result
-                instanceof BraveAdsNotificationBuilder
-            : "Bytecode changes for BraveAdsNotificationBuilder were not applied!";
-        if (result instanceof BraveAdsNotificationBuilder) {
-            ((BraveAdsNotificationBuilder) result)
-                    .setIsBraveAdsNotification(mNotificationType == NotificationType.BRAVE_ADS);
+                instanceof BraveNotificationBuilder
+            : "Bytecode changes for BraveNotificationBuilder were not applied!";
+        if (result instanceof BraveNotificationBuilder) {
+            ((BraveNotificationBuilder) result)
+                    .setIsBraveNotification(mNotificationType == NotificationType.BRAVE_ADS);
         }
 
         return result;

@@ -7,16 +7,16 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
-public class BraveAdsNotificationBuilderClassAdapter extends BraveClassVisitor {
+public class BraveNotificationBuilderClassAdapter extends BraveClassVisitor {
     static String sStandardNotificationBuilderClassName =
             "org/chromium/chrome/browser/notifications/StandardNotificationBuilder";
-    static String sBraveAdsNotificationBuilderClassName =
-            "org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder";
+    static String sBraveNotificationBuilderClassName =
+            "org/chromium/chrome/browser/notifications/BraveNotificationBuilder";
 
-    public BraveAdsNotificationBuilderClassAdapter(ClassVisitor visitor) {
+    public BraveNotificationBuilderClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
         redirectConstructor(
-                sStandardNotificationBuilderClassName, sBraveAdsNotificationBuilderClassName);
+                sStandardNotificationBuilderClassName, sBraveNotificationBuilderClassName);
     }
 }

@@ -722,7 +722,7 @@ public class BytecodeTest {
                 Context.class, ModalDialogManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
-                "org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder",
+                "org/chromium/chrome/browser/notifications/BraveNotificationBuilder",
                 Context.class));
     }
 

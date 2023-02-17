@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.'
+
 import("//build/config/android/rules.gni")
 import("//chrome/common/features.gni")
 
@@ -5,7 +10,7 @@ assert(is_android)
 
 android_library("java") {
   sources = [
-    "java/src/org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder.java",
+    "java/src/org/chromium/chrome/browser/notifications/BraveNotificationBuilder.java",
     "java/src/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl.java",
   ]
 

@@ -10,7 +10,6 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
-        chain = new BraveAdsNotificationBuilderClassAdapter(chain);
         chain = new BraveAppHooksClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveApplicationImplBaseClassAdapter(chain);
@@ -52,6 +51,7 @@ public class BraveClassAdapter {
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
