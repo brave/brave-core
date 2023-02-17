@@ -50,6 +50,7 @@
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/safe_browsing/core/common/features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #endif
@@ -215,6 +216,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
+    &safe_browsing::kDownloadBubble,
+    &safe_browsing::kDownloadBubbleV2,
     &sharing_hub::kDesktopScreenshots,
 #endif
     &media::kEnableTabMuting,
