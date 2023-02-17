@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { sendWithPromise } from 'gen/ui/webui/resources/preprocessed/js/cr'
 import { DefaultBrowserBrowserProxyImpl } from './default_browser_browser_proxy'
 import { ImportDataBrowserProxyImpl, BrowserProfile as _BrowserProfile } from './import_data_browser_proxy'
 
@@ -31,6 +32,7 @@ export interface WelcomeBrowserProxy {
   setP3AEnabled: (enabled: boolean) => void
   setMetricsReportingEnabled: (enabled: boolean) => void
   openSettingsPage: () => void
+  getDefaultBrowser: () => Promise<string>
 }
 
 export { DefaultBrowserBrowserProxyImpl, ImportDataBrowserProxyImpl }
@@ -50,6 +52,10 @@ export class WelcomeBrowserProxyImpl implements WelcomeBrowserProxy {
 
   openSettingsPage () {
     chrome.send('openSettingsPage')
+  }
+
+  getDefaultBrowser (): Promise<string> {
+    return sendWithPromise('getDefaultBrowser')
   }
 
   static getInstance (): WelcomeBrowserProxy {

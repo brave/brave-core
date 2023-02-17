@@ -78,7 +78,6 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
 function SelectBrowser () {
   const { browserProfiles, currentSelectedBrowser, setCurrentSelectedBrowser, setViewType, incrementCount, scenes } = React.useContext(DataContext)
   const browserTypes = getUniqueBrowserTypes(browserProfiles ?? [])
-
   const handleSelectionChange = (browserName: string) => {
     setCurrentSelectedBrowser?.(browserName)
   }
@@ -106,6 +105,13 @@ function SelectBrowser () {
     setViewType(ViewType.HelpImprove)
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: true })
   }
+
+  React.useEffect(() => {
+    WelcomeBrowserProxyImpl.getInstance().getDefaultBrowser().then(
+      (name: string) => {
+      setCurrentSelectedBrowser?.(name)
+    })
+  }, [])
 
   return (
     <S.MainBox>
