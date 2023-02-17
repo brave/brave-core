@@ -94,7 +94,7 @@ const char kTorClientComponentBase64PublicKey[] =
 #elif BUILDFLAG(IS_LINUX)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
 #if defined(ARCH_CPU_ARM64)
-const char kTorClientComponentId[] = "fmmldihckdnognaabhligdpckkeancng";
+const char kTorClientComponentId[] = "monolafkoghdlanndjfeebmdfkbklejg";
 const char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqb14fggDpbjZtv3HKmR"
     "UTnvfDTcqVbVZo0DdCHQi6SwxDlRweGwsvsHuy9U37VBr41ha/neemQGf+5qkWgY"
