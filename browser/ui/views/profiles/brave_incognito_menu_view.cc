@@ -67,8 +67,8 @@ void BraveIncognitoMenuView::AddedToWidget() {
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
   // The icon color is set to match the menu text, which guarantees sufficient
   // contrast and a consistent visual appearance.
-  const SkColor icon_color = provider->GetTypographyProvider().GetColor(
-      *this, views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
+  const ui::ColorId icon_color = provider->GetTypographyProvider().GetColorId(
+      views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
 
   int window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
       browser()->profile());
