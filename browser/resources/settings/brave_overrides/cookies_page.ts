@@ -34,9 +34,19 @@ RegisterPolymerTemplateModifications({
         blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
       }
     }
-    const networkPredictionToggle = templateContent.getElementById('networkPrediction')
+    const preloadingToggleTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[!showPreloadingSubPage_]]"]')
+    if (!preloadingToggleTemplate) {
+      console.error(
+        '[Brave Settings Overrides] Could not find preloading toggle template')
+      return
+    }
+    const networkPredictionToggle = preloadingToggleTemplate.content.
+      getElementById('preloadingToggle')
     if (!networkPredictionToggle) {
-      console.error('[Brave Settings Overrides] Could not find networkPrediction id on cookies page.')
+      console.error(
+        '[Brave Settings Overrides] Could not find preloadingToggle id ' +
+        'on cookies page.')
     } else {
       networkPredictionToggle.setAttribute('hidden', 'true')
     }
