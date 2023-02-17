@@ -254,15 +254,15 @@ void MdTextButton::UpdateTextColor() {
   if (!ShouldIgnoreHarmonySpec(*this) &&
       label()->GetTextContext() == style::CONTEXT_BUTTON_MD) {
     DCHECK(GetNativeTheme());
-    enabled_text_color = is_prominent_ ? SK_ColorWHITE
+    enabled_text_color = GetProminent() ? SK_ColorWHITE
                          : GetNativeTheme()->ShouldUseDarkColors()
                              ? SK_ColorWHITE
                              : gfx::kBraveGrey800;
   } else {
     enabled_text_color =
         style::GetColor(*this, label()->GetTextContext(),
-                        is_prominent_ ? style::STYLE_DIALOG_BUTTON_DEFAULT
-                                      : style::STYLE_PRIMARY);
+                        GetProminent() ? style::STYLE_DIALOG_BUTTON_DEFAULT
+                                       : style::STYLE_PRIMARY);
   }
 
   const auto colors = explicitly_set_colors();
