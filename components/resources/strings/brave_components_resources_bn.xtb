@@ -260,7 +260,7 @@
 <translation id="2916515880661220182">আপনার ইতিমধ্যেই একটি কাস্টোডিয়াল অ্যাকাউন্ট থাকলে, আপনাকে এতে সংযোগ করার অনুরোধ জানানো হবে। আপনার না থাকলে, আপনি একটি অ্যাকাউন্ট তৈরি করার সুযোগ পাবেন।</translation>
 <translation id="2054853229650377447">নোট: আপনি একবার অনুমোদন করলে আপনার লেনদেনগুলি কাস্টোডিয়ানে দেখা যাবে। উদাহরণস্বরূপ, তারা আপনার পরামর্শের অর্থরাশি এবং প্রাপক দেখতে পাবেন।</translation>
 <translation id="121894865378699201">BAT উপার্জন শুরু করতে আপনি প্রস্তুত?</translation>
-<translation id="4478996292566912629">কাস্টডিয়াল অ্যাকাউন্ট প্রোভাইডাররা আপনার পরিচয় যাচাই করবেন, এজন্য আপনাকে যে কাজগুলো করতে হবে তার মধ্যে ফটো আইডি জমা দেওয়া অন্যতম। আমাদের <ph name="BEGIN_LINK"/>Brave পুরস্কারের গোপনীয়তা নীতি<ph name="END_LINK"/> দেখুন।</translation>
+<translation id="4478996292566912629">কাস্টডিয়াল অ্যাকাউন্ট প্রোভাইডাররা আপনার পরিচয় যাচাই করবেন, যার মধ্যে ফটো আইডি জমা দেওয়া অন্যতম। আমাদের <ph name="BEGIN_LINK"/>Brave পুরস্কারের গোপনীয়তা নীতি দেখুন<ph name="END_LINK"/>।</translation>
 <translation id="7730415569603152862">আপনার পুরস্কারের প্রোফাইলে কাস্টডিয়াল অ্যাকাউন্টে সংযোগ করুন যাতে আপনি:</translation>
 <translation id="5785531043735482053">আপনার BAT উপার্জন সঞ্চয়, পরিচালনা ও উইথড্র করতে পারেন</translation>
 <translation id="5155452078869279096">আপনার কেনা BAT দিয়ে আপনার অ্যাকাউন্ট ব্যালেন্স টপ আপ করুন</translation>
@@ -542,14 +542,14 @@
 <translation id="3647533686160055812">Brave .crypto (এছাড়াও .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) সমাধানের জন্য Infura ব্যবহার করবে, যেগুলো অপ্রতিরোধ্য ডোমেন। Brave আপনার IP অ্যাড্রেস লুকিয়ে রাখে। আপনি এটি চালু করলে, Infura ডোমেইনটি দেখতে পাবে যা আপনি দেখার চেষ্টা করছেন কিন্তু তারা অন্য ডোমেইনগুলি দেখতে পাবেন না। Infura-র <ph name="BEGIN_INFURA_TOU_LINK"/>ব্যবহারের শর্তাবলী<ph name="END_INFURA_TOU_LINK"/> এবং <ph name="BEGIN_INFURA_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_INFURA_PRIVACY_LINK"/> দেখুন।</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Brave-এ Ethereum Name Service (ENS)-এর সহায়তা সক্রিয় করবেন?</translation>
-<translation id="4609973808011229683">Ethereum নেম সার্ভিস (ENS)-এ থাকা .eth ডোমেইন নেম রিজলভ করতে Brave Infura ব্যবহার করবে। Brave আপনার IP অ্যাড্রেস লুকিয়ে রাখে। আপনি এটি চালু করলে, Infura বুঝতে পারবে যে, কেউ শুধু এই .eth ডোমেইনগুলো ভিজিট করার চেষ্টা করছেন। Infura-র <ph name="BEGIN_INFURA_TOU_LINK"/>ব্যবহারের শর্তাবলী<ph name="END_INFURA_TOU_LINK"/> এবং <ph name="BEGIN_INFURA_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_INFURA_PRIVACY_LINK"/> দেখুন।</translation>
+<translation id="4609973808011229683">Ethereum নেম সার্ভিস (ENS)-এ থাকা .eth ডোমেইন নেম রিজলভ করতে Brave Infura ব্যবহার করবে। Brave আপনার IP অ্যাড্রেস লুকিয়ে রাখে। আপনি এটি চালু করলে, Infura বুঝতে পারবে যে, কেউ .eth ডোমেন ভিজিট করার চেষ্টা করছেন, আর কিছুই নয়। Infura-র <ph name="BEGIN_INFURA_TOU_LINK"/>ব্যবহারের শর্তাবলী<ph name="END_INFURA_TOU_LINK"/> এবং <ph name="BEGIN_INFURA_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_INFURA_PRIVACY_LINK"/> দেখুন।</translation>
 <translation id="807404806385418949">Ethereum নেম সার্ভিস অফচেইন লুকআপ</translation>
 <translation id="4049590838234508776">Brave-এ Ethereum নেম সার্ভিস (ENS)-এর অফচেইন লুকআপ চালু করবেন?</translation>
 <translation id="5944991147217767764">এই .eth ডোমেন নাম অফচেইনে সংরক্ষণ করা হয় এবং তৃতীয় পক্ষের গেটওয়ে দিয়ে সমাধান করা হবে। আপনি যদি ENS অফচেইন লুকআপ চালু করেন, তৃতীয় পক্ষের গেটওয়ে বুঝতে পারবে যে আপনি .eth ডোমেনে যাওয়ার চেষ্টা করছেন। <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>আরও জানুন<ph name="END_BRAVE_LEARN_MORE_LINK"/>।</translation>
 <translation id="4047002754575891955">অফচেইন লুকআপের সাথে এগিয়ে যান</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Brave-এ Solana Name Service (SNS)-এর সহায়তা সক্রিয় করবেন?</translation>
-<translation id="2350552210396418924">.sol ডোমেইন নেম রিজলভ করতে Brave Coinbase Cloud ব্যবহার করবে। Brave আপনার IP অ্যাড্রেস লুকিয়ে রাখে। আপনি এটি চালু করলে, Coinbase Cloud বুঝতে পারবে যে, কেউ শুধু .sol ডোমেন ভিজিট করার চেষ্টা করছেন। Coinbase Cloud-এর <ph name="BEGIN_COINBASE_TOU_LINK"/>ব্যবহারের শর্তাবলী<ph name="END_COINBASE_TOU_LINK"/> ও <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_COINBASE_PRIVACY_LINK"/> দেখুন।</translation>
+<translation id="2350552210396418924">.sol ডোমেইন নেম রিজলভ করতে Brave Coinbase Cloud ব্যবহার করবে। Brave আপনার IP অ্যাড্রেস লুকিয়ে রাখে। আপনি এটি চালু করলে, Coinbase বুঝতে পারবে যে, কেউ .sol ডোমেন ভিজিট করার চেষ্টা করছেন, আর কিছুই নয়। Coinbase Cloud-এর <ph name="BEGIN_COINBASE_TOU_LINK"/>ব্যবহারের শর্তাবলী<ph name="END_COINBASE_TOU_LINK"/> ও <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>গোপনীয়তা নীতি<ph name="END_COINBASE_PRIVACY_LINK"/> দেখুন।</translation>
 <translation id="7378412287463452336">Infura সার্ভার ব্যবহার করে অগ্রসর হন</translation>
 <translation id="2313603121968571839">Coinbase Cloud সার্ভার ব্যবহারের সময়ে প্রক্রিয়া করা হয়েছে</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
@@ -652,7 +652,7 @@
 <translation id="3368922792935385530">সংযুক্ত</translation>
 <translation id="8494748383523030337">আপনার ব্যালেন্স</translation>
 <translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>BAT উপার্জন শুরু করতে আপনি প্রস্তুত?<ph name="BOLD_END"/> আপনার পুরস্কারের প্রোফাইলে শুধুমাত্র আপনার কাস্টডিয়াল অ্যাকাউন্টে সংযোগ করুন। আপনার কোনো অ্যাকাউন্ট না থাকলে, আপনি একটি অ্যাকাউন্ট তৈরি করার সুযোগ পাবেন।</translation>
-<translation id="1772961321862399863">BAT উপার্জন করতে, BAT পুরস্কারের জন্য ইউজারকে কোনও কাস্টডিয়াল অ্যাকাউন্টে সংযোগ করতে হবে। দূর্ভাগ্যবশত আপনার অঞ্চলে কোনো কাস্টোডিয়ান উপলভ্য নেই, তাই উপার্জন করা যাবে না। এখন Brave পুরস্কার চালু করলে তা স্বয়ংক্রিয়ভাবে ক্রিয়েটরদের সাহায্য করবে।</translation>
+<translation id="1772961321862399863">BAT উপার্জন করতে, ইউজারকে কোনও কাস্টডিয়াল অ্যাকাউন্ট Brave পুরস্কারের সাথে সংযুক্ত করতে হবে। দূর্ভাগ্যবশত আপনার অঞ্চলে কোনো কাস্টোডিয়ান উপলভ্য নেই, তাই উপার্জন করা যাবে না। এখন Brave পুরস্কার চালু করলে তা স্বয়ংক্রিয়ভাবে ক্রিয়েটরদের সাহায্য করবে।</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {এই মাসে আপনি Brave পুরস্কার দিয়ে # জন ক্রিয়েটরকে সহায়তা করেছেন}
       other {এই মাসে, আপনি Brave পুরস্কার দিয়ে # জন ক্রিয়েটরকে সহায়তা করেছেন}
@@ -679,7 +679,7 @@
 <translation id="2369994359029526515">অযাচাইকৃত স্রষ্টা</translation>
 <translation id="6020176662032623904">যাচাই করা স্রষ্টা</translation>
 <translation id="215037911651623564">ক্রিয়েটর ভেরিফিকেশনের স্ট্যাটাস রিফ্রেশ করুন</translation>
-<translation id="8946576491316456643">আপনার দেওয়া যে কোনো টিপ আপাতত মুলতুবি থাকবে এবং 90 দিনের জন্য স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে। <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
+<translation id="8946576491316456643">এখন যদি আপনি কোনও পরামর্শ প্রদান করেন সেটি মুলতুবি থাকবে এবং 90 দিন পর স্বয়ংক্রিয়ভাবে আবার চেষ্টা করা হবে। <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">এই নির্মাতা এখনও সাইন আপ করেন নি।</translation>
 <translation id="3573568055713372419">আপনি <ph name="USER_PROVIDER"/>-এ সংযুক্ত হয়েছেন, তবে এই ক্রিয়েটর <ph name="CREATOR_PROVIDER"/>-তে সংযুক্ত হয়েছেন। এর মানে আপনার টিপ এই ক্রিয়েটরের কাছে পৌঁছাবে না।</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/> এ <ph name="NAME"/></translation>
@@ -1219,7 +1219,7 @@
 <translation id="6954150712710630841">লেনদেন জমা দেওয়া হয়েছে</translation>
 <translation id="905855245798176174">লেনদেন সফলভাবে নেটওয়ার্কে পাঠানো হয়েছে এবং নিশ্চিতকরণের জন্য অপেক্ষা করছে।</translation>
 <translation id="619697073289995370">লেনদেন স্বাক্ষরিত হয়েছে</translation>
-<translation id="7493732383203109611">লেনদেন স্বাক্ষরিত হয়েছে এবং Dapp দিয়ে নেটওয়ার্কে পাঠানো হবে</translation>
+<translation id="7493732383203109611">লেনদেন স্বাক্ষরিত হয়েছে এবং DApp দিয়ে নেটওয়ার্কে পাঠানো হবে</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> আপনার ওয়ালেটে ফেরত এসেছে</translation>
 <translation id="4577432071459867390">লেনদেন ব্যর্থ হয়েছে</translation>
 <translation id="4359235192593147041">দামের বড়মাপের পরিবর্তনের জন্য লেনদেন ব্যর্থ হয়েছে। দামের বড়মাপের পরিবর্তনে সফল হতে স্লিপেজ টলারেন্স বাড়ান।</translation>
@@ -1426,7 +1426,7 @@
 <translation id="3033638954295674319">NFT-র বিশদ বিবরণ আনার সময়ে কোনো কিছু ভুল হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</translation>
 <translation id="2540568096903252632">অবিরত রাখতে পাসওয়ার্ড লিখুন</translation>
 <translation id="3356580495013324916">ওয়ালেটের ব্যাক আপ নেওয়া শুরু করতে আপনার Brave ওয়ালেটের পাসওয়ার্ড লিখুন।</translation>
-<translation id="7545441766078366279">অনুমোদন করুন <ph name="TOKEN"/></translation>
+<translation id="7545441766078366279"><ph name="TOKEN"/> অনুমোদন করুন</translation>
 <translation id="3115303896544539834">অপর্যাপ্ত <ph name="TOKEN"/> ব্যালেন্স</translation>
 <translation id="4937657825850660613">অর্ধেক</translation>
 <translation id="7639814793732182496">সর্বাধিক</translation>

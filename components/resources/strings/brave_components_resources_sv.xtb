@@ -260,8 +260,8 @@
 <translation id="2916515880661220182">Om du redan har ett depåkonto uppmanas du att ansluta det. Om du inte gör det får du chansen att skapa ett.</translation>
 <translation id="2054853229650377447">Obs! Dina transaktioner är synliga för förvaltaren när du godkänner det. Till exempel kommer de att kunna se mottagaren och mängden dricks.</translation>
 <translation id="121894865378699201">Redo att börja tjäna BAT?</translation>
-<translation id="4478996292566912629">Leverantörer av depåkonton måste styrka din identitet, vilket kan innebära att ett foto-ID måste skickas in. Se vår <ph name="BEGIN_LINK"/>sekretesspolicy för Brave-belöningar<ph name="END_LINK"/>.</translation>
-<translation id="7730415569603152862">Anslut ditt depåkonto till din Rewards-profil så att du kan:</translation>
+<translation id="4478996292566912629">Leverantörer av depåkonton måste styrka din identitet, vilket kan innebära att ett foto-ID måste skickas in. Se vår <ph name="BEGIN_LINK"/>sekretesspolicy för Brave Belöningar<ph name="END_LINK"/>.</translation>
+<translation id="7730415569603152862">Anslut ditt depåkonto till din profil för Belöningar så att du kan:</translation>
 <translation id="5785531043735482053">Lagra, hantera och ta ut dina BAT-intäkter</translation>
 <translation id="5155452078869279096">Fyll på ditt konto med BAT som du köpt</translation>
 <translation id="5497001757280825146">Donera till de webbplatser och kreatörer du gillar bäst</translation>
@@ -473,9 +473,9 @@
 <translation id="5317144262906129592">Du kan stödja den här innehållsskaparen genom att skicka dricks. Det är ett sätt att tacka för att de gör bra innehåll.</translation>
 <translation id="3074127054582480056">Observation</translation>
 <translation id="3659457123782988823">Är du säker på att du vill återställa din Brave Rewards?</translation>
-<translation id="1666001796278936721">När du återställer tas din nuvarande Brave Rewards-profil bort och du börjar om med en helt ny Brave Rewards-profil. Innan du fortsätter kan du <ph name="LINK_BEGIN"/>läsa mer<ph name="LINK_END"/> om återställning, bara för att vara på den säkra sidan.</translation>
+<translation id="1666001796278936721">När du återställer tas din nuvarande profil för Belöningar  i Brave bort och du börjar om med en helt ny profil för Belöningar i Brave. Innan du fortsätter kan du <ph name="LINK_BEGIN"/>läsa mer<ph name="LINK_END"/> om återställning, bara för att vara på den säkra sidan.</translation>
 <translation id="94095197509579227">Obs! Du har för närvarande beräknade intäkter på <ph name="BAT_AMOUNT"/> denna månad som kommer att gå förlorade om du återställer nu.</translation>
-<translation id="4806029412510565611">Jag förstår att min nuvarande Brave Rewards-profil och mina Brave Rewards-data kommer att tas bort från min enhet, och jag har läst<ph name="LINK_BEGIN"/>supportartikeln om återställning<ph name="LINK_END"/>.</translation>
+<translation id="4806029412510565611">Jag förstår att min nuvarande profil för Belöningar i Brave och mina data i Belöningar för Brave kommer att tas bort från min enhet, och jag har läst<ph name="LINK_BEGIN"/>supportartikeln om återställning<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>
 <translation id="2913994227901456490">Visa alla [[numItems]] objekt</translation>
@@ -651,11 +651,11 @@
 <translation id="3026978804849658576">Visa utdrag</translation>
 <translation id="3368922792935385530">Ansluten</translation>
 <translation id="8494748383523030337">Ditt saldo</translation>
-<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>Redo att börja tjäna BAT?<ph name="BOLD_END"/> Anslut bara ditt depåkonto till din Rewards-profil. Om du inte har ett konto kan du skapa ett.</translation>
-<translation id="1772961321862399863">För att tjäna BAT måste användare koppla ett depåkonto till Brave Rewards. Tyvärr finns det ingen depå tillgänglig i din region, så det går inte att tjäna pengar. För närvarande stöds kreatörer automatiskt om du aktiverar Brave Rewards.</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>Redo att börja tjäna BAT?<ph name="BOLD_END"/> Anslut bara ditt depåkonto till din profil för Belöningar. Om du inte har ett konto kan du skapa ett.</translation>
+<translation id="1772961321862399863">För att tjäna BAT måste användare koppla ett depåkonto till Belöningar i Brave. Tyvärr finns det ingen depå tillgänglig i din region, så det går inte att tjäna pengar. För närvarande stöds kreatörer automatiskt om du aktiverar Brave Belöningar.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {Denna månad har du besökt # kreatör som stöds av Brave Rewards}
-      other {Denna månad har du besökt # kreatörer som stöds av Brave Rewards}
+      =1 {Denna månad har du besökt # kreatör som stöds av Belöningar i Brave}
+      other {Denna månad har du besökt # kreatörer som stöds av Belöningar i Brave}
     }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Dina <ph name="MONTH"/> Ad Rewards är här!</translation>
@@ -687,7 +687,7 @@
 <translation id="6965382102122355670">Ok</translation>
 <translation id="6727102863431372879">Ange</translation>
 <translation id="8853725596990766789">Ändra summa</translation>
-<translation id="6067959437127691361">Med Brave Rewards kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
+<translation id="6067959437127691361">Med Belöningar i Brave kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
 <translation id="1609556006143307897">Du hjälper till att stödja innehållsskapare</translation>
 <translation id="6605147707233193230">Aktivera för att stödja innehållsskapare</translation>
 <translation id="5430495762768325224">Läs mer om BAT</translation>
@@ -1466,8 +1466,8 @@
 <translation id="4029551149873989025">Växla nätverk</translation>
 <translation id="7561262633951061138">Bästa</translation>
 <translation id="3143110700666266545">Den här appen använder följande API:er från tredje part:</translation>
-<translation id="8411419545176806786">Brave Swap använder 0x som en DEX-aggregator för EVM-nätverk som stöds. 0x kommer att bearbeta Ethereums plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). 0x kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
-<translation id="7467728126359974661">Brave Swap använder Jupiter som en DEX-aggregator för Solana-nätverket. Jupiter kommer att bearbeta Solanas plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). Jupiter kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
+<translation id="8411419545176806786">Växla i Brave använder 0x som en DEX-aggregator för EVM-nätverk som stöds. 0x kommer att bearbeta Ethereums plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). 0x kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
+<translation id="7467728126359974661">Växla i Brave använder Jupiter som en DEX-aggregator för Solana-nätverket. Jupiter kommer att bearbeta Solanas plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). Jupiter kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
 <translation id="8497751359931572880">Klicka här för att visa sekretesspolicyn för 0x.</translation>
 <translation id="4904748904130272182">Klicka här för att visa sekretesspolicyn för Jupiter.</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
@@ -1571,7 +1571,7 @@
 <translation id="264682546981571963">Trött på meddelanden om samtycke till cookies?</translation>
 <translation id="4986297793092101884">Brave blockerar redan tredjepartscookies. Vi kan också blockera meddelanden om samtycke till cookies.</translation>
 <translation id="535688588637568715">Ja, blockera meddelanden om samtycke till cookies</translation>
-<translation id="2808175374672429053">Jokertecken tillåts inte för Brave Shields.</translation>
+<translation id="2808175374672429053">Jokertecken tillåts inte för Sköldar i Brave.</translation>
 <translation id="6294662480095808915">Integritet. Som standard.</translation>
 <translation id="4366423156486478559">Få Brave-skydd varje gång du klickar på en länk. Ställ bara in Brave som standard och surfa vidare privat.</translation>
 <translation id="3830912418080848377">Importera inställningar</translation>

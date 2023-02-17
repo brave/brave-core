@@ -40,7 +40,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1725356094208762656">Obrir a Tor</translation>
 <translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
 <translation id="7473245612074035141">Comenceu la Configuració</translation>
-<translation id="496896260395129787">Aquest compte de Brave Sync s'ha suprimit d'un altre dispositiu. Si no volíeu desactivar Sync,<ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Aquest compte de Sincronització de Brave s'ha suprimit d'un altre dispositiu. Si no volíeu desactivar Sincronització,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>torneu a crear el compte</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="3975865347033939965">No s'ha pogut iniciar el servei de sincronització, Brave Sync no s'està executant</translation>
@@ -286,7 +286,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5510493033031835532">Redirigeix automàticament les pàgines AMP</translation>
 <translation id="7630031867325944356">Preferiu els URL de les pàgines de l'editor en comptes d'AMP i versions similars.</translation>
 <translation id="920638232916443453">Redirigeix automàticament les URL de seguiment</translation>
-<translation id="1118970888826017401">Habilita el suport per evitar les URL de seguiment de redireccions de nivell superior.</translation>
+<translation id="1118970888826017401">Habiliteu la compatibilitat per evitar les URL de seguiment de redireccions de nivell superior.</translation>
 <translation id="7607166182943595829">Impedeix que els llocs web em facin empremtes digitals segons les meves preferències d'idioma</translation>
 <translation id="3497934980362703405">Activar aquesta opció de configuració redueix el que poden aprendre els llocs web sobre les teves preferències d'idioma.</translation>
 <translation id="2133317862976486547">Seguidors &amp; bloquejant anuncis</translation>
@@ -303,7 +303,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
 <translation id="101592339984642584">Filtració del contingut</translation>
 <translation id="8694564340481124390">Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de l'idioma.</translation>
-<translation id="4877657558909976793">Habilita filtres personalitzats que bloquegen elements molestos i <ph name="BEGIN_LINK"/> rastrejadors <ph name="END_LINK"/> regionals i específics de l'idioma.</translation>
 <translation id="3482656215021340727">Afegeix llistes de filtres personalitzats</translation>
 <translation id="1020877116991797978">Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.</translation>
 <translation id="7617831480435794399">Subscriu-te només a llistes d'entitats de confiança. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista des de l'URL que introdueixis, revelant la teva adreça IP al seu servidor.</translation>
@@ -379,7 +378,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4332558599726753990">Posada en marxa de la sincronització</translation>
 <translation id="2187778349654214731">Per començar, necessitareu instal·lar Brave a tots els dispositius que planegeu sincronitzar. Després, enllaçar-los de manera segura amb un codi de sincronització.</translation>
 <translation id="7530575064080939974">Gestioneu els dispositius sincronitzats</translation>
-<translation id="8668872235103666008">No s'ha pogut sincronitzar Brave en els vostres dispositius</translation>
+<translation id="8668872235103666008">No s'ha pogut sincronitzar Brave als vostres dispositius</translation>
 <translation id="7575156386943878014">Gestor de sincronització</translation>
 <translation id="1755198127524719638">Configuració de sincronització</translation>
 <translation id="7558480201297099157">Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.</translation>
@@ -435,7 +434,7 @@ Segur que vols continuar?</translation>
 <translation id="1680065323266179640">Suprimeix el compte de Sync</translation>
 <translation id="9064376100690171155">Suprimeix el compte permanentment</translation>
 <translation id="228906529296554286">Si suprimiu el vostre compte, se suprimiran les vostres dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.</translation>
-<translation id="7578652532113583362">No obstant això, no eliminarà les dades que s'emmagatzemen localment en aquests dispositius.</translation>
+<translation id="7578652532113583362">No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.</translation>
 <translation id="2516405584294312544">Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decidiu
     començar a utilitzar Sync de nou, haureu de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
 <translation id="4860996720371753023">La supressió del compte està en curs...</translation>
@@ -534,7 +533,7 @@ Segur que vols continuar?</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="8996633027318264334">Realment vols eliminar <ph name="KEY_NAME"/>?</translation>
 <translation id="3316326558572563182">La xarxa activa sempre és visible a la llista de xarxes del moneder</translation>
-<translation id="232693303726691609">Mostra/amaga la xarxa a la llista de xarxes del moneder</translation>
+<translation id="232693303726691609">Mostra/Amaga la xarxa a la llista de xarxes del moneder</translation>
 <translation id="7893578599666249602">Segur que vols restablir <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
 <translation id="9170907049676078643">Mètode per a resoldre els recursos IPFS</translation>

@@ -40,7 +40,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
-<translation id="496896260395129787">Detta Brave Sync-konto togs bort från en annan enhet. Om du inte ville inaktivera Sync kan du<ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">Detta konto för Synkning i Brave togs bort från en annan enhet. Om du inte ville inaktivera Synkning kan du<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> återskapa kontot</translation>
 <translation id="6965382102122355670">Ok</translation>
 <translation id="3975865347033939965">Synkroniseringstjänsten kunde inte startas, Brave Sync körs inte</translation>
@@ -303,8 +303,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
 <translation id="101592339984642584">Innehållsfiltrering</translation>
 <translation id="8694564340481124390">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.</translation>
-<translation id="4877657558909976793">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och 
- <ph name="BEGIN_LINK"/>irritationsmoment<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Lägg till anpassade filterlistor</translation>
 <translation id="1020877116991797978">Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.</translation>
 <translation id="7617831480435794399">Prenumerera bara på listor från entiteter som du litar på. Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger och avslöjar din IP-adress för deras server.</translation>
@@ -430,7 +428,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 
 Är du säker på att du vill göra detta?</translation>
 <translation id="7443185843787879670">Brave kunde inte komma åt ditt operativsystems säkra lagring. Detta är vad som används för att säkra data som lösenord och cookies; det krävs också för att Brave Sync ska kunna ansluta din webbläsarprofil mellan enheter. Det betyder att Brave Sync inte körs. För att lösa det här problemet, se <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync-felsökningsguiden<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
-<translation id="6802736947576520626">Det ser ut som att krypteringsnyckeln för synkronisering skiljer sig från den som användes när du först konfigurerade Brave Sync. Den enklaste lösningen här är att återställa och återansluta synkroniseringskedjan med hjälp av lösenfrasen från en av dina andra synkroniserade enheter.</translation>
+<translation id="6802736947576520626">Det ser ut som att krypteringsnyckeln för synkronisering skiljer sig från den som användes när du först konfigurerade Brave Synkning. Den enklaste lösningen här är att återställa och återansluta synkroniseringskedjan med hjälp av lösenfrasen från en av dina andra synkroniserade enheter.</translation>
 <translation id="4889767840132638381">Återställ och gå med i synkroniseringskedjan igen</translation>
 <translation id="1680065323266179640">Ta bort synkroniseringskonto</translation>
 <translation id="9064376100690171155">Ta bort konto permanent</translation>

@@ -169,7 +169,7 @@
 <translation id="5299848999918506028">Merci !</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="4851215387785619212">Publicités privées de Brave</translation>
-<translation id="6480303618073442141">Les publicités privées Brave sont discrètes et privées par nature. Elles reposent sur vos centres d'intérêt, mais aucune donnée personnelle ni aucun historique de navigation ne quitte jamais votre appareil. Mieux encore, les publicités privées Brave vous permettent de gagner des BAT (<ph name="BEGIN_LINK"/>Basic Attention Token ou jeton d'attention de base<ph name="END_LINK"/>) rien qu'en les regardant.</translation>
+<translation id="6480303618073442141">Les publicités privées Brave sont discrètes et privées par nature. Elles reposent sur vos centres d'intérêt, mais aucune donnée personnelle ni aucun historique de navigation ne quitte jamais votre appareil. Mieux encore, les publicités privées Brave vous permettent de gagner des BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) rien qu'en les regardant.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="3742599705619405136">Un moyen automatique de soutenir les éditeurs et les créateurs de contenu. Établissez un paiement mensuel et naviguez normalement. Les sites Brave Verified que vous visitez recevront automatiquement vos contributions, en fonction de votre niveau d'attention mesuré par Brave.</translation>
 <translation id="3325399124634342726">Gains actuels du mois (estimation)</translation>
@@ -549,7 +549,7 @@
 <translation id="4047002754575891955">Continuer avec la résolution hors chaîne</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Activer la prise en charge de Solana Name Service (SNS) dans Brave?</translation>
-<translation id="2350552210396418924">Brave utilisera Coinbase Cloud pour résoudre le noms de domaine .sol. Brave masque votre adresse IP. Si vous activez cette option, Coinbase verra que quelqu'un tente de consulter ces domaines .sol, mais rien d'autre. Consultez les <ph name="BEGIN_COINBASE_TOU_LINK"/>conditions d'utilisation<ph name="END_COINBASE_TOU_LINK"/> et la <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>politique de confidentialité<ph name="END_COINBASE_PRIVACY_LINK"/> de Coinbase Cloud.</translation>
+<translation id="2350552210396418924">Brave utilisera Coinbase Cloud pour résoudre les noms de domaine .sol. Brave masque votre adresse IP. Si vous activez cette option, Coinbase verra que quelqu'un tente de consulter ces domaines .sol, mais rien d'autre. Consultez les <ph name="BEGIN_COINBASE_TOU_LINK"/>conditions d'utilisation<ph name="END_COINBASE_TOU_LINK"/> et la <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>politique de confidentialité<ph name="END_COINBASE_PRIVACY_LINK"/> de Coinbase Cloud.</translation>
 <translation id="7378412287463452336">Continuer avec un serveur Infura</translation>
 <translation id="2313603121968571839">Continuer avec un serveur Coinbase Cloud</translation>
 <translation id="2356070529366658676">Demander</translation>
@@ -1238,7 +1238,7 @@
 <translation id="9104177294757104789">Envoyer <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Échanger <ph name="MAKER"/> contre <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Réseaux secondaires</translation>
-<translation id="282560918037172384">Tester les réseaux</translation>
+<translation id="282560918037172384">Réseaux de test</translation>
 <translation id="2816106784624007524">La limite de Gas doit être un nombre entier supérieur à 0</translation>
 <translation id="3354376789153561654">Le destinataire des données de transaction doit être indiqué</translation>
 <translation id="8728991256628663004">L'expéditeur des données de transaction doit être une adresse Filecoin valide</translation>
@@ -1428,6 +1428,7 @@
 <translation id="3356580495013324916">Saisissez le mot de passe de votre portefeuille Brave pour commencer à sauvegarder le portefeuille.</translation>
 <translation id="7545441766078366279">Approuver <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Solde <ph name="TOKEN"/> insuffisant</translation>
+<translation id="4937657825850660613">Moitié</translation>
 <translation id="7639814793732182496">Max</translation>
 <translation id="6584782231358487640">Saisissez un montant</translation>
 <translation id="2335903728876796191">Recherche du meilleur prix pour vous</translation>
@@ -1437,7 +1438,8 @@
 <translation id="4886690455791686940">Masquer les soldes nuls</translation>
 <translation id="381485723922188688">Option</translation>
 <translation id="6680650203439190394">Noter</translation>
-<translation id="2538996898605796431">Impact sur les prix</translation>
+<translation id="2538996898605796431">Effet prix</translation>
+<translation id="8007404171238546456">Minimum reçu après glissement</translation>
 <translation id="767199001998615704">Frais de réseau</translation>
 <translation id="7057870207229052478">Frais de Brave</translation>
 <translation id="3624518972158401291">Gratuits</translation>
@@ -1453,7 +1455,7 @@
 <translation id="3569512916300900704">Moyen</translation>
 <translation id="7019805045859631636">Rapide</translation>
 <translation id="1826671530876539299">Paramètres d'échange</translation>
-<translation id="6778140392042462129">Changes</translation>
+<translation id="6778140392042462129">Bourses</translation>
 <translation id="6173494033320397682">Routage direct uniquement</translation>
 <translation id="2440960581098655899">Cela garantit un routage direct uniquement et désactive également les transactions d'échanges fractionnés</translation>
 <translation id="6245314729809503023">Brave utilise les 60 premiers jetons pour le routage intermédiaire afin d'optimiser les performances</translation>

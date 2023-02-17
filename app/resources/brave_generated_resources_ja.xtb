@@ -40,6 +40,8 @@
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
+<translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
 <translation id="6965382102122355670">はい</translation>
 <translation id="3975865347033939965">Syncサービスを開始できませんでした。</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
@@ -123,7 +125,11 @@
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
+<translation id="4375473250631001683">サイドバーのアイコンを非表示</translation>
+<translation id="2613033293035359003">サイドバーを非表示にします</translation>
 <translation id="4233010476457917696">サイドバーを表示</translation>
+<translation id="7829322605042304637">サイドバーのアイコンを非表示</translation>
+<translation id="7349915168363514678">サイドバーを非表示</translation>
 <translation id="5404213409401164238">サイドバーを表示</translation>
 <translation id="9149866541089851383">編集...</translation>
 <translation id="1181037720776840403">削除</translation>
@@ -133,6 +139,9 @@
 <translation id="5877900074358050101">サイドバーアイテムのタイトル</translation>
 <translation id="1613695740874407223">サイドバーアイテムのURL</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
+<translation id="5977931179408079967">位置</translation>
+<translation id="3790384768741064842">右に移動</translation>
+<translation id="7444424316576061724">左に移動</translation>
 <translation id="7561196759112975576">常に表示</translation>
 <translation id="7060352228894039151">マウスオーバーで表示</translation>
 <translation id="7961015016161918242">使用しない</translation>
@@ -166,6 +175,7 @@
 <translation id="8199661191594897555">暗号資産ウォレットを開始してリロード</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3ドメイン</translation>
 <translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認しますか？</translation>
@@ -250,6 +260,8 @@
 <translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
+<translation id="2422927186524098759">サイドバー</translation>
+<translation id="832432428796481785">サイドバーのボタンを表示</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="1988804048511540801">新しいタブページが表示されます</translation>
 <translation id="2970343821770026391">ダッシュボード</translation>
@@ -273,6 +285,8 @@
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
 <translation id="7630031867325944356">AMPや類似のバージョンではなく、パブリッシャーページのURLを優先します。</translation>
+<translation id="920638232916443453">自動リダイレクト追跡URL</translation>
+<translation id="1118970888826017401">トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします</translation>
 <translation id="7607166182943595829">言語設定に基づく、サイトのフィンガープリンティングを禁止</translation>
 <translation id="3497934980362703405">この設定を有効にすると、ウェブサイトに収集される言語設定に関する情報を減らすことができます。</translation>
 <translation id="2133317862976486547">トラッカーと広告をブロック中</translation>
@@ -289,8 +303,6 @@
 <translation id="2360360976480535628">詳細表示</translation>
 <translation id="101592339984642584">コンテンツフィルター</translation>
 <translation id="8694564340481124390">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます。</translation>
-<translation id="4877657558909976793">カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや
-    <ph name="BEGIN_LINK"/>不快な表示<ph name="END_LINK"/>をブロックできます。</translation>
 <translation id="3482656215021340727">カスタムフィルターのリストを追加</translation>
 <translation id="1020877116991797978">信頼できるコミュニティにより作成および管理されているリストを追加します。</translation>
 <translation id="7617831480435794399">信頼できる作成者のリストにのみ登録してください。ブラウザでは入力されたURLからのリスト更新が定期的にチェックされ、IPアドレスがサーバーに表示されます。</translation>
@@ -365,6 +377,7 @@
 <translation id="4332558599726753990">同期設定</translation>
 <translation id="2187778349654214731">開始するには、同期したいデバイス全てにBraveをインストールしておく必要があります。それから、同期コードを使って安全に各デバイス同士をリンクします。</translation>
 <translation id="7530575064080939974">同期済みのデバイスを管理</translation>
+<translation id="8668872235103666008">Braveをこのデバイスで同期できませんでした</translation>
 <translation id="7575156386943878014">Sync Manager</translation>
 <translation id="1755198127524719638">設定の同期</translation>
 <translation id="7558480201297099157">デバイス間でどのような情報を同期したいのかを管理してください。
@@ -395,6 +408,7 @@
 <translation id="4485276108749547761">このコードはパスワードのように厳重に扱ってください。第三者に入手された場合、第三者があなたの同期されたデータを読み取って変更することが可能になります。</translation>
 <translation id="3034163433136515805">QR コードを見る</translation>
 <translation id="5373825572723282843">同期コードを入力</translation>
+<translation id="1265244359514651398">同期チェーンのパスフレーズをここに入力してください。</translation>
 <translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="5093410893656857925">デバイスの種類を選んでください</translation>
 <translation id="4581190919849683048">同期したいデバイスの種類はどれですか？</translation>
@@ -402,6 +416,7 @@
 <translation id="3995714999835224798">このコードは無効です</translation>
 <translation id="4432071071853308688">このコードは空です</translation>
 <translation id="955848693465029904">内部同期の設定でエラーが発生しました</translation>
+<translation id="7456398316301207582">内部アカウント削除エラー</translation>
 <translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスであたらしいコードを生成してもう一度お試しください。</translation>
 <translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
@@ -414,6 +429,17 @@
 
     続行してよろしいですか？</translation>
 <translation id="7443185843787879670">Braveは、お使いのオペレーティングシステムの安全なストレージにアクセスすることができませんでした。これは、パスワードやクッキーなどのデータを保護するために使用されるものです。また、Brave Syncがデバイス間でブラウザプロファイルを接続するために必要なものです。これは、Brave Syncが実行されていないことを意味します。この問題を解決するには、<ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync トラブルシューティング ガイド<ph name="END_LINK_SYNC_GUIDE"/>を参照してください。</translation>
+<translation id="6802736947576520626">同期の暗号化キーが、Brave同期を最初に設定した際に使用したキーと一致しません。これを簡単に解決するには、他のいずれかの同期先デバイスのパスフレーズを使用して、同期チェーンをリセットし、参加し直してください。</translation>
+<translation id="4889767840132638381">同期チェーンをリセットして参加し直す</translation>
+<translation id="1680065323266179640">同期アカウントを削除</translation>
+<translation id="9064376100690171155">アカウントを完全に削除する</translation>
+<translation id="228906529296554286">アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。</translation>
+<translation id="7578652532113583362">ただし、それらのデバイスでローカルに格納されたデータは削除されません。</translation>
+<translation id="2516405584294312544">これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
+<translation id="4860996720371753023">アカウントの削除を処理中です...</translation>
+<translation id="8199291899164865593">この同期チェーンに参加できません。アカウントが削除されています。</translation>
+<translation id="5633907266617216186">住所、支払い情報など</translation>
+<translation id="294985549514492876">ウェブアプリ（PWA）</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
@@ -467,6 +493,7 @@
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
+<translation id="856371974127598760">ウォレットネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="4993345308607970390">Braveウォレットをリセット</translation>
@@ -504,6 +531,8 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="8996633027318264334"><ph name="KEY_NAME"/>を削除しますか？</translation>
+<translation id="3316326558572563182">アクティブなネットワークをウォレットネットワークリストで非表示にはできません</translation>
+<translation id="232693303726691609">ウォレットネットワークリストでネットワークを表示または非表示にします</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>をリセットしますか？</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
 <translation id="9170907049676078643">IPFSリソースを解決する方法</translation>
@@ -557,6 +586,7 @@
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
+<translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
 <translation id="6624718837376802990">アバター「エッジ・リワード」</translation>
 <translation id="6617313057407561765">アバター「エッジ・ブレイブ」</translation>
 <translation id="6754445808455578019">アバター「エッジ・オーシャン」</translation>

@@ -1466,8 +1466,8 @@
 <translation id="4029551149873989025">네트워크 전환</translation>
 <translation id="7561262633951061138">최고</translation>
 <translation id="3143110700666266545">이 앱은 다음 제3자 API를 사용합니다.</translation>
-<translation id="8411419545176806786">Brave Swap은 지원되는 EVM 네트워크에 DEX 애그리게이터로 0x를 사용합니다. 0x는 이더리움 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). 0x는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
-<translation id="7467728126359974661">Brave Swap은 Solana 네트워크에 DEX 애그리게이터로 Jupiter를 사용합니다. Jupiter는 Solana 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="8411419545176806786">Brave 스왑은 지원되는 EVM 네트워크에 DEX 애그리게이터로 0x를 사용합니다. 0x는 이더리움 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). 0x는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="7467728126359974661">Brave 스왑은 Solana 네트워크에 DEX 애그리게이터로 Jupiter를 사용합니다. Jupiter는 Solana 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="8497751359931572880">0x 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
 <translation id="4904748904130272182">Jupiter 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
