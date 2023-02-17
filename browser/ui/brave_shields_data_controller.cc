@@ -7,6 +7,7 @@
 #include "brave/browser/ui/brave_shields_data_controller.h"
 
 #include <string>
+#include <utility>
 
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -387,8 +388,8 @@ void BraveShieldsDataController::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
       BraveShieldsWebContentsObserver::FromWebContents(web_contents());
-  if (observer) {
-    observer->AllowScriptsOnce(origins);
+  if (!observer) {
+    return observer->AllowScriptsOnce(origins);
   }
 
   ReloadWebContents();
@@ -426,12 +427,12 @@ void BraveShieldsDataController::HandleItemBlocked(
 void BraveShieldsDataController::HandleItemAllowedOnce(
     const std::string& allowed_once_type,
     const std::string& subresource) {
-  auto subres = GURL(subresource);
+  GURL subres(subresource);
   if (allowed_once_type == kJavaScript) {
     if (resource_list_allowed_once_js_.contains(subres)) {
       return;
     }
-    resource_list_allowed_once_js_.insert(GURL(subresource));
+    resource_list_allowed_once_js_.insert(std::move(subres));
   }
 
   for (Observer& obs : observer_list_) {
