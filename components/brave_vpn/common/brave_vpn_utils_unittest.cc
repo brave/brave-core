@@ -10,6 +10,7 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/skus/browser/skus_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -186,4 +187,10 @@ TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
       *p3a_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
+}
+
+TEST(BraveVPNUtilsUnitTest, VPNPaymentsEnv) {
+  EXPECT_EQ("production", GetBraveVPNPaymentsEnv(skus::kEnvProduction));
+  EXPECT_EQ("staging", GetBraveVPNPaymentsEnv(skus::kEnvStaging));
+  EXPECT_EQ("development", GetBraveVPNPaymentsEnv(skus::kEnvDevelopment));
 }
