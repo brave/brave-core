@@ -88,8 +88,9 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
@@ -199,7 +200,8 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
                   {
                     "name": "lamports",
                     "localized_name": "Lamports",
-                    "value": "10000000"
+                    "value": "10000000",
+                    "type": 2
                   }
                 ],
                 "sys_ins_type": "2"

@@ -586,8 +586,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
@@ -651,8 +652,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   account_metas.push_back(std::move(solana_account_meta2));
   account_metas.push_back(std::move(solana_account_meta3));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("amount", "Amount", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "amount", "Amount", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
@@ -805,8 +807,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(

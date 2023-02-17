@@ -1599,10 +1599,22 @@ enum SolanaTokenInstruction {
   kInitializeMint2 = 20,
 };
 
+enum SolanaInstructionParamType {
+  kUint8 = 0,
+  kUint32 = 1,
+  kUint64 = 2,
+  kPublicKey = 3,
+  kOptionalPublicKey = 4,
+  kString = 5,
+  kAuthorityType = 6,
+  kUnknown = -1,
+};
+
 struct SolanaInstructionParam {
   string name;
   string localized_name;  // For UI display.
   string value;
+  SolanaInstructionParamType type = SolanaInstructionParamType.kUnknown;
 };
 
 struct SolanaInstructionAccountParam {
