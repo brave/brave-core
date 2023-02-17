@@ -184,6 +184,8 @@ class TestBraveWalletServiceObserver
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
 
+  void OnResetWallet() override {}
+
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;
   }

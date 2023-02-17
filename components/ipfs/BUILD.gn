@@ -41,6 +41,7 @@ static_library("ipfs") {
   deps = [
     "buildflags",
     "//base",
+    "//brave/base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser/",
     "//brave/components/resources:static_resources",

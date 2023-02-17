@@ -99,6 +99,7 @@ class TestBraveWalletServiceObserverForAssetDiscovery
     on_discover_assets_completed_fired_ = true;
     run_loop_asset_discovery_->Quit();
   }
+  void OnResetWallet() override {}
 
   void WaitForOnDiscoverAssetsCompleted(
       const std::vector<std::string>& addresses) {

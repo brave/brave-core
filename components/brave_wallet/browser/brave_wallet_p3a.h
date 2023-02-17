@@ -92,6 +92,7 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void OnNetworkListChanged() override {}
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
+  void OnResetWallet() override {}
 
  private:
   void MigrateUsageProfilePrefsToLocalState();

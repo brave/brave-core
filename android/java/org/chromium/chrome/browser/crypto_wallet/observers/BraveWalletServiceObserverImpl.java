@@ -27,6 +27,8 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
         default void onNetworkListChanged() {}
 
         default void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {}
+
+        default void onResetWallet() {}
     }
 
     private WeakReference<BraveWalletServiceObserverImplDelegate> mDelegate;

@@ -112,6 +112,7 @@ class MockIpfsLocalPinService : public ipfs::IpfsLocalPinService {
                void(const std::string& prefix,
                     const std::vector<std::string>& cids,
                     ipfs::ValidatePinsCallback callback));
+  MOCK_METHOD1(Reset, void(base::OnceCallback<void(bool)> callback));
 };
 
 class MockJsonRpcService : public JsonRpcService {
@@ -869,6 +870,64 @@ TEST_F(BraveWalletPinServiceTest, GetTokens) {
     auto tokens = service()->GetTokens("non_existing_storage");
     EXPECT_EQ(0u, tokens.size());
   }
+}
+
+TEST_F(BraveWalletPinServiceTest, Reset) {
+  {
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update->GetDict();
+
+    base::Value::Dict item;
+    item.Set("status", "pinned");
+    item.Set("validate_timestamp",
+             base::TimeToValue(base::Time::FromTimeT(123u)));
+    base::Value::List cids;
+    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("cids", std::move(cids));
+
+    update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
+  }
+
+  ON_CALL(*GetIpfsLocalPinService(), Reset(_))
+      .WillByDefault(
+          ::testing::Invoke([](base::OnceCallback<void(bool)> callback) {
+            std::move(callback).Run(true);
+          }));
+  absl::optional<bool> reset_result;
+  service()->Reset(base::BindLambdaForTesting(
+      [&reset_result](bool result) { reset_result = result; }));
+  EXPECT_TRUE(reset_result.value());
+  EXPECT_EQ(0u, service()->GetPinnedTokensCount());
+}
+
+TEST_F(BraveWalletPinServiceTest, Reset_Failed) {
+  {
+    DictionaryPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
+    base::Value::Dict& update_dict = update->GetDict();
+
+    base::Value::Dict item;
+    item.Set("status", "pinned");
+    item.Set("validate_timestamp",
+             base::TimeToValue(base::Time::FromTimeT(123u)));
+    base::Value::List cids;
+    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("cids", std::move(cids));
+
+    update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
+  }
+
+  ON_CALL(*GetIpfsLocalPinService(), Reset(_))
+      .WillByDefault(
+          ::testing::Invoke([](base::OnceCallback<void(bool)> callback) {
+            std::move(callback).Run(false);
+          }));
+  absl::optional<bool> reset_result;
+  service()->Reset(base::BindLambdaForTesting(
+      [&reset_result](bool result) { reset_result = result; }));
+  EXPECT_FALSE(reset_result.value());
+  EXPECT_EQ(1u, service()->GetPinnedTokensCount());
 }
 
 }  // namespace brave_wallet

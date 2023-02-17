@@ -123,6 +123,30 @@ class BraveWalletIsNftPinningEnabledFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletGetPinnedNftCountFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getPinnedNftCount", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetPinnedNftCountFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletClearPinnedNftFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.clearPinnedNft", UNKNOWN)
+  BraveWalletClearPinnedNftFunction();
+
+ protected:
+  void OnBraveWalletPinServiceResetResult(bool result);
+  ~BraveWalletClearPinnedNftFunction() override;
+  ResponseAction Run() override;
+
+ private:
+  base::WeakPtrFactory<BraveWalletClearPinnedNftFunction> weak_ptr_factory_{
+      this};
+};
+
 }  // namespace api
 }  // namespace extensions
 

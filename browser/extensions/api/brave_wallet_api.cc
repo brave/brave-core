@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
@@ -18,6 +19,7 @@
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -32,6 +34,12 @@
 #include "extensions/common/constants.h"
 
 namespace {
+
+brave_wallet::BraveWalletPinService* GetBraveWalletPinService(
+    content::BrowserContext* context) {
+  return brave_wallet::BraveWalletPinServiceFactory::GetInstance()
+      ->GetServiceForContext(context);
+}
 
 EthereumRemoteClientService* GetEthereumRemoteClientService(
     content::BrowserContext* context) {
@@ -204,6 +212,33 @@ ExtensionFunction::ResponseAction
 BraveWalletIsNftPinningEnabledFunction::Run() {
   return RespondNow(
       OneArgument(base::Value(::brave_wallet::IsNftPinningEnabled())));
+}
+
+ExtensionFunction::ResponseAction BraveWalletGetPinnedNftCountFunction::Run() {
+  auto* service = GetBraveWalletPinService(browser_context());
+  if (!service) {
+    return RespondNow(OneArgument(base::Value(static_cast<int>(-1))));
+  }
+  return RespondNow(OneArgument(
+      base::Value(static_cast<int>(service->GetPinnedTokensCount()))));
+}
+
+BraveWalletClearPinnedNftFunction::BraveWalletClearPinnedNftFunction() =
+    default;
+BraveWalletClearPinnedNftFunction::~BraveWalletClearPinnedNftFunction() =
+    default;
+
+ExtensionFunction::ResponseAction BraveWalletClearPinnedNftFunction::Run() {
+  GetBraveWalletPinService(browser_context())
+      ->Reset(base::BindOnce(&BraveWalletClearPinnedNftFunction::
+                                 OnBraveWalletPinServiceResetResult,
+                             this));
+  return RespondLater();
+}
+
+void BraveWalletClearPinnedNftFunction::OnBraveWalletPinServiceResetResult(
+    bool result) {
+  Respond(OneArgument(base::Value(result)));
 }
 
 }  // namespace api

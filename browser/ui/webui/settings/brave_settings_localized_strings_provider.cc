@@ -521,6 +521,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
     {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
     {"ipfsLocalNodeWarning", IDS_IPFS_LOCAL_NODE_WARNING},
+    {"clearPinnedNft", IDS_SETTINGS_CLEAR_PINNED_NFT},
+    {"clearPinnedNftDesc", IDS_SETTINGS_CLEAR_PINNED_NFT_DESC},
     {"resetWallet", IDS_SETTINGS_WALLET_RESET},
     {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
     {"resetTransactionInfoDesc",
@@ -530,9 +532,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION},
     {"walletResetTransactionInfoConfirmation",
      IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION},
+    {"walletClearPinnedNftConfirmation",
+     IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION},
     {"walletResetConfirmed", IDS_SETTINGS_WALLET_RESET_CONFIRMED},
     {"walletResetTransactionInfoConfirmed",
      IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED},
+    {"walletClearPinnedNftConfirmed",
+     IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED},
     {"walletNetworksLinkTitle", IDS_SETTINGS_WALLET_NETWORKS_ITEM},
     {"walletAddNetworkDialogTitle", IDS_SETTINGS_WALLET_ADD_NETWORK_TITLE},
     {"walletAddNetworkInvalidURLInput",
@@ -649,6 +655,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
+  auto clear_pinned_nft_confirmation = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION, confirmation_phrase);
+  html_source->AddString("walletClearPinnedNftConfirmation",
+                         clear_pinned_nft_confirmation);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif

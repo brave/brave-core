@@ -78,6 +78,7 @@ class BraveWalletPinService : public KeyedService,
   ~BraveWalletPinService() override;
 
   virtual void Restore();
+  virtual void Reset(base::OnceCallback<void(bool)> callback);
 
   mojo::PendingRemote<mojom::WalletPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletPinService> receiver);
@@ -131,6 +132,8 @@ class BraveWalletPinService : public KeyedService,
   virtual std::set<std::string> GetTokens(
       const absl::optional<std::string>& service);
 
+  size_t GetPinnedTokensCount();
+
  protected:
   // For testing
   BraveWalletPinService();
@@ -179,6 +182,9 @@ class BraveWalletPinService : public KeyedService,
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
+
+  void OnResetLocalPinService(base::OnceCallback<void(bool)> callback,
+                              bool result);
 
   mojo::ReceiverSet<brave_wallet::mojom::WalletPinService> receivers_;
   mojo::RemoteSet<mojom::BraveWalletPinServiceObserver> observers_;

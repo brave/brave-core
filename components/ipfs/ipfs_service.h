@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -85,6 +86,8 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
+  using NodeCallback =
+      base::OnceCallback</*stdout*/ void(absl::optional<std::string>)>;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   // Local pins
   using AddPinCallback = base::OnceCallback<void(absl::optional<AddPinResult>)>;
@@ -133,6 +136,9 @@ class IpfsService : public KeyedService,
                        const std::string& type,
                        bool quiet,
                        GetPinsCallback callback);
+  // Removes pins using client mode withoud launching the IPFS daemon
+  virtual void RemovePinCli(std::set<std::string> cid, BoolCallback callback);
+  virtual void LsPinCli(NodeCallback callback);
 
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 const std::string& key,
@@ -206,10 +212,12 @@ class IpfsService : public KeyedService,
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  static bool WaitUntilExecutionFinished(base::Process process);
+  static absl::optional<std::string> WaitUntilExecutionFinished(
+      base::FilePath data_path,
+      base::CommandLine cmd);
   void ExecuteNodeCommand(const base::CommandLine& command_line,
                           const base::FilePath& data,
-                          BoolCallback callback);
+                          NodeCallback callback);
 
   // Local pins
   void OnGetPinsResult(APIRequestList::iterator iter,
@@ -221,6 +229,9 @@ class IpfsService : public KeyedService,
   void OnPinRemoveResult(APIRequestList::iterator iter,
                          RemovePinCallback callback,
                          api_request_helper::APIRequestResult response);
+  void OnRemovePinCli(BoolCallback callback,
+                      std::set<std::string> cids,
+                      absl::optional<std::string> result);
 #endif
   base::TimeDelta CalculatePeersRetryTime();
 

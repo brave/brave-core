@@ -201,7 +201,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
-  prefs->ClearPref(kPinnedNFTAssets);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {

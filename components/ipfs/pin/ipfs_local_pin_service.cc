@@ -6,10 +6,12 @@
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
 #include <memory>
+#include <set>
 #include <string>
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/strings/string_split.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -189,6 +191,42 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
                                          IpfsService* ipfs_service)
     : prefs_service_(prefs_service), ipfs_service_(ipfs_service) {
   ipfs_base_pin_service_ = std::make_unique<IpfsBasePinService>(ipfs_service_);
+}
+
+void IpfsLocalPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  ipfs_service_->LsPinCli(base::BindOnce(&IpfsLocalPinService::OnLsPinCliResult,
+                                         weak_ptr_factory_.GetWeakPtr(),
+                                         std::move(callback)));
+}
+
+void IpfsLocalPinService::OnLsPinCliResult(
+    base::OnceCallback<void(bool)> callback,
+    absl::optional<std::string> result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::vector<std::string> values = base::SplitString(
+      result.value(), "\n\r", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (values.empty()) {
+    OnRemovePinCliResult(std::move(callback), true);
+    return;
+  }
+  ipfs_service_->RemovePinCli(
+      std::set(values.begin(), values.end()),
+      base::BindOnce(&IpfsLocalPinService::OnRemovePinCliResult,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void IpfsLocalPinService::OnRemovePinCliResult(
+    base::OnceCallback<void(bool)> callback,
+    bool result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  prefs_service_->ClearPref(kIPFSPinnedCids);
+  std::move(callback).Run(true);
 }
 
 void IpfsLocalPinService::ScheduleGcTask() {

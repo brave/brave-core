@@ -314,6 +314,23 @@ void BraveWalletPinService::Restore() {
   local_pin_service_->ScheduleGcTask();
 }
 
+void BraveWalletPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  local_pin_service_->Reset(
+      base::BindOnce(&BraveWalletPinService::OnResetLocalPinService,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletPinService::OnResetLocalPinService(
+    base::OnceCallback<void(bool)> callback,
+    bool result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  prefs_->ClearPref(kPinnedNFTAssets);
+  std::move(callback).Run(true);
+}
+
 BraveWalletPinService::~BraveWalletPinService() {
   if (ipfs_service_) {
     ipfs_service_->RemoveObserver(this);
@@ -955,6 +972,10 @@ std::set<std::string> BraveWalletPinService::GetTokens(
   }
 
   return result;
+}
+
+size_t BraveWalletPinService::GetPinnedTokensCount() {
+  return GetTokens(absl::nullopt).size();
 }
 
 }  // namespace brave_wallet
