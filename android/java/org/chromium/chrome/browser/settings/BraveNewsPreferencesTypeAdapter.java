@@ -347,13 +347,11 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     private void displayFollowButton(
             boolean isFollowing, int textId, NewsPreferencesViewHolder holder) {
         if (isFollowing) {
-            holder.btnFollow.setBackgroundResource(R.drawable.white_rounded_bg);
-            holder.btnFollow.setElevation(2f);
+            holder.btnFollow.setBackgroundResource(R.drawable.brave_news_settings_unfollow_bg);
             holder.btnText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.news_settings_subtitle_color));
+                    ContextCompat.getColor(mContext, R.color.news_settings_unfollow_color));
         } else {
             holder.btnFollow.setBackgroundResource(R.drawable.blue_48_rounded_bg);
-            holder.btnFollow.setElevation(0f);
             holder.btnText.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
         }
 

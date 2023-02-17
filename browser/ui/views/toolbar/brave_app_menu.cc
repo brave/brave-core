@@ -71,6 +71,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
     case IDC_NEW_TAB:
     case IDC_NEW_INCOGNITO_WINDOW:
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
+    case IDC_OPEN_GUEST_PROFILE:
       group = misc_metrics::MenuGroup::kTabWindow;
       break;
     case IDC_SHOW_BRAVE_WALLET:
