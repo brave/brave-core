@@ -22,7 +22,7 @@ const char kDomainsLoadedHistogramName[] = "Brave.Core.DomainsLoaded";
 
 namespace {
 
-constexpr const int kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};
+constexpr const uint64_t kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};
 constexpr const int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
 
 constexpr base::TimeDelta kPagesLoadedReportInterval = base::Minutes(30);

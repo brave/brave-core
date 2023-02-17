@@ -30,7 +30,7 @@ namespace {
 constexpr char kNewTabPageEventCountDictPref[] =
     "brave.brave_ads.p3a.ntp_event_count";
 
-constexpr int kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
+constexpr size_t kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
 
 constexpr char kViewEventKey[] = "views";
 constexpr char kClickEventKey[] = "clicks";
@@ -120,7 +120,7 @@ void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type) {
       inflight_dict->Set(key, count);
       p3a_utils::RecordToHistogramBucket(
           BuildHistogramName(creative_instance_id, key).c_str(), kCountBuckets,
-          count);
+          static_cast<size_t>(count));
       is_active_creative = true;
     }
     if (is_active_creative) {

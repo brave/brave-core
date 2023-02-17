@@ -40,6 +40,7 @@
 namespace {
 
 constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
+const uint64_t kNewTabsCreatedBuckets[] = {0, 3, 8, 20, 50, 100};
 constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 
@@ -439,7 +440,7 @@ void ViewCounterService::MaybePrefetchNewTabPageAd() {
 void ViewCounterService::UpdateP3AValues() const {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
   p3a_utils::RecordToHistogramBucket("Brave.NTP.NewTabsCreated",
-                                     {0, 3, 8, 20, 50, 100}, new_tab_count);
+                                     kNewTabsCreatedBuckets, new_tab_count);
 
   constexpr char kSponsoredNewTabsHistogramName[] =
       "Brave.NTP.SponsoredNewTabsCreated";

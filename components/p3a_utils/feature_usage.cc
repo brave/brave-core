@@ -15,7 +15,7 @@ namespace p3a_utils {
 
 namespace {
 
-constexpr int kDaysInMonthBuckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
+constexpr uint64_t kDaysInMonthBuckets[] = {0, 1, 2, 5, 10, 15, 20, 100};
 
 }  // namespace
 

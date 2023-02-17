@@ -64,7 +64,7 @@ void RecordDaysInMonthUsedCount(PrefService* prefs, bool is_add) {
 void RecordWeeklySessionCount(PrefService* prefs, bool is_add) {
   // Track how many times in the past week
   // user has scrolled to Brave Today.
-  constexpr int buckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
+  constexpr uint64_t buckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
   uint64_t total_session_count = AddToWeeklyStorageAndGetSum(
       prefs, prefs::kBraveTodayWeeklySessionCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklySessionCountHistogramName, buckets,
@@ -95,7 +95,7 @@ void RecordWeeklyMaxCardVisitsCount(
     uint64_t cards_visited_session_total_count) {
   // Track how many Brave Today cards have been viewed per session
   // (each NTP / NTP Message Handler is treated as 1 session).
-  constexpr int buckets[] = {0, 1, 3, 6, 10, 15, 100};
+  constexpr uint64_t buckets[] = {0, 1, 3, 6, 10, 15, 100};
   uint64_t max = UpdateWeeklyStorageWithValueAndGetMax(
       prefs, prefs::kBraveTodayWeeklyCardVisitsCount,
       cards_visited_session_total_count);
@@ -107,7 +107,7 @@ void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
                                    uint64_t cards_viewed_session_total_count) {
   // Track how many Brave Today cards have been viewed per session
   // (each NTP / NTP Message Handler is treated as 1 session).
-  constexpr int buckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
+  constexpr uint64_t buckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
   uint64_t max = UpdateWeeklyStorageWithValueAndGetMax(
       prefs, prefs::kBraveTodayWeeklyCardViewsCount,
       cards_viewed_session_total_count);
@@ -117,7 +117,7 @@ void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
 
 void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
   // Store current weekly total in p3a, ready to send on the next upload
-  constexpr int buckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
+  constexpr uint64_t buckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
   uint64_t total = AddToWeeklyStorageAndGetSum(
       prefs, prefs::kBraveTodayWeeklyDisplayAdViewedCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklyDisplayAdsViewedHistogramName,
@@ -125,7 +125,7 @@ void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
 }
 
 void RecordDirectFeedsTotal(PrefService* prefs) {
-  constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
+  constexpr size_t buckets[] = {0, 1, 2, 3, 4, 5, 10};
   const auto& direct_feeds_dict = prefs->GetDict(prefs::kBraveTodayDirectFeeds);
   std::size_t feed_count = direct_feeds_dict.size();
   p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, buckets,
@@ -133,7 +133,7 @@ void RecordDirectFeedsTotal(PrefService* prefs) {
 }
 
 void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
-  constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
+  constexpr uint64_t buckets[] = {0, 1, 2, 3, 4, 5, 10};
   uint64_t weekly_total = AddToWeeklyStorageAndGetSum(
       prefs, prefs::kBraveTodayWeeklyAddedDirectFeedsCount, change);
 
@@ -159,7 +159,7 @@ void RecordTotalCardViews(PrefService* prefs,
 
   uint64_t total = total_storage.GetWeeklySum();
 
-  int buckets[] = {0, 1, 10, 20, 40, 80, 100};
+  uint64_t buckets[] = {0, 1, 10, 20, 40, 80, 100};
   VLOG(1) << "NewsP3A: total card views update: total = " << total
           << " curr session = " << cards_viewed_session_total_count;
   p3a_utils::RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets,

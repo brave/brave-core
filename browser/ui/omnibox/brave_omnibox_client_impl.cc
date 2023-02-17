@@ -30,6 +30,7 @@ using brave_search_conversion::ConversionType;
 using brave_search_conversion::GetConversionType;
 
 constexpr char kSearchCountPrefName[] = "brave.weekly_storage.search_count";
+const uint64_t kSearchCountBuckets[] = {0, 5, 10, 20, 50, 100, 500};
 
 bool IsSearchEvent(const AutocompleteMatch& match) {
   switch (match.type) {
@@ -49,8 +50,7 @@ bool IsSearchEvent(const AutocompleteMatch& match) {
 
 void RecordSearchEventP3A(uint64_t number_of_searches) {
   p3a_utils::RecordToHistogramBucket("Brave.Omnibox.SearchCount",
-                                     {0, 5, 10, 20, 50, 100, 500},
-                                     number_of_searches);
+                                     kSearchCountBuckets, number_of_searches);
 }
 
 }  // namespace
