@@ -276,11 +276,6 @@ Ko za vsa spletna mesta ali za določeno spletno mesto izbrišete zgodovino brsk
 <translation id="2567545343356994513">Hitrejša, še boljša zaščita proti nevarnim spletnim mestom, prenosom in razširitvam.</translation>
 <translation id="5079947353572974060">Ponudi pošiljanje strani v drugih jezikih v Brave Prevajalnik</translation>
 <translation id="6995512410824092085">Preberite, kako Brave nastavite kot privzetega.</translation>
-<translation id="6453483065572809635">Zmanjšanje vsiljene vsebine in prevar temelji na zasebnih žetonih stanja, s katerimi si spletna mesta pomagajo pri boju zoper prevare in ločevanju botov od ljudi.
-
-Glede na interakcijo s spletnim mestom, kot je redno prijavljanje v račun, lahko to spletno mesto brskalniku izda zasebni žeton stanja. Če pozneje druga spletna mesta, ki jih obiščete, iščejo in poiščejo veljaven zasebni žeton stanja, vas bodo verjetneje obravnavala kot osebo, ne pa bot.
-
-Zasebni žetoni stanja izboljšujejo zaupanje v spletu in jih ni mogoče uporabiti za osebno prepoznavo.</translation>
 <translation id="2324920234469020158">S tem bodo izbrisani piškotki, predpomnilnik in drugi podatki spletnih mest, ki se Chromu ne zdijo pomembni.</translation>
 <translation id="2587052924345400782">Na voljo je nov. različica</translation>
 <translation id="2593272815202181319">Stalna širina</translation>
@@ -559,11 +554,6 @@ Zasebni žetoni stanja izboljšujejo zaupanje v spletu in jih ni mogoče uporabi
 <translation id="4137746084635924146">Trenutni jezik naprave</translation>
 <translation id="414128724510021958">Namizna spletna mesta so privzeto zahtevana</translation>
 <translation id="4159350418181625094">Spoznavanje Chroma</translation>
-<translation id="1453456663856716353">Če so preizkusi vklopljeni, zmanjšanje vsiljene vsebine in prevar temelji na zasebnih žetonih stanja, s katerimi si spletna mesta pomagajo pri boju zoper prevare in ločevanju botov od ljudi.
-
-Glede na interakcijo s spletnim mestom, kot je redno prijavljanje v račun, lahko to spletno mesto brskalniku izda zasebni žeton stanja. Če pozneje druga spletna mesta, ki jih obiščete, iščejo in poiščejo veljaven zasebni žeton stanja, vas bodo verjetneje obravnavala kot osebo, ne pa bot.
-
-Zasebni žetoni stanja izboljšujejo zaupanje v spletu in jih ni mogoče uporabiti za osebno prepoznavo.</translation>
 <translation id="4162867837470729563">Seznam možnosti deljenja z drugimi je odprt pri polni višini.</translation>
 <translation id="4170011742729630528">Storitev ni na voljo; poskusite znova pozneje.</translation>
 <translation id="4177222230309051052">Zagotovitev vseh zaznamkov</translation>
@@ -1533,6 +1523,16 @@ Nekatera spletna mesta se lahko na primer na zahtevo odzovejo tako, da prikažej
 <translation id="5711390076756601471">Ko zapustite Brave, zaklenite zasebne zavihke</translation>
 <translation id="1014490034578104945">Za ogled odprtih zasebnih zavihkov uporabite zaklepanje zaslona</translation>
 <translation id="4390099071040105838">Pomagajte spletnim mestom v boju proti goljufijam in pri razlikovanju robotov od profilov</translation>
+<translation id="6453483065572809635">Zmanjševanje neželene pošte in goljufij temelji na žetonih zasebnega stanja, ki spletnim mestom pomagajo v boju proti goljufijam in pri razlikovanju robotov od profilov.
+
+Na podlagi vaše interakcije s spletnim mestom, na primer redne prijave v račun, lahko to spletno mesto vašemu brskalniku izda žeton zaupanja. Če druga spletna mesta, ki jih obiščete, preverijo in najdejo veljaven znak zaupanja, je bolj verjetno, da vas bodo obravnavala kot profil in ne kot bota.
+
+Zaupanja vredni žetoni izboljšujejo zasebnost v spletu in jih ni mogoče uporabiti za ugotavljanje, kdo ste.</translation>
+<translation id="1453456663856716353">Ko so preizkusi vključeni, se zmanjšanje neželene pošte in goljufij opira na žetone zasebnega stanja, ki spletnim mestom pomagajo v boju proti goljufijam in pri razlikovanju robotov od profilov.
+
+Na podlagi vaše interakcije s spletnim mestom, na primer redne prijave v račun, lahko to spletno mesto vašemu brskalniku izda žeton zaupanja. Če druga spletna mesta, ki jih obiščete, preverijo in najdejo veljaven znak zaupanja, je bolj verjetno, da vas bodo obravnavala kot profil in ne kot bota.
+
+Zaupanja vredni žetoni izboljšujejo zasebnost v spletu in jih ni mogoče uporabiti za ugotavljanje, kdo ste.</translation>
 <translation id="7721367250891727403">Blokiraj med uporabo zasebnega</translation>
 <translation id="4785410057733147746">Medtem ko so zasebna, spletna mesta ne morejo uporabljati vaših piškotkov za ogled vaše dejavnosti brskanja na različnih spletnih mestih, na primer za prilagajanje oglasov. Funkcije na nekaterih spletnih mestih se lahko pokvarijo.</translation>
 <translation id="2633278372998075009">Zavihki brez beleženja zgodovine</translation>

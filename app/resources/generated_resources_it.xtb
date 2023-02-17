@@ -3564,7 +3564,7 @@ Puoi gestire le impostazioni dell'account installando l'app Family Link su quest
 <translation id="4275291496240508082">Suono avvio</translation>
 <translation id="4275830172053184480">Riavvia il dispositivo</translation>
 <translation id="4277434192562187284">Origine della configurazione XML</translation>
-<translation id="4278390842282768270">Consenti</translation>
+<translation id="4278390842282768270">Consentita</translation>
 <translation id="4278498748067682896">Utilizzerai un upgrade Kiosk e segnaletica che consente l'esecuzione del dispositivo solo in modalità kiosk o segnaletica. Se vuoi che gli utenti accedano al dispositivo, torna indietro ed esegui la registrazione utilizzando Brave Enterprise Upgrade.</translation>
 <translation id="4279129444466079448">Puoi installare fino a <ph name="PROFILE_LIMIT"/> profili eSIM su questo dispositivo. Per aggiungere un altro profilo, prima rimuovine uno esistente.</translation>
 <translation id="4280325816108262082">Il dispositivo si disconnetterà automaticamente quando verrà spento o non sarà in uso</translation>
@@ -4146,7 +4146,7 @@ Premi Ctrl + Alt + Diminuisci luminosità per diminuire lo zoom.</translation>
 <translation id="4536267179863600153">Controllo ortografico avanzato nel browser Brave (testo inviato a Brave per suggerimenti ortografici)</translation>
 <translation id="4827904420700932487">Crea codice QR per questa immagine</translation>
 <translation id="4827970183019354123">Controllo URL</translation>
-<translation id="4828567746430452681">"<ph name="EXTENSION_NAME"/>" non è più supportato</translation>
+<translation id="4828567746430452681">"<ph name="EXTENSION_NAME"/>" non è più supportata</translation>
 <translation id="482952334869563894">Dispositivi USB del fornitore <ph name="VENDOR_ID"/></translation>
 <translation id="4829768588131278040">Imposta il codice PIN</translation>
 <translation id="4830026649400230050">Tutti i download idonei vengono indirizzati all'account <ph name="WEB_DRIVE"/> della tua organizzazione.</translation>
@@ -7539,7 +7539,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8030169304546394654">Disconnessa</translation>
 <translation id="8030852056903932865">Approva</translation>
 <translation id="8032244173881942855">Impossibile trasmettere la scheda.</translation>
-<translation id="8032569120109842252">Seguito</translation>
+<translation id="8032569120109842252">Stai seguendo</translation>
 <translation id="8033023935541439900">Menu degli accenti aperto. Premi la Freccia sinistra o destra per spostarti e Invio per inserire.</translation>
 <translation id="8033827949643255796">selezionati</translation>
 <translation id="8033958968890501070">Timeout</translation>

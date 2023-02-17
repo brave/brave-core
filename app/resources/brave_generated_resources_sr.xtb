@@ -40,6 +40,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1725356094208762656">Otorite u Toru</translation>
 <translation id="3396347744975515056">Brave sinhronizacija je nadograđena i zahteva podešavanje</translation>
 <translation id="7473245612074035141">Počni podešavanje</translation>
+<translation id="496896260395129787">Ovaj Brave nalog za sinhronizaciju je obrisan na drugom uređaju. Ako niste želeli da onemogućite sinhronizaciju,<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ponovo kreirajte nalog</translation>
 <translation id="6965382102122355670">U redu</translation>
 <translation id="3975865347033939965">Usluga sinhronizacije nije mogla da se pokrene, Brave sinhronizacija ne radi</translation>
 <translation id="4450893287417543264">Ne prikazuj ponovo</translation>
@@ -115,6 +117,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7404610376221341525">Brave pretraga</translation>
 <translation id="8184318863960255706">Више информација</translation>
 <translation id="780301667611848630">Не, хвала</translation>
+<translation id="1162706247109707219">Klikom na OK, potvrđujete da vaša Brave instalacija NEĆE dobiti kritične bezbednosne ispravke dok ne ažurirate na Windows 10 ili noviji. Ovo upozorenje se NEĆE ponovo prikazati.</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="6040143037577758943">Затвори</translation>
@@ -122,7 +125,11 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4174337572777167894">Projekat istraživanja veba</translation>
 <translation id="8659271182272561965">Anonimno priložite neke podatke o pretrazi &amp; pregledanju kako biste unapredili Brave pretragu.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
+<translation id="4375473250631001683">Sakrijte ikonicu bočne trake</translation>
+<translation id="2613033293035359003">Sakrijte bočnu traku</translation>
 <translation id="4233010476457917696">Prikazati bočnu traku</translation>
+<translation id="7829322605042304637">Sakrijte ikonicu bočne trake</translation>
+<translation id="7349915168363514678">Sakrijte bočnu traku</translation>
 <translation id="5404213409401164238">Prikaži bočnu traku</translation>
 <translation id="9149866541089851383">Измени...</translation>
 <translation id="1181037720776840403">Уклони</translation>
@@ -132,6 +139,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5877900074358050101">Naziv stavke bočne trake</translation>
 <translation id="1613695740874407223">Url stavke bočne trake</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
+<translation id="5977931179408079967">Položaj</translation>
+<translation id="3790384768741064842">Pomerite desno</translation>
+<translation id="7444424316576061724">Pomerite levo</translation>
 <translation id="7561196759112975576">Uvek</translation>
 <translation id="7060352228894039151">Pri prelasku mišem</translation>
 <translation id="7961015016161918242">Никад</translation>
@@ -164,6 +174,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8731422418734770661">Podesite kripto novčanike</translation>
 <translation id="8199661191594897555">Pokrenite Crypto Wallets i ponovo učitajte</translation>
 <translation id="8428213095426709021">Подешавања</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 domeni</translation>
 <translation id="72868071984333667">Saznaj više o IPFS-u i privatnosti</translation>
 <translation id="4552520379838695057">Žao nam je, ta stranica nedostaje.</translation>
 <translation id="2609895996619941644">Da li želite da proverite da li je sačuvana verzija dostupna u Wayback Machine arhivi?</translation>
@@ -175,14 +187,14 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3987546108749866209">Prikaži kartice vertikalno</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="399928467800528208">Plutajući režim pri prelasku mišem</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Искључи звук картице}one{Искључи звук картица}few{Искључи звук картица}other{Искључи звук картица}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Укључи звук картице}one{Укључи звук картица}few{Укључи звук картица}other{Укључи звук картица}}</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Isključi zvuk kartice} other {Isključi zvuk kartica}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Uključi zvuk kartice} other {Uključi zvuk kartica}}</translation>
 <translation id="2336228925368920074">Обележи све картице...</translation>
 <translation id="2523967823495420116">Prikaži kartice vertikalno</translation>
 <translation id="8888603463702767599">Prikaži naslovnu traku</translation>
 <translation id="2058818256505091369">Plutajući režim pri prelasku mišem</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Искључи звук картице}one{Искључи звук картица}few{Искључи звук картица}other{Искључи звук картица}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Укључи звук картице}one{Укључи звук картица}few{Укључи звук картица}other{Укључи звук картица}}</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Isključi zvuk kartice} other {Isključi zvuk kartica}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Uključi zvuk karice} other {Uključi zvuk kartica}}</translation>
 <translation id="4235920711083356755">Prikaži VPN dugme</translation>
 <translation id="4070612712151038707">Prikazuje VPN dugme na traci sa alatkama</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -248,6 +260,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Krećite se kroz najčešće korišćene kartice pomoću Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Članci se automatski učitavaju u režimu čitača, što vam štedi vreme</translation>
+<translation id="2422927186524098759">Bočna traka</translation>
+<translation id="832432428796481785">Prikaži dugme bočne trake</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
 <translation id="1988804048511540801">Prikazi stranice nove kartice</translation>
 <translation id="2970343821770026391">Kontrolna tabla</translation>
@@ -271,6 +285,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4800195524776354947">Pokaži broj blokiranih stavki na Štit ikonici</translation>
 <translation id="5510493033031835532">Automatsko preusmeravanje AMP stranica</translation>
 <translation id="7630031867325944356">Daje prednost URL adresama stranica objavljivača a ne AMP i sličnim verzijama.</translation>
+<translation id="920638232916443453">Automatski preusmeri URL adrese za praćenje</translation>
+<translation id="1118970888826017401">Omogućite podršku za zaobilaženje preusmeravanje URL adresa za praćenje najvišeg nivoa</translation>
 <translation id="7607166182943595829">Sprečiti sajtove da mi uzimaju otisak prsta na osnovu mojih jezičkih preferencija</translation>
 <translation id="3497934980362703405">Omogućavanje ovog podešavanja smanjuje to koliko veb stranice mogu saznati o vašim jezičkim preferencijama.</translation>
 <translation id="2133317862976486547">Praćenja &amp; blokiranje reklama</translation>
@@ -287,8 +303,6 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
 <translation id="101592339984642584">Filtriranje sadržaja</translation>
 <translation id="8694564340481124390">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i smetnje.</translation>
-<translation id="4877657558909976793">Omogućuje prilagođene filtere koji blokiraju regionalno i jezičko praćenje i
-    <ph name="BEGIN_LINK"/>smetnje<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Dodavanje prilagođenih lista filtera</translation>
 <translation id="1020877116991797978">Dodajte liste koje kreira i održava vaša pouzdana zajednica.</translation>
 <translation id="7617831480435794399">Prijavite se samo za liste iz pouzdanih izvora. Vaš pretraživač će povremeno proveriti da li je ažurirana lista za URL koji ste upisali, pri čemu će otkriti vašu IP adresu njihovom serveru.</translation>
@@ -363,6 +377,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
 <translation id="2187778349654214731">Da biste započeli, imaćete Brave instaliran na svim uređajima koje planirate da sinhronizujete. Onda, sigurno ih povežite zajedno sa kodom za sinhronizaciju.</translation>
 <translation id="7530575064080939974">Upravljajte vašim sinhronizovanim uređajima</translation>
+<translation id="8668872235103666008">Nije moguće sinhronizovati Brave na vašim uređajima</translation>
 <translation id="7575156386943878014">Upravljač sinhronizacije</translation>
 <translation id="1755198127524719638">Sinhronizuj podešavanja</translation>
 <translation id="7558480201297099157">Upravljajte informacijama koje biste želeli da sinhronizujete između vaših uređaja. Ova podešavanja utiču samo na ovaj uređaj.</translation>
@@ -392,6 +407,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4485276108749547761">Postupajte sa ovom šifrom kao sa lozinkom. Ako neko uspe da joj pristupi, moći će da čita i menja Vaše sinhronizovane podatke.</translation>
 <translation id="3034163433136515805">Vidi QR šifru</translation>
 <translation id="5373825572723282843">Unesite kod sinhronizacije</translation>
+<translation id="1265244359514651398">Unesite ispod vašu lozinku za lančanu sinhronizaciju</translation>
 <translation id="1061533051865606843">Dodaj novi uređaj</translation>
 <translation id="5093410893656857925">Izaberite tip uređaja</translation>
 <translation id="4581190919849683048">Sa kojim tipom uređaja biste hteli da se sinhronizujete?</translation>
@@ -399,6 +415,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3995714999835224798">Ovaj kod je nevažeći</translation>
 <translation id="4432071071853308688">Ovaj kôd je prazan</translation>
 <translation id="955848693465029904">Interna greška konfigurisanja sinhronizacije</translation>
+<translation id="7456398316301207582">Interna greška brisanja naloga</translation>
 <translation id="859506441384380749">Ovaj kod je generisala zastarela verzija Brave pregledača. Ažurirajte najpre svoj drugi uređaj</translation>
 <translation id="3132642509209154999">Ovaj kod je istekao. Generišite nov kod na vašem drugom uređaju i pokušajte ponovo.</translation>
 <translation id="2859229680945501779">Ovaj kod je nevažeći. Proverite da li su vreme i vremenska zona ispravno podešeni na vašem uređaju.</translation>
@@ -411,6 +428,18 @@ Molimo vas da dobro proverite da li je ovaj kod generisao uređaj koji vi posedu
 
 Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="7443185843787879670">Brave nije mogao da pristupi bezbednom memorijskom prostoru vašeg operativnog sistema, koji se koristi za zaštitu podataka kao što su lozinke i kolačići. Osim toga, potrebno je da Brave sinhronizacija poveže profil vašeg pregledača između uređaja. To znači da Brave sinhronizacija ne radi. Da biste rešili ovaj problem, pogledajte <ph name="BEGIN_LINK_SYNC_GUIDE"/>uputstvo za rešavanje problema sa Brave sinhronizacijom<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">Izgleda da se ključ za šifrovanje sinhronizacije razlikuje od onog koji je korišćen kada ste prvi put podesili Brave sinhronizaciju. Najlakše rešenje ovde je da resetujete i ponovo se pridružite lancu sinhronizacije koristeći pristupnu lozinku sa nekog od vaših drugih sinhronizovanih uređaja.</translation>
+<translation id="4889767840132638381">Restujte i ponovo se pridružite lancu sinhronizacije</translation>
+<translation id="1680065323266179640">Obrišite nalog za sinhronizaciju</translation>
+<translation id="9064376100690171155">Trajno obrišite nalog</translation>
+<translation id="228906529296554286">Brisanje vašeg naloga će ukloniti vaše šifrovane podatke sa Brave servera i onemogućiti sinhronizaciju na svim vašim povezanim uređajima.</translation>
+<translation id="7578652532113583362">Međutim, neće obrisati podatke koji se lokalno čuvaju na vašim uređajima.</translation>
+<translation id="2516405584294312544">Ovo brisanje je trajno i ne postoji način da oporavite podatke. Ukoliko odlučite da
+     ponovo počnete da koristite sinhronizaciju, moraćete da kreirate novi nalog i da ponovo dodate svaki uređaj jedan po jedan.</translation>
+<translation id="4860996720371753023">Brisanje naloga je u toku...</translation>
+<translation id="8199291899164865593">Nije moguće pridružiti se ovom lancu sinhronizacije. Nalog je obrisan.</translation>
+<translation id="5633907266617216186">Adrese, informacije o plaćanju, itd.</translation>
+<translation id="294985549514492876">Internet aplikacije (PWA)</translation>
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
 <translation id="842628013524824194">Normalan prozor - pretraživač se koristi u traci za adrese</translation>
@@ -464,6 +493,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
 <translation id="8239147115686034860">Automatsko zaključavanje za Brave novčanik</translation>
 <translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave novčanik automatski zaključa</translation>
+<translation id="856371974127598760">Mreže novčanika</translation>
 <translation id="5975930666279943472">Obriši transakcije novčanika i informacije o jednokratnom ključu</translation>
 <translation id="5693968582510626466">Brisanje transakcija može biti korisno programerima ili pri brisanju stanja na lokalnom serveru</translation>
 <translation id="4993345308607970390">Resetovanje Brave novčanika</translation>
@@ -501,6 +531,8 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreže novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="8996633027318264334">Da li zaista želite da izbrišete <ph name="KEY_NAME"/>?</translation>
+<translation id="3316326558572563182">Aktivna mreža je uvek vidljiva u listi mreža novčanika</translation>
+<translation id="232693303726691609">Prikaži/sakrij mrežu sa liste mreža novčanika</translation>
 <translation id="7893578599666249602">Želite li zaista da resetujete <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Da li želite da ažurirate postojeću mrežu?</translation>
 <translation id="9170907049676078643">Metoda za rešavanje IPFS resursa</translation>
@@ -554,6 +586,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2775956301559569472">Pokaži gotovu Wayback Machine arhivu na 404 strana</translation>
 <translation id="3095201688102519917">Upozori me pre zatvaranja prozora s više kartica</translation>
 <translation id="7120553802660696133">Zatvoriti prozor prilikom zatvaranja poslednje kartice</translation>
+<translation id="7984721311211272523">Onemogućite funkciju utišavanja u kartici ikonice zvučnika</translation>
 <translation id="6624718837376802990">Avatar nervozne nagrade</translation>
 <translation id="6617313057407561765">Avatar nervozni Brave</translation>
 <translation id="6754445808455578019">Avatar nervozni okean</translation>

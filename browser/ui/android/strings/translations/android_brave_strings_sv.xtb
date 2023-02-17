@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="4744921452903670666">Berätta vad du tycker!</translation>
 <translation id="2524310205387880526">Betygsätt Brave</translation>
+<translation id="4104400246019119780">Tack!</translation>
+<translation id="5202255382948179481">Lägg till dina förslag</translation>
+<translation id="7759809451544302770">Valfritt</translation>
+<translation id="4748689412569009273">Hur betygsätter du din upplevelse av Brave med en emoji?</translation>
+<translation id="7335142069363686805">Betygsätt nu</translation>
+<translation id="6681362094306959654">Gillar du Brave?</translation>
+<translation id="5488843227043643519">Vill du ge ett betyg i Play Butik?</translation>
+<translation id="5867854497245948308">Tack för din feedback!</translation>
+<translation id="4935400164159327304">Berätta hur vi kan förbättra Brave.</translation>
 <translation id="915758461293673891">Dricksbelopp:</translation>
 <translation id="1420756770787071946">Stöd den här skaparen</translation>
 <translation id="4147995007712611681">Du har skapat en väntande dricks!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Lösningsmetod</translation>
+<translation id="8410806609595910352">ENS-sökning utanför kedja</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="59174027418879706">Aktiverat</translation>
@@ -100,6 +111,10 @@
 <translation id="7264627851715038916">Hantera källor för ditt flöde</translation>
 <translation id="4108314971463891922">Följ</translation>
 <translation id="3861486700625780712">Sluta följa</translation>
+<translation id="7813788390976857515">Hämta feeds</translation>
+<translation id="3405580543478883040">Hämtar feeds ...</translation>
+<translation id="7461899062138731833">KÄLLOR</translation>
+<translation id="6150420917380577651">Inga feeds hittades på <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Reklam</translation>
 <translation id="7823038307453615214">Visa Brave News</translation>
 <translation id="6527303717912515753">Dela</translation>
@@ -229,6 +244,9 @@
 <translation id="4781696154289395607">Du har bidragit med <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Det gick inte att behandla ditt bidrag.</translation>
 <translation id="2221902203895354376">En tokentilldelning är tillgänglig!</translation>
+<translation id="2377929997600454162">Dina <ph name="MONTH_VALUE"/> är här!</translation>
+<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Rewards: <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">Du har <ph name="TOKEN"/> dagar kvar att göra anspråk</translation>
 <translation id="2323069945529668668">Hoppsan!</translation>
 <translation id="7510166204621526816">Servern för Brave Rewards svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
@@ -256,6 +274,8 @@
 <translation id="3792563952903751704">Om du tar bort ditt konto kommer dina krypterade data att tas bort från Brave-servrar och synkronisering inaktiveras på alla dina anslutna enheter. Data som lagras lokalt på dessa enheter kommer dock inte att tas bort.
 Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.</translation>
 <translation id="9064376100690171155">Ta bort konto permanent</translation>
+<translation id="2740516568641790390">Synkroniseringskontot har tagits bort</translation>
+<translation id="7006136453627651236">Det gick inte att ta bort synkroniseringskontot</translation>
 <translation id="728334460283296316">Ta bort enheten</translation>
 <translation id="1178128181015923849">Är du säker på att du vill ta bort enheten <ph name="DEVICE_NAME"/>?</translation>
 <translation id="7745082336226088126">Skanna eller ange synkroniseringskod</translation>
@@ -298,6 +318,8 @@ Denna borttagning är permanent och det finns inget sätt att återställa data.
 <translation id="7173114856073700355">Inställningar</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Visa inte igen.</translation>
+<translation id="496896260395129787">Detta Brave Sync-konto togs bort från en annan enhet. Om du inte ville inaktivera Sync kan du <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> återskapa kontot</translation>
 <translation id="8199291899164865593">Det gick inte att gå med i den här synkroniseringskedjan. Kontot togs bort.</translation>
 <translation id="5633907266617216186">Adresser, betalningsinformation etc.</translation>
 <translation id="1056898198331236512">Varning</translation>
@@ -314,6 +336,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6199596294742117349">Detta är en privat flik</translation>
 <translation id="5858455511731621847">Även om webbplatser du besöker på privata flikar inte sparas lokalt, gör de dig inte anonym eller osynlig för din internetleverantör. din arbetsgivare eller de webbplatser du besöker.</translation>
 <translation id="5789441016350810005">Brave Ads skickas när webbläsaren är i bakgrunden</translation>
+<translation id="4059103952779533037">Bidrag och dricks</translation>
 <translation id="2892744985635833293">Din månatliga dricks har behandlats.</translation>
 <translation id="3124090095880236567">Aktivera annonser</translation>
 <translation id="2975780980638932742">Brave Ads är här!</translation>
@@ -456,9 +479,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7712287524451429139">Ge tillbaka på ett enkelt sätt</translation>
 <translation id="105037569026952831">Skapare får dina tokenbidrag automatiskt baserat på din engagemangsnivå som vi mäter som "Uppmärksamhet".</translation>
 <translation id="5323267338679539010">Säg tack med dricks</translation>
+<translation id="8235783939971604011">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
 <translation id="4215679190414901888">Till sist, låt oss konfigurera dina inställningar</translation>
 <translation id="3494356595346329740">Du kan ändra detta senare.</translation>
 <translation id="3115702351969988294">Hur ofta vill du se annonser?</translation>
+<translation id="2353222426385080466">Fler privata annonser, fler belöningar.</translation>
+<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> annonser per timme</translation>
 <translation id="827315274423079662">Tjoho, du är klar!</translation>
 <translation id="3895246934788932488">Genom att använda Brave Rewards skyddar du din integritet och hjälper till att göra webben till en bättre plats för alla. Och det är fantastiskt!</translation>
 <translation id="5705882733397021510">Gå tillbaka</translation>
@@ -577,12 +603,16 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5050890334032852465">Spara kontobevakningslista</translation>
 <translation id="7755766175599167100">Sök tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="6888491517683356528">Fortsätt till Ramp</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lås</translation>
 <translation id="8796429300536029044">Info om NFT</translation>
 <translation id="3866249974567520381">Beskrivning</translation>
 <translation id="4378475168089649292">Blockkedja</translation>
+<translation id="794436451374055797">Tokenstandard</translation>
 <translation id="9033453977881595182">Token-id</translation>
+<translation id="4987916116550559556">Minta adress</translation>
+<translation id="7592795625234816917">Bild är inte tillgänglig</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
@@ -965,14 +995,18 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6662142137695589205">Länka din VPN-prenumeration</translation>
 <translation id="2674077112509133024">Utöka ditt Brave Firewall + VPN-skydd</translation>
 <translation id="6365389672683343144">Din Brave VPN-prenumeration kan skydda upp till 5 enheter, på Android, iOS och stationära datorer. Länka bara din Google Play-prenumeration till ditt Brave-konto.</translation>
+<translation id="6610899852831463073">Kan inte aktivera säker webbsökning</translation>
+<translation id="7954263306665462056">Säker webbsökning har inaktiverats på din enhet. För att aktivera det, se till att Google Play Services är installerat och att det är uppdaterat.</translation>
 <translation id="6605147707233193230">Aktivera för att stödja innehållsskapare</translation>
 <translation id="1609556006143307897">Du hjälper till att stödja innehållsskapare</translation>
 <translation id="6067959437127691361">Med Brave Rewards kan du stötta kreatörer samtidigt som du tjänar BAT.</translation>
 <translation id="121894865378699201">Redo att börja tjäna BAT?</translation>
+<translation id="2648805457288107211">Anslut bara ditt depåkonto till din Rewards-profil. Om du inte har ett konto kan du skapa ett.</translation>
 <translation id="1772961321862399863">För att tjäna BAT måste användare koppla ett depåkonto till Brave Rewards. Tyvärr finns det ingen depå tillgänglig i din region, så det går inte att tjäna pengar. För närvarande stöds kreatörer automatiskt om du aktiverar Brave Rewards.</translation>
 <translation id="5430495762768325224">Läs mer om BAT</translation>
 <translation id="6278643716658443228">Rewards-inställningar</translation>
 <translation id="6516984207843289176">Anslut konto</translation>
+<translation id="4272136334824111854">Den här månaden har du besökt <ph name="CREATOR_COUNT"/>-kreatörer som stöds av Brave Rewards</translation>
 <translation id="6845311459433734326">Anslut ett depåkonto så att du kan tjäna BAT och ta ut dina belöningar</translation>
 <translation id="928980476243133540">Jag gör det senare</translation>
 <translation id="579702532610384533">Återanslut</translation>
@@ -982,6 +1016,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="9074594632540931067">Fel: BAT är inte tillgänglig</translation>
 <translation id="5382684862562314222">BAT stöds ännu inte i din region på Uphold.</translation>
 <translation id="6996157559236886133">Fel: Begränsad funktionalitet för Uphold-konto</translation>
+<translation id="842321566508373706">Enligt Uphold finns det för närvarande vissa begränsningar i ditt Uphold-konto. Logga in på ditt Uphold-konto och kontrollera om det finns några meddelanden eller kvarstående kontokrav som behöver slutföras och försök sedan igen.</translation>
 <translation id="6417420737057016607">Brave annonser</translation>
 <translation id="5425006356459378415">Brave Rewards är inte tillgängligt</translation>
 <translation id="833643743158564518">Nya registrerade Brave Rewards-medlemmar är för närvarande inaktiverade i din region. Du kan alltid försöka igen senare. <ph name="LEARN_MORE"/></translation>
@@ -989,6 +1024,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2781668117338732220">Sekundära nätverk</translation>
 <translation id="6309721369749814582">Domän <ph name="DOMAIN"/> är inte registrerad</translation>
 <translation id="4071347720273751665">Det verkar som att du har angett en ENS-adress. Vi måste använda namnuppslag från tredje part för namnuppslag av denna begäran, vilket kan innebära att de kan se din IP-adress och domän. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">Använd ENS-domän utanför kedja</translation>
 <translation id="4982630604810554641">Söker efter domän...</translation>
 <translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

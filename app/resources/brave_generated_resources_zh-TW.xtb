@@ -303,8 +303,6 @@
 <translation id="2360360976480535628">進階瀏覽</translation>
 <translation id="101592339984642584">內容過濾</translation>
 <translation id="8694564340481124390">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容。</translation>
-<translation id="4877657558909976793">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及
-    <ph name="BEGIN_LINK"/>惱人的內容<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">新增自訂過濾器清單</translation>
 <translation id="1020877116991797978">新增由您信任的社群所建立及維護的額外清單。</translation>
 <translation id="7617831480435794399">僅訂閱來自您信任實體的清單。您的瀏覽器會定期從您輸入的 URL 中檢查清單更新，並將您的 IP 位址向其伺服器顯示。</translation>

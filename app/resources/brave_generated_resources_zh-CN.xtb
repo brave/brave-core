@@ -39,8 +39,8 @@
 <translation id="1725356094208762656">在 Tor 中打开</translation>
 <translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
 <translation id="7473245612074035141">开始设置</translation>
-<translation id="496896260395129787">此 Brave 同步帐户已从其他设备删除。如果您未故意禁用同步，<ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新创建帐户</translation>
+<translation id="496896260395129787">此 Brave 同步账户已从其他设备删除。如果您未故意禁用同步，<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新创建账户</translation>
 <translation id="6965382102122355670">确定</translation>
 <translation id="3975865347033939965">同步服务无法启动，Brave Sync 未运行</translation>
 <translation id="4450893287417543264">不再显示</translation>
@@ -302,8 +302,6 @@
 <translation id="2360360976480535628">高级视图</translation>
 <translation id="101592339984642584">内容过滤</translation>
 <translation id="8694564340481124390">启用自定义过滤器来阻止特定区域和语言的跟踪器和烦人的内容。</translation>
-<translation id="4877657558909976793">启用自定义过滤器以阻止特定区域和语言的跟踪器和
-    <ph name="BEGIN_LINK"/>烦人的内容<ph name="END_LINK"/>。</translation>
 <translation id="3482656215021340727">添加自定义过滤器列表</translation>
 <translation id="1020877116991797978">添加由您信任的社区创建和维护的其他列表。</translation>
 <translation id="7617831480435794399">仅订阅您信任的实体的列表。您的浏览器会在定期检查您输入的 URL 中的列表更新情况，与此同时会将您的 IP 地址显示给其服务器。</translation>
@@ -437,10 +435,10 @@
 <translation id="7578652532113583362">但是，将不会删除本地存储在这些设备上的数据。</translation>
 <translation id="2516405584294312544">这种删除是永久性的，没有办法恢复数据。您应该决定
 再次开始使用同步时，您需要创建一个新账户，并逐个重新添加每个设备。</translation>
-<translation id="4860996720371753023">账户删除正在进行中……</translation>
+<translation id="4860996720371753023">正在删除账户……</translation>
 <translation id="8199291899164865593">无法加入此同步链。账户已删除。</translation>
 <translation id="5633907266617216186">地址、付款信息等。</translation>
-<translation id="294985549514492876">Web 应用程序（PWAs）</translation>
+<translation id="294985549514492876">Web 应用程序（PWA）</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
 <translation id="842628013524824194">一般窗口 - 地址栏中使用的搜索引擎</translation>
