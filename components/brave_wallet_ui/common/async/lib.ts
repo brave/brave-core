@@ -41,12 +41,13 @@ import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult, SolDerivationPaths } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllNetworksOption, AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
 import { WalletPageActions } from '../../page/actions'
+import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -1107,4 +1108,27 @@ export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
 export async function isTokenPinningSupported (token: BraveWallet.BlockchainToken) {
   const { braveWalletPinService } = getAPIProxy()
   return await braveWalletPinService.isTokenSupported(token)
+}
+
+
+export function refreshPortfolioFilterOptions () {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    const { wallet: { accounts, networkList, selectedAccountFilter, selectedNetworkFilter } } = getState()
+
+    if (
+      !networkList.some(network => network.chainId === selectedNetworkFilter.chainId) &&
+      selectedNetworkFilter.chainId !== AllNetworksOption.chainId
+    ) {
+      dispatch(WalletActions.setSelectedNetworkFilter(AllNetworksOptionDefault))
+      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION)
+    }
+
+    if (
+      !accounts.some(account => account.id === selectedAccountFilter) &&
+      selectedAccountFilter !== AllAccountsOption.id
+    ) {
+      dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOption.id))
+      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION)
+    }
+  }
 }
