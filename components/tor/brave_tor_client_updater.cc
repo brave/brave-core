@@ -39,7 +39,7 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
     if (RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                       "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
+                       "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+|\\w+-\\w+-brave-\\d+"))
       executable_path = current;
     else if (file_info.GetName().MaybeAsASCII() == "tor-torrc")
       torrc_path = current;
