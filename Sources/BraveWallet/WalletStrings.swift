@@ -1450,6 +1450,13 @@ extension Strings {
       value: "Error",
       comment: "A status that explains that the transaction failed due to some error"
     )
+    public static let transactionStatusSigned = NSLocalizedString(
+      "wallet.transactionStatusSigned",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Signed",
+      comment: "A status that explains that the transaction has been signed."
+    )
     public static let transactionStatusUnknown = NSLocalizedString(
       "wallet.transactionStatusUnknown",
       tableName: "BraveWallet",
@@ -3584,6 +3591,97 @@ extension Strings {
       bundle: .module,
       value: "Invalid url was provided. Gateway should be able to resolve IPFS resources.",
       comment: "Description of the wrong IPFS gateway alert"
+    )
+    public static let signedTransactionTitle = NSLocalizedString(
+      "wallet.signedTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction Signed",
+      comment: "A title of transaction signed status view indicating this transaction has been signed."
+    )
+    public static let submittedTransactionTitle = NSLocalizedString(
+      "wallet.submittedTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction Submitted",
+      comment: "A title of transaction signed status view indicating this transaction has been submitted to the network."
+    )
+    public static let confirmedTransactionTitle = NSLocalizedString(
+      "wallet.confirmedTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction Completed",
+      comment: "A title of transaction confirmed status view indicating this transaction has been included in a block."
+    )
+    public static let failedTransactionTitle = NSLocalizedString(
+      "wallet.failedTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction Failed",
+      comment: "A title of transaction failed status view indicating this transaction has not been included in a block."
+    )
+    public static let signedTransactionDescription = NSLocalizedString(
+      "wallet.signedTransactionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction has been signed and will be sent to network by dapps and awaits confirmation.",
+      comment: "A description explains signed transaction will be sent to network by dapps and awaits confirmation."
+    )
+    public static let submittedTransactionDescription = NSLocalizedString(
+      "wallet.submittedTransactionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction has been successfully sent to the network and awaits confirmation.",
+      comment: "A description explains submitted transaction has been sent to the netwokr and awaits confirmation."
+    )
+    public static let confirmedTransactionDescription = NSLocalizedString(
+      "wallet.confirmedTransactionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction has been successfully included in a block. To avoid the risk of double spending, we recommend waiting for block confirmations.",
+      comment: "A description explains confirmed transaction has been included in a block."
+    )
+    public static let failedTransactionDescription = NSLocalizedString(
+      "wallet.failedTransactionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.",
+      comment: "A description explains transaction is failed."
+    )
+    public static let confirmedTransactionReceiptButtonTitle = NSLocalizedString(
+      "wallet.confirmedTransactionReceiptButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Receipt",
+      comment: "A title of a button which can open a confirmed transaction details screen."
+    )
+    public static let confirmedTransactionCloseButtonTitle = NSLocalizedString(
+      "wallet.confirmedTransactionCloseButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Close",
+      comment: "A title of a button which will close this transaction status view."
+    )
+    public static let failedTransactionViewErrorButtonTitle = NSLocalizedString(
+      "wallet.failedTransactionViewErrorButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "View Error",
+      comment: "A title of a button which will a new view to display the error."
+    )
+    public static let failedTransactionErrorViewTitle = NSLocalizedString(
+      "wallet.failedTransactionErrorViewTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Error Message",
+      comment: "A title of the view that will display the error message."
+    )
+    public static let failedTransactionErrorViewDescription = NSLocalizedString(
+      "wallet.failedTransactionErrorViewDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Please save the error message for future reference.",
+      comment: "A description of the view that will display the error message."
     )
   }
 }
