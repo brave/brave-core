@@ -179,6 +179,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
@@ -588,11 +589,17 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
 #endif
+
+#if BUILDFLAG(IS_ANDROID)
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
-  content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<

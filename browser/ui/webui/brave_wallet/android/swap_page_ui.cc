@@ -1,74 +1,71 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 
-#include <string>
 #include <utility>
 
-#include "base/command_line.h"
-#include "base/files/file_path.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
+#include "brave/components/l10n/common/localization_util.h"
+
+#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
+
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/swap_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
+
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/l10n/common/localization_util.h"
+
 #include "chrome/browser/profiles/profile.h"
-#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
-#endif
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
-#include "ui/base/accelerators/accelerator.h"
-#include "ui/base/webui/web_ui_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
-#endif
+#include "base/command_line.h"
 
-WalletPageUI::WalletPageUI(content::WebUI* web_ui)
+SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
+
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
+
   auto* profile = Profile::FromWebUI(web_ui);
-#if !BUILDFLAG(IS_ANDROID)
-  NavigationBarDataProvider::Initialize(source, profile);
-#endif
   webui::SetupWebUIDataSource(
       source,
-      base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
-      IDR_WALLET_PAGE_HTML);
+      base::make_span(kBraveWalletSwapPageGenerated,
+                      kBraveWalletSwapPageGeneratedSize),
+      IDR_BRAVE_WALLET_SWAP_PAGE_HTML);
+
+  // Add required resources.
+  webui::SetupWebUIDataSource(
+      source,
+      base::make_span(kBraveWalletSwapPageGenerated,
+                      kBraveWalletSwapPageGeneratedSize),
+      IDR_BRAVE_WALLET_SWAP_PAGE_HTML);
+
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
@@ -82,23 +79,23 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   content::WebUIDataSource::Add(profile, source);
-#if !BUILDFLAG(IS_ANDROID)
+
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
-#endif
 }
 
-WalletPageUI::~WalletPageUI() = default;
-WEB_UI_CONTROLLER_TYPE_IMPL(WalletPageUI)
+SwapPageUI::~SwapPageUI() = default;
 
-void WalletPageUI::BindInterface(
+WEB_UI_CONTROLLER_TYPE_IMPL(SwapPageUI)
+
+void SwapPageUI::BindInterface(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver) {
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
-void WalletPageUI::CreatePageHandler(
+void SwapPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
@@ -157,13 +154,6 @@ void WalletPageUI::CreatePageHandler(
   wallet_service->Bind(std::move(brave_wallet_service_receiver));
   wallet_service->GetBraveWalletP3A()->Bind(
       std::move(brave_wallet_p3a_receiver));
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_pin_service_receiver));
-  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_auto_pin_service_receiver));
-#endif
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

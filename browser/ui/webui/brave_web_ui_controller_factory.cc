@@ -38,10 +38,10 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/browser/ui/webui/commands_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
@@ -49,6 +49,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_util.h"
 #include "brave/components/commands/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -166,6 +170,16 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
+#if BUILDFLAG(IS_ANDROID)
+  } else if (url.is_valid() &&
+             (url.spec() == base::StringPrintf("%s://%s",
+                                               content::kChromeUIScheme,
+                                               kWalletSwapPagePath) ||
+              url.spec() == base::StringPrintf("%s://%s",
+                                               content::kBraveUIScheme,
+                                               kWalletSwapPagePath))) {
+    return new SwapPageUI(web_ui, url.host());
+#endif
   }
   return nullptr;
 }
@@ -185,6 +199,13 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif
+#if BUILDFLAG(IS_ANDROID)
+      (url.is_valid() &&
+       (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+                                         kWalletSwapPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                         kWalletSwapPagePath))) ||
+#endif  // BUILDFLAG(IS_ANDROID)
       url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&
        base::FeatureList::IsEnabled(

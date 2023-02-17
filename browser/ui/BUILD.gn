@@ -219,8 +219,13 @@ source_set("ui") {
     }
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
-  }  # !is_android
-
+  } else {
+    # is_android
+    sources += [
+      "../../../chrome/browser/ui/webui/sanitized_image_source.cc",
+      "../../../chrome/browser/ui/webui/sanitized_image_source.h",
+    ]
+  }
   if (toolkit_views) {
     sources += [
       "views/bookmarks/bookmark_bar_instructions_view.cc",
@@ -796,6 +801,29 @@ source_set("ui") {
       "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
+    ]
+  }
+  if (is_android) {
+    sources += [
+      "webui/brave_wallet/android/swap_page_ui.cc",
+      "webui/brave_wallet/android/swap_page_ui.h",
+      "webui/brave_wallet/common_handler/wallet_handler.cc",
+      "webui/brave_wallet/common_handler/wallet_handler.h",
+      "webui/brave_wallet/page_handler/wallet_page_handler.cc",
+      "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/wallet_common_ui.cc",
+      "webui/brave_wallet/wallet_common_ui.h",
+      "webui/brave_wallet/wallet_page_ui.cc",
+      "webui/brave_wallet/wallet_page_ui.h",
+    ]
+    deps += [
+      "//brave/browser/ui/brave_wallet",
+      "//brave/browser/ui/webui/brave_wallet/common_handler",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/brave_wallet_ui:resources",
+      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+      "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
   }
 

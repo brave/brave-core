@@ -34,6 +34,7 @@ extern const char kVPNPanelURL[];
 extern const char kVPNPanelHost[];
 extern const char kBraveUIWalletPageURL[];
 extern const char kWalletPageHost[];
+extern const char kWalletSwapPagePath[];
 extern const char kExtensionSettingsURL[];
 extern const char kWalletSettingsURL[];
 extern const char kBraveSyncPath[];

@@ -33,6 +33,7 @@ const char kVPNPanelURL[] = "chrome-untrusted://vpn-panel.top-chrome/";
 const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
+const char kWalletSwapPagePath[] = "wallet/swap";
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";
 const char kBraveSyncPath[] = "braveSync";
