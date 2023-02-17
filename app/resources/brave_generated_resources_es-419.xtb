@@ -304,8 +304,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="2360360976480535628">Vista avanzada</translation>
 <translation id="101592339984642584">Filtrado de contenido</translation>
 <translation id="8694564340481124390">Habilita los filtros personalizados para bloquear los rastreadores y molestias asociados a un idioma o región en concreto.</translation>
-<translation id="4877657558909976793">Habilita los filtros personalizados para bloquear los rastreadores y
-    <ph name="BEGIN_LINK"/>molestias<ph name="END_LINK"/> asociados a un idioma o región en concreto.</translation>
 <translation id="3482656215021340727">Agrega listas de filtros personalizadas</translation>
 <translation id="1020877116991797978">Agrega otras listas creadas y mantenidas por tu comunidad de confianza.</translation>
 <translation id="7617831480435794399">Suscríbete solo a listas de entidades en las que confíes. Tu navegador comprobará periódicamente si hay actualizaciones de las URL que ingresas, por lo tanto, mostrará tu dirección IP a sus servidores.</translation>

@@ -260,7 +260,7 @@
 <translation id="2916515880661220182">Jika anda telah mempunyai akaun penjagaan, anda akan digesa supaya menyambungkannya. Jika belum, anda berpeluang untuk mencipta akaun.</translation>
 <translation id="2054853229650377447">Nota: Transaksi anda boleh dilihat oleh penjagaan sebaik sahaja anda memberikan keizinan. Contohnya, mereka boleh melihat penerima dan jumlah tip anda.</translation>
 <translation id="121894865378699201">Sedia untuk mula memperoleh BAT?</translation>
-<translation id="4478996292566912629">Penyedia akaun penjagaan diperlukan untuk mengesahkan identiti anda yang mungkin termasuk penyerahan ID foto. Lihat <ph name="BEGIN_LINK"/>Dasar Privasi Ganjaran Brave<ph name="END_LINK"/> kami.</translation>
+<translation id="4478996292566912629">Penyedia akaun penjagaan diperlukan untuk mengesahkan identiti anda yang mungkin termasuk penyerahan ID berfoto. Lihat <ph name="BEGIN_LINK"/>Dasar Privasi Ganjaran Brave<ph name="END_LINK"/> kami.</translation>
 <translation id="7730415569603152862">Hubungkan akaun penjagaan anda dengan profil Ganjaran anda supaya anda boleh:</translation>
 <translation id="5785531043735482053">Menyimpan, mengurus dan mengeluarkan pendapatan BAT anda</translation>
 <translation id="5155452078869279096">Tambah nilai akaun anda dengan BAT yang telah anda beli</translation>
@@ -473,7 +473,7 @@
 <translation id="5317144262906129592">Anda boleh menyokong pencipta kandungan ini dengan menghantar tip. Tindakan ini merupakan cara untuk mengucapkan terima kasih atas penghasilan kandungan yang hebat.</translation>
 <translation id="3074127054582480056">Perhatian</translation>
 <translation id="3659457123782988823">Betulkah anda mahu menetapkan semula Brave Rewards anda?</translation>
-<translation id="1666001796278936721">Dengan menetapkan semula, profil semasa Brave Rewards anda akan dipadamkan dan anda akan bermula semula dengan profil Ganjaran Brave yang baharu. Sebelum meneruskan, <ph name="LINK_BEGIN"/>ketahui lebih lanjut<ph name="LINK_END"/> tentang penetapan semula sebagai langkah selamat.</translation>
+<translation id="1666001796278936721">Dengan menetapkan semula, profil semasa Ganjaran Brave anda akan dipadamkan dan anda akan bermula semula dengan profil Ganjaran Brave yang baharu. Sebelum meneruskan, <ph name="LINK_BEGIN"/>ketahui lebih lanjut<ph name="LINK_END"/> tentang penetapan semula sebagai langkah selamat.</translation>
 <translation id="94095197509579227">Perhatian: Anda mempunyai anggaran pendapatan semasa sebanyak <ph name="BAT_AMOUNT"/> pada bulan ini yang akan hilang jika anda membuat penetapan semula sekarang.</translation>
 <translation id="4806029412510565611">Saya faham bahawa profil semasa Ganjaran Brave dan data Ganjaran Brave saya akan dipadamkan daripada peranti saya dan saya telah membaca <ph name="LINK_BEGIN"/>artikel sokongan tentang penetapan semula<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Pemberian Token Dituntut</translation>
@@ -1238,7 +1238,7 @@
 <translation id="9104177294757104789">Hantar <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Tukar <ph name="MAKER"/> kepada <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Rangkaian Kedua</translation>
-<translation id="282560918037172384">Uji Rangkaian</translation>
+<translation id="282560918037172384">Rangkaian Ujian</translation>
 <translation id="2816106784624007524">Had gas mestilah dalam bentuk nombor bulat yang lebih besar daripada 0</translation>
 <translation id="3354376789153561654">Data transaksi 'kepada' perlu ditentukan</translation>
 <translation id="8728991256628663004">Data transaksi 'daripada' mestilah alamat Filecoin yang sah</translation>

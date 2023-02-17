@@ -539,7 +539,7 @@
 <translation id="4894106830958548828">Lo comprendo</translation>
 <translation id="7534079972563542000">Dominios imparables</translation>
 <translation id="4492298165410552103">¿Quieres activar dominios imparables en Brave?</translation>
-<translation id="3647533686160055812">Brave comenzará a usar Infura para resolver nombres de dominio .crypto (y también .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) que estén en Unstoppable Domains. Brave oculta tu dirección IP. Si activas esto, Infura verá que alguien quiere visitar estos dominios, pero nada más. Consulta las <ph name="BEGIN_INFURA_TOU_LINK"/>Condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la<ph name="BEGIN_INFURA_PRIVACY_LINK"/>Política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
+<translation id="3647533686160055812">Brave comenzará a usar Infura para resolver nombres de dominio .crypto (y también .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) que estén en Unstoppable Domains. Brave oculta tu dirección IP. Si activas esto, Infura verá que alguien quiere visitar estos dominios, pero nada más. Consulta las <ph name="BEGIN_INFURA_TOU_LINK"/>Condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">¿Quieres activar la compatibilidad de Ethereum Name Service (ENS) en Brave?</translation>
 <translation id="4609973808011229683">Brave comenzará a usar Infura para resolver nombres de dominio .eth que estén en Ethereum Name Service (ENS). Brave oculta tu dirección IP. Si activas esto, Infura verá que alguien quiere visitar estos dominios .eth, pero nada más. Consulta las <ph name="BEGIN_INFURA_TOU_LINK"/>Condiciones de uso<ph name="END_INFURA_TOU_LINK"/> y la <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Política de privacidad<ph name="END_INFURA_PRIVACY_LINK"/> de Infura.</translation>
@@ -1238,7 +1238,7 @@
 <translation id="9104177294757104789">Enviar <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Cambiar <ph name="MAKER"/> por <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Redes secundarias</translation>
-<translation id="282560918037172384">Probar redes</translation>
+<translation id="282560918037172384">Redes de prueba</translation>
 <translation id="2816106784624007524">El límite de gas debe ser un número entero superior a 0</translation>
 <translation id="3354376789153561654">Se debe especificar el beneficiario ("To") de la transacción</translation>
 <translation id="8728991256628663004">El emisor ("From") de la transacción debe ser una dirección Filecoin válida</translation>
@@ -1450,7 +1450,7 @@
 <translation id="7480629155329718561">Introduce la dirección Ethereum del destinatario</translation>
 <translation id="4967749818080339523">Selecciona una cuenta</translation>
 <translation id="3887241807965836390">A mi cuenta</translation>
-<translation id="3079716946572942356">A otra direcció</translation>
+<translation id="3079716946572942356">A otra dirección</translation>
 <translation id="8044899503464538266">Lento</translation>
 <translation id="3569512916300900704">Promedio</translation>
 <translation id="7019805045859631636">Rápido</translation>

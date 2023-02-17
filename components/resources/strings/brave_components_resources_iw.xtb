@@ -263,7 +263,7 @@
 <translation id="121894865378699201">מוכן להתחיל להרוויח BAT?</translation>
 <translation id="4478996292566912629">ספקי חשבונות משמורת נדרשים לאמת את זהותך, מה שעשוי לכלול הגשת תעודה מזהה עם תמונה. ראה
 <ph name="BEGIN_LINK"/>Brave Rewards Privacy Policy<ph name="END_LINK"/>.</translation>
-<translation id="7730415569603152862">חבר את חשבון המשמורת שלך לפרופיל התגמולים שלך כדי שתוכל</translation>
+<translation id="7730415569603152862">חבר את חשבון המשמורת שלך לפרופיל התגמולים שלך כדי שתוכל:</translation>
 <translation id="5785531043735482053">אחסן, נהל ומשוך את רווחי ה-BAT שלך</translation>
 <translation id="5155452078869279096">טען את חשבונך ב-BAT שרכשת</translation>
 <translation id="5497001757280825146">טיפים לאתרים המועדפים עליך &amp;</translation>
@@ -907,7 +907,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="9209024278910716955">קנייה לא נתמכת עבור הרשת שנבחרה</translation>
 <translation id="4982630604810554641">מחפש דומיין...</translation>
 <translation id="5467044307473123584">Brave תומך בשימוש בשערים מחוץ לרשת כדי לפתור תחומים eth.</translation>
-<translation id="4896417414446851895">נראה שהזנת כתובת ENS. נצטרך להשתמש בפותר צד שלישי כדי לפתור בקשה זו, שאולי יוכל לראות את כתובת ה-IP והדומיין שלך</translation>
+<translation id="4896417414446851895">נראה שהזנת כתובת ENS. נצטרך להשתמש בפותר צד שלישי כדי לפתור בקשה זו, שאולי יוכל לראות את כתובת ה-IP והדומיין שלך.</translation>
 <translation id="8646078615727397565">השתמש בדומיין ENS</translation>
 <translation id="4171338820961522154">החלפת תמיכה אינה זמינה עבור <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">העסקה ניתנת להטרמה</translation>
@@ -1256,8 +1256,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="4038403584813842767">איזון ↑</translation>
 <translation id="1695096446857675822">איזון ↓</translation>
 <translation id="8151187584908138100">שם ↓</translation>
-<translation id="883138507248906253">3807
-שם ↑</translation>
+<translation id="883138507248906253">שם ↑</translation>
 <translation id="7198018180583855568">כל החשבונות</translation>
 <translation id="6954150712710630841">העסקה נשלחה</translation>
 <translation id="905855245798176174">העסקה נשלחה בהצלחה לרשת וממתינה לאישור.</translation>
@@ -1517,10 +1516,10 @@ CoinGecko</translation>
 <translation id="4029551149873989025">החלף רשת</translation>
 <translation id="7561262633951061138">הטוב ביותר</translation>
 <translation id="3143110700666266545">אפליקציה זו משתמשת בממשקי ה-API של צד שלישי הבאים:</translation>
-<translation id="8411419545176806786">Brave Swap משתמש ב-0x בתור אגרגטור DEX עבור רשתות EVM נתמכות. 0x תעבד את כתובת ארנק Ethereum ואת כתובת ה-IP כדי למלא עסקה (כולל קבלת הצעות מחיר). 0x ישתמש בנתונים אלה רק למטרות עיבוד עסקאות</translation>
+<translation id="8411419545176806786">Brave לְהַחלִיף משתמש ב-0x בתור אגרגטור DEX עבור רשתות EVM נתמכות. 0x תעבד את כתובת ארנק Ethereum ואת כתובת ה-IP כדי למלא עסקה (כולל קבלת הצעות מחיר). 0x ישתמש בנתונים אלה רק למטרות עיבוד עסקאות.</translation>
 <translation id="7467728126359974661">Brave Swap משתמש ב-Jupiter בתור אגרגטור DEX עבור רשת Solana.
  Jupiter יעבד את כתובת הארנק וכתובת ה-IP של Solana כדי לבצע עסקה (כולל קבלת הצעות מחיר). Jupiter ישתמש בנתונים אלה רק למטרות עיבוד עסקאות.</translation>
-<translation id="8497751359931572880">לחץ כאן למדיניות הפרטיות של 0x</translation>
+<translation id="8497751359931572880">לחץ כאן למדיניות הפרטיות של 0x.</translation>
 <translation id="4904748904130272182">לחץ כאן למדיניות הפרטיות של Jupiter.</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>

@@ -169,7 +169,7 @@
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
 <translation id="4851215387785619212">Приватна реклама Brave</translation>
-<translation id="6480303618073442141">Приватну рекламу Brave створено ненав’язливою та приватною. Хоча реклама й надається відповідно до ваших інтересів, особисті відомості та дані історії перегляду ніколи не виходять за межі вашого пристрою. Також приватна реклама Brave дає змогу заробляти BAT (<ph name="BEGIN_LINK"/>Основний токен уваги<ph name="END_LINK"/>) за перегляд реклами.</translation>
+<translation id="6480303618073442141">Приватну рекламу Brave створено ненав’язливою та конфіденційною. Хоча реклама й надається відповідно до ваших зацікавлень, особисті відомості та дані історії перегляду ніколи не виходять за межі вашого пристрою. Також приватна реклама Brave дає змогу заробляти BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) за перегляд реклами.</translation>
 <translation id="6112368337882254910">Зробити автоматичний внесок</translation>
 <translation id="3742599705619405136">Автоматичний спосіб підтримки видавців та творців контенту. Встановіть щомісячний платіж та просто переглядайте. Відвідані вами сайти, які перевірені Brave, будуть отримувати ваші внески автоматично, виходячи з вашої уваги, виміряної Brave.</translation>
 <translation id="3325399124634342726">Поточний заробіток цього місяця (приблизно)</translation>
@@ -261,10 +261,10 @@
 <translation id="2054853229650377447">Зауважте: ваші транзакції будуть видимі для депозитарного партнера, якому ви надасте дозвіл. Наприклад, він зможе бачити отримувача та суму ваших чайових.</translation>
 <translation id="121894865378699201">Готові почати заробляти BAT?</translation>
 <translation id="4478996292566912629">Постачальники депозитарних рахунків зазвичай вимагають підтвердження особи. Для цього потрібно завантажити фото посвідчення особи. Перегляньте <ph name="BEGIN_LINK"/>Політику конфіденційності Brave Rewards<ph name="END_LINK"/>.</translation>
-<translation id="7730415569603152862">Прив’яжіть депозитарний рахунок до профілю Rewards, щоб отримати доступ до таких можливостей.</translation>
+<translation id="7730415569603152862">Прив’яжіть депозитарний рахунок до профілю Rewards, щоб отримати доступ до вказаних далі можливостей.</translation>
 <translation id="5785531043735482053">Зберігання та виведення коштів у BAT, а також керування ними</translation>
-<translation id="5155452078869279096">Поповнення рахунку придбаними коштами у BAT</translation>
-<translation id="5497001757280825146">Надішліть чайові улюбленим сайтам і авторам</translation>
+<translation id="5155452078869279096">Поповнення рахунку придбаними коштами в BAT</translation>
+<translation id="5497001757280825146">Надсилання чайових улюбленим сайтам і авторам</translation>
 <translation id="1233129511866436960">Дізнайтеся більше про регіони й підтримку</translation>
 <translation id="7329170127335794328">Наразі недоступно у вашому регіоні</translation>
 <translation id="8304979233901023264">Я прочитав(-ла) <ph name="TOS_LINK_BEGIN"/>Умови використання<ph name="TOS_LINK_END"/> та <ph name="PP_LINK_BEGIN"/>Політику конфіденційності<ph name="PP_LINK_END"/> Brave та я погоджуюсь з ними.</translation>
@@ -385,8 +385,8 @@
 <translation id="1420756770787071946">Підтримати цього творця</translation>
 <translation id="3271043362279673449">Дякуємо за підтримку!</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Примітка. <ph name="BOLD_END"/>Обробка чайових може зайняти кілька хвилин</translation>
-<translation id="6516984207843289176">Прив’язати обліковий запис</translation>
-<translation id="8775519284782574752">Прив’яжіть депозитарний обліковий запис, щоб почати заробляти BAT і надсилати чайові авторам.</translation>
+<translation id="6516984207843289176">Прив’язати рахунок</translation>
+<translation id="8775519284782574752">Прив’яжіть депозитарний рахунок, щоб почати заробляти BAT і надсилати чайові авторам.</translation>
 <translation id="6485607335663409274">Хочете надіслати чайові улюбленому автору?</translation>
 <translation id="3312470408978098625">Ваші одноразові чайові надіслано.</translation>
 <translation id="839058704683989763">Ви налаштували несплачені чайові!</translation>
@@ -475,7 +475,7 @@
 <translation id="3659457123782988823">Справді скинути профіль Brave Rewards?</translation>
 <translation id="1666001796278936721">Скидання налаштувань призведе до видалення поточного профілю Brave Rewards. У вас буде новий профіль Brave Rewards. Перед продовженням <ph name="LINK_BEGIN"/>перегляньте додаткову інформацію<ph name="LINK_END"/> про скидання налаштувань.</translation>
 <translation id="94095197509579227">Зверніть увагу! У вас залишилося <ph name="BAT_AMOUNT"/> за цей місяць. Їх буде втрачено, якщо ви зараз скинете налаштування.</translation>
-<translation id="4806029412510565611">Я розумію, що мій поточний профіль Brave Rewards і дані Brave Rewards буде видалено з пристрою. Я також прочитав <ph name="LINK_BEGIN"/>статтю щодо скидання налаштувань<ph name="LINK_END"/>.</translation>
+<translation id="4806029412510565611">Я розумію, що мій поточний профіль Brave Rewards і дані Brave Rewards буде видалено з пристрою. Я також прочитав (-ла) <ph name="LINK_BEGIN"/>статтю щодо скидання налаштувань<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Гранти з токенів запитано</translation>
 <translation id="3494964159182650590">Підсумок винагород</translation>
 <translation id="2913994227901456490">Дивитись усі об’єкти ([[numItems]])</translation>
@@ -542,7 +542,7 @@
 <translation id="3647533686160055812">Brave використовуватиме Infura для вирішення доменних імен у мережі Unstoppable Domains (.crypto, .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil). Brave приховає вашу IP-адресу. Якщо ви ввімкнете цю опцію, Infura буде бачити, лише як невідомий користувач відвідує ці домени. Додатково перегляньте <ph name="BEGIN_INFURA_TOU_LINK"/>Умови використання<ph name="END_INFURA_TOU_LINK"/> та <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Політику конфіденційності<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Увімкнути підтримку Ethereum Name Service (ENS) у Brave?</translation>
-<translation id="4609973808011229683">використовуватиме Infura для вирішення доменних імен .eth у мережі Ethereum Name Service. Brave приховає вашу IP-адресу. Якщо ви ввімкнете цю опцію, Infura буде бачити, лише як невідомий користувач відвідує цей домен. Додатково перегляньте <ph name="BEGIN_INFURA_TOU_LINK"/>Умови використання<ph name="END_INFURA_TOU_LINK"/> та <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Політику конфіденційності<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
+<translation id="4609973808011229683">Brave використовуватиме Infura для вирішення доменних імен .eth у мережі Ethereum Name Service (ENS). Brave приховає вашу IP-адресу. Якщо ви ввімкнете цю опцію, Infura буде бачити, лише як невідомий користувач відвідує цей домен. Додатково перегляньте <ph name="BEGIN_INFURA_TOU_LINK"/>Умови використання<ph name="END_INFURA_TOU_LINK"/> та <ph name="BEGIN_INFURA_PRIVACY_LINK"/>Політику конфіденційності<ph name="END_INFURA_PRIVACY_LINK"/> Infura.</translation>
 <translation id="807404806385418949">Пошук за межами мережі Ethereum Name Service</translation>
 <translation id="4049590838234508776">Увімкнути підтримку пошуку за межами мережі Ethereum Name Service (ENS) у Brave?</translation>
 <translation id="5944991147217767764">Домен .eth зберігається поза межами ланцюжка. Його буде вирішено за допомогою стороннього шлюзу. Якщо ви ввімкнете пошук за межами мережі ENS, сторонній шлюз бачитиме, як ви намагаєтеся відвідати домен .eth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Дізнатися більше<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
@@ -678,8 +678,8 @@
 <translation id="2956070106555335453">Звід</translation>
 <translation id="2369994359029526515">Неверифікований автор</translation>
 <translation id="6020176662032623904">Перевірений автор</translation>
-<translation id="215037911651623564">Повторно підтвердьте статус автора</translation>
-<translation id="8946576491316456643">Наразі усі зроблені чайові залишаться в черзі на оброблення, а оплату буде автоматично повторено через 90 днів.<ph name="LINK_BEGIN"/>Дізнатися більше<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">Оновити статус перевірки автора</translation>
+<translation id="8946576491316456643">Наразі всі зроблені чайові залишаться в черзі на оброблення, а оплату буде автоматично повторено через 90 днів.<ph name="LINK_BEGIN"/>Дізнатися більше<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">Цей автор ще не зареєструвався.</translation>
 <translation id="3573568055713372419">Ви підключені до постачальника <ph name="USER_PROVIDER"/>, а цей автор підключений до постачальника <ph name="CREATOR_PROVIDER"/>. Через це ви не можете надіслати чайові автору.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> у <ph name="PLATFORM"/></translation>
@@ -735,7 +735,7 @@
       =1 {Реклами за годину: #}
       other {Реклами за годину: #}
     }</translation>
-<translation id="6129810595598072828">Приватніша реклама, більше нагород</translation>
+<translation id="6129810595598072828">Більше приватної реклами — більше нагород</translation>
 <translation id="8871481223725076571">Завдяки додатковій рекламі ви зможете підтримувати більше авторів</translation>
 <translation id="9215691564467955056">Це можна змінити пізніше в налаштуваннях.</translation>
 <translation id="6318696841371191107">Пройдіть швидке ознайомлення</translation>
@@ -1440,34 +1440,34 @@
 <translation id="6680650203439190394">Курс</translation>
 <translation id="2538996898605796431">Вплив на ціну</translation>
 <translation id="8007404171238546456">Мінімум після прослизання</translation>
-<translation id="767199001998615704">Мережева комісія</translation>
+<translation id="767199001998615704">Комісія в мережі</translation>
 <translation id="7057870207229052478">Комісія Brave</translation>
 <translation id="3624518972158401291">Безкоштовно</translation>
 <translation id="5038255447967558645">Постачальник ліквідності</translation>
 <translation id="8450638959928932199">Своп і надсилання</translation>
-<translation id="476816352791390168">Без додаткових комісій!</translation>
+<translation id="476816352791390168">БЕЗ додаткових комісій!</translation>
 <translation id="5319981934425923365">Підтверджую, що вказана вище адреса правильна</translation>
 <translation id="7480629155329718561">Уведіть адресу отримувача Ethereum</translation>
-<translation id="4967749818080339523">Вибрати обліковий запис</translation>
-<translation id="3887241807965836390">До мого облікового запису</translation>
-<translation id="3079716946572942356">До іншої адреси</translation>
+<translation id="4967749818080339523">Вибрати рахунок</translation>
+<translation id="3887241807965836390">На мій рахунок</translation>
+<translation id="3079716946572942356">На іншу адресу</translation>
 <translation id="8044899503464538266">Повільна</translation>
 <translation id="3569512916300900704">У середньому</translation>
 <translation id="7019805045859631636">Швидка</translation>
 <translation id="1826671530876539299">Налаштування свопів</translation>
-<translation id="6778140392042462129">Біржи</translation>
+<translation id="6778140392042462129">Біржі</translation>
 <translation id="6173494033320397682">Тільки прямий маршрут</translation>
 <translation id="2440960581098655899">Буде застраховано лише прямий маршрут, а також відключено розділену торгівлю</translation>
-<translation id="6245314729809503023">Brave використовує перші 60 токенів для проміжної маршрутизації з метою оптимізації продуктивності</translation>
+<translation id="6245314729809503023">Brave використовує перші 60 токенів для проміжної маршрутизації для оптимізації продуктивності</translation>
 <translation id="2379187373676242615">На <ph name="VALUE"/> % дешевше за CoinGecko</translation>
 <translation id="5351867352310722022">У межах <ph name="VALUE"/> % від вартості в CoinGecko</translation>
 <translation id="7695501918490163821">На <ph name="VALUE"/> % дорожче за CoinGecko</translation>
 <translation id="6065708195277841442">Підключити гаманець</translation>
 <translation id="4029551149873989025">Перемикання мережі</translation>
-<translation id="7561262633951061138">Найкраще</translation>
+<translation id="7561262633951061138">Найкращий варіант</translation>
 <translation id="3143110700666266545">Ця програма використовує такі сторонні API:</translation>
-<translation id="8411419545176806786">Brave Swap використовує 0x як агрегатор DEX для підтримуваних мереж EVM. 0x обробляє адресу гаманця Ethereum і IP-адресу для виконання транзакції (зокрема отримання котирувань). 0x буде використовувати ці дані ТІЛЬКИ з метою оброблення транзакцій.</translation>
-<translation id="7467728126359974661">Brave Swap використовує Jupiter як агрегатор DEX для мережі Solana. Jupiter обробляє адресу гаманця Solana і IP-адресу для виконання транзакції (зокрема отримання котирувань). Jupiter буде використовувати ці дані ТІЛЬКИ з метою оброблення транзакцій.</translation>
+<translation id="8411419545176806786">Своп Brave використовує 0x як агрегатор DEX для підтримуваних мереж EVM. 0x обробляє адресу гаманця Ethereum і IP-адресу для виконання транзакції (зокрема отримання котирувань). 0x буде використовувати ці дані ТІЛЬКИ для оброблення транзакцій.</translation>
+<translation id="7467728126359974661">Brave Swap використовує Jupiter як агрегатор DEX для мережі Solana. Jupiter обробляє адресу гаманця Solana і IP-адресу для виконання транзакції (зокрема отримання котирувань). Jupiter буде використовувати ці дані ТІЛЬКИ для оброблення транзакцій.</translation>
 <translation id="8497751359931572880">Натисніть тут, щоб переглянути Політику конфіденційності 0x.</translation>
 <translation id="4904748904130272182">Натисніть тут, щоб переглянути Політику конфіденційності Jupiter.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
