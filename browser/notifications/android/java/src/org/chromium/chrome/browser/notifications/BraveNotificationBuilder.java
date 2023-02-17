@@ -39,7 +39,7 @@ import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 /**
  * Builds a notification according to BraveAds spec.
  */
-public class BraveAdsNotificationBuilder extends StandardNotificationBuilder {
+public class BraveNotificationBuilder extends StandardNotificationBuilder {
     /**
      * The maximum width of action icons in dp units.
      */
@@ -74,7 +74,7 @@ public class BraveAdsNotificationBuilder extends StandardNotificationBuilder {
 
     private boolean mIsBraveAdsNotification;
 
-    public BraveAdsNotificationBuilder(Context context) {
+    public BraveNotificationBuilder(Context context) {
         super(context);
 
         mContext = context;
@@ -250,7 +250,7 @@ public class BraveAdsNotificationBuilder extends StandardNotificationBuilder {
         return dpToPx(metrics, paddingScale * MAX_SCALABLE_PADDING_DP);
     }
 
-    public void setIsBraveAdsNotification(boolean isBraveAdsNotification) {
+    public void setIsBraveNotification(boolean isBraveAdsNotification) {
         mIsBraveAdsNotification = isBraveAdsNotification;
     }
 }
