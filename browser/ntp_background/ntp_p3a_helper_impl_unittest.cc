@@ -106,18 +106,20 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
   ASSERT_TRUE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
-  ASSERT_TRUE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+                  .has_value());
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
   histogram_tester_->ExpectTotalCount(histogram_name, 2);
   histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
   ASSERT_FALSE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 }
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
@@ -155,14 +157,17 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
   histogram_tester_->ExpectTotalCount(histogram_name, 2);
   histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
 
-  ASSERT_FALSE(p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 }
 
 TEST_F(NTPP3AHelperImplTest, LandCountReported) {
@@ -175,7 +180,8 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   ASSERT_FALSE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 
   ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
 
@@ -194,8 +200,8 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
                                  /*is_star*/ false);
   ASSERT_TRUE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
-  ASSERT_TRUE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+                  .has_value());
   histogram_tester_->ExpectUniqueSample(histogram_name, 1, 1);
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
@@ -216,19 +222,23 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 2);
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
 
-  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_TRUE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+                  .has_value());
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 2);
   histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
 
-  ASSERT_FALSE(p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 }
 
 TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
@@ -239,16 +249,19 @@ TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
 
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 
-  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress);
+  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
+                                 /*is_star*/ false);
 
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
-  ASSERT_TRUE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+                  .has_value());
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
 
@@ -256,32 +269,39 @@ TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
       .Times(testing::AtLeast(1))
       .WillRepeatedly(testing::Return(true));
 
-  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress);
+  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
+                                 /*is_star*/ false);
 
   // should send total for any outstanding events
   // (such as the event before the second rotation above)
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
-  ASSERT_TRUE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+  ASSERT_TRUE(p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+                  .has_value());
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
-  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress);
+  ntp_p3a_helper_->OnP3ARotation(p3a::MetricLogType::kExpress,
+                                 /*is_star*/ false);
 
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
 
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
-  ASSERT_FALSE(p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
+  ASSERT_FALSE(
+      p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
 
   ntp_p3a_helper_->OnP3AMetricCycled(histogram_name, /*is_star*/ false);
-  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName, /*is_star*/ false);
+  ntp_p3a_helper_->OnP3AMetricCycled(kCreativeTotalHistogramName,
+                                     /*is_star*/ false);
 
   ASSERT_FALSE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
   ASSERT_FALSE(
-      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName).has_value());
+      p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
+          .has_value());
 }
 
 }  // namespace ntp_background_images

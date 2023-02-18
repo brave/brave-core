@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-star-constellation = { git = "https://github.com/brave/constellation", rev = "bd9301a775d690151f1694080dd514733616a694" }
+star-constellation = { git = "https://github.com/brave/constellation", rev = "67dc7400a8592d984d84474cb54676e60404bea3" }
 cxx = "1.0"
 
 [lib]
