@@ -135,7 +135,7 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
   if ((ads_service_ != nullptr && !ads_service_->IsEnabled()) ||
       total_active_creatives > 0) {
     p3a_service_->RegisterDynamicMetric(creative_total_histogram_name,
-                                        brave::MetricLogType::kExpress);
+                                        p3a::MetricLogType::kExpress);
     p3a_utils::RecordToHistogramBucket(creative_total_histogram_name.c_str(),
                                        kCountBuckets, total_active_creatives);
   } else {
