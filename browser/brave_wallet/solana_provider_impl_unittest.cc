@@ -630,6 +630,8 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_FALSE(IsConnected());
   EXPECT_FALSE(account_creation_callback_called);
   EXPECT_TRUE(provider_->account_creation_shown_);
+  // Clear previous set callback which won't run in this test suite
+  SetCallbackForAccountCreationForTesting(base::DoNothing());
 }
 
 TEST_F(SolanaProviderImplUnitTest, Disconnect) {
