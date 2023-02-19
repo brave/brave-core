@@ -128,7 +128,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                views::MaximumFlexSizeRule::kPreferred));
   manage_feeds_button->SetProperty(views::kCrossAxisAlignmentKey,
                                    views::LayoutAlignment::kEnd);
-  manage_feeds_button->SetIcon(&kBraveNewsArrowRightIcon);
+  manage_feeds_button->SetIcon(&kLeoArrowRightIcon);
   manage_feeds_button->SetHorizontalAlignment(
       gfx::HorizontalAlignment::ALIGN_RIGHT);
 }

@@ -119,7 +119,7 @@ void BraveNewsLocationView::WebContentsDestroyed() {
 }
 
 const gfx::VectorIcon& BraveNewsLocationView::GetVectorIcon() const {
-  return kBraveNewsSubscribeIcon;
+  return kLeoRssIcon;
 }
 
 std::u16string BraveNewsLocationView::GetTextForTooltipAndAccessibleName()

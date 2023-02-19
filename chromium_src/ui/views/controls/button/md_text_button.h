@@ -55,7 +55,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   Kind GetKind() const;
   void SetKind(Kind kind);
 
-  void SetIcon(const gfx::VectorIcon* icon);
+  void SetIcon(const gfx::VectorIcon* icon, int icon_size = 0);
 
   bool GetLoading() const;
   void SetLoading(bool loading);
@@ -76,6 +76,8 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  private:
   Kind kind_ = kOld;
   bool loading_ = false;
+
+  int icon_size_ = 0;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
 
