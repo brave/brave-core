@@ -16,13 +16,8 @@
 class BraveNewsUrlsTest : public testing::Test {};
 
 TEST_F(BraveNewsUrlsTest, BraveNewsV2FeatureFlag) {
-#if BUILDFLAG(IS_ANDROID)
-  EXPECT_FALSE(
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
-#else
   EXPECT_TRUE(
       base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
-#endif
 }
 
 TEST_F(BraveNewsUrlsTest, BraveNewsV1UsesLocalUrl) {
