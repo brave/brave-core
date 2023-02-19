@@ -294,5 +294,6 @@
     <color name="notification_badge_icon_color">#C2A5D1</color>
     <color name="notification_download_icon_color">#F092C5</color>
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
+    <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
 </resources>

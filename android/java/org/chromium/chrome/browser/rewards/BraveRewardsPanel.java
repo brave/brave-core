@@ -221,7 +221,9 @@ public class BraveRewardsPanel
     private BraveRewardsExternalWallet mExternalWallet;
 
     private View mNotificationLayout;
+    private View mNotificationPermissionLayout;
     private boolean mClaimInProcess;
+    private boolean notificationShown;
 
     private View mBraveRewardsOnboardingModalView;
     private View mRewardsResponseModal;
@@ -336,6 +338,8 @@ public class BraveRewardsPanel
                 mPopupView.findViewById(R.id.brave_rewards_onboarding_modal_id);
         mNotificationLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_notification_layout_id);
+        mNotificationPermissionLayout =
+                mPopupView.findViewById(R.id.brave_rewards_notification_permission_id);
         mRewardsResponseModal = mPopupView.findViewById(R.id.rewards_response_modal_id);
         mConnectAccountModal = mPopupView.findViewById(R.id.connect_account_layout_id);
         mBraveRewardsUnverifiedView =
@@ -774,6 +778,7 @@ public class BraveRewardsPanel
             mRewardsMainLayout.setForeground(
                     new ColorDrawable(ContextCompat.getColor(mActivity, foregroundColor)));
             enableControls(false, mRewardsMainLayout);
+            notificationShown = true;
         }
 
         setNotificationButtoClickListener(notificationClickAction);
@@ -1237,6 +1242,40 @@ public class BraveRewardsPanel
         mBraveRewardsNativeWorker.GetAllNotifications();
         setVerifyWalletButton();
         showRewardsFromAdsSummary();
+        mayBeShowNotitionPermissionDialog();
+    }
+
+    private void mayBeShowNotitionPermissionDialog() {
+        clickOnCloseButtonOfNotificationPermission();
+        clickOnTurnOnNotificationButton();
+        if ((!BravePermissionUtils.hasNotificationPermission(mAnchorView.getContext()))
+                || BraveNotificationWarningDialog.shouldShowRewardWarningDialog(
+                        mAnchorView.getContext())) {
+            mNotificationLayout.setVisibility(View.VISIBLE);
+            mNotificationPermissionLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void clickOnCloseButtonOfNotificationPermission() {
+        View closeButton = mNotificationPermissionLayout.findViewById(R.id.close_text_button);
+        closeButton.setOnClickListener((v) -> {
+            mNotificationPermissionLayout.setVisibility(View.GONE);
+            if (!notificationShown) {
+                mNotificationLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void clickOnTurnOnNotificationButton() {
+        View turnOnNotification =
+                mNotificationPermissionLayout.findViewById(R.id.turnOnNotification);
+        turnOnNotification.setOnClickListener((v) -> {
+            mNotificationPermissionLayout.setVisibility(View.GONE);
+            BravePermissionUtils.notificationSettingPage(mAnchorView.getContext());
+            if (!notificationShown) {
+                mNotificationLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void showUnverifiedLayout() {
