@@ -119,7 +119,39 @@ export const balanceTitle = styled.div`
   letter-spacing: 0.01em;
 `
 
+export const balanceGrid = styled.div`
+  display: grid;
+  width: 100%;
+
+  grid-template-areas:
+    "amount"
+    "exchange";
+  grid-template-columns: auto;
+
+  margin-bottom: 16px;
+
+  &.spinner {
+    grid-template-areas:
+      "spinner";
+    grid-template-columns: auto;
+
+    margin-bottom: 6px;
+  }
+`
+
+export const balanceSpinner = styled.div`
+  grid-area: spinner;
+
+  .icon {
+    height: 36px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+`
+
 export const balanceAmount = styled.div`
+  grid-area: amount;
+
   .amount {
     font-size: 36px;
     line-height: 40px;
@@ -132,6 +164,8 @@ export const balanceAmount = styled.div`
 `
 
 export const balanceExchange = styled.div`
+  grid-area: exchange;
+
   color: rgba(255, 255, 255, 0.8);
   letter-spacing: 0.01em;
   display: flex;
@@ -213,7 +247,6 @@ export const needsBrowserUpdateContentBody = styled.div`
 `
 
 export const progressHeader = styled.div`
-  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 11px;

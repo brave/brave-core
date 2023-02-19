@@ -138,7 +138,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       adsEnabled={props.enabledAds}
       adsSupported={Boolean(props.adsSupported)}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
-      rewardsBalance={props.balance.total}
+      rewardsBalance={props.balance}
       exchangeCurrency='USD'
       exchangeRate={props.parameters.rate}
       providerPayoutStatus={providerPayoutStatus()}

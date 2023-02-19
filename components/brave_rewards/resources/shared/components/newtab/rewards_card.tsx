@@ -23,6 +23,7 @@ import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
+import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -76,7 +77,7 @@ interface Props {
   adsEnabled: boolean
   adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
-  rewardsBalance: number
+  rewardsBalance: NewTab.RewardsBalance
   exchangeRate: number
   exchangeCurrency: string
   providerPayoutStatus: ProviderPayoutStatus
@@ -165,30 +166,46 @@ export function RewardsCard (props: Props) {
       )
     }
 
+    const wallet_keys = Object.keys(props.rewardsBalance.wallets)
+    const shouldShowSpinner =
+      !wallet_keys.includes('blinded') ||
+      (
+        props.externalWallet !== null &&
+        !wallet_keys.includes(props.externalWallet.provider)
+      )
+
     return (
       <style.balance>
         <style.balanceTitle>
           {getString('rewardsTokenBalance')}
         </style.balanceTitle>
-        <style.balanceAmount>
-          <TokenAmount amount={props.rewardsBalance} />
-        </style.balanceAmount>
-        <style.balanceExchange>
-          <style.balanceExchangeAmount>
-            ≈&nbsp;
-            <ExchangeAmount
-              amount={props.rewardsBalance}
-              rate={props.exchangeRate}
-              currency={props.exchangeCurrency}
-            />
-          </style.balanceExchangeAmount>
-          {
-            props.rewardsBalance > 0 &&
-              <style.balanceExchangeNote>
-                {getString('rewardsExchangeValueNote')}
-              </style.balanceExchangeNote>
+        <style.balanceGrid className={shouldShowSpinner ? 'spinner' : ''}>
+          {shouldShowSpinner
+            ? <style.balanceSpinner>
+              <LoadingIcon />{'Loading...'}
+            </style.balanceSpinner>
+            : <>
+              <style.balanceAmount>
+                <TokenAmount amount={props.rewardsBalance.total} />
+              </style.balanceAmount>
+              <style.balanceExchange>
+                <style.balanceExchangeAmount>
+                  ≈&nbsp;
+                  <ExchangeAmount
+                    amount={props.rewardsBalance.total}
+                    rate={props.exchangeRate}
+                    currency={props.exchangeCurrency} />
+                </style.balanceExchangeAmount>
+                {
+                  props.rewardsBalance.total > 0 &&
+                  <style.balanceExchangeNote>
+                    {getString('rewardsExchangeValueNote')}
+                  </style.balanceExchangeNote>
+                }
+              </style.balanceExchange>
+            </>
           }
-        </style.balanceExchange>
+        </style.balanceGrid>
         <style.pendingRewards>
           <PaymentStatusView
             earningsLastMonth={props.earningsLastMonth}
