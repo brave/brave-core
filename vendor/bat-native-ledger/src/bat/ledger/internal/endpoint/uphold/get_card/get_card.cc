@@ -95,9 +95,11 @@ void GetCard::OnRequest(GetCardCallback callback,
     return;
   }
 
-  double available;
-  result = ParseBody(response.body, &available);
-  std::move(callback).Run(result, available);
+  return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
+
+  //double available;
+  //result = ParseBody(response.body, &available);
+  //std::move(callback).Run(result, available);
 }
 
 }  // namespace uphold
