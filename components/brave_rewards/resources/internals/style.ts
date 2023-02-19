@@ -104,3 +104,11 @@ export const Input = styled.input`
 export const DiagnosticsHeader = styled.h3`
   margin: 20px 0px 10px;
 `
+
+export const BalanceWrapper = styled('div')<{}>`
+  .icon {
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+`

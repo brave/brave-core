@@ -6,9 +6,12 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
+import * as mojom from '../../shared/lib/mojom'
 
 interface Props {
   info: RewardsInternals.Balance
+  externalWallet: RewardsInternals.ExternalWallet
 }
 
 const getWalletName = (walletKey: string) => {
@@ -30,10 +33,18 @@ const getWalletName = (walletKey: string) => {
   return 'Missing wallet'
 }
 
-const getWalletBalance = (wallets: Record<string, number>) => {
+const getWalletBalance = (externalWallet: RewardsInternals.ExternalWallet, wallets: Record<string, number>) => {
+  const getBalanceForWallet = (wallet: string) => {
+    const keys = Object.keys(wallets) as Array<string>
+    return <div key={'wallet-' + wallet}>
+      {getWalletName(wallet)}: {keys.includes(wallet) ? wallets[wallet] + ' ' + getLocale('bat') : <><LoadingIcon />{'Loading...'}</>}
+    </div>
+  }
+
   let items = []
-  for (const key in wallets) {
-    items.push(<div key={'wallet-' + key}> {getWalletName(key)}: {wallets[key]} {getLocale('bat')} </div>)
+  items.push(getBalanceForWallet('blinded'))
+  if (externalWallet.status === mojom.WalletStatus.kConnected) {
+    items.push(getBalanceForWallet(externalWallet.type))
   }
 
   return items
@@ -50,6 +61,6 @@ export const Balance = (props: Props) => {
       <div>
         {getLocale('totalBalance')} {props.info.total} {getLocale('bat')}
       </div>
-      {getWalletBalance(props.info.wallets)}
+      {getWalletBalance(props.externalWallet, props.info.wallets)}
     </>)
 }

@@ -9,7 +9,7 @@ import { WalletHistory } from './walletHistory'
 import { Balance } from './balance'
 import { ExternalWallet } from './externalWallet'
 import { Button } from 'brave-ui/components'
-import { ButtonWrapper } from '../style'
+import { BalanceWrapper, ButtonWrapper } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -36,7 +36,11 @@ export class General extends React.Component<Props, {}> {
           paymentId={this.props.data.info.walletPaymentId}
           logEntries={this.props.data.eventLogs}
         />
-        <Balance info={this.props.data.balance} />
+        <BalanceWrapper>
+          <Balance
+            info={this.props.data.balance}
+            externalWallet={this.props.data.externalWallet} />
+        </BalanceWrapper>
         <ExternalWallet info={this.props.data.externalWallet} />
       </>
     )
