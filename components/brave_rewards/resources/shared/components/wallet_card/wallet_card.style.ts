@@ -92,12 +92,28 @@ export const batAmount = styled.div`
     line-height: 14px;
     opacity: 0.66;
   }
+
+  .icon {
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  .loading {
+    font-size: 14px;
+    line-height: 18px;
+    vertical-align: middle;
+  }
 `
 
 export const exchangeAmount = styled.div`
   font-size: 12px;
   line-height: 14px;
   opacity: 0.66;
+
+  &.hidden {
+    visibility: hidden;
+  }
 `
 
 export const earningsPanel = styled.div`

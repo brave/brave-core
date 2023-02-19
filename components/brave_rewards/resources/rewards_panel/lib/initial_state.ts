@@ -10,7 +10,10 @@ export function getInitialState (): HostState {
     loading: true,
     requestedView: null,
     rewardsEnabled: false,
-    balance: 0,
+    balance: {
+      total: 0,
+      wallets: {}
+    },
     settings: {
       adsEnabled: false,
       adsPerHour: 0,

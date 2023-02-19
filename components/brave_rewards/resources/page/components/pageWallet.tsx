@@ -530,7 +530,6 @@ class PageWallet extends React.Component<Props, State> {
       pendingContributions,
       userType
     } = this.props.rewardsData
-    const { total } = balance
     const { modalReset, modalConnect } = ui
 
     let externalWalletInfo: ExternalWallet | null = null
@@ -558,7 +557,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           userType !== 'unconnected' &&
             <WalletCard
-              balance={total}
+              balance={balance}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
               earningsThisMonth={adsData.adsEarningsThisMonth || 0}

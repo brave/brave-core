@@ -17,6 +17,7 @@ import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
 import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
+import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -30,7 +31,7 @@ const rangeFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 interface Props {
-  balance: number
+  balance: Rewards.Balance
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
   earningsThisMonth: number
@@ -88,16 +89,28 @@ export function WalletCard (props: Props) {
       )
     }
 
+    const wallet_keys = Object.keys(props.balance.wallets)
+    const shouldShowSpinner =
+      !wallet_keys.includes('blinded') ||
+      (
+        props.externalWallet !== null &&
+        !wallet_keys.includes(props.externalWallet.provider)
+      )
+
     return (
       <style.rewardsBalance>
         <style.balanceHeader>
           {getString('walletYourBalance')}
         </style.balanceHeader>
         <style.batAmount data-test-id='rewards-balance-text'>
-          <TokenAmount amount={props.balance} />
+          {
+            shouldShowSpinner
+              ? <><LoadingIcon /><span className='loading'>Loading...</span></>
+              : <TokenAmount amount={props.balance.total} />
+          }
         </style.batAmount>
-        <style.exchangeAmount>
-          <ExchangeAmount amount={props.balance} rate={props.exchangeRate} />
+        <style.exchangeAmount className={shouldShowSpinner ? 'hidden' : ''}>
+          <ExchangeAmount amount={props.balance.total} rate={props.exchangeRate} />
         </style.exchangeAmount>
       </style.rewardsBalance>
     )

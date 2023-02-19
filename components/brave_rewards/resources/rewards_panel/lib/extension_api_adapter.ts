@@ -32,8 +32,8 @@ import {
 // APIs are improved, the need for this adapter will diminish.
 
 export function getRewardsBalance () {
-  return new Promise<number>((resolve) => {
-    chrome.braveRewards.fetchBalance((balance) => { resolve(balance.total) })
+  return new Promise<Rewards.Balance>((resolve) => {
+    chrome.braveRewards.fetchBalance((balance) => { resolve(balance) })
   })
 }
 
