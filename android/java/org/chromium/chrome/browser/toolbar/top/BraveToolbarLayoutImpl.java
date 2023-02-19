@@ -57,6 +57,7 @@ import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
 import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistViewUtils;
 
 import org.chromium.base.ApiCompatibilityUtils;
@@ -592,12 +593,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
                         && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
                         && mPlaylistService != null) {
-                    // TODO DEEP : find contents from the page and show the playlist button
+                    hidePlaylistButton();
                     mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
                         Log.e(PlaylistUtils.TAG, "Default Playlist : " + defaultPlaylist.id);
                     });
-                    mPlaylistService.findMediaFilesFromActiveTab(playlistItems -> {
+                    mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {
                         Log.e(PlaylistUtils.TAG, "Inside condition");
+                        Log.e(PlaylistUtils.TAG, "findMediaFilesFromActiveTab url  : " + url);
                         for (PlaylistItem playlistItem : playlistItems) {
                             Log.e(PlaylistUtils.TAG, "Media source  : " + playlistItem.mediaSource);
                         }
@@ -606,7 +608,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             showPlaylistButton(tab.getUrl().getSpec());
                         }
                     });
-                    // showPlaylistButton(tab.getUrl().getSpec());
                 }
             }
 
@@ -670,10 +671,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
                         contentUrl.url = url;
                         int mediaCount = SharedPreferencesManager.getInstance().readInt(
-                                PlaylistUtils.ADD_MEDIA_COUNT);
+                                PlaylistPreferenceUtils.ADD_MEDIA_COUNT);
                         if (mediaCount <= 2) {
                             SharedPreferencesManager.getInstance().writeInt(
-                                    PlaylistUtils.ADD_MEDIA_COUNT, mediaCount + 1);
+                                    PlaylistPreferenceUtils.ADD_MEDIA_COUNT, mediaCount + 1);
                         }
                         if (mediaCount == 2) {
                             if (BraveActivity.getBraveActivity() != null) {

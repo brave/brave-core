@@ -10,6 +10,8 @@ import android.os.Handler;
 
 import androidx.preference.Preference;
 
+import com.brave.playlist.util.PlaylistPreferenceUtils;
+
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
@@ -81,7 +83,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
         updatePlaylistSettingsState(
                 SharedPreferencesManager.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
-        initPlaylistService();
     }
 
     @Override
@@ -109,6 +110,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        initPlaylistService();
         getActivity().setTitle(R.string.brave_playlist);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_playlist_preferences);
     }
@@ -157,7 +159,9 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                     PREF_START_PLAYBACK, (boolean) newValue);
         } else if (PREF_RESET_PLAYLIST.equals(key)) {
             if (mPlaylistService != null) {
-                // TODO Deep appl;y reset
+                mPlaylistService.resetAll();
+                PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
+                BraveRelaunchUtils.askForRelaunch(getActivity());
             }
         }
 

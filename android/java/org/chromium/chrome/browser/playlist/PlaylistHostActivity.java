@@ -178,7 +178,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 for (PlaylistItemModel playlistItemModel :
                                         playlistOptionsModel.getPlaylistModel().getItems()) {
                                     mPlaylistService.recoverLocalDataForItem(
-                                            playlistItemModel.getId());
+                                            playlistItemModel.getId(), true);
                                 }
                             }
                         } else if (option == PlaylistOptions.DELETE_PLAYLIST) {
@@ -216,7 +216,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 for (PlaylistItemModel playlistItemModel :
                                         playlistOptionsModel.getPlaylistModel().getItems()) {
                                     mPlaylistService.recoverLocalDataForItem(
-                                            playlistItemModel.getId());
+                                            playlistItemModel.getId(), false);
                                 }
                             }
                         }
@@ -237,6 +237,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.DELETE_ITEMS_OFFLINE_DATA");
                             mPlaylistService.removeLocalDataForItem(
                                     playlistItemOption.getPlaylistItemModel().getId());
+                            loadPlaylist(playlistItemOption.getPlaylistId());
                         } else if (option == PlaylistOptions.SHARE_PLAYLIST_ITEM) {
                             Log.e(PlaylistUtils.TAG, "PlaylistOptions.SHARE_PLAYLIST_ITEM");
                         } else if (option == PlaylistOptions.OPEN_IN_NEW_TAB) {
@@ -252,6 +253,11 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             mPlaylistService.removeItemFromPlaylist(
                                     playlistItemOption.getPlaylistId(),
                                     playlistItemOption.getPlaylistItemModel().getId());
+                            loadPlaylist(playlistItemOption.getPlaylistId());
+                        } else if (option == PlaylistOptions.RECOVER_PLAYLIST_ITEM) {
+                            Log.e(PlaylistUtils.TAG, "PlaylistOptions.RECOVER_PLAYLIST_ITEM");
+                            mPlaylistService.recoverLocalDataForItem(
+                                    playlistItemOption.getPlaylistItemModel().getId(), true);
                             loadPlaylist(playlistItemOption.getPlaylistId());
                         }
                     }

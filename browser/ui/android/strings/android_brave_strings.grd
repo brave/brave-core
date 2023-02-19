@@ -3801,7 +3801,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Copy
     </message>
     <message name="IDS_PLAYLIST_DELETE_ITEM_OFFLINE_DATA" desc="Playlist menu text">
-      Delete item\'s offline data
+      Delete item's offline data
     </message>
     <message name="IDS_PLAYLIST_SHARE_ITEM" desc="Playlist menu text">
       Share

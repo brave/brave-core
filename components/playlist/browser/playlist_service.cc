@@ -626,30 +626,6 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
   NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemThumbnailReady, id});
 }
 
-void PlaylistService::GetDefaultPlaylistId(
-    GetDefaultPlaylistIdCallback callback) {
-  std::move(callback).Run(GetDefaultSaveTargetListID());
-}
-
-void PlaylistService::SetDefaultPlaylistId(const std::string& playlist_id) {
-  if (!prefs_) {
-    prefs_->SetString(kPlaylistDefaultSaveTargetListID, playlist_id);
-  }
-}
-
-void PlaylistService::GetPlaylistCacheByDefault(
-    GetPlaylistCacheByDefaultCallback callback) {
-  if (!prefs_) {
-    std::move(callback).Run(prefs_->GetBoolean(kPlaylistCacheByDefault));
-  }
-}
-
-void PlaylistService::SetPlaylistCacheByDefault(const bool is_enabled) {
-  if (!prefs_) {
-    prefs_->SetBoolean(kPlaylistCacheByDefault, is_enabled);
-  }
-}
-
 void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
   if (playlist_id == kDefaultPlaylistID)
     return;
