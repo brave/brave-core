@@ -32,9 +32,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
-#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
-#endif
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -62,9 +60,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     source->AddString(str.name, l10n_str);
   }
   auto* profile = Profile::FromWebUI(web_ui);
-#if !BUILDFLAG(IS_ANDROID)
   NavigationBarDataProvider::Initialize(source, profile);
-#endif
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
@@ -82,11 +78,9 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   content::WebUIDataSource::Add(profile, source);
-#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
-#endif
 }
 
 WalletPageUI::~WalletPageUI() = default;

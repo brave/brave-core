@@ -27,7 +27,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -80,8 +79,6 @@ SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
   content::WebUIDataSource::Add(profile, source);
 
-  content::URLDataSource::Add(profile,
-                              std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }
 
