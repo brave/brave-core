@@ -12,8 +12,10 @@
 namespace speedreader {
 
 SpeedreaderRenderFrameObserver::SpeedreaderRenderFrameObserver(
-    content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {}
+    content::RenderFrame* render_frame,
+    int32_t isolated_world_id)
+    : RenderFrameObserver(render_frame),
+      isolated_world_id_(isolated_world_id) {}
 
 SpeedreaderRenderFrameObserver::~SpeedreaderRenderFrameObserver() = default;
 
@@ -26,7 +28,8 @@ void SpeedreaderRenderFrameObserver::DidStartNavigation(
 void SpeedreaderRenderFrameObserver::DidClearWindowObject() {
   if (!is_speedreadable_url_ || !render_frame()->IsMainFrame())
     return;
-  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr());
+  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr(),
+                                isolated_world_id_);
 }
 
 void SpeedreaderRenderFrameObserver::OnDestruct() {
