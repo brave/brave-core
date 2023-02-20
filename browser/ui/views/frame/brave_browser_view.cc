@@ -5,7 +5,9 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
+#include <map>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
@@ -41,6 +43,7 @@
 #include "chrome/common/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/accelerators/accelerator.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
@@ -82,9 +85,7 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
     Start();
   }
 
-  ~TabCyclingEventHandler() override {
-    Stop();
-  }
+  ~TabCyclingEventHandler() override { Stop(); }
 
   TabCyclingEventHandler(const TabCyclingEventHandler&) = delete;
   TabCyclingEventHandler& operator=(const TabCyclingEventHandler&) = delete;
@@ -99,29 +100,28 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
       return;
     }
 
-    if (event.type() == ui::ET_MOUSE_PRESSED)
+    if (event.type() == ui::ET_MOUSE_PRESSED) {
       Stop();
+    }
   }
 
   // views::WidgetObserver overrides:
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override {
     // We should stop cycling if other application gets active state.
-    if (!active)
+    if (!active) {
       Stop();
+    }
   }
 
   // Handle Browser widget closing while tab Cycling is in-progress.
-  void OnWidgetClosing(views::Widget* widget) override {
-    Stop();
-  }
+  void OnWidgetClosing(views::Widget* widget) override { Stop(); }
 
   void Start() {
     // Add the event handler
     auto* widget = browser_view_->GetWidget();
     if (widget->GetNativeWindow()) {
       monitor_ = views::EventMonitor::CreateWindowMonitor(
-          this,
-          widget->GetNativeWindow(),
+          this, widget->GetNativeWindow(),
           {ui::ET_MOUSE_PRESSED, ui::ET_KEY_RELEASED});
     }
 
@@ -129,9 +129,10 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
   }
 
   void Stop() {
-    if (!monitor_.get())
+    if (!monitor_.get()) {
       // We already stopped
       return;
+    }
 
     // Remove event handler
     auto* widget = browser_view_->GetWidget();
@@ -202,8 +203,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                             base::Unretained(this)));
   }
 
-  if (!supports_vertical_tabs && !can_have_sidebar)
+  if (!supports_vertical_tabs && !can_have_sidebar) {
     return;
+  }
 
   // Make sure |find_bar_host_view_| is the last child of BrowserView by
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
@@ -276,8 +278,9 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* vpn_button =
       static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
-  if (vpn_button->GetVisible())
+  if (vpn_button->GetVisible()) {
     return vpn_button;
+  }
   return toolbar()->app_menu_button();
 #else
   return nullptr;
@@ -287,25 +290,29 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   auto* brave_location_bar_view =
       static_cast<BraveLocationBarView*>(GetLocationBarView());
-  if (!brave_location_bar_view)
+  if (!brave_location_bar_view) {
     return gfx::Rect();
+  }
 
   auto* shields_action_view =
       brave_location_bar_view->brave_actions_contatiner_view()
           ->GetShieldsActionView();
-  if (!shields_action_view)
+  if (!shields_action_view) {
     return gfx::Rect();
+  }
 
   auto* bubble_widget = shields_action_view->GetBubbleWidget();
-  if (!bubble_widget)
+  if (!bubble_widget) {
     return gfx::Rect();
+  }
 
   return bubble_widget->GetClientAreaBoundsInScreen();
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return BrowserView::GetTabStripVisible();
+  }
 
   if (tabs::utils::ShouldShowVerticalTabs(browser())) {
     return false;
@@ -316,8 +323,9 @@ bool BraveBrowserView::GetTabStripVisible() const {
 
 #if BUILDFLAG(IS_WIN)
 bool BraveBrowserView::GetSupportsTitle() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return BrowserView::GetSupportsTitle();
+  }
 
   if (tabs::utils::SupportsVerticalTabs(browser())) {
     return true;
@@ -330,8 +338,9 @@ bool BraveBrowserView::GetSupportsTitle() const {
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
       static_cast<BraveToolbarView*>(toolbar())->bookmark_button();
-  if (button)
+  if (button) {
     button->SetToggled(is_starred);
+  }
 }
 
 void BraveBrowserView::ShowSpeedreaderWebUIBubble(Browser* browser) {
@@ -420,6 +429,17 @@ views::View* BraveBrowserView::GetWalletButtonAnchorView() {
       ->GetAsAnchorView();
 }
 
+std::map<int, std::vector<ui::Accelerator>>
+BraveBrowserView::GetAcceleratedCommands() {
+  // In future, it will be possible to customize this map so users can configure
+  // their own keyboard shortcuts.
+  std::map<int, std::vector<ui::Accelerator>> result;
+  for (const auto& [accelerator, command] : accelerator_table_) {
+    result[command].push_back(accelerator);
+  }
+  return result;
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
@@ -431,8 +451,9 @@ void BraveBrowserView::CreateApproveWalletBubble() {
 }
 
 void BraveBrowserView::CloseWalletBubble() {
-  if (GetWalletButton())
+  if (GetWalletButton()) {
     GetWalletButton()->CloseWalletBubble();
+  }
 }
 
 void BraveBrowserView::AddedToWidget() {
@@ -534,16 +555,19 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   // from other windows. So, simply trying to update when window activation
   // state is changed. With this, active window could have correct sidebar item
   // state.
-  if (sidebar_container_view_)
+  if (sidebar_container_view_) {
     sidebar_container_view_->UpdateSidebar();
+  }
 }
 
 bool BraveBrowserView::ShouldShowWindowTitle() const {
-  if (BrowserView::ShouldShowWindowTitle())
+  if (BrowserView::ShouldShowWindowTitle()) {
     return true;
+  }
 
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return false;
+  }
 
   if (tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
     return true;
@@ -575,6 +599,6 @@ void BraveBrowserView::StartTabCycling() {
 
 void BraveBrowserView::StopTabCycling() {
   tab_cycling_event_handler_.reset();
-  static_cast<BraveTabStripModel*>(browser()->tab_strip_model())->
-      StopMRUCycling();
+  static_cast<BraveTabStripModel*>(browser()->tab_strip_model())
+      ->StopMRUCycling();
 }

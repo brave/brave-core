@@ -205,5 +205,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock_internals/brave_adblock_internals.grd": {
     "META": {"sizes": {"includes": [50]}},
     "includes": [59840],
-  }
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-commands/commands.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [60090]
+  },
 }

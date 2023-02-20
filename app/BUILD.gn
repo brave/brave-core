@@ -13,6 +13,20 @@ import("//build/config/locales.gni")
 
 source_set("command_ids") {
   sources = [ "brave_command_ids.h" ]
+
+  deps = [
+    "//base",
+    "//chrome/app:command_ids",
+  ]
+
+  if (!is_android && !is_ios) {
+    sources += [
+      "command_utils.cc",
+      "command_utils.h",
+    ]
+
+    deps += [ "//brave/components/commands/common" ]
+  }
 }
 
 brave_grit("brave_generated_resources_grit") {
@@ -33,6 +47,71 @@ brave_grit("brave_generated_resources_grit") {
 
   foreach(locale, all_chrome_locales) {
     outputs += [ "brave_generated_resources_$locale.pak" ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  if (!is_android && !is_ios) {
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [
+      "brave_main_delegate_browsertest.cc",
+      "brave_main_delegate_runtime_flags_browsertest.cc",
+      "command_utils_browsertest.cc",
+    ]
+
+    deps = [
+      ":command_ids",
+      "//base",
+      "//brave/components/commands/common",
+      "//chrome/app:command_ids",
+      "//chrome/browser",
+      "//chrome/browser/enterprise/connectors/analysis:features",
+      "//chrome/browser/ui",
+      "//chrome/common:chrome_features",
+      "//chrome/common:non_code_constants",
+      "//chrome/test",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/autofill/core/common",
+      "//components/commerce/core:feature_list",
+      "//components/component_updater",
+      "//components/embedder_support",
+      "//components/history_clusters/core",
+      "//components/language/core/common",
+      "//components/lens",
+      "//components/network_time",
+      "//components/omnibox/browser",
+      "//components/optimization_guide/core",
+      "//components/permissions",
+      "//components/privacy_sandbox",
+      "//components/reading_list/features:flags",
+      "//components/segmentation_platform/public",
+      "//components/send_tab_to_self",
+      "//components/subresource_filter/core/common",
+      "//components/translate/core/common",
+      "//extensions/common",
+      "//services/device/public/cpp:device_features",
+      "//testing/gtest",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  if (!is_android && !is_ios) {
+    sources = [ "command_utils_unittest.cc" ]
+    deps = [
+      ":command_ids",
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/commands/common",
+      "//chrome/browser/ui/views",
+      "//testing/gtest",
+    ]
   }
 }
 
