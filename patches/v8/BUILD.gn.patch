@@ -10,7 +10,7 @@ index 83bf5406e613da22a444278372f5315a2d06de3e..1581640704c76a3c52b3511d8cf1ecc6
  }
  
  config("internal_config") {
-@@ -2695,6 +2696,7 @@ v8_header_set("v8_headers") {
+@@ -2693,6 +2694,7 @@ v8_header_set("v8_headers") {
      ":cppgc_headers",
      ":v8_version",
    ]
