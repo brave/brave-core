@@ -62,15 +62,14 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
 
   // methods
   const onClickRunNode = React.useCallback(() => {
-    dispatch(WalletPageActions.setAutoPinEnabled(true))
-  }, [])
+    if (!isAutoPinEnabled) {
+      dispatch(WalletPageActions.setAutoPinEnabled(true))
+    }
+    history.push(WalletRoutes.Nfts)
+  }, [isAutoPinEnabled])
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])
-
-  const goToNftsTab = React.useCallback(() => {
-    history.push(WalletRoutes.Nfts)
-  }, [])
 
   return (
     <InspectNftsWrapper>
@@ -114,10 +113,7 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           </BenefitsList>
         </Column>
         <Row gap='16px' alignItems='center' justifyContent='center'>
-          {isAutoPinEnabled
-            ? <PinNftsButton onClick={goToNftsTab}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
-            : <PinNftsButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningRunNodeButton')}</PinNftsButton>
-          }
+          <PinNftsButton onClick={onClickRunNode}>{getLocale('braveWalletNftPinningPinNftsButton')}</PinNftsButton>
         </Row>
         <PinnedNftIllustration src={Illustration} />
       </MainContent>

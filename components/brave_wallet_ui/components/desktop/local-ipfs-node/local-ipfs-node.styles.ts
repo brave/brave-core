@@ -15,9 +15,9 @@ export const RunNodeWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
+  min-width: 100vw;
+  min-height: 100vh;
   background-image: url(${Background});
   background-size: cover;
   background-repeat: no-repeat;
