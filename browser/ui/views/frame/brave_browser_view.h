@@ -13,8 +13,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/views/commands/accelerator_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/commands/common/accelerator_pref_manager.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -47,7 +50,8 @@ class SidebarContainerView;
 class WalletButton;
 class VerticalTabStripWidgetDelegateView;
 
-class BraveBrowserView : public BrowserView {
+class BraveBrowserView : public BrowserView,
+                         public commands::AcceleratorService::Observer {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
@@ -64,7 +68,6 @@ class BraveBrowserView : public BrowserView {
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
-  std::map<int, std::vector<ui::Accelerator>> GetAcceleratedCommands() override;
 
   // BrowserView overrides:
   void StartTabCycling() override;
@@ -87,6 +90,9 @@ class BraveBrowserView : public BrowserView {
     return vertical_tab_strip_widget_delegate_view_;
   }
 
+  // commands::AcceleratorService:
+  void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
+
  private:
   class TabCyclingEventHandler;
   friend class WindowClosingConfirmBrowserTest;
@@ -99,6 +105,7 @@ class BraveBrowserView : public BrowserView {
 
   // BrowserView overrides:
   void AddedToWidget() override;
+  void LoadAccelerators() override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
@@ -141,6 +148,9 @@ class BraveBrowserView : public BrowserView {
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   PrefChangeRegistrar pref_change_registrar_;
+  base::ScopedObservation<commands::AcceleratorService,
+                          commands::AcceleratorService::Observer>
+      accelerators_observation_{this};
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };

@@ -23,6 +23,7 @@
   GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
+#define LoadAccelerators virtual LoadAccelerators
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
@@ -44,6 +45,7 @@
 #undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH
+#undef LoadAccelerators
 #undef BrowserViewLayout
 #undef SidePanel
 #undef GetContentsLayoutManager

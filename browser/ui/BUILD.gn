@@ -752,6 +752,10 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "views/commands/accelerator_service.cc",
+      "views/commands/accelerator_service.h",
+      "views/commands/accelerator_service_factory.cc",
+      "views/commands/accelerator_service_factory.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
