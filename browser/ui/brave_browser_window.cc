@@ -7,8 +7,6 @@
 
 #include <vector>
 
-#include "ui/base/accelerators/accelerator.h"
-
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.
 
@@ -20,11 +18,6 @@ speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
 
 gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
-}
-
-std::map<int, std::vector<ui::Accelerator>>
-BraveBrowserWindow::GetAcceleratedCommands() {
-  return std::map<int, std::vector<ui::Accelerator>>();
 }
 
 // static

@@ -8,6 +8,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
 import Command from './components/Command'
+import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
 
 const CommandsContainer = styled.div`
@@ -28,54 +29,52 @@ const FiltersRow = styled.div`
   gap: 8px;
 `
 
-export const api = CommandsMojo.CommandsService.getRemote()
-
-function usePromise<T> (getPromise: () => Promise<T>, deps: any[]) {
-  const [result, setResult] = React.useState<T>()
+export const commandsCache = new CommandsCache()
+function useCommands() {
+  const [commands, setCommands] = React.useState<{
+    [id: number]: CommandsMojo.Command
+  }>({})
   React.useEffect(() => {
-    getPromise().then(setResult)
-  }, deps)
-
-  return result
+    const listener = (l: { [command: number]: CommandsMojo.Command }) => {
+      setCommands(l)
+    }
+    commandsCache.addListener(listener)
+    return () => commandsCache.removeListener(listener)
+  }, [])
+  return commands
 }
 
-function App () {
+function App() {
   const [filter, setFilter] = React.useState('')
   const [withAccelerator, setWithAccelerator] = React.useState(false)
-  const [enabledOnly, setEnabledOnly] = React.useState(true)
 
-  const commands = usePromise(
-    () => api.getCommands().then((r) => r.commands),
-    []
-  )
+  const commands = useCommands()
 
   const filteredCommands = React.useMemo(
     () =>
-      commands
+      Object.values(commands)
         ?.filter((c) => match(filter, c))
-        .filter((c) => !withAccelerator || c.accelerators.length)
-        .filter((c) => !enabledOnly || c.enabled),
-    [filter, withAccelerator, enabledOnly, commands]
+        .filter((c) => !withAccelerator || c.accelerators.length),
+    [filter, withAccelerator, commands]
   )
   return (
     <CommandsContainer>
-      <FilterBox value={filter} onChange={(e) => { setFilter(e.target.value) }} />
+      <FilterBox
+        value={filter}
+        onChange={(e) => {
+          setFilter(e.target.value)
+        }}
+      />
       <FiltersRow>
         <label>
           <input
             type="checkbox"
             checked={withAccelerator}
-            onChange={(e) => { setWithAccelerator(e.target.checked) }}
+            onChange={(e) => {
+              setWithAccelerator(e.target.checked)
+            }}
           />
           Only with accelerator
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={enabledOnly}
-            onChange={(e) => { setEnabledOnly(e.target.checked) }}
-          />
-          Enabled only
         </label>
       </FiltersRow>
       {filteredCommands?.map((c) => (
@@ -85,5 +84,6 @@ function App () {
   )
 }
 
-document.addEventListener('DOMContentLoaded', () => { render(<App />, document.getElementById('root')) }
-)
+document.addEventListener('DOMContentLoaded', () => {
+  render(<App />, document.getElementById('root'))
+})

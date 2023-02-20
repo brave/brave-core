@@ -2,6 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { type Accelerator } from 'gen/brave/components/commands/common/commands.mojom.m'
 
-export const allKeys = (accelerator: Accelerator) => [...accelerator.modifiers, accelerator.keycode]
+export const stringToKeys = (accelerator: string) =>
+  accelerator ? accelerator.split('+') : [] // If it's an empty string, there are no keys.
+
+export const keysToString = (keys: string[]) => keys.join('+')

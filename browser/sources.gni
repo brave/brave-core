@@ -232,7 +232,10 @@ brave_chrome_browser_deps = [
 ]
 
 if (!is_android && !is_ios) {
-  brave_chrome_browser_deps += [ "//brave/components/commands/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/components/commands/browser",
+    "//brave/components/commands/common",
+  ]
 }
 
 if (is_mac) {

@@ -9,37 +9,23 @@
 #include <string>
 
 #include "brave/components/commands/common/commands.mojom.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
-
-class Browser;
-class BraveBrowserWindow;
+#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace commands {
 
-class CommandsUI : public content::WebUIController, public CommandsService {
+class CommandsUI : public content::WebUIController {
  public:
   CommandsUI(content::WebUI* web_ui, const std::string& host);
   ~CommandsUI() override;
   CommandsUI(const CommandsUI&) = delete;
   CommandsUI& operator=(const CommandsUI&) = delete;
 
-  void BindInterface(mojo::PendingReceiver<CommandsService> pending_receiver);
-
-  // CommandsService:
-  void GetCommands(GetCommandsCallback callback) override;
-  void TryExecuteCommand(uint32_t command_id) override;
+  void BindInterface(
+      mojo::PendingReceiver<mojom::CommandsService> pending_receiver);
 
  protected:
-  Browser* GetBrowser();
-  BraveBrowserWindow* GetWindow();
-
- private:
-  mojo::Receiver<CommandsService> receiver_{this};
-
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

@@ -44,8 +44,10 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
+#include "brave/components/commands/common/features.h"
 #else
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
@@ -108,6 +110,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::SwapServiceFactory::GetInstance();
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    commands::AcceleratorServiceFactory::GetInstance();
+  }
+#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EthereumRemoteClientServiceFactory::GetInstance();
