@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 41088266556378316da9e8eebcd9a165e1cb200f..007946fc30f9e4d99aed73824acd51d11818ef45 100644
+index 874a850632473605d0fd47cc246b39658b437d70..0effce0a989cd87b1e649c848fe43ace82d6f00e 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -8,6 +8,7 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
