@@ -48,8 +48,7 @@ bool RewriteManifestFile(const base::FilePath& extension_root,
 
   base::FilePath manifest_path =
       extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
-  int size = base::checked_cast<int>(manifest_json.size());
-  if (base::WriteFile(manifest_path, manifest_json.data(), size) != size) {
+  if (!base::WriteFile(manifest_path, manifest_json)) {
     return false;
   }
   return true;
