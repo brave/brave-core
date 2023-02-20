@@ -6,6 +6,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -79,6 +80,24 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
         brave_shields_web_contents_observer_);
   }
 
+  std::vector<GURL> GetBlockedJsList() {
+    return brave_shields::BraveShieldsDataController::FromWebContents(
+               GetWebContents())
+        ->GetBlockedJsList();
+  }
+
+  std::vector<GURL> GetAllowedJsList() {
+    return brave_shields::BraveShieldsDataController::FromWebContents(
+               GetWebContents())
+        ->GetAllowedJsList();
+  }
+
+  void ClearAllResourcesList() {
+    return brave_shields::BraveShieldsDataController::FromWebContents(
+               GetWebContents())
+        ->ClearAllResourcesList();
+  }
+
   void TearDownOnMainThread() override {
     BraveShieldsWebContentsObserver::SetReceiverImplForTesting(nullptr);
   }
@@ -114,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
       browser(), embedded_test_server()->GetURL("a.com", "/load_js.html")));
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
-
+  EXPECT_EQ(GetBlockedJsList().size(), 0u);
   // Enable JavaScript blocking globally now.
   content_settings()->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
@@ -128,6 +147,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+  EXPECT_EQ(GetBlockedJsList().size(), 3u);
 
   // Disable JavaScript blocking again now.
   content_settings()->SetContentSettingCustomScope(
@@ -148,6 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+  EXPECT_EQ(GetBlockedJsList().size(), 0u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
@@ -162,6 +183,81 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
       browser(), embedded_test_server()->GetURL("a.com", "/embedded_js.html")));
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+  EXPECT_EQ(GetBlockedJsList().size(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
+                       JavaScriptAllowedEvents) {
+  const GURL& url = GURL("a.com");
+
+  // Start with JavaScript blocking initially disabled.
+  ContentSetting block_javascript_setting =
+      content_settings()->GetContentSetting(url, url,
+                                            ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+
+  // Load a simple HTML that attempts to load some JavaScript without blocking.
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("a.com", "/load_js.html")));
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+
+  // Enable JavaScript blocking globally now.
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+  block_javascript_setting = content_settings()->GetContentSetting(
+      url, url, ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, block_javascript_setting);
+
+  // Reload the test page now that JavaScript has been blocked.
+  brave_shields_web_contents_observer()->Reset();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+  auto blocked_list = GetBlockedJsList();
+  EXPECT_EQ(blocked_list.size(), 3u);
+
+  // Allow One Script
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({blocked_list.back().spec()}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(GetBlockedJsList().size(), 2u);
+  EXPECT_EQ(GetAllowedJsList().size(), 1u);
+
+  blocked_list.pop_back();
+  EXPECT_EQ(blocked_list.size(), 2u);
+
+  // Allow Second Script
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({blocked_list.back().spec()}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(GetBlockedJsList().size(), 1u);
+  EXPECT_EQ(GetAllowedJsList().size(), 2u);
+
+  // Disable JavaScript blocking again now.
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
+  block_javascript_setting = content_settings()->GetContentSetting(
+      url, url, ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+
+  // Reload the test page now that JavaScript has been allowed again.
+  // Do it twice, because first reload will still trigger blocked events as
+  // renderer caches AllowScript results in
+  // ContentSettingsAgentImpl::cached_script_permissions_.
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+
+  brave_shields_web_contents_observer()->Reset();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 }
 
 }  // namespace brave_shields

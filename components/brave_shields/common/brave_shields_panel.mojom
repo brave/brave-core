@@ -46,6 +46,7 @@ interface DataHandler {
   SetBraveShieldsEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
+  AllowScriptsOnce(array<string> origins);
 };
 
 struct SiteBlockInfo {
