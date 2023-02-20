@@ -19,7 +19,7 @@ namespace brave {
 NSArray<MojoBaseValue*>* NSArrayFromBaseValue(const base::Value);
 
 // Clone the contents of a `base::Value` whos type is
-// `base::Value::Type::DICTIONARY`.  Any types found within the `base::Value`
+// `base::Value::Type::DICT`.  Any types found within the `base::Value`
 // that are unsupported or `NONE` will become `NSNull`
 NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
     const base::Value);
@@ -29,7 +29,7 @@ NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
 base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>*);
 
 // Clone the contents of an NSDictionary into a `base::Value` with the type
-// `base::Value::Type::DICTIONARY`
+// `base::Value::Type::DICT`
 base::Value BaseValueFromNSDictionary(NSDictionary<NSString*, MojoBaseValue*>*);
 
 NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValueDict(

@@ -62,8 +62,7 @@ void NTPBackgroundPrefs::RegisterPref(
   dict.Set(kSelectedValueKey, "");
   registry->RegisterDictionaryPref(kPrefName, base::Value(std::move(dict)));
 
-  registry->RegisterListPref(kCustomImageListPrefName,
-                             base::Value(base::Value::Type::LIST));
+  registry->RegisterListPref(kCustomImageListPrefName);
 }
 
 void NTPBackgroundPrefs::MigrateOldPref() {

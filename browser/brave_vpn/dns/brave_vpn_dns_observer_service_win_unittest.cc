@@ -139,8 +139,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   }
 
   void SetManagedMode(const std::string& value) {
-    local_state_.SetManagedPref(::prefs::kDnsOverHttpsMode,
-                                std::make_unique<base::Value>(value));
+    local_state_.SetManagedPref(::prefs::kDnsOverHttpsMode, base::Value(value));
   }
 
  private:

@@ -47,9 +47,9 @@ TEST(TestIPFSDomHandler, AddComponentVersion) {
   handler.OnGetNodeInfo(true, info);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_dict());
-  EXPECT_EQ(*data.arg1()->FindStringKey("id"), info.id);
-  EXPECT_EQ(*data.arg1()->FindStringKey("version"), info.version);
-  EXPECT_EQ(*data.arg1()->FindStringKey("component_version"), component);
+  EXPECT_EQ(*data.arg1()->GetDict().FindString("id"), info.id);
+  EXPECT_EQ(*data.arg1()->GetDict().FindString("version"), info.version);
+  EXPECT_EQ(*data.arg1()->GetDict().FindString("component_version"), component);
 }
 
 TEST(TestIPFSDomHandler, ComponentNotRegistered) {
@@ -60,7 +60,7 @@ TEST(TestIPFSDomHandler, ComponentNotRegistered) {
   handler.OnGetNodeInfo(true, info);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_dict());
-  EXPECT_EQ(*data.arg1()->FindStringKey("id"), info.id);
-  EXPECT_EQ(*data.arg1()->FindStringKey("version"), info.version);
-  ASSERT_FALSE(data.arg1()->FindStringKey("component_version"));
+  EXPECT_EQ(*data.arg1()->GetDict().FindString("id"), info.id);
+  EXPECT_EQ(*data.arg1()->GetDict().FindString("version"), info.version);
+  ASSERT_FALSE(data.arg1()->GetDict().FindString("component_version"));
 }
