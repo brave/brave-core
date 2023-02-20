@@ -26,6 +26,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
@@ -216,6 +217,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &features::kWinrtGeolocationImplementation,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
+    &performance_manager::features::kBatterySaverModeAvailable,
+    &performance_manager::features::kHighEfficiencyModeAvailable,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
     &sharing_hub::kDesktopScreenshots,

@@ -15,7 +15,8 @@ OverrideIronIcons('settings', 'brave_settings', {
   assignment: 'autofill',
   language: 'language',
   build: 'system',
-  restore: 'reset-settings'
+  restore: 'reset-settings',
+  performance: 'performance'
 })
 OverrideIronIcons('cr', 'brave_settings', {
   security: 'privacy-security',

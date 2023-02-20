@@ -81,6 +81,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   } else if (!isGuest) {
     console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
   }
+  // Deleted performance menu and system menu includes it instead.
+  if (r.PERFORMANCE) {
+    delete r.PERFORMANCE
+  }
   // Safety check route is moved to advanced.
   if (r.SAFETY_CHECK && r.ADVANCED) {
     r.SAFETY_CHECK.parent = r.ADVANCED
