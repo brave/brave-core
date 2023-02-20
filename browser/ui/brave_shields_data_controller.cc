@@ -389,9 +389,9 @@ void BraveShieldsDataController::AllowScriptsOnce(
   BraveShieldsWebContentsObserver* observer =
       BraveShieldsWebContentsObserver::FromWebContents(web_contents());
   if (!observer) {
-    return observer->AllowScriptsOnce(origins);
+    return;
   }
-
+  observer->AllowScriptsOnce(origins);
   ReloadWebContents();
 }
 
@@ -428,12 +428,13 @@ void BraveShieldsDataController::HandleItemAllowedOnce(
     const std::string& allowed_once_type,
     const std::string& subresource) {
   GURL subres(subresource);
-  if (allowed_once_type == kJavaScript) {
-    if (resource_list_allowed_once_js_.contains(subres)) {
-      return;
-    }
-    resource_list_allowed_once_js_.insert(std::move(subres));
+  if (allowed_once_type != kJavaScript) {
+    return;
   }
+  if (resource_list_allowed_once_js_.contains(subres)) {
+    return;
+  }
+  resource_list_allowed_once_js_.insert(std::move(subres));
 
   for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
