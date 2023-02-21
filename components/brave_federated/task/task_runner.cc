@@ -45,7 +45,6 @@ TaskResult TaskRunner::Run() {
     report = model_->Evaluate(test_data_);
   }
 
-  report.parameters = task_.GetParameters();
   TaskResult result(task_, report);
   return result;
 }
@@ -66,41 +65,5 @@ void TaskRunner::SetWeights(ModelWeights weights) {
 ModelWeights TaskRunner::GetWeights() {
   return std::make_tuple(model_->GetWeights(), model_->GetBias());
 }
-
-// flwr::FitRes TaskRunner::Fit(flwr::FitIns instructions) {
-//   auto config = instructions.getConfig();
-//   flwr::FitRes response;
-//   flwr::Parameters parameters = instructions.getParameters();
-//   SetParameters(parameters);
-
-//   std::tuple<size_t, float, float> result =
-//       model_->Train(training_data_);
-
-//   response.setParameters(GetParameters().getParameters());
-//   response.setNum_example(std::get<0>(result));
-
-//   return response;
-// }
-
-// flwr::EvaluateRes TaskRunner::Evaluate(flwr::EvaluateIns instructions) {
-//   flwr::EvaluateRes response;
-//   flwr::Parameters parameters = instructions.getParameters();
-//   SetParameters(parameters);
-
-//   // Evaluation returns a number_of_examples, a loss and an "accuracy"
-//   std::tuple<size_t, float, float> result =
-//       model_->Evaluate(test_data_);
-
-//   response.setNum_example(std::get<0>(result));
-//   response.setLoss(std::get<1>(result));
-
-//   flwr::Scalar accuracy = flwr::Scalar();
-//   accuracy.setDouble(static_cast<double>(std::get<2>(result)));
-//   std::map<std::string, flwr::Scalar> metric = {
-//       {"accuracy", accuracy},
-//   };
-//   response.setMetrics(metric);
-//   return response;
-// }
 
 }  // namespace brave_federated

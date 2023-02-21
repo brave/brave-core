@@ -42,7 +42,6 @@ class Model {
   ~Model();
 
   std::vector<float> Predict(const DataSet& dataset);
-  // TODO(lminto): enforce data dim to model
   PerformanceReport Train(const DataSet& train_dataset);
   PerformanceReport Evaluate(const DataSet& test_dataset);
 
