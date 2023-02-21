@@ -117,6 +117,11 @@
             android:title="@string/block_cookie_consent_notices_title"
             android:summary="@string/block_cookie_consent_notices_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="block_switch_to_app_notices"
+            android:order="25"
+            android:title="@string/block_switch_to_app_notices"
+            android:defaultValue="true" />
         <Preference
             android:fragment="org.chromium.chrome.browser.decentralized_dns.settings.UnstoppableDomainsSettingsFragment"
             android:key="unstoppable_domains"

@@ -152,6 +152,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TURN_ON"  desc="Text for Turn On">
         TURN ON
       </message>
+      <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
+        Block 'Switch to App' Notices
+      </message>
       <message name="IDS_TELL_US_WHAT_YOU_THINK"  desc="Text for Tell us what you think!">
         Tell us what you think!
       </message>
