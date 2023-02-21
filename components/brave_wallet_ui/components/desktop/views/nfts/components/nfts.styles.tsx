@@ -71,7 +71,7 @@ export const IpfsIcon = styled.div`
   mask-image: url(${Ipfs});
   -webkit-mask-image: url(${Ipfs});
   mask-repeat: no-repeat;
-  background-color: #495057;
+  background-color: ${(p) => p.theme.color.background02};
   cursor: pointer;
 
   &:hover {
