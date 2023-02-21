@@ -15,11 +15,7 @@
 namespace brave_news {
 
 // Convert from the "combined feed" hosted remotely to Brave News mojom items.
-// TODO(petemill): Rename this file to combined_feed_parsing.h or similar,
-// in order to differentiate the "Combined Feed" from
-// a "Direct Feed" (a.k.a RSS).
-bool ParseFeedItems(const base::Value& json_value,
-                    std::vector<mojom::FeedItemPtr>* feed_items);
+std::vector<mojom::FeedItemPtr> ParseFeedItems(const base::Value& value);
 
 }  // namespace brave_news
 

@@ -34,21 +34,20 @@ base::Value GetItem(std::string url) {
 
 }  // namespace
 
-TEST(BraveNewsFeedParsing, Success) {
+TEST(BraveNewCombinedFeedParsing, Success) {
   // Create an entry which should be valid as a Brave News item
   auto item = GetItem("https://www.hello.com");
   base::Value::List list;
   list.Append(std::move(item));
   base::Value json_value = base::Value(std::move(list));
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-
-  EXPECT_TRUE(ParseFeedItems(std::move(json_value), &feed_items));
+  std::vector<mojom::FeedItemPtr> feed_items =
+      ParseFeedItems(std::move(json_value));
   // The single item should be successfully parsed to a FeedItem
   EXPECT_EQ(feed_items.size(), 1u);
 }
 
-TEST(BraveNewsFeedParsing, FailBadProtocol) {
+TEST(BraveNewCombinedFeedParsing, FailBadProtocol) {
   // Create an entry which should be invalid as a Brave News item
   // A chrome: protocol should not be allowed
   auto item = GetItem("chrome://settings");
@@ -56,9 +55,8 @@ TEST(BraveNewsFeedParsing, FailBadProtocol) {
   list.Append(std::move(item));
   base::Value json_value = base::Value(std::move(list));
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-
-  EXPECT_TRUE(ParseFeedItems(std::move(json_value), &feed_items));
+  std::vector<mojom::FeedItemPtr> feed_items =
+      ParseFeedItems(std::move(json_value));
   // The single item should not be parsed to a FeedItem
   EXPECT_EQ(feed_items.size(), 0u);
 }

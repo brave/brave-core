@@ -355,9 +355,8 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
                 // Only mark cache time of remote request if
                 // parsing was successful
                 controller->locale_feed_etags_[locale] = etag;
-                FeedItems feed_items;
-                ParseFeedItems(api_request_result.value_body(), &feed_items);
-                std::move(callback).Run(std::move(feed_items));
+                std::move(callback).Run(
+                    ParseFeedItems(api_request_result.value_body()));
               },
               base::Unretained(controller), locale, locales_fetched_callback);
           // Send the request

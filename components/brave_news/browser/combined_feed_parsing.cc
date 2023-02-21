@@ -10,8 +10,13 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_news/api/combined_feed.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -22,62 +27,64 @@ namespace brave_news {
 
 namespace {
 
-// TODO(petemill): Accept base::Value::Dict param and use something like
-// `contains()` to avoid potential crashes dereferencing missing fields.
-bool ParseFeedItem(const base::Value& feed_item_raw,
-                   mojom::FeedItemPtr* feed_item) {
-  auto url_raw = *feed_item_raw.FindStringKey("url");
-  if (url_raw.empty()) {
-    VLOG(1) << "Found feed item with missing url. Title: "
-            << *feed_item_raw.FindStringKey("title");
-    return false;
+base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
+    const base::Value& value) {
+  std::u16string error;
+  auto parsed_feed_item = api::combined_feed::Item::FromValue(value, &error);
+  if (!parsed_feed_item) {
+    return base::unexpected(base::StrCat(
+        {"Failed to parse feed item. ", base::UTF16ToASCII(error)}));
   }
-  auto image_url_raw = *feed_item_raw.FindStringKey("padded_img");
-  // Filter out non-image articles
-  if (image_url_raw.empty()) {
-    VLOG(2) << "Found feed item with missing image. Url: " << url_raw;
-    return false;
-  }
-  auto publisher_id = *feed_item_raw.FindStringKey("publisher_id");
-  if (publisher_id.empty()) {
-    VLOG(1) << "Found article with missing publisher_id. Url: " << url_raw;
-    return false;
-  }
-  // Parse metadata which all content types have
-  auto metadata = mojom::FeedItemMetadata::New();
-  metadata->category_name = *feed_item_raw.FindStringKey("category");
-  metadata->title = *feed_item_raw.FindStringKey("title");
-  // Title is mandatory
-  if (metadata->title.empty()) {
-    VLOG(2) << "Item was missing a title: " << url_raw;
-    return false;
-  }
-  metadata->description = *feed_item_raw.FindStringKey("description");
-  metadata->publisher_id = publisher_id;
-  metadata->publisher_name = *feed_item_raw.FindStringKey("publisher_name");
-  auto image_url = mojom::Image::NewPaddedImageUrl(GURL(image_url_raw));
-  metadata->image = std::move(image_url);
-  auto url = GURL(url_raw);
+  api::combined_feed::Item& feed_item = *parsed_feed_item;
+
+  auto url = GURL(feed_item.url);
   if (url.is_empty() || !url.has_host()) {
-    VLOG(1) << "Could not parse item url: " << url_raw;
-    return false;
+    return base::unexpected(base::StrCat(
+        {"Found feed item with an invalid url value. title=", feed_item.title,
+         ", url=", feed_item.url}));
   }
+
   if (!url.SchemeIsHTTPOrHTTPS()) {
-    VLOG(1) << "Item url was not HTTP or HTTPS: " << url.spec();
-    return false;
+    return base::unexpected(
+        base::StrCat({"Item url was not HTTP or HTTPS: url=", url.spec()}));
   }
+
+  if (feed_item.padded_img.empty()) {
+    return base::unexpected(base::StrCat(
+        {"Found feed item with missing image. url=", feed_item.url}));
+  }
+
+  if (feed_item.publisher_id.empty()) {
+    return base::unexpected(base::StrCat(
+        {"Found feed item with missing publisher id. url=", feed_item.url}));
+  }
+
+  if (feed_item.title.empty()) {
+    return base::unexpected(base::StrCat(
+        {"Found feed item with missing title. url=", feed_item.url}));
+  }
+
+  if (!feed_item.score.has_value()) {
+    // We just warn, as this is an optional field.
+    VLOG(1) << "Item was missing score: " << feed_item.url;
+  }
+
+  auto metadata = mojom::FeedItemMetadata::New();
+  metadata->category_name = feed_item.category;
+  metadata->title = feed_item.title;
+  metadata->description = feed_item.description;
+  metadata->publisher_id = feed_item.publisher_id;
+  metadata->publisher_name = feed_item.publisher_name;
+  metadata->image = mojom::Image::NewPaddedImageUrl(GURL(feed_item.padded_img));
   metadata->url = std::move(url);
+
   // Further weight according to history
-  auto score = feed_item_raw.FindDoubleKey("score");
-  if (!score.has_value()) {
-    VLOG(1) << "Item was missing score: " << url_raw;
-  }
-  metadata->score = score.value_or(20.0);
+  metadata->score = feed_item.score.value_or(20.0);
+
   // Extract time
-  const char* publish_time_raw =
-      (*feed_item_raw.FindStringKey("publish_time")).c_str();
-  if (!base::Time::FromUTCString(publish_time_raw, &metadata->publish_time)) {
-    VLOG(1) << "bad time string for feed item: " << publish_time_raw;
+  if (!base::Time::FromUTCString(feed_item.publish_time.c_str(),
+                                 &metadata->publish_time)) {
+    VLOG(1) << "Bad time string for feed item: " << feed_item.publish_time;
   } else {
     // Successful, get language-specific relative time
     base::TimeDelta relative_time_delta =
@@ -88,49 +95,54 @@ bool ParseFeedItem(const base::Value& feed_item_raw,
             ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta));
   }
   // Detect type
-  auto content_type = *feed_item_raw.FindStringKey("content_type");
-  if (content_type == "brave_partner") {
+  if (feed_item.content_type == "brave_partner") {
+    if (!feed_item.creative_instance_id ||
+        feed_item.creative_instance_id->empty()) {
+      return base::unexpected(
+          base::StrCat({"Promoted item has empty creative_instance_id. url=",
+                        feed_item.url}));
+    }
+
     auto item = mojom::PromotedArticle::New();
-    item->creative_instance_id =
-        *feed_item_raw.FindStringKey("creative_instance_id");
-    if (item->creative_instance_id.empty()) {
-      VLOG(1) << "Promoted Item has empty creative_instance_id: " << url_raw;
-      return false;
+    item->creative_instance_id = *feed_item.creative_instance_id;
+    item->data = std::move(metadata);
+    return mojom::FeedItem::NewPromotedArticle(std::move(item));
+  } else if (feed_item.content_type == "product") {
+    auto item = mojom::Deal::New();
+    if (feed_item.offers_category) {
+      item->offers_category = *feed_item.offers_category;
     }
     item->data = std::move(metadata);
-    *feed_item = mojom::FeedItem::NewPromotedArticle(std::move(item));
-  } else if (content_type == "product") {
-    auto item = mojom::Deal::New();
-    item->offers_category = *feed_item_raw.FindStringKey("offers_category");
-    item->data = std::move(metadata);
-    *feed_item = mojom::FeedItem::NewDeal(std::move(item));
-  } else if (content_type == "article") {
+    return mojom::FeedItem::NewDeal(std::move(item));
+  } else if (feed_item.content_type == "article") {
     auto item = mojom::Article::New();
     item->data = std::move(metadata);
-    *feed_item = mojom::FeedItem::NewArticle(std::move(item));
-  } else {
-    // Do not error if unknown content_type is discovered, it could
-    // be a future use.
-    VLOG(3) << "Unknown content type of: " << content_type;
-    return false;
+    return mojom::FeedItem::NewArticle(std::move(item));
   }
-  return true;
+
+  // An unknown content_type could be something introduced for future use.
+  return base::unexpected(
+      base::StrCat({"Feed item of unknown content type. content_type=",
+                    feed_item.content_type}));
 }
 
 }  // namespace
 
-bool ParseFeedItems(const base::Value& json_value,
-                    std::vector<mojom::FeedItemPtr>* feed_items) {
-  if (!json_value.is_list()) {
-    return false;
+std::vector<mojom::FeedItemPtr> ParseFeedItems(const base::Value& value) {
+  std::vector<mojom::FeedItemPtr> items;
+  if (!value.is_list()) {
+    NOTREACHED();
+    return items;
   }
-  for (const base::Value& feed_item_raw : json_value.GetList()) {
-    mojom::FeedItemPtr item;
-    if (ParseFeedItem(feed_item_raw, &item)) {
-      feed_items->push_back(std::move(item));
+  for (const base::Value& feed_item : value.GetList()) {
+    auto item = ParseFeedItem(feed_item);
+    if (item.has_value()) {
+      items.push_back(std::move(*item));
+    } else {
+      VLOG(1) << item.error();
     }
   }
-  return true;
+  return items;
 }
 
 }  // namespace brave_news
