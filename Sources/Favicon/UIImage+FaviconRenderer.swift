@@ -104,13 +104,18 @@ extension UIImage {
     if let cgImage = image.cgImage {
       let hasTransparentEdges = image.hasTransparentEdges
       
-      var padding = hasTransparentEdges ? 4.0 : 0.0
       var idealSize = image.size
+      var padding = hasTransparentEdges ? 4.0 : 0.0
+      
+      if shouldScale && hasTransparentEdges {
+        padding = max(idealSize.width, idealSize.height) * 0.20
+      }
+      
       if shouldScale && max(idealSize.width, idealSize.height) < 64.0 && min(idealSize.width, idealSize.height) > 0 {
         let ratio = 64.0 / min(idealSize.width, idealSize.height)
         idealSize.width *= ratio
         idealSize.height *= ratio
-        padding = hasTransparentEdges ? 10.0 : 0.0
+        padding = hasTransparentEdges ? max(idealSize.width, idealSize.height) * 0.20 : padding
       }
         
       let size = CGSize(
