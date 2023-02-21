@@ -706,8 +706,9 @@ public class CardBuilderFeedCard {
                             .inflate(R.layout.brave_rating_news_layout, null);
         view.setOnClickListener((v) -> { showBraveRateDialog(); });
         linearLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        mLinearLayout.setLayoutParams(linearLayoutParams);
-        mLinearLayout.setBackground(makeRound(CARD_LAYOUT, R.color.card_background, 30));
+        linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        linearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.setBackground(makeRound(CARD_LAYOUT, R.color.card_background, 30));
         linearLayout.addView(view);
     }
 

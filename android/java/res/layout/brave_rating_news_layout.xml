@@ -51,6 +51,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tell_us_what_you_think_id"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tell_us_what_you_think_id"
         app:layout_constraintTop_toTopOf="@+id/brave_liking_id"
         tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
