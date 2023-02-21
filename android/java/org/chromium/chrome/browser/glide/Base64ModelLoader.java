@@ -17,10 +17,10 @@ import java.nio.ByteBuffer;
  * Loads a {@link ByteBuffer} from a Base 64 encoded String.
  */
 public final class Base64ModelLoader implements ModelLoader<String, ByteBuffer> {
-
     @NonNull
     @Override
-    public LoadData<ByteBuffer> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
+    public LoadData<ByteBuffer> buildLoadData(
+            @NonNull String model, int width, int height, @NonNull Options options) {
         return new LoadData<>(new ObjectKey(model), new Base64DataFetcher(model));
     }
 

@@ -27,8 +27,7 @@ public class BraveGlideModule implements GlideModule {
     @Override
     public void registerComponents(
             @NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        registry
-                .append(String.class, ByteBuffer.class, new Base64ModelLoaderFactory())
+        registry.append(String.class, ByteBuffer.class, new Base64ModelLoaderFactory())
                 .register(SVG.class, PictureDrawable.class, new SvgDrawableTranscoder())
                 .append(InputStream.class, SVG.class, new SvgDecoder());
     }
