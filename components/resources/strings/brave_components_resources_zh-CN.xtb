@@ -679,7 +679,7 @@
 <translation id="2369994359029526515">未验证的创建者</translation>
 <translation id="6020176662032623904">已验证的创建者</translation>
 <translation id="215037911651623564">刷新创作者验证状态</translation>
-<translation id="8946576491316456643">目前，您提出的任何建议都将保持等待状态，并在 90 天内自动重试。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/></translation>
+<translation id="8946576491316456643">目前，您赚取的任何奖励都将保持等待状态，并在 90 天内自动重试。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">此创作者尚未注册。</translation>
 <translation id="3573568055713372419">您已连接至<ph name="USER_PROVIDER"/>，但该创作者已连接至<ph name="CREATOR_PROVIDER"/>。这意味着该创作者无法收到您的建议。</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/>上的<ph name="NAME"/></translation>

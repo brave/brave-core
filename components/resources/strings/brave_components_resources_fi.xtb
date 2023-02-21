@@ -539,13 +539,17 @@
 <translation id="4894106830958548828">Ymmärrän</translation>
 <translation id="7534079972563542000">Pysäyttämättömät verkkotunnukset</translation>
 <translation id="4492298165410552103">Otetaanko pysäyttämättömien verkkotunnisten tuki käyttöön Bravessa?</translation>
+<translation id="3647533686160055812">Brave tulee käyttämään Infuraa selvittääkseen .crypto (ja myös .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) -verkkotunnukset, jotka ovat pysäyttämättömissä verkkotunnuksissa. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Infura näkee, että joku yrittää vierailla näissä verkkotunnuksissa, muttei mitään muuta. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum-nimipalvelu</translation>
 <translation id="4335039108389860301">Haluatko ottaa ENS-palvelun (Ethereum Name Service) käyttöön Bravessa?</translation>
+<translation id="4609973808011229683">Brave tulee käyttämään Infuraa selvittääkseen .eth-verkkotunnukset, jotka ovat Ethereum-nimipalvelussa (ENS). Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Infura näkee, että joku yrittää vierailla näissä .eth-verkkotunnuksissa, muttei mitään muuta. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="807404806385418949">Ketjun ulkopuolinen Ethereum Name Service -haku</translation>
 <translation id="4049590838234508776">Ota ketjun ulkopuolinen Ethereum Name Service (ENS) -haku käyttöön Bravessa?</translation>
+<translation id="5944991147217767764">Tämä .eth-verkkotunnus on tallennettu ketjun ulkopuolella, ja kolmannen osapuolen yhdyskäytävä ratkaisee sen. Jos otat ENSin ketjun ulkopuolisen hakupyynnön käyttöön, kolmannen osapuolen yhdyskäytävä näkee, että yrität vierailla .eth-verkkotunnuksessa. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Learn more<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Jatka ketjun ulkopuolista hakua</translation>
 <translation id="531747189990625622">Solana-nimipalvelu</translation>
 <translation id="1090584614351290462">Haluatko ottaa Ethereum-nimipalvelun (SNS) käyttöön Bravessa?</translation>
+<translation id="2350552210396418924">Brave tulee käyttämään Coinbase Cloudia selvittääkseen .sol-verkkotunnuksia. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Coinbase näkee, että joku yrittää vierailla näissä .sol-verkkotunnuksissa, muttei mitään muuta. Tutustu Coinbase Cloudin <ph name="BEGIN_COINBASE_TOU_LINK"/>käyttöehtoihin<ph name="END_COINBASE_TOU_LINK"/> ja <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_COINBASE_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Jatka Infura-palvelimella</translation>
 <translation id="2313603121968571839">Jatka Coinbase-pilvipalvelimella</translation>
 <translation id="2356070529366658676">Kysy</translation>
@@ -647,6 +651,12 @@
 <translation id="3026978804849658576">Näytä tiliote</translation>
 <translation id="3368922792935385530">Yhdistetty</translation>
 <translation id="8494748383523030337">Saldosi</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>Oletko valmis ansaitsemaan BATeja?<ph name="BOLD_END"/> Yhdistä säilytystilisi palveluprofiiliisi. Jos sinulla ei ole tiliä, saat mahdollisuuden luoda sellaisen.</translation>
+<translation id="1772961321862399863">Ansaitakseen BATeja, käyttäjien täytyy yhdistää säilytystili Brave-palkintoihin. Valitettavasti alueellasi ei ole saatavilla olevaa valvojaa, joten ansaitseminen ei ole mahdollista. Toistaiseksi Brave-palkintojen käynnistäminen tukee automaattisesti luojia.</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {Tässä kuussa olet vieraillut # creator Brave-palkintojen tukeman luojan luona}
+      other {Tässä kuussa olet vieraillut # creator Brave-palkintojen tukeman luojan luona}
+    }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Palkinnot: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Kuukauden <ph name="MONTH"/> mainosten palkintosi ovat täällä!</translation>
 <translation id="7861645265922445992">Lunasta palkinnot</translation>
@@ -668,6 +678,7 @@
 <translation id="2956070106555335453">Yhteenveto</translation>
 <translation id="2369994359029526515">Vahvistamaton luoja</translation>
 <translation id="6020176662032623904">Vahvistettu luoja</translation>
+<translation id="215037911651623564">Päivitä luojan vahvistuksen tila</translation>
 <translation id="8946576491316456643">Kaikki antamasi tipit pysyvät käsittelyssä, ja niitä yritetään automaattisesti uudelleen 90 päivän ajan. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">Tämä luoja ei ole vielä rekisteröitynyt.</translation>
 <translation id="3573568055713372419">Olet yhdistetty tarjoajaan <ph name="USER_PROVIDER"/>, mutta tämä luoja on yhdistetty tarjoajaan <ph name="CREATOR_PROVIDER"/>. Tämä tarkoittaa sitä, että tippisi ei saavuta tätä luojaa.</translation>
@@ -741,8 +752,10 @@
 <translation id="105037569026952831">Kehittävät saavat maksutunnuslahjoituksesi automaattisesti käyttötasojesi mukaan, joista käytämme termiä "Huomio".</translation>
 <translation id="5323267338679539010">Kiitä tippien muodossa</translation>
 <translation id="6042317056594735519">Tippaaminen kannustaa ja tukee suosikkisisältöäsi ja -kehittäjiäsi. Aloita siis tippaaminen!</translation>
+<translation id="4215679190414901888">Lopuksi, autetaan sinut alkuun</translation>
 <translation id="827315274423079662">Jee, valmista tuli!</translation>
 <translation id="8268038362451312235">Brave Rewardien avulla voit tehdä verkosta turvallisemman paikan muille. Se vasta onkin upeaa!</translation>
+<translation id="6845311459433734326">Yhdistä säilytystili, jotta voit ansaita BATeja ja nostaa palkintosi</translation>
 <translation id="1443125272907895958">Teen sen myöhemmin</translation>
 <translation id="1015443539415537847">Pahoittelut, Brave-palkinnot eivät ole käytettävissä</translation>
 <translation id="5007776270364097327">Valitettavasti näyttää siltä, että olet alueella, jossa Brave-palkinnot eivät ole käytettävissä.</translation>
@@ -851,6 +864,8 @@
 <translation id="6295954645230084874">Ostoa ei tueta kohteelle <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Ostosta ei tueta valitussa verkossa</translation>
 <translation id="4982630604810554641">Etsitään verkkotunnusta...</translation>
+<translation id="5467044307473123584">Brave tukee ketjujen ulkopuolisten yhdyskäytävien käyttämistä .eth-verkkotunnusten selvittämiseen.</translation>
+<translation id="4896417414446851895">Näyttää siltä, että olet syöttänyt ENS-osoitteen. Meidän täytyy käyttää kolmannen osapuolen ratkaisijaa selvittääksemme tämän pyynnön, joka saattaa nähdä IP-osoitteesi ja verkkotunnuksesi.</translation>
 <translation id="8646078615727397565">Käytä ENS-verkkotunnusta</translation>
 <translation id="4171338820961522154">Vaihtoa ei tueta kohteelle <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Maksutapahtuma voidaan suorittaa etukäteen</translation>
@@ -1442,6 +1457,8 @@
 <translation id="1826671530876539299">Vaihda asetuksia</translation>
 <translation id="6778140392042462129">Vaihdot</translation>
 <translation id="6173494033320397682">Vain suora reitti</translation>
+<translation id="2440960581098655899">Se varmistaa vain suoran reitityksen ja myös poistaa jaetun kaupan pois käytöstä</translation>
+<translation id="6245314729809503023">Brave käyttää 60 parasta tokenia välireititykseen suorituskyvyn optimointia varten</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% halvempi kuin CoinGecko</translation>
 <translation id="5351867352310722022"><ph name="VALUE"/>% CoinGeckon sisällä</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% kalliimpi kuin CoinGecko</translation>
@@ -1449,6 +1466,8 @@
 <translation id="4029551149873989025">Vaihda verkkoa</translation>
 <translation id="7561262633951061138">Paras</translation>
 <translation id="3143110700666266545">Tämä sovellus käyttää seuraavia kolmannen osapuolen sovellusrajapintoja:</translation>
+<translation id="8411419545176806786">Brave-vaihto käyttää 0xia DEX-aggregaattorina tuetuille EVM-verkoille. 0x käsittelee Ethereum-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). 0x käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
+<translation id="7467728126359974661">Brave-vaihto käyttää Jupiteria DEX-aggregaattorina Solana-verkolle. Jupiter käsittelee Solana-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). Jupiter käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
 <translation id="8497751359931572880">Napsuta tästä nähdäksesi 0xin tietosuojakäytännön.</translation>
 <translation id="4904748904130272182">Napsuta tästä nähdäksesi Jupiterin tietosuojakäytännön.</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>

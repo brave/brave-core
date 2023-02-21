@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
+<translation id="4744921452903670666">אנו מעוניינים בדעתך!</translation>
 <translation id="2524310205387880526">דרג/י את Brave</translation>
+<translation id="4104400246019119780">תודה!</translation>
+<translation id="5202255382948179481">הוסיפו את ההמלצה שלכם</translation>
+<translation id="7759809451544302770">אופציונלי</translation>
+<translation id="4748689412569009273">באימוג'י אחד, איך החוויה שלכם ב-Brave?</translation>
+<translation id="7335142069363686805">דרגו אותנו</translation>
+<translation id="6681362094306959654">אוהבים את Brave</translation>
+<translation id="5488843227043643519">האם תשאירו דירוג בחנות האפליקציות?</translation>
+<translation id="5867854497245948308">תודה על המשוב שלכם!</translation>
+<translation id="4935400164159327304">יידעו אותנו כיצד נוכל לשפר את Brave.</translation>
 <translation id="915758461293673891">סכום הטיפ:</translation>
 <translation id="1420756770787071946">תמכו ביוצר זה</translation>
 <translation id="4147995007712611681">הגדרת טיפ בהמתנה!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">שירות רישום שמות Ethereum</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">שיטת רזולוציה</translation>
+<translation id="8410806609595910352">בדיקת אופ-צ'יין של ENS</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="59174027418879706">מאופשר</translation>
@@ -91,11 +102,19 @@
 <translation id="1765217911817124376">הפעל את חדשות Brave</translation>
 <translation id="8981973962043893066">חפשו אתר, נושא או הזנת RSS</translation>
 <translation id="3225021799163709119">פופולאריים</translation>
+<translation id="3673348851739109493">רשימה מדורגת של מקורות</translation>
 <translation id="4750394297954878236">הצעות</translation>
+<translation id="1031536812594716160">מקורות שאולי תאהבו</translation>
 <translation id="1498364270401875204">ערוצים</translation>
+<translation id="3923595176124806911">עקבו אחרי נושאים שמעניינים אתכם</translation>
 <translation id="8032569120109842252">במעקב</translation>
+<translation id="7264627851715038916">נהלו מקורות עבור הפיד שלכם</translation>
 <translation id="4108314971463891922">עקוב</translation>
 <translation id="3861486700625780712">בטל מעקב</translation>
+<translation id="7813788390976857515">קבלו פידים</translation>
+<translation id="3405580543478883040">קבלו פידים</translation>
+<translation id="7461899062138731833">מקורות</translation>
+<translation id="6150420917380577651">לא נמצא פיד עבור <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">פרסומת</translation>
 <translation id="7823038307453615214">הצג את Brave News</translation>
 <translation id="6527303717912515753">שיתוף</translation>
@@ -225,6 +244,9 @@
 <translation id="4781696154289395607">תרמת <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">אירעה תקלה בעיבוד התרומה שלכם.</translation>
 <translation id="2221902203895354376">מענק סמלי זמין!</translation>
+<translation id="2377929997600454162">התגמול שלכם עבור <ph name="MONTH_VALUE"/> כאן!</translation>
+<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>תגמולים:<ph name="TOKEN"/>BAT</translation>
+<translation id="1649629664206601032">יש לכם <ph name="TOKEN"/>ימים נותרים לתביעה</translation>
 <translation id="2323069945529668668">אוי לא!</translation>
 <translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
@@ -251,6 +273,9 @@
 <translation id="1680065323266179640">מחק חשבון מסונכרן</translation>
 <translation id="3792563952903751704">מחיקת החשבון שלך תסיר את הנתונים המוצפנים שלך משרתי Brave ותשבית את הסנכרון בכל המכשירים המחוברים שלך. עם זאת, זה לא ימחק את הנתונים המאוחסנים באופן מקומי במכשירים אלה.
 המחיקה הזו היא לצמיתות ואין דרך לשחזר את הנתונים. אם תחליט להתחיל להשתמש שוב בסינכרון, תצטרך ליצור חשבון חדש ולהוסיף מחדש כל מכשיר אחד אחד.</translation>
+<translation id="9064376100690171155">מחק חשבון לצמיתות</translation>
+<translation id="2740516568641790390">החשבון המסונכרן נמחק בהצלחה</translation>
+<translation id="7006136453627651236">מחיקת החשבון המסונכרן נכשל</translation>
 <translation id="728334460283296316">הסר מכשיר</translation>
 <translation id="1178128181015923849">הנך בטוח/ה שברצונך למחוק את מכשיר '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">סרק/י או הזנ/י קוד סנכרון</translation>
@@ -294,6 +319,10 @@
 <translation id="7173114856073700355">פתיחת ההגדרות</translation>
 <translation id="6965382102122355670">אישור</translation>
 <translation id="4450893287417543264">אל תציג שוב</translation>
+<translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>מחדש את החשבון</translation>
+<translation id="8199291899164865593">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. החשבון נמחק.</translation>
+<translation id="5633907266617216186">כתובות, פרטי תשלום וכו'.</translation>
 <translation id="1056898198331236512">אזהרה</translation>
 <translation id="1426410128494586442">כן</translation>
 <translation id="7811264919113243207">פעולה זו תשתף נתוני Brave שלך, העשויים לכלול את הסיסמאות שלך, עם המכשיר שיצר QR קוד זה.
@@ -308,6 +337,7 @@
 <translation id="6199596294742117349">זוהי כרטיסייה פרטית</translation>
 <translation id="5858455511731621847">למרות שאתרים בהם אתם מבקרים בכרטיסיות פרטיות לא נשמרים באופן מקומי, הם לא הופכים אתכם לאנונימיים או בלתי נראים עבור ספק שירותי האינטרנט שלכם, המעסיק שלכם או האתרים שבהם אתם מבקרים.</translation>
 <translation id="5789441016350810005">Brave Ads נשלחות כאשר הדפדפן נמצא ברקע</translation>
+<translation id="4059103952779533037">תרומות &amp; טיפים</translation>
 <translation id="2892744985635833293">הטיפ החודשי שלך עבר.</translation>
 <translation id="3124090095880236567">הפעל פרסומות</translation>
 <translation id="2975780980638932742">Brave Ads כאן!</translation>
@@ -315,8 +345,10 @@
 <translation id="8520059774736886747">יוצר/ת <ph name="PUBLISHER_NAME"/> אומת/ה לאחרונה</translation>
 <translation id="1486343603936278248">טוקן</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
+<translation id="3171669670217312786">תמונות רקע</translation>
 <translation id="8522669544471808198">הצג תמונות רקע</translation>
 <translation id="3870475560794762985">הצג תמונות ממומנות</translation>
+<translation id="8793108040181436796">ווידג'טים</translation>
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>
 <translation id="8297488609722895137">תמונה מאת <ph name="PHOTO_BY"/></translation>
@@ -444,11 +476,16 @@
 <translation id="7930505144430343145">ברוכים הבאים ל-Brave Rewards!</translation>
 <translation id="3477340970981564961">פרסומות Brave Private מתגמלות אתכם בטוקנים לתמיכה ביוצרי תוכן בשונה מפרסומות מסורתיות, כל זאת תוך שמירה על פרטיות המידע האישי שלכם.</translation>
 <translation id="6973095375773523904">היכן מוצגות פרסומות?</translation>
+<translation id="4328028439561659455">Brave Private Ads מופיעות כהתראות על המסך שלך. אתה שולט באיזו תדירות אתה רואה את המודעות האלה.</translation>
 <translation id="7712287524451429139">נתינה בחזרה הפכה לקלה</translation>
 <translation id="105037569026952831">היוצרים מקבלים את תרומות הטוקנים שלכם באופן אוטומטי על סמך רמות המעורבות שלכם שאנו מודדים כ'תשומת לב'.</translation>
 <translation id="5323267338679539010">תגידו תודה באמצעות טיפים</translation>
+<translation id="8235783939971604011">מתן טיפים היא דרך לעודד ולתמוך באופן אישי בתכנים או ביוצרים שאתם אוהבים. התחילו לתת טיפים!</translation>
+<translation id="4215679190414901888">לבסוף, בוא נתקין</translation>
 <translation id="3494356595346329740">תוכלו לשנות זאת בהמשך.</translation>
 <translation id="3115702351969988294">באיזו תדירות תרצו לראות פרסומות?</translation>
+<translation id="2353222426385080466">יותר מודעות פרטיות, יותר תגמולים.</translation>
+<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> מודעות לשעה</translation>
 <translation id="827315274423079662">ווהו, אתם מוכנים!</translation>
 <translation id="3895246934788932488">באמצעות שימוש ב- Brave Rewards אתם מגנים על פרטיותכם ועוזרים להפוך את האינטרנט למקום טוב יותר עבור כולם. וזה’ מדהים!</translation>
 <translation id="5705882733397021510">חזור</translation>
@@ -567,11 +604,16 @@
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
 <translation id="3835223348537121988">יתרה:</translation>
+<translation id="6888491517683356528">המשך ל-Ramp</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3784455785234192852">נעל</translation>
+<translation id="8796429300536029044">פרטי NFT</translation>
 <translation id="3866249974567520381">תיאור</translation>
 <translation id="4378475168089649292">בלוקצ'יין</translation>
+<translation id="794436451374055797">סטנדרט אסימון</translation>
 <translation id="9033453977881595182">זיהוי סמל</translation>
+<translation id="4987916116550559556">כתובת Mint</translation>
+<translation id="7592795625234816917">התמונה אינה זמינה</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
@@ -955,8 +997,18 @@
 <translation id="6662142137695589205">קשרו את מנוי ה-VPN שלכם</translation>
 <translation id="2674077112509133024">הרחיבו את Brave Firewall + הגנת VPN</translation>
 <translation id="6365389672683343144">המינוי ל-VPN של Brave יכול להגן על עד 5 מכשירים, באנדרואיד, iOS ושולחן העבודה. פשוט קשר את המינוי שלכם ב-Google Play לחשבון ה-Brave שלכם.</translation>
+<translation id="6610899852831463073">לא ניתן להפעיל גלישה בטוחה</translation>
+<translation id="7954263306665462056">גלישה בטוחה הושבתה במכשיר שלכם. כדי להפעיל את האפשרות מחדש ודאו ששירותי Google Play מותקנים ומעודכנים.</translation>
+<translation id="6605147707233193230">הפעל כדי לעזור לתמוך ביוצרי תוכן</translation>
+<translation id="1609556006143307897">אתה עוזר לתמוך ביוצרי תוכן</translation>
+<translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
+<translation id="121894865378699201">מוכן להתחיל להרוויח BAT?</translation>
+<translation id="2648805457288107211">רק חבר את חשבון המשמורת שלך לפרופיל התגמולים שלך. אם אין לך חשבון, תקבל את ההזדמנות ליצור אחד.</translation>
+<translation id="1772961321862399863">כדי להרוויח BAT, המשתמשים חייבים לחבר חשבון משמורת ל-Brave Rewards. למרבה הצער, אין אפוטרופוס זמין באזור שלך, כך שהרווחים אינם זמינים. לעת עתה, הפעלת Brave Rewards תתמוך ביוצרים באופן אוטומטי.</translation>
+<translation id="5430495762768325224">למידע נוסף על BAT</translation>
 <translation id="6278643716658443228">הגדרות תשלומים</translation>
 <translation id="6516984207843289176">חבר חשבון</translation>
+<translation id="4272136334824111854">בחודש זה, ביקרתם <ph name="CREATOR_COUNT"/> תומכים של תגמולי Brave</translation>
 <translation id="6845311459433734326">חבר חשבון משמורת כדי שתוכל להרוויח BAT ולמשוך את התגמולים שלך</translation>
 <translation id="928980476243133540">אעשה זאת מאוחר יותר</translation>
 <translation id="579702532610384533">התחבר מחדש</translation>
@@ -966,6 +1018,7 @@
 <translation id="9074594632540931067">שגיאה: BAT אינו זמין</translation>
 <translation id="5382684862562314222">BAT עדין לא נתמך באזור שלך ב-Uphold.</translation>
 <translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
+<translation id="842321566508373706">על פי Uphold, יש כרגע כמה מגבלות על חשבון Uphold שלכם. התחברו לחשבון Uphold שלכם ובדקו אם יש הודעות או דרישות חשבון שנותרו להשלים, ולאחר מכן נסו שוב.</translation>
 <translation id="6417420737057016607">פרסומות Brave</translation>
 <translation id="5425006356459378415">Brave Rewards לא זמינים</translation>
 <translation id="833643743158564518">הרשמות חדשות ל-Brave Rewards מושבתות כעת באזורכם. עם זאת, תמיד אפשר לנסות שוב מאוחר יותר. <ph name="LEARN_MORE"/></translation>
@@ -973,5 +1026,7 @@
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="6309721369749814582">דומיין <ph name="DOMAIN"/> אינו רשום</translation>
 <translation id="4071347720273751665">נראה שהזנת כתובת ENS. נצטרך להשתמש בפותר צד שלישי כדי לפתור בקשה זו, שאולי יוכל לראות את כתובת ה-IP והדומיין שלך. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">השתמשו בדומיין אופ-צ'יין ENS</translation>
+<translation id="4982630604810554641">מחפש דומיין...</translation>
 <translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

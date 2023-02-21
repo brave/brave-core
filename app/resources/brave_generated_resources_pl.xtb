@@ -302,9 +302,6 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Widok zaawansowany</translation>
 <translation id="101592339984642584">Filtrowanie treści</translation>
 <translation id="8694564340481124390">Włącz filtry niestandardowe, które blokują oprogramowanie śledzące i przeszkadzające, konkretne dla danego regionu oraz języka.</translation>
-<translation id="4877657558909976793">Włącz filtry niestandardowe, które blokują skypty śledzące i 
-    
-<ph name="BEGIN_LINK"/>przeszkadzające<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Dodaj listy filtrów niestandardowych</translation>
 <translation id="1020877116991797978">Dodaje dodatkowe listy utworzone i utrzymywane przez Twoją zaufaną społeczność.</translation>
 <translation id="7617831480435794399">Subskrybuj tylko listy pochodzące od podmiotów, którym ufasz. Twoja przeglądarka będzie regularnie sprawdzać podany adres URL pod kątem aktualizacji, ujawniając Twój adres IP serwerowi tej strony.</translation>
