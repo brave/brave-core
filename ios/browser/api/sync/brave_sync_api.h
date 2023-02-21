@@ -75,6 +75,7 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 @property(nonatomic, readonly) bool isFirstSetupComplete;
+@property(nonatomic) bool isSyncAccountDeletedNoticePending;
 
 - (instancetype)init NS_UNAVAILABLE;
 

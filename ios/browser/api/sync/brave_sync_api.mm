@@ -24,6 +24,10 @@
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
+#include "components/prefs/ios/pref_observer_bridge.h"
+#include "components/prefs/pref_member.h"
+#include "components/prefs/pref_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -126,6 +130,10 @@ BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
+namespace brave_sync {
+const char kSyncAccountDeletedNotice[] = "brave_sync_v2.account_deleted_notice_pending";
+}
+
 // MARK: - BraveSyncDeviceObserver
 
 @interface BraveSyncDeviceObserver : NSObject {
@@ -167,9 +175,14 @@ BraveSyncAPIWordsValidationStatus const
 
 // MARK: - BraveSyncAPI
 
-@interface BraveSyncAPI () {
+@interface BraveSyncAPI () <PrefObserverDelegate> {
   std::unique_ptr<BraveSyncWorker> _worker;
   ChromeBrowserState* _chromeBrowserState;
+  PrefService* _prefService;
+  // Preference Observer to track changes to preferences
+  std::unique_ptr<PrefObserverBridge> _prefObserverBridge;
+  // Registrar for preference changes notifications
+  PrefChangeRegistrar _prefChangeRegistrar;
 }
 @end
 
@@ -179,6 +192,16 @@ BraveSyncAPIWordsValidationStatus const
   if ((self = [super init])) {
     _chromeBrowserState = mainBrowserState;
     _worker.reset(new BraveSyncWorker(_chromeBrowserState));
+
+    // Registering to observe Preference Changes
+    _prefService = _chromeBrowserState->GetPrefs();
+    _prefChangeRegistrar.Init(_prefService);
+    _prefObserverBridge.reset(new PrefObserverBridge(self));
+
+    // Register to observe any changes on Preference SyncAccountDeletedNoticePending
+    _prefObserverBridge->ObserveChangesForPreference(
+        brave_sync::kSyncAccountDeletedNotice,
+        &_prefChangeRegistrar);
   }
   return self;
 }
@@ -186,6 +209,10 @@ BraveSyncAPIWordsValidationStatus const
 - (void)dealloc {
   _worker.reset();
   _chromeBrowserState = NULL;
+
+  // Remove Preferences changes registrations
+  _prefChangeRegistrar.RemoveAll();
+  _prefObserverBridge.reset();
 }
 
 - (bool)canSyncFeatureStart {
@@ -352,6 +379,15 @@ BraveSyncAPIWordsValidationStatus const
       completion));
 }
 
+- (bool)isSyncAccountDeletedNoticePending {
+  return _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNotice);
+}
+
+- (void)setIsSyncAccountDeletedNoticePending:(bool)isSyncAccountDeletedNoticePending {
+  _prefService->SetBoolean(brave_sync::kSyncAccountDeletedNotice, isSyncAccountDeletedNoticePending);
+  _prefService->CommitPendingWrite();
+}
+
 - (void)deleteDevice:(NSString*)guid {
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
 }
@@ -378,4 +414,16 @@ BraveSyncAPIWordsValidationStatus const
       initWithSyncServiceImpl:service
                      callback:onSyncServiceStateChanged];
 }
+
+// MARK: - PrefObserverDelegate
+
+- (void)onPreferenceChanged:(const std::string&)preferenceName {
+  if (preferenceName == brave_sync::kSyncAccountDeletedNotice) {
+    // BOOL autofillProfileEnabled = 
+    //     _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNotice);
+
+    
+  }
+}
+
 @end
