@@ -19,7 +19,8 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
-  hour: 'numeric'
+  hour: 'numeric',
+  minute: 'numeric'
 })
 
 export function shouldShowVBATNotice (
