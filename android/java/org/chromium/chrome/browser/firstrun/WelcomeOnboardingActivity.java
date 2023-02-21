@@ -162,6 +162,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void nextOnboardingStep() {
+        if (isActivityFinishingOrDestroyed()) return;
+
         mCurrentStep++;
         if (mCurrentStep == 0) {
             int margin = mIsTablet ? 100 : 0;
@@ -194,19 +196,31 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
 
             if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                mBtnPositive.setText(getResources().getString(R.string.continue_text));
-                mBtnNegative.setVisibility(View.GONE);
+                if (mBtnPositive != null) {
+                    mBtnPositive.setText(getResources().getString(R.string.continue_text));
+                }
+                if (mBtnNegative != null) {
+                    mBtnNegative.setVisibility(View.GONE);
+                }
             }
             if (mTvWelcome != null) {
                 mTvWelcome.setVisibility(View.GONE);
             }
-            mLayoutCard.setVisibility(View.VISIBLE);
-            mIvArrowDown.setVisibility(View.VISIBLE);
-
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.VISIBLE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.VISIBLE);
+            }
             String countryCode = Locale.getDefault().getCountry();
             if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
+                if (mTvCard != null) {
+                    mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+                }
+                if (mTvDefault != null) {
+                    mTvDefault.setText(
+                            getResources().getString(R.string.onboarding_set_default_india));
+                }
             }
 
         } else if (mCurrentStep == 2) {
@@ -214,18 +228,32 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
 
-            mLayoutCard.setVisibility(View.GONE);
-            mTvDefault.setVisibility(View.GONE);
-            mIvArrowDown.setVisibility(View.GONE);
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.GONE);
+            }
+            if (mTvDefault != null) {
+                mTvDefault.setVisibility(View.GONE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.GONE);
+            }
 
-            mTvCard.setText(getResources().getString(R.string.p3a_title));
-            mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
-            mBtnNegative.setVisibility(View.VISIBLE);
+            if (mTvCard != null) {
+                mTvCard.setText(getResources().getString(R.string.p3a_title));
+            }
+            if (mBtnPositive != null) {
+                mBtnPositive.setText(getResources().getString(R.string.continue_text));
+            }
+            if (mBtnNegative != null) {
+                mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
+                mBtnNegative.setVisibility(View.VISIBLE);
+            }
 
             if (PackageUtils.isFirstInstall(this)
                     && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                mCheckboxCrash.setChecked(true);
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(true);
+                }
                 UmaSessionStats.changeMetricsReportingConsent(true);
                 OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
             } else {
@@ -237,19 +265,25 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 } catch (Exception e) {
                     Log.e("isCrashReportingOnboarding", e.getMessage());
                 }
-                mCheckboxCrash.setChecked(isCrashReporting);
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(isCrashReporting);
+                }
             }
 
-            mCheckboxCrash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    try {
-                        UmaSessionStats.changeMetricsReportingConsent(isChecked);
-                    } catch (Exception e) {
-                        Log.e("CrashReportingOnboarding", e.getMessage());
-                    }
-                }
-            });
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    UmaSessionStats.changeMetricsReportingConsent(isChecked);
+                                } catch (Exception e) {
+                                    Log.e("CrashReportingOnboarding", e.getMessage());
+                                }
+                            }
+                        });
+            }
 
             boolean isP3aEnabled = true;
 
@@ -259,25 +293,41 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 Log.e("P3aOnboarding", e.getMessage());
             }
 
-            mCheckboxP3a.setChecked(isP3aEnabled);
-            mCheckboxP3a.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    try {
-                        BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
-                        BraveLocalState.get().setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                        BraveLocalState.commitPendingWrite();
-                    } catch (Exception e) {
-                        Log.e("P3aOnboarding", e.getMessage());
-                    }
-                }
-            });
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setChecked(isP3aEnabled);
+                mCheckboxP3a.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    BraveLocalState.get().setBoolean(
+                                            BravePref.P3A_ENABLED, isChecked);
+                                    BraveLocalState.get().setBoolean(
+                                            BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                    BraveLocalState.commitPendingWrite();
+                                } catch (Exception e) {
+                                    Log.e("P3aOnboarding", e.getMessage());
+                                }
+                            }
+                        });
+            }
 
-            mTvCard.setVisibility(View.VISIBLE);
-            mLayoutCrash.setVisibility(View.VISIBLE);
-            mLayoutP3a.setVisibility(View.VISIBLE);
-            mLayoutCard.setVisibility(View.VISIBLE);
-            mIvArrowDown.setVisibility(View.VISIBLE);
+            if (mTvCard != null) {
+                mTvCard.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutCrash != null) {
+                mLayoutCrash.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutP3a != null) {
+                mLayoutP3a.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.VISIBLE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.VISIBLE);
+            }
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
