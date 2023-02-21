@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import Combine
 
 enum PendingRequest: Equatable {
   case transactions([BraveWallet.TransactionInfo])

@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import OrderedCollections
+import Combine
 
 /// A store contains data for buying tokens
 public class BuyTokenStore: ObservableObject {

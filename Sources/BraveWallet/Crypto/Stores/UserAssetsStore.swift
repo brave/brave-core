@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import Combine
 
 public class AssetStore: ObservableObject, Equatable {
   @Published var token: BraveWallet.BlockchainToken

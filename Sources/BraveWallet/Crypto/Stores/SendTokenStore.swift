@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import Strings
 import BigNumber
+import Combine
 
 /// A store contains data for sending tokens
 public class SendTokenStore: ObservableObject {

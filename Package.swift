@@ -464,3 +464,15 @@ if ProcessInfo.processInfo.environment["BRAVE_APPSTORE_BUILD"] == nil {
 }
 
 package.targets.append(braveTarget)
+
+#if swift(>=5.8)
+// Xcode 14.3b1 uses `-strict-concurrency=targeted` as the default. This can be removed when a Xcode build
+// moves this back to `minimal`. See https://github.com/apple/swift/pull/63786
+for i in package.targets.indices {
+  let type = package.targets[i].type
+  if type == .binary || type == .plugin { continue }
+  package.targets[i].swiftSettings = [
+    .unsafeFlags(["-Xfrontend", "-strict-concurrency=minimal"])
+  ]
+}
+#endif

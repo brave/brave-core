@@ -7,6 +7,7 @@ import Foundation
 import BraveCore
 import BigNumber
 import Strings
+import Combine
 
 public class TransactionConfirmationStore: ObservableObject {
   /// The value that are being sent/swapped/approved in this transaction

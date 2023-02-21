@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Combine
 
 /// This Store will be created for each Tab
 public class TabDappStore: ObservableObject {
