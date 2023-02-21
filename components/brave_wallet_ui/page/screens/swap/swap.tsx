@@ -20,6 +20,7 @@ import {
 
 // Hooks
 import { useLib } from '../../../common/hooks'
+import { useLazyGetTokenBalancesForChainIdQuery } from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet, WalletAccountType } from '../../../constants/types'
@@ -52,9 +53,7 @@ export const Swap = (props: Props) => {
   const { hideNav } = props
 
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
-  )
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const accounts: WalletAccountType[] = useUnsafeWalletSelector(WalletSelectors.accounts)
   const networks: BraveWallet.NetworkInfo[] = useUnsafeWalletSelector(WalletSelectors.networkList)
   const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
@@ -90,10 +89,23 @@ export const Swap = (props: Props) => {
     sendEthTransaction
   } = useLib()
 
+  const [getTokenBalancesForChainId] = useLazyGetTokenBalancesForChainIdQuery()
+  const getTokenBalancesForChainIdWrapped = React.useCallback(
+    async (contracts: string[], address: string, coin: BraveWallet.CoinType, chainId: string) => {
+      return await getTokenBalancesForChainId({
+        contracts,
+        address,
+        coin,
+        chainId
+      }).unwrap()
+    },
+    [getTokenBalancesForChainId]
+  )
+
   const swapServiceMojo = getSwapService()
 
   React.useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const results = await Promise.all(
         networks.map(async e => (await swapServiceMojo.isSwapSupported(e.chainId)).result)
       )
@@ -142,6 +154,7 @@ export const Swap = (props: Props) => {
           switchNetwork={makeSwitchNetwork()}
           getBalance={getBalanceForChainId}
           getTokenBalance={getTokenBalanceForChainId}
+          getTokenBalances={getTokenBalancesForChainIdWrapped}
           // // FIXME - remove isSwapSupported()
           swapService={makeSwapService()}
           // // FIXME - implement mojo method to query available 0x exchanges
