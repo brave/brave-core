@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -110,13 +111,32 @@ export const disconnectedArrow = styled.div`
 
 export const balance = styled.div`
   margin-top: 16px;
+  margin-bottom: 16px;
   font-size: 12px;
   line-height: 18px;
+
+  &.flat {
+    margin-bottom: 6px;
+  }
 `
 
 export const balanceTitle = styled.div`
   color: rgba(255, 255, 255, 0.8);
   letter-spacing: 0.01em;
+`
+
+export const balanceSpinner = styled.div`
+  .icon {
+    height: 36px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+`
+
+export const loading = styled.span`
+  font-size: 12px;
+  line-height: 18px;
+  vertical-align: middle;
 `
 
 export const balanceAmount = styled.div`
@@ -213,7 +233,6 @@ export const needsBrowserUpdateContentBody = styled.div`
 `
 
 export const progressHeader = styled.div`
-  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 11px;

@@ -528,4 +528,9 @@
     You can still browse privately!
   </message>
 
+  <!-- Rewards common strings -->
+  <message name="IDS_BRAVE_REWARDS_LOADING_LABEL" desc="">
+    Loading...
+  </message>
+
 </grit-part>

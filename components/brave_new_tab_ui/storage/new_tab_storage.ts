@@ -61,10 +61,7 @@ export const defaultState: NewTab.State = {
       earningsThisMonth: 0,
       earningsLastMonth: 0
     },
-    balance: {
-      total: 0,
-      wallets: {}
-    },
+    balance: undefined,
     externalWallet: undefined,
     externalWalletProviders: [],
     dismissedNotifications: [],

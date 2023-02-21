@@ -175,10 +175,7 @@ declare namespace RewardsExtension {
 
   export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
-  export interface Balance {
-    total: number
-    wallets: Record<string, number>
-  }
+  export type Balance = number | undefined
 
   type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
 

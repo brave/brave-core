@@ -1368,15 +1368,8 @@
             "parameters": [
               {
                 "name": "balance",
-                "type": "object",
-                "properties": {
-                  "total": {
-                    "type": "any"
-                  },
-                  "wallets": {
-                    "type": "any"
-                  }
-                }
+                "type": "number",
+                "optional": true
               }
             ]
           }

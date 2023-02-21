@@ -63,6 +63,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"includeInAutoContribute", IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE},
     {"learnMore", IDS_REWARDS_LEARN_MORE},
     {"learnMoreAboutBAT", IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT},
+    {"loading", IDS_BRAVE_REWARDS_LOADING_LABEL},
     {"monthlyTip", IDS_REWARDS_PANEL_MONTHLY_TIP},
     {"notificationAdGrantAmount", IDS_REWARDS_NOTIFICATION_AD_GRANT_AMOUNT},
     {"notificationAdGrantTitle", IDS_REWARDS_NOTIFICATION_AD_GRANT_TITLE},

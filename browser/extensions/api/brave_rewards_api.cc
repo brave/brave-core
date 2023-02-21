@@ -1192,30 +1192,44 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
     return RespondNow(Error("Rewards service is not available"));
   }
 
-  rewards_service->FetchBalance(
-      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnBalance, this));
+  rewards_service->GetExternalWallet(base::BindOnce(
+      &BraveRewardsFetchBalanceFunction::OnGetExternalWallet, this));
+
   return RespondLater();
 }
 
-void BraveRewardsFetchBalanceFunction::OnBalance(
-    const ledger::mojom::Result result,
-    ledger::mojom::BalancePtr balance) {
-  base::Value::Dict balance_value;
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    balance_value.Set("total", balance->total);
-
-    base::Value::Dict wallets;
-    for (auto const& rate : balance->wallets) {
-      wallets.Set(rate.first, rate.second);
-    }
-    balance_value.Set("wallets", std::move(wallets));
-  } else {
-    balance_value.Set("total", 0.0);
-    base::Value::Dict wallets;
-    balance_value.Set("wallets", std::move(wallets));
+void BraveRewardsFetchBalanceFunction::OnGetExternalWallet(
+    base::expected<ledger::mojom::ExternalWalletPtr,
+                   ledger::mojom::GetExternalWalletError> result) {
+  std::string connected_wallet_type;
+  if (auto wallet = std::move(result).value_or(nullptr);
+      wallet && wallet->status == ledger::mojom::WalletStatus::kConnected) {
+    connected_wallet_type = std::move(wallet->type);
   }
 
-  Respond(WithArguments(std::move(balance_value)));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return Release();
+  }
+
+  rewards_service->FetchBalance(
+      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this,
+                     std::move(connected_wallet_type)));
+}
+
+void BraveRewardsFetchBalanceFunction::OnFetchBalance(
+    const std::string& connected_wallet_type,
+    ledger::mojom::Result,
+    ledger::mojom::BalancePtr balance) {
+  if (!balance || !balance->wallets.contains("blinded") ||
+      (!connected_wallet_type.empty() &&
+       !balance->wallets.contains(connected_wallet_type))) {
+    return Respond(NoArguments());
+  }
+
+  Respond(WithArguments(balance->total));
 }
 
 BraveRewardsGetExternalWalletProvidersFunction::
