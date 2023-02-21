@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Daima Google'ın Hızlandırılmış Mobil Sayfa versiyonları yerine orijinal (AMP olmayan) sayfa URL'lerini ziyaret edin";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "İzleme URL'lerini Otomatik Olarak Yönlendir";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "En üst seviye yönlendirme izleme URL'lerini atlamak için desteği etkinleştir";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Üçüncü taraf çerezlerini engelle";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Güvenlik. Artık Çok Kolay.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Bu şekilde en sık hangi Brave özelliklerinin kullanıldığını öğrenmemize yardımcı olabilirsiniz. Bu tercihi Brave Ayarları altındaki \"Brave Kalkanları ve Gizlilik\"ten istediğiniz zaman değiştirebilirsiniz.";
+"callout.p3aCalloutDescription" = "Bu, en sık kullandığınız Brave özelliklerini öğrenmemize yardımcı olur. Brave Ayarları altındaki \"Brave Kalkanları ve Diğer Gizlilik Ayarları\" seçeneğinden istediğiniz zaman değişiklik yapabilirsiniz.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Gizlilik Korumalı Ürün Analizlerimiz (P3A) hakkında daha fazlasını öğrenin.";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Brave'i daha iyi hale getirmeye yardım edin.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Anonim, gizli ürün içgörüleri paylaşın.";
+"callout.p3aCalloutToggleTitle" = "Tamamen Gizli ve Anonim Ürün İçgörülerini Paylaşın";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Videoyu izleyin";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Uygulama bilgilerini panoya kopyalayın.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Uygulama boyutu bilgilerini panoya kopyala.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Resmi Kopyala";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Yeniden Yükle";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@, normalde verilerinizi korumak için şifreleme kullanır. Brave bu sefer %2$@ adresine bağlanmaya çalıştığında web sitesi beklenmedik ve yanlış kimlik bilgileri gönderdi. Bu durum, bir saldırgan %3$@ kimliğine bürünmeye çalıştığında veya Wi-Fi oturum açma ekranı bağlantıyı kesintiye uğrattığında yaşanabilir. Brave herhangi bir veri alışveriş yapılmadan önce bağlantıyı durdurduğu için bilgileriniz hala güvende.<br />Web sitesi sertifika sabitleme kullandığı için şu anda %4$@ adresini ziyaret edemezsiniz. Ağ hataları ve saldırılar genellikle geçicidir, o yüzden bu sayfa muhtemelen daha sonra çalışacaktır.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Bu sunucu, bunun %@ olduğunu kanıtlayamadı, cihazınızın işletim sistemi bunun güvenlik sertifikasına güvenmiyor. Bu durum hatalı yapılandırmadan veya bağlantınıza sızmaya çalışan bir saldırgandan kaynaklanıyor olabilir.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ diyor ki:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "%@ öğesinin uygulamaları değiştirmesine izin verilsin mi?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Resmi Yeni Sekmede Aç";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Yer İşaretlerine Ekle";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Sekmeyi Kapat";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "URL'yi kopyala";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "%@ önizlemesi";
-
 /* Settings privacy section title */
 "Privacy" = "Gizlilik";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Renk temasını değiştirir.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Temizle";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Son Kapatılan Tüm Sekmeler Temizlensin mi?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Son Kapatılan Sekme Yok.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Aç";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Son kapatılan sekmeyi açmak istiyor musunuz?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Son Kapatılan Sekmeler";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Son Kapatılan Sekmeleri Görüntüle";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Temizle";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Geri yükle";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "VPN oturumunuzu yenilemek için lütfen Brave Hesabınızda oturum açın.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Dismiss";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Oturum Aç";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Oturumun süresi doldu";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Bağlantınızı korumak ve her yerde istilacı izleyicileri engellemek için bir VPN'e yükseltin.";

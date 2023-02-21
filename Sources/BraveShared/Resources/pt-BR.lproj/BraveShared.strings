@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Sempre acessar os URLs das páginas originais (não AMP), em vez das versões de Accelerated Mobile Page do Google";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Redirecionamento automático de URLs de monitorização";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Ative o suporte para ignorar o redirecionamento principal de URLs de monitorização.";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloquear cookies de terceiros";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Privacidade simplificada.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Isso nos ajuda a saber quais recursos do Brave são usados com mais frequência. Altere isso a qualquer momento na seção \"Proteções do Brave e privacidade\" das Configurações do Brave.";
+"callout.p3aCalloutDescription" = "Isso nos ajuda a saber quais recursos do Brave são usados com mais frequência. Altere a qualquer momento nas configurações do Brave em 'Brave Shields e outras configurações de privacidade.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Saiba mais sobre nossa análise de produtos com preservação da privacidade (P3A)";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Ajude a melhorar o Brave.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Compartilhe insights anônimos e privados sobre o produto.";
+"callout.p3aCalloutToggleTitle" = "Compartilhe percepções sobre produtos completamente privadas e anônimas.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Assistir ao vídeo";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copie informações do app para a área de transferência.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Copie as informações sobre tamanho do aplicativo para a área de transferência.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Copiar imagem";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Recarregar";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "O %1$@ normalmente usa criptografia para proteger suas informações. Desta vez, quando o Brave tentou se conectar a %2$@, o site retornou com credenciais incomuns e incorretas. Isso pode acontecer quando um invasor tenta fingir ser %3$@ ou uma tela de início de sessão de Wi-Fi interrompe a conexão. Suas informações ainda estão seguras porque o Brave interrompeu a conexão antes que qualquer dado fosse trocado. <br />Você não pode visitar %4$@ agora porque o site usa fixação de certificado. Erros e ataques de rede geralmente são temporários, então esta página provavelmente funcionará mais tarde.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Este servidor não conseguiu comprovar que é %@; o certificado de segurança dele não é considerado confiável pelo sistema operacional do seu dispositivo. Isso pode ser causado por uma configuração incorreta ou um invasor tentando interceptar sua conexão.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ diz:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Permitir que o %@ troque de aplicativo?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Abrir imagem em uma nova aba";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Fechar menu de proteções";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Adicionar aos favoritos";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Fechar aba";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "Copiar URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "Pré-visualização de %@";
-
 /* Settings privacy section title */
 "Privacy" = "Privacidade";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Altera o tema de cores.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Limpar";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Limpar todas as guias recentemente fechadas?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Nenhuma guia recentemente fechada.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Abrir";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Quer abrir a última guia fechada?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Guias fechadas recentemente";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Exibir guias recentemente fechadas";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Limpar";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaurar";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Inicie sessão na sua conta Brave para atualizar sua sessão de VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Dispensar";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Login";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Sessão expirada";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Faça o upgrade para uma VPN para proteger sua conexão e bloquear rastreadores invasivos em qualquer lugar.";

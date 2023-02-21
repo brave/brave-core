@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Gå alltid til originale (ikke-AMP)-nettstedsadresser, ikke Googles Accelerated Mobile Page-versjoner";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Videresend automatisk sporings-URL-er";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Aktiver støtte for omgåelse av videresending av sporings-URL-er på toppnivå";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blokker tredjeparts informasjonskapsler";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Personvern. Gjort enkelt.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Dette hjelper oss å finne ut hvilke Brave-funksjoner som brukes oftest. Du kan endre dette når som helst i Brave-innstillinger under «Brave Shields og personvern».";
+"callout.p3aCalloutDescription" = "Dette hjelper oss å finne ut hvilke Brave-funksjoner som brukes oftest. Du kan endre dette når som helst i Brave-innstillingene under Brave Shields og andre personverninnstillinger.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Finn ut mer om vår personvernbevarende produktanalyse (P3A).";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Hjelp oss med å gjøre Brave bedre.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Del anonym, privat produktinnsikt.";
+"callout.p3aCalloutToggleTitle" = "Del helt anonyme og private produktinnsikter.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Se på videoen";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopier informasjon om appen til utklippstavlen.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Kopier informasjon om appstørrelse til utklippstavlen.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Kopier bilde";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Last inn på nytt";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ bruker normalt kryptering for å beskytte informasjonen din. Da Brave prøvde å koble til %2$@ denne gangen, returnerte nettstedet uvanlig og ukorrekt legitimasjon. Dette kan skje dersom en angriper prøver å utgi seg for å være %3$@, eller en wifi-påloggingsskjerm har avbrutt tilkoblingen. Informasjonen din er fortsatt sikker, fordi Brave stanset tilkoblingen før noen data ble utvekslet. <br />Du kan ikke besøke %4$@ akkurat nå, fordi nettstedet bruker sertifikatpinning. Nettverksfeil og angrep er vanligvis av begrenset varighet, så denne siden kommer trolig til å virke igjen senere.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Denne serveren kunne ikke bevise at domenet er %@ – sikkerhetssertifikatet kan ikke klareres av operativsystemet på enheten din. Dette kan skyldes en feilkonfigurering, eller at en ondsinnet tredjepart prøver å koble seg på tilkoblingen din.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ sier:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Vil du tillate at %@ bytter apper?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Åpne bilde i ny fane";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Lukk Skjold-menyen";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Legg til bokmerker";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Lukk fane";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "Kopier URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "Forhåndsvisning av %@";
-
 /* Settings privacy section title */
 "Privacy" = "Personvern";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Endrer fargetema.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Fjern";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Vil du fjerne alle nylig lukkede faner?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Ingen nylig lukkede faner.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Åpne";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Vil du åpne den sist lukkede fanen?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Nylig lukkede faner";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Vis nylig lukkede faner";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Fjern";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Gjenopprett";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Logg på Brave-konten din for å oppdatere VPN-økten.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Avvis";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Logg inn";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Økten er utløpt";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";

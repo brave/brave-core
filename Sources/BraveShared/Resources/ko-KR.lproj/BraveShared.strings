@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 항상 방문합니다.";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "추적 URL 자동 리디렉션";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "최상위 리디렉션 추적 URL 바이패싱 지원 활성화";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "프라이버시. 심플하게.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "어떤 Brave 기능이 가장 자주 사용되는지 학습할 수 있습니다. 'Brave Shields 및 프라이버시' 아래 Brave 설정에서 언제든지 변경할 수 있습니다.";
+"callout.p3aCalloutDescription" = "어떤 Brave 기능이 가장 자주 사용되는지 당사가 파악할 수 있습니다. 'Brave Shields 및 프라이버시' 아래 Brave 설정에서 언제든지 변경할 수 있습니다.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "프라이버시 보호 제품 분석(P3A)에 대해 자세히 알아보기.";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Brave 개선에 참여.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "익명으로 프라이버시를 보호하며 제품 인사이트 공유.";
+"callout.p3aCalloutToggleTitle" = "프라이버시가 완전 보장되는 익명 제품 인사이트를 공유합니다.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "동영상 보기";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "앱 정보를 클립보드에 복사합니다.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "앱 크기 정보를 클립보드에 복사합니다.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "이미지 복사";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "다시 로드";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@에서는 보통 암호화를 사용하여 사용자의 정보를 보호합니다. 이번에 Brave가 %2$@에 연결을 시도할 때 웹사이트가 비정상적이고 정확하지 않은 자격증명을 보냈습니다. 이는 공격자가 %3$@임을 가장하려고 시도하거나 Wi-Fi 로그인 화면이 연결을 방해할 때 주로 발생합니다. 어떠한 정보도 교환되기 전에 Brave가 연결을 중단했기 때문에 귀하의 정보는 안전합니다.<br />%4$@ 웹사이트가 인증서 피닝을 사용하기 때문에 지금은 이 사이트를 방문하실 수 없습니다. 네트워크 오류든 공격이든 일시적인 게 일반적이므로 잠시 후에는 이 페이지가 다시 작동할 가능성이 큽니다.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "이 서버는 %@인지 입증할 수 없습니다. 서버의 보안 인증서를 귀하의 기기 운영체제에서 신뢰하고 있지 않습니다. 오구성 또는 공격자의 연결 탈취 시도가 원인일 수 있습니다.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ 요청:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "%@에 앱 전환을 허용하시겠습니까?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "새 탭에서 이미지 열기";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields 메뉴 닫기";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "북마크에 추가";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "탭 닫기";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "URL 복사";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "%@ 미리보기";
-
 /* Settings privacy section title */
 "Privacy" = "개인정보";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "테마 색상을 변경합니다.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "지우기";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "최근에 닫은 탭을 모두 지우시겠습니까?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "최근에 닫은 탭이 없습니다.";
+
+/* Open Tab action title */
+"recently.closed.open" = "열기";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "최근에 닫은 탭을 여시겠습니까?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "최근에 닫은 탭";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "최근에 닫은 탭 보기";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "지우기";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "복구";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "VPN 세션을 새로 고치려면 Brave 계정에 로그인하세요.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "숨기기";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "로그인";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "세션 만료됨";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN으로 업그레이드하면 연결을 보호하고 침입성 트래커를 차단합니다.";

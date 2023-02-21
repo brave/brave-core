@@ -7,9 +7,6 @@
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "Begär mobilversion";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Tillbaka";
-
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "Visa senaste besökta bokmärken";
 
@@ -27,15 +24,6 @@
 
 /* Cancel button */
 "CancelString" = "Avbryt";
-
-/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseAllTabsFromTabTrayKeyCodeTitle" = "Stäng alla flikar";
-
-/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseTabFromTabTrayKeyCodeTitle" = "Stäng vald flik";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "Stäng flik";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedButtonText" = "Växla";
@@ -67,9 +55,6 @@
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Vill du öppna den här länken i App Store-appen?";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Framåt";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Öppna";
 
@@ -85,20 +70,8 @@
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "Uppdatera";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Ny privat flik";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Ny flik";
-
 /* OK button */
 "OKString" = "OK";
-
-/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Öppna ny flik";
-
-/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Öppna vald flik";
 
 /* The title for the button that lets you paste and go to a URL */
 "PasteAndGoTitle" = "Klistra in och öppna";
@@ -111,9 +84,6 @@
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Återställ textstorlek";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Uppdatera sida";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
 "SaveLoginPrompt" = "Vill du spara lösenordet till %@?";
@@ -136,35 +106,11 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Skanna QR-kod";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Välj adressfältet";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Allmänt";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Klar";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "Visa bokmärken";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowNextTabTitle" = "Visa nästa flik";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "Visa föregående flik";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Öppna Brave Shields";
-
-/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"ShowTabTrayFromTabKeyCodeTitle" = "Visa alla flikar";
-
-/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "Vanligt surfläge";
-
-/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToPBMKeyCodeTitle" = "Privat surfläge";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "Ångra";

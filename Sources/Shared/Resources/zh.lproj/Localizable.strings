@@ -7,9 +7,6 @@
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "请求移动站点";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "返回";
-
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "显示上一次访问的书签";
 
@@ -27,15 +24,6 @@
 
 /* Cancel button */
 "CancelString" = "取消";
-
-/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseAllTabsFromTabTrayKeyCodeTitle" = "关闭所有标签";
-
-/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseTabFromTabTrayKeyCodeTitle" = "关闭选择的标签";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "关闭标签";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedButtonText" = "切换";
@@ -67,9 +55,6 @@
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "在应用商店应用中打开此链接？";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "向前";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "前往";
 
@@ -85,20 +70,8 @@
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "更新";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "新隐私标签页";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "新标签页";
-
 /* OK button */
 "OKString" = "好";
-
-/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "打开新标签页";
-
-/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "打开选定的标签";
 
 /* The title for the button that lets you paste and go to a URL */
 "PasteAndGoTitle" = "粘贴并跳转";
@@ -111,9 +84,6 @@
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "重设字体";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "重新加载页面";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
 "SaveLoginPrompt" = "保存密码%@？";
@@ -136,35 +106,11 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "扫描二维码";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "选择地点栏";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "通用";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "完成";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "显示书签";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowNextTabTitle" = "显示下个标签页";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "显示之前标签页";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "打开 Brave Shields";
-
-/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"ShowTabTrayFromTabKeyCodeTitle" = "显示所有标签";
-
-/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "正常浏览模式";
-
-/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToPBMKeyCodeTitle" = "隐私浏览模式";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "取消";

@@ -7,9 +7,6 @@
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "Solicitar site para dispositivos móveis";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Voltar";
-
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "Mostrar últimos favoritos acessados";
 
@@ -27,15 +24,6 @@
 
 /* Cancel button */
 "CancelString" = "Cancelar";
-
-/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseAllTabsFromTabTrayKeyCodeTitle" = "Fechar todas as abas";
-
-/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseTabFromTabTrayKeyCodeTitle" = "Fechar aba selecionada";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "Fechar aba";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedButtonText" = "Alternar";
@@ -67,9 +55,6 @@
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Abrir este link no app da App Store?";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Avançar";
-
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Abrir";
 
@@ -85,20 +70,8 @@
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "Atualizar";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Nova guia privada";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Nova guia";
-
 /* OK button */
 "OKString" = "OK";
-
-/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Abrir nova aba";
-
-/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Abrir aba selecionada";
 
 /* The title for the button that lets you paste and go to a URL */
 "PasteAndGoTitle" = "Colar e abrir";
@@ -111,9 +84,6 @@
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Redefinir tamanho do texto";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Recarregar página";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
 "SaveLoginPrompt" = "Salvar senha de %@?";
@@ -136,35 +106,11 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Ler código QR";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Selecionar barra de local";
-
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Geral";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Concluído";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "Mostrar favoritos";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowNextTabTitle" = "Mostrar próxima aba";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "Mostrar aba anterior";
-
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Abrir Proteções do Brave";
-
-/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"ShowTabTrayFromTabKeyCodeTitle" = "Mostrar todas as abas";
-
-/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "Modo de navegação normal";
-
-/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToPBMKeyCodeTitle" = "Modo de navegação privada";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "Desfazer";
