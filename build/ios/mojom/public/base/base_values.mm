@@ -213,7 +213,7 @@
           return a;
         }();
         break;
-      case base::Value::Type::DICTIONARY:
+      case base::Value::Type::DICT:
         self.dictionaryValue = brave::NSDictionaryFromBaseValue(value.Clone());
         break;
       case base::Value::Type::LIST:
@@ -334,12 +334,13 @@ base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>* array) {
 
 base::Value BaseValueFromNSDictionary(
     NSDictionary<NSString*, MojoBaseValue*>* dictionary) {
-  base::Value dict(base::Value::Type::DICTIONARY);
+  base::Value result(base::Value::Type::DICT);
+  base::Value::Dict& dict = result.GetDict();
   for (NSString* key in dictionary) {
     MojoBaseValue* value = dictionary[key];
-    dict.SetKey(base::SysNSStringToUTF8(key), value.cppObjPtr);
+    dict.Set(base::SysNSStringToUTF8(key), value.cppObjPtr);
   }
-  return dict;
+  return result;
 }
 
 NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValueDict(

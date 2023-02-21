@@ -183,18 +183,16 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // Set policy to disable shields for specific domain.
-  auto disabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List disabled_list;
   disabled_list.Append("[*.]host2.com");
   disabled_list.Append("*.*");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(disabled_list)));
+      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
 
-  auto enabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(enabled_list)));
+      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
 
   // setting should apply block to origin.
   setting =
@@ -222,11 +220,10 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, host2));
 
-  auto disabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List disabled_list;
   disabled_list.Append("[*.]host2.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(disabled_list)));
+      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
   // only disabled pref set
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, host2));
@@ -234,11 +231,10 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, GURL("http://host1.com")));
 
-  auto enabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(enabled_list)));
+      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
 
   // both disabled/enabled prefs set
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(

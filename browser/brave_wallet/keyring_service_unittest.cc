@@ -1829,15 +1829,13 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
       KeyringService::GetPrefForKeyring(*GetPrefs(), kImportedAccounts,
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
-  EXPECT_EQ(imported_accounts_value->GetList()[0]
-                .FindKey(kAccountAddress)
-                ->GetString(),
+  EXPECT_EQ(*imported_accounts_value->GetList()[0].GetDict().FindString(
+                kAccountAddress),
             imported_accounts[0].address);
   // private key is encrypted
   const std::string encrypted_private_key =
-      imported_accounts_value->GetList()[0]
-          .FindKey(kEncryptedPrivateKey)
-          ->GetString();
+      *imported_accounts_value->GetList()[0].GetDict().FindString(
+          kEncryptedPrivateKey);
   EXPECT_FALSE(encrypted_private_key.empty());
 
   std::vector<uint8_t> private_key0;
@@ -1905,9 +1903,8 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
   const std::string encrypted_private_key =
-      imported_accounts_value->GetList()[0]
-          .FindKey(kEncryptedPrivateKey)
-          ->GetString();
+      *imported_accounts_value->GetList()[0].GetDict().FindString(
+          kEncryptedPrivateKey);
   EXPECT_FALSE(encrypted_private_key.empty());
 
   std::vector<uint8_t> private_key_bytes;
@@ -3906,7 +3903,8 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
                                          .AsStringPiece());
     absl::optional<base::Value> request_value =
         base::JSONReader::Read(request_string);
-    if (*request_value->FindStringKey("method") == "eth_getTransactionCount") {
+    if (*request_value->GetDict().FindString("method") ==
+        "eth_getTransactionCount") {
       base::Value* params = request_value->FindListKey("params");
       EXPECT_TRUE(params);
       std::string* address = params->GetList()[0].GetIfString();

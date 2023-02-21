@@ -1225,7 +1225,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
     ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
     base::Value::List* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
-      auto* chain_id_value = v.FindStringKey("chainId");
+      auto* chain_id_value = v.GetDict().FindString("chainId");
       if (!chain_id_value)
         return false;
       return *chain_id_value == "0x5566";

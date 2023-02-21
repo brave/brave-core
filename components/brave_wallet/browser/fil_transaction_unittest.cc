@@ -193,7 +193,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   ASSERT_TRUE(signature.has_value());
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
-  auto* message = signature_value->FindKey("Message");
+  auto* message = signature_value->GetDict().Find("Message");
   auto* signature_data = signature_value->FindStringPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
@@ -246,7 +246,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
   ASSERT_TRUE(signature.has_value());
   auto signature_value = base::JSONReader::Read(*signature);
   EXPECT_TRUE(signature_value);
-  auto* message = signature_value->FindKey("Message");
+  auto* message = signature_value->GetDict().Find("Message");
   auto* signature_data = signature_value->FindStringPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);

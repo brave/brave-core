@@ -211,36 +211,38 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
   auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
-  if (!parsed_json.has_value()) {
+  if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     VLOG(0) << __func__ << ": UTC v3 json parsed failed because "
             << parsed_json.error().message;
     return nullptr;
   }
+
+  auto& dict = parsed_json->GetDict();
   // check version
-  auto version = parsed_json->FindIntKey("version");
+  auto version = dict.FindInt("version");
   if (!version || *version != 3) {
     VLOG(0) << __func__ << ": missing version or version is not 3";
     return nullptr;
   }
 
-  const auto* crypto = parsed_json->FindKey("crypto");
+  const auto* crypto = dict.FindDict("crypto");
   if (!crypto) {
     VLOG(0) << __func__ << ": missing crypto";
     return nullptr;
   }
-  const auto* kdf = crypto->FindStringKey("kdf");
+  const auto* kdf = crypto->FindString("kdf");
   if (!kdf) {
     VLOG(0) << __func__ << ": missing kdf";
     return nullptr;
   }
 
   std::unique_ptr<SymmetricKey> derived_key = nullptr;
-  const auto* kdfparams = crypto->FindKey("kdfparams");
+  const auto* kdfparams = crypto->FindDict("kdfparams");
   if (!kdfparams) {
     VLOG(0) << __func__ << ": missing kdfparams";
     return nullptr;
   }
-  auto dklen = kdfparams->FindIntKey("dklen");
+  auto dklen = kdfparams->FindInt("dklen");
   if (!dklen) {
     VLOG(0) << __func__ << ": missing dklen";
     return nullptr;
@@ -249,7 +251,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(0) << __func__ << ": dklen must be >=32";
     return nullptr;
   }
-  const auto* salt = kdfparams->FindStringKey("salt");
+  const auto* salt = kdfparams->FindString("salt");
   if (!salt) {
     VLOG(0) << __func__ << ": missing salt";
     return nullptr;
@@ -260,12 +262,12 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
   if (*kdf == "pbkdf2") {
-    auto c = kdfparams->FindIntKey("c");
+    auto c = kdfparams->FindInt("c");
     if (!c) {
       VLOG(0) << __func__ << ": missing c";
       return nullptr;
     }
-    const auto* prf = kdfparams->FindStringKey("prf");
+    const auto* prf = kdfparams->FindString("prf");
     if (!prf) {
       VLOG(0) << __func__ << ": missing prf";
       return nullptr;
@@ -283,17 +285,17 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
       return nullptr;
     }
   } else if (*kdf == "scrypt") {
-    auto n = kdfparams->FindIntKey("n");
+    auto n = kdfparams->FindInt("n");
     if (!n) {
       VLOG(0) << __func__ << ": missing n";
       return nullptr;
     }
-    auto r = kdfparams->FindIntKey("r");
+    auto r = kdfparams->FindInt("r");
     if (!r) {
       VLOG(0) << __func__ << ": missing r";
       return nullptr;
     }
-    auto p = kdfparams->FindIntKey("p");
+    auto p = kdfparams->FindInt("p");
     if (!p) {
       VLOG(0) << __func__ << ": missing p";
       return nullptr;
@@ -312,12 +314,12 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
 
-  const auto* mac = crypto->FindStringKey("mac");
+  const auto* mac = crypto->FindString("mac");
   if (!mac) {
     VLOG(0) << __func__ << ": missing mac";
     return nullptr;
   }
-  const auto* ciphertext = crypto->FindStringKey("ciphertext");
+  const auto* ciphertext = crypto->FindString("ciphertext");
   if (!ciphertext) {
     VLOG(0) << __func__ << ": missing ciphertext";
     return nullptr;
@@ -332,7 +334,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
                                *dklen))
     return nullptr;
 
-  const auto* cipher = crypto->FindStringKey("cipher");
+  const auto* cipher = crypto->FindString("cipher");
   if (!cipher) {
     VLOG(0) << __func__ << ": missing cipher";
     return nullptr;
@@ -344,7 +346,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   }
 
   std::vector<uint8_t> iv_bytes;
-  const auto* iv = crypto->FindStringPath("cipherparams.iv");
+  const auto* iv = crypto->FindStringByDottedPath("cipherparams.iv");
   if (!iv) {
     VLOG(0) << __func__ << ": missing cipherparams.iv";
     return nullptr;

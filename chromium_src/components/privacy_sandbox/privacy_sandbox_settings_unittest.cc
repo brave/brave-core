@@ -522,8 +522,7 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff
  public:
   void InitializePrefsBeforeStart() override {
     prefs()->SetUserPref(prefs::kPrivacySandboxTopicsDataAccessibleSince,
-                         std::make_unique<base::Value>(::base::TimeToValue(
-                             base::Time::FromTimeT(12345))));
+                         base::TimeToValue(base::Time::FromTimeT(12345)));
   }
 };
 
@@ -542,8 +541,7 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn
         ContentSetting::CONTENT_SETTING_SESSION_ONLY);
 
     prefs()->SetUserPref(prefs::kPrivacySandboxTopicsDataAccessibleSince,
-                         std::make_unique<base::Value>(::base::TimeToValue(
-                             base::Time::FromTimeT(12345))));
+                         base::TimeToValue(base::Time::FromTimeT(12345)));
   }
 };
 

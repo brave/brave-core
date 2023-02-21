@@ -264,7 +264,7 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
   auto device_list = _worker->GetDeviceList();
   auto* local_device_info = _worker->GetLocalDeviceInfo();
 
-  base::Value device_list_value(base::Value::Type::LIST);
+  base::Value::List device_list_value;
 
   for (const auto& device : device_list) {
     auto device_value = device->ToValue();

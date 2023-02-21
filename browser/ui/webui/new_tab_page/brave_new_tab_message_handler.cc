@@ -462,12 +462,13 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   }
 
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
+    const auto& arg = args[0].GetDict();
     auto* creative_instance_id =
-        args[0].FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
-    auto* destination_url =
-        args[0].FindStringPath(ntp_background_images::kLogoDestinationURLPath);
+        arg.FindString(ntp_background_images::kCreativeInstanceIDKey);
+    auto* destination_url = arg.FindStringByDottedPath(
+        ntp_background_images::kLogoDestinationURLPath);
     auto* wallpaper_id =
-        args[0].FindStringPath(ntp_background_images::kWallpaperIDKey);
+        arg.FindStringByDottedPath(ntp_background_images::kWallpaperIDKey);
 
     DCHECK(creative_instance_id);
     DCHECK(destination_url);
