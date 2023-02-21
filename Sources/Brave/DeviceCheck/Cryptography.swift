@@ -266,11 +266,11 @@ public class Cryptography {
       return CryptographyError(description: "Invalid KeyId")
     }
 
-    let error = SecItemDelete(
-      [
-        kSecClass: kSecClassKey,
-        kSecAttrApplicationTag: keyId,
-      ] as CFDictionary)
+    let query: [CFString: Any] = [
+      kSecClass: kSecClassKey,
+      kSecAttrApplicationTag: keyId,
+    ]
+    let error = SecItemDelete(query as CFDictionary)
 
     if error == errSecSuccess || error == errSecItemNotFound {
       return nil

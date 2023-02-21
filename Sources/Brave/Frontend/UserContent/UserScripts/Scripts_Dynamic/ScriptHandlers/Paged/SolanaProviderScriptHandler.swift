@@ -313,7 +313,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   }
   
   private func buildErrorJson(status: BraveWallet.SolanaProviderError, errorMessage: String) -> String? {
-    JSONSerialization.jsObject(withNative: [Keys.code.rawValue: status.rawValue, Keys.message.rawValue: errorMessage])
+    JSONSerialization.jsObject(withNative: [Keys.code.rawValue: status.rawValue, Keys.message.rawValue: errorMessage] as [String: Any])
   }
   
   @MainActor private func emitConnectEvent(publicKey: String) async {
