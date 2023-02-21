@@ -80,4 +80,16 @@ static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())));
 }
 
+static void JNI_InterceptNavigationDelegateImpl_OnSubframeAsyncActionTaken(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents,
+    const base::android::JavaParamRef<jobject>& j_gurl) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  navigation_interception::InterceptNavigationDelegate* delegate =
+      navigation_interception::InterceptNavigationDelegate::Get(web_contents);
+  CHECK(delegate);
+  delegate->OnSubframeAsyncActionTaken(env, j_gurl);
+}
+
 }  // namespace external_intents
