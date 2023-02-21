@@ -389,9 +389,9 @@ extension Tab: BraveWalletEventsListener {
     guard !isPrivate else { return }
     
     Task { @MainActor in
-      /// Temporary fix for #5404
-      /// Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
-      /// We keep the same as Metamask, that, we will reload tab on chain changes.
+      // Temporary fix for #5404
+      // Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
+      // We keep the same as Metamask, that, we will reload tab on chain changes.
       emitEthereumEvent(.ethereumChainChanged(chainId: chainId))
       updateEthereumProperties()
       reload()
@@ -401,10 +401,10 @@ extension Tab: BraveWalletEventsListener {
   func accountsChangedEvent(_ accounts: [String]) {
     guard !isPrivate else { return }
     
-    /// Temporary fix for #5402.
-    /// If we emit from one account directly to another we're not seeing dapp sites
-    /// update our selected account. If we emit an undefined/empty string before
-    /// emitting the new account, we're seeing correct account change behaviour
+    // Temporary fix for #5402.
+    // If we emit from one account directly to another we're not seeing dapp sites
+    // update our selected account. If we emit an undefined/empty string before
+    // emitting the new account, we're seeing correct account change behaviour
     emitEthereumEvent(.ethereumAccountsChanged(accounts: []))
     emitEthereumEvent(.ethereumAccountsChanged(accounts: accounts))
     updateEthereumProperties()
@@ -418,8 +418,8 @@ extension Tab: BraveWalletEventsListener {
       return
     }
     Task { @MainActor in
-      /// Turn an optional value into a string (or quoted string in case of the value being a string) or
-      /// return `undefined`
+      // Turn an optional value into a string (or quoted string in case of the value being a string) or
+      // return `undefined`
       func valueOrUndefined<T>(_ value: T?) -> String {
         switch value {
         case .some(let string as String):

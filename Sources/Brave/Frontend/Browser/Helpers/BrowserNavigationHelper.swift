@@ -70,19 +70,19 @@ class BrowserNavigationHelper {
     guard let bvc = bvc else { return }
     dismissView()
 
-    @MainActor @Sendable func share(url: URL) {
-      bvc.presentActivityViewController(
-        url,
-        tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
-        sourceView: bvc.view,
-        sourceRect: bvc.view.convert(bvc.topToolbar.menuButton.frame, from: bvc.topToolbar.menuButton.superview),
-        arrowDirection: [.up]
-      )
-    }
-
     guard let tab = bvc.tabManager.selectedTab, let url = tab.url else { return }
     
     Task { @MainActor in
+      @MainActor func share(url: URL) {
+        bvc.presentActivityViewController(
+          url,
+          tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
+          sourceView: bvc.view,
+          sourceRect: bvc.view.convert(bvc.topToolbar.menuButton.frame, from: bvc.topToolbar.menuButton.superview),
+          arrowDirection: [.up]
+        )
+      }
+      
       if let temporaryDocument = tab.temporaryDocument {
         let tempDocURL = await temporaryDocument.getURL()
         // If we successfully got a temp file URL, share it like a downloaded file,

@@ -204,10 +204,10 @@ import SwiftUI
       }
       interactiveTransitionProgress = progress
     } else if toolbarState == .expanded {
-      /// if expanded: collapsing when scrolling down
-      ///   - interactively collapses on the way down and up based on y-translation
-      ///   - once it has fully collapsed though scrolling back up does nothing until touch up
-      ///   - don't shrink if we're near the bottom and don't have enough space to collapse
+      // if expanded: collapsing when scrolling down
+      //   - interactively collapses on the way down and up based on y-translation
+      //   - once it has fully collapsed though scrolling back up does nothing until touch up
+      //   - don't shrink if we're near the bottom and don't have enough space to collapse
       let startOffset = normalizedOffset + ty
       if startOffset + snapshot.frameHeight <= snapshot.contentHeight - transitionDistance, !isRubberBandingBottomEdge {
         let progress = max(0.0, min(1.0, -ty / transitionDistance))
@@ -274,7 +274,9 @@ import SwiftUI
     scrollView.panGestureRecognizer.addTarget(self, action: #selector(pannedScrollView(_:)))
     scrollViewObservation = scrollView.observe(\.contentSize, options: [.old, .new], changeHandler: { [weak self] scrollView, change in
       guard change.oldValue != change.newValue else { return }
-      self?.send(action: .contentSizeChanged(snapshot: Self.snapshotData(from: scrollView)))
+      DispatchQueue.main.async { [self] in
+        self?.send(action: .contentSizeChanged(snapshot: Self.snapshotData(from: scrollView)))
+      }
     })
     scrollView.delegate = coordinator
   }

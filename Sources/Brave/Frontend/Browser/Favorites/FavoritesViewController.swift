@@ -675,14 +675,6 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
-        // All favorites should have domain's, but it was noticed at one
-        // point that this wasn't the case, so for future bug-tracking
-        // assert if its not found.
-        assert(favorite.domain != nil, "Domain should exist for all favorites")
-        // The domain for the favorite is required for pulling cached
-        // favicon info. Since all favorites should have persisted
-        // Domain's, we leave `persistent` as true
-        let domain = favorite.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
         cell.imageView.loadFavicon(siteURL: url,
                                    monogramFallbackCharacter: favorite.title?.first)
       }

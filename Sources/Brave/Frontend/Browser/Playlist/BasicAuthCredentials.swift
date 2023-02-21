@@ -14,13 +14,13 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
   }
   
   @MainActor
-  private func loginsForChallenge(challenge: URLAuthenticationChallenge) async -> URLCredential? {
+  private func loginsForChallenge(protectionSpace: URLProtectionSpace) async -> URLCredential? {
     guard let profile = UIApplication.shared.keyWindow?.windowScene?.browserViewController?.profile else {
       return nil
     }
     
     do {
-      let cursor = try await profile.logins.getLoginsForProtectionSpace(challenge.protectionSpace)
+      let cursor = try await profile.logins.getLoginsForProtectionSpace(protectionSpace)
       guard cursor.count >= 1 else {
         return nil
       }
@@ -28,10 +28,10 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
       let logins = cursor.asArray()
       
       if logins.count > 1 {
-        return (logins.find { login in
-          (login.protectionSpace.protocol == challenge.protectionSpace.protocol) && !login.hasMalformedHostname
-        })?.credentials
-      } else if logins.count == 1, logins.first?.protectionSpace.protocol != challenge.protectionSpace.protocol {
+        return (logins.first(where: { login in
+          (login.protectionSpace.protocol == protectionSpace.protocol) && !login.hasMalformedHostname
+        }))?.credentials
+      } else if logins.count == 1, logins.first?.protectionSpace.protocol != protectionSpace.protocol {
         return logins.first?.credentials
       }
       
@@ -41,46 +41,47 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
     }
   }
 
-  func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
-      completionHandler(.performDefaultHandling, nil)
-      return
+  func urlSession(
+    _ session: URLSession,
+    didReceive challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
+      return (.performDefaultHandling, nil)
     }
 
     if !domains.contains(challenge.protectionSpace.host) {
-      completionHandler(.performDefaultHandling, nil)
-      return
+      return (.performDefaultHandling, nil)
     }
 
     // -- Handle Authentication --
 
     // Too many failed attempts
     if challenge.previousFailureCount >= 3 {
-      completionHandler(.rejectProtectionSpace, nil)
-      return
+      return (.rejectProtectionSpace, nil)
     }
 
     if let proposedCredential = challenge.proposedCredential,
       !(proposedCredential.user?.isEmpty ?? true),
       challenge.previousFailureCount == 0 {
-      completionHandler(.useCredential, proposedCredential)
-      return
+      return (.useCredential, proposedCredential)
     }
 
     // Lookup the credentials
     // If there is no profile or the challenge is not an auth challenge, reject the challenge
-    Task { @MainActor in
-      guard let credential = await loginsForChallenge(challenge: challenge) else {
-        completionHandler(.rejectProtectionSpace, nil)
-        return
-      }
-      
-      completionHandler(.useCredential, credential)
+    guard let credential = await loginsForChallenge(protectionSpace: challenge.protectionSpace) else {
+      return (.rejectProtectionSpace, nil)
     }
+      
+    return (.useCredential, credential)
   }
 
-  func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-    urlSession(session, didReceive: challenge, completionHandler: completionHandler)
+  func urlSession(
+    _ session: URLSession,
+    task: URLSessionTask,
+    didReceive challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    return await urlSession(session, didReceive: challenge)
   }
 }

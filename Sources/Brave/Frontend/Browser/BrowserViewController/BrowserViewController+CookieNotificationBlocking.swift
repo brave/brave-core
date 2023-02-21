@@ -26,8 +26,6 @@ extension BrowserViewController {
     // Ensure we successfully shown basic onboarding first
     guard Preferences.FullScreenCallout.omniboxCalloutCompleted.value else { return }
 
-
-    
     let popover = PopoverController(
       contentController: CookieNotificationBlockingConsentViewController(),
       contentSizeBehavior: .preferredContentSize)

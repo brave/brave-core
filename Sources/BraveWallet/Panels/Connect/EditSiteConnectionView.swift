@@ -9,7 +9,6 @@ import Strings
 import BraveShared
 import BraveUI
 import Data
-import BraveUI
 
 struct EditSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore

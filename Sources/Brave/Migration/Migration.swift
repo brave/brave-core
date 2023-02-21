@@ -286,7 +286,7 @@ fileprivate extension Preferences {
       return
     }
 
-    /// Wrapper around BraveShared migrate, to automate prefix injection
+    // Wrapper around BraveShared migrate, to automate prefix injection
     func migrate<T>(key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
       self.migrate(keyPrefix: keyPrefix, key: key, to: option, transform: transform)
     }

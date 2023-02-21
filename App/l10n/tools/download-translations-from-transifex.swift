@@ -145,7 +145,7 @@ try await withThrowingTaskGroup(of: Void.self) { group in
       while true {
         let xliffData = await downloadResource(with: resourceURL)
         do {
-          let _ = try JSONSerialization.jsonObject(with: xliffData, options: [])
+          _ = try JSONSerialization.jsonObject(with: xliffData, options: [])
           // Found JSON, not ready
           retryCount += 1
           print("Resource for \(code) not ready yet. Retrying in 5 seconds (attempt #\(retryCount))")

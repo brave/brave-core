@@ -705,7 +705,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
        let trust = challenge.protectionSpace.serverTrust,
-       let cert = SecTrustGetCertificateAtIndex(trust, 0), await certStore?.containsCertificate(cert, forOrigin: origin) == true {
+       let cert = SecTrustGetCertificateAtIndex(trust, 0), certStore?.containsCertificate(cert, forOrigin: origin) == true {
       return (.useCredential, URLCredential(trust: trust))
     }
     
@@ -717,8 +717,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       let result = BraveCertificateUtility.verifyTrust(serverTrust,
                                                        host: host,
                                                        port: port)
-      let certificateChain = (0..<SecTrustGetCertificateCount(serverTrust))
-        .compactMap { SecTrustGetCertificateAtIndex(serverTrust, $0) }
       
       if result == 0 {
         return (.useCredential, URLCredential(trust: serverTrust))

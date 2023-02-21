@@ -64,6 +64,7 @@ final class NetworkManager: Sendable {
         if case .failure(let error) = res {
           completion(.failure(error))
         }
+        _ = cancellable // To silence warning
         cancellable = nil
       }, receiveValue: { res in
         completion(.success(res))

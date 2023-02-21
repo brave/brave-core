@@ -711,11 +711,6 @@ extension VideoView: UIGestureRecognizerDelegate {
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
     let location = touch.location(in: self)
     let restrictedViews = [infoView, controlsView]
-    for view in restrictedViews {
-      if view.point(inside: self.convert(location, to: view), with: nil) {
-        return false
-      }
-    }
-    return true
+    return !restrictedViews.contains(where: { $0.point(inside: self.convert(location, to: $0), with: nil) })
   }
 }

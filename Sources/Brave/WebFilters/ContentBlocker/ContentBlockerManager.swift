@@ -236,7 +236,7 @@ final public class ContentBlockerManager: Sendable {
     
     switch ruleType {
     case .general(let generalBlocklistTypes):
-      /// Add back the bundled rule type if we need to. We always want at least the bundled resource type
+      // Add back the bundled rule type if we need to. We always want at least the bundled resource type
       switch cachedCompileResults[ruleType.identifier]?.sourceType {
       case .downloaded, .none:
         guard let resource = await getBundledResource(for: generalBlocklistTypes) else { return }

@@ -255,87 +255,86 @@ class BraveSearchManager: NSObject {
 // This code helps passing all auth info to the requests we make.
 extension BraveSearchManager: URLSessionDataDelegate {
 
-  private func findLoginsForProtectionSpace(profile: Profile, challenge: URLAuthenticationChallenge, completion: @escaping (URLCredential?) -> Void) {
-    Task { @MainActor in
-      do {
-        let cursor = try await profile.logins.getLoginsForProtectionSpace(challenge.protectionSpace)
-        guard cursor.count >= 1 else {
-          completion(nil)
-          return
-        }
-        
-        let logins = cursor.asArray()
-        var credentials: URLCredential?
-        
-        if logins.count > 1 {
-          credentials =
-          (logins.find { login in
-            (login.protectionSpace.`protocol` == challenge.protectionSpace.`protocol`) && !login.hasMalformedHostname
-          })?.credentials
-        } else if logins.count == 1, logins.first?.protectionSpace.`protocol` != challenge.protectionSpace.`protocol` {
-          credentials = logins.first?.credentials
-        } else {
-          credentials = logins.first?.credentials
-        }
-        
-        completion(credentials)
-      } catch {
-        completion(nil)
+  @MainActor
+  private func findLoginsForProtectionSpace(
+    profile: Profile,
+    protectionSpace: URLProtectionSpace
+  ) async -> URLCredential? {
+    do {
+      let cursor = try await profile.logins.getLoginsForProtectionSpace(protectionSpace)
+      guard cursor.count >= 1 else {
+        return nil
       }
+      
+      let logins = cursor.asArray()
+      var credentials: URLCredential?
+      
+      if logins.count > 1 {
+        credentials =
+        (logins.first(where: { login in
+          (login.protectionSpace.`protocol` == protectionSpace.`protocol`) && !login.hasMalformedHostname
+        }))?.credentials
+      } else if logins.count == 1, logins.first?.protectionSpace.`protocol` != protectionSpace.`protocol` {
+        credentials = logins.first?.credentials
+      } else {
+        credentials = logins.first?.credentials
+      }
+      
+      return credentials
+    } catch {
+      return nil
     }
   }
 
-  func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-
-    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
-      completionHandler(.performDefaultHandling, nil)
-      return
+  func urlSession(
+    _ session: URLSession,
+    didReceive challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+            challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM else {
+      return (.performDefaultHandling, nil)
     }
 
     if !BraveSearchManager.validDomains.contains(challenge.protectionSpace.host) {
-      completionHandler(.performDefaultHandling, nil)
-      return
+      return (.performDefaultHandling, nil)
     }
 
     // -- Handle Authentication --
 
     // Too many failed attempts
     if challenge.previousFailureCount >= 3 {
-      completionHandler(.rejectProtectionSpace, nil)
-      return
+      return (.rejectProtectionSpace, nil)
     }
 
     if let credentials = BraveSearchManager.cachedCredentials {
-      completionHandler(.useCredential, credentials)
-      return
+      return (.useCredential, credentials)
     }
 
     if let proposedCredential = challenge.proposedCredential,
       !(proposedCredential.user?.isEmpty ?? true),
       challenge.previousFailureCount == 0 {
-      completionHandler(.useCredential, proposedCredential)
-      return
+      return (.useCredential, proposedCredential)
     }
 
     // Lookup the credentials
     // If there is no profile or the challenge is not an auth challenge, reject the challenge
-    findLoginsForProtectionSpace(
-      profile: profile, challenge: challenge,
-      completion: { credential in
-        if let credential = credential {
-          BraveSearchManager.cachedCredentials = credential
-
-          completionHandler(.useCredential, credential)
-          return
-        }
-
-        completionHandler(.rejectProtectionSpace, nil)
-      })
-    return
+    guard let credential = await findLoginsForProtectionSpace(
+      profile: profile,
+      protectionSpace: challenge.protectionSpace
+    ) else {
+      return (.rejectProtectionSpace, nil)
+    }
+    
+    BraveSearchManager.cachedCredentials = credential
+    return (.useCredential, credential)
   }
 
-  func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-
-    urlSession(session, didReceive: challenge, completionHandler: completionHandler)
+  func urlSession(
+    _ session: URLSession,
+    task: URLSessionTask,
+    didReceive challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    return await urlSession(session, didReceive: challenge)
   }
 }

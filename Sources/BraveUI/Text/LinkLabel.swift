@@ -122,7 +122,7 @@ final public class LinkLabel: UITextView {
       .underlineStyle: 0,
     ]
 
-    /// For some odd reason.. changing only the `linkTextAttributes` does NOT change the font! (yet it works for colour)
+    // For some odd reason.. changing only the `linkTextAttributes` does NOT change the font! (yet it works for colour)
     guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
     let range = NSRange(location: 0, length: text.length)
 
@@ -181,8 +181,8 @@ extension LinkLabel: UITextViewDelegate {
   }
 
   override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-    /// Detect if we're tapping on a link.. otherwise make everything else NOT selectable.
-    /// This also fixes a bug where you tap on the "side" of a link and it still triggers.
+    // Detect if we're tapping on a link.. otherwise make everything else NOT selectable.
+    // This also fixes a bug where you tap on the "side" of a link and it still triggers.
     guard let pos = closestPosition(to: point) else { return false }
     guard let range = tokenizer.rangeEnclosingPosition(pos, with: .character, inDirection: .layout(.left)) else { return false }
     let startIndex = offset(from: beginningOfDocument, to: range.start)

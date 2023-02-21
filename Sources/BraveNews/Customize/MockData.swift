@@ -66,6 +66,7 @@ enum Mock {
     "site_url": "https://abc.es"
   }]
 """
+    // swiftlint:disable:next force_try
     return try! JSONDecoder().decode([FeedItem.Source].self, from: json.data(using: .utf8)!)
   }
   

@@ -553,10 +553,14 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
+    // URLAuthenticationChallenge isn't Sendable atm
+    let protectionSpace = challenge.protectionSpace
+    let credential = challenge.proposedCredential
+    let previousFailureCount = challenge.previousFailureCount
     return await Task { @MainActor in
-      guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
-              challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
-              challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
+      guard protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+              protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+              protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
             let tab = tab(for: webView)
       else {
         return (.performDefaultHandling, nil)
@@ -567,7 +571,13 @@ extension BrowserViewController: WKNavigationDelegate {
       
       let loginsHelper = tab.getContentScript(name: LoginsScriptHandler.scriptName) as? LoginsScriptHandler
       do {
-        let credentials = try await Authenticator.handleAuthRequest(self, challenge: challenge, loginsHelper: loginsHelper)
+        let credentials = try await Authenticator.handleAuthRequest(
+          self,
+          credential: credential,
+          protectionSpace: protectionSpace,
+          previousFailureCount: previousFailureCount,
+          loginsHelper: loginsHelper
+        )
         return (.useCredential, credentials.credentials)
       } catch {
         return (.rejectProtectionSpace, nil)

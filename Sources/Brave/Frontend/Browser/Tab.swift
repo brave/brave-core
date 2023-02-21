@@ -82,7 +82,7 @@ class Tab: NSObject {
   }
 
   var secureContentState: TabSecureContentState = .unknown
-  var sslPinningError: Error? = nil
+  var sslPinningError: Error?
 
   var walletEthProvider: BraveWalletEthereumProvider?
   var walletEthProviderScript: WKUserScript?
@@ -595,7 +595,7 @@ class Tab: NSObject {
           return webView.loadFileURL(url, allowingReadAccessTo: url)
         }
 
-        /// Donate Custom Intent Open Website
+        // Donate Custom Intent Open Website
         if url.isSecureWebPage(), !isPrivate {
           ActivityShortcutManager.shared.donateCustomIntent(for: .openWebsite, with: url.absoluteString)
         }
@@ -959,7 +959,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
   }
 }
 
-///
+//
 // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
 //
 // This class only exists to contain the swizzledMenuHelperFindInPage. This class is actually never

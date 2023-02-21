@@ -11,19 +11,24 @@ import os.log
 class Authenticator {
   fileprivate static let maxAuthenticationAttempts = 3
 
-  static func handleAuthRequest(_ viewController: UIViewController, challenge: URLAuthenticationChallenge, loginsHelper: LoginsScriptHandler?) async throws -> LoginData {
+  static func handleAuthRequest(
+    _ viewController: UIViewController,
+    credential: URLCredential?,
+    protectionSpace: URLProtectionSpace,
+    previousFailureCount: Int,
+    loginsHelper: LoginsScriptHandler?
+  ) async throws -> LoginData {
+    var credential = credential
     // If there have already been too many login attempts, we'll just fail.
-    if challenge.previousFailureCount >= Authenticator.maxAuthenticationAttempts {
+    if previousFailureCount >= Authenticator.maxAuthenticationAttempts {
       throw LoginDataError(description: "Too many attempts to open site")
     }
-
-    var credential = challenge.proposedCredential
 
     // If we were passed an initial set of credentials from iOS, try and use them.
     if let proposed = credential {
       if !(proposed.user?.isEmpty ?? true) {
-        if challenge.previousFailureCount == 0 {
-          return Login.createWithCredential(credential!, protectionSpace: challenge.protectionSpace)
+        if previousFailureCount == 0 {
+          return Login.createWithCredential(credential!, protectionSpace: protectionSpace)
         }
       } else {
         credential = nil
@@ -32,21 +37,21 @@ class Authenticator {
 
     // If we have some credentials, we'll show a prompt with them.
     if let credential = credential {
-      return try await promptForUsernamePassword(viewController, credentials: credential, protectionSpace: challenge.protectionSpace, loginsHelper: loginsHelper)
+      return try await promptForUsernamePassword(viewController, credentials: credential, protectionSpace: protectionSpace, loginsHelper: loginsHelper)
     }
 
     // Otherwise, try to look them up and show the prompt.
     if let loginsHelper = loginsHelper {
-      let credentials = await findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: loginsHelper.logins)
-      return try await self.promptForUsernamePassword(viewController, credentials: credentials, protectionSpace: challenge.protectionSpace, loginsHelper: loginsHelper)
+      let credentials = await findMatchingCredentialsForChallenge(protectionSpace, fromLoginsProvider: loginsHelper.logins)
+      return try await self.promptForUsernamePassword(viewController, credentials: credentials, protectionSpace: protectionSpace, loginsHelper: loginsHelper)
     }
 
     // No credentials, so show an empty prompt.
-    return try await self.promptForUsernamePassword(viewController, credentials: nil, protectionSpace: challenge.protectionSpace, loginsHelper: nil)
+    return try await self.promptForUsernamePassword(viewController, credentials: nil, protectionSpace: protectionSpace, loginsHelper: nil)
   }
 
-  static func findMatchingCredentialsForChallenge(_ challenge: URLAuthenticationChallenge, fromLoginsProvider loginsProvider: BrowserLogins) async -> URLCredential? {
-    guard let cursor = try? await loginsProvider.getLoginsForProtectionSpace(challenge.protectionSpace),
+  static func findMatchingCredentialsForChallenge(_ protectionSpace: URLProtectionSpace, fromLoginsProvider loginsProvider: BrowserLogins) async -> URLCredential? {
+    guard let cursor = try? await loginsProvider.getLoginsForProtectionSpace(protectionSpace),
           cursor.count >= 1 else {
       return nil
     }
@@ -58,9 +63,9 @@ class Authenticator {
     // This is a side effect of https://bugzilla.mozilla.org/show_bug.cgi?id=1238103.
     if logins.count > 1 {
       credentials =
-      (logins.find { login in
-        (login.protectionSpace.`protocol` == challenge.protectionSpace.`protocol`) && !login.hasMalformedHostname
-      })?.credentials
+      (logins.first(where: { login in
+        (login.protectionSpace.`protocol` == protectionSpace.`protocol`) && !login.hasMalformedHostname
+      }))?.credentials
       
       let malformedGUIDs: [GUID] = logins.compactMap { login in
         if login.hasMalformedHostname {
@@ -80,10 +85,10 @@ class Authenticator {
     // Found a single entry but the schemes don't match. This is a result of a schemeless entry that we
     // saved in a previous iteration of the app so we need to migrate it. We only care about the
     // the username/password so we can rewrite the scheme to be correct.
-    else if logins.count == 1 && logins[0].protectionSpace.`protocol` != challenge.protectionSpace.`protocol` {
+    else if logins.count == 1 && logins[0].protectionSpace.`protocol` != protectionSpace.`protocol` {
       let login = logins[0]
       credentials = login.credentials
-      let new = Login(credential: login.credentials, protectionSpace: challenge.protectionSpace)
+      let new = Login(credential: login.credentials, protectionSpace: protectionSpace)
       do {
         try await loginsProvider.updateLoginByGUID(login.guid, new: new, significant: true)
         return credentials

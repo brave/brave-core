@@ -67,14 +67,7 @@ public class ErrorPageHandler: InternalSchemeResponse {
     guard let model = ErrorPageModel(request: request) else {
       return nil
     }
-
-    for handler in errorHandlers {
-      if handler.canHandle(error: model.error) {
-        return handler.response(for: model)
-      }
-    }
-
-    return nil
+    return errorHandlers.filter({ $0.canHandle(error: model.error )}).first?.response(for: model)
   }
   
   public init() { }

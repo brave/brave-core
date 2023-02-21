@@ -6,15 +6,6 @@ import Foundation
 
 public extension Array {
 
-  func find(_ f: (Iterator.Element) -> Bool) -> Iterator.Element? {
-    for x in self {
-      if f(x) {
-        return x
-      }
-    }
-    return nil
-  }
-
   // Performs a union operator using the result of f(Element) as the value to base uniqueness on.
   func union<T: Hashable>(_ arr: [Element], f: ((Element) -> T)) -> [Element] {
     let result = self + arr

@@ -37,7 +37,7 @@ public class NTPDataSource {
   ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
   /// One example, if rotation is every 4 images, but sponsored image should be shown as 2nd image, then this will
   ///     be reset back to `1` after reaching `4`, and when the value is `2`, a sponsored image will be shown.
-  // This can be easily converted to a preference to persist
+  /// This can be easily converted to a preference to persist
   private var backgroundRotationCounter = 1
 
   private lazy var downloader = NTPDownloader()

@@ -477,7 +477,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       } else {
         if let url = URL(string: bookmark.url ?? "") {
           let bookmarkClickEvent: (() -> Void)? = {
-            /// Donate Custom Intent Open Bookmark List
+            // Donate Custom Intent Open Bookmark List
             if !self.isPrivateBrowsing {
               ActivityShortcutManager.shared.donateCustomIntent(for: .openBookmarks, with: url.absoluteString)
             }
@@ -527,8 +527,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    var fetchedBookmarkItem: Bookmarkv2?
-
     if isBookmarksBeingSearched {
       return true
     } else {
