@@ -15,8 +15,9 @@ class ExternalProcessImporterHost;
 
 class BraveImporterObserver : public importer::ImporterProgressObserver {
  public:
-  using ReportProgressCallback = base::RepeatingCallback<
-      void(const importer::SourceProfile& source_profile, const base::Value&)>;
+  using ReportProgressCallback = base::RepeatingCallback<void(
+      const importer::SourceProfile& source_profile,
+      const base::Value::Dict&)>;
 
   BraveImporterObserver(ExternalProcessImporterHost* host,
                         const importer::SourceProfile& source_profile,

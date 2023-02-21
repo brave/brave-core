@@ -104,8 +104,8 @@ void BraveImportDataHandler::StartImportImpl(
 
 void BraveImportDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
-    const base::Value& info) {
-  const std::string* event = info.FindStringKey("event");
+    const base::Value::Dict& info) {
+  const std::string* event = info.FindString("event");
   if (!event)
     return;
   if (*event == "ImportItemEnded") {
