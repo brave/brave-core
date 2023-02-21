@@ -52,7 +52,7 @@ public class ImageLoader {
     }
 
     public static boolean isSupported(String url) {
-        return isValidImgUrl(url) && !isSvg(url);
+        return isValidImgUrl(url);
     }
 
     public static boolean isSvg(String url) {

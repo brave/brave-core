@@ -54,6 +54,22 @@ android_aar_prebuilt("com_github_bumptech_glide_java") {
   ]
 }
 
+android_java_prebuilt("com_github_bumptech_glide_annotations_java") {
+  jar_path = "libs/com_github_bumptech_glide_annotations/annotations-4.12.0.jar"
+}
+
+android_java_prebuilt("com_github_bumptech_glide_compiler_java") {
+  jar_path = "libs/com_github_bumptech_glide_compiler/compiler-4.12.0.jar"
+  output_name = "com_github_bumptech_glide_compiler"
+  enable_bytecode_checks = false
+  deps = [":com_github_bumptech_glide_annotations_java"]
+}
+
+java_annotation_processor("glide_compiler_processor") {
+  main_class = "com.bumptech.glied.annotation.compiler.GlideAnnotationProcessor"
+  deps = [ ":com_github_bumptech_glide_compiler_java" ]
+}
+
 android_aar_prebuilt("com_github_bumptech_glide_gifdecoder_java") {
   aar_path = "libs/com_github_bumptech_glide_gifdecoder/gifdecoder-4.12.0.aar"
   info_path = "libs/com_github_bumptech_glide_gifdecoder/com_github_bumptech_glide_gifdecoder.info"

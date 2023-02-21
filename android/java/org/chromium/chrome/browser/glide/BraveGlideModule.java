@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
-//import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 import com.caverock.androidsvg.SVG;
 
@@ -21,9 +21,9 @@ import java.nio.ByteBuffer;
 
 /**
  * Module for all the Glide components used by Brave app.
- * There can be at most one {@link AppGlideModule} in an application
+ * There can be at most one {@link AppGlideModule} in an application.
  */
-//@GlideModule
+@GlideModule
 public class BraveGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(
