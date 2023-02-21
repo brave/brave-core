@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index bf792a19368d0c1819658ff644ad43d7b69022cd..1930f1d7bc301027ae1d3cbed3ef7b4349d8f1b1 100644
---- a/chrome/browser/resources/tools/optimize_webui.gni
-+++ b/chrome/browser/resources/tools/optimize_webui.gni
+diff --git a/ui/webui/resources/tools/optimize_webui.gni b/ui/webui/resources/tools/optimize_webui.gni
+index f2c99eef5a44bc9ebae6a60e338cce5b0681be5f..64ef2890daadb04106129bbbad7ae90abe0bbe4c 100644
+--- a/ui/webui/resources/tools/optimize_webui.gni
++++ b/ui/webui/resources/tools/optimize_webui.gni
 @@ -53,6 +53,8 @@ template("optimize_webui") {
                      root_build_dir)
      resources_path =
