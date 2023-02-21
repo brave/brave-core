@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_handler.h"
 
+#include <iterator>
 #include <utility>
 
 #include "base/memory/ptr_util.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
@@ -48,7 +50,8 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
 }
 
 void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
-    content::RenderFrameHost* render_frame_host) {
+    content::RenderFrameHost* render_frame_host,
+    base::OnceCallback<void(std::vector<std::string>)> callback) {
   DCHECK(render_frame_host);
   DCHECK(ads_service_);
 
@@ -66,7 +69,8 @@ void SearchResultAdHandler::MaybeRetrieveSearchResultAd(
       document_metadata.get();
   raw_document_metadata->GetEntities(
       base::BindOnce(&SearchResultAdHandler::OnRetrieveSearchResultAdEntities,
-                     weak_factory_.GetWeakPtr(), std::move(document_metadata)));
+                     weak_factory_.GetWeakPtr(), std::move(document_metadata),
+                     std::move(callback)));
 }
 
 void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
@@ -98,29 +102,49 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     mojo::Remote<blink::mojom::DocumentMetadata> /*document_metadata*/,
+    base::OnceCallback<void(std::vector<std::string>)> callback,
     blink::mojom::WebPagePtr web_page) {
   DCHECK(ads_service_);
 
   if (!ads_service_->IsEnabled() || !web_page) {
+    std::move(callback).Run({});
     return;
   }
 
   search_result_ads_ =
       ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
 
+  std::vector<std::string> placement_ids;
   if (search_result_ads_ && should_trigger_viewed_event_) {
-    for (const auto& [placement_id, search_result_ad] : *search_result_ads_) {
-      DCHECK(search_result_ad);
-
-      ads_service_->TriggerSearchResultAdEvent(
-          search_result_ad->Clone(),
-          ads::mojom::SearchResultAdEventType::kServed);
-
-      ads_service_->TriggerSearchResultAdEvent(
-          search_result_ad->Clone(),
-          ads::mojom::SearchResultAdEventType::kViewed);
-    }
+    base::ranges::transform(*search_result_ads_,
+                            std::back_inserter(placement_ids),
+                            [](const auto& value) { return value.first; });
   }
+
+  std::move(callback).Run(std::move(placement_ids));
+}
+
+void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
+    const std::string& placement_id) {
+  if (!search_result_ads_ || placement_id.empty()) {
+    return;
+  }
+
+  auto iter = search_result_ads_->find(placement_id);
+  if (iter == search_result_ads_->end()) {
+    return;
+  }
+
+  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
+  if (!search_result_ad) {
+    return;
+  }
+
+  ads_service_->TriggerSearchResultAdEvent(
+      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kServed);
+
+  ads_service_->TriggerSearchResultAdEvent(
+      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kViewed);
 }
 
 }  // namespace brave_ads

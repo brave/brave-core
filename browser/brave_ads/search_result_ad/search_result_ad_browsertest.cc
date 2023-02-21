@@ -262,34 +262,28 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    auto run_loop3 = std::make_unique<base::RunLoop>();
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kServed))
-        .Times(3);
+        .Times(2);
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
                     _, ads::mojom::SearchResultAdEventType::kViewed))
-        .Times(3)
+        .Times(2)
         .WillRepeatedly(
-            [this, &run_loop1, &run_loop2, &run_loop3](
+            [this, &run_loop1, &run_loop2](
                 ads::mojom::SearchResultAdInfoPtr ad_mojom,
                 const ads::mojom::SearchResultAdEventType event_type) {
               const bool is_search_result_ad_1 =
                   CheckSampleSearchAdMetadata(ad_mojom, 1);
               const bool is_search_result_ad_2 =
                   CheckSampleSearchAdMetadata(ad_mojom, 2);
-              const bool is_search_result_ad_3 =
-                  CheckSampleSearchAdMetadata(ad_mojom, 3);
-              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2 ||
-                          is_search_result_ad_3);
+              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
 
               if (is_search_result_ad_1) {
                 run_loop1->Quit();
               } else if (is_search_result_ad_2) {
                 run_loop2->Quit();
-              } else if (is_search_result_ad_3) {
-                run_loop3->Quit();
               }
             });
 
@@ -301,7 +295,6 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
 
     run_loop1->Run();
     run_loop2->Run();
-    run_loop3->Run();
 
     return web_contents;
   }

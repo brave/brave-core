@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
@@ -41,7 +42,11 @@ class SearchResultAdHandler final {
                                    const GURL& url,
                                    bool should_trigger_viewed_event);
 
-  void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host);
+  void MaybeRetrieveSearchResultAd(
+      content::RenderFrameHost* render_frame_host,
+      base::OnceCallback<void(std::vector<std::string>)> callback);
+
+  void MaybeTriggerSearchResultAdViewedEvent(const std::string& placement_id);
 
   void MaybeTriggerSearchResultAdClickedEvent(const GURL& navigation_url);
 
@@ -53,6 +58,7 @@ class SearchResultAdHandler final {
 
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
+      base::OnceCallback<void(std::vector<std::string>)> callback,
       blink::mojom::WebPagePtr web_page);
 
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED

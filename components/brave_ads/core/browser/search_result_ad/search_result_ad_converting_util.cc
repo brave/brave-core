@@ -76,8 +76,12 @@ bool GetStringValue(const schema_org::mojom::PropertyPtr& ad_property,
     return false;
   }
 
-  *out_value = ad_property->values->get_string_values().front();
+  const std::string& value = ad_property->values->get_string_values().front();
+  if (value.empty()) {
+    return false;
+  }
 
+  *out_value = value;
   return true;
 }
 
@@ -278,6 +282,9 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
   }
 
   std::string placement_id = search_result_ad->placement_id;
+  if (placement_id.empty()) {
+    return;
+  }
   search_result_ads->emplace(std::move(placement_id),
                              std::move(search_result_ad));
 }

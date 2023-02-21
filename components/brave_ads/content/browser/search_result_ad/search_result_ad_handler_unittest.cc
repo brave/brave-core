@@ -9,6 +9,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
@@ -25,6 +26,9 @@ namespace {
 using testing::_;
 using testing::Mock;
 using testing::Return;
+
+using OnRetrieveSearchResultAdCallback =
+    base::OnceCallback<void(std::vector<std::string>)>;
 
 constexpr char kAllowedDomain[] = "https://search.brave.com";
 constexpr char kNotAllowedDomain[] = "https://brave.com";
@@ -55,9 +59,11 @@ class SearchResultAdHandlerTest : public ::testing::Test {
 
   static void SimulateOnRetrieveSearchResultAdEntities(
       SearchResultAdHandler* search_result_ad_handler,
+      OnRetrieveSearchResultAdCallback callback,
       blink::mojom::WebPagePtr web_page) {
     search_result_ad_handler->OnRetrieveSearchResultAdEntities(
-        mojo::Remote<blink::mojom::DocumentMetadata>(), std::move(web_page));
+        mojo::Remote<blink::mojom::DocumentMetadata>(), std::move(callback),
+        std::move(web_page));
   }
 
  protected:
@@ -115,7 +121,17 @@ TEST_F(SearchResultAdHandlerTest, NullWebPage) {
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
+                                           callback.Get(),
                                            blink::mojom::WebPagePtr());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
@@ -139,7 +155,17 @@ TEST_F(SearchResultAdHandlerTest, EmptyWebPage) {
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
+                                           callback.Get(),
                                            blink::mojom::WebPage::New());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
@@ -164,8 +190,17 @@ TEST_F(SearchResultAdHandlerTest, NotValidSearchResultAd) {
   ASSERT_TRUE(search_result_ad_handler.get());
 
   // "data-rewards-value" is missed.
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(
-      search_result_ad_handler.get(),
+      search_result_ad_handler.get(), callback.Get(),
       CreateTestWebPage({"data-rewards-value"}));
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
@@ -191,8 +226,17 @@ TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
   ASSERT_TRUE(search_result_ad_handler.get());
 
   // "data-conversion-type-value" is missed.
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(
-      search_result_ad_handler.get(),
+      search_result_ad_handler.get(), callback.Get(),
       CreateTestWebPage({"data-conversion-type-value"}));
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
@@ -219,8 +263,17 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsBecomeDisabled) {
                   _, ads::mojom::SearchResultAdEventType::kClicked))
       .Times(0);
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           CreateTestWebPage());
+                                           callback.Get(), CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
       GetSearchResultAdClickedUrl());
@@ -245,8 +298,17 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           CreateTestWebPage());
+                                           callback.Get(), CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
       GetSearchResultAdClickedUrl());
@@ -271,8 +333,17 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsTabRestored) {
           /*should_trigger_viewed_event*/ false);
   ASSERT_TRUE(search_result_ad_handler.get());
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           CreateTestWebPage());
+                                           callback.Get(), CreateTestWebPage());
 
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(
       GetSearchResultAdClickedUrl());
@@ -297,8 +368,17 @@ TEST_F(SearchResultAdHandlerTest, WrongClickedUrl) {
           /*should_trigger_viewed_event*/ true);
   ASSERT_TRUE(search_result_ad_handler.get());
 
+  base::MockCallback<OnRetrieveSearchResultAdCallback> callback;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce([&search_result_ad_handler](
+                    const std::vector<std::string>& placement_ids) {
+        for (const std::string& placement_id : placement_ids) {
+          search_result_ad_handler->MaybeTriggerSearchResultAdViewedEvent(
+              placement_id);
+        }
+      });
   SimulateOnRetrieveSearchResultAdEntities(search_result_ad_handler.get(),
-                                           CreateTestWebPage());
+                                           callback.Get(), CreateTestWebPage());
 
   GURL url(base::StrCat({kSearchResultAdClickUrl, kPlacementId}));
   search_result_ad_handler->MaybeTriggerSearchResultAdClickedEvent(url);
