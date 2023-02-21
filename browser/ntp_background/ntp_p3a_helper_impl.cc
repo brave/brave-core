@@ -15,6 +15,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -35,6 +36,9 @@ constexpr char kViewEventKey[] = "views";
 constexpr char kClickEventKey[] = "clicks";
 constexpr char kLandEventKey[] = "lands";
 
+constexpr char kCreativeTotalCountEventKey[] = "count";
+constexpr char kCreativeTotalInstanceId[] = "total";
+
 constexpr char kInflightDictKey[] = "inflight";
 constexpr char kExpireTimeKey[] = "expiry_time";
 
@@ -46,8 +50,11 @@ constexpr base::TimeDelta kLandingTime = base::Seconds(10);
 }  // namespace
 
 NTPP3AHelperImpl::NTPP3AHelperImpl(PrefService* local_state,
-                                   brave::BraveP3AService* p3a_service)
-    : local_state_(local_state), p3a_service_(p3a_service) {
+                                   brave::BraveP3AService* p3a_service,
+                                   brave_ads::AdsService* ads_service)
+    : local_state_(local_state),
+      p3a_service_(p3a_service),
+      ads_service_(ads_service) {
   DCHECK(local_state);
   DCHECK(p3a_service);
   metric_sent_subscription_ =
@@ -99,10 +106,12 @@ void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type) {
     return;
   }
 
+  size_t total_active_creatives = 0;
   for (const auto [creative_instance_id, creative_value] : update_dict) {
     base::Value::Dict& creative_dict = creative_value.GetDict();
     base::Value::Dict* inflight_dict = creative_dict.FindDict(kInflightDictKey);
     DCHECK(inflight_dict);
+    bool is_active_creative = false;
     for (const auto [key, value] : creative_dict) {
       if (key == kExpireTimeKey || key == kInflightDictKey) {
         continue;
@@ -112,7 +121,24 @@ void NTPP3AHelperImpl::OnP3ARotation(brave::MetricLogType log_type) {
       p3a_utils::RecordToHistogramBucket(
           BuildHistogramName(creative_instance_id, key).c_str(), kCountBuckets,
           count);
+      is_active_creative = true;
     }
+    if (is_active_creative) {
+      total_active_creatives++;
+    }
+  }
+  std::string creative_total_histogram_name =
+      BuildHistogramName(kCreativeTotalInstanceId, kCreativeTotalCountEventKey);
+  // Always send the creative total if ads are disabled (as per spec),
+  // or send the total if there were outstanding events sent
+  if ((ads_service_ != nullptr && !ads_service_->IsEnabled()) ||
+      total_active_creatives > 0) {
+    p3a_service_->RegisterDynamicMetric(creative_total_histogram_name,
+                                        brave::MetricLogType::kExpress);
+    p3a_utils::RecordToHistogramBucket(creative_total_histogram_name.c_str(),
+                                       kCountBuckets, total_active_creatives);
+  } else {
+    p3a_service_->RemoveDynamicMetric(creative_total_histogram_name);
   }
 }
 
