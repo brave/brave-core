@@ -22,7 +22,12 @@ class LargeFaviconView: UIView {
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor
         self.imageView.contentMode = .scaleAspectFit
-        self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
+        
+        if let image = favicon.image {
+          self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+        } else {
+          self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
+        }
       } catch {
         self.imageView.image = try? await FaviconFetcher.monogramIcon(url: siteURL).image ?? Favicon.defaultImage
         self.backgroundColor = nil
