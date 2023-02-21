@@ -68,14 +68,12 @@ struct EncryptionView: View {
   
   var body: some View {
     ScrollView(.vertical) {
-      if let chain = networkStore.selectedChain {
-        HStack(alignment: .top) {
-          Text(chain.chainName)
-          Spacer()
-        }
-        .font(.callout)
-        .padding(.bottom, 6)
+      HStack(alignment: .top) {
+        Text(networkStore.selectedChain.chainName)
+        Spacer()
       }
+      .font(.callout)
+      .padding(.bottom, 6)
       VStack(spacing: 12) {
         VStack(spacing: 8) {
           Blockie(address: request.address)

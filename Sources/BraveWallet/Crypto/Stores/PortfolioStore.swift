@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import SwiftUI
+import Combine
 
 public struct AssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.BlockchainToken

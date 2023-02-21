@@ -8,6 +8,7 @@ import BraveCore
 import SwiftUI
 import Strings
 import BraveShared
+import Combine
 
 /// An interface that helps you interact with a json-rpc service
 ///

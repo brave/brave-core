@@ -8,6 +8,7 @@ import LocalAuthentication
 import BraveCore
 import Data
 import BraveShared
+import Combine
 
 public class SettingsStore: ObservableObject {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
