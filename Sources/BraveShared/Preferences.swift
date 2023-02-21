@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import os.log
+import Combine
 
 /// An empty protocol simply here to force the developer to use a user defaults encodable value via generic constraint
 public protocol UserDefaultsEncodable {}

@@ -36,6 +36,11 @@ class BraveWebView: WKWebView {
     super.init(frame: frame, configuration: configuration)
 
     customUserAgent = UserAgent.userAgentForDesktopMode
+#if compiler(>=5.8)
+    if #available(iOS 16.4, *) {
+      isInspectable = true
+    }
+#endif
   }
 
   static func removeNonPersistentStore() {

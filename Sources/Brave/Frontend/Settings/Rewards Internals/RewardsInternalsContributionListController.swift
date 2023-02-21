@@ -157,7 +157,7 @@ struct RewardsInternalsContributionsGenerator: RewardsInternalsFileGenerator {
               "Publisher Key": pub.publisherKey,
               "Total Amount": pub.totalAmount,
               "Contributed Amount": pub.contributedAmount,
-            ]
+            ] as [String: Any]
           },
         ]
       }

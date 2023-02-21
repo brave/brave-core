@@ -11,6 +11,7 @@ import Data
 import CoreData
 import Storage
 import os.log
+import Combine
 
 public class BraveCoreMigrator {
 
