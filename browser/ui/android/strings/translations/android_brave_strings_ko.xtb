@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="4744921452903670666">어떻게 생각하시는지 알려주세요!</translation>
 <translation id="2524310205387880526">Brave 평가</translation>
+<translation id="4104400246019119780">감사합니다!</translation>
+<translation id="5202255382948179481">제안 사항 추가</translation>
+<translation id="7759809451544302770">선택사항</translation>
+<translation id="4748689412569009273">Brave 경험을 이모지 하나로 어떻게 표현하시겠습니까?</translation>
+<translation id="7335142069363686805">지금 평가하기</translation>
+<translation id="6681362094306959654">Brave가 마음에 드십니까?</translation>
+<translation id="5488843227043643519">Play 스토어 평점을 남겨주시겠습니까?</translation>
+<translation id="5867854497245948308">피드백을 주셔서 감사합니다!</translation>
+<translation id="4935400164159327304">Brave의 개선점을 알려주세요.</translation>
 <translation id="915758461293673891">팁 금액:</translation>
 <translation id="1420756770787071946">이 작성자 지원</translation>
 <translation id="4147995007712611681">보류 중인 팁이 설정되었습니다!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">해결 방법</translation>
+<translation id="8410806609595910352">ENS 오프체인 룩업</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="4176463684765177261">사용 중지</translation>
 <translation id="59174027418879706">사용함</translation>
@@ -91,11 +102,19 @@
 <translation id="1765217911817124376">Brave News 켜기</translation>
 <translation id="8981973962043893066">사이트, 주제, RSS 피드 검색</translation>
 <translation id="3225021799163709119">인기</translation>
+<translation id="3673348851739109493">소스 순위 목록</translation>
 <translation id="4750394297954878236">추천</translation>
+<translation id="1031536812594716160">좋아할 만한 소스</translation>
 <translation id="1498364270401875204">채널</translation>
+<translation id="3923595176124806911">관심 있는 주제 팔로우</translation>
 <translation id="8032569120109842252">팔로우 중</translation>
+<translation id="7264627851715038916">피드 소스 관리</translation>
 <translation id="4108314971463891922">팔로우</translation>
 <translation id="3861486700625780712">언팔로우</translation>
+<translation id="7813788390976857515">피드 받기</translation>
+<translation id="3405580543478883040">피드 받는 중...</translation>
+<translation id="7461899062138731833">소스</translation>
+<translation id="6150420917380577651"><ph name="SEARCH_URL"/>에서 찾은 피드 없음</translation>
 <translation id="4541978218358617681">광고</translation>
 <translation id="7823038307453615214">Brave News 표시</translation>
 <translation id="6527303717912515753">공유</translation>
@@ -225,6 +244,9 @@
 <translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT를 후원했습니다.</translation>
 <translation id="2429828319207652823">기부금 처리 중 문제가 생겼습니다.</translation>
 <translation id="2221902203895354376">토큰 보조금을 받을 수 있습니다!</translation>
+<translation id="2377929997600454162"><ph name="MONTH_VALUE"/> 광고 리워드가 도착했습니다!</translation>
+<translation id="2716238748894345194"><ph name="MONTH_VALUE"/> 리워드: <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">받을 수 있는 기한 <ph name="TOKEN"/>일 남음</translation>
 <translation id="2323069945529668668">이런!</translation>
 <translation id="7510166204621526816">Brave 보상 서버가 응답하지 않습니다. 가능한 한 신속히 이 문제를 해결하겠습니다.</translation>
 <translation id="683765328936486920">YouTube에서 활동</translation>
@@ -252,6 +274,8 @@
 <translation id="3792563952903751704">계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.
 삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
 <translation id="9064376100690171155">계정 영구 삭제</translation>
+<translation id="2740516568641790390">동기화 계정 삭제 성공</translation>
+<translation id="7006136453627651236">동기화 계정 삭제 실패</translation>
 <translation id="728334460283296316">장치 제거</translation>
 <translation id="1178128181015923849">정말 '<ph name="DEVICE_NAME"/>' 장치를 삭제하시겠습니까?</translation>
 <translation id="7745082336226088126">동기화 코드를 스캔하거나 입력하세요</translation>
@@ -294,6 +318,8 @@
 <translation id="7173114856073700355">설정 열기</translation>
 <translation id="6965382102122355670">확인</translation>
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
+<translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
 <translation id="8199291899164865593">이 동기화 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.</translation>
 <translation id="5633907266617216186">주소, 결제 정보 등</translation>
 <translation id="1056898198331236512">경고</translation>
@@ -310,6 +336,7 @@
 <translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
 <translation id="5858455511731621847">개인 탭에서 방문하는 사이트는 로컬로 저장되지 않는 경우에도 ISP, 고용주 또는 방문하는 사이트에 사용자를 익명으로 표시하거나 숨기지 않습니다.</translation>
 <translation id="5789441016350810005">브라우저가 백그라운드에 있을 때 전송된 브레이브 광고</translation>
+<translation id="4059103952779533037">기부와 팁</translation>
 <translation id="2892744985635833293">월간 팁이 처리되었습니다.</translation>
 <translation id="3124090095880236567">광고 켜기</translation>
 <translation id="2975780980638932742">Brave 광고가 도착했습니다!</translation>
@@ -317,8 +344,10 @@
 <translation id="8520059774736886747">제작자 <ph name="PUBLISHER_NAME"/> 최근에 확인됨</translation>
 <translation id="1486343603936278248">토큰</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
+<translation id="3171669670217312786">배경 이미지</translation>
 <translation id="8522669544471808198">배경 이미지 표시</translation>
 <translation id="3870475560794762985">스폰서 이미지 표시</translation>
+<translation id="8793108040181436796">위젯</translation>
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="7275773481201277457">Brave Stats 보기</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/>의 사진</translation>
@@ -450,9 +479,12 @@
 <translation id="7712287524451429139">쉽게 돌려주기</translation>
 <translation id="105037569026952831">창작자들은 저희들이 ‘어텐션’으로써 측정하는 여러분의 주의 수준에 따라 자동으로 여러분의 토큰 기부금을 수여받게 됩니다.</translation>
 <translation id="5323267338679539010">팁으로 감사 인사하기</translation>
+<translation id="8235783939971604011">팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!</translation>
 <translation id="4215679190414901888">직접 설정하기</translation>
 <translation id="3494356595346329740">나중에 변경할 수 있습니다.</translation>
 <translation id="3115702351969988294">얼마나 자주 광고를 보고 싶으신가요?</translation>
+<translation id="2353222426385080466">더욱 프라이빗한 광고, 더 많은 리워드.</translation>
+<translation id="1201128255476890443">시간당 광고 <ph name="ADS_PER_HOUR"/>개</translation>
 <translation id="827315274423079662">야호, 설정이 다 끝났습니다!</translation>
 <translation id="3895246934788932488">Brave Rewards를 사용하면 개인 정보를 보호하고 웹을 모두에게 더 나은 곳으로 만드는 데 도움이 됩니다. 그리고 그것은 굉장합니다!</translation>
 <translation id="5705882733397021510">돌아가기</translation>
@@ -574,9 +606,13 @@
 <translation id="6888491517683356528">Ramp로 이동</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="3784455785234192852">잠금</translation>
+<translation id="8796429300536029044">NFT 세부정보</translation>
 <translation id="3866249974567520381">설명</translation>
 <translation id="4378475168089649292">블록체인</translation>
+<translation id="794436451374055797">토큰 표준</translation>
 <translation id="9033453977881595182">토큰 ID</translation>
+<translation id="4987916116550559556">Mint 주소</translation>
+<translation id="7592795625234816917">이미지 사용 불가</translation>
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
 <translation id="4993345308607970390">Brave 월렛 초기화</translation>
@@ -959,14 +995,18 @@
 <translation id="6662142137695589205">VPN 구독 연결</translation>
 <translation id="2674077112509133024">Brave Firewall + VPN 보호를 더 폭넓게 활용</translation>
 <translation id="6365389672683343144">Brave VPN 구독은 최대 5대의 Android, iOS, 데스크톱 기기를 보호할 수 있습니다. Google Play 구독을 Brave 계정에 연결하기만 하면 됩니다.</translation>
+<translation id="6610899852831463073">세이프 브라우징 활성화 불가</translation>
+<translation id="7954263306665462056">세이프 브라우징이 디바이스에 비활성화되어 있습니다. 활성화하려면 Google Play Services를 설치하고 최신 상태로 업데이트하세요.</translation>
 <translation id="6605147707233193230">콘텐츠 제작자를 지원하려면 켜세요.</translation>
 <translation id="1609556006143307897">콘텐츠 제작자를 지원하고 계십니다.</translation>
 <translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
 <translation id="121894865378699201">BAT를 받을 준비가 되셨나요?</translation>
+<translation id="2648805457288107211">보호관리 계정을 Rewards 프로필에 연결하면 됩니다. 계정이 없다면 하나 새로 만드세요.</translation>
 <translation id="1772961321862399863">BAT를 적립받으려면, 보호관리 계정을 Brave Rewards에 연결해야 합니다. 안타깝지만 현재 거주하고 계신 지역에 가능한 보호관리 서비스가 없어 적립이 불가능합니다. 지금은 Brave Rewards를 켜면 제작자를 자동으로 지원합니다.</translation>
 <translation id="5430495762768325224">BAT에 대해 자세히 알아보기</translation>
 <translation id="6278643716658443228">리워드 설정</translation>
 <translation id="6516984207843289176">계정 연결</translation>
+<translation id="4272136334824111854">이번 달에 Brave Rewards의 지원을 받는 제작자 <ph name="CREATOR_COUNT"/>명을 방문하셨습니다.</translation>
 <translation id="6845311459433734326">BAT를 벌고 리워드를 인출할 수 있도록 보호관리 계정 연결</translation>
 <translation id="928980476243133540">나중에</translation>
 <translation id="579702532610384533">재연결</translation>
@@ -976,6 +1016,7 @@
 <translation id="9074594632540931067">오류: BAT 이용 불가</translation>
 <translation id="5382684862562314222">거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.</translation>
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
+<translation id="842321566508373706">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요.</translation>
 <translation id="6417420737057016607">Brave 광고</translation>
 <translation id="5425006356459378415">Brave Rewards 사용 불가</translation>
 <translation id="833643743158564518">귀하가 계신 지역에서는 현재 Brave Rewards 신규 가입이 중단되었습니다. 나중에 언제든 다시 시도해주세요. <ph name="LEARN_MORE"/></translation>
@@ -983,5 +1024,7 @@
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="6309721369749814582">도메인 <ph name="DOMAIN"/> 등록되지 않음</translation>
 <translation id="4071347720273751665">ENS 주소를 입력하신 것 같습니다. 이 요청을 해석하려면 제3자 해석기를 사용해야 하므로 IP 주소와 도메인을 해당 제3자가 볼 수 있습니다. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">ENS 오프체인 도메인 사용</translation>
 <translation id="4982630604810554641">도메인 검색 중...</translation>
+<translation id="3586775666459823714">NFT</translation>
 </translationbundle>

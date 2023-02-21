@@ -276,11 +276,6 @@
 <translation id="2567545343356994513">Бржа проактивна заштита од опасних веб-сајтова, преузимања и додатака</translation>
 <translation id="5079947353572974060">Понуди слање страница на другим језицима у Brave преводилац</translation>
 <translation id="6995512410824092085">Сазнајте како да подесите Brave као подразумевани прегледач</translation>
-<translation id="6453483065572809635">Умањење непожељног садржаја и превара ослања се на приватнe токенe за стање да би помогло сајтовима који се боре против превара, као и у разликовању робота од људи.
-
-Тај сајт може да изда приватни токен за стање за прегледач на основу ваше интеракције са сајтом, попут редовног пријављивања на налог. Ако други сајтови које посећујете касније потраже и пронађу важећи приватни токен за стање, већа је вероватноћа да ће вас третирати као особу, а не као робота.
-
-Приватни токени за стање побољшавају приватност на вебу и не могу да се користе за откривање идентитета.</translation>
 <translation id="2324920234469020158">Овим ћете обрисати колачиће, кеш и друге податке сајтова које Brave не сматра важним.</translation>
 <translation id="2587052924345400782">Доступна је новија верзија</translation>
 <translation id="2593272815202181319">Фиксне ширине</translation>
@@ -559,11 +554,6 @@
 <translation id="4137746084635924146">Актуелни језик уређаја</translation>
 <translation id="414128724510021958">Верзије сајтова за рачунар које се подразумевано захтевају</translation>
 <translation id="4159350418181625094">Упознајте се са Brave-ом</translation>
-<translation id="1453456663856716353">Док пробни периоди трају, умањење непожељног садржаја и превара ослања се на приватне токене за стање да би помогло сајтовима у борби против превара, као и у разликовању робота од људи.
-
-Тај сајт може да изда приватни токен за стање за прегледач на основу ваше интеракције са сајтом, попут редовног пријављивања на налог. Ако други сајтови које посећујете касније потраже и пронађу важећи приватни токен за стање, већа је вероватноћа да ће вас третирати као особу, а не као робота.
-
-Приватни токени за стање побољшавају приватност на вебу и не могу да се користе за откривање идентитета.</translation>
 <translation id="4162867837470729563">Листа опција за дељење је отворена на целом екрану.</translation>
 <translation id="4170011742729630528">Услуга није доступна. Пробајте поново касније.</translation>
 <translation id="4177222230309051052">Преузмите све обележиваче</translation>
@@ -1533,6 +1523,16 @@ Brave налог можда има друге облике историје пр
 <translation id="5711390076756601471">Zaključajte privatne kartice kada napuštate Brave</translation>
 <translation id="1014490034578104945">Koristite blokadu ekrana da biste videli otvorene privatne kartice</translation>
 <translation id="4390099071040105838">Pomoći sajtovima u borbi protiv prevare i razlikovanju botova od profila</translation>
+<translation id="6453483065572809635">Smanjenje spemova &amp; prevara oslanja se na tokene privatgnog stanja u pomaganju sajtovima u borbi protiv prevare i razlikovanju botova od profila.
+
+Na osnovu vaše interakcije sa sajtom, kao što je redovno prijavljivanje na određeni nalog, taj sajt može izdati token privatnog stanja vašem pretraživaču. Kasnije, ako drugi sajtovi koje posećujete provere i pronađu validni token privatnog stanja, veća je verovatnoća da će vas smatrati profilom a ne botom.
+
+Tokeni privatnog stanja poboljšavaju privatnost na mreži i ne mogu se koristiti da se ustanovi ko ste.</translation>
+<translation id="1453456663856716353">Kada su probe uključene, smanjenje spemova &amp; prevara oslanja se na tokene privatnog stanja u pomaganju sajtovima u borbi protiv prevare i razlikovanju botova od profila.
+
+Na osnovu vaše interakcije sa sajtom, kao što je redovno prijavljivanje na određeni nalog, taj sajt može izdati token privatnog stanja vašem pretraživaču. Kasnije, ako drugi sajtovi koje posećujete provere i pronađu validni token privatnog stanja, veća je verovatnoća da će vas smatrati profilom a ne botom.
+
+Tokeni privatnog stanja poboljšavaju privatnost na mreži i ne mogu se koristiti da se ustanovi ko ste.</translation>
 <translation id="7721367250891727403">Blokiraj tokom korišćenja privatnog režima</translation>
 <translation id="4785410057733147746">Prilikom korišćenja privatnog režima, lokacije mogu da pomoću vaših kolačića dobiju informacije o vašim aktivnostima pregledanja različitih lokacija, radi personalizacije oglasa. Funkcije na nekim lokacijama možda neće raditi.</translation>
 <translation id="2633278372998075009">Privatne kartice</translation>

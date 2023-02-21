@@ -40,8 +40,8 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="1725356094208762656">Abrir en Tor</translation>
 <translation id="3396347744975515056">Brave Sync ha sido actualizado y requiere configuración</translation>
 <translation id="7473245612074035141">Iniciar la configuración</translation>
-<translation id="496896260395129787">Esta cuenta de Sincronización de Brave se eliminó de otro dispositivo. Si no quería desactivar la sincronización, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> vuelva a crear la cuenta</translation>
+<translation id="496896260395129787">Esta cuenta de Sincronización de Brave se eliminó de otro dispositivo. Si no querías desactivar la sincronización, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> vuelve a crear la cuenta</translation>
 <translation id="6965382102122355670">Aceptar</translation>
 <translation id="3975865347033939965">No se ha podido iniciar el servicio de sincronización. La sincronización de Brave no se está ejecutando.</translation>
 <translation id="4450893287417543264">No volver a mostrar</translation>
@@ -303,8 +303,6 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="2360360976480535628">Vista avanzada</translation>
 <translation id="101592339984642584">Filtrado de contenido</translation>
 <translation id="8694564340481124390">Habilita los filtros personalizados para bloquear los rastreadores y molestias asociados a un idioma o región en concreto.</translation>
-<translation id="4877657558909976793">Habilita los filtros personalizados para bloquear los rastreadores y
-    <ph name="BEGIN_LINK"/>molestias<ph name="END_LINK"/> asociados a un idioma o región en concreto.</translation>
 <translation id="3482656215021340727">Añade listas de filtros personalizadas</translation>
 <translation id="1020877116991797978">Añade otras listas creadas y mantenidas por tu comunidad de confianza.</translation>
 <translation id="7617831480435794399">Suscríbete solo a las listas de entidades en las que confíes. Tu navegador comprobará regularmente si hay actualizaciones para las listas de las URL que introduzcas, de modo que sus servidores estarán al tanto de tu dirección IP.</translation>
@@ -430,16 +428,16 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 
 ¿Seguro que quieres hacerlo?</translation>
 <translation id="7443185843787879670">Brave no ha podido acceder al almacenamiento seguro de tu sistema operativo, donde se protegen datos como contraseñas y cookies. También es necesario para que la sincronización de Brave vincule tu perfil de navegador entre dispositivos. Esto significa que la sincronización de Brave no se está ejecutando. Para resolver el problema, consulta la <ph name="BEGIN_LINK_SYNC_GUIDE"/>Guía de solución de problemas con la sincronización de Brave<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
-<translation id="6802736947576520626">Parece que la clave de encriptación de la sincronización es distinta a la que se utilizó la primera vez que se configuró Sincronización de Brave. La solución más sencilla es restablecer y volver a unir la cadena de sincronización utilizando la frase de contraseña de uno de los otros dispositivos sincronizados.</translation>
-<translation id="4889767840132638381">Restablezca y vuelva a unir la cadena de sincronización</translation>
-<translation id="1680065323266179640">Eliminar cuenta de sincronización</translation>
+<translation id="6802736947576520626">Parece que la clave de encriptación de la sincronización es distinta a la que se utilizó la primera vez que configuraste la Sincronización de Brave. La solución más sencilla es restablecer y volver a unir la cadena de sincronización utilizando la frase de contraseña de uno de los otros dispositivos sincronizados.</translation>
+<translation id="4889767840132638381">Restablece y vuelve a unir la cadena de sincronización</translation>
+<translation id="1680065323266179640">Eliminar cuenta de Sincronización</translation>
 <translation id="9064376100690171155">Eliminar cuenta de forma permanente</translation>
-<translation id="228906529296554286">Al eliminar tu cuenta se eliminarán tus datos encriptados de los servidores de Brave y se desactivará la sincronización en todos los dispositivos conectados.</translation>
+<translation id="228906529296554286">Al eliminar tu cuenta se eliminarán tus datos encriptados de los servidores de Brave y se desactivará la Sincronización en todos los dispositivos conectados.</translation>
 <translation id="7578652532113583362">Sin embargo, no se borrarán los datos almacenados localmente en dichos dispositivos.</translation>
-<translation id="2516405584294312544">Esta eliminación es permanente y no se pueden recuperar los datos. Si decide
- volver a utilizar Sincronización, tendrá que crear una cuenta nueva y volver a añadir cada dispositivo uno por uno.</translation>
+<translation id="2516405584294312544">Esta eliminación es permanente y no se pueden recuperar los datos. Si decides
+ volver a utilizar la Sincronización, tendrás que crear una cuenta nueva y volver a añadir cada dispositivo uno por uno.</translation>
 <translation id="4860996720371753023">Eliminación de la cuenta en curso...</translation>
-<translation id="8199291899164865593">No se pudo unir esta cadena de sincronización, La cuenta fue eliminada.</translation>
+<translation id="8199291899164865593">No se pudo unir esta cadena de sincronización. La cuenta fue eliminada.</translation>
 <translation id="5633907266617216186">Direcciones, datos de pago, etc.</translation>
 <translation id="294985549514492876">Aplicaciones web (PWA)</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>

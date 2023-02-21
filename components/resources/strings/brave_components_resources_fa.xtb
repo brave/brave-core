@@ -169,7 +169,7 @@
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
 <translation id="4851215387785619212">آگهی‌های خصوصی Brave</translation>
-<translation id="6480303618073442141">Brave Private Ads نامحسوس هستند و طراحی شخصی دارند. آگهی‌ها تنها بر اساس علایق شما می‌باشند نه بر اساس داده‌های خصوصی یا تاریخچه مرورگر موجود بر روی دستگاه شما. از همه مهم‌تر اینکه Brave Private Ads به شما برای بازدید ‏BAT‏ (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) خواهد داد.</translation>
+<translation id="6480303618073442141">آگهی‌های خصوصی Brave نامحسوس هستند و طراحی شخصی دارند. آگهی‌ها تنها بر اساس علایق شما نشان داده می‌شوند نه بر اساس داده‌های خصوصی یا تاریخچه مرورگر موجود بر روی دستگاه شما. از همه مهم‌تر اینکه آگهی‌های خصوصی Brave در ازای بازدید به شما ‏BAT‏ (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) خواهد داد.</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="3742599705619405136">شیوه‌ای خودکار برای حمایت از ناشران و پدیدآورندگان محتوا. پرداخت ماهانه‌ای تنظیم کنید و به‌طور معمول وب را مرور کنید. سایت‌های مورد تأیید Brave که بازدید می‌کنید، کمک‌های مالی شما را براساس توجهتان، که توسط Brave سنجیده می‌شود، به‌طور خودکار دریافت می‌کنند.</translation>
 <translation id="3325399124634342726">دستاورهایی فعلی این ماه (تخمینی)</translation>
@@ -260,11 +260,11 @@
 <translation id="2916515880661220182">اگر قبلاً یک حساب امانی دارید، از شما خواسته می‌شود آن را متصل کنید. اگر ندارید بعداً فرصت ایجاد آن را خواهید داشت.</translation>
 <translation id="2054853229650377447">توجه: پس از تأیید، تراکنش‌های شما برای سرپرست قابل مشاهده خواهد بود. به عنوان مثال، آنها می‌توانند گیرنده و مبلغ انعام‌های شما را ببینند.</translation>
 <translation id="121894865378699201">برای شروع دریافت BAT آماده‌اید؟</translation>
-<translation id="4478996292566912629">ارائه‌دهندگان حساب نظارتی ملزم هستند که هویت شما را تأیید کنند، که ممکن است شامل ثبت عکس شناسه باشد. به <ph name="BEGIN_LINK"/>خط مشی حریم خصوصی ‏Brave Rewards‏<ph name="END_LINK"/>مراجعه کنید.</translation>
-<translation id="7730415569603152862">حساب نظارتی‌تان را به پروفایل Rewards خود وصل کنید تا بتوانید:</translation>
+<translation id="4478996292566912629">ارائه‌دهندگان حساب نظارتی ملزم هستند که هویت شما را تأیید کنند، که ممکن است شامل ثبت عکس مدرک شناسایی باشد. به <ph name="BEGIN_LINK"/>خط مشی حریم خصوصی ‏Brave Rewards‏<ph name="END_LINK"/>مراجعه کنید.</translation>
+<translation id="7730415569603152862">حساب نظارتی‌تان را به نمایه Rewards خود وصل کنید تا بتوانید:</translation>
 <translation id="5785531043735482053">دریافتی‌های BAT خود را ذخیره، مدیریت و برداشت کنید.</translation>
 <translation id="5155452078869279096">حسابتان را با BAT‌های خریداری شده شارژ کنید.</translation>
-<translation id="5497001757280825146">به پدیدآورندگان &amp; سایت‌های موردعلاقه خود انعام دهید</translation>
+<translation id="5497001757280825146">به پدیدآورندگان و سایت‌های موردعلاقه خود انعام دهید</translation>
 <translation id="1233129511866436960">درباره مناطق و پشتیبانی بیشتر بدانید</translation>
 <translation id="7329170127335794328">در حال حاضر در منطقه شما در دسترس نیست</translation>
 <translation id="8304979233901023264">’s <ph name="TOS_LINK_BEGIN"/>شرایط خدمات<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>خط‌مشی رازداری<ph name="PP_LINK_END"/> ‏Brave را خوانده‌ام و با آن‌ها موافقم.</translation>
@@ -473,9 +473,9 @@
 <translation id="5317144262906129592">با ارسال انعام می‌توانید از پدیدآورنده محتوا حمایت کنید. با این کار می‌توانید از آن‌ها بابت خلق چنین محتوای خوبی قدردانی کنید.</translation>
 <translation id="3074127054582480056">توجه</translation>
 <translation id="3659457123782988823">مطمئن هستید می‌خواهید پاداش‌های Brave خود را بازنشانی کنید؟</translation>
-<translation id="1666001796278936721">پس از بازنشانی، پروفایل Brave Rewards فعلی شما حذف می‌شود و شما دوباره با یک پروفایل Brave Rewards profile کاملاً جدید شروع خواهید کرد. قبل از هرگونه اقدامی به منظور امنیت بیشتر، درباره‌ی بازنشانی <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/> .</translation>
-<translation id="94095197509579227">توجه: شما هم‌اکنون <ph name="BAT_AMOUNT"/> دریافتی تخمین‌زده شده در این ماه دارید که در صورت بازنشانی مجدد آن را از دست می‌دهید.</translation>
-<translation id="4806029412510565611">متوجه‌ام که پروفایل Brave Rewards فعلی و داده‌های Brave Rewards من از روی دستگاهم حذف خواهد شد و <ph name="LINK_BEGIN"/>قانون پشتیبانی درباره‌ی بازنشانی<ph name="LINK_END"/>را خوانده‌ام.</translation>
+<translation id="1666001796278936721">پس از بازنشانی، پروفایل Brave Rewards فعلی شما حذف می‌شود و شما دوباره با یک نمایه Brave Rewards کاملاً جدید شروع خواهید کرد. قبل از هرگونه اقدامی به‌منظور امنیت بیشتر، درباره بازنشانی <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="94095197509579227">توجه: شما هم‌اکنون <ph name="BAT_AMOUNT"/> دریافتی تخمین‌زده شده در این ماه دارید که در صورت بازنشانی، آن را از دست می‌دهید.</translation>
+<translation id="4806029412510565611">متوجهم که نمایه Brave Rewards فعلی و داده‌های Brave Rewards من از روی دستگاهم حذف خواهد شد و <ph name="LINK_BEGIN"/>مقاله پشتیبانی درباره بازنشانی<ph name="LINK_END"/> را خوانده‌ام.</translation>
 <translation id="4914597931214386232">امتیازهای توکن مطالبه شد</translation>
 <translation id="3494964159182650590">خلاصه پاداش‌ها</translation>
 <translation id="2913994227901456490">دیدن همه [[numItems]] ردیف</translation>
@@ -498,7 +498,7 @@
 <translation id="6727483290601442544">مشاهده جزئیات</translation>
 <translation id="4206899127409458763">ایجاد نمایه پاداش‌های Brave شما</translation>
 <translation id="1988679729106502285">توجه:</translation>
-<translation id="942863887222585572">شما به <ph name="USER_PROVIDER"/>متصل هستید, اما این پدید‌آورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید. در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به صورت خودکار مجدداً فرستاده می‌شوند.</translation>
+<translation id="942863887222585572">شما به <ph name="USER_PROVIDER"/>متصل هستید، اما این پدید‌آورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید. در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به‌صورت خودکار مجدداً فرستاده می‌شوند.</translation>
 <translation id="5530734056858418442">این پدیدآورنده هنوز ثبت‌نام نکرده است. هر انعامی که شما بدهید به حالت معوق باقی می‌ماند و به‌طور خودکار به‌مدت 90 روز تلاش مجدد انجام خواهد شد.</translation>
 <translation id="3197752845651180812">مشارکت‌های معلق</translation>
 <translation id="6964891561514920613">مشاهده همه مشارکت‌های معلق</translation>
@@ -539,17 +539,17 @@
 <translation id="4894106830958548828">متوجه هستم</translation>
 <translation id="7534079972563542000">دامنه‌های توقف‌ناپذیر</translation>
 <translation id="4492298165410552103">پشتیبانی از «دامنه‌های توقف‌ناپذیر» در Brave فعال شود؟</translation>
-<translation id="3647533686160055812">Brave از Infura برای حل نام‌های دامنه ‏.crypto (and also .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil)‏. استفاده خواهد کرد که بر روی دامنه‌های غیر‌قابل‌توقف هستند. Brave آدرس IP شما را آشکار نمی‌کند. با فعال کردن این گزینه، Infura تنها دامنه‌های .eth را که سعی بر مشاهده آن دارید را می‌بیند اما نمی‌تواند سایر دامنه‌ها را ببیند. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده ‏Infura‏<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط‌مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>مراجعه کنید.</translation>
+<translation id="3647533686160055812">Brave از Infura برای حل نام‌های دامنه ‎.crypto (و همچنین ‎.x،‏ ‎.nft،‏ ‎.dao،‏ ‎.wallet،‏ ‎.blockchain،‏ ‎.bitcoin،‏ ‎.zil) استفاده خواهد کرد که روی دامنه‌های غیر‌قابل‌توقف هستند. Brave آدرس IP شما را آشکار نمی‌کند. با فعال کردن این گزینه، Infura تنها دامنه‌های ‎.eth را که سعی بر مشاهده آن دارید می‌بیند اما نمی‌تواند سایر دامنه‌ها را ببیند. به <ph name="BEGIN_INFURA_TOU_LINK"/>شرایط استفاده ‏Infura‏<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط‌مشی حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/> مراجعه کنید.</translation>
 <translation id="6513892817556267573">سرویس نام اتریوم</translation>
 <translation id="4335039108389860301">پشتیبانی از «سروبی نام اتریوم» (ENS) در Brave فعال شود؟</translation>
-<translation id="4609973808011229683">Brave از Infura برای حل کردن نام‌های دامنه .eth که بر روی Ethereum Name Service (ENS) هستند، استفاده می‌کند. Brave آدرس IP شما را آشکار نخواهد کرد. با فعال کردن این گزینه، Infura تنها دامنه‌های .eth را که سعی بر مشاهده آن دارید را می‌بیند اما نمی‌تواند سایر دامنه‌ها را ببیند. به <ph name="BEGIN_INFURA_TOU_LINK"/>tشرایط استفاده Infura‏<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط‌مشی حفظ حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/>مراجعه کنید.</translation>
+<translation id="4609973808011229683">Brave از Infura برای حل کردن نام‌های دامنه ‎.eth که روی Ethereum Name Service (ENS) هستند، استفاده می‌کند. Brave آدرس IP شما را آشکار نخواهد کرد. با فعال کردن این گزینه، Infura تنها دامنه‌های ‎.eth را که سعی بر مشاهده آن دارید می‌بیند اما نمی‌تواند سایر دامنه‌ها را ببیند. به <ph name="BEGIN_INFURA_TOU_LINK"/>tشرایط استفاده Infura‏<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>خط‌مشی حفظ حریم خصوصی<ph name="END_INFURA_PRIVACY_LINK"/> مراجعه کنید.</translation>
 <translation id="807404806385418949">مراجعه برون زنجیره‌ای سرویس نام اتریوم</translation>
 <translation id="4049590838234508776">پشتیبانی از مراجعه برون زنجیره‌ای سرویس نام اتریوم (ENS) در Brave فعال شود؟</translation>
-<translation id="5944991147217767764">این نام دامنه eth. در خارج از زنجیره ذخیره می‌شود و از طریق درگاه شخص ثالث حل می‌شود. اگر جست‌و‌جوی خارج از زنجیره ENS را فعال کنید، درگاه شخص ثالث دامنه .eth را که می‌خواهید از آن بازدید کنید، می‌بینند. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>بیشتر بدانید<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="5944991147217767764">این نام دامنه ‎.eth در خارج از زنجیره ذخیره می‌شود و از طریق درگاه شخص ثالث حل می‌شود. اگر جستجوی خارج از زنجیره ENS را فعال کنید، درگاه شخص ثالث دامنه ‎.eth را که می‌خواهید از آن بازدید کنید می‌بینند. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>بیشتر بدانید<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">ادامه دادن با مراجعه برون زنجیره‌ای</translation>
 <translation id="531747189990625622">سرویس نام سولانا</translation>
 <translation id="1090584614351290462">پشتیبانی از «سرویس نام سولانا» (SNS) در Brave فعال شود؟</translation>
-<translation id="2350552210396418924">Brave از Coinbase Cloud برای حل نام‌های دامنه ‏sol‏. استفاده می‌کند. Brave آدرس IP شما را آشکار نخواهد کرد. اگر این قابلیت را فعال کنید، Coinbase Cloud دامنه sol. را که می‌خواهید از آن بازدید کنید می‌بیند، اما نمی‌تواند دامنه‌های دیگر را ببیند. به <ph name="BEGIN_COINBASE_TOU_LINK"/>شرایط استفاده<ph name="END_COINBASE_TOU_LINK"/> و <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_COINBASE_PRIVACY_LINK"/>‏Coinbase Cloud‏ مراجعه کنید.</translation>
+<translation id="2350552210396418924">Brave از Coinbase Cloud برای حل نام‌های دامنه ‎.sol‏ استفاده می‌کند. Brave آدرس IP شما را آشکار نخواهد کرد. اگر این قابلیت را فعال کنید، Coinbase Cloud دامنه ‎.sol را که می‌خواهید از آن بازدید کنید می‌بیند، اما نمی‌تواند دامنه‌های دیگر را ببیند. به <ph name="BEGIN_COINBASE_TOU_LINK"/>شرایط استفاده<ph name="END_COINBASE_TOU_LINK"/> و <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>خط مشی حریم خصوصی<ph name="END_COINBASE_PRIVACY_LINK"/>‏ Coinbase Cloud‏ مراجعه کنید.</translation>
 <translation id="7378412287463452336">ادامه با استفاده از سرور Infura</translation>
 <translation id="2313603121968571839">ادامه استفاده از سرور Coinbase Cloud</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
@@ -651,11 +651,11 @@
 <translation id="3026978804849658576">مشاهده بیانیه</translation>
 <translation id="3368922792935385530">متصل</translation>
 <translation id="8494748383523030337">موجودی شما</translation>
-<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>برای شروع دریافتBAT آماده‌اید؟<ph name="BOLD_END"/> تنها کافی است که حساب نظارتی‌تان را به پروفایل Rewards خود وصل کنید. در صورت نداشتن حساب، شما فرصت برای ساختن یک حساب را خواهید داشت.</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>برای شروع دریافتBAT آماده‌اید؟<ph name="BOLD_END"/> تنها کافی است که حساب نظارتی‌تان را به نمایه Rewards خود وصل کنید. در صورت نداشتن حساب، شما فرصت برای ساختن یک حساب را خواهید داشت.</translation>
 <translation id="1772961321862399863">کاربران برای دریافت BAT باید حساب نظارتی را به Brave Rewards وصل کنند. متأسفانه، هیچ ناظری در منطقه شما وجود ندارد و دریافت برای شما امکان‌پذیر نیست. در حال حاضر، روشن کردن Brave Rewards منجر به حمایت خودکار از پدیدآورندگان خواهد شد.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {This month, you've visited # creator supported by Brave Rewards}
-      other {This month, you've visited # creators supported by Brave Rewards}
+      =1 {این ماه، از # پدیدآورنده Brave Rewards بازدید کرده‌اید}
+      other {این ماه، از # پدیدآورنده Brave Rewards بازدید کرده‌اید}
     }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> پاداش‌ها: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">پاداش‌های تبلیغات <ph name="MONTH"/> شما آماده هستند!</translation>
@@ -678,10 +678,10 @@
 <translation id="2956070106555335453">خلاصه</translation>
 <translation id="2369994359029526515">پدیدآورنده تأییدنشده</translation>
 <translation id="6020176662032623904">پدیدآورنده تأییدشده</translation>
-<translation id="215037911651623564">باز‌آوری وضعیت اعتبارسنجی پدید‌آورنده</translation>
-<translation id="8946576491316456643">در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به صورت خودکار مجدداً فرستاده می‌شوند. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">تازه‌سازی وضعیت اعتبارسنجی پدید‌آورنده</translation>
+<translation id="8946576491316456643">در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به‌صورت خودکار مجدداً فرستاده می‌شوند. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">این ایجادکننده هنوز ثبت‌نام نکرده است.</translation>
-<translation id="3573568055713372419">شما به <ph name="USER_PROVIDER"/>متصل شدید, اما این پدیدآورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید.</translation>
+<translation id="3573568055713372419">شما به <ph name="USER_PROVIDER"/>متصل شدید، اما این پدیدآورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> در <ph name="PLATFORM"/></translation>
 <translation id="7335371657242627509">لحاظ کردن در کمک خودکار</translation>
 <translation id="6965382102122355670">قبول</translation>
@@ -690,7 +690,7 @@
 <translation id="6067959437127691361">استفاده از Brave Rewards، به حمایت از پدیدآورندگان محتوی کمک می‌کند و به شما اجازه دریافت BAT می‌دهد.</translation>
 <translation id="1609556006143307897">شما به حمایت از پدیدآورندگان محتوی کمک می‌کنید</translation>
 <translation id="6605147707233193230">کمک به حمایت از پدیدآورندگان محتوی را فعال کنید</translation>
-<translation id="5430495762768325224">درباره‌ی BAT بیشتر بدانید</translation>
+<translation id="5430495762768325224">درباره BAT بیشتر بدانید</translation>
 <translation id="1258144146756156541">انسان بودنتان را اثبات کنید</translation>
 <translation id="1555514580945108302">اوووم...نه کاملاً. دوباره امتحان کنید.</translation>
 <translation id="8078414184292711961">نماد BAT را به هدف <ph name="HINT"/> بکشید.</translation>
@@ -732,10 +732,10 @@
 <translation id="4331886860862592203">کشور را انتخاب کنید</translation>
 <translation id="3115702351969988294">چندوقت یکبار می‌خواهید آگهی‌ها را ببینید؟</translation>
 <translation id="9006929295045381749">{ADS_PER_HOUR, plural,
-      =1 {# Ad per hour}
-      other {# Ads per hour}
+      =1 {# آگهی در هر ساعت}
+      other {# آگهی در هر ساعت}
     }</translation>
-<translation id="6129810595598072828">پاداش بیشتر در ازای آگهی‌های شخصی بیشتر</translation>
+<translation id="6129810595598072828">پاداش بیشتر در ازای آگهی‌های خصوصی بیشتر</translation>
 <translation id="8871481223725076571">آگهی بیشتر منجر به حمایت از پدیدآورندگان بیشتری می‌شود</translation>
 <translation id="9215691564467955056">می‌توانید آن را بعداً در تنظیمات تغییر دهید.</translation>
 <translation id="6318696841371191107">گشتی سریع بزنید</translation>
@@ -747,7 +747,7 @@
 <translation id="7930505144430343145">به Brave Rewards خوش آمدید!</translation>
 <translation id="3477340970981564961">Brave Private Ads به شما توکن جایزه می‌دهد تا از سازندگان محتوا پشتیبانی شود (کاملاً برعکس آگهی‌های قدیمی)، همه این کارها را در حالی انجام می‌دهد که اطلاعات شخصی شما را خصوصی نگه می‌دارد.</translation>
 <translation id="6973095375773523904">آگهی‌ها کجا نمایش داده می‌شوند؟</translation>
-<translation id="4328028439561659455">Brave Private Ads به‌عنوان اعلانی معمولی بر روی صفحه‌ی دستگاه شما نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را کنترل کنید.</translation>
+<translation id="4328028439561659455">آگهی‌های خصوصی Brave به‌عنوان اعلانی معمولی بر روی صفحه دستگاه شما نشان داده خواهد شد. شما می‌توانید تعداد دفعات مشاهده این آگهی‌ها را کنترل کنید.</translation>
 <translation id="7712287524451429139">برگرداندن بی‌دردسر شده است</translation>
 <translation id="105037569026952831">سازندگان همیاری‌های توکن شما را به‌طور خودکار بر اساس سطح مشارکتتان دریافت می‌کنند که ما آن را به‌عنوان «توجه» می‌سنجیم.</translation>
 <translation id="5323267338679539010">با انعام‌ها سپاس‌گزاری خود را اعلام کنید</translation>
@@ -755,7 +755,7 @@
 <translation id="4215679190414901888">در آخر، بیایید تنظیمات اصلی را انجام دهیم</translation>
 <translation id="827315274423079662">وو هوو، کاملاً آماده هستید!</translation>
 <translation id="8268038362451312235">با استفاده از Brave Rewards کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!</translation>
-<translation id="6845311459433734326">حساب نظارتی‌تان را متصل کنید تا بتوانید BAT دریافت کرده و پاداش‌هایتان را برداشت کنید</translation>
+<translation id="6845311459433734326">حساب نظارتی‌تان را متصل کنید تا بتوانید BAT بگیرید و پاداش‌هایتان را برداشت کنید</translation>
 <translation id="1443125272907895958">بعداً انجام می‌دهم</translation>
 <translation id="1015443539415537847">متأسفیم، پاداش‌های Brave در دسترس نمی‌باشد</translation>
 <translation id="5007776270364097327">متأسفانه به نظر می‌رسد که در منطقه‌ای هستید که پاداش‌های Brave در دسترس نیست.</translation>
@@ -863,9 +863,9 @@
 <translation id="5009335307032488349">جستجوی NFT بر اساس نام، شناسه</translation>
 <translation id="6295954645230084874">از خرید برای <ph name="NETWORK"/> پشتیبانی نمی‌شود</translation>
 <translation id="9209024278910716955">خرید برای شبکه انتخابی پشتیبانی نمی‌شود</translation>
-<translation id="4982630604810554641">جست‌وجوی دامنه...</translation>
-<translation id="5467044307473123584">Brave استفاده از درگاه‌های خارج از زنجیره برای حل دامنه‌های .eth را پشتیبانی می‌کند.</translation>
-<translation id="4896417414446851895">به نظر می‌رسد که یک آدرس ENS وارد کرده‌اید. ما برای حل این درخواست به یک حل‌کننده‌ی شخص ثالث نیاز داریم که ممکن است به آدرس IP و دامنه شما دسترسی پیدا کند.</translation>
+<translation id="4982630604810554641">جستجوی دامنه...</translation>
+<translation id="5467044307473123584">Brave استفاده از درگاه‌های خارج از زنجیره برای حل دامنه‌های ‎.eth را پشتیبانی می‌کند.</translation>
+<translation id="4896417414446851895">به نظر می‌رسد که یک آدرس ENS وارد کرده‌اید. ما برای حل این درخواست به یک حل‌کننده شخص ثالث نیاز داریم که ممکن است به آدرس IP و دامنه شما دسترسی پیدا کند.</translation>
 <translation id="8646078615727397565">از دامنه ENS استفاده کنید</translation>
 <translation id="4171338820961522154">از جابه‌جایی برای <ph name="NETWORK"/> پشتیبانی نمی‌شود</translation>
 <translation id="1191686659164947414">ممکن است تراکنش فرانت ران شده باشد</translation>
@@ -1444,7 +1444,7 @@
 <translation id="7057870207229052478">کارمزد Brave</translation>
 <translation id="3624518972158401291">رایگان</translation>
 <translation id="5038255447967558645">تأمین‌کننده نقدینگی</translation>
-<translation id="8450638959928932199">مبادله &amp; ارسال</translation>
+<translation id="8450638959928932199">مبادله و ارسال</translation>
 <translation id="476816352791390168">بدون کارمزد اضافه!</translation>
 <translation id="5319981934425923365">من درستی آدرس بالا را تأیید می‌کنم</translation>
 <translation id="7480629155329718561">آدرس اتریوم گیرنده را وارد کنید</translation>
@@ -1457,8 +1457,8 @@
 <translation id="1826671530876539299">تنظیمات مبادله</translation>
 <translation id="6778140392042462129">صرافی‌ها</translation>
 <translation id="6173494033320397682">فقط راه مستقیم</translation>
-<translation id="2440960581098655899">این گزینه استفاده‌ی تنها از راه مستقیم را تضمین می‌کند و همچنین تقسیم خرید و فروش در معاملات کوتاه را غیرفعال می‌کند</translation>
-<translation id="6245314729809503023">Brave از 60 تا از بهترین توکن‌ها برای مسیریابی متوسط به منظور بهینه‌سازی عملکرد استفاده می‌کند.</translation>
+<translation id="2440960581098655899">این گزینه مسیریابی فقط مستقیم را تضمین می‌کند و همچنین تقسیم خرید و فروش در معاملات کوتاه را غیرفعال می‌سازد</translation>
+<translation id="6245314729809503023">Brave از 60 تا از بهترین توکن‌ها برای مسیریابی واسطه‌ای به‌منظور بهینه‌سازی عملکرد استفاده می‌کند.</translation>
 <translation id="2379187373676242615"><ph name="VALUE"/>% ارزان‌تر از CoinGecko</translation>
 <translation id="5351867352310722022">در حدود <ph name="VALUE"/>% CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% گران‌تر از CoinGecko</translation>
@@ -1466,8 +1466,8 @@
 <translation id="4029551149873989025">عوض کردن شبکه</translation>
 <translation id="7561262633951061138">بهترین</translation>
 <translation id="3143110700666266545">این برنامه از APIهای شخص ثالث زیر استفاده می‌کند:</translation>
-<translation id="8411419545176806786">Brave Swap از 0x به عنوان صرافی غیرمتمرکز تجمیع‌کننده نقدینگی برای پشتیبانی شبکه‌های EVM استفاده می‌کند. 0x برای تکمیل تراکنش (از جمله دریافت نرخ)، آدرس کیف پول اتریوم و آدرس IP شما را پردازش می‌کند. 0x از این داده‌ها فقط و فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
-<translation id="7467728126359974661">Brave Swap از Jupiter به عنوان صرافی غیرمتمرکز تجمیع‌کننده نقدینگی برای پشتیبانی شبکه‌های EVM استفاده می‌کند. Jupiter برای تکمیل تراکنش (از جمله دریافت نرخ)، آدرس کیف پول اتریوم و آدرس IP شما را پردازش می‌کند. Jupiter از این داده‌ها فقط و فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
+<translation id="8411419545176806786">Brave Swap از 0x به‌عنوان صرافی غیرمتمرکز تجمیع‌کننده نقدینگی برای پشتیبانی شبکه‌های EVM استفاده می‌کند. 0x برای تکمیل تراکنش (از جمله دریافت نرخ)، آدرس کیف پول اتریوم و آدرس IP شما را پردازش می‌کند. 0x از این داده‌ها فقط و فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
+<translation id="7467728126359974661">Brave Swap از Jupiter به‌عنوان صرافی غیرمتمرکز تجمیع‌کننده نقدینگی برای پشتیبانی شبکه‌های Solana استفاده می‌کند. Jupiter برای تکمیل تراکنش (از جمله دریافت نرخ)، آدرس کیف پول Solana و آدرس IP شما را پردازش می‌کند. Jupiter از این داده‌ها فقط و فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
 <translation id="8497751359931572880">برای مشاهده خط‌مشی حریم خصوصی 0x اینجا کلیک کنید.</translation>
 <translation id="4904748904130272182">برای مشاهده خط‌مشی حریم خصوصی Jupiter اینجا کلیک کنید.</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>

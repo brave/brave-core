@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
+<translation id="4744921452903670666">Поделитесь своим мнением</translation>
 <translation id="2524310205387880526">Оценить Brave</translation>
+<translation id="4104400246019119780">Спасибо!</translation>
+<translation id="5202255382948179481">Предложите, как можно улучшить продукт</translation>
+<translation id="7759809451544302770">Необязательно</translation>
+<translation id="4748689412569009273">Оцените свои впечатления от работы с Brave одним эмодзи</translation>
+<translation id="7335142069363686805">Оценить</translation>
+<translation id="6681362094306959654">Вам нравится Brave?</translation>
+<translation id="5488843227043643519">Оставьте отзыв в Google Play</translation>
+<translation id="5867854497245948308">Спасибо за отзыв!</translation>
+<translation id="4935400164159327304">Расскажите, как мы можем улучшить Brave.</translation>
 <translation id="915758461293673891">Сумма платежа:</translation>
 <translation id="1420756770787071946">Поддержать этого творца</translation>
 <translation id="4147995007712611681">Вы настроили платеж в статусе ожидания!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">Служба имен Ethereum</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Способ разрешения</translation>
+<translation id="8410806609595910352">Офчейн-поиск в ENS</translation>
 <translation id="2356070529366658676">Спрашивать</translation>
 <translation id="4176463684765177261">Отключено</translation>
 <translation id="59174027418879706">Включено</translation>
@@ -100,6 +111,10 @@
 <translation id="7264627851715038916">Управляйте источниками в ленте</translation>
 <translation id="4108314971463891922">Подписаться</translation>
 <translation id="3861486700625780712">Отписаться</translation>
+<translation id="7813788390976857515">Получить ленты</translation>
+<translation id="3405580543478883040">Загрузка…</translation>
+<translation id="7461899062138731833">ИСТОЧНИКИ</translation>
+<translation id="6150420917380577651">На сайте <ph name="SEARCH_URL"/> ленты не найдены</translation>
 <translation id="4541978218358617681">Реклама</translation>
 <translation id="7823038307453615214">Показывать Brave News</translation>
 <translation id="6527303717912515753">Поделиться</translation>
@@ -229,6 +244,9 @@
 <translation id="4781696154289395607">Вы внесли <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Возникла проблема при обработке вашего взноса.</translation>
 <translation id="2221902203895354376">Вы можете получить бесплатные токены!</translation>
+<translation id="2377929997600454162">Вы получили награды за просмотр рекламы в следующем месяце: <ph name="MONTH_VALUE"/>.</translation>
+<translation id="2716238748894345194">Вознаграждение за <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">Получить награду можно в течение <ph name="TOKEN"/> дн.</translation>
 <translation id="2323069945529668668">Ой!</translation>
 <translation id="7510166204621526816">Сервер Brave Rewards не отвечает. Мы устраним проблему как можно скорее.</translation>
 <translation id="683765328936486920">на YouTube</translation>
@@ -255,6 +273,9 @@
 <translation id="1680065323266179640">Удалить аккаунт Brave Синхронизация</translation>
 <translation id="3792563952903751704">Удалив свою учетную запись, вы сотрете зашифрованные данные с серверов Brave и отключити Brave Синхронизацию на всех подключенных устройствах. При этом не удалятся данные, которые хранятся локально на этих устройствах.
 Удаление необратимо, и данные восстановить невозможно. Если вы захотите опять использовать Синхронизацию, создайте новый аккаунт и добавьте каждое устройство.</translation>
+<translation id="9064376100690171155">Удалить аккаунт навсегда</translation>
+<translation id="2740516568641790390">Аккаунт Brave Синхронизации удален</translation>
+<translation id="7006136453627651236">Не удалось удалить аккаунт Brave Синхронизации</translation>
 <translation id="728334460283296316">Удалить устройство</translation>
 <translation id="1178128181015923849">Вы уверены, что хотите удалить устройство '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Сосканируйте или введите код синхронизации</translation>
@@ -297,6 +318,10 @@
 <translation id="7173114856073700355">Открыть настройки</translation>
 <translation id="6965382102122355670">ОК</translation>
 <translation id="4450893287417543264">Не показывать снова</translation>
+<translation id="496896260395129787">Этот аккаунт Brave Синхронизации удален с другого устройства. Если вы не хотели отключать Синхронизацию, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>создайте аккаунт заново.</translation>
+<translation id="8199291899164865593">Не удалось присоединиться к цепи синхронизации, потому что аккаунт удален.</translation>
+<translation id="5633907266617216186">Адреса, платежные данные и т. д.</translation>
 <translation id="1056898198331236512">Предупреждение</translation>
 <translation id="1426410128494586442">Да</translation>
 <translation id="7811264919113243207">Устройство, на котором был сгенерирован QR-код, получит доступ к вашим данным в Brave, в том числе к паролям.
@@ -311,6 +336,7 @@
 <translation id="6199596294742117349">Это приватная вкладка</translation>
 <translation id="5858455511731621847">Несмотря на то, что сайты, которые вы посещаете в приватных вкладках, не сохраняются локально, они не делают вас анонимным или невидимым для вашего провайдера, работодателя или сайтов, которые вы посещаете.</translation>
 <translation id="5789441016350810005">Brave Ads отправляется, когда браузер работает в фоновом режиме</translation>
+<translation id="4059103952779533037">Взносы и вознаграждения</translation>
 <translation id="2892744985635833293">Ваш ежемесячный платеж обработан.</translation>
 <translation id="3124090095880236567">Включить рекламу</translation>
 <translation id="2975780980638932742">Brave Ads уже здесь!</translation>
@@ -449,11 +475,16 @@
 <translation id="7930505144430343145">Добро пожаловать в Brave Rewards!</translation>
 <translation id="3477340970981564961">В отличие от традиционной рекламы, просмотр Brave Private Ads приносит вам вознаграждения в виде токенов для поддержки создателей контента, сохраняя при этом конфиденциальность ваших персональных данных.</translation>
 <translation id="6973095375773523904">Где появляются рекламные объявления?</translation>
+<translation id="4328028439561659455">Конфиденциальная реклама Brave появляется на экране в виде оповещений. Вы можете настроить частоту их показа.</translation>
 <translation id="7712287524451429139">Выражать благодарность теперь не составляет усилий</translation>
 <translation id="105037569026952831">Создатели контента автоматически получают взносы в токенах на основе уровня вашей вовлеченности, который мы измеряем в показателе ‘Внимание’.</translation>
 <translation id="5323267338679539010">Скажите спасибо при помощи донатов</translation>
+<translation id="8235783939971604011">Донаты — это способ лично поощрить и поддержать контент или авторов, которые вам нравятся. Начать донатить!</translation>
+<translation id="4215679190414901888">Наконец, давайте настроим Brave Награды</translation>
 <translation id="3494356595346329740">Вы сможете поменять это позже.</translation>
 <translation id="3115702351969988294">Как часто вы хотите видеть рекламу?</translation>
+<translation id="2353222426385080466">Чем больше конфиденциальных рекламных объявлений вы посмотрите, тем больше токенов заработаете.</translation>
+<translation id="1201128255476890443">Рекламных объявлений в час: <ph name="ADS_PER_HOUR"/></translation>
 <translation id="827315274423079662">Ура, всё готово к работе!</translation>
 <translation id="3895246934788932488">Используя Brave Rewards, вы сохраняете свою конфиденциальность и помогаете сделать Интернет лучшим местом для всех. И это потрясающе!</translation>
 <translation id="5705882733397021510">Назад</translation>
@@ -578,7 +609,10 @@
 <translation id="8796429300536029044">Сведения об NFT</translation>
 <translation id="3866249974567520381">Описание</translation>
 <translation id="4378475168089649292">Блокчейн</translation>
+<translation id="794436451374055797">Стандарт токена</translation>
 <translation id="9033453977881595182">ID токена</translation>
+<translation id="4987916116550559556">Адрес минта</translation>
+<translation id="7592795625234816917">Изображение недоступно</translation>
 <translation id="8239147115686034860">Автоматическая блокировка кошелька Brave</translation>
 <translation id="414639769490080648">Через сколько минут кошелек Brave автоматически блокируется</translation>
 <translation id="4993345308607970390">Сбросить кошелек Brave</translation>
@@ -961,9 +995,18 @@
 <translation id="6662142137695589205">Привяжите подписку на VPN</translation>
 <translation id="2674077112509133024">Получите больше от функции «Brave Брандмауэр + VPN»</translation>
 <translation id="6365389672683343144">Вы можете использовать Brave VPN максимум на пяти устройствах Android, iOS и компьютерах. Для этого привяжите подписку Google Play к аккаунту Brave.</translation>
+<translation id="6610899852831463073">Безопасный просмотр недоступен</translation>
+<translation id="7954263306665462056">На вашем устройстве безопасный просмотр отключен. Чтобы его включить, убедитесь, что сервисы Google Play установлены и обновлены до последней версии.</translation>
 <translation id="6605147707233193230">Включите, если хотите поддерживать создателей контента</translation>
 <translation id="1609556006143307897">Вы помогаете поддерживать создателей контента</translation>
+<translation id="6067959437127691361">Используя Brave Награды, вы поддерживаете авторов и можете зарабатывать BAT.</translation>
+<translation id="121894865378699201">Готовы зарабатывать BAT?</translation>
+<translation id="2648805457288107211">Просто создайте кастодиальный аккаунт, если у вас его еще нет, и подключите к профилю Brave Наград.</translation>
+<translation id="1772961321862399863">Чтобы зарабатывать BAT, нужно подключить кастодиальный аккаунт Brave Наград. К сожалению, в вашем регионе нет ни одного доступного кастодиана, поэтому вы не можете получать токены. Если вы включите Brave Награды, то автоматически будете поддерживать авторов.</translation>
+<translation id="5430495762768325224">Узнайте больше о BAT</translation>
 <translation id="6278643716658443228">Настройки Rewards</translation>
+<translation id="6516984207843289176">Подключить аккаунт</translation>
+<translation id="4272136334824111854">Столько авторов, получающих доход в сервисе «Brave Награды», вы посетили в этом месяце: <ph name="CREATOR_COUNT"/></translation>
 <translation id="6845311459433734326">Чтобы зарабатывать и снимать токены BAT, подключите кастодиальный аккаунт.</translation>
 <translation id="928980476243133540">Позже</translation>
 <translation id="579702532610384533">Переподключиться</translation>
@@ -973,11 +1016,15 @@
 <translation id="9074594632540931067">Ошибка: баллы BAT недоступны</translation>
 <translation id="5382684862562314222">Баллы BAT в Uphold еще не поддерживаются в вашем регионе.</translation>
 <translation id="6996157559236886133">Функциональность аккаунта Uphold ограничена</translation>
+<translation id="842321566508373706">Для вашего аккаунта Uphold установлены ограничения. Войдите в систему и проверьте, нет ли у вас непрочитанных уведомлений или невыполненных требований, а затем повторите попытку.</translation>
 <translation id="6417420737057016607">Brave Реклама</translation>
 <translation id="5425006356459378415">Brave Награды недоступны</translation>
 <translation id="833643743158564518">В вашем регионе приостановлена регистрация в сервисе «Brave Награды». Повторите попытку позже. <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">Все сети</translation>
 <translation id="2781668117338732220">Дополнительные сети</translation>
 <translation id="6309721369749814582">Домен «<ph name="DOMAIN"/>» не зарегистрирован.</translation>
+<translation id="4071347720273751665">Похоже, вы ввели адрес ENS. Чтобы обработать этот запрос, нам потребуется сторонний сервис, который сможет увидеть ваш домен и IP-адрес. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">Использовать офчейн-домен ENS</translation>
+<translation id="4982630604810554641">Поиск домена…</translation>
 <translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

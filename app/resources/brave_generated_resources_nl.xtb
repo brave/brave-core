@@ -261,7 +261,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artikels worden automatisch in lezermodus geladen, waardoor je tijd kunt besparen</translation>
 <translation id="2422927186524098759">Zijbalk</translation>
-<translation id="832432428796481785">Knop zijbalk weergeven</translation>
+<translation id="832432428796481785">Knop Zijbalk weergeven</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="1988804048511540801">Nieuw tabblad toont</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -303,8 +303,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2360360976480535628">Geavanceerde weergave</translation>
 <translation id="101592339984642584">Content filteren</translation>
 <translation id="8694564340481124390">Schakel aangepaste filters in die regionale en taalspecifieke trackers en storende elementen blokkeren.</translation>
-<translation id="4877657558909976793">Schakel aangepaste filters in die regionale en taalspecifieke trackers en
-<ph name="BEGIN_LINK"/>storende elementen<ph name="END_LINK"/> blokkeren.</translation>
 <translation id="3482656215021340727">Aangepaste filterlijsten toevoegen</translation>
 <translation id="1020877116991797978">Voeg extra lijsten toe die gemaakt en beheerd worden door uw vertrouwde community.</translation>
 <translation id="7617831480435794399">Abonneer je alleen op lijsten van entiteiten die je kent. Je browser zal regelmatig controleren of er lijstbijwerkingen zijn van de URL's die je invoert, waarbij jouw IP-adres wordt getoond aan hun server.</translation>
@@ -409,7 +407,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4485276108749547761">Behandel deze code als een wachtwoord. Als iemand hem in handen krijgt, kan diegene uw gesynchroniseerde gegevens lezen en bewerken.</translation>
 <translation id="3034163433136515805">QR-code bekijken</translation>
 <translation id="5373825572723282843">Een synchronisatiecode invoeren</translation>
-<translation id="1265244359514651398">Voer uw wachtwoordzin voor synchroniseren van de chain hieronder in.</translation>
+<translation id="1265244359514651398">Voer uw wachtwoordzin voor het synchroniseren van de keten hieronder in.</translation>
 <translation id="1061533051865606843">Nieuw apparaat toevoegen</translation>
 <translation id="5093410893656857925">Apparaattype kiezen</translation>
 <translation id="4581190919849683048">Naar welk type apparaat wil je synchroniseren?</translation>
@@ -430,6 +428,18 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 
     Weet u zeker dat u dit wilt doen?</translation>
 <translation id="7443185843787879670">Brave kon geen toegang krijgen tot de beveiligde opslag van uw besturingssysteem. Deze wordt gebruikt om gegevens zoals wachtwoorden en cookies te beveiligen; deze is ook nodig voor Brave Sync om uw browserprofiel te verbinden tussen apparaten. Dit betekent dat Brave Sync niet actief is. Om dit probleem op te lossen, zie de <ph name="BEGIN_LINK_SYNC_GUIDE"/>gids voor het oplossen van problemen met Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">De encryptiesleutel is anders dan degene die u hebt gebruikt toen u Brave Sync voor het eerst instelde. De eenvoudigste oplossing is om de synchronisatieketen opnieuw in te stellen en er opnieuw aan deel te nemen door gebruik te maken van de wachtwoordzin van een van uw andere gesynchroniseerde apparaten.</translation>
+<translation id="4889767840132638381">Opnieuw instellen en deelnemen aan synchronisatieketen</translation>
+<translation id="1680065323266179640">Sync-account verwijderen</translation>
+<translation id="9064376100690171155">Account permanent verwijderen</translation>
+<translation id="228906529296554286">Als u uw account verwijdert, worden al uw versleutelde gegevens op Brave-servers verwijderd en wordt Sync op al uw verbonden apparaten uitgeschakeld.</translation>
+<translation id="7578652532113583362">De gegevens die lokaal op apparaten zijn opgeslagen, worden echter niet verwijderd.</translation>
+<translation id="2516405584294312544">Verwijderen is een definitieve actie en de gegevens kunnen daarna op geen enkele manier meer worden hersteld. Als u besluit
+    Sync weer te gaan gebruiken, dan dient u een nieuw account aan te maken en elk apparaat afzonderlijk opnieuw toe te voegen.</translation>
+<translation id="4860996720371753023">Account wordt verwijderd...</translation>
+<translation id="8199291899164865593">Kan niet aan deze synchronisatieketen deelnemen. Account is verwijderd.</translation>
+<translation id="5633907266617216186">Adressen, betalingsinformatie, etc.</translation>
+<translation id="294985549514492876">Web-apps (PWA's)</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
 <translation id="842628013524824194">Normaal venster - gebruikte zoekmachine in de adresbalk</translation>
@@ -521,6 +531,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
 <translation id="8996633027318264334">Weet je zeker dat je <ph name="KEY_NAME"/> wilt verwijderen?</translation>
+<translation id="3316326558572563182">Actief netwerk is altijd zichtbaar in de walletnetwerklijst</translation>
+<translation id="232693303726691609">Netwerk in walletnetwerklijst weergeven/verbergen</translation>
 <translation id="7893578599666249602">Weet u zeker dat u <ph name="KEY_NAME"/> wilt resetten?</translation>
 <translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
@@ -574,6 +586,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="2775956301559569472">Bekijk Wayback Machine meteen op 404 pagina's</translation>
 <translation id="3095201688102519917">Waarschuw mij voordat ik een venster met meerdere tabbladen sluit</translation>
 <translation id="7120553802660696133">Venster sluiten bij het sluiten van het laatste tabblad</translation>
+<translation id="7984721311211272523">De functie Dempen in het luidsprekerpictogram op tabbladen uitschakelen</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

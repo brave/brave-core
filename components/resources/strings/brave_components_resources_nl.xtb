@@ -260,10 +260,11 @@
 <translation id="2916515880661220182">Indien u al een beheerrekening heeft, wordt u gevraagd om hier verbinding mee te maken. Indien u dit niet doet, krijgt u de mogelijkheid om een nieuwe te maken.</translation>
 <translation id="2054853229650377447">Let op: uw transacties worden zichtbaar voor de beheerder zodra u toestemming geeft. Deze ziet dan bijvoorbeeld de ontvanger en het bedrag van uw fooi.</translation>
 <translation id="121894865378699201">Klaar om BAT te verdienen?</translation>
-<translation id="4478996292566912629">Providers van beheerrekeningen zijn verplicht uw identiteit te controleren, wat inhoudt dat zij om een identiteitsbewijs met foto mogen vragen. Zie ons <ph name="BEGIN_LINK"/>Privacybeleid van Brave Rewards<ph name="END_LINK"/>.</translation>
-<translation id="7730415569603152862">Koppel uw beheerrekening aan uw Rewards-profiel zodat u:</translation>
+<translation id="4478996292566912629">Providers van beheerderaccounts zijn verplicht uw identiteit te controleren, wat inhoudt dat zij om een kopie van uw identiteitsbewijs met foto mogen vragen. Zie ons <ph name="BEGIN_LINK"/>Privacybeleid van Brave Beloningen<ph name="END_LINK"/>.</translation>
+<translation id="7730415569603152862">Koppel uw beheerdersaccount aan uw Beloningen-profiel zodat u:</translation>
 <translation id="5785531043735482053">uw BAT-verdiensten kunt opslaan, beheren en opnemen</translation>
 <translation id="5155452078869279096">uw rekening kunt opwaarderen met uw BAT-verdiensten</translation>
+<translation id="5497001757280825146">Geef een fooi aan uw favoriete sites en ontwikkelaars</translation>
 <translation id="1233129511866436960">Meer informatie over regio's en ondersteuning</translation>
 <translation id="7329170127335794328">Momenteel niet beschikbaar in uw regio</translation>
 <translation id="8304979233901023264">Ik heb de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> &amp; en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/> van Brave gelezen en ga ermee akkoord.</translation>
@@ -384,6 +385,9 @@
 <translation id="1420756770787071946">Steun deze maker</translation>
 <translation id="3271043362279673449">Bedankt voor de ondersteuning!</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Opmerking: <ph name="BOLD_END"/>Het kan enkele minuten duren voor je fooi is verwerkt</translation>
+<translation id="6516984207843289176">Account koppelen</translation>
+<translation id="8775519284782574752">Koppel een beheerdersaccount, zodat u BAT kunt gaan verdienen en ontwikkelaars fooien kunt geven.</translation>
+<translation id="6485607335663409274">Wilt u een van uw favoriete ontwikkelaars een fooi geven?</translation>
 <translation id="3312470408978098625">Je eenmalige fooi is verzonden.</translation>
 <translation id="839058704683989763">U hebt een in behandeling zijnde fooi ingesteld!</translation>
 <translation id="5096821444729034955">voor hun post</translation>
@@ -469,7 +473,9 @@
 <translation id="5317144262906129592">U kunt deze content creator steunen door een bijdrage te verzenden. Dit is een blijk van waardering voor het maken van goede content.</translation>
 <translation id="3074127054582480056">Opgelet</translation>
 <translation id="3659457123782988823">Weet u zeker dat u Brave Beloningen opnieuw wilt instellen?</translation>
+<translation id="1666001796278936721">Als u kiest voor 'opnieuw instellen', wordt uw Brave Beloningen-profiel verwijderd en begint u opnieuw met een compleet nieuw Brave Beloningen-profiel. Voordat u verdergaat, raden wij u aan <ph name="LINK_BEGIN"/>meer te weten te komen<ph name="LINK_END"/> over opnieuw instellen om zeker te zijn van uw keuze.</translation>
 <translation id="94095197509579227">Opmerking: u hebt momenteel <ph name="BAT_AMOUNT"/> geschatte verdiensten deze maand die verloren gaan als u nu uw instellingen opnieuw instelt.</translation>
+<translation id="4806029412510565611">Ik begrijp dat mijn huidige Brave Beloningen-profiel en Brave Beloningen-gegevens worden verwijderd van mijn apparaat en ik heb het <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> gelezen.</translation>
 <translation id="4914597931214386232">Geclaimde giften</translation>
 <translation id="3494964159182650590">Overzicht van de Beloningen</translation>
 <translation id="2913994227901456490">Bekijk alle [[numItems]] artikels</translation>
@@ -492,7 +498,7 @@
 <translation id="6727483290601442544">Bekijk de Details</translation>
 <translation id="4206899127409458763">Uw Brave Beloningen-profiel aanmaken</translation>
 <translation id="1988679729106502285">OPMERKING:</translation>
-<translation id="942863887222585572">U bent verbonden met <ph name="USER_PROVIDER"/>, maar deze maker is verbonden met <ph name="CREATOR_PROVIDER"/>. Dit betekent dat de maker uw fooi niet kan ontvangen. Voorlopig blijft iedere fooi die u geeft in behandeling en wordt de komende 90 dagen opnieuw geprobeerd deze over te maken.</translation>
+<translation id="942863887222585572">U bent verbonden met <ph name="USER_PROVIDER"/>, maar deze ontwikkelaar is verbonden met <ph name="CREATOR_PROVIDER"/>. Dit betekent dat de ontwikkelaar uw fooi niet kan ontvangen. Voorlopig houden alle fooien die u stuurt de status 'In behandeling'. We proberen ze de komende 90 dagen opnieuw te verwerken.</translation>
 <translation id="5530734056858418442">Deze maker is momenteel nog niet aangemeld. Alle fooien die u stuurt, blijven in uw wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden.</translation>
 <translation id="3197752845651180812">Openstaande bijdragen</translation>
 <translation id="6964891561514920613">Toon alle openstaande bijdragen</translation>
@@ -536,7 +542,7 @@
 <translation id="3647533686160055812">Brave gebruikt Infura om de domeinnamen .crypto (en ook .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) die op Unstoppable Domains staan om te zetten. Brave verbergt uw IP-adres. Als u dit inschakelt, ziet Infura dat iemand deze domeinen probeert te bezoeken, maar Infura ziet verder niets. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Ondersteuning voor Ethereum Name Service (ENS) inschakelen in Brave?</translation>
-<translation id="4609973808011229683">Brave gebruikt Infura om .eth-domeinnamen die op Ethereum Name Service (ENS) te staan om te zetten. Brave verbergt uw IP-adres. Als u dit inschakelt, ziet Infura dat iemand deze .eth-domeinnamen probeert te bezoeken, maar Infura kan verder niets zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
+<translation id="4609973808011229683">Brave gebruikt Infura om .eth-domeinnamen die op Ethereum Name Service (ENS) staan om te zetten. Brave verbergt uw IP-adres. Als u dit inschakelt, ziet Infura dat iemand deze .eth-domeinnamen probeert te bezoeken, maar Infura kan verder niets zien. Bekijk de <ph name="BEGIN_INFURA_TOU_LINK"/>gebruiksvoorwaarden<ph name="END_INFURA_TOU_LINK"/> en het <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privacybeleid<ph name="END_INFURA_PRIVACY_LINK"/> van Infura.</translation>
 <translation id="807404806385418949">Ethereum Name Service-zoekopdrachten buiten blockchain</translation>
 <translation id="4049590838234508776">Ondersteuning voor Ethereum Name Service (ENS)-zoekopdrachten buiten blokchain inschakelen in Brave?</translation>
 <translation id="5944991147217767764">Deze .eth-domeinnaam wordt buiten de blockchain bewaard en wordt omgezet door de gateway van een derde partij. Als u ENS-zoekopdrachten buiten de blockchain inschakelt, ziet de gateway van de derde partij dat u een .eth-domein probeert te bezoeken. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Meer informatie<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
@@ -645,6 +651,12 @@
 <translation id="3026978804849658576">Afschrift bekijken</translation>
 <translation id="3368922792935385530">Verbonden</translation>
 <translation id="8494748383523030337">Je saldo</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>Klaar om BAT te verdienen?<ph name="BOLD_END"/> U hoeft alleen maar uw beheerdersaccount te koppelen aan uw Beloningen-profiel. Als u geen account hebt, kunt u er een maken.</translation>
+<translation id="1772961321862399863">Om BAT te verdienen, moeten gebruikers een beheerdersaccount koppelen aan Brave Beloningen. Er zijn geen beheerdersaccounts beschikbaar in uw regio, dus is verdienen niet mogelijk. Door Brave Beloningen in te schakelen worden ontwikkelaars automatisch gesteund.</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {U hebt deze maand # ontwikkelaar bezocht die wordt ondersteund via Brave Beloningen}
+      other {U hebt deze maand # ontwikkelaars bezocht die worden ondersteund via Brave Beloningen}
+    }</translation>
 <translation id="1187367336925051518">Beloningen van <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Uw advertentiebeloningen voor <ph name="MONTH"/> zijn er!</translation>
 <translation id="7861645265922445992">Beloningen claimen</translation>
@@ -666,8 +678,8 @@
 <translation id="2956070106555335453">Samenvatting</translation>
 <translation id="2369994359029526515">Niet-geverifieerde ontwikkelaar</translation>
 <translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
-<translation id="215037911651623564">Vernieuw de verificatiestatus van ontwikkelaar</translation>
-<translation id="8946576491316456643">Voorlopig houden alle fooien die u stuurt de status 'In behandeling' en proberen we ze de komende 90 dagen opnieuw te verzenden. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">Verificatiestatus van ontwikkelaar vernieuwen</translation>
+<translation id="8946576491316456643">Voorlopig houden alle fooien die u stuurt de status 'In behandeling'. We proberen ze de komende 90 dagen opnieuw te verwerken. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">Deze ontwikkelaar is nog niet aangemeld.</translation>
 <translation id="3573568055713372419">U bent verbonden met <ph name="USER_PROVIDER"/>, maar deze ontwikkelaar is verbonden met <ph name="CREATOR_PROVIDER"/>. Dit betekent dat de ontwikkelaar uw fooi niet kan ontvangen.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> op <ph name="PLATFORM"/></translation>
@@ -675,6 +687,10 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Instellen</translation>
 <translation id="8853725596990766789">Aantal veranderen</translation>
+<translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
+<translation id="1609556006143307897">U helpt contentontwikkelaars te ondersteunen</translation>
+<translation id="6605147707233193230">Inschakelen om contentontwikkelaars te helpen ondersteunen</translation>
+<translation id="5430495762768325224">Meer informatie over BAT</translation>
 <translation id="1258144146756156541">Bevestig dat je een mens bent</translation>
 <translation id="1555514580945108302">Hmmm... niet helemaal. Probeer het opnieuw.</translation>
 <translation id="8078414184292711961">Sleep het BAT-pictogram naar het <ph name="HINT"/>-doel.</translation>
@@ -715,6 +731,13 @@
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
 <translation id="4331886860862592203">Land selecteren</translation>
 <translation id="3115702351969988294">Hoe vaak wilt u advertenties zien?</translation>
+<translation id="9006929295045381749">{ADS_PER_HOUR, plural,
+      =1 {# Advertentie per uur}
+      other {# Advertenties per uur}
+    }</translation>
+<translation id="6129810595598072828">Meer privéadvertenties, meer beloningen</translation>
+<translation id="8871481223725076571">Met meer advertenties kunt u meer ontwikkelaars ondersteunen</translation>
+<translation id="9215691564467955056">U kunt dit later wijzigen in de instellingen.</translation>
 <translation id="6318696841371191107">Een beknopt overzicht bekijken</translation>
 <translation id="8465790416279415448">Door verder te gaan, ga je akkoord met de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
@@ -729,12 +752,11 @@
 <translation id="105037569026952831">De makers ontvangen uw contributies automatisch op basis van uw engagementniveau's die we meten als 'Attention'.</translation>
 <translation id="5323267338679539010">Bedanken door middel van een fooi</translation>
 <translation id="6042317056594735519">Een fooi geven is een manier om inhoud of makers waar u van houdt persoonlijk aan te moedigen en te steunen. Laten we een fooi geven!</translation>
-<translation id="4215679190414901888">Laten we dan nu de instellingen toepassen</translation>
+<translation id="4215679190414901888">Laten we aan de slag gaan</translation>
 <translation id="827315274423079662">Woehoe, u bent er helemaal klaar voor!</translation>
 <translation id="8268038362451312235">Door Brave Rewards te gebruiken helpt u het internet een betere plek te maken voor iedereen. En dat is geweldig!</translation>
-<translation id="6845311459433734326">Koppel een beheerrekening zodat u BAT kunt verdienen en neem uw beloningen op</translation>
+<translation id="6845311459433734326">Koppel een beheerdersaccount zodat u BAT kunt verdienen en neem uw beloningen op</translation>
 <translation id="1443125272907895958">Ik doe het een andere keer</translation>
-<translation id="6516984207843289176">Koppel rekening</translation>
 <translation id="1015443539415537847">Sorry, Brave Rewards is niet beschikbaar</translation>
 <translation id="5007776270364097327">Helaas, het ziet ernaar uit dat u zich in een regio bevindt waar Brave Rewards niet beschikbaar is.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
@@ -755,6 +777,7 @@
 <translation id="9161147058107529840">Eén verwacht, objectparameter.</translation>
 <translation id="1875861420974447980">Deze keten-ID wordt momenteel gebruikt</translation>
 <translation id="167698752210114155">Er is een interne fout opgetreden</translation>
+<translation id="8945668490056243760">Niet-ondersteund abonnementstype</translation>
 <translation id="2326876601333401685">Deze RPC-methode wordt niet ondersteund.</translation>
 <translation id="1128992132632883337">Er is een fout opgetreden bij parseren van het antwoord</translation>
 <translation id="5382339341735118861">Er is een fout opgetreden bij het verwerken van een algemene aanvraag</translation>
@@ -830,6 +853,7 @@
 <translation id="3453833142586986467">Token selecteren</translation>
 <translation id="554732459168975059">NFT selecteren</translation>
 <translation id="5313430503143128212">Selecteer een token om te verzenden</translation>
+<translation id="5784485862926111563">Selecteer een NFT om te verzenden</translation>
 <translation id="2791691551852500015">Vul het adres van de ontvanger in</translation>
 <translation id="570080709303714420">HELFT</translation>
 <translation id="2784548701748328827">MAXIMAAL</translation>
@@ -839,6 +863,10 @@
 <translation id="5009335307032488349">Zoek NFT op naam, ID</translation>
 <translation id="6295954645230084874">Koopondersteuning is niet beschikbaar voor <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Aankoop niet ondersteund voor geselecteerd netwerk</translation>
+<translation id="4982630604810554641">Zoeken naar domein...</translation>
+<translation id="5467044307473123584">Brave ondersteunt het gebruik van gateways buiten de blockchain om .eth-domeinen om te zetten.</translation>
+<translation id="4896417414446851895">U hebt een ENS-adres ingevoerd. We hebben een omzetter van een derde partij nodig om deze aanvraag om te zetten. Deze omzetter kan mogelijk uw IP-adres en domein zien.</translation>
+<translation id="8646078615727397565">ENS-domein gebruiken</translation>
 <translation id="4171338820961522154">Wisselondersteuning is niet beschikbaar voor <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Frontrunning van transactie is mogelijk</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
@@ -1185,9 +1213,13 @@
 <translation id="8528916244724490964">Alle netwerken</translation>
 <translation id="4038403584813842767">Saldo ↑</translation>
 <translation id="1695096446857675822">Saldo ↓</translation>
+<translation id="8151187584908138100">Naam ↓</translation>
+<translation id="883138507248906253">Naam ↑</translation>
 <translation id="7198018180583855568">Alle accounts</translation>
 <translation id="6954150712710630841">Transactie ingediend</translation>
 <translation id="905855245798176174">De transactie is succesvol naar het netwerk verzonden en wacht op bevestiging</translation>
+<translation id="619697073289995370">Transactie ondertekend</translation>
+<translation id="7493732383203109611">De transactie is ondertekend en wordt verzonden naar het netwerk met de DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> is teruggestort in uw wallet</translation>
 <translation id="4577432071459867390">Transactie mislukt</translation>
 <translation id="4359235192593147041">Transactie is mislukt vanwege een aanzienlijke prijsfluctuatie. Verhoog de risicotolerantie om transacties bij aanzienlijke prijsfluctuaties te laten slagen.</translation>
@@ -1206,6 +1238,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> verzenden</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> verruilen voor <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
+<translation id="282560918037172384">Testnetwerken</translation>
 <translation id="2816106784624007524">Gaslimiet moet een geheel getal zijn dat groter dan 0 is</translation>
 <translation id="3354376789153561654">Transactiegegevens 'naar' moeten worden vermeld</translation>
 <translation id="8728991256628663004">Transactiegegevens 'vanuit' moeten een geldig Filecoin-adres zijn</translation>
@@ -1393,12 +1426,48 @@
 <translation id="3033638954295674319">Er is iets misgegaan bij het ophalen van de NFT-gegevens. Probeer het later opnieuw.</translation>
 <translation id="2540568096903252632">Voer het wachtwoord in om verder te gaan</translation>
 <translation id="3356580495013324916">Voer het wachtwoord van uw Brave Wallet in om een back-up te maken van uw wallet.</translation>
+<translation id="7545441766078366279"><ph name="TOKEN"/> goedkeuren</translation>
+<translation id="3115303896544539834">Onvoldoende <ph name="TOKEN"/>-saldo</translation>
+<translation id="4937657825850660613">Helft</translation>
 <translation id="7639814793732182496">Max</translation>
+<translation id="6584782231358487640">Voer een bedrag in</translation>
+<translation id="2335903728876796191">We zoeken naar de beste prijs</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="5709875713144853427">Selecteer een token om te ruilen</translation>
+<translation id="720404198240859011">Toon tokens zonder saldo</translation>
+<translation id="4886690455791686940">Nulsaldo verbergen</translation>
+<translation id="381485723922188688">Optie</translation>
 <translation id="6680650203439190394">Snelheid</translation>
+<translation id="2538996898605796431">Prijseffect</translation>
+<translation id="8007404171238546456">Minimaal te ontvangen na slippage</translation>
+<translation id="767199001998615704">Netwerkkosten</translation>
+<translation id="7057870207229052478">Brave-kosten</translation>
+<translation id="3624518972158401291">Gratis</translation>
+<translation id="5038255447967558645">Liquiditeitsverschaffer</translation>
+<translation id="8450638959928932199">Ruilen en verzenden</translation>
+<translation id="476816352791390168">GEEN extra kosten!</translation>
+<translation id="5319981934425923365">Ik bevestig dat het bovenstaande adres juist is</translation>
+<translation id="7480629155329718561">Voer het Ethereum-adres van de ontvanger in</translation>
+<translation id="4967749818080339523">Selecteer een bedrag</translation>
+<translation id="3887241807965836390">Naar mijn account</translation>
+<translation id="3079716946572942356">Naar een ander adres</translation>
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Average</translation>
 <translation id="7019805045859631636">Snel</translation>
+<translation id="1826671530876539299">Ruilinstellingen</translation>
+<translation id="6778140392042462129">Wisselkoersen</translation>
+<translation id="6173494033320397682">Alleen rechtstreeks</translation>
+<translation id="2440960581098655899">Alleen directe routering wordt verzekerd en handel via gesplitste routes wordt uitgeschakeld</translation>
+<translation id="6245314729809503023">Brave gebruikt de belangrijkste 60 tokens voor tussenliggende routering voor prestatieoptimalisatie</translation>
+<translation id="2379187373676242615"><ph name="VALUE"/>% goedkoper dan CoinGecko</translation>
+<translation id="5351867352310722022">Binnen <ph name="VALUE"/>% van CoinGecko</translation>
+<translation id="7695501918490163821"><ph name="VALUE"/>% duurder dan CoinGecko</translation>
+<translation id="6065708195277841442">Wallet koppelen</translation>
+<translation id="4029551149873989025">Wisselen van netwerk</translation>
+<translation id="7561262633951061138">Beste</translation>
+<translation id="3143110700666266545">Deze app gebruikt de volgende API's van derde partijen:</translation>
+<translation id="8411419545176806786">Brave Ruilen gebruikt 0x als DEX-aggregator voor ondersteunde EVM-netwerken. 0x verwerkt het Ethereum-walletadres en IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). 0x gebruikt deze gegevens UITSLUITEND voor transactieverwerkingsdoeleinden.</translation>
+<translation id="7467728126359974661">Brave Ruilen gebruikt Jupiter als DEX-aggregator voor het Solana-netwerk. Jupiter verwerkt het Solana-walletadres en IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). Jupiter gebruikt deze gegevens UITSLUITEND voor transactieverwerkingsdoeleinden.</translation>
 <translation id="8497751359931572880">Klik hier voor het privacybeleid van 0x.</translation>
 <translation id="4904748904130272182">Klik hier voor het privacybeleid van Jupiter.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
@@ -1502,6 +1571,7 @@
 <translation id="264682546981571963">Heeft u genoeg van meldingen over toestemming voor cookies?</translation>
 <translation id="4986297793092101884">Brave blokkeert al cookies van derden. We kunnen ook de kennisgevingen over cookietoestemming blokkeren.</translation>
 <translation id="535688588637568715">Ja, kennisgevingen over cookietoestemming blokkeren</translation>
+<translation id="2808175374672429053">Wildcards zijn niet beschikbaar in Brave Shields.</translation>
 <translation id="6294662480095808915">Privacy. Standaard.</translation>
 <translation id="4366423156486478559">Ontvang bescherming door Brave voor elke link waarop u klikt. Stel Brave in als uw standaardbrowser en zoek privé.</translation>
 <translation id="3830912418080848377">Instellingen importeren</translation>
