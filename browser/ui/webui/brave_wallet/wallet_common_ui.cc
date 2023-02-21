@@ -17,8 +17,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#endif
 #include "chrome/browser/ui/webui/favicon_source.h"
+#endif
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -28,10 +28,11 @@
 namespace brave_wallet {
 
 void AddBlockchainTokenImageSource(Profile* profile) {
+#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(
                    profile, chrome::FaviconUrlFormat::kFavicon2));
-
+#endif
   base::FilePath path = profile->GetPath().DirName();
   path = path.AppendASCII(brave_wallet::kWalletBaseDirectory);
   content::URLDataSource::Add(
