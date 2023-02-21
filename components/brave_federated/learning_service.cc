@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/communication_adapter.h"
@@ -62,32 +63,44 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
     reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
                             &LearningService::GetTasks);
+    VLOG(2) << "No tasks available, reconnecting in " << reconnect << "s";
     return;
   }
 
-  // TODO(lminto): implement actual task handling
+  // TODO(lminto): for now, disregard all tasks beyond the first one
   Task task = tasks.at(0);
-  ModelSpec spec{32, 64, 0.01, 500, 0.5};
+  ModelSpec spec{
+      32,    // num_params
+      64,    // batch_size
+      0.01,  // learning_rate
+      500,   // num_iterations
+      0.5    // threshold
+  };
+
+  if (spec.num_params != static_cast<int>(task.GetParameters().at(0).size())) {
+    VLOG(2) << "Task specifies a different model size than the client";
+    return;
+  }
+  VLOG(2) << "Task model and client model match!";
 
   Model* model = new Model(spec);
-  model->SetWeights(task.GetParameters()[0]);
-  model->SetBias(task.GetParameters()[1][0]);
-  TaskRunner* notification_ad_task_runner = new TaskRunner(task, model);
+  model->SetWeights(task.GetParameters().at(0));
+  model->SetBias(task.GetParameters().at(1).at(0));
+  TaskRunner* task_runner = new TaskRunner(task, model);
 
-  SyntheticDataset* local_training_data = new SyntheticDataset(5000);
-  SyntheticDataset* local_test_data = new SyntheticDataset(500);
+  SyntheticDataset* local_training_data = new SyntheticDataset(500);
+  SyntheticDataset* local_test_data = new SyntheticDataset(50);
 
-  notification_ad_task_runner->SetTrainingData(
-      local_training_data->GetDataPoints());
-  notification_ad_task_runner->SetTestData(local_test_data->GetDataPoints());
+  task_runner->SetTrainingData(local_training_data->GetDataPoints());
+  task_runner->SetTestData(local_test_data->GetDataPoints());
+  VLOG(2) << "Model and data set. Task runner initialized.";
 
-  task_runners_.insert(std::make_pair(kNotificationAdTaskName,
-                                      std::move(notification_ad_task_runner)));
-  // TODO(lminto): run task runner async and use callback
+  // TODO(lminto): should we run the task runner on another thread?
   TaskResultList results;
-  TaskResult result = notification_ad_task_runner->Run();
+  TaskResult result = task_runner->Run();
   results.push_back(result);
   PostTaskResults(results);
+  delete task_runner;
 }
 
 void LearningService::PostTaskResults(TaskResultList results) {
@@ -99,16 +112,29 @@ void LearningService::PostTaskResults(TaskResultList results) {
 }
 
 void LearningService::OnPostTaskResults(TaskResultResponse response) {
+  int reconnect = 0;
+
   if (response.IsSuccessful()) {
-    return;
+    reconnect = 5;  // 20 minutes
+    VLOG(2) << "Task results posted successfully";
+  } else {
+    reconnect = 5;  // 5 minute
+    VLOG(2) << "Task results posting failed";
   }
+
+  reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
+  reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
+                          &LearningService::GetTasks);
+  VLOG(2) << "Reconnecting in " << reconnect << "s";
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {
   if (is_eligible) {
     StartParticipating();
+    VLOG(2) << "Eligibility changed, started participating.";
   } else {
     StopParticipating();
+    VLOG(2) << "Eligibility changed, stopped participating.";
   }
 }
 
