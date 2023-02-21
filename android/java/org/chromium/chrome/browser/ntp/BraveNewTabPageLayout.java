@@ -1146,16 +1146,13 @@ public class BraveNewTabPageLayout
         mBgImageView = (ImageView) findViewById(R.id.bg_image_view);
         mBgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int mDeviceHeight = displayMetrics.heightPixels;
-        int mDeviceWidth = displayMetrics.widthPixels;
         ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mWorkerTask = new FetchWallpaperWorkerTask(
-                        ntpImage, mDeviceWidth, mDeviceHeight, wallpaperRetrievedCallback);
+                mWorkerTask =
+                        new FetchWallpaperWorkerTask(ntpImage, mBgImageView.getMeasuredWidth(),
+                                mBgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -1254,13 +1251,7 @@ public class BraveNewTabPageLayout
             wallpaperRetrievedCallback = new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
         @Override
         public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
-            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-                if (BraveActivity.getBraveActivity() != null && mTabProvider.get() != null
-                        && !mTabProvider.get().isIncognito()) {
-                    BraveActivity.getBraveActivity().setBackground(bgWallpaper);
-                }
-
-            } else {
+            if (mBgImageView != null) {
                 mBgImageView.setImageBitmap(bgWallpaper);
             }
         }

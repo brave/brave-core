@@ -18,18 +18,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,11 +34,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -106,7 +96,6 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
-import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
@@ -263,7 +252,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private EthTxManagerProxy mEthTxManagerProxy;
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private AssetRatioService mAssetRatioService;
-    public CompositorViewHolder compositorView;
     public boolean mLoadedFeed;
     public boolean mComesFromNewTab;
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
@@ -1005,7 +993,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         checkFingerPrintingOnUpgrade();
-        compositorView = null;
 
         String countryCode = Locale.getDefault().getCountry();
 
@@ -1198,38 +1185,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void focusSearchBox() {
         if (mNewTabPageManager != null) {
             mNewTabPageManager.focusSearchBox(false, null);
-        }
-    }
-
-    // Sets NTP background
-    public void setBackground(Bitmap bgWallpaper) {
-        CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
-        if (compositorView != null) {
-            ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
-            if (root != null && root.getChildAt(0) instanceof FrameLayout) {
-                FrameLayout frameLayout = (FrameLayout) root.getChildAt(0);
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int mDeviceHeight = displayMetrics.heightPixels;
-                int mDeviceWidth = displayMetrics.widthPixels;
-                Glide.with(this)
-                        .asBitmap()
-                        .load(bgWallpaper)
-                        .centerCrop()
-                        .override(mDeviceWidth, mDeviceHeight)
-                        .priority(Priority.IMMEDIATE)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource,
-                                    @Nullable Transition<? super Bitmap> transition) {
-                                Drawable drawable = new BitmapDrawable(getResources(), resource);
-                                frameLayout.setBackground(drawable);
-                            }
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {}
-                        });
-            }
         }
     }
 
