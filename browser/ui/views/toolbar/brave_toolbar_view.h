@@ -34,6 +34,8 @@ class BraveToolbarView : public ToolbarView,
   void OnVPNButtonVisibilityChanged();
 #endif
 
+  void UpdateHorizontalPadding();
+
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
@@ -52,7 +54,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetLocationBarBounds();
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
-  void UpdateHorizontalPadding();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -76,6 +77,9 @@ class BraveToolbarView : public ToolbarView,
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+#if BUILDFLAG(IS_LINUX)
+  BooleanPrefMember use_custom_chrome_frame_;
+#endif  // BUILDFLAG(IS_LINUX)
 
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;

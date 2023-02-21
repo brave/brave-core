@@ -21,7 +21,15 @@
 #endif
 
 #if BUILDFLAG(IS_LINUX)
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_linux_native.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/common/pref_names.h"
+#include "ui/linux/linux_ui.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/window/caption_button_layout_constants.h"
+#include "ui/views/window/window_button_order_provider.h"
 #endif
 
 namespace tabs::utils {
@@ -72,8 +80,44 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   // On Mac, window caption buttons are drawn by the system.
   return {80, 0};
 #elif BUILDFLAG(IS_LINUX)
-  // On Linux, we can't overlay caption buttons on toolbar.
-  return {0, 0};
+  if (!frame->UseCustomFrame()) {
+    // We're using system provided title bar and border. As we don't have our
+    // own window caption button at all, there's no caption button width.
+    return {};
+  }
+
+  auto* browser_view =
+      BrowserView::GetBrowserViewForNativeWindow(frame->GetNativeWindow());
+  if (!browser_view) {
+    // This can happen on startup
+    return {};
+  }
+
+  auto* profile = browser_view->browser()->profile();
+  auto* linux_ui_theme = ui::LinuxUiTheme::GetForProfile(profile);
+  auto* theme_service_factory = ThemeServiceFactory::GetForProfile(profile);
+  const bool using_gtk_caption_button =
+      linux_ui_theme && theme_service_factory->UsingSystemTheme();
+  if (!using_gtk_caption_button) {
+    auto* window_order_provider =
+        views::WindowButtonOrderProvider::GetInstance();
+    return {views::kCaptionButtonWidth *
+                window_order_provider->leading_buttons().size(),
+            views::kCaptionButtonWidth *
+                window_order_provider->trailing_buttons().size()};
+  }
+
+  // When using gtk-provided caption buttons, buttons' size and spacing is
+  // decided by system. So we can't help but peeking the actual caption button's
+  // position.
+  auto* frame_view = views::AsViewClass<BraveBrowserFrameViewLinuxNative>(
+      frame->GetFrameView());
+  if (!frame_view) {
+    // We could be in the middle of transition to GTK theme frame.
+    return {};
+  }
+  return frame_view->leading_trailing_caption_button_width();
+
 #elif BUILDFLAG(IS_WIN)
   if (frame->ShouldUseNativeFrame()) {
     // In this case, we usd GlassBrowserFrameView. Native frame will be set to
