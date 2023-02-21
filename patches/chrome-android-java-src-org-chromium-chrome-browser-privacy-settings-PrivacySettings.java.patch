@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index da126b63a3d93952bc0a361456b32a519d618cdc..aa48d8cbf929d90ae0ad7235736088f2ab33cc69 100644
+index 6cd22798170dbcbda00aeb2370f49277a862db88..73e5b36ffc158bc8086fcd834779047fe733d96d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 @@ -55,7 +55,7 @@ import org.chromium.ui.text.SpanApplier;
@@ -18,7 +18,7 @@ index da126b63a3d93952bc0a361456b32a519d618cdc..aa48d8cbf929d90ae0ad7235736088f2
 +        super.onCreateOptionsMenu(menu, inflater);
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
-         help.setIcon(VectorDrawableCompat.create(
+         help.setIcon(TraceEventVectorDrawableCompat.create(
 @@ -302,6 +303,6 @@ public class PrivacySettings
                      null);
              return true;
