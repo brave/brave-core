@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 1b16c6bc6117b71c3d561eaa0a901b938fda6180..35245f47b9bb5d5a7543dc761a3e3e1c412f0b33 100644
+index dda688f501c764d409aae37b02f0231035bc495f..33bd891880ba76b9ac632b61815c2ce909c53910 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -183,6 +183,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_AUTO_SIGNIN_PERMISSION, nullptr},
+     {ContentSettingsType::FEDERATED_IDENTITY_AUTO_REAUTHN_PERMISSION, nullptr},
      {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_REGISTRATION,
       nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
