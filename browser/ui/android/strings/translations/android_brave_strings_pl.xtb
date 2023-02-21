@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
+<translation id="4744921452903670666">Powiedz nam, co myślisz!</translation>
 <translation id="2524310205387880526">Oceń Brave</translation>
+<translation id="4104400246019119780">Dziękujemy!</translation>
+<translation id="5202255382948179481">Dodaj swoje sugestie</translation>
+<translation id="7759809451544302770">Opcjonalne</translation>
+<translation id="4748689412569009273">Wyrażając to jedną emotikoną, jak oceniasz swoje doświadczenia z Brave?</translation>
+<translation id="7335142069363686805">Oceń teraz</translation>
+<translation id="6681362094306959654">Podoba Ci się Brave?</translation>
+<translation id="5488843227043643519">Może wystawisz ocenę na Play Store?</translation>
+<translation id="5867854497245948308">Dziękujemy za Twoją opinię!</translation>
+<translation id="4935400164159327304">Powiedz nam, jak możemy ulepszyć Brave.</translation>
 <translation id="915758461293673891">Wartość napiwku:</translation>
 <translation id="1420756770787071946">Wspieraj tego twórcę</translation>
 <translation id="4147995007712611681">Ustawiono oczekujący napiwek!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Domena Solana Name Service</translation>
 <translation id="3894650624018948468">Metoda rozwiązania</translation>
+<translation id="8410806609595910352">Wyszukiwanie ENS poza łańcuchem</translation>
 <translation id="2356070529366658676">Zapytaj</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
 <translation id="59174027418879706">Włączone</translation>
@@ -100,6 +111,10 @@
 <translation id="7264627851715038916">Zarządzaj źródłami dla swojego kanału</translation>
 <translation id="4108314971463891922">Obserwuj</translation>
 <translation id="3861486700625780712">Przestań obserwować</translation>
+<translation id="7813788390976857515">Wyszukaj kanały</translation>
+<translation id="3405580543478883040">Wyszukiwanie kanałów…</translation>
+<translation id="7461899062138731833">ŹRÓDŁA</translation>
+<translation id="6150420917380577651">Nie znaleziono kanałów w <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Reklama</translation>
 <translation id="7823038307453615214">Pokaż Brave News</translation>
 <translation id="6527303717912515753">Udostępnij</translation>
@@ -229,6 +244,9 @@
 <translation id="4781696154289395607">Przekazano <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Wystąpił problem przy przetwarzaniu Twojego wsparcia.</translation>
 <translation id="2221902203895354376">Dostępna jest subwencja tokenów!</translation>
+<translation id="2377929997600454162">Twoje nagrody za reklamy za <ph name="MONTH_VALUE"/> są już dostępne!</translation>
+<translation id="2716238748894345194"><ph name="MONTH_VALUE"/>Nagrody : <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">Pozostało dni na odebranie: <ph name="TOKEN"/></translation>
 <translation id="2323069945529668668">O nie!</translation>
 <translation id="7510166204621526816">Serwer Nagród Brave nie odpowiada. Naprawimy to tak szybko, jak to możliwe.</translation>
 <translation id="683765328936486920">na YouTube</translation>
@@ -256,6 +274,8 @@
 <translation id="3792563952903751704">Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach. Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.
 Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać funkcji synchronizacji, konieczne będzie utworzenie nowego konta i ponowne dodanie każdego urządzenia po kolei.</translation>
 <translation id="9064376100690171155">Trwale usuń konto</translation>
+<translation id="2740516568641790390">Konto synchronizacji zostało pomyślnie usunięte</translation>
+<translation id="7006136453627651236">Nie udało się usunąć konta synchronizacji</translation>
 <translation id="728334460283296316">Usuń urządzenie</translation>
 <translation id="1178128181015923849">Czy na pewno chcesz usunąć urządzenie „<ph name="DEVICE_NAME"/>”?</translation>
 <translation id="7745082336226088126">Zeskanuj lub wprowadź kod synchronizacji</translation>
@@ -298,6 +318,8 @@ Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zd
 <translation id="7173114856073700355">Otwórz Ustawienia</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Nie pokazuj ponownie</translation>
+<translation id="496896260395129787">Konto synchronizacji Brave zostało usunięte z poziomu innego urządzenia. Jeśli wyłączenie synchronizacji było przypadkowe, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>utwórz konto ponownie</translation>
 <translation id="8199291899164865593">Nie można połączyć z tym łańcuchem synchronizacji. Konto zostało usunięte.</translation>
 <translation id="5633907266617216186">Adresy, informacje dotyczące płatności itp.</translation>
 <translation id="1056898198331236512">Uwaga</translation>
@@ -314,6 +336,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6199596294742117349">To jest karta prywatna</translation>
 <translation id="5858455511731621847">Mimo że strony otwierane w prywatnych kartach nie są zapisywane lokalnie. Taki sposób przeglądania treści nie zapewnia użytkownikowi anonimowości, ani nie czyni go niewidocznym dla dostawcy Internetu, pracodawcy bądź dla odwiedzanych przez niego stron.</translation>
 <translation id="5789441016350810005">Reklamy Brave przesyłane, gdy przeglądarka znajduje się w tle</translation>
+<translation id="4059103952779533037">Darowizny i napiwki</translation>
 <translation id="2892744985635833293">Twoje miesięczne napiwki zostały przekazane.</translation>
 <translation id="3124090095880236567">Włącz reklamy</translation>
 <translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
@@ -456,9 +479,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="7712287524451429139">Bezwysiłkowe obdarowywanie innych.</translation>
 <translation id="105037569026952831">Twórcy otrzymują przekazane przez Ciebie żetony automatycznie na podstawie poziomu Twojego zaangażowania, które mierzymy jako "Uwagę".</translation>
 <translation id="5323267338679539010">Podziękuj napiwkami.</translation>
+<translation id="8235783939971604011">Dawanie napiwków to sposób na osobiste zachęcanie i wspieranie twórców Twoich ulubionych treści. Zacznij dawać napiwki!</translation>
 <translation id="4215679190414901888">Wreszcie skonfigurujmy Twoje konto</translation>
 <translation id="3494356595346329740">Można to później zmienić.</translation>
 <translation id="3115702351969988294">Jak często chcesz widzieć reklamy?</translation>
+<translation id="2353222426385080466">Więcej prywatnych reklam to więcej nagród.</translation>
+<translation id="1201128255476890443">Liczba reklam na godzinę: <ph name="ADS_PER_HOUR"/></translation>
 <translation id="827315274423079662">Huraa, jesteście gotowi!</translation>
 <translation id="3895246934788932488">Korzystając z nagród Brave, chronisz swoją prywatność i pomagasz ulepszać sieć dla wszystkich. To wspaniałe!</translation>
 <translation id="5705882733397021510">Wróć</translation>
@@ -583,7 +609,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8796429300536029044">Dane tokena NFT</translation>
 <translation id="3866249974567520381">Opis</translation>
 <translation id="4378475168089649292">Blockchain</translation>
+<translation id="794436451374055797">Standard tokenu</translation>
 <translation id="9033453977881595182">ID tokenu</translation>
+<translation id="4987916116550559556">Adres tworzenia tokenów</translation>
+<translation id="7592795625234816917">Obraz niedostępny</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
 <translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="4993345308607970390">Resetuj portfel Brave Wallet</translation>
@@ -966,14 +995,18 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6662142137695589205">Subskrypcja połączenia VPN</translation>
 <translation id="2674077112509133024">Rozszerz swoją ochronę Firewall Brave + VPN</translation>
 <translation id="6365389672683343144">Twoja subskrypcja połączenia VPN Brave może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję Google Play z kontem Brave.</translation>
+<translation id="6610899852831463073">Nie można włączyć Bezpiecznego przeglądania</translation>
+<translation id="7954263306665462056">Funkcja Bezpiecznego przeglądania została wyłączona na Twoim urządzeniu. W celu jej ponownego włączenia upewnij się, że Usługi Google Play są zainstalowane i aktualne.</translation>
 <translation id="6605147707233193230">Włącz, aby wspierać twórców treści</translation>
 <translation id="1609556006143307897">Pomagasz twórcom treści</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
 <translation id="121894865378699201">Gotowi, żeby zacząć zdobywać tokeny BAT?</translation>
+<translation id="2648805457288107211">Wystarczy, że połączysz swoje konto powiernicze z profilem Nagród. Jeśli nie masz konta, będziesz mieć okazję do utworzenia nowego.</translation>
 <translation id="1772961321862399863">Żeby zacząć zarabiać BAT, użytkownicy muszą połączyć konto powiernicze z Nagrodami Brave. Niestety w Twoim regionie nie ma dostępnych kont powierniczych, więc nie możesz zdobywać tokenów. W tej chwili włączenie Nagród Brave automatycznie wspomoże twórców.</translation>
 <translation id="5430495762768325224">Dowiedz się więcej o BAT</translation>
 <translation id="6278643716658443228">Ustawienia nagród</translation>
 <translation id="6516984207843289176">Połącz konto</translation>
+<translation id="4272136334824111854">Liczba twórców, których udało Ci się odwiedzić w tym miesiącu, którzy są wspierani przez Nagrody Brave: <ph name="CREATOR_COUNT"/></translation>
 <translation id="6845311459433734326">Połącz swoje konto powiernicze, żeby zdobywać BAT-y i wypłacać nagrody</translation>
 <translation id="928980476243133540">Zrobię to później</translation>
 <translation id="579702532610384533">Połącz ponownie</translation>
@@ -983,6 +1016,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="9074594632540931067">Błąd: BAT niedostępny</translation>
 <translation id="5382684862562314222">BAT nie jest jeszcze obsługiwany w Twoim regionie w systemie Uphold.</translation>
 <translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
+<translation id="842321566508373706">Według serwisu Uphold na Twoim koncie Uphold obowiązują obecnie pewne ograniczenia. Zaloguj się na swoje konto i sprawdź, czy nie ma jakichś powiadomień lub pozostałych wymagań związanych z kontem, które należy spełnić, a następnie spróbuj ponownie.</translation>
 <translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="5425006356459378415">Nagrody Brave nie są dostępne</translation>
 <translation id="833643743158564518">Nowe rejestracje w ramach Nagród Brave są obecnie wyłączone w Twoim regionie. Zawsze możesz spróbować później. <ph name="LEARN_MORE"/></translation>
@@ -990,6 +1024,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2781668117338732220">Sieci pomocnicze</translation>
 <translation id="6309721369749814582">Domena <ph name="DOMAIN"/> nie jest zarejestrowana</translation>
 <translation id="4071347720273751665">Wprowadzono adres ENS. Będziemy musieli użyć programu do rozpoznawania serwera strony trzeciej, żeby zrealizować to żądanie. Ten program może być w stanie zobaczyć Twój adres IP i domenę. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">Użyj domeny ENS poza łańcuchem</translation>
 <translation id="4982630604810554641">Wyszukiwanie domeny…</translation>
 <translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

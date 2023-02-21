@@ -41,8 +41,7 @@
 <translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון,
 <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>
-ליצור מחדש את החשבון</translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ליצור מחדש את החשבון</translation>
 <translation id="6965382102122355670">אישור</translation>
 <translation id="3975865347033939965">לא ניתן היה להפעיל את שירות הסנכרון, Brave Sync אינו פועל</translation>
 <translation id="4450893287417543264">אל תציג שוב</translation>
@@ -118,7 +117,7 @@
 <translation id="7404610376221341525">חיפוש Brave</translation>
 <translation id="8184318863960255706">מידע נוסף</translation>
 <translation id="780301667611848630">לא תודה</translation>
-<translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב</translation>
+<translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב.</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="6040143037577758943">סגירה</translation>
@@ -303,7 +302,6 @@
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
 <translation id="101592339984642584">סינון תוכן</translation>
 <translation id="8694564340481124390">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים מטרדים ומעקבים מבוססי מיקום או שפה.</translation>
-<translation id="4877657558909976793">מאפשר הפעלה של מסננים מותאמים אישית שחוסמים עוקבים ו<ph name="BEGIN_LINK"/>מטרדים<ph name="END_LINK"/> מבוססי מיקום ושפה.</translation>
 <translation id="3482656215021340727">הוספת רשימות סינון מותאמות אישית</translation>
 <translation id="1020877116991797978">הוספה של רשימות נוספות שנוצרו על ידי הקהילה המהימנה שלך ומתוחזקות על ידה.</translation>
 <translation id="7617831480435794399">הירשם כמנוי רק לרשימות שמקורן בישויות שיש לך אמון בהן. הדפדפן יבדוק מעת לעת אם קיימים עדכונים לרשימות בכתובת ה-URL שתזין. פעולה זו תחשוף את כתובת ה-IP שלך לשרת של ישות זו.</translation>

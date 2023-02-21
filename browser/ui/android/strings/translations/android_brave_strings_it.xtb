@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
+<translation id="4744921452903670666">Dicci cosa ne pensi!</translation>
 <translation id="2524310205387880526">Valuta Brave</translation>
+<translation id="4104400246019119780">Grazie!</translation>
+<translation id="5202255382948179481">Aggiungi i tuoi suggerimenti</translation>
+<translation id="7759809451544302770">Opzionale</translation>
+<translation id="4748689412569009273">Usando un’emoji, come descriveresti la tua esperienza con Brave?</translation>
+<translation id="7335142069363686805">Valuta ora</translation>
+<translation id="6681362094306959654">Ti piace Brave?</translation>
+<translation id="5488843227043643519">Vuoi lasciare una valutazione nel Play Store?</translation>
+<translation id="5867854497245948308">Grazie per il feedback!</translation>
+<translation id="4935400164159327304">Dicci come possiamo migliorare Brave.</translation>
 <translation id="915758461293673891">Importo della donazione:</translation>
 <translation id="1420756770787071946">Supporta questo creatore</translation>
 <translation id="4147995007712611681">Hai impostato una donazione in sospeso!</translation>
@@ -81,6 +91,7 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">Metodo di risoluzione</translation>
+<translation id="8410806609595910352">Ricerca offchain ENS</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
 <translation id="59174027418879706">Attiva</translation>
@@ -100,6 +111,10 @@
 <translation id="7264627851715038916">Gestisci le fonti del tuo feed</translation>
 <translation id="4108314971463891922">Segui</translation>
 <translation id="3861486700625780712">Non seguire più</translation>
+<translation id="7813788390976857515">Ottieni i feed</translation>
+<translation id="3405580543478883040">Ricerca dei feed...</translation>
+<translation id="7461899062138731833">FONTI</translation>
+<translation id="6150420917380577651">Non abbiamo trovato nessun feed su <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Annuncio pubblicitario</translation>
 <translation id="7823038307453615214">Mostra Brave News</translation>
 <translation id="6527303717912515753">Condividi</translation>
@@ -229,6 +244,9 @@
 <translation id="4781696154289395607">Hai contribuito con <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="2429828319207652823">Si è verificato un problema nell'elaborazione del tuo contributo.</translation>
 <translation id="2221902203895354376">È disponibile una concessione di token!</translation>
+<translation id="2377929997600454162">Sono disponibili le ricompense per gli annunci di <ph name="MONTH_VALUE"/>!</translation>
+<translation id="2716238748894345194">Ricompense di <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">Per raccogliere la ricompensa ti restano <ph name="TOKEN"/> giorni</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">Il server di Brave Rewards non risponde. Sistemeremo il problema il prima possibile.</translation>
 <translation id="683765328936486920">su YouTube</translation>
@@ -256,6 +274,8 @@
 <translation id="3792563952903751704">L’eliminazione dell’account rimuoverà i tuoi dati crittografati dai server Brave e disabiliterà Sincronizzazione su tutti i tuoi dispositivi connessi. Tuttavia non eliminerà i dati memorizzati localmente su quei dispositivi.
 L’eliminazione è definitiva e non c’è alcun modo di recuperare i dati. Qualora decidessi di ricominciare a utilizzare Sincronizzazione, dovrai creare un nuovo account e riaggiungere ciascun dispositivo, uno alla volta.</translation>
 <translation id="9064376100690171155">Elimina l’account in modo definitivo</translation>
+<translation id="2740516568641790390">L’account di sincronizzazione è stato eliminato</translation>
+<translation id="7006136453627651236">L’account di sincronizzazione non è stato eliminato</translation>
 <translation id="728334460283296316">Rimuovi il dispositivo</translation>
 <translation id="1178128181015923849">Sei sicuro di voler eliminare il dispositivo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scansiona o inserisci il codice di sincronizzazione</translation>
@@ -298,6 +318,8 @@ L’eliminazione è definitiva e non c’è alcun modo di recuperare i dati. Qua
 <translation id="7173114856073700355">Apri Impostazioni</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Non mostrare più</translation>
+<translation id="496896260395129787">L’account di Sincronizzazione Brave è stato eliminato da un altro dispositivo. Se non avevi intenzione di disabilitare Sincronizzazione, <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ricrea l’account</translation>
 <translation id="8199291899164865593">Impossibile unirsi alla catena di sincronizzazione. L’account è stato eliminato.</translation>
 <translation id="5633907266617216186">Indirizzi, informazioni sui pagamenti, ecc.</translation>
 <translation id="1056898198331236512">Attenzione</translation>
@@ -314,6 +336,7 @@ Confermi di voler procedere?</translation>
 <translation id="6199596294742117349">Questa è una scheda privata</translation>
 <translation id="5858455511731621847">Anche se i siti che visiti in schede private non vengono salvati localmente, questo non ti rende anonimo o invisibile al tuo fornitore di servizi Internet (ISP), al tuo datore di lavoro o ai siti stessi che stai visitando.</translation>
 <translation id="5789441016350810005">Brave Ads inviati quando il browser non è attivo</translation>
+<translation id="4059103952779533037">Donazioni e mance</translation>
 <translation id="2892744985635833293">Le tue donazioni mensili sono state elaborate.</translation>
 <translation id="3124090095880236567">Attiva gli Ads</translation>
 <translation id="2975780980638932742">Brave Ads è arrivato!</translation>
@@ -456,9 +479,12 @@ Confermi di voler procedere?</translation>
 <translation id="7712287524451429139">Dare qualcosa indietro senza sforzo</translation>
 <translation id="105037569026952831">I creatori ricevono automaticamente i tuoi contributi simbolici in base ai tuoi livelli di coinvolgimento che misuriamo come "Attenzione".</translation>
 <translation id="5323267338679539010">Dì grazie con una mancia</translation>
+<translation id="8235783939971604011">Lasciare le mance è un modo per incoraggiare personalmente e supportare il contenuto o il creatori che più ami. Inizia a lasciare mance!</translation>
 <translation id="4215679190414901888">Passiamo alla configurazione</translation>
 <translation id="3494356595346329740">Puoi modificarlo in seguito</translation>
 <translation id="3115702351969988294">Quanto spesso vuoi vedere gli annunci?</translation>
+<translation id="2353222426385080466">Più annunci privati e più ricompense.</translation>
+<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> annunci all’ora</translation>
 <translation id="827315274423079662">Evviva, sei a posto!</translation>
 <translation id="3895246934788932488">Scegliendo di utilizzare Brave Rewards, stai proteggendo la tua privacy e contribuisci a rendere il Web un posto migliore per tutti. E questo è fantastico!</translation>
 <translation id="5705882733397021510">Vai indietro</translation>
@@ -583,7 +609,10 @@ Confermi di voler procedere?</translation>
 <translation id="8796429300536029044">NFT in dettaglio</translation>
 <translation id="3866249974567520381">Descrizione</translation>
 <translation id="4378475168089649292">Blockchain</translation>
+<translation id="794436451374055797">Standard del token</translation>
 <translation id="9033453977881595182">ID token</translation>
+<translation id="4987916116550559556">Indirizzo Mint</translation>
+<translation id="7592795625234816917">Immagine non disponibile</translation>
 <translation id="8239147115686034860">Blocca automaticamente il portafoglio Brave</translation>
 <translation id="414639769490080648">Il numero di minuti di attesa per il blocco automatico del portafoglio Brave</translation>
 <translation id="4993345308607970390">Ripristina il portafoglio di Brave</translation>
@@ -966,14 +995,18 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6662142137695589205">Collega il tuo abbonamento alla VPN</translation>
 <translation id="2674077112509133024">Estendi la protezione Firewall + VPN di Brave</translation>
 <translation id="6365389672683343144">L’abbonamento alla VPN di Brave è in grado di proteggere fino a 5 dispositivi su Android, iOS e desktop. Collega a Brave l’abbonamento sottoscritto su Google Play.</translation>
+<translation id="6610899852831463073">Impossibile attivare la navigazione sicura</translation>
+<translation id="7954263306665462056">Sul tuo dispositivo la navigazione sicura è stata disattivata. Per attivarla, controlla che Google Play Services sia installato e aggiornato.</translation>
 <translation id="6605147707233193230">Attiva la funzione, per aiutarci a sostenere chi crea contenuti</translation>
 <translation id="1609556006143307897">Ci stai aiutando a sostenere chi crea contenuti</translation>
 <translation id="6067959437127691361">Grazie a Ricompense Brave sostieni gli autori dei contenuti e guadagni BAT.</translation>
 <translation id="121894865378699201">Vuoi iniziare a guadagnare BAT?</translation>
+<translation id="2648805457288107211">Ti basta connettere il conto di custodia al profilo Ricompense. Se non hai un conto, potrai crearne uno.</translation>
 <translation id="1772961321862399863">Per guadagnare BAT, gli utenti devono connettere un conto di custodia a Ricompense Brave. Purtroppo non ci sono gestori disponibili nella tua area geografica e pertanto nemmeno l’opzione di guadagno sarà disponibile. Per il momento l’attivazione di Ricompense Brave supporterà gli autori automaticamente.</translation>
 <translation id="5430495762768325224">Scopri di più su BAT</translation>
 <translation id="6278643716658443228">Impostazioni Ricompense</translation>
 <translation id="6516984207843289176">Connetti conto</translation>
+<translation id="4272136334824111854">Questo mese hai consultato i contenuti di <ph name="CREATOR_COUNT"/> autori sostenuti dal programma Ricompense Brave</translation>
 <translation id="6845311459433734326">Connetti un conto di custodia così puoi guadagnare BAT e prelevare le tue ricompense</translation>
 <translation id="928980476243133540">Più tardi</translation>
 <translation id="579702532610384533">Ricollegati</translation>
@@ -983,6 +1016,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="9074594632540931067">Errore: BAT non disponibile</translation>
 <translation id="5382684862562314222">BAT non è ancora supportato nella tua area geografica su Uphold.</translation>
 <translation id="6996157559236886133">Errore: funzionalità del conto Uphold limitata</translation>
+<translation id="842321566508373706">Secondo Uphold, ci sono alcune limitazioni attive sul tuo conto Uphold. Accedi ad Uphold e verifica la presenza di avvisi o di richieste da completare, poi riprova.</translation>
 <translation id="6417420737057016607">Annunci Brave</translation>
 <translation id="5425006356459378415">Ricompense Brave non disponibili</translation>
 <translation id="833643743158564518">Nella tua area geografica al momento non è possibile iscriversi al programma Ricompense di Brave. Puoi comunque riprovare in seguito. <ph name="LEARN_MORE"/></translation>
@@ -990,6 +1024,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2781668117338732220">Reti secondarie</translation>
 <translation id="6309721369749814582">Il dominio <ph name="DOMAIN"/> non è registrato</translation>
 <translation id="4071347720273751665">Sembra che tu abbia inserito un indirizzo ENS. Per risolvere questa richiesta dovremo utilizzare un risolutore di terze parti che potrebbe vedere il tuo indirizzo IP e dominio. <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">Usa il dominio offchain ENS</translation>
 <translation id="4982630604810554641">Ricerca di un dominio…</translation>
 <translation id="3586775666459823714">NFTs</translation>
 </translationbundle>

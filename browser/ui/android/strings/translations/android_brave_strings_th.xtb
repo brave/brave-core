@@ -1,7 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
+<translation id="4744921452903670666">บอกเราว่าคุณคิดยังไง!</translation>
 <translation id="2524310205387880526">ให้คะแนน Brave</translation>
+<translation id="4104400246019119780">ขอบคุณ!</translation>
+<translation id="5202255382948179481">เพิ่มคำแนะนำใหม่ของคุณ</translation>
+<translation id="7759809451544302770">ไม่บังคับ</translation>
+<translation id="4748689412569009273">บอกเล่าประสบการณ์ของคุณกับ Brave ด้วยหนึ่งอิโมจิได้หรือไม่</translation>
+<translation id="7335142069363686805">ให้คะแนนตอนนี้</translation>
+<translation id="6681362094306959654">คุณชอบ Brave ใช่ไหม</translation>
+<translation id="5488843227043643519">ต้องการให้คะแนนที่ Play Store หรือไม่</translation>
+<translation id="5867854497245948308">ขอบคุณสำหรับความคิดเห็นของคุณ!</translation>
+<translation id="4935400164159327304">แจ้งให้เราทราบว่าควรปรับปรุง Brave อย่างไรบ้าง</translation>
 <translation id="915758461293673891">จำนวนทิป:</translation>
 <translation id="1420756770787071946">สนับสนุนครีเอเตอร์รายนี้</translation>
 <translation id="4147995007712611681">คุณได้ตั้งค่าทิปที่รอดำเนินการแล้ว!</translation>
@@ -54,6 +64,8 @@
 <translation id="2278950434998763147">เปิดบางเว็บไซต์โดยใช้การเชื่อมต่อ HTTPS ที่ปลอดภัยแทน HTTP ธรรมดา</translation>
 <translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
 <translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
+<translation id="920638232916443453">เปลี่ยนเส้นทาง URL ติดตามอัตโนมัติ</translation>
+<translation id="1118970888826017401">เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง</translation>
 <translation id="94154759592465111">สคริปต์บล็อก</translation>
 <translation id="7714773920987474116">บล็อก JavaScript (อาจทำเว็บเสียหาย)</translation>
 <translation id="6052725679982758334">การบล็อกโซเชียลมีเดีย</translation>
@@ -79,6 +91,7 @@
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="3894650624018948468">วิธีแก้ไข</translation>
+<translation id="8410806609595910352">การค้นหานอกเครือข่ายบล็อกเชนของ ENS</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
 <translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
@@ -89,11 +102,19 @@
 <translation id="1765217911817124376">เปิดข่าว Brave</translation>
 <translation id="8981973962043893066">ค้นหาเว็บไซต์ หัวข้อ หรือฟีด RSS</translation>
 <translation id="3225021799163709119">ยอดนิยม</translation>
+<translation id="3673348851739109493">รายการอันดับแหล่งที่มา</translation>
 <translation id="4750394297954878236">การแนะนำ</translation>
+<translation id="1031536812594716160">แหล่งที่มาที่คุณอาจชอบ</translation>
 <translation id="1498364270401875204">ช่อง</translation>
+<translation id="3923595176124806911">ติดตามหัวข้อที่คุณสนใจ</translation>
 <translation id="8032569120109842252">กำลังติดตาม</translation>
+<translation id="7264627851715038916">จัดการแหล่งที่มาสำหรับฟีดของคุณ</translation>
 <translation id="4108314971463891922">ติดตาม</translation>
 <translation id="3861486700625780712">เลิกติดตาม</translation>
+<translation id="7813788390976857515">รับฟีด</translation>
+<translation id="3405580543478883040">กำลังรับฟีด...</translation>
+<translation id="7461899062138731833">แหล่งที่มา</translation>
+<translation id="6150420917380577651">ไม่พบฟีดที่ <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">โฆษณา</translation>
 <translation id="7823038307453615214">แสดง Brave News</translation>
 <translation id="6527303717912515753">แชร์</translation>
@@ -223,6 +244,9 @@
 <translation id="4781696154289395607">คุณได้สนับสนุน <ph name="BAT_VALUE"/> BAT</translation>
 <translation id="2429828319207652823">มีปัญหาในการประมวลผลการบริจาคของคุณ</translation>
 <translation id="2221902203895354376">มีโทเค็นพร้อมมอบให้!</translation>
+<translation id="2377929997600454162">Ads Rewards สำหรับเดือน <ph name="MONTH_VALUE"/> ของคุณมาถึงแล้ว!</translation>
+<translation id="2716238748894345194">Rewards ประจำเดือน<ph name="MONTH_VALUE"/> : <ph name="TOKEN"/> BAT</translation>
+<translation id="1649629664206601032">คุณเหลือเวลาอีก <ph name="TOKEN"/> วันในการรับ</translation>
 <translation id="2323069945529668668">โอ๊ะโอ!</translation>
 <translation id="7510166204621526816">เซิร์ฟเวอร์ Brave Rewards ไม่ตอบสนอง เราจะทำการแก้ไขให้โดยเร็วที่สุด</translation>
 <translation id="683765328936486920">บน YouTube</translation>
@@ -246,6 +270,12 @@
 <translation id="5241263629636958324">คัดลอกไปที่คลิบบอร์ดแล้ว</translation>
 <translation id="5817918615728894473">จับคู่</translation>
 <translation id="7090325819305486658">การตั้งค่าข้อมูล</translation>
+<translation id="1680065323266179640">ลบบัญชีซิงค์</translation>
+<translation id="3792563952903751704">การลบบัญชีจะลบข้อมูลที่เข้ารหัสของคุณออกจากเซิร์ฟเวอร์ของ Brave และปิดการซิงค์บนอุปกรณ์ที่เชื่อมต่อทั้งหมด แต่จะไม่ลบข้อมูลใดๆ ที่เก็บไว้ในเครื่อง
+การลบนั้นเป็นถาวรและจะไม่สามารถกู้คืนข้อมูลได้ ถ้าคุณตัดสินใจที่จะ เริ่มใช้การซิงค์อีกครั้ง คุณจะต้องสร้างบัญชีใหม่และเพิ่มอุปกรณ์ใหม่ทีละเครื่อง</translation>
+<translation id="9064376100690171155">ลบบัญชีถาวร</translation>
+<translation id="2740516568641790390">ลบบัญชีซิงค์เรียบร้อยแล้ว</translation>
+<translation id="7006136453627651236">ไม่สามารถลบบัญชีซิงค์ได้</translation>
 <translation id="728334460283296316">นำอุปกรณ์ออก</translation>
 <translation id="1178128181015923849">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">สแกนหรือใส่ซิงค์โค้ด</translation>
@@ -288,6 +318,10 @@
 <translation id="7173114856073700355">เปิดการตั้งค่า</translation>
 <translation id="6965382102122355670">ตกลง</translation>
 <translation id="4450893287417543264">ไม่ต้องแสดงอีก</translation>
+<translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้ <ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
+<translation id="8199291899164865593">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากบัญชีถูกลบแล้ว</translation>
+<translation id="5633907266617216186">ที่อยู่ ข้อมูลการชำระเงิน เป็นต้น</translation>
 <translation id="1056898198331236512">คำเตือน</translation>
 <translation id="1426410128494586442">ใช่</translation>
 <translation id="7811264919113243207">การดำเนินการนี้จะแชร์ข้อมูล Brave ของคุณ รวมถึงอาจแชร์รหัสผ่านของคุณ กับอุปกรณ์ที่สร้างรหัส QR นี้
@@ -302,6 +336,7 @@
 <translation id="6199596294742117349">นี่คือแท็บส่วนตัว</translation>
 <translation id="5858455511731621847">แม้ว่าเว็บไซต์ที่คุณเข้าชมในแท็บส่วนตัวจะไม่ถูกบันทึกไว้ภายในเครื่อง แต่นี่ไม่ได้ทำให้คุณไม่ระบุชื่อหรือไม่เปิดเผยตัวตนต่อผู้ให้บริการอินเทอร์เน็ตของคุณ นายจ้างของคุณ หรือเว็บไซต์ที่คุณกำลังเข้าชม</translation>
 <translation id="5789441016350810005">Brave Ads ที่ถูกส่งเมื่อเบราว์เซอร์อยู่ในเบื้องหลัง</translation>
+<translation id="4059103952779533037">การสนับสนุนและการให้ทิป</translation>
 <translation id="2892744985635833293">ดำเนินการให้ทิปรายเดือนของคุณเรียบร้อยแล้ว</translation>
 <translation id="3124090095880236567">เปิดใช้งาน Ads</translation>
 <translation id="2975780980638932742">Brave Ads มาแล้ว!</translation>
@@ -309,8 +344,10 @@
 <translation id="8520059774736886747">ผู้สร้าง <ph name="PUBLISHER_NAME"/> เพิ่งได้รับการยืนยัน</translation>
 <translation id="1486343603936278248">โทเคน</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
+<translation id="3171669670217312786">ภาพพื้นหลัง</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="3870475560794762985">แสดงรูปภาพที่มีผู้สนับสนุน</translation>
+<translation id="8793108040181436796">วิดเจ็ต</translation>
 <translation id="8643377320501056697">แสดงเว็บไซต์ยอดนิยม</translation>
 <translation id="7275773481201277457">แสดงสถิติ Brave</translation>
 <translation id="8297488609722895137">ภาพถ่ายโดย <ph name="PHOTO_BY"/></translation>
@@ -438,11 +475,16 @@
 <translation id="7930505144430343145">ยินดีต้อนรับสู่ Brave Reward</translation>
 <translation id="3477340970981564961">โฆษณาส่วนตัวของ Brave ให้ Reward เป็นโทเค็นสำหรับนำไปสนับสนุนผู้สร้างคอนเทนต์ ซึ่งจะต่างจากโฆษณาทั่วไป แต่ยังคงรักษาความเป็นส่วนตัวให้กับข้อมูลส่วนตัวของคุณไว้ในทุกๆ ส่วน</translation>
 <translation id="6973095375773523904">โฆษณาจะปรากฏที่ใด</translation>
+<translation id="4328028439561659455">Brave Private Ads จะปรากฏเป็นการแจ้งเตือนบนจอของคุณ และคุณสามารถควบคุมความถี่ที่จะมองเห็นโฆษณาเหล่านี้ได้</translation>
 <translation id="7712287524451429139">การตอบแทนจะกลายเป็นเรื่องง่าย</translation>
 <translation id="105037569026952831">ครีเอเตอร์จะได้รับโทเค็นบริจาคจากคุณโดยอัตโนมัติตามระดับการมีส่วนร่วมที่เราวัดได้ในรูป 'ความสนใจ' ของคุณ</translation>
 <translation id="5323267338679539010">ให้ทิปเป็นการขอบคุณ</translation>
+<translation id="8235783939971604011">การให้ทิปเป็นวิธีส่งกำลังใจและให้การสนับสนุนเนื้อหาหรือผู้สร้างที่คุณชื่นชอบ ไปให้ทิปกัน!</translation>
+<translation id="4215679190414901888">และท้ายที่สุด ถึงเวลาตั้งค่าแล้ว</translation>
 <translation id="3494356595346329740">สามารถแก้ไขในภายหลังได้</translation>
 <translation id="3115702351969988294">คุณต้องการเห็นโฆษณาบ่อยแค่ไหน</translation>
+<translation id="2353222426385080466">ชมโฆษณาส่วนตัวมากขึ้นเพื่อรับรางวัลที่มากขึ้น</translation>
+<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> โฆษณาต่อชั่วโมง</translation>
 <translation id="827315274423079662">ไชโย คุณพร้อมแล้วละ!</translation>
 <translation id="3895246934788932488">การใช้งาน Brave Reward จะช่วยปกป้องความเป็นส่วนตัวของคุณ และช่วยทำให้เว็บนี้เป็นพื้นที่ที่ดีขึ้นสำหรับทุกคน ซึ่งเยี่ยมสุดๆ ไปเลย</translation>
 <translation id="5705882733397021510">ย้อนกลับ</translation>
@@ -561,11 +603,16 @@
 <translation id="5050890334032852465">บันทึกรายการเฝ้าดูของบัญชี</translation>
 <translation id="7755766175599167100">ค้นหาโทเค็น</translation>
 <translation id="3835223348537121988">ยอดคงเหลือ:</translation>
+<translation id="6888491517683356528">ไปที่ Ramp</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">ล็อค</translation>
+<translation id="8796429300536029044">รายละเอียด NFT</translation>
 <translation id="3866249974567520381">คำอธิบาย</translation>
 <translation id="4378475168089649292">บล็อกเชน</translation>
+<translation id="794436451374055797">มาตรฐานโทเค็น</translation>
 <translation id="9033453977881595182">ID โทเค็น</translation>
+<translation id="4987916116550559556">ที่อยู่การสร้าง</translation>
+<translation id="7592795625234816917">ไม่มีรูปภาพ</translation>
 <translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="4993345308607970390">รีเซ็ตกระเป๋าเงิน Brave</translation>
@@ -948,7 +995,20 @@
 <translation id="6662142137695589205">ลิงก์การสมัครสมาชิก VPN ของคุณ</translation>
 <translation id="2674077112509133024">ขยายการปกป้อง Brave Firewall + VPN ของคุณ</translation>
 <translation id="6365389672683343144">การสมัครสมาชิก Brave VPN สามารถปกป้องอุปกรณ์ได้สูงสุด 5 รายการทั้ง Android, iOS และเดสก์ท็อป เพียงลิงก์การสมัครสมาชิก Google Play กับบัญชี Brave ของคุณ</translation>
+<translation id="6610899852831463073">ไม่สามารถเปิดใช้งาน Safe Browsing ได้</translation>
+<translation id="7954263306665462056">Safe Browsing ถูกปิดใช้งานบนอุปกรณ์ของคุณ หากต้องการเปิดใช้งาน กรุณาตรวจสอบให้แน่ใจว่าได้ติดตั้งบริการ Google Play เป็นเวอร์ชันล่าสุดแล้ว</translation>
+<translation id="6605147707233193230">เปิดเพื่อช่วยสนับสนุนคอนเทนต์ครีเอเตอร์</translation>
+<translation id="1609556006143307897">คุณกำลังช่วยสนับสนุนคอนเทนต์ครีเอเตอร์</translation>
+<translation id="6067959437127691361">การใช้ Brave Rewards จะช่วยสนับสนุนคอนเทนต์ครีเอเตอร์และช่วยให้คุณได้รับ BAT ด้วย</translation>
+<translation id="121894865378699201">พร้อมที่จะรับ BAT แล้วหรือยัง?</translation>
+<translation id="2648805457288107211">เพียงเชื่อมต่อบัญชีดูแลรักษาสินทรัพย์กับบัญชี Rewards ของคุณ ถ้าคุณไม่มีบัญชี คุณจะสามารถสร้างบัญชีได้</translation>
+<translation id="1772961321862399863">เพื่อรับ BAT ผู้ใช้ต้องเชื่อมต่อบัญชีดูแลรักษาสินทรัพย์กับบัญชี Brave Rewards แต่เราขออภัยที่ต้องแจ้งให้ทราบว่าไม่มีผู้ดูแลรักษาสินทรัพย์ในภูมิภาคของคุณ ทำให้ไม่สามารถรับรายได้ได้ ตั้งแต่นี้ไป การเปิดใช้ Brave Rewards จะเป็นการสนับสนุนครีเอเตอร์โดยอัตโนมัติ</translation>
+<translation id="5430495762768325224">เรียนรู้เพิ่มเติมเกี่ยวกับ BAT</translation>
 <translation id="6278643716658443228">การตั้งค่า Rewards</translation>
+<translation id="6516984207843289176">เชื่อมต่อบัญชี</translation>
+<translation id="4272136334824111854">ในเดือนนี้ คุณได้เยี่ยมชมครีเอเตอร์ที่สนับสนุนโดย Brave Rewards <ph name="CREATOR_COUNT"/> คน</translation>
+<translation id="6845311459433734326">เชื่อมต่อบัญชีดูแลรักษาสินทรัพย์เพื่อรับ BAT และถอนรางวัลของคุณ</translation>
+<translation id="928980476243133540">ไว้ทีหลัง</translation>
 <translation id="579702532610384533">เชื่อมต่ออีกครั้ง</translation>
 <translation id="1619753851206150396">คุณออกจากระบบแล้ว</translation>
 <translation id="8208669151660770401">สิ่งนี้สามารถเกิดขึ้นได้เพื่อรักษาบัญชีของคุณให้ปลอดภัย กรุณาคลิกด้านล่างเพื่อเชื่อมต่อใหม่อีกครั้งตอนนี้</translation>
@@ -956,11 +1016,15 @@
 <translation id="9074594632540931067">เกิดข้อผิดพลาด: BAT ไม่พร้อมใช้งาน</translation>
 <translation id="5382684862562314222">ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold</translation>
 <translation id="6996157559236886133">ข้อผิดพลาด: จำกัดฟังก์ชันการทำงานของบัญชี Uphold</translation>
+<translation id="842321566508373706">ตามระเบียบของ Uphold ขณะนี้มีข้อจำกัดบางประการสำหรับบัญชี Uphold ของคุณ กรุณาลงชื่อเข้าใช้บัญชี Uphold ของคุณและตรวจสอบว่ามีการแจ้งเตือนหรือข้อกำหนดบัญชีที่เหลือที่ต้องดำเนินการให้เสร็จสิ้นหรือไม่ แล้วลองอีกครั้ง</translation>
 <translation id="6417420737057016607">เบรฟ แอดส์ (Brave Ads)</translation>
 <translation id="5425006356459378415">ไม่สามารถใช้งาน Brave Rewards</translation>
 <translation id="833643743158564518">ขณะนี้ไม่สามารถลงทะเบียน Brave Rewards ใหม่ในภูมิภาคของคุณได้ แต่คุณสามารถลองอีกครั้งในภายหลังได้เสมอ <ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">ทุกเครือข่าย</translation>
 <translation id="2781668117338732220">เครือข่ายสำรอง</translation>
 <translation id="6309721369749814582">ยังไม่ได้ลงทะเบียนโดเมน <ph name="DOMAIN"/></translation>
+<translation id="4071347720273751665">ดูเหมือนคุณจะกรอกที่อยู่ ENS เราต้องใช้ตัวแปลงจากบุคคลที่สามเพื่อแปลงคำขอนี้ ซึ่งบุคคลที่สามอาจทราบที่อยู่ IP และโดเมนของคุณได้ <ph name="LEARN_MORE"/></translation>
+<translation id="4096049525705855774">ใช้โดเมนนอกเครือข่ายบล็อกเชนของ ENS</translation>
+<translation id="4982630604810554641">กำลังค้นหาโดเมน...</translation>
 <translation id="3586775666459823714">NFT</translation>
 </translationbundle>

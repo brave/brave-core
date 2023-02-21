@@ -40,7 +40,7 @@
 <translation id="1725356094208762656">Tor에서 열기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되어서 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
-<translation id="496896260395129787">다른 디바이스에서 이 Brave Sync 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
+<translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
 <translation id="6965382102122355670">좋습니다</translation>
 <translation id="3975865347033939965">동기화 서비스를 시작할 수 없습니다. Brave Sync가 미실행 중입니다.</translation>
@@ -303,7 +303,6 @@
 <translation id="2360360976480535628">고급 보기</translation>
 <translation id="101592339984642584">콘텐츠 필터링</translation>
 <translation id="8694564340481124390">맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 짜증나는 요소를 차단합니다.</translation>
-<translation id="4877657558909976793">맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 <ph name="BEGIN_LINK"/>짜증나는 요소<ph name="END_LINK"/>를 차단합니다.</translation>
 <translation id="3482656215021340727">맞춤 필터 목록 추가</translation>
 <translation id="1020877116991797978">신뢰할 수 있는 커뮤니티가 만들고 관리하는 목록을 추가합니다.</translation>
 <translation id="7617831480435794399">출처를 신뢰할 수 있는 목록만 구독하세요. 입력하신 URL에서 받은 목록 업데이트를 브라우저가 주기적으로 확인하며 이 과정에서 귀하의 IP 주소가 해당 서버에 공개됩니다.</translation>
@@ -429,7 +428,7 @@
 
     계속하시겠습니까?</translation>
 <translation id="7443185843787879670">Brave가 운영체제의 안전한 스토리지에 액세스할 수 없습니다. 이 영역은 비밀번호와 쿠키 등의 데이터를 보호하는 데 사용되며, 또한 Brave Sync가 디바이스 간에 브라우저 프로필을 연결하는 데에도 필요합니다. 따라서, Brave Sync가 실행되고 있지 않습니다. 이 문제를 해결하려면 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync 문제 해결 가이드<ph name="END_LINK_SYNC_GUIDE"/>를 참조하세요.</translation>
-<translation id="6802736947576520626">동기화 암호화 키가 귀하가 Brave Sync를 처음 셋업할 때와 달라진 것 같습니다. 가장 쉬운 해결 방법은 초기화하고 동기화되어 있는 다른 디바이스에서 가져온 암호로 동기화 체인에 다시 참여하는 것입니다.</translation>
+<translation id="6802736947576520626">동기화 암호화 키가 귀하가 Brave 동기화를 처음 셋업할 때와 달라진 것 같습니다. 가장 쉬운 해결 방법은 초기화하고 동기화되어 있는 다른 디바이스에서 가져온 암호로 동기화 체인에 다시 참여하는 것입니다.</translation>
 <translation id="4889767840132638381">초기화하고 동기화 체인 다시 참여하기</translation>
 <translation id="1680065323266179640">동기화 계정 삭제</translation>
 <translation id="9064376100690171155">계정 영구 삭제</translation>

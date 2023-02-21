@@ -303,8 +303,6 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="2360360976480535628">Tampilan lanjut</translation>
 <translation id="101592339984642584">Penyaringan konten</translation>
 <translation id="8694564340481124390">Aktifkan filter khusus yang memblokir pelacak serta gangguan regional dan berbahasa tertentu.</translation>
-<translation id="4877657558909976793">Mengaktifkan filter khusus yang memblokir pelacak dan 
-    <ph name="BEGIN_LINK"/>Pengganggu<ph name="END_LINK"/> untuk wilayah dan bahasa tertentu.</translation>
 <translation id="3482656215021340727">Tambahkan daftar filter khusus</translation>
 <translation id="1020877116991797978">Tambahkan daftar tambahan yang dibuat dan dikelola oleh komunitas tepercaya Anda.</translation>
 <translation id="7617831480435794399">Berlanggananlah hanya pada daftar dari entitas yang Anda percayai. Peramban Anda akan secara periodik memeriksa pembaruan daftar dari URL yang Anda tuliskan, mengungkapkan alamat IP Anda ke peladen mereka.</translation>

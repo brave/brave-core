@@ -303,8 +303,6 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="2360360976480535628">Vue avancée</translation>
 <translation id="101592339984642584">Filtrage du contenu</translation>
 <translation id="8694564340481124390">Activez des filtres personnalisés pour bloquer des traceurs et des nuisances spécifiques à votre région ou votre langue.</translation>
-<translation id="4877657558909976793">Activez des filtres personnalisés pour bloquer des traceurs et des
-<ph name="BEGIN_LINK"/>nuisances<ph name="END_LINK"/> spécifiques à votre région ou votre langue.</translation>
 <translation id="3482656215021340727">Ajouter des listes de filtres personnalisés</translation>
 <translation id="1020877116991797978">Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.</translation>
 <translation id="7617831480435794399">Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l'URL que vous saisissez, révélant ainsi votre adresse IP à leur serveur.</translation>
@@ -430,8 +428,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 
     Voulez-vous vraiment continuer ?</translation>
 <translation id="7443185843787879670">Brave n'a pas pu accéder au stockage sécurisé de votre système d'exploitation. Il sert à sécuriser les données telles que les mots de passe et les cookies ; il est également nécessaire pour que la synchronisation Brave puisse connecter votre profil de navigateur entre les appareils. Cela signifie que la synchronisation Brave ne fonctionne pas. Pour résoudre ce problème, veuillez consulter le <ph name="BEGIN_LINK_SYNC_GUIDE"/>Guide de dépannage de la synchronisation Brave<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
-<translation id="6802736947576520626">Il semble que la clé de chiffrement de synchronisation soit différente de celle utilisée lors de la première configuration de Synchronisation Brave. La solution la plus simple consiste à réinitialiser et à réassocier la chaîne de synchronisation à l'aide de la phrase secrète à partir de l’un de vos autres appareils synchronisés.</translation>
-<translation id="4889767840132638381">Réinitialiser et à réassocier la chaîne de synchronisation</translation>
+<translation id="6802736947576520626">Il semble que la clé de chiffrement de synchronisation soit différente de celle utilisée lors de la première configuration de Synchronisation Brave. La solution la plus simple consiste à réinitialiser et à réassocier la chaîne de synchronisation à l'aide de la phrase secrète à partir de l'un de vos autres appareils synchronisés.</translation>
+<translation id="4889767840132638381">Réinitialiser et réassocier la chaîne de synchronisation</translation>
 <translation id="1680065323266179640">Supprimer le compte Synchronisation</translation>
 <translation id="9064376100690171155">Supprimer définitivement le compte</translation>
 <translation id="228906529296554286">La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera Synchronisation sur tous vous appareils connectés.</translation>
