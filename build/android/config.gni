@@ -40,8 +40,6 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_caverock_androidsvg_java",
-  "//brave/third_party/android_deps:com_github_bumptech_glide_annotations_java",
-  "//brave/third_party/android_deps:com_github_bumptech_glide_compiler_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
