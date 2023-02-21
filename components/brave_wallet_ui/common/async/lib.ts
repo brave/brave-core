@@ -158,6 +158,42 @@ export function getTokenBalanceForChainId (contract: string, address: string, co
   })
 }
 
+interface BalancesMap {
+  [contractAddress: string]: string
+}
+
+export function getTokenBalancesForChainId (
+  contracts: string[],
+  address: string,
+  coin: BraveWallet.CoinType,
+  chainId: string
+): Promise<BalancesMap> {
+  return new Promise(async (resolve, reject) => {
+    const { jsonRpcService } = getAPIProxy()
+    if (coin === BraveWallet.CoinType.ETH) {
+      const result = await jsonRpcService.getERC20TokenBalances(contracts, address, chainId)
+      if (result.error === BraveWallet.ProviderError.kSuccess) {
+        resolve(
+          result.balances.reduce((acc, balanceResult) => {
+            if (balanceResult.balance) {
+              return {
+                ...acc,
+                [balanceResult.contractAddress]: Amount.normalize(balanceResult.balance)
+              }
+            }
+
+            return acc
+          }, {})
+        )
+      } else {
+        reject(result.errorMessage)
+      }
+    }
+
+    reject(`Unsupported CoinType: ${coin}`)
+  })
+}
+
 export async function getChecksumEthAddress (value: string) {
   const { keyringService } = getAPIProxy()
   return (await keyringService.getChecksumEthAddress(value))
