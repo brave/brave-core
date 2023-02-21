@@ -1941,7 +1941,7 @@ extension Strings {
   public struct PlaylistFolderSharing {
     public static let addButtonTitle =
     NSLocalizedString("playlistFolderSharing.addButtonTitle", tableName: "BraveShared", bundle: .module,
-                      value: "Add",
+                      value: "Save",
                       comment: "Title for the button that adds the playlist to the database.")
     
     public static let addButtonAccessibilityTitle =

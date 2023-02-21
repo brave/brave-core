@@ -122,7 +122,6 @@ class PlaylistMenuHeader: UITableViewHeaderFooterView {
     switch state {
     case .add:
       menuButton.setTitle(Strings.PlaylistFolderSharing.addButtonTitle, for: .normal)
-      menuButton.setImage(UIImage(systemName: "plus"), for: .normal)
       menuButton.backgroundColor = .braveBlurpleTint
       menuButton.accessibilityLabel = Strings.PlaylistFolderSharing.addButtonAccessibilityTitle
       menuButton.contentEdgeInsets = UIEdgeInsets(top: 6.0, left: 20.0, bottom: 6.0, right: 20.0)

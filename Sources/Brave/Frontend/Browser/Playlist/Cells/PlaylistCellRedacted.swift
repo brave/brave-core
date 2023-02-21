@@ -36,12 +36,7 @@ private struct PlaylistRedactedHeaderView: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
       
       Button(action: {}) {
-        Label {
-          Text(Strings.PlaylistFolderSharing.addButtonTitle)
-        } icon: {
-          Image(systemName: "plus")
-        }
-
+        Text(Strings.PlaylistFolderSharing.addButtonTitle)
       }
       .font(.subheadline.weight(.bold))
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
