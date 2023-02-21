@@ -253,6 +253,18 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "無制限承認がリクエストされました";
 
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "閉じる";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "トランザクションは正常にブロックに含まれています。二重支出のリスクを回避するため、ブロックの確認を待つことをおすすめします。";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "領収書";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "トランザクションが完了しました";
+
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "パスワードを確認";
 
@@ -577,6 +589,21 @@
 /* The message of an alert when the user attempted to remove custom network and it fails for some reason */
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "ネットワークを削除できませんでした。\nもう一度お試しください。";
 
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "値動きが大きいためにトランザクションが失敗しました。より大きな値動きで取引ができるよう、価格変動の許容値を上げてください。";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "後に参照できるよう、エラーメッセージを保存してください。";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "エラーメッセージ";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "トランザクションが失敗しました";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "エラーを表示";
+
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Gasの上限量";
 
@@ -612,6 +639,9 @@
 
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "公開暗号化キーの要求";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "ヘルプセンター";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "プライベートキーを隠す";
@@ -654,6 +684,12 @@
 
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "流動性が不足しています";
+
+/* The footer of the section for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsFooter" = "ウォレット内のNFTコンテンツを解決するためにゲートウェイを使用しています";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "詳しく";
@@ -771,6 +807,12 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "トークン規格";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "有効なIPFSゲートウェイを提供してください。提供されたゲートウェイについては、IPFSリソースの読み込みが可能かどうかの確認が行われます。";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.nftGatewayTitle" = "NFTゲートウェイをカスタマイズ";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
@@ -985,6 +1027,9 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "送信済";
 
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "設定";
+
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "設定";
 
@@ -1001,7 +1046,7 @@
 "wallet.settingsNetworkButtonTitle" = "ネットワーク";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetButtonTitle" = "リセット";
+"wallet.settingsResetButtonTitle" = "Braveウォレットをリセット";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "リセット";
@@ -1051,11 +1096,23 @@
 /* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
 "wallet.signAllTransactionsTitle" = "すべてのトランザクションに署名";
 
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "ドメイン";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "メッセージ";
+
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "署名が要求されています";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "署名が必要です";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "トランザクションが署名されました。DAppによってネットワークに送信予定で、確認待ちの状態です。";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "トランザクション署名済み";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "改行文字が連続して入力されています！";
@@ -1106,10 +1163,10 @@
 "wallet.solanaAuthorizeNonceAccountInstructionName" = "ノンスアカウントの認証";
 
 /* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
-"wallet.solanaBurnCheckedInstructionName" = "焼却の確認";
+"wallet.solanaBurnCheckedInstructionName" = "バーンの確認";
 
 /* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
-"wallet.solanaBurnInstructionName" = "焼却";
+"wallet.solanaBurnInstructionName" = "バーン";
 
 /* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
 "wallet.solanaCloseAccountInstructionName" = "アカウントを閉鎖";
@@ -1151,7 +1208,7 @@
 "wallet.solanaInitializeNonceAccountInstructionName" = "ノンスアカウントの初期化";
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
-"wallet.solanaInstructionAccounts" = "プログラムID";
+"wallet.solanaInstructionAccounts" = "アカウント";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "データ";
@@ -1207,8 +1264,29 @@
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "ノンスアカウントの引き出し";
 
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "トランザクションをネットワークに送信し、確認を待っています。";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "トランザクション送信済み";
+
 /* As in swapping cryptocurrency from one asset to another */
 "wallet.swap" = "スワップ";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "on %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "ネットワーク費用";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "注文を確認";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "獲得";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "支出";
 
 /* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountReceivingTitle" = "受け取る %@ の量（推定）";
@@ -1351,6 +1429,9 @@
 /* A status that explains that the transaction has been rejected by the user */
 "wallet.transactionStatusRejected" = "拒否済";
 
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "Signed";
+
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "送信済";
 
@@ -1377,6 +1458,15 @@
 
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "%@ が送信されました";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "銀行口座で即座に購入。手数料を抑えられます。";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "不明なエラー";
@@ -1438,6 +1528,24 @@
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
 "wallet.warningAlertConfirmation" = "本当によろしいですか？";
 
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name. */
+"wallet.web3DomainOptionAsk" = "確認する";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name. */
+"wallet.web3DomainOptionDisabled" = "無効";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name. */
+"wallet.web3DomainOptionEnabled" = "有効";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Web3ドメイン";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "ソラナネームサービス（SNS）のドメイン名を解決";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "サイトからEthereumウォレットへのアクセス要求が可能";
 
@@ -1458,4 +1566,10 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3環境設定";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "無効なURLが渡されました。ゲートウェイはIPFSリソースを解決できるものでなければいけません。";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "ゲートウェイの設定に失敗しました";
 

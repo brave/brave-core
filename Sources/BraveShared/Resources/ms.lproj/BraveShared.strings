@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Sentiasa lawati URL halaman asal (bukan AMP) berbanding versi Halaman Mudah Alih Dipercepat Google";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Halakan Semula Automatik URL Penjejakan";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Dayakan sokongan untuk memintas hala semula aras atas bagi URL penjejakan";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Sekat kuki pihak ke 3";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Privasi. Dihasilkan Secara Mudah.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Ini membantu kami mengetahui tentang ciri Brave yang paling kerap digunakan. Tukarkan ini pada bila-bila masa di Tetapan Brave di bawah 'Perisai Brave dan Privasi'.";
+"callout.p3aCalloutDescription" = "Perkara ini membantu kami mengetahui ciri Brave yang paling kerap digunakan. Tukar pada bila-bila masa dalam Tetapan Brave di bawah Brave Shields dan Tetapan Privasi Lain.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Ketahui lebih lanjut tentang Analitik Produk Pengekalan Privasi (P3A).";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Bantu usaha menambah baik Brave.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama.";
+"callout.p3aCalloutToggleTitle" = "Kongsi Cerapan Produk Peribadi dan Awanama Menyeluruh";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Tonton video";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Salin maklumat app kepada papan klip.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Salin maklumat saiz apl ke papan klip.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Salin Imej";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Muatkan semula";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan penyulitan untuk melindungi maklumat anda. Apabila Brave cuba berhubung dengan %2$@ kali ini, laman web tersebut menghantar kembali bukti kelayakan yang luar biasa dan salah. Perkara ini mungkin berlaku apabila penyerang cuba menyamar sebagai %3$@, atau skrin log masuk Wi-Fi telah mengganggu sambungan tersebut. Maklumat anda masih selamat kerana Brave menghentikan sambungan sebelum mana-mana data telah ditukar.<br />Anda tidak boleh melawat %4$@ sekarang kerana laman web tersebut menggunakan pencematan sijil. Ralat dan serangan rangkaian selalunya berlaku buat sementara waktu jadi halaman ini mungkin akan berfungsi sebentar lagi.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Pelayan ini tidak dapat membuktikan bahawa ia %@; sijil keselamatannya tidak dipercayai oleh sistem pengendalian peranti anda. Hal ini mungkin berpunca daripada kesilapan konfigurasi atau penyerang cuba memintas sambungan anda.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ menyebut:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Benarkan %@ untuk beralih apl?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Buka Imej Dalam Tab Baru";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tutup Menu Shields";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Tambah kepada Penanda Buku";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Tutup Tab";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "Salin URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "Pratonton %@";
-
 /* Settings privacy section title */
 "Privacy" = "Privasi";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Mengubah tema warna.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Kosongkan";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Kosongkan Semua Tab yang Baru Ditutup?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Tiada Tab Baru Ditutup.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Buka";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Adakah anda mahu membuka tab paling akhir ditutup?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Tab Baru Ditutup";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Paparkan Tab Baru Ditutup";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Kosongkan";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Pulihkan";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Sila log masuk ke Akaun Brave anda untuk menyegarkan semula sesi VPN anda.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Singkirkan";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Log masuk";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Sesi luput";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Naik taraf kepada VPN untuk melindungi sambungan anda dan menyekat penjejak invasif yang berada di mana-mana. ";

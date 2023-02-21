@@ -253,6 +253,18 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "请求无限额批准";
 
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "关闭";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "交易已成功纳入区块。 为防止双重开支风险，建议等待区块确认。";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "收據";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "交易完成";
+
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "确认密码";
 
@@ -577,6 +589,21 @@
 /* The message of an alert when the user attempted to remove custom network and it fails for some reason */
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "无法移除网络。\n请重试。";
 
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "交易因價格波動大而失敗。增加滑點忍耐度，以在更大價格波動下取得成功。";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "請儲存錯誤訊息以供未來參考。";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "错误信息";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "交易失败";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "檢視錯誤";
+
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Gas 金额限制";
 
@@ -612,6 +639,9 @@
 
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "公共加密密钥请求";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "帮助中心";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "隐藏隐私密钥";
@@ -654,6 +684,12 @@
 
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "流动资产不足";
+
+/* The footer of the section for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsFooter" = "网关用于解析钱包中的 NFT 内容";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "了解更多";
@@ -771,6 +807,12 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "代幣標準";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "应该提供有效的 IPFS 网关。所提供的网关将检查是否有能力加载 IPFS 资源。";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.nftGatewayTitle" = "自定义 NFT 网关";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
@@ -985,6 +1027,9 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "已发送";
 
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "設定";
+
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "设置";
 
@@ -1001,7 +1046,7 @@
 "wallet.settingsNetworkButtonTitle" = "网络";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetButtonTitle" = "重置";
+"wallet.settingsResetButtonTitle" = "重設 Brave 錢包";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "重置";
@@ -1051,11 +1096,23 @@
 /* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
 "wallet.signAllTransactionsTitle" = "签署所有交易";
 
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "網域";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "訊息";
+
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "需要您的签名";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "需要签名";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "交易已签署，将通过 dapps 发送至网络，并等待确认。";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "交易已签署";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "检测到连续换行符！";
@@ -1151,7 +1208,7 @@
 "wallet.solanaInitializeNonceAccountInstructionName" = "初始化随机帐户";
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
-"wallet.solanaInstructionAccounts" = "程式 ID";
+"wallet.solanaInstructionAccounts" = "账户";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "数据";
@@ -1207,8 +1264,29 @@
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "提款随机账户";
 
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "交易已成功發送至網路，等待確認。";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "交易已提交";
+
 /* As in swapping cryptocurrency from one asset to another */
 "wallet.swap" = "兑换";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "在 %@ 上";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "网络费用";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "确认订单";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "您将收到";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "您花费了";
 
 /* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountReceivingTitle" = "收到的 %@ 金额（预估）";
@@ -1351,6 +1429,9 @@
 /* A status that explains that the transaction has been rejected by the user */
 "wallet.transactionStatusRejected" = "已拒绝";
 
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "已簽署";
+
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "已提交";
 
@@ -1377,6 +1458,15 @@
 
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "已发送 %@";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "未知错误";
@@ -1438,6 +1528,24 @@
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
 "wallet.warningAlertConfirmation" = "您确定吗？";
 
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name. */
+"wallet.web3DomainOptionAsk" = "詢問";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name. */
+"wallet.web3DomainOptionDisabled" = "已阻止";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name. */
+"wallet.web3DomainOptionEnabled" = "启用";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Web3 域";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "解析 Solana 名称服务 (SNS) 域名";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "网站可以请求访问您的 Ethereum 钱包";
 
@@ -1458,4 +1566,10 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3 首选项";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "提供了无效的链接。网关应能够解析 IPFS 资源。";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "无法设置网关";
 

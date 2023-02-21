@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "常に、Google Accelerated Mobile Pageバージョンではなく、元の (AMPではない) ページのURLを開きます";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "自動リダイレクト追跡URL";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "シンプルに、プライバシー保護。";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。Braveの設定の「Braveシールド & プライバシー」でいつでも変更できます。";
+"callout.p3aCalloutDescription" = "これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。Braveの設定の「Braveシールド & その他のプライバシー設定」でいつでも変更できます。";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "プライバシーを保護したプロダクト分析 (P3A) についてはこちらをご覧ください。";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Braveの品質向上にご協力ください。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "匿名かつプライバシーに配慮した形で製品のインサイトを共有します。";
+"callout.p3aCalloutToggleTitle" = "完全非公開、匿名で製品のインサイトを共有します。";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "説明を見る";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "アプリ情報をクリップボードにコピーします。";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "アプリのサイズ情報をクリップボードにコピーします。";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "画像をコピー";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "リロード";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "1$@は通常、情報を保護するために暗号化を使用しています。今回、Braveが%2$@に接続を試みた際、ウェブサイトから通常とは異なる不正な認証情報が返されました。これは、攻撃者が%3$@になりすまそうとしているときや、Wi-Fiサインイン画面により接続が中断したときに起こる可能性があります。Braveはデータが交換される前に接続を停止したため、お客様の情報はまだ安全です。<br />ウェブサイトは証明書のピン留めを使用しているため、現時点では%4$@にアクセスすることはできません。ネットワークエラーや攻撃は通常一時的なものなので、しばらくするとページの機能は回復します。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "このサーバーは、%@ であることを証明できませんでした。セキュリティ証明書があなたのデバイスのオペレーションシステムによって信頼されていません。これは、設定の間違いか、あなたの接続に介入しようとする攻撃者によって生じている可能性があります。";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ からのお知らせ:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "%@にアプリの切り替えを許可しますか？";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "画像を新しいタブで開く";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "ブックマークに追加";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "タブを閉じる";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "URL をコピー";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "%@ のプレビュー";
-
 /* Settings privacy section title */
 "Privacy" = "プライバシー";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "色テーマを変更します。";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "消去する";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "最近閉じたタブをすべてクリアしますか？";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "最近閉じたタブはありません。";
+
+/* Open Tab action title */
+"recently.closed.open" = "開く";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "最後に閉じたタブを開きますか？";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "最近閉じたタブ";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "最近閉じたタブを見る";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "消去する";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "復元";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Braveアカウントにログインして、VPNセッションを更新してください。";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "表示しない";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "ログイン";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "セッションの期限が切れました";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "VPN接続にアップグレードして接続を保護し、デバイス全体で広告やトラッカーをブロックします。";

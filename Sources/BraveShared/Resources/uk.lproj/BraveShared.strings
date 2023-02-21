@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Автоматично переходити на вихідні (не AMP) URL-посилання сторінок замість версій Accelerated Mobile Page від Google";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Автоматичне переспрямування URL-адрес відстеження";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Активація підтримки обходу URL-адрес відстеження переспрямувань верхнього рівня";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокування додаткових файлів cookie";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Конфіденційність — це просто.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Brave використовуються найчастіше. Ви можете змінити параметри будь-коли в налаштуваннях Brave у розділі «Brave Shields і конфіденційність»";
+"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Brave використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Brave у розділі «Brave Shields й інші параметри конфіденційності».";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Допоможіть поліпшити Brave.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Ділитися анонімною та приватною інформацією про продукт";
+"callout.p3aCalloutToggleTitle" = "Ділитися повністю конфіденційною й анонімною статистикою продукта.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Переглянути відео";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопіювати дані програми до буферу обміну.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Скопіювати дані про розмір програми до буферу обміну.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Скопіювати зображення";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Перезавантажити";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Brave намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Brave припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Сервер не може довести, що він є %@; його сертифікат безпеки не є довіреним сертифікатом для операційної системи вашого пристрою. Це могло статися через помилку конфігурації або через спроби зловмисника перехопити ваше під’єднання.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ повідомляє:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Дозволити перемикання програм за допомогою %@?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Відкрити зображення в новій вкладці";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрити меню Shields";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Додати до закладок";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Закрити вкладку";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "Скопіювати URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "Попередній перегляд %@";
-
 /* Settings privacy section title */
 "Privacy" = "Приватність";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Зміна кольорової теми.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Видалити";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Очистити всі нещодавно закриті вкладки?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Немає нещодавно закритих вкладок.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Відкрити";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Ви хочете відкрити нещодавно закриті вкладки?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Нещодавно закриті вкладки";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Переглянути нещодавно закриті вкладки";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Видалити";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Відновити";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Brave, щоб оновити сеанс VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Відхилити";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Вхід";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Термін дії сеансу сплив";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Перейдіть на режим VPN, щоб захистити ваше з’єднання й блокувати небезпечні засоби відстеження вашої активності.";

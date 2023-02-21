@@ -253,6 +253,18 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "무제한 승인 요청됨";
 
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "닫기";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "트랜잭션이 성공적으로 블록에 포함되었습니다. 이중 지출 위험을 피하려면 블록이 확인될 때까지 기다리세요.";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "수취";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "트랜잭션 완료";
+
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "비밀번호 재입력";
 
@@ -577,6 +589,21 @@
 /* The message of an alert when the user attempted to remove custom network and it fails for some reason */
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "네트워크를 제거하지 못했습니다.\n다시 시도하세요.";
 
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "가격 변동폭이 커서 트랜잭션이 실패했습니다. 가격 변동폭이 커도 성공하려면 슬리피지 허용 오차를 늘리세요.";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "향후 참조를 위해 오류 메시지를 저장하세요.";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "오류 메시지";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "트랜잭션 실패";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "오류 보기";
+
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "가스비 수량 한도";
 
@@ -612,6 +639,9 @@
 
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "공개 암호화 키 요청";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "도움말 센터";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "비공개 키 숨기기";
@@ -654,6 +684,12 @@
 
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "유동성 부족";
+
+/* The footer of the section for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsFooter" = "월렛 내 NFT 콘텐츠 해석에 게이트웨이 사용";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "자세히 알아보기";
@@ -771,6 +807,12 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "토큰 표준";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "유효한 IPFS 게이트웨이를 제공해야 합니다. 제공된 게이트웨이에 IPFS 리소스 로드 권한이 있는지 확인합니다.";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.nftGatewayTitle" = "NFT 게이트웨이 맞춤 설정";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFT";
@@ -985,6 +1027,9 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "송금됨";
 
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "설정";
+
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "설정";
 
@@ -1001,7 +1046,7 @@
 "wallet.settingsNetworkButtonTitle" = "네트워크";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetButtonTitle" = "재설정";
+"wallet.settingsResetButtonTitle" = "Brave 월렛 초기화";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "재설정";
@@ -1051,11 +1096,23 @@
 /* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
 "wallet.signAllTransactionsTitle" = "모든 트랜잭션에 서명";
 
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "도메인";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "메시지";
+
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "서명을 요청받으셨습니다.";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "서명 요청됨";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "트랜잭션이 서명되었고 네트워크로 전송되어 확인을 기다리고 있습니다.";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "트랜잭션 서명됨";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "연속된 줄바꿈 문자가 감지되었습니다!";
@@ -1151,7 +1208,7 @@
 "wallet.solanaInitializeNonceAccountInstructionName" = "논스 계정 초기화";
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
-"wallet.solanaInstructionAccounts" = "프로그램 ID";
+"wallet.solanaInstructionAccounts" = "계정";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "데이터";
@@ -1207,8 +1264,29 @@
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "논스 계정 철회";
 
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "트랜잭션 제출됨";
+
 /* As in swapping cryptocurrency from one asset to another */
 "wallet.swap" = "스왑";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "- %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "네트워크 수수료";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "주문 확인";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "수신액";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "지출액";
 
 /* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountReceivingTitle" = "받을 %@ 수량(추산)";
@@ -1351,6 +1429,9 @@
 /* A status that explains that the transaction has been rejected by the user */
 "wallet.transactionStatusRejected" = "거부됨";
 
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "서명됨";
+
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "제출됨";
 
@@ -1377,6 +1458,15 @@
 
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "%@ 보냄";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "은행 계좌로 즉시 매수. 수수료는 더 낮게.";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "알 수 없는 오류";
@@ -1438,6 +1528,24 @@
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
 "wallet.warningAlertConfirmation" = "계속하시겠습니까?";
 
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name. */
+"wallet.web3DomainOptionAsk" = "확인";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name. */
+"wallet.web3DomainOptionDisabled" = "비활성화됨";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name. */
+"wallet.web3DomainOptionEnabled" = "활성화됨";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Web3 도메인";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "SNS(Solana Name Service) 도메인 이름 해석";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "사이트는 회원님의 이더리움 지갑에 대한 액세스를 요청할 수 있습니다";
 
@@ -1458,4 +1566,10 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Web3 선호설정";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "유효하지 않은 URL이 제공되었습니다. 게이트웨이가 IPFS 리소스를 해석할 수 있어야 합니다.";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "게이트웨이 설정 실패";
 

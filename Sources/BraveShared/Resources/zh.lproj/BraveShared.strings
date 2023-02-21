@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "始终访问原始（非 AMP）页面的 URL，而不是 Google 的加速移动页面版本";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "自动重新定向跟踪链接";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "启用绕过顶级重新定向跟踪链接支持";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "隐私。让事情变得简单明了。";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "这有助于我们了解 Brave 最常用的功能。在 Brave 设置下的 Brave 防护盾和隐私中随时更改此设置。";
+"callout.p3aCalloutDescription" = "这有助于我们了解 Brave 最常用的功能。在 Brave 设置下的 Brave 防护盾和隐私中随时更改设置。";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "了解更多关于我们的隐私保护产品分析（P3A）。";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "協助提升 Brave 品質。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "匿名分享私密的产品见解。";
+"callout.p3aCalloutToggleTitle" = "分享完全私密和匿名的产品见解。";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "观看视频";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "将应用信息复制到剪切板中。";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "将应用信息复制到剪切板中。";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "复制图片";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "重新加载";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 通常使用加密来保护您的信息。当 Brave 这次试图连接到 %2$@ 时，网站发回了不寻常和错误的凭据。当攻击者试图假装是 %3$@ 时，或者 Wi-Fi 登录屏幕中断了连接时，可能会发生这种情况。您的信息仍然是安全的，因为 Brave 在交换任何数据之前停止了连接。<br />您目前无法访问 %4$@，因为该网站使用证书码。网络错误和攻击通常是暂时的，所以这个页面将来可能还能正常工作。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "此服务器无法证明它是 %@；其安全证书不受设备的操作系统信任。原因可能是配置错误，或攻击者正尝试拦截您的连接。";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ 说：";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "是否允许 %@ 切换应用程序？";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "在新标签中打开图片";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "关闭 Shields 菜单";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "添加至书签";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "关闭标签";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "复制 URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "预览 %@";
-
 /* Settings privacy section title */
 "Privacy" = "隐私";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "改变主题颜色";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "清除";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "是否清除所有最近关闭的标签？";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "没有最近关闭的标签。";
+
+/* Open Tab action title */
+"recently.closed.open" = "打开";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "是否要打开最近关闭的标签页？";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "最近关闭的标签";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "查看最近关闭的标签";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "清除";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "还原";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "请登录您的 Brave 帐户刷新您的 VPN 会话。";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "關閉";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "登入";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "会话已过期";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "升级到 VPN，以保护您的连接并在各处阻止侵入式跟踪器。";

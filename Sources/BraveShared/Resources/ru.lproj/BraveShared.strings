@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Всегда использовать URL исходной страницы, а не AMP-страницы Google";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Автоматически перенаправлять URL-адреса отслеживания";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Включить поддержку обхода URL-адресов отслеживания верхнего уровня";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокировать сторонние файлы cookie";
 
@@ -302,7 +308,7 @@
 "callout.defaultBrowserTitle" = "Защитите данные одним нажатием";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Это поможет нам узнать, какими функциями Brave пользуются чаще всего. Вы можете в любое время изменить выбор в настройках в разделе «Brave Щит и конфиденциальность».";
+"callout.p3aCalloutDescription" = "Это поможет нам узнать, какими функциями Brave пользуются чаще всего. Вы можете в любое время изменить выбор в меню «Brave Щит» и «Другие настройки конфиденциальности».";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Узнайте больше об аналитике продукта без нарушения конфиденциальности (P3A)";
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Помогите сделать Brave лучше";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Делитесь анонимными и конфиденциальными сведениями о продукте";
+"callout.p3aCalloutToggleTitle" = "Делиться полностью конфиденциальными и анонимными сведениями о продукте";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Смотреть видео";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопировать сведения о приложении";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Скопировать сведения о размере приложения";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Скопировать изображение";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Перезагрузить";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "Обычно %1$@ защищает вашу информацию шифрованием. При попытке подключения к %2$@ в этот раз сайт отправил неверные, подозрительные учетные данные. Такое бывает, когда злоумышленники выдают себя за %3$@ или экран входа в систему Wi-Fi прерывает соединение. Ваша информация по-прежнему в безопасности, потому что Brave отключил соединение до того, как произошел обмен данными. <br />Сайт %4$@ сейчас недоступен из-за привязки сертификата. Обычно сетевые ошибки и атаки проходят через какое-то время, поэтому эта страница, вероятно, станет доступна позже.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Сервер не может подтвердить связь с доменом %@. Сертификат безопасности сайта не является доверенным в операционной системе устройства. Возможно, сервер настроен неправильно или кто-то пытается перехватить ваши данные.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "Сообщение сайта %@:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Разрешить %@ переключать приложения?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Открыть изображение в новой вкладке";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Добавить в закладки";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Закрыть вкладку";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "Скопировать URL";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "%@: предварительный просмотр";
-
 /* Settings privacy section title */
 "Privacy" = "Конфиденциальность";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Изменение цветовой темы.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Удалить";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Очистить все недавно закрытые вкладки?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Недавно закрытых вкладок нет";
+
+/* Open Tab action title */
+"recently.closed.open" = "Открыть";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Открыть недавно закрытую вкладку?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Недавно закрытые вкладки";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Посмотреть недавно закрытые вкладки";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Удалить";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Восстановить";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Чтобы обновить сеанс VPN, войдите в аккаунт Brave.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Dismiss";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Вход";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Срок действия сеанса истек";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Чтобы защищать соединение и блокировать трекеры на всех сайтах, вы можете приобрести VPN.";

@@ -88,6 +88,12 @@
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
 "AutoRedirectAMPPagesDescription" = "Immer Original-Seiten-URLs (nicht AMP) besuchen statt den beschleunigten Mobilseiten von Google";
 
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Tracking-URLs automatisch umleiten";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Aktivierung der Unterstützung für die Umgehung von Top-Level-Redirect-Tracking-URLs";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Cookies von Dritten blockieren";
 
@@ -311,7 +317,7 @@
 "callout.p3aCalloutTitle" = "Brave mit Ihrer Hilfe verbessern.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Teilen Sie anonyme und private Produkteinblicke.";
+"callout.p3aCalloutToggleTitle" = "Teilen Sie völlig private und anonyme Produkteinblicke.";
 
 /* Button title for Playlist Onboarding View */
 "callout.playlistOnboardingViewButtonTitle" = "Video ansehen";
@@ -535,6 +541,9 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "App-Infos in Zwischenablage kopieren.";
 
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Kopieren Sie die App-Größeninformationen in die Zwischenablage.";
+
 /* Context menu item for copying an image to the clipboard */
 "CopyImageActionTitle" = "Bild kopieren";
 
@@ -738,6 +747,9 @@
 
 /* Shown in error pages on a button that will try to load the page again */
 "ErrorPageReloadButtonTitle" = "Neu laden";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ verwendet normalerweise Verschlüsselung, um Ihre Daten zu schützen. Als Brave dieses Mal versuchte, sich mit %2$@ zu verbinden, hat die Website ungewöhnliche und falsche Zugangsdaten zurückgesendet. Dies kann passieren, wenn ein Angreifer versucht, sich als %3$@ auszugeben, oder ein Wi-Fi-Anmeldebildschirm die Verbindung unterbrochen hat. Ihre Daten sind immer noch sicher, da Brave die Verbindung beendet hat, bevor Daten ausgetauscht wurden. <br />Sie können %4$@ derzeit nicht aufrufen, da die Website Zertifikat-Pinning verwendet. Netzwerkfehler und Angriffe sind normalerweise vorübergehend, daher wird diese Webseite wahrscheinlich später wieder funktionieren.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Es konnte nicht bestätigt werden, dass dieser Server %@ ist. Sein Sicherheitszertifikat wird vom Betriebssystem Ihres Geräts nicht als vertrauenswürdig eingestuft. Dies könnte an einer falschen Konfiguration oder an einem Angreifer liegen, der versucht, Ihre Verbindung zu überwachen.";
@@ -1272,6 +1284,9 @@
 
 /* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
 "openExternalAppURLHost" = "%@ sagt:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "%@ erlauben, Apps zu wechseln?";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Bild in einem neuen Tab öffnen";
@@ -1816,18 +1831,6 @@
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Shields-Menü schließen";
 
-/* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Zu Lesezeichen hinzufügen";
-
-/* Label for preview action on Tab Tray Tab to close the current tab */
-"PreviewActionCloseTabActionTitle" = "Tab schließen";
-
-/* Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard */
-"PreviewActionCopyURLActionTitle" = "URL kopieren";
-
-/* Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab. */
-"PreviewFormatAccessibilityLabel" = "Vorschau für %@";
-
 /* Settings privacy section title */
 "Privacy" = "Datenschutz";
 
@@ -2055,6 +2058,27 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Ändert das Farbschema.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Löschen";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Alle kürzlich geschlossenen Tabs löschen?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Keine kürzlich geschlossenen Tabs.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Öffnen";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Möchten Sie den zuletzt geschlossenen Tab öffnen?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Kürzlich geschlossene Tabs";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Kürzlich geschlossene Tabs anzeigen";
 
 /* Recent Search Clear Button */
 "RecentSearchClear" = "Löschen";
@@ -3549,6 +3573,18 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Wiederherstellen";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Bitte melden Sie sich bei Ihrem Brave-Konto an, um Ihre VPN-Sitzung zu aktualisieren.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Schließen";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Anmeldung";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Sitzung abgelaufen";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Nehmen Sie ein Upgrade auf ein VPN vor, um Ihre Verbindung zu schützen und invasive Tracker überall zu blockieren.";

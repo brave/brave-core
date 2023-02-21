@@ -253,6 +253,18 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Se ha solicitado la aprobación de una concesión ilimitada";
 
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "Cerrar";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "La transacción se ha añadido correctamente a un bloque. Recomendamos esperar por las confirmaciones del bloque para evitar posibles dobles gastos.";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "Recibo";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "Transacción completada";
+
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "Confirmar contraseña";
 
@@ -577,6 +589,21 @@
 /* The message of an alert when the user attempted to remove custom network and it fails for some reason */
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "Error al eliminar la red.\nInténtalo de nuevo.";
 
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "La transacción no se ha producido debido a un gran movimiento de precios. Aumenta la tolerancia al deslizamiento para no verte afectado por grandes movimientos de precios.";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "Guarda el mensaje de error para poder consultarlo en el futuro.";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "Mensaje de error";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "Transacción fallida";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "Error de visualización";
+
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Límite de cantidad de gas";
 
@@ -612,6 +639,9 @@
 
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestTitle" = "Solicitud de clave de cifrado público";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "Centro de ayuda";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "Ocultar clave privada";
@@ -654,6 +684,12 @@
 
 /* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
 "wallet.insufficientLiquidity" = "Liquidez insuficiente";
+
+/* The footer of the section for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsFooter" = "La puerta de enlace se usa para resolver contenido NFT en la cartera";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS\n";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Más información";
@@ -771,6 +807,12 @@
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "Estándar de token";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "Debería proporcionarse una puerta de enlace IPFS válida. Se comprobará si la puerta de enlace proporcionada puede cargar recursos IPFS.";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.nftGatewayTitle" = "Personalizar la puerta de enlace de NFT";
 
 /* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
 "wallet.nftsTitle" = "NFTs";
@@ -985,6 +1027,9 @@
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Enviado";
 
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "Configurar";
+
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ajustes";
 
@@ -1001,7 +1046,7 @@
 "wallet.settingsNetworkButtonTitle" = "Redes";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetButtonTitle" = "Restablecer";
+"wallet.settingsResetButtonTitle" = "Restablecer cartera de Brave";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertButtonTitle" = "Restablecer";
@@ -1051,11 +1096,23 @@
 /* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
 "wallet.signAllTransactionsTitle" = "Firmar todas las transacciones";
 
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "Dominio";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "Mensaje";
+
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestSubtitle" = "Se necesita tu firma";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "Firma solicitada";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "Se ha firmado la transacción y se enviará a la red mediante aplicaciones descentralizadas; se encuentra ya a la espera de confirmación.";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "Transacción firmada";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "¡Se han detectado caracteres de nueva línea consecutivos!";
@@ -1151,7 +1208,7 @@
 "wallet.solanaInitializeNonceAccountInstructionName" = "Inicializar cuenta de nonce";
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. \"Accounts: <solana_public_key>\" */
-"wallet.solanaInstructionAccounts" = "ID del programa";
+"wallet.solanaInstructionAccounts" = "Cuentas";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. \"Data: [1, 20, 3, 5, 50]]\" */
 "wallet.solanaInstructionData" = "Datos";
@@ -1207,8 +1264,29 @@
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "Retirar cuenta de nonce";
 
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "La transacción se ha enviado correctamente a la red y se encuentra ya a la espera de confirmación.";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "Transacción enviada";
+
 /* As in swapping cryptocurrency from one asset to another */
 "wallet.swap" = "Intercambiar";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "en %@";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "Comisión de red";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "Confirmar pedido";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "Recibirás";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "Coste";
 
 /* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.swapCryptoAmountReceivingTitle" = "Importe que recibirás en %@ (estimación)";
@@ -1351,6 +1429,9 @@
 /* A status that explains that the transaction has been rejected by the user */
 "wallet.transactionStatusRejected" = "Rechazada";
 
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "Signed";
+
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "Enviada";
 
@@ -1377,6 +1458,15 @@
 
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
 "wallet.transactionUnknownSendTitle" = "Se han enviado %@";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "Compra al instante con tu cuenta bancaria. Con menos comisiones.";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Error desconocido";
@@ -1438,6 +1528,24 @@
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
 "wallet.warningAlertConfirmation" = "¿Seguro?";
 
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name. */
+"wallet.web3DomainOptionAsk" = "Preguntar";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name. */
+"wallet.web3DomainOptionDisabled" = "Deshabilitado";
+
+/* One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name. */
+"wallet.web3DomainOptionEnabled" = "Habilitada";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Dominios Web3";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "Resolver los nombres de dominio del servicio de nombres de Solana (SNS)";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Los sitios pueden solicitar acceso a tu cartera de ethereum";
 
@@ -1458,4 +1566,10 @@
 
 /* The section title for users to set up preferences for interation with web3 sites. */
 "wallet.web3PreferencesSectionTitle" = "Preferencias de Web3";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "Se ha proporcionado una URL no válida. La puerta de enlace debería poder resolver recursos IPFS.";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "Error al establecer la puerta de enlace";
 
