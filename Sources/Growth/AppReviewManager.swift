@@ -141,29 +141,18 @@ public class AppReviewManager: ObservableObject {
   /// Method checking If all main criterias are handled including at least one additional sub-criteria
   /// - Returns: Boolean value showing If App RAting should be requested
   func shouldRequestReview() -> Bool {
-    var mainCriteriaSatisfied = true
     var subCriteriaSatisfied = false
         
     // All of the main criterias should be met before additional situation can be checked
-    for mainCriteria in AppReviewMainCriteriaType.allCases {
-      if !checkMainCriteriaSatisfied(for: mainCriteria) {
-        mainCriteriaSatisfied = false
-        break
-      }
-    }
+    let mainCriteriaSatisfied = AppReviewMainCriteriaType.allCases.allSatisfy(checkMainCriteriaSatisfied(for:))
     
     // Additionally if all main criterias are accomplished one of following conditions must also be met
     if mainCriteriaSatisfied {
       // One of the sub criterias also should be satisfied
-      for subCriteria in AppReviewSubCriteriaType.allCases {
-        subCriteriaSatisfied = checkSubCriteriaSatisfied(for: subCriteria)
-        if subCriteriaSatisfied {
-          break
-        }
-      }
+      subCriteriaSatisfied = AppReviewSubCriteriaType.allCases.contains(where: checkSubCriteriaSatisfied(for:))
     }
     
-    return legacyAppReviewLogicEnabled ? false :  mainCriteriaSatisfied && subCriteriaSatisfied
+    return legacyAppReviewLogicEnabled ? false : mainCriteriaSatisfied && subCriteriaSatisfied
   }
   
   /// This method is for checking App Review Sub Criteria is satisfied for a type

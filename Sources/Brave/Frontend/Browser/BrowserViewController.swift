@@ -1355,7 +1355,7 @@ public class BrowserViewController: UIViewController {
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards)
-      /// Donate NewTabPage Activity For Custom Suggestions
+      // Donate NewTabPage Activity For Custom Suggestions
       let newTabPageActivity =
         ActivityShortcutManager.shared.createShortcutActivity(type: selectedTab.isPrivate ? .newPrivateTab : .newTab)
 
@@ -2369,7 +2369,7 @@ public class BrowserViewController: UIViewController {
   }
 }
 
-extension BrowserViewController: QRCodeViewControllerDelegate {
+extension BrowserViewController {
   func didScanQRCodeWithURL(_ url: URL) {
     popToBVC()
     finishEditingAndSubmit(url, visitType: .typed)
@@ -2653,8 +2653,8 @@ extension BrowserViewController: TabDelegate {
   @MainActor
   private func isPendingRequestAvailable() async -> Bool {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    /// If we have an open `WalletStore`, use that so we can assign the pending request if the wallet is open,
-    /// which allows us to store the new `PendingRequest` triggering a modal presentation for that request.
+    // If we have an open `WalletStore`, use that so we can assign the pending request if the wallet is open,
+    // which allows us to store the new `PendingRequest` triggering a modal presentation for that request.
     guard let cryptoStore = self.walletStore?.cryptoStore ?? CryptoStore.from(privateMode: privateMode) else {
       return false
     }
@@ -2748,7 +2748,6 @@ extension BrowserViewController: TabTrayDelegate {
     tabsBar.updateData()
   }
 }
-
 
 extension BrowserViewController: JSPromptAlertControllerDelegate {
   func promptAlertControllerDidDismiss(_ alertController: JSPromptAlertController) {

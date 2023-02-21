@@ -52,9 +52,9 @@ extension UIView {
 
     UISwitch.appearance().onTintColor = UIColor.braveBlurpleTint
 
-    /// Used as color a table will use as the base (e.g. background)
+    // Used as color a table will use as the base (e.g. background)
     let tablePrimaryColor = UIColor.braveGroupedBackground
-    /// Used to augment `tablePrimaryColor` above
+    // Used to augment `tablePrimaryColor` above
     let tableSecondaryColor = UIColor.secondaryBraveGroupedBackground
 
     UITableView.appearance().backgroundColor = tablePrimaryColor

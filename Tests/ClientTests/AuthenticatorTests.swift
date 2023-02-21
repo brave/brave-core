@@ -139,7 +139,7 @@ class AuthenticatorTests: XCTestCase {
     let login = Login.createWithHostname("https://securesite.com", username: "username", password: "password", formSubmitURL: "https://submit.me")
     try await logins.addLogin(login)
     let challenge = mockChallengeForURL(URL(string: "https://securesite.com")!, username: "username", password: "password")
-    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge.protectionSpace, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "username")
     XCTAssertEqual(result?.password, "password")
@@ -155,7 +155,7 @@ class AuthenticatorTests: XCTestCase {
     XCTAssertEqual(oldHostname, "malformed.com")
 
     let challenge = mockChallengeForURL(URL(string: "https://malformed.com")!, username: "username", password: "password")
-    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge.protectionSpace, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "username")
     XCTAssertEqual(result?.password, "password")
@@ -180,7 +180,7 @@ class AuthenticatorTests: XCTestCase {
     XCTAssertEqual(hostnames[1], "malformed.com")
 
     let challenge = mockChallengeForURL(URL(string: "https://malformed.com")!, username: "username", password: "password")
-    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge, fromLoginsProvider: logins)
+    let result = await Authenticator.findMatchingCredentialsForChallenge(challenge.protectionSpace, fromLoginsProvider: logins)
     XCTAssertNotNil(result)
     XCTAssertEqual(result?.user, "good_username")
     XCTAssertEqual(result?.password, "good_password")

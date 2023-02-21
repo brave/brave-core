@@ -326,10 +326,8 @@ class MockKeyringService: BraveWalletKeyringService {
 
   func keyringsInfo(_ keyrings: [String], completion: @escaping ([BraveWallet.KeyringInfo]) -> Void) {
     var keyringInfo = [BraveWallet.KeyringInfo]()
-    for item in self.keyrings {
-      if keyrings.contains(item.id) {
-        keyringInfo.append(item.copy() as! BraveWallet.KeyringInfo)  // swiftlint:disable:this force_cast
-      }
+    for item in self.keyrings where keyrings.contains(item.id) {
+      keyringInfo.append(item.copy() as! BraveWallet.KeyringInfo)  // swiftlint:disable:this force_cast
     }
     completion(keyringInfo)
   }

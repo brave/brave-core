@@ -222,7 +222,6 @@ extension BrowserViewController {
       UIKeyCommand(title: Strings.Hotkey.closeAllTabsFromTabTrayKeyCodeTitle, action: #selector(closeAllTabsKeyCommand), input: "w", modifierFlags: [.command, .alternate])
     ]
     
-    
     let tabNavigationKeyCommands = [
       // Tab Navigation Key Commands
       UIKeyCommand(title: Strings.Hotkey.showNextTabTitle, action: #selector(nextTabKeyCommand), input: UIKeyCommand.inputRightArrow, modifierFlags: [.command, .alternate]),

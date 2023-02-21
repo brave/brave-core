@@ -52,10 +52,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   /// The number of times that each row contains
   static func numberOfItems(in collectionView: UICollectionView, availableWidth: CGFloat) -> Int {
-    /// Two considerations:
-    /// 1. icon size minimum
-    /// 2. trait collection
-    /// 3. orientation ("is landscape")
+    // Two considerations:
+    // 1. icon size minimum
+    // 2. trait collection
+    // 3. orientation ("is landscape")
     let icons = (min: 4, max: 6)
     let defaultWidth: CGFloat = defaultIconSize.width
     let fittingNumber: Int
@@ -110,14 +110,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     cell.imageView.cancelLoading()
 
     if let url = fav.url?.asURL {
-      // All favorites should have domain's, but it was noticed at one
-      // point that this wasn't the case, so for future bug-tracking
-      // assert if its not found.
-      assert(fav.domain != nil, "Domain should exist for all favorites")
-      // The domain for the favorite is required for pulling cached
-      // favicon info. Since all favorites should have persisted
-      // Domain's, we leave `persistent` as true
-      let domain = fav.domain ?? Domain.getOrCreate(forUrl: url, persistent: true)
       cell.imageView.loadFavicon(siteURL: url, monogramFallbackCharacter: fav.title?.first)
     }
     cell.accessibilityLabel = cell.textLabel.text

@@ -274,7 +274,6 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerD
         let tab = tab ?? tabManager.selectedTab
         guard let webView = tab?.webView else { return }
         
-
         webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone", contentWorld: FindInPageScriptHandler.scriptSandbox)
         
         findInPageBar.removeFromSuperview()

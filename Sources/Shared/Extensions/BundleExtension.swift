@@ -15,7 +15,7 @@ extension Bundle {
   public func infoDictionaryString(forKey key: String) -> String {
     guard let value = object(forInfoDictionaryKey: key) as? String else {
       if AppConstants.isRunningTest {
-        /// Using dummy info dictionary while running tests, without host app set.
+        // Using dummy info dictionary while running tests, without host app set.
         return "com.brave.tests"
       }
       fatalError("Could not find a string value in the Info dictionary with the key: \(key)")

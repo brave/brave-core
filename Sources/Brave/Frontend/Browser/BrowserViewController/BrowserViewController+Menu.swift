@@ -23,7 +23,7 @@ extension BrowserViewController {
             .pushInnerMenu(vc)
         },
         enableInstalledVPN: { [unowned menuController] in
-          /// Donate Enable VPN Activity for suggestions
+          // Donate Enable VPN Activity for suggestions
           let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()
@@ -52,7 +52,7 @@ extension BrowserViewController {
             .pushInnerMenu(vc)
         },
         enableInstalledVPN: { [unowned menuController] in
-          /// Donate Enable VPN Activity for suggestions
+          // Donate Enable VPN Activity for suggestions
           let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
           menuController.userActivity = enableVPNActivity
           enableVPNActivity.becomeCurrent()

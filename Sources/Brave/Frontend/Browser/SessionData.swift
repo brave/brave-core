@@ -85,7 +85,7 @@ class SessionData: NSObject, NSSecureCoding {
       let port = AppConstants.webServerPort
       [
         ("http://localhost:\(port)/errors/error.html?url=", "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)?url="),
-        //("http://localhost:\(port)/reader-mode?url=", "\(InternalURL.baseUrl)/\(ReaderModeHandler.path)?url=")
+        // ("http://localhost:\(port)/reader-mode?url=", "\(InternalURL.baseUrl)/\(ReaderModeHandler.path)?url=")
       ].forEach {
         oldItem, newItem in
         if url.absoluteString.hasPrefix(oldItem) {

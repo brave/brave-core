@@ -66,7 +66,7 @@ extension BrowserViewController {
   }
   
   func recordVPNUsageP3A(vpnEnabled: Bool) {
-    var usage = P3AFeatureUsage.braveVPNUsage
+    let usage = P3AFeatureUsage.braveVPNUsage
     var braveVPNDaysInMonthUsedStorage = P3ATimedStorage<Int>.braveVPNDaysInMonthUsedStorage
     
     if vpnEnabled {

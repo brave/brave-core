@@ -912,7 +912,7 @@ extension PlaylistViewController: VideoViewDelegate {
                 resolver(.failure(.cancelled))
               case .other(let err):
                 resolver(.failure(.other(err)))
-              case .cannotLoadAsset(status: let status):
+              case .cannotLoadAsset:
                 resolver(.failure(.other(error)))
               }
             case .finished:

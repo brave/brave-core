@@ -316,7 +316,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate, PlaylistFolderSh
       playlistController.setFolderSharingUrl(folderSharingPageUrl)
     }
 
-    /// Donate Open Playlist Activity for suggestions
+    // Donate Open Playlist Activity for suggestions
     let openPlaylist = ActivityShortcutManager.shared.createShortcutActivity(type: .openPlayList)
     self.userActivity = openPlaylist
     openPlaylist.becomeCurrent()

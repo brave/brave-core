@@ -66,7 +66,7 @@ class DownloadContentScriptHandler: TabContentScript {
       }
       
       let info = try JSONDecoder().decode(BlobDownloadInfo.self, from: JSONSerialization.data(withJSONObject: body))
-      guard let data = Bytes.decodeBase64(info.base64String) else {
+      guard let _ = Bytes.decodeBase64(info.base64String) else {
         return
       }
       
@@ -95,7 +95,6 @@ class DownloadContentScriptHandler: TabContentScript {
           filename += ".\(fileExtension)"
         }
       }
-      
       
 //      let response = DownloadedResourceResponse(statusCode: 200, data: data)
 //      tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)

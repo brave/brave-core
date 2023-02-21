@@ -64,7 +64,7 @@ extension BrowserViewController {
       rewards: rewards,
       legacyWallet: legacyWallet
     )
-    braveRewardsPanel.actionHandler = { [weak self, unowned braveRewardsPanel] action in
+    braveRewardsPanel.actionHandler = { [weak self] action in
       switch action {
       case .unverifiedPublisherLearnMoreTapped:
         self?.loadNewTabWithRewardsURL(BraveUX.braveRewardsUnverifiedPublisherLearnMoreURL)

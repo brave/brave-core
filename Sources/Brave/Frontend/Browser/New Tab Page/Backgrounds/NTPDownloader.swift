@@ -309,7 +309,7 @@ public class NTPDownloader {
         }
 
         if let schemaWallpapers = schema.wallpapers, campaigns.isEmpty {
-          /// If campaigns are not defined in the scema fallback to wallpapers
+          // If campaigns are not defined in the scema fallback to wallpapers
           let campaign: NTPCampaign = NTPCampaign(wallpapers: schemaWallpapers, logo: schema.logo)
           campaigns.append(campaign)
         }
@@ -543,7 +543,7 @@ public class NTPDownloader {
           logos.append(contentsOf: wallpapers.compactMap(\.logo))
 
           if let schemaWallpapers = schema.wallpapers, wallpapers.isEmpty {
-            /// If campaigns are not defined in the scema fallback to wallpapers
+            // If campaigns are not defined in the scema fallback to wallpapers
             wallpapers.append(contentsOf: schemaWallpapers.compactMap { $0 })
             logos.append(contentsOf: [schema.logo].compactMap { $0 })
           }
@@ -590,7 +590,7 @@ public class NTPDownloader {
       }
 
       if let topSites = item.topSites {
-        /// For favicons we do not move them to temp directory but write directly to a folder with favicon overrides.
+        // For favicons we do not move them to temp directory but write directly to a folder with favicon overrides.
         guard
           let saveLocation =
             FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory)

@@ -174,7 +174,11 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
                 }
               }
               // Save cookie to disk before purge for unblock load.
-              status ? HTTPCookie.saveToDisk(completion: completionBlock) : completionBlock(true)
+              if status {
+                HTTPCookie.saveToDisk(completion: completionBlock)
+              } else {
+                completionBlock(true)
+              }
             }
             if $0 {
               let status = $0
@@ -519,7 +523,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
       // Clearing Tab History should clear Recently Closed
       RecentlyClosed.removeAll()
       
-      /// Donate Clear Browser History for suggestions
+      // Donate Clear Browser History for suggestions
       let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
       self.userActivity = clearBrowserHistoryActivity
       clearBrowserHistoryActivity.becomeCurrent()
