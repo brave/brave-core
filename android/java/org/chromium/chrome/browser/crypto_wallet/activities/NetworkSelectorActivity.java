@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
     public static String NETWORK_SELECTOR_MODE = "network_selector_mode";
-    private static final String TAG = NetworkSelectorActivity.class.getSimpleName();
+    private static final String TAG = "NetworkSelector";
     private NetworkSelectorModel.Mode mMode;
     private RecyclerView mRVNetworkSelector;
     private NetworkSelectorAdapter networkSelectorAdapter;
@@ -71,10 +73,13 @@ public class NetworkSelectorActivity
     }
 
     private void initState() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "initState " + e);
         }
+
         mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkSelectorModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(mMode);

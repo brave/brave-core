@@ -9,6 +9,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -132,6 +133,8 @@ import java.util.concurrent.Executors;
 
 public class BraveNewTabPageLayout
         extends NewTabPageLayout implements ConnectionErrorHandler, OnBraveNtpListener {
+    private static final String TAG = "BraveNewTabPage";
+
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     private static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION =
@@ -218,13 +221,17 @@ public class BraveNewTabPageLayout
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             mFeedHash = "";
             initBraveNewsController();
-            if (BraveNewsUtils.shouldDisplayNews() && BraveActivity.getBraveActivity() != null
-                    && BraveActivity.getBraveActivity().isLoadedFeed()) {
-                CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
-                        BraveActivity.getBraveActivity().getNewsItemsFeedCards();
-                if (existingNewsFeedObject != null) {
-                    mNewsItemsFeedCard = existingNewsFeedObject;
+            try {
+                if (BraveNewsUtils.shouldDisplayNews()
+                        && BraveActivity.getBraveActivity().isLoadedFeed()) {
+                    CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
+                            BraveActivity.getBraveActivity().getNewsItemsFeedCards();
+                    if (existingNewsFeedObject != null) {
+                        mNewsItemsFeedCard = existingNewsFeedObject;
+                    }
                 }
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "onFinishInflate " + e);
             }
         }
     }
@@ -303,7 +310,7 @@ public class BraveNewTabPageLayout
             initBraveNewsController();
             if (BravePrefServiceBridge.getInstance().getNewsOptIn()) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         Tab tab = BraveActivity.getBraveActivity().getActivityTab();
                         if (tab != null && tab.getUrl().getSpec() != null
                                 && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())) {
@@ -316,6 +323,8 @@ public class BraveNewTabPageLayout
 
                             BraveActivity.getBraveActivity().setLastTabId(tab.getId());
                         }
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "onAttachedToWindow " + e);
                     }
                 });
             }
@@ -424,32 +433,36 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter == null) return;
 
         if (mIsDisplayNews) {
-            boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
-            boolean isFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
+            try {
+                boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
+                boolean isFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
 
-            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-            int offsetPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                         BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
-                                               : 0;
+                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                int offsetPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
+                                             BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0)
+                                                   : 0;
 
-            int itemPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
-                                       BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
-                                             : 0;
+                int itemPosition = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
+                                           BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0)
+                                                 : 0;
 
-            if (offsetPosition == 0 && itemPosition == 0) {
-                isFeedLoaded = false;
-            }
-
-            if (!isFeedLoaded || isFromNewTab) {
-                mNtpAdapter.setNewsLoading(true);
-                getFeed(false);
-
-                // Brave News interaction started
-                if (mBraveNewsController != null) {
-                    mBraveNewsController.onInteractionSessionStarted();
+                if (offsetPosition == 0 && itemPosition == 0) {
+                    isFeedLoaded = false;
                 }
-            } else {
-                keepPosition();
+
+                if (!isFeedLoaded || isFromNewTab) {
+                    mNtpAdapter.setNewsLoading(true);
+                    getFeed(false);
+
+                    // Brave News interaction started
+                    if (mBraveNewsController != null) {
+                        mBraveNewsController.onInteractionSessionStarted();
+                    }
+                } else {
+                    keepPosition();
+                }
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "setNtpRecyclerView " + e);
             }
         } else {
             keepPosition();
@@ -466,29 +479,32 @@ public class BraveNewTabPageLayout
                 int newsFeedPosition = firstNewsFeedPosition();
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (BraveActivity.getBraveActivity() != null
-                            && BraveActivity.getBraveActivity().getActivityTab() != null
-                            && mRecyclerView.getChildCount() > 0) {
-                        View firstChild = mRecyclerView.getChildAt(0);
-                        if (firstChild != null) {
-                            int firstVisiblePosition =
-                                    mRecyclerView.getChildAdapterPosition(firstChild);
-                            int verticalOffset = firstChild.getTop();
+                    try {
+                        if (BraveActivity.getBraveActivity().getActivityTab() != null
+                                && mRecyclerView.getChildCount() > 0) {
+                            View firstChild = mRecyclerView.getChildAt(0);
+                            if (firstChild != null) {
+                                int firstVisiblePosition =
+                                        mRecyclerView.getChildAdapterPosition(firstChild);
+                                int verticalOffset = firstChild.getTop();
 
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    BRAVE_RECYCLERVIEW_OFFSET_POSITION
-                                            + BraveActivity.getBraveActivity()
-                                                      .getActivityTab()
-                                                      .getId(),
-                                    verticalOffset);
+                                SharedPreferencesManager.getInstance().writeInt(
+                                        BRAVE_RECYCLERVIEW_OFFSET_POSITION
+                                                + BraveActivity.getBraveActivity()
+                                                          .getActivityTab()
+                                                          .getId(),
+                                        verticalOffset);
 
-                            SharedPreferencesManager.getInstance().writeInt(
-                                    BRAVE_RECYCLERVIEW_POSITION
-                                            + BraveActivity.getBraveActivity()
-                                                      .getActivityTab()
-                                                      .getId(),
-                                    firstVisiblePosition);
+                                SharedPreferencesManager.getInstance().writeInt(
+                                        BRAVE_RECYCLERVIEW_POSITION
+                                                + BraveActivity.getBraveActivity()
+                                                          .getActivityTab()
+                                                          .getId(),
+                                        firstVisiblePosition);
+                            }
                         }
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "onScrollStateChanged " + e);
                     }
                 }
                 if (mIsDisplayNews && firstVisibleItemPosition >= newsFeedPosition - 1) {
@@ -642,18 +658,8 @@ public class BraveNewTabPageLayout
                                                                 mVisibleCard.setViewStatSent(true);
                                                                 mBraveNewsController.onDisplayAdView(
                                                                         mUuid, mCreativeInstanceId);
-                                                                DisplayAd currentDisplayAd =
-                                                                        BraveNewsUtils
-                                                                                .getFromDisplayAdsMap(
-                                                                                        mItemPosition);
 
-                                                                mDatabaseHelper.insertAd(
-                                                                        currentDisplayAd,
-                                                                        mItemPosition,
-                                                                        BraveActivity
-                                                                                .getBraveActivity()
-                                                                                .getActivityTab()
-                                                                                .getId());
+                                                                insertAd();
                                                             }
                                                         }
                                                     }.start();
@@ -665,6 +671,16 @@ public class BraveNewTabPageLayout
                             }
                         }
                     }
+                }
+            }
+
+            private void insertAd() {
+                DisplayAd currentDisplayAd = BraveNewsUtils.getFromDisplayAdsMap(mItemPosition);
+                try {
+                    mDatabaseHelper.insertAd(currentDisplayAd, mItemPosition,
+                            BraveActivity.getBraveActivity().getActivityTab().getId());
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "insertAd " + e);
                 }
             }
 
@@ -719,34 +735,34 @@ public class BraveNewTabPageLayout
     }
 
     private void keepPosition() {
-        if (BraveActivity.getBraveActivity() == null) {
-            return;
-        }
+        try {
+            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+            if (tab != null) {
+                int itemPosition = SharedPreferencesManager.getInstance().readInt(
+                        BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
 
-        Tab tab = BraveActivity.getBraveActivity().getActivityTab();
-        if (tab != null) {
-            int itemPosition = SharedPreferencesManager.getInstance().readInt(
-                    BRAVE_RECYCLERVIEW_POSITION + tab.getId(), 0);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (mNtpAdapter != null && mNtpAdapter.getItemCount() > itemPosition) {
+                        RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                        if (manager instanceof LinearLayoutManager) {
+                            int offsetPosition = SharedPreferencesManager.getInstance().readInt(
+                                    BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0);
 
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (mNtpAdapter != null && mNtpAdapter.getItemCount() > itemPosition) {
-                    RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-                    if (manager instanceof LinearLayoutManager) {
-                        int offsetPosition = SharedPreferencesManager.getInstance().readInt(
-                                BRAVE_RECYCLERVIEW_OFFSET_POSITION + tab.getId(), 0);
+                            if (itemPosition
+                                    == mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()
+                                            + mNtpAdapter.getNewContentCount()) {
+                                offsetPosition -= mNtpAdapter.getTopMarginImageCredit();
+                            }
 
-                        if (itemPosition
-                                == mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()
-                                        + mNtpAdapter.getNewContentCount()) {
-                            offsetPosition -= mNtpAdapter.getTopMarginImageCredit();
+                            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
+                            linearLayoutManager.scrollToPositionWithOffset(
+                                    itemPosition, offsetPosition);
                         }
-
-                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
-                        linearLayoutManager.scrollToPositionWithOffset(
-                                itemPosition, offsetPosition);
                     }
-                }
-            }, 10);
+                }, 10);
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "keepPosition " + e);
         }
     }
 
@@ -826,8 +842,10 @@ public class BraveNewTabPageLayout
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
-                if (BraveActivity.getBraveActivity() != null) {
+                try {
                     BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "onDetachedFromWindow " + e);
                 }
             }
 
@@ -992,9 +1010,11 @@ public class BraveNewTabPageLayout
                     } // end page loop
 
                     processFeed(isNewContent);
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "getFeed " + e);
                     }
                 });
             }
@@ -1049,9 +1069,10 @@ public class BraveNewTabPageLayout
                         dpToPx(mActivity, 60));
             }
         }
-
-        if (BraveActivity.getBraveActivity() != null) {
+        try {
             BraveActivity.getBraveActivity().setComesFromNewTab(false);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "processFeed " + e);
         }
     }
 

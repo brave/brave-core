@@ -11,6 +11,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -190,7 +191,7 @@ public class BraveRewardsPanel
     private ViewGroup mPopupView;
     private FrameLayout mBravePanelShadow;
     private LinearLayout mRewardsMainLayout;
-    private final BraveActivity mBraveActivity;
+    private BraveActivity mBraveActivity;
     private final ChromeTabbedActivity mActivity;
     private BraveRewardsHelper mIconFetcher;
 
@@ -295,7 +296,12 @@ public class BraveRewardsPanel
                 }
             }
         });
-        mBraveActivity = BraveRewardsHelper.getBraveActivity();
+        try {
+            mBraveActivity = BraveRewardsHelper.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            mBraveActivity = null;
+            Log.e(TAG, "BraveRewardsPanel constructor " + e);
+        }
         mActivity = BraveRewardsHelper.getChromeTabbedActivity();
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null) {
@@ -393,7 +399,9 @@ public class BraveRewardsPanel
         btnRewardsSettings.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                if (mBraveActivity != null)
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                 dismiss();
             }
         }));
@@ -1302,7 +1310,9 @@ public class BraveRewardsPanel
         rewardsSettingsButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                if (mBraveActivity != null)
+                    mBraveActivity.openNewOrSelectExistingTab(
+                            BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
                 dismiss();
             }
         }));

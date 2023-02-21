@@ -22,7 +22,7 @@ import java.lang.Runnable;
 
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {
-    public static final String TAG = "SYNC";
+    private static final String TAG = "SYNC";
 
     private Context mContext;
     private String mDebug = "true";

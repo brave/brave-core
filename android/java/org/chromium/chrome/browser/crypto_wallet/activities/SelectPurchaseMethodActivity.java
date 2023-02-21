@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -31,6 +33,7 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     private static final String ASSET_SYMBOL = "assetSymbol";
     private static final String CONTRACT_ADDRESS = "contractAddress";
     private static final String AMOUNT = "amount";
+    private static final String TAG = "SelectPurchase";
 
     private BuyModel mBuyModel;
     private WalletModel mWalletModel;
@@ -83,12 +86,14 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             if (mWalletModel != null && mWalletModel.getCryptoModel() != null) {
                 mBuyModel = mWalletModel.getCryptoModel().getBuyModel();
             }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "finishNativeInitialization " + e);
         }
         if (mWalletModel != null && mBuyModel != null) {
             LiveDataUtil.observeOnce(

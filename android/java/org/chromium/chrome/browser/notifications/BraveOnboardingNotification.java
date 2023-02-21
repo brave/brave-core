@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.notifications;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.net.Uri;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
@@ -34,6 +36,7 @@ import java.util.Locale;
 public class BraveOnboardingNotification extends BroadcastReceiver {
     public Context mContext;
     private Intent mIntent;
+    private static final String TAG = "OnboardingNoti";
 
     private static final int BRAVE_ONBOARDING_NOTIFICATION_ID = -2;
     public static String BRAVE_ONBOARDING_NOTIFICATION_TAG = "brave_onboarding_notification_tag";
@@ -47,12 +50,14 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static final String COUNTRY_CODE_FR = "fr_FR";
 
     public static void showOnboardingDialog() {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity != null) {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             BraveAdsNotificationDialog.showNotificationAd(braveActivity,
                     BRAVE_ONBOARDING_NOTIFICATION_TAG, getNotificationUrl(),
                     braveActivity.getString(R.string.brave_ui_brave_rewards),
                     braveActivity.getString(R.string.this_is_your_first_ad));
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showOnboardingDialog " + e);
         }
     }
 
@@ -91,26 +96,29 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (action != null && action.equals(DEEP_LINK)) {
-            if (braveActivity != null) {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (action != null && action.equals(DEEP_LINK)) {
                 Intent launchIntent =
                         new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
                 launchIntent.setPackage(context.getPackageName());
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);
             } else {
-                intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, RetentionNotificationUtil.DAY_10);
-                RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
-            }
-        } else {
-            if (intent.getBooleanExtra(USE_CUSTOM_NOTIFICATION, false)) {
-                showOnboardingDialog();
-            } else {
-                showOnboardingNotification();
-            }
-            if (braveActivity != null) {
+                if (intent.getBooleanExtra(USE_CUSTOM_NOTIFICATION, false)) {
+                    showOnboardingDialog();
+                } else {
+                    showOnboardingNotification();
+                }
                 braveActivity.hideRewardsOnboardingIcon();
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onReceive " + e);
+
+            if (action != null && action.equals(DEEP_LINK)) {
+                intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE,
+                        RetentionNotificationUtil.DAY_10);
+                RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
             }
         }
     }

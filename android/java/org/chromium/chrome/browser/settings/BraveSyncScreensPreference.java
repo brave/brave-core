@@ -1488,9 +1488,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           mScrollViewSyncDone.setVisibility(View.VISIBLE);
       }
 
-      BraveActivity mainActivity = BraveActivity.getBraveActivity();
-      if (null != mainActivity) {
-          mBraveSyncTextDevicesTitle.setText(getResources().getString(R.string.brave_sync_loading_devices_title));
+      try {
+          BraveActivity mainActivity = BraveActivity.getBraveActivity();
+          mBraveSyncTextDevicesTitle.setText(
+                  getResources().getString(R.string.brave_sync_loading_devices_title));
+      } catch (ActivityNotFoundException e) {
+          Log.e(TAG, "setSyncDoneLayout " + e);
       }
 
       onDevicesAvailable();

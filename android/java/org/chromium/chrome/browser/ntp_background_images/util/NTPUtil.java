@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp_background_images.util;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -67,6 +68,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class NTPUtil {
+    private static final String TAG = "NTPUtil";
+
     private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
 
@@ -111,9 +114,11 @@ public class NTPUtil {
             takeTourButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
                         BraveActivity.getBraveActivity().openRewardsPanel();
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "showBREBottomBanner takeTourButton click " + e);
                     }
                     breBottomBannerLayout.setVisibility(View.GONE);
                 }
@@ -131,9 +136,11 @@ public class NTPUtil {
                     clickOnBottomBanner(chromeActivity, ntpType, nonDisruptiveBannerLayout,
                             sponsoredTab, newTabPageListener);
                 } else {
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
                         BraveActivity.getBraveActivity().openRewardsPanel();
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "showNonDisruptiveBanner nonDisruptiveBannerLayout click " + e);
                     }
                 }
                 sponsoredTab.updateBannerPref();
@@ -175,8 +182,9 @@ public class NTPUtil {
                     @Override
                     public void onClick(View view) {
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
-                        if (BraveActivity.getBraveActivity() != null) {
+                        try {
                             BraveActivity.getBraveActivity().openRewardsPanel();
+                        } catch (ActivityNotFoundException e) {
                         }
                         sponsoredTab.updateBannerPref();
                     }

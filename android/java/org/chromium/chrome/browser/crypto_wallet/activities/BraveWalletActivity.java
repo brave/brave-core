@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FI
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
+import android.content.ActivityNotFoundException;
 import android.os.Build;
 import android.os.Handler;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -62,6 +64,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNextPage {
+    private static final String TAG = "AssetDetailActivity";
+
     private Toolbar mToolbar;
 
     private View mCryptoLayout;
@@ -130,9 +134,11 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             mSwapButton.setBackgroundResource(R.drawable.ic_swap_bg);
         }
 
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
         mSwapButton.setOnClickListener(v -> {
@@ -424,11 +430,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         if (finishOnboarding) {
             if (mIsFromDapps) {
                 finish();
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
+                try {
+                    BraveActivity activity = BraveActivity.getBraveActivity();
                     activity.showWalletPanel(true);
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "gotoNextPage " + e);
                 }
-
                 return;
             }
             setCryptoLayout();

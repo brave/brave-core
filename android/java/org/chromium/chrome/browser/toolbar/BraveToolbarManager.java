@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar;
 
+import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.Log;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -85,6 +87,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.List;
 
 public class BraveToolbarManager extends ToolbarManager {
+    private static final String TAG = "BraveToolbarManager";
+
     // To delete in bytecode, members from parent class will be used instead.
     private ObservableSupplierImpl<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
@@ -208,9 +212,11 @@ public class BraveToolbarManager extends ToolbarManager {
             @Override
             public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
                 if (layoutType == LayoutType.TAB_SWITCHER) {
-                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                    if (braveActivity != null) {
+                    try {
+                        BraveActivity braveActivity = BraveActivity.getBraveActivity();
                         braveActivity.dismissCookieConsent();
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "setLayoutStateProvider onStartedShowing click " + e);
                     }
                 }
             }

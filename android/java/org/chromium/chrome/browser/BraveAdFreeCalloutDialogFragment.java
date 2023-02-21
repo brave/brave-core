@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,12 +20,15 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
+    private static final String TAG = "BraveAdFreeCallout";
+
     private ImageView mConfettiImageView;
 
     @Override
@@ -58,10 +62,13 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
 
         Button btnVideos = view.findViewById(R.id.btn_videos);
         btnVideos.setOnClickListener(button -> {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            if (braveActivity != null) {
+            try {
+                BraveActivity braveActivity = BraveActivity.getBraveActivity();
                 braveActivity.focusSearchBox();
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "onViewCreated btnVideos click " + e);
             }
+
             dismiss();
         });
 

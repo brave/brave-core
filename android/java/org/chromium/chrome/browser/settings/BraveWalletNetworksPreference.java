@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -28,6 +30,8 @@ import org.chromium.mojo.system.MojoException;
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkListBaseAdapter.ItemClickListener,
                    BraveWalletAddNetworksFragment.Refresher {
+    private static final String TAG = "WalletNetworks";
+
     private TextView mbtAddNetwork;
     private RecyclerView mRecyclerView;
     private NetworkListBaseAdapter mAdapter;
@@ -117,9 +121,11 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     private void updateNetworksList() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "updateNetworksList " + e);
         }
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(CoinType.ETH, chainId -> {

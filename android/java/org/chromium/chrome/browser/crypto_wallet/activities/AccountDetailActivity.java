@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -57,6 +59,8 @@ import java.util.concurrent.Executors;
 
 public class AccountDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
+    private static final String TAG = "AccountDetail";
+
     private String mAddress;
     private String mName;
     private boolean mIsImported;
@@ -221,9 +225,11 @@ public class AccountDetailActivity
         super.finishNativeInitialization();
 
         initState();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null;
         mJsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
