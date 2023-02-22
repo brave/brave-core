@@ -121,7 +121,7 @@ export function RewardsCard (props: Props) {
     if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
       const onClick = () => {
         if (externalWallet.links.reconnect) {
-          window.open(externalWallet.links.reconnect, '_blank')
+          window.open(externalWallet.links.reconnect, '_blank', 'noreferrer')
         }
       }
       return (
@@ -274,7 +274,7 @@ export function RewardsCard (props: Props) {
   }
 
   function renderVBATNotice () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank') }
+    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
     const onClose = () => { setHideVBATNotice(true) }
     return (
       <style.root>
@@ -293,7 +293,7 @@ export function RewardsCard (props: Props) {
   }
 
   function renderLimited () {
-    const onConnect = () => { window.open(urls.connectURL, '_blank') }
+    const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
 
     return (
       <style.root>

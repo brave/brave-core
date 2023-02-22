@@ -157,7 +157,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (externalWallet.loginUrl) {
-      window.open(externalWallet.loginUrl, '_self')
+      window.open(externalWallet.loginUrl, '_self', 'noreferrer')
     }
   }
 
@@ -207,7 +207,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    window.open(externalWallet.accountUrl, '_self')
+    window.open(externalWallet.accountUrl, '_self', 'noreferrer')
   }
 
   getBalanceToken = (key: string) => {

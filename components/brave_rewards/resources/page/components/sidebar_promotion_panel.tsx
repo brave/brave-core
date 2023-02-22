@@ -112,7 +112,7 @@ export function SidebarPromotionPanel (props: Props) {
           }
 
           const visitPromotionURL = () => {
-            window.open(getPromotionURL(key), '_blank')
+            window.open(getPromotionURL(key), '_blank', 'noreferrer')
           }
 
           const onDismiss = () => {

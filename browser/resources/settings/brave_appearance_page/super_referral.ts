@@ -83,7 +83,8 @@ export class SettingsBraveAppearanceSuperReferralElement extends
    * Open URL for either current theme or the theme gallery.
    */
   private openThemeUrl_() {
-    window.open(this.themeUrl_ || loadTimeData.getString('themesGalleryUrl'));
+    window.open(this.themeUrl_ || loadTimeData.getString('themesGalleryUrl'),
+      null, 'noreferrer');
   }
 
   private onUseDefaultTap_() {
