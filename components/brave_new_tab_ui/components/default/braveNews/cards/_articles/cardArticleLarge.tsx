@@ -39,7 +39,7 @@ const promotedInfoUrl = 'https://brave.com/brave-today'
 function onClickPromoted (e: React.MouseEvent) {
   const openInNewTab = e.ctrlKey || e.metaKey
   if (openInNewTab) {
-    document.open(promotedInfoUrl, '__blank')
+    document.open(promotedInfoUrl, '__blank', 'noreferrer')
   } else {
     window.location.href = promotedInfoUrl
   }
