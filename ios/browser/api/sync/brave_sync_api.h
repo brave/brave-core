@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BraveSyncInternalsController;
+@protocol SyncPreferenceObserver;
 
 typedef NSInteger BraveSyncAPISyncProtocolErrorResult
     NS_TYPED_ENUM NS_SWIFT_NAME(BraveSyncAPI.SyncProtocolErrorResult);
@@ -70,12 +71,14 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber;
 
 OBJC_EXPORT
+
 @interface BraveSyncAPI : NSObject
 
 @property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 @property(nonatomic, readonly) bool isFirstSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
+@property(nullable, nonatomic, weak) id<SyncPreferenceObserver> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;
 

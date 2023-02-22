@@ -22,12 +22,13 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
+#include "brave/ios/browser/api/sync/brave_sync_observer.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
 #include "components/prefs/ios/pref_observer_bridge.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "components/prefs/pref_service.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -130,10 +131,6 @@ BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
-namespace brave_sync {
-const char kSyncAccountDeletedNotice[] = "brave_sync_v2.account_deleted_notice_pending";
-}
-
 // MARK: - BraveSyncDeviceObserver
 
 @interface BraveSyncDeviceObserver : NSObject {
@@ -198,10 +195,10 @@ const char kSyncAccountDeletedNotice[] = "brave_sync_v2.account_deleted_notice_p
     _prefChangeRegistrar.Init(_prefService);
     _prefObserverBridge.reset(new PrefObserverBridge(self));
 
-    // Register to observe any changes on Preference SyncAccountDeletedNoticePending
+    // Register to observe any changes on Preference
+    // SyncAccountDeletedNoticePending
     _prefObserverBridge->ObserveChangesForPreference(
-        brave_sync::kSyncAccountDeletedNotice,
-        &_prefChangeRegistrar);
+        brave_sync::kSyncAccountDeletedNoticePending, &_prefChangeRegistrar);
   }
   return self;
 }
@@ -380,11 +377,13 @@ const char kSyncAccountDeletedNotice[] = "brave_sync_v2.account_deleted_notice_p
 }
 
 - (bool)isSyncAccountDeletedNoticePending {
-  return _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNotice);
+  return _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNoticePending);
 }
 
-- (void)setIsSyncAccountDeletedNoticePending:(bool)isSyncAccountDeletedNoticePending {
-  _prefService->SetBoolean(brave_sync::kSyncAccountDeletedNotice, isSyncAccountDeletedNoticePending);
+- (void)setIsSyncAccountDeletedNoticePending:
+    (bool)isSyncAccountDeletedNoticePending {
+  _prefService->SetBoolean(brave_sync::kSyncAccountDeletedNoticePending,
+                           isSyncAccountDeletedNoticePending);
   _prefService->CommitPendingWrite();
 }
 
@@ -418,12 +417,18 @@ const char kSyncAccountDeletedNotice[] = "brave_sync_v2.account_deleted_notice_p
 // MARK: - PrefObserverDelegate
 
 - (void)onPreferenceChanged:(const std::string&)preferenceName {
-  if (preferenceName == brave_sync::kSyncAccountDeletedNotice) {
-    // BOOL autofillProfileEnabled = 
-    //     _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNotice);
+  if (preferenceName == brave_sync::kSyncAccountDeletedNoticePending) {
+    BOOL accountDeletedNoticePending =
+        _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNoticePending);
 
-    
+    [self.delegate syncAccountDeletedNotice:accountDeletedNoticePending];
+  }
+
+  if (preferenceName == brave_sync::kSyncFailedDecryptSeedNoticeDismissed) {
+    BOOL decryptSeedFailedNoticePending = _prefService->GetBoolean(
+        brave_sync::kSyncFailedDecryptSeedNoticeDismissed);
+
+    [self.delegate syncAccountDeletedNotice:decryptSeedFailedNoticePending];
   }
 }
-
 @end
