@@ -1,12 +1,17 @@
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# you can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 """A inline part of result_dashboard.py"""
 import re
 import os
+import sys
+import subprocess
 
 import override_utils
+
+from core import path_util  # pylint: disable=import-error
+
 
 def BraveAuthTokenGeneratorCallback():
     """A substitution for LuciAuthTokenGeneratorCallback()"""
@@ -41,6 +46,6 @@ def _MakeBuildStatusUrl(original_function, project, buildbucket, buildername,
                         buildnumber):
     m = re.match('brave/refs/tags/(.+)', buildername)
     if m:
-        return 'https://github.com/brave/brave-browser/releases/tag/%s' % m.group(
-            1)
+        URL = 'https://github.com/brave/brave-browser/releases/tag/%s'
+        return URL % m.group(1)
     return original_function(project, buildbucket, buildername, buildnumber)
