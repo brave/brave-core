@@ -53,13 +53,16 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
   BraveSyncServiceTracker(syncer::SyncServiceImpl* sync_service_impl,
-                          std::function<void()> on_state_changed_callback);
+                          std::function<void()> on_state_changed_callback,
+                          std::function<void()> on_sync_shutdown_callback);
   ~BraveSyncServiceTracker() override;
 
  private:
   void OnStateChanged(syncer::SyncService* sync) override;
+  void OnSyncShutdown(syncer::SyncService* sync) override;
 
   std::function<void()> on_state_changed_callback_;
+  std::function<void()> on_sync_shutdown_callback_;
 
   base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
@@ -60,8 +60,10 @@ void BraveSyncDeviceTracker::OnDeviceInfoChange() {
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
     syncer::SyncServiceImpl* sync_service_impl,
-    std::function<void()> on_state_changed_callback)
-    : on_state_changed_callback_(on_state_changed_callback) {
+    std::function<void()> on_state_changed_callback,
+    std::function<void()> on_sync_shutdown_callback)
+    : on_state_changed_callback_(on_state_changed_callback),
+      on_sync_shutdown_callback_(on_sync_shutdown_callback) {
   DCHECK(sync_service_impl);
   sync_service_observer_.Observe(sync_service_impl);
 }
@@ -73,6 +75,12 @@ BraveSyncServiceTracker::~BraveSyncServiceTracker() {
 void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
   if (on_state_changed_callback_) {
     on_state_changed_callback_();
+  }
+}
+
+void BraveSyncServiceTracker::OnSyncShutdown(syncer::SyncService* sync) {
+  if (on_sync_shutdown_callback_) {
+    on_sync_shutdown_callback_();
   }
 }
 

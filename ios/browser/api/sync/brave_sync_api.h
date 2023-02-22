@@ -127,7 +127,8 @@ OBJC_EXPORT
 - (BraveSyncInternalsController*)createSyncInternalsController;
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
-- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged;
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
+          onSyncServiceShutdown:(void (^)())onSyncServiceShutdown;
 @end
 
 NS_ASSUME_NONNULL_END

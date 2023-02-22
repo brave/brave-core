@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/compiler_specific.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
@@ -131,6 +131,13 @@ BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
+namespace brave_sync {
+const char kSyncAccountDeletedNoticePending[] =
+    "brave_sync_v2.account_deleted_notice_pending";
+const char kSyncFailedDecryptSeedNotice[] =
+    "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
+}  // namespace brave_sync
+
 // MARK: - BraveSyncDeviceObserver
 
 @interface BraveSyncDeviceObserver : NSObject {
@@ -161,10 +168,11 @@ BraveSyncAPIWordsValidationStatus const
 
 - (instancetype)initWithSyncServiceImpl:
                     (syncer::SyncServiceImpl*)syncServiceImpl
-                               callback:(void (^)())onSyncServiceStateChanged {
+                   stateChangedCallback:(void (^)())onSyncServiceStateChanged
+                   syncShutdownCallback:(void (^)())onSyncServiceShutdown {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
-        syncServiceImpl, onSyncServiceStateChanged);
+        syncServiceImpl, onSyncServiceStateChanged, onSyncServiceShutdown);
   }
   return self;
 }
@@ -405,13 +413,14 @@ BraveSyncAPIWordsValidationStatus const
                        callback:onDeviceInfoChanged];
 }
 
-- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
+          onSyncServiceShutdown:(void (^)())onSyncServiceShutdown {
   auto* service =
-      SyncServiceFactory::GetAsSyncServiceImplForBrowserStateForTesting(
-          _chromeBrowserState);
+      static_cast<syncer::SyncServiceImpl*>(SyncServiceFactory::GetForBrowserState(_chromeBrowserState));
   return [[BraveSyncServiceObserver alloc]
       initWithSyncServiceImpl:service
-                     callback:onSyncServiceStateChanged];
+         stateChangedCallback:onSyncServiceStateChanged
+         syncShutdownCallback:onSyncServiceShutdown];
 }
 
 // MARK: - PrefObserverDelegate
@@ -424,11 +433,11 @@ BraveSyncAPIWordsValidationStatus const
     [self.delegate syncAccountDeletedNotice:accountDeletedNoticePending];
   }
 
-  if (preferenceName == brave_sync::kSyncFailedDecryptSeedNoticeDismissed) {
-    BOOL decryptSeedFailedNoticePending = _prefService->GetBoolean(
-        brave_sync::kSyncFailedDecryptSeedNoticeDismissed);
+  if (preferenceName == brave_sync::kSyncFailedDecryptSeedNotice) {
+    BOOL decryptSeedFailedNoticeDismissed =
+        _prefService->GetBoolean(brave_sync::kSyncFailedDecryptSeedNotice);
 
-    [self.delegate syncAccountDeletedNotice:decryptSeedFailedNoticePending];
+    [self.delegate syncAccountDeletedNotice:decryptSeedFailedNoticeDismissed];
   }
 }
 @end
