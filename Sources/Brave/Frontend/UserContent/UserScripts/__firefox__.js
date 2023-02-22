@@ -69,19 +69,26 @@ if (!window.__firefox__) {
   /*
    *  Secures an object's attributes
    */
-  let $ = function(value) {
+  let $ = function(value, overrideToString = true) {
     if ($Object.isExtensible(value)) {
       const description = (typeof value === 'function') ?
-                          `function () {\n\t[native code]\n}` :
+                          `function ${ typeof value.name !== 'undefined' ? value.name : "" }() {\n    [native code]\n}` :
                           '[object Object]';
       
       const toString = function() {
         return description;
       };
       
-      const overrides = {
+      Object.defineProperty(toString, 'name', {
+        enumerable: false,
+        configurable: true,
+        writable: false,
+        value: 'toString'
+      });
+      
+      const overrides = overrideToString ? {
         'toString': toString
-      };
+      } : {};
       
       if (typeof value === 'function') {
         const functionOverrides = {
@@ -147,7 +154,7 @@ if (!window.__firefox__) {
           // Object.prototype.toString != Object.toString
           // They are two different functions, so we should check for both before overriding them
           let descriptor = $Object.getOwnPropertyDescriptor(value, name);
-          if (descriptor && descriptor.value !== Object.prototype.toString && descriptor.value !== Object.toString) {
+          if (descriptor && descriptor.value && descriptor.value !== Object.prototype.toString && descriptor.value !== Object.toString) {
             // Secure the existing custom toString function
             // Do NOT deepFreeze existing toString functions
             // on custom objects we don't own. We secure it,
@@ -160,6 +167,18 @@ if (!window.__firefox__) {
             }
             continue;
           }
+          
+          // Object.prototype.toString != Object.toString
+          // They are two different functions, so we should check for both before overriding them
+          if (typeof value.toString !== 'undefined') {
+            if (value.toString !== Object.prototype.toString && value.toString !== Object.toString) {
+              if (value.toString !== toString) {
+                secureToString(value.toString);
+              }
+              
+              continue;
+            }
+          }
         }
         
         // Override all of the functions in the overrides array
@@ -167,8 +186,8 @@ if (!window.__firefox__) {
         if (!descriptor || descriptor.configurable) {
           $Object.defineProperty(value, name, {
             enumerable: false,
-            configurable: false,
-            writable: false,
+            configurable: name == 'toString',
+            writable: name == 'toString',
             value: property
           });
         }
@@ -263,7 +282,7 @@ if (!window.__firefox__) {
       }
 
       return isIgnoredClass(obj) ? $(obj) : $Object.freeze($(obj));
-    } else if (obj.constructor && (obj.constructor.name == "Function" || obj.constructor.name == "AsyncFunction")) {
+    } else if (obj.constructor && (obj.constructor.name == "Function" || obj.constructor.name == "AsyncFunction" || obj.constructor.name == "GeneratorFunction")) {
       return $Object.freeze($(obj));
     } else {
       let prototype = $Object.getPrototypeOf(obj);

@@ -45,7 +45,7 @@ window.__firefox__.execute(function($) {
         return originalFetch.apply(this, arguments)
       }
     })
-  });
+  }, /*overrideToString=*/false);
   
   const originalOpen = XMLHttpRequest.prototype.open
   XMLHttpRequest.prototype.open = $(function() {
@@ -60,7 +60,7 @@ window.__firefox__.execute(function($) {
     // Store only primitive types not things like URL objects
     this._url = arguments[1]
     return originalOpen.apply(this, arguments)
-  });
+  }, /*overrideToString=*/false);
 
   const originalSend = XMLHttpRequest.prototype.send
   XMLHttpRequest.prototype.send = $(function () {
@@ -92,5 +92,5 @@ window.__firefox__.execute(function($) {
         originalSend.apply(this, arguments)
       }
     })
-  });
+  }, /*overrideToString=*/false);
 });
