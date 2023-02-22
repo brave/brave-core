@@ -1558,6 +1558,11 @@ interface BraveWalletService {
 
   DiscoverAssetsOnAllSupportedChains();
 
+  GetNftDiscoveryEnabled() => (bool enabled);
+
+  // Calling this setter should be approved by privacy review.
+  SetNftDiscoveryEnabled(bool enabled);
+
   // Resets the keyring and the related preferences
   Reset();
 };

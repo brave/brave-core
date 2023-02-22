@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
@@ -152,9 +153,13 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         shared_url_loader_factory_);
     tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
+        shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service, GetPrefs(), GetLocalState());
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
+        std::make_unique<api_request_helper::APIRequestHelper>(
+            net::DefineNetworkTrafficAnnotation("asset_discovery_manager", ""),
+            shared_url_loader_factory_),
         wallet_service_.get(), json_rpc_service_, keyring_service_, GetPrefs());
     asset_discovery_manager_->SetSupportedChainsForTesting(
         GetAssetDiscoverySupportedEthChainsForTest());
@@ -170,6 +175,29 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
             url_loader_factory_.ClearResponses();
             url_loader_factory_.AddResponse(request.url.spec(), content);
           }
+        }));
+  }
+
+  void SetInterceptors(std::map<GURL, std::string> responses) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, responses](const network::ResourceRequest& request) {
+          // If the request url is in responses, add that response
+          auto it = responses.find(request.url);
+          if (it != responses.end()) {
+            // Get the response string
+            std::string response = it->second;
+            url_loader_factory_.ClearResponses();
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+          }
+        }));
+  }
+
+  void SetHTTPRequestTimeoutInterceptor() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "",
+                                          net::HTTP_REQUEST_TIMEOUT);
         }));
   }
 
@@ -210,19 +238,33 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         [&, requests](const network::ResourceRequest& request) {
           for (auto const& [url, address_response_map] : requests) {
             if (request.url.spec() == url.spec()) {
-              base::StringPiece request_string(
-                  request.request_body->elements()
-                      ->at(0)
-                      .As<network::DataElementBytes>()
-                      .AsStringPiece());
+              base::StringPiece request_string;
+              if (request.request_body) {
+                request_string = request.request_body->elements()
+                                     ->at(0)
+                                     .As<network::DataElementBytes>()
+                                     .AsStringPiece();
+              }
               std::string response;
               for (auto const& [address, potential_response] :
                    address_response_map) {
                 // Trim leading "0x" from address before searching for it in the
                 // it in the request string since it's not included in the
                 // calldata
-                if (request_string.find(address.substr(2)) !=
-                    std::string::npos) {
+                if ((request_string.find(address.substr(2)) !=
+                     std::string::npos) &&  // and request is not a GET
+                    !request_string.empty()) {
+                  response = potential_response;
+                  break;
+                }
+                // If the request string is empty and there's only one entry
+                // in the address_response_map, return that response.
+                // This allows us to match GET requests to SimpleHash (which do
+                // not have a request body) to the correct response in addition
+                // to POST requests to JSON RPC API (which do have a request
+                // body and the address is in it).
+                if (request_string.empty() &&
+                    address_response_map.size() == 1) {
                   response = potential_response;
                   break;
                 }
@@ -273,7 +315,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     wallet_service_observer_->Reset();
   }
 
-  void TestDiscoverAssetsOnAllSupportedChainsAccountsAddedV2(
+  void TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
       mojom::CoinType coin,
       const std::vector<std::string>& account_addresses,
       const std::vector<std::string>& expected_token_contract_addresses) {
@@ -304,7 +346,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   }
 
   void TestDiscoverAssetsOnAllSupportedChainsRefresh(
-      std::map<mojom::CoinType, std::vector<std::string>>& addresses,
+      const std::map<mojom::CoinType, std::vector<std::string>>& addresses,
       base::OnceCallback<void(base::Time previous, base::Time current)>
           assets_last_discovered_at_test_fn,
       const std::vector<std::string>& expected_token_contract_addresses) {
@@ -332,6 +374,36 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
              current_assets_last_discovered_at);
   }
 
+  void TestFetchNFTsFromSimpleHash(
+      const std::string& account_address,
+      const std::vector<std::string>& chain_ids,
+      mojom::CoinType coin,
+      const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
+    base::RunLoop run_loop;
+    asset_discovery_manager_->FetchNFTsFromSimpleHash(
+        account_address, chain_ids, coin,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
+              ASSERT_EQ(nfts.size(), expected_nfts.size());
+              EXPECT_EQ(nfts, expected_nfts);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestDiscoverNFTsOnAllSupportedChains(
+      const std::map<mojom::CoinType, std::vector<std::string>>& addresses,
+      const std::vector<std::string>& expected_token_contract_addresses) {
+    asset_discovery_manager_->remaining_buckets_ = 1;
+    asset_discovery_manager_->DiscoverNFTsOnAllSupportedChains(addresses,
+                                                               false);
+
+    // Wait for the the wallet service event to be emitted (meaning asset
+    // discovery has totally completed)
+    wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
+        expected_token_contract_addresses);
+  }
+
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
@@ -355,9 +427,10 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
 };
 
 TEST_F(AssetDiscoveryManagerUnitTest,
-       DiscoverAssetsOnAllSupportedChainsAccountsAddedV2) {
+       DiscoverAssetsOnAllSupportedChainsAccountsAdded) {
   auto* blockchain_registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
+  wallet_service_->SetNftDiscoveryEnabled(true);
 
   // Ethereum
   asset_discovery_manager_->SetSupportedChainsForTesting(
@@ -400,7 +473,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
        }},
   };
   SetInterceptorForDiscoverEthAssets(requests);
-  TestDiscoverAssetsOnAllSupportedChainsAccountsAddedV2(
+  TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
       mojom::CoinType::ETH,
       {
           "0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
@@ -540,7 +613,7 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   ASSERT_TRUE(
       ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
   blockchain_registry->UpdateTokenList(std::move(token_list_map));
-  TestDiscoverAssetsOnAllSupportedChainsAccountsAddedV2(
+  TestDiscoverAssetsOnAllSupportedChainsAccountsAdded(
       mojom::CoinType::SOL,
       {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF",
        "8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB"},
@@ -557,9 +630,11 @@ TEST_F(AssetDiscoveryManagerUnitTest,
   auto* blockchain_registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   std::map<GURL, std::map<std::string, std::string>> requests;
+  wallet_service_->SetNftDiscoveryEnabled(true);
 
   // Verify that in a single call, we can discover assets on multiple Ethereum
-  // chains as well as Solana. Rate limit pref is updated.
+  // chains as well as Solana, and one NFT from SimpleHash. Rate limit pref is
+  // updated.
   asset_discovery_manager_->SetSupportedChainsForTesting(
       {mojom::kMainnetChainId, mojom::kPolygonMainnetChainId});
   // Parse the ETH token list
@@ -649,6 +724,59 @@ TEST_F(AssetDiscoveryManagerUnitTest,
        {
            {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF", sol_response},
        }},
+      {GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+            "owners?chains=ethereum%2Cpolygon&wallet_addresses="
+            "0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),
+       {
+           {"0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", R"({
+                  "next": null,
+                  "nfts": [
+                    {
+                      "chain": "ethereum",
+                      "contract_address": "0x4E1f41613c9084FdB9E34E11fAE9412427480e56",
+                      "token_id": "8635",
+                      "name": "Level 14 at {24, 19}",
+                      "description": "Terraforms by Mathcastles. Onchain land art from a dynamically generated, onchain 3D world.",
+                      "image_url": "https://cdn.simplehash.com/assets/69a8608ff3000e44037b58773e6cc62e494bbd7999ae25b60218d92461f54765.svg",
+                      "contract": {
+                        "type": "ERC721",
+                        "name": "Terraforms",
+                        "symbol": "TERRAFORMS"
+                      },
+                      "collection": {
+                        "name": "Terraforms by Mathcastles",
+                        "description": "Onchain land art from a dynamically generated onchain 3D world.",
+                        "image_url": "https://lh3.googleusercontent.com/JYpFUw47L8R8iGOj0uVzPEUlB11A0YNuS3FWwD349ngn6da-PbsrzV6zSqmkNtsfynm0Dpc-rUIr5z9CwsSQq5C0aVenH71OeA",
+                        "spam_score": 0
+                      }
+                    }
+                  ]
+              })"},
+       }},
+      {
+          GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+               "owners?chains=ethereum%2Cpolygon&wallet_addresses="
+               "0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"),
+          {
+              {"0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", R"({
+                  "next": null,
+                  "previous": null,
+                  "nfts": []
+              })"},
+          },
+      },
+      {
+          GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+               "owners?chains=solana&wallet_addresses="
+               "4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"),
+          {
+              {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF", R"({
+                  "next": null,
+                  "previous": null,
+                  "nfts": []
+              })"},
+          },
+      },
   };
   SetInterceptorForDiscoverEthAssets(requests);
   addresses = {
@@ -664,7 +792,8 @@ TEST_F(AssetDiscoveryManagerUnitTest,
       }),
       {"EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b",
        "0x3333333333333333333333333333333333333333",
-       "0x4444444444444444444444444444444444444444"});
+       "0x4444444444444444444444444444444444444444",
+       "0x4E1f41613c9084FdB9E34E11fAE9412427480e56"});
 
   // Verify that subsequent calls are rate limited.
   // Need to adds some new assets to the token list first though
@@ -745,7 +874,45 @@ TEST_F(AssetDiscoveryManagerUnitTest,
        {
            {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF", sol_response},
        }},
-  };
+      {
+          GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+               "owners?chains=ethereum%2Cpolygon&wallet_addresses="
+               "0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),
+          {
+              {"0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+               R"({
+            "next": null,
+            "previous": null,
+            "nfts": [ ]
+          })"},
+          },
+      },
+      {
+          GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+               "owners?chains=ethereum%2Cpolygon&wallet_addresses="
+               "0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"),
+          {
+              {"0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+               R"({
+            "next": null,
+            "previous": null,
+            "nfts": [ ]
+          })"},
+          },
+      },
+      {
+          GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+               "owners?chains=solana&wallet_addresses="
+               "4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF"),
+          {
+              {"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF",
+               R"({
+            "next": null,
+            "previous": null,
+            "nfts": [ ]
+          })"},
+          },
+      }};
   SetInterceptorForDiscoverEthAssets(requests);
   TestDiscoverAssetsOnAllSupportedChainsRefresh(
       addresses,
@@ -1296,6 +1463,736 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetAssetDiscoverySupportedEthChains) {
   EXPECT_GT(chains1.size(), 0u);
   EXPECT_EQ(chains1.size(), chains2.size());
   EXPECT_EQ(chains2.size(), chains3.size());
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, GetSimpleHashNftsByWalletUrl) {
+  // Empty address yields empty URL
+  EXPECT_EQ(asset_discovery_manager_->GetSimpleHashNftsByWalletUrl(
+                "", {mojom::kMainnetChainId}),
+            GURL(""));
+
+  // Empty chains yields empty URL
+  EXPECT_EQ(asset_discovery_manager_->GetSimpleHashNftsByWalletUrl(
+                "0x0000000000000000000000000000000000000000", {}),
+            GURL());
+
+  // One valid chain yields correct URL
+  EXPECT_EQ(asset_discovery_manager_->GetSimpleHashNftsByWalletUrl(
+                "0x0000000000000000000000000000000000000000",
+                {mojom::kMainnetChainId}),
+            GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+                 "owners?chains=ethereum&wallet_addresses="
+                 "0x0000000000000000000000000000000000000000"));
+
+  // Two valid chains yields correct URL
+  EXPECT_EQ(asset_discovery_manager_->GetSimpleHashNftsByWalletUrl(
+                "0x0000000000000000000000000000000000000000",
+                {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId}),
+            GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+                 "owners?chains=ethereum%2Coptimism&wallet_addresses="
+                 "0x0000000000000000000000000000000000000000"));
+
+  // One invalid chain yields empty URL
+  EXPECT_EQ(asset_discovery_manager_->GetSimpleHashNftsByWalletUrl(
+                "0x0000000000000000000000000000000000000000",
+                {"chain ID not supported by SimpleHash"}),
+            GURL());
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
+  std::string json;
+  absl::optional<base::Value> json_value;
+
+  // Non dictionary JSON response yields nullopt
+  json = R"([])";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  auto result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_FALSE(result);
+
+  // Missing 'nfts' key yields nullopt
+  json = R"({"foo": "bar"})";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_FALSE(result);
+
+  // Dictionary type 'nfts' key yields nullopt
+  json = R"({"nfts": {}})";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_FALSE(result);
+
+  // Invalid next URL (wrong host) yields empty next URL
+  json = R"({
+    "next": "https://foo.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "name": "Token #1",
+        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->first, GURL());
+
+  // Invalid next URL (not https) yields empty next URL
+  json = R"({
+    "next": "http://api.simplehash.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=0x00",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "name": "Token #1",
+        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->first, GURL());
+
+  // Unsupported CoinType yields nullopt (valid otherwise)
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "name": "Token #1",
+        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::FIL);
+
+  // Valid, 1 ETH NFT
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_TRUE(result);
+  EXPECT_FALSE(result->first.is_valid());
+  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "0x1111111111111111111111111111111111111111");
+  EXPECT_EQ(result->second[0]->name, "Token #1");
+  EXPECT_EQ(result->second[0]->logo,
+            "https://nftimages-cdn.simplehash.com/1.png");
+  EXPECT_EQ(result->second[0]->is_erc20, false);
+  EXPECT_EQ(result->second[0]->is_erc721, true);
+  EXPECT_EQ(result->second[0]->is_erc1155, false);
+  EXPECT_EQ(result->second[0]->is_nft, true);
+  EXPECT_EQ(result->second[0]->symbol, "ONE");
+  EXPECT_EQ(result->second[0]->decimals, 0);
+  EXPECT_EQ(result->second[0]->visible, true);
+  EXPECT_EQ(result->second[0]->token_id, "0x1");
+  EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
+
+  // Valid, 2 ETH NFTs
+  json = R"({
+    "next": "https://api.simplehash.com/api/v0/nfts/next",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "name": "Token #1",
+        "image_url": "https://nftimages-cdn.simplehash.com/1.png",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0x2222222222222222222222222222222222222222",
+        "token_id": "2",
+        "name": "Token #2",
+        "image_url": "https://nftimages-cdn.simplehash.com/2.png",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "TWO"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->first.spec(),
+            "https://simplehash.wallet.brave.com/api/v0/nfts/next");
+  EXPECT_EQ(result->second.size(), 2u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "0x1111111111111111111111111111111111111111");
+  EXPECT_EQ(result->second[0]->name, "Token #1");
+  EXPECT_EQ(result->second[0]->logo,
+            "https://nftimages-cdn.simplehash.com/1.png");
+  EXPECT_EQ(result->second[0]->is_erc20, false);
+  EXPECT_EQ(result->second[0]->is_erc721, true);
+  EXPECT_EQ(result->second[0]->is_erc1155, false);
+  EXPECT_EQ(result->second[0]->is_nft, true);
+  EXPECT_EQ(result->second[0]->symbol, "ONE");
+  EXPECT_EQ(result->second[0]->decimals, 0);
+  EXPECT_EQ(result->second[0]->visible, true);
+  EXPECT_EQ(result->second[0]->token_id, "0x1");
+  EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
+
+  EXPECT_EQ(result->second[1]->contract_address,
+            "0x2222222222222222222222222222222222222222");
+  EXPECT_EQ(result->second[1]->name, "Token #2");
+  EXPECT_EQ(result->second[1]->logo,
+            "https://nftimages-cdn.simplehash.com/2.png");
+  EXPECT_EQ(result->second[1]->is_erc20, false);
+  EXPECT_EQ(result->second[1]->is_erc721, true);
+  EXPECT_EQ(result->second[1]->is_erc1155, false);
+  EXPECT_EQ(result->second[1]->is_nft, true);
+  EXPECT_EQ(result->second[1]->symbol, "TWO");
+  EXPECT_EQ(result->second[1]->decimals, 0);
+  EXPECT_EQ(result->second[1]->visible, true);
+  EXPECT_EQ(result->second[1]->token_id, "0x2");
+  EXPECT_EQ(result->second[1]->chain_id, mojom::kMainnetChainId);
+  EXPECT_EQ(result->second[1]->coin, mojom::CoinType::ETH);
+
+  // 6 ETH nfts, but only 1 has all necessary keys yields 1 NFT
+  //
+  // 1. Missing nothing (valid)
+  // 2. Missing chain_id
+  // 3. Missing contract_address
+  // 4. Missing token_id
+  // 5. Missing standard
+  // 6. Missing spam_score
+  // 7. Missing symbol
+  json = R"({
+    "next": "https://api.simplehash.com/api/v0/nfts/next",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "contract_address": "0x2222222222222222222222222222222222222222",
+        "token_id": "2",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "TWO"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "token_id": "3",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "THREE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0x4444444444444444444444444444444444444444",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "FOUR"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0x5555555555555555555555555555555555555555",
+        "token_id": "5",
+        "contract": {
+          "symbol": "FIVE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "polygon",
+        "contract_address": "0x6666666666666666666666666666666666666666",
+        "token_id": "6",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "SIX"
+        },
+        "collection": {
+        }
+      },
+      {
+        "chain": "polygon",
+        "contract_address": "0x7777777777777777777777777777777777777777",
+        "token_id": "7",
+        "contract": {
+          "type": "ERC721"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::ETH);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+
+  // 1 SOL NFT
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "solana",
+        "contract_address": "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE",
+        "token_id": null,
+        "name": "y00t #2623",
+        "description": "y00ts is a generative art project of 15,000 NFTs. y00topia is a curated community of builders and creators. Each y00t was designed by De Labs in Los Angeles, CA.",
+        "image_url": "https://cdn.simplehash.com/assets/dc78fa011ba46fa12748f1a20ad5e98e1e0b6746dcbfcf409c091dd48d09aee1.png",
+        "status": "minted",
+        "contract": {
+          "type": "NonFungible",
+          "name": "y00t #2623",
+          "symbol": "Y00T"
+        },
+        "collection": {
+          "spam_score": 0
+        },
+        "extra_metadata": {
+          "is_mutable": true
+        }
+      }
+    ]
+  })";
+
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 1u);
+  EXPECT_EQ(result->second[0]->contract_address,
+            "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE");
+  EXPECT_EQ(result->second[0]->name, "y00t #2623");
+  EXPECT_EQ(
+      result->second[0]->logo,
+      "https://cdn.simplehash.com/assets/"
+      "dc78fa011ba46fa12748f1a20ad5e98e1e0b6746dcbfcf409c091dd48d09aee1.png");
+  EXPECT_EQ(result->second[0]->is_erc20, false);
+  EXPECT_EQ(result->second[0]->is_erc721, false);
+  EXPECT_EQ(result->second[0]->is_erc1155, false);
+  EXPECT_EQ(result->second[0]->is_nft, true);
+  EXPECT_EQ(result->second[0]->symbol, "Y00T");
+  EXPECT_EQ(result->second[0]->decimals, 0);
+  EXPECT_EQ(result->second[0]->visible, true);
+  EXPECT_EQ(result->second[0]->token_id, "");
+  EXPECT_EQ(result->second[0]->coingecko_id, "");
+  EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+
+  // An NFT with a spam_score > 0 will be skipped
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "solana",
+        "contract_address": "AvdAUsR4qgsT5HgyKCVeGjimmyu8xrG3RudFqm5txDDE",
+        "token_id": null,
+        "name": "y00t #2623",
+        "description": "y00ts is a generative art project of 15,000 NFTs. y00topia is a curated community of builders and creators. Each y00t was designed by De Labs in Los Angeles, CA.",
+        "image_url": "https://cdn.simplehash.com/assets/dc78fa011ba46fa12748f1a20ad5e98e1e0b6746dcbfcf409c091dd48d09aee1.png",
+        "status": "minted",
+        "contract": {
+          "type": "NonFungible",
+          "name": "y00t #2623",
+          "symbol": "Y00T"
+        },
+        "collection": {
+          "spam_score": 100
+        },
+        "extra_metadata": {
+          "is_mutable": true
+        }
+      }
+    ]
+  })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
+      *json_value, mojom::CoinType::SOL);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->second.size(), 0u);
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, FetchNFTsFromSimpleHash) {
+  std::vector<mojom::BlockchainTokenPtr> expected_nfts;
+  std::string json;
+  std::string json2;
+  std::map<GURL, std::string> responses;
+  GURL url;
+
+  // Empty account address yields empty expected_nfts
+  TestFetchNFTsFromSimpleHash("", {mojom::kMainnetChainId},
+                              mojom::CoinType::ETH, expected_nfts);
+
+  // Empty chain IDs yields empty expected_nfts
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
+                              mojom::CoinType::ETH, expected_nfts);
+
+  // Unsupported chain ID yields empty expected_nfts
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000", {},
+                              mojom::CoinType::FIL, expected_nfts);
+
+  // Non 2xx response yields empty expected_nfts
+  SetHTTPRequestTimeoutInterceptor();
+  TestFetchNFTsFromSimpleHash("0x0000000000000000000000000000000000000000",
+                              {mojom::kMainnetChainId}, mojom::CoinType::ETH,
+                              expected_nfts);
+
+  // 1 NFT is parsed
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  auto nft1 = mojom::BlockchainToken::New();
+  nft1->chain_id = mojom::kPolygonMainnetChainId;
+  nft1->contract_address = "0x1111111111111111111111111111111111111111";
+  nft1->token_id = "0x1";
+  nft1->is_erc721 = true;
+  nft1->is_erc1155 = false;
+  nft1->is_erc20 = false;
+  nft1->is_nft = true;
+  nft1->symbol = "ONE";
+  nft1->coin = mojom::CoinType::ETH;
+  expected_nfts.push_back(std::move(nft1));
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum%2Coptimism&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  responses[url] = json;
+  SetInterceptors(responses);
+  TestFetchNFTsFromSimpleHash(
+      "0x0000000000000000000000000000000000000000",
+      {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
+      mojom::CoinType::ETH, expected_nfts);
+
+  // If 'next' page url is present, it should make another request
+  responses.clear();
+  json = R"({
+    "next": "https://api.simplehash.com/api/v0/nfts/next",
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[url] = json;
+  GURL next_url = GURL("https://simplehash.wallet.brave.com/api/v0/nfts/next");
+  json2 = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "nft_id": "ethereum.0x5555555555555555555555555555555555555555.555555555555",
+        "chain": "ethereum",
+        "contract_address": "0x5555555555555555555555555555555555555555",
+        "token_id": "555555555555",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "FIVE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[next_url] = json2;
+  SetInterceptors(responses);
+  auto nft2 = mojom::BlockchainToken::New();
+  nft2->chain_id = mojom::kMainnetChainId;
+  nft2->contract_address = "0x5555555555555555555555555555555555555555";
+  nft2->token_id = "0x8159b108e3";  // "555555555555"
+  nft2->is_erc20 = false;
+  nft2->is_erc721 = true;
+  nft2->is_erc1155 = false;
+  nft2->is_nft = true;
+  nft2->symbol = "FIVE";
+  nft2->coin = mojom::CoinType::ETH;
+  expected_nfts.push_back(std::move(nft2));
+  TestFetchNFTsFromSimpleHash(
+      "0x0000000000000000000000000000000000000000",
+      {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
+      mojom::CoinType::ETH, expected_nfts);
+}
+
+TEST_F(AssetDiscoveryManagerUnitTest, DiscoverNFTsOnAllSupportedChains) {
+  std::map<mojom::CoinType, std::vector<std::string>> addresses;
+  std::vector<std::string> expected_contract_addresses;
+  std::map<GURL, std::string> responses;
+  std::string json;
+  std::string json2;
+  GURL url;
+
+  // Empty addresses yields empty expected_contract_addresses
+  wallet_service_->SetNftDiscoveryEnabled(true);
+  TestDiscoverNFTsOnAllSupportedChains(addresses, expected_contract_addresses);
+
+  // 1 ETH address yields 1 discovered NFT
+  asset_discovery_manager_->SetSupportedChainsForTesting(
+      {mojom::kMainnetChainId, mojom::kPolygonMainnetChainId});
+  addresses[mojom::CoinType::ETH] = {
+      "0x0000000000000000000000000000000000000000"};
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum%2Cpolygon&wallet_addresses="
+      "0x0000000000000000000000000000000000000000");
+  json = R"({
+    "next": null,
+    "previous": null,
+    "nfts": [
+      {
+        "chain": "polygon",
+        "contract_address": "0x1111111111111111111111111111111111111111",
+        "token_id": "1",
+        "contract": {
+          "type": "ERC721",
+          "symbol": "ONE"
+        },
+        "collection": {
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[url] = json;
+  SetInterceptors(responses);
+  expected_contract_addresses.push_back(
+      "0x1111111111111111111111111111111111111111");
+  // First test nothing is discovered when NFT discovery is not enabled.
+  wallet_service_->SetNftDiscoveryEnabled(false);
+  TestDiscoverNFTsOnAllSupportedChains(addresses, {});
+  // Enable and verify 1 ETH address yields 1 discovered NFT
+  wallet_service_->SetNftDiscoveryEnabled(true);
+  TestDiscoverNFTsOnAllSupportedChains(addresses, expected_contract_addresses);
+
+  // 2 ETH addresses (2 requests), yields 4 discovered NFTs (1 from one address,
+  // and 3 from the other
+  expected_contract_addresses.clear();
+  addresses.clear();
+  asset_discovery_manager_->SetSupportedChainsForTesting(
+      {mojom::kMainnetChainId});
+  addresses[mojom::CoinType::ETH].push_back(
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961");
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961");
+  json = R"({
+    "next": null,
+    "nfts": [
+      {
+        "chain": "ethereum",
+        "contract_address": "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85",
+        "token_id": "53762001732575849527995595036249427730510390651723189221519398504820492711584",
+        "name": "stochasticparrot.eth",
+        "description": "stochasticparrot.eth, an ENS name.",
+        "image_url": "https://cdn.simplehash.com/assets/6e174a2e0091ffd5c0c63904366a62da8890508b01e7e85b13d5475b038e6544.svg",
+        "last_sale": null,
+        "contract": {
+          "type": "ERC721",
+          "name": null,
+          "symbol": "ENS"
+        },
+        "collection": {
+          "name": "ENS: Ethereum Name Service",
+          "description": "Ethereum Name Service (ENS) domains are secure domain names for the decentralized world. ENS domains provide a way for users to map human readable names to blockchain and non-blockchain resources, like Ethereum addresses, IPFS hashes, or website URLs. ENS domains can be bought and sold on secondary markets.",
+          "image_url": "https://lh3.googleusercontent.com/yXNjPUCCTHyvYNarrb81ln31I6hUIaoPzlGU8kki-OohiWuqxfrIkMaOdLzcO4iGuXcvE5mgCZ-ds9tZotEJi3hdkNusheEK_w2V",
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0x9251dEC8DF720C2ADF3B6f46d968107cbBADf4d4",
+        "token_id": "3176",
+        "name": "1337 skulls #3176",
+        "description": "1337 skulls is a collection of 7,331 pixel art skulls, deployed fully on-chain with a public domain license.  600+ traits created from new, original art and referencing 30+ existing cc0 NFT projects.  Free mint.  0% royalties.  No roadmap.  Just 1337.",
+        "image_url": "https://cdn.simplehash.com/assets/67cd1f24395a09ccfc0693d231671738ab8d1976a4a46f5ba6f091076ee942c9.svg",
+        "contract": {
+          "type": "ERC721",
+          "name": "1337 skulls",
+          "symbol": "1337skulls"
+        },
+        "collection": {
+          "name": "1337 skulls",
+          "description": "1337 skulls is a collection of 7,331 pixel art skulls, deployed fully on-chain with a public domain license.  600+ traits created from new, original art and referencing 30+ existing cc0 NFT projects.  Free mint.  0% royalties.  No roadmap.  Just 1337.",
+          "image_url": "https://lh3.googleusercontent.com/8vMgdfdfIkn_c9iVSAmWJ0S3cQDSWSgYUU2hYC4sUBHow5wJIgoRjGPREnQwjE5kdyu0e6UNQ5NXING82kIubdU4p5j8XpT47rQ",
+          "spam_score": 0
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0x4b10701Bfd7BFEdc47d50562b76b436fbB5BdB3B",
+        "token_id": "5929",
+        "name": "Lil Noun 5929",
+        "description": "Lil Noun 5929 is a member of the Lil Nouns DAO",
+        "image_url": "https://cdn.simplehash.com/assets/8c3a6098e6387c9f129a45adf79ceaa32a4c52a5aaf4cc21d29289fd98000b07.svg",
+        "contract": {
+          "type": "ERC721",
+          "name": "LilNoun",
+          "symbol": "LILNOUN"
+        },
+        "collection": {
+          "name": "Lil Nouns",
+          "description": "One Lil Noun, every 15 minutes, forever.\r\n\r\nlilnouns.wtf",
+          "image_url": "https://lh3.googleusercontent.com/Bd9JbbJl9cmaFCtws9ZgWdsoVYWt_N8XrJ_9s82LTD-chFitIDck8hHt2dpofekr6PvlKwFT-Zh-lOvcJbcFpI2N3YCkKZoQUCk",
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[url] = json;
+  expected_contract_addresses.push_back(
+      "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85");
+  expected_contract_addresses.push_back(
+      "0x9251dEC8DF720C2ADF3B6f46d968107cbBADf4d4");
+  expected_contract_addresses.push_back(
+      "0x4b10701Bfd7BFEdc47d50562b76b436fbB5BdB3B");
+
+  addresses[mojom::CoinType::ETH].push_back(
+      "0x16e4476c8fDDc552e3b1C4b8b56261d85977fE52");
+  url = GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "owners?chains=ethereum&wallet_addresses="
+      "0x16e4476c8fDDc552e3b1C4b8b56261d85977fE52");
+  json2 = R"({
+    "next": null,
+    "nfts": [
+      {
+        "chain": "ethereum",
+        "contract_address": "0x4E1f41613c9084FdB9E34E11fAE9412427480e56",
+        "token_id": "8635",
+        "name": "Level 14 at {24, 19}",
+        "description": "Terraforms by Mathcastles. Onchain land art from a dynamically generated, onchain 3D world.",
+        "image_url": "https://cdn.simplehash.com/assets/69a8608ff3000e44037b58773e6cc62e494bbd7999ae25b60218d92461f54765.svg",
+        "contract": {
+          "type": "ERC721",
+          "name": "Terraforms",
+          "symbol": "TERRAFORMS"
+        },
+        "collection": {
+          "name": "Terraforms by Mathcastles",
+          "description": "Onchain land art from a dynamically generated onchain 3D world.",
+          "image_url": "https://lh3.googleusercontent.com/JYpFUw47L8R8iGOj0uVzPEUlB11A0YNuS3FWwD349ngn6da-PbsrzV6zSqmkNtsfynm0Dpc-rUIr5z9CwsSQq5C0aVenH71OeA",
+          "spam_score": 0
+        }
+      }
+    ]
+  })";
+  responses[url] = json2;
+  expected_contract_addresses.push_back(
+      "0x4E1f41613c9084FdB9E34E11fAE9412427480e56");
+
+  SetInterceptors(responses);
+  TestDiscoverNFTsOnAllSupportedChains(addresses, expected_contract_addresses);
+
+  // Making the same request again should not yield any new discovered NFTs
+  // since they are have already been discovered and added
+  TestDiscoverNFTsOnAllSupportedChains(addresses, {});
 }
 
 }  // namespace brave_wallet

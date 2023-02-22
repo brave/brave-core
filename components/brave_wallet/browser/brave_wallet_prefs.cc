@@ -130,6 +130,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kPinnedNFTAssets);
   registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
+  registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
 }
 
 void RegisterProfilePrefsForMigration(

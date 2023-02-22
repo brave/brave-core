@@ -28,6 +28,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
+namespace network {
+class SharedURLLoaderFactory;
+}
+
 class PrefService;
 
 namespace brave_wallet {
@@ -60,12 +64,14 @@ class BraveWalletService : public KeyedService,
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
-  BraveWalletService(std::unique_ptr<BraveWalletServiceDelegate> delegate,
-                     KeyringService* keyring_service,
-                     JsonRpcService* json_rpc_service,
-                     TxService* tx_service,
-                     PrefService* profile_prefs,
-                     PrefService* local_state);
+  BraveWalletService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<BraveWalletServiceDelegate> delegate,
+      KeyringService* keyring_service,
+      JsonRpcService* json_rpc_service,
+      TxService* tx_service,
+      PrefService* profile_prefs,
+      PrefService* local_state);
 
   ~BraveWalletService() override;
 
@@ -208,6 +214,10 @@ class BraveWalletService : public KeyedService,
                     Base58EncodeCallback callback) override;
 
   void DiscoverAssetsOnAllSupportedChains() override;
+
+  void GetNftDiscoveryEnabled(GetNftDiscoveryEnabledCallback callback) override;
+
+  void SetNftDiscoveryEnabled(bool enabled) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;

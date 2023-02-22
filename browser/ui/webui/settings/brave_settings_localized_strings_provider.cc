@@ -69,6 +69,9 @@ const char16_t kDeAmpLearnMoreUrl[] =
     u"https://support.brave.com/hc/en-us/articles/8611298579981";
 const char16_t kDebounceLearnMoreUrl[] =
     u"https://brave.com/privacy-updates/11-debouncing/";
+const char16_t kEnableNftDiscoveryLearnMoreUrl[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"NFT-Discovery";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -404,6 +407,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_DEFAULT_BASE_CRYPTOCURRENCY_DESC},
     {"showBravewalletIconOnToolbar",
      IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
+    {"enableNftDiscoveryLabel", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL},
+    {"enableNftDiscoveryDesc", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC},
     {"showBravewalletTestNetworks",
      IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS},
     {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
@@ -641,6 +646,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
+  html_source->AddString("enableNftDiscoveryLearnMoreURL",
+                         kEnableNftDiscoveryLearnMoreUrl);
   auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);

@@ -49,6 +49,7 @@ extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
+extern const char kBraveWalletNftDiscoveryEnabled[];
 extern const char kBraveWalletLastDiscoveredAssetsAt[];
 
 extern const char kBraveWalletLastTransactionSentTimeDict[];

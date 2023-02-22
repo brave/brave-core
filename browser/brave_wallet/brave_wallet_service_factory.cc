@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace brave_wallet {
 
@@ -72,8 +73,11 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  auto* default_storage_partition = context->GetDefaultStoragePartition();
+  auto shared_url_loader_factory =
+      default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
   return new BraveWalletService(
-      BraveWalletServiceDelegate::Create(context),
+      shared_url_loader_factory, BraveWalletServiceDelegate::Create(context),
       KeyringServiceFactory::GetServiceForContext(context),
       JsonRpcServiceFactory::GetServiceForContext(context),
       TxServiceFactory::GetServiceForContext(context),

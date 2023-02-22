@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -32,6 +33,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -154,11 +156,36 @@ bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
   return token->is_erc721 || token->is_erc1155;
 }
 
+net::NetworkTrafficAnnotationTag
+GetAssetDiscoveryManagerNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("brave_wallet_service", R"(
+      semantics {
+        sender: "Asset Discovery Manager"
+        description:
+          "This service is used to discover crypto assets on behalf "
+          "of the user interacting with the native Brave wallet."
+        trigger:
+          "Triggered by uses of the native Brave wallet."
+        data:
+          "NFT assets."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature on chrome://flags."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
 }  // namespace
 
 namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     KeyringService* keyring_service,
     JsonRpcService* json_rpc_service,
@@ -171,11 +198,14 @@ BraveWalletService::BraveWalletService(
       tx_service_(tx_service),
       profile_prefs_(profile_prefs),
       brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
-      asset_discovery_manager_(
-          std::make_unique<AssetDiscoveryManager>(this,
-                                                  json_rpc_service,
-                                                  keyring_service,
-                                                  profile_prefs)),
+      asset_discovery_manager_(std::make_unique<AssetDiscoveryManager>(
+          std::make_unique<api_request_helper::APIRequestHelper>(
+              GetAssetDiscoveryManagerNetworkTrafficAnnotationTag(),
+              url_loader_factory),
+          this,
+          json_rpc_service,
+          keyring_service,
+          profile_prefs)),
       weak_ptr_factory_(this) {
   if (delegate_)
     delegate_->AddObserver(this);
@@ -1563,6 +1593,16 @@ void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
   // Discover assets owned by the SOL and ETH addresses on all supported chains
   asset_discovery_manager_->DiscoverAssetsOnAllSupportedChainsRefresh(
       addresses);
+}
+
+void BraveWalletService::GetNftDiscoveryEnabled(
+    GetNftDiscoveryEnabledCallback callback) {
+  std::move(callback).Run(
+      profile_prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled));
+}
+
+void BraveWalletService::SetNftDiscoveryEnabled(bool enabled) {
+  profile_prefs_->SetBoolean(kBraveWalletNftDiscoveryEnabled, enabled);
 }
 
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
