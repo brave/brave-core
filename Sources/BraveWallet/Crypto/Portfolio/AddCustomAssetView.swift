@@ -109,21 +109,20 @@ struct AddCustomAssetView: View {
         ) {
           TextField(Strings.Wallet.enterAddress, text: $addressInput)
             .onChange(of: addressInput) { newValue in
-              if !newValue.isEmpty, newValue.isETHAddress {
-                userAssetStore.tokenInfo(by: newValue) { token in
-                  if let token = token {
-                    if nameInput.isEmpty {
-                      nameInput = token.name
-                    }
-                    if symbolInput.isEmpty {
-                      symbolInput = token.symbol
-                    }
-                    if !token.isErc721 {
-                      if decimalsInput.isEmpty {
-                        decimalsInput = "\(token.decimals)"
-                      }
-                    }
-                  }
+              guard !newValue.isEmpty else { return }
+              userAssetStore.tokenInfo(address: newValue) { token in
+                guard let token else { return }
+                if nameInput.isEmpty {
+                  nameInput = token.name
+                }
+                if symbolInput.isEmpty {
+                  symbolInput = token.symbol
+                }
+                if !token.isErc721, !token.isNft, decimalsInput.isEmpty {
+                  decimalsInput = "\(token.decimals)"
+                }
+                if let network = networkStore.allChains.first(where: { $0.chainId == token.chainId }) {
+                  networkSelectionStore.networkSelectionInForm = network
                 }
               }
             }

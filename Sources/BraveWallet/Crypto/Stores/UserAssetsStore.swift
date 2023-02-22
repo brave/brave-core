@@ -160,27 +160,27 @@ public class UserAssetsStore: ObservableObject {
     }
   }
 
-  func tokenInfo(by contractAddress: String, completion: @escaping (BraveWallet.BlockchainToken?) -> Void) {
-    if let assetStore = assetStores.first(where: { $0.token.contractAddress.lowercased() == contractAddress.lowercased() }) {  // First check user's visible assets
+  func tokenInfo(
+    address: String,
+    completion: @escaping (BraveWallet.BlockchainToken?) -> Void
+  ) {
+    // First check user's visible assets
+    if let assetStore = assetStores.first(where: { $0.token.contractAddress.caseInsensitiveCompare(address) == .orderedSame }) {
       completion(assetStore.token)
-    } else if let token = allTokens.first(where: { $0.contractAddress.lowercased() == contractAddress.lowercased() }) {  // Then check full tokens list
+    } // else check full tokens list
+    else if let token = allTokens.first(where: { $0.contractAddress.caseInsensitiveCompare(address) == .orderedSame }) {
       completion(token)
-    } else {  // Last network call to get token info by its contractAddress only if the network is Mainnet
+    } // else use network request to get token info
+    else if address.isETHAddress { // only Eth Mainnet supported, require ethereum address
       timer?.invalidate()
       timer = Timer.scheduledTimer(
         withTimeInterval: 0.25, repeats: false,
         block: { [weak self] _ in
           guard let self = self else { return }
-          self.rpcService.network(.eth) { network in
-            if network.id == BraveWallet.MainnetChainId {
-              self.isSearchingToken = true
-              self.assetRatioService.tokenInfo(contractAddress) { token in
-                self.isSearchingToken = false
-                completion(token)
-              }
-            } else {
-              completion(nil)
-            }
+          self.isSearchingToken = true
+          self.assetRatioService.tokenInfo(address) { token in
+            self.isSearchingToken = false
+            completion(token)
           }
         })
     }
