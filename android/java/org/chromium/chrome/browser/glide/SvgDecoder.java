@@ -19,7 +19,9 @@ import com.caverock.androidsvg.SVGParseException;
 import java.io.IOException;
 import java.io.InputStream;
 
-/** Decodes an SVG internal representation from an {@link InputStream}. */
+/**
+ * Decodes an SVG internal representation from an {@link InputStream}.
+ */
 public class SvgDecoder implements ResourceDecoder<InputStream, SVG> {
     @Override
     public boolean handles(@NonNull InputStream source, @NonNull Options options) {
