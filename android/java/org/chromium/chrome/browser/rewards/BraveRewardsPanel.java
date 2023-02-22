@@ -735,18 +735,6 @@ public class BraveRewardsPanel
                         break;
                 }
                 break;
-            case REWARDS_NOTIFICATION_NO_INTERNET:
-                notificationClaimImg.setVisibility(View.GONE);
-                notificationClaimSubText.setVisibility(View.GONE);
-                title = "";
-                notificationIcon = R.drawable.ic_notification_error;
-                description = "\n"
-                        + mPopupView.getResources().getString(R.string.brave_rewards_local_uh_oh)
-                        + "\n"
-                        + mPopupView.getResources().getString(
-                                R.string.brave_rewards_local_server_not_responding);
-                actionNotificationButton.setVisibility(View.GONE);
-                break;
             case REWARDS_PROMOTION_CLAIM_ERROR:
                 notificationClaimImg.setVisibility(View.GONE);
                 notificationClaimSubText.setVisibility(View.GONE);
@@ -1084,11 +1072,6 @@ public class BraveRewardsPanel
                 TextView usdBalanceText = mPopupView.findViewById(R.id.usd_balance_text);
                 usdBalanceText.setText(usdText);
             }
-        } else if (errorCode == BraveRewardsNativeWorker.LEDGER_ERROR) { // No Internet connection
-            String args[] = {};
-            Log.e(TAG, "Failed to fetch rewards parameters from server");
-            showNotification(
-                    REWARDS_NOTIFICATION_NO_INTERNET_ID, REWARDS_NOTIFICATION_NO_INTERNET, 0, args);
         }
     }
 
