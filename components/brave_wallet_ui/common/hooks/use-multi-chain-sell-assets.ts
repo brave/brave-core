@@ -35,7 +35,6 @@ export const useMultiChainSellAssets = () => {
   // State
   const [sellAmount, setSellAmount] = React.useState<string>('')
   const [selectedSellAsset, setSelectedSellAsset] = React.useState<BraveWallet.BlockchainToken>()
-  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
   const [options, setOptions] = React.useState<
     {
       rampAssetOptions: BraveWallet.BlockchainToken[]
@@ -122,8 +121,6 @@ export const useMultiChainSellAssets = () => {
     sellAmount,
     setSellAmount,
     openSellAssetLink,
-    checkIsAssetSellSupported,
-    showSellModal,
-    setShowSellModal
+    checkIsAssetSellSupported
   }
 }

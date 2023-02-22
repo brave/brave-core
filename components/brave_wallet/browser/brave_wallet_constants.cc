@@ -575,13 +575,7 @@ const std::vector<mojom::BlockchainToken>& GetRampSellTokens() {
        {"", "Fantom", "", false, false, false, "FTM", 18, true, "", "",
         mojom::kFantomMainnetChainId, mojom::CoinType::ETH},
        {"", "Solana", "", false, false, false, "SOL", 9, true, "", "",
-        mojom::kSolanaMainnet, mojom::CoinType::SOL},
-       {"Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", "Tether", "usdt.png",
-        true, false, false, "USDT", 6, true, "", "", mojom::kSolanaMainnet,
-        mojom::CoinType::SOL},
-       {"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin", "usdc.png",
-        true, false, false, "USDC", 6, true, "", "", mojom::kSolanaMainnet,
-        mojom::CoinType::SOL}});
+        mojom::kSolanaMainnet, mojom::CoinType::SOL}});
   return *tokens;
 }
 

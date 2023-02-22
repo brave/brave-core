@@ -39,6 +39,8 @@ import {
 
 import { VerticalSpacer, Row } from '../../../shared/style'
 
+const MINIMUM_SELL_THRESHOLD = 50
+
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined
@@ -107,9 +109,20 @@ export const SellAssetModal = (props: Props) => {
     return Number(sellAmount) > new Amount(fiatBalance.format(2)).toNumber()
   }, [sellAmount, fiatBalance])
 
-  const isSellButtonDisabled = React.useMemo(() => {
-    return sellAmount === '' || insufficientBalance || hasTooManyDecimals
-  }, [sellAmount, insufficientBalance, hasTooManyDecimals])
+  // Computed
+  const meetsMinimumSellThreshold = Number(sellAmount) >= MINIMUM_SELL_THRESHOLD
+
+  const isSellButtonDisabled = sellAmount === '' || insufficientBalance || hasTooManyDecimals || !meetsMinimumSellThreshold
+
+  const errorMessage = React.useMemo(() => {
+    if (!meetsMinimumSellThreshold && sellAmount !== '') {
+      return getLocale('braveWalletSellMinimumAmount').replace('$1', new Amount(MINIMUM_SELL_THRESHOLD).formatAsFiat(defaultCurrencies.fiat))
+    }
+    if (insufficientBalance) {
+      return getLocale('braveWalletNotEnoughBalance').replace('$1', selectedAsset.symbol)
+    }
+    return ''
+  }, [selectedAsset.symbol, meetsMinimumSellThreshold, sellAmount, defaultCurrencies.fiat, insufficientBalance])
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -127,17 +140,22 @@ export const SellAssetModal = (props: Props) => {
     setSellAmount(fiatBalance.format(2))
   }, [fiatBalance])
 
+  const onCloseSellModal = React.useCallback(() => {
+    setSellAmount('')
+    onClose()
+  }, [setSellAmount, onClose])
+
   // Hooks
   useOnClickOutside(
     sellAssetModalRef,
-    onClose,
+    onCloseSellModal,
     showSellModal
   )
 
   return (
     <PopupModal
       title={`${getLocale('braveWalletSell')} ${selectedAsset.name}`}
-      onClose={onClose}
+      onClose={onCloseSellModal}
       width='512px'
       borderRadius={16}
       ref={sellAssetModalRef}
@@ -233,7 +251,7 @@ export const SellAssetModal = (props: Props) => {
             </Text>
           </Row>
         </InputSection>
-        {insufficientBalance &&
+        {errorMessage !== '' &&
           <ErrorBox>
             <ErrorIcon />
             <Text
@@ -241,7 +259,7 @@ export const SellAssetModal = (props: Props) => {
               isBold={false}
               textColor='text01'
             >
-              {getLocale('braveWalletNotEnoughBalance').replace('$1', selectedAsset.symbol)}
+              {errorMessage}
             </Text>
           </ErrorBox>
         }

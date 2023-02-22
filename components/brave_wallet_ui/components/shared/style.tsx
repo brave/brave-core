@@ -105,6 +105,7 @@ export const Row = styled.div<FlexProps & {
   width?: '100%' | 'unset'
   marginBottom?: number
 }>`
+  font-family: 'Poppins';
   display: flex;
   flex-direction: row;
   flex: ${(p) => p.flex ?? 'unset'};
@@ -125,6 +126,7 @@ export const Column = styled.div<FlexProps & {
   color?: ThemeColor
   padding?: number | string
 }>`
+  font-family: 'Poppins';
   height: ${(p) => p.fullHeight ? '100%' : 'unset'};
   width: ${(p) => p.fullWidth ? '100%' : 'unset'};
   flex: ${(p) => p.flex ?? 'unset'};
