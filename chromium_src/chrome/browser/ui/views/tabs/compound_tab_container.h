@@ -13,9 +13,19 @@
   friend class BraveCompoundTabContainer; \
   int NumPinnedTabs
 #define TransferTabBetweenContainers virtual TransferTabBetweenContainers
+#define GetUnpinnedContainerIdealLeadingX \
+  virtual GetUnpinnedContainerIdealLeadingX
+#define GetTabContainerAt     \
+  GetTabContainerAt_Unused(); \
+  virtual TabContainer* GetTabContainerAt
+#define ConvertUnpinnedContainerIdealBoundsToLocal \
+  virtual ConvertUnpinnedContainerIdealBoundsToLocal
 
 #include "src/chrome/browser/ui/views/tabs/compound_tab_container.h"  // IWYU pragma: export
 
+#undef ConvertUnpinnedContainerIdealBoundsToLocal
+#undef GetTabContainerAt
+#undef GetUnpinnedContainerIdealLeadingX
 #undef TransferTabBetweenContainers
 #undef NumPinnedTabs
 
