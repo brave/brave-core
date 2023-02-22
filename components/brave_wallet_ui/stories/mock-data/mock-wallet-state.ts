@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { LAMPORTS_PER_SOL } from '@solana/web3.js'
-
 // asset
 import { USDCIconUrl } from '../../assets/asset-icons'
 
@@ -19,6 +17,7 @@ import { mockMoonCatNFT } from './mock-asset-options'
 import { mockNetwork } from '../../common/constants/mocks'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 import { mockNetworks } from './mock-networks'
+import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',

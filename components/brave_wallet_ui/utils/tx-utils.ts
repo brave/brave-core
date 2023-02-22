@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Solana from '@solana/web3.js'
 import { EntityState } from '@reduxjs/toolkit'
 
 // types
@@ -27,8 +26,9 @@ import { SwapExchangeProxy } from '../common/constants/registry'
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
 import {
+  getSolInstructionAccountParamsObj,
+  getSolInstructionParamsObj,
   getTypedSolanaTxInstructions,
-  SolanaParamsWithLamports,
   TypedSolanaInstructionWithParams
 } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
@@ -271,21 +271,29 @@ export const getToAddressesFromSolanaTransaction = (
   }
 
   const addresses = instructions.map((instruction) => {
+    const {
+      toAccount,
+      newAccount
+    } = getSolInstructionAccountParamsObj(
+      instruction.accountParams,
+      instruction.accountMetas
+    )
+
     switch (instruction.type) {
       case 'Transfer':
       case 'TransferWithSeed':
       case 'WithdrawNonceAccount': {
-        const { toPubkey } = instruction.params
-        return toPubkey.toString() ?? ''
+        return toAccount ?? ''
       }
 
-      case 'Create':
-      case 'CreateWithSeed': {
-        const { newAccountPubkey } = instruction.params
-        return newAccountPubkey.toString() ?? ''
+      case 'CreateAccount':
+      case 'CreateAccountWithSeed': {
+        return (
+          newAccount ?? ''
+        )
       }
 
-      case 'Unknown':
+      case undefined:
       default: return to ?? ''
     }
   })
@@ -449,47 +457,50 @@ export function getLamportsMovedFromInstructions (
   fromAddress: string
 ) {
   return instructions.reduce((acc, instruction) => {
-    const lamportsAmount = (instruction.params as SolanaParamsWithLamports)?.lamports?.toString() ?? '0'
+    const { lamports } = getSolInstructionParamsObj(instruction.params)
+
+    const {
+      fromAccount,
+      nonceAccount,
+      toAccount
+    } = getSolInstructionAccountParamsObj(
+      instruction.accountParams,
+      instruction.accountMetas
+    )
 
     switch (instruction.type) {
       case 'Transfer':
       case 'TransferWithSeed': {
-        const { fromPubkey, toPubkey } = instruction.params
-
         // only show lamports as transferred if
         // the amount is going to a different pubKey
-        if (!toPubkey.equals(fromPubkey)) {
-          return acc.plus(lamportsAmount)
+        if (toAccount !== fromAccount) {
+          return acc.plus(lamports)
         }
         return acc
       }
 
       case 'WithdrawNonceAccount': {
-        const { noncePubkey, toPubkey } = instruction.params
-
-        if (noncePubkey.equals(new Solana.PublicKey(fromAddress))) {
-          return acc.plus(lamportsAmount)
+        if (nonceAccount === fromAddress) {
+          return acc.plus(lamports)
         }
 
-        if (toPubkey.equals(new Solana.PublicKey(fromAddress))) {
-          return acc.minus(lamportsAmount)
-        }
-
-        return acc
-      }
-
-      case 'Create':
-      case 'CreateWithSeed': {
-        const { fromPubkey } = instruction.params
-
-        if (fromPubkey.toString() === fromAddress) {
-          return acc.plus(lamportsAmount)
+        if (toAccount === fromAddress) {
+          return acc.minus(lamports)
         }
 
         return acc
       }
 
-      default: return acc.plus(lamportsAmount)
+      case 'CreateAccount':
+      case 'CreateAccountWithSeed': {
+        if (fromAccount === fromAddress) {
+          return acc.plus(lamports)
+        }
+
+        return acc
+      }
+
+      default: return acc.plus(lamports)
     }
   }, new Amount(0)) ?? 0
 }

@@ -46,8 +46,18 @@ export const findAccountByAddress = <T extends { address: string }>(
   return accounts.find((account) => address === account.address)
 }
 
-export const findAccountName = (accounts: WalletAccountType[], address: string) => {
-  return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
+export const findAccountName = <
+  T extends {
+    address: string
+    name: string
+  }
+>(
+  accounts: T[],
+  address: string
+) => {
+  return accounts.find(
+    (account) => account.address.toLowerCase() === address.toLowerCase()
+  )?.name
 }
 
 export const createTokenBalanceRegistryKey = (

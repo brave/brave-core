@@ -3,143 +3,94 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Solana from '@solana/web3.js'
+// types
+import {
+  BraveWallet,
+  SerializableSolanaTxData
+} from '../constants/types'
 
 // utils
-import { getLocale } from '../../common/locale'
-import {
-  SOLANA_STAKE_PROGRAM_INSTRUCTION_DECODERS,
-  SOLANA_SYSTEM_INSTRUCTION_DECODERS,
-  SOLANA_VOTE_PROGRAM_INSTRUCTION_DECODERS
-} from '../common/constants/solana'
+import { findAccountName } from './account-utils'
+import { getGetCleanedMojoEnumKeys } from './enum-utils'
+import { lamportsToSol } from './web3-utils'
 
-// types
-import { BraveWallet, SerializableSolanaTxData } from '../constants/types'
-
-export type TypedSolanaInstructionWithParams = {
-  instruction: Solana.TransactionInstruction
-} & (
-  // System Program
-  | { params: Solana.AdvanceNonceParams, type: 'AdvanceNonceAccount' }
-  | { params: Solana.AllocateParams, type: 'Allocate' }
-  | { params: Solana.AllocateWithSeedParams, type: 'AllocateWithSeed' }
-  | { params: Solana.AllocateWithSeedParams, type: 'AllocateWithSeed' }
-  | { params: Solana.AssignParams, type: 'Assign' }
-  | { params: Solana.AssignWithSeedParams, type: 'AssignWithSeed' }
-  | { params: Solana.AuthorizeNonceParams, type: 'AuthorizeNonceAccount' }
-  | { params: Solana.CreateAccountParams, type: 'Create' }
-  | { params: Solana.CreateAccountWithSeedParams, type: 'CreateWithSeed' }
-  | { params: Solana.InitializeNonceParams, type: 'InitializeNonceAccount' }
-  | { params: Solana.TransferParams, type: 'Transfer' }
-  | { params: Solana.TransferWithSeedParams, type: 'TransferWithSeed' }
-  | { params: Solana.WithdrawNonceParams, type: 'WithdrawNonceAccount' }
-
-  // Vote Program
-  | { params: Solana.AuthorizeVoteParams, type: 'Authorize' }
-  | { params: Solana.CreateVoteAccountParams, type: 'InitializeAccount' }
-  | { params: Solana.WithdrawFromVoteAccountParams, type: 'Withdraw' }
-
-  // Staking
-  | { params: Solana.AuthorizeStakeParams, type: 'Authorize' }
-  | { params: Solana.AuthorizeWithSeedStakeParams, type: 'AuthorizeWithSeed' }
-  | { params: Solana.DeactivateStakeParams, type: 'Deactivate' }
-  | { params: Solana.DelegateStakeParams, type: 'Delegate' }
-  | { params: Solana.InitializeStakeParams, type: 'Initialize' }
-  | { params: Solana.MergeStakeParams, type: 'Merge' }
-  | { params: Solana.SplitStakeParams, type: 'Split' }
-  | { params: Solana.WithdrawStakeParams, type: 'Withdraw' }
-
-  // Unknown
-  | { params: {}, type: 'Unknown' }
+export const SolanaSystemInstructionKeys = getGetCleanedMojoEnumKeys(
+  BraveWallet.SolanaSystemInstruction
 )
 
-type SolanaInstructionParams =
-  // System Program
-  & Solana.AdvanceNonceParams
-  & Solana.AllocateParams
-  & Solana.AllocateWithSeedParams
-  & Solana.AllocateWithSeedParams
-  & Solana.AssignParams
-  & Solana.AssignWithSeedParams
-  & Solana.AuthorizeNonceParams
-  & Solana.CreateAccountParams
-  & Solana.CreateAccountWithSeedParams
-  & Solana.InitializeNonceParams
-  & Solana.TransferParams
-  & Solana.TransferWithSeedParams
-  & Solana.WithdrawNonceParams
+export const SolanaTokenInstructionKeys = getGetCleanedMojoEnumKeys(
+  BraveWallet.SolanaTokenInstruction
+)
 
-  // Voting
-  & Solana.AuthorizeVoteParams
-  & Solana.CreateVoteAccountParams
-  & Solana.WithdrawFromVoteAccountParams
+export type SolanaSystemInstructionType =
+  typeof SolanaSystemInstructionKeys[number]
 
-  // Staking
-  & Solana.MergeStakeParams
-  & Solana.SplitStakeParams
-  & Solana.DelegateStakeParams
-  & Solana.WithdrawStakeParams
-  & Solana.AuthorizeStakeParams
-  & Solana.DeactivateStakeParams
-  & Solana.InitializeStakeParams
-  & Solana.CreateStakeAccountParams
-  & Solana.SplitStakeWithSeedParams
-  & Solana.AuthorizeWithSeedStakeParams
-  & Solana.CreateStakeAccountWithSeedParams
+export type SolanaTokenInstructionType =
+  typeof SolanaTokenInstructionKeys[number]
 
-export type SolanaInstructionParamKeys = keyof SolanaInstructionParams
-
-export type SolanaParamsWithLamports =
-  | Solana.CreateAccountParams
-  | Solana.CreateAccountWithSeedParams
-  | Solana.TransferParams
-  | Solana.TransferWithSeedParams
-  | Solana.WithdrawNonceParams
+export type TypedSolanaInstructionWithParams = {
+  accountMetas: BraveWallet.SolanaAccountMeta[]
+  programId: string
+  accountParams: BraveWallet.SolanaInstructionParam[]
+  type?: SolanaSystemInstructionType | SolanaTokenInstructionType
+  params: BraveWallet.SolanaInstructionParam[]
+  data: number[]
+}
 
 export const getSolanaTransactionInstructionParamsAndType = ({
+  programId,
+  decodedData,
   accountMetas,
   data,
-  programId
 }: BraveWallet.SolanaInstruction): TypedSolanaInstructionWithParams => {
-  const instruction: Solana.TransactionInstruction = new Solana.TransactionInstruction({
-    data: Buffer.from(data),
-    programId: new Solana.PublicKey(programId),
-    keys: accountMetas.map((meta) => ({
-      isSigner: meta.isSigner,
-      isWritable: meta.isWritable,
-      pubkey: new Solana.PublicKey(meta.pubkey)
-    }))
+  // the signers are the `accountMetas` from this index to the end of the array
+  // its possible to have any number of signers, including 0
+  const accountParams: BraveWallet.SolanaInstructionParam[] = (
+    decodedData?.accountParams || []
+  ).map(({ localizedName, name }, i) => {
+    const isSignersParam = name === BraveWallet.SIGNERS
+
+    return {
+      name,
+      localizedName,
+      type: isSignersParam
+        ? BraveWallet.SolanaInstructionParamType.kString
+        : BraveWallet.SolanaInstructionParamType.kPublicKey,
+      // add a comma separated list of signers as a value if param name is "signers"
+      value: isSignersParam
+        ? accountMetas.slice(i).join(',')
+        : accountMetas[i]?.pubkey
+    }
   })
 
-  let instructionType = 'Unknown'
-  let params = {}
-
-  if (instruction.programId.equals(Solana.SystemProgram.programId)) {
-    instructionType = Solana.SystemInstruction.decodeInstructionType(instruction)
-    params = Solana.SystemInstruction[
-      SOLANA_SYSTEM_INSTRUCTION_DECODERS[instructionType]
-    ](instruction) || {}
+  const typedInstruction: TypedSolanaInstructionWithParams = {
+    programId,
+    accountParams: accountParams,
+    params: decodedData?.params || [],
+    type: undefined,
+    accountMetas,
+    data
   }
 
-  if (instruction.programId.equals(Solana.VoteProgram.programId)) {
-    instructionType = Solana.VoteInstruction.decodeInstructionType(instruction)
-    params = Solana.VoteInstruction[
-      SOLANA_VOTE_PROGRAM_INSTRUCTION_DECODERS[instructionType]
-    ](instruction) || {}
+  if (decodedData === undefined) {
+    // return early if nothing to decode
+    return typedInstruction
   }
 
-  if (instruction.programId.equals(Solana.StakeProgram.programId)) {
-    instructionType = Solana.StakeInstruction.decodeInstructionType(instruction)
-    params = Solana.StakeInstruction[
-      SOLANA_STAKE_PROGRAM_INSTRUCTION_DECODERS[instructionType]
-    ](instruction)
+  switch (programId) {
+    case BraveWallet.SOLANA_SYSTEM_PROGRAM_ID: {
+      typedInstruction.type =
+        SolanaSystemInstructionKeys[decodedData.instructionType]
+      break
+    }
+    case BraveWallet.SOLANA_TOKEN_PROGRAM_ID: {
+      typedInstruction.type =
+        SolanaTokenInstructionKeys[decodedData.instructionType]
+      break
+    }
   }
 
-  return {
-    instruction,
-    params,
-    type: instructionType
-  } as TypedSolanaInstructionWithParams
+  return typedInstruction
 }
 
 export const getTypedSolanaTxInstructions = (solTxData?: SerializableSolanaTxData | BraveWallet.SolanaTxData): TypedSolanaInstructionWithParams[] => {
@@ -149,11 +100,104 @@ export const getTypedSolanaTxInstructions = (solTxData?: SerializableSolanaTxDat
   return instructions || []
 }
 
-export const getSolanaInstructionParamKeyName = (key: SolanaInstructionParamKeys) => {
-  return ({
-    fromPubkey: getLocale('braveWalletSolanaParamKeyFromPubkey'),
-    toPubkey: getLocale('braveWalletSolanaParamKeyToPubkey'),
-    lamports: getLocale('braveWalletSolanaParamKeyLamports'),
-    newAccountPubkey: getLocale('braveWalletSolanaParamKeyNewAccountPubkey')
-  } as Partial<Record<SolanaInstructionParamKeys, string>>)[key] || key
+/**
+ * formatted if possible:
+ *
+ * lamports -> SOL
+ *
+ * pubkey -> friendly account address name
+ */
+export const formatSolInstructionParamValue = (
+  { name, value, type }: BraveWallet.SolanaInstructionParam,
+  accounts: Array<{
+    address: string
+    name: string
+  }>
+): {
+  valueType: 'lamports' | 'address' | 'other'
+  formattedValue: string
+} => {
+  const isAddressParam =
+    type === BraveWallet.SolanaInstructionParamType.kOptionalPublicKey ||
+    type === BraveWallet.SolanaInstructionParamType.kPublicKey
+
+  const isLamportsParam = name === BraveWallet.LAMPORTS
+
+  const formattedParamValue = (
+    isLamportsParam
+      ? lamportsToSol(value).formatAsAsset(9, 'SOL')
+      : isAddressParam
+      ? findAccountName(accounts, value) ?? value
+      : value
+  ).toString()
+
+  return {
+    formattedValue: formattedParamValue,
+    valueType: isAddressParam
+      ? 'address'
+      : isLamportsParam
+      ? 'lamports'
+      : 'other'
+  }
+}
+
+export const getSolInstructionAccountParamsObj = (
+  accountParams: BraveWallet.SolanaInstructionAccountParam[],
+  accountMetas: BraveWallet.SolanaAccountMeta[]
+) => {
+  let fromAccount: string = ''
+  let toAccount: string = ''
+  let nonceAccount: string = ''
+  let newAccount: string = ''
+
+  accountParams.forEach(({ name }, i) => {
+    const value = accountMetas[i]?.pubkey
+
+    switch (name) {
+      case BraveWallet.FROM_ACCOUNT: {
+        fromAccount = value
+        break
+      }
+      case BraveWallet.TO_ACCOUNT: {
+        toAccount = value
+        break
+      }
+      case BraveWallet.NONCE_ACCOUNT: {
+        nonceAccount = value
+        break
+      }
+      case BraveWallet.NEW_ACCOUNT: {
+        newAccount = value
+        break
+      }
+      default: break
+    }
+  })
+
+  return {
+    fromAccount,
+    toAccount,
+    nonceAccount,
+    newAccount
+  }
+}
+
+export const getSolInstructionParamsObj = (
+  params: BraveWallet.SolanaInstructionParam[]
+) => {
+  let lamports: string = '0'
+
+  params.forEach(({ name, value }, i) => {
+    switch (name) {
+      case BraveWallet.LAMPORTS: {
+        lamports = value ?? '0'
+        break
+      }
+      default: break
+    }
+  })
+
+  return {
+    lamports
+  }
 }
