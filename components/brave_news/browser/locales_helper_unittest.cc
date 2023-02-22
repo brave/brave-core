@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -38,7 +39,7 @@ Publishers MakePublishers(
       publisher->locales.push_back(MakeLocaleInfo(locale));
     }
     publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
-    result[std::to_string(next_id++)] = std::move(publisher);
+    result[base::NumberToString(next_id++)] = std::move(publisher);
   }
   return result;
 }

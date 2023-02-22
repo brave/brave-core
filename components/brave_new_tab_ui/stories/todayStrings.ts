@@ -6,8 +6,6 @@ import { provideStrings } from '../../../.storybook/locale'
 
 provideStrings({
   braveNewsDisableSourceCommand: 'Disable content from $1',
-  braveNewsIntroTitle: 'Today\'s top stories in a completely private feed, just for you.',
-  braveNewsIntroDescription: 'Brave News is ad-supported with completely private and anonymized ads matched on your device. Your personal information always stays private, per our $1privacy policy$2.',
   braveNewsOptInActionLabel: 'Show Brave News',
   braveNewsOptOutActionLabel: 'No thanks',
   braveNewsScrollHint: 'Scroll for Brave News',

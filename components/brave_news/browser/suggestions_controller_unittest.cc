@@ -11,6 +11,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
@@ -40,7 +41,7 @@ Publishers MakePublishers(const std::vector<std::string>& publisher_urls) {
         mojom::LocaleInfo::New("en_US", 0, std::vector<std::string>{}));
     publisher->site_url = GURL(url);
     publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
-    result[std::to_string(next_id++)] = std::move(publisher);
+    result[base::NumberToString(next_id++)] = std::move(publisher);
   }
   return result;
 }

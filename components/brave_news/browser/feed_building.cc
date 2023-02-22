@@ -6,12 +6,9 @@
 #include "brave/components/brave_news/browser/feed_building.h"
 
 #include <algorithm>
-#include <cstdint>
-#include <functional>
 #include <iterator>
 #include <list>
 #include <map>
-#include <random>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -20,7 +17,10 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -45,7 +45,7 @@ using mojom::CardType;
 // This controls the order to display "card" and content types on every
 // platform. Each "page" of content is a repeat of
 // `page_content_order + random_content_order`
-std::vector<CardType> page_content_order = {
+std::vector<CardType> g_page_content_order = {
     CardType::HEADLINE,        CardType::HEADLINE,
     CardType::HEADLINE_PAIRED, CardType::PROMOTED_ARTICLE,
     CardType::CATEGORY_GROUP,  CardType::HEADLINE,
@@ -55,8 +55,8 @@ std::vector<CardType> page_content_order = {
     CardType::PUBLISHER_GROUP, CardType::HEADLINE_PAIRED,
     CardType::HEADLINE,        CardType::DEALS};
 
-std::vector<CardType> random_content_order = {CardType::HEADLINE,
-                                              CardType::HEADLINE_PAIRED};
+std::vector<CardType> g_random_content_order = {CardType::HEADLINE,
+                                                CardType::HEADLINE_PAIRED};
 
 mojom::FeedItemPtr FromArticle(mojom::ArticlePtr article) {
   return mojom::FeedItem::NewArticle(std::move(article));
@@ -82,13 +82,16 @@ bool Take(
     size_t count,
     std::list<mojo::StructPtr<T>>* articles,
     std::vector<mojom::FeedItemPtr>* results,
-    std::function<mojom::FeedItemPtr(mojo::StructPtr<T>)> create = FromArticle,
-    std::function<bool(T*)> predicate = {[](T* a) { return true; }}) {
+    base::RepeatingCallback<mojom::FeedItemPtr(mojo::StructPtr<T>)> create =
+        base::BindRepeating(&FromArticle),
+    base::RepeatingCallback<bool(T*)> predicate = base::BindRepeating([](T* a) {
+      return true;
+    })) {
   auto it = articles->begin();
   while (it != articles->end() && results->size() < count) {
-    auto should_take = predicate(it->get());
+    auto should_take = predicate.Run(it->get());
     if (should_take) {
-      mojom::FeedItemPtr item = create(*std::make_move_iterator(it));
+      mojom::FeedItemPtr item = create.Run(*std::make_move_iterator(it));
       results->emplace_back(std::move(item));
       it = articles->erase(it);
     } else {
@@ -104,27 +107,27 @@ void TakeRandom(
     size_t count,
     std::list<mojo::StructPtr<T>>* articles,
     std::vector<mojom::FeedItemPtr>* results,
-    std::function<mojom::FeedItemPtr(mojo::StructPtr<T>)> create = FromArticle,
-    std::function<bool(T*)> predicate = {[](T* a) { return true; }}) {
+    base::RepeatingCallback<mojom::FeedItemPtr(mojo::StructPtr<T>)> create =
+        FromArticle,
+    base::RepeatingCallback<bool(T*)> predicate = {[](T* a) { return true; }}) {
   auto it = articles->begin();
   std::vector<typename std::list<mojo::StructPtr<T>>::iterator>
       matching_iterators;
   while (it != articles->end()) {
-    auto should_take = predicate(it->get());
+    auto should_take = predicate.Run(it->get());
     if (should_take) {
       matching_iterators.push_back(it);
     }
     it++;
   }
-  std::random_device rd;
-  std::mt19937 g(rd());
-  std::shuffle(matching_iterators.begin(), matching_iterators.end(), g);
+
+  base::RandomShuffle(matching_iterators.begin(), matching_iterators.end());
   if (matching_iterators.size() > count) {
     matching_iterators.resize(count);
   }
   for (auto& matching_iterator : matching_iterators) {
     auto a = std::make_move_iterator(matching_iterator);
-    auto item = create(*a);
+    auto item = create.Run(*a);
     results->emplace_back(std::move(item));
     articles->erase(matching_iterator);
   }
@@ -146,16 +149,20 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
     // Additional difference for is_random is that we only consider items from
     // the last 48hrs.
     base::Time time_limit = base::Time::Now() - base::Days(2);
-    auto match_is_recent = [time_limit](mojom::Article* article) {
-      return (article->data->publish_time >= time_limit);
-    };
+    auto match_is_recent = base::BindRepeating(
+        [](base::Time time_limit, mojom::Article* article) {
+          return (article->data->publish_time >= time_limit);
+        },
+        time_limit);
     switch (page_item->card_type) {
       case CardType::HEADLINE:
-        TakeRandom<mojom::Article>(1u, articles, &page_item->items, FromArticle,
+        TakeRandom<mojom::Article>(1u, articles, &page_item->items,
+                                   base::BindRepeating(&FromArticle),
                                    match_is_recent);
         break;
       case CardType::HEADLINE_PAIRED:
-        TakeRandom<mojom::Article>(2u, articles, &page_item->items, FromArticle,
+        TakeRandom<mojom::Article>(2u, articles, &page_item->items,
+                                   base::BindRepeating(&FromArticle),
                                    match_is_recent);
         break;
       default:
@@ -167,17 +174,22 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
   // Not having enough articles is the only real reason to abandon a page.
   switch (page_item->card_type) {
     case CardType::HEADLINE:
-      Take<mojom::Article>(1u, articles, &page_item->items, FromArticle);
+      Take<mojom::Article>(1u, articles, &page_item->items,
+                           base::BindRepeating(&FromArticle));
       break;
     case CardType::HEADLINE_PAIRED:
-      Take<mojom::Article>(2u, articles, &page_item->items, FromArticle);
+      Take<mojom::Article>(2u, articles, &page_item->items,
+                           base::BindRepeating(&FromArticle));
       break;
     case CardType::CATEGORY_GROUP:
       Take<mojom::Article>(
-          3u, articles, &page_item->items, FromArticle,
-          [article_category_name](mojom::Article* article) {
-            return (article->data->category_name == article_category_name);
-          });
+          3u, articles, &page_item->items, base::BindRepeating(&FromArticle),
+          base::BindRepeating(
+              [](const std::string& article_category_name,
+                 mojom::Article* article) {
+                return (article->data->category_name == article_category_name);
+              },
+              article_category_name));
       break;
     case CardType::PUBLISHER_GROUP: {
       // Choose the first publisher available
@@ -190,23 +202,28 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
         break;
       }
       Take<mojom::Article>(
-          3u, articles, &page_item->items, FromArticle,
-          [publisher_id](mojom::Article* article) {
-            return (article->data->publisher_id == publisher_id);
-          });
+          3u, articles, &page_item->items, base::BindRepeating(&FromArticle),
+          base::BindRepeating(
+              [](const std::string& publisher_id, mojom::Article* article) {
+                return (article->data->publisher_id == publisher_id);
+              },
+              publisher_id));
       break;
     }
     case CardType::DEALS:
-      Take<mojom::Deal>(3u, deals, &page_item->items, FromDeal,
-                        [deal_category_name](mojom::Deal* deal) {
-                          return MatchesDealsCategory(deal_category_name, deal);
-                        });
+      Take<mojom::Deal>(
+          3u, deals, &page_item->items, base::BindRepeating(FromDeal),
+          base::BindRepeating(
+              [](const std::string& deal_category_name, mojom::Deal* deal) {
+                return MatchesDealsCategory(deal_category_name, deal);
+              },
+              deal_category_name));
       if (page_item->items.size() < 3u) {
         // Supplement with deals from other categories
         size_t supplemental_count =
             std::min(3u - page_item->items.size(), deals->size());
         Take<mojom::Deal>(supplemental_count, deals, &page_item->items,
-                          FromDeal);
+                          base::BindRepeating(&FromDeal));
       }
       break;
     case CardType::DISPLAY_AD:
@@ -215,7 +232,7 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
       break;
     case CardType::PROMOTED_ARTICLE:
       Take<mojom::PromotedArticle>(1u, promoted_articles, &page_item->items,
-                                   FromPromotedArticle);
+                                   base::BindRepeating(&FromPromotedArticle));
       break;
   }
 }
@@ -357,7 +374,8 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     // Get hash at this point since we have a flat list, and our algorithm
     // will only change sorting which can be re-applied on the next
     // feed update.
-    feed->hash = std::to_string(hasher(feed->hash + metadata->url.spec()));
+    feed->hash =
+        base::NumberToString(hasher(feed->hash + metadata->url.spec()));
     switch (item->which()) {
       case mojom::FeedItem::Tag::kArticle:
         articles.push_back(std::move(item->get_article()));
@@ -476,7 +494,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     std::string article_category_name =
         (category_it != category_names_by_priority.end()) ? *category_it : "";
     auto feed_page = mojom::FeedPage::New();
-    for (auto card_type : page_content_order) {
+    for (auto card_type : g_page_content_order) {
       auto feed_page_item = mojom::FeedPageItem::New();
       feed_page_item->card_type = card_type;
       BuildFeedPageItem(&articles, &promoted_articles, &deals,
@@ -484,7 +502,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                         &feed_page_item);
       feed_page->items.push_back(std::move(feed_page_item));
     }
-    for (auto card_type : random_content_order) {
+    for (auto card_type : g_random_content_order) {
       auto feed_page_item = mojom::FeedPageItem::New();
       feed_page_item->card_type = card_type;
       BuildFeedPageItem(&articles, &promoted_articles, &deals,
