@@ -78,7 +78,7 @@ window.__firefox__.execute(function($) {
       this._shouldTrack = arguments[2] !== undefined && !arguments[2]
       this._url = url;
       return originalOpen.apply(this, arguments);
-    });
+    }, /*overrideToString=*/false);
 
     xhrProto.send = $(function(body) {
       if (this._url === undefined || !this._shouldTrack) {
@@ -96,7 +96,7 @@ window.__firefox__.execute(function($) {
         this.addEventListener("error", this._tpErrorHandler);
       }
       return originalSend.apply(this, arguments);
-    });
+    }, /*overrideToString=*/false);
 
     // -------------------------------------------------
     // Detect when new sources get set on Image and send them to the host application

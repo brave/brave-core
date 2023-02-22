@@ -41,7 +41,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
         this.addEventListener('load', listener, true);
         this.addEventListener('error', listener, true);
         return originalOpen.apply(this, arguments);
-    });
+    }, /*overrideToString=*/false);
     
     XMLHttpRequest.prototype.send = $(function(body) {
         this._ref = null;
@@ -51,7 +51,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
             this._data = null;
         }
         return originalSend.apply(this, arguments);
-    });
+    }, /*overrideToString=*/false);
 
     window.fetch = $(function(resource, options) {
         const args = arguments
@@ -71,7 +71,7 @@ window.__firefox__.includeOnce("RewardsReporting", function($) {
               reject(error);
             })
         }));
-    });
+    }, /*overrideToString=*/false);
 
     navigator.sendBeacon = $(function(url, data) {
       sendMessage("POST", url, data);
