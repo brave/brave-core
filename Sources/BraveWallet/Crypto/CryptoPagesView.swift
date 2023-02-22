@@ -20,13 +20,20 @@ struct CryptoPagesView: View {
   @State private var fetchedPendingRequestsThisSession: Bool = false
 
   @Environment(\.openWalletURLAction) private var openWalletURL
+  
+  private var isConfirmationButtonVisible: Bool {
+    if case .transactions(let txs) = cryptoStore.pendingRequest {
+      return !txs.isEmpty
+    }
+    return cryptoStore.pendingRequest != nil
+  }
 
   var body: some View {
     _CryptoPagesView(
       keyringStore: keyringStore,
       cryptoStore: cryptoStore,
       isShowingPendingRequest: $cryptoStore.isPresentingPendingRequest,
-      isConfirmationsButtonVisible: cryptoStore.pendingRequest != nil
+      isConfirmationsButtonVisible: isConfirmationButtonVisible
     )
     .onAppear {
       // If a user chooses not to confirm/reject their requests we shouldn't

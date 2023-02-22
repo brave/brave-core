@@ -12,6 +12,13 @@ extension BraveWalletTxService {
   func pendingTransactions(
     for keyrings: [BraveWallet.KeyringInfo]
   ) async -> [BraveWallet.TransactionInfo] {
+    await allTransactions(for: keyrings).filter { $0.txStatus == .unapproved }
+  }
+  
+  // Fetches all transactions for all given keyrings
+  func allTransactions(
+    for keyrings: [BraveWallet.KeyringInfo]
+  ) async -> [BraveWallet.TransactionInfo] {
     return await withTaskGroup(
       of: [BraveWallet.TransactionInfo].self,
       body: { @MainActor group in
@@ -22,11 +29,11 @@ extension BraveWalletTxService {
             }
           }
         }
-        var allPendingTx: [BraveWallet.TransactionInfo] = []
+        var allTx: [BraveWallet.TransactionInfo] = []
         for await transactions in group {
-          allPendingTx.append(contentsOf: transactions.filter { $0.txStatus == .unapproved })
+          allTx.append(contentsOf: transactions)
         }
-        return allPendingTx
+        return allTx
       }
     )
   }

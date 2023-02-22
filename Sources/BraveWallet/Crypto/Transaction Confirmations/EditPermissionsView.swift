@@ -22,7 +22,7 @@ struct EditPermissionsView: View {
   @Environment(\.sizeCategory) private var sizeCategory
   
   private var activeTransaction: BraveWallet.TransactionInfo {
-    confirmationStore.transactions.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.transactions.first ?? .init())
+    confirmationStore.unapprovedTxs.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.unapprovedTxs.first ?? .init())
   }
   
   private var customAllowanceAmountInWei: String {
