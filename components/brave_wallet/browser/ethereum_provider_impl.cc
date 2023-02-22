@@ -12,15 +12,12 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -92,8 +89,7 @@ EthereumProviderImpl::EthereumProviderImpl(
       brave_wallet_service_(brave_wallet_service),
       eth_block_tracker_(json_rpc_service),
       eth_logs_tracker_(json_rpc_service),
-      prefs_(prefs),
-      weak_factory_(this) {
+      prefs_(prefs) {
   DCHECK(json_rpc_service);
   json_rpc_service_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
@@ -1526,13 +1522,13 @@ void EthereumProviderImpl::OnUpdateKnownAccounts(
   if (error != mojom::ProviderError::kSuccess) {
     return;
   }
-  bool accounts_changed = allowed_accounts != known_allowed_accounts;
-  known_allowed_accounts = allowed_accounts;
-  if (!first_known_accounts_check && events_listener_.is_bound() &&
+  bool accounts_changed = allowed_accounts != known_allowed_accounts_;
+  known_allowed_accounts_ = allowed_accounts;
+  if (!first_known_accounts_check_ && events_listener_.is_bound() &&
       accounts_changed) {
-    events_listener_->AccountsChangedEvent(known_allowed_accounts);
+    events_listener_->AccountsChangedEvent(known_allowed_accounts_);
   }
-  first_known_accounts_check = false;
+  first_known_accounts_check_ = false;
 }
 
 void EthereumProviderImpl::Web3ClientVersion(RequestCallback callback,

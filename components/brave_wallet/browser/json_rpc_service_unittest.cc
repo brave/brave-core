@@ -22,25 +22,19 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
-#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -56,15 +50,10 @@
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
-#include "net/test/embedded_test_server/embedded_test_server.h"
-#include "net/test/embedded_test_server/http_request.h"
-#include "net/test/embedded_test_server/http_response.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -364,15 +353,17 @@ class EthCallHandler {
   virtual ~EthCallHandler() = default;
 
   bool CallSupported(const EthAddress& to, eth_abi::Span call_data) {
-    if (to != to_)
+    if (to != to_) {
       return false;
+    }
 
     auto [selector, _] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
     for (const auto& s : selectors_) {
-      if (base::ranges::equal(s, selector))
+      if (base::ranges::equal(s, selector)) {
         return true;
+      }
     }
     return false;
   }
@@ -424,13 +415,16 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       : account_address_(account_address), owner_(owner), data_(data) {}
 
   bool CallSupported(const base::Value::Dict& dict) override {
-    if (disabled_)
+    if (disabled_) {
       return false;
+    }
     auto* method = dict.FindString("method");
-    if (!method || *method != "getAccountInfo")
+    if (!method || *method != "getAccountInfo") {
       return false;
-    if (!account_address_.IsValid())
+    }
+    if (!account_address_.IsValid()) {
       return true;
+    }
     return AddressFromParams(dict) == account_address_;
   }
 
@@ -486,8 +480,9 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   absl::optional<std::string> HandleCall(
       const base::Value::Dict& dict) override {
-    if (fail_with_timeout_)
+    if (fail_with_timeout_) {
       return "timeout";
+    }
 
     if (!account_address_.IsValid()) {
       return MakeJsonRpcValueResponse(base::Value());
@@ -525,12 +520,14 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
         token_account_data_(token_account_data) {}
 
   bool CallSupported(const base::Value::Dict& dict) override {
-    if (disabled_)
+    if (disabled_) {
       return false;
+    }
 
     auto* method = dict.FindString("method");
-    if (!method || *method != "getProgramAccounts")
+    if (!method || *method != "getProgramAccounts") {
       return false;
+    }
     return AddressFromParams(dict) == target_;
   }
 
@@ -553,8 +550,9 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
 
   absl::optional<std::string> HandleCall(
       const base::Value::Dict& dict) override {
-    if (fail_with_timeout_)
+    if (fail_with_timeout_) {
       return "timeout";
+    }
 
     auto* filters = (*dict.FindList("params"))[1].GetDict().FindList("filters");
     EXPECT_TRUE(filters);
@@ -610,8 +608,9 @@ class JsonRpcEnpointHandler {
 
   absl::optional<std::string> HandleRequest(
       const network::ResourceRequest& request) {
-    if (request.url != endpoint_)
+    if (request.url != endpoint_) {
       return absl::nullopt;
+    }
 
     auto value = ToValue(request);
     if (value && value->is_dict()) {
@@ -635,10 +634,12 @@ class JsonRpcEnpointHandler {
  protected:
   absl::optional<std::string> HandleCall(const base::Value::Dict& dict) {
     auto* method = dict.FindString("method");
-    if (!method)
+    if (!method) {
       return absl::nullopt;
-    if (*method == "eth_call")
+    }
+    if (*method == "eth_call") {
       return HandleEthCall(dict);
+    }
 
     return HandleSolRpcCall(dict);
   }
@@ -653,32 +654,38 @@ class JsonRpcEnpointHandler {
     auto& transaction_params = params_list->begin()->GetDict();
     auto* data_param = transaction_params.FindString("data");
     auto* to_param = transaction_params.FindString("to");
-    if (!data_param || !to_param || !EthAddress::FromHex(*to_param).IsValid())
+    if (!data_param || !to_param || !EthAddress::FromHex(*to_param).IsValid()) {
       return absl::nullopt;
+    }
 
     auto call_data = PrefixedHexStringToBytes(*data_param);
-    if (!call_data)
+    if (!call_data) {
       return absl::nullopt;
+    }
 
     for (auto* handler : eth_call_handlers_) {
-      if (!handler->CallSupported(EthAddress::FromHex(*to_param), *call_data))
+      if (!handler->CallSupported(EthAddress::FromHex(*to_param), *call_data)) {
         continue;
+      }
 
       auto response = handler->HandleEthCall(*call_data);
-      if (response)
+      if (response) {
         return response;
+      }
     }
     return absl::nullopt;
   }
 
   absl::optional<std::string> HandleSolRpcCall(const base::Value::Dict& dict) {
     for (auto* handler : sol_rpc_call_handlers_) {
-      if (!handler->CallSupported(dict))
+      if (!handler->CallSupported(dict)) {
         continue;
+      }
 
       auto response = handler->HandleCall(dict);
-      if (response)
+      if (response) {
         return response;
+      }
     }
     return absl::nullopt;
   }
@@ -740,20 +747,24 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   bool GetIsEip1559FromPrefs(const std::string& chain_id) {
-    if (chain_id == mojom::kLocalhostChainId)
+    if (chain_id == mojom::kLocalhostChainId) {
       return prefs()->GetBoolean(kSupportEip1559OnLocalhostChain);
+    }
     const base::Value* custom_networks =
         prefs()->GetDict(kBraveWalletCustomNetworks).Find(kEthereumPrefKey);
-    if (!custom_networks)
+    if (!custom_networks) {
       return false;
+    }
 
     for (const auto& chain : custom_networks->GetList()) {
-      if (!chain.is_dict())
+      if (!chain.is_dict()) {
         continue;
+      }
 
       const std::string* id = chain.FindStringKey("chainId");
-      if (!id || *id != chain_id)
+      if (!id || *id != chain_id) {
         continue;
+      }
 
       return chain.FindBoolKey("is_eip1559").value_or(false);
     }
@@ -1030,15 +1041,16 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void SetIsEip1559Interceptor(const GURL& expected_network, bool is_eip1559) {
-    if (is_eip1559)
+    if (is_eip1559) {
       SetInterceptor(
           expected_network, "eth_getBlockByNumber", "latest,false",
           "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
           "{\"baseFeePerGas\":\"0x181f22e7a9\", \"gasLimit\":\"0x6691b8\"}}");
-    else
+    } else {
       SetInterceptor(expected_network, "eth_getBlockByNumber", "latest,false",
                      "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
                      "{\"gasLimit\":\"0x6691b8\"}}");
+    }
   }
 
   void ValidateStartWithNetwork(const std::string& chain_id,
@@ -2597,8 +2609,9 @@ class UDGetManyCallHandler : public EthCallHandler {
 
     calls_number_++;
 
-    if (!raw_response_.empty())
+    if (!raw_response_.empty()) {
       return raw_response_;
+    }
 
     std::vector<std::string> result_strings;
     for (auto& key : *keys_array) {
@@ -3305,16 +3318,18 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
 TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
-  for (const auto& domain : valid_domains)
+  for (const auto& domain : valid_domains) {
     EXPECT_TRUE(JsonRpcService::IsValidDomain(domain))
         << domain << " should be valid";
+  }
 
   std::vector<std::string> invalid_domains = {
       "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
       "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
-  for (const auto& domain : invalid_domains)
+  for (const auto& domain : invalid_domains) {
     EXPECT_FALSE(JsonRpcService::IsValidDomain(domain))
         << domain << " should be invalid";
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
@@ -3345,13 +3360,15 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.888",
   };
   // clang-format on
-  for (const auto& domain : valid_domains)
+  for (const auto& domain : valid_domains) {
     EXPECT_TRUE(JsonRpcService::IsValidUnstoppableDomain(domain))
         << domain << " should be valid";
+  }
 
-  for (const auto& domain : invalid_domains)
+  for (const auto& domain : invalid_domains) {
     EXPECT_FALSE(JsonRpcService::IsValidUnstoppableDomain(domain))
         << domain << " should be invalid";
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
@@ -4616,6 +4633,61 @@ TEST_F(JsonRpcServiceUnitTest, SendFilecoinTransaction) {
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
+TEST_F(JsonRpcServiceUnitTest, ResolverPrefs) {
+  base::MockCallback<base::OnceCallback<void(mojom::ResolveMethod)>> callback;
+
+  auto methods = {mojom::ResolveMethod::kEnabled, mojom::ResolveMethod::kAsk,
+                  mojom::ResolveMethod::kDisabled};
+
+  // Unstoppable domains.
+  EXPECT_CALL(callback, Run(mojom::ResolveMethod::kAsk));
+  json_rpc_service_->GetUnstoppableDomainsResolveMethod(callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  for (auto m : methods) {
+    json_rpc_service_->SetUnstoppableDomainsResolveMethod(m);
+    EXPECT_CALL(callback, Run(m));
+    json_rpc_service_->GetUnstoppableDomainsResolveMethod(callback.Get());
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+
+  // ENS.
+  EXPECT_CALL(callback, Run(mojom::ResolveMethod::kAsk));
+  json_rpc_service_->GetEnsResolveMethod(callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  for (auto m : methods) {
+    json_rpc_service_->SetEnsResolveMethod(m);
+    EXPECT_CALL(callback, Run(m));
+    json_rpc_service_->GetEnsResolveMethod(callback.Get());
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+
+  // ENS Offchain.
+  EXPECT_CALL(callback, Run(mojom::ResolveMethod::kAsk));
+  json_rpc_service_->GetEnsOffchainLookupResolveMethod(callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  for (auto m : methods) {
+    json_rpc_service_->SetEnsOffchainLookupResolveMethod(m);
+    EXPECT_CALL(callback, Run(m));
+    json_rpc_service_->GetEnsOffchainLookupResolveMethod(callback.Get());
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+
+  // SNS.
+  EXPECT_CALL(callback, Run(mojom::ResolveMethod::kAsk));
+  json_rpc_service_->GetSnsResolveMethod(callback.Get());
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  for (auto m : methods) {
+    json_rpc_service_->SetSnsResolveMethod(m);
+    EXPECT_CALL(callback, Run(m));
+    json_rpc_service_->GetSnsResolveMethod(callback.Get());
+    testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+}
+
 class EnsGetResolverHandler : public EthCallHandler {
  public:
   EnsGetResolverHandler(const std::string& host_name,
@@ -4715,16 +4787,18 @@ class EnsGetRecordHandler : public EthCallHandler {
 
     if (base::ranges::equal(selector, GetFunctionHashBytes4("addr(bytes32)"))) {
       auto eth_address = EthAddress::ZeroAddress();
-      if (host_matches)
+      if (host_matches) {
         eth_address = result_address_;
+      }
 
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddAddress(eth_address));
     } else if (base::ranges::equal(
                    selector, GetFunctionHashBytes4("contenthash(bytes32)"))) {
       std::vector<uint8_t> contenthash;
-      if (host_matches)
+      if (host_matches) {
         contenthash = result_contenthash_;
+      }
 
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddBytes(contenthash));
@@ -4797,8 +4871,9 @@ class OffchainCallbackHandler : public EthCallHandler {
               eth_abi::ExtractStringFromTuple(*extra_data_bytes, 0));
 
     auto bytes_result = eth_abi::ExtractBytesFromTuple(args, 0);
-    if (!bytes_result)
+    if (!bytes_result) {
       return absl::nullopt;
+    }
 
     // Just returning bytes result from gateway as is.
     return MakeJsonRpcRawBytesResponse(*bytes_result);
@@ -4820,15 +4895,18 @@ class OffchainGatewayHandler {
 
   absl::optional<std::string> HandleRequest(
       const network::ResourceRequest& request) {
-    if (request.url.host() != gateway_url_.host())
+    if (request.url.host() != gateway_url_.host()) {
       return absl::nullopt;
+    }
 
-    if (respond_with_500_)
+    if (respond_with_500_) {
       return "";
+    }
 
     auto payload = ToValue(request);
-    if (!payload || !payload->is_dict())
+    if (!payload || !payload->is_dict()) {
       return absl::nullopt;
+    }
     auto* sender = payload->GetDict().FindString("sender");
     EXPECT_EQ(EthAddress::FromHex(*sender), resolver_address_);
 
@@ -5040,7 +5118,8 @@ class ENSL2JsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
 };
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
@@ -5050,7 +5129,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback, Run(offchain_subdomain_eth_addr().ToHex(), false,
@@ -5060,7 +5140,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
@@ -5074,7 +5155,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   base::MockCallback<JsonRpcService::EnsGetEthAddrCallback> callback;
   EXPECT_CALL(callback,
@@ -5085,7 +5167,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
@@ -5098,7 +5181,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
@@ -5113,7 +5197,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   // Gateway request fails.
   offchain_gateway_handler_->SetRespondWith500();
@@ -5127,7 +5212,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
-  json_rpc_service_->EnableEnsOffchainLookup();
+  json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+      mojom::ResolveMethod::kEnabled);
 
   // No data record in gateway.
   offchain_gateway_handler_->SetRespondWithNoRecord();
@@ -5159,7 +5245,8 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
 
   // Allow and remember.
   {
-    json_rpc_service_->EnableEnsOffchainLookup();
+    json_rpc_service_->SetEnsOffchainLookupResolveMethod(
+        mojom::ResolveMethod::kEnabled);
     EXPECT_EQ(
         decentralized_dns::EnsOffchainResolveMethod::kEnabled,
         decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
