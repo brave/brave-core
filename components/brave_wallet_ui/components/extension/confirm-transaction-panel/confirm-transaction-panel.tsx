@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
+// Types
 import { WalletState } from '../../../constants/types'
 
 // Utils
@@ -15,6 +16,7 @@ import { getLocale } from '../../../../common/locale'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
+import { useExplorer } from '../../../common/hooks'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
@@ -43,10 +45,11 @@ import {
   TransactionTypeText,
   AccountCircleWrapper,
   ArrowIcon,
-  FromToRow,
   EditButton,
   WarningIcon,
-  AssetIcon
+  AssetIcon,
+  ContractButton,
+  ExplorerIcon
 } from './style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
@@ -63,11 +66,13 @@ import {
   LearnMoreButton,
   WarningBoxTitleRow
 } from '../shared-panel-styles'
+import { Column, Row } from '../../shared/style'
 
 import { Footer } from './common/footer'
 import { TransactionQueueStep } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
+import { useGetAddressByteCodeQuery } from '../../../common/slices/api.slice'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -116,6 +121,19 @@ export const ConfirmTransactionPanel = ({
     transactionTitle,
     updateUnapprovedTransactionNonce
   } = usePendingTransactions()
+
+  // queries
+  const { data: byteCode, isLoading } = useGetAddressByteCodeQuery({
+    address: transactionDetails?.recipient ?? '',
+    coin: transactionDetails?.coinType ?? -1,
+    chainId: transactionDetails?.chainId ?? ''
+  }, { skip: !transactionDetails })
+
+  // computed
+  const isContract = !isLoading && byteCode !== '0x'
+
+  // hooks
+  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   // state
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
@@ -222,23 +240,36 @@ export const ConfirmTransactionPanel = ({
               eTldPlusOne={originInfo.eTldPlusOne}
             />
           </URLText>
-          <FromToRow>
-            <Tooltip
-              text={fromAddress}
-              isAddress={true}
-              position='left'
-            >
-              <AccountNameText>{fromAccountName}</AccountNameText>
-            </Tooltip>
+          <Row marginBottom={8} maxWidth={isContract ? '90%' : 'unset'} width='unset'>
+            <Row maxWidth={isContract ? '70px' : 'unset'} width='unset'>
+              <Tooltip
+                text={fromAddress}
+                isAddress={true}
+                position='left'
+              >
+                <AccountNameText>{fromAccountName}</AccountNameText>
+              </Tooltip>
+            </Row>
             <ArrowIcon />
-            <Tooltip
-              text={transactionDetails.recipient}
-              isAddress={true}
-              position='right'
-            >
-              <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
-            </Tooltip>
-          </FromToRow>
+            {isContract ? (
+              <Column alignItems='flex-start' justifyContent='flex-start'>
+                <NetworkText>
+                  {getLocale('braveWalletNFTDetailContractAddress')}
+                </NetworkText>
+                <ContractButton onClick={onClickViewOnBlockExplorer('contract', `${transactionDetails.recipient}`)}>
+                  {reduceAddress(transactionDetails.recipient)} <ExplorerIcon />
+                </ContractButton>
+              </Column>
+            ) : (
+              <Tooltip
+                text={transactionDetails.recipient}
+                isAddress={true}
+                position='right'
+              >
+                <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
+              </Tooltip>
+            )}
+          </Row>
 
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
 

@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
+import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'
 
 import {
@@ -279,4 +280,33 @@ export const SmallLoadIcon = styled(LoaderIcon)`
   width: 16px;
   opacity: .4;
   padding-left: 5px;
+`
+
+export const ContractButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+`
+
+export const ExplorerIcon = styled.div`
+ -webkit-mask-image: url(${LinkIcon});
+ mask-image: url(${LinkIcon});
+ width: 12px;
+ height: 12px;
+ margin-left: 8px;
+ mask-size: contain;
+ background-color: ${(p) => p.theme.color.interactive05};
 `
