@@ -15,6 +15,9 @@ import com.bumptech.glide.load.data.DataFetcher;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Fetches the base64 section from a give string using a {@link ByteBuffer}.
+ */
 public class Base64DataFetcher implements DataFetcher<ByteBuffer> {
     private final String model;
 
@@ -37,8 +40,7 @@ public class Base64DataFetcher implements DataFetcher<ByteBuffer> {
 
     @Override
     public void cleanup() {
-        // Intentionally empty only because we're not opening an InputStream or another I/O
-        // resource!
+        // Intentionally empty.
     }
 
     @Override
