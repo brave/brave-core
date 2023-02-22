@@ -109,8 +109,7 @@ def GetRevisionNumberAndHash(revision: str, ci_mode: bool) -> Tuple[str, str]:
                                         check=True)
 
   rev_number_args = [
-      'git', 'rev-list', '--topo-order', '--first-parent', '--count',
-      'FETCH_HEAD'
+      'git', 'rev-list', '--topo-order', '--first-parent', '--count', revision
   ]
 
   # Get the revision number:
