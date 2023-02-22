@@ -72,7 +72,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
       self.dismiss(animated: true)
     }
     rootView.openWalletURLAction = { [unowned self] url in
-      (presentingViewController ?? self).dismiss(animated: true) {
+      (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
         self.delegate?.openWalletURL(url)
       }
     }
