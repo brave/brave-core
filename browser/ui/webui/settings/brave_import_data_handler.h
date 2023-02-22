@@ -52,7 +52,7 @@ class BraveImportDataHandler : public ImportDataHandler,
                        Profile* profile);
   virtual void NotifyImportProgress(
       const importer::SourceProfile& source_profile,
-      const base::Value& info);
+      const base::Value::Dict& info);
   virtual void OnImportEnded(const importer::SourceProfile& source_profile);
 
   void OnStartImport(const importer::SourceProfile& source_profile,

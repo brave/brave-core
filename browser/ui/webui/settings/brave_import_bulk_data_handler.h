@@ -45,7 +45,7 @@ class BraveImportBulkDataHandler : public BraveImportDataHandler {
                              Profile* profile);
   // BraveImportDataHandler
   void NotifyImportProgress(const importer::SourceProfile& source_profile,
-                            const base::Value& info) override;
+                            const base::Value::Dict& info) override;
   void OnImportEnded(const importer::SourceProfile& source_profile) override;
 
   // SettingsPageUIHandler

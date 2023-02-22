@@ -160,7 +160,7 @@ void BraveImportBulkDataHandler::StartImport(
 
 void BraveImportBulkDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
-    const base::Value& info) {
+    const base::Value::Dict& info) {
   FireWebUIListener("brave-import-data-status-changed", info);
 }
 
