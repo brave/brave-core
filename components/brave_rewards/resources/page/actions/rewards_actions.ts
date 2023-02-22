@@ -221,6 +221,9 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
   value
 })
 
+export const onInlineTipsEnabledChange = (enabled: boolean) =>
+  action(types.ON_INLINE_TIPS_ENABLED_CHANGE, { enabled })
+
 export const removePendingContribution = (id: number) =>
   action(types.REMOVE_PENDING_CONTRIBUTION, {
     id

@@ -121,6 +121,7 @@ export const reduxState: Rewards.ApplicationState = {
     adsHistory: [],
     pendingContributionTotal: 4,
     promotions: [],
+    inlineTipsEnabled: true,
     inlineTip: {
       twitter: true,
       reddit: true,
