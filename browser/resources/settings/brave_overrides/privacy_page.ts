@@ -85,12 +85,12 @@ function InsertLocalhostAccessSubpage (
         <template is="dom-if" route-path="/content/localhostAccess" no-search>
         <settings-subpage>
           <category-default-setting
-            id="googleSignInDefault"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
+            id="localhostAccessDefault"
+            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
           </category-default-setting>
           <category-setting-exceptions
-            id="googleSignInExceptions"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]">
+            id="localhostAccessExceptions"
+            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]">
           </category-setting-exceptions>
         </settings-subpage>
         </template>
@@ -98,7 +98,7 @@ function InsertLocalhostAccessSubpage (
 
   const localhostAccessTemplate = templateContent.
     querySelector('[route-path="/content/localhostAccess"]')
-  if (!googleSignInTemplate) {
+  if (!localhostAccessTemplate) {
     console.error(
       '[Brave Settings Overrides] Couldn\'t find localhost access template')
   } else {
@@ -106,35 +106,35 @@ function InsertLocalhostAccessSubpage (
       localhostAccessTemplate.content.querySelector('settings-subpage')
     if (!localhostAccessSubpage) {
       console.error(
-        '[Brave Settings Overrides] Couldn\'t find Google signin subpage')
+        '[Brave Settings Overrides] Couldn\'t find localhost access subpage')
     } else {
       localhostAccessSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryGoogleSignIn'))
+        I18nBehavior.i18n('siteSettingsCategoryLocalhostAccess'))
       const localhostAccessDefault =
-        localhostAccessTemplate.content.getElementById('googleSignInDefault')
+        localhostAccessTemplate.content.getElementById('localhostAccessDefault')
       if (!localhostAccessDefault) {
         console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin default')
+          '[Brave Settings Overrides] Couldn\'t find localhost access default')
       } else {
         localhostAccessDefault.setAttribute(
           'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
-        googleSignInDefault.setAttribute(
+          I18nBehavior.i18n('siteSettingsLocalhostAccessAsk'))
+          localhostAccessDefault.setAttribute(
           'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAsk'))
+          I18nBehavior.i18n('siteSettingsLocalhostAccessAsk'))
       }
       const localhostAccessExceptions =
-        localhostAccessTemplate.content.getElementById('googleSignInExceptions')
+        localhostAccessTemplate.content.getElementById('localhostAccessExceptions')
       if (!localhostAccessExceptions) {
         console.error(
-          '[Brave Settings Overrides] Couldn\'t find Google signin exceptions')
+          '[Brave Settings Overrides] Couldn\'t find localhost access exceptions')
       } else {
         localhostAccessExceptions.setAttribute(
           'block-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInBlockExceptions'))
+          I18nBehavior.i18n('siteSettingsLocalhostAccessBlockExceptions'))
         localhostAccessExceptions.setAttribute(
           'allow-header',
-          I18nBehavior.i18n('siteSettingsGoogleSignInAllowExceptions'))
+          I18nBehavior.i18n('siteSettingsLocalhostAccessAllowExceptions'))
       }
     }
   }

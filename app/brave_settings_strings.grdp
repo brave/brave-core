@@ -597,13 +597,16 @@
     Localhost Access
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK" desc="Label for localhost access site settings.">
-    Ask when a site wants to access localhost resources
+    Sites can request access to localhost resources
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK" desc="Label for localhost access site settings.">
-    Block sites from accessing localhost resources
+    Don't allow access to localhost resources
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW" desc="Label for localhost access site settings.">
-    Allow sites to access localhost resources
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK_EXCEPTIONS" desc="Label for localhost access site settings.">
+    Not allowed to access localhost resources
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS" desc="Label for localhost access site settings.">
+    Allowed to access localhost resources
   </message>
 
   <!-- Settings / Privacy and security / Safety Check -->

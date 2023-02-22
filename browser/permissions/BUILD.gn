@@ -6,6 +6,7 @@ if (!is_android) {
     sources = [
       "brave_wallet_permission_context_browsertest.cc",
       "google_sign_in_permission_browsertest.cc",
+      "localhost_access_permission_browsertest.cc",
       "mock_permission_lifetime_prompt.cc",
       "mock_permission_lifetime_prompt.h",
       "mock_permission_lifetime_prompt_factory.cc",

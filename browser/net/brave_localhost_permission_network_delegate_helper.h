@@ -26,7 +26,7 @@ namespace brave {
 
 int OnBeforeURLRequest_LocalhostPermissionWork(
     const ResponseCallback& next_callback,
-    std::scoped_refptr<BraveRequestInfo> ctx);
+    std::shared_ptr<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

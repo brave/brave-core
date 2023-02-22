@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.ts b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
-index 23ca13f050103ec396f8e3d73e03492475182dcf..58c6628fbb8248fd02e78d404155dac089c4e38b 100644
+index 23ca13f050103ec396f8e3d73e03492475182dcf..78162146e04bbcfa31368094ea9a3fee3cb77ae9 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 @@ -184,6 +184,7 @@ export class CategoryDefaultSettingElement extends
@@ -14,7 +14,7 @@ index 23ca13f050103ec396f8e3d73e03492475182dcf..58c6628fbb8248fd02e78d404155dac0
        case ContentSettingsTypes.USB_DEVICES:
        case ContentSettingsTypes.VR:
        case ContentSettingsTypes.WINDOW_MANAGEMENT:
-+      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN:
++      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS:
          // "Ask" vs "Blocked".
          this.browserProxy.setDefaultValueForContentType(
              this.category,

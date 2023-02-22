@@ -38,6 +38,8 @@ source_set("net") {
     "brave_common_static_redirect_network_delegate_helper.h",
     "brave_httpse_network_delegate_helper.cc",
     "brave_httpse_network_delegate_helper.h",
+    "brave_localhost_permission_network_delegate_helper.cc",
+    "brave_localhost_permission_network_delegate_helper.h",
     "brave_proxying_url_loader_factory.cc",
     "brave_proxying_url_loader_factory.h",
     "brave_proxying_web_socket.cc",
