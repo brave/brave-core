@@ -6,18 +6,26 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/gfx/geometry/size.h"
 
+class BraveTabSearchBubbleHost;
+
 class BraveTabSearchButton : public TabSearchButton {
  public:
-  using TabSearchButton::TabSearchButton;
+  METADATA_HEADER(BraveTabSearchButton);
+
+  explicit BraveTabSearchButton(TabStrip* tab_strip);
   ~BraveTabSearchButton() override;
   BraveTabSearchButton(const BraveTabSearchButton&) = delete;
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
 
   void set_fill_color_disabled() { fill_color_disabled_ = true; }
+
+  void SetBubbleArrow(views::BubbleBorder::Arrow arrow);
 
   // TabSearchButton overrides:
   SkPath GetBorderPath(const gfx::Point& origin,
@@ -28,6 +36,9 @@ class BraveTabSearchButton : public TabSearchButton {
 
  private:
   bool fill_color_disabled_ = false;
+
+  // This hides the same member in the base class
+  std::unique_ptr<BraveTabSearchBubbleHost> tab_search_bubble_host_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_SEARCH_BUTTON_H_
