@@ -196,9 +196,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
       [](PublishersController* controller,
          api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
-        Publishers publisher_list;
-        ParseCombinedPublisherList(api_request_result.value_body(),
-                                   &publisher_list);
+        absl::optional<Publishers> publisher_list =
+            ParseCombinedPublisherList(api_request_result.value_body());
+        if (!publisher_list) {
+          return;
+        }
+
         // Add user enabled statuses
         const auto& publisher_prefs =
             controller->prefs_->GetDict(prefs::kBraveNewsSources);
@@ -206,9 +209,9 @@ void PublishersController::EnsurePublishersIsUpdating() {
         for (const auto&& [key, value] : publisher_prefs) {
           auto publisher_id = key;
           auto is_user_enabled = value.GetIfBool();
-          if (publisher_list.contains(publisher_id) &&
+          if (publisher_list->contains(publisher_id) &&
               is_user_enabled.has_value()) {
-            publisher_list[publisher_id]->user_enabled_status =
+            (*publisher_list)[publisher_id]->user_enabled_status =
                 (is_user_enabled.value()
                      ? brave_news::mojom::UserEnabled::ENABLED
                      : brave_news::mojom::UserEnabled::DISABLED);
@@ -232,12 +235,12 @@ void PublishersController::EnsurePublishersIsUpdating() {
              it++) {
           auto move_it = std::make_move_iterator(it);
           auto publisher = *move_it;
-          publisher_list.insert_or_assign(publisher->publisher_id,
-                                          std::move(publisher));
+          publisher_list->insert_or_assign(publisher->publisher_id,
+                                           std::move(publisher));
         }
 
         // Set memory cache
-        controller->publishers_ = std::move(publisher_list);
+        controller->publishers_ = std::move(*publisher_list);
         controller->UpdateDefaultLocale();
         // Let any callback know that the data is ready.
         VLOG(1) << "Notify subscribers to publishers data";

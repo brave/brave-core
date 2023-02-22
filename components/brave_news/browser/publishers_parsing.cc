@@ -11,6 +11,7 @@
 
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_news/api/publisher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -18,84 +19,83 @@
 
 namespace brave_news {
 
-mojom::LocaleInfoPtr ParseLocaleInfo(const base::Value::Dict& publisher_dict,
-                                     const base::Value& locale_entry) {
-  auto result = mojom::LocaleInfo::New();
-
-  const auto& locale_dict = locale_entry.GetDict();
-  result->locale = *locale_dict.FindString("locale");
-  result->rank = locale_dict.FindInt("rank").value_or(0);
-
-  for (const auto& channel : *locale_dict.FindList("channels")) {
-    result->channels.push_back(channel.GetString());
+absl::optional<Publishers> ParseCombinedPublisherList(
+    const base::Value& value) {
+  if (!value.is_list()) {
+    LOG(ERROR) << "Publisher data expected to be a list";
+    return absl::nullopt;
   }
-  return result;
-}
 
-bool ParseCombinedPublisherList(const base::Value& json_value,
-                                Publishers* publishers) {
-  DCHECK(publishers);
-  if (!json_value.is_list()) {
-    return false;
-  }
-  for (const base::Value& publisher_raw : json_value.GetList()) {
-    const auto& publisher_dict = publisher_raw.GetDict();
+  Publishers result;
+
+  for (const base::Value& publisher_value : value.GetList()) {
+    std::u16string error;
+    auto parsed_publisher =
+        api::feed::Publisher::FromValue(publisher_value, &error);
+    if (!parsed_publisher) {
+      LOG(ERROR) << "Invalid Brave Publisher data. error=" << error;
+      return absl::nullopt;
+    }
+    auto& entry = *parsed_publisher;
+
+    GURL site_url = [&entry]() {
+      if (base::StartsWith(entry.site_url, "https://")) {
+        return GURL(entry.site_url);
+      } else {
+        return GURL("https://" + entry.site_url);
+      }
+    }();
+
+    if (!site_url.is_valid()) {
+      LOG(ERROR) << "Found invalid site url for Brave News publisher "
+                 << entry.publisher_name << "(was " << entry.site_url << ")";
+      continue;
+    }
 
     auto publisher = brave_news::mojom::Publisher::New();
-    publisher->publisher_id = *publisher_dict.FindString("publisher_id");
-    publisher->type = mojom::PublisherType::COMBINED_SOURCE;
-    publisher->publisher_name = *publisher_dict.FindString("publisher_name");
 
-    publisher->category_name = *publisher_dict.FindString("category");
-    publisher->is_enabled = publisher_dict.FindBool("enabled").value_or(true);
-    GURL feed_source(*publisher_dict.FindString("feed_url"));
+    publisher->site_url = site_url;
+    publisher->publisher_id = entry.publisher_id;
+    publisher->type = mojom::PublisherType::COMBINED_SOURCE;
+    publisher->publisher_name = entry.publisher_name;
+    publisher->category_name = entry.category;
+    publisher->is_enabled = entry.enabled.value_or(true);
+    GURL feed_source(entry.feed_url);
     if (feed_source.is_valid()) {
       publisher->feed_source = feed_source;
     }
 
-    auto* locales_raw = publisher_dict.FindList("locales");
-    if (locales_raw) {
-      for (const auto& locale_raw : *locales_raw) {
-        publisher->locales.push_back(
-            ParseLocaleInfo(publisher_dict, locale_raw));
+    if (entry.locales) {
+      for (auto& locale : *entry.locales) {
+        auto locale_info = mojom::LocaleInfo::New();
+        locale_info->locale = locale.locale;
+        locale_info->rank = locale.rank.value_or(0);
+        locale_info->channels = std::move(locale.channels);
+
+        publisher->locales.push_back(std::move(locale_info));
       }
     }
 
-    std::string site_url_raw = *publisher_dict.FindString("site_url");
-    if (!base::StartsWith(site_url_raw, "https://")) {
-      site_url_raw = "https://" + site_url_raw;
-    }
-    GURL site_url(site_url_raw);
-    if (!site_url.is_valid()) {
-      LOG(ERROR) << "Found invalid site url for Brave News publisher "
-                 << publisher->publisher_name << "(was " << site_url_raw << ")";
-      continue;
-    }
-    publisher->site_url = site_url;
-
-    auto* favicon_url_raw = publisher_dict.FindString("favicon_url");
-    if (favicon_url_raw) {
-      if (GURL favicon_url(*favicon_url_raw); favicon_url.is_valid()) {
+    if (entry.favicon_url) {
+      if (GURL favicon_url(*entry.favicon_url); favicon_url.is_valid()) {
         publisher->favicon_url = favicon_url;
       }
     }
 
-    auto* cover_url_raw = publisher_dict.FindString("cover_url");
-    if (cover_url_raw) {
-      if (GURL cover_url(*cover_url_raw); cover_url.is_valid()) {
+    if (entry.cover_url) {
+      if (GURL cover_url(*entry.cover_url); cover_url.is_valid()) {
         publisher->cover_url = cover_url;
       }
     }
 
-    auto* background_color = publisher_dict.FindString("background_color");
-    if (background_color) {
-      publisher->background_color = *background_color;
+    if (entry.background_color) {
+      publisher->background_color = *entry.background_color;
     }
 
     // TODO(petemill): Validate
-    publishers->insert_or_assign(publisher->publisher_id, std::move(publisher));
+    result.insert_or_assign(entry.publisher_id, std::move(publisher));
   }
-  return true;
+  return result;
 }
 
 void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,

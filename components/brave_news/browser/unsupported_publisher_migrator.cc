@@ -52,8 +52,11 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
         // can try and migrate the sources again next time the browser is
         // launched.
         if (result.Is2XXResponseCode()) {
-          ParseCombinedPublisherList(result.value_body(),
-                                     &migrator->v1_api_publishers_);
+          absl::optional<Publishers> publishers =
+              ParseCombinedPublisherList(result.value_body());
+          if (publishers) {
+            migrator->v1_api_publishers_ = std::move(*publishers);
+          }
         }
 
         migrator->on_init_complete_->Signal();
