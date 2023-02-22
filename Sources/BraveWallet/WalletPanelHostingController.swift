@@ -36,7 +36,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
       self.delegate?.walletPanel(self, presentWalletWithContext: context, walletStore: walletStore)
     }
     rootView.openWalletURLAction = { [unowned self] url in
-      (presentingViewController ?? self).dismiss(animated: true) {
+      (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
         self.delegate?.openWalletURL(url)
       }
     }
