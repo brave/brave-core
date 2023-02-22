@@ -5,6 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "chrome/browser/browser_process.h"
@@ -15,6 +16,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -75,6 +77,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
 
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
+    content::SetBrowserClientForTesting(&client_);
     g_brave_browser_process->https_upgrade_exceptions_service()
         ->SetIsReadyForTesting();
     // By default allow all hosts on HTTPS.
@@ -165,6 +168,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
   net::EmbeddedTestServer http_server_{net::EmbeddedTestServer::TYPE_HTTP};
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   content::ContentMockCertVerifier mock_cert_verifier_;
+  BraveContentBrowserClient client_;
 };
 
 class HttpsUpgradeBrowserTest_FlagDisabled : public HttpsUpgradeBrowserTest {
