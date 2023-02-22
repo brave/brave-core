@@ -2280,7 +2280,7 @@ public class BrowserViewController: UIViewController {
       let qrCodeController = RecentSearchQRCodeScannerController { [weak self] string in
         guard let self = self else { return }
 
-        if let url = URIFixup.getURL(string) {
+        if let url = URIFixup.getURL(string), url.isWebPage(includeDataURIs: false) {
           self.didScanQRCodeWithURL(url)
         } else {
           self.didScanQRCodeWithText(string)
