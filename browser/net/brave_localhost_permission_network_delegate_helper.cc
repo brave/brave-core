@@ -1,7 +1,7 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 
@@ -45,7 +45,6 @@ bool IsLocalhostRequest(const GURL& request_url,
 int OnBeforeURLRequest_LocalhostPermissionWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-      
   auto* contents =
       content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
   if (!contents) {

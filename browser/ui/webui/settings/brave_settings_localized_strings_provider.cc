@@ -115,7 +115,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsLocalhostAccessBlockExceptions",
      IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_BLOCK_EXCEPTIONS},
     {"siteSettingsLocalhostAccessAllowExceptions",
-
      IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
