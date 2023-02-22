@@ -9,6 +9,7 @@
 
 #include "base/json/values_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "components/prefs/pref_service.h"
@@ -85,11 +86,6 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
     meta->set_group_id(*group_id);
   }
 
-  const auto* chain_id_string = value.FindString("chain_id"); 
-  if(chain_id_string){
-    meta->set_chain_id(*chain_id_string);
-  }
-
   return true;
 }
 
@@ -102,7 +98,6 @@ TxStateManager::TxStateManager(PrefService* prefs,
 TxStateManager::~TxStateManager() = default;
 
 void TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
-  VLOG(5) << "TxStateManager::AddOrUpdateTx meta.chain_id_:" << meta.chain_id();
   ScopedDictPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value::Dict& dict = update.Get();
   const std::string path =
@@ -201,6 +196,54 @@ void TxStateManager::AddObserver(TxStateManager::Observer* observer) {
 
 void TxStateManager::RemoveObserver(TxStateManager::Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void TxStateManager::MigrateShowChainIdNetworkInfo(PrefService* prefs) {
+  if (!prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)) {
+    ScopedDictPrefUpdate sol_txs_update(prefs, kBraveWalletSolanaTransactions);
+    auto& sol_network_ids = sol_txs_update.Get();
+
+    ScopedDictPrefUpdate fil_txs_update(prefs,
+                                        kBraveWalletFileCoinTransactions);
+    auto& fil_network_ids = fil_txs_update.Get();
+
+    auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
+                            const mojom::CoinType& coin) {
+      for (auto tnid : *tx_by_network_ids) {
+        auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
+
+        if (!chain_id.has_value()) {
+          continue;
+        }
+
+        auto* txs = tnid.second.GetIfDict();
+
+        if (!txs || txs->empty()) {
+          return;
+        }
+
+        for (auto tx : *txs) {
+          auto* ptx = tx.second.GetIfDict();
+
+          if (!ptx) {
+            continue;
+          }
+
+          ptx->Set("chain_id", chain_id.value());
+        }
+      }
+    };
+
+    if (!sol_network_ids.empty()) {
+      set_chain_id(&sol_network_ids, mojom::CoinType::SOL);
+    }
+
+    if (!fil_network_ids.empty()) {
+      set_chain_id(&fil_network_ids, mojom::CoinType::FIL);
+    }
+
+    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
+  }
 }
 
 }  // namespace brave_wallet

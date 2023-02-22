@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -176,7 +177,6 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterDictionaryPref(kBraveWalletEthereumTransactions);
   registry->RegisterDictionaryPref(kBraveWalletSolanaTransactions);
   registry->RegisterDictionaryPref(kBraveWalletFileCoinTransactions);
-
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -266,64 +266,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 
   // Added 02/2022
-  if(!prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)){
-    VLOG(5) << "Migrate Flag:" << kBraveWalletTransactionsChainIdMigrated;
-
-    ScopedDictPrefUpdate eth_txs_update(prefs, kBraveWalletEthereumTransactions);
-    auto& eth_network_ids = eth_txs_update.Get();
-
-    ScopedDictPrefUpdate sol_txs_update(prefs, kBraveWalletSolanaTransactions);
-    auto& sol_network_ids = sol_txs_update.Get();
-
-    ScopedDictPrefUpdate fil_txs_update(prefs, kBraveWalletFileCoinTransactions);
-    auto& fil_network_ids = fil_txs_update.Get();
-
-    VLOG(5) << "Networks: \r\neth:" << eth_network_ids.DebugString() << "\r\nSOL:" << sol_network_ids.DebugString() << "\r\nFIL:" << fil_network_ids.DebugString();
-
-    auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
-                            const mojom::CoinType& coin) {
-
-      for(auto tnid : *tx_by_network_ids){
-          auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
-          
-          if(!chain_id.has_value())
-            continue;
-
-          auto* txs = tnid.second.GetIfDict();
-
-          if (!txs || txs->empty()) {
-            return;
-          }
-
-          for (auto tx : *txs) {
-            auto* ptx = tx.second.GetIfDict();
-
-            if (!ptx)
-              continue;
-
-            ptx->Set("chain_id", chain_id.value());
-
-            VLOG(5) << "Migration: " << tnid.first << " Set chainId:" << chain_id.value();
-          }
-      }
-     };
-
-    if (!eth_network_ids.empty()) {
-      set_chain_id(&eth_network_ids, mojom::CoinType::ETH);
-    }
-
-    if (!sol_network_ids.empty()) {
-      set_chain_id(&sol_network_ids, mojom::CoinType::SOL);
-    }
-
-    if (!fil_network_ids.empty()) {
-      set_chain_id(&fil_network_ids, mojom::CoinType::FIL);
-    }
-
-    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
-
-     VLOG(5) << "Migration finished.";
-  }
+  TxStateManager::MigrateShowChainIdNetworkInfo(prefs);
 }
 
 }  // namespace brave_wallet

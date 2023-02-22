@@ -10,13 +10,13 @@
 
 #include "base/base64.h"
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -77,7 +77,6 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(GetCurrentChainId(prefs_, mojom::CoinType::SOL));
-  VLOG(5) << "SolanaTxManager::ContinueAddUnapprovedTransaction chain_id_:" << GetCurrentChainId(prefs_, mojom::CoinType::SOL);
   tx_state_manager_->AddOrUpdateTx(meta);
   std::move(callback).Run(true, meta.id(), "");
 }

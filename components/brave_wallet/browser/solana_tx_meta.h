@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TX_META_H_
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
@@ -30,6 +31,9 @@ class SolanaTxMeta : public TxMeta {
   ~SolanaTxMeta() override;
   bool operator==(const SolanaTxMeta&) const;
 
+  const std::string& chain_id() const { return chain_id_; }
+  void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
+
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
@@ -46,6 +50,7 @@ class SolanaTxMeta : public TxMeta {
   std::unique_ptr<SolanaTransaction> tx_;
   // Status returned by getSignatureStatuses JSON-RPC call.
   SolanaSignatureStatus signature_status_;
+  std::string chain_id_;
 };
 
 }  // namespace brave_wallet

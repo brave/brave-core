@@ -48,6 +48,12 @@ std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
 
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
+
+  const auto* chain_id_string = value.FindString("chain_id");
+  if (chain_id_string) {
+    meta->set_chain_id(*chain_id_string);
+  }
+
   const base::Value::Dict* tx = value.FindDict("tx");
   if (!tx)
     return nullptr;
