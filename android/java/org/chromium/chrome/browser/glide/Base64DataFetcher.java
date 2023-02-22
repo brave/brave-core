@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 public class Base64DataFetcher implements DataFetcher<ByteBuffer> {
     private final String model;
 
-    Base64DataFetcher(String model) {
+    public Base64DataFetcher(String model) {
         this.model = model;
     }
 
