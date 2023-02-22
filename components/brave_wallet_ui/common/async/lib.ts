@@ -176,7 +176,7 @@ export async function isStrongPassword (value: string) {
 
 export async function enableEnsOffchainLookup () {
   const apiProxy = getAPIProxy()
-  return apiProxy.jsonRpcService.enableEnsOffchainLookup()
+  return apiProxy.jsonRpcService.setEnsOffchainLookupResolveMethod(BraveWallet.ResolveMethod.kEnabled)
 }
 
 export async function findENSAddress (address: string) {

@@ -1009,6 +1009,12 @@ struct ERC20BalanceResult {
   string? balance;
 };
 
+enum ResolveMethod {
+   kAsk = 0,
+   kDisabled = 1,
+   kEnabled = 2,
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1072,8 +1078,18 @@ interface JsonRpcService {
   // Obtains the metadata JSON for a token ID of an ERC1155 contract
   GetERC1155Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
+  GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
+  GetEnsResolveMethod() => (ResolveMethod method);
+  GetEnsOffchainLookupResolveMethod() => (ResolveMethod method);
+  GetSnsResolveMethod() => (ResolveMethod method);
+
+  // Calling these setters should be approved by privacy review.
+  SetUnstoppableDomainsResolveMethod(ResolveMethod method);
+  SetEnsResolveMethod(ResolveMethod method);
+  SetEnsOffchainLookupResolveMethod(ResolveMethod method);
+  SetSnsResolveMethod(ResolveMethod method);
+
   // ENS lookups
-  EnableEnsOffchainLookup();
   EnsGetEthAddr(string domain) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
   // SNS lookups
