@@ -170,6 +170,17 @@
 -MediaRouterUIServiceFactoryUnitTest.*
 -MediaRouterViewsUITest.*
 
+# These tests failed because we enable download bubble features by default.
+# safe_browsing::kDownloadBubble, safe_browsing::kDownloadBubbleV2
+-DownloadBubbleUIControllerIncognitoTest.DoesNotShowDetailsIfDone
+-DownloadBubbleUIControllerIncognitoTest.IncludeDownloadsFromMainProfile
+-DownloadBubbleUIControllerTest.ListIsRecent
+-DownloadBubbleUIControllerTest.ListIsSorted
+-DownloadBubbleUIControllerTest.OpeningMainViewRemovesEntryFromPartialView
+-DownloadBubbleUIControllerTest.ProcessesUpdatedItems
+-DownloadBubbleUIControllerTest.TransientDownloadShouldNotShow
+-DownloadBubbleSecurityViewTest.UpdateSecurityView_WillHaveAppropriateDialogButtons
+
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
 

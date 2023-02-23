@@ -469,6 +469,14 @@
 -PdfOcrMenuObserverTest.PdfOcrItemShownWithScreenReaderEnabled
 -PluginInfoHostImplTest.GetPluginInfoForPdfInternalPlugin
 
+# These tests failed because we enable download bubble features by default.
+# safe_browsing::kDownloadBubble, safe_browsing::kDownloadBubbleV2
+-DownloadExtensionTest.DownloadExtensionTest_Download_Incognito
+-DownloadExtensionTest.DownloadExtensionTest_OnDeterminingFilename_IncognitoSpanning
+-DownloadExtensionTest.DownloadExtensionTest_OnDeterminingFilename_IncognitoSplit
+-DownloadExtensionTest.DownloadExtensionTest_SearchPauseResumeCancelGetFileIconIncognito
+-DownloadTestWithFakeSafeBrowsing.NoUncommonDownloadReportIfIncognito
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
