@@ -112,7 +112,7 @@ struct SignTransactionView: View {
       .map { instructionsForOneTx in
         instructionsForOneTx
           .map { TransactionParser.parseSolanaInstruction($0).toString }
-          .joined(separator: "\n\n") // separator between each instruction
+          .joined(separator: "\n\n====\n\n") // separator between each instruction
       }
       .joined(separator: "\n\n\n\n") // separator between each transaction
   }

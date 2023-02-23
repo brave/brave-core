@@ -175,6 +175,44 @@ struct SwapCryptoView: View {
 
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
+  
+  enum DEXAggregator {
+    case zeroX
+    case jupiter
+    
+    var displayName: String {
+      switch self {
+      case .zeroX: return "0x"
+      case .jupiter: return "Jupiter"
+      }
+    }
+    
+    var url: URL? {
+      switch self {
+      case .zeroX: return URL(string: "https://0x.org/")
+      case .jupiter: return URL(string: "https://jup.ag")
+      }
+    }
+    
+    var swapDexAggrigatorNote: String {
+      String.localizedStringWithFormat(Strings.Wallet.swapDexAggrigatorNote, displayName)
+    }
+    
+    var swapDexAggrigatorDisclaimer: String {
+      let network: String
+      switch self {
+      case .zeroX: network = Strings.Wallet.coinTypeEthereum
+      case .jupiter: network = Strings.Wallet.coinTypeSolana
+      }
+      return String.localizedStringWithFormat(
+        Strings.Wallet.swapDexAggrigatorDisclaimer, displayName, network, displayName)
+    }
+  }
+  
+  /// The DEX Aggregator for the current network.
+  var dexAggregator: DEXAggregator {
+    networkStore.selectedChain.coin == .sol ? .jupiter : .zeroX
+  }
 
   @ViewBuilder var unsupportedSwapChainSection: some View {
     Section {
@@ -327,6 +365,7 @@ struct SwapCryptoView: View {
         text: $swapTokensStore.buyAmount
       )
       .keyboardType(.decimalPad)
+      .disabled(networkStore.selectedChain.coin == .sol)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
@@ -395,10 +434,18 @@ struct SwapCryptoView: View {
                 let formatter = NumberFormatter()
                 formatter.numberStyle = .percent
                 formatter.minimumFractionDigits = 3
-                formatter.maximumFractionDigits = 3
+                let value: Double
+                switch dexAggregator {
+                case .zeroX: // 0.875
+                  value = WalletConstants.braveSwapFee
+                  formatter.maximumFractionDigits = 3
+                case .jupiter: // 0.85
+                  value = WalletConstants.braveSwapJupiterFee
+                  formatter.maximumFractionDigits = 2
+                }
                 return formatter.string(
                   from: NSNumber(
-                    value: WalletConstants.braveSwapFee
+                    value: value
                   )) ?? ""
               }())
           )
@@ -430,7 +477,7 @@ struct SwapCryptoView: View {
         isSwapDisclaimerVisible = true
       }) {
         HStack {
-          Text(Strings.Wallet.swapDexAggrigatorNote)
+          Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
             .foregroundColor(Color(.braveLabel))
           Image(systemName: "info.circle")
@@ -442,12 +489,12 @@ struct SwapCryptoView: View {
       .padding(.vertical, 12)
       .alert(isPresented: $isSwapDisclaimerVisible) {
         Alert(
-          title: Text(Strings.Wallet.swapDexAggrigatorNote),
-          message: Text(Strings.Wallet.swapDexAggrigatorDisclaimer),
+          title: Text(dexAggregator.swapDexAggrigatorNote),
+          message: Text(dexAggregator.swapDexAggrigatorDisclaimer),
           primaryButton: Alert.Button.default(
             Text(Strings.learnMore),
             action: {
-              guard let url = URL(string: "https://0x.org/") else { return }
+              guard let url = dexAggregator.url else { return }
               openWalletURL?(url)
             }),
           secondaryButton: Alert.Button.cancel(Text(Strings.OKString))

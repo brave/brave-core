@@ -179,6 +179,7 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: prefilledToken
     )
     swapTokenStore = store

@@ -147,12 +147,18 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case .solDappTransaction:
+    case .solDappTransaction, .solSwapTransaction:
+      let title: String
+      if case .solDappTransaction = parsedTransaction.details {
+        title = Strings.Wallet.solanaDappTransactionTitle
+      } else {
+        title = Strings.Wallet.solanaSwapTransactionTitle
+      }
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
         namedToAddress: parsedTransaction.namedToAddress,
-        title: Strings.Wallet.solanaDappTransactionTitle,
+        title: title,
         gasFee: parsedTransaction.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )

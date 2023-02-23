@@ -113,7 +113,7 @@ class AssetDetailStore: ObservableObject {
       let sardineBuyTokens = await blockchainRegistry.buyTokens(.sardine, chainId: network.chainId)
       let buyTokens = rampBuyTokens + sardineBuyTokens
       self.isBuySupported = buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame }) != nil
-      self.isSwapSupported = await swapService.isiOSSwapSupported(chainId: token.chainId, coin: token.coin)
+      self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
       
       // fetch accounts
       let keyring = await keyringService.keyringInfo(coin.keyringId)

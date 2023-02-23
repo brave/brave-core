@@ -22,7 +22,9 @@ struct SwapTokenSearchView: View {
 
   var body: some View {
     let excludedToken = searchType == .fromToken ? swapTokenStore.selectedToToken : swapTokenStore.selectedFromToken
-    TokenList(tokens: swapTokenStore.allTokens.filter { ($0.symbol != excludedToken?.symbol) && ($0.isErc20 || $0.symbol == network.symbol) }) { token in
+    TokenList(tokens: swapTokenStore.allTokens
+      .filter { ($0.symbol != excludedToken?.symbol) && (!$0.isNft || $0.symbol == network.symbol) }
+    ) { token in
       Button(action: {
         if searchType == .fromToken {
           swapTokenStore.selectedFromToken = token

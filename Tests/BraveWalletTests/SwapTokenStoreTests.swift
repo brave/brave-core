@@ -13,6 +13,7 @@ class SwapStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = []
   
   func testDefaultSellBuyTokensOnMainnetWithoutPrefilledToken() {
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -21,6 +22,7 @@ class SwapStoreTests: XCTestCase {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     let ex = expectation(description: "default-sell-buy-token-on-main")
@@ -39,6 +41,7 @@ class SwapStoreTests: XCTestCase {
 
   func testDefaultSellBuyTokensOnMainnetWithPrefilledToken() {
     let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: BraveWallet.MainnetChainId, coin: .eth)
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -47,6 +50,7 @@ class SwapStoreTests: XCTestCase {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: batToken
     )
     let fromTokenExpectation = expectation(description: "update-fromTokenExpectation")
@@ -78,16 +82,13 @@ class SwapStoreTests: XCTestCase {
   func testPrefilledTokenSwitchNetwork() {
     let prefilledToken: BraveWallet.BlockchainToken = .mockSolToken
     
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     var selectedCoin: BraveWallet.CoinType = .eth
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let walletService = BraveWallet.TestBraveWalletService()
-    walletService._addObserver = { _ in }
     walletService._selectedCoin = { $0(selectedCoin) }
     walletService._userAssets = { _, coin, completion in
-      completion(coin == .eth ? [.previewToken] : [.mockSolToken])
+      completion(coin == .eth ? [.previewToken, .previewDaiToken] : [.mockSolToken, .mockSpdToken])
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
     rpcService._network = { coin, completion in
       completion(selectedNetwork)
     }
@@ -109,13 +110,14 @@ class SwapStoreTests: XCTestCase {
     }
     
     let store = SwapTokenStore(
-      keyringService: MockKeyringService(),
-      blockchainRegistry: MockBlockchainRegistry(),
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
-      swapService: MockSwapService(),
-      txService: MockTxService(),
+      swapService: swapService,
+      txService: txService,
       walletService: walletService,
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: prefilledToken
     )
     
@@ -136,7 +138,7 @@ class SwapStoreTests: XCTestCase {
       defer { ex.fulfill() }
       XCTAssertEqual(store.selectedFromToken?.symbol.lowercased(), prefilledToken.symbol.lowercased())
       XCTAssertNotNil(store.selectedToToken)
-      XCTAssertNotEqual(store.selectedToToken!.symbol.lowercased(), prefilledToken.symbol.lowercased())
+      XCTAssertNotEqual(store.selectedToToken?.symbol.lowercased(), prefilledToken.symbol.lowercased())
     }
     waitForExpectations(timeout: 3) { error in
       XCTAssertNil(error)
@@ -145,6 +147,7 @@ class SwapStoreTests: XCTestCase {
 
   func testDefaultSellBuyTokensOnEVMWithoutPrefilledToken() {
     let rpcService = MockJsonRpcService()
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -153,6 +156,7 @@ class SwapStoreTests: XCTestCase {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     let ex = expectation(description: "default-sell-buy-token-on-evm")
@@ -180,6 +184,7 @@ class SwapStoreTests: XCTestCase {
     rpcService._addObserver = { _ in }
     rpcService._network = { $1(.mockPolygon) }
     rpcService._erc20TokenBalance = { $3("10", .success, "") }
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -188,6 +193,7 @@ class SwapStoreTests: XCTestCase {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: daiToken
     )
     XCTAssertNil(store.selectedFromToken)  // `prefilledToken` not set until validated in `prepare()`
@@ -218,7 +224,7 @@ class SwapStoreTests: XCTestCase {
   private func setupServices(
     network: BraveWallet.NetworkInfo = .mockMainnet,
     coin: BraveWallet.CoinType = .eth
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestJsonRpcService, BraveWallet.TestSwapService, BraveWallet.TestTxService, BraveWallet.TestBraveWalletService, BraveWallet.TestEthTxManagerProxy) {
+  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestJsonRpcService, BraveWallet.TestSwapService, BraveWallet.TestTxService, BraveWallet.TestBraveWalletService, BraveWallet.TestEthTxManagerProxy, BraveWallet.TestSolanaTxManagerProxy) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
@@ -234,6 +240,12 @@ class SwapStoreTests: XCTestCase {
       // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
       completion("0x13e25e19dc20ba7", .success, "")
     }
+    rpcService._solanaBalance = { _, _, completion in
+      completion(0, .internalError, "")
+    }
+    rpcService._splTokenAccountBalance = { _, _, _, completion in
+      completion("", 0, "", .internalError, "")
+    }
     let swapService = BraveWallet.TestSwapService()
     swapService._priceQuote = { $1(.init(), nil, "") }
     swapService._transactionPayload = { $1(.init(), nil, "") }
@@ -245,12 +257,13 @@ class SwapStoreTests: XCTestCase {
     let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
     ethTxManagerProxy._makeErc20ApproveData = { $2(true, []) }
     ethTxManagerProxy._gasEstimation1559 = { $0(.init()) }
-    return (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy)
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
+    return (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy)
   }
   
   /// Test change to `sellAmount` (from value) will fetch price quote and assign to `buyAmount`
   func testFetchPriceQuoteSell() {
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices()
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     swapService._priceQuote = { _, completion in
       let swapResponse: BraveWallet.SwapResponse = .init()
       swapResponse.buyAmount = "2000000000000000000"
@@ -264,6 +277,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     
@@ -288,7 +302,7 @@ class SwapStoreTests: XCTestCase {
   
   /// Test change to `buyAmount` (to value) will fetch price quote and assign to `buyAmount`
   func testFetchPriceQuoteBuy() {
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices()
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     swapService._priceQuote = { _, completion in
       let swapResponse: BraveWallet.SwapResponse = .init()
       swapResponse.sellAmount = "3000000000000000000"
@@ -302,6 +316,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTest(sellAmount: "")
@@ -324,10 +339,109 @@ class SwapStoreTests: XCTestCase {
       XCTAssertNil(error)
     }
   }
+  
+  /// Test change to `sellAmount` (from value) will fetch price quote and assign to `buyAmount` on Solana Mainnet
+  func testSolanaFetchPriceQuoteSell() {
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      network: .mockSolana,
+      coin: .sol
+    )
+    swapService._jupiterQuote = { _, completion in
+      let route: BraveWallet.JupiterRoute = .init(
+        inAmount: 10000000, // 0.01 SOL (9 decimals)
+        outAmount: 2500000, // 2.5 SPD (6 decimals)
+        amount: 2500000, // 2.5 SPD (6 decimals)
+        otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
+        swapMode: "",
+        priceImpactPct: 0,
+        marketInfos: [])
+      completion(.init(routes: [route]), nil, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+
+    let buyAmountExpectation = expectation(description: "buyAmountExpectation")
+    store.$buyAmount
+      .dropFirst()
+      .sink { buyAmount in
+        defer { buyAmountExpectation.fulfill() }
+        XCTAssertFalse(buyAmount.isEmpty)
+        XCTAssertEqual(buyAmount, "2.5000")
+      }
+      .store(in: &cancellables)
+
+    XCTAssertTrue(store.buyAmount.isEmpty)
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(
+      selectedFromToken: .mockSolToken,
+      selectedToToken: .mockSpdToken,
+      sellAmount: "0.01"
+    )
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test change to `sellAmount` (from value) will fetch price quote and display insufficient liquidity (when returned by Jupiter price quote)
+  func testSolanaFetchPriceQuoteInsufficientLiquidity() {
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      network: .mockSolana,
+      coin: .sol
+    )
+    swapService._jupiterQuote = { _, completion in
+      let errorResponse: BraveWallet.JupiterErrorResponse = .init(
+        statusCode: "",
+        error: "",
+        message: "",
+        isInsufficientLiquidity: true
+      )
+      completion(nil, errorResponse, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+    
+    let stateExpectation = expectation(description: "stateExpectation")
+    store.$state
+      .dropFirst()
+      .sink { state in
+        defer { stateExpectation.fulfill() }
+        XCTAssertEqual(state, .error(Strings.Wallet.insufficientLiquidity))
+      }
+      .store(in: &cancellables)
+    
+    XCTAssertNotEqual(store.state, .error(Strings.Wallet.insufficientLiquidity))
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(
+      selectedFromToken: .mockSolToken,
+      selectedToToken: .mockSpdToken,
+      sellAmount: "0.01"
+    )
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
 
   /// Test creating ERC20 approve transaction on EIP1559 network
   @MainActor func testSwapERC20EIP1559Transaction() async {
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices()
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     var submittedTxData: BraveWallet.TxDataUnion?
     txService._addUnapprovedTransaction = { txData, _, _, _, completion in
       submittedTxData = txData
@@ -341,6 +455,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTest()
@@ -355,7 +470,7 @@ class SwapStoreTests: XCTestCase {
   /// Test creating ERC20 approve transaction on non-EIP1559 network
   @MainActor func testSwapERC20Transaction() async {
     // Celo Mainnet / `.mockCelo` is not EIP1559
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices(network: .mockCelo)
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(network: .mockCelo)
     var submittedTxData: BraveWallet.TxDataUnion?
     txService._addUnapprovedTransaction = { txData, _, _, _, completion in
       submittedTxData = txData
@@ -369,6 +484,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTest()
@@ -383,7 +499,7 @@ class SwapStoreTests: XCTestCase {
 
   /// Test creating a eth swap transaction on EIP1559 network
   @MainActor func testSwapETHSwapEIP1559Transaction() async {
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices()
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     var submittedTxData: BraveWallet.TxDataUnion?
     txService._addUnapprovedTransaction = { txData, _, _, _, completion in
       submittedTxData = txData
@@ -397,6 +513,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTest()
@@ -412,7 +529,7 @@ class SwapStoreTests: XCTestCase {
   /// Test creating a eth swap transaction on non-EIP1559 network
   @MainActor func testSwapETHSwapTransaction() async {
     // Celo Mainnet / `.mockCelo` is not EIP1559
-    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy) = setupServices(network: .mockCelo)
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(network: .mockCelo)
     var submittedTxData: BraveWallet.TxDataUnion?
     txService._addUnapprovedTransaction = { txData, _, _, _, completion in
       submittedTxData = txData
@@ -426,6 +543,7 @@ class SwapStoreTests: XCTestCase {
       txService: txService,
       walletService: walletService,
       ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTest()
@@ -436,6 +554,58 @@ class SwapStoreTests: XCTestCase {
     XCTAssertFalse(store.isMakingTx)
     XCTAssertNotNil(submittedTxData?.ethTxData)
     XCTAssertNil(submittedTxData?.ethTxData1559)
+  }
+
+  /// Test creating a sol swap transaction
+  @MainActor func testSwapSolSwapTransaction() async {
+    let route: BraveWallet.JupiterRoute = .init(
+      inAmount: 3000000000,
+      outAmount: 2500000, // 2.5 SPD (6 decimals)
+      amount: 2500000, // 2.5 SPD (6 decimals)
+      otherAmountThreshold: 2500000, // 2.5 SPD (6 decimals)
+      swapMode: "",
+      priceImpactPct: 0,
+      marketInfos: [])
+    let (keyringService, blockchainRegistry, rpcService, swapService, txService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      network: .mockSolana,
+      coin: .sol
+    )
+    swapService._jupiterSwapTransactions = { _, completion in
+      let swapTransactions: BraveWallet.JupiterSwapTransactions = .init(
+        setupTransaction: "", swapTransaction: "1", cleanupTransaction: "")
+      completion(swapTransactions, nil, "")
+    }
+    solTxManagerProxy._makeTxDataFromBase64EncodedTransaction = { _, _, _, completion in
+      completion(.init(), .success, "")
+    }
+    var submittedTxData: BraveWallet.TxDataUnion?
+    txService._addUnapprovedTransaction = { txData, _, _, _, completion in
+      submittedTxData = txData
+      completion(true, "tx-meta-id", "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil
+    )
+    store.setUpTest(
+      selectedFromToken: .mockSolToken,
+      selectedToToken: .mockSpdToken,
+      sellAmount: "0.01",
+      jupiterQuote: .init(routes: [route])
+    )
+    store.state = .swap
+    
+    let success = await store.createSwapTransaction()
+    XCTAssertTrue(success, "Expected to successfully create transaction")
+    XCTAssertFalse(store.isMakingTx)
+    XCTAssertNotNil(submittedTxData?.solanaTxData)
   }
   
   func testSwapFullBalanceNoRounding() {
@@ -450,6 +620,7 @@ class SwapStoreTests: XCTestCase {
       completion(mockBalanceWei, .success, "")
     }
     rpcService._addObserver = { _ in }
+    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
@@ -459,6 +630,7 @@ class SwapStoreTests: XCTestCase {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil
     )
     store.setUpTestForRounding()

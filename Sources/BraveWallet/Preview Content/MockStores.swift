@@ -139,6 +139,7 @@ extension SwapTokenStore {
       txService: MockTxService(),
       walletService: MockBraveWalletService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       prefilledToken: nil
     )
   }

@@ -200,6 +200,7 @@ public class TransactionConfirmationStore: ObservableObject {
       await fetchAssetRatios(for: userVisibleTokens)
     }
     await fetchUnknownTokens(for: unapprovedTxs)
+    await fetchSolEstimatedTxFees(for: unapprovedTxs)
   }
   
   func updateTransaction(
@@ -215,11 +216,7 @@ public class TransactionConfirmationStore: ObservableObject {
       let network = await rpcService.network(coin)
       let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: coin) + tokenInfoCache.map(\.value)
       let userVisibleTokens = await walletService.userAssets(network.chainId, coin: coin)
-      
-      var solEstimatedTxFee: UInt64?
-      if transaction.coin == .sol {
-        (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(transaction.id)
-      }
+      let solEstimatedTxFee: UInt64? = solEstimatedTxFeeCache[transaction.id]
       
       if transaction.isEIP1559Transaction {
         eip1559GasEstimation = transaction.txDataUnion.ethTxData1559?.gasEstimation
@@ -279,6 +276,8 @@ public class TransactionConfirmationStore: ObservableObject {
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
+  /// Cache for storing the estimated transaction fee for each Solana transaction. The key is the transaction id.
+  private var solEstimatedTxFeeCache: [String: UInt64] = [:]
   
   @MainActor private func fetchAssetRatios(for userVisibleTokens: [BraveWallet.BlockchainToken]) async {
     let priceResult = await assetRatioService.priceWithIndividualRetry(
@@ -336,6 +335,16 @@ public class TransactionConfirmationStore: ObservableObject {
     let unknownTokens = await assetRatioService.fetchTokens(for: unknownTokenContractAddresses)
     for unknownToken in unknownTokens {
       tokenInfoCache[unknownToken.contractAddress] = unknownToken
+    }
+    updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
+  }
+  
+  @MainActor private func fetchSolEstimatedTxFees(
+    for transactions: [BraveWallet.TransactionInfo]
+  ) async {
+    for transaction in transactions where transaction.coin == .sol {
+      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(transaction.id)
+      self.solEstimatedTxFeeCache[transaction.id] = solEstimatedTxFee
     }
     updateTransaction(with: activeTransaction, shouldFetchCurrentAllowance: false, shouldFetchGasTokenBalance: false)
   }
@@ -470,12 +479,12 @@ public class TransactionConfirmationStore: ObservableObject {
         
         totalFiat = totalFiat(value: value, tokenAssetRatioId: details.fromToken?.assetRatioId ?? "", gasValue: gasValue, gasSymbol: gasSymbol, assetRatios: assetRatios, currencyFormatter: currencyFormatter)
       }
-    case let .solDappTransaction(details):
+    case let .solDappTransaction(details), let .solSwapTransaction(details):
       symbol = details.symbol ?? ""
       value = details.fromAmount
       transactionDetails = details.instructions
         .map(\.toString)
-        .joined(separator: "\n\n") // separator between each instruction
+        .joined(separator: "\n\n====\n\n") // separator between each instruction
       
       if let gasFee = details.gasFee {
         gasValue = gasFee.fee

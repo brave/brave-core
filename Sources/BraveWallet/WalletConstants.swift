@@ -8,10 +8,14 @@ import BraveCore
 import OrderedCollections
 
 struct WalletConstants {
-  /// The Brave swap fee as a % value
+  /// The Brave swap fee as a % value for 0x DEX aggregator
   ///
   /// This value will be formatted to a string such as 0.875%)
   static let braveSwapFee: Double = 0.00875
+  /// The Brave swap fee as a % value for Jupiter DEX aggregator
+  ///
+  /// This value will be formatted to a string such as 0.85%)
+  static let braveSwapJupiterFee: Double = 0.0085
 
   /// The wei value used for unlimited allowance in an ERC 20 transaction.
   static let MAX_UINT256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
