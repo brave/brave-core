@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index 93cf8e0af281272ce1e0db7c3dd0605f5d1610c2..8c8a5e9f5cf3786aec87ea29a273c588e797dc7c 100644
+index d99aba7b8da009d5f98835ed48a4887e1862b34b..67d3a756f8e1a2792be1c99222b383d8c0d21b5a 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
 @@ -391,6 +391,7 @@ component("core") {

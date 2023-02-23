@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index e2ff573184d7baca8f77c2b8c674359dba442164..8909d52b997f3366e1e790a207af1127d55d1174 100644
+index 5ff05c4e91742735392b360544e4d3680eaff540..371983cde00cbcb139310469c21dc03d6eaf7659 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1263,6 +1263,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1271,6 +1271,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,7 +11,7 @@ index e2ff573184d7baca8f77c2b8c674359dba442164..8909d52b997f3366e1e790a207af1127
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1665,6 +1667,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1673,6 +1675,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #if BUILDFLAG(IS_ANDROID)
    registry->RegisterBooleanPref(prefs::kQuickDeleteDialogSuppressed, false);
  #endif
