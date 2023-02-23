@@ -1429,8 +1429,14 @@ Permissions you've already given to websites and apps may apply to this account.
           </message>
         </if>
         <if expr="not chromeos_lacros">
-          <message name="IDS_FRE_SIGN_IN_SUBTITLE" desc="The subtitle for the sign in page explaining to the users the benefits of signing in to Brave">
-            You can enjoy the most out of Brave
+          <message name="IDS_FRE_SIGN_IN_TITLE_0" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+            Sign in to Brave
+          </message>
+          <message name="IDS_FRE_SIGN_IN_TITLE_1" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+            Make Brave your own
+          </message>
+          <message name="IDS_FRE_SIGN_IN_TITLE_2" desc="This string appears as a heading on a full-page screen that tells users the benefits of signing in to Brave. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+            Do more with Brave
           </message>
         </if>
 
