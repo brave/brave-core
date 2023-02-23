@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/build_cr_component.gni b/ui/webui/resources/tools/build_cr_component.gni
-index 0cfcc96a79400a5e9237815e273d8787052abb4c..8a66275c20d7f96f47fdfbe19b0b6d7f7582eb84 100644
+index 714c5853f943e7c66a09700c2c6b914d04ca777f..df8a2916b57c25b602ae57da8695e7a2fe9e4d12 100644
 --- a/ui/webui/resources/tools/build_cr_component.gni
 +++ b/ui/webui/resources/tools/build_cr_component.gni
-@@ -248,5 +248,6 @@ template("build_cr_component") {
+@@ -251,5 +251,6 @@ template("build_cr_component") {
      manifest_files +=
          filter_include(get_target_outputs(":build_ts"), [ "*.manifest" ])
      resource_path_prefix = rebase_path(".", "//ui/webui/resources")
