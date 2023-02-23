@@ -20,11 +20,9 @@ import {
   AssetsPanel,
   EncryptionKeyPanel
 } from '../components/extension'
-import {
-  SelectAccount,
-  SelectNetworkWithHeader,
-  CreateAccountTab
-} from '../components/buy-send-swap/'
+import { CreateAccountTab } from '../components/buy-send-swap/create-account'
+import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
+import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
 import { AppList } from '../components/shared'
 import { filterAppList } from '../utils/filter-app-list'
 import {
@@ -566,7 +564,7 @@ function Container () {
     return (
       <PanelWrapper isLonger={false}>
         <SelectContainer>
-          <SelectAccount
+          <SelectAccountWithHeader
             accounts={accounts}
             onBack={onReturnToMain}
             onSelectAccount={onSelectAccount}
