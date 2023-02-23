@@ -6,11 +6,10 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
-#include <string>
-
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -299,6 +298,10 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+#if BUILDFLAG(IS_ANDROID)
+      json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
+#endif
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
@@ -1112,27 +1115,96 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
   if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
-    return data_decoder::JsonSanitizer::Sanitize(
-        *response_body,
-        base::BindOnce(
-            [](ledger::client::LoadURLCallback callback,
-               ledger::mojom::UrlResponse response,
-               data_decoder::JsonSanitizer::Result result) {
-              if (result.value) {
-                response.body = std::move(*result.value);
-              } else {
-                response.body = {};
-                VLOG(0) << "Response sanitization error: "
-                        << (result.error ? *result.error : "unknown");
-              }
-
-              std::move(callback).Run(response);
-            },
-            std::move(callback), std::move(response)));
+    return OnURLLoaderCompleteSanitizeJson(
+        std::move(callback), std::move(response), std::move(response_body));
   }
 
   std::move(callback).Run(response);
 }
+
+void RewardsServiceImpl::OnURLLoaderCompleteSanitizeJson(
+    ledger::client::LoadURLCallback callback,
+    ledger::mojom::UrlResponse response,
+    std::unique_ptr<std::string> response_body) {
+// On Android |RewardsServiceImpl::OnURLLoaderComplete| is executed in UI
+// thread. We have evidences of ANRs happened at |JsonSanitizer::Sanitize|.
+// By this reason sanitazing on Android is moved to non-UI thread, callback
+// is still invoiked in UI thread.
+#if BUILDFLAG(IS_ANDROID)
+  OnURLLoaderCompleteSanitizeJsonAndroid(
+      std::move(callback), std::move(response), std::move(response_body));
+#else
+  OnURLLoaderCompleteSanitizeJsonDesktop(
+      std::move(callback), std::move(response), std::move(response_body));
+#endif  // BUILDFLAG(IS_ANDROID)
+}
+
+#if BUILDFLAG(IS_ANDROID)
+
+void RewardsServiceImpl::OnURLLoaderCompleteSanitizeJsonAndroid(
+    ledger::client::LoadURLCallback callback,
+    ledger::mojom::UrlResponse response,
+    std::unique_ptr<std::string> response_body) {
+  json_sanitizer_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::unique_ptr<std::string> response_body,
+             ledger::client::LoadURLCallback callback,
+             ledger::mojom::UrlResponse response,
+             const scoped_refptr<base::SequencedTaskRunner>
+                 post_response_runner) {
+            data_decoder::JsonSanitizer::Sanitize(
+                *response_body,
+                base::BindOnce(
+                    [](ledger::client::LoadURLCallback callback,
+                       ledger::mojom::UrlResponse response,
+                       const scoped_refptr<base::SequencedTaskRunner>
+                           post_response_runner,
+                       data_decoder::JsonSanitizer::Result result) {
+                      if (result.value) {
+                        response.body = std::move(*result.value);
+                      } else {
+                        response.body = {};
+                        VLOG(0) << "Response sanitization error: "
+                                << (result.error ? *result.error : "unknown");
+                      }
+                      post_response_runner->PostTask(
+                          FROM_HERE,
+                          base::BindOnce(std::move(callback), response));
+                    },
+                    std::move(callback), std::move(response),
+                    post_response_runner));
+          },
+
+          std::move(response_body), std::move(callback), std::move(response),
+          base::SequencedTaskRunner::GetCurrentDefault()));
+}
+
+#else
+
+void RewardsServiceImpl::OnURLLoaderCompleteSanitizeJsonDesktop(
+    ledger::client::LoadURLCallback callback,
+    ledger::mojom::UrlResponse response,
+    std::unique_ptr<std::string> response_body) {
+  data_decoder::JsonSanitizer::Sanitize(
+      *response_body, base::BindOnce(
+                          [](ledger::client::LoadURLCallback callback,
+                             ledger::mojom::UrlResponse response,
+                             data_decoder::JsonSanitizer::Result result) {
+                            if (result.value) {
+                              response.body = std::move(*result.value);
+                            } else {
+                              response.body = {};
+                              VLOG(0)
+                                  << "Response sanitization error: "
+                                  << (result.error ? *result.error : "unknown");
+                            }
+
+                            std::move(callback).Run(response);
+                          },
+                          std::move(callback), std::move(response)));
+}
+#endif
 
 void RewardsServiceImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
