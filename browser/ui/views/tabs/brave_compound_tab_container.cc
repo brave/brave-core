@@ -153,6 +153,25 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
                            /*height=*/views::SizeBound());
 }
 
+Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
+                                       int model_index,
+                                       TabPinned pinned) {
+  auto* result =
+      CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
+      !tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return result;
+  }
+
+  if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
+    // When the browser was initialized without any pinned tabs, pinned tabs
+    // could be hidden initially by the FlexLayout.
+    pinned_tab_container_->SetVisible(true);
+  }
+  return result;
+}
+
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
   return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
          tabs::utils::ShouldShowVerticalTabs(

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_COMPOUND_TAB_CONTAINER_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/tabs/compound_tab_container.h"
 
 class BraveCompoundTabContainer : public CompoundTabContainer {
@@ -32,6 +34,9 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
   views::SizeBounds GetAvailableSize(const views::View* child) const override;
+  Tab* AddTab(std::unique_ptr<Tab> tab,
+              int model_index,
+              TabPinned pinned) override;
 
  private:
   bool ShouldShowVerticalTabs() const;
