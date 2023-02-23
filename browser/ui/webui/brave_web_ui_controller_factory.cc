@@ -51,6 +51,10 @@
 #include "brave/components/commands/common/features.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#endif
+
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
@@ -166,6 +170,16 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
+#if BUILDFLAG(IS_ANDROID)
+  } else if (url.is_valid() &&
+             (url.spec() == base::StringPrintf("%s://%s",
+                                               content::kChromeUIScheme,
+                                               kWalletSwapPagePath) ||
+              url.spec() == base::StringPrintf("%s://%s",
+                                               content::kBraveUIScheme,
+                                               kWalletSwapPagePath))) {
+    return new SwapPageUI(web_ui, url.host());
+#endif
   }
   return nullptr;
 }
@@ -185,6 +199,13 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif
+#if BUILDFLAG(IS_ANDROID)
+      (url.is_valid() &&
+       (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+                                         kWalletSwapPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                         kWalletSwapPagePath))) ||
+#endif  // BUILDFLAG(IS_ANDROID)
       url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&
        base::FeatureList::IsEnabled(

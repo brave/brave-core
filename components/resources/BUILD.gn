@@ -94,7 +94,7 @@ repack("resources") {
     ]
   }
 
-  if (!is_android && !is_ios) {
+  if (!is_ios) {
     deps += [ "//brave/components/brave_wallet_ui:resources" ]
     sources += [
       "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",

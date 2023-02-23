@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <base href="/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Brave Swap</title>
+    <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
+    <script src="/strings.js"></script>
+    <script src="/brave_wallet_swap_page.bundle.js"></script>
+    <style>
+      html {
+        /* Prevent layout shift when a vertical scrollbar is added  */
+        overflow-y: auto;
+      }
+
+      #root {
+        display: flex;
+        min-height: calc(100vh - 56px);
+      }
+
+      iframe {
+        color-scheme: none;
+      }
+    </style>
+    </head>
+    <body>
+      <div id="root"></div>
+  </body>
+</html>

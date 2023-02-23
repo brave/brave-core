@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
+#include "build/build_config.h"
+
 extern const char kAdblockHost[];
 extern const char kAdblockInternalsHost[];
 extern const char kAdblockJS[];
@@ -34,6 +36,9 @@ extern const char kVPNPanelURL[];
 extern const char kVPNPanelHost[];
 extern const char kBraveUIWalletPageURL[];
 extern const char kWalletPageHost[];
+#if BUILDFLAG(IS_ANDROID)
+extern const char kWalletSwapPagePath[];
+#endif  // BUILDFLAG(IS_ANDROID)
 extern const char kExtensionSettingsURL[];
 extern const char kWalletSettingsURL[];
 extern const char kBraveSyncPath[];
