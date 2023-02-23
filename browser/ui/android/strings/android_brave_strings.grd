@@ -3548,6 +3548,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VBAT_UNSUPPORTED_REGION_TEXT" desc="Vbat modal text for unsupported region">
       On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">%2$s</ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
     </message>
+    <message name="IDS_SPEEDREADER_MESSAGE_TITLE" desc="Message shown on the speedreader prompt.">
+      View page with Speedreader?
+    </message>
+    <message name="IDS_SPEEDREADER_MESSAGE_BUTTON" desc="The label for the button to enable speedreader on current page.">
+      Enable
+    </message>
+    <message name="IDS_ENABLE_SPEEDREADER_TITLE" desc="Title for preference that enables or disables Speedreader." translateable="false">
+      Enable Speedreader
+    </message>
+    <message name="IDS_ENABLE_SPEEDREADER_SUMMARY" desc="Summary for preference that enables or disables Speedreader">
+      Automatically loads eligible articles in reader mode
+    </message>
   </messages>
   </release>
 </grit>

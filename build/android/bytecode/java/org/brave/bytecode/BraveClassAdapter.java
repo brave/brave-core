@@ -73,6 +73,7 @@ public class BraveClassAdapter {
         chain = new BraveStartupPaintPreviewHelperClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
+        chain = new BraveTabHelpersClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTopToolbarClassAdapter(chain);
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
