@@ -193,7 +193,6 @@ export const GridItemSponsoredImage = styled.section<{ otherWidgetsHidden: boole
   grid-row: 2 / span 3;
   height: calc(100% - 200px);
   width: 100%;
-  padding: 8px;
   position: relative;
 
   @media screen and (max-width: ${breakpointEveryBlock}) {

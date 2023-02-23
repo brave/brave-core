@@ -16,11 +16,12 @@ const Indicator = styled.span`
 
 const Link = styled.a`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 8px;
+  left: 8px;
+  right: 56px;
+  bottom: 8px;
   display: block;
+  border: 1px solid red;
 
   &:hover {
     cursor: pointer;
@@ -30,9 +31,9 @@ const Link = styled.a`
   }
 `
 
-export default function SponsoredImage(props: { sponsoredImageUrl: string }) {
+export default function SponsoredImage(props: { sponsoredImageUrl: string, onClick: () => void }) {
   return (
-    <Link href={props.sponsoredImageUrl} rel="noreferrer noopener">
+    <Link href={props.sponsoredImageUrl} rel="noreferrer noopener" onClick={props.onClick}>
       <Indicator>
         <OpenNewIcon />
       </Indicator>
