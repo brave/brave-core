@@ -50,6 +50,9 @@
       Remove address from Brave?
     </message>
   </if>
+  <message name="IDS_AUTOFILL_DELETE_AUTOCOMPLETE_SUGGESTION_TOOLTIP" desc="Tooltip shown when hovering over a small button with a trash-can logo next to an Autocomplete entry in the Autofill popup." translateable="false">
+    Remove entry
+  </message>
   <message name="IDS_AUTOFILL_CC_AMEX" desc="Full American Express credit card name.">
     American Express
   </message>
@@ -206,8 +209,11 @@
   <message name="IDS_AUTOFILL_DELETE_ACCOUNT_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
     This address will be deleted from your Brave sync chain, <ph name="ACCOUNT">$1<ex>alexpark@gmail.com</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_DELETE_SYNC_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_DELETE_SYNC_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before the address deletion (with syncing enabled)." formatter_data="android_java">
     This address will be deleted from this and your other signed-in devices
+  </message>
+  <message name="IDS_AUTOFILL_DELETE_LOCAL_ADDRESS_SOURCE_NOTICE" desc="The notice/warning for the user before a local (syncing is disabled) address deletion." formatter_data="android_java">
+    This address will be deleted from this device
   </message>
   <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_FORM_ERROR" desc="The form error message shown to the user in case of a single required field missing.">
     A required field is empty. Fill it before saving.
@@ -257,7 +263,7 @@
           Use screen lock to confirm cards faster
         </message>
         <message name="IDS_AUTOFILL_EDIT_ADDRESS_REQUIRED_FIELD_ERROR" desc="Validation error message for missing required address field." formatter_data="android_java">
-          <ph name="FIELD">$1<ex>Postal code</ex></ph> can't be empty
+          Enter <ph name="FIELD">$1<ex>ZIP code</ex></ph>
         </message>
       </if>
       <if expr="not is_macosx and not is_win and not is_android">
