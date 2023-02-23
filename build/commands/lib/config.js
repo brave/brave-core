@@ -961,16 +961,25 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
-    env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
-    env.GYP_MSVS_VERSION = env.GYP_MSVS_VERSION || '2017' // enable 2017
 
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
     env.GSUTIL_ENABLE_LUCI_AUTH = '0'
 
     if (this.channel != "") {
       env.BRAVE_CHANNEL = this.channel
+    }
+
+    if (process.platform === 'win32' || (this.targetOS && this.targetOS === 'win')) {
+      if (!this.gomaServerHost || !this.gomaServerHost.endsWith('.brave.com')) {
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+      } else {
+        // Use hermetic toolchain only internally.
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
+        env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
+      }
     }
 
     if (this.getCachePath()) {
