@@ -23,10 +23,6 @@
     *** createBookmarkItem(...);
 }
 
--keep class org.chromium.components.external_intents.ExternalNavigationHandler {
-    *** clobberCurrentTabWithFallbackUrl(...);
-}
-
 -keep class org.chromium.chrome.browser.LaunchIntentDispatcher {
     *** isCustomTabIntent(...);
 }
@@ -154,6 +150,7 @@
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
     *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
+    *** mToolbarColorObserverManager;
     public <init>(...);
 }
 
@@ -538,7 +535,6 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListManager {
     <init>(...);
-    *** removeSuggestionsForGroup(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager {
@@ -668,5 +664,13 @@
 }
 
 -keep class org.chromium.chrome.browser.settings.BravePreferenceFragment {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.StandardNotificationBuilder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationBuilder {
     public <init>(...);
 }

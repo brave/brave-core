@@ -10,9 +10,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"

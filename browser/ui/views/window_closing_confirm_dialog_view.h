@@ -6,9 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
 
-#include <memory>
-
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"

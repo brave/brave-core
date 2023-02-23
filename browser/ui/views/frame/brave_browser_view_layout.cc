@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

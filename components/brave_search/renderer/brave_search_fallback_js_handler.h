@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"

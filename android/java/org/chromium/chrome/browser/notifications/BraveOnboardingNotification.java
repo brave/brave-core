@@ -19,7 +19,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
-import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
+import org.chromium.chrome.browser.notifications.BraveNotificationBuilder;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
@@ -63,14 +63,14 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
             new NotificationManagerProxyImpl(context);
 
         NotificationBuilderBase notificationBuilder =
-            new BraveAdsNotificationBuilder(context)
-        .setTitle(context.getString(R.string.brave_ui_brave_rewards))
-        .setBody(context.getString(R.string.this_is_your_first_ad))
-        .setSmallIconId(R.drawable.ic_chrome)
-        .setPriority(Notification.PRIORITY_HIGH)
-        .setDefaults(Notification.DEFAULT_ALL)
-        .setContentIntent(getDeepLinkIntent(context))
-        .setOrigin(getNotificationUrl());
+                new BraveNotificationBuilder(context)
+                        .setTitle(context.getString(R.string.brave_ui_brave_rewards))
+                        .setBody(context.getString(R.string.this_is_your_first_ad))
+                        .setSmallIconId(R.drawable.ic_chrome)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setContentIntent(getDeepLinkIntent(context))
+                        .setOrigin(getNotificationUrl());
 
         NotificationWrapper notification = notificationBuilder.build(new NotificationMetadata(
                                               NotificationUmaTracker.SystemNotificationType

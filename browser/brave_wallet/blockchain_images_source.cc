@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

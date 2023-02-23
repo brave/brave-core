@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"

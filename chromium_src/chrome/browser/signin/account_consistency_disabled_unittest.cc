@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2017 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/signin/account_consistency_mode_manager.h"
 
@@ -11,13 +12,13 @@
 #include "build/buildflag.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/supervised_user/supervised_user_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_notifier_impl.h"
 #include "components/prefs/testing_pref_store.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #include "components/signin/public/base/signin_buildflags.h"
 #include "components/signin/public/base/signin_pref_names.h"
+#include "components/supervised_user/core/common/supervised_user_constants.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_task_environment.h"

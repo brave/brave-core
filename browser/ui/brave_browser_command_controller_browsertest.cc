@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"

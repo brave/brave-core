@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/features.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"

@@ -1,8 +1,8 @@
 diff --git a/tools/grit/grit/gather/policy_json.py b/tools/grit/grit/gather/policy_json.py
-index e084c7214d82cb6319082cb53b9bc63364bf63c9..9a08e959d312aaa528ed9bb0a247dc392e537cef 100644
+index df11b26828df02278b07c577b228332e63451f56..9d8d902781d905175eb7c089798adf7758a9cc5a 100644
 --- a/tools/grit/grit/gather/policy_json.py
 +++ b/tools/grit/grit/gather/policy_json.py
-@@ -354,3 +354,4 @@ class PolicyJson(skeleton_gatherer.SkeletonGatherer):
+@@ -350,3 +350,4 @@ class PolicyJson(skeleton_gatherer.SkeletonGatherer):
        }
      else:
        raise Exception('Unknown build')

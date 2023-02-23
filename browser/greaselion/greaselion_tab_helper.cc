@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"

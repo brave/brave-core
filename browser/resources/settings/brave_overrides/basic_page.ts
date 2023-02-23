@@ -5,9 +5,6 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/polymer_overriding.js'
-import {loadTimeData} from '../i18n_setup.js'
-
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
@@ -21,6 +18,10 @@ import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
+
+import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
+
+import {loadTimeData} from '../i18n_setup.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 

@@ -5,8 +5,8 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
+import {RegisterPolymerComponentBehaviors, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {RegisterStyleOverride, RegisterPolymerComponentBehaviors} from 'chrome://resources/polymer_overriding.js'
 
 // TODO: move throttle utility to a chrome://resources module
 function throttle (callback, maxWaitTime = 30) {

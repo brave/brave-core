@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/features.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"

@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -183,7 +183,6 @@ bool BraveFirstRunDialog::Accept() {
 }
 
 void BraveFirstRunDialog::WindowClosing() {
-  first_run::SetShouldShowWelcomePage();
   Done();
 }
 
