@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index 9bb0e76fac2c7e9c7f72609e802d593137f84774..da3f13a300d769f6fb312abb33252f8a79360bc7 100644
+index 9bb0e76fac2c7e9c7f72609e802d593137f84774..d2cb4fdff61f117e1350f13c6bfb29ee4a7769f6 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
 @@ -68,4 +68,5 @@ build_webui("build") {
        "lazy_load.js",
      ]
    }
-+  import("//brave/browser/resources/history/sources.gni") web_component_files += brave_history_web_component_files non_web_component_files += brave_history_non_web_component_files exclude_preprocess_files = brave_history_local_files preprocess_deps = brave_history_preprocess_extra_deps
++  import("//brave/browser/resources/history/sources.gni") web_component_files += brave_history_web_component_files non_web_component_files += brave_history_non_web_component_files exclude_ts_preprocess_files = brave_history_local_ts_files exclude_html_css_preprocess_files = brave_history_local_html_files preprocess_deps = brave_history_preprocess_extra_deps
  }
