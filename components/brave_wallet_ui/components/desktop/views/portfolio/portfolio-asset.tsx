@@ -758,6 +758,7 @@ export const PortfolioAsset = (props: Props) => {
         visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
         ref={nftDetailsRef}
         sandbox="allow-scripts allow-popups allow-same-origin"
+        allow="clipboard-write"
         src='chrome-untrusted://nft-display'
         allowFullScreen
         style={{ height: iframeHeight }}
