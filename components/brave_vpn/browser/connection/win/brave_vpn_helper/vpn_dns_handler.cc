@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"

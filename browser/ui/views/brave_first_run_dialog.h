@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "ui/base/metadata/metadata_header_macros.h"

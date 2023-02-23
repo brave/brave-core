@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
 import {loadTimeData} from '//resources/js/load_time_data.js';
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
   'settings-security-page': (templateContent) => {

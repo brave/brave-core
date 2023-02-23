@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ssl/https_only_mode_navigation_throttle.h"
 
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -123,7 +123,7 @@ HttpsOnlyModeNavigationThrottle::WillFailRequest() {
   // Use the original fallback URL.
   url_params.url = tab_helper->fallback_url();
   // Launch a new task to navigate to the fallback URL.
-  base::SequencedTaskRunnerHandle::Get()->PostTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(
                      [](base::WeakPtr<content::WebContents> contents,
                         const content::OpenURLParams& url_params) {

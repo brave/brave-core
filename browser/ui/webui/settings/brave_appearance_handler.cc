@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"

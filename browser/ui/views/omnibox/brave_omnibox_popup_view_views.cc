@@ -1,9 +1,9 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_contents_view.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -11,12 +11,13 @@
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
-BraveOmniboxPopupContentsView::~BraveOmniboxPopupContentsView() = default;
+BraveOmniboxPopupViewViews::~BraveOmniboxPopupViewViews() = default;
 
-gfx::Rect BraveOmniboxPopupContentsView::GetTargetBounds() const {
-  auto bounds = OmniboxPopupContentsView::GetTargetBounds();
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
+  auto bounds = OmniboxPopupViewViews::GetTargetBounds();
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return bounds;
+  }
 
   if (auto* browser = location_bar_view_->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
@@ -32,5 +33,5 @@ gfx::Rect BraveOmniboxPopupContentsView::GetTargetBounds() const {
   return bounds;
 }
 
-BEGIN_METADATA(BraveOmniboxPopupContentsView, OmniboxPopupContentsView)
+BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
 END_METADATA

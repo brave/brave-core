@@ -1,73 +1,66 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
 import("//ui/webui/resources/include_polymer.gni")
+import("//ui/webui/resources/tools/build_cr_component.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/webui_features.gni")
 import("./fonts/fonts.gni")
 import("./sources.gni")
 
-# Add Files to chrome://resources
-# - Use preprocess_if_expr to get the files to same gen dir as chromium
-# - Use extensible patch to ui/webui/resources/build.gn to get the info to typescript, grd, and c++ (via the main resources .grd)
-# - Generate GRDP for extra static files - fonts, css
+# These targets add files to chrome://resources/brave
+# - Use build_cr_componesnrt or other methods to compile resources and generate GRDPs
+# - Use extensible patch to ui/webui/resources/build.gn to get the files in these GRDPs to typescript, grd, and c++ (via the main resources .grd)
+# - Files generates here are path mapped from chrome://resources/brave via:
+#    - Typescript compiler in //tools/typescript/ts_library.gni
+#    - Rollup bundler in //chrome/browser/resources/tools/optimize_webui.gni
 
-preprocess_in_files = brave_web_component_files_native_ts +
-                      brave_native_html_files + brave_non_web_component_files_ts
+group("grdp") {
+  public_deps = [
+    ":fonts_grdp",
+    ":static_grdp",
+  ]
+  if (include_polymer) {
+    public_deps += [ ":build_grdp" ]
+  }
+}
+
 if (include_polymer) {
-  preprocess_in_files += brave_web_component_files_polymer_ts +
-                         brave_polymer_html_files + brave_css_files
-}
-requires_preprocess = preprocess_in_files != []
+  build_cr_component("build") {
+    grd_prefix = "brave"
 
-# Same path as //ui/webui/resources generates to
-if (requires_preprocess) {
-  preprocess_folder = "$root_gen_dir/ui/webui/resources/preprocessed"
-}
+    # Ensure all the files are relative to this dir (with a brave/ prefix),
+    # and not //ui/webui/resources which is the default for build_cr_component.
+    resource_path_prefix = "brave"
+    if (include_polymer) {
+      web_component_files = [
+        "br_elements/br_toolbar/br_toolbar.ts",
+        "br_elements/br_toolbar/br_toolbar_search_field.ts",
+      ]
 
-# Put files that are required for the //ui/webui/resources typescript compile in the
-# expected gen directory
-if (requires_preprocess) {
-  preprocess_if_expr("preprocess_ts") {
-    in_folder = "."
-    out_folder = preprocess_folder
-    in_files = preprocess_in_files
-  }
-}
-
-group("preprocess") {
-  public_deps = []
-  if (requires_preprocess) {
-    public_deps += [ ":preprocess_ts" ]
-    if (brave_polymer_html_files != []) {
-      public_deps += [ ":html_wrapper_files" ]
+      non_web_component_files = [ "polymer_overriding.ts" ]
     }
-    if (brave_css_files != []) {
-      public_deps += [ ":css_wrapper_files" ]
+
+    if (include_polymer) {
+      css_files = [
+        "br_elements/br_shared_style.css",
+        "br_elements/br_shared_vars.css",
+        "overrides/cr_button_override.css",
+        "overrides/cr_toggle_override.css",
+        "page_specific/settings/br_settings_shared.css",
+      ]
     }
-  }
-}
 
-# Generate .html.ts files from .html
-if (requires_preprocess && brave_polymer_html_files != []) {
-  html_to_wrapper("html_wrapper_files") {
-    deps = [ ":preprocess_ts" ]
-    in_folder = preprocess_folder
-    out_folder = preprocess_folder
-    in_files = brave_polymer_html_files
-    scheme = "relative"
-    minify = optimize_webui
-  }
-}
+    html_to_wrapper_template = "detect"
 
-# Generate .css.ts files from .css
-if (requires_preprocess && brave_css_files != []) {
-  css_to_wrapper("css_wrapper_files") {
-    deps = [ ":preprocess_ts" ]
-    in_folder = preprocess_folder
-    out_folder = preprocess_folder
-    in_files = brave_css_files
-    minify = optimize_webui
+    tsc_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
+    ts_deps = [ "//ui/webui/resources/js:build_ts" ]
+    ts_use_local_config = false
   }
 }
 
@@ -88,13 +81,6 @@ if (include_polymer) {
   ]
 }
 
-group("grdp") {
-  public_deps = [
-    ":fonts_grdp",
-    ":static_grdp",
-  ]
-}
-
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
 generate_grd("static_grdp") {
   grd_prefix = "brave_webui"
@@ -106,7 +92,7 @@ generate_grd("static_grdp") {
                   "ethereum_remote_client_page.html",
                 ]
   input_files_base_dir =
-      rebase_path("$brave_resources_extra_grdps_path/brave", root_build_dir)
+      rebase_path("$brave_resources_extra_grdps_path", root_build_dir)
   deps = [
     ":ethereum_remote_client_html_copy",
     ":static_copy",
@@ -116,18 +102,18 @@ generate_grd("static_grdp") {
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
 generate_grd("fonts_grdp") {
   grd_prefix = "brave_webui"
+  resource_path_prefix = "brave"
   out_grd = "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp"
   input_files = brave_font_files
   input_files_base_dir =
-      rebase_path("$brave_resources_extra_grdps_path/", root_build_dir)
+      rebase_path("$brave_resources_extra_grdps_path", root_build_dir)
   deps = [ ":fonts_copy" ]
 }
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
 copy("static_copy") {
   sources = static_files
-  outputs =
-      [ "$brave_resources_extra_grdps_path/brave/{{source_target_relative}}" ]
+  outputs = [ "$brave_resources_extra_grdps_path/{{source_target_relative}}" ]
 }
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
@@ -140,7 +126,6 @@ copy("fonts_copy") {
 # This is separate to "static_copy" because the path is not relative.
 copy("ethereum_remote_client_html_copy") {
   sources = [ "../../../browser/ui/webui/ethereum_remote_client/ethereum_remote_client_page.html" ]
-  outputs = [
-    "$brave_resources_extra_grdps_path/brave/ethereum_remote_client_page.html",
-  ]
+  outputs =
+      [ "$brave_resources_extra_grdps_path/ethereum_remote_client_page.html" ]
 }

@@ -90,6 +90,7 @@ source_set("testutil") {
     "//base",
     "//brave/browser",
     "//brave/vendor/bat-native-ledger:headers",
+    "//chrome/browser/bitmap_fetcher:bitmap_fetcher",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//testing/gtest",

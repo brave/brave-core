@@ -15,15 +15,14 @@
 // we still want to block 3p frames as usual and not fall back to "allow
 // everything" path.
 #define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL                    \
-  DCHECK(third_party_blocking_outcome ==                                      \
-         ThirdPartyBlockingOutcome::kIrrelevant);                             \
+  DCHECK(third_party_blocking_scope == absl::nullopt);                        \
   if (is_third_party_request &&                                               \
       ShouldBlockThirdPartyIfSettingIsExplicit(                               \
           block_third_party_cookies_, cookie_setting, found_explicit_setting, \
           base::Contains(third_party_cookies_allowed_schemes_,                \
                          first_party_url.scheme()))) {                        \
-    third_party_blocking_outcome =                                            \
-        ThirdPartyBlockingOutcome::kAllStateDisallowed;                       \
+    third_party_blocking_scope =                                              \
+        ThirdPartyBlockingScope::kUnpartitionedAndPartitioned;                \
     cookie_setting = CONTENT_SETTING_BLOCK;                                   \
   }                                                                           \
   /* Store patterns information to determine if Shields are disabled. */      \
@@ -45,17 +44,21 @@ bool CookieSettings::IsEphemeralCookieAccessible(
     const net::CanonicalCookie& cookie,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    const absl::optional<url::Origin>& top_frame_origin) const {
+    const absl::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides) const {
   // Upstream now do single cookie-specific checks in some places to determine
   // whether cookie access should be granted. However, when ephemeral storage is
   // enabled, Brave doesn't care about whether access is being requested for a
   // specific cookie or not, so we simply return |true| if that's the case.
   // See https://crrev.com/c/2895004 for the upstream change that required this.
-  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
-                                     CookieSettingsBase::QueryReason::kCookies))
+  if (IsEphemeralCookieAccessAllowed(
+          url, site_for_cookies, top_frame_origin, overrides,
+          CookieSettingsBase::QueryReason::kCookies)) {
     return true;
+  }
 
-  return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin);
+  return IsCookieAccessible(cookie, url, site_for_cookies, top_frame_origin,
+                            overrides);
 }
 
 net::NetworkDelegate::PrivacySetting
@@ -63,13 +66,15 @@ CookieSettings::IsEphemeralPrivacyModeEnabled(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::SamePartyContext::Type same_party_cookie_context_type) const {
-  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
-                                     CookieSettingsBase::QueryReason::kCookies))
+    net::CookieSettingOverrides overrides) const {
+  if (IsEphemeralCookieAccessAllowed(
+          url, site_for_cookies, top_frame_origin, overrides,
+          CookieSettingsBase::QueryReason::kCookies)) {
     return net::NetworkDelegate::PrivacySetting::kStateAllowed;
+  }
 
   return IsPrivacyModeEnabled(url, site_for_cookies, top_frame_origin,
-                              same_party_cookie_context_type);
+                              overrides);
 }
 
 bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
@@ -77,6 +82,7 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
     const net::SiteForCookies& site_for_cookies,
     const url::Origin* top_frame_origin,
     const net::FirstPartySetMetadata& first_party_set_metadata,
+    net::CookieSettingOverrides overrides,
     net::CookieAccessResultList& maybe_included_cookies,
     net::CookieAccessResultList& excluded_cookies) const {
   absl::optional<url::Origin> top_frame_origin_opt;
@@ -84,14 +90,14 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
     top_frame_origin_opt = *top_frame_origin;
 
   if (IsEphemeralCookieAccessAllowed(
-          url, site_for_cookies, top_frame_origin_opt,
+          url, site_for_cookies, top_frame_origin_opt, overrides,
           CookieSettingsBase::QueryReason::kCookies)) {
     return true;
   }
 
   return AnnotateAndMoveUserBlockedCookies(
       url, site_for_cookies, top_frame_origin, first_party_set_metadata,
-      maybe_included_cookies, excluded_cookies);
+      overrides, maybe_included_cookies, excluded_cookies);
 }
 
 }  // namespace network

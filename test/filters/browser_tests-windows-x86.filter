@@ -11,5 +11,6 @@
 -CDM_10/ECKEncryptedMediaTest.MultipeCdmTypes/0
 -CDM_11/ECKEncryptedMediaTest.MultipeCdmTypes/0
 
-# This test fails on x86 CI but passes locally
+# These tests fail on x86 CI but pass locally
 -MetricIntegrationTest.LargestContentfulPaint_SubframeInput
+-SaveDesktopSnapshotTest.SaveDesktopSnapshot

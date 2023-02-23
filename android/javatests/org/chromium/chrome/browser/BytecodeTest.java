@@ -551,12 +551,12 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
-                StatusBarColorController.class, AppMenuDelegate.class,
-                ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
-                Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
-                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class));
+                WindowAndroid.class, Supplier.class, Supplier.class, StatusBarColorController.class,
+                AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
+                BottomSheetController.class, Supplier.class, TabContentManager.class,
+                TabCreatorManager.class, SnackbarManager.class, JankTracker.class, Supplier.class,
+                OneshotSupplier.class, OmniboxPedalDelegate.class, Supplier.class, boolean.class,
+                BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -617,10 +617,10 @@ public class BytecodeTest {
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
+                OfflineDownloader.class, boolean.class, Callback.class, boolean.class,
+                ObservableSupplier.class, ObservableSupplier.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -720,6 +720,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
                 Context.class, ModalDialogManager.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
+                "org/chromium/chrome/browser/notifications/BraveNotificationBuilder",
+                Context.class));
     }
 
     @Test
@@ -833,6 +837,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mToolbarColorObserverManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
                         "mActiveTabSwitcherToolbar"));

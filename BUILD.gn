@@ -126,8 +126,8 @@ group("resources") {
 if (is_android) {
   android_assets("brave_pak_assets") {
     sources = [
-      "$root_build_dir/brave_100_percent.pak",
-      "$root_build_dir/brave_resources.pak",
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_resources.pak",
       "//brave/LICENSE.html",
       "//brave/android/java/org/chromium/chrome/browser/ntp/ntp_news_optin_icon_animation.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads.json",
@@ -139,7 +139,12 @@ if (is_android) {
       "//brave/android/java/org/chromium/chrome/browser/shields/disconnect_entitylist.json",
       "//brave/android/java/org/chromium/chrome/browser/vpn/brave_vpn_confirm.json",
     ]
-    deps = [ "//brave:browser_dependencies" ]
+
+    deps = [
+      "//brave:browser_dependencies",
+      "//brave:packed_resources_100_percent",
+      "//brave:packed_resources_extra",
+    ]
     disable_compression = true
   }
 }

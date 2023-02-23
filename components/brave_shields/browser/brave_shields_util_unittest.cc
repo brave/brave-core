@@ -17,6 +17,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -571,13 +572,13 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
          const GURL& url) -> CookieState {
     const auto first_party_blocked =
         cookie_settings->GetCookieSetting(
-            url, url, nullptr,
+            url, url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 
     const auto third_party_blocked =
         cookie_settings->GetCookieSetting(
-            GURL::EmptyGURL(), url, nullptr,
+            GURL::EmptyGURL(), url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 
