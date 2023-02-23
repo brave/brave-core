@@ -47,18 +47,23 @@ class BraveCoreImportExportUtility {
       // startAccessingSecurityScopedResource should be called for that URL
       // Reference: https://stackoverflow.com/a/73912499/2239348
       guard path.startAccessingSecurityScopedResource() else {
+        DispatchQueue.main.async {
+          completion(false)
+        }
         return
       }
       
       self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: true) { [weak self] state, bookmarks in
-        defer {
+        guard let self else {
           // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
           // (Note: this is not reference counted)
           path.stopAccessingSecurityScopedResource()
+          return
         }
         
-        guard let self = self, state != .started else { return }
-            
+        guard state != .started else { return }    
+        path.stopAccessingSecurityScopedResource()
+
         do {
           try self.rethrow(state)
           self.state = .none
@@ -94,15 +99,20 @@ class BraveCoreImportExportUtility {
       // To access a document URL from UIDocumentPickerViewController
       // startAccessingSecurityScopedResource should be called
       guard path.startAccessingSecurityScopedResource() else {
+        DispatchQueue.main.async {
+          completion(false, [])
+        }
         return
       }
       
       self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: false) { [weak self] state, bookmarks in
-        defer {
+        guard let self else {
           path.stopAccessingSecurityScopedResource()
+          return
         }
         
-        guard let self = self, state != .started else { return }
+        guard state != .started else { return }
+        path.stopAccessingSecurityScopedResource()
         
         do {
           try self.rethrow(state)
@@ -126,7 +136,7 @@ class BraveCoreImportExportUtility {
   func exportBookmarks(to path: URL, _ completion: @escaping (_ success: Bool) -> Void) {
     precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
 
-    guard let path = nativeURLPathFromURL(path) else {
+    guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
       DispatchQueue.main.async {
         completion(false)
@@ -136,7 +146,7 @@ class BraveCoreImportExportUtility {
 
     self.state = .exporting
     self.queue.async {
-      self.exporter.export(toFile: path) { [weak self] state in
+      self.exporter.export(toFile: nativePath) { [weak self] state in
         guard let self = self, state != .started else { return }
 
         do {
