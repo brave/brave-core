@@ -119,14 +119,16 @@ brave_settings_ts_definitions = [
 ]
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
-brave_settings_local_files =
+brave_settings_local_ts_files =
     brave_settings_web_component_files +
-    brave_settings_non_web_component_files + brave_settings_icons_html_files
+    brave_settings_non_web_component_files
+
+brave_settings_local_html_files = []
 foreach(component_file, brave_settings_web_component_files) {
-  brave_settings_local_files +=
+  brave_settings_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
-brave_settings_exclude_preprocess_files = brave_settings_local_files
+brave_settings_local_html_files += brave_settings_icons_html_files
 
 brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]

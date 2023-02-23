@@ -11,4 +11,4 @@ brave_bookmarks_non_web_component_files = [
 brave_bookmarks_preprocess_extra_deps =
     [ "//brave/browser/resources/bookmarks:preprocess" ]
 
-brave_bookmarks_local_files = brave_bookmarks_non_web_component_files
+brave_bookmarks_ts_local_files = brave_bookmarks_non_web_component_files

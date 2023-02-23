@@ -13,9 +13,11 @@ brave_extensions_non_web_component_files = [
 brave_extensions_preprocess_extra_deps =
     [ "//brave/browser/resources/extensions:preprocess" ]
 
-brave_extensions_local_files = brave_extensions_web_component_files +
-                               brave_extensions_non_web_component_files
+brave_extensions_local_ts_files = brave_extensions_web_component_files +
+                                  brave_extensions_non_web_component_files
+
+brave_extensions_local_html_files = []
 foreach(component_file, brave_extensions_web_component_files) {
-  brave_extensions_local_files +=
+  brave_extensions_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
