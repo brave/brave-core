@@ -37,8 +37,13 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   Tab* AddTab(std::unique_ptr<Tab> tab,
               int model_index,
               TabPinned pinned) override;
+  int GetUnpinnedContainerIdealLeadingX() const override;
+  TabContainer* GetTabContainerAt(gfx::Point point_in_local_coords) override;
+  gfx::Rect ConvertUnpinnedContainerIdealBoundsToLocal(
+      gfx::Rect ideal_bounds) const override;
+  BrowserRootView::DropTarget* GetDropTarget(
+      gfx::Point loc_in_local_coords) override;
 
- private:
   bool ShouldShowVerticalTabs() const;
 
   base::raw_ref<TabSlotController> tab_slot_controller_;

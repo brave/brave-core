@@ -143,9 +143,7 @@ gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
 
 views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
     const views::View* child) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser())) {
+  if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetAvailableSize(child);
   }
 
@@ -170,6 +168,52 @@ Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
     pinned_tab_container_->SetVisible(true);
   }
   return result;
+}
+
+int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetUnpinnedContainerIdealLeadingX();
+  }
+
+  return 0;
+}
+
+BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
+    gfx::Point loc_in_local_coords) {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetDropTarget(loc_in_local_coords);
+  }
+
+  // At this moment, upstream doesn't have implementation for this path yet.
+  // TODO(1346023): Implement text drag and drop.
+
+  if (!GetLocalBounds().Contains(loc_in_local_coords)) {
+    return nullptr;
+  }
+
+  return GetTabContainerAt(loc_in_local_coords);
+}
+
+TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
+    gfx::Point point_in_local_coords) {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetTabContainerAt(point_in_local_coords);
+  }
+
+  return point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
+             ? base::to_address(pinned_tab_container_)
+             : base::to_address(unpinned_tab_container_);
+}
+
+gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
+    gfx::Rect ideal_bounds) const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
+        ideal_bounds);
+  }
+
+  ideal_bounds.Offset(0, unpinned_tab_container_->y());
+  return ideal_bounds;
 }
 
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
