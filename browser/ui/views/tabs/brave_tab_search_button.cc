@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 
 #include <algorithm>
+#include <memory>
 
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
@@ -20,10 +21,10 @@
 #include "ui/views/layout/layout_provider.h"
 
 BraveTabSearchButton::BraveTabSearchButton(TabStrip* tab_strip)
-    : TabSearchButton(tab_strip),
-      tab_search_bubble_host_(std::make_unique<BraveTabSearchBubbleHost>(
-          this,
-          tab_strip->controller()->GetProfile())) {}
+    : TabSearchButton(tab_strip) {
+  tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
+      this, tab_strip->controller()->GetProfile());
+}
 
 BraveTabSearchButton::~BraveTabSearchButton() = default;
 
@@ -43,7 +44,8 @@ SkPath BraveTabSearchButton::GetBorderPath(const gfx::Point& origin,
 }
 
 void BraveTabSearchButton::SetBubbleArrow(views::BubbleBorder::Arrow arrow) {
-  tab_search_bubble_host_->SetBubbleArrow(arrow);
+  static_cast<BraveTabSearchBubbleHost*>(tab_search_bubble_host_.get())
+      ->SetBubbleArrow(arrow);
 }
 
 int BraveTabSearchButton::GetCornerRadius() const {
