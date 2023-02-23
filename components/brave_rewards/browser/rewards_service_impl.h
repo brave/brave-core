@@ -605,6 +605,7 @@ class RewardsServiceImpl : public RewardsService,
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
