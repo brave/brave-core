@@ -537,51 +537,6 @@ TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   run_loop3.Run();
 }
 
-TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
-  base::test::TaskEnvironment task_environment;
-  auto* registry = BlockchainRegistry::GetInstance();
-
-  base::RunLoop run_loop;
-  registry->GetBuyUrl(
-      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC", "99.99",
-      base::BindLambdaForTesting([&](const std::string& url,
-                                     const absl::optional<std::string>& error) {
-        EXPECT_EQ(
-            url,
-            "https://pay.sendwyre.com/"
-            "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&"
-            "amount=99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card");
-        EXPECT_FALSE(error);
-
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-}
-
-TEST(BlockchainRegistryUnitTest, GetBuyUrlRamp) {
-  base::test::TaskEnvironment task_environment;
-  auto* registry = BlockchainRegistry::GetInstance();
-
-  base::RunLoop run_loop;
-  registry->GetBuyUrl(
-      mojom::OnRampProvider::kRamp, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC",
-      "55000000",  // 55 USDC
-      base::BindLambdaForTesting([&](const std::string& url,
-                                     const absl::optional<std::string>& error) {
-        EXPECT_EQ(url,
-                  "https://buy.ramp.network/"
-                  "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
-                  "&fiatCurrency=USD&hostApiKey="
-                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf");
-        EXPECT_FALSE(error);
-
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-}
-
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();

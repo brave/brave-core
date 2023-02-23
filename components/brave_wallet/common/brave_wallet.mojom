@@ -681,9 +681,6 @@ interface BlockchainRegistry {
   // Obtains all tokens for the Sell UI
   GetSellTokens(OffRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
-  // Obtains the URL used for buying assets.
-  GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
-
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
 
