@@ -44,7 +44,13 @@ import {
 } from './adapters'
 import { hasEIP1559Support } from '../../../utils/network-utils'
 
-export const Swap = () => {
+export interface Props {
+  hideNav?: boolean
+}
+
+export const Swap = (props: Props) => {
+  const { hideNav } = props
+
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedAccount = useUnsafeWalletSelector(
     WalletSelectors.selectedAccount
@@ -125,7 +131,7 @@ export const Swap = () => {
 
   return (
     <div>
-      <BuySendSwapDepositNav isTab={true} isSwap={true} />
+      {!hideNav && <BuySendSwapDepositNav isTab={true} isSwap={true} />}
       {selectedNetwork && selectedAccount && (
         <SwapInterface
           getLocale={getLocale}
