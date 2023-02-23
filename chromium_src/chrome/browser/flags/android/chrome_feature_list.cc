@@ -19,9 +19,9 @@
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
     &brave_rewards::features::kBraveRewards,                 \
     &brave_search_conversion::features::kOmniboxBanner,      \
-    &brave_news::features::kBraveNewsFeature,               \
+    &brave_news::features::kBraveNewsFeature,                \
+    &brave_news::features::kBraveNewsV2Feature,              \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,\
-    &brave_news::features::kBraveNewsV2Feature,             \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
     &brave_wallet::features::kBraveWalletSnsFeature,         \
