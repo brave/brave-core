@@ -48,7 +48,7 @@ import java.util.TreeMap;
 
 public class BraveNewsPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener, ConnectionErrorHandler {
-    public static final String PREF_TURN_ON_NEWS = "kBraveTodayOptedIn";
+    public static final String PREF_TURN_ON_NEWS = "kBraveNewsOptedIn";
     public static final String PREF_SHOW_NEWS = "kNewTabPageShowToday";
     public static final String PREF_SHOW_OPTIN = "show_optin";
     public static final String PREF_SOURCES_SECTION = "your_sources_section";
