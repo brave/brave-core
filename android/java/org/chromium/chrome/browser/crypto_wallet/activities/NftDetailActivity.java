@@ -241,27 +241,22 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader.createLoadNftRequest(imageUrl, this, false)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(GlideException glideException, Object model,
-                            Target<Drawable> target, boolean isFirstResource) {
-                        setNftImageAsNotAvailable();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model,
-                            Target<Drawable> target, DataSource dataSource,
-                            boolean isFirstResource) {
-                        if (ImageLoader.isSvg(imageUrl)) {
-                            ImageLoader.setSoftwareLayerType(target);
-                        }
-                        target.onResourceReady(
-                                resource, new DrawableCrossFadeTransition(250, true));
-                        return true;
-                    }
-                })
+        ImageLoader
+                .createRequest(imageUrl, this, false,
+                        new ImageLoader.Callback() {
+                            @Override
+                            public boolean onLoadFailed() {
+                                setNftImageAsNotAvailable();
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(
+                                    Drawable resource, Target<Drawable> target) {
+                                target.onResourceReady(
+                                        resource, new DrawableCrossFadeTransition(250, true));
+                                return true;
+                            }
+                        })
                 .into(mNftImageView);
     }
 

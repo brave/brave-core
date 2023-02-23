@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.glide;
 
+import android.webkit.URLUtil;
+
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.Options;
@@ -26,6 +28,6 @@ public final class Base64ModelLoader implements ModelLoader<String, ByteBuffer> 
 
     @Override
     public boolean handles(@NonNull String model) {
-        return model.startsWith("data:");
+        return URLUtil.isDataUrl(model);
     }
 }

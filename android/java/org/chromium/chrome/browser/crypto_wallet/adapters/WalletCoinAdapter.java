@@ -204,26 +204,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 if (walletListItemModel.hasNftImageLink()
                         && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                     String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.createLoadNftRequest(url, context, false)
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(GlideException glideException,
-                                        Object model, Target<Drawable> target,
-                                        boolean isFirstResource) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model,
-                                        Target<Drawable> target, DataSource dataSource,
-                                        boolean isFirstResource) {
-                                    if (ImageLoader.isSvg(url)) {
-                                        ImageLoader.setSoftwareLayerType(target);
-                                    }
-                                    return false;
-                                }
-                            })
-                            .into(holder.iconImg);
+                    ImageLoader.createRequest(url, context, false, null).into(holder.iconImg);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                             walletListItemModel.getBlockchainToken().contractAddress,
