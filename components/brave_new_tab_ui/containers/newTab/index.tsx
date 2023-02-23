@@ -641,9 +641,9 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.GridItemTopSites>
             }
-            {<Page.GridItemSponsoredImage otherWidgetsHidden={this.allWidgetsHidden()}>
+            {newTabData.brandedWallpaper?.isSponsored && <Page.GridItemSponsoredImage otherWidgetsHidden={this.allWidgetsHidden()}>
               <SponsoredImage onClick={this.onClickLogo}
-                sponsoredImageUrl={newTabData.brandedWallpaper?.logo.destinationUrl ?? 'https://example.com'}/>
+                sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
               </Page.GridItemSponsoredImage>}
             {
               gridSitesData.shouldShowSiteRemovedNotification

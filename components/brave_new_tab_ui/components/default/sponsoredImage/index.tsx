@@ -21,7 +21,6 @@ const Link = styled.a`
   right: 56px;
   bottom: 8px;
   display: block;
-  border: 1px solid red;
 
   &:hover {
     cursor: pointer;
