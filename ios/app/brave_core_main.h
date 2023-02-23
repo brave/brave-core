@@ -22,7 +22,7 @@
 @class BraveWalletAPI;
 @class AdblockService;
 @class BraveTabGeneratorAPI;
-@class IpfsAPI;
+@protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -81,7 +81,7 @@ OBJC_EXPORT
 
 @property(readonly) AdblockService* adblockService;
 
-@property(readonly) IpfsAPI* ipfsAPI;
+@property(readonly) id<IpfsAPI> ipfsAPI;
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall;

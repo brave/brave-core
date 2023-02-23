@@ -107,7 +107,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
-@property(nonatomic) IpfsAPI* ipfsAPI;
+@property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @end
 
 @implementation BraveCoreMain
@@ -437,9 +437,9 @@ static bool CustomLogHandler(int severity,
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
 
-- (IpfsAPI*)ipfsAPI {
+- (id<IpfsAPI>)ipfsAPI {
   if (!_ipfsAPI) {
-    _ipfsAPI = [[IpfsAPI alloc] initWithBrowserState:_mainBrowserState];
+    _ipfsAPI = [[IpfsAPIImpl alloc] initWithBrowserState:_mainBrowserState];
   }
   return _ipfsAPI;
 }

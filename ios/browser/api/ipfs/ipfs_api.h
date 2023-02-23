@@ -11,15 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NS_SWIFT_NAME(IpfsAPI)
 OBJC_EXPORT
-@interface IpfsAPI : NSObject
+@protocol IpfsAPI
+@required
 
 @property(nonatomic, nullable) NSURL* nftIpfsGateway;
 
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
-
-- (instancetype)init NS_UNAVAILABLE;
 
 @end
 
