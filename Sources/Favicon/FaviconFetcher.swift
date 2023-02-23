@@ -36,13 +36,19 @@ public class FaviconFetcher {
     SDImageCache.shared.diskCache.removeAllData()
   }
 
+  /// Fetch a favicon in the following order:
+  /// 1. Fetch from Cache
+  /// 2. Fetch from Brave-Core
+  /// 3. Fetch from Bundled Icons
+  /// Notes: Does NOT make a request to fetch icons from the page.
+  ///      Requests are only made in FaviconScriptHandler, when the user visits the page.
   @MainActor
   public static func loadIcon(url: URL, kind: FaviconFetcher.Kind = .smallIcon, persistent: Bool) async throws -> Favicon {
+    try Task.checkCancellation()
+    
     if let favicon = getFromCache(for: url) {
       return favicon
     }
-
-    try Task.checkCancellation()
 
     // Fetch the Brave-Core icons
     if let favicon = try? await FaviconRenderer.loadIcon(for: url, persistent: persistent), !favicon.isMonogramImage {
@@ -54,6 +60,7 @@ public class FaviconFetcher {
     // Fetch Bundled or Custom icons
     // If there is an error, we'll try to fetch the cached icons
     if let favicon = try? await BundledFaviconRenderer.loadIcon(url: url) {
+      storeInCache(favicon, for: url, persistent: true)
       try Task.checkCancellation()
       return favicon
     }
@@ -61,6 +68,9 @@ public class FaviconFetcher {
     throw FaviconError.noImagesFound
   }
   
+  /// Creates a monogram Favicon with the following conditions
+  /// 1. If `monogramString` is not null, it is used to render the Favicon image.
+  /// 2. If `monogramString` is null, the first character of the URL's domain is used to render the Favicon image.
   @MainActor
   public static func monogramIcon(url: URL, monogramString: Character? = nil) async throws -> Favicon {
     // Render the Monogram on a UIImage
@@ -79,6 +89,19 @@ public class FaviconFetcher {
     try Task.checkCancellation()
     return favicon
   }
+  
+  /// Stores a Favicon in the cache if not persistent, and not a monogram image.
+  /// If the
+  public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) {
+    guard let favicon, !favicon.isMonogramImage else {
+      let cachedURL = cacheURL(for: url)
+      SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
+      SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
+      return
+    }
+
+    storeInCache(favicon, for: url, persistent: persistent)
+  }
 
   private static func cacheURL(for url: URL) -> URL {
     // Some websites still only have a favicon for the FULL url including the fragmented parts
@@ -90,8 +113,7 @@ public class FaviconFetcher {
 
   private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) {
     // Do not cache non-persistent icons
-    // Do not cache monogram icons
-    if persistent && !favicon.isMonogramImage {
+    if persistent {
       do {
         let data = try JSONEncoder().encode(favicon)
         let cachedURL = cacheURL(for: url)
@@ -106,7 +128,7 @@ public class FaviconFetcher {
   private static func getFromCache(for url: URL) -> Favicon? {
     let cachedURL = cacheURL(for: url)
     guard let data = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString) as? Data ??
-            SDImageCache.shared.diskCache.data(forKey: cachedURL.absoluteString) else {
+                     SDImageCache.shared.diskCache.data(forKey: cachedURL.absoluteString) else {
       return nil
     }
 

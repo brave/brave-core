@@ -45,11 +45,27 @@ class FaviconScriptHandler: NSObject, TabContentScript {
           !InternalURL.isValid(url: url),
           !(InternalURL(url)?.isSessionRestore ?? false) else { return }
     
-    tab?.faviconDriver?.webView(webView, scriptMessage: message) { [weak tab] _, icon in
+    tab?.faviconDriver?.webView(webView, scriptMessage: message) { [weak tab] iconUrl, icon in
       if let icon = icon, let tab = tab {
-        let favicon = Favicon(image: icon, isMonogramImage: false, backgroundColor: .clear)
-        tab.favicons.append(favicon)
-        TabEvent.post(.didLoadFavicon(favicon), for: tab)
+        if let iconUrl = iconUrl {
+          Logger.module.debug("Fetched Favicon: \(iconUrl.absoluteString), for page: \(url.absoluteString)")
+        } else {
+          Logger.module.debug("Fetched Favicon for page: \(url.absoluteString)")
+        }
+        
+        Task { @MainActor in
+          let favicon = await Favicon.renderImage(icon, backgroundColor: .clear, shouldScale: true)
+          FaviconFetcher.updateCache(favicon, for: url, persistent: !tab.isPrivate)  // We can only cache favicons for non-private tabs
+          
+          tab.favicons.append(favicon)
+          TabEvent.post(.didLoadFavicon(favicon), for: tab)
+        }
+      } else if let iconUrl = iconUrl {
+        Logger.module.error("Failed fetching Favicon: \(iconUrl.absoluteString), for page: \(url.absoluteString)")
+        FaviconFetcher.updateCache(nil, for: url, persistent: true)  // We can delete cache always
+      } else {
+        Logger.module.error("Website: \(url.absoluteString), has no Favicon")
+        FaviconFetcher.updateCache(nil, for: url, persistent: true)  // We can delete cache always
       }
     }
   }
