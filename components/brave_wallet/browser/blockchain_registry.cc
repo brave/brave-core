@@ -208,42 +208,6 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
   std::move(callback).Run(std::move(blockchain_sell_tokens));
 }
 
-// TODO(muliswilliam) - Remove this function when iOS and Android no longer
-// depend on it https://github.com/brave/brave-browser/issues/23503
-void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
-                                   const std::string& chain_id,
-                                   const std::string& address,
-                                   const std::string& symbol,
-                                   const std::string& amount,
-                                   GetBuyUrlCallback callback) {
-  std::string url;
-  const std::string default_currency = "USD";
-  if (provider == mojom::OnRampProvider::kWyre) {
-    GURL wyre_url = GURL(kWyreBaseUrl);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "dest", "ethereum:" + address);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "sourceCurrency", default_currency);
-    wyre_url = net::AppendQueryParameter(wyre_url, "destCurrency", symbol);
-    wyre_url = net::AppendQueryParameter(wyre_url, "amount", amount);
-    wyre_url = net::AppendQueryParameter(wyre_url, "accountId", kWyreID);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "paymentMethod", "debit-card");
-    std::move(callback).Run(std::move(wyre_url.spec()), absl::nullopt);
-  } else if (provider == mojom::OnRampProvider::kRamp) {
-    GURL ramp_url = GURL(kRampBaseUrl);
-    ramp_url = net::AppendQueryParameter(ramp_url, "userAddress", address);
-    ramp_url = net::AppendQueryParameter(ramp_url, "swapAsset", symbol);
-    ramp_url = net::AppendQueryParameter(ramp_url, "fiatValue", amount);
-    ramp_url =
-        net::AppendQueryParameter(ramp_url, "fiatCurrency", default_currency);
-    ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kRampID);
-    std::move(callback).Run(std::move(ramp_url.spec()), absl::nullopt);
-  } else {
-    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
-  }
-}
-
 void BlockchainRegistry::GetOnRampCurrencies(
     GetOnRampCurrenciesCallback callback) {
   std::vector<mojom::OnRampCurrencyPtr> currencies;
