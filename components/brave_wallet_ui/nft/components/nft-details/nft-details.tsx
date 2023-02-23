@@ -127,7 +127,7 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     </Row>
                   </DetailSectionColumn>
                 </DetailSectionRow>
-                <DetailSectionRow>
+                <DetailSectionRow style={{ gap: '10px' }}>
                   <DetailSectionColumn>
                     <DetailSectionTitle>
                       {getLocale('braveWalletNFTDetailBlockchain')}
