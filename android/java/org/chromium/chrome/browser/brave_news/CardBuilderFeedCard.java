@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.brave_news;
-
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -121,7 +121,7 @@ public class CardBuilderFeedCard {
     private RequestManager mGlide;
     private DisplayAdsTable mPosTabAd;
 
-    private final String TAG = "BN";
+    private static final String TAG = "BN";
     private final int MARGIN_VERTICAL = 10;
     private final String BRAVE_OFFERS_URL = "offers.brave.com";
 
@@ -407,19 +407,24 @@ public class CardBuilderFeedCard {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         Handler handler = new Handler(Looper.getMainLooper());
                         executor.execute(() -> {
-                            int tabId = BraveActivity.getBraveActivity().getActivityTab().getId();
-                            DatabaseHelper dbHelper = DatabaseHelper.getInstance();
-                            DisplayAdsTable posTabAd = dbHelper.getDisplayAd(position, tabId);
-                            handler.post(() -> {
-                                if (posTabAd != null) {
-                                    createAdFromTable(posTabAd);
-                                } else {
-                                    mBraveNewsController.getDisplayAd(adData -> {
-                                        BraveNewsUtils.putToDisplayAdsMap(position, adData);
-                                        createdDisplayAdCard(adData);
-                                    });
-                                }
-                            });
+                            try {
+                                int tabId =
+                                        BraveActivity.getBraveActivity().getActivityTab().getId();
+                                DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                                DisplayAdsTable posTabAd = dbHelper.getDisplayAd(position, tabId);
+                                handler.post(() -> {
+                                    if (posTabAd != null) {
+                                        createAdFromTable(posTabAd);
+                                    } else {
+                                        mBraveNewsController.getDisplayAd(adData -> {
+                                            BraveNewsUtils.putToDisplayAdsMap(position, adData);
+                                            createdDisplayAdCard(adData);
+                                        });
+                                    }
+                                });
+                            } catch (ActivityNotFoundException e) {
+                                Log.e(TAG, "createCard DISPLAY_AD " + e);
+                            }
                         });
                     } catch (Exception e) {
                         Log.e(TAG, "displayad Exception" + e.getMessage());
@@ -721,10 +726,14 @@ public class CardBuilderFeedCard {
     }
 
     private void openUrlInSameTabAndSavePosition(String myUrl) {
-        SharedPreferencesManager.getInstance().writeInt(
-                Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
-                mPosition);
-        TabUtils.openUrlInSameTab(myUrl);
+        try {
+            SharedPreferencesManager.getInstance().writeInt(
+                    Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
+                    mPosition);
+            TabUtils.openUrlInSameTab(myUrl);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openUrlInSameTabAndSavePosition " + e);
+        }
     }
 
     private void openUrlAndSaveEvent(DisplayAd adData) {

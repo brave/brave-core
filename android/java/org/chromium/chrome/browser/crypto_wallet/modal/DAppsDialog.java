@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -33,6 +35,8 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
 public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
+    private static final String TAG = "DAppsDialog";
+
     public static final String TAG_FRAGMENT = DAppsDialog.class.getName();
 
     private View mRootView;
@@ -105,9 +109,12 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
     }
 
     private void openWallet() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        assert activity != null;
-        activity.openBraveWallet(true, false, false);
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openBraveWallet(true, false, false);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openWallet " + e);
+        }
     }
 
     @Override

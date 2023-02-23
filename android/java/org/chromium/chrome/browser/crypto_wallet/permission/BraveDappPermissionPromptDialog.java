@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -53,6 +55,7 @@ import java.util.List;
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ImageDownloadCallback, ConnectionErrorHandler {
     static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
+    private static final String TAG = "BraveDappPermission";
 
     private final ModalDialogManager mModalDialogManager;
     private int mCoinType;
@@ -89,9 +92,11 @@ public class BraveDappPermissionPromptDialog
         mModalDialogManager = windowAndroid.getModalDialogManager();
         mCoinType = coinType;
         mMojoServicesClosed = false;
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "BraveDappPermissionPromptDialog constructor " + e);
         }
     }
 
@@ -129,17 +134,20 @@ public class BraveDappPermissionPromptDialog
                         .build();
         mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.APP);
         InitKeyringService();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.dismissWalletPanelOrDialog();
-        }
-        ViewGroup container = getPermissionModalViewContainer(customView);
-        mPermissionDialogPositiveButton =
-                container.findViewById(activity.getResources().getIdentifier(
-                        WalletConstants.PERMISSION_DIALOG_POSITIVE_BUTTON_ID,
-                        WalletConstants.RESOURCE_ID, activity.getPackageName()));
-        if (mPermissionDialogPositiveButton != null) {
-            mPermissionDialogPositiveButton.setEnabled(false);
+
+            ViewGroup container = getPermissionModalViewContainer(customView);
+            mPermissionDialogPositiveButton =
+                    container.findViewById(activity.getResources().getIdentifier(
+                            WalletConstants.PERMISSION_DIALOG_POSITIVE_BUTTON_ID,
+                            WalletConstants.RESOURCE_ID, activity.getPackageName()));
+            if (mPermissionDialogPositiveButton != null) {
+                mPermissionDialogPositiveButton.setEnabled(false);
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "show " + e);
         }
         initAccounts();
     }
@@ -187,7 +195,9 @@ public class BraveDappPermissionPromptDialog
                     mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
                     if (accounts.size() > 0) {
                         mAccountsListAdapter.setSelectedAccount(selectedAccount);
-                        mPermissionDialogPositiveButton.setEnabled(true);
+                        if (mPermissionDialogPositiveButton != null) {
+                            mPermissionDialogPositiveButton.setEnabled(true);
+                        }
                     }
                     mAccountsListAdapter.notifyDataSetChanged();
                 });

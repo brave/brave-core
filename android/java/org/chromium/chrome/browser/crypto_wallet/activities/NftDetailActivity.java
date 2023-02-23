@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -44,6 +46,8 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
 import java.util.Locale;
 
 public class NftDetailActivity extends BraveWalletBaseActivity {
+    private static final String TAG = "NftDetailActivity";
+
     private static final String TOKEN_ID_FORMAT = "#%s";
     private static final String NFT_ERC721_URL_FORMAT = "%s/token/%s?a=%s";
     private static final String NFT_SPL_URL_FORMAT = "%s/address/%s";
@@ -151,8 +155,12 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         mNftDescriptionLayout = findViewById(R.id.nft_description);
 
         setMetadata(mNftMetadata);
-
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+        BraveActivity braveActivity = null;
+        try {
+            braveActivity = BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
+        }
         assert braveActivity != null;
 
         LiveDataUtil.observeOnce(

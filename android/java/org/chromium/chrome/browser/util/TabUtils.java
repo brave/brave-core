@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.util;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -40,6 +42,8 @@ import org.chromium.content_public.browser.LoadUrlParams;
 import java.lang.reflect.Field;
 
 public class TabUtils {
+    private static final String TAG = "TabUtils";
+
     public static void showBookmarkTabPopupMenu(Context context, View view,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             LocationBarModel locationBarModel) {
@@ -106,7 +110,12 @@ public class TabUtils {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                BraveActivity activity = BraveActivity.getBraveActivity();
+                BraveActivity activity = null;
+                try {
+                    activity = BraveActivity.getBraveActivity();
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showBookmarkTabPopupMenu popup click " + e);
+                }
                 if (currentTab == null || activity == null) {
                     return false;
                 }
@@ -132,40 +141,49 @@ public class TabUtils {
     }
 
     public static void showTabPopupMenu(Context context, View view) {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        Context wrapper = new ContextThemeWrapper(context,
-                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                        ? R.style.NewTabPopupMenuDark
-                        : R.style.NewTabPopupMenuLight);
-        // Creating the instance of PopupMenu
-        PopupMenu popup = new PopupMenu(wrapper, view);
-        // Inflating the Popup using xml file
-        popup.getMenuInflater().inflate(R.menu.new_tab_menu, popup.getMenu());
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            Context wrapper = new ContextThemeWrapper(context,
+                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                            ? R.style.NewTabPopupMenuDark
+                            : R.style.NewTabPopupMenuLight);
+            // Creating the instance of PopupMenu
+            PopupMenu popup = new PopupMenu(wrapper, view);
+            // Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.new_tab_menu, popup.getMenu());
 
-        if (braveActivity != null && braveActivity.getCurrentTabModel().isIncognito()) {
-            popup.getMenu().findItem(R.id.new_tab_menu_id).setVisible(false);
-        }
-        // registering popup with OnMenuItemClickListener
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.new_tab_menu_id) {
-                    openNewTab(braveActivity, false);
-                } else if (id == R.id.new_incognito_tab_menu_id) {
-                    openNewTab(braveActivity, true);
-                }
-                return true;
+            if (braveActivity != null && braveActivity.getCurrentTabModel().isIncognito()) {
+                popup.getMenu().findItem(R.id.new_tab_menu_id).setVisible(false);
             }
-        });
-        popup.show(); // showing popup menu
+            // registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.new_tab_menu_id) {
+                        openNewTab(braveActivity, false);
+                    } else if (id == R.id.new_incognito_tab_menu_id) {
+                        openNewTab(braveActivity, true);
+                    }
+                    return true;
+                }
+            });
+            popup.show(); // showing popup menu
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showTabPopupMenu " + e);
+        }
     }
 
     public static void openNewTab() {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        boolean isIncognito =
-                braveActivity != null ? braveActivity.getCurrentTabModel().isIncognito() : false;
-        openNewTab(braveActivity, isIncognito);
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            boolean isIncognito = braveActivity != null
+                    ? braveActivity.getCurrentTabModel().isIncognito()
+                    : false;
+            openNewTab(braveActivity, isIncognito);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openNewTab " + e);
+        }
     }
 
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
@@ -175,44 +193,58 @@ public class TabUtils {
     }
 
     public static void openUrlInNewTab(boolean isIncognito, String url) {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity != null) {
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             braveActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openUrlInNewTab " + e);
         }
     }
 
     public static void openUrlInNewTabInBackground(boolean isIncognito, String url) {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity != null && braveActivity.getTabModelSelector() != null
-                && braveActivity.getActivityTab() != null) {
-            braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
-                    TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP,
-                    braveActivity.getActivityTab(), isIncognito);
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (braveActivity.getTabModelSelector() != null
+                    && braveActivity.getActivityTab() != null) {
+                braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
+                        TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP,
+                        braveActivity.getActivityTab(), isIncognito);
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openUrlInNewTabInBackground " + e);
         }
     }
 
     public static void openUrlInSameTab(String url) {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity != null && braveActivity.getActivityTab() != null) {
-            LoadUrlParams loadUrlParams = new LoadUrlParams(url);
-            braveActivity.getActivityTab().loadUrl(loadUrlParams);
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (braveActivity.getActivityTab() != null) {
+                LoadUrlParams loadUrlParams = new LoadUrlParams(url);
+                braveActivity.getActivityTab().loadUrl(loadUrlParams);
+            }
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openUrlInSameTab " + e);
         }
     }
 
     public static void enableRewardsButton() {
-        BraveActivity braveActivity = BraveActivity.getBraveActivity();
-        if (braveActivity == null || braveActivity.getToolbarManager() == null) {
-            return;
+        try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
+            if (braveActivity.getToolbarManager() == null) {
+                return;
+            }
+            View toolbarView = braveActivity.findViewById(R.id.toolbar);
+            if (toolbarView == null) {
+                return;
+            }
+            FrameLayout rewardsLayout = toolbarView.findViewById(R.id.brave_rewards_button_layout);
+            if (rewardsLayout == null) {
+                return;
+            }
+            rewardsLayout.setVisibility(View.VISIBLE);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "enableRewardsButton " + e);
         }
-        View toolbarView = braveActivity.findViewById(R.id.toolbar);
-        if (toolbarView == null) {
-            return;
-        }
-        FrameLayout rewardsLayout = toolbarView.findViewById(R.id.brave_rewards_button_layout);
-        if (rewardsLayout == null) {
-            return;
-        }
-        rewardsLayout.setVisibility(View.VISIBLE);
     }
 
     public static void bringChromeTabbedActivityToTheTop(Activity activity) {

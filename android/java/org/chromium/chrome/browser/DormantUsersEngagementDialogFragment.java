@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -26,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
+    private static final String TAG = "DormantEngagement";
+
     private static final List<String> mTexts =
             Arrays.asList(ContextUtils.getApplicationContext().getResources().getString(
                                   R.string.dormant_users_engagement_text_1),
@@ -64,8 +68,10 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
         doneButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (BraveActivity.getBraveActivity() != null) {
+                try {
                     BraveSetDefaultBrowserUtils.setDefaultBrowser(BraveActivity.getBraveActivity());
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "onViewCreated doneButton click " + e);
                 }
                 dismiss();
             }

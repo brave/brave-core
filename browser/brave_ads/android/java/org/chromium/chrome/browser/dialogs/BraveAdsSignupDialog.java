@@ -10,6 +10,7 @@ package org.chromium.chrome.browser.dialogs;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -36,6 +38,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import java.lang.System;
 
 public class BraveAdsSignupDialog {
+    private static final String TAG = "BraveAdsSignupDialog";
 
     private static String SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER = "should_show_onboarding_dialog_view_counter";
     private static String SHOULD_SHOW_ONBOARDING_DIALOG = "should_show_onboarding_dialog";
@@ -116,10 +119,11 @@ public class BraveAdsSignupDialog {
                 OnboardingPrefManager.getInstance().setOnboardingNotificationShown(false);
 
                 neverShowOnboardingDialogAgain();
-
-                // Enable ads
-                if (BraveActivity.getBraveActivity() != null) {
+                try {
+                    // Enable ads
                     BraveActivity.getBraveActivity().openRewardsPanel();
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showNewUserDialog " + e);
                 }
             }
         }).create();
@@ -142,9 +146,11 @@ public class BraveAdsSignupDialog {
             public void onClick(DialogInterface dialog, int which) {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
-                BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                if (braveActivity != null) {
+                try {
+                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
                     braveActivity.openRewardsPanel();
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showExistingUserDialog " + e);
                 }
             }
         }).create();

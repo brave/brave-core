@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Editable;
@@ -36,6 +37,7 @@ import java.io.InputStreamReader;
 
 public class AddAccountActivity extends BraveWalletBaseActivity {
     public static final String ACCOUNT = "account";
+    private static final String TAG = "AddAccountActivity";
 
     private String mAddress;
     private String mName;
@@ -68,10 +70,12 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         EditText importAccountPasswordText = findViewById(R.id.import_account_password_text);
 
         btnAdd.setEnabled(false);
-        BraveActivity activity = BraveActivity.getBraveActivity();
-
-        assert activity != null;
-        mWalletModel = activity.getWalletModel();
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation btnAdd click " + e);
+        }
 
         mCryptoAccountTypeInfo = (CryptoAccountTypeInfo) getIntent().getSerializableExtra(ACCOUNT);
 

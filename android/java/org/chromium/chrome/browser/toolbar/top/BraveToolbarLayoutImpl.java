@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -166,6 +167,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver,
                    ConnectionErrorHandler {
+    private static final String TAG = "BraveToolbar";
+
     private static final String YOUTUBE_DOMAIN = "youtube.com";
     private static final List<String> mBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
@@ -530,13 +533,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
 
             private void showNotificationNotEarningDialog() {
-                if (BraveActivity.getBraveActivity() != null) {
+                try {
                     RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
                             RewardsYouAreNotEarningDialog.newInstance();
                     rewardsYouAreNotEarningDialog.setCancelable(false);
                     rewardsYouAreNotEarningDialog.show(
                             BraveActivity.getBraveActivity().getSupportFragmentManager(),
                             RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
+
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showNotificationNotEarningDialog " + e);
                 }
             }
 
@@ -611,7 +617,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showTooltip(String tooltipPref, int tabId) {
-        if (BraveActivity.getBraveActivity() != null) {
+        try {
             HighlightView highlightView = new HighlightView(getContext(), null);
             highlightView.setColor(ContextCompat.getColor(
                     getContext(), R.color.onboarding_search_highlight_color));
@@ -636,9 +642,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                     highlightView.stopAnimation();
                                     viewGroup.removeView(highlightView);
                                 }
-                                if (BraveActivity.getBraveActivity() != null) {
+                                try {
                                     BraveActivity.getBraveActivity()
                                             .maybeShowNotificationPermissionRetionale();
+                                } catch (ActivityNotFoundException e) {
+                                    Log.e(TAG, "showTooltip dismiss " + e);
                                 }
                             })
                             .contentView(R.layout.brave_shields_tooltip_layout)
@@ -709,6 +717,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
                 BraveShieldsUtils.isTooltipShown = true;
             }
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showTooltip " + e);
         }
     }
 
@@ -732,12 +743,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showCookieConsentTooltip() {
-        if (BraveActivity.getBraveActivity() == null) {
+        try {
+            ViewGroup viewGroup =
+                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+                            android.R.id.content);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showCookieConsentTooltip " + e);
             return;
         }
-        ViewGroup viewGroup =
-                BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                        android.R.id.content);
+
         float padding = (float) dpToPx(getContext(), 20);
         mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
                                         .anchorView(mBraveShieldsButton)
@@ -1041,19 +1055,23 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         } else if (mHomeButton == v) {
             // Helps Brave News know how to behave on home button action
-            BraveActivity.getBraveActivity().setComesFromNewTab(true);
+            try {
+                BraveActivity.getBraveActivity().setComesFromNewTab(true);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "HomeButton click " + e);
+            }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel(v);
         }
     }
 
     private void maybeShowWalletPanel(View v) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        assert activity != null;
-        if (activity == null) {
-            return;
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.showWalletPanel(true);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "maybeShowWalletPanel " + e);
         }
-        activity.showWalletPanel(true);
     }
 
     private void showWalletPanelInternal(View v) {
@@ -1129,17 +1147,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
         String countryCode = Locale.getDefault().getCountry();
-        if (hasFocus && PackageUtils.isFirstInstall(context)
-                && BraveActivity.getBraveActivity() != null
-                && BraveActivity.getBraveActivity().getActivityTab() != null
-                && UrlUtilities.isNTPUrl(
-                        BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
-                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
-                && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
-                && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
-            Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-            context.startActivity(searchActivityIntent);
+        try {
+            if (hasFocus && PackageUtils.isFirstInstall(context)
+                    && BraveActivity.getBraveActivity().getActivityTab() != null
+                    && UrlUtilities.isNTPUrl(
+                            BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
+                    && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+                    && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
+                    && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
+                Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+                context.startActivity(searchActivityIntent);
+            }
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onUrlFocusChange " + e);
         }
+
         // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
         PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
             if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);

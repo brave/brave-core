@@ -5,12 +5,14 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.content.ActivityNotFoundException;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -44,6 +46,8 @@ import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
  * are being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
  */
 public class BrowsingModeBottomToolbarCoordinator {
+    private static final String TAG = "BrowsingMode";
+
     /** The mediator that handles events from outside the browsing mode bottom toolbar. */
     private final BrowsingModeBottomToolbarMediator mMediator;
 
@@ -125,12 +129,16 @@ public class BrowsingModeBottomToolbarCoordinator {
             getNewTabButtonParent().setVisibility(View.GONE);
             OnClickListener bookmarkClickHandler = v -> {
                 TabImpl tab = (TabImpl) mTabProvider.get();
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (tab == null || activity == null) {
-                    assert false;
-                    return;
+                try {
+                    BraveActivity activity = BraveActivity.getBraveActivity();
+                    if (tab == null || activity == null) {
+                        assert false;
+                        return;
+                    }
+                    activity.addOrEditBookmark(tab);
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "BookmarkButton click " + e);
                 }
-                activity.addOrEditBookmark(tab);
             };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
         }

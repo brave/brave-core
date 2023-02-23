@@ -1,3 +1,8 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN;
@@ -142,13 +147,15 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void showFavIcon(GURL url) {
         mFaviconHelper = new FaviconHelper();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             FaviconImageCallback imageCallback =
                     (bitmap, iconUrl) -> setBitmapOnImageView(url, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), url, 0, imageCallback);
+
+        } catch (Exception e) {
         }
     }
 

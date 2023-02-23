@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -130,6 +131,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 
 public class Utils {
+    private static final String TAG = "Utils";
+
     public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
     public static int ONBOARDING_ACTION = 2;
     public static int UNLOCK_WALLET_ACTION = 3;
@@ -1399,7 +1402,12 @@ public class Utils {
 
     @NonNull
     public static Profile getProfile(boolean isIncognito) {
-        ChromeActivity chromeActivity = BraveActivity.getBraveActivity();
+        ChromeActivity chromeActivity = null;
+        try {
+            chromeActivity = BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "getProfile " + e);
+        }
         if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
         if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
 

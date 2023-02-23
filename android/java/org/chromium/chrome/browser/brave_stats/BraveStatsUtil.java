@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +56,7 @@ public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
     public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
     public static final int SHARE_STATS_REQUEST_CODE = 4367;
-    public static final String TAG = "BraveStatsUtil";
+    private static final String TAG = "BraveStatsUtil";
     public static final String STATS_FRAGMENT_TAG = "brave_stats_bottom_sheet_dialog_fragment";
     private static String shareStatsFile = "";
     /*
@@ -113,12 +114,14 @@ public class BraveStatsUtil {
     }
 
     public static void showBraveStats() {
-        if (BraveActivity.getBraveActivity() != null) {
+        try {
             BraveStatsBottomSheetDialogFragment braveStatsBottomSheetDialogFragment =
                     BraveStatsBottomSheetDialogFragment.newInstance();
             braveStatsBottomSheetDialogFragment.show(
                     BraveActivity.getBraveActivity().getSupportFragmentManager(),
                     STATS_FRAGMENT_TAG);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showBraveStats " + e);
         }
     }
 
@@ -198,9 +201,7 @@ public class BraveStatsUtil {
             Intent shareIntent = Intent.createChooser(sendIntent, " ");
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            if (BraveActivity.getBraveActivity() != null) {
-                BraveActivity.getBraveActivity().startActivity(shareIntent);
-            }
+            BraveActivity.getBraveActivity().startActivity(shareIntent);
         } catch (Exception e) {
             e.printStackTrace();
         }

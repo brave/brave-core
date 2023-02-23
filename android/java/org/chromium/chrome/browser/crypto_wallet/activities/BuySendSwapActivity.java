@@ -113,7 +113,7 @@ import java.util.concurrent.Executors;
 public class BuySendSwapActivity extends BraveWalletBaseActivity
         implements AdapterView.OnItemSelectedListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
                    ApprovedTxObserver {
-    private final static String TAG = "BuySendSwapActivity";
+    private static final String TAG = "BuySendSwap";
     private static final int RC_HANDLE_CAMERA_PERM = 113;
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -243,10 +243,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         mFromValueBlock = findViewById(R.id.from_value_block);
 
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mSendModel = mWalletModel.getCryptoModel().createSendModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
