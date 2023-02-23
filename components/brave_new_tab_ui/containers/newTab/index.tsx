@@ -642,7 +642,7 @@ class NewTabPage extends React.Component<Props, State> {
               </Page.GridItemTopSites>
             }
             {<Page.GridItemSponsoredImage otherWidgetsHidden={this.allWidgetsHidden()}>
-              <SponsoredImage sponsoredImageUrl='https://example.com'/>
+              <SponsoredImage sponsoredImageUrl={'https://example.com'}/>
               </Page.GridItemSponsoredImage>}
             {
               gridSitesData.shouldShowSiteRemovedNotification
