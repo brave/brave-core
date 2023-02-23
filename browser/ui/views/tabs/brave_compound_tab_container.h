@@ -41,7 +41,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   TabContainer* GetTabContainerAt(gfx::Point point_in_local_coords) override;
   gfx::Rect ConvertUnpinnedContainerIdealBoundsToLocal(
       gfx::Rect ideal_bounds) const override;
- BrowserRootView::DropTarget* GetDropTarget(gfx::Point loc_in_local_coords) override;
+  BrowserRootView::DropTarget* GetDropTarget(
+      gfx::Point loc_in_local_coords) override;
 
   bool ShouldShowVerticalTabs() const;
 
