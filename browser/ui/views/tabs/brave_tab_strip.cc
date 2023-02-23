@@ -293,6 +293,8 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->SetLayoutManager(nullptr);
     }
   }
+
+  hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {

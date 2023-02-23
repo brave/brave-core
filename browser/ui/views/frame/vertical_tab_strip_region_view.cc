@@ -209,6 +209,7 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
     tab_search_button_->SetAccessibleName(
         l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
     tab_search_button_->set_fill_color_disabled();
+    tab_search_button_->SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
 
     UpdateTabSearchButtonVisibility();
   }
