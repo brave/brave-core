@@ -16,7 +16,7 @@ import com.bumptech.glide.load.data.DataFetcher;
 import java.nio.ByteBuffer;
 
 /**
- * Fetches the base64 section from a give string using a {@link ByteBuffer}.
+ * Fetches the base64 section from a given string using a {@link ByteBuffer}.
  */
 public class Base64DataFetcher implements DataFetcher<ByteBuffer> {
     private final String model;
