@@ -27,9 +27,7 @@ export const buildExplorerUrl = (
   }
 
   if (type === 'contract') {
-    return id
-      ? `${explorerURL}/${value}?a=${new Amount(id).format()}`
-      : fallbackURL
+    return `${explorerURL}/address/${value}/#code`
   }
 
   const isFileCoinNet =
@@ -86,7 +84,7 @@ export const openBlockExplorerURL = ({
     const url = buildExplorerUrl(network, type, value, id)
 
     if (!chrome.tabs) {
-      window.open(url, '_blank')
+      window.open(url, '_blank', 'noreferrer')
     } else {
       chrome.tabs.create({ url: url }, () => {
         if (chrome.runtime.lastError) {
