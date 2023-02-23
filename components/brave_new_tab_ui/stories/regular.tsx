@@ -73,7 +73,6 @@ export const Regular = () => {
       gridSitesData={gridSitesData}
       actions={getActions()}
       saveShowBackgroundImage={doNothing}
-      saveShowToday={doNothing}
       saveShowRewards={doNothing}
       saveShowBraveTalk={doNothing}
       saveBrandedWallpaperOptIn={onShowBrandedImageChanged}
