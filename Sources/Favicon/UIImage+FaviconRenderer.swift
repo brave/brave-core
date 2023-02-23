@@ -167,7 +167,7 @@ extension UIImage {
     let text = (monogramString ?? FaviconUtils.monogramLetter(
         for: url,
         fallbackCharacter: nil
-      )) as NSString
+    )).uppercased() as NSString
 
     let padding = 28.0
     let finalImage = await drawOnImageContext(size: imageSize) { context, rect in

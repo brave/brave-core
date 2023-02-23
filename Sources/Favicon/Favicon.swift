@@ -50,6 +50,11 @@ public class Favicon: Codable {
     try container.encode(isMonogramImage, forKey: .isMonogramImage)
     try container.encode(backgroundColor.rgba, forKey: .backgroundColor)
   }
+  
+  @MainActor
+  public static func renderImage(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
+    await UIImage.renderFavicon(image, backgroundColor: backgroundColor, shouldScale: shouldScale)
+  }
 
   private enum CodingKeys: CodingKey {
     case image
