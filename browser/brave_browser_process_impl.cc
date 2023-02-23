@@ -460,7 +460,9 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
 }
 
 misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
+#if !BUILDFLAG(IS_ANDROID)
   if (!menu_metrics_)
     menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+#endif
   return menu_metrics_.get();
 }
