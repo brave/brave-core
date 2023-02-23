@@ -30,7 +30,7 @@ const Link = styled.a`
   }
 `
 
-export default function SponsoredImage(props: { sponsoredImageUrl: string, onClick: () => void }) {
+export default function SponsoredImageClickArea(props: { sponsoredImageUrl: string, onClick: () => void }) {
   return (
     <Link href={props.sponsoredImageUrl} rel="noreferrer noopener" onClick={props.onClick}>
       <Indicator>

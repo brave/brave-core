@@ -188,7 +188,7 @@ export const GridItemTopSites = styled('section')`
   ${singleColumnSmallViewport}
 `
 
-export const GridItemSponsoredImage = styled.section<{ otherWidgetsHidden: boolean }>`
+export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidden: boolean }>`
   grid-column: 2;
   grid-row: 2 / span 3;
   height: calc(100% - 200px);
