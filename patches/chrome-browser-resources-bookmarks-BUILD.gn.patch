@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 165d7d98805130fac378a19026973ee8ff2eecf0..5ecf83185f153c5c753a6fbd8c238f7a45b13acb 100644
+index 562af13549e34882869414e7576db7d8742bcea9..f970c05162ac2fcfb9e60095a076cb5207b15513 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
 @@ -71,4 +71,5 @@ build_webui("build") {
