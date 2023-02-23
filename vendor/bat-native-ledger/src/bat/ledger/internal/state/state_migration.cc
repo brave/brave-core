@@ -46,12 +46,6 @@ void StateMigration::Start(ledger::LegacyResultCallback callback) {
 
 void StateMigration::FreshInstall(ledger::LegacyResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms::REDDIT, true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms::TWITTER, true);
-  ledger_->state()->SetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms::GITHUB, true);
   ledger_->state()->SetVersion(kCurrentVersionNumber);
   callback(mojom::Result::LEDGER_OK);
 }
