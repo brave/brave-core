@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { sendWithPromise } from 'gen/ui/webui/resources/preprocessed/js/cr'
+import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { DefaultBrowserBrowserProxyImpl } from './default_browser_browser_proxy'
 import { ImportDataBrowserProxyImpl, BrowserProfile as _BrowserProfile } from './import_data_browser_proxy'
 

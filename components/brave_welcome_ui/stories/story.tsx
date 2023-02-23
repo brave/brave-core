@@ -48,7 +48,7 @@ const payload = [
     'payments': false,
     'profileName': '',
     'search': false,
-    'browserType': 'Chrome'
+    'browserType': 'Google Chrome'
   },
   {
     'autofillFormData': false,
@@ -61,7 +61,7 @@ const payload = [
     'payments': false,
     'profileName': '',
     'search': false,
-    'browserType': 'Chrome'
+    'browserType': 'Google Chrome'
   },
   {
     'autofillFormData': false,
