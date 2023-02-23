@@ -8,7 +8,12 @@ import BraveCore
 
 extension BraveWallet.TransactionInfo {
   var isSwap: Bool {
-    ethTxToAddress.caseInsensitiveCompare(NamedAddresses.swapExchangeProxyAddress) == .orderedSame
+    switch txType {
+    case .ethSwap, .solanaSwap:
+      return true
+    default:
+      return false
+    }
   }
   var isEIP1559Transaction: Bool {
     guard let ethTxData1559 = txDataUnion.ethTxData1559 else { return false }

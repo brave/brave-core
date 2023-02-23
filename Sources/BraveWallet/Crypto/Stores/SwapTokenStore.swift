@@ -50,6 +50,7 @@ public class SwapTokenStore: ObservableObject {
   /// The sell amount in this swap
   @Published var sellAmount = "" {
     didSet {
+      jupiterQuote = nil // sell amount changed, new jupiterQuote is needed
       guard !sellAmount.isEmpty, BDouble(sellAmount.normalizedDecimals) != nil else {
         state = .idle
         return
@@ -107,6 +108,7 @@ public class SwapTokenStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let walletService: BraveWalletBraveWalletService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
+  private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private var accountInfo: BraveWallet.AccountInfo?
   private var slippage = 0.005 {
     didSet {
@@ -122,7 +124,10 @@ public class SwapTokenStore: ObservableObject {
   private var timer: Timer?
   private let batSymbol = "BAT"
   private let daiSymbol = "DAI"
+  private let USDCSymbol = "USDC"
   private var prefilledToken: BraveWallet.BlockchainToken?
+  /// The JupiterQuote currently being displayed for Solana swap. The quote needs preserved to create the swap transaction.
+  private var jupiterQuote: BraveWallet.JupiterQuote?
 
   enum SwapParamsBase {
     // calculating based on sell asset amount
@@ -152,6 +157,7 @@ public class SwapTokenStore: ObservableObject {
     txService: BraveWalletTxService,
     walletService: BraveWalletBraveWalletService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.keyringService = keyringService
@@ -161,6 +167,7 @@ public class SwapTokenStore: ObservableObject {
     self.txService = txService
     self.walletService = walletService
     self.ethTxManagerProxy = ethTxManagerProxy
+    self.solTxManagerProxy = solTxManagerProxy
     self.prefilledToken = prefilledToken
 
     self.keyringService.add(self)
@@ -502,7 +509,146 @@ public class SwapTokenStore: ObservableObject {
     guard status == .success, amountToSend > allowanceValue else { return }  // no problem with its allowance
     self.state = .lowAllowance(spenderAddress)
   }
-
+  
+  @MainActor private func fetchSolPriceQuote(
+    base: SwapParamsBase,
+    swapParams: BraveWallet.SwapParams,
+    network: BraveWallet.NetworkInfo
+  ) async {
+    guard base == .perSellAsset else {
+      return // entering buy amount is disabled for Solana swap
+    }
+    let jupiterQuoteParams: BraveWallet.JupiterQuoteParams = .init(
+      inputMint: swapParams.sellToken,
+      outputMint: swapParams.buyToken,
+      amount: swapParams.sellAmount,
+      slippagePercentage: swapParams.slippagePercentage
+    )
+    self.updatingPriceQuote = true
+    let (jupiterQuote, swapErrorResponse, _) = await swapService.jupiterQuote(jupiterQuoteParams)
+    defer { self.updatingPriceQuote = false }
+    if let jupiterQuote {
+      await self.handleSolPriceQuoteResponse(jupiterQuote, base: base)
+    } else if let swapErrorResponse {
+      // check balance first because error can be caused by insufficient balance
+      if let sellTokenBalance = self.selectedFromTokenBalance,
+         let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+         sellTokenBalance < sellAmountValue {
+        self.state = .error(Strings.Wallet.insufficientBalance)
+        return
+      }
+      // check if jupiterQuote fails due to insufficient liquidity
+      if swapErrorResponse.isInsufficientLiquidity {
+        self.state = .error(Strings.Wallet.insufficientLiquidity)
+        return
+      }
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+    } else { // unknown error, ex failed parsing jupiter quote.
+      self.state = .error(Strings.Wallet.unknownError)
+      self.clearAllAmount()
+    }
+  }
+  
+  @MainActor private func handleSolPriceQuoteResponse(_ response: BraveWallet.JupiterQuote, base: SwapParamsBase) async {
+    guard let route = response.routes.first,
+          base == .perSellAsset // entering buy amount is disabled for Solana swap
+    else { return }
+    self.jupiterQuote = response
+    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    if let selectedToToken {
+      buyAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)) ?? ""
+    }
+    
+    // No exchange rate is returned by Jupiter API, so we estimate it from the quote.
+    if let selectedFromToken,
+       let newFromAmount = formatter.decimalString(for: "\(route.inAmount)", radix: .decimal, decimals: Int(selectedFromToken.decimals)),
+       let newFromAmountWrapped = BDouble(newFromAmount),
+       let selectedToToken,
+       let newToAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)),
+       let newToAmountWrapped = BDouble(newToAmount) {
+      let rate = newToAmountWrapped / newFromAmountWrapped
+      selectedFromTokenPrice = rate.decimalDescription
+    }
+    
+    await checkBalanceShowError(jupiterQuote: response)
+  }
+  
+  @MainActor private func checkBalanceShowError(jupiterQuote: BraveWallet.JupiterQuote) async {
+    guard let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
+          let selectedFromTokenBalance else {
+      return
+    }
+    // Check if balance is insufficient
+    guard sellAmountValue <= selectedFromTokenBalance else {
+      state = .error(Strings.Wallet.insufficientBalance)
+      return
+    }
+    // Cannot currently estimate SOL gas balance to verify
+    self.state = .swap
+  }
+  
+  @MainActor private func createSolSwapTransaction() async -> Bool {
+    guard let jupiterQuote,
+          let route = jupiterQuote.routes.first,
+          let accountInfo = self.accountInfo,
+          let selectedToToken else {
+      return false
+    }
+    let network = await rpcService.network(.sol)
+    let jupiterSwapParams: BraveWallet.JupiterSwapParams = .init(
+      route: route,
+      userPublicKey: accountInfo.address,
+      outputMint: selectedToToken.contractAddress(in: network)
+    )
+    let (swapTransactions, errorResponse, _) = await swapService.jupiterSwapTransactions(jupiterSwapParams)
+    guard let swapTransactions else {
+      // check balance first because error can cause by insufficient balance
+      if let sellTokenBalance = self.selectedFromTokenBalance,
+         let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+         sellTokenBalance < sellAmountValue {
+        self.state = .error(Strings.Wallet.insufficientBalance)
+        return false
+      }
+      // check if jupiterQuote fails due to insufficient liquidity
+      if errorResponse?.isInsufficientLiquidity == true {
+        self.state = .error(Strings.Wallet.insufficientLiquidity)
+        return false
+      }
+      self.state = .error(Strings.Wallet.unknownError)
+      return false
+    }
+    /* Group transactions no longer used in core.
+      let serializedTransactions = [
+        swapTransactions.setupTransaction,
+        swapTransactions.swapTransaction,
+        swapTransactions.cleanupTransaction
+      ].filter { !$0.isEmpty }
+      let hasParts = serializedTransactions.count > 1
+      let groupId: String? = hasParts ? UUID().uuidString : nil
+    */
+    let (solTxData, status, _) = await solTxManagerProxy.makeTxData(
+      fromBase64EncodedTransaction: swapTransactions.swapTransaction,
+      txType: .solanaSwap,
+      send: .init(
+        maxRetries: nil,
+        preflightCommitment: nil,
+        skipPreflight: .init(skipPreflight: true)
+      )
+    )
+    guard status == .success, let solTxData else {
+      self.state = .error(Strings.Wallet.unknownError)
+      return false
+    }
+    let (success, _, _) = await txService.addUnapprovedTransaction(
+      .init(solanaTxData: solTxData),
+      from: accountInfo.address,
+      origin: nil,
+      groupId: nil
+    )
+    return success
+  }
+  
   // MARK: Public
 
   func swapSelectedTokens() {
@@ -526,12 +672,22 @@ public class SwapTokenStore: ObservableObject {
     case let .lowAllowance(spenderAddress):
       return await createERC20ApprovalTransaction(spenderAddress)
     case .swap:
-      return await createEthSwapTransaction()
+      let coin = await walletService.selectedCoin()
+      switch coin {
+      case .eth:
+        return await createEthSwapTransaction()
+      case .sol:
+        return await createSolSwapTransaction()
+      default:
+        return false
+      }
     }
   }
 
   func fetchPriceQuote(base: SwapParamsBase) {
     Task { @MainActor in
+      // reset jupiter quote before fetching new quote
+      self.jupiterQuote = nil
       let coin = await walletService.selectedCoin()
       let network = await rpcService.network(coin)
       guard let swapParams = self.swapParameters(for: base, in: network) else {
@@ -541,6 +697,8 @@ public class SwapTokenStore: ObservableObject {
       switch coin {
       case .eth:
         await fetchEthPriceQuote(base: base, swapParams: swapParams, network: network)
+      case .sol:
+        await fetchSolPriceQuote(base: base, swapParams: swapParams, network: network)
       default:
         break
       }
@@ -595,8 +753,18 @@ public class SwapTokenStore: ObservableObject {
         if network.chainId == BraveWallet.MainnetChainId {
           if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == batSymbol.uppercased() {
             selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != batSymbol.uppercased() })
-          } else {
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() == batSymbol.uppercased() })
+          } else if let batToken = allTokens.first(where: { $0.symbol.uppercased() == batSymbol.uppercased() }) {
+            selectedToToken = batToken
+          } else { // if BAT is unavailable
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased() })
+          }
+        } else if network.chainId == BraveWallet.SolanaMainnet {
+          if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == USDCSymbol.uppercased() {
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != USDCSymbol.uppercased() })
+          } else if let usdcToken = allTokens.first(where: { $0.symbol.uppercased() == USDCSymbol.uppercased() }) {
+            selectedToToken = usdcToken
+          } else { // if USDC is unavailable
+            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased() })
           }
         } else {
           if let fromToken = selectedFromToken {
@@ -631,7 +799,7 @@ public class SwapTokenStore: ObservableObject {
                   return $0.symbol < $1.symbol
                 }
               }
-              self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
+              self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
               // Seems like user assets always include the selected network's native asset
               // But let's make sure all token list includes the native asset
               if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
@@ -684,11 +852,25 @@ public class SwapTokenStore: ObservableObject {
   }
 
   #if DEBUG
-  func setUpTest(sellAmount: String = "0.01") {
+  func setUpTest(
+    selectedFromToken: BraveWallet.BlockchainToken = .previewToken,
+    selectedToToken: BraveWallet.BlockchainToken = .previewDaiToken,
+    sellAmount: String? = "0.01",
+    buyAmount: String? = nil,
+    jupiterQuote: BraveWallet.JupiterQuote? = nil
+  ) {
     accountInfo = .init()
-    selectedFromToken = .previewToken
-    selectedToToken = .previewDaiToken
-    self.sellAmount = sellAmount
+    self.selectedFromToken = selectedFromToken
+    self.selectedToToken = selectedToToken
+    if let sellAmount {
+      self.sellAmount = sellAmount
+    }
+    if let buyAmount {
+      self.buyAmount = buyAmount
+    }
+    if let jupiterQuote {
+      self.jupiterQuote = jupiterQuote
+    }
     selectedFromTokenBalance = 0.02
   }
   
@@ -727,7 +909,7 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     Task { @MainActor in
       let network = await rpcService.network(coinType)
-      let isSwapSupported = await swapService.isiOSSwapSupported(chainId: network.chainId, coin: coinType)
+      let isSwapSupported = await swapService.isSwapSupported(network.chainId)
       guard isSwapSupported else { return }
       
       let keyringInfo = await keyringService.keyringInfo(coinType.keyringId)
@@ -748,7 +930,7 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
 extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     Task { @MainActor in
-      let isSwapSupported = await swapService.isiOSSwapSupported(chainId: chainId, coin: coin)
+      let isSwapSupported = await swapService.isSwapSupported(chainId)
       guard isSwapSupported, let accountInfo = accountInfo else { return }
       selectedFromToken = nil
       selectedToToken = nil

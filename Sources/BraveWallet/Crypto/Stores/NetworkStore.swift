@@ -74,7 +74,7 @@ public class NetworkStore: ObservableObject {
       // we don't need to call `setNetwork` on JsonRpcService
       self.selectedChainId = chain.chainId
       // update `isSwapSupported` for Buy/Send/Swap panel
-      self.isSwapSupported = await swapService.isiOSSwapSupported(chainId: chain.chainId, coin: selectedCoin)
+      self.isSwapSupported = await swapService.isSwapSupported(chain.chainId)
     }
   }
 
@@ -108,7 +108,7 @@ public class NetworkStore: ObservableObject {
       } else {
         let rpcServiceNetwork = await rpcService.network(network.coin)
         guard rpcServiceNetwork.chainId != network.chainId else {
-          self.isSwapSupported = await swapService.isiOSSwapSupported(chainId: network.chainId, coin: selectedCoin)
+          self.isSwapSupported = await swapService.isSwapSupported(network.chainId)
           return .chainAlreadySelected
         }
         let success = await rpcService.setNetwork(network.chainId, coin: network.coin)
@@ -245,7 +245,7 @@ extension NetworkStore: BraveWalletJsonRpcServiceObserver {
       // we don't need to call `setNetwork` on JsonRpcService
       selectedChainId = chainId
       
-      isSwapSupported = await swapService.isiOSSwapSupported(chainId: chainId, coin: coin)
+      isSwapSupported = await swapService.isSwapSupported(chainId)
     }
   }
 }

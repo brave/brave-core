@@ -396,7 +396,7 @@ enum TransactionParser {
           )
         )
       )
-    case .solanaDappSignAndSendTransaction, .solanaDappSignTransaction:
+    case .solanaDappSignAndSendTransaction, .solanaDappSignTransaction, .solanaSwap:
       let transactionLamports = transaction.txDataUnion.solanaTxData?.lamports
       let fromAddress = transaction.fromAddress
       var toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress
@@ -465,6 +465,25 @@ enum TransactionParser {
         }
       }
       
+      let solanaTxDetails: SolanaTxDetails = .init(
+        fromValue: fromValue,
+        fromAmount: fromAmount,
+        symbol: symbol,
+        gasFee: gasFee(
+          from: transaction,
+          network: network,
+          assetRatios: assetRatios,
+          solEstimatedTxFee: solEstimatedTxFee,
+          currencyFormatter: currencyFormatter
+        ),
+        instructions: parsedInstructions
+      )
+      let details: ParsedTransaction.Details
+      if transaction.txType == .solanaDappSignTransaction, transaction.txType == .solanaDappSignAndSendTransaction {
+        details = .solDappTransaction(solanaTxDetails)
+      } else {
+        details = .solSwapTransaction(solanaTxDetails)
+      }
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(for: transaction.fromAddress, accounts: accountInfos),
@@ -472,25 +491,9 @@ enum TransactionParser {
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
         networkSymbol: network.symbol,
-        details: .solDappTransaction(
-          .init(
-            fromValue: fromValue,
-            fromAmount: fromAmount,
-            symbol: symbol,
-            gasFee: gasFee(
-              from: transaction,
-              network: network,
-              assetRatios: assetRatios,
-              solEstimatedTxFee: solEstimatedTxFee,
-              currencyFormatter: currencyFormatter
-            ),
-            instructions: parsedInstructions
-          )
-        )
+        details: details
       )
     case .erc1155SafeTransferFrom:
-      return nil
-    case .solanaSwap:
       return nil
     @unknown default:
       return nil
@@ -500,28 +503,28 @@ enum TransactionParser {
   static func parseSolanaInstruction(
     _ instruction: BraveWallet.SolanaInstruction,
     decimalFormatStyle: WeiFormatter.DecimalFormatStyle? = nil
-  ) -> SolanaDappTxDetails.ParsedSolanaInstruction {
+  ) -> SolanaTxDetails.ParsedSolanaInstruction {
     guard let decodedData = instruction.decodedData else {
       let title = Strings.Wallet.solanaUnknownInstructionName
-      let programId = SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(
+      let programId = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
         key: Strings.Wallet.solanaInstructionProgramId, value: instruction.programId)
       let accountPubkeys = instruction.accountMetas.map(\.pubkey)
-      let accounts = SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(
+      let accounts = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
         key: Strings.Wallet.solanaInstructionAccounts, value: accountPubkeys.isEmpty ? "[]" : accountPubkeys.joined(separator: "\n"))
-      let data = SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(
+      let data = SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
         key: Strings.Wallet.solanaInstructionData, value: "\(instruction.data)")
       return .init(name: title, details: [programId, accounts, data], instruction: instruction)
     }
     let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: 9))
-    var details: [SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue] = []
+    var details: [SolanaTxDetails.ParsedSolanaInstruction.KeyValue] = []
     if instruction.isSystemProgram {
-      let accounts = decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue? in
+      let accounts = decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaTxDetails.ParsedSolanaInstruction.KeyValue? in
         guard let account = instruction.accountMetas[safe: index] else {
           // 'Signer' is optional for .createAccountWithSeed
           // so if unavailable in `accountMetas`, no signer
           return nil
         }
-        return SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: account.pubkey)
+        return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: account.pubkey)
       }
       details.append(contentsOf: accounts)
       
@@ -533,13 +536,13 @@ enum TransactionParser {
       let params = decodedData.params
       if !params.isEmpty {
         let params = params.map { param in
-          SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: param.value)
+          SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: param.value)
         }
         details.append(contentsOf: params)
       }
       
     } else if instruction.isTokenProgram {
-      let accounts = decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue? in
+      let accounts = decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaTxDetails.ParsedSolanaInstruction.KeyValue? in
         if param.name == "signers" { // special case
           // the signers are the `accountMetas` from this index to the end of the array
           // its possible to have any number of signers, including 0
@@ -547,13 +550,13 @@ enum TransactionParser {
             let signers = instruction.accountMetas[index...].map(\.pubkey)
               .map { pubkey in "\(pubkey)" }
               .joined(separator: "\n")
-            return SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: signers)
+            return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: signers)
           } else {
             return nil // no signers
           }
         } else {
           guard let account = instruction.accountMetas[safe: index] else { return nil }
-          return SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: account.pubkey)
+          return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: account.pubkey)
         }
       }
       details.append(contentsOf: accounts)
@@ -568,7 +571,7 @@ enum TransactionParser {
       let params = decodedData.params
       if !params.isEmpty {
         let params = params.map { param in
-          SolanaDappTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: param.value)
+          SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: param.value)
         }
         details.append(contentsOf: params)
       }
@@ -596,7 +599,8 @@ struct ParsedTransaction: Equatable {
     case erc721Transfer(Eth721TransferDetails)
     case solSystemTransfer(SendDetails)
     case solSplTokenTransfer(SendDetails)
-    case solDappTransaction(SolanaDappTxDetails)
+    case solDappTransaction(SolanaTxDetails)
+    case solSwapTransaction(SolanaTxDetails)
     case other
   }
   
@@ -631,7 +635,8 @@ struct ParsedTransaction: Equatable {
       return details.gasFee
     case let .ethErc20Approve(details):
       return details.gasFee
-    case let .solDappTransaction(details):
+    case let .solDappTransaction(details),
+      let .solSwapTransaction(details):
       return details.gasFee
     case .erc721Transfer, .other:
       return nil
@@ -737,7 +742,7 @@ struct Eth721TransferDetails: Equatable {
   let gasFee: GasFee?
 }
 
-struct SolanaDappTxDetails: Equatable {
+struct SolanaTxDetails: Equatable {
   struct ParsedSolanaInstruction: Equatable {
     struct KeyValue: Equatable {
       let key: String
@@ -752,9 +757,10 @@ struct SolanaDappTxDetails: Equatable {
     
     var toString: String {
       let detailsString = details.map { keyValue in
-        "\(keyValue.key):\n  \(keyValue.value)"
-      }.joined(separator: "\n")
-      return "\(name)\n\(detailsString)"
+        let valueIndentedNewLines = keyValue.value.replacingOccurrences(of: "\n", with: "\n")
+        return "\(keyValue.key):\n\(valueIndentedNewLines)"
+      }.joined(separator: "\n--\n")
+      return "\(name)\n--\n\(detailsString)"
     }
   }
   /// From value prior to formatting

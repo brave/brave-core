@@ -900,7 +900,7 @@ class TransactionParserTests: XCTestCase {
         params: [.init(name: "lamports", localizedName: "Lamports", value: "10000")]
       )
     )
-    let expectedParsedTransfer = SolanaDappTxDetails.ParsedSolanaInstruction(
+    let expectedParsedTransfer = SolanaTxDetails.ParsedSolanaInstruction(
       name: "System Program - Transfer",
       details: [
         .init(key: "From Account", value: fromPubkey),
@@ -936,7 +936,7 @@ class TransactionParserTests: XCTestCase {
         ]
       )
     )
-    let expectedParsedWithdrawNonceAccount = SolanaDappTxDetails.ParsedSolanaInstruction(
+    let expectedParsedWithdrawNonceAccount = SolanaTxDetails.ParsedSolanaInstruction(
       name: "System Program - Withdraw Nonce Account",
       details: [
         .init(key: "Nonce Account", value: fromPubkey),
@@ -971,7 +971,7 @@ class TransactionParserTests: XCTestCase {
         ]
       )
     )
-    let expectedParsedCreateAccount = SolanaDappTxDetails.ParsedSolanaInstruction(
+    let expectedParsedCreateAccount = SolanaTxDetails.ParsedSolanaInstruction(
       name: "System Program - Create Account",
       details: [
         .init(key: "From Account", value: fromPubkey),
@@ -1007,7 +1007,7 @@ class TransactionParserTests: XCTestCase {
         ]
       )
     )
-    let expectedParsedCreateAccountWithSeed = SolanaDappTxDetails.ParsedSolanaInstruction(
+    let expectedParsedCreateAccountWithSeed = SolanaTxDetails.ParsedSolanaInstruction(
       name: "System Program - Create Account With Seed",
       details: [
         .init(key: "From Account", value: fromPubkey),

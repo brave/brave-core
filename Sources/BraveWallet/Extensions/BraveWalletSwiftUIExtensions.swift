@@ -93,16 +93,29 @@ extension BraveWallet.BlockchainToken: Identifiable {
   }
 
   public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {
-    // ETH special swap address
-    // Only checking token.symbol with selected network.symbol is sufficient
-    // since there is no swap support for custom networks.
-    return symbol == network.symbol ? BraveWallet.ethSwapAddress : contractAddress
+    switch network.coin {
+    case .eth:
+      // ETH special swap address
+      // Only checking token.symbol with selected network.symbol is sufficient
+      // since there is no swap support for custom networks.
+      return symbol == network.symbol ? BraveWallet.ethSwapAddress : contractAddress
+    case .sol:
+      // SOL special swap address
+      // Only checking token.symbol with selected network.symbol is sufficient
+      // since there is no swap support for custom networks.
+      return symbol == network.symbol ? BraveWallet.solSwapAddress : contractAddress
+    default:
+      return contractAddress
+    }
   }
 }
 
 extension BraveWallet {
   /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  
+  /// The address that is expected when you are swapping SOL via Jupiter Swap APIs
+  public static let solSwapAddress: String = "So11111111111111111111111111111111111111112"
 }
 
 extension BraveWallet.CoinType: Identifiable {
