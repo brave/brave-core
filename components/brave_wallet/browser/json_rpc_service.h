@@ -193,7 +193,19 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback);
-  void EnableEnsOffchainLookup() override;
+
+  void GetUnstoppableDomainsResolveMethod(
+      GetUnstoppableDomainsResolveMethodCallback callback) override;
+  void GetEnsResolveMethod(GetEnsResolveMethodCallback callback) override;
+  void GetEnsOffchainLookupResolveMethod(
+      GetEnsOffchainLookupResolveMethodCallback callback) override;
+  void GetSnsResolveMethod(GetSnsResolveMethodCallback callback) override;
+
+  void SetUnstoppableDomainsResolveMethod(mojom::ResolveMethod method) override;
+  void SetEnsResolveMethod(mojom::ResolveMethod method) override;
+  void SetEnsOffchainLookupResolveMethod(mojom::ResolveMethod method) override;
+  void SetSnsResolveMethod(mojom::ResolveMethod method) override;
+
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
   void SnsGetSolAddr(const std::string& domain,

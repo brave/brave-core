@@ -12,7 +12,6 @@
 #include "base/base64.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -42,10 +41,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -57,9 +53,12 @@
 #include "url/origin.h"
 
 using api_request_helper::APIRequestHelper;
-using decentralized_dns::EnsOffchainResolveMethod;
 
 namespace {
+
+using brave_wallet::mojom::ResolveMethod;
+using decentralized_dns::EnsOffchainResolveMethod;
+using decentralized_dns::ResolveMethodTypes;
 
 // The domain name should be a-z | A-Z | 0-9 and hyphen(-).
 // The domain name should not start or end with hyphen (-).
@@ -135,10 +134,66 @@ bool EnsOffchainPrefDisabled(PrefService* local_state_prefs) {
          EnsOffchainResolveMethod::kDisabled;
 }
 
-void SetEnsOffchainPref(PrefService* local_state_prefs, bool enabled) {
-  decentralized_dns::SetEnsOffchainResolveMethod(
-      local_state_prefs, enabled ? EnsOffchainResolveMethod::kEnabled
-                                 : EnsOffchainResolveMethod::kDisabled);
+brave_wallet::mojom::ResolveMethod ToMojomResolveMethod(
+    decentralized_dns::ResolveMethodTypes method) {
+  switch (method) {
+    case ResolveMethodTypes::ASK:
+      return ResolveMethod::kAsk;
+    case ResolveMethodTypes::DISABLED:
+      return ResolveMethod::kDisabled;
+    case ResolveMethodTypes::ENABLED:
+      return ResolveMethod::kEnabled;
+    case ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS:
+      break;
+  }
+
+  NOTREACHED();
+  return ResolveMethod::kDisabled;
+}
+
+decentralized_dns::ResolveMethodTypes FromMojomResolveMethod(
+    brave_wallet::mojom::ResolveMethod method) {
+  switch (method) {
+    case ResolveMethod::kAsk:
+      return ResolveMethodTypes::ASK;
+    case ResolveMethod::kDisabled:
+      return ResolveMethodTypes::DISABLED;
+    case ResolveMethod::kEnabled:
+      return ResolveMethodTypes::ENABLED;
+  }
+
+  NOTREACHED();
+  return ResolveMethodTypes::DISABLED;
+}
+
+brave_wallet::mojom::ResolveMethod ToMojomEnsOffchainResolveMethod(
+    decentralized_dns::EnsOffchainResolveMethod method) {
+  switch (method) {
+    case EnsOffchainResolveMethod::kAsk:
+      return ResolveMethod::kAsk;
+    case EnsOffchainResolveMethod::kDisabled:
+      return ResolveMethod::kDisabled;
+    case EnsOffchainResolveMethod::kEnabled:
+      return ResolveMethod::kEnabled;
+  }
+
+  NOTREACHED();
+  return ResolveMethod::kDisabled;
+}
+
+decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
+    brave_wallet::mojom::ResolveMethod method) {
+  switch (method) {
+    case ResolveMethod::kAsk:
+      return EnsOffchainResolveMethod::kAsk;
+    case ResolveMethod::kDisabled:
+      return EnsOffchainResolveMethod::kDisabled;
+    case ResolveMethod::kEnabled:
+      return EnsOffchainResolveMethod::kEnabled;
+  }
+
+  NOTREACHED();
+  return EnsOffchainResolveMethod::kDisabled;
 }
 
 namespace solana {
@@ -1421,8 +1476,49 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
                           "");
 }
 
-void JsonRpcService::EnableEnsOffchainLookup() {
-  SetEnsOffchainPref(local_state_prefs_, true);
+void JsonRpcService::GetUnstoppableDomainsResolveMethod(
+    GetUnstoppableDomainsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetUnstoppableDomainsResolveMethod(
+          local_state_prefs_)));
+}
+
+void JsonRpcService::GetEnsResolveMethod(GetEnsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetENSResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::GetEnsOffchainLookupResolveMethod(
+    GetEnsOffchainLookupResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomEnsOffchainResolveMethod(
+      decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::GetSnsResolveMethod(GetSnsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetSnsResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::SetUnstoppableDomainsResolveMethod(
+    mojom::ResolveMethod method) {
+  decentralized_dns::SetUnstoppableDomainsResolveMethod(
+      local_state_prefs_, FromMojomResolveMethod(method));
+}
+
+void JsonRpcService::SetEnsResolveMethod(mojom::ResolveMethod method) {
+  decentralized_dns::SetENSResolveMethod(local_state_prefs_,
+                                         FromMojomResolveMethod(method));
+}
+
+void JsonRpcService::SetEnsOffchainLookupResolveMethod(
+    mojom::ResolveMethod method) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs_, FromMojomEnsOffchainResolveMethod(method));
+}
+
+void JsonRpcService::SetSnsResolveMethod(mojom::ResolveMethod method) {
+  decentralized_dns::SetSnsResolveMethod(local_state_prefs_,
+                                         FromMojomResolveMethod(method));
 }
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
