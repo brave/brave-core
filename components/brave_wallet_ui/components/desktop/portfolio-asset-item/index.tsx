@@ -84,8 +84,14 @@ export const PortfolioAssetItem = ({
       .formatAsAsset(6, token.symbol)
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: assetBalance })
-  }, [spotPrices, assetBalance, token.symbol, token.decimals])
+    return computeFiatAmount(spotPrices, {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      value: assetBalance,
+      contractAddress: token.contractAddress,
+      chainId: token.chainId
+    })
+  }, [spotPrices, assetBalance, token.symbol, token.decimals, token.chainId])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)

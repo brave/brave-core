@@ -156,7 +156,9 @@ export const PortfolioOverview = () => {
           {
             value: item.assetBalance,
             decimals: item.asset.decimals,
-            symbol: item.asset.symbol
+            symbol: item.asset.symbol,
+            contractAddress: item.asset.contractAddress,
+            chainId: item.asset.chainId
           }
         )
       })

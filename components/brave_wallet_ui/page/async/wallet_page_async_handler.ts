@@ -141,7 +141,22 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
     const selectedAsset = payload.asset
     const defaultPrices = await assetRatioService.getPrice([getTokenParam(selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
     const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo(
+      {
+        priceHistory: priceHistory,
+        defaultFiatPrice: {
+          ...defaultPrices.values[0],
+          contractAddress: payload.asset.contractAddress,
+          chainId: payload.asset.chainId
+        },
+        defaultCryptoPrice: {
+          ...defaultPrices.values[1],
+          contractAddress: payload.asset.contractAddress,
+          chainId: payload.asset.chainId
+        },
+        timeFrame: payload.timeFrame
+      }
+    ))
 
     if (payload.asset.isErc721 || payload.asset.isNft) {
       store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))

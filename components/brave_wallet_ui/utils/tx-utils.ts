@@ -16,7 +16,8 @@ import {
   TimeDelta,
   SerializableTimeDelta,
   SerializableOriginInfo,
-  SortingOrder
+  SortingOrder,
+  AssetPriceWithContractAndChainId
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -1317,7 +1318,7 @@ export const getTransactionFiatValues = ({
   normalizedTransferredValue: string
   sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
   token?: BraveWallet.BlockchainToken
   transferredValueWei?: string
   tx: TransactionInfo
@@ -1339,7 +1340,9 @@ export const getTransactionFiatValues = ({
       ? computeFiatAmount(spotPrices, {
           decimals: txNetwork.decimals,
           symbol: txNetwork.symbol,
-          value: transferredValueWei || ''
+          value: transferredValueWei || '',
+          contractAddress: '',
+          chainId: txNetwork.chainId
         })
       : Amount.empty()
 
@@ -1356,7 +1359,7 @@ export const getTransactionFiatValues = ({
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
     const [, amount] = tx.txArgs // (address recipient, uint256 amount) → bool
 
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
 
     const sendAmountFiat = new Amount(amount)
       .divideByDecimals(token?.decimals ?? 18)
@@ -1399,7 +1402,7 @@ export const getTransactionFiatValues = ({
 
   // SPL
   if (isSolanaSplTransaction(tx)) {
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
     const sendAmountFiat = new Amount(normalizedTransferredValue).times(price)
 
     return {
@@ -1419,7 +1422,9 @@ export const getTransactionFiatValues = ({
         ? computeFiatAmount(spotPrices, {
             decimals: sellToken.decimals,
             symbol: sellToken.symbol,
-            value: sellAmountWei
+            value: sellAmountWei,
+            contractAddress: sellToken.contractAddress,
+            chainId: sellToken.chainId
           })
         : Amount.empty()
 
@@ -1437,7 +1442,9 @@ export const getTransactionFiatValues = ({
     ? computeFiatAmount(spotPrices, {
         decimals: txNetwork.decimals,
         symbol: txNetwork.symbol,
-        value: getTransactionBaseValue(tx) || ''
+        value: getTransactionBaseValue(tx) || '',
+        contractAddress: '',
+        chainId: txNetwork.chainId
       })
     : Amount.empty()
 
@@ -1678,12 +1685,14 @@ export const parseTransactionWithPrices = ({
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
 }): ParsedTransaction => {
   const networkSpotPrice = transactionNetwork
     ? findAssetPrice(
         spotPrices,
-        transactionNetwork.symbol
+        transactionNetwork.symbol,
+        '',
+        transactionNetwork.chainId
       )
     : ''
 

@@ -146,8 +146,8 @@ export const TokenLists = ({
       return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
-        const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals)
-        const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals)
+        const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals, b.asset.contractAddress, b.asset.chainId)
+        const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals, a.asset.contractAddress, a.asset.chainId)
         return assetFilterItemInfo.id === 'highToLow'
           ? bFiatBalance.toNumber() - aFiatBalance.toNumber()
           : aFiatBalance.toNumber() - bFiatBalance.toNumber()

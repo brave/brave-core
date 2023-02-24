@@ -8,7 +8,8 @@ import {
   AppsListType,
   BraveWallet,
   SerializableTransactionInfo,
-  WalletAccountType
+  WalletAccountType,
+  AssetPriceWithContractAndChainId
 } from '../../constants/types'
 
 // mocks
@@ -189,24 +190,30 @@ export const mockFilecoinAccount: WalletAccountType = {
   keyringId: BraveWallet.FILECOIN_TESTNET_KEYRING_ID
 }
 
-export const mockAssetPrices: BraveWallet.AssetPrice[] = [
+export const mockAssetPrices: AssetPriceWithContractAndChainId[] = [
   {
     fromAsset: 'ETH',
     price: '4000',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0x1',
+    chainId: 'ETH'
   },
   {
     fromAsset: 'DOG',
     price: '100',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0xdog',
+    chainId: '0x1'
   },
   {
     fromAsset: mockBasicAttentionToken.symbol,
     price: '0.88',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+    chainId: '0x1'
   }
 ]
 

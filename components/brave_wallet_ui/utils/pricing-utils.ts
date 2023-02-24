@@ -3,24 +3,33 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../constants/types'
+import { AssetPriceWithContractAndChainId } from '../constants/types'
 import Amount from './amount'
 
-export const findAssetPrice = (spotPrices: BraveWallet.AssetPrice[], symbol: string) => {
+export const findAssetPrice = (
+  spotPrices: AssetPriceWithContractAndChainId[],
+  symbol: string,
+  contractAddress: string,
+  chainId: string
+) => {
   return spotPrices.find(
-    (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase()
+    (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase() &&
+      token.contractAddress === contractAddress &&
+      token.chainId === chainId
   )?.price ?? ''
 }
 
 export const computeFiatAmount = (
-  spotPrices: BraveWallet.AssetPrice[],
+  spotPrices: AssetPriceWithContractAndChainId[],
   asset: {
     value: string
     symbol: string
     decimals: number
+    contractAddress: string
+    chainId: string
   }
 ): Amount => {
-  const price = findAssetPrice(spotPrices, asset.symbol)
+  const price = findAssetPrice(spotPrices, asset.symbol, asset.contractAddress, asset.chainId)
 
   if (!price || !asset.value) {
     return Amount.empty()
@@ -33,10 +42,12 @@ export const computeFiatAmount = (
 
 export const computeFiatAmountToAssetValue = (
   fiatAmount: string,
-  spotPrices: BraveWallet.AssetPrice[],
-  assetSymbol: string
+  spotPrices: AssetPriceWithContractAndChainId[],
+  assetSymbol: string,
+  contractAddress: string,
+  chainId: string
 ): Amount => {
-  const price = findAssetPrice(spotPrices, assetSymbol)
+  const price = findAssetPrice(spotPrices, assetSymbol, contractAddress, chainId)
 
   if (!price || !fiatAmount) {
     return Amount.empty()

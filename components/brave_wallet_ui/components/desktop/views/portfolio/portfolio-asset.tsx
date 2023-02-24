@@ -276,7 +276,13 @@ export const PortfolioAsset = (props: Props) => {
 
     const visibleAssetFiatBalances = visibleAssetOptions
       .map((item) => {
-        return computeFiatAmount(item.assetBalance, item.asset.symbol, item.asset.decimals)
+        return computeFiatAmount(
+          item.assetBalance,
+          item.asset.symbol,
+          item.asset.decimals,
+          item.asset.contractAddress,
+          item.asset.chainId
+        )
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
@@ -347,7 +353,9 @@ export const PortfolioAsset = (props: Props) => {
     ? computeFiatAmount(
       fullAssetBalances.assetBalance,
       fullAssetBalances.asset.symbol,
-      fullAssetBalances.asset.decimals
+      fullAssetBalances.asset.decimals,
+      fullAssetBalances.asset.contractAddress,
+      fullAssetBalances.asset.chainId
     )
     : Amount.empty(),
     [fullAssetBalances]
