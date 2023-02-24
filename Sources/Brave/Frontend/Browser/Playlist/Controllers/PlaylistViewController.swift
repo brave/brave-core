@@ -394,16 +394,6 @@ class PlaylistViewController: UIViewController {
       guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
       self.onNextTrack(self.playerView, isUserInitiated: true)
     }.store(in: &playerStateObservers)
-    
-    player.publisher(for: .seekBackward).sink { [weak self] _ in
-      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
-      self.seekBackwards(self.playerView)
-    }.store(in: &playerStateObservers)
-    
-    player.publisher(for: .seekForward).sink { [weak self] _ in
-      guard let self = self, !PlaylistCarplayManager.shared.isCarPlayAvailable else { return }
-      self.seekForwards(self.playerView)
-    }.store(in: &playerStateObservers)
 
     player.publisher(for: .finishedPlaying).sink { [weak self] event in
       guard let self = self,

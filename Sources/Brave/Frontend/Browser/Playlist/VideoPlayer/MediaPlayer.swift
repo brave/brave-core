@@ -599,6 +599,26 @@ extension MediaPlayer {
       self.seekForwards()
       MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds + event.interval)
     }.store(in: &notificationObservers)
+    
+    center.publisher(for: .seekBackwardCommand).sink { [weak self] event in
+      guard let self = self,
+        let event = event as? MPSkipIntervalCommandEvent
+      else { return }
+
+      let currentTime = self.player.currentTime()
+      self.seekBackwards()
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds - event.interval)
+    }.store(in: &notificationObservers)
+
+    center.publisher(for: .seekForwardCommand).sink { [weak self] event in
+      guard let self = self,
+        let event = event as? MPSkipIntervalCommandEvent
+      else { return }
+
+      let currentTime = self.player.currentTime()
+      self.seekForwards()
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds + event.interval)
+    }.store(in: &notificationObservers)
 
     center.publisher(for: .changePlaybackPositionCommand).sink { [weak self] event in
       guard let self = self,
