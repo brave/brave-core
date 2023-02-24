@@ -37,7 +37,7 @@ import Settings, { TabType as SettingsTabType } from './settings'
 import { BraveNewsContextProvider } from '../../components/default/braveToday/customize/Context'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import GridWidget from './gridWidget'
-import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsosredImageClickArea'
+import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 
 interface Props {
   newTabData: NewTab.State
