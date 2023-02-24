@@ -46,6 +46,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     chrome.importer_name = base::UTF8ToUTF16(base::StrCat({brand, " ", *name}));
     chrome.importer_type = type;
     chrome.services_supported = items;
+    chrome.profile = base::UTF8ToUTF16(brand);
     chrome.source_path = user_data_folder.Append(
         base::FilePath::StringType(profile->begin(), profile->end()));
     profiles->push_back(chrome);
@@ -59,23 +60,24 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeUserDataFolder(), "Chrome", importer::TYPE_CHROME);
+      GetChromeUserDataFolder(), "Google Chrome", importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeBetaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeBetaUserDataFolder(), "Chrome Beta", importer::TYPE_CHROME);
+      GetChromeBetaUserDataFolder(), "Google Chrome Beta",
+      importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeDevUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeDevUserDataFolder(), "Chrome Dev", importer::TYPE_CHROME);
+      GetChromeDevUserDataFolder(), "Google Chrome Dev", importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetCanaryUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetCanaryUserDataFolder(), "Chrome Canary", importer::TYPE_CHROME);
+      GetCanaryUserDataFolder(), "Google Chrome Canary", importer::TYPE_CHROME);
 #endif
   AddChromeToProfiles(
       profiles,
@@ -111,7 +113,7 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetWhaleUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetWhaleUserDataFolder(), "Whale", importer::TYPE_WHALE);
+      GetWhaleUserDataFolder(), "NAVER Whale", importer::TYPE_WHALE);
 
 #if BUILDFLAG(IS_LINUX)
   // Installed via snap Opera has different profile path.
