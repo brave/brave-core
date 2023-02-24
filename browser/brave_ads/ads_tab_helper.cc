@@ -9,8 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
-#include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -26,6 +25,15 @@
 #endif
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char16_t kGetDocumentHTMLScript[] =
+    u"new XMLSerializer().serializeToString(document)";
+
+constexpr char16_t kGetInnerTextScript[] = u"document?.body?.innerText";
+
+}  // namespace
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
@@ -67,15 +75,17 @@ void AdsTabHelper::RunIsolatedJavaScript(
     content::RenderFrameHost* render_frame_host) {
   DCHECK(render_frame_host);
 
-  dom_distiller::RunIsolatedJavaScript(
-      render_frame_host, "new XMLSerializer().serializeToString(document)",
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      kGetDocumentHTMLScript,
       base::BindOnce(&AdsTabHelper::OnJavaScriptHtmlResult,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
-  dom_distiller::RunIsolatedJavaScript(
-      render_frame_host, "document?.body?.innerText",
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      kGetInnerTextScript,
       base::BindOnce(&AdsTabHelper::OnJavaScriptTextResult,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {

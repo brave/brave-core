@@ -23,16 +23,6 @@
 class Browser;
 class GURL;
 
-namespace dom_distiller {
-
-class DistillerPage;
-
-namespace proto {
-class DomDistillerResult;
-}  // namespace proto
-
-}  // namespace dom_distiller
-
 namespace brave_ads {
 
 class AdsService;

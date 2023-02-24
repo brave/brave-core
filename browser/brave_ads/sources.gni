@@ -39,7 +39,6 @@ brave_browser_brave_ads_deps = [
   "//chrome/browser/profiles",
   "//chrome/browser/profiles:profile",
   "//chrome/browser/ui",
-  "//components/dom_distiller/content/browser",
   "//components/history/core/browser",
   "//components/keyed_service/content",
   "//components/sessions",
