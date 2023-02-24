@@ -12,6 +12,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -66,6 +67,7 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
   }
 
  private:
+  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
