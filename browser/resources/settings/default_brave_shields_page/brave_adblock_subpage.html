@@ -159,40 +159,42 @@
 </style>
 
 <div id="adblock-section">
-  <div class="settings-box">
-    <div class="flex">
-        <div class="label shields-primary-title">$i18n{adblockTrackingFiltersLabel}</div>
-        <div class="label secondary shields-secondary-title">
-          $i18n{adblockTrackingFiltersDesc}
-        </div>
-        <cr-input
-          type="text"
-          placeholder="$i18n{adblockFilterListsInputPlaceHolder}"
-          min="1"
-          max="100"
-          value="{{filterListTitle}}"
-        >
-          <span id="search-box" slot="inline-suffix">
-            <iron-icon icon="brave_leo:magnifying-glass"></iron-icon>
-          </span>
-        </cr-input>
-        <div class$="filter-list-box expanded-[[hasListExpanded_]]">
-          <template is="dom-repeat" items="[[filterList_]]"
-          filter="{{searchListBy_(filterListTitle)}}" observe="val" initial-count="10">
-            <div class$="filter-list-item selected-[[item.enabled]]">
-              <cr-checkbox checked="{{item.enabled}}" on-change="handleFilterListItemToggle_">
-                <div>[[item.title]]</div>
-              </cr-checkbox>
+  <template is="dom-if" if="[[filterList_.length]]">
+    <div class="settings-box">
+      <div class="flex">
+          <div class="label shields-primary-title">$i18n{adblockTrackingFiltersLabel}</div>
+          <div class="label secondary shields-secondary-title">
+            $i18n{adblockTrackingFiltersDesc}
+          </div>
+          <cr-input
+            type="text"
+            placeholder="$i18n{adblockFilterListsInputPlaceHolder}"
+            min="1"
+            max="100"
+            value="{{filterListTitle}}"
+          >
+            <span id="search-box" slot="inline-suffix">
+              <iron-icon icon="brave_leo:magnifying-glass"></iron-icon>
+            </span>
+          </cr-input>
+          <div class$="filter-list-box expanded-[[hasListExpanded_]]">
+            <template is="dom-repeat" items="[[filterList_]]"
+            filter="{{searchListBy_(filterListTitle)}}" observe="val" initial-count="10">
+              <div class$="filter-list-item selected-[[item.enabled]]">
+                <cr-checkbox checked="{{item.enabled}}" on-change="handleFilterListItemToggle_">
+                  <div>[[item.title]]</div>
+                </cr-checkbox>
+              </div>
+            </template>
+          </div>
+          <template is="dom-if" if="[[!hasListExpanded_]]">
+            <div class="show-list-button-box">
+              <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
             </div>
           </template>
-        </div>
-        <template is="dom-if" if="[[!hasListExpanded_]]">
-          <div class="show-list-button-box">
-            <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
-          </div>
-        </template>
+      </div>
     </div>
-  </div>
+  </template>
   <div class="settings-box">
     <div class="flex">
       <div class="label shields-primary-title">

@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/constants/brave_services_key_helper.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -80,6 +81,53 @@ SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
 const base::FilePath::CharType kSubscriptionsDir[] =
     FILE_PATH_LITERAL("FilterListSubscriptionCache");
 
+// Direct links to Brave's default lists, for use without a valid service key.
+// Source:
+// https://github.com/brave/adblock-resources/blob/master/filter_lists/default.json
+constexpr base::StringPiece kDefaultListURLs[] = {
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "filters.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "filters-2020.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "filters-2021.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "filters-2022.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "filters-2023.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "badware.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "privacy.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "resource-abuse.txt",
+    "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/"
+    "unbreak.txt",
+    "https://easylist.to/easylist/easylist.txt",
+    "https://easylist.to/easylist/easyprivacy.txt",
+    "https://malware-filter.gitlab.io/malware-filter/"
+    "urlhaus-filter-agh-online.txt",
+    "https://pgl.yoyo.org/adservers/"
+    "serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-unbreak.txt",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-lists/"
+    "brave-specific.txt",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-lists/"
+    "brave-social.txt",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-lists/"
+    "brave-unbreak.txt",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-lists/"
+    "brave-android-specific.txt",
+    "https://raw.githubusercontent.com/brave/adblock-lists/master/"
+    "brave-lists/"
+    "brave-sugarcoat.txt",
+};
+
 }  // namespace
 
 SubscriptionInfo::SubscriptionInfo() = default;
@@ -110,8 +158,7 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
     const base::FilePath& profile_dir)
-    : initialized_(false),
-      local_state_(local_state),
+    : local_state_(local_state),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscription_update_timer_(
           std::make_unique<component_updater::TimerUpdateScheduler>()) {
@@ -326,6 +373,15 @@ void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
 
   download_manager_->CancelAllPendingDownloads();
   LoadSubscriptionServices();
+
+  if constexpr (!brave::CanUseBraveServices()) {
+    // Prefill the subscriptions with direct links to Brave's default lists
+    if (subscriptions_.empty()) {
+      for (const base::StringPiece list : kDefaultListURLs) {
+        CreateSubscription(GURL(list));
+      }
+    }
+  }
 
   subscription_update_timer_->Schedule(
       kListCheckInitialDelay, kListRetryInterval,

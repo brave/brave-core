@@ -6,9 +6,16 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_BRAVE_SERVICES_KEY_HELPER_H_
 #define BRAVE_COMPONENTS_CONSTANTS_BRAVE_SERVICES_KEY_HELPER_H_
 
+#include "base/strings/string_piece.h"
+#include "brave/components/constants/brave_services_key.h"
+
 class GURL;
 
 namespace brave {
+
+constexpr bool CanUseBraveServices() {
+  return !base::StringPiece(BUILDFLAG(BRAVE_SERVICES_KEY)).empty();
+}
 
 bool ShouldAddBraveServicesKeyHeader(const GURL& url);
 
