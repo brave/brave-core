@@ -13,11 +13,11 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -591,17 +591,17 @@ constexpr char kRestrictEventSourcePoolDescription[] =
      flag_descriptions::kBraveNewsName,                                     \
      flag_descriptions::kBraveNewsDescription,                              \
      kOsDesktop | kOsAndroid,                                               \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsFeature)},         \
+     FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeature)},         \
     {"brave-news-v2",                                                       \
      flag_descriptions::kBraveNewsV2Name,                                   \
      flag_descriptions::kBraveNewsV2Description,                            \
      kOsDesktop | flags_ui::kOsAndroid,                                     \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsV2Feature)},       \
+     FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsV2Feature)},       \
     {"brave-news-peek",                                                     \
      flag_descriptions::kBraveNewsCardPeekFeatureName,                      \
      flag_descriptions::kBraveNewsCardPeekFeatureDescription,               \
      kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_today::features::kBraveNewsCardPeekFeature)}, \
+     FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsCardPeekFeature)}, \
 
 #define BRAVE_FEDERATED_FEATURE_ENTRIES                                 \
     {"brave-federated",                                                 \

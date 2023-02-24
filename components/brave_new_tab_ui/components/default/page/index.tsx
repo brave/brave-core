@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import styled, { createGlobalStyle, css } from 'styled-components'
@@ -80,14 +81,14 @@ const StyledPage = styled('div')<PageProps>`
   min-height: 100vh;
   align-items: flex-start;
 
-  /* Fix the main NTP content so, when Brave Today is in-view,
+  /* Fix the main NTP content so, when Brave News is in-view,
   NTP items remain in the same place, and still allows NTP
   Page to scroll to the bottom before that starts happening. */
   .${CLASSNAME_PAGE_STUCK} & {
     z-index: 3;
     position: fixed;
     bottom: 0;
-    /* Blur out the content when Brave Today is interacted
+    /* Blur out the content when Brave News is interacted
       with. We need the opacity to fade out our background image.
       We need the background image to overcome the bug
       where a backdrop-filter element's ancestor which has
@@ -109,7 +110,7 @@ const StyledPage = styled('div')<PageProps>`
 
 export const Page: React.FunctionComponent<PageProps> = (props) => {
   // Note(petemill): When we scroll to the bottom, if there's an
-  // extra scroll area (Brave Today) then we "sticky" the Page at
+  // extra scroll area (Brave News) then we "sticky" the Page at
   // the bottom scroll and overlay the extra content on top.
   // This isn't possible with regular `position: sticky` as far as I can tell.
   const pageRef = React.useRef<HTMLDivElement>(null)
@@ -249,7 +250,7 @@ export const GridItemNavigation = styled('section')`
   }
 `
 
-export const GridItemNavigationBraveToday = styled('div')<{}>`
+export const GridItemNavigationBraveNews = styled('div')<{}>`
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -293,7 +294,7 @@ function getPageBackground (p: HasImageProps) {
   // Page background is duplicated since a backdrop-filter's
   // ancestor which has blur must also have background.
   // In our case, Widgets are the backdrop-filter element
-  // and Page is the element with blur (when brave today is active)
+  // and Page is the element with blur (when Brave News is active)
   // so it also needs the background. However, we also
   // need the background _not_ to blur, so we also put it on
   // Page's ancestor: App.

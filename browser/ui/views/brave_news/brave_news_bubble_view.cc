@@ -16,7 +16,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
-#include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -137,7 +137,7 @@ BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
 void BraveNewsBubbleView::OpenManageFeeds() {
   auto* browser = chrome::FindBrowserWithWebContents(contents_);
-  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"),
+  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveNews"),
                     content::Referrer(),
                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
                     ui::PAGE_TRANSITION_LINK, false});

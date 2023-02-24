@@ -6,9 +6,9 @@
 #include "base/feature_override.h"
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
-#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/common/features.h"
@@ -19,9 +19,9 @@
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode, \
     &brave_rewards::features::kBraveRewards,                 \
     &brave_search_conversion::features::kOmniboxBanner,      \
-    &brave_today::features::kBraveNewsFeature,               \
+    &brave_news::features::kBraveNewsFeature,                \
+    &brave_news::features::kBraveNewsV2Feature,              \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,\
-    &brave_today::features::kBraveNewsV2Feature,             \
     &brave_wallet::features::kNativeBraveWalletFeature,      \
     &brave_wallet::features::kBraveWalletSolanaFeature,      \
     &brave_wallet::features::kBraveWalletSnsFeature,         \

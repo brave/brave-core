@@ -40,7 +40,7 @@ cargo_build("rust_lib") {
   # but in order to do that we have to dynamically create the brave rust lib
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
-    "//brave/components/brave_today/rust:rust_lib",
+    "//brave/components/brave_news/rust:rust_lib",
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
     "//brave/components/filecoin:rust_lib",

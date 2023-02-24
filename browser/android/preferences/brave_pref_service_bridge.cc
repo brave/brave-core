@@ -7,13 +7,13 @@
 
 #include "base/android/jni_string.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
@@ -238,12 +238,12 @@ void JNI_BravePrefServiceBridge_SetWebrtcPolicy(JNIEnv* env, jint policy) {
 
 void JNI_BravePrefServiceBridge_SetNewsOptIn(JNIEnv* env, jboolean value) {
   GetOriginalProfile()->GetPrefs()->SetBoolean(
-      brave_news::prefs::kBraveTodayOptedIn, value);
+      brave_news::prefs::kBraveNewsOptedIn, value);
 }
 
 jboolean JNI_BravePrefServiceBridge_GetNewsOptIn(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
-      brave_news::prefs::kBraveTodayOptedIn);
+      brave_news::prefs::kBraveNewsOptedIn);
 }
 
 void JNI_BravePrefServiceBridge_SetShowNews(JNIEnv* env, jboolean value) {

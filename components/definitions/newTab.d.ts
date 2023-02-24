@@ -124,7 +124,7 @@ declare namespace NewTab {
     showRewards: boolean
     showBraveTalk: boolean
     hideAllWidgets: boolean
-    isBraveTodayOptedIn: boolean
+    isBraveNewsOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
 

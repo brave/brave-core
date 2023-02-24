@@ -26,7 +26,7 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -96,7 +96,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     brave_news::BraveNewsControllerFactory::GetInstance();
   }
 

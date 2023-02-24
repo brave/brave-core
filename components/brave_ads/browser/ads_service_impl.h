@@ -143,7 +143,7 @@ class AdsServiceImpl : public AdsService,
   void InitializePrefChangeRegistrar();
   void OnEnabledPrefChanged();
   void OnIdleTimeThresholdPrefChanged();
-  void OnBraveTodayOptedInPrefChanged();
+  void OnBraveNewsOptedInPrefChanged();
   void OnNewTabPageShowTodayPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 

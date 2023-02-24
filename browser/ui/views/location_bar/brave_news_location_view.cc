@@ -14,7 +14,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
-#include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -47,7 +47,7 @@ BraveNewsLocationView::BraveNewsLocationView(
                     profile->GetPrefs(),
                     base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
                                         base::Unretained(this)));
-  opted_in_.Init(brave_news::prefs::kBraveTodayOptedIn, profile->GetPrefs(),
+  opted_in_.Init(brave_news::prefs::kBraveNewsOptedIn, profile->GetPrefs(),
                  base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
                                      base::Unretained(this)));
   news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,

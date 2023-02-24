@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Utils
 import { debounce } from '../../common/debounce'
@@ -32,7 +32,7 @@ export const defaultState: NewTab.State = {
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
-  isBraveTodayOptedIn: false,
+  isBraveNewsOptedIn: false,
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
