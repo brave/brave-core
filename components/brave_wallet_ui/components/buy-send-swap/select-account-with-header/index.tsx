@@ -22,7 +22,7 @@ export interface Props {
   onBack?: () => void
 }
 
-function SelectAccountWithHeader (props: Props) {
+export function SelectAccountWithHeader (props: Props) {
   const {
     accounts,
     selectedAccount,
