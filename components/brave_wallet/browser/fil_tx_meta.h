@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TX_META_H_
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
@@ -31,9 +30,6 @@ class FilTxMeta : public TxMeta {
   bool operator==(const FilTxMeta&) const;
   ~FilTxMeta() override;
 
-  const std::string& chain_id() const { return chain_id_; }
-  void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
-
   // TxMeta
   base::Value::Dict ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
@@ -43,7 +39,6 @@ class FilTxMeta : public TxMeta {
 
  private:
   std::unique_ptr<FilTransaction> tx_;
-  std::string chain_id_;
 };
 
 }  // namespace brave_wallet

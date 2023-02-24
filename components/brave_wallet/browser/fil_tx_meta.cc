@@ -28,7 +28,6 @@ bool FilTxMeta::operator==(const FilTxMeta& meta) const {
 
 base::Value::Dict FilTxMeta::ToValue() const {
   base::Value::Dict dict = TxMeta::ToValue();
-  dict.Set("chain_id", chain_id_);
   dict.Set("tx", tx_->ToValue());
   return dict;
 }
@@ -43,7 +42,7 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.ToJavaTime()),
       base::Milliseconds(confirmed_time_.ToJavaTime()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, group_id_,
-      chain_id_);
+      chain_id());
 }
 
 }  // namespace brave_wallet

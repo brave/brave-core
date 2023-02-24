@@ -329,7 +329,8 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowChainIdNetworkInfo) {
           .FindStringByDottedPath(
               base::StringPrintf("%s.%s", ethPath.c_str(), "chain_id"));
 
-  EXPECT_TRUE(ethChainId == nullptr);
+  EXPECT_TRUE(ethChainId != nullptr);
+  EXPECT_EQ(*ethChainId, "0x1");
 
   const std::string* solChainId =
       GetPrefs()

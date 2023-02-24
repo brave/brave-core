@@ -1196,7 +1196,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
   string? group_id;
-  string? chain_id;
+  string chain_id;
 };
 
 interface TxServiceObserver {

@@ -285,6 +285,7 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_sign_only(sign_only);
+  meta.set_chain_id(GetCurrentChainId(prefs_, mojom::CoinType::ETH));
   tx_state_manager_->AddOrUpdateTx(meta);
   std::move(callback).Run(true, meta.id(), "");
 }

@@ -49,6 +49,11 @@ extern const char kBraveWalletLastDiscoveredAssetsAt[];
 
 extern const char kBraveWalletLastTransactionSentTimeDict[];
 
+extern const char kBraveWalletTransactionsChainIdMigrated[];
+extern const char kBraveWalletEthereumTransactions[];
+extern const char kBraveWalletSolanaTransactions[];
+extern const char kBraveWalletFileCoinTransactions[];
+
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];
 extern const char kBraveWalletSelectedAccount[];
@@ -61,9 +66,5 @@ extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
 extern const char kPinnedNFTAssets[];
 extern const char kAutoPinEnabled[];
-extern const char kBraveWalletTransactionsChainIdMigrated[];
-extern const char kBraveWalletEthereumTransactions[];
-extern const char kBraveWalletSolanaTransactions[];
-extern const char kBraveWalletFileCoinTransactions[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

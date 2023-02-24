@@ -35,11 +35,6 @@ std::unique_ptr<TxMeta> SolanaTxStateManager::ValueToTxMeta(
   if (!TxStateManager::ValueToTxMeta(value, meta.get()))
     return nullptr;
 
-  const auto* chain_id_string = value.FindString("chain_id");
-  if (chain_id_string) {
-    meta->set_chain_id(*chain_id_string);
-  }
-
   const base::Value::Dict* tx_value = value.FindDict("tx");
   if (!tx_value)
     return nullptr;
