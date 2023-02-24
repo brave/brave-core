@@ -105,7 +105,7 @@ export const TransactionInfo = ({
         <>
           {transactionDetails.gasPremium && (
             <SectionColumn>
-              <TransactionTitle>Gas Premium</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasPremium')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasPremium)
@@ -117,7 +117,7 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasLimit && (
             <SectionColumn>
-              <TransactionTitle>Gas Limit</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasLimit')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasLimit)
@@ -129,7 +129,7 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasFeeCap && (
             <SectionColumn>
-              <TransactionTitle>Gas Fee Cap</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasFeeCap')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasFeeCap)
