@@ -233,7 +233,7 @@ export const PortfolioAsset = (props: Props) => {
     // If the id length is greater than 15 assumes it's a contractAddress
     let token = assetId.length > 15
       ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
-      : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase())
+      : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase() && token.contractAddress === '')
 
     if (!token && assetId.length < 15) {
       const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === assetId?.toLowerCase())
