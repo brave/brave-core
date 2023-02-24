@@ -513,6 +513,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onPageLoadFinished(final Tab tab, GURL url) {
+                Log.e(PlaylistUtils.TAG, "onPageLoadFinished URL : " + tab.getUrl().getSpec());
                 if (getToolbarDataProvider().getTab() == tab) {
                     mBraveShieldsHandler.updateHost(url.getSpec());
                     updateBraveShieldsButtonState(tab);
@@ -599,7 +600,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     });
                     mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {
                         Log.e(PlaylistUtils.TAG, "Inside condition");
-                        Log.e(PlaylistUtils.TAG, "findMediaFilesFromActiveTab url  : " + url);
+                        Log.e(PlaylistUtils.TAG, "findMediaFilesFromActiveTab url  : " + url.url);
                         for (PlaylistItem playlistItem : playlistItems) {
                             Log.e(PlaylistUtils.TAG, "Media source  : " + playlistItem.mediaSource);
                         }

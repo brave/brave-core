@@ -79,23 +79,29 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         mStartPlaybackSwitch.setOnPreferenceChangeListener(this);
 
         mResetPlaylist = (BravePlaylistResetPreference) findPreference(PREF_RESET_PLAYLIST);
-        mResetPlaylist.setOnPreferenceChangeListener(this);
+        mResetPlaylist.setOnPreferenceClickListener(preference -> {
+            if (mPlaylistService != null) {
+                mPlaylistService.resetAll();
+                PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
+                BraveRelaunchUtils.askForRelaunch(getActivity());
+            }
+            return true;
+        });
 
         updatePlaylistSettingsState(
                 SharedPreferencesManager.getInstance().readBoolean(PREF_ENABLE_PLAYLIST, true));
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
         if (mPlaylistService != null) {
             mPlaylistService.close();
         }
+        super.onDestroy();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mPlaylistService.close();
         mPlaylistService = null;
         initPlaylistService();
     }
@@ -110,9 +116,9 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        initPlaylistService();
         getActivity().setTitle(R.string.brave_playlist);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_playlist_preferences);
+        initPlaylistService();
     }
 
     @Override
@@ -157,12 +163,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         } else if (PREF_START_PLAYBACK.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     PREF_START_PLAYBACK, (boolean) newValue);
-        } else if (PREF_RESET_PLAYLIST.equals(key)) {
-            if (mPlaylistService != null) {
-                mPlaylistService.resetAll();
-                PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
-                BraveRelaunchUtils.askForRelaunch(getActivity());
-            }
         }
 
         return true;
