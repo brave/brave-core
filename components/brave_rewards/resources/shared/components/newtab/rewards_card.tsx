@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -23,6 +24,8 @@ import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
+import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
+import { Optional } from '../../../shared/lib/optional'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -76,7 +79,7 @@ interface Props {
   adsEnabled: boolean
   adsSupported: boolean
   needsBrowserUpgradeToServeAds: boolean
-  rewardsBalance: number
+  rewardsBalance: Optional<number>
   exchangeRate: number
   exchangeCurrency: string
   providerPayoutStatus: ProviderPayoutStatus
@@ -166,29 +169,38 @@ export function RewardsCard (props: Props) {
     }
 
     return (
-      <style.balance>
+      <style.balance
+        className={!props.rewardsBalance.hasValue() ? 'flat' : ''}>
         <style.balanceTitle>
           {getString('rewardsTokenBalance')}
         </style.balanceTitle>
-        <style.balanceAmount>
-          <TokenAmount amount={props.rewardsBalance} />
-        </style.balanceAmount>
-        <style.balanceExchange>
-          <style.balanceExchangeAmount>
-            ≈&nbsp;
-            <ExchangeAmount
-              amount={props.rewardsBalance}
-              rate={props.exchangeRate}
-              currency={props.exchangeCurrency}
-            />
-          </style.balanceExchangeAmount>
-          {
-            props.rewardsBalance > 0 &&
-              <style.balanceExchangeNote>
-                {getString('rewardsExchangeValueNote')}
-              </style.balanceExchangeNote>
-          }
-        </style.balanceExchange>
+        {
+          !props.rewardsBalance.hasValue()
+            ? <style.balanceSpinner>
+              <LoadingIcon />
+              <style.loading>{getString('loading')}</style.loading>
+            </style.balanceSpinner>
+            : <>
+              <style.balanceAmount>
+                <TokenAmount amount={props.rewardsBalance.value()} />
+              </style.balanceAmount>
+              <style.balanceExchange>
+                <style.balanceExchangeAmount>
+                  ≈&nbsp;
+                  <ExchangeAmount
+                    amount={props.rewardsBalance.value()}
+                    rate={props.exchangeRate}
+                    currency={props.exchangeCurrency} />
+                </style.balanceExchangeAmount>
+                {
+                  props.rewardsBalance.value() > 0 &&
+                  <style.balanceExchangeNote>
+                    {getString('rewardsExchangeValueNote')}
+                  </style.balanceExchangeNote>
+                }
+              </style.balanceExchange>
+            </>
+        }
         <style.pendingRewards>
           <PaymentStatusView
             earningsLastMonth={props.earningsLastMonth}

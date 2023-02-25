@@ -350,6 +350,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
         {"rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2},
 
+        { "loading", IDS_BRAVE_REWARDS_LOADING_LABEL },
+
         // Brave Talk  Widget
         { "braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE },
         { "braveTalkWidgetWelcomeTitle", IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE },
@@ -689,6 +691,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletViewStatement", IDS_REWARDS_WALLET_VIEW_STATEMENT },
         { "walletVerified", IDS_REWARDS_WALLET_VERIFIED },
         { "walletYourBalance", IDS_REWARDS_WALLET_YOUR_BALANCE },
+
+        { "loading", IDS_BRAVE_REWARDS_LOADING_LABEL },
       }
     }, {
       std::string("adblock"), {
@@ -898,6 +902,8 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
         { "walletCreationEnvironment", IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT },    // NOLINT
         { "currentEnvironment", IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT},    // NOLINT
+
+        { "loading", IDS_BRAVE_REWARDS_LOADING_LABEL },
       }
     }, {
 #if BUILDFLAG(ENABLE_TOR)

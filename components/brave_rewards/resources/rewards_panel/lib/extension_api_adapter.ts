@@ -26,14 +26,16 @@ import {
   Settings
 } from './interfaces'
 
+import { optional, Optional } from '../../shared/lib/optional'
+
 // The functions exported from this module wrap the existing |braveRewards|
 // and |rewardsNotifications| extension API functions in order to reduce the
 // amount of mapping/adapter code found in |extension_host|. As the extension
 // APIs are improved, the need for this adapter will diminish.
 
 export function getRewardsBalance () {
-  return new Promise<number>((resolve) => {
-    chrome.braveRewards.fetchBalance((balance) => { resolve(balance.total) })
+  return new Promise<Optional<number>>((resolve) => {
+    chrome.braveRewards.fetchBalance((balance) => { resolve(optional(balance)) })
   })
 }
 

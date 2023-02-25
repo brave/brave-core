@@ -467,8 +467,13 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnBalance(const ledger::mojom::Result result,
-                 ledger::mojom::BalancePtr balance);
+  void OnGetExternalWallet(
+      base::expected<ledger::mojom::ExternalWalletPtr,
+                     ledger::mojom::GetExternalWalletError> result);
+
+  void OnFetchBalance(const std::string& connected_wallet_type,
+                      ledger::mojom::Result result,
+                      ledger::mojom::BalancePtr balance);
 };
 
 class BraveRewardsGetExternalWalletProvidersFunction

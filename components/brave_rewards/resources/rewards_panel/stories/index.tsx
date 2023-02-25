@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -18,6 +19,7 @@ import { App } from '../components/app'
 
 import grantCaptchaImageURL from './grant_captcha_image.png'
 import * as mojom from '../../shared/lib/mojom'
+import { optional } from '../../shared/lib/optional'
 
 export default {
   title: 'Rewards/Panel'
@@ -72,7 +74,7 @@ function createHost (): Host {
       status: 'pending'
     },
     externalWalletProviders: ['uphold', 'gemini'],
-    balance: 10.2,
+    balance: optional(10.2),
     exchangeInfo: {
       rate: 0.75,
       currency: 'USD'

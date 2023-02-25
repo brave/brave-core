@@ -33,6 +33,7 @@ import { PendingContributionsModal } from './pending_contributions_modal'
 
 import * as mojom from '../../shared/lib/mojom'
 import { isPublisherVerified } from '../../shared/lib/publisher_status'
+import { optional } from '../../shared/lib/optional'
 
 interface State {
   modalActivity: boolean
@@ -530,7 +531,6 @@ class PageWallet extends React.Component<Props, State> {
       pendingContributions,
       userType
     } = this.props.rewardsData
-    const { total } = balance
     const { modalReset, modalConnect } = ui
 
     let externalWalletInfo: ExternalWallet | null = null
@@ -553,12 +553,20 @@ class PageWallet extends React.Component<Props, State> {
       pendingTips: pendingContributionTotal || 0
     }
 
+    const walletKeys = Object.keys(balance.wallets)
+    const totalBalance =
+      !walletKeys.includes('blinded')
+        ? undefined
+        : externalWallet && !walletKeys.includes(externalWallet.type)
+          ? undefined
+          : balance.total
+
     return (
       <>
         {
           userType !== 'unconnected' &&
             <WalletCard
-              balance={total}
+              balance={optional(totalBalance)}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
               earningsThisMonth={adsData.adsEarningsThisMonth || 0}

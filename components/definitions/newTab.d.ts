@@ -220,10 +220,7 @@ declare namespace NewTab {
     amount: number
   }
 
-  export interface RewardsBalance {
-    total: number
-    wallets: Record<string, number>
-  }
+  export type RewardsBalance = number | undefined
 
   export interface AdsAccountStatement {
     nextPaymentDate: number

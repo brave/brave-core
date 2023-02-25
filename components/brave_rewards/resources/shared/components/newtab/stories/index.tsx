@@ -12,6 +12,7 @@ import { SponsoredImageTooltip } from '../sponsored_image_tooltip'
 
 import { localeStrings } from './locale_strings'
 import * as mojom from '../../../../shared/lib/mojom'
+import { optional } from '../../../../shared/lib/optional'
 
 const localeContext = createLocaleContextForTesting(localeStrings)
 
@@ -42,7 +43,7 @@ export function Card () {
             adsEnabled={true}
             adsSupported={true}
             needsBrowserUpgradeToServeAds={false}
-            rewardsBalance={91.5812}
+            rewardsBalance={optional(91.5812)}
             exchangeCurrency='USD'
             exchangeRate={0.82}
             providerPayoutStatus={'complete'}

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -17,6 +18,8 @@ import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
 import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
+import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
+import { Optional } from '../../../shared/lib/optional'
 
 import * as urls from '../../lib/rewards_urls'
 
@@ -30,7 +33,7 @@ const rangeFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 interface Props {
-  balance: number
+  balance: Optional<number>
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
   earningsThisMonth: number
@@ -94,10 +97,20 @@ export function WalletCard (props: Props) {
           {getString('walletYourBalance')}
         </style.balanceHeader>
         <style.batAmount data-test-id='rewards-balance-text'>
-          <TokenAmount amount={props.balance} />
+          {
+            !props.balance.hasValue()
+              ? <style.balanceSpinner>
+                <LoadingIcon />
+                <style.loading>{getString('loading')}</style.loading>
+              </style.balanceSpinner>
+              : <TokenAmount amount={props.balance.value()} />
+          }
         </style.batAmount>
-        <style.exchangeAmount>
-          <ExchangeAmount amount={props.balance} rate={props.exchangeRate} />
+        <style.exchangeAmount
+          className={!props.balance.hasValue() ? 'hidden' : ''}>
+          <ExchangeAmount
+            amount={props.balance.valueOr(0)}
+            rate={props.exchangeRate} />
         </style.exchangeAmount>
       </style.rewardsBalance>
     )

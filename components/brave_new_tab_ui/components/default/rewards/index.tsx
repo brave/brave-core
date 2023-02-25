@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -13,6 +14,9 @@ import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/sha
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
 import { userTypeFromString } from '../../../../brave_rewards/resources/shared/lib/user_type'
+import {
+  optional
+} from '../../../../brave_rewards/resources/shared/lib/optional'
 
 import {
   externalWalletFromExtensionData,
@@ -138,7 +142,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       adsEnabled={props.enabledAds}
       adsSupported={Boolean(props.adsSupported)}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
-      rewardsBalance={props.balance.total}
+      rewardsBalance={optional(props.balance)}
       exchangeCurrency='USD'
       exchangeRate={props.parameters.rate}
       providerPayoutStatus={providerPayoutStatus()}
