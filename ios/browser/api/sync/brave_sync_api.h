@@ -78,6 +78,7 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 @property(nonatomic, readonly) bool isFirstSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
+@property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
 @property(nullable, nonatomic, weak) id<SyncPreferenceObserver> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -107,6 +108,8 @@ OBJC_EXPORT
 - (NSString*)hexSeedFromSyncCode:(NSString*)syncCode;
 
 - (NSString*)qrCodeJsonFromHexSeed:(NSString*)hexSeed;
+
+- (void)dismissFailedDecryptSeedNotice;
 
 - (BraveSyncAPIQrCodeDataValidationResult)getQRCodeValidationResult:
     (NSString*)json;

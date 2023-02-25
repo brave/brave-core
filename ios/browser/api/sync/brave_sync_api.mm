@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/bind.h"
 #include "base/compiler_specific.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
@@ -367,7 +367,6 @@ const char kSyncFailedDecryptSeedNotice[] =
 - (void)setJoinSyncChain:(void (^)(bool success))completion {
   _worker->SetJoinSyncChainCallback(base::BindOnce(
       [](void (^completion)(bool), const bool& success) {
-        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for " << success;
         completion(success);
       },
       completion));
@@ -385,14 +384,24 @@ const char kSyncFailedDecryptSeedNotice[] =
 }
 
 - (bool)isSyncAccountDeletedNoticePending {
-  return _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNoticePending);
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  return brave_sync_prefs.IsSyncAccountDeletedNoticePending();
 }
 
 - (void)setIsSyncAccountDeletedNoticePending:
     (bool)isSyncAccountDeletedNoticePending {
-  _prefService->SetBoolean(brave_sync::kSyncAccountDeletedNoticePending,
-                           isSyncAccountDeletedNoticePending);
-  _prefService->CommitPendingWrite();
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
+}
+
+- (bool)isFailedDecryptSeedNoticeDismissed {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  return brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed();
+}
+
+- (void)dismissFailedDecryptSeedNotice {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  brave_sync_prefs.DismissFailedDecryptSeedNotice();
 }
 
 - (void)deleteDevice:(NSString*)guid {
@@ -415,8 +424,8 @@ const char kSyncFailedDecryptSeedNotice[] =
 
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
           onSyncServiceShutdown:(void (^)())onSyncServiceShutdown {
-  auto* service =
-      static_cast<syncer::SyncServiceImpl*>(SyncServiceFactory::GetForBrowserState(_chromeBrowserState));
+  auto* service = static_cast<syncer::SyncServiceImpl*>(
+      SyncServiceFactory::GetForBrowserState(_chromeBrowserState));
   return [[BraveSyncServiceObserver alloc]
       initWithSyncServiceImpl:service
          stateChangedCallback:onSyncServiceStateChanged

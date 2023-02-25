@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
