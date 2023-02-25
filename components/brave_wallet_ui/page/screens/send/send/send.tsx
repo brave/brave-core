@@ -219,7 +219,9 @@ export const Send = (props: Props) => {
       symbol: selectedSendAsset.symbol,
       value: new Amount(sendAmount !== '' ? sendAmount : '0')
         .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
-        .toHex()
+        .toHex(),
+      contractAddress: selectedSendAsset.contractAddress,
+      chainId: selectedSendAsset.chainId
     }).formatAsFiat(defaultCurrencies.fiat)
   }, [spotPrices, selectedSendAsset, sendAmount, defaultCurrencies.fiat, sendAssetBalance, selectedSendOption])
 

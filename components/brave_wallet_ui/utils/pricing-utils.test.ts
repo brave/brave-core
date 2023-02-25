@@ -16,11 +16,13 @@ import {
 
 describe('findAssetPrice', () => {
   it('should find the price of a coin from within a list of asset prices', () => {
-    const { symbol } = mockBasicAttentionToken
+    const { symbol, chainId, contractAddress } = mockBasicAttentionToken
     expect(
       findAssetPrice(
         mockAssetPrices,
-        symbol
+        symbol,
+        contractAddress,
+        chainId
       )
     ).toBe('0.88')
   })
@@ -28,12 +30,12 @@ describe('findAssetPrice', () => {
 
 describe('computeFiatAmount', () => {
   it('should find and convert the fiat value of a token', () => {
-    const { symbol, decimals } = mockBasicAttentionToken
+    const { symbol, decimals, contractAddress, chainId } = mockBasicAttentionToken
 
     expect(
       computeFiatAmount(
         mockAssetPrices,
-        { symbol, decimals, value: '20' }
+        { symbol, decimals, value: '20', contractAddress, chainId }
       ).format()
     ).toBe('0.0000000000000000176')
   })
@@ -41,13 +43,15 @@ describe('computeFiatAmount', () => {
 
 describe('computeFiatAmountToAssetValue', () => {
   it('should find and convert the fiat amoount to token value', () => {
-    const { symbol } = mockBasicAttentionToken
+    const { symbol, contractAddress, chainId } = mockBasicAttentionToken
 
     expect(
       computeFiatAmountToAssetValue(
         '200',
         mockAssetPrices,
-        symbol
+        symbol,
+        contractAddress,
+        chainId
       ).format(6)
     ).toBe('227.273')
   })

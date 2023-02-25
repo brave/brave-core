@@ -194,7 +194,11 @@ export const ConnectedPanel = (props: Props) => {
     }
 
     return computeFiatAmount(
-      selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
+      selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId],
+      selectedNetwork.symbol,
+      selectedNetwork.decimals,
+      '',
+      selectedNetwork.chainId
     )
   }, [computeFiatAmount, selectedNetwork, selectedAccount])
 

@@ -121,7 +121,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const getAccountFiatValue = React.useCallback((account: WalletAccountType) => {
       const amounts = getTokensBySearchValue(account).map((token) => {
         const balance = getBalance(account, token)
-        return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: balance }).format()
+        return computeFiatAmount(spotPrices, {
+          decimals: token.decimals,
+          symbol: token.symbol,
+          value: balance,
+          contractAddress: token.contractAddress,
+          chainId: token.chainId
+        }).format()
       })
       const reducedAmounts = amounts.reduce(function (a, b) {
         return a !== '' && b !== ''

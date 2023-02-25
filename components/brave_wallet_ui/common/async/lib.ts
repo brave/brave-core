@@ -676,7 +676,9 @@ export function refreshPrices () {
         fromAsset: network.symbol.toLowerCase(),
         toAsset: defaultFiatCurrency,
         price: nativeAssetPrice,
-        assetTimeframeChange: ''
+        assetTimeframeChange: '',
+        contractAddress: '',
+        chainId: network.chainId
       }
     }))
 
@@ -687,7 +689,9 @@ export function refreshPrices () {
         fromAsset: token.token.symbol,
         toAsset: defaultFiatCurrency,
         price: '',
-        assetTimeframeChange: ''
+        assetTimeframeChange: '',
+        contractAddress: token.token.contractAddress,
+        chainId: token.token.chainId
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
@@ -705,7 +709,9 @@ export function refreshPrices () {
 
       const tokenPrice = {
         ...price.values[0],
-        fromAsset: token.token.symbol.toLowerCase()
+        fromAsset: token.token.symbol.toLowerCase(),
+        contractAddress: token.token.contractAddress,
+        chainId: token.token.chainId
       }
 
       return price.success ? tokenPrice : emptyPrice

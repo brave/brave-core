@@ -231,19 +231,25 @@ export const mockWalletState: WalletState = {
       assetTimeframeChange: '',
       fromAsset: 'eth',
       price: '2581.2',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '',
+      chainId: '0x1'
     },
     {
       assetTimeframeChange: '',
       fromAsset: 'eth',
       price: '0',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '',
+      chainId: '0x1'
     },
     {
       assetTimeframeChange: '-0.18757681821254726',
       fromAsset: 'usdc',
       price: '0.999414',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '0xusdc',
+      chainId: '0x1'
     }
   ],
   userVisibleTokensInfo: [

@@ -82,17 +82,38 @@ export const SellAssetModal = (props: Props) => {
       {
         decimals: selectedAsset?.decimals ?? '',
         symbol: selectedAsset?.symbol ?? '',
-        value: sellAssetBalance
+        contractAddress: selectedAsset?.contractAddress ?? '',
+        value: sellAssetBalance,
+        chainId: selectedAsset?.chainId ?? ''
       })
-  }, [spotPrices, sellAssetBalance, selectedAsset?.symbol, selectedAsset?.decimals])
+  }, [
+    spotPrices,
+    sellAssetBalance,
+    selectedAsset?.symbol,
+    selectedAsset?.decimals,
+    selectedAsset?.contractAddress,
+    selectedAsset.chainId
+  ])
 
   const estimatedAssetAmount = React.useMemo(() => {
     if (sellAmount !== '') {
-      return `~${computeFiatAmountToAssetValue(sellAmount, spotPrices, selectedAsset?.symbol ?? '')
+      return `~${computeFiatAmountToAssetValue(
+        sellAmount,
+        spotPrices,
+        selectedAsset?.symbol ?? '',
+        selectedAsset?.contractAddress ?? '',
+        selectedAsset?.chainId ?? ''
+      )
         .formatAsAsset(6, selectedAsset.symbol)}`
     }
     return `0.00 ${selectedAsset?.symbol}`
-  }, [sellAmount, spotPrices, selectedAsset.symbol])
+  }, [
+    sellAmount,
+    spotPrices,
+    selectedAsset?.symbol,
+    selectedAsset?.contractAddress,
+    selectedAsset?.chainId
+  ])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance ? new Amount(fiatBalance.format(2)).formatAsFiat(defaultCurrencies.fiat) : undefined

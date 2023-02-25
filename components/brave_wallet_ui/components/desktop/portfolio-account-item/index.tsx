@@ -7,7 +7,7 @@ import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
 
 // Types
-import { BraveWallet, DefaultCurrencies, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies, WalletRoutes, AssetPriceWithContractAndChainId } from '../../../constants/types'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -42,9 +42,11 @@ import {
 import { SellButtonRow, SellButton } from '../../shared/style'
 
 interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
   address: string
   defaultCurrencies: DefaultCurrencies
+  assetContractAddress: string
+  assetChainId: string
   assetBalance: string
   assetTicker: string
   assetDecimals: number
@@ -58,6 +60,8 @@ interface Props {
 
 export const PortfolioAccountItem = (props: Props) => {
   const {
+    assetContractAddress,
+    assetChainId,
     assetBalance,
     address,
     assetTicker,
@@ -94,8 +98,8 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [assetBalance, assetDecimals])
 
   const fiatBalance: Amount = React.useMemo(() => {
-    return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
-  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])
+    return computeFiatAmount(assetBalance, assetTicker, assetDecimals, assetContractAddress, assetChainId)
+  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker, assetContractAddress, assetChainId])
 
   const isAssetsBalanceZero = React.useMemo(() => {
     return new Amount(assetBalance).isZero()

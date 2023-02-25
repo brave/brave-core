@@ -6,7 +6,8 @@
 import { FilecoinNetwork } from '../../common/hardware/types'
 import {
   BraveWallet,
-  GetPriceHistoryReturnObjectInfo
+  GetPriceHistoryReturnObjectInfo,
+  AssetPriceWithContractAndChainId
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -82,8 +83,8 @@ export type UpdateSelectedAssetType = {
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  defaultFiatPrice?: BraveWallet.AssetPrice
-  defaultCryptoPrice?: BraveWallet.AssetPrice
+  defaultFiatPrice?: AssetPriceWithContractAndChainId
+  defaultCryptoPrice?: AssetPriceWithContractAndChainId
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 

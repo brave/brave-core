@@ -221,6 +221,11 @@ export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
 
+export interface AssetPriceWithContractAndChainId extends BraveWallet.AssetPrice {
+  contractAddress: string
+  chainId: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
@@ -244,7 +249,7 @@ export interface WalletState {
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
   hiddenNetworkList: BraveWallet.NetworkInfo[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
+  transactionSpotPrices: AssetPriceWithContractAndChainId[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
@@ -302,8 +307,8 @@ export interface PageState {
   enablingAutoPin: boolean
   isAutoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
-  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetFiatPrice: AssetPriceWithContractAndChainId | undefined
+  selectedAssetCryptoPrice: AssetPriceWithContractAndChainId | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -364,7 +369,7 @@ export type SwapValidationErrorType =
 
 export interface GetPriceReturnInfo {
   success: boolean
-  values: BraveWallet.AssetPrice[]
+  values: AssetPriceWithContractAndChainId[]
 }
 
 export interface GetPriceHistoryReturnInfo {
