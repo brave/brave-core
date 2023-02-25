@@ -223,6 +223,13 @@ RegisterPolymerTemplateModifications({
     } else {
       menuEl.insertAdjacentElement('afterbegin', titleEl)
     }
+
+    // Hide performance menu. We moved it under system menu instead.
+    const performanceEl = getMenuElement(templateContent, '/performance')
+    if (performanceEl) {
+      performanceEl.remove()
+    }
+
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(

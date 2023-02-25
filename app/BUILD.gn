@@ -85,6 +85,7 @@ source_set("browser_tests") {
       "//components/network_time",
       "//components/omnibox/browser",
       "//components/optimization_guide/core",
+      "//components/performance_manager",
       "//components/permissions",
       "//components/privacy_sandbox",
       "//components/reading_list/features:flags",
