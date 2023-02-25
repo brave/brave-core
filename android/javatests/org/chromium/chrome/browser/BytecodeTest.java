@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
@@ -646,10 +647,11 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
-                Context.class, AutocompleteDelegate.class, UrlBarEditingTextStateProvider.class,
-                PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
-                LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
-                JankTracker.class, OmniboxPedalDelegate.class));
+                Context.class, AutocompleteControllerProvider.class, AutocompleteDelegate.class,
+                UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
+                Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
+                Callback.class, Supplier.class, BookmarkState.class, JankTracker.class,
+                OmniboxPedalDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
