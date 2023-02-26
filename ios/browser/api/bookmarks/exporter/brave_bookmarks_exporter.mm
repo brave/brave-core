@@ -13,6 +13,7 @@
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/guid.h"
 #include "base/mac/foundation_util.h"
@@ -40,28 +41,37 @@
 
 class BraveBookmarksExportObserver : public BookmarksExportObserver {
  public:
-  BraveBookmarksExportObserver(
-      std::function<void(BraveBookmarksExporterState)> on_export_finished);
+  using OnCompletion = base::OnceCallback<void(BraveBookmarksExporterState)>;
+
+  BraveBookmarksExportObserver(OnCompletion on_completion);
   void OnExportFinished(Result result) override;
 
  private:
-  std::function<void(BraveBookmarksExporterState)> _on_export_finished;
+  // A callback to be called once the observer calls OnExportFinished.
+  OnCompletion on_completion_;
 };
 
 BraveBookmarksExportObserver::BraveBookmarksExportObserver(
-    std::function<void(BraveBookmarksExporterState)> on_export_finished)
-    : _on_export_finished(on_export_finished) {}
+    OnCompletion on_completion)
+    : on_completion_(std::move(on_completion)) {}
 
 void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   switch (result) {
     case Result::kSuccess:
-      return _on_export_finished(BraveBookmarksExporterStateCompleted);
+      std::move(on_completion_).Run(BraveBookmarksExporterStateCompleted);
+      break;
     case Result::kCouldNotCreateFile:
-      return _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
+      std::move(on_completion_)
+          .Run(BraveBookmarksExporterStateErrorCreatingFile);
+      break;
     case Result::kCouldNotWriteHeader:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
+      std::move(on_completion_)
+          .Run(BraveBookmarksExporterStateErrorWritingHeader);
+      break;
     case Result::kCouldNotWriteNodes:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
+      std::move(on_completion_)
+          .Run(BraveBookmarksExporterStateErrorWritingNodes);
+      break;
     default:
       NOTREACHED();
   }
@@ -87,15 +97,17 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 }
 
 - (void)exportToFile:(NSString*)filePath
-        withListener:(void (^)(BraveBookmarksExporterState))listener {
+        withListener:
+            (base::RepeatingCallback<void(BraveBookmarksExporterState)>)
+                listener {
   auto start_export =
       [](BraveBookmarksExporter* weak_exporter, NSString* filePath,
-         std::function<void(BraveBookmarksExporterState)> listener) {
+         base::RepeatingCallback<void(BraveBookmarksExporterState)> listener) {
         // Export cancelled as the exporter has been deallocated
         __strong BraveBookmarksExporter* exporter = weak_exporter;
         if (!exporter) {
-          listener(BraveBookmarksExporterStateStarted);
-          listener(BraveBookmarksExporterStateCancelled);
+          listener.Run(BraveBookmarksExporterStateStarted);
+          listener.Run(BraveBookmarksExporterStateCancelled);
           return;
         }
 
@@ -104,7 +116,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
         base::FilePath destination_file_path =
             base::mac::NSStringToFilePath(filePath);
 
-        listener(BraveBookmarksExporterStateStarted);
+        listener.Run(BraveBookmarksExporterStateStarted);
 
         ios::ChromeBrowserStateManager* browserStateManager =
             GetApplicationContext()->GetChromeBrowserStateManager();
@@ -116,7 +128,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         bookmark_html_writer::WriteBookmarks(
             chromeBrowserState, destination_file_path,
-            new BraveBookmarksExportObserver(listener));
+            new BraveBookmarksExportObserver(base::BindOnce(listener)));
       };
 
   __weak BraveBookmarksExporter* weakSelf = self;
@@ -126,26 +138,28 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (void)exportToFile:(NSString*)filePath
            bookmarks:(NSArray<IOSBookmarkNode*>*)bookmarks
-        withListener:(void (^)(BraveBookmarksExporterState))listener {
+        withListener:
+            (base::RepeatingCallback<void(BraveBookmarksExporterState)>)
+                listener {
   if ([bookmarks count] == 0) {
-    listener(BraveBookmarksExporterStateStarted);
-    listener(BraveBookmarksExporterStateCompleted);
+    listener.Run(BraveBookmarksExporterStateStarted);
+    listener.Run(BraveBookmarksExporterStateCompleted);
     return;
   }
 
   auto start_export =
       [](BraveBookmarksExporter* weak_exporter, NSString* filePath,
          NSArray<IOSBookmarkNode*>* bookmarks,
-         std::function<void(BraveBookmarksExporterState)> listener) {
+         base::RepeatingCallback<void(BraveBookmarksExporterState)> listener) {
         // Export cancelled as the exporter has been deallocated
         __strong BraveBookmarksExporter* exporter = weak_exporter;
         if (!exporter) {
-          listener(BraveBookmarksExporterStateStarted);
-          listener(BraveBookmarksExporterStateCancelled);
+          listener.Run(BraveBookmarksExporterStateStarted);
+          listener.Run(BraveBookmarksExporterStateCancelled);
           return;
         }
 
-        listener(BraveBookmarksExporterStateStarted);
+        listener.Run(BraveBookmarksExporterStateStarted);
         base::FilePath destination_file_path =
             base::mac::NSStringToFilePath(filePath);
 
@@ -165,7 +179,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
                                            mobile_folder_node.get());
         bookmark_html_writer::WriteBookmarks(
             std::move(encoded_bookmarks), destination_file_path,
-            new BraveBookmarksExportObserver(listener));
+            new BraveBookmarksExportObserver(base::BindOnce(listener)));
       };
 
   __weak BraveBookmarksExporter* weakSelf = self;

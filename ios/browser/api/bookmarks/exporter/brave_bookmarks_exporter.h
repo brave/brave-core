@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include "base/functional/callback.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, BraveBookmarksExporterState) {
@@ -26,11 +28,15 @@ OBJC_EXPORT
 - (instancetype)init;
 
 - (void)exportToFile:(NSString*)filePath
-        withListener:(void (^)(BraveBookmarksExporterState))listener;
+        withListener:
+            (base::RepeatingCallback<void(BraveBookmarksExporterState)>)
+                listener;
 
 - (void)exportToFile:(NSString*)filePath
            bookmarks:(NSArray<IOSBookmarkNode*>*)bookmarks
-        withListener:(void (^)(BraveBookmarksExporterState))listener;
+        withListener:
+            (base::RepeatingCallback<void(BraveBookmarksExporterState)>)
+                listener;
 @end
 
 NS_ASSUME_NONNULL_END
