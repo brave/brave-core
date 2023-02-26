@@ -92,7 +92,7 @@ public class BraveSkusManager {
   }
   
   func credentialSummary(for domain: String, resultJSON: @escaping (Any?) -> Void) {
-    sku.credentialSummary(domain) { [weak self] completion in
+    sku.credentialSummary(domain) { [self] completion in
       do {
         Logger.module.debug("skus credentialSummary")
         
@@ -110,7 +110,10 @@ public class BraveSkusManager {
         case .valid:
           if Preferences.VPN.skusCredential.value == nil {
             Logger.module.debug("The credential does NOT exists, calling prepareCredentialsPresentation")
-            self?.prepareCredentialsPresentation(for: domain, path: "*", resultCredential: nil)
+            self.prepareCredentialsPresentation(for: domain, path: "*") { _ in
+              // Keep the skus manager alive until preparing credential presentation finishes.
+              _ = self
+            }
           } else {
             Logger.module.debug("The credential exists, NOT calling prepareCredentialsPresentation")
           }
