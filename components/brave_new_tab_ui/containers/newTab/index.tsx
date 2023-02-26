@@ -37,6 +37,7 @@ import Settings, { TabType as SettingsTabType } from './settings'
 import { BraveNewsContextProvider } from '../../components/default/braveNews/customize/Context'
 import BraveNewsHint from '../../components/default/braveNews/hint'
 import GridWidget from './gridWidget'
+import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 
 interface Props {
   newTabData: NewTab.State
@@ -640,6 +641,10 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.GridItemTopSites>
             }
+            {newTabData.brandedWallpaper?.isSponsored && <Page.GridItemSponsoredImageClickArea otherWidgetsHidden={this.allWidgetsHidden()}>
+              <SponsoredImageClickArea onClick={this.onClickLogo}
+                sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
+              </Page.GridItemSponsoredImageClickArea>}
             {
               gridSitesData.shouldShowSiteRemovedNotification
                 ? (

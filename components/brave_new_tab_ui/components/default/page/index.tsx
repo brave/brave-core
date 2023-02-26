@@ -71,7 +71,7 @@ const StyledPage = styled('div')<PageProps>`
   width: 100%;
   display: grid;
   grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
-  grid-template-columns: min-content auto min-content;
+  grid-template-columns: min-content 1fr min-content;
   grid-auto-flow: row dense;
   padding: var(--ntp-page-padding);
   overflow: hidden;
@@ -185,8 +185,27 @@ export const GridItemWidgetStack = styled('section')`
 `
 
 export const GridItemTopSites = styled('section')`
-  grid-column: 1 / span 2;
+  grid-column: 1;
   ${singleColumnSmallViewport}
+`
+
+export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidden: boolean }>`
+  grid-column: 2;
+  grid-row: 2 / span 3;
+  height: calc(100% - 200px);
+  width: 100%;
+  position: relative;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    ${(p) =>
+      p.otherWidgetsHidden
+        ? css`
+            flex-grow: 2;
+          `
+        : css`
+            display: none
+          `}
+  }
 `
 
 export const GridItemNotification = styled('section')`
