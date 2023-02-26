@@ -108,7 +108,7 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   }
 
   openWebStoreUrl_() {
-    window.open(loadTimeData.getString('getMoreExtensionsUrl'))
+    window.open(loadTimeData.getString('getMoreExtensionsUrl'), undefined, 'noreferrer')
   }
 
   shouldShowRestartForGoogleLogin_(value: boolean) {

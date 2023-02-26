@@ -247,7 +247,7 @@ function enabledInlineTippingPlatforms (list: string[]) {
 }
 
 function externalWalletLogin (url: string) {
-  window.open(url, '_self')
+  window.open(url, '_self', 'noreferrer')
 }
 
 function onPrefChanged (key: string) {

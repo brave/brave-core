@@ -820,7 +820,7 @@ export const _ConnectHardwareWallet = () => {
 
   const onClickInstructions = () => {
     // Open support link in new tab
-    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
+    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank', 'noreferrer')
   }
 
   return (

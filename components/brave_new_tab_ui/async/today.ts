@@ -111,7 +111,7 @@ handler.on<Actions.ReadFeedItemPayload>(
       // visit article url
       window.location.href = data.url.url
     } else {
-      window.open(data.url.url, '_blank')
+      window.open(data.url.url, '_blank', 'noreferrer')
     }
   }
 )
@@ -223,7 +223,7 @@ handler.on<Actions.VisitDisplayAdPayload>(
       // visit article url
       window.location.href = destinationUrl
     } else {
-      window.open(destinationUrl, '_blank')
+      window.open(destinationUrl, '_blank', 'noreferrer')
     }
   }
 )
