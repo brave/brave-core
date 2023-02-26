@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
@@ -266,6 +267,10 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   sidebar_container_view_->Init();
   UpdateSideBarHorizontalAlignment();
   return sidebar_container_view_;
+}
+
+void BraveBrowserView::ToggleSidebar() {
+  side_panel_coordinator()->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble() {

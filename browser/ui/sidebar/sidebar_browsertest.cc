@@ -7,6 +7,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -24,6 +25,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -39,6 +41,7 @@
 #include "ui/gfx/geometry/point.h"
 
 using ::testing::Eq;
+using ::testing::Ne;
 using ::testing::Optional;
 
 namespace sidebar {
@@ -144,6 +147,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
+  // Check active index is non-null.
+  EXPECT_THAT(model()->active_index(), Ne(absl::nullopt));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
+  // Check active index is null.
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   // Currently we have 4 default items.
   EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
