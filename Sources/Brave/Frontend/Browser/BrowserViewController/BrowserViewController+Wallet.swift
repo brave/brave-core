@@ -16,7 +16,7 @@ import Growth
 
 extension WalletStore {
   /// Creates a WalletStore based on whether or not the user is in Private Mode
-  static func from(privateMode: Bool) -> WalletStore? {
+  static func from(ipfsApi: IpfsAPI?, privateMode: Bool) -> WalletStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
@@ -39,14 +39,15 @@ extension WalletStore {
       blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi
     )
   }
 }
 
 extension CryptoStore {
   /// Creates a CryptoStore based on whether or not the user is in Private Mode
-  static func from(privateMode: Bool) -> CryptoStore? {
+  static func from(ipfsApi: IpfsAPI?, privateMode: Bool) -> CryptoStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
@@ -69,7 +70,8 @@ extension CryptoStore {
       blockchainRegistry: BraveWalletAPI.blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi
     )
   }
 }
@@ -79,7 +81,7 @@ extension BrowserViewController {
   /// when the pending request is updated so we can update the wallet url bar button.
   func newWalletStore() -> WalletStore? {
     let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let walletStore = WalletStore.from(privateMode: privateMode) else {
+    guard let walletStore = WalletStore.from(ipfsApi: braveCore.ipfsAPI, privateMode: privateMode) else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
     }
@@ -208,7 +210,7 @@ extension Tab: BraveWalletProviderDelegate {
         }
       }
       
-      guard WalletStore.from(privateMode: isPrivate) != nil else {
+      guard WalletStore.from(ipfsApi: nil, privateMode: isPrivate) != nil else {
         completion(.internal, nil)
         return
       }

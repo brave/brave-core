@@ -161,7 +161,8 @@ class PortfolioStoreTests: XCTestCase {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      blockchainRegistry: BraveWallet.TestBlockchainRegistry()
+      blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
+      ipfsApi: nil
     )
     // test that `update()` will assign new value to `userVisibleAssets` publisher
     let userVisibleAssetsException = expectation(description: "update-userVisibleAssets")

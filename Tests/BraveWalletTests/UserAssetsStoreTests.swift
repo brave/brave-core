@@ -61,7 +61,8 @@ class UserAssetsStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
       keyringService: keyringService,
-      assetRatioService: assetRatioService
+      assetRatioService: assetRatioService,
+      ipfsApi: nil
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")
@@ -112,7 +113,8 @@ class UserAssetsStoreTests: XCTestCase {
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
       keyringService: keyringService,
-      assetRatioService: assetRatioService
+      assetRatioService: assetRatioService,
+      ipfsApi: nil
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")

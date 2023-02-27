@@ -114,6 +114,7 @@ public class SendTokenStore: ObservableObject {
   private var sendAmountUpdatedTimer: Timer?
   private var prefilledToken: BraveWallet.BlockchainToken?
   private var metadataCache: [String: NFTMetadata] = [:]
+  private let ipfsApi: IpfsAPI?
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -123,7 +124,8 @@ public class SendTokenStore: ObservableObject {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    prefilledToken: BraveWallet.BlockchainToken?
+    prefilledToken: BraveWallet.BlockchainToken?,
+    ipfsApi: IpfsAPI?
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -133,6 +135,7 @@ public class SendTokenStore: ObservableObject {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
     self.prefilledToken = prefilledToken
+    self.ipfsApi = ipfsApi
 
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -206,7 +209,7 @@ public class SendTokenStore: ObservableObject {
       )
   
       if (selectedSendToken.isErc721 || selectedSendToken.isNft), metadataCache[selectedSendToken.id] == nil {
-        metadataCache[selectedSendToken.id] = await rpcService.fetchNFTMetadata(for: selectedSendToken)
+        metadataCache[selectedSendToken.id] = await rpcService.fetchNFTMetadata(for: selectedSendToken, ipfsApi: self.ipfsApi)
       }
       guard !Task.isCancelled else { return }
       self.selectedSendTokenBalance = balance

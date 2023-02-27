@@ -20,7 +20,8 @@ extension WalletStore {
       blockchainRegistry: MockBlockchainRegistry(),
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      ipfsApi: nil
     )
   }
 }
@@ -36,7 +37,8 @@ extension CryptoStore {
       blockchainRegistry: MockBlockchainRegistry(),
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy
+      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
+      ipfsApi: nil
     )
   }
 }
@@ -108,7 +110,8 @@ extension SendTokenStore {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
   }
 }
@@ -152,7 +155,8 @@ extension UserAssetsStore {
       blockchainRegistry: MockBlockchainRegistry(),
       rpcService: MockJsonRpcService(),
       keyringService: MockKeyringService(),
-      assetRatioService: MockAssetRatioService()
+      assetRatioService: MockAssetRatioService(),
+      ipfsApi: nil
     )
   }
 }

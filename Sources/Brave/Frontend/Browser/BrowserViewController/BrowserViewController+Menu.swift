@@ -153,7 +153,7 @@ extension BrowserViewController {
           )
         }
         
-        let cryptoStore = CryptoStore.from(privateMode: isPrivateMode)
+        let cryptoStore = CryptoStore.from(ipfsApi: braveCore.ipfsAPI, privateMode: isPrivateMode)
 
         let vc = SettingsViewController(
           profile: self.profile,
