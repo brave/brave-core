@@ -22,6 +22,10 @@
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
 
+namespace {
+constexpr int kFollowButtonIconSize = 14;
+}
+
 BraveNewsFeedItemView::BraveNewsFeedItemView(
     BraveNewsTabHelper::FeedDetails details,
     content::WebContents* contents)
@@ -74,14 +78,16 @@ void BraveNewsFeedItemView::Update() {
   subscribe_button_->SetLoading(loading_);
   subscribe_button_->SetKind(is_subscribed ? views::MdTextButton::kSecondary
                                            : views::MdTextButton::kPrimary);
-  subscribe_button_->SetIcon(is_subscribed ? &kBraveNewsUnfollowButtonIcon
-                                           : &kBraveNewsFollowButtonIcon);
+  subscribe_button_->SetIcon(
+      is_subscribed ? &kLeoHeartFilledIcon : &kLeoHeartOutlineIcon,
+      kFollowButtonIconSize);
 }
 
 void BraveNewsFeedItemView::OnPressed() {
   // Don't queue multiple toggles.
-  if (loading_)
+  if (loading_) {
     return;
+  }
 
   tab_helper_->ToggleSubscription(feed_details_);
   loading_ = true;

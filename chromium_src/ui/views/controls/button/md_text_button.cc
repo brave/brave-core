@@ -178,8 +178,9 @@ MdTextButton::Kind MdTextButton::GetKind() const {
 }
 
 void MdTextButton::SetKind(Kind kind) {
-  if (kind == kind_)
+  if (kind == kind_) {
     return;
+  }
 
   kind_ = kind;
 
@@ -193,8 +194,9 @@ void MdTextButton::SetKind(Kind kind) {
   UpdateColors();
 }
 
-void MdTextButton::SetIcon(const gfx::VectorIcon* icon) {
+void MdTextButton::SetIcon(const gfx::VectorIcon* icon, int icon_size) {
   icon_ = icon;
+  icon_size_ = icon_size;
   UpdateColors();
 }
 
@@ -310,9 +312,9 @@ void MdTextButton::UpdateColorsForBrave() {
 
 void MdTextButton::UpdateIconForBrave() {
   if (icon_) {
-    SetImageModel(
-        ButtonState::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor()));
+    SetImageModel(ButtonState::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
+                                                 icon_size_));
   }
 }
 
