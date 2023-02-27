@@ -11,6 +11,7 @@ import Introspect
 import Strings
 import DesignSystem
 import BraveUI
+import Shared
 
 struct PortfolioView: View {
   var cryptoStore: CryptoStore
@@ -27,7 +28,7 @@ struct PortfolioView: View {
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   /// Reference to the collection view used to back the `List` on iOS 16+
-  @State private var collectionView: UICollectionView?
+  @State private var collectionViewRef: WeakRef<UICollectionView>?
 
   private var isShowingBackupBanner: Bool {
     !keyringStore.defaultKeyring.isBackedUp && !dismissedBackupBannerThisSession
@@ -272,12 +273,12 @@ struct PortfolioView: View {
     }
     .onChange(of: sizeCategory) { _ in
       // Fix broken header when text size changes on iOS 16+
-      collectionView?.collectionViewLayout.invalidateLayout()
+      self.collectionViewRef?.value?.collectionViewLayout.invalidateLayout()
     }
     .introspect(
       selector: TargetViewSelector.ancestorOrSiblingContaining
     ) { (collectionView: UICollectionView) in
-      self.collectionView = collectionView
+      self.collectionViewRef = .init(collectionView)
     }
   }
 }
