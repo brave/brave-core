@@ -5,10 +5,19 @@
 
 #include "brave/browser/ui/toolbar/brave_bookmark_sub_menu_model.h"
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
+#include "chrome/grit/generated_resources.h"
+
+#define IDS_NEW_INCOGNITO_WINDOW_OLD IDS_NEW_INCOGNITO_WINDOW
+#undef IDS_NEW_INCOGNITO_WINDOW
+#define IDS_NEW_INCOGNITO_WINDOW IDS_BRAVE_NEW_INCOGNITO_WINDOW
 
 #define RecentTabsSubMenuModel BraveRecentTabsSubMenuModel
 #define BookmarkSubMenuModel BraveBookmarkSubMenuModel
 #include "src/chrome/browser/ui/toolbar/app_menu_model.cc"
 #undef BookmarkSubMenuModel
 #undef RecentTabsSubMenuModel
+
+#undef IDS_NEW_INCOGNITO_WINDOW
+#define IDS_NEW_INCOGNITO_WINDOW IDS_NEW_INCOGNITO_WINDOW_OLD
