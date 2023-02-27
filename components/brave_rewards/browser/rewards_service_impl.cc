@@ -369,22 +369,6 @@ void RewardsServiceImpl::Init(
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
-      prefs::kShowButton,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipTwitterEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipRedditEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipGithubEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
       prefs::kAutoContributeEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
@@ -1385,19 +1369,20 @@ void RewardsServiceImpl::EnableGreaseLion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
 
-  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
+  const bool show_buttons =
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
   greaselion_service_->SetFeatureEnabled(
       greaselion::TWITTER_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::REDDIT_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_button);
+          show_buttons);
 }
 
 void RewardsServiceImpl::OnRulesReady(

@@ -89,9 +89,6 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
-  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
     Show Brave News button in address bar
   </message>
@@ -420,8 +417,11 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
     By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE" desc="The text label for the Rewards Tip Buttons section">
-    Tip buttons
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
+    Show Brave Rewards icon in address bar
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons">
+    Show Tip buttons on sites
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Reddit">
     Reddit

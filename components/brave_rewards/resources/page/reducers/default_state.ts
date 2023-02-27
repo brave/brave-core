@@ -41,6 +41,7 @@ export function defaultState (): Rewards.State {
     adsHistory: [],
     pendingContributionTotal: 0,
     promotions: [],
+    inlineTipsEnabled: true,
     inlineTip: {
       twitter: true,
       reddit: true,

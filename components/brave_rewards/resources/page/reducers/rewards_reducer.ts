@@ -256,6 +256,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_ENABLED_INLINE_TIPPING_PLATFORMS: {
+      let inlineTipsEnabled = false
       const inlineTip = {
         twitter: false,
         reddit: false,
@@ -264,6 +265,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       for (const platform of action.payload.platforms) {
         switch (platform) {
+          case 'enabled':
+            inlineTipsEnabled = true
+            break
           case 'github':
             inlineTip.github = true
             break
@@ -278,6 +282,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       state = {
         ...state,
+        inlineTipsEnabled,
         inlineTip
       }
 
@@ -307,6 +312,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state = {
         ...state,
         inlineTip
+      }
+
+      break
+    }
+    case types.ON_INLINE_TIPS_ENABLED_CHANGE: {
+      const inlineTipsEnabled = action.payload.enabled
+      chrome.send('brave_rewards.setInlineTipsEnabled', [inlineTipsEnabled])
+      state = {
+        ...state,
+        inlineTipsEnabled
       }
 
       break
