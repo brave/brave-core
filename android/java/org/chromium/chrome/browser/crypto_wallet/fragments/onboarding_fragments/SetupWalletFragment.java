@@ -83,7 +83,9 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     // is done.
     private void checkOnBraveActivity(boolean setupAction, boolean restoreAction) {
         try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
+            BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "checkOnBraveActivity " + e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
@@ -91,8 +93,6 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
             getActivity().finish();
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "checkOnBraveActivity " + e);
         }
     }
 }
