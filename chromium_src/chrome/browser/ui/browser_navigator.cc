@@ -22,7 +22,8 @@ void UpdateBraveScheme(NavigateParams* params) {
 bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
   if (host == kWalletPageHost || host == kWalletPanelHost ||
       host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
-      host == chrome::kChromeUISyncHost || host == kAdblockHost) {
+      host == chrome::kChromeUISyncHost || host == kAdblockHost ||
+      host == kWelcomeHost) {
     return false;
   }
 
