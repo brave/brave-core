@@ -45,11 +45,14 @@ RegisterPolymerTemplateModifications({
         console.error(
           '[Brave Settings Overrides] Couldn\'t find autoplay settings')
       }
-      else {autoplaySettings.setAttribute(
-          'label', loadTimeData.getString('siteSettingsAutoplay'))} curChild++
-          // Google Sign-In feature
-          const isGoogleSignInFeatureEnabled =
-              loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+      else {
+        autoplaySettings.setAttribute(
+          'label', loadTimeData.getString('siteSettingsAutoplay'))
+      }
+      curChild++
+      // Google Sign-In feature
+      const isGoogleSignInFeatureEnabled =
+        loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
       if (isGoogleSignInFeatureEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
@@ -65,9 +68,11 @@ RegisterPolymerTemplateModifications({
           console.error(
             '[Brave Settings Overrides] Couldn\'t find Google signin settings')
         }
-        else {googleSignInSettings.setAttribute(
-            'label',
-            loadTimeData.getString('siteSettingsGoogleSignIn'))} curChild++
+        else {
+          googleSignInSettings.setAttribute(
+            'label', loadTimeData.getString('siteSettingsGoogleSignIn'))
+        }
+        curChild++
       }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
