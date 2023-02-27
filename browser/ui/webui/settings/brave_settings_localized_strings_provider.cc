@@ -10,6 +10,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -110,8 +111,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
     {"appearanceSettingsLocationBarIsWide",
      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
-    {"appearanceSettingsShowBraveRewardsButtonLabel",
-     IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
     {"appearanceSettingsShowBraveNewsButtonLabel",
      IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
     {"appearanceSettingsBookmarBar", IDS_SETTINGS_SHOW_BOOKMARK_BAR},
@@ -384,8 +383,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_SHOW_NON_VERIFIED_SITES_LABEL},
     {"braveRewardsAutoContributeAllowVideoContributionsLabel",
      IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL},  // NOLINT
-    {"braveRewardsTipButtonsTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE},
+    {"braveRewardsShowBraveRewardsButtonLabel",
+     IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
+    {"braveRewardsShowTipButtonsLabel",
+     IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL},
     {"braveRewardsInlineTipRedditLabel",
      IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL},
     {"braveRewardsInlineTipTwitterLabel",
@@ -728,6 +729,20 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
+
+  // Load time data for brave://settings/rewards
+  html_source->AddBoolean("inlineTipButtonsEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipButtonsEnabled));
+  html_source->AddBoolean("inlineTipTwitterEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipTwitterEnabled));
+  html_source->AddBoolean("inlineTipRedditEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipRedditEnabled));
+  html_source->AddBoolean("inlineTipGithubEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipGithubEnabled));
 
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(

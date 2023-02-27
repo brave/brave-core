@@ -29,6 +29,7 @@ void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
 
 // static
 void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kShowLocationBarButton, true);
   registry->RegisterStringPref(prefs::kNotifications, "");
   registry->RegisterTimeDeltaPref(prefs::kNotificationTimerInterval,
                                   base::Days(1));
@@ -67,6 +68,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kCreationStamp, 0ull);
   registry->RegisterStringPref(prefs::kRecoverySeed, "");
   registry->RegisterStringPref(prefs::kPaymentId, "");
+  registry->RegisterBooleanPref(prefs::kInlineTipButtonsEnabled, true);
   registry->RegisterBooleanPref(prefs::kInlineTipRedditEnabled, true);
   registry->RegisterBooleanPref(prefs::kInlineTipTwitterEnabled, true);
   registry->RegisterBooleanPref(prefs::kInlineTipGithubEnabled, true);

@@ -27,7 +27,7 @@ export const localeStrings = {
 
   braveRewards: 'Brave Rewards',
   pendingContributions: 'Pending Contributions',
-  donationAbility: 'Enable content-level tips on these sites',
+  donationAbility: 'Show Tip buttons on sites',
   donationTitle: 'Tips',
   donationDesc: 'See the one-time tips you\'ve given to websites and creators.',
   donationDescLearnMore: 'Learn more about tipping.',
