@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/variations/buildflags.h"
 #include "build/build_config.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/sync/base/command_line_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
