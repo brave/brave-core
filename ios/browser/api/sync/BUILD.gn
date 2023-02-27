@@ -14,7 +14,6 @@ source_set("sync") {
     "brave_sync_api.mm",
     "brave_sync_internals.h",
     "brave_sync_internals.mm",
-    "brave_sync_observer.h",
     "brave_sync_worker.cc",
     "brave_sync_worker.h",
   ]

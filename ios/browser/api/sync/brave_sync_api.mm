@@ -22,7 +22,6 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
-#include "brave/ios/browser/api/sync/brave_sync_observer.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
 #include "components/prefs/ios/pref_observer_bridge.h"
@@ -131,13 +130,6 @@ BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
-namespace brave_sync {
-const char kSyncAccountDeletedNoticePending[] =
-    "brave_sync_v2.account_deleted_notice_pending";
-const char kSyncFailedDecryptSeedNotice[] =
-    "brave_sync_v2.failed_decrypt_seed_notice_dismissed";
-}  // namespace brave_sync
-
 // MARK: - BraveSyncDeviceObserver
 
 @interface BraveSyncDeviceObserver : NSObject {
@@ -181,14 +173,9 @@ const char kSyncFailedDecryptSeedNotice[] =
 
 // MARK: - BraveSyncAPI
 
-@interface BraveSyncAPI () <PrefObserverDelegate> {
+@interface BraveSyncAPI () {
   std::unique_ptr<BraveSyncWorker> _worker;
   ChromeBrowserState* _chromeBrowserState;
-  PrefService* _prefService;
-  // Preference Observer to track changes to preferences
-  std::unique_ptr<PrefObserverBridge> _prefObserverBridge;
-  // Registrar for preference changes notifications
-  PrefChangeRegistrar _prefChangeRegistrar;
 }
 @end
 
@@ -198,16 +185,6 @@ const char kSyncFailedDecryptSeedNotice[] =
   if ((self = [super init])) {
     _chromeBrowserState = mainBrowserState;
     _worker.reset(new BraveSyncWorker(_chromeBrowserState));
-
-    // Registering to observe Preference Changes
-    _prefService = _chromeBrowserState->GetPrefs();
-    _prefChangeRegistrar.Init(_prefService);
-    _prefObserverBridge.reset(new PrefObserverBridge(self));
-
-    // Register to observe any changes on Preference
-    // SyncAccountDeletedNoticePending
-    _prefObserverBridge->ObserveChangesForPreference(
-        brave_sync::kSyncAccountDeletedNoticePending, &_prefChangeRegistrar);
   }
   return self;
 }
@@ -215,10 +192,6 @@ const char kSyncFailedDecryptSeedNotice[] =
 - (void)dealloc {
   _worker.reset();
   _chromeBrowserState = NULL;
-
-  // Remove Preferences changes registrations
-  _prefChangeRegistrar.RemoveAll();
-  _prefObserverBridge.reset();
 }
 
 - (bool)canSyncFeatureStart {
@@ -427,23 +400,5 @@ const char kSyncFailedDecryptSeedNotice[] =
       initWithSyncServiceImpl:service
          stateChangedCallback:onSyncServiceStateChanged
          syncShutdownCallback:onSyncServiceShutdown];
-}
-
-// MARK: - PrefObserverDelegate
-
-- (void)onPreferenceChanged:(const std::string&)preferenceName {
-  if (preferenceName == brave_sync::kSyncAccountDeletedNoticePending) {
-    BOOL accountDeletedNoticePending =
-        _prefService->GetBoolean(brave_sync::kSyncAccountDeletedNoticePending);
-
-    [self.delegate syncAccountDeletedNotice:accountDeletedNoticePending];
-  }
-
-  if (preferenceName == brave_sync::kSyncFailedDecryptSeedNotice) {
-    BOOL decryptSeedFailedNoticeDismissed =
-        _prefService->GetBoolean(brave_sync::kSyncFailedDecryptSeedNotice);
-
-    [self.delegate syncAccountDeletedNotice:decryptSeedFailedNoticeDismissed];
-  }
 }
 @end
