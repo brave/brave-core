@@ -446,8 +446,9 @@ export const Send = (props: Props) => {
               value={toAddressOrUrl}
               onChange={handleInputAddressChange}
               spellCheck={false}
+              disabled={!selectedSendAsset}
             />
-            <AccountSelector onSelectAddress={updateToAddressOrUrl} />
+            <AccountSelector disabled={!selectedSendAsset} onSelectAddress={updateToAddressOrUrl} />
           </InputRow>
           {showResolvedDomain &&
             <CopyAddress address={toAddress} />
