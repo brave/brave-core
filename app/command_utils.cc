@@ -209,6 +209,7 @@ const base::flat_map<uint16_t, std::string>& GetCommandInfo() {
             ADD_UNTRANSLATED_COMMAND(TOGGLE_BRAVE_VPN),
             ADD_UNTRANSLATED_COMMAND(COPY_CLEAN_LINK),
             ADD_UNTRANSLATED_COMMAND(SIDEBAR_TOGGLE_POSITION),
+            ADD_UNTRANSLATED_COMMAND(TOGGLE_SIDEBAR),
             ADD_UNTRANSLATED_COMMAND(TOGGLE_TAB_MUTE)
       });
   return *kCommands;

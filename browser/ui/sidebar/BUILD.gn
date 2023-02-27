@@ -75,6 +75,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/app:command_ids",
     "//brave/browser/ui",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs",
