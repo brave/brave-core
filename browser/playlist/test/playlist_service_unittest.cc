@@ -443,9 +443,8 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     service->RecoverLocalDataForItem(
         id,
         /*update_media_src_before_recovery*/ false,
-        base::BindLambdaForTesting([](mojom::PlaylistItemPtr item){
-          EXPECT_FALSE(item->cached);
-        }));
+        base::BindLambdaForTesting(
+            [](mojom::PlaylistItemPtr item) { EXPECT_FALSE(item->cached); }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserverForTest(&observer);
@@ -477,7 +476,7 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           fake_download_request_manager->SetItemToDiscover(item.Clone());
           service->RecoverLocalDataForItem(
               id, /*update_media_src_before_recovery=*/true,
-              base::BindLambdaForTesting([](mojom::PlaylistItemPtr item){
+              base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
                 EXPECT_TRUE(item->cached);
               }));
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -724,7 +723,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
         const auto& item = items.front();
         service->RecoverLocalDataForItem(
-            item->id, /*update_media_src_before_recovery*/ false, 
+            item->id, /*update_media_src_before_recovery*/ false,
             base::NullCallback());
 
         base::FilePath media_path;

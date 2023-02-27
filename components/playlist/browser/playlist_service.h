@@ -126,13 +126,15 @@ class PlaylistService : public KeyedService,
                        GetPlaylistItemCallback callback) override;
 
   void AddMediaFilesFromPageToPlaylist(const std::string& playlist_id,
-                                       const GURL& url) override;
-  void AddMediaFilesFromActiveTabToPlaylist(
-      const std::string& playlist_id) override;
+                                       const GURL& url,
+                                       bool can_cache) override;
+  void AddMediaFilesFromActiveTabToPlaylist(const std::string& playlist_id,
+                                            bool can_cache) override;
   void FindMediaFilesFromActiveTab(
       FindMediaFilesFromActiveTabCallback callback) override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
-                     const std::string& playlist_id) override;
+                     const std::string& playlist_id,
+                     bool can_cache) override;
   void CopyItemToPlaylist(const std::vector<std::string>& item_ids,
                           const std::string& playlist_id) override;
   void RemoveItemFromPlaylist(const std::string& playlist_id,

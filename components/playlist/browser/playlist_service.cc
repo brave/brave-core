@@ -417,19 +417,22 @@ mojom::PlaylistItemPtr PlaylistService::GetPlaylistItem(const std::string& id) {
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
-    const GURL& url) {
+    const GURL& url,
+    bool can_cache) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url.spec();
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
-      prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
+      /* cache= */ can_cache &&
+          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
-    const std::string& playlist_id) {
+    const std::string& playlist_id,
+    bool can_cache) {
   DCHECK(delegate_);
 
   auto* contents = delegate_->GetActiveWebContents();
@@ -437,7 +440,8 @@ void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     return;
 
   AddMediaFilesFromContentsToPlaylist(
-      playlist_id, contents, prefs_->GetBoolean(kPlaylistCacheByDefault));
+      playlist_id, contents,
+      /* cache= */ can_cache && prefs_->GetBoolean(kPlaylistCacheByDefault));
 }
 
 void PlaylistService::FindMediaFilesFromActiveTab(
@@ -462,10 +466,13 @@ void PlaylistService::FindMediaFilesFromActiveTab(
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
-                                    const std::string& playlist_id) {
-  AddMediaFilesFromItems(playlist_id,
-                         prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-                         std::move(items));
+                                    const std::string& playlist_id,
+                                    bool can_cache) {
+  AddMediaFilesFromItems(
+      playlist_id,
+      /* cache= */ can_cache &&
+          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+      std::move(items));
 }
 
 void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,

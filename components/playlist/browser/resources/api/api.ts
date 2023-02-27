@@ -45,11 +45,11 @@ class API {
     let mojoUrl = new Url()
     mojoUrl.url = url
     this.#pageHandler.addMediaFilesFromPageToPlaylist(
-        playlistId, mojoUrl)
+        playlistId, mojoUrl, /* canCache */ true)
   }
 
   addMediaFilesFromActiveTabToPlaylist (playlistId: string) {
-    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(playlistId)
+    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(playlistId, /* canCache */ true)
   }
 
   removeItemFromPlaylist (playlistId: string, itemId: string) {
