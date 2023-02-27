@@ -43,7 +43,7 @@ static const size_t SEED_BYTES_COUNT = 32u;
 
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(
     syncer::DeviceInfoTracker* device_info_tracker,
-    std::function<void()> on_device_info_changed_callback)
+    const base::RepeatingCallback<void()>& on_device_info_changed_callback)
     : on_device_info_changed_callback_(on_device_info_changed_callback) {
   DCHECK(device_info_tracker);
   device_info_tracker_observer_.Observe(device_info_tracker);
@@ -55,14 +55,14 @@ BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
 
 void BraveSyncDeviceTracker::OnDeviceInfoChange() {
   if (on_device_info_changed_callback_) {
-    on_device_info_changed_callback_();
+    on_device_info_changed_callback_.Run();
   }
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
     syncer::SyncServiceImpl* sync_service_impl,
-    std::function<void()> on_state_changed_callback,
-    std::function<void()> on_sync_shutdown_callback)
+    const base::RepeatingCallback<void()>& on_state_changed_callback,
+    const base::RepeatingCallback<void()>& on_sync_shutdown_callback)
     : on_state_changed_callback_(on_state_changed_callback),
       on_sync_shutdown_callback_(on_sync_shutdown_callback) {
   DCHECK(sync_service_impl);
@@ -75,13 +75,13 @@ BraveSyncServiceTracker::~BraveSyncServiceTracker() {
 
 void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
   if (on_state_changed_callback_) {
-    on_state_changed_callback_();
+    on_state_changed_callback_.Run();
   }
 }
 
 void BraveSyncServiceTracker::OnSyncShutdown(syncer::SyncService* sync) {
   if (on_sync_shutdown_callback_) {
-    on_sync_shutdown_callback_();
+    on_sync_shutdown_callback_.Run();
   }
 }
 

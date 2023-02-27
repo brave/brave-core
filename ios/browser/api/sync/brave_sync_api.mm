@@ -150,8 +150,8 @@ const char kSyncFailedDecryptSeedNotice[] =
 - (instancetype)initWithDeviceInfoTracker:(syncer::DeviceInfoTracker*)tracker
                                  callback:(void (^)())onDeviceInfoChanged {
   if ((self = [super init])) {
-    _device_observer =
-        std::make_unique<BraveSyncDeviceTracker>(tracker, onDeviceInfoChanged);
+    _device_observer = std::make_unique<BraveSyncDeviceTracker>(
+        tracker, base::BindRepeating(onDeviceInfoChanged));
   }
   return self;
 }
@@ -172,7 +172,8 @@ const char kSyncFailedDecryptSeedNotice[] =
                    syncShutdownCallback:(void (^)())onSyncServiceShutdown {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
-        syncServiceImpl, onSyncServiceStateChanged, onSyncServiceShutdown);
+        syncServiceImpl, base::BindRepeating(onSyncServiceStateChanged),
+        base::BindRepeating(onSyncServiceShutdown));
   }
   return self;
 }
@@ -365,11 +366,10 @@ const char kSyncFailedDecryptSeedNotice[] =
 }
 
 - (void)setJoinSyncChain:(void (^)(bool success))completion {
-  _worker->SetJoinSyncChainCallback(base::BindOnce(
-      [](void (^completion)(bool), const bool& success) {
-        completion(success);
-      },
-      completion));
+  _worker->SetJoinSyncChainCallback(
+      base::BindOnce([](void (^completion)(bool),
+                        const bool& success) { completion(success); },
+                     completion));
 }
 
 - (void)permanentlyDeleteAccount:
