@@ -195,7 +195,7 @@ BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
 }
 
 TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
-    gfx::Point point_in_local_coords) {
+    gfx::Point point_in_local_coords) const {
   if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetTabContainerAt(point_in_local_coords);
   }
