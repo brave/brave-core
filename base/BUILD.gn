@@ -9,6 +9,7 @@ source_set("base") {
   if (is_posix) {
     sources += [ "process/process_launcher_posix.cc" ]
   } else if (!is_ios) {
+    sources += [ "process/process_launcher_win.cc" ]
   }
 
   deps = [ "//base" ]
