@@ -49,6 +49,8 @@ export const List = styled.ul`
     font-size: 12px;
     line-height: 18px;
     margin-bottom: 8px;
+    padding-left: 26px;
+    text-indent: -26px;
 
     &:before {
       content: '';
