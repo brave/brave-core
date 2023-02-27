@@ -15,7 +15,7 @@ namespace commands {
 // be executed in the main browser window. This is used for listing the
 // shortcuts available to users and will eventually be used to allow configuring
 // shortcuts.
-const std::vector<uint16_t>& GetCommands();
+const std::vector<int>& GetCommands();
 
 // Gets a string representing a command. In future this will be translated, but
 // while we're prototyping the feature it will always returns English strings.
