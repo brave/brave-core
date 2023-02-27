@@ -78,4 +78,5 @@ brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]
 
 # Re-define play core target to use full library as we need it for seemless review processes.
-playcore_target = "//brave/third_party/android_deps:com_google_android_play_core_java"
+playcore_target =
+    "//brave/third_party/android_deps:com_google_android_play_core_java"
