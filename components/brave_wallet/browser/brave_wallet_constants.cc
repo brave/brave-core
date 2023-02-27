@@ -580,17 +580,43 @@ const std::vector<mojom::BlockchainToken>& GetRampSellTokens() {
 }
 
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
-  static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies({
-      {"USD",
-       "United States Dollar",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-      {"EUR",
-       "Euro",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-      {"GBP",
-       "British Pound Sterling",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-  });
+  static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies(
+      {{"ARS", "Argentine Peso", {mojom::OnRampProvider::kTransak}},
+       {"AUD", "Australian dollar", {mojom::OnRampProvider::kTransak}},
+       {"BMD", "Bermudian Dollar", {mojom::OnRampProvider::kTransak}},
+       {"BRL", "Brazilian Real", {mojom::OnRampProvider::kTransak}},
+       {"GBP",
+        "British pound",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}},
+       {"CAD", "Canadian dollar", {mojom::OnRampProvider::kTransak}},
+       {"CLP", "Chilean Peso", {mojom::OnRampProvider::kTransak}},
+       {"CZK", "Czech Koruna", {mojom::OnRampProvider::kTransak}},
+       {"DKK", "Danish Krone", {mojom::OnRampProvider::kTransak}},
+       {"DJF", "Djibouti Franc", {mojom::OnRampProvider::kTransak}},
+       {"EUR",
+        "Euro",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}},
+       {"HUF", "Forint", {mojom::OnRampProvider::kTransak}},
+       {"INR", "Indian rupee", {mojom::OnRampProvider::kTransak}},
+       {"IDR", "Indonesian Rupiah", {mojom::OnRampProvider::kTransak}},
+       {"ILS", "Israeli Shekel", {mojom::OnRampProvider::kTransak}},
+       {"JPY", "Japanese Yen", {mojom::OnRampProvider::kTransak}},
+       {"MYR", "Malaysian Ringgit", {mojom::OnRampProvider::kTransak}},
+       {"MXN", "Mexican peso", {mojom::OnRampProvider::kTransak}},
+       {"NZD", "New Zealand dollar", {mojom::OnRampProvider::kTransak}},
+       {"NOK", "Norwegian Krone", {mojom::OnRampProvider::kTransak}},
+       {"PHP", "Philippine Peso", {mojom::OnRampProvider::kTransak}},
+       {"PLN", "Polish Zloty", {mojom::OnRampProvider::kTransak}},
+       {"SGD", "Singapore Dollar", {mojom::OnRampProvider::kTransak}},
+       {"ZAR", "South African Rand", {mojom::OnRampProvider::kTransak}},
+       {"KRW", "South Korean Won", {mojom::OnRampProvider::kTransak}},
+       {"SEK", "Swedish krona", {mojom::OnRampProvider::kTransak}},
+       {"CHF", "Swiss franc", {mojom::OnRampProvider::kTransak}},
+       {"THB", "Thai Baht", {mojom::OnRampProvider::kTransak}},
+       {"TRY", "Turkish Lira", {mojom::OnRampProvider::kTransak}},
+       {"USD",
+        "US Dollar",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}}});
 
   return *currencies;
 }
