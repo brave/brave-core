@@ -12,8 +12,6 @@ component("common") {
   sources = [
     "accelerator_parsing.cc",
     "accelerator_parsing.h",
-    "accelerator_pref_manager.cc",
-    "accelerator_pref_manager.h",
     "features.cc",
     "features.h",
   ]
@@ -22,6 +20,7 @@ component("common") {
     "//base",
     "//components/prefs",
     "//ui/base",
+    "//ui/events:dom_keycode_converter",
     "//ui/events:event_constants",
     "//ui/events:events_base",
   ]
@@ -33,17 +32,11 @@ source_set("unit_tests") {
   testonly = true
 
   if (!is_android && !is_ios) {
-    sources = [
-      "accelerator_parsing_unittest.cc",
-      "accelerator_pref_manager_unittest.cc",
-    ]
+    sources = [ "accelerator_parsing_unittest.cc" ]
 
     deps = [
       ":common",
       "//base/test:test_support",
-      "//chrome/test:test_support",
-      "//components/prefs:test_support",
-      "//content/test:test_support",
       "//testing/gtest",
       "//ui/base",
       "//ui/events:event_constants",

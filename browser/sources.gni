@@ -159,6 +159,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_wallet/common:mojom",
   "//brave/components/brave_wayback_machine/buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
+  "//brave/components/commands/browser",
   "//brave/components/constants",
   "//brave/components/cosmetic_filters/browser",
   "//brave/components/cosmetic_filters/common:mojom",

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_COMMANDS_COMMON_ACCELERATOR_PREF_MANAGER_H_
-#define BRAVE_COMPONENTS_COMMANDS_COMMON_ACCELERATOR_PREF_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_COMMANDS_BROWSER_ACCELERATOR_PREF_MANAGER_H_
+#define BRAVE_COMPONENTS_COMMANDS_BROWSER_ACCELERATOR_PREF_MANAGER_H_
 
 #include <vector>
 
@@ -16,7 +16,7 @@
 
 namespace commands {
 
-class COMPONENT_EXPORT(COMMANDS_COMMON) AcceleratorPrefManager {
+class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
  public:
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
@@ -37,4 +37,4 @@ class COMPONENT_EXPORT(COMMANDS_COMMON) AcceleratorPrefManager {
 
 }  // namespace commands
 
-#endif  // BRAVE_COMPONENTS_COMMANDS_COMMON_ACCELERATOR_PREF_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_COMMANDS_BROWSER_ACCELERATOR_PREF_MANAGER_H_

@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/views/commands/accelerator_service.h"
-#include "brave/browser/ui/views/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/commands/browser/resources/grit/commands_generated_map.h"
 #include "brave/components/commands/common/features.h"

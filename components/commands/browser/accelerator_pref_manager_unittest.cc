@@ -3,13 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/commands/common/accelerator_pref_manager.h"
+#include "brave/components/commands/browser/accelerator_pref_manager.h"
 
-#include "base/containers/contains.h"
-#include "brave/components/commands/common/accelerator_parsing.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -17,15 +13,16 @@
 
 class AcceleratorPrefManagerTest : public testing::Test {
  public:
-  AcceleratorPrefManagerTest() : manager_(profile_.GetPrefs()) {}
+  AcceleratorPrefManagerTest() : manager_(&prefs_) {
+    commands::AcceleratorPrefManager::RegisterProfilePrefs(prefs_.registry());
+  }
 
   ~AcceleratorPrefManagerTest() override = default;
 
   commands::AcceleratorPrefManager& manager() { return manager_; }
 
  private:
-  content::BrowserTaskEnvironment browser_task_environment_;
-  TestingProfile profile_;
+  TestingPrefServiceSimple prefs_;
   commands::AcceleratorPrefManager manager_;
 };
 

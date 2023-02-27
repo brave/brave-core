@@ -3,18 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_UI_VIEWS_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "brave/browser/ui/views/commands/accelerator_service.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "brave/browser/ui/commands/accelerator_service.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace commands {
 
-class AcceleratorServiceFactory : public BrowserContextKeyedServiceFactory {
+class AcceleratorServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static AcceleratorService* GetForContext(content::BrowserContext* context);
   static AcceleratorServiceFactory* GetInstance();
@@ -29,13 +33,13 @@ class AcceleratorServiceFactory : public BrowserContextKeyedServiceFactory {
   AcceleratorServiceFactory();
   ~AcceleratorServiceFactory() override;
 
-  KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* context) const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 
-  content::BrowserContext* GetBrowserContextToUse(
+  KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
 };
 
 }  // namespace commands
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_UI_COMMANDS_ACCELERATOR_SERVICE_FACTORY_H_

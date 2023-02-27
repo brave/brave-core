@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/commands/common/accelerator_pref_manager.h"
+#include "brave/components/commands/browser/accelerator_pref_manager.h"
 
 #include <vector>
 

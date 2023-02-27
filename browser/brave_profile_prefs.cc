@@ -31,7 +31,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/commands/common/accelerator_pref_manager.h"
+#include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/browser/debounce_service.h"
@@ -204,7 +204,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
   brave_news::BraveNewsController::RegisterProfilePrefs(registry);
-  commands::AcceleratorPrefManager::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

@@ -19,13 +19,13 @@
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
-#include "brave/browser/ui/views/commands/accelerator_service.h"
-#include "brave/browser/ui/views/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/accelerator_table.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
@@ -92,6 +93,16 @@ bool IsUnsupported(int command_id, Browser* browser) {
 // static
 void BraveBrowserView::SetDownloadConfirmReturnForTesting(bool allow) {
   g_download_confirm_return_allow_for_testing = allow;
+}
+
+// static
+commands::Accelerators BraveBrowserWindow::GetDefaultAccelerators() {
+  commands::Accelerators defaults;
+  for (const auto& accelerator_info : GetAcceleratorList()) {
+    defaults[accelerator_info.command_id].push_back(
+        ui::Accelerator(accelerator_info.keycode, accelerator_info.modifiers));
+  }
+  return defaults;
 }
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,

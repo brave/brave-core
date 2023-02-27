@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/commands/accelerator_service.h"
+#include "brave/browser/ui/commands/accelerator_service.h"
 
 #include <string>
 #include <utility>
@@ -13,9 +13,8 @@
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_map.h"
 #include "brave/app/command_utils.h"
+#include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
-#include "brave/components/commands/common/accelerator_pref_manager.h"
-#include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -112,6 +111,7 @@ void AcceleratorService::ResetAcceleratorsForCommand(int command_id) {
   std::vector<int> modified_commands = {command_id};
 
   // First, clear our shortcuts list.
+  accelerators_[command_id].clear();
   pref_manager_.ClearAccelerators(command_id);
 
   // For each default shortcut for this command, assign it.

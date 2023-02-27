@@ -25,9 +25,11 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -106,6 +108,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::SwapServiceFactory::GetInstance();
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
+
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    commands::AcceleratorServiceFactory::GetInstance();
+  }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EthereumRemoteClientServiceFactory::GetInstance();

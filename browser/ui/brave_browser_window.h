@@ -6,9 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
-#include <map>
-#include <vector>
-
+#include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -27,15 +25,14 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
 }  // namespace speedreader
 
-namespace ui {
-class Accelerator;
-}
-
 class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
   static BraveBrowserWindow* From(BrowserWindow*);
+
+  // Gets the default list of accelerators.
+  static commands::Accelerators GetDefaultAccelerators();
 
   virtual void StartTabCycling() {}
 
@@ -43,8 +40,6 @@ class BraveBrowserWindow : public BrowserWindow {
   // Renderers will call this to check if the bottom of the panel exceeds
   // the overall screen's height
   virtual gfx::Rect GetShieldsBubbleRect();
-
-  virtual std::map<int, std::vector<ui::Accelerator>> GetAcceleratedCommands();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(

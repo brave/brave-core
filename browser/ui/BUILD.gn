@@ -752,10 +752,10 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
-      "views/commands/accelerator_service.cc",
-      "views/commands/accelerator_service.h",
-      "views/commands/accelerator_service_factory.cc",
-      "views/commands/accelerator_service_factory.h",
+      "commands/accelerator_service.cc",
+      "commands/accelerator_service.h",
+      "commands/accelerator_service_factory.cc",
+      "commands/accelerator_service_factory.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
@@ -797,6 +797,7 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
+      "//brave/components/commands/browser",
       "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
