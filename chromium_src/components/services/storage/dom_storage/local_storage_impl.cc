@@ -112,7 +112,8 @@ const blink::StorageKey* LocalStorageImpl::GetStorageKeyWithNonOpaqueOrigin(
       base::ToLowerASCII(base::UnguessableToken::Create().ToString()),
       origin_scheme_host_port.port());
   auto emplaced_pair = storage_keys_with_non_opaque_origin_.emplace(
-      storage_key_origin, blink::StorageKey(non_opaque_origin));
+      storage_key_origin,
+      blink::StorageKey::CreateFirstParty(non_opaque_origin));
   return &emplaced_pair.first->second;
 }
 
