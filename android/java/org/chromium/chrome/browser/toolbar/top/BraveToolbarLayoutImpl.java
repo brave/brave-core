@@ -497,7 +497,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             public void onHidden(Tab tab, @TabHidingType int reason) {
                 dismissCookieConsent();
-                // hidePlaylistButton();
+                hidePlaylistButton();
             }
 
             @Override
@@ -726,7 +726,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
         if (mPlaylistService != null) {
             mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
-                mPlaylistService.addMediaFilesFromPageToPlaylist(defaultPlaylist.id, contentUrl);
+                mPlaylistService.addMediaFilesFromPageToPlaylist(
+                        defaultPlaylist.id, contentUrl, true);
                 SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
                         getContext().getResources().getString(R.string.view_action),
                         new View.OnClickListener() {

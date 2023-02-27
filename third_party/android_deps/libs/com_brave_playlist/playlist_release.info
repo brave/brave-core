@@ -382,6 +382,7 @@ resources = [
   "res/layout/player_bottom_view.xml",
   "res/layout/playlist_item_layout.xml",
   "res/layout/playlist_onboarding_activity.xml",
+  "res/layout/playlist_view.xml",
   "res/layout/toast_brave.xml",
   "res/layout/toolbar_playlist.xml",
   "res/layout/tooltip_playlist_onboarding_button.xml",

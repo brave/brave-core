@@ -8,6 +8,20 @@ module playlist.mojom;
 import "url/mojom/url.mojom";
 
 enum PlaylistEvent {
+  kNone,
+  kItemAdded,             // a new playlist item added but not ready state
+  kItemThumbnailReady,    // Thumbnail ready to use for playlist
+  kItemThumbnailFailed,   // Failed to fetch thumbnail
+  kItemCached,            // The item is cached in local storage
+  kItemDeleted,           // An item deleted
+  kItemUpdated,           // An item's properties have been changed
+  kItemMoved,             // An item moved
+  kItemAborted,           // Aborted during the creation process
+  kItemLocalDataRemoved,  // Local data removed
+
+  kListCreated,  // A list is created
+  kListRemoved,  // A list is removed
+  kAllDeleted,   // All playlist are deleted
   kUpdated,
 };
 
@@ -115,7 +129,7 @@ interface PlaylistService {
 interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
-  OnEvent(PlaylistEvent event);
+  OnEvent(PlaylistEvent event, string id);
 
   OnMediaFileDownloadProgressed(
       string id,

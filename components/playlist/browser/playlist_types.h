@@ -12,6 +12,8 @@
 #include "base/time/time.h"
 #include "base/types/strong_alias.h"
 
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+
 namespace playlist {
 
 // TODO(sko) Try removing these types. We can use mojom type directly.
@@ -32,13 +34,13 @@ struct PlaylistChangeParams {
     kListRemoved,  // A list is removed
     kAllDeleted,   // All playlist are deleted
   };
-  static std::string GetPlaylistChangeTypeAsString(Type type);
+  static std::string GetPlaylistChangeTypeAsString(mojom::PlaylistEvent type);
 
   PlaylistChangeParams();
-  PlaylistChangeParams(Type type, const std::string& id);
+  PlaylistChangeParams(mojom::PlaylistEvent type, const std::string& id);
   ~PlaylistChangeParams();
 
-  Type change_type = Type::kNone;
+  mojom::PlaylistEvent change_type = mojom::PlaylistEvent::kNone;
   std::string playlist_id;
 
   bool operator==(const PlaylistChangeParams& rhs) const;

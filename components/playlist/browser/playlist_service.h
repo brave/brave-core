@@ -243,6 +243,8 @@ class PlaylistService : public KeyedService,
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
   void NotifyPlaylistChanged(const PlaylistChangeParams& params);
+  void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
+                             const std::string& playlist_id);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
   void RemovePlaylistItemValue(const std::string& id);

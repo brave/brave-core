@@ -11,25 +11,25 @@
 namespace playlist {
 
 std::string PlaylistChangeParams::GetPlaylistChangeTypeAsString(
-    PlaylistChangeParams::Type type) {
+    mojom::PlaylistEvent type) {
   switch (type) {
-    case PlaylistChangeParams::Type::kItemAdded:
+    case mojom::PlaylistEvent::kItemAdded:
       return "item: added";
-    case PlaylistChangeParams::Type::kItemDeleted:
+    case mojom::PlaylistEvent::kItemDeleted:
       return "item: deleted";
-    case PlaylistChangeParams::Type::kItemAborted:
+    case mojom::PlaylistEvent::kItemAborted:
       return "item: aborted";
-    case PlaylistChangeParams::Type::kItemThumbnailReady:
+    case mojom::PlaylistEvent::kItemThumbnailReady:
       return "item: thumbnail_ready";
-    case PlaylistChangeParams::Type::kItemThumbnailFailed:
+    case mojom::PlaylistEvent::kItemThumbnailFailed:
       return "item: thumbnail_failed";
-    case PlaylistChangeParams::Type::kItemCached:
+    case mojom::PlaylistEvent::kItemCached:
       return "item: cached";
-    case PlaylistChangeParams::Type::kListCreated:
+    case mojom::PlaylistEvent::kListCreated:
       return "list: created";
-    case PlaylistChangeParams::Type::kAllDeleted:
+    case mojom::PlaylistEvent::kAllDeleted:
       return "item: all deleted";
-    case PlaylistChangeParams::Type::kNone:
+    case mojom::PlaylistEvent::kNone:
       [[fallthrough]];
     default:
       NOTREACHED() << "Unknown type: " << static_cast<int>(type);
@@ -39,7 +39,8 @@ std::string PlaylistChangeParams::GetPlaylistChangeTypeAsString(
 
 PlaylistChangeParams::PlaylistChangeParams() = default;
 
-PlaylistChangeParams::PlaylistChangeParams(Type type, const std::string& id)
+PlaylistChangeParams::PlaylistChangeParams(mojom::PlaylistEvent type,
+                                           const std::string& id)
     : change_type(type), playlist_id(id) {}
 PlaylistChangeParams::~PlaylistChangeParams() = default;
 

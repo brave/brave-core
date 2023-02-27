@@ -267,8 +267,9 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
     return false;
   }
 
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemDeleted, *from});
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, *to});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemDeleted, *from});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAdded, *to});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemMoved, *from);
   return true;
 }
 
@@ -321,8 +322,15 @@ void PlaylistService::NotifyPlaylistChanged(
     obs.OnPlaylistStatusChanged(params);
 
   // TODO(sko) Send proper events based on |params|
+  // for (auto& service_observer : service_observers_)
+  //   service_observer->OnEvent(mojom::PlaylistEvent::kUpdated);
+}
+
+void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
+                                            const std::string& playlist_id) {
+  // TODO(sko) Send proper events based on |params|
   for (auto& service_observer : service_observers_)
-    service_observer->OnEvent(mojom::PlaylistEvent::kUpdated);
+    service_observer->OnEvent(playlist_event, playlist_id);
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
@@ -508,7 +516,8 @@ void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
 
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemUpdated, item->id});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemUpdated, item->id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
 }
 
 void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
@@ -521,7 +530,9 @@ void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
   playlists_update->Set(playlist->id.value(), ConvertPlaylistToValue(playlist));
 
   NotifyPlaylistChanged(
-      {PlaylistChangeParams::Type::kListCreated, playlist->id.value()});
+      {mojom::PlaylistEvent::kListCreated, playlist->id.value()});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kListCreated,
+                        playlist->id.value());
 
   std::move(callback).Run(playlist.Clone());
 }
@@ -558,7 +569,8 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
 
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAdded, item->id});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAdded, item->id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAdded, item->id);
 
   GetTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -587,7 +599,8 @@ void PlaylistService::OnPlaylistItemDirCreated(
     bool directory_ready) {
   VLOG(2) << __func__;
   if (!directory_ready) {
-    NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAborted, item->id});
+    NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAborted, item->id});
+    NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAborted, item->id);
     if (callback) {
       std::move(callback).Run(item.Clone());
     }
@@ -622,8 +635,8 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
 
   if (path.empty()) {
     VLOG(2) << __func__ << ": thumbnail fetching failed for " << id;
-    NotifyPlaylistChanged(
-        {PlaylistChangeParams::Type::kItemThumbnailFailed, id});
+    NotifyPlaylistChanged({mojom::PlaylistEvent::kItemThumbnailFailed, id});
+    NotifyPlaylistChanged(mojom::PlaylistEvent::kItemThumbnailFailed, id);
     return;
   }
 
@@ -633,7 +646,8 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
   playlist_item->thumbnail_path = GURL("file://" + path.AsUTF8Unsafe());
   UpdatePlaylistItemValue(
       id, base::Value(ConvertPlaylistItemToValue(playlist_item)));
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemThumbnailReady, id});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemThumbnailReady, id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemThumbnailReady, id);
 }
 
 void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
@@ -664,8 +678,8 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
   for (const auto& item_id : id_list)
     DeletePlaylistItemData(item_id.GetString());
 
-  NotifyPlaylistChanged(
-      {PlaylistChangeParams::Type::kListRemoved, playlist_id});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kListRemoved, playlist_id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kListRemoved, playlist_id);
 }
 
 void PlaylistService::ResetAll() {
@@ -832,7 +846,8 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
 
   RemovePlaylistItemValue(id);
 
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemDeleted, id});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemDeleted, id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
 
   // TODO(simonhong): Delete after getting cancel complete message from all
   // downloader.
@@ -858,7 +873,8 @@ void PlaylistService::DeleteAllPlaylistItems() {
 
   prefs_->ClearPref(kPlaylistItemsPref);
 
-  NotifyPlaylistChanged({PlaylistChangeParams::Type::kAllDeleted, ""});
+  NotifyPlaylistChanged({mojom::PlaylistEvent::kAllDeleted, ""});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kAllDeleted, "");
 
   CleanUpOrphanedPlaylistItemDirs();
 }
@@ -907,7 +923,8 @@ void PlaylistService::RemoveLocalDataForItemImpl(
                           base::Value(ConvertPlaylistItemToValue(item)));
 
   NotifyPlaylistChanged(
-      {PlaylistChangeParams::Type::kItemLocalDataRemoved, item->id});
+      {mojom::PlaylistEvent::kItemLocalDataRemoved, item->id});
+  NotifyPlaylistChanged(mojom::PlaylistEvent::kItemLocalDataRemoved, item->id);
 
   base::FilePath media_path;
   if (GetMediaPath(item->id, &media_path)) {
@@ -949,10 +966,13 @@ void PlaylistService::OnMediaFileDownloadFinished(
   UpdatePlaylistItemValue(new_item->id,
                           base::Value(ConvertPlaylistItemToValue(new_item)));
 
-  NotifyPlaylistChanged({new_item->cached
-                             ? PlaylistChangeParams::Type::kItemCached
-                             : PlaylistChangeParams::Type::kItemAborted,
+  NotifyPlaylistChanged({new_item->cached ? mojom::PlaylistEvent::kItemCached
+                                          : mojom::PlaylistEvent::kItemAborted,
                          new_item->id});
+
+  NotifyPlaylistChanged(new_item->cached ? mojom::PlaylistEvent::kItemCached
+                                         : mojom::PlaylistEvent::kItemAborted,
+                        new_item->id);
 
   if (callback) {
     std::move(callback).Run(new_item.Clone());
