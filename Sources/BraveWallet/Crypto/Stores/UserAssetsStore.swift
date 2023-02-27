@@ -29,6 +29,7 @@ public class AssetStore: ObservableObject, Equatable {
 
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
+  private let ipfsApi: IpfsAPI?
   private(set) var isCustomToken: Bool
 
   init(
@@ -36,6 +37,7 @@ public class AssetStore: ObservableObject, Equatable {
     rpcService: BraveWalletJsonRpcService,
     network: BraveWallet.NetworkInfo,
     token: BraveWallet.BlockchainToken,
+    ipfsApi: IpfsAPI?,
     isCustomToken: Bool,
     isVisible: Bool
   ) {
@@ -43,6 +45,7 @@ public class AssetStore: ObservableObject, Equatable {
     self.rpcService = rpcService
     self.network = network
     self.token = token
+    self.ipfsApi = ipfsApi
     self.isCustomToken = isCustomToken
     self.isVisible = isVisible
   }
@@ -52,7 +55,7 @@ public class AssetStore: ObservableObject, Equatable {
   }
   
   @MainActor func fetchERC721Metadata() async -> NFTMetadata? {
-    return await rpcService.fetchNFTMetadata(for: token)
+    return await rpcService.fetchNFTMetadata(for: token, ipfsApi: self.ipfsApi)
   }
 }
 
@@ -65,6 +68,7 @@ public class UserAssetsStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   private let keyringService: BraveWalletKeyringService
   private let assetRatioService: BraveWalletAssetRatioService
+  private let ipfsApi: IpfsAPI?
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var timer: Timer?
 
@@ -73,13 +77,15 @@ public class UserAssetsStore: ObservableObject {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     rpcService: BraveWalletJsonRpcService,
     keyringService: BraveWalletKeyringService,
-    assetRatioService: BraveWalletAssetRatioService
+    assetRatioService: BraveWalletAssetRatioService,
+    ipfsApi: IpfsAPI?
   ) {
     self.walletService = walletService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
     self.keyringService = keyringService
     self.assetRatioService = assetRatioService
+    self.ipfsApi = ipfsApi
     self.keyringService.add(self)
   }
   
@@ -131,6 +137,7 @@ public class UserAssetsStore: ObservableObject {
             rpcService: rpcService,
             network: assetsForNetwork.network,
             token: token,
+            ipfsApi: self.ipfsApi,
             isCustomToken: isCustomToken,
             isVisible: visibleIds.contains(where: { $0 == (token.id + token.chainId) })
           )

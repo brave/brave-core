@@ -81,7 +81,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     XCTAssertNil(store.selectedSendToken)
 
@@ -93,7 +94,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
     let sendTokenExpectation = expectation(description: "update-sendTokenExpectation")
     store.$selectedSendToken
@@ -138,7 +140,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockSolToken
+      prefilledToken: .mockSolToken,
+      ipfsApi: nil
     )
     let sendTokenExpectation = expectation(description: "update-sendTokenExpectation")
     store.$selectedSendToken
@@ -172,7 +175,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     let selectedSendTokenExpectation = expectation(description: "update-selectedSendToken")
     XCTAssertNil(store.selectedSendToken)  // Initial state
@@ -215,7 +219,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-eth-eip1559-transaction")
@@ -239,7 +244,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-eth-transaction")
@@ -263,7 +269,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, isNft: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "", chainId: "", coin: .eth)
     store.selectedSendToken = token
@@ -289,7 +296,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .previewToken
     let ex = expectation(description: "send-bat-transaction")
@@ -317,7 +325,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockERC721NFTToken
+      prefilledToken: .mockERC721NFTToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .mockERC721NFTToken
     let ex = expectation(description: "send-NFT-transaction")
@@ -366,7 +375,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .previewToken
+      prefilledToken: .previewToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .previewToken
     let fetchSelectedTokenBalanceEx = expectation(description: "fetchSelectedTokenBalance")
@@ -417,7 +427,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: BraveWallet.NetworkInfo.mockSolana.nativeToken
+      prefilledToken: BraveWallet.NetworkInfo.mockSolana.nativeToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = BraveWallet.NetworkInfo.mockSolana.nativeToken
     let ex = expectation(description: "send-sol-transaction")
@@ -454,7 +465,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockSpdToken
+      prefilledToken: .mockSpdToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .mockSpdToken
     let ex = expectation(description: "send-sol-transaction")
@@ -494,7 +506,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockSolToken
+      prefilledToken: .mockSolToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .mockSolToken
     let ex = expectation(description: "send-sol-transaction")
@@ -535,7 +548,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: .mockSpdToken
+      prefilledToken: .mockSpdToken,
+      ipfsApi: nil
     )
     store.selectedSendToken = .mockSpdToken
     let ex = expectation(description: "send-spl-transaction")
@@ -567,7 +581,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     
     let selectedSendNFTMetadataERC721Exception = expectation(description: "sendTokenStore-selectedSendTokenERC721MetadataException")
@@ -609,7 +624,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     
     let selectedSendNFTMetadataSolNFTException = expectation(description: "sendTokenStore-selectedSendNFTMetadataSolNFTException")
@@ -652,7 +668,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
@@ -692,7 +709,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
@@ -741,7 +759,8 @@ class SendTokenStoreTests: XCTestCase {
       blockchainRegistry: MockBlockchainRegistry(),
       ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: nil
+      prefilledToken: nil,
+      ipfsApi: nil
     )
     store.selectedSendToken = .mockSolToken
     

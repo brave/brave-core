@@ -90,6 +90,7 @@ public class CryptoStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let ipfsApi: IpfsAPI?
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -100,7 +101,8 @@ public class CryptoStore: ObservableObject {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI?
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -111,6 +113,7 @@ public class CryptoStore: ObservableObject {
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
+    self.ipfsApi = ipfsApi
     
     self.networkStore = .init(
       keyringService: keyringService,
@@ -123,7 +126,8 @@ public class CryptoStore: ObservableObject {
       rpcService: rpcService,
       walletService: walletService,
       assetRatioService: assetRatioService,
-      blockchainRegistry: blockchainRegistry
+      blockchainRegistry: blockchainRegistry,
+      ipfsApi: ipfsApi
     )
     
     self.keyringService.add(self)
@@ -160,7 +164,8 @@ public class CryptoStore: ObservableObject {
       blockchainRegistry: blockchainRegistry,
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
-      prefilledToken: prefilledToken
+      prefilledToken: prefilledToken,
+      ipfsApi: self.ipfsApi
     )
     sendTokenStore = store
     return store
@@ -281,6 +286,7 @@ public class CryptoStore: ObservableObject {
     }
     let store = NFTDetailStore(
       rpcService: rpcService,
+      ipfsApi: ipfsApi,
       nft: nft,
       nftMetadata: nftMetadata
     )

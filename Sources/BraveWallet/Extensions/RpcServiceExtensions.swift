@@ -278,7 +278,7 @@ extension BraveWalletJsonRpcService {
   }
   
   /// Returns a nullable NFT metadata
-  @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken) async -> NFTMetadata? {
+  @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken, ipfsApi: IpfsAPI?) async -> NFTMetadata? {
     var metaDataString = ""
     if token.isErc721 {
       let (_, metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
@@ -296,7 +296,7 @@ extension BraveWalletJsonRpcService {
     }
     if let data = metaDataString.data(using: .utf8),
        let result = try? JSONDecoder().decode(NFTMetadata.self, from: data) {
-      return result
+      return result.httpfyIpfsUrl(ipfsApi: ipfsApi)
     }
     return nil
   }
@@ -325,6 +325,7 @@ extension BraveWalletJsonRpcService {
           
           if let data = metaDataString.data(using: .utf8),
              let result = try? JSONDecoder().decode(NFTMetadata.self, from: data) {
+
             return [token.id: result]
           }
           return [:]

@@ -29,7 +29,8 @@ public class WalletStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI?
   ) {
     self.keyringStore = .init(keyringService: keyringService, walletService: walletService, rpcService: rpcService)
     self.setUp(
@@ -41,7 +42,8 @@ public class WalletStore {
       blockchainRegistry: blockchainRegistry,
       txService: txService,
       ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi
     )
   }
 
@@ -54,7 +56,8 @@ public class WalletStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI?
   ) {
     self.cancellable = self.keyringStore.$defaultKeyring
       .map(\.isKeyringCreated)
@@ -73,7 +76,8 @@ public class WalletStore {
             blockchainRegistry: blockchainRegistry,
             txService: txService,
             ethTxManagerProxy: ethTxManagerProxy,
-            solTxManagerProxy: solTxManagerProxy
+            solTxManagerProxy: solTxManagerProxy,
+            ipfsApi: ipfsApi
           )
           self.onPendingRequestCancellable = self.cryptoStore?.$pendingRequest
             .removeDuplicates()
