@@ -13,6 +13,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BraveSyncInternalsController;
 
+typedef NSInteger BraveSyncAPISyncProtocolErrorResult
+    NS_TYPED_ENUM NS_SWIFT_NAME(BraveSyncAPI.SyncProtocolErrorResult);
+
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultSuccess;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultNotMyBirthday;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultThrottled;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultClearPending;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultTransientError;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultMigrationDone;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDisabledByAdmin;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultPartialFailure;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDataObsolete;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultEncryptionObsolete;
+OBJC_EXPORT BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultUnknown;
+
 typedef NSInteger BraveSyncAPIQrCodeDataValidationResult NS_TYPED_ENUM
     NS_SWIFT_NAME(BraveSyncAPI.QrCodeDataValidationResult);
 
@@ -49,6 +75,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool canSyncFeatureStart;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
 @property(nonatomic, readonly) bool isFirstSetupComplete;
+@property(nonatomic) bool isSyncAccountDeletedNoticePending;
+@property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -57,6 +85,11 @@ OBJC_EXPORT
 - (void)setSetupComplete;
 
 - (void)resetSync;
+
+- (void)setDidJoinSyncChain:(void (^)(bool))completion;
+
+- (void)permanentlyDeleteAccount:
+    (void (^)(BraveSyncAPISyncProtocolErrorResult))completion;
 
 - (void)deleteDevice:(NSString*)guid;
 
@@ -72,6 +105,8 @@ OBJC_EXPORT
 - (NSString*)hexSeedFromSyncCode:(NSString*)syncCode;
 
 - (NSString*)qrCodeJsonFromHexSeed:(NSString*)hexSeed;
+
+- (void)dismissFailedDecryptSeedNotice;
 
 - (BraveSyncAPIQrCodeDataValidationResult)getQRCodeValidationResult:
     (NSString*)json;
@@ -92,7 +127,8 @@ OBJC_EXPORT
 - (BraveSyncInternalsController*)createSyncInternalsController;
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
-- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged;
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
+          onSyncServiceShutdown:(void (^)())onSyncServiceShutdown;
 @end
 
 NS_ASSUME_NONNULL_END
