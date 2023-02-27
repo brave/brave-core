@@ -51,7 +51,7 @@ TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   for (const auto& opaque_origin :
        delegate_->TakeEphemeralStorageOpaqueOrigins(key_.second)) {
     storage_partition_->GetDOMStorageContext()->DeleteLocalStorage(
-        blink::StorageKey(opaque_origin), base::DoNothing());
+        blink::StorageKey::CreateFirstParty(opaque_origin), base::DoNothing());
   }
 
   if (!on_destroy_callbacks_.empty()) {
