@@ -35,7 +35,8 @@ using brave::FarbleKey;
 void LocalDOMWindow::SetEphemeralStorageOrigin(
     const SecurityOrigin* ephemeral_storage_origin) {
   DCHECK(ephemeral_storage_origin);
-  ephemeral_storage_key_ = BlinkStorageKey(ephemeral_storage_origin);
+  ephemeral_storage_key_ =
+      BlinkStorageKey::CreateFirstParty(ephemeral_storage_origin);
 }
 
 const SecurityOrigin* LocalDOMWindow::GetEphemeralStorageOrigin() const {

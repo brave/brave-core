@@ -46,7 +46,7 @@ void UrlStorageChecker::OnGetCookieList(
   }
 
   storage_partition_->GetLocalStorageControl()->BindStorageArea(
-      blink::StorageKey(url::Origin::Create(url_)),
+      blink::StorageKey::CreateFirstParty(url::Origin::Create(url_)),
       local_storage_area_.BindNewPipeAndPassReceiver());
   local_storage_area_->GetAll(
       {}, base::BindOnce(&UrlStorageChecker::OnGetLocalStorageData, this));
