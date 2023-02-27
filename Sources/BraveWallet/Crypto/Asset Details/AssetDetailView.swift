@@ -12,6 +12,7 @@ import Strings
 import BraveShared
 import BraveUI
 import Introspect
+import Shared
 
 struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore
@@ -25,7 +26,7 @@ struct AssetDetailView: View {
   
   @Environment(\.sizeCategory) private var sizeCategory
   /// Reference to the collection view used to back the `List` on iOS 16+
-  @State private var collectionView: UICollectionView?
+  @State private var collectionViewRef: WeakRef<UICollectionView>?
 
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
@@ -152,12 +153,12 @@ struct AssetDetailView: View {
     }
     .onChange(of: sizeCategory) { _ in
       // Fix broken header when text size changes on iOS 16+
-      collectionView?.collectionViewLayout.invalidateLayout()
+      self.collectionViewRef?.value?.collectionViewLayout.invalidateLayout()
     }
     .introspect(
       selector: TargetViewSelector.ancestorOrSiblingContaining
     ) { (collectionView: UICollectionView) in
-      self.collectionView = collectionView
+      self.collectionViewRef = .init(collectionView)
     }
     .background(
       Color.clear
