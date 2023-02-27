@@ -41,8 +41,31 @@ const char kMonkey3Path[] =
 
 const char kMonkey1Url[] =
     "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413";
+const char kMonkey2Url[] =
+    "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2555";
+const char kMonkey3Url[] =
+    "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2777";
+
 const char kMonkey1[] =
-    R"({"image":"ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg",
+    R"({"image":"ipfs://bafy1",
+                        "attributes":[
+                        {"trait_type":"Mouth","value":"Bored Cigarette"},
+                        {"trait_type":"Fur","value":"Zombie"},
+                        {"trait_type":"Background","value":"Purple"},
+                        {"trait_type":"Eyes","value":"Closed"},
+                        {"trait_type":"Clothes","value":"Toga"},
+                        {"trait_type":"Hat","value":"Cowboy Hat"}]})";
+const char kMonkey2[] =
+    R"({"image":"ipfs://bafy2",
+                        "attributes":[
+                        {"trait_type":"Mouth","value":"Bored Cigarette"},
+                        {"trait_type":"Fur","value":"Zombie"},
+                        {"trait_type":"Background","value":"Purple"},
+                        {"trait_type":"Eyes","value":"Closed"},
+                        {"trait_type":"Clothes","value":"Toga"},
+                        {"trait_type":"Hat","value":"Cowboy Hat"}]})";
+const char kMonkey3[] =
+    R"({"image":"ipfs://bafy3",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -100,6 +123,13 @@ class MockIpfsService : public IpfsService {
   MOCK_METHOD0(IsDaemonLaunched, bool());
 };
 
+class MockContentTypeChecker : public ContentTypeChecker {
+ public:
+  MOCK_METHOD2(CheckContentTypeSupported,
+               void(const std::string&,
+                    base::OnceCallback<void(absl::optional<bool>)>));
+};
+
 }  // namespace
 
 class BraveWalletPinServiceTest : public testing::Test {
@@ -112,9 +142,12 @@ class BraveWalletPinServiceTest : public testing::Test {
   void SetUp() override {
     auto* registry = pref_service_.registry();
     registry->RegisterDictionaryPref(kPinnedNFTAssets);
+    auto content_type_checker =
+        std::make_unique<testing::NiceMock<MockContentTypeChecker>>();
+    content_type_checker_ = content_type_checker.get();
     brave_wallet_pin_service_ = std::make_unique<BraveWalletPinService>(
         GetPrefs(), GetJsonRpcService(), GetIpfsLocalPinService(),
-        GetIpfsService());
+        GetIpfsService(), std::move(content_type_checker));
   }
 
   PrefService* GetPrefs() { return &pref_service_; }
@@ -131,9 +164,14 @@ class BraveWalletPinServiceTest : public testing::Test {
     return &ipfs_service_;
   }
 
+  testing::NiceMock<MockContentTypeChecker>* GetContentTypeChecker() {
+    return content_type_checker_;
+  }
+
   testing::NiceMock<MockIpfsLocalPinService> ipfs_local_pin_service_;
   testing::NiceMock<MockJsonRpcService> json_rpc_service_;
   testing::NiceMock<MockIpfsService> ipfs_service_;
+  testing::NiceMock<MockContentTypeChecker>* content_type_checker_;
 
   std::unique_ptr<BraveWalletPinService> brave_wallet_pin_service_;
   TestingPrefServiceSimple pref_service_;
@@ -141,6 +179,14 @@ class BraveWalletPinServiceTest : public testing::Test {
 };
 
 TEST_F(BraveWalletPinServiceTest, AddPin) {
+  {
+    ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& cid,
+               base::OnceCallback<void(absl::optional<bool>)> callback) {
+              std::move(callback).Run(true);
+            }));
+  }
   {
     ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
         .WillByDefault(::testing::Invoke(
@@ -161,8 +207,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
               EXPECT_EQ(kMonkey1Path, prefix);
               EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg",
-                        cids.at(1));
+              EXPECT_EQ("bafy1", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -188,7 +233,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
 
     base::Value::List expected_cids;
     expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    expected_cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    expected_cids.Append("bafy1");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
@@ -241,6 +286,178 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
   }
 }
 
+TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
+  {
+    ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& cid,
+               base::OnceCallback<void(absl::optional<bool>)> callback) {
+              EXPECT_EQ(cid, "ipfs://bafy1");
+              std::move(callback).Run(true);
+            }));
+    ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& contract_address, const std::string& token_id,
+               const std::string& chain_id,
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
+              EXPECT_EQ("0x1", chain_id);
+              EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+                        contract_address);
+              EXPECT_EQ("0x1", token_id);
+              std::move(callback).Run(kMonkey1Url, kMonkey1,
+                                      mojom::ProviderError::kSuccess, "");
+            }));
+    ON_CALL(*GetIpfsLocalPinService(), AddPins(_, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& prefix, const std::vector<std::string>& cids,
+               ipfs::AddPinCallback callback) {
+              EXPECT_EQ(kMonkey1Path, prefix);
+              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+                        cids.at(0));
+              EXPECT_EQ("bafy1", cids.at(1));
+              std::move(callback).Run(true);
+            }));
+
+    auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(123u));
+
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
+    absl::optional<bool> call_status;
+    service()->AddPin(
+        std::move(token), absl::nullopt,
+        base::BindLambdaForTesting(
+            [&call_status](bool result, mojom::PinErrorPtr error) {
+              call_status = result;
+              EXPECT_FALSE(error);
+            }));
+    EXPECT_TRUE(call_status.value());
+
+    const base::Value::Dict* token_record =
+        GetPrefs()
+            ->GetDict(kPinnedNFTAssets)
+            .FindDictByDottedPath(kMonkey1Path);
+
+    base::Value::List expected_cids;
+    expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    expected_cids.Append("bafy1");
+
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_PINNED),
+              *(token_record->FindString("status")));
+    EXPECT_EQ(nullptr, token_record->FindDict("error"));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(base::Time::FromTimeT(123u),
+              base::ValueToTime(token_record->Find("validate_timestamp")));
+  }
+
+  {
+    ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& cid,
+               base::OnceCallback<void(absl::optional<bool>)> callback) {
+              EXPECT_EQ(cid, "ipfs://bafy2");
+              std::move(callback).Run(false);
+            }));
+    ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& contract_address, const std::string& token_id,
+               const std::string& chain_id,
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
+              EXPECT_EQ("0x1", chain_id);
+              EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+                        contract_address);
+              EXPECT_EQ("0x1", token_id);
+              std::move(callback).Run(kMonkey2Url, kMonkey2,
+                                      mojom::ProviderError::kSuccess, "");
+            }));
+    ON_CALL(*GetIpfsLocalPinService(), AddPins(_, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& prefix, const std::vector<std::string>& cids,
+               ipfs::AddPinCallback callback) {
+              EXPECT_EQ(kMonkey1Path, prefix);
+              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+                        cids.at(0));
+              EXPECT_EQ("bafy2", cids.at(1));
+              std::move(callback).Run(true);
+            }));
+
+    auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(123u));
+
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
+    absl::optional<bool> call_status;
+    service()->AddPin(
+        std::move(token), absl::nullopt,
+        base::BindLambdaForTesting(
+            [&call_status](bool result, mojom::PinErrorPtr error) {
+              call_status = result;
+              EXPECT_TRUE(error);
+            }));
+    EXPECT_TRUE(call_status.value());
+
+    const base::Value::Dict* token_record =
+        GetPrefs()
+            ->GetDict(kPinnedNFTAssets)
+            .FindDictByDottedPath(kMonkey2Path);
+    EXPECT_EQ(nullptr, token_record);
+  }
+
+  {
+    ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& cid,
+               base::OnceCallback<void(absl::optional<bool>)> callback) {
+              EXPECT_EQ(cid, "ipfs://bafy3");
+              std::move(callback).Run(absl::nullopt);
+            }));
+    ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& contract_address, const std::string& token_id,
+               const std::string& chain_id,
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
+              EXPECT_EQ("0x1", chain_id);
+              EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+                        contract_address);
+              EXPECT_EQ("0x1", token_id);
+              std::move(callback).Run(kMonkey3Url, kMonkey3,
+                                      mojom::ProviderError::kSuccess, "");
+            }));
+    ON_CALL(*GetIpfsLocalPinService(), AddPins(_, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& prefix, const std::vector<std::string>& cids,
+               ipfs::AddPinCallback callback) {
+              EXPECT_EQ(kMonkey3Path, prefix);
+              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+                        cids.at(0));
+              EXPECT_EQ("bafy3", cids.at(1));
+              std::move(callback).Run(true);
+            }));
+
+    auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(123u));
+
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(kMonkey1Path);
+    token->is_erc721 = true;
+    absl::optional<bool> call_status;
+    service()->AddPin(
+        std::move(token), absl::nullopt,
+        base::BindLambdaForTesting(
+            [&call_status](bool result, mojom::PinErrorPtr error) {
+              call_status = result;
+              EXPECT_TRUE(error);
+            }));
+    EXPECT_TRUE(call_status.value());
+
+    const base::Value::Dict* token_record =
+        GetPrefs()
+            ->GetDict(kPinnedNFTAssets)
+            .FindDictByDottedPath(kMonkey2Path);
+    EXPECT_EQ(nullptr, token_record);
+  }
+}
+
 TEST_F(BraveWalletPinServiceTest, RemovePin) {
   {
     ScopedDictPrefUpdate update(GetPrefs(), kPinnedNFTAssets);
@@ -251,7 +468,7 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
     item.Set("validation_timestamp", "123");
     base::Value::List cids;
     cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    cids.Append("bafy1");
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
