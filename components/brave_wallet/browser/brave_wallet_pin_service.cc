@@ -20,6 +20,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "services/network/public/cpp/resource_request.h"
 
 namespace brave_wallet {
 
@@ -78,6 +79,8 @@ absl::optional<mojom::WalletPinServiceErrorCode> StringToErrorCode(
     return mojom::WalletPinServiceErrorCode::ERR_NOT_PINNED;
   } else if (error == "ERR_PINNING_FAILED") {
     return mojom::WalletPinServiceErrorCode::ERR_PINNING_FAILED;
+  } else if (error == "ERR_MEDIA_TYPE_UNSUPORTED") {
+    return mojom::WalletPinServiceErrorCode::ERR_MEDIA_TYPE_UNSUPORTED;
   }
   return absl::nullopt;
 }
@@ -149,9 +152,92 @@ std::string BraveWalletPinService::ErrorCodeToString(
       return "ERR_NOT_PINNED";
     case mojom::WalletPinServiceErrorCode::ERR_PINNING_FAILED:
       return "ERR_PINNING_FAILED";
+    case mojom::WalletPinServiceErrorCode::ERR_MEDIA_TYPE_UNSUPORTED:
+      return "ERR_MEDIA_TYPE_UNSUPORTED";
   }
   NOTREACHED();
   return "";
+}
+
+ContentTypeChecker::ContentTypeChecker(
+    PrefService* pref_service,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : pref_service_(pref_service),
+      url_loader_factory_(std::move(url_loader_factory)) {}
+
+ContentTypeChecker::ContentTypeChecker() = default;
+
+ContentTypeChecker::~ContentTypeChecker() = default;
+
+void ContentTypeChecker::CheckContentTypeSupported(
+    const std::string& ipfs_url,
+    base::OnceCallback<void(absl::optional<bool>)> callback) {
+  // Create a request with no data or cookies.
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  GURL translated_url;
+  if (!ipfs::TranslateIPFSURI(GURL(ipfs_url), &translated_url,
+                              ipfs::GetDefaultNFTIPFSGateway(pref_service_),
+                              false)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  resource_request->url = translated_url;
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->redirect_mode = ::network::mojom::RedirectMode::kFollow;
+
+  auto annotation = net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
+            semantics {
+              sender: "Brave wallet pin service"
+              description:
+                "This service is used to pin NFTs which are added to the wallet."
+              trigger:
+                "Triggered by enable auto-pinning mode from the Brave Wallet page or settings."
+              data:
+                "Options of the commands."
+              destination: WEBSITE
+            }
+            policy {
+              cookies_allowed: NO
+              setting:
+                "You can enable or disable this feature in brave://settings."
+              policy_exception_justification:
+                "Not implemented."
+            }
+          )");
+
+  auto url_loader =
+      network::SimpleURLLoader::Create(std::move(resource_request), annotation);
+  auto* url_loader_ptr = url_loader.get();
+  auto it = loaders_in_progress_.insert(loaders_in_progress_.end(),
+                                        std::move(url_loader));
+
+  url_loader_ptr->SetTimeoutDuration(base::Seconds(60));
+  url_loader_ptr->SetRetryOptions(
+      5, network::SimpleURLLoader::RetryMode::RETRY_ON_5XX |
+             network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+  url_loader_ptr->DownloadHeadersOnly(
+      url_loader_factory_.get(),
+      base::BindOnce(&ContentTypeChecker::OnHeadersFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(it),
+                     std::move(callback)));
+}
+
+void ContentTypeChecker::OnHeadersFetched(
+    UrlLoaderList::iterator loader_it,
+    base::OnceCallback<void(absl::optional<bool>)> callback,
+    scoped_refptr<net::HttpResponseHeaders> headers) {
+  loaders_in_progress_.erase(loader_it);
+  if (!headers) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  std::string content_type_value;
+  headers->GetMimeType(&content_type_value);
+  if (base::StartsWith(content_type_value, "image/")) {
+    std::move(callback).Run(true);
+  } else {
+    std::move(callback).Run(false);
+  }
 }
 
 // static
@@ -204,11 +290,13 @@ BraveWalletPinService::BraveWalletPinService(
     PrefService* prefs,
     JsonRpcService* service,
     ipfs::IpfsLocalPinService* local_pin_service,
-    IpfsService* ipfs_service)
+    IpfsService* ipfs_service,
+    std::unique_ptr<ContentTypeChecker> content_type_checker)
     : prefs_(prefs),
       json_rpc_service_(service),
       local_pin_service_(local_pin_service),
-      ipfs_service_(ipfs_service) {
+      ipfs_service_(ipfs_service),
+      content_type_checker_(std::move(content_type_checker)) {
   ipfs_service_->AddObserver(this);
 }
 
@@ -507,20 +595,56 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
   std::vector<std::string> cids;
 
   cids.push_back(ExtractCID(token_url).value());
-  auto* image = parsed_result->FindStringKey("image");
-  if (image) {
-    auto image_cid = ExtractCID(*image);
+  auto* image_url = parsed_result->FindStringKey("image");
+  if (image_url) {
+    auto image_cid = ExtractCID(*image_url);
     if (image_cid) {
-      cids.push_back(image_cid.value());
+      cids.push_back(*image_cid);
+      content_type_checker_->CheckContentTypeSupported(
+          *image_url,
+          base::BindOnce(&BraveWalletPinService::OnContentTypeChecked,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(service),
+                         std::move(token), std::move(cids),
+                         std::move(callback)));
+      return;
     }
+  }
+  OnContentTypeChecked(std::move(service), std::move(token), std::move(cids),
+                       std::move(callback), true);
+}
+
+void BraveWalletPinService::OnContentTypeChecked(
+    absl::optional<std::string> service,
+    mojom::BlockchainTokenPtr token,
+    std::vector<std::string> cids,
+    AddPinCallback callback,
+    absl::optional<bool> result) {
+  if (!result.has_value()) {
+    SetTokenStatus(service, token,
+                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, nullptr);
+    std::move(callback).Run(
+        false, mojom::PinError::New(
+                   mojom::WalletPinServiceErrorCode::ERR_FETCH_METADATA_FAILED,
+                   "Failed to verify media type"));
+    return;
+  }
+
+  if (!result.value()) {
+    SetTokenStatus(service, token,
+                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, nullptr);
+    std::move(callback).Run(
+        false,
+        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_MEDIA_TYPE_UNSUPORTED,
+                             "Media type not supported"));
+    return;
   }
 
   auto path = GetTokenPrefPath(service, token);
   if (!path) {
     std::move(callback).Run(
-        false,
-        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_WRONG_TOKEN,
-                             "Wrong token data"));
+        false, mojom::PinError::New(
+                   mojom::WalletPinServiceErrorCode::ERR_WRONG_METADATA_FORMAT,
+                   "Wrong token data"));
     return;
   }
 

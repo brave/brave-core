@@ -222,7 +222,8 @@ enum WalletPinServiceErrorCode {
   ERR_WRONG_METADATA_FORMAT = 4,
   ERR_ALREADY_PINNED = 5,
   ERR_NOT_PINNED = 6,
-  ERR_PINNING_FAILED = 7
+  ERR_PINNING_FAILED = 7,
+  ERR_MEDIA_TYPE_UNSUPORTED = 8
 };
 
 enum TokenPinStatusCode {

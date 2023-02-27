@@ -23,9 +23,41 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+class ContentTypeChecker {
+ public:
+  ContentTypeChecker(
+      PrefService* pref_service,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  virtual ~ContentTypeChecker();
+
+  virtual void CheckContentTypeSupported(
+      const std::string& cid,
+      base::OnceCallback<void(absl::optional<bool>)> callback);
+
+ protected:
+  // For tests
+  ContentTypeChecker();
+
+ private:
+  using UrlLoaderList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
+
+  void OnHeadersFetched(UrlLoaderList::iterator iterator,
+                        base::OnceCallback<void(absl::optional<bool>)> callback,
+                        scoped_refptr<net::HttpResponseHeaders> headers);
+
+  raw_ptr<PrefService> pref_service_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  // Reports that are actively being sent.
+  UrlLoaderList loaders_in_progress_;
+
+  base::WeakPtrFactory<ContentTypeChecker> weak_ptr_factory_{this};
+};
 
 /**
  * At the moment only local pinning is supported so use absl::nullopt
@@ -35,10 +67,12 @@ class BraveWalletPinService : public KeyedService,
                               public brave_wallet::mojom::WalletPinService,
                               public ipfs::IpfsServiceObserver {
  public:
-  BraveWalletPinService(PrefService* prefs,
-                        JsonRpcService* service,
-                        ipfs::IpfsLocalPinService* local_pin_service,
-                        IpfsService* ipfs_service);
+  BraveWalletPinService(
+      PrefService* prefs,
+      JsonRpcService* service,
+      ipfs::IpfsLocalPinService* local_pin_service,
+      IpfsService* ipfs_service,
+      std::unique_ptr<ContentTypeChecker> content_type_checker);
   ~BraveWalletPinService() override;
 
   virtual void Restore();
@@ -134,6 +168,11 @@ class BraveWalletPinService : public KeyedService,
                                const std::string& result,
                                mojom::ProviderError error,
                                const std::string& error_message);
+  void OnContentTypeChecked(absl::optional<std::string> service,
+                            mojom::BlockchainTokenPtr token,
+                            std::vector<std::string> cids,
+                            AddPinCallback callback,
+                            absl::optional<bool> result);
 
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
@@ -149,6 +188,7 @@ class BraveWalletPinService : public KeyedService,
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<ipfs::IpfsLocalPinService> local_pin_service_ = nullptr;
   raw_ptr<IpfsService> ipfs_service_ = nullptr;
+  std::unique_ptr<ContentTypeChecker> content_type_checker_;
 
   base::WeakPtrFactory<BraveWalletPinService> weak_ptr_factory_{this};
 };
