@@ -22,6 +22,7 @@
 @class BraveWalletAPI;
 @class AdblockService;
 @class BraveTabGeneratorAPI;
+@class WebImageDownloader;
 @protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -57,6 +58,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
 
 @property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
+
+@property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///

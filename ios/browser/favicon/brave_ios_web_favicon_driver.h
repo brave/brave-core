@@ -9,8 +9,8 @@
 #include <memory>
 #include <vector>
 
+#import "brave/ios/browser/api/web_image/image_downloader.h"
 #include "components/favicon/core/favicon_driver_impl.h"
-#import "components/image_fetcher/ios/ios_image_data_fetcher_wrapper.h"
 #include "ios/web/public/favicon/favicon_url.h"
 #include "ios/web/public/web_state_observer.h"
 #import "ios/web/public/web_state_user_data.h"
@@ -85,7 +85,7 @@ class BraveIOSWebFaviconDriver
                         bool icon_url_changed);
 
   // Image Fetcher used to fetch favicon.
-  image_fetcher::IOSImageDataFetcherWrapper image_fetcher_;
+  brave::ImageDownloader image_fetcher_;
   std::size_t max_image_size_;
 
   // The WebState this instance is observing. Will be null after

@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
-#import "brave/ios/browser/svg/svg_image.h"
 
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
@@ -17,8 +16,6 @@
 #include "ios/web/public/navigation/navigation_item.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "skia/ext/skia_utils_ios.h"
-#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/image/image.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -53,48 +50,9 @@ GURL BraveIOSWebFaviconDriver::GetActiveURL() {
 int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
                                             int max_image_size,
                                             ImageDownloadCallback callback) {
-  static int downloaded_image_count = 0;
-  int local_download_id = ++downloaded_image_count;
-
-  GURL local_url(url);
-  __block ImageDownloadCallback local_callback = std::move(callback);
-
-  image_fetcher::ImageDataFetcherBlock ios_callback =
-      ^(NSData* data, const image_fetcher::RequestMetadata& metadata) {
-        if (metadata.http_response_code ==
-            image_fetcher::RequestMetadata::RESPONSE_CODE_INVALID)
-          return;
-
-        std::vector<SkBitmap> frames;
-        std::vector<gfx::Size> sizes;
-        if (data) {
-          frames = skia::ImageDataToSkBitmapsWithMaxSize(
-              data, max_image_size_ > 0 ? max_image_size_ : max_image_size);
-          for (const auto& frame : frames) {
-            sizes.push_back(gfx::Size(frame.width(), frame.height()));
-          }
-          DCHECK_EQ(frames.size(), sizes.size());
-
-          // When there are no frames, attempt to parse the image as SVG
-          // `skia::ImageDataToSkBitmapsWithMaxSize` parses all other formats
-          // but not SVG
-          if (!frames.size()) {
-            SkBitmap svg_image =
-                SVGImage::MakeFromData(data, max_image_size, max_image_size);
-            if (!svg_image.empty()) {
-              frames.push_back(svg_image);
-              sizes.push_back(gfx::Size(svg_image.width(), svg_image.height()));
-            }
-          }
-          DCHECK_EQ(frames.size(), sizes.size());
-        }
-        std::move(local_callback)
-            .Run(local_download_id, metadata.http_response_code, local_url,
-                 frames, sizes);
-      };
-  image_fetcher_.FetchImageDataWebpDecoded(url, ios_callback);
-
-  return downloaded_image_count;
+  return image_fetcher_.DownloadImage(
+      url, max_image_size_ > 0 ? max_image_size_ : max_image_size,
+      std::move(callback));
 }
 
 void BraveIOSWebFaviconDriver::DownloadManifest(
