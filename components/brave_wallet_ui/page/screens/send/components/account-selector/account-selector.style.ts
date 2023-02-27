@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { Icon, StyledDiv } from '../../shared.styles'
+import { Icon, StyledDiv, StyledButton } from '../../shared.styles'
 
 export const ButtonIcon = styled(Icon)`
   background-color: ${(p) => p.theme.color.text03};
@@ -37,4 +37,10 @@ export const DropDown = styled(StyledDiv)`
   left: 0px;
   top: 56px;
   overflow-y: auto;
+`
+
+export const SelectorButton = styled(StyledButton)`
+  :disabled {
+    opacity: 0.4;
+  }
 `
