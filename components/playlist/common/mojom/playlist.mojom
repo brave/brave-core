@@ -62,14 +62,15 @@ interface PlaylistService {
   GetPlaylistItem(string id) => (PlaylistItem? item);
 
   // Store all media files from given URL.
-  AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
+  AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url,
+                                  bool can_cache);
 
   // Store or find all media files from the active tab.
-  AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
-  FindMediaFilesFromActiveTab() => (url.mojom.Url page_url, 
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache);
+  FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
                                     array<PlaylistItem> items);
 
-  AddMediaFiles(array<PlaylistItem> items, string playlist_id);
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache);
 
   CopyItemToPlaylist(array<string> item_ids, string playlist_id);
 
@@ -79,8 +80,10 @@ interface PlaylistService {
 
   UpdateItem(PlaylistItem item);
 
-  // Try downloading media files again
-  RecoverLocalDataForItem(string id, bool update_media_src_before_recovery);
+  // Try downloading media files again. Returns PlaylistItem after trying
+  // recovery. If it succeeded, |cached| state of the return itme would be true.
+  RecoverLocalDataForItem(string id, bool update_media_src_before_recovery)
+      => (PlaylistItem result);
 
   // Removes media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);

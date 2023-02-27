@@ -329,9 +329,9 @@ bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   return !!playlist_info;
 }
 
-void PlaylistService::DownloadMediaFile(
-    const mojom::PlaylistItemPtr& item,
-    bool update_media_src_and_retry_on_fail) {
+void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
+                                        bool update_media_src_and_retry_on_fail,
+                                        DownloadMediaFileCallback callback) {
   VLOG(2) << __func__;
   DCHECK(item);
 
@@ -342,7 +342,7 @@ void PlaylistService::DownloadMediaFile(
                           weak_factory_.GetWeakPtr());
   job->on_finish_callback = base::BindOnce(
       &PlaylistService::OnMediaFileDownloadFinished, weak_factory_.GetWeakPtr(),
-      update_media_src_and_retry_on_fail);
+      update_media_src_and_retry_on_fail, std::move(callback));
 
   media_file_download_manager_->DownloadMediaFile(std::move(job));
 }
@@ -417,19 +417,22 @@ mojom::PlaylistItemPtr PlaylistService::GetPlaylistItem(const std::string& id) {
 
 void PlaylistService::AddMediaFilesFromPageToPlaylist(
     const std::string& playlist_id,
-    const GURL& url) {
+    const GURL& url,
+    bool can_cache) {
   VLOG(2) << __func__ << " " << playlist_id << " " << url;
   PlaylistDownloadRequestManager::Request request;
   request.url_or_contents = url.spec();
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id,
-      prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
+      /* cache= */ can_cache &&
+          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault));
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
-    const std::string& playlist_id) {
+    const std::string& playlist_id,
+    bool can_cache) {
   DCHECK(delegate_);
 
   auto* contents = delegate_->GetActiveWebContents();
@@ -437,7 +440,8 @@ void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     return;
 
   AddMediaFilesFromContentsToPlaylist(
-      playlist_id, contents, prefs_->GetBoolean(kPlaylistCacheByDefault));
+      playlist_id, contents,
+      /* cache= */ can_cache && prefs_->GetBoolean(kPlaylistCacheByDefault));
 }
 
 void PlaylistService::FindMediaFilesFromActiveTab(
@@ -462,10 +466,13 @@ void PlaylistService::FindMediaFilesFromActiveTab(
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
-                                    const std::string& playlist_id) {
-  AddMediaFilesFromItems(playlist_id,
-                         prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-                         std::move(items));
+                                    const std::string& playlist_id,
+                                    bool can_cache) {
+  AddMediaFilesFromItems(
+      playlist_id,
+      /* cache= */ can_cache &&
+          prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+      std::move(items));
 }
 
 void PlaylistService::RemoveItemFromPlaylist(const std::string& playlist_id,
@@ -542,7 +549,8 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
       base::BindOnce(&base::CreateDirectory, GetPlaylistItemDirPath(item->id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
                      weak_factory_.GetWeakPtr(), item.Clone(), cache,
-                     /*update_media_src_and_retry_on_fail=*/false));
+                     /*update_media_src_and_retry_on_fail=*/false,
+                     base::NullCallback()));
 }
 
 bool PlaylistService::ShouldDownloadOnBackground(
@@ -555,16 +563,21 @@ void PlaylistService::OnPlaylistItemDirCreated(
     mojom::PlaylistItemPtr item,
     bool cache_media,
     bool update_media_src_and_retry_caching_on_fail,
+    DownloadMediaFileCallback callback,
     bool directory_ready) {
   VLOG(2) << __func__;
   if (!directory_ready) {
     NotifyPlaylistChanged({PlaylistChangeParams::Type::kItemAborted, item->id});
+    if (callback) {
+      std::move(callback).Run(item.Clone());
+    }
     return;
   }
 
   DownloadThumbnail(item);
   if (cache_media) {
-    DownloadMediaFile(item, update_media_src_and_retry_caching_on_fail);
+    DownloadMediaFile(item, update_media_src_and_retry_caching_on_fail,
+                      std::move(callback));
   }
 }
 
@@ -651,10 +664,14 @@ void PlaylistService::ResetAll() {
 
 void PlaylistService::RecoverLocalDataForItem(
     const std::string& id,
-    bool update_media_src_before_recovery) {
+    bool update_media_src_before_recovery,
+    RecoverLocalDataForItemCallback callback) {
   const auto* item_value = prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
   if (!item_value) {
     LOG(ERROR) << __func__ << ": Invalid playlist id for recovery: " << id;
+    if (callback) {
+      std::move(callback).Run({});
+    }
     return;
   }
 
@@ -663,7 +680,8 @@ void PlaylistService::RecoverLocalDataForItem(
 
   if (!update_media_src_before_recovery) {
     RecoverLocalDataForItemImpl(std::move(item),
-                                /*update_media_src_and_retry_on_fail=*/true);
+                                /*update_media_src_and_retry_on_fail=*/true,
+                                std::move(callback));
     return;
   }
 
@@ -672,6 +690,7 @@ void PlaylistService::RecoverLocalDataForItem(
   auto update_media_src_and_recover = base::BindOnce(
       [](base::WeakPtr<PlaylistService> service,
          mojom::PlaylistItemPtr old_item,
+         RecoverLocalDataForItemCallback callback,
          std::vector<mojom::PlaylistItemPtr> found_items) {
         if (!service) {
           return;
@@ -682,7 +701,8 @@ void PlaylistService::RecoverLocalDataForItem(
           // In this case, just try recovering with existing data.
           service->RecoverLocalDataForItemImpl(
               std::move(old_item),
-              /*update_media_src_and_retry_on_fail=*/false);
+              /*update_media_src_and_retry_on_fail=*/false,
+              std::move(callback));
           return;
         }
 
@@ -708,9 +728,9 @@ void PlaylistService::RecoverLocalDataForItem(
 
         service->RecoverLocalDataForItemImpl(
             std::move(new_item),
-            /*update_media_src_and_retry_on_fail=*/false);
+            /*update_media_src_and_retry_on_fail=*/false, std::move(callback));
       },
-      weak_factory_.GetWeakPtr(), item->Clone());
+      weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
   PlaylistDownloadRequestManager::Request request;
   DCHECK(!item->page_source.spec().empty());
@@ -771,11 +791,15 @@ void PlaylistService::DeleteAllPlaylistItems() {
 
 void PlaylistService::RecoverLocalDataForItemImpl(
     const mojom::PlaylistItemPtr& item,
-    bool update_media_src_and_retry_on_fail) {
+    bool update_media_src_and_retry_on_fail,
+    RecoverLocalDataForItemCallback callback) {
   DCHECK(!item->id.empty());
 
   if (item->cached) {
     VLOG(2) << __func__ << ": This is ready to play(" << item->id << ")";
+    if (callback) {
+      std::move(callback).Run(item.Clone());
+    }
     return;
   }
 
@@ -792,7 +816,8 @@ void PlaylistService::RecoverLocalDataForItemImpl(
       base::BindOnce(make_sure_path_exists, GetPlaylistItemDirPath(item->id)),
       base::BindOnce(&PlaylistService::OnPlaylistItemDirCreated,
                      weak_factory_.GetWeakPtr(), item->Clone(),
-                     /* cache = */ true, update_media_src_and_retry_on_fail));
+                     /* cache = */ true, update_media_src_and_retry_on_fail,
+                     std::move(callback)));
 }
 
 void PlaylistService::RemoveLocalDataForItemImpl(
@@ -820,6 +845,7 @@ void PlaylistService::RemoveLocalDataForItemImpl(
 
 void PlaylistService::OnMediaFileDownloadFinished(
     bool update_media_src_and_retry_on_fail,
+    DownloadMediaFileCallback callback,
     mojom::PlaylistItemPtr item,
     const std::string& media_file_path) {
   DCHECK(item);
@@ -835,7 +861,8 @@ void PlaylistService::OnMediaFileDownloadFinished(
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&PlaylistService::RecoverLocalDataForItem,
                                   weak_factory_.GetWeakPtr(), item->id,
-                                  /*update_media_src_before_recovery=*/true));
+                                  /*update_media_src_before_recovery=*/true,
+                                  std::move(callback)));
     return;
   }
 
@@ -852,6 +879,10 @@ void PlaylistService::OnMediaFileDownloadFinished(
                              ? PlaylistChangeParams::Type::kItemCached
                              : PlaylistChangeParams::Type::kItemAborted,
                          new_item->id});
+
+  if (callback) {
+    std::move(callback).Run(new_item.Clone());
+  }
 }
 
 #if BUILDFLAG(IS_ANDROID)
