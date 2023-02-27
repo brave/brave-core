@@ -442,7 +442,10 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     service->AddObserverForTest(&observer);
     service->RecoverLocalDataForItem(
         id,
-        /*update_media_src_before_recovery*/ false);
+        /*update_media_src_before_recovery*/ false,
+        base::BindLambdaForTesting([](mojom::PlaylistItemPtr item){
+          EXPECT_FALSE(item->cached);
+        }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserverForTest(&observer);
@@ -473,7 +476,10 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           // try recovering from the url.
           fake_download_request_manager->SetItemToDiscover(item.Clone());
           service->RecoverLocalDataForItem(
-              id, /*update_media_src_before_recovery=*/true);
+              id, /*update_media_src_before_recovery=*/true,
+              base::BindLambdaForTesting([](mojom::PlaylistItemPtr item){
+                EXPECT_TRUE(item->cached);
+              }));
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
 
@@ -718,7 +724,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
         const auto& item = items.front();
         service->RecoverLocalDataForItem(
-            item->id, /*update_media_src_before_recovery*/ false);
+            item->id, /*update_media_src_before_recovery*/ false, 
+            base::NullCallback());
 
         base::FilePath media_path;
         ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));

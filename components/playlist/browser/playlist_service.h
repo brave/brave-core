@@ -144,8 +144,10 @@ class PlaylistService : public KeyedService,
                                const std::string& item_id,
                                int16_t position) override;
   void UpdateItem(mojom::PlaylistItemPtr item) override;
-  void RecoverLocalDataForItem(const std::string& item_id,
-                               bool update_media_src_before_recovery) override;
+  void RecoverLocalDataForItem(
+      const std::string& item_id,
+      bool update_media_src_before_recovery,
+      RecoverLocalDataForItemCallback callback) override;
   void RemoveLocalDataForItem(const std::string& item_id) override;
   void RemoveLocalDataForItemsInPlaylist(
       const std::string& playlist_id) override;
@@ -205,18 +207,17 @@ class PlaylistService : public KeyedService,
 
   bool ShouldDownloadOnBackground(content::WebContents* contents) const;
 
-  void OnPlaylistItemDirCreated(mojom::PlaylistItemPtr item,
-                                bool cache_media,
-                                bool update_media_src_and_retry_caching_on_fail,
-                                bool directory_ready);
-
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
+
+  using DownloadMediaFileCallback =
+      base::OnceCallback<void(mojom::PlaylistItemPtr)>;
   void DownloadMediaFile(const mojom::PlaylistItemPtr& item,
-                         bool update_media_src_and_retry_on_fail);
+                         bool update_media_src_and_retry_on_fail,
+                         DownloadMediaFileCallback callback);
 
   base::SequencedTaskRunner* GetTaskRunner();
 
@@ -270,8 +271,15 @@ class PlaylistService : public KeyedService,
   void DeleteAllPlaylistItems();
 
   void RecoverLocalDataForItemImpl(const mojom::PlaylistItemPtr& item,
-                                   bool update_media_src_and_retry_on_fail);
+                                   bool update_media_src_and_retry_on_fail,
+                                   RecoverLocalDataForItemCallback callback);
   void RemoveLocalDataForItemImpl(const mojom::PlaylistItemPtr& item);
+
+  void OnPlaylistItemDirCreated(mojom::PlaylistItemPtr item,
+                                bool cache_media,
+                                bool update_media_src_and_retry_caching_on_fail,
+                                DownloadMediaFileCallback callback,
+                                bool directory_ready);
 
   void OnMediaFileDownloadProgressed(const mojom::PlaylistItemPtr& item,
                                      int64_t total_bytes,
@@ -279,6 +287,7 @@ class PlaylistService : public KeyedService,
                                      int percent_complete,
                                      base::TimeDelta remaining_time);
   void OnMediaFileDownloadFinished(bool update_media_src_and_retry_on_fail,
+                                   DownloadMediaFileCallback callback,
                                    mojom::PlaylistItemPtr item,
                                    const std::string& media_file_path);
 
