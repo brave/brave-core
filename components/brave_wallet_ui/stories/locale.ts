@@ -432,7 +432,7 @@ provideStrings({
   braveWalletBuyTransakName: 'Transak',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
-  braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuySardineDescription: 'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
