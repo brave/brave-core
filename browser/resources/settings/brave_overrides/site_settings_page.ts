@@ -45,7 +45,7 @@ RegisterPolymerTemplateModifications({
     if (!siteSettingsShieldsTitle) {
       console.error('[Brave Settings Overrides] Couldn\'t find shields title')
     } else {
-      siteSettingsShieldsTitle.textcontent =
+      siteSettingsShieldsTitle.textContent =
           loadTimeData.getString('siteSettingsShields')
     }
   }
