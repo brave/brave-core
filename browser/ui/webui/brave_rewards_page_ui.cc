@@ -1143,7 +1143,7 @@ void RewardsDOMHandler::OnGetRecurringTips(
     publisher.Set("provider", item->provider);
     publisher.Set("url", item->url);
     publisher.Set("favIcon", item->favicon_url);
-    publisher.Set("tipDate", 0);
+    publisher.Set("tipDate", static_cast<double>(item->reconcile_stamp));
     publishers.Append(std::move(publisher));
   }
 

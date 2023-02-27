@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -184,12 +185,9 @@ function reconcileComplete (properties: { type: number, result: number }) {
   actions.getContributeList()
   actions.getBalance()
   actions.getRewardsParameters()
+  actions.getTipTable()
 
   getCurrentBalanceReport()
-
-  if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
-    chrome.send('brave_rewards.getOneTimeTips')
-  }
 
   // EXPIRED TOKEN
   if (properties.result === 24) {

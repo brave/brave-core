@@ -480,9 +480,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC" desc="">Set up recurring monthly tips so you can continually support your favorite creators.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY" desc="">No monthly tips set up yet.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_NEXT_CONTRIBUTION" desc="">Next contribution</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_TIPS" desc="">Total monthly tips this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite content creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
@@ -497,7 +497,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Show Tip buttons on sites</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tips date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>

@@ -243,6 +243,12 @@ class RewardsService : public KeyedService {
                      ledger::mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
+
+  virtual void SetMonthlyContribution(
+      const std::string& publisher_id,
+      double amount,
+      base::OnceCallback<void(bool)> callback) = 0;
+
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTips(GetOneTimeTipsCallback callback) = 0;
   virtual void SetPublisherExclude(
@@ -271,6 +277,7 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  // DEPRECATED: Use `SetMonthlyContribution`.
   virtual void SaveRecurringTip(const std::string& publisher_key,
                                 double amount,
                                 OnTipCallback callback) = 0;

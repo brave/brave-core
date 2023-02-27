@@ -18,7 +18,7 @@ export const root = styled.span`
 
 export const icon = styled.span`
   position: relative;
-  margin-right: 12px;
+  margin-right: 18px;
 
   img {
     display: inline-block;
@@ -48,3 +48,10 @@ export const name = styled.span`
 `
 
 export const platform = styled.span``
+
+export const info = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #858999;
+`
