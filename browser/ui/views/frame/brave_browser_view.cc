@@ -585,6 +585,20 @@ void BraveBrowserView::OnThemeChanged() {
   }
 }
 
+TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return BrowserView::GetTabSearchBubbleHost();
+  }
+
+  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+    return vertical_tab_strip_widget_delegate_view_
+        ->vertical_tab_strip_region_view()
+        ->GetTabSearchBubbleHost();
+  }
+
+  return BrowserView::GetTabSearchBubbleHost();
+}
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }

@@ -78,6 +78,7 @@ class BraveBrowserView : public BrowserView {
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
+  TabSearchBubbleHost* GetTabSearchBubbleHost() override;
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
   bool IsSidebarVisible() const;
