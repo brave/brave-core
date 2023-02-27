@@ -181,7 +181,8 @@ MdTextButton::MdTextButton(PressedCallback callback,
         const SkColor fill_color = SK_ColorTRANSPARENT;
         gfx::RectF boundsF(host->GetLocalBounds());
         return std::make_unique<InkDropHighlight>(
-            boundsF.size(), static_cast<MdTextButton*>(host)->GetCornerRadius(),
+            boundsF.size(),
+            static_cast<MdTextButton*>(host)->GetCornerRadiusValue(),
             boundsF.CenterPoint(), fill_color);
       },
       this));
@@ -191,7 +192,7 @@ MdTextButton::~MdTextButton() = default;
 
 SkPath MdTextButton::GetHighlightPath() const {
   SkPath path;
-  int radius = GetCornerRadius();
+  float radius = GetCornerRadiusValue();
   path.addRRect(
       SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
   return path;
@@ -297,7 +298,7 @@ void MdTextButton::UpdateBackgroundColor() {
 
   SetBackground(
       CreateBackgroundFromPainter(Painter::CreateRoundRectWith1PxBorderPainter(
-          colors.background_color, colors.stroke_color, GetCornerRadius())));
+          colors.background_color, colors.stroke_color, GetCornerRadiusValue())));
 }
 
 void MdTextButton::UpdateColors() {
@@ -326,7 +327,7 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     flags.setColor(current_color);
     flags.setStyle(cc::PaintFlags::kFill_Style);
     flags.setAntiAlias(true);
-    canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadius(),
+    canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadiusValue(),
                           flags);
   }
 }
