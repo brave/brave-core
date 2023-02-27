@@ -100,7 +100,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);
-  void SetJoinSyncChainCallback(base::OnceCallback<void(const bool&)> callback);
+  void SetJoinSyncChainCallback(base::OnceCallback<void(bool)> callback);
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const syncer::SyncProtocolError&)> callback);
 

@@ -338,7 +338,7 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
 }
 
 void BraveSyncWorker::SetJoinSyncChainCallback(
-    base::OnceCallback<void(const bool&)> callback) {
+    base::OnceCallback<void(bool)> callback) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
 
@@ -346,7 +346,7 @@ void BraveSyncWorker::SetJoinSyncChainCallback(
     return;
   }
 
-  sync_service->SetJoinChainResultCallback(base::BindOnce(std::move(callback)));
+  sync_service->SetJoinChainResultCallback(std::move(callback));
 }
 
 void BraveSyncWorker::PermanentlyDeleteAccount(
@@ -358,7 +358,7 @@ void BraveSyncWorker::PermanentlyDeleteAccount(
     return;
   }
 
-  sync_service->PermanentlyDeleteAccount(base::BindOnce(std::move(callback)));
+  sync_service->PermanentlyDeleteAccount(std::move(callback));
 }
 
 syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {

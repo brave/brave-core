@@ -365,11 +365,8 @@ const char kSyncFailedDecryptSeedNotice[] =
   _worker->ResetSync();
 }
 
-- (void)setJoinSyncChain:(void (^)(bool success))completion {
-  _worker->SetJoinSyncChainCallback(
-      base::BindOnce([](void (^completion)(bool),
-                        const bool& success) { completion(success); },
-                     completion));
+- (void)didJoinSyncChain:(void (^)(bool success))completion {
+  _worker->SetJoinSyncChainCallback(base::BindOnce(completion));
 }
 
 - (void)permanentlyDeleteAccount:

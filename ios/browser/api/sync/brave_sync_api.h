@@ -71,7 +71,6 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber;
 
 OBJC_EXPORT
-
 @interface BraveSyncAPI : NSObject
 
 @property(nonatomic, readonly) bool canSyncFeatureStart;
@@ -89,7 +88,7 @@ OBJC_EXPORT
 
 - (void)resetSync;
 
-- (void)setJoinSyncChain:(void (^)(bool))completion;
+- (void)didJoinSyncChain:(void (^)(bool))completion;
 
 - (void)permanentlyDeleteAccount:
     (void (^)(BraveSyncAPISyncProtocolErrorResult))completion;
