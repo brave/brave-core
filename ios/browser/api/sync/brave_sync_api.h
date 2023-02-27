@@ -12,7 +12,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BraveSyncInternalsController;
-@protocol SyncPreferenceObserver;
 
 typedef NSInteger BraveSyncAPISyncProtocolErrorResult
     NS_TYPED_ENUM NS_SWIFT_NAME(BraveSyncAPI.SyncProtocolErrorResult);
@@ -78,7 +77,6 @@ OBJC_EXPORT
 @property(nonatomic, readonly) bool isFirstSetupComplete;
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
 @property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
-@property(nullable, nonatomic, weak) id<SyncPreferenceObserver> delegate;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -88,7 +86,7 @@ OBJC_EXPORT
 
 - (void)resetSync;
 
-- (void)didJoinSyncChain:(void (^)(bool))completion;
+- (void)setDidJoinSyncChain:(void (^)(bool))completion;
 
 - (void)permanentlyDeleteAccount:
     (void (^)(BraveSyncAPISyncProtocolErrorResult))completion;

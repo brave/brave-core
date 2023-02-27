@@ -26,8 +26,6 @@ source_set("sync") {
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//brave/components/brave_sync:time_limited_codes",
-    "//components/prefs",
-    "//components/prefs/ios",
     "//components/sync/base",
     "//components/sync/driver",
     "//components/sync/protocol",

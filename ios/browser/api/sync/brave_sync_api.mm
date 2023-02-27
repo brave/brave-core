@@ -15,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
-
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_validator.h"
@@ -24,10 +23,6 @@
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
-#include "components/prefs/ios/pref_observer_bridge.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_member.h"
-#include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
@@ -36,7 +31,6 @@
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
-
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
@@ -338,7 +332,7 @@ BraveSyncAPIWordsValidationStatus const
   _worker->ResetSync();
 }
 
-- (void)didJoinSyncChain:(void (^)(bool success))completion {
+- (void)setDidJoinSyncChain:(void (^)(bool success))completion {
   _worker->SetJoinSyncChainCallback(base::BindOnce(completion));
 }
 
