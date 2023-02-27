@@ -10,7 +10,7 @@ import Flex from '../../../Flex'
 import { useLazyFavicon } from '../useUnpaddedImageUrl'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from './Context'
 import { getTranslatedChannelName } from './ChannelCard'
-import { channels as ChannelIcons } from './Icons'
+import { channelIcons as ChannelIcons } from './Icons'
 
 interface Props {
   publisherId: string
@@ -46,6 +46,7 @@ const FavIconContainer = styled.div`
   height: 24px;
   flex-shrink: 0;
   border-radius: 100px;
+  color: #6B7084;
 
   img {
     width: 100%;

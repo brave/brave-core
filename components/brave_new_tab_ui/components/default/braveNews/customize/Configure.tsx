@@ -7,7 +7,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Flex from '../../../Flex'
 import Discover from './Discover'
-import { BackArrow, Cross } from './Icons'
+import { BackArrow } from './Icons'
+import Icon from '@brave/leo/react/icon'
 import Button from '$web-components/button'
 import Toggle from '$web-components/toggle'
 import SourcesList from './SourcesList'
@@ -148,7 +149,9 @@ export default function Configure () {
       </BackButtonContainer>
       <Header direction="row-reverse" gap={12} align="center" justify="space-between">
         <CloseButtonContainer>
-          <Button onClick={() => setCustomizePage(null)}>{Cross}</Button>
+          <Button onClick={() => setCustomizePage(null)}>
+            <Icon name='close'/>
+          </Button>
         </CloseButtonContainer>
         {isBraveNewsFullyEnabled && <Flex direction="row" align="center" gap={8}>
           <HeaderText>{getLocale('braveNewsTitle')}</HeaderText>

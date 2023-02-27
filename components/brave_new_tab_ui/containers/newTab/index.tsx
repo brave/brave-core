@@ -39,6 +39,9 @@ import BraveNewsHint from '../../components/default/braveNews/hint'
 import GridWidget from './gridWidget'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
 
+import { setIconBasePath } from '@brave/leo/react/icon'
+setIconBasePath('chrome://resources/brave-icons')
+
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
