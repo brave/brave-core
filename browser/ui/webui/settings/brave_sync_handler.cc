@@ -270,8 +270,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
 
-void BraveSyncHandler::OnJoinChainResult(base::Value callback_id,
-                                         const bool& result) {
+void BraveSyncHandler::OnJoinChainResult(base::Value callback_id, bool result) {
   if (result) {
     ResolveJavascriptCallback(callback_id, base::Value(true));
   } else {
