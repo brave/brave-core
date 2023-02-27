@@ -279,12 +279,13 @@ void AssetDiscoveryManager::OnGetERC20TokenBalances(
 
   // Populate the map using the balance_results
   for (size_t i = 0; i < balance_results.size(); i++) {
-    if (balance_results[i]->balance.has_value() &&
-        balance_results[i]->balance !=
-            "0x000000000000000000000000000000000000000000000000000000000000000"
-            "0") {
-      chain_id_to_contract_addresses_with_balance[chain_id].push_back(
-          contract_addresses[i]);
+    if (balance_results[i]->balance.has_value()) {
+      uint256_t balance_uint;
+      HexValueToUint256(balance_results[i]->balance.value(), &balance_uint);
+      if (balance_uint > 0) {
+        chain_id_to_contract_addresses_with_balance[chain_id].push_back(
+            contract_addresses[i]);
+      }
     }
   }
 
