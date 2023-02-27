@@ -140,11 +140,15 @@ mojom::ExternalWalletPtr GetWallet(LedgerImpl* ledger,
                                    const std::string& wallet_type) {
   DCHECK(ledger);
 
-  auto json =
-      ledger->state()->GetEncryptedString(WalletTypeToState(wallet_type));
-
-  if (!json || json->empty())
+  const auto state = WalletTypeToState(wallet_type);
+  if (state.empty()) {
     return nullptr;
+  }
+
+  auto json = ledger->state()->GetEncryptedString(state);
+  if (!json || json->empty()) {
+    return nullptr;
+  }
 
   return ExternalWalletPtrFromJSON(*json, wallet_type);
 }
@@ -416,6 +420,21 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
   } else {
     NOTREACHED() << "Unexpected wallet type " << wallet->type << '!';
     return nullptr;
+  }
+}
+
+void FetchBalance(LedgerImpl* ledger,
+                  const std::string& wallet_type,
+                  base::OnceCallback<void(mojom::Result, double)> callback) {
+  if (wallet_type == constant::kWalletBitflyer) {
+    ledger->bitflyer()->FetchBalance(std::move(callback));
+  } else if (wallet_type == constant::kWalletGemini) {
+    ledger->gemini()->FetchBalance(std::move(callback));
+  } else if (wallet_type == constant::kWalletUphold) {
+    ledger->uphold()->FetchBalance(std::move(callback));
+  } else {
+    NOTREACHED() << "Unexpected wallet type " << wallet_type << '!';
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 }
 

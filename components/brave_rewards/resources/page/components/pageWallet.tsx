@@ -557,7 +557,9 @@ class PageWallet extends React.Component<Props, State> {
     const totalBalance =
       !walletKeys.includes('blinded')
         ? undefined
-        : externalWallet && !walletKeys.includes(externalWallet.type)
+        : externalWallet
+          && externalWallet.status === mojom.WalletStatus.kConnected
+          && !walletKeys.includes(externalWallet.type)
           ? undefined
           : balance.total
 

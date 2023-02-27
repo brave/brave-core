@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 
@@ -38,6 +39,10 @@ bool LogOutWallet(LedgerImpl*,
                   const std::string& notification = "");
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
+
+void FetchBalance(LedgerImpl* ledger,
+                  const std::string& wallet_type,
+                  base::OnceCallback<void(mojom::Result, double)> callback);
 
 }  // namespace wallet
 }  // namespace ledger
