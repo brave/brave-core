@@ -89,6 +89,9 @@ RegisterPolymerTemplateModifications({
         if (!ethereumSettings) {
           console.error(
               '[Brave Settings Overrides] Couldn\'t find Ethereum settings')
+        } else {
+          ethereumSettings.setAttribute(
+            'label', loadTimeData.getString('siteSettingsEthereum'))
         }
         curChild++
         firstPermissionItem.insertAdjacentHTML(
