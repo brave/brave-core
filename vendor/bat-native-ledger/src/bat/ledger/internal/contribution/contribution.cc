@@ -169,29 +169,58 @@ void Contribution::NotCompletedContributions(
 
 void Contribution::ResetReconcileStamp() {
   ledger_->state()->ResetReconcileStamp();
-  SetReconcileTimer();
+  SetAutoContributeTimer();
 }
 
-void Contribution::StartMonthlyContribution() {
-  const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
-  ResetReconcileStamp();
-
-  BLOG(1, "Starting monthly contribution");
-
-  auto callback = std::bind(&Contribution::StartAutoContribute,
-      this,
-      _1,
-      reconcile_stamp);
-
-  monthly_->Process(callback);
+void Contribution::StartContributionsForTesting() {
+  StartMonthlyContributions(MonthlyContributionOptions::kSendAllContributions);
 }
 
-void Contribution::StartAutoContribute(const mojom::Result result,
-                                       const uint64_t reconcile_stamp) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Monthly contribution failed");
+void Contribution::StartMonthlyContributions(
+    MonthlyContributionOptions options) {
+  if (monthly_contributions_processing_) {
+    return;
   }
 
+  monthly_contribution_timer_.Stop();
+  monthly_contributions_processing_ = true;
+
+  base::Time cutoff_time = base::Time::Now();
+
+  // Existing tests expect the ability to trigger all monthly and AC
+  // contributions, regardless of their "next contribution dates". If we are
+  // triggering all contributions, pass a null cutoff time to the monthly
+  // contribution processor so that it will send them all.
+  if (options == MonthlyContributionOptions::kSendAllContributions) {
+    cutoff_time = base::Time();
+  }
+
+  BLOG(1, "Starting monthly contributions");
+
+  monthly_->Process(cutoff_time, [this, options](mojom::Result result) {
+    monthly_contributions_processing_ = false;
+
+    // Only restart the timer on success. If we were unable to advance the
+    // contribution dates and enqueue contributions, then we'll most likely end
+    // up in a failure loop if we retry immediately. The timer will be reset
+    // when the user creates another monthly contribution or restarts.
+    if (result == mojom::Result::LEDGER_OK) {
+      SetMonthlyContributionTimer();
+    }
+
+    // Existing tests expect that, when all contributions are triggered, monthly
+    // contributions will be sent before AC contributions. When testing, we
+    // process contributions in series instead of in parallel.
+    if (options == MonthlyContributionOptions::kSendAllContributions) {
+      StartAutoContribute();
+    }
+  });
+}
+
+void Contribution::StartAutoContribute() {
+  uint64_t reconcile_stamp = ledger_->state()->GetReconcileStamp();
+  ResetReconcileStamp();
+  BLOG(1, "Starting auto-contribute");
   ac_->Process(reconcile_stamp);
 }
 
@@ -213,8 +242,8 @@ void Contribution::Start(mojom::ContributionQueuePtr info) {
   ledger_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
-void Contribution::SetReconcileTimer() {
-  if (last_reconcile_timer_.IsRunning()) {
+void Contribution::SetAutoContributeTimer() {
+  if (auto_contribute_timer_.IsRunning()) {
     return;
   }
 
@@ -226,11 +255,63 @@ void Contribution::SetReconcileTimer() {
     delay = base::Seconds(next_reconcile_stamp - now);
   }
 
-  BLOG(1, "Last reconcile timer set for " << delay);
+  BLOG(1, "Auto-contribute timer set for " << delay);
 
-  last_reconcile_timer_.Start(FROM_HERE, delay,
-      base::BindOnce(&Contribution::StartMonthlyContribution,
-          base::Unretained(this)));
+  auto_contribute_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&Contribution::StartAutoContribute,
+                     base::Unretained(this)));
+}
+
+void Contribution::SetMonthlyContributionTimer() {
+  // Read the next contribution time of the monthly contribution that will
+  // run soonest.
+  ledger_->database()->GetNextMonthlyContributionTime(
+      base::BindOnce(&Contribution::OnNextMonthlyContributionTimeRead,
+                     base::Unretained(this)));
+}
+
+void Contribution::OnNextMonthlyContributionTimeRead(base::Time time) {
+  monthly_contribution_timer_.Stop();
+
+  if (time.is_null()) {
+    BLOG(1, "No monthly contributions found.");
+    return;
+  }
+
+  base::TimeDelta delay = time - base::Time::Now();
+
+  monthly_contribution_timer_.Start(
+      FROM_HERE, delay,
+      base::BindOnce(&Contribution::StartMonthlyContributions,
+                     base::Unretained(this),
+                     MonthlyContributionOptions::kDefault));
+
+  BLOG(1, "Monthly contribution timer set for " << delay);
+}
+
+void Contribution::SetMonthlyContribution(
+    const std::string& publisher_id,
+    double amount,
+    base::OnceCallback<void(bool)> callback) {
+  ledger_->database()->SetMonthlyContribution(
+      publisher_id, amount,
+      base::BindOnce(&Contribution::OnMonthlyContributionSet,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void Contribution::OnMonthlyContributionSet(
+    base::OnceCallback<void(bool)> callback,
+    bool success) {
+  if (success) {
+    // After setting a monthly contribution, reset the monthly contribution
+    // timer. Note that we do not need to reset the timer when a monthly
+    // contribution is deleted. If a deleted contribution was the soonest to
+    // execute, then the monthly contribution processor will simply no-op when
+    // it runs.
+    SetMonthlyContributionTimer();
+  }
+  std::move(callback).Run(success);
 }
 
 void Contribution::ContributionCompleted(

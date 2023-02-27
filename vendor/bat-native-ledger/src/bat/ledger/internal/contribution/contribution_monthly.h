@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/time/time.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -21,16 +22,18 @@ class ContributionMonthly {
 
   ~ContributionMonthly();
 
-  void Process(ledger::LegacyResultCallback callback);
+  void Process(base::Time cutoff_time, ledger::LegacyResultCallback callback);
 
  private:
-  void PrepareTipList(std::vector<mojom::PublisherInfoPtr> list,
-                      ledger::LegacyResultCallback callback);
+  void AdvanceContributionDates(
+      base::Time cutoff_time,
+      ledger::LegacyResultCallback callback,
+      std::vector<mojom::PublisherInfoPtr> publishers);
 
-  void GetVerifiedTipList(const std::vector<mojom::PublisherInfoPtr>& list,
-                          std::vector<mojom::PublisherInfoPtr>* verified_list);
-
-  void OnSavePendingContribution(const mojom::Result result);
+  void OnNextContributionDateAdvanced(
+      std::vector<mojom::PublisherInfoPtr> publishers,
+      ledger::LegacyResultCallback callback,
+      bool success);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

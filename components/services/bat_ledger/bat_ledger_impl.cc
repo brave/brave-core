@@ -303,6 +303,13 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
       std::bind(BatLedgerImpl::OnGetRewardsInternalsInfo, holder, _1));
 }
 
+void BatLedgerImpl::SetMonthlyContribution(
+    const std::string& publisher_id,
+    double amount,
+    SetMonthlyContributionCallback callback) {
+  ledger_->SetMonthlyContribution(publisher_id, amount, std::move(callback));
+}
+
 // static
 void BatLedgerImpl::OnSaveRecurringTip(
     CallbackHolder<SaveRecurringTipCallback>* holder,
@@ -531,8 +538,8 @@ void BatLedgerImpl::RefreshPublisher(
       std::bind(BatLedgerImpl::OnRefreshPublisher, holder, _1));
 }
 
-void BatLedgerImpl::StartMonthlyContribution() {
-  ledger_->StartMonthlyContribution();
+void BatLedgerImpl::StartContributionsForTesting() {
+  ledger_->StartContributionsForTesting();  // IN-TEST
 }
 
 void BatLedgerImpl::SetInlineTippingPlatformEnabled(

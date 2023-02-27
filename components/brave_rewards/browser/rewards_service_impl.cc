@@ -1888,6 +1888,30 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
                                       AsWeakPtr(), std::move(callback)));
 }
 
+void RewardsServiceImpl::SetMonthlyContribution(
+    const std::string& publisher_key,
+    double amount,
+    base::OnceCallback<void(bool)> callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), false);
+  }
+
+  auto on_completed = [](base::WeakPtr<RewardsServiceImpl> self,
+                         base::OnceCallback<void(bool)> callback,
+                         bool success) {
+    if (self) {
+      for (auto& observer : self->observers_) {
+        observer.OnRecurringTipSaved(self.get(), success);
+      }
+    }
+    std::move(callback).Run(success);
+  };
+
+  bat_ledger_->SetMonthlyContribution(
+      publisher_key, amount,
+      base::BindOnce(on_completed, AsWeakPtr(), std::move(callback)));
+}
+
 void RewardsServiceImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
@@ -2263,12 +2287,12 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
 #endif
 }
 
-void RewardsServiceImpl::StartMonthlyContributionForTest() {
+void RewardsServiceImpl::StartContributionsForTesting() {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->StartMonthlyContribution();
+  bat_ledger_->StartContributionsForTesting();  // IN-TEST
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {

@@ -477,6 +477,25 @@ void Database::SaveRecurringTip(mojom::RecurringTipPtr info,
   recurring_tip_->InsertOrUpdate(std::move(info), callback);
 }
 
+void Database::SetMonthlyContribution(const std::string& publisher_id,
+                                      double amount,
+                                      base::OnceCallback<void(bool)> callback) {
+  SaveEventLog(log::kRecurringTipAdded, publisher_id);
+  recurring_tip_->InsertOrUpdate(publisher_id, amount, std::move(callback));
+}
+
+void Database::AdvanceMonthlyContributionDates(
+    const std::vector<std::string>& publisher_ids,
+    base::OnceCallback<void(bool)> callback) {
+  recurring_tip_->AdvanceMonthlyContributionDates(publisher_ids,
+                                                  std::move(callback));
+}
+
+void Database::GetNextMonthlyContributionTime(
+    base::OnceCallback<void(base::Time)> callback) {
+  recurring_tip_->GetNextMonthlyContributionTime(std::move(callback));
+}
+
 void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
   recurring_tip_->GetAllRecords(callback);
 }

@@ -826,4 +826,12 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_37) {
   EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
 }
 
+TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
+  DatabaseMigration::SetTargetVersionForTesting(38);
+  InitializeDatabaseAtVersion(37);
+  InitializeLedger();
+  EXPECT_TRUE(
+      GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
+}
+
 }  // namespace ledger

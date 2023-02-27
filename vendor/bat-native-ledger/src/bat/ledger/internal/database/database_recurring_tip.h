@@ -7,7 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_DATABASE_RECURRING_TIP_H_
 
 #include <string>
+#include <vector>
 
+#include "base/functional/callback.h"
+#include "base/time/time.h"
 #include "bat/ledger/internal/database/database_table.h"
 
 namespace ledger {
@@ -18,8 +21,20 @@ class DatabaseRecurringTip: public DatabaseTable {
   explicit DatabaseRecurringTip(LedgerImpl* ledger);
   ~DatabaseRecurringTip() override;
 
+  // DEPRECATED
   void InsertOrUpdate(mojom::RecurringTipPtr info,
                       ledger::LegacyResultCallback callback);
+
+  void InsertOrUpdate(const std::string& publisher_id,
+                      double amount,
+                      base::OnceCallback<void(bool)> callback);
+
+  void AdvanceMonthlyContributionDates(
+      const std::vector<std::string>& publisher_ids,
+      base::OnceCallback<void(bool)> callback);
+
+  void GetNextMonthlyContributionTime(
+      base::OnceCallback<void(base::Time)> callback);
 
   void GetAllRecords(ledger::PublisherInfoListCallback callback);
 
