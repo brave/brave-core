@@ -281,8 +281,9 @@ void AssetDiscoveryManager::OnGetERC20TokenBalances(
   for (size_t i = 0; i < balance_results.size(); i++) {
     if (balance_results[i]->balance.has_value()) {
       uint256_t balance_uint;
-      HexValueToUint256(balance_results[i]->balance.value(), &balance_uint);
-      if (balance_uint > 0) {
+      bool success =
+          HexValueToUint256(balance_results[i]->balance.value(), &balance_uint);
+      if (success && balance_uint > 0) {
         chain_id_to_contract_addresses_with_balance[chain_id].push_back(
             contract_addresses[i]);
       }
