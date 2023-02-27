@@ -30,6 +30,7 @@
 #include "ui/views/layout/layout_manager.h"
 
 #if BUILDFLAG(IS_WIN)
+#include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
 #endif
 
@@ -136,7 +137,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     if (browser_view()->GetWidget()->ShouldUseNativeFrame()) {
       return static_cast<const GlassBrowserFrameView*>(
                  browser_non_client_frame_view())
-          ->window_title_for_testing()
+          ->GetViewByID(VIEW_ID_WINDOW_TITLE)
           ->GetVisible();
     }
 #endif
