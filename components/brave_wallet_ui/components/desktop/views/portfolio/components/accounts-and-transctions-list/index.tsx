@@ -108,10 +108,7 @@ export const AccountsAndTransactionsList = ({
   }, [accounts, selectedAsset])
 
   const accountsList = React.useMemo(() => {
-    if (isNonFungibleToken && selectedAssetsNetwork) {
-      return filteredAccountsByCoinType.filter((account) => Number(account.nativeBalanceRegistry[selectedAssetsNetwork.chainId] ?? 0) !== 0)
-    }
-    return filteredAccountsByCoinType
+    return filteredAccountsByCoinType.filter((account) => new Amount(getBalance(account, selectedAsset)).gt(0))
   }, [selectedAsset, filteredAccountsByCoinType])
 
   const nonRejectedTransactions = React.useMemo(() => {
