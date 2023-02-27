@@ -17,6 +17,8 @@ static_library("speedreader") {
   sources = [
     "speedreader_extended_info_handler.cc",
     "speedreader_extended_info_handler.h",
+    "speedreader_local_url_loader.cc",
+    "speedreader_local_url_loader.h",
     "speedreader_pref_names.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",

@@ -14,6 +14,7 @@
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -42,7 +43,8 @@ class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
       public SpeedreaderThrottleDelegate,
-      public mojom::SpeedreaderHost {
+      public mojom::SpeedreaderHost,
+      public dom_distiller::DistillabilityObserver {
  public:
   ~SpeedreaderTabHelper() override;
 
@@ -75,8 +77,8 @@ class SpeedreaderTabHelper
   // the setting. Triggers page reload on toggle.
   void MaybeToggleEnabledForSite(bool on);
 
-  // Reload the page and mark the next request to run through Speedreader,
-  // without turning it on. This mimics the standard reader mode.
+  // Get the current page's content and run it through Speedreader, without
+  // turning it on. This mimics the standard reader mode.
   void SingleShotSpeedreader();
 
   // returns nullptr if no bubble currently shown
@@ -160,10 +162,17 @@ class SpeedreaderTabHelper
 
   // SpeedreaderThrottleDelegate:
   bool IsPageDistillationAllowed() override;
-  void OnDistillComplete() override;
+  bool IsPageContentPresent() override;
+  std::string TakePageContent() override;
+  void OnDistillComplete(DistillationResult result) override;
+
+  // dom_distiller::DistillabilityObserver:
+  void OnResult(const dom_distiller::DistillabilityResult& result) override;
 
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
+
+  void OnGetDocumentSource(base::Value result);
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
@@ -171,6 +180,7 @@ class SpeedreaderTabHelper
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
+  std::string single_show_content_;
 
   bool show_original_page_ = false;   // next request should not be distilled
   bool original_page_shown_ = false;  // true if reload was performed using the

@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_H_
@@ -59,10 +59,13 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
                            bool* defer) override;
 
  private:
+  void InstallSpeedReaderLocalUrlLoader(const GURL& response_url);
+  void InstallSpeedReaderUrlLoader(const GURL& response_url);
+
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned
   raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;
-  base::WeakPtr<SpeedreaderThrottleDelegate> delegate_;
+  base::WeakPtr<SpeedreaderThrottleDelegate> speedreader_delegate_;
 };
 
 }  // namespace speedreader

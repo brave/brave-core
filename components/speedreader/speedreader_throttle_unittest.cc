@@ -36,7 +36,9 @@ class TestSpeedreaderThrottleDelegate
  public:
   ~TestSpeedreaderThrottleDelegate() override = default;
   bool IsPageDistillationAllowed() override { return true; }
-  void OnDistillComplete() override {}
+  bool IsPageContentPresent() override { return false; }
+  std::string TakePageContent() override { return {}; }
+  void OnDistillComplete(DistillationResult result) override {}
 };
 
 }  // anonymous namespace

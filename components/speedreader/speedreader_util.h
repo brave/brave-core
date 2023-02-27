@@ -6,10 +6,18 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_UTIL_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_UTIL_H_
 
+#include <string>
+
+#include "base/functional/callback_forward.h"
+
 class GURL;
 class HostContentSettingsMap;
 
 namespace speedreader {
+
+class SpeedreaderService;
+class SpeedreaderRewriterService;
+
 // DistillState is an enum for the current state of a speedreader WebContents
 enum class DistillState {
   // Used as an initialization state
@@ -51,6 +59,12 @@ enum class DistillState {
   kPageProbablyReadable,
 };
 
+enum class DistillationResult : int {
+  kNone,
+  kSucceess,
+  kFail,
+};
+
 // Page is in reader mode or speedreader mode.
 bool PageStateIsDistilled(DistillState state);
 
@@ -70,6 +84,16 @@ void SetEnabledForSite(HostContentSettingsMap* map,
 bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
 
 bool IsSpeedreaderPanelV2Enabled();
+
+using DistillationResultCallback =
+    base::OnceCallback<void(DistillationResult result,
+                            std::string original_data,
+                            std::string transformed)>;
+void DistillPage(const GURL& url,
+                 std::string body,
+                 SpeedreaderService* speedreader_service,
+                 SpeedreaderRewriterService* rewriter_service,
+                 DistillationResultCallback callback);
 
 }  // namespace speedreader
 

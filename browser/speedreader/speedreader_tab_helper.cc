@@ -35,6 +35,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -86,6 +87,8 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
         base::BindRepeating(&SpeedreaderTabHelper::OnPropertyPrefChanged,
                             weak_factory_.GetWeakPtr()));
   }
+
+  dom_distiller::AddObserver(web_contents, this);
 
   content_rules_ = HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
@@ -184,18 +187,19 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 }
 
 void SpeedreaderTabHelper::SingleShotSpeedreader() {
+  constexpr const char16_t kGetDocumentSource[] =
+      uR"js(
+    document.documentElement.outerHTML
+  )js";
+
+  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      kGetDocumentSource,
+      base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
+                     weak_factory_.GetWeakPtr()),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+
+  SetNextRequestState(DistillState::kReaderModePending);
   single_shot_next_request_ = true;
-
-  // Refresh the page so it runs through the speedreader throttle
-  ReloadContents();
-
-  // Determine if bubble should be shown automatically
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (speedreader_service->ShouldPromptUserToEnable()) {
-    ShowReaderModeBubble();
-    speedreader_service->IncrementPromptCount();
-  }
 }
 
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
@@ -531,6 +535,7 @@ void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void SpeedreaderTabHelper::WebContentsDestroyed() {
   pref_change_registrar_.reset();
+  dom_distiller::RemoveObserver(web_contents(), this);
   content_rules_ = nullptr;
   HideBubble();
 }
@@ -539,12 +544,31 @@ bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
   return speedreader::PageWantsDistill(distill_state_);
 }
 
-void SpeedreaderTabHelper::OnDistillComplete() {
+bool SpeedreaderTabHelper::IsPageContentPresent() {
+  return !single_show_content_.empty();
+}
+
+std::string SpeedreaderTabHelper::TakePageContent() {
+  return std::move(single_show_content_);
+}
+
+void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
+  if (result != DistillationResult::kSucceess) {
+    // TODO(boocmp): Show error dialog [Distillation failed on this page].
+    SetNextRequestState(DistillState::kNone);
+    ReloadContents();
+    return;
+  }
+
   // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
     distill_state_ = DistillState::kSpeedreaderMode;
   } else if (distill_state_ == DistillState::kReaderModePending) {
-    distill_state_ = DistillState::kReaderMode;
+    if (result == DistillationResult::kSucceess) {
+      distill_state_ = DistillState::kReaderMode;
+    } else {
+      distill_state_ = DistillState::kPageProbablyReadable;
+    }
   } else {
     // We got here via an already cached page.
     DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
@@ -552,6 +576,17 @@ void SpeedreaderTabHelper::OnDistillComplete() {
   }
 
   UpdateButtonIfNeeded();
+}
+
+void SpeedreaderTabHelper::OnResult(
+    const dom_distiller::DistillabilityResult& result) {
+  if (PageDistillState() == DistillState::kNone) {
+    if (result.is_distillable) {
+      // Page detected as non-readable by URL, but readable by it's content.
+      distill_state_ = DistillState::kPageProbablyReadable;
+      UpdateButtonIfNeeded();
+    }
+  }
 }
 
 void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
@@ -575,6 +610,24 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void SpeedreaderTabHelper::OnGetDocumentSource(base::Value result) {
+  DCHECK(single_shot_next_request_);
+
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  auto* speedreader_service_rewriter =
+      g_brave_browser_process->speedreader_rewriter_service();
+  if (!speedreader_service || !speedreader_service_rewriter ||
+      !result.is_string()) {
+    // Failed to get source, fall back to the network request.
+    ReloadContents();
+    return;
+  }
+
+  single_show_content_ = std::move(result).TakeString();
+  ReloadContents();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);

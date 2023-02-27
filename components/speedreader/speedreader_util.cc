@@ -5,9 +5,18 @@
 
 #include "brave/components/speedreader/speedreader_util.h"
 
+#include <memory>
+#include <tuple>
+#include <utility>
+
 #include "base/feature_list.h"
+#include "base/metrics/histogram_macros.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/speedreader/common/features.h"
-#include "components/content_settings/core/browser/content_settings_utils.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
+#include "brave/components/speedreader/speedreader_rewriter_service.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -40,8 +49,9 @@ void SetEnabledForSite(HostContentSettingsMap* map,
 
   // Rule covers all protocols and pages.
   auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
-  if (!pattern.IsValid())
+  if (!pattern.IsValid()) {
     return;
+  }
 
   ContentSetting setting =
       enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
@@ -60,6 +70,51 @@ bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
 
 bool IsSpeedreaderPanelV2Enabled() {
   return base::FeatureList::IsEnabled(speedreader::kSpeedreaderPanelV2);
+}
+
+void DistillPage(const GURL& url,
+                 std::string body,
+                 SpeedreaderService* speedreader_service,
+                 SpeedreaderRewriterService* rewriter_service,
+                 DistillationResultCallback callback) {
+  struct Result {
+    DistillationResult result;
+    std::string body;
+    std::string transformed;
+  };
+
+  auto distill = [](const GURL& url, std::string data,
+                    std::unique_ptr<Rewriter> rewriter) -> Result {
+    SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
+    int written = rewriter->Write(data.c_str(), data.length());
+    // Error occurred
+    if (written != 0) {
+      return {DistillationResult::kFail, std::move(data), std::string()};
+    }
+
+    rewriter->End();
+    const std::string& transformed = rewriter->GetOutput();
+
+    if (transformed.length() < 1024) {
+      return {DistillationResult::kFail, std::move(data), std::string()};
+    }
+    return {DistillationResult::kSucceess, std::move(data), transformed};
+  };
+
+  auto return_result = [](DistillationResultCallback callback, Result r) {
+    std::move(callback).Run(r.result, r.body, r.transformed);
+  };
+
+  auto rewriter = rewriter_service->MakeRewriter(
+      url, speedreader_service->GetThemeName(),
+      speedreader_service->GetFontFamilyName(),
+      speedreader_service->GetFontSizeName(),
+      speedreader_service->GetContentStyleName());
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
+      base::BindOnce(distill, url, std::move(body), std::move(rewriter)),
+      base::BindOnce(return_result, std::move(callback)));
 }
 
 }  // namespace speedreader

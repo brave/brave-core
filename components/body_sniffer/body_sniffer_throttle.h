@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_THROTTLE_H_
 #define BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_THROTTLE_H_
@@ -34,9 +34,6 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle,
                            bool* defer) override = 0;
 
   void InterceptAndStartLoader(
-      mojo::PendingRemote<network::mojom::URLLoader> source_loader,
-      mojo::PendingReceiver<network::mojom::URLLoaderClient>
-          source_client_receiver,
       mojo::PendingRemote<network::mojom::URLLoader> new_remote,
       mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
       BodySnifferURLLoader* loader);
