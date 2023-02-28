@@ -895,6 +895,7 @@
 -PDFExtensionTest.ContextMenuPrintCommandExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandPluginFrame
 -PDFExtensionTest.PdfAccessibilityContextMenuAction
+-PDFExtensionTest.PdfAccessibilitySelection
 -PDFExtensionTest.PdfExtensionLoadedWhileOldPdfCloses
 -PDFIFrameNavigationThrottleBrowserTest.*
 -PKIMetadataComponentUpdater/PKIMetadataComponentUpdaterTest.*
