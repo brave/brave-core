@@ -325,11 +325,12 @@ NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
 }
 
 base::Value BaseValueFromNSArray(NSArray<MojoBaseValue*>* array) {
-  base::Value list(base::Value::Type::LIST);
+  base::Value value(base::Value::Type::LIST);
+  base::Value::List& list = *value.GetIfList();
   for (MojoBaseValue* obj in array) {
     list.Append(obj.cppObjPtr);
   }
-  return list;
+  return value;
 }
 
 base::Value BaseValueFromNSDictionary(
