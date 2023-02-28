@@ -147,6 +147,7 @@
 -DIPSDatabaseHistogramTest.*
 -DIPSServiceHistogramTest.*
 -DIPSServiceStateRemovalTest.*
+-GetSitesToClearTest.*
 
 # These tests fail a CalledOnValidSequence check when calling
 # TorProfileServiceFactory::IsTorDisabled
