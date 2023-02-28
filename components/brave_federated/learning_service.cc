@@ -13,6 +13,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/task_runner.h"
@@ -115,10 +116,10 @@ void LearningService::OnPostTaskResults(TaskResultResponse response) {
   int reconnect = 0;
 
   if (response.IsSuccessful()) {
-    reconnect = 5;  // 20 minutes
+    reconnect = features::GetFederatedLearningUpdateCycleInMinutes() * 60;
     VLOG(2) << "Task results posted successfully";
   } else {
-    reconnect = 5;  // 5 minute
+    reconnect = features::GetFederatedLearningUpdateCycleInMinutes()/2 * 60;
     VLOG(2) << "Task results posting failed";
   }
 

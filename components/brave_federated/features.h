@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
 
+#include <string>
+
 #include "base/feature_list.h"
 
 namespace brave_federated::features {
@@ -13,6 +15,11 @@ namespace brave_federated::features {
 BASE_DECLARE_FEATURE(kFederatedLearning);
 
 bool IsFederatedLearningEnabled();
+
+// Federated Learning
+int GetFederatedLearningUpdateCycleInMinutes();
+std::string GetFederatedLearningTaskEndpoint();
+std::string GetFederatedLearningResultsEndpoint();
 
 // Operational Patterns
 bool IsOperationalPatternsEnabled();
