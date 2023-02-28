@@ -30,10 +30,10 @@ BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
-# pylint: disable-next=line-too-long
+# pylint: disable=line-too-long
 NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])+([a-zA-Z0-9_]+[^\s\(]*)'
-# pylint: disable-next=line-too-long
 FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
+# pylint: enable=line-too-long
 
 EXCLUDES = [
     '.*/BUILD.gn',
@@ -86,19 +86,18 @@ def do_check_includes(override_filepath):
                           f"{normalized_override_filepath}")
                     print("-------------------------")
                 continue
-            else:
-                gen_regexp = r'^#include "../gen/(.*)"'
-                line_match = re.search(gen_regexp, line)
-                if line_match:
-                    if line_match.group(1) != normalized_override_filepath:
-                        print(f"WARNING: {override_filepath} uses a ../gen/" +
-                              "-prefixed include that doesn't point to the " +
-                              "expected file:")
-                        print(f"         Include: {line}" +
-                              "         Expected include target: ../gen/" +
-                              f"{normalized_override_filepath}")
-                        print("-------------------------")
-                    continue
+            gen_regexp = r'^#include "../gen/(.*)"'
+            line_match = re.search(gen_regexp, line)
+            if line_match:
+                if line_match.group(1) != normalized_override_filepath:
+                    print(f"WARNING: {override_filepath} uses a ../gen/" +
+                          "-prefixed include that doesn't point to the " +
+                          "expected file:")
+                    print(f"         Include: {line}" +
+                          "         Expected include target: ../gen/" +
+                          f"{normalized_override_filepath}")
+                    print("-------------------------")
+                continue
 
             # Check relative includes go up the expected amount of steps.
             # We're only interested in relative include paths.
