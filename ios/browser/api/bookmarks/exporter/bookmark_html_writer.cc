@@ -489,12 +489,9 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
       base::BindOnce(
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
-              std::move(
-                  codec
-                      .Encode(ios::BookmarkModelFactory::GetForBrowserState(
-                                  browser_state_),
-                              /*sync_metadata_str=*/std::string())
-                      .GetDict()),
+              codec.Encode(
+                  ios::BookmarkModelFactory::GetForBrowserState(browser_state_),
+                  /*sync_metadata_str=*/std::string()),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
