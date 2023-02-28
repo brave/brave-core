@@ -35,8 +35,12 @@ export const SelectCurrencyItem = (props: Props) => {
 
   // memos
   const bg = React.useMemo(() => {
-    return background({ seed: window.btoa(currency.currencyName + currency.currencyCode) })
+    return background({ seed: window.btoa(encodeURIComponent(currency.currencyName + currency.currencyCode)) })
   }, [currency])
+
+  const currencySymbol = React.useMemo(() => {
+    return CurrencySymbols[currency.currencyCode] ? CurrencySymbols[currency.currencyCode] : currency.currencyCode.charAt(0)
+  }, [currency.currencyCode])
 
   return (
     <StyledWrapper onClick={onClick}>
@@ -47,7 +51,7 @@ export const SelectCurrencyItem = (props: Props) => {
         marginLeft={0}
         marginRight={8}
       >
-        <PlaceholderText size='small'>{CurrencySymbols[currency.currencyCode]}</PlaceholderText>
+        <PlaceholderText size='small'>{currencySymbol}</PlaceholderText>
       </IconWrapper>
       <CurrencyNameAndCode>
         <CurrencyName>{currency.currencyName}</CurrencyName>
