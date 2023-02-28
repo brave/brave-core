@@ -10,38 +10,13 @@ component("common") {
   defines = [ "IS_COMMANDS_COMMON_IMPL" ]
 
   sources = [
-    "accelerator_parsing.cc",
-    "accelerator_parsing.h",
     "features.cc",
     "features.h",
   ]
 
-  deps = [
-    "//base",
-    "//components/prefs",
-    "//ui/base",
-    "//ui/events:dom_keycode_converter",
-    "//ui/events:event_constants",
-    "//ui/events:events_base",
-  ]
+  deps = [ "//base" ]
 
   public_deps = [ ":mojom" ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  if (!is_android && !is_ios) {
-    sources = [ "accelerator_parsing_unittest.cc" ]
-
-    deps = [
-      ":common",
-      "//base/test:test_support",
-      "//testing/gtest",
-      "//ui/base",
-      "//ui/events:event_constants",
-    ]
-  }
 }
 
 mojom_component("mojom") {

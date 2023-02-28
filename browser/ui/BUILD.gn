@@ -752,6 +752,8 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "commands/accelerator_parsing.cc",
+      "commands/accelerator_parsing.h",
       "commands/accelerator_service.cc",
       "commands/accelerator_service.h",
       "commands/accelerator_service_factory.cc",

@@ -5,15 +5,14 @@
 
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 
+#include <string>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/commands/common/accelerator_parsing.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "ui/base/accelerators/accelerator.h"
 
 namespace commands {
 namespace {
@@ -40,44 +39,33 @@ void AcceleratorPrefManager::ClearAccelerators(int command_id) {
   list->clear();
 }
 
-void AcceleratorPrefManager::AddAccelerator(
-    int command_id,
-    const ui::Accelerator& accelerator) {
+void AcceleratorPrefManager::AddAccelerator(int command_id,
+                                            const std::string& accelerator) {
   ScopedDictPrefUpdate update(prefs_, kAcceleratorsPrefs);
   auto* list = update->EnsureList(base::NumberToString(command_id));
-  auto serialized = ToCodesString(accelerator);
-  if (serialized.empty()) {
-    DCHECK(false) << "Failed to serialize shortcut Modifier: "
-                  << accelerator.modifiers()
-                  << ", Keycode: " << accelerator.key_code();
-    return;
-  }
-  list->Append(serialized);
+  list->Append(accelerator);
 }
 
-void AcceleratorPrefManager::RemoveAccelerator(
-    int command_id,
-    const ui::Accelerator& accelerator) {
+void AcceleratorPrefManager::RemoveAccelerator(int command_id,
+                                               const std::string& accelerator) {
   ScopedDictPrefUpdate update(prefs_, kAcceleratorsPrefs);
-  auto accelerator_as_string = ToCodesString(accelerator);
   auto* list = update->EnsureList(base::NumberToString(command_id));
-  list->EraseIf([accelerator_as_string](const base::Value& value) {
+  list->EraseIf([accelerator](const base::Value& value) {
     auto* string_value = value.GetIfString();
-    return string_value && *string_value == accelerator_as_string;
+    return string_value && *string_value == accelerator;
   });
 }
 
-base::flat_map<int, std::vector<ui::Accelerator>>
+base::flat_map<int, std::vector<std::string>>
 AcceleratorPrefManager::GetAccelerators() {
-  base::flat_map<int, std::vector<ui::Accelerator>> result;
+  base::flat_map<int, std::vector<std::string>> result;
 
   const auto& accelerators = prefs_->GetDict(kAcceleratorsPrefs);
   for (const auto [command_id, shortcuts] : accelerators) {
     int id;
     DCHECK(base::StringToInt(command_id, &id));
-    for (const auto& shortcut : shortcuts.GetList()) {
-      auto accelerator = FromCodesString(shortcut.GetString());
-      result[id].push_back(accelerator);
+    for (const auto& accelerator : shortcuts.GetList()) {
+      result[id].push_back(accelerator.GetString());
     }
   }
 

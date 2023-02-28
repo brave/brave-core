@@ -5,11 +5,11 @@
 
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 
+#include <string>
+
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
-#include "ui/base/accelerators/accelerator.h"
-#include "ui/events/event_constants.h"
 
 class AcceleratorPrefManagerTest : public testing::Test {
  public:
@@ -27,8 +27,7 @@ class AcceleratorPrefManagerTest : public testing::Test {
 };
 
 TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
-  ui::Accelerator accelerator1(ui::VKEY_C, ui::EF_SHIFT_DOWN | ui::EF_ALT_DOWN);
-
+  std::string accelerator1("Shift+Alt+KeyC");
   EXPECT_EQ(0u, manager().GetAccelerators().size());
   manager().AddAccelerator(1, accelerator1);
 
@@ -38,8 +37,7 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   ASSERT_EQ(1u, accelerators[1].size());
   EXPECT_EQ(accelerator1, accelerators[1][0]);
 
-  ui::Accelerator accelerator2(ui::VKEY_H,
-                               ui::EF_CONTROL_DOWN | ui::EF_COMMAND_DOWN);
+  std::string accelerator2("Ctrl+Cmd+KeyH");
   manager().AddAccelerator(1, accelerator2);
 
   accelerators = manager().GetAccelerators();
@@ -49,7 +47,7 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   EXPECT_EQ(accelerator1, accelerators[1][0]);
   EXPECT_EQ(accelerator2, accelerators[1][1]);
 
-  ui::Accelerator accelerator3(ui::VKEY_M, ui::EF_CONTROL_DOWN);
+  std::string accelerator3("Ctrl+KeyM");
   manager().AddAccelerator(100, accelerator3);
 
   accelerators = manager().GetAccelerators();
@@ -64,10 +62,9 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
 }
 
 TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
-  ui::Accelerator accelerator1(ui::VKEY_C, ui::EF_SHIFT_DOWN | ui::EF_ALT_DOWN);
-  ui::Accelerator accelerator2(ui::VKEY_H,
-                               ui::EF_CONTROL_DOWN | ui::EF_COMMAND_DOWN);
-  ui::Accelerator accelerator3(ui::VKEY_M, ui::EF_CONTROL_DOWN);
+  std::string accelerator1("Shift+Alt+KeyC");
+  std::string accelerator2("Ctrl+Cmd+KeyH");
+  std::string accelerator3("Ctrl+KeyM");
   manager().AddAccelerator(1, accelerator1);
   manager().AddAccelerator(1, accelerator2);
   manager().AddAccelerator(100, accelerator3);

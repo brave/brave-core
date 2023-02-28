@@ -13,8 +13,8 @@
 #include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_map.h"
 #include "brave/app/command_utils.h"
+#include "brave/browser/ui/commands/accelerator_parsing.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
-#include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -64,7 +64,8 @@ void AcceleratorService::Initialize() {
     for (const auto& [command_id, default_accelerators] :
          default_accelerators_) {
       for (const auto& default_accelerator : default_accelerators) {
-        pref_manager_.AddAccelerator(command_id, default_accelerator);
+        pref_manager_.AddAccelerator(command_id,
+                                     ToCodesString(default_accelerator));
       }
     }
     accelerators = pref_manager_.GetAccelerators();
@@ -81,7 +82,7 @@ void AcceleratorService::Initialize() {
 
     // Initialize the default table.
     for (const auto& accelerator : it->second) {
-      accelerators_[command].push_back(accelerator);
+      accelerators_[command].push_back(FromCodesString(accelerator));
     }
   }
 }
@@ -94,16 +95,14 @@ void AcceleratorService::BindInterface(
 void AcceleratorService::AssignAcceleratorToCommand(
     int command_id,
     const std::string& accelerator) {
-  NotifyCommandsChanged(
-      AssignAcceleratorToCommand(command_id, FromCodesString(accelerator)));
+  NotifyCommandsChanged(AssignAccelerator(command_id, accelerator));
 }
 
 void AcceleratorService::UnassignAcceleratorFromCommand(
     int command_id,
     const std::string& accelerator) {
-  auto a = FromCodesString(accelerator);
-  base::Erase(accelerators_[command_id], a);
-  pref_manager_.RemoveAccelerator(command_id, a);
+  base::Erase(accelerators_[command_id], FromCodesString(accelerator));
+  pref_manager_.RemoveAccelerator(command_id, accelerator);
   NotifyCommandsChanged({command_id});
 }
 
@@ -118,7 +117,7 @@ void AcceleratorService::ResetAcceleratorsForCommand(int command_id) {
   const auto& default_accelerators = default_accelerators_[command_id];
   for (const auto& default_accelerator : default_accelerators) {
     auto additionally_modified =
-        AssignAcceleratorToCommand(command_id, default_accelerator);
+        AssignAccelerator(command_id, ToCodesString(default_accelerator));
     modified_commands.insert(modified_commands.end(),
                              additionally_modified.begin(),
                              additionally_modified.end());
@@ -144,22 +143,23 @@ void AcceleratorService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-std::vector<int> AcceleratorService::AssignAcceleratorToCommand(
+std::vector<int> AcceleratorService::AssignAccelerator(
     int command_id,
-    const ui::Accelerator& accelerator) {
+    const std::string& accelerator_string) {
+  auto accelerator = FromCodesString(accelerator_string);
   std::vector<int> modified_commands = {command_id};
 
   // Find any other commands with this accelerator and remove it from them.
   for (auto& [other_command_id, accelerators] : accelerators_) {
     if (base::Contains(accelerators, accelerator)) {
       base::Erase(accelerators, accelerator);
-      pref_manager_.RemoveAccelerator(other_command_id, accelerator);
+      pref_manager_.RemoveAccelerator(other_command_id, accelerator_string);
       modified_commands.push_back(other_command_id);
     }
   }
 
   accelerators_[command_id].push_back(accelerator);
-  pref_manager_.AddAccelerator(command_id, accelerator);
+  pref_manager_.AddAccelerator(command_id, accelerator_string);
   return modified_commands;
 }
 

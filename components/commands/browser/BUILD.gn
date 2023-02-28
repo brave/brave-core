@@ -15,8 +15,6 @@ component("browser") {
   deps = [
     "//base",
     "//components/prefs",
-    "//ui/base",
-    "//ui/events",
   ]
 
   public_deps = [ "//brave/components/commands/common" ]
@@ -30,12 +28,8 @@ source_set("unit_tests") {
 
     deps = [
       ":browser",
-      "//base/test:test_support",
       "//components/prefs:test_support",
-      "//content/test:test_support",
       "//testing/gtest",
-      "//ui/base",
-      "//ui/events:event_constants",
     ]
   }
 }

@@ -56,9 +56,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
  private:
   // Returns all the command_ids whose accelerators were affected by the set and
   // does not notify observers.
-  std::vector<int> AssignAcceleratorToCommand(
-      int command_id,
-      const ui::Accelerator& accelerator);
+  std::vector<int> AssignAccelerator(int command_id,
+                                     const std::string& accelerator);
   void NotifyCommandsChanged(const std::vector<int>& modified_ids);
 
   AcceleratorPrefManager pref_manager_;
