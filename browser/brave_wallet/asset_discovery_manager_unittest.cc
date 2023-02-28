@@ -1125,6 +1125,25 @@ TEST_F(AssetDiscoveryManagerUnitTest, DiscoverEthAssets) {
   TestDiscoverEthAssets({"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, false,
                         {});
 
+  // One account returns the cUSDT token response for no balance detected
+  // (successful), yields no discovered contract addresses
+  const char cusdt_balance_not_detected_response[] = R"({
+        "jsonrpc":"2.0",
+        "id":1,
+        "result":"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    })";
+
+  requests = {
+      {GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
+       {
+           {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961",
+            cusdt_balance_not_detected_response},
+       }},
+  };
+  SetInterceptorForDiscoverEthAssets(requests);
+  TestDiscoverEthAssets({"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, false,
+                        {});
+
   // One account, with a balance, yields discovered contract address
   requests = {
       {GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
