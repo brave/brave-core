@@ -26,14 +26,16 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
-      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
-      "]},\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
+      "quic-v1/webtransport\","
+      "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
+      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/tcp/"
+      "SwarmPort\"]},"
+      "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
       "\"StorageSize\"},"
       "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
-      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}},"
-      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
-      "\"HighWater\":40,\"LowWater\":20}}}";
+      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
   updated.clear();
@@ -80,17 +82,19 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
 
     std::string expect =
         "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-        "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
-        "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
-        "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/"
+        "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+        "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/"
+        "SwarmPort/quic-v1/webtransport\","
+        "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
+        "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/"
+        "tcp/SwarmPort\"]},"
+        "\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/"
         "dns-query\"}},"
         "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
         "\"StorageSize\"},"
         "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":"
         "true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
-        "api\"],\"UseSubdomains\":true}}},"
-        "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
-        "\"HighWater\":40,\"LowWater\":20}}}";
+        "api\"],\"UseSubdomains\":true}}}}";
 
     EXPECT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
     EXPECT_EQ(updated, expect);
@@ -104,15 +108,16 @@ TEST_F(IPFSServiceUtils, DNSResolversRemove) {
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
-      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
-      "]},"
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
+      "quic-v1/webtransport\","
+      "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
+      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/tcp/"
+      "SwarmPort\"]},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
       "\"StorageSize\"},\"Gateway\":{\"PublicGateways\":{\"localhost\":{"
       "\"InlineDNSLink\":true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
-      "api\"],\"UseSubdomains\":true}}},"
-      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
-      "\"HighWater\":40,\"LowWater\":20}}}";
+      "api\"],\"UseSubdomains\":true}}}}";
 
   EXPECT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   ASSERT_EQ(updated, expect);
@@ -128,15 +133,17 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate) {
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
-      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
-      "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
+      "quic-v1/webtransport\","
+      "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
+      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/tcp/"
+      "SwarmPort\"]},"
+      "\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
       "\"StorageSize\"},\"Gateway\":{\"PublicGateways\":{\"localhost\":{"
       "\"InlineDNSLink\":true,\"Paths\":[\"/ipfs\",\"/ipns\",\"/"
-      "api\"],\"UseSubdomains\":true}}},"
-      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
-      "\"HighWater\":40,\"LowWater\":20}}}";
+      "api\"],\"UseSubdomains\":true}}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
 }
@@ -151,15 +158,17 @@ TEST_F(IPFSServiceUtils, DNSResolversUpdate_DnsHasRFC8484Template) {
 
   std::string expect =
       "{\"Addresses\":{\"API\":\"/ip4/127.0.0.1/tcp/APIPort\","
-      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
-      "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
-      "]},\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
+      "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\","
+      "\"Swarm\":[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip4/0.0.0.0/udp/SwarmPort/"
+      "quic-v1/webtransport\","
+      "\"/ip4/0.0.0.0/udp/SwarmPort/quic-v1\",\"/ip6/::/udp/SwarmPort/"
+      "quic-v1\",\"/ip6/::/udp/SwarmPort/quic-v1/webtransport\",\"/ip6/::/tcp/"
+      "SwarmPort\"]},"
+      "\"DNS\":{\"Resolvers\":{\".\":\"https://cloudflare.com/dns-query\"}},"
       "\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
       "\"StorageSize\"},"
       "\"Gateway\":{\"PublicGateways\":{\"localhost\":{\"InlineDNSLink\":true,"
-      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}},"
-      "\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
-      "\"HighWater\":40,\"LowWater\":20}}}";
+      "\"Paths\":[\"/ipfs\",\"/ipns\",\"/api\"],\"UseSubdomains\":true}}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
 }

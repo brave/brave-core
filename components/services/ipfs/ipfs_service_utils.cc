@@ -49,9 +49,6 @@ bool UpdateConfigJSON(const std::string& source,
       "Addresses.Gateway",
       base::StrCat({"/ip4/127.0.0.1/tcp/", config->gateway_port}));
   dict->SetByDottedPath("Datastore.GCPeriod", "1h");
-  dict->SetByDottedPath("Swarm.ConnMgr.GracePeriod", "20s");
-  dict->SetByDottedPath("Swarm.ConnMgr.LowWater", 20);
-  dict->SetByDottedPath("Swarm.ConnMgr.HighWater", 40);
   dict->SetByDottedPath("Datastore.StorageMax", config->storage_max);
 
   base::Value::Dict localhost_gateway_settings;
@@ -79,8 +76,19 @@ bool UpdateConfigJSON(const std::string& source,
 
   base::Value::List list;
   list.Append(base::StrCat({"/ip4/0.0.0.0/tcp/", config->swarm_port}));
+  list.Append(base::ReplaceStringPlaceholders(
+      "/ip4/0.0.0.0/udp/$1/quic-v1/webtransport", {config->swarm_port},
+      nullptr));
+  list.Append(base::ReplaceStringPlaceholders("/ip4/0.0.0.0/udp/$1/quic-v1",
+                                              {config->swarm_port}, nullptr));
+  list.Append(base::ReplaceStringPlaceholders("/ip6/::/udp/$1/quic-v1",
+                                              {config->swarm_port}, nullptr));
+  list.Append(base::ReplaceStringPlaceholders(
+      "/ip6/::/udp/$1/quic-v1/webtransport", {config->swarm_port}, nullptr));
   list.Append(base::StrCat({"/ip6/::/tcp/", config->swarm_port}));
+
   dict->SetByDottedPath("Addresses.Swarm", std::move(list));
+  dict->RemoveByDottedPath("Swarm.ConnMgr");
 
   std::string json_string;
   if (!base::JSONWriter::Write(records_v.value(), &json_string) ||
