@@ -122,19 +122,8 @@ std::string GetManageUrl(const std::string& env) {
 // When the vendor receives a credential from us during auth, it also includes
 // the environment. The vendor then can do a lookup using Payment Service.
 std::string GetBraveVPNPaymentsEnv(const std::string& env) {
-  if (env == skus::kEnvProduction)
-    return "";
-  // Use same value.
-  if (env == skus::kEnvStaging || env == skus::kEnvDevelopment)
-    return env;
-
-  NOTREACHED();
-
-#if defined(OFFICIAL_BUILD)
-  return "";
-#else
-  return "development";
-#endif
+  // Use same string as payment env.
+  return env;
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
