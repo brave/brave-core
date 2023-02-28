@@ -14,9 +14,7 @@ namespace SVGImage {
 
 /// Creates a Scaled `SkBitmap` from SVG `data`
 /// Width and Height are the desired dimensions when scaling
-SkBitmap MakeFromData(const NSData* data,
-                      std::size_t width,
-                      std::size_t height);
+SkBitmap MakeFromData(const NSData* data, size_t width, size_t height);
 }  // namespace SVGImage
 
 #endif  // BRAVE_IOS_BROWSER_SVG_SVG_IMAGE_H_
