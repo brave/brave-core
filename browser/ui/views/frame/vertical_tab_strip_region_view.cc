@@ -541,10 +541,6 @@ void VerticalTabStripRegionView::OnBoundsChanged(
     ScrollActiveTabToBeVisible();
 }
 
-bool VerticalTabStripRegionView::IsDrawn() const {
-  return View::IsDrawn() && !IsTabFullscreen();
-}
-
 void VerticalTabStripRegionView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,

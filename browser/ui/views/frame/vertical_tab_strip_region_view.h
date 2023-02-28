@@ -77,7 +77,6 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
-  bool IsDrawn() const override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
