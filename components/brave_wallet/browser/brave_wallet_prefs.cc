@@ -172,11 +172,8 @@ void RegisterProfilePrefsForMigration(
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
 
-  // Added 02/2022
+  // Added 02/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
-  registry->RegisterDictionaryPref(kBraveWalletEthereumTransactions);
-  registry->RegisterDictionaryPref(kBraveWalletSolanaTransactions);
-  registry->RegisterDictionaryPref(kBraveWalletFileCoinTransactions);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -258,15 +255,14 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
-
   // Added 10/2022
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 
   // Added 12/2022
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
 
-  // Added 02/2022
-  TxStateManager::MigrateShowChainIdNetworkInfo(prefs);
+  // Added 02/2023
+  TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
 }
 
 }  // namespace brave_wallet

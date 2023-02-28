@@ -1195,12 +1195,10 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   for (auto coin :
        {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
     ASSERT_TRUE(GetAllCustomChains(&prefs, coin).empty());
-
     std::vector<base::Value::Dict> values;
     mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
     chain1.coin = coin;
     values.push_back(NetworkInfoToValue(chain1));
-
     mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
     chain2.coin = coin;
     if (coin != mojom::CoinType::ETH) {
@@ -1210,71 +1208,46 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
     UpdateCustomNetworks(&prefs, std::move(values), coin);
   }
 
-  auto chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::SOL, "testnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x66", chainIdNotExist.value());
+  auto getChainIdByNetworkIdCheck = [&](const mojom::CoinType& coin_type) {
+    auto chains = GetAllChains(&prefs, coin_type);
+    const auto& custom_networks = prefs.GetDict(kBraveWalletCustomNetworks);
+    auto* custom_list =
+        custom_networks.FindList(GetPrefKeyForCoinType(coin_type));
+    if (custom_list) {
+      for (const auto& it : *custom_list) {
+        chains.push_back(ValueToNetworkInfo(it));
+      }
+    }
+    for (const auto& chain : chains) {
+      std::string nid;
+      if (chain->coin == mojom::CoinType::ETH) {
+        nid = GetKnownEthNetworkId(chain->chain_id);
+      }
+      if (chain->coin == mojom::CoinType::SOL) {
+        nid = GetKnownSolNetworkId(chain->chain_id);
+      }
+      if (chain->coin == mojom::CoinType::FIL) {
+        nid = GetKnownFilNetworkId(chain->chain_id);
+      }
 
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "goerli");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x5", chainIdNotExist.value());
+      if (nid.empty()) {
+        nid = chain->chain_id;
+        if (chain->coin != mojom::CoinType::ETH) {
+          auto chainId = GetChainIdByNetworkId(&prefs, coin_type, nid);
+          ASSERT_FALSE(chainId.has_value());  // GetNetworkId supports only ETH
+          continue;
+        }
+      }
+      auto chainId = GetChainIdByNetworkId(&prefs, coin_type, nid);
+      ASSERT_TRUE(chainId.has_value());
+      EXPECT_EQ(chain->chain_id, chainId.value());
+    }
+  };
 
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "mainnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x1", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "0x4e454152");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x4e454152", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "chain_id");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("chain_id", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "chain_id2");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("chain_id2", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::SOL, "mainnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x65", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::SOL, "testnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x66", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::SOL, "devnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("0x67", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::FIL, "mainnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("f", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::FIL, "testnet");
-  ASSERT_TRUE(chainIdNotExist.has_value());
-  EXPECT_EQ("t", chainIdNotExist.value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::ETH, "testnet");
-  ASSERT_FALSE(chainIdNotExist.has_value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::SOL, "123456");
-  ASSERT_FALSE(chainIdNotExist.has_value());
-
-  chainIdNotExist =
-      GetChainIdByNetworkId(&prefs, mojom::CoinType::FIL, "123456");
-  ASSERT_FALSE(chainIdNotExist.has_value());
+  for (auto coin :
+       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+    getChainIdByNetworkIdCheck(coin);
+  }
 }
+
 }  // namespace brave_wallet

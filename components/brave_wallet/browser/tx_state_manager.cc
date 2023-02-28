@@ -87,9 +87,10 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
   }
 
   const auto* chain_id_string = value.FindString("chain_id");
-  if (chain_id_string) {
-    meta->set_chain_id(*chain_id_string);
+  if (!chain_id_string) {
+    return false;
   }
+  meta->set_chain_id(*chain_id_string);
 
   return true;
 }
@@ -203,24 +204,21 @@ void TxStateManager::RemoveObserver(TxStateManager::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void TxStateManager::MigrateShowChainIdNetworkInfo(PrefService* prefs) {
+void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)) {
     return;
   }
-  ScopedDictPrefUpdate eth_txs_update(prefs, kBraveWalletEthereumTransactions);
-  auto& eth_network_ids = eth_txs_update.Get();
+  if (!prefs->HasPrefPath(kBraveWalletTransactions)) {
+    return;
+  }
 
-  ScopedDictPrefUpdate sol_txs_update(prefs, kBraveWalletSolanaTransactions);
-  auto& sol_network_ids = sol_txs_update.Get();
-
-  ScopedDictPrefUpdate fil_txs_update(prefs, kBraveWalletFileCoinTransactions);
-  auto& fil_network_ids = fil_txs_update.Get();
+  ScopedDictPrefUpdate txs_update(prefs, kBraveWalletTransactions);
+  auto& all_txs = txs_update.Get();
 
   auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
                           const mojom::CoinType& coin) {
     for (auto tnid : *tx_by_network_ids) {
       auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
-
       if (!chain_id.has_value()) {
         continue;
       }
@@ -230,7 +228,6 @@ void TxStateManager::MigrateShowChainIdNetworkInfo(PrefService* prefs) {
       if (!txs || txs->empty()) {
         return;
       }
-
       for (auto tx : *txs) {
         auto* ptx = tx.second.GetIfDict();
 
@@ -242,17 +239,20 @@ void TxStateManager::MigrateShowChainIdNetworkInfo(PrefService* prefs) {
       }
     }
   };
-  if (!eth_network_ids.empty()) {
-    set_chain_id(&eth_network_ids, mojom::CoinType::ETH);
-  }
-  if (!sol_network_ids.empty()) {
-    set_chain_id(&sol_network_ids, mojom::CoinType::SOL);
-  }
 
-  if (!fil_network_ids.empty()) {
-    set_chain_id(&fil_network_ids, mojom::CoinType::FIL);
-  }
+  for (auto txs_coin_type : all_txs) {
+    auto coin = GetCoinTypeFromPrefKey(txs_coin_type.first);
 
+    if (!coin.has_value()) {
+      continue;
+    }
+
+    if (!txs_coin_type.second.is_dict()) {
+      continue;
+    }
+
+    set_chain_id(&txs_coin_type.second.GetDict(), coin.value());
+  }
   prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
 }
 
