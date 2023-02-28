@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -27,12 +28,6 @@
 namespace brave_federated {
 
 namespace {
-
-// constexpr char kServerEndpoint[] = "https://fl.brave.com";
-constexpr char kLocalServerTasksEndpoint[] =
-    "http://127.0.0.1:8000/api/v0/fleet/pull-task-ins";
-constexpr char kLocalServerResultsEndpoint[] =
-    "http://127.0.0.1:8000/api/v0/fleet/push-task-res";
 
 // TODO(lminto): update this annotation
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -69,7 +64,7 @@ CommunicationAdapter::~CommunicationAdapter() = default;
 
 void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(kLocalServerTasksEndpoint);
+  request->url = GURL(features::GetFederatedLearningTaskEndpoint());
   request->headers.SetHeader("Content-Type", "application/protobuf");
   request->headers.SetHeader("Accept", "application/protobuf");
   request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");
@@ -107,11 +102,11 @@ void CommunicationAdapter::OnGetTasks(
 
     if (task_list.empty()) {
       VLOG(1) << "No tasks received from FL service, retrying in 60s";
-      std::move(callback).Run({}, 60);
+      std::move(callback).Run({}, features::GetFederatedLearningUpdateCycleInMinutes() * 60);
       return;
     }
 
-    std::move(callback).Run(task_list, 60);
+    std::move(callback).Run(task_list, features::GetFederatedLearningUpdateCycleInMinutes() * 60);
     return;
   }
 
@@ -121,7 +116,7 @@ void CommunicationAdapter::OnGetTasks(
 void CommunicationAdapter::PostTaskResult(TaskResult result,
                                           PostResultCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(kLocalServerResultsEndpoint);
+  request->url = GURL(features::GetFederatedLearningResultsEndpoint());
   request->headers.SetHeader("Content-Type", "application/protobuf");
   request->headers.SetHeader("Accept", "application/protobuf");
   request->headers.SetHeader("X-Brave-FL-Federated-Learning", "?1");

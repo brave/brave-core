@@ -15,6 +15,20 @@ namespace {
 
 const char kFeatureName[] = "BraveFederated";
 
+const char kFieldTrialParameterFederatedLearningUpdateCycleInMinutes[] =
+    "federated_learning_update_cycle_in_minutes";
+const int kDefaultFederatedLearningUpdateCycleInMinutes = 5;
+
+const char kFieldTrialParameterFederatedLearningTaskEndpoint[] =
+    "federated_learning_task_endpoint";
+const char kDefaultFederatedLearningTaskEndpoint[] =
+    "https://fl.brave.com/api/v0/fleet/pull-task-ins";
+
+const char kFieldTrialParameterFederatedLearningResultsEndpoint[] =
+    "federated_learning_results_endpoint";
+const char kDefaultFederatedLearningResultsEndpoint[] =
+    "https://fl.brave.com/api/v0/fleet/push-task-res";
+
 const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
@@ -51,6 +65,33 @@ BASE_FEATURE(kFederatedLearning,
 
 bool IsFederatedLearningEnabled() {
   return base::FeatureList::IsEnabled(kFederatedLearning);
+}
+
+int GetFederatedLearningUpdateCycleInMinutes() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning,
+      kFieldTrialParameterFederatedLearningUpdateCycleInMinutes,
+      kDefaultFederatedLearningUpdateCycleInMinutes);
+}
+
+std::string GetFederatedLearningTaskEndpoint() {
+  const std::string task_endpoint = GetFieldTrialParamValueByFeature(
+      kFederatedLearning, kFieldTrialParameterFederatedLearningTaskEndpoint);
+
+  if (task_endpoint.empty()) {
+    return kDefaultFederatedLearningTaskEndpoint;
+  }
+  return task_endpoint;
+}
+
+std::string GetFederatedLearningResultsEndpoint() {
+  const std::string results_endpoint = GetFieldTrialParamValueByFeature(
+      kFederatedLearning, kFieldTrialParameterFederatedLearningResultsEndpoint);
+
+  if (results_endpoint.empty()) {
+    return kDefaultFederatedLearningResultsEndpoint;
+  }
+  return results_endpoint;
 }
 
 bool IsOperationalPatternsEnabled() {
