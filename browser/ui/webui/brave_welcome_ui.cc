@@ -32,6 +32,8 @@
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
+#include "chrome/grit/chromium_strings.h"
+#include "common/importer/importer_constants.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -198,7 +200,15 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
     const std::string& callback_id,
     shell_integration::DefaultWebClientState state,
     const std::u16string& name) {
-  ResolveJavascriptCallback(base::Value(callback_id), base::Value(name));
+  std::u16string browser_name = name;
+  if (browser_name == l10n_util::GetStringUTF16(IDS_BRAVE_SHORTCUT_NAME_BETA)) {
+    browser_name = "Google Chrome Beta";
+  } else if (browser_name ==
+             l10n_util::GetStringUTF16(IDS_BRAVE_SHORTCUT_NAME_DEV)) {
+    browser_name = "Google Chrome Dev";
+  }
+  ResolveJavascriptCallback(base::Value(callback_id),
+                            base::Value(browser_name));
 }
 
 void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
