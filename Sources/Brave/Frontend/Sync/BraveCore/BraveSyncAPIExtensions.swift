@@ -100,7 +100,7 @@ extension BraveSyncAPI {
     let serviceStateListener = BraveSyncServiceListener(onRemoved: { [weak self] observer in
       self?.serviceObservers.remove(observer)
     })
-    serviceStateListener.observer = createSyncServiceObserver(observer)
+    serviceStateListener.observer = createSyncServiceObserver(observer, onSyncServiceShutdown: {})
 
     serviceObservers.add(serviceStateListener)
     return serviceStateListener
