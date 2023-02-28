@@ -83,14 +83,28 @@ TEST(FeatureOverrideTest, FeatureDuplicateDChecks) {
       {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
   }};
 
-  // This should trigger DCHECKs.
+  // This should trigger DCHECK.
+  EXPECT_DEATH_IF_SUPPORTED(
+      internal::FeatureDefaultStateOverrider({
+          {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
+      }),
+      testing::HasSubstr("Feature TestEnabledButOverridenFeature has already "
+                         "been overridden"));
+}
+
+TEST(FeatureOverrideTest, FeatureDuplicateInSameMacroDChecks) {
+  // Check any feature to make sure overridden features are finalized (moved
+  // from an unsorted vector to a sorted flat_map).
+  ASSERT_FALSE(base::FeatureList::IsEnabled(kTestEnabledButOverridenFeature));
+
+  // This should trigger DCHECK.
   EXPECT_DEATH_IF_SUPPORTED(
       internal::FeatureDefaultStateOverrider({
           {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
           {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
       }),
-      testing::HasSubstr("Feature TestEnabledButOverridenFeature has already "
-                         "been overridden"));
+      testing::HasSubstr("Feature TestEnabledButOverridenFeature is duplicated "
+                         "in the current override macros"));
 }
 #endif  // DCHECK_IS_ON() && !BUILDFLAG(DCHECK_IS_CONFIGURABLE)
 
