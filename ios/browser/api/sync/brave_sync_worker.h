@@ -16,10 +16,12 @@
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 class ChromeBrowserState;
+struct SyncProtocolError;
 
 namespace syncer {
 class BraveSyncServiceImpl;
@@ -34,14 +36,15 @@ enum class QrCodeDataValidationResult;
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
  public:
-  BraveSyncDeviceTracker(syncer::DeviceInfoTracker* device_info_tracker,
-                         std::function<void()> on_device_info_changed_callback);
+  BraveSyncDeviceTracker(
+      syncer::DeviceInfoTracker* device_info_tracker,
+      const base::RepeatingCallback<void()>& on_device_info_changed_callback);
   ~BraveSyncDeviceTracker() override;
 
  private:
   void OnDeviceInfoChange() override;
 
-  std::function<void()> on_device_info_changed_callback_;
+  base::RepeatingCallback<void()> on_device_info_changed_callback_;
 
   base::ScopedObservation<syncer::DeviceInfoTracker,
                           syncer::DeviceInfoTracker::Observer>
@@ -50,14 +53,18 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncServiceTracker(syncer::SyncServiceImpl* sync_service_impl,
-                          std::function<void()> on_state_changed_callback);
+  BraveSyncServiceTracker(
+      syncer::SyncServiceImpl* sync_service_impl,
+      const base::RepeatingCallback<void()>& on_state_changed_callback,
+      const base::RepeatingCallback<void()>& on_sync_shutdown_callback);
   ~BraveSyncServiceTracker() override;
 
  private:
   void OnStateChanged(syncer::SyncService* sync) override;
+  void OnSyncShutdown(syncer::SyncService* sync) override;
 
-  std::function<void()> on_state_changed_callback_;
+  base::RepeatingCallback<void()> on_state_changed_callback_;
+  base::RepeatingCallback<void()> on_sync_shutdown_callback_;
 
   base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
@@ -93,6 +100,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool SetSetupComplete();
   void ResetSync();
   void DeleteDevice(const std::string& device_guid);
+  void SetJoinSyncChainCallback(base::OnceCallback<void(bool)> callback);
+  void PermanentlyDeleteAccount(
+      base::OnceCallback<void(const syncer::SyncProtocolError&)> callback);
 
  private:
   // syncer::SyncServiceObserver implementation.
