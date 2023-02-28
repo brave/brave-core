@@ -50,6 +50,7 @@ source_set("app") {
     "//brave/ios/browser/api/qr_code",
     "//brave/ios/browser/api/skus:skus_mojom_wrappers",
     "//brave/ios/browser/api/sync/driver",
+    "//brave/ios/browser/api/web_image",
     "//brave/ios/browser/component_updater",
     "//brave/ios/browser/skus",
     "//components/browser_sync",
