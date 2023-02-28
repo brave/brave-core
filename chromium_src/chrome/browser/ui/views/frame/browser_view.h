@@ -23,7 +23,7 @@
   GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
-#define LoadAccelerators virtual LoadAccelerators
+#define LoadAccelerators() virtual LoadAccelerators()
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
