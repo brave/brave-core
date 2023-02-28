@@ -741,7 +741,8 @@ extension BrowserViewController {
     _ url: URL,
     tab: Tab?,
     navigationAction: WKNavigationAction,
-    openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
+    openedURLCompletionHandler: ((Bool) -> Void)? = nil
+  ) {
     
     let isMainFrame = navigationAction.targetFrame?.isMainFrame == true
     
@@ -765,6 +766,13 @@ extension BrowserViewController {
       }
     }
     
+    // If the tab is empty when handling an external URL we should remove the tab once the user decides
+    func removeTabIfEmpty() {
+      if let tab = tab, tab.url == nil {
+        tabManager.removeTab(tab)
+      }
+    }
+    
     view.endEditing(true)
     let popup = AlertPopupView(
       imageView: nil,
@@ -774,10 +782,12 @@ extension BrowserViewController {
       titleSize: 21
     )
     popup.addButton(title: Strings.openExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
+      removeTabIfEmpty()
       return .flyDown
     }
     popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
       UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
+      removeTabIfEmpty()
       return .flyDown
     }
     popup.showWithType(showType: .flyUp)
