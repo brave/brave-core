@@ -170,6 +170,34 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   func snsResolveHost(_ domain: String, completion: @escaping (URL?, BraveWallet.SolanaProviderError, String) -> Void) {
     completion(nil, .internalError, "Error Message")
   }
+
+  func unstoppableDomainsResolveMethod(_ completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
+    completion(.ask)
+  }
+
+  func ensResolveMethod(_ completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
+    completion(.ask)
+  }
+
+  func ensOffchainLookupResolveMethod(_ completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
+    completion(.ask)
+  }
+
+  func snsResolveMethod(_ completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
+    completion(.ask)
+  }
+
+  func setUnstoppableDomainsResolveMethod(_ method: BraveWallet.ResolveMethod) {
+  }
+
+  func setEnsResolveMethod(_ method: BraveWallet.ResolveMethod) {
+  }
+
+  func setEnsOffchainLookupResolveMethod(_ method: BraveWallet.ResolveMethod) {
+  }
+
+  func setSnsResolveMethod(_ method: BraveWallet.ResolveMethod) {
+  }
 }
 
 extension BraveWallet.NetworkInfo {
