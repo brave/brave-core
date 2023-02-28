@@ -47,6 +47,10 @@ class AdBlockRegionalServiceManager
 
   base::Value::List GetRegionalLists();
 
+  bool NeedsLocaleListsMigration(
+      std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
+          locale_lists);
+
   void SetFilterListCatalog(std::vector<FilterListCatalogEntry> catalog);
   const std::vector<FilterListCatalogEntry>& GetFilterListCatalog();
 
