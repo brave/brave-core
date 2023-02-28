@@ -5,11 +5,15 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
+#include <initializer_list>
+#include <string>
 #include <utility>
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -31,6 +35,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_details.h"
@@ -38,6 +43,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/resource/resource_bundle.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser_window.h"
@@ -56,6 +62,19 @@ void SetShowOriginalLinkTitle(const std::u16string* title) {
 }
 
 }  // namespace test
+
+std::u16string GetSpeedreaderData(
+    std::initializer_list<std::pair<base::StringPiece, int>> resources) {
+  std::u16string result = u"speedreaderData = {";
+  for (const auto& r : resources) {
+    auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
+    // Make sure that the text doesn't contain js injection
+    base::ReplaceChars(text, u"\"", u"\\\"", &text);
+    result += base::StrCat({base::UTF8ToUTF16(r.first), u": \"", text, u"\","});
+  }
+
+  return result + u"}\n\n";
+}
 
 constexpr const char* kPropertyPrefNames[] = {
     kSpeedreaderPrefTheme, kSpeedreaderPrefFontSize, kSpeedreaderPrefFontFamily,
@@ -497,38 +516,23 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
-  if (!PageWantsDistill(distill_state_))
+  if (!PageWantsDistill(distill_state_)) {
     return;
-
-  constexpr const char16_t kAddShowOriginalPageLink[] =
-      uR"js(
-    (function() {
-      // element id is hardcoded in extractor.rs
-      const link = document.
-        getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
-      if (!link)
-        return;
-      link.innerText = "$1";
-      link.addEventListener('click', (e) => {
-        window.speedreader.showOriginalPage();
-      })
-    })();
-  )js";
-
-  auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
-  if (test::g_show_original_link_title) {
-    link_text = *test::g_show_original_link_title;
   }
 
-  // Make sure that the link text doesn't contain js injection
-  base::ReplaceChars(link_text, u"\"", u"\\\"", &link_text);
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_SPEEDREADER_MINUTES_TEXT}}));
 
-  const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
-                                                      link_text, nullptr);
+  static base::NoDestructor<std::u16string> kJsScript(base::UTF8ToUTF16(
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_JS_DESKTOP)));
+
+  static base::NoDestructor<std::u16string> kLoadScript(*kSpeedreaderData +
+                                                        *kJsScript);
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+      *kLoadScript, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
