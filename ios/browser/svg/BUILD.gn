@@ -32,6 +32,8 @@ source_set("svg") {
     "//third_party/skia/src/codec/SkMaskSwizzler.cpp",
     "//third_party/skia/src/codec/SkMasks.cpp",
     "//third_party/skia/src/codec/SkParseEncodedOrigin.cpp",
+    "//third_party/skia/src/codec/SkPixmapUtils.cpp",
+    "//third_party/skia/src/codec/SkPixmapUtils.h",
     "//third_party/skia/src/codec/SkPngCodec.cpp",
     "//third_party/skia/src/codec/SkSampler.cpp",
     "//third_party/skia/src/codec/SkSwizzler.cpp",
