@@ -215,6 +215,8 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
   }
   ~ScrollHeaderView() override = default;
 
+  BraveTabSearchButton* tab_search_button() { return tab_search_button_; }
+
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
         !WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
@@ -554,6 +556,10 @@ void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   auto* original_ntb = region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
+}
+
+TabSearchBubbleHost* VerticalTabStripRegionView::GetTabSearchBubbleHost() {
+  return scroll_view_header_->tab_search_button()->tab_search_bubble_host();
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {

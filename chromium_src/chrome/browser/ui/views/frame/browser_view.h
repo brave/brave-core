@@ -29,6 +29,10 @@
 #define GetTabStripVisible virtual GetTabStripVisible
 #define BrowserViewLayout BraveBrowserViewLayout
 
+#define GetTabSearchBubbleHost     \
+  GetTabSearchBubbleHost_Unused(); \
+  virtual TabSearchBubbleHost* GetTabSearchBubbleHost
+
 #if BUILDFLAG(IS_WIN)
 #define GetSupportsTitle virtual GetSupportsTitle
 #endif
@@ -39,6 +43,7 @@
 #undef GetSupportsTitle
 #endif
 
+#undef GetTabSearchBubbleHost
 #undef BrowserViewLayout
 #undef GetTabStripVisible
 #undef BrowserViewLayoutDelegateImpl

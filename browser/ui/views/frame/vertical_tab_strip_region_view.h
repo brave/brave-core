@@ -67,6 +67,8 @@ class VerticalTabStripRegionView : public views::View,
   // This should be called when height of this view or tab strip changes.
   void UpdateNewTabButtonVisibility();
 
+  TabSearchBubbleHost* GetTabSearchBubbleHost();
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
