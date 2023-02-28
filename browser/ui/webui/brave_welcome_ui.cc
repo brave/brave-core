@@ -12,10 +12,12 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
+#include "brave/common/importer/importer_constants.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
@@ -33,7 +35,6 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/chromium_strings.h"
-#include "common/importer/importer_constants.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -43,6 +44,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/p3a/pref_names.h"
@@ -201,11 +203,12 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
     shell_integration::DefaultWebClientState state,
     const std::u16string& name) {
   std::u16string browser_name = name;
-  if (browser_name == l10n_util::GetStringUTF16(IDS_BRAVE_SHORTCUT_NAME_BETA)) {
-    browser_name = "Google Chrome Beta";
+  if (browser_name ==
+      l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_BETA)) {
+    browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserBeta));
   } else if (browser_name ==
-             l10n_util::GetStringUTF16(IDS_BRAVE_SHORTCUT_NAME_DEV)) {
-    browser_name = "Google Chrome Dev";
+             l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_DEV)) {
+    browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserDev));
   }
   ResolveJavascriptCallback(base::Value(callback_id),
                             base::Value(browser_name));
