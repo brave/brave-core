@@ -99,6 +99,7 @@ export interface HostState {
   summaryData: RewardsSummaryData
   notifications: Notification[]
   availableCountries: string[]
+  defaultCountry: string
   declaredCountry: string
   userType: UserType
   publishersVisitedCount: number
