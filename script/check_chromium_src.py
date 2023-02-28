@@ -95,8 +95,8 @@ def do_check_includes(override_filepath):
                               "-prefixed include that doesn't point to the " +
                               "expected file:")
                         print(f"         Include: {line}" +
-                           "         Expected include target: ../gen/" +
-                            f"{normalized_override_filepath}")
+                              "         Expected include target: ../gen/" +
+                              f"{normalized_override_filepath}")
                         print("-------------------------")
                     continue
 
@@ -179,7 +179,9 @@ def do_check_defines(override_filepath, original_filepath):
                     print("-------------------------")
 
 
-def do_check_overrides(overrides_list, search_dir, check_includes=False,
+def do_check_overrides(overrides_list,
+                       search_dir,
+                       check_includes=False,
                        gen_dir=None):
     """
     Checks that each path in the passed in list |overrides_list| exists in
