@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_logs_tracker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -400,15 +399,15 @@ class EthereumProviderImpl final
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
-  std::vector<std::string> known_allowed_accounts;
+  std::vector<std::string> known_allowed_accounts_;
   std::vector<std::string> eth_subscriptions_;
   std::vector<std::string> eth_log_subscriptions_;
   EthBlockTracker eth_block_tracker_;
   EthLogsTracker eth_logs_tracker_;
-  bool first_known_accounts_check = true;
+  bool first_known_accounts_check_ = true;
   PrefService* prefs_ = nullptr;
   bool wallet_onboarding_shown_ = false;
-  base::WeakPtrFactory<EthereumProviderImpl> weak_factory_;
+  base::WeakPtrFactory<EthereumProviderImpl> weak_factory_{this};
 };
 
 }  // namespace brave_wallet
