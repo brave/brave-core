@@ -371,6 +371,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
+  registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
 }
 
 AdBlockResourceProvider* AdBlockService::resource_provider() {

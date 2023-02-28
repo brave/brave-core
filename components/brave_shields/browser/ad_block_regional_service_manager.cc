@@ -70,6 +70,31 @@ AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
   catalog_provider_->RemoveObserver(this);
 }
 
+// If the older logic was used, only the first regional list for a given locale
+// might have been enabled. If so, make sure the user hasn't explicitly
+// modified any of these locale-specific list settings, to determine if all
+// should be enabled.
+bool AdBlockRegionalServiceManager::NeedsLocaleListsMigration(
+    std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
+        locale_lists) {
+  // This can only apply to locales with more than one available list
+  if (locale_lists.size() <= 1) {
+    return false;
+  }
+
+  if (!IsFilterListEnabled(locale_lists[0].get().uuid)) {
+    return false;
+  }
+
+  for (size_t i = 1; i < locale_lists.size(); i++) {
+    if (IsFilterListEnabled(locale_lists[i].get().uuid)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 void AdBlockRegionalServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
@@ -79,17 +104,24 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
     return;
   }
 
-  // Enable the default regional list, but only do this once so that
-  // user can override this setting in the future
-  bool checked_default_region =
-      local_state_->GetBoolean(prefs::kAdBlockCheckedDefaultRegion);
-  if (!checked_default_region) {
-    local_state_->SetBoolean(prefs::kAdBlockCheckedDefaultRegion, true);
+  // Enable the default regional lists, but only do this once so that user can
+  // override this setting in the future
+  bool checked_all_default_regions =
+      local_state_->GetBoolean(prefs::kAdBlockCheckedAllDefaultRegions);
+
+  if (!checked_all_default_regions) {
+    bool checked_default_region =
+        local_state_->GetBoolean(prefs::kAdBlockCheckedDefaultRegion);
     auto locale_lists = brave_shields::FindAdBlockFilterListsByLocale(
         filter_list_catalog_, locale_);
-    for (auto const& entry : locale_lists) {
-      EnableFilterList(entry.get().uuid, true);
+
+    if (!checked_default_region || NeedsLocaleListsMigration(locale_lists)) {
+      for (auto const& entry : locale_lists) {
+        EnableFilterList(entry.get().uuid, true);
+      }
     }
+
+    local_state_->SetBoolean(prefs::kAdBlockCheckedAllDefaultRegions, true);
   }
 
   // Start all regional services associated with enabled filter lists
