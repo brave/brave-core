@@ -61,33 +61,6 @@
 #include "brave/components/commands/common/features.h"
 #endif
 
-using brave_shields::features::kBraveAdblockCnameUncloaking;
-using brave_shields::features::kBraveAdblockCollapseBlockedElements;
-using brave_shields::features::kBraveAdblockCookieListDefault;
-using brave_shields::features::kBraveAdblockCookieListOptIn;
-using brave_shields::features::kBraveAdblockCosmeticFiltering;
-using brave_shields::features::kBraveAdblockCspRules;
-using brave_shields::features::kBraveAdblockDefault1pBlocking;
-using brave_shields::features::kBraveAdblockMobileNotificationsListDefault;
-using brave_shields::features::kBraveDarkModeBlock;
-using brave_shields::features::kBraveDomainBlock;
-using brave_shields::features::kBraveDomainBlock1PES;
-using brave_shields::features::kBraveExtensionNetworkBlocking;
-using brave_shields::features::kBraveReduceLanguage;
-using brave_shields::features::kCosmeticFilteringSyncLoad;
-
-using de_amp::features::kBraveDeAMP;
-using debounce::features::kBraveDebounce;
-using google_sign_in_permission::features::kBraveGoogleSignInPermission;
-
-using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
-using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
-
-#if BUILDFLAG(IS_ANDROID)
-using preferences::features::kBraveBackgroundVideoPlayback;
-using safe_browsing::features::kBraveAndroidSafeBrowsing;
-#endif
-
 namespace flag_descriptions {
 
 namespace {
@@ -690,15 +663,16 @@ constexpr char kRestrictEventSourcePoolDescription[] =
       flag_descriptions::kBraveBackgroundVideoPlaybackName,        \
       flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
       kOsAndroid,                                                  \
-      FEATURE_VALUE_TYPE(kBraveBackgroundVideoPlayback),           \
+      FEATURE_VALUE_TYPE(                                          \
+          preferences::features::kBraveBackgroundVideoPlayback),   \
   })
-#define BRAVE_SAFE_BROWSING_ANDROID                            \
-  EXPAND_FEATURE_ENTRIES({                                     \
-      "brave-safe-browsing",                                   \
-      flag_descriptions::kBraveAndroidSafeBrowsingName,        \
-      flag_descriptions::kBraveAndroidSafeBrowsingDescription, \
-      kOsAndroid,                                              \
-      FEATURE_VALUE_TYPE(kBraveAndroidSafeBrowsing),           \
+#define BRAVE_SAFE_BROWSING_ANDROID                                           \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-safe-browsing",                                                  \
+      flag_descriptions::kBraveAndroidSafeBrowsingName,                       \
+      flag_descriptions::kBraveAndroidSafeBrowsingDescription,                \
+      kOsAndroid,                                                             \
+      FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
@@ -729,56 +703,63 @@ constexpr char kRestrictEventSourcePoolDescription[] =
           flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                \
           flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription,         \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo),                   \
+          FEATURE_VALUE_TYPE(                                                  \
+              ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           flag_descriptions::kBraveAdblockCnameUncloakingName,                 \
           flag_descriptions::kBraveAdblockCnameUncloakingDescription,          \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockCnameUncloaking),                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockCnameUncloaking),          \
       },                                                                       \
       {                                                                        \
           "brave-adblock-collapse-blocked-elements",                           \
           flag_descriptions::kBraveAdblockCollapseBlockedElementsName,         \
           flag_descriptions::kBraveAdblockCollapseBlockedElementsDescription,  \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockCollapseBlockedElements),            \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockCollapseBlockedElements),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cookie-list-default",                                 \
           flag_descriptions::kBraveAdblockCookieListDefaultName,               \
           flag_descriptions::kBraveAdblockCookieListDefaultDescription,        \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockCookieListDefault),                  \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockCookieListDefault),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cookie-list-opt-in",                                  \
           flag_descriptions::kBraveAdblockCookieListOptInName,                 \
           flag_descriptions::kBraveAdblockCookieListOptInDescription,          \
           kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(kBraveAdblockCookieListOptIn),                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockCookieListOptIn),          \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cosmetic-filtering",                                  \
           flag_descriptions::kBraveAdblockCosmeticFilteringName,               \
           flag_descriptions::kBraveAdblockCosmeticFilteringDescription,        \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering),                  \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockCosmeticFiltering),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-csp-rules",                                           \
           flag_descriptions::kBraveAdblockCspRulesName,                        \
           flag_descriptions::kBraveAdblockCspRulesDescription,                 \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockCspRules),                           \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveAdblockCspRules),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-default-1p-blocking",                                 \
           flag_descriptions::kBraveAdblockDefault1pBlockingName,               \
           flag_descriptions::kBraveAdblockDefault1pBlockingDescription,        \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockDefault1pBlocking),                  \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockDefault1pBlocking),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-mobile-notifications-list-default",                   \
@@ -786,77 +767,82 @@ constexpr char kRestrictEventSourcePoolDescription[] =
           flag_descriptions::                                                  \
               kBraveAdblockMobileNotificationsListDefaultDescription,          \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveAdblockMobileNotificationsListDefault),     \
+          FEATURE_VALUE_TYPE(brave_shields::features::                         \
+                                 kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
           "brave-dark-mode-block",                                             \
           flag_descriptions::kBraveDarkModeBlockName,                          \
           flag_descriptions::kBraveDarkModeBlockDescription,                   \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveDarkModeBlock),                             \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveDarkModeBlock),    \
       },                                                                       \
       {                                                                        \
           "brave-domain-block",                                                \
           flag_descriptions::kBraveDomainBlockName,                            \
           flag_descriptions::kBraveDomainBlockDescription,                     \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveDomainBlock),                               \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveDomainBlock),      \
       },                                                                       \
       {                                                                        \
           "brave-domain-block-1pes",                                           \
           flag_descriptions::kBraveDomainBlock1PESName,                        \
           flag_descriptions::kBraveDomainBlock1PESDescription,                 \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveDomainBlock1PES),                           \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveDomainBlock1PES),  \
       },                                                                       \
       {                                                                        \
           "brave-debounce",                                                    \
           flag_descriptions::kBraveDebounceName,                               \
           flag_descriptions::kBraveDebounceDescription,                        \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveDebounce),                                  \
+          FEATURE_VALUE_TYPE(debounce::features::kBraveDebounce),              \
       },                                                                       \
       {                                                                        \
           "brave-de-amp",                                                      \
           flag_descriptions::kBraveDeAMPName,                                  \
           flag_descriptions::kBraveDeAMPDescription,                           \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveDeAMP),                                     \
+          FEATURE_VALUE_TYPE(de_amp::features::kBraveDeAMP),                   \
       },                                                                       \
       {                                                                        \
           "brave-google-sign-in-permission",                                   \
           flag_descriptions::kBraveGoogleSignInPermissionName,                 \
           flag_descriptions::kBraveGoogleSignInPermissionDescription,          \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveGoogleSignInPermission),                    \
+          FEATURE_VALUE_TYPE(google_sign_in_permission::features::             \
+                                 kBraveGoogleSignInPermission),                \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \
           flag_descriptions::kBraveExtensionNetworkBlockingName,               \
           flag_descriptions::kBraveExtensionNetworkBlockingDescription,        \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking),                  \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveExtensionNetworkBlocking),        \
       },                                                                       \
       {                                                                        \
           "brave-reduce-language",                                             \
           flag_descriptions::kBraveReduceLanguageName,                         \
           flag_descriptions::kBraveReduceLanguageDescription,                  \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kBraveReduceLanguage),                            \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveReduceLanguage),   \
       },                                                                       \
       {                                                                        \
           "brave-cosmetic-filtering-sync-load",                                \
           flag_descriptions::kCosmeticFilteringSyncLoadName,                   \
           flag_descriptions::kCosmeticFilteringSyncLoadDescription,            \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(kCosmeticFilteringSyncLoad),                      \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kCosmeticFilteringSyncLoad),            \
       },                                                                       \
       {                                                                        \
           "brave-super-referral",                                              \
           flag_descriptions::kBraveSuperReferralName,                          \
           flag_descriptions::kBraveSuperReferralDescription,                   \
           flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,          \
-          FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper),                 \
+          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
+                                 kBraveNTPSuperReferralWallpaper),             \
       },                                                                       \
       {                                                                        \
           "brave-ephemeral-storage",                                           \
@@ -1027,7 +1013,7 @@ constexpr char kRestrictEventSourcePoolDescription[] =
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
-  LAST_BRAVE_FEATURE_ENTRIES_ITEM
+  LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 
 namespace flags_ui {
 namespace {
