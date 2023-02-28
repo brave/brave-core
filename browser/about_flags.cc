@@ -61,379 +61,26 @@
 #include "brave/components/commands/common/features.h"
 #endif
 
-namespace flag_descriptions {
-
-namespace {
-
-constexpr char kBraveAdblockCnameUncloakingName[] = "Enable CNAME uncloaking";
-constexpr char kBraveAdblockCnameUncloakingDescription[] =
-    "Take DNS CNAME records into account when making network request blocking "
-    "decisions.";
-
-constexpr char kBraveAdblockCollapseBlockedElementsName[] =
-    "Collapse HTML elements with blocked source attributes";
-constexpr char kBraveAdblockCollapseBlockedElementsDescription[] =
-    "Cause iframe and img elements to be collapsed if the URL of their src "
-    "attribute is blocked";
-
-constexpr char kBraveAdblockCookieListDefaultName[] =
-    "Treat 'Easylist-Cookie List' as a default list source";
-constexpr char kBraveAdblockCookieListDefaultDescription[] =
-    "Enables the 'Easylist-Cookie List' regional list if its toggle "
-    "in brave://adblock hasn't otherwise been modified";
-
-constexpr char kBraveAdblockCookieListOptInName[] =
-    "Show an opt-in bubble for the 'Easylist-Cookie List' filter";
-constexpr char kBraveAdblockCookieListOptInDescription[] =
-    "When enabled, a bubble will be displayed inviting the user to enable the "
-    "'Easylist-Cookie List' filter for blocking cookie consent dialogs";
-
-constexpr char kBraveAdblockCosmeticFilteringName[] =
-    "Enable cosmetic filtering";
-constexpr char kBraveAdblockCosmeticFilteringDescription[] =
-    "Enable support for cosmetic filtering";
-
-constexpr char kBraveAdblockCspRulesName[] = "Enable support for CSP rules";
-constexpr char kBraveAdblockCspRulesDescription[] =
-    "Applies additional CSP rules to pages for which a $csp rule has been "
-    "loaded from a filter list";
-
-constexpr char kBraveAdblockDefault1pBlockingName[] =
-    "Shields first-party network blocking";
-constexpr char kBraveAdblockDefault1pBlockingDescription[] =
-    "Allow Brave Shields to block first-party network requests in Standard "
-    "blocking mode";
-
-constexpr char kBraveAdblockMobileNotificationsListDefaultName[] =
-    "Treat 'Fanboy's Mobile Notifications List' as a default list source";
-constexpr char kBraveAdblockMobileNotificationsListDefaultDescription[] =
-    "Enables the 'Fanboy's Mobile Notifications List' regional list if its "
-    "toggle in brave://adblock hasn't otherwise been modified";
-
-constexpr char kBraveAdsCustomNotificationsName[] =
-    "Enable Brave Ads custom push notifications";
-constexpr char kBraveAdsCustomNotificationsDescription[] =
-    "Enable Brave Ads custom push notifications to support rich media";
-
-constexpr char kBraveAdsCustomNotificationsFallbackName[] =
-    "Allow Brave Ads to fallback from native to custom push notifications";
-constexpr char kBraveAdsCustomNotificationsFallbackDescription[] =
-    "Allow Brave Ads to fallback from native to custom push notifications on "
-    "operating systems which do not support native notifications";
-
-constexpr char kBraveDarkModeBlockName[] =
-    "Enable dark mode blocking fingerprinting protection";
-constexpr char kBraveDarkModeBlockDescription[] =
-    "Always report light mode when fingerprinting protections set to Strict";
-
-constexpr char kBraveDomainBlockName[] = "Enable domain blocking";
-constexpr char kBraveDomainBlockDescription[] =
-    "Enable support for blocking domains with an interstitial page";
-
-constexpr char kBraveDomainBlock1PESName[] =
-    "Enable domain blocking using First Party Ephemeral Storage";
-constexpr char kBraveDomainBlock1PESDescription[] =
-    "When visiting a blocked domain, Brave will try to enable Ephemeral "
-    "Storage for a first party context, meaning neither cookies nor "
-    "localStorage data will be persisted after a website is closed. Ephemeral "
-    "Storage will be auto-enabled only if no data was previously stored for a "
-    "website";
-
-constexpr char kBraveDebounceName[] = "Enable debouncing";
-constexpr char kBraveDebounceDescription[] =
-    "Enable support for skipping top-level redirect tracking URLs";
-
-constexpr char kBraveDeAMPName[] = "Enable De-AMP";
-constexpr char kBraveDeAMPDescription[] = "Enable De-AMPing feature";
-
-constexpr char kBraveGoogleSignInPermissionName[] =
-    "Enable Google Sign-In Permission Prompt";
-constexpr char kBraveGoogleSignInPermissionDescription[] =
-    "Enable permissioning access to legacy Google Sign-In";
-
-constexpr char kBraveExtensionNetworkBlockingName[] =
-    "Enable extension network blocking";
-constexpr char kBraveExtensionNetworkBlockingDescription[] =
-    "Enable blocking for network requests initiated by extensions";
-
-constexpr char kBraveReduceLanguageName[] = "Reduce language identifiability";
-constexpr char kBraveReduceLanguageDescription[] =
-    "Reduce the identifiability of my language preferences";
-
-constexpr char kCosmeticFilteringSyncLoadName[] =
-    "Enable sync loading of cosmetic filter rules";
-constexpr char kCosmeticFilteringSyncLoadDescription[] =
-    "Enable sync loading of cosmetic filter rules";
-
-constexpr char kBraveIpfsName[] = "Enable IPFS";
-constexpr char kBraveIpfsDescription[] = "Enable native support of IPFS.";
-
-constexpr char kBraveNTPBrandedWallpaperDemoName[] =
-    "New Tab Page Demo Branded Wallpaper";
-constexpr char kBraveNTPBrandedWallpaperDemoDescription[] =
-    "Force dummy data for the Branded Wallpaper New Tab Page Experience. "
-    "View rate and user opt-in conditionals will still be followed to decide "
-    "when to display the Branded Wallpaper.";
-
-constexpr char kBraveBlockScreenFingerprintingName[] =
-    "Block screen fingerprinting";
-constexpr char kBraveBlockScreenFingerprintingDescription[] =
-    "Prevents JavaScript and CSS from learning the user's screen dimensions "
-    "or window position.";
-
-constexpr char kBraveCommandsName[] = "Brave Commands";
-constexpr char kBraveCommandsDescription[] =
-    "Enable experimental page for viewing and executing commands in Brave";
-
-constexpr char kBraveTorWindowsHttpsOnlyName[] =
-    "Use HTTPS-Only Mode in Private Windows with Tor";
-constexpr char kBraveTorWindowsHttpsOnlyDescription[] =
-    "Prevents Private Windows with Tor from making any insecure HTTP "
-    "connections without warning the user first.";
-
-constexpr char kBraveRoundTimeStampsName[] = "Round time stamps";
-constexpr char kBraveRoundTimeStampsDescription[] =
-    "Prevents JavaScript from getting access to high-resolution clocks by "
-    "rounding all DOMHighResTimeStamps to the nearest millisecond.";
-
-constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
-constexpr char kBraveSpeedreaderDescription[] =
-    "Enables faster loading of simplified article-style web pages.";
-
-constexpr char kBraveSyncName[] = "Enable Brave Sync v2";
-constexpr char kBraveSyncDescription[] =
-    "Brave Sync v2 integrates with chromium sync engine with Brave specific "
-    "authentication flow and enforce client side encryption";
-
-constexpr char kBraveVPNName[] = "Enable experimental Brave VPN";
-constexpr char kBraveVPNDescription[] = "Experimental native VPN support";
-#if BUILDFLAG(IS_WIN)
-constexpr char kBraveVPNDnsProtectionName[] = "Enable DoH for Brave VPN";
-constexpr char kBraveVPNDnsProtectionDescription[] =
-    "Override DoH settings with Cloudflare dns if necessary to avoid leaking "
-    "requests due to Smart Multi-Home Named Resolution";
-#endif
-constexpr char kBraveSkusSdkName[] = "Enable experimental SKU SDK";
-constexpr char kBraveSkusSdkDescription[] = "Experimental SKU SDK support";
-
-constexpr char kBraveEphemeralStorageName[] = "Enable Ephemeral Storage";
-constexpr char kBraveEphemeralStorageDescription[] =
-    "Use ephemeral storage for third-party frames";
-
-constexpr char kBraveEphemeralStorageKeepAliveName[] =
-    "Ephemeral Storage Keep Alive";
-constexpr char kBraveEphemeralStorageKeepAliveDescription[] =
-    "Keep ephemeral storage partitions alive for a specified time after all "
-    "tabs for that origin are closed";
-
-constexpr char kBraveFirstPartyEphemeralStorageName[] =
-    "Enable First Party Ephemeral Storage";
-constexpr char kBraveFirstPartyEphemeralStorageDescription[] =
-    "Enable support for First Party Ephemeral Storage using SESSION_ONLY "
-    "cookie setting";
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-constexpr char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
-constexpr char kBraveRewardsGeminiDescription[] =
-    "Enables support for Gemini as an external wallet provider for Brave";
-#endif
-
-constexpr char kBraveRewardsVBatNoticeName[] =
-    "Enable Brave Rewards VBAT notices";
-constexpr char kBraveRewardsVBatNoticeDescription[] =
-    "Enables notices in the Brave Rewards UI about VBAT deadlines.";
-
-constexpr char kBraveRewardsVerboseLoggingName[] =
-    "Enable Brave Rewards verbose logging";
-constexpr char kBraveRewardsVerboseLoggingDescription[] =
-    "Enables detailed logging of Brave Rewards system events to a log file "
-    "stored on your device. Please note that this log file could include "
-    "information such as browsing history and credentials such as passwords "
-    "and access tokens depending on your activity. Please do not share it "
-    "unless asked to by Brave staff.";
-
-constexpr char kBraveRewardsAllowUnsupportedWalletProvidersName[] =
-    "Always show Brave Rewards custodial connection options";
-constexpr char kBraveRewardsAllowUnsupportedWalletProvidersDescription[] =
-    "Allows all custodial options to be selected in Brave Rewards, "
-    "including those not supported for your Rewards country.";
-
-constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
-constexpr char kBraveSuperReferralDescription[] =
-    "Use custom theme for Brave Super Referral";
-
-constexpr char kBraveWalletNftPinningFeatureName[] = "Enable NFT pinning";
-constexpr char kBraveWalletNftPinningFeatureDescription[] =
-    "Enable NFT pinning for Brave Wallet";
-
-constexpr char kBraveWalletPanelV2FeatureName[] = "Enable Panel v2";
-constexpr char kBraveWalletPanelV2FeatureDescription[] =
-    "Enable Panel v2 for Brave Wallet";
-
-constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
-constexpr char kNativeBraveWalletDescription[] =
-    "Native cryptocurrency wallet support without the use of extensions";
-
-constexpr char kBraveWalletFilecoinName[] =
-    "Enable Brave Wallet Filecoin support";
-constexpr char kBraveWalletFilecoinDescription[] =
-    "Filecoin support for native Brave Wallet";
-
-constexpr char kBraveWalletSolanaName[] = "Enable Brave Wallet Solana support";
-constexpr char kBraveWalletSolanaDescription[] =
-    "Solana support for native Brave Wallet";
-constexpr char kBraveWalletSolanaProviderName[] =
-    "Enable Brave Wallet Solana provider support";
-constexpr char kBraveWalletSolanaProviderDescription[] =
-    "Solana provider support for native Brave Wallet";
-constexpr char kBraveWalletSnsName[] = "Enable Solana Name Service support";
-constexpr char kBraveWalletSnsDescription[] =
-    "Enable Solana Name Service(.sol) support for Wallet and omnibox address "
-    "resolution";
-constexpr char kBraveWalletDappsSupportName[] =
-    "Enable Brave Wallet Dapps support";
-constexpr char kBraveWalletDappsSupportDescription[] =
-    "Brave Wallet Dapps support";
-
-constexpr char kBraveNewsName[] = "Enable Brave News";
-constexpr char kBraveNewsDescription[] =
-    "Brave News is completely private and includes anonymized ads matched on "
-    "your device.";
-
-constexpr char kBraveNewsV2Name[] = "Enable Brave News V2";
-constexpr char kBraveNewsV2Description[] =
-    "Use the new Brave News UI and sources lists";
-
-constexpr char kBraveNewsCardPeekFeatureName[] =
-    "Brave News prompts on New Tab Page";
-constexpr char kBraveNewsCardPeekFeatureDescription[] =
-    "Prompt Brave News via the top featured article peeking up from the bottom "
-    "of the New Tab Page, after a short delay.";
-
-constexpr char kCryptoWalletsForNewInstallsName[] =
-    "Enable Crypto Wallets option in settings";
-constexpr char kCryptoWalletsForNewInstallsDescription[] =
-    "Crypto Wallets extension is deprecated but with this option it can still "
-    "be enabled in settings. If it was previously used, this flag is ignored.";
-
-constexpr char kUseDevUpdaterUrlName[] = "Use dev updater url";
-constexpr char kUseDevUpdaterUrlDescription[] =
-    "Use the dev url for the component updater. "
-    "This is for internal testing only.";
-
-constexpr char kTranslateName[] = "Enable Chromium Translate feature";
-constexpr char kTranslateDescription[] =
-    "Should be used with brave-translate-go, see the description here.";
-
-constexpr char kBraveFederatedName[] =
-    "Enables local data collection for notification ad timing "
-    "(brave-federated)";
-constexpr char kBraveFederatedDescription[] =
-    "Starts local collection for notification ad timing data. This data "
-    "is stored locally and automatically erased after one month. No data "
-    "leaves the client.";
-
-constexpr char kAllowIncognitoPermissionInheritanceName[] =
-    "Allow permission inheritance in incognito profiles";
-constexpr char kAllowIncognitoPermissionInheritanceDescription[] =
-    "When enabled, most permissions set in a normal profile will be inherited "
-    "in incognito profile if they are less permissive, for ex. Geolocation "
-    "BLOCK will be automatically set to BLOCK in incognito.";
-
-constexpr char kBraveSyncHistoryDiagnosticsName[] =
-    "Enable Brave Sync History Diagnostics";
-constexpr char kBraveSyncHistoryDiagnosticsDescription[] =
-    "Brave Sync History Diagnostics flag displays additional sync related "
-    "information on History page";
-constexpr char kBraveSyncSendAllHistoryName[] =
-    "Send All History to Brave Sync";
-constexpr char kBraveSyncSendAllHistoryDescription[] =
-    "With Send All History flag all sync entries are sent to Sync server "
-    "including transitions of link, bookmark, reload, etc";
-
-// Blink features.
-constexpr char kFileSystemAccessAPIName[] = "File System Access API";
-constexpr char kFileSystemAccessAPIDescription[] =
-    "Enables the File System Access API, giving websites access to the file "
-    "system";
-
-constexpr char kNavigatorConnectionAttributeName[] =
-    "Enable navigator.connection attribute";
-constexpr char kNavigatorConnectionAttributeDescription[] =
-    "Enables the navigator.connection API. Enabling this API will allow sites "
-    "to learn information about your network and internet connection. Trackers "
-    "can use this information to fingerprint your browser, or to infer when "
-    "you are traveling or at home.";
-
-constexpr char kRestrictWebSocketsPoolName[] = "Restrict WebSockets pool";
-constexpr char kRestrictWebSocketsPoolDescription[] =
-    "Limits simultaneous active WebSockets connections per eTLD+1";
-
-constexpr char kPlaylistName[] = "Playlist";
-constexpr char kPlaylistDescription[] = "Enables Playlist";
-
-constexpr char kAllowCertainClientHintsName[] =
-    "Allow certain request client hints";
-constexpr char kAllowCertainClientHintsDescription[] =
-    "Allows setting certain request client hints (sec-ch-ua, sec-ch-ua-mobile, "
-    "sec-ch-ua-platform)";
-
-constexpr char kBraveHttpsByDefaultName[] = "Use HTTPS by Default";
-constexpr char kBraveHttpsByDefaultDescription[] =
-    "Attempt to connect to all websites using HTTPS before falling back to "
-    "HTTP.";
-
-constexpr char kBraveVerticalTabsName[] = "Vertical tabs";
-constexpr char kBraveVerticalTabsDescription[] =
-    "Move tab strip to be a vertical panel on the side of the window instead "
-    "of horizontal at the top of the window.";
-
-#if BUILDFLAG(IS_ANDROID)
-constexpr char kBraveBackgroundVideoPlaybackName[] =
-    "Background video playback";
-constexpr char kBraveBackgroundVideoPlaybackDescription[] =
-    "Enables play audio from video in background when tab is not active or "
-    "device screen is turned off. Try to switch to desktop mode if this "
-    "feature is not working.";
-constexpr char kBraveAndroidSafeBrowsingName[] = "Safe Browsing";
-constexpr char kBraveAndroidSafeBrowsingDescription[] =
-    "Enables Google Safe Browsing for determining whether a URL has been "
-    "marked as a known threat.";
-#endif
-
-#if BUILDFLAG(IS_LINUX)
-constexpr char kBraveChangeActiveTabOnScrollEventName[] =
-    "Change active tab on scroll event";
-constexpr char kBraveChangeActiveTabOnScrollEventDescription[] =
-    "Change the active tab when scroll events occur on tab strip.";
-#endif  // BUILDFLAG(IS_LINUX)
-
-constexpr char kRestrictEventSourcePoolName[] = "Restrict Event Source Pool";
-constexpr char kRestrictEventSourcePoolDescription[] =
-    "Limits simultaneous active WebSockets connections per eTLD+1";
-
-}  // namespace
-}  // namespace flag_descriptions
-
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
   EXPAND_FEATURE_ENTRIES({                                \
       kBraveVPNFeatureInternalName,                       \
-      flag_descriptions::kBraveVPNName,                   \
-      flag_descriptions::kBraveVPNDescription,            \
+      "Enable experimental Brave VPN",                    \
+      "Experimental native VPN support",                  \
       kOsMac | kOsWin,                                    \
       FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN), \
   })
 #if BUILDFLAG(IS_WIN)
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                  \
-  EXPAND_FEATURE_ENTRIES({                                             \
-      kBraveVPNDnsFeatureInternalName,                                 \
-      flag_descriptions::kBraveVPNDnsProtectionName,                   \
-      flag_descriptions::kBraveVPNDnsProtectionDescription,            \
-      kOsWin,                                                          \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection), \
+#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      kBraveVPNDnsFeatureInternalName,                                   \
+      "Enable DoH for Brave VPN",                                        \
+      "Override DoH settings with Cloudflare dns if necessary to avoid " \
+      "leaking requests due to Smart Multi-Home Named Resolution",       \
+      kOsWin,                                                            \
+      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
   })
 #else
 #define BRAVE_VPN_DNS_FEATURE_ENTRIES
@@ -446,33 +93,33 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #define BRAVE_SKU_SDK_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                              \
       "skus-sdk",                                       \
-      flag_descriptions::kBraveSkusSdkName,             \
-      flag_descriptions::kBraveSkusSdkDescription,      \
+      "Enable experimental SKU SDK",                    \
+      "Experimental SKU SDK support",                   \
       kOsMac | kOsWin | kOsAndroid,                     \
       FEATURE_VALUE_TYPE(skus::features::kSkusFeature), \
   })
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#define SPEEDREADER_FEATURE_ENTRIES                         \
-  EXPAND_FEATURE_ENTRIES({                                  \
-      "brave-speedreader",                                  \
-      flag_descriptions::kBraveSpeedreaderName,             \
-      flag_descriptions::kBraveSpeedreaderDescription,      \
-      kOsDesktop | kOsAndroid,                              \
-      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature), \
+#define SPEEDREADER_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "brave-speedreader",                                             \
+      "Enable SpeedReader",                                            \
+      "Enables faster loading of simplified article-style web pages.", \
+      kOsDesktop | kOsAndroid,                                         \
+      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
   })
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
-#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                       \
-  EXPAND_FEATURE_ENTRIES({                                         \
-      "brave-rewards-gemini",                                      \
-      flag_descriptions::kBraveRewardsGeminiName,                  \
-      flag_descriptions::kBraveRewardsGeminiDescription,           \
-      kOsDesktop,                                                  \
-      FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature), \
+#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                 \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-rewards-gemini",                                                \
+      "Enable Gemini for Brave Rewards",                                     \
+      "Enables support for Gemini as an external wallet provider for Brave", \
+      kOsDesktop,                                                            \
+      FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),           \
   })
 #else
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
@@ -482,8 +129,8 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #define BRAVE_IPFS_FEATURE_ENTRIES                      \
   EXPAND_FEATURE_ENTRIES({                              \
       "brave-ipfs",                                     \
-      flag_descriptions::kBraveIpfsName,                \
-      flag_descriptions::kBraveIpfsDescription,         \
+      "Enable IPFS",                                    \
+      "Enable native support of IPFS.",                 \
       kOsDesktop | kOsAndroid,                          \
       FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
   })
@@ -495,63 +142,65 @@ constexpr char kRestrictEventSourcePoolDescription[] =
   EXPAND_FEATURE_ENTRIES(                                                     \
       {                                                                       \
           "enable-nft-pinning",                                               \
-          flag_descriptions::kBraveWalletNftPinningFeatureName,               \
-          flag_descriptions::kBraveWalletNftPinningFeatureDescription,        \
+          "Enable NFT pinning",                                               \
+          "Enable NFT pinning for Brave Wallet",                              \
           kOsDesktop,                                                         \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletNftPinningFeature),         \
       },                                                                      \
       {                                                                       \
           "enable-panel-v2",                                                  \
-          flag_descriptions::kBraveWalletPanelV2FeatureName,                  \
-          flag_descriptions::kBraveWalletPanelV2FeatureDescription,           \
+          "Enable Panel v2",                                                  \
+          "Enable Panel v2 for Brave Wallet",                                 \
           kOsDesktop,                                                         \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletPanelV2Feature),            \
       },                                                                      \
       {                                                                       \
           "native-brave-wallet",                                              \
-          flag_descriptions::kNativeBraveWalletName,                          \
-          flag_descriptions::kNativeBraveWalletDescription,                   \
+          "Enable Brave Wallet",                                              \
+          "Native cryptocurrency wallet support without the use of "          \
+          "extensions",                                                       \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
       {                                                                       \
           "brave-wallet-filecoin",                                            \
-          flag_descriptions::kBraveWalletFilecoinName,                        \
-          flag_descriptions::kBraveWalletFilecoinDescription,                 \
+          "Enable Brave Wallet Filecoin support",                             \
+          "Filecoin support for native Brave Wallet",                         \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletFilecoinFeature),           \
       },                                                                      \
       {                                                                       \
           "brave-wallet-solana",                                              \
-          flag_descriptions::kBraveWalletSolanaName,                          \
-          flag_descriptions::kBraveWalletSolanaDescription,                   \
+          "Enable Brave Wallet Solana support",                               \
+          "Solana support for native Brave Wallet",                           \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletSolanaFeature),             \
       },                                                                      \
       {                                                                       \
           "brave-wallet-solana-provider",                                     \
-          flag_descriptions::kBraveWalletSolanaProviderName,                  \
-          flag_descriptions::kBraveWalletSolanaProviderDescription,           \
+          "Enable Brave Wallet Solana provider support",                      \
+          "Solana provider support for native Brave Wallet",                  \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletSolanaProviderFeature),     \
       },                                                                      \
       {                                                                       \
           "brave-wallet-sns",                                                 \
-          flag_descriptions::kBraveWalletSnsName,                             \
-          flag_descriptions::kBraveWalletSnsDescription,                      \
+          "Enable Solana Name Service support",                               \
+          "Enable Solana Name Service(.sol) support for Wallet and omnibox "  \
+          "address resolution",                                               \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSnsFeature), \
       },                                                                      \
       {                                                                       \
           "brave-wallet-dapps-support",                                       \
-          flag_descriptions::kBraveWalletDappsSupportName,                    \
-          flag_descriptions::kBraveWalletDappsSupportDescription,             \
+          "Enable Brave Wallet Dapps support",                                \
+          "Brave Wallet Dapps support",                                       \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletDappsSupportFeature),       \
@@ -561,44 +210,51 @@ constexpr char kRestrictEventSourcePoolDescription[] =
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
           "brave-news",                                                        \
-          flag_descriptions::kBraveNewsName,                                   \
-          flag_descriptions::kBraveNewsDescription,                            \
+          "Enable Brave News",                                                 \
+          "Brave News is completely private and includes anonymized ads "      \
+          "matched on your device.",                                           \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeature),         \
       },                                                                       \
       {                                                                        \
           "brave-news-v2",                                                     \
-          flag_descriptions::kBraveNewsV2Name,                                 \
-          flag_descriptions::kBraveNewsV2Description,                          \
+          "Enable Brave News V2",                                              \
+          "Use the new Brave News UI and sources lists",                       \
           kOsDesktop | flags_ui::kOsAndroid,                                   \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsV2Feature),       \
       },                                                                       \
       {                                                                        \
           "brave-news-peek",                                                   \
-          flag_descriptions::kBraveNewsCardPeekFeatureName,                    \
-          flag_descriptions::kBraveNewsCardPeekFeatureDescription,             \
+          "Brave News prompts on New Tab Page",                                \
+          "Prompt Brave News via the top featured article peeking up from "    \
+          "the bottom of the New Tab Page, after a short delay.",              \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsCardPeekFeature), \
       })
 
-#define BRAVE_FEDERATED_FEATURE_ENTRIES                                  \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-federated",                                                 \
-      flag_descriptions::kBraveFederatedName,                            \
-      flag_descriptions::kBraveFederatedDescription,                     \
-      kOsDesktop,                                                        \
-      FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning), \
+#define BRAVE_FEDERATED_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-federated",                                                       \
+      "Enables local data collection for notification ad timing "              \
+      "(brave-federated)",                                                     \
+      "Starts local collection for notification ad timing data. This data is " \
+      "stored locally and automatically erased after one month. No data "      \
+      "leaves the client.",                                                    \
+      kOsDesktop,                                                              \
+      FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning),       \
   })
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#define CRYPTO_WALLETS_FEATURE_ENTRIES                             \
-  EXPAND_FEATURE_ENTRIES({                                         \
-      "ethereum_remote-client_new-installs",                       \
-      flag_descriptions::kCryptoWalletsForNewInstallsName,         \
-      flag_descriptions::kCryptoWalletsForNewInstallsDescription,  \
-      kOsDesktop,                                                  \
-      FEATURE_VALUE_TYPE(ethereum_remote_client::features::        \
-                             kCryptoWalletsForNewInstallsFeature), \
+#define CRYPTO_WALLETS_FEATURE_ENTRIES                                         \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "ethereum_remote-client_new-installs",                                   \
+      "Enable Crypto Wallets option in settings",                              \
+      "Crypto Wallets extension is deprecated but with this option it can "    \
+      "still be enabled in settings. If it was previously used, this flag is " \
+      "ignored.",                                                              \
+      kOsDesktop,                                                              \
+      FEATURE_VALUE_TYPE(ethereum_remote_client::features::                    \
+                             kCryptoWalletsForNewInstallsFeature),             \
   })
 #else
 #define CRYPTO_WALLETS_FEATURE_ENTRIES
@@ -608,8 +264,8 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #define PLAYLIST_FEATURE_ENTRIES                         \
   EXPAND_FEATURE_ENTRIES({                               \
       kPlaylistFeatureInternalName,                      \
-      flag_descriptions::kPlaylistName,                  \
-      flag_descriptions::kPlaylistDescription,           \
+      "Playlist",                                        \
+      "Enables Playlist",                                \
       kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
       FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
   })
@@ -618,26 +274,27 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_COMMANDS_FEATURE_ENTRIES                        \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-commands",                                       \
-      flag_descriptions::kBraveCommandsName,                  \
-      flag_descriptions::kBraveCommandsDescription,           \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(commands::features::kBraveCommands), \
+#define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-commands",                                                       \
+      "Brave Commands",                                                       \
+      "Enable experimental page for viewing and executing commands in Brave", \
+      kOsWin | kOsMac | kOsLinux,                                             \
+      FEATURE_VALUE_TYPE(commands::features::kBraveCommands),                 \
   })
 #else
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY                     \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-vertical-tabs",                                  \
-      flag_descriptions::kBraveVerticalTabsName,              \
-      flag_descriptions::kBraveVerticalTabsDescription,       \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs), \
+#define BRAVE_VERTICAL_TABS_FEATURE_ENTRY                                \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "brave-vertical-tabs",                                             \
+      "Vertical tabs",                                                   \
+      "Move tab strip to be a vertical panel on the side of the window " \
+      "instead of horizontal at the top of the window.",                 \
+      kOsWin | kOsMac | kOsLinux,                                        \
+      FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabs),            \
   })
 #else
 #define BRAVE_VERTICAL_TABS_FEATURE_ENTRY
@@ -647,8 +304,8 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES               \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-change-active-tab-on-scroll-event",                              \
-      flag_descriptions::kBraveChangeActiveTabOnScrollEventName,              \
-      flag_descriptions::kBraveChangeActiveTabOnScrollEventDescription,       \
+      "Change active tab on scroll event",                                    \
+      "Change the active tab when scroll events occur on tab strip.",         \
       kOsLinux,                                                               \
       FEATURE_VALUE_TYPE(tabs::features::kBraveChangeActiveTabOnScrollEvent), \
   })
@@ -657,20 +314,23 @@ constexpr char kRestrictEventSourcePoolDescription[] =
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                    \
-  EXPAND_FEATURE_ENTRIES({                                         \
-      "brave-background-video-playback",                           \
-      flag_descriptions::kBraveBackgroundVideoPlaybackName,        \
-      flag_descriptions::kBraveBackgroundVideoPlaybackDescription, \
-      kOsAndroid,                                                  \
-      FEATURE_VALUE_TYPE(                                          \
-          preferences::features::kBraveBackgroundVideoPlayback),   \
+#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-background-video-playback",                                       \
+      "Background video playback",                                             \
+      "Enables play audio from video in background when tab is not active or " \
+      "device screen is turned off. Try to switch to desktop mode if this "    \
+      "feature is not working.",                                               \
+      kOsAndroid,                                                              \
+      FEATURE_VALUE_TYPE(                                                      \
+          preferences::features::kBraveBackgroundVideoPlayback),               \
   })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-safe-browsing",                                                  \
-      flag_descriptions::kBraveAndroidSafeBrowsingName,                       \
-      flag_descriptions::kBraveAndroidSafeBrowsingDescription,                \
+      "Safe Browsing",                                                        \
+      "Enables Google Safe Browsing for determining whether a URL has been "  \
+      "marked as a known threat.",                                            \
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
@@ -686,314 +346,356 @@ constexpr char kRestrictEventSourcePoolDescription[] =
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
           "use-dev-updater-url",                                               \
-          flag_descriptions::kUseDevUpdaterUrlName,                            \
-          flag_descriptions::kUseDevUpdaterUrlDescription,                     \
+          "Use dev updater url",                                               \
+          "Use the dev url for the component updater. This is for internal "   \
+          "testing only.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
       },                                                                       \
       {                                                                        \
           "allow-certain-client-hints",                                        \
-          flag_descriptions::kAllowCertainClientHintsName,                     \
-          flag_descriptions::kAllowCertainClientHintsDescription,              \
+          "Allow certain request client hints",                                \
+          "Allows setting certain request client hints (sec-ch-ua, "           \
+          "sec-ch-ua-mobile, sec-ch-ua-platform)",                             \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kAllowCertainClientHints),       \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
-          flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                \
-          flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription,         \
+          "New Tab Page Demo Branded Wallpaper",                               \
+          "Force dummy data for the Branded Wallpaper New Tab Page "           \
+          "Experience. View rate and user opt-in conditionals will still be "  \
+          "followed to decide when to display the Branded Wallpaper.",         \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
-          flag_descriptions::kBraveAdblockCnameUncloakingName,                 \
-          flag_descriptions::kBraveAdblockCnameUncloakingDescription,          \
+          "Enable CNAME uncloaking",                                           \
+          "Take DNS CNAME records into account when making network request "   \
+          "blocking decisions.",                                               \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCnameUncloaking),          \
       },                                                                       \
       {                                                                        \
           "brave-adblock-collapse-blocked-elements",                           \
-          flag_descriptions::kBraveAdblockCollapseBlockedElementsName,         \
-          flag_descriptions::kBraveAdblockCollapseBlockedElementsDescription,  \
+          "Collapse HTML elements with blocked source attributes",             \
+          "Cause iframe and img elements to be collapsed if the URL of their " \
+          "src attribute is blocked",                                          \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCollapseBlockedElements),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cookie-list-default",                                 \
-          flag_descriptions::kBraveAdblockCookieListDefaultName,               \
-          flag_descriptions::kBraveAdblockCookieListDefaultDescription,        \
+          "Treat 'Easylist-Cookie List' as a default list source",             \
+          "Enables the 'Easylist-Cookie List' regional list if its toggle in " \
+          "brave://adblock hasn't otherwise been modified",                    \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCookieListDefault),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cookie-list-opt-in",                                  \
-          flag_descriptions::kBraveAdblockCookieListOptInName,                 \
-          flag_descriptions::kBraveAdblockCookieListOptInDescription,          \
+          "Show an opt-in bubble for the 'Easylist-Cookie List' filter",       \
+          "When enabled, a bubble will be displayed inviting the user to "     \
+          "enable the 'Easylist-Cookie List' filter for blocking cookie "      \
+          "consent dialogs",                                                   \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCookieListOptIn),          \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cosmetic-filtering",                                  \
-          flag_descriptions::kBraveAdblockCosmeticFilteringName,               \
-          flag_descriptions::kBraveAdblockCosmeticFilteringDescription,        \
+          "Enable cosmetic filtering",                                         \
+          "Enable support for cosmetic filtering",                             \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockCosmeticFiltering),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-csp-rules",                                           \
-          flag_descriptions::kBraveAdblockCspRulesName,                        \
-          flag_descriptions::kBraveAdblockCspRulesDescription,                 \
+          "Enable support for CSP rules",                                      \
+          "Applies additional CSP rules to pages for which a $csp rule has "   \
+          "been loaded from a filter list",                                    \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveAdblockCspRules),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-default-1p-blocking",                                 \
-          flag_descriptions::kBraveAdblockDefault1pBlockingName,               \
-          flag_descriptions::kBraveAdblockDefault1pBlockingDescription,        \
+          "Shields first-party network blocking",                              \
+          "Allow Brave Shields to block first-party network requests in "      \
+          "Standard blocking mode",                                            \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveAdblockDefault1pBlocking),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-mobile-notifications-list-default",                   \
-          flag_descriptions::kBraveAdblockMobileNotificationsListDefaultName,  \
-          flag_descriptions::                                                  \
-              kBraveAdblockMobileNotificationsListDefaultDescription,          \
+          "Treat 'Fanboy's Mobile Notifications List' as a default list "      \
+          "source",                                                            \
+                                                                               \
+          "Enables the 'Fanboy's Mobile Notifications List' regional list if " \
+          "its toggle in brave://adblock hasn't otherwise been modified",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::                         \
                                  kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
           "brave-dark-mode-block",                                             \
-          flag_descriptions::kBraveDarkModeBlockName,                          \
-          flag_descriptions::kBraveDarkModeBlockDescription,                   \
+          "Enable dark mode blocking fingerprinting protection",               \
+          "Always report light mode when fingerprinting protections set to "   \
+          "Strict",                                                            \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveDarkModeBlock),    \
       },                                                                       \
       {                                                                        \
           "brave-domain-block",                                                \
-          flag_descriptions::kBraveDomainBlockName,                            \
-          flag_descriptions::kBraveDomainBlockDescription,                     \
+          "Enable domain blocking",                                            \
+          "Enable support for blocking domains with an interstitial page",     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveDomainBlock),      \
       },                                                                       \
       {                                                                        \
           "brave-domain-block-1pes",                                           \
-          flag_descriptions::kBraveDomainBlock1PESName,                        \
-          flag_descriptions::kBraveDomainBlock1PESDescription,                 \
+          "Enable domain blocking using First Party Ephemeral Storage",        \
+          "When visiting a blocked domain, Brave will try to enable "          \
+          "Ephemeral Storage for a first party context, meaning neither "      \
+          "cookies nor localStorage data will be persisted after a website "   \
+          "is closed. Ephemeral Storage will be auto-enabled only if no data " \
+          "was previously stored for a website",                               \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveDomainBlock1PES),  \
       },                                                                       \
       {                                                                        \
           "brave-debounce",                                                    \
-          flag_descriptions::kBraveDebounceName,                               \
-          flag_descriptions::kBraveDebounceDescription,                        \
+          "Enable debouncing",                                                 \
+          "Enable support for skipping top-level redirect tracking URLs",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(debounce::features::kBraveDebounce),              \
       },                                                                       \
       {                                                                        \
           "brave-de-amp",                                                      \
-          flag_descriptions::kBraveDeAMPName,                                  \
-          flag_descriptions::kBraveDeAMPDescription,                           \
+          "Enable De-AMP",                                                     \
+          "Enable De-AMPing feature",                                          \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(de_amp::features::kBraveDeAMP),                   \
       },                                                                       \
       {                                                                        \
           "brave-google-sign-in-permission",                                   \
-          flag_descriptions::kBraveGoogleSignInPermissionName,                 \
-          flag_descriptions::kBraveGoogleSignInPermissionDescription,          \
+          "Enable Google Sign-In Permission Prompt",                           \
+          "Enable permissioning access to legacy Google Sign-In",              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(google_sign_in_permission::features::             \
                                  kBraveGoogleSignInPermission),                \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \
-          flag_descriptions::kBraveExtensionNetworkBlockingName,               \
-          flag_descriptions::kBraveExtensionNetworkBlockingDescription,        \
+          "Enable extension network blocking",                                 \
+          "Enable blocking for network requests initiated by extensions",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveExtensionNetworkBlocking),        \
       },                                                                       \
       {                                                                        \
           "brave-reduce-language",                                             \
-          flag_descriptions::kBraveReduceLanguageName,                         \
-          flag_descriptions::kBraveReduceLanguageDescription,                  \
+          "Reduce language identifiability",                                   \
+          "Reduce the identifiability of my language preferences",             \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveReduceLanguage),   \
       },                                                                       \
       {                                                                        \
           "brave-cosmetic-filtering-sync-load",                                \
-          flag_descriptions::kCosmeticFilteringSyncLoadName,                   \
-          flag_descriptions::kCosmeticFilteringSyncLoadDescription,            \
+          "Enable sync loading of cosmetic filter rules",                      \
+          "Enable sync loading of cosmetic filter rules",                      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kCosmeticFilteringSyncLoad),            \
       },                                                                       \
       {                                                                        \
           "brave-super-referral",                                              \
-          flag_descriptions::kBraveSuperReferralName,                          \
-          flag_descriptions::kBraveSuperReferralDescription,                   \
+          "Enable Brave Super Referral",                                       \
+          "Use custom theme for Brave Super Referral",                         \
           flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,          \
           FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
                                  kBraveNTPSuperReferralWallpaper),             \
       },                                                                       \
       {                                                                        \
           "brave-ephemeral-storage",                                           \
-          flag_descriptions::kBraveEphemeralStorageName,                       \
-          flag_descriptions::kBraveEphemeralStorageDescription,                \
+          "Enable Ephemeral Storage",                                          \
+          "Use ephemeral storage for third-party frames",                      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorage),           \
       },                                                                       \
       {                                                                        \
           "brave-ephemeral-storage-keep-alive",                                \
-          flag_descriptions::kBraveEphemeralStorageKeepAliveName,              \
-          flag_descriptions::kBraveEphemeralStorageKeepAliveDescription,       \
+          "Ephemeral Storage Keep Alive",                                      \
+          "Keep ephemeral storage partitions alive for a specified time "      \
+          "after all tabs for that origin are closed",                         \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorageKeepAlive),  \
       },                                                                       \
       {                                                                        \
           "brave-first-party-ephemeral-storage",                               \
-          flag_descriptions::kBraveFirstPartyEphemeralStorageName,             \
-          flag_descriptions::kBraveFirstPartyEphemeralStorageDescription,      \
+          "Enable First Party Ephemeral Storage",                              \
+          "Enable support for First Party Ephemeral Storage using "            \
+          "SESSION_ONLY cookie setting",                                       \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveFirstPartyEphemeralStorage), \
       },                                                                       \
       {                                                                        \
           "brave-rewards-vbat-notice",                                         \
-          flag_descriptions::kBraveRewardsVBatNoticeName,                      \
-          flag_descriptions::kBraveRewardsVBatNoticeDescription,               \
+          "Enable Brave Rewards VBAT notices",                                 \
+          "Enables notices in the Brave Rewards UI about VBAT deadlines.",     \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(brave_rewards::features::kVBatNoticeFeature),     \
       },                                                                       \
       {                                                                        \
           "brave-rewards-verbose-logging",                                     \
-          flag_descriptions::kBraveRewardsVerboseLoggingName,                  \
-          flag_descriptions::kBraveRewardsVerboseLoggingDescription,           \
+          "Enable Brave Rewards verbose logging",                              \
+          "Enables detailed logging of Brave Rewards system events to a log "  \
+          "file stored on your device. Please note that this log file could "  \
+          "include information such as browsing history and credentials such " \
+          "as passwords and access tokens depending on your activity. Please " \
+          "do not share it unless asked to by Brave staff.",                   \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature), \
       },                                                                       \
       {                                                                        \
           "brave-rewards-allow-unsupported-wallet-providers",                  \
-          flag_descriptions::kBraveRewardsAllowUnsupportedWalletProvidersName, \
-          flag_descriptions::                                                  \
-              kBraveRewardsAllowUnsupportedWalletProvidersDescription,         \
+          "Always show Brave Rewards custodial connection options",            \
+                                                                               \
+          "Allows all custodial options to be selected in Brave Rewards, "     \
+          "including those not supported for your Rewards country.",           \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(brave_rewards::features::                         \
                                  kAllowUnsupportedWalletProvidersFeature),     \
       },                                                                       \
       {                                                                        \
           "brave-ads-custom-push-notifications-ads",                           \
-          flag_descriptions::kBraveAdsCustomNotificationsName,                 \
-          flag_descriptions::kBraveAdsCustomNotificationsDescription,          \
+          "Enable Brave Ads custom push notifications",                        \
+          "Enable Brave Ads custom push notifications to support rich media",  \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_ads::features::kCustomNotificationAds),     \
       },                                                                       \
       {                                                                        \
           "brave-ads-allowed-to-fallback-to-custom-push-notification-ads",     \
-          flag_descriptions::kBraveAdsCustomNotificationsFallbackName,         \
-          flag_descriptions::kBraveAdsCustomNotificationsFallbackDescription,  \
+          "Allow Brave Ads to fallback from native to custom push "            \
+          "notifications",                                                     \
+          "Allow Brave Ads to fallback from native to custom push "            \
+          "notifications on operating systems which do not support native "    \
+          "notifications",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_ads::features::kAllowedToFallbackToCustomNotificationAds), \
       },                                                                       \
       {                                                                        \
           "brave-sync-v2",                                                     \
-          flag_descriptions::kBraveSyncName,                                   \
-          flag_descriptions::kBraveSyncDescription,                            \
+          "Enable Brave Sync v2",                                              \
+          "Brave Sync v2 integrates with chromium sync engine with Brave "     \
+          "specific authentication flow and enforce client side encryption",   \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync),                \
       },                                                                       \
       {                                                                        \
           "file-system-access-api",                                            \
-          flag_descriptions::kFileSystemAccessAPIName,                         \
-          flag_descriptions::kFileSystemAccessAPIDescription,                  \
+          "File System Access API",                                            \
+          "Enables the File System Access API, giving websites access to the " \
+          "file system",                                                       \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI),           \
       },                                                                       \
       {                                                                        \
           "navigator-connection-attribute",                                    \
-          flag_descriptions::kNavigatorConnectionAttributeName,                \
-          flag_descriptions::kNavigatorConnectionAttributeDescription,         \
+          "Enable navigator.connection attribute",                             \
+          "Enables the navigator.connection API. Enabling this API will "      \
+          "allow sites to learn information about your network and internet "  \
+          "connection. Trackers can use this information to fingerprint your " \
+          "browser, or to infer when you are traveling or at home.",           \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kNavigatorConnectionAttribute),  \
       },                                                                       \
       {                                                                        \
           "restrict-websockets-pool",                                          \
-          flag_descriptions::kRestrictWebSocketsPoolName,                      \
-          flag_descriptions::kRestrictWebSocketsPoolDescription,               \
+          "Restrict WebSockets pool",                                          \
+          "Limits simultaneous active WebSockets connections per eTLD+1",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool),        \
       },                                                                       \
       {                                                                        \
           "allow-incognito-permission-inheritance",                            \
-          flag_descriptions::kAllowIncognitoPermissionInheritanceName,         \
-          flag_descriptions::kAllowIncognitoPermissionInheritanceDescription,  \
+          "Allow permission inheritance in incognito profiles",                \
+          "When enabled, most permissions set in a normal profile will be "    \
+          "inherited in incognito profile if they are less permissive, for "   \
+          "ex. Geolocation BLOCK will be automatically set to BLOCK in "       \
+          "incognito.",                                                        \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               content_settings::kAllowIncognitoPermissionInheritance),         \
       },                                                                       \
       {                                                                        \
           "brave-block-screen-fingerprinting",                                 \
-          flag_descriptions::kBraveBlockScreenFingerprintingName,              \
-          flag_descriptions::kBraveBlockScreenFingerprintingDescription,       \
+          "Block screen fingerprinting",                                       \
+          "Prevents JavaScript and CSS from learning the user's screen "       \
+          "dimensions or window position.",                                    \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               blink::features::kBraveBlockScreenFingerprinting),               \
       },                                                                       \
       {                                                                        \
           "brave-tor-windows-https-only",                                      \
-          flag_descriptions::kBraveTorWindowsHttpsOnlyName,                    \
-          flag_descriptions::kBraveTorWindowsHttpsOnlyDescription,             \
+          "Use HTTPS-Only Mode in Private Windows with Tor",                   \
+          "Prevents Private Windows with Tor from making any insecure HTTP "   \
+          "connections without warning the user first.",                       \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveTorWindowsHttpsOnly),        \
       },                                                                       \
       {                                                                        \
           "brave-round-time-stamps",                                           \
-          flag_descriptions::kBraveRoundTimeStampsName,                        \
-          flag_descriptions::kBraveRoundTimeStampsDescription,                 \
+          "Round time stamps",                                                 \
+          "Prevents JavaScript from getting access to high-resolution clocks " \
+          "by rounding all DOMHighResTimeStamps to the nearest millisecond.",  \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kBraveRoundTimeStamps),          \
       },                                                                       \
       {                                                                        \
           "translate",                                                         \
-          flag_descriptions::kTranslateName,                                   \
-          flag_descriptions::kTranslateDescription,                            \
+          "Enable Chromium Translate feature",                                 \
+          "Should be used with brave-translate-go, see the description here.", \
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(translate::kTranslate),                           \
       },                                                                       \
       {                                                                        \
           "brave-sync-history-diagnostics",                                    \
-          flag_descriptions::kBraveSyncHistoryDiagnosticsName,                 \
-          flag_descriptions::kBraveSyncHistoryDiagnosticsDescription,          \
+          "Enable Brave Sync History Diagnostics",                             \
+          "Brave Sync History Diagnostics flag displays additional sync "      \
+          "related information on History page",                               \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_sync::features::kBraveSyncHistoryDiagnostics),             \
       },                                                                       \
       {                                                                        \
           "restrict-event-source-pool",                                        \
-          flag_descriptions::kRestrictEventSourcePoolName,                     \
-          flag_descriptions::kRestrictEventSourcePoolDescription,              \
+          "Restrict Event Source Pool",                                        \
+          "Limits simultaneous active WebSockets connections per eTLD+1",      \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(blink::features::kRestrictEventSourcePool),       \
       },                                                                       \
       {                                                                        \
           "brave-sync-send-all-history",                                       \
-          flag_descriptions::kBraveSyncSendAllHistoryName,                     \
-          flag_descriptions::kBraveSyncSendAllHistoryDescription,              \
+          "Send All History to Brave Sync",                                    \
+          "With Send All History flag all sync entries are sent to Sync "      \
+          "server including transitions of link, bookmark, reload, etc",       \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_sync::features::kBraveSyncSendAllHistory),  \
       },                                                                       \
       {                                                                        \
           "https-by-default",                                                  \
-          flag_descriptions::kBraveHttpsByDefaultName,                         \
-          flag_descriptions::kBraveHttpsByDefaultDescription,                  \
+          "Use HTTPS by Default",                                              \
+          "Attempt to connect to all websites using HTTPS before falling "     \
+          "back to HTTP.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       })                                                                       \
