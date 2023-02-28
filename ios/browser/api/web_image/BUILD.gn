@@ -1,0 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("web_image") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "image_downloader.h",
+    "image_downloader.mm",
+    "web_image+private.h",
+    "web_image.h",
+    "web_image.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/svg",
+    "//components/image_fetcher/ios",
+    "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/ui/util",
+    "//net",
+  ]
+}
