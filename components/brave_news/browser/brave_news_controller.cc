@@ -59,6 +59,13 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
 }  // namespace
 
+bool GetIsEnabled(PrefService* prefs) {
+  bool should_show = prefs->GetBoolean(prefs::kNewTabPageShowToday);
+  bool opted_in = prefs->GetBoolean(prefs::kBraveNewsOptedIn);
+  bool is_enabled = (should_show && opted_in);
+  return is_enabled;
+}
+
 // static
 void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
@@ -141,10 +148,6 @@ void BraveNewsController::ClearHistory() {
   // feed cache somewhere.
 }
 
-bool BraveNewsController::GetIsEnabledForTesting() {
-  return GetIsEnabled();
-}
-
 mojo::PendingRemote<mojom::BraveNewsController>
 BraveNewsController::MakeRemote() {
   mojo::PendingRemote<mojom::BraveNewsController> remote;
@@ -153,7 +156,7 @@ BraveNewsController::MakeRemote() {
 }
 
 void BraveNewsController::GetLocale(GetLocaleCallback callback) {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     std::move(callback).Run("");
     return;
   }
@@ -161,7 +164,7 @@ void BraveNewsController::GetLocale(GetLocaleCallback callback) {
 }
 
 void BraveNewsController::GetFeed(GetFeedCallback callback) {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     std::move(callback).Run(brave_news::mojom::Feed::New());
     return;
   }
@@ -169,7 +172,7 @@ void BraveNewsController::GetFeed(GetFeedCallback callback) {
 }
 
 void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     std::move(callback).Run({});
     return;
   }
@@ -208,7 +211,7 @@ void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
 }
 
 void BraveNewsController::GetChannels(GetChannelsCallback callback) {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     std::move(callback).Run({});
     return;
   }
@@ -600,14 +603,14 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     return;
   }
   publishers_controller_.EnsurePublishersIsUpdating();
 }
 
 void BraveNewsController::CheckForFeedsUpdate() {
-  if (!GetIsEnabled()) {
+  if (!GetIsEnabled(prefs_)) {
     return;
   }
   feed_controller_.UpdateIfRemoteChanged();
@@ -623,7 +626,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
   // make sure we're setup or migrated.
   MaybeInitPrefs();
   // Refresh data on an interval only if Brave News is enabled
-  if (GetIsEnabled()) {
+  if (GetIsEnabled(prefs_)) {
     VLOG(1) << "STARTING TIMERS";
     if (!timer_feed_update_.IsRunning()) {
       timer_feed_update_.Start(FROM_HERE, base::Hours(3), this,
@@ -659,15 +662,8 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
   }
 }
 
-bool BraveNewsController::GetIsEnabled() {
-  bool should_show = prefs_->GetBoolean(prefs::kNewTabPageShowToday);
-  bool opted_in = prefs_->GetBoolean(prefs::kBraveNewsOptedIn);
-  bool is_enabled = (should_show && opted_in);
-  return is_enabled;
-}
-
 void BraveNewsController::HandleSubscriptionsChanged() {
-  if (GetIsEnabled()) {
+  if (GetIsEnabled(prefs_)) {
     VLOG(1) << "HandleSubscriptionsChanged: Ensuring feed is updated";
     feed_controller_.EnsureFeedIsUpdating();
   } else {
@@ -676,7 +672,7 @@ void BraveNewsController::HandleSubscriptionsChanged() {
 }
 
 void BraveNewsController::MaybeInitPrefs() {
-  if (GetIsEnabled() &&
+  if (GetIsEnabled(prefs_) &&
       base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature)) {
     // We had a bug where you could be subscribed to a channel in the empty
     // locale in earlier versions of Brave News. If so, we should remove it.

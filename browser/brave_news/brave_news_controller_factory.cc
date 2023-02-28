@@ -77,9 +77,4 @@ KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
                                  profile->GetURLLoaderFactory());
 }
 
-content::BrowserContext* BraveNewsControllerFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
-
 }  // namespace brave_news

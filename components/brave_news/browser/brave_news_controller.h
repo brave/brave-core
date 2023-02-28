@@ -53,6 +53,8 @@ class HistoryService;
 
 namespace brave_news {
 
+bool GetIsEnabled(PrefService* prefs);
+
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.
@@ -82,8 +84,6 @@ class BraveNewsController : public KeyedService,
   PublishersController* publisher_controller() {
     return &publishers_controller_;
   }
-
-  bool GetIsEnabledForTesting();
 
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
@@ -139,7 +139,6 @@ class BraveNewsController : public KeyedService,
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
-  bool GetIsEnabled();
   void HandleSubscriptionsChanged();
   void Prefetch();
   void MaybeInitPrefs();
