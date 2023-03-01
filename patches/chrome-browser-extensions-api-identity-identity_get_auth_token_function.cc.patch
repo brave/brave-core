@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 04a1506295005bed19a905232b07f87fba858c13..1b9870c3cfe4275ae24e84fa753bc89f567568af 100644
+index 120ed70af8385cda741cd1f34d21751c0873d0fd..c983131a957bb86dbb4472af20f01769923b9951 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -48,6 +48,13 @@
