@@ -15,7 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ads/history_item_value_util.h"
 #include "bat/ads/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_value_util.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 namespace ads {
 

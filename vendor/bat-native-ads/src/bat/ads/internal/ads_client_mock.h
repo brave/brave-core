@@ -12,7 +12,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {
 

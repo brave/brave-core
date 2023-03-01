@@ -13,7 +13,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
-#include "base/feature_list.h"  // IWYU pragma: keep
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
@@ -23,7 +23,6 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -47,7 +46,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -61,7 +60,7 @@
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"

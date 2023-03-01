@@ -10,7 +10,7 @@
 #include "bat/ads/internal/common/search_engine/search_engine_constants.h"
 #include "bat/ads/internal/common/search_engine/search_engine_info.h"
 #include "bat/ads/internal/common/url/url_util.h"
-#include "net/base/url_util.h"  // IWYU pragma: keep
+#include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 

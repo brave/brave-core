@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/feature_list.h"   // IWYU pragma: keep
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace brave_ads::features {
 

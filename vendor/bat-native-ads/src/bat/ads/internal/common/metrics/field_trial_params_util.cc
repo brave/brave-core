@@ -6,7 +6,7 @@
 #include "bat/ads/internal/common/metrics/field_trial_params_util.h"
 
 #include "absl/types/optional.h"
-#include "base/feature_list.h"  // IWYU pragma: keep
+#include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "base/time/time_delta_from_string.h"
