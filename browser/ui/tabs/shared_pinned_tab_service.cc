@@ -25,7 +25,7 @@ namespace {
 
 ////////////////////////////////////////////////////////////////////////////////
 // SharedContentsData is a WebContentsUserData attached to pinned tab's web
-// contentses that could be movable between multiple windows.
+// contents that could be movable between multiple windows.
 //
 class SharedContentsData
     : public content::WebContentsUserData<SharedContentsData> {
@@ -50,7 +50,7 @@ class SharedContentsData
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SharedContentsData);
 
 ////////////////////////////////////////////////////////////////////////////////
-// DummyContentsData is a WebContentsUserData attached to dummy web contentses
+// DummyContentsData is a WebContentsUserData attached to a dummy web contents
 // we create for inactive pinned tabs.
 //
 class DummyContentsData
