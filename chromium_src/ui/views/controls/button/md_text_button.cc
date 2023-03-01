@@ -257,8 +257,8 @@ void MdTextButton::UpdateBackgroundColor() {
       // The only thing that differs for Brave is the stroke color
       SkColor stroke_color = kBraveBrandColor;
       SetBackground(CreateBackgroundFromPainter(
-          Painter::CreateRoundRectWith1PxBorderPainter(bg_color, stroke_color,
-                                                       GetCornerRadius())));
+          Painter::CreateRoundRectWith1PxBorderPainter(
+              bg_color, stroke_color, GetCornerRadiusValue())));
     }
     return;
   }
@@ -270,7 +270,8 @@ void MdTextButton::UpdateBackgroundColor() {
 
   SetBackground(
       CreateBackgroundFromPainter(Painter::CreateRoundRectWith1PxBorderPainter(
-          colors.background_color, colors.stroke_color, GetCornerRadiusValue())));
+          colors.background_color, colors.stroke_color,
+          GetCornerRadiusValue())));
 }
 
 void MdTextButton::UpdateColors() {
