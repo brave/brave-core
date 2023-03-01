@@ -318,8 +318,8 @@ mojom::DBCommandResponse::Status LedgerDatabase::Migrate(
     return mojom::DBCommandResponse::Status::INITIALIZATION_ERROR;
   }
 
-  meta_table_.SetVersionNumber(version);
-  meta_table_.SetCompatibleVersionNumber(compatible_version);
+  CHECK(meta_table_.SetVersionNumber(version));
+  CHECK(meta_table_.SetCompatibleVersionNumber(compatible_version));
 
   return mojom::DBCommandResponse::Status::RESPONSE_OK;
 }
