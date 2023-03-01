@@ -1,9 +1,9 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 522e3c252dac3890a80eb335db62a2c38097d5bc..01dfa8141d99539fedd76adacd540f7fc848e064 100644
+index b9bac52390e72642c485fc9e82d82a02b5b97894..4596f1687e2d005b0ab49a3a27f3b9da4f0a5d03 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -115,6 +115,7 @@ generate_grd("build_grd") {
-       "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
+@@ -121,6 +121,7 @@ generate_grd("build_grd") {
+       "$root_gen_dir/ui/webui/resources/cr_components/image_service/resources.grdp",
      ]
    }
 +  import("//brave/ui/webui/resources/sources.gni") grdp_files += brave_resources_extra_grdps public_deps += brave_resources_extra_grdps_deps

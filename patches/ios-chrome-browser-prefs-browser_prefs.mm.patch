@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 8e99f7b942c692d956cab8dd6e560fda6fd66236..46f56cac5eb00d4e69d3c365d6dddb30b0eb555f 100644
+index 06aae1b9288ca07cad39f32c17865e38c3a98756..79e6b7262aebad2990bf58b5e415a06a57a0fdbd 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -267,6 +267,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -272,6 +272,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterBooleanPref(prefs::kIosCredentialProviderPromoStopPromo,
-                                 false);
+   registry->RegisterBooleanPref(
+       prefs::kIosCredentialProviderPromoHasRegisteredWithPromoManager, false);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -404,6 +405,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -409,6 +410,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
        base::to_underlying(
            prerender_prefs::NetworkPredictionSetting::kEnabledWifiOnly),
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
@@ -18,7 +18,7 @@ index 8e99f7b942c692d956cab8dd6e560fda6fd66236..46f56cac5eb00d4e69d3c365d6dddb30
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -549,4 +551,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -554,4 +556,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
    if (prefs->FindPreference(kUserClassifierLastTimeToUseSuggestions)) {
      prefs->ClearPref(kUserClassifierLastTimeToUseSuggestions);
    }
