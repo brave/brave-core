@@ -30,8 +30,11 @@ void BraveWalletPermissionPrompt::ConnectToSite(
     const std::vector<std::string>& accounts) {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
-  permissions::BraveWalletPermissionContext::AcceptOrCancel(accounts,
-                                                            web_contents_);
+  // TODO(SergeyZhukovsky): Use the real option that the user chooses, using
+  // `kForever` here is for landing new API changes separately.
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(
+      accounts, brave_wallet::mojom::PermissionLifetimeOption::kForever,
+      web_contents_);
 }
 
 void BraveWalletPermissionPrompt::CancelConnectToSite() {
@@ -54,8 +57,9 @@ void BraveWalletPermissionPrompt::OnDialogDismissed() {
 }
 
 void BraveWalletPermissionPrompt::Delegate::Closing() {
-  if (!permission_prompt_)
+  if (!permission_prompt_) {
     return;
+  }
   permission_prompt_->Closing();
 }
 

@@ -114,13 +114,14 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
   void UserGrantPermission(bool granted) {
-    if (granted)
+    if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
           std::vector<std::string>{
               "0x084DCb94038af1715963F149079cE011C4B22961"},
-          web_contents());
-    else
+          mojom::PermissionLifetimeOption::kForever, web_contents());
+    } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
+    }
     ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractBool(),

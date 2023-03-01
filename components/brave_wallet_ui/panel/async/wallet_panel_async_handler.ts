@@ -293,7 +293,10 @@ handler.on(PanelActions.connectToSite.type, async (store: Store, payload: Accoun
   const apiProxy = getWalletPanelApiProxy()
   let accounts: string[] = []
   payload.selectedAccounts.forEach((account) => { accounts.push(account.address) })
-  apiProxy.panelHandler.connectToSite(accounts)
+  // TODO(muliswilliam): Use the real option that the user chooses, using
+  // `kForever` here is for landing new API changes separately.
+  apiProxy.panelHandler.connectToSite(
+    accounts, BraveWallet.PermissionLifetimeOption.kForever)
   apiProxy.panelHandler.closeUI()
 })
 

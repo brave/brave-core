@@ -7,7 +7,10 @@
 #include <vector>
 
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/permissions/permission_lifetime_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -338,6 +341,38 @@ TEST(PermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
     GURL url_out = GetConnectWithSiteWebUIURL(base_url, cases[i].addrs, origin);
     EXPECT_EQ(url_out.spec(), cases[i].expected_out_url) << "case: " << i;
   }
+}
+
+TEST(PermissionUtilsUnitTest, SyncingWithCreatePermissionLifetimeOptions) {
+  const auto options = permissions::CreatePermissionLifetimeOptions();
+  ASSERT_EQ(
+      options.size(),
+      static_cast<size_t>(mojom::PermissionLifetimeOption::kMaxValue) + 1);
+  ASSERT_EQ(mojom::PermissionLifetimeOption::kPageClosed,
+            mojom::PermissionLifetimeOption::kMinValue);
+  ASSERT_EQ(mojom::PermissionLifetimeOption::kForever,
+            mojom::PermissionLifetimeOption::kMaxValue);
+
+  for (size_t i = 0; i < options.size(); ++i) {
+    EXPECT_TRUE(mojom::IsKnownEnumValue(
+        static_cast<mojom::PermissionLifetimeOption>(i)));
+  }
+  EXPECT_EQ(
+      options[static_cast<size_t>(mojom::PermissionLifetimeOption::kPageClosed)]
+          .lifetime,
+      base::TimeDelta());
+  EXPECT_EQ(
+      options[static_cast<size_t>(mojom::PermissionLifetimeOption::k24Hours)]
+          .lifetime,
+      base::Hours(24));
+  EXPECT_EQ(
+      options[static_cast<size_t>(mojom::PermissionLifetimeOption::k7Days)]
+          .lifetime,
+      base::Days(7));
+  EXPECT_EQ(
+      options[static_cast<size_t>(mojom::PermissionLifetimeOption::kForever)]
+          .lifetime,
+      absl::nullopt);
 }
 
 }  // namespace brave_wallet

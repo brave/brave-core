@@ -35,7 +35,9 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
   void ShowUI() override;
   void CloseUI() override;
   void SetCloseOnDeactivate(bool close) override;
-  void ConnectToSite(const std::vector<std::string>& accounts) override;
+  void ConnectToSite(
+      const std::vector<std::string>& accounts,
+      brave_wallet::mojom::PermissionLifetimeOption option) override;
   void CancelConnectToSite() override;
   void Focus() override;
   void IsSolanaAccountConnected(

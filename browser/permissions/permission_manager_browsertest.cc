@@ -229,7 +229,9 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
 
     // Test accepting request with one of the address.
     permissions::BraveWalletPermissionContext::AcceptOrCancel(
-        std::vector<std::string>{addresses[1]}, web_contents());
+        std::vector<std::string>{addresses[1]},
+        brave_wallet::mojom::PermissionLifetimeOption::kForever,
+        web_contents());
     std::vector<ContentSetting> expected_settings(
         {ContentSetting::CONTENT_SETTING_ASK,
          ContentSetting::CONTENT_SETTING_ALLOW});

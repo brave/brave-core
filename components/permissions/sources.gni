@@ -26,6 +26,7 @@ brave_components_permissions_sources = [
 brave_components_permissions_deps = [
   "//base",
   "//brave/components/brave_wallet/browser:permission_utils",
+  "//brave/components/brave_wallet/common:mojom",
   "//brave/components/l10n/common",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",

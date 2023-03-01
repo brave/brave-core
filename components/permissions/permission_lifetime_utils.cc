@@ -90,15 +90,21 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate) {
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
                          size_t index,
                          PermissionPrompt::Delegate* delegate) {
+  for (auto* request : delegate->Requests()) {
+    SetRequestLifetime(options, index, request);
+  }
+}
+
+void SetRequestLifetime(const std::vector<PermissionLifetimeOption>& options,
+                        size_t index,
+                        PermissionRequest* request) {
   DCHECK(base::FeatureList::IsEnabled(features::kPermissionLifetime));
   DCHECK(!options.empty());
   DCHECK(index < options.size());
   const auto& lifetime = options[index].lifetime;
   DLOG(INFO) << "Set permission lifetime "
              << (lifetime ? lifetime->InSeconds() : -1);
-  for (auto* request : delegate->Requests()) {
-    request->SetLifetime(lifetime);
-  }
+  request->SetLifetime(lifetime);
 }
 
 }  // namespace permissions
