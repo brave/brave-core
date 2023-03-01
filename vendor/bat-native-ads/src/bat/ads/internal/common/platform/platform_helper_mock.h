@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {
 

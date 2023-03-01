@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 #if BUILDFLAG(IS_LINUX)
 #include "absl/types/optional.h"

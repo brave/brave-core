@@ -8,7 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ads/sys_info.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
