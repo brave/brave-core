@@ -99,44 +99,38 @@
       FEATURE_VALUE_TYPE(skus::features::kSkusFeature), \
   })
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-#define SPEEDREADER_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                             \
-      "brave-speedreader",                                             \
-      "Enable SpeedReader",                                            \
-      "Enables faster loading of simplified article-style web pages.", \
-      kOsDesktop | kOsAndroid,                                         \
-      FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
-  })
-#else
-#define SPEEDREADER_FEATURE_ENTRIES
-#endif
+#define SPEEDREADER_FEATURE_ENTRIES                                        \
+  IF_BUILDFLAG(                                                            \
+      ENABLE_SPEEDREADER,                                                  \
+      EXPAND_FEATURE_ENTRIES({                                             \
+          "brave-speedreader",                                             \
+          "Enable SpeedReader",                                            \
+          "Enables faster loading of simplified article-style web pages.", \
+          kOsDesktop | kOsAndroid,                                         \
+          FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
+      }))
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                 \
-  EXPAND_FEATURE_ENTRIES({                                                   \
-      "brave-rewards-gemini",                                                \
-      "Enable Gemini for Brave Rewards",                                     \
-      "Enables support for Gemini as an external wallet provider for Brave", \
-      kOsDesktop,                                                            \
-      FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),           \
-  })
-#else
-#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES
-#endif
+#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
+  IF_BUILDFLAG(                                                            \
+      ENABLE_GEMINI_WALLET,                                                \
+      EXPAND_FEATURE_ENTRIES({                                             \
+          "brave-rewards-gemini",                                          \
+          "Enable Gemini for Brave Rewards",                               \
+          "Enables support for Gemini as an external wallet provider for " \
+          "Brave",                                                         \
+          kOsDesktop,                                                      \
+          FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),     \
+      }))
 
-#if BUILDFLAG(ENABLE_IPFS)
-#define BRAVE_IPFS_FEATURE_ENTRIES                      \
-  EXPAND_FEATURE_ENTRIES({                              \
-      "brave-ipfs",                                     \
-      "Enable IPFS",                                    \
-      "Enable native support of IPFS.",                 \
-      kOsDesktop | kOsAndroid,                          \
-      FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
-  })
-#else
-#define BRAVE_IPFS_FEATURE_ENTRIES
-#endif
+#define BRAVE_IPFS_FEATURE_ENTRIES                                   \
+  IF_BUILDFLAG(ENABLE_IPFS,                                          \
+               EXPAND_FEATURE_ENTRIES({                              \
+                   "brave-ipfs",                                     \
+                   "Enable IPFS",                                    \
+                   "Enable native support of IPFS.",                 \
+                   kOsDesktop | kOsAndroid,                          \
+                   FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
+               }))
 
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -244,34 +238,31 @@
       FEATURE_VALUE_TYPE(brave_federated::features::kFederatedLearning),       \
   })
 
-#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-#define CRYPTO_WALLETS_FEATURE_ENTRIES                                         \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      "ethereum_remote-client_new-installs",                                   \
-      "Enable Crypto Wallets option in settings",                              \
-      "Crypto Wallets extension is deprecated but with this option it can "    \
-      "still be enabled in settings. If it was previously used, this flag is " \
-      "ignored.",                                                              \
-      kOsDesktop,                                                              \
-      FEATURE_VALUE_TYPE(ethereum_remote_client::features::                    \
-                             kCryptoWalletsForNewInstallsFeature),             \
-  })
-#else
-#define CRYPTO_WALLETS_FEATURE_ENTRIES
-#endif
+#define CRYPTO_WALLETS_FEATURE_ENTRIES                                      \
+  IF_BUILDFLAG(                                                             \
+      ETHEREUM_REMOTE_CLIENT_ENABLED,                                       \
+      EXPAND_FEATURE_ENTRIES({                                              \
+          "ethereum_remote-client_new-installs",                            \
+          "Enable Crypto Wallets option in settings",                       \
+          "Crypto Wallets extension is deprecated but with this option it " \
+          "can "                                                            \
+          "still be enabled in settings. If it was previously used, this "  \
+          "flag is "                                                        \
+          "ignored.",                                                       \
+          kOsDesktop,                                                       \
+          FEATURE_VALUE_TYPE(ethereum_remote_client::features::             \
+                                 kCryptoWalletsForNewInstallsFeature),      \
+      }))
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#define PLAYLIST_FEATURE_ENTRIES                         \
-  EXPAND_FEATURE_ENTRIES({                               \
-      kPlaylistFeatureInternalName,                      \
-      "Playlist",                                        \
-      "Enables Playlist",                                \
-      kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
-      FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
-  })
-#else
-#define PLAYLIST_FEATURE_ENTRIES
-#endif
+#define PLAYLIST_FEATURE_ENTRIES                                      \
+  IF_BUILDFLAG(ENABLE_PLAYLIST,                                       \
+               EXPAND_FEATURE_ENTRIES({                               \
+                   kPlaylistFeatureInternalName,                      \
+                   "Playlist",                                        \
+                   "Enables Playlist",                                \
+                   kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
+                   FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
+               }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
