@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_news/browser/feed_parsing.h"
+#include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
