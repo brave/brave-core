@@ -384,4 +384,6 @@
 <translation id="3829358914761176693">{COUNT,plural, =0{管理者が、このアップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理者が、アップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、アップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、アップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="2176087127109773485">サインイン済みのBrave同期チェーンを管理できます。Brave同期チェーンは、Braveブラウザ、Play ストア、Gmailなどに使用されます。家族など、他のユーザー用にアカウントを追加するには、<ph name="DEVICE_TYPE"/>にプロフィールを新規追加します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome ベータ版</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

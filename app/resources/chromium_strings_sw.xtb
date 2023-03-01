@@ -387,4 +387,6 @@ Ruhusa ambazo tayari umetoa kwa tovuti na programu zinaweza kutumika katika akau
 <translation id="3829358914761176693">{COUNT,plural, =0{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili}=1{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili. Haitafungua upya dirisha fiche.}other{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho hili. Haitafungua upya madirisha # fiche.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho}=1{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho. Haitafungua upya dirisha fiche.}other{Msimamizi wako anataka ufungue Brave tena ili utumie sasisho. Haitafungua upya madirisha # fiche.}}</translation>
 <translation id="2176087127109773485">Unaweza kudhibiti minyororo yako ya usawazishaji uliyoingia katika Brave. Minyororo yako ya usawazishaji ya Brave hutumiwa kwa ajili ya kivinjari cha Brave, Play Store, Gmail, na zaidi. Ikiwa unataka kuongeza akaunti ya mtu mwingine, kama vile mwanafamilia, ongeza wasifu mpya kwenye <ph name="DEVICE_TYPE"/> badala yake. <ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

@@ -385,4 +385,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{系統管理員要求你重新啟動 Brave，以套用這項更新}=1{系統管理員要求你重新啟動 Brave，以套用這項更新。你的無痕式視窗不會重新開啟。}other{系統管理員要求你重新啟動 Brave，以套用這項更新。你的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{系統管理員要求你重新啟動 Brave，以套用更新}=1{系統管理員要求你重新啟動 Brave，以套用更新。你的無痕式視窗不會重新開啟。}other{系統管理員要求你重新啟動 Brave，以套用更新。你的 # 個無痕式視窗不會重新開啟。}}</translation>
 <translation id="2176087127109773485">您可以管理您已登入的 Brave 同步鏈。您的 Brave 同步鏈用於 Brave 瀏覽器、Play 商店、Gmail 等處。如果您想為其他人（如家庭成員）新增帳戶，請將新的個人檔案新增到您的 <ph name="DEVICE_TYPE"/>。<ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome 測試版</translation>
+<translation id="7535429826459677826">Google Chrome 開發人員版</translation>
 </translationbundle>

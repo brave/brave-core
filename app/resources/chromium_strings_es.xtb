@@ -397,4 +397,6 @@ Es posible que los permisos para sitios web y aplicaciones que ya hayas concedid
               =1 {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tu ventana privada no volverá a abrirse.}
               other {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tus # ventanas privadas no volverán a abrirse.}}</translation>
 <translation id="2176087127109773485">Puedes administrar tus cadenas de sincronización de Brave conectadas. Tus cadenas de sincronización de Brave se usan en el navegador de Brave, en Play Store, Gmail y muchas más plataformas. Si quieres añadir la cuenta de otra persona, como puede ser un familiar, añade un nuevo perfil en tu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>
