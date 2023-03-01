@@ -102,7 +102,9 @@ AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
-AdBlockEngine::~AdBlockEngine() = default;
+AdBlockEngine::~AdBlockEngine() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
 
 void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        blink::mojom::ResourceType resource_type,

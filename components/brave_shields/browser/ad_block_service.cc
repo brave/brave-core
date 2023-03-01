@@ -263,13 +263,8 @@ AdBlockService::AdBlockService(
           std::move(subscription_download_manager_getter)),
       component_update_service_(cus),
       task_runner_(task_runner),
-      default_engine_(std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-          new AdBlockEngine(),
-          base::OnTaskRunnerDeleter(GetTaskRunner()))),
-      additional_filters_engine_(
-          std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
-              new AdBlockEngine(),
-              base::OnTaskRunnerDeleter(GetTaskRunner()))) {
+      default_engine_(std::make_unique<AdBlockEngine>()),
+      additional_filters_engine_(std::make_unique<AdBlockEngine>()) {
   // Initializes adblock-rust's domain resolution implementation
   adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
@@ -322,6 +317,20 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
       base::BindOnce(&AdBlockEngine::EnableTag,
                      base::Unretained(default_engine_.get()), tag, enabled));
 }
+
+void AdBlockService::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  additional_filters_service_observer_.reset();
+  default_service_observer_.reset();
+  regional_service_manager_.reset();
+  subscription_service_manager_.reset();
+  filter_list_catalog_provider_.reset();
+  default_filters_provider_.reset();
+  custom_filters_provider_.reset();
+  resource_provider_.reset();
+}
+
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

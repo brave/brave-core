@@ -110,8 +110,9 @@ using content::BrowserThread;
 
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
 
-BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
-    : BrowserProcessImpl(startup_data) {
+BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData *startup_data)
+    : BrowserProcessImpl(startup_data),
+      ad_block_service_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {
   g_browser_process = this;
   g_brave_browser_process = this;
 
@@ -173,6 +174,9 @@ void BraveBrowserProcessImpl::Init() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
+  ad_block_service_->Shutdown();
+  // |ad_block_service_| will be deleted on its TaskRunner (see
+  // |ad_block_service_| declaration).
   ad_block_service_.reset();
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
@@ -227,11 +231,14 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
         base::ThreadPool::CreateSequencedTaskRunner(
             {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
-    ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
-        local_state(), GetApplicationLocale(), component_updater(), task_runner,
-        AdBlockSubscriptionDownloadManagerGetter(),
-        profile_manager()->user_data_dir().Append(
-            profile_manager()->GetInitialProfileDir()));
+    ad_block_service_ = std::unique_ptr<brave_shields::AdBlockService,
+                                        base::OnTaskRunnerDeleter>(
+        new brave_shields::AdBlockService(
+            local_state(), GetApplicationLocale(), component_updater(),
+            task_runner, AdBlockSubscriptionDownloadManagerGetter(),
+            profile_manager()->user_data_dir().Append(
+                profile_manager()->GetInitialProfileDir())),
+        base::OnTaskRunnerDeleter(task_runner));
   }
   return ad_block_service_.get();
 }

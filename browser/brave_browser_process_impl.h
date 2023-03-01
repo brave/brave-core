@@ -161,7 +161,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       local_data_files_service_;
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
-  std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
+  std::unique_ptr<brave_shields::AdBlockService, base::OnTaskRunnerDeleter>
+      ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
 #if BUILDFLAG(ENABLE_GREASELION)

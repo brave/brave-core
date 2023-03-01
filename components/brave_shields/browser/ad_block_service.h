@@ -120,6 +120,8 @@ class AdBlockService {
 
   void EnableTag(const std::string& tag, bool enabled);
 
+  void Shutdown();
+
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
       base::OnceCallback<void(base::Value::Dict, base::Value::Dict)>;
@@ -178,9 +180,8 @@ class AdBlockService {
   std::unique_ptr<AdBlockRegionalServiceManager> regional_service_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter> default_engine_;
-  std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>
-      additional_filters_engine_;
+  std::unique_ptr<AdBlockEngine> default_engine_;
+  std::unique_ptr<AdBlockEngine> additional_filters_engine_;
 
   std::unique_ptr<SourceProviderObserver> default_service_observer_
       GUARDED_BY_CONTEXT(sequence_checker_);
