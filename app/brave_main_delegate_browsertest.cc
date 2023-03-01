@@ -97,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
-    &autofill::features::kAutofillServerCommunication,
+    &autofill::features::test::kAutofillServerCommunication,
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
