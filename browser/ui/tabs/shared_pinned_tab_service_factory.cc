@@ -21,20 +21,16 @@ SharedPinnedTabServiceFactory* SharedPinnedTabServiceFactory::GetInstance() {
 }
 
 SharedPinnedTabServiceFactory::SharedPinnedTabServiceFactory()
-    : ProfileKeyedServiceFactory("PinnedTabService") {}
+    : ProfileKeyedServiceFactory("SharedPinnedTabService",
+                                 ProfileSelections::BuildForAllProfiles()) {}
 
 SharedPinnedTabServiceFactory::~SharedPinnedTabServiceFactory() {}
 
 KeyedService* SharedPinnedTabServiceFactory::BuildServiceInstanceFor(
-    content::BrowserContext* profile) const {
-  return new SharedPinnedTabService(static_cast<Profile*>(profile));
+    content::BrowserContext* context) const {
+  return new SharedPinnedTabService(Profile::FromBrowserContext(context));
 }
 
 bool SharedPinnedTabServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
-}
-
-content::BrowserContext* SharedPinnedTabServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }

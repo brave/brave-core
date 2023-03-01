@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
+#include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 #include "chrome/browser/ui/browser_command_controller.h"

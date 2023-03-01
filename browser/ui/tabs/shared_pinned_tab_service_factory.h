@@ -25,10 +25,8 @@ class SharedPinnedTabServiceFactory : public ProfileKeyedServiceFactory {
 
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* profile) const override;
-  bool ServiceIsCreatedWithBrowserContext() const override;
-  content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_

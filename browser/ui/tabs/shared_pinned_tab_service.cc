@@ -51,7 +51,7 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(SharedContentsData);
 
 ////////////////////////////////////////////////////////////////////////////////
 // DummyContentsData is a WebContentsUserData attached to dummy web contentses
-// we creates for inactive pinned tabs.
+// we create for inactive pinned tabs.
 //
 class DummyContentsData
     : public content::WebContentsUserData<DummyContentsData> {
@@ -253,7 +253,7 @@ void SharedPinnedTabService::OnTabStripModelChanged(
   } else if (change.type() == TabStripModelChange::Type::kMoved) {
     OnTabMoved(tab_strip_model, change.GetMove());
   }
-  // TODO(sko) Replace and move should be handled.
+  // TODO(sko) Replace should be handled.
 
   if (selection.active_tab_changed()) {
     OnActiveTabChanged(tab_strip_model);
