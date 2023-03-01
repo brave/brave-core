@@ -17,6 +17,7 @@ import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-opti
 
 export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   return {
+    chainId: '1337',
     id: '1',
     fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
     txHash: '',
@@ -320,6 +321,7 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
 export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionInfo = {
+  chainId: '0x67',
   id: 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
   fromAddress: mockSolanaAccount.address,
   txHash: '',
