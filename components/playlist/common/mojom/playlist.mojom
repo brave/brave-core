@@ -116,12 +116,6 @@ interface PlaylistService {
 
   RenamePlaylist(string playlist_id, string playlist_name) => (Playlist updated_playlist);
 
-  GetDefaultPlaylist() => (Playlist defaultPlaylist);
-  SetDefaultPlaylistId(string playlist_id);
-
-  GetPlaylistCacheByDefault() => (bool is_enabled);
-  SetPlaylistCacheByDefault(bool is_enabled);
-
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
 

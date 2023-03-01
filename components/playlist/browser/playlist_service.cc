@@ -716,35 +716,6 @@ void PlaylistService::RenamePlaylist(const std::string& playlist_id,
   std::move(callback).Run(target_playlist.Clone());
 }
 
-void PlaylistService::GetDefaultPlaylist(GetDefaultPlaylistCallback callback) {
-  const auto& playlist_id = GetDefaultSaveTargetListID();
-  const auto& playlists = prefs_->GetDict(kPlaylistsPref);
-  if (!playlists.contains(playlist_id)) {
-    LOG(ERROR) << __func__ << " playlist with id<" << playlist_id
-               << "> not found";
-    std::move(callback).Run({});
-    return;
-  }
-  auto* playlist_dict = playlists.FindDict(playlist_id);
-  DCHECK(playlist_dict);
-
-  const auto& items_dict = prefs_->GetDict(kPlaylistItemsPref);
-  std::move(callback).Run(ConvertValueToPlaylist(*playlist_dict, items_dict));
-}
-
-void PlaylistService::SetDefaultPlaylistId(const std::string& playlist_id) {
-  prefs_->SetString(kPlaylistDefaultSaveTargetListID, playlist_id);
-}
-
-void PlaylistService::GetPlaylistCacheByDefault(
-    GetPlaylistCacheByDefaultCallback callback) {
-  std::move(callback).Run(prefs_->GetBoolean(kPlaylistCacheByDefault));
-}
-
-void PlaylistService::SetPlaylistCacheByDefault(const bool is_enabled) {
-  prefs_->SetBoolean(kPlaylistCacheByDefault, is_enabled);
-}
-
 void PlaylistService::RecoverLocalDataForItem(
     const std::string& id,
     bool update_media_src_before_recovery,

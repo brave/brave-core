@@ -67,8 +67,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
         Log.e("BravePlaylist",
                 "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE : "
                         + SharedPreferencesManager.getInstance().readInt(
-                                BravePlaylistSaveMediaFragment.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
-                                0));
+                                PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
         mAutoSaveMediaForOfflinePreference =
                 (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
         updateAutoSaveMedia();
@@ -130,7 +129,7 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     private void updateAutoSaveMedia() {
         if (mAutoSaveMediaForOfflinePreference != null) {
             switch (SharedPreferencesManager.getInstance().readInt(
-                    BravePlaylistSaveMediaFragment.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
+                    PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
                 case 0:
                     mAutoSaveMediaForOfflinePreference.setSummary(
                             getActivity().getResources().getString(R.string.on_text));

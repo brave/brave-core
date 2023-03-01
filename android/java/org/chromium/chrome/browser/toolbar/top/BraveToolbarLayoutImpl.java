@@ -56,6 +56,7 @@ import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.listener.PlaylistOptionsListener;
 import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.model.SnackBarActionModel;
+import com.brave.playlist.util.ConnectionUtils;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 import com.brave.playlist.util.PlaylistViewUtils;
@@ -497,7 +498,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             public void onHidden(Tab tab, @TabHidingType int reason) {
                 dismissCookieConsent();
-                hidePlaylistButton();
+                // hidePlaylistButton();
             }
 
             @Override
@@ -591,13 +592,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                         && SharedPreferencesManager.getInstance().readBoolean(
                                 BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)
-                        && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
-                        && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
                         && mPlaylistService != null) {
                     hidePlaylistButton();
-                    mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
-                        Log.e(PlaylistUtils.TAG, "Default Playlist : " + defaultPlaylist.id);
-                    });
+                    // mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+                    //     Log.e(PlaylistUtils.TAG, "Default Playlist : " + defaultPlaylist.id);
+                    // });
                     mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {
                         Log.e(PlaylistUtils.TAG, "Inside condition");
                         Log.e(PlaylistUtils.TAG, "findMediaFilesFromActiveTab url  : " + url.url);
@@ -700,9 +699,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.OPEN_PLAYLIST) {
-                        mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
-                            PlaylistUtils.openPlaylistActivity(getContext(), defaultPlaylist.id);
-                        });
+                        // mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+                        //     PlaylistUtils.openPlaylistActivity(getContext(), defaultPlaylist.id);
+                        // });
+                        PlaylistUtils.openPlaylistActivity(
+                                getContext(), ConstantUtils.DEFAULT_PLAYLIST);
                     } else if (playlistOptionsModel.getOptionType()
                             == PlaylistOptions.PLAYLIST_SETTINGS) {
                         braveActivity.openBravePlaylistSettings();
@@ -725,28 +726,55 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
         if (mPlaylistService != null) {
-            mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
-                mPlaylistService.addMediaFilesFromPageToPlaylist(
-                        defaultPlaylist.id, contentUrl, true);
-                SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
-                        getContext().getResources().getString(R.string.view_action),
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                PlaylistUtils.openPlaylistActivity(
-                                        getContext(), defaultPlaylist.id);
-                            }
-                        });
+            // mPlaylistService.getDefaultPlaylist(defaultPlaylist -> {
+            //     mPlaylistService.addMediaFilesFromPageToPlaylist(
+            //             defaultPlaylist.id, contentUrl, true);
+            //     SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
+            //             getContext().getResources().getString(R.string.view_action),
+            //             new View.OnClickListener() {
+            //                 @Override
+            //                 public void onClick(View v) {
+            //                     PlaylistUtils.openPlaylistActivity(
+            //                             getContext(), defaultPlaylist.id);
+            //                 }
+            //             });
 
-                PlaylistViewUtils.showSnackBarWithActions(viewGroup,
-                        String.format(
-                                getContext().getResources().getString(R.string.added_to_playlist),
-                                defaultPlaylist.id.equals(ConstantUtils.DEFAULT_PLAYLIST)
-                                        ? getContext().getResources().getString(
-                                                R.string.playlist_play_later)
-                                        : defaultPlaylist.name),
-                        snackBarActionModel);
-            });
+            //     PlaylistViewUtils.showSnackBarWithActions(viewGroup,
+            //             String.format(
+            //                     getContext().getResources().getString(R.string.added_to_playlist),
+            //                     defaultPlaylist.id.equals(ConstantUtils.DEFAULT_PLAYLIST)
+            //                             ? getContext().getResources().getString(
+            //                                     R.string.playlist_play_later)
+            //                             : defaultPlaylist.name),
+            //             snackBarActionModel);
+            // });
+            boolean shouldCacheOnlyOnWifi =
+                    (SharedPreferencesManager.getInstance().readInt(
+                             BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
+                                    == 2
+                            && ConnectionUtils.isWifiAvailable(getContext()));
+
+            boolean shouldCache =
+                    SharedPreferencesManager.getInstance().readInt(
+                            BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
+                            == 0
+                    || shouldCacheOnlyOnWifi;
+            mPlaylistService.addMediaFilesFromPageToPlaylist(
+                    ConstantUtils.DEFAULT_PLAYLIST, contentUrl, shouldCache);
+            SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
+                    getContext().getResources().getString(R.string.view_action),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            PlaylistUtils.openPlaylistActivity(
+                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                        }
+                    });
+
+            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
+                    String.format(getContext().getResources().getString(R.string.added_to_playlist),
+                            getContext().getResources().getString(R.string.playlist_play_later)),
+                    snackBarActionModel);
         }
     }
 

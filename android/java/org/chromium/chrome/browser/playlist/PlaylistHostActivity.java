@@ -99,20 +99,15 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 playlist.name = newName;
                 playlist.items = new PlaylistItem[0];
                 Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
-                mPlaylistService.createPlaylist(playlist, createdPlaylist -> {
-                    mPlaylistService.setDefaultPlaylistId(createdPlaylist.id);
-                });
+                mPlaylistService.createPlaylist(playlist,
+                        createdPlaylist
+                        -> {
+                                // mPlaylistService.setDefaultPlaylistId(createdPlaylist.id);
+                        });
                 Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
                 loadAllPlaylists();
             }
         });
-
-        mPlaylistViewModel.getDefaultPlaylist().observe(
-                PlaylistHostActivity.this, defaultPlaylistId -> {
-                    if (mPlaylistService != null) {
-                        mPlaylistService.setDefaultPlaylistId(defaultPlaylistId);
-                    }
-                });
 
         mPlaylistViewModel.getRenamePlaylistOption().observe(
                 PlaylistHostActivity.this, renamePlaylistModel -> {
@@ -261,17 +256,19 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 == PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE) {
                             Log.e(PlaylistUtils.TAG,
                                     "PlaylistOptions.DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE");
-                            if (mPlaylistService != null
-                                    && playlistOptionsModel.getPlaylistModel() != null) {
-                                for (PlaylistItemModel playlistItemModel :
-                                        playlistOptionsModel.getPlaylistModel().getItems()) {
-                                    mPlaylistService.recoverLocalDataForItem(
-                                            playlistItemModel.getId(), false,
-                                            playlistItem
-                                            -> {
+                            if (mPlaylistService != null) {
+                                mPlaylistService.getAllPlaylists(playlists -> {
+                                    for (Playlist playlist : playlists) {
+                                        for (PlaylistItem playlistItem : playlist.items) {
+                                            mPlaylistService.recoverLocalDataForItem(
+                                                    playlistItem.id, true,
+                                                    tempPlaylistItem
+                                                    -> {
 
-                                            });
-                                }
+                                                    });
+                                        }
+                                    }
+                                });
                             }
                         }
                     }
@@ -355,9 +352,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItemsJsonArray.put(playlistItemObject);
                     }
                     playlistJson.put("items", playlistItemsJsonArray);
-                    // GsonBuilder gsonBuilder = new GsonBuilder();
-                    // Gson gson = gsonBuilder.create();
-                    // String playlistJson = gson.toJson(playlist);
                     Log.e(PlaylistUtils.TAG, "playlistJson :  " + playlistJson.toString(2));
                     if (mPlaylistViewModel != null) {
                         mPlaylistViewModel.setPlaylistData(playlistJson.toString(2));
@@ -384,10 +378,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         if (mPlaylistService != null) {
             mPlaylistService.getAllPlaylists(playlists -> {
                 try {
-                    // GsonBuilder gsonBuilder = new GsonBuilder();
-                    // Gson gson = gsonBuilder.create();
-                    // String playlistsJson = gson.toJson(playlists);
-                    // Log.e(PlaylistUtils.TAG, "loadAllPlaylists " + playlistsJson);
                     JSONArray playlistsJson = new JSONArray();
                     for (Playlist playlist : playlists) {
                         JSONObject playlistJsonObject = new JSONObject();
