@@ -11,9 +11,9 @@ source_set("brave_news_unit_tests") {
   sources = [
     "//brave/components/brave_news/browser/brave_news_p3a_unittest.cc",
     "//brave/components/brave_news/browser/channels_controller_unittest.cc",
+    "//brave/components/brave_news/browser/combined_feed_parsing_unittest.cc",
     "//brave/components/brave_news/browser/direct_feed_controller_unittest.cc",
     "//brave/components/brave_news/browser/feed_building_unittest.cc",
-    "//brave/components/brave_news/browser/feed_parsing_unittest.cc",
     "//brave/components/brave_news/browser/html_parsing_unittest.cc",
     "//brave/components/brave_news/browser/locales_helper_unittest.cc",
     "//brave/components/brave_news/browser/publishers_controller_unittest.cc",

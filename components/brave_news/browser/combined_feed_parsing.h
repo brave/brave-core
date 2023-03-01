@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_PARSING_H_
-#define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_PARSING_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_COMBINED_FEED_PARSING_H_
+#define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_COMBINED_FEED_PARSING_H_
 
 #include <string>
 #include <vector>
@@ -23,4 +23,4 @@ bool ParseFeedItems(const base::Value& json_value,
 
 }  // namespace brave_news
 
-#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_PARSING_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_COMBINED_FEED_PARSING_H_
