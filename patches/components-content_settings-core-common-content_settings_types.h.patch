@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 17c5e6aafb7047867306b8a9e9e715effdbb7c5b..1c4d2d55ec61366e20d84e01c94895f9d7fccc51 100644
+index 4eb53ed3da74c4798815bf592f01cc6fc086bd9d..af16a4139acb63a4be2a4b0a97f1b1bb6259dc49 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -323,6 +323,21 @@ enum class ContentSettingsType : int32_t {
+@@ -327,6 +327,21 @@ enum class ContentSettingsType : int32_t {
    // should be enabled.
-   ANTI_ABUSE,
+   THIRD_PARTY_STORAGE_PARTITIONING,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
