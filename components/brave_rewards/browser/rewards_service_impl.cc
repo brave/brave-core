@@ -6,11 +6,10 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
-#include <string>
-
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -299,6 +298,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
@@ -1096,23 +1097,40 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
   if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
-    return data_decoder::JsonSanitizer::Sanitize(
-        *response_body,
+    json_sanitizer_task_runner_->PostTask(
+        FROM_HERE,
         base::BindOnce(
-            [](ledger::client::LoadURLCallback callback,
+            [](std::unique_ptr<std::string> response_body,
+               ledger::client::LoadURLCallback callback,
                ledger::mojom::UrlResponse response,
-               data_decoder::JsonSanitizer::Result result) {
-              if (result.value) {
-                response.body = std::move(*result.value);
-              } else {
-                response.body = {};
-                VLOG(0) << "Response sanitization error: "
-                        << (result.error ? *result.error : "unknown");
-              }
+               scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
+              data_decoder::JsonSanitizer::Sanitize(
+                  *response_body,
+                  base::BindOnce(
+                      [](ledger::client::LoadURLCallback callback,
+                         ledger::mojom::UrlResponse response,
+                         const scoped_refptr<base::SequencedTaskRunner>&
+                             post_response_runner,
+                         data_decoder::JsonSanitizer::Result result) {
+                        if (result.value) {
+                          response.body = std::move(*result.value);
+                        } else {
+                          response.body = {};
+                          VLOG(0) << "Response sanitization error: "
+                                  << (result.error ? *result.error : "unknown");
+                        }
 
-              std::move(callback).Run(response);
+                        post_response_runner->PostTask(
+                            FROM_HERE, base::BindOnce(std::move(callback),
+                                                      std::move(response)));
+                      },
+                      std::move(callback), std::move(response),
+                      std::move(post_response_runner)));
             },
-            std::move(callback), std::move(response)));
+            std::move(response_body), std::move(callback), std::move(response),
+            base::SequencedTaskRunner::GetCurrentDefault()));
+
+    return;
   }
 
   std::move(callback).Run(response);
