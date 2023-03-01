@@ -18,6 +18,13 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
+#define JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents \
+  JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl
+
+#include "src/components/external_intents/android/intercept_navigation_delegate_impl.cc"
+
+#undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
+
 namespace external_intents {
 namespace {
 
@@ -78,18 +85,12 @@ static void JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents(
       std::make_unique<BraveInterceptNavigationDelegate>(
           env, jdelegate,
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())));
-}
-
-static void JNI_InterceptNavigationDelegateImpl_OnSubframeAsyncActionTaken(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents,
-    const base::android::JavaParamRef<jobject>& j_gurl) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-  navigation_interception::InterceptNavigationDelegate* delegate =
-      navigation_interception::InterceptNavigationDelegate::Get(web_contents);
-  CHECK(delegate);
-  delegate->OnSubframeAsyncActionTaken(env, j_gurl);
+  // This will never happen. We need it just to avoid unused function error
+  // message.
+  if (!web_contents) {
+    JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl(
+        env, jdelegate, jweb_contents);
+  }
 }
 
 }  // namespace external_intents
