@@ -63,18 +63,11 @@ std::vector<base::Time> AdEventHistory::Get(
 
   std::vector<base::Time> timestamps;
 
-  for (const auto& history : history_) {
-    const base::flat_map<std::string, std::vector<base::Time>>& ad_events =
-        history.second;
-
-    for (const auto& ad_event : ad_events) {
-      const std::string& ad_event_type_id = ad_event.first;
-      if (ad_event_type_id != type_id) {
-        continue;
+  for (const auto& [uuid, ad_events] : history_) {
+    for (const auto& [ad_event_type_id, ad_event_timestamps] : ad_events) {
+      if (ad_event_type_id == type_id) {
+        base::Extend(timestamps, ad_event_timestamps);
       }
-
-      const std::vector<base::Time>& ad_event_timestamps = ad_event.second;
-      base::Extend(timestamps, ad_event_timestamps);
     }
   }
 

@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/common/crypto/crypto_util.h"
@@ -106,14 +107,14 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
   std::string concatenated_message;
 
   unsigned int index = 0;
-  for (const auto& header : headers) {
+  for (const auto& [header, value] : headers) {
     if (index != 0) {
       concatenated_header += " ";
       concatenated_message += "\n";
     }
 
-    concatenated_header += header.first;
-    concatenated_message += header.first + ": " + header.second;
+    concatenated_header += header;
+    concatenated_message += base::StrCat({header, ": ", value});
 
     index++;
   }

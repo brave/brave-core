@@ -57,7 +57,7 @@ TEST(BatAdsTotalsUserDataTest, GetTotals) {
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
-      R"({"totals":[{"ad_format":"ad_notification","click":"1","view":"2"},{"ad_format":"inline_content_ad","view":"1"}]})");
+      R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);

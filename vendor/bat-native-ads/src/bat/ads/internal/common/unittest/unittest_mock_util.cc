@@ -207,25 +207,18 @@ void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock) {
 
             std::vector<base::Time> timestamps;
 
-            for (const auto& ad_event : AdEventHistory()) {
-              const std::string& uuid = ad_event.first;
+            for (const auto& [uuid, ad_event_history] : AdEventHistory()) {
               if (!base::EndsWith(uuid, namespace_for_current_test,
                                   base::CompareCase::SENSITIVE)) {
                 // Only get ad events for current test namespace.
                 continue;
               }
 
-              const AdEventHistoryMap& ad_event_history = ad_event.second;
-              for (const auto& ad_event_history_item : ad_event_history) {
-                const std::string& ad_event_type_id =
-                    ad_event_history_item.first;
-                if (ad_event_type_id != type_id) {
-                  continue;
+              for (const auto& [ad_event_type_id, ad_event_timestamps] :
+                   ad_event_history) {
+                if (ad_event_type_id == type_id) {
+                  base::Extend(timestamps, ad_event_timestamps);
                 }
-
-                const std::vector<base::Time>& ad_event_timestamps =
-                    ad_event_history_item.second;
-                base::Extend(timestamps, ad_event_timestamps);
               }
             }
 

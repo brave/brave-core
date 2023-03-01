@@ -146,11 +146,9 @@ CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
     const AdEventList& ad_events) {
   CreativeAdPredictorMap<T> creative_ad_predictors_with_features;
 
-  for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    AdPredictorInfo<T> ad_predictor = creative_ad_predictor.second;
-
-    ad_predictor =
-        ComputePredictorFeatures(ad_predictor, user_model, ad_events);
+  for (const auto& [segment, creative_ad_predictor] : creative_ad_predictors) {
+    AdPredictorInfo<T> ad_predictor =
+        ComputePredictorFeatures(creative_ad_predictor, user_model, ad_events);
     ad_predictor.score = ComputePredictorScore(ad_predictor);
 
     creative_ad_predictors_with_features.insert(
