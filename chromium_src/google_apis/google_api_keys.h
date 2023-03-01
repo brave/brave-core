@@ -12,6 +12,7 @@
 
 namespace google_apis {
 
+COMPONENT_EXPORT(GOOGLE_APIS)
 void SetAPIKeyForTesting(const std::string& api_key);
 
 }  // namespace google_apis
