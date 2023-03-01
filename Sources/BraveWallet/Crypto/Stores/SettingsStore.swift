@@ -35,30 +35,46 @@ public class SettingsStore: ObservableObject {
     }
   }
 
+  /// The current SNS Resolve Method preference (Ask / Enabled / Disabled)
+  @Published var snsResolveMethod: BraveWallet.ResolveMethod = .ask {
+    didSet {
+      guard oldValue != snsResolveMethod else { return }
+      rpcService.setSnsResolveMethod(snsResolveMethod)
+    }
+  }
+
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
+  private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
   private let keychain: KeychainType
 
   public init(
     keyringService: BraveWalletKeyringService,
     walletService: BraveWalletBraveWalletService,
+    rpcService: BraveWalletJsonRpcService,
     txService: BraveWalletTxService,
     keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
+    self.rpcService = rpcService
     self.txService = txService
     self.keychain = keychain
 
     keyringService.add(self)
-    keyringService.autoLockMinutes { [self] minutes in
-      self.autoLockInterval = .init(value: minutes)
-    }
-    
     walletService.add(self)
-    walletService.defaultBaseCurrency { [self] currencyCode in
+  }
+  
+  func setup() {
+    Task { @MainActor in
+      let currencyCode = await walletService.defaultBaseCurrency()
       self.currencyCode = CurrencyCode(code: currencyCode)
+
+      let autoLockMinutes = await keyringService.autoLockMinutes()
+      self.autoLockInterval = .init(value: autoLockMinutes)
+
+      self.snsResolveMethod = await rpcService.snsResolveMethod()
     }
   }
 

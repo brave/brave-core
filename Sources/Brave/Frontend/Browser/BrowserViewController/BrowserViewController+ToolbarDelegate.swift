@@ -12,6 +12,7 @@ import Data
 import SwiftUI
 import BraveNews
 import os.log
+import BraveWallet
 
 // MARK: - TopToolbarDelegate
 
@@ -108,7 +109,29 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
-    tabManager.selectedTab?.reload()
+    let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    if !isPrivateMode, let url = topToolbar.currentURL, url.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
+      Task { @MainActor in
+        let currentStatus = await rpcService.snsResolveMethod()
+        switch currentStatus {
+        case .ask:
+          // show name service interstitial page
+          showSNSDomainInterstitialPage(originalURL: url, visitType: .unknown)
+        case .enabled:
+          if let resolvedURL = await resolveSNSHost(url.schemelessAbsoluteDisplayString, rpcService: rpcService) {
+            tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
+            return
+          }
+          tabManager.selectedTab?.loadRequest(URLRequest(url: url))
+        case .disabled:
+          tabManager.selectedTab?.reload()
+        @unknown default:
+          tabManager.selectedTab?.reload()
+        }
+      }
+    } else {
+      tabManager.selectedTab?.reload()
+    }
   }
 
   func topToolbarDidPressStop(_ topToolbar: TopToolbarView) {
@@ -216,25 +239,53 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func processAddressBar(text: String, visitType: VisitType, isBraveSearchPromotion: Bool = false) {
-    if !isBraveSearchPromotion {
-      if submitValidURL(text, visitType: visitType) {
+    Task { @MainActor in
+      if !isBraveSearchPromotion, await submitValidURL(text, visitType: visitType) {
         return
+      } else {
+        // We couldn't build a URL, so pass it on to the search engine.
+        submitSearchText(text, isBraveSearchPromotion: isBraveSearchPromotion)
+        
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+          RecentSearch.addItem(type: .text, text: text, websiteUrl: nil)
+        }
       }
-    }
-    
-    // We couldn't build a URL, so pass it on to the search engine.
-    submitSearchText(text, isBraveSearchPromotion: isBraveSearchPromotion)
-
-    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-      RecentSearch.addItem(type: .text, text: text, websiteUrl: nil)
     }
   }
   
-  func submitValidURL(_ text: String, visitType: VisitType) -> Bool {
+  @MainActor func resolveSNSHost(_ host: String, rpcService: BraveWalletJsonRpcService) async -> URL? {
+    let (url, status, _) = await rpcService.snsResolveHost(host)
+    guard let url = url, status == .success else { return nil }
+    return url
+  }
+  
+  @MainActor func submitValidURL(_ text: String, visitType: VisitType) async -> Bool {
     if let fixupURL = URIFixup.getURL(text) {
       // Do not allow users to enter URLs with the following schemes.
       // Instead, submit them to the search engine like Chrome-iOS does.
       if !["file"].contains(fixupURL.scheme) {
+        // check text is SNS domain
+        let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+        if !isPrivateMode, fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
+          let currentStatus = await rpcService.snsResolveMethod()
+          switch currentStatus {
+          case .ask:
+            // show name service interstitial page
+            showSNSDomainInterstitialPage(originalURL: fixupURL, visitType: visitType)
+            return true
+          case .enabled:
+            if let resolvedURL = await resolveSNSHost(text, rpcService: rpcService) {
+              // resolved url
+              finishEditingAndSubmit(resolvedURL, visitType: visitType)
+              return true
+            }
+          case .disabled:
+            break
+          @unknown default:
+            break
+          }
+        }
+        
         // The user entered a URL, so use it.
         finishEditingAndSubmit(fixupURL, visitType: visitType)
         return true

@@ -159,7 +159,7 @@ extension URL {
       return internalUrl.originalURLFromErrorPage?.displayURL
     }
     
-    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore {
+    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore || internalUrl.isWeb3URL {
       return internalUrl.extractedUrlParam?.displayURL
     }
 
@@ -612,6 +612,23 @@ public struct InternalURL {
 
     if url.path.hasPrefix(aboutPath) {
       return String(url.path.dropFirst(aboutPath.count))
+    }
+    return nil
+  }
+  
+  public var isWeb3URL: Bool {
+    return web3Component != nil
+  }
+  
+  /// Return the path after "web3/" in the URI.
+  public var web3Component: String? {
+    let web3Path = "/web3/"
+    guard let url = NSURL(idnString: stripAuthorization) as? URL else {
+      return nil
+    }
+    
+    if url.path.hasPrefix(web3Path) {
+      return String(url.path.dropFirst(web3Path.count))
     }
     return nil
   }

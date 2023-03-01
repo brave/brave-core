@@ -3536,7 +3536,7 @@ extension Strings {
       value: "Disabled",
       comment: "One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name."
     )
-    public static let web3DomainOptionsTitle = NSLocalizedString(
+    public static let snsResolveMethodTitle = NSLocalizedString(
       "wallet.web3DomainOptionsTitle",
       tableName: "BraveWallet",
       bundle: .module,

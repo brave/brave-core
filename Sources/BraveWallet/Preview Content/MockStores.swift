@@ -201,6 +201,7 @@ extension SettingsStore {
     .init(
       keyringService: MockKeyringService(),
       walletService: MockBraveWalletService(),
+      rpcService: MockJsonRpcService(),
       txService: MockTxService(),
       keychain: TestableKeychain()
     )

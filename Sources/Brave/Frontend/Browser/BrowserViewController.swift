@@ -1594,6 +1594,19 @@ public class BrowserViewController: UIViewController {
     }
   }
 
+  func showSNSDomainInterstitialPage(originalURL: URL, visitType: VisitType) {
+    topToolbar.leaveOverlayMode()
+    
+    guard let tab = tabManager.selectedTab, let encodedURL = originalURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics), let internalUrl = URL(string: "\(InternalURL.baseUrl)/\(SNSDomainHandler.path)?url=\(encodedURL)") else {
+      return
+    }
+    let scriptHandler = tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler
+    scriptHandler?.originalURL = originalURL
+    scriptHandler?.visitType = visitType
+    
+    tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
+  }
+  
   override public func accessibilityPerformEscape() -> Bool {
     if topToolbar.inOverlayMode {
       topToolbar.didClickCancel()
@@ -2471,6 +2484,7 @@ extension BrowserViewController: TabDelegate {
       SiteStateListenerScriptHandler(tab: tab),
       CosmeticFiltersScriptHandler(tab: tab),
       FaviconScriptHandler(tab: tab),
+      Web3NameServiceScriptHandler(tab: tab),
       
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
@@ -2508,6 +2522,7 @@ extension BrowserViewController: TabDelegate {
     (tab.getContentScript(name: FindInPageScriptHandler.scriptName) as? FindInPageScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName) as? PlaylistFolderSharingScriptHandler)?.delegate = self
+    (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler)?.delegate = self
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
