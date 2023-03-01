@@ -8,16 +8,97 @@
 import argparse
 import os.path
 import sys
-
-from lxml import etree  # pylint: disable=import-error
-from lib.l10n.grd_utils import (get_override_file_path,
-                                textify,
+import glob
+from lib.l10n.grd_utils import (GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
+                                get_override_file_path, textify,
                                 update_braveified_grd_tree_override,
                                 write_xml_file_from_tree,
                                 write_braveified_grd_override)
+from lxml import etree  # pylint: disable=import-error
+
+BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+SRC_SOURCE_ROOT = os.path.abspath(os.path.dirname(BRAVE_SOURCE_ROOT))
+
+sys.path.insert(1, os.path.join(SRC_SOURCE_ROOT, 'tools/grit'))
+
+from grit.extern import tclib  # pylint: disable=import-error,wrong-import-position
 
 
-SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+def write_xtb_content(xtb_tree, source_string_path):
+    transformed_content = (b'<?xml version="1.0" ?>\n' + etree.tostring(
+        xtb_tree, pretty_print=True, xml_declaration=False, encoding='utf-8'))
+    print(f'writing file {source_string_path}')
+    transformed_content = transformed_content.replace(b'  <translation',
+                                                      b'<translation')
+    with open(source_string_path, mode='wb') as f:
+        f.write(transformed_content)
+    print('-----------')
+
+
+def write_new_translation_to_xtb(xtb_path, message_id, text):
+    parser = etree.XMLParser(remove_blank_text=True, resolve_entities=False)
+    brave_xtb_xml_tree = etree.parse(xtb_path, parser)
+    google_elem = brave_xtb_xml_tree.xpath(
+        '//translation[@id="{}"]'.format(message_id))
+    bundle_element = brave_xtb_xml_tree.xpath('//translationbundle')[0]
+    element = google_elem[0] if google_elem else etree.SubElement(
+        bundle_element, 'translation')
+    element.set('id', message_id)
+    element.text = text
+    write_xtb_content(brave_xtb_xml_tree, xtb_path)
+
+
+def migrate_google_chrome_xtb_translations_for_message(message_id):
+    google_chrome_xtb_files = glob.glob(
+        os.path.join(SRC_SOURCE_ROOT,
+                     'chrome/app/resources/google_chrome_strings_*.xtb'))
+    for google_xtb_path in google_chrome_xtb_files:
+        google_xtb_xml_tree = etree.parse(google_xtb_path)
+        google_elem = google_xtb_xml_tree.xpath('//translation[@id="' +
+                                                message_id + '"]')[0]
+        #print(google_xtb_path, google_elem.text)
+        lang = os.path.basename(google_xtb_path).replace(
+            'google_chrome_strings_', '').replace('.xtb', '')
+        if not lang:
+            print(
+                'Skipping file {} because unable to determine language'.format(
+                    google_xtb_path))
+            continue
+        brave_xtb_path = os.path.join(
+            BRAVE_SOURCE_ROOT,
+            'app/resources/chromium_strings_{}.xtb'.format(lang))
+        if not os.path.exists(brave_xtb_path):
+            print('Unable to find brave translation file {}'.format(
+                brave_xtb_path))
+            return False
+        write_new_translation_to_xtb(brave_xtb_path, message_id,
+                                     google_elem.text)
+
+    return True
+
+
+def migrate_google_chrome_strings(brave_strings_xml_tree,
+                                  google_chrome_strings_map):
+    google_chrome_string_path = os.path.join(
+        SRC_SOURCE_ROOT, 'chrome/app/google_chrome_strings.grd')
+    google_chrome_xml_tree = etree.parse(google_chrome_string_path)
+
+    for item in google_chrome_strings_map.keys():
+        google_message_elem = google_chrome_xml_tree.xpath(
+            '//message[@name="{}"]'.format(item))[0]
+        message_text = google_message_elem.text.lstrip().rstrip()
+        message_id = tclib.GenerateMessageId(message_text)
+        if not migrate_google_chrome_xtb_translations_for_message(message_id):
+            print(
+                'Unable to migrate translations from google chrome: {}'.format(
+                    item))
+            return
+
+        messages_element = brave_strings_xml_tree.xpath('//messages')[0]
+        new_element = etree.SubElement(messages_element, 'message')
+        new_element.set('name', google_chrome_strings_map[item])
+        new_element.text = google_message_elem.text
+        new_element.set('desc', google_message_elem.get('desc'))
 
 
 def parse_args():
@@ -85,7 +166,8 @@ def main():
     args = parse_args()
     # This file path is a string path inside brave/ but just recently copied
     # in from chromium files which need replacements.
-    source_string_path = os.path.join(SOURCE_ROOT, args.source_string_path[0])
+    source_string_path = os.path.join(BRAVE_SOURCE_ROOT,
+                                      args.source_string_path[0])
     filename = os.path.basename(source_string_path)
     extension = os.path.splitext(source_string_path)[1]
     if extension not in ('.grd', '.grdp'):
@@ -102,6 +184,8 @@ def main():
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
     if basename == 'brave_strings':
+        migrate_google_chrome_strings(xml_tree,
+                                      GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = 'Brave Nightly'
         elem1.attrib.pop('desc')
@@ -173,7 +257,8 @@ def main():
         comment = etree.Comment(comment_text)
         grit_root.addprevious(comment)
 
-    transformed_content = etree.tostring(xml_tree, pretty_print=True,
+    transformed_content = etree.tostring(xml_tree,
+                                         pretty_print=True,
                                          xml_declaration=True,
                                          encoding='UTF-8')
     # Fix some minor formatting differences from what Chromium outputs

@@ -10,6 +10,7 @@
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/common/importer/chrome_importer_utils.h"
+#include "brave/common/importer/importer_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/importer/importer_type.h"
 #include "chrome/grit/generated_resources.h"
@@ -60,60 +61,63 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetChromeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeUserDataFolder(), "Google Chrome", importer::TYPE_CHROME);
+      GetChromeUserDataFolder(), kGoogleChromeBrowser, importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeBetaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeBetaUserDataFolder(), "Google Chrome Beta",
+      GetChromeBetaUserDataFolder(), kGoogleChromeBrowserBeta,
       importer::TYPE_CHROME);
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromeDevUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromeDevUserDataFolder(), "Google Chrome Dev", importer::TYPE_CHROME);
+      GetChromeDevUserDataFolder(), kGoogleChromeBrowserDev,
+      importer::TYPE_CHROME);
 #if !BUILDFLAG(IS_LINUX)
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetCanaryUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetCanaryUserDataFolder(), "Google Chrome Canary", importer::TYPE_CHROME);
+      GetCanaryUserDataFolder(), kGoogleChromeBrowserCanary,
+      importer::TYPE_CHROME);
 #endif
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetChromiumUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetChromiumUserDataFolder(), "Chromium", importer::TYPE_CHROME);
+      GetChromiumUserDataFolder(), kChromiumBrowser, importer::TYPE_CHROME);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetEdgeUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetEdgeUserDataFolder(), "Microsoft Edge", importer::TYPE_EDGE_CHROMIUM);
+      GetEdgeUserDataFolder(), kMicrosoftEdgeBrowser,
+      importer::TYPE_EDGE_CHROMIUM);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetVivaldiUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetVivaldiUserDataFolder(), "Vivaldi", importer::TYPE_VIVALDI);
+      GetVivaldiUserDataFolder(), kVivaldiBrowser, importer::TYPE_VIVALDI);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetOperaUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetOperaUserDataFolder(), "Opera", importer::TYPE_OPERA);
+      GetOperaUserDataFolder(), kOperaBrowser, importer::TYPE_OPERA);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetYandexUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetYandexUserDataFolder(), "Yandex", importer::TYPE_YANDEX);
+      GetYandexUserDataFolder(), kYandexBrowser, importer::TYPE_YANDEX);
 
   AddChromeToProfiles(
       profiles,
       GetChromeSourceProfiles(GetWhaleUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetWhaleUserDataFolder(), "NAVER Whale", importer::TYPE_WHALE);
+      GetWhaleUserDataFolder(), kWhaleBrowser, importer::TYPE_WHALE);
 
 #if BUILDFLAG(IS_LINUX)
   // Installed via snap Opera has different profile path.
@@ -121,7 +125,7 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
       profiles,
       GetChromeSourceProfiles(GetOperaSnapUserDataFolder().Append(
           base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
-      GetOperaSnapUserDataFolder(), "Opera", importer::TYPE_OPERA);
+      GetOperaSnapUserDataFolder(), kOperaBrowser, importer::TYPE_OPERA);
 #endif
 }
 
