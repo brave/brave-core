@@ -14,6 +14,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
+#include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 
 namespace blink {
 namespace probe {
@@ -61,7 +62,12 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
                                         &hardware_concurrency); \
   probe::ApplyHardwareConcurrencyOverride
 
+#define ScriptWrappable           \
+  BraveNavigator::Trace(visitor); \
+  ScriptWrappable
+
 #include "src/third_party/blink/renderer/core/execution_context/navigator_base.cc"
+#undef ScriptWrappable
 #undef ApplyHardwareConcurrencyOverride
 #undef userAgent
 

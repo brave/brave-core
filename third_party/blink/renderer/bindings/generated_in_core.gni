@@ -1,0 +1,9 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_generated_interface_sources_in_core = [
+  "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_worker_brave.cc",
+  "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_worker_brave.h",
+]

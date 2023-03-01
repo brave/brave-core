@@ -1,7 +1,25 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index 488b2ddf8462dbb9a85eb010818265e92a6e8c53..9971e8f977ed027c92807e83da1789dc8726f5db 100644
+index 488b2ddf8462dbb9a85eb010818265e92a6e8c53..1f210e3976ee468fcdf365ce3c6b3e78c073b022 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
+@@ -12,7 +12,7 @@ import("//third_party/blink/renderer/bindings/idl_in_core.gni")
+ import("//third_party/blink/renderer/bindings/idl_in_extensions_chromeos.gni")
+ import("//third_party/blink/renderer/bindings/idl_in_modules.gni")
+ import("//third_party/blink/renderer/bindings/scripts/scripts.gni")
+-
++import("//brave/third_party/blink/renderer/bindings/idl_in_core.gni")
+ visibility = [ "//third_party/blink/renderer/*" ]
+ 
+ bindings_gen_dir = get_path_info(".", "gen_dir")
+@@ -48,7 +48,7 @@ collect_idl_files("web_idl_in_core") {
+   component = "core"
+ 
+   inputs = static_idl_files_in_core
+-
++  inputs += brave_static_idl_files_in_core
+   output = "${bindings_gen_dir}/web_idl_in_core.pickle"
+ }
+ 
 @@ -173,6 +173,7 @@ template("generate_bindings") {
      args += invoker.targets
  

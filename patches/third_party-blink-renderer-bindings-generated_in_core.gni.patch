@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/bindings/generated_in_core.gni b/third_party/blink/renderer/bindings/generated_in_core.gni
+index 27fc0d2411580a109475fba0a5e295be38417114..f114f232445a945e025b016b12da03bbc71c0e3c 100644
+--- a/third_party/blink/renderer/bindings/generated_in_core.gni
++++ b/third_party/blink/renderer/bindings/generated_in_core.gni
+@@ -3,7 +3,7 @@
+ # found in the LICENSE file.
+ 
+ # Generated sources for production
+-
++import("//brave/third_party/blink/renderer/bindings/generated_in_core.gni")
+ generated_callback_function_sources_in_core = [
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_blob_callback.cc",
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_blob_callback.h",
+@@ -1608,7 +1608,7 @@ generated_interface_sources_in_core = [
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_xslt_processor.cc",
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_xslt_processor.h",
+ ]
+-
++generated_interface_sources_in_core += brave_generated_interface_sources_in_core
+ generated_namespace_sources_in_core = [
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_css.cc",
+   "$root_gen_dir/third_party/blink/renderer/bindings/core/v8/v8_css.h",

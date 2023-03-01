@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/core/frame/build.gni b/third_party/blink/renderer/core/frame/build.gni
+index 329c3630456202e2137554114bea369be51a6fdd..6d6f15f7e50011ecd1147833c995c24b194c578b 100644
+--- a/third_party/blink/renderer/core/frame/build.gni
++++ b/third_party/blink/renderer/core/frame/build.gni
+@@ -1,7 +1,7 @@
+ # Copyright 2020 The Chromium Authors
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+-
++import("//brave/third_party/blink/renderer/core/frame/sources.gni")
+ blink_core_sources_frame = [
+   "ad_tracker.cc",
+   "ad_tracker.h",
+@@ -238,7 +238,7 @@ blink_core_sources_frame = [
+   "window_or_worker_global_scope.cc",
+   "window_or_worker_global_scope.h",
+ ]
+-
++blink_core_sources_frame += brave_blink_core_sources_frame
+ # WindowControlsOverlay
+ # This uses target_os rather than current_os (which is what is_android is set
+ # from) for the case of generating the v8 context snapshot for android. When

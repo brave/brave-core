@@ -6,14 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_NAVIGATOR_BASE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_NAVIGATOR_BASE_H_
 
+#include "brave/third_party/blink/renderer/core/frame/brave_navigator.h"
 #include "third_party/blink/renderer/core/frame/navigator_id.h"
 
 #define userAgent                 \
   userAgent_ChromiumImpl() const; \
   String userAgent
-
+#define NavigatorID NavigatorID, public BraveNavigator
 #include "src/third_party/blink/renderer/core/execution_context/navigator_base.h"  // IWYU pragma: export
-
+#undef NavigatorID
 #undef userAgent
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_NAVIGATOR_BASE_H_

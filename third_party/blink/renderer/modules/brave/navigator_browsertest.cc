@@ -14,6 +14,8 @@
 namespace {
 
 const char kDetectBraveTest[] = "/detect_brave.html";
+const char kDetectBraveInServiceWorkerTest[] =
+    "/detect_brave_service_worker.html";
 
 }  // namespace
 
@@ -39,4 +41,32 @@ IN_PROC_BROWSER_TEST_F(NavigatorGetBraveDetectedTest, IsDetected) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(true, EvalJs(contents, "getBraveDetected()"));
+}
+
+IN_PROC_BROWSER_TEST_F(NavigatorGetBraveDetectedTest,
+                       IsDetectedInServiceWorker) {
+  GURL url = embedded_test_server()->GetURL(kDetectBraveInServiceWorkerTest);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  std::string result;
+  EXPECT_TRUE(content::ExecuteScriptAndExtractString(contents, R"(
+        navigator.serviceWorker.addEventListener('message', msg => {
+          window.domAutomationController.send(msg.data);
+        });
+        navigator.serviceWorker.register('./detect_brave_service_worker.js')
+          .then(registration => {
+            if (registration.active) {
+              registration.active.postMessage('isBrave');
+            } else if (registration.installing) {
+              registration.installing.addEventListener('statechange', () => {
+                if (registration.active) {
+                  registration.active.postMessage('isBrave');
+                }
+              });
+            }
+          })
+      )",
+                                                     &result));
+  EXPECT_EQ(result, "BRAVE");
 }
