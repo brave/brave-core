@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 3b9ce2a93d09d328358c1b99966d3546bd2d0942..ba976ae9b7a4b6ce14fcdf2b622a902989ff3c9c 100644
+index f9bb7f65af94986faa41d951608dd0ded6542dd1..ba210b72a8e2fc86dd07a868e83ca2e31324c44f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1296,6 +1296,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1340,6 +1340,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,10 +11,10 @@ index 3b9ce2a93d09d328358c1b99966d3546bd2d0942..ba976ae9b7a4b6ce14fcdf2b622a9029
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -1695,6 +1697,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if BUILDFLAG(IS_ANDROID)
-   registry->RegisterBooleanPref(prefs::kQuickDeleteDialogSuppressed, false);
- #endif
+@@ -1737,6 +1739,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+       prefs::kAccessibilityPdfOcrAlwaysActive, false,
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+ #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
 +  brave::RegisterProfilePrefs(registry);
  }
  
