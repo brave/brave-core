@@ -23,7 +23,7 @@
 #include "bat/ads/internal/features/text_classification_features.h"
 #include "bat/ads/internal/history/history_constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace ads {
 
@@ -389,12 +389,12 @@ bool ClientStateManager::ToggleFlaggedAd(const AdContentInfo& ad_content) {
         client_->ad_preferences.flagged_ads.end());
   }
 
-  auto item = base::ranges::find_if(
+  auto iter = base::ranges::find_if(
       client_->history_items, [&ad_content](const HistoryItemInfo& item) {
         return item.ad_content.creative_set_id == ad_content.creative_set_id;
       });
-  if (item != client_->history_items.end()) {
-    item->ad_content.is_flagged = is_flagged;
+  if (iter != client_->history_items.end()) {
+    iter->ad_content.is_flagged = is_flagged;
   }
 
   Save();

@@ -190,14 +190,14 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
         ::testing::UnitTest::GetInstance()->current_test_info();
     ASSERT_NE(nullptr, test_info);
 
-    const auto it = locale_for_tests.find(test_info->name());
-    if (it == locale_for_tests.end()) {
+    const auto iter = locale_for_tests.find(test_info->name());
+    if (iter == locale_for_tests.end()) {
       MaybeMockLocaleForBraveAdsUpgradePath();
       return;
     }
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(it->second);
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(iter->second);
   }
 
   void MaybeMockLocaleForBraveAdsUpgradePath() {
