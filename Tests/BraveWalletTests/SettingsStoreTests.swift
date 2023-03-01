@@ -12,8 +12,10 @@ import BigNumber
 
 class SettingsStoreTests: XCTestCase {
   
+  private var cancellables: Set<AnyCancellable> = .init()
+  
   /// Sets up TestKeyringService, TestBraveWalletService and TestTxService with some default values.
-  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestBraveWalletService, BraveWallet.TestTxService) {
+  private func setupServices() -> (BraveWallet.TestKeyringService, BraveWallet.TestBraveWalletService, BraveWallet.TestJsonRpcService, BraveWallet.TestTxService) {
     let mockAccountInfos: [BraveWallet.AccountInfo] = [.previewAccount]
     let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken.then { $0.visible = true }]
     
@@ -40,31 +42,70 @@ class SettingsStoreTests: XCTestCase {
     walletService._setDefaultBaseCurrency = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) } // default is USD
     
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._ensOffchainLookupResolveMethod = { $0(.ask) }
+    rpcService._setEnsOffchainLookupResolveMethod = { _ in }
+    rpcService._snsResolveMethod = { $0(.ask) }
+    rpcService._setSnsResolveMethod = { _ in }
+    
     let txService = BraveWallet.TestTxService()
     
-    return (keyringService, walletService, txService)
+    return (keyringService, walletService, rpcService, txService)
   }
   
-  /// Test `init` will populate default values from keyring service / wallet service
-  func testInit() {
-    let (keyringService, walletService, txService) = setupServices()
+  /// Test `setup` will populate default values from keyring service / wallet service
+  func testSetup() {
+    let (keyringService, walletService, rpcService, txService) = setupServices()
     keyringService._autoLockMinutes = { $0(1) }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.cad.code) }
+    rpcService._ensOffchainLookupResolveMethod = { $0(.disabled) }
+    rpcService._snsResolveMethod = { $0(.disabled) }
 
     let sut = SettingsStore(
       keyringService: keyringService,
       walletService: walletService,
+      rpcService: rpcService,
       txService: txService,
       keychain: TestableKeychain()
     )
-
-    XCTAssertEqual(sut.autoLockInterval, .minute)
-    XCTAssertEqual(sut.currencyCode.code, CurrencyCode.cad.code)
+    
+    let autoLockIntervalExpectation = expectation(description: "setup-autoLockInterval")
+    sut.$autoLockInterval
+      .dropFirst()
+      .sink { autoLockInterval in
+        defer { autoLockIntervalExpectation.fulfill() }
+        XCTAssertEqual(autoLockInterval, .minute)
+      }
+      .store(in: &cancellables)
+    
+    let currencyCodeExpectation = expectation(description: "setup-currencyCode")
+    sut.$currencyCode
+      .dropFirst()
+      .sink { currencyCode in
+        defer { currencyCodeExpectation.fulfill() }
+        XCTAssertEqual(currencyCode, CurrencyCode.cad)
+      }
+      .store(in: &cancellables)
+    
+    let snsResolveMethodExpectation = expectation(description: "setup-snsResolveMethod")
+    sut.$snsResolveMethod
+      .dropFirst()
+      .sink { snsResolveMethod in
+        defer { snsResolveMethodExpectation.fulfill() }
+        XCTAssertEqual(snsResolveMethod, .disabled)
+      }
+      .store(in: &cancellables)
+    
+    sut.setup()
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
   }
 
   /// Test `reset()` will call `reset()` on wallet service, update web3 preferences to default values, and update autolock & currency code values.
   func testReset() {
-    let (keyringService, walletService, txService) = setupServices()
+    let (keyringService, walletService, rpcService, txService) = setupServices()
     var keyringServiceAutolockMinutes: Int32 = 1
     keyringService._autoLockMinutes = { $0(keyringServiceAutolockMinutes) }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.cad.code) }
@@ -118,12 +159,13 @@ class SettingsStoreTests: XCTestCase {
     let sut = SettingsStore(
       keyringService: keyringService,
       walletService: walletService,
+      rpcService: rpcService,
       txService: txService,
       keychain: keychain
     )
     
-    XCTAssertEqual(sut.autoLockInterval, .minute)
-    XCTAssertEqual(sut.currencyCode.code, CurrencyCode.cad.code)
+    sut.autoLockInterval = .minute
+    sut.currencyCode = .cad
 
     // reset internally in services, mock reset here.
     keyringServiceAutolockMinutes = 5
@@ -170,7 +212,7 @@ class SettingsStoreTests: XCTestCase {
 
   /// Test `resetTransaction()` will call `reset()` on TxService
   func testResetTransaction() {
-    let (keyringService, walletService, txService) = setupServices()
+    let (keyringService, walletService, rpcService, txService) = setupServices()
     var txServiceResetCalled = false
     txService._reset = {
       txServiceResetCalled = true
@@ -179,6 +221,7 @@ class SettingsStoreTests: XCTestCase {
     let sut = SettingsStore(
       keyringService: keyringService,
       walletService: walletService,
+      rpcService: rpcService,
       txService: txService,
       keychain: TestableKeychain()
     )

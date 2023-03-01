@@ -276,6 +276,7 @@ public class CryptoStore: ObservableObject {
   public private(set) lazy var settingsStore = SettingsStore(
     keyringService: keyringService,
     walletService: walletService,
+    rpcService: rpcService,
     txService: txService
   )
   

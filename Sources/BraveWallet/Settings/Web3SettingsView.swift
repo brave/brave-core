@@ -16,15 +16,11 @@ public struct Web3SettingsView: View {
   
   private let ipfsAPI: IpfsAPI?
   
-  @ObservedObject var enableSNSDomainName = Preferences.Wallet.resolveSNSDomainNames
-  
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
   /// If we are showing the modal so the user can enter their password to enable unlock via biometrics.
   @State private var isShowingBiometricsPasswordEntry = false
   @State private var ipfsNFTGatewayURL: String = ""
-  
-  private var domainOptions: [Preferences.Wallet.Web3DomainOption] = Preferences.Wallet.Web3DomainOption.allCases
   
   public init(
     settingsStore: SettingsStore? = nil,
@@ -56,34 +52,20 @@ public struct Web3SettingsView: View {
           footer: Text(Strings.Wallet.ipfsSettingsFooter)
         ) {
           NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: ipfsAPI)) {
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 4) {
               Text(Strings.Wallet.nftGatewayTitle)
                 .foregroundColor(Color(.braveLabel))
               Text(ipfsNFTGatewayURL)
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
-            .padding(.top, 5)
-            .padding(.bottom, 5)
+            .padding(.vertical, 4)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        if WalletFeatureFlags.SNSDomainResolverEnabled {
-          Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {
-            Picker(selection: $enableSNSDomainName.value) {
-              ForEach(Preferences.Wallet.Web3DomainOption.allCases) { option in
-                Text(option.name)
-                  .foregroundColor(Color(.secondaryBraveLabel))
-                  .tag(option)
-              }
-            } label: {
-              Text(Strings.Wallet.web3DomainOptionsTitle)
-                .foregroundColor(Color(.braveLabel))
-                .padding(.vertical, 4)
-            }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          }
-        }
+      }
+      if let settingsStore {
+        Web3DomainSettingsView(settingsStore: settingsStore)
       }
     }
     .listStyle(InsetGroupedListStyle())
@@ -132,6 +114,7 @@ public struct Web3SettingsView: View {
       if let urlString = ipfsAPI?.nftIpfsGateway?.absoluteString, urlString != ipfsNFTGatewayURL {
         ipfsNFTGatewayURL = urlString
       }
+      settingsStore?.setup()
     }
   }
 }
@@ -283,3 +266,37 @@ struct WalletSettingsView_Previews: PreviewProvider {
   }
 }
 #endif
+
+/*
+ Section containing the follow preferences:
+ - SNS Resolve (Ask/Enabled/Disabled)
+ */
+private struct Web3DomainSettingsView: View {
+
+  @ObservedObject var settingsStore: SettingsStore
+
+  @Environment(\.openWalletURLAction) private var openWalletURL
+
+  var body: some View {
+    Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {
+      Group {
+        snsResolveMethodPreference
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+  }
+  
+  @ViewBuilder private var snsResolveMethodPreference: some View {
+    Picker(selection: $settingsStore.snsResolveMethod) {
+      ForEach(BraveWallet.ResolveMethod.allCases) { option in
+        Text(option.name)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .tag(option)
+      }
+    } label: {
+      Text(Strings.Wallet.snsResolveMethodTitle)
+        .foregroundColor(Color(.braveLabel))
+        .padding(.vertical, 4)
+    }
+  }
+}

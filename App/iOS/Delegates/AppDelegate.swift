@@ -433,7 +433,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       (AboutLicenseHandler.path, AboutLicenseHandler()),
       (SessionRestoreHandler.path, SessionRestoreHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler(profile: profile))
+      (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
+      (SNSDomainHandler.path, SNSDomainHandler())
     ]
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
