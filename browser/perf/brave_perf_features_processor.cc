@@ -6,7 +6,7 @@
 #include "brave/browser/perf/brave_perf_features_processor.h"
 
 #include "base/command_line.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -39,7 +39,7 @@ void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
   if (!regional_service_manager ||
       !regional_service_manager->IsFilterListAvailable(
           brave_shields::kCookieListUuid)) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, base::BindOnce(&EnableAdblockCookieList, profile),
         base::Seconds(1));
     return;

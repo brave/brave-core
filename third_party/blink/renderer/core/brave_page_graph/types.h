@@ -6,7 +6,6 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_TYPES_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_TYPES_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -16,6 +15,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/graphics/dom_node_id.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
@@ -26,8 +26,8 @@ class GraphEdge;
 class GraphNode;
 class NodeHTML;
 
-using ItemDesc = std::string;
-using ItemName = std::string;
+using ItemDesc = String;
+using ItemName = String;
 using GraphMLId = std::string;
 
 using Binding = const char*;
@@ -38,15 +38,14 @@ using ScriptId = int;
 using ScriptPosition = int;
 using EventListenerId = int;
 using GraphItemId = uint64_t;
-using MethodName = std::string;
-using RequestURL = std::string;
+using MethodName = String;
+using RequestURL = blink::KURL;
 using InspectorId = uint64_t;
 
 using GraphItemUniquePtrList = Vector<std::unique_ptr<GraphItem>>;
 using EdgeList = Vector<const GraphEdge*>;
 using NodeList = Vector<GraphNode*>;
 using HTMLNodeList = Vector<NodeHTML*>;
-using AttributeMap = std::map<const std::string, const std::string>;
 
 struct CORE_EXPORT FingerprintingRule {
   FingerprintingRule(const std::string& primary_pattern,

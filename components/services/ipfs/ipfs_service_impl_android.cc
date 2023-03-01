@@ -5,7 +5,7 @@
 
 #include "brave/components/services/ipfs/ipfs_service_impl.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/threading/thread.h"
 
 namespace ipfs {

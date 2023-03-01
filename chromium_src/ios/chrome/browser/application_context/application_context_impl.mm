@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
@@ -44,8 +44,7 @@
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #include "ios/chrome/browser/prefs/pref_names.h"
-#import "ios/chrome/browser/promos_manager/features.h"
-#import "ios/chrome/browser/promos_manager/promos_manager_impl.h"
+#import "ios/chrome/browser/promos_manager/promos_manager.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #include "ios/chrome/browser/signin/system_identity_manager.h"
@@ -397,10 +396,7 @@ void ApplicationContextImpl::CreateGCMDriver() {
 
 PromosManager* ApplicationContextImpl::GetPromosManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  if (IsFullscreenPromosManagerEnabled() && !promos_manager_) {
-    promos_manager_ = std::make_unique<PromosManagerImpl>(GetLocalState());
-  }
-  return promos_manager_.get();
+  return nullptr;
 }
 
 PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {

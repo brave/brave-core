@@ -1,12 +1,12 @@
-// Copyright (c) 2019 The Brave Authors
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "ui/base/webui/web_ui_util.h"
 
 #include "build/build_config.h"
-#include "ui/resources/grit/webui_generated_resources.h"
+#include "ui/resources/grit/webui_resources.h"
 
 #if !BUILDFLAG(IS_IOS)
 // Replace text_defaults_md.css with brave's text_defaults_md.css

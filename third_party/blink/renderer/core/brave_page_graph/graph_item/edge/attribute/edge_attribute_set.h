@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_ATTRIBUTE_EDGE_ATTRIBUTE_SET_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_ATTRIBUTE_EDGE_ATTRIBUTE_SET_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -21,12 +20,12 @@ class EdgeAttributeSet final : public EdgeAttribute {
   EdgeAttributeSet(GraphItemContext* context,
                    NodeActor* out_node,
                    NodeHTMLElement* in_node,
-                   const std::string& name,
-                   const std::string& value,
+                   const String& name,
+                   const String& value,
                    const bool is_style = false);
   ~EdgeAttributeSet() override;
 
-  const std::string& GetValue() const { return value_; }
+  const String& GetValue() const { return value_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -37,7 +36,7 @@ class EdgeAttributeSet final : public EdgeAttribute {
   bool IsEdgeAttributeSet() const override;
 
  private:
-  const std::string value_;
+  const String value_;
 };
 
 }  // namespace brave_page_graph

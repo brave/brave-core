@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_ads/brave_stats_updater_helper.h"

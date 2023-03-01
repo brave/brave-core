@@ -7,8 +7,8 @@
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPHML_H_
 
 #include <libxml/tree.h>
+
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/time/time.h"
@@ -20,7 +20,7 @@ namespace brave_page_graph {
 class GraphMLAttr {
  public:
   GraphMLAttr(const GraphMLAttrForType for_value,
-              const std::string& name,
+              const String& name,
               const GraphMLAttrType type = kGraphMLAttrTypeString);
 
   GraphMLId GetGraphMLId() const;
@@ -56,7 +56,7 @@ class GraphMLAttr {
  protected:
   const uint64_t id_;
   const GraphMLAttrForType for_;
-  const std::string name_;
+  const String name_;
   const GraphMLAttrType type_;
 };
 

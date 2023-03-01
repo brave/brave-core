@@ -6,13 +6,14 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute_attr.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeExecuteAttr::EdgeExecuteAttr(GraphItemContext* context,
                                  NodeHTMLElement* out_node,
                                  NodeScript* in_node,
-                                 const std::string& attribute_name)
+                                 const String& attribute_name)
     : EdgeExecute(context, out_node, in_node),
       attribute_name_(attribute_name) {}
 
@@ -23,7 +24,9 @@ ItemName EdgeExecuteAttr::GetItemName() const {
 }
 
 ItemDesc EdgeExecuteAttr::GetItemDesc() const {
-  return EdgeExecute::GetItemDesc() + " [" + attribute_name_ + "]";
+  WTF::TextStream ts;
+  ts << EdgeExecute::GetItemDesc() << " [" << attribute_name_ << "]";
+  return ts.Release();
 }
 
 void EdgeExecuteAttr::AddGraphMLAttributes(xmlDocPtr doc,

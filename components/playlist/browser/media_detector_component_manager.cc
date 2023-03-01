@@ -5,9 +5,10 @@
 
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 
-#include "base/bind.h"
 #include "base/containers/flat_set.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/task/thread_pool.h"

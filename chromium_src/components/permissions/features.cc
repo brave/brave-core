@@ -19,7 +19,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPermissionOnDeviceNotificationPredictions,
      base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
-    {kPermissionsPostPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRecordPermissionExpirationTimestamps, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});

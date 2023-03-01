@@ -38,6 +38,7 @@ source_set("svg") {
     "//third_party/skia/src/codec/SkWbmpCodec.cpp",
     "//third_party/skia/src/codec/SkWebpCodec.cpp",
     "//third_party/skia/src/ports/SkImageGenerator_skia.cpp",
+    "//third_party/skia/src/utils/SkOSPath.h",
     "//third_party/skia/src/utils/SkParsePath.cpp",
     "//third_party/skia/src/xml/SkDOM.cpp",
     "//third_party/skia/src/xml/SkDOM.h",

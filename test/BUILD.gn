@@ -458,7 +458,7 @@ test("brave_unit_tests") {
     }
 
     if (!use_v8_context_snapshot || include_both_v8_snapshots) {
-      deps += [ "//v8:v8_external_startup_data_assets" ]
+      deps += [ "//gin:v8_snapshot_assets" ]
     }
 
     data += [
@@ -1084,7 +1084,11 @@ test("brave_browser_tests") {
 
   if (!is_android) {
     sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
-    deps += [ "//brave/browser/sharing_hub:browser_tests" ]
+    deps += [
+      "//brave/browser/sharing_hub:browser_tests",
+      "//chrome/browser/apps/app_service:app_service",
+      "//chrome/browser/apps/app_service:constants",
+    ]
   }
 
   if (enable_custom_background) {

@@ -125,7 +125,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/tabs",
-  "//brave/browser/ui/webui/brave_federated:mojo_bindings",
   "//brave/common",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",

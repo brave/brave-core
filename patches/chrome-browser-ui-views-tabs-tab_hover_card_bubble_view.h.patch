@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-index e2297c2305872b28bd645f3f918c425781b6edbd..abe790633fadd7739bfd10375c0bcccc558dc971 100644
+index c8c69f1236653694b76e8ae1a8934d8693969df0..8d9901095371ba4603a95d2f6130dd1cae68f30c 100644
 --- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-@@ -138,6 +138,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+@@ -139,6 +139,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
    // available, or `absl::nullopt` to disable crossfades entirely.
    static absl::optional<double> GetPreviewImageCrossfadeStart();
  

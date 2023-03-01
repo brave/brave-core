@@ -6,10 +6,9 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_DOM_ROOT_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_DOM_ROOT_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -17,10 +16,10 @@ class NodeDOMRoot final : public NodeHTMLElement {
  public:
   NodeDOMRoot(GraphItemContext* context,
               const blink::DOMNodeId dom_node_id,
-              const std::string& tag_name);
+              const String& tag_name);
 
-  void SetURL(const std::string& url) { url_ = url; }
-  const std::string& GetURL() const { return url_; }
+  void SetURL(const String& url) { url_ = url; }
+  const String& GetURL() const { return url_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -31,7 +30,7 @@ class NodeDOMRoot final : public NodeHTMLElement {
   bool IsNodeDOMRoot() const override;
 
  private:
-  std::string url_;
+  String url_;
 };
 
 }  // namespace brave_page_graph

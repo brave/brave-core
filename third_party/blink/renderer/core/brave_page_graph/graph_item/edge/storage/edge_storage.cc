@@ -8,26 +8,27 @@
 #include <sstream>
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeStorage::EdgeStorage(GraphItemContext* context,
                          GraphNode* out_node,
                          GraphNode* in_node,
-                         const std::string& key)
+                         const String& key)
     : GraphEdge(context, out_node, in_node), key_(key) {}
 
 EdgeStorage::~EdgeStorage() = default;
 
 ItemName EdgeStorage::GetItemDesc() const {
-  std::stringstream builder;
-  builder << GraphEdge::GetItemDesc();
+  WTF::TextStream ts;
+  ts << GraphEdge::GetItemDesc();
 
   if (!key_.empty()) {
-    builder << " [" << key_ << "]";
+    ts << " [" << key_ << "]";
   }
 
-  return builder.str();
+  return ts.Release();
 }
 
 void EdgeStorage::AddGraphMLAttributes(xmlDocPtr doc,

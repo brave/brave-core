@@ -13,7 +13,6 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
@@ -162,11 +161,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
-  } else if (host == kFederatedInternalsHost) {
-    if (base::FeatureList::IsEnabled(
-            brave_federated::features::kFederatedLearning)) {
-      return new brave_federated::FederatedInternalsUI(web_ui);
-    }
   }
   return nullptr;
 }
@@ -191,7 +185,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
        base::FeatureList::IsEnabled(
            brave_shields::features::kBraveAdblockCookieListOptIn)) ||
       url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kFederatedInternalsHost ||
       url.host_piece() == kRewardsInternalsHost ||
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kTipHost ||

@@ -78,7 +78,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   DCHECK(contents);
 
   SetButtons(ui::DIALOG_BUTTON_NONE);
-  SetAccessibleRole(ax::mojom::Role::kDialog);
+  SetAccessibleWindowRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
 
   SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));

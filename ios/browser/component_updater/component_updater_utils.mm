@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "components/component_updater/component_updater_service.h"
 #include "ios/chrome/browser/application_context/application_context.h"
 

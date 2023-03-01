@@ -140,7 +140,7 @@ public class BraveToolbarManager extends ToolbarManager {
             List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
             ScrimCoordinator scrimCoordinator, ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
@@ -148,7 +148,6 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
             Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
@@ -170,16 +169,16 @@ public class BraveToolbarManager extends ToolbarManager {
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
-                bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
-                layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
-                tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
-                intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
-                isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
-                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
-                bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
-                snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
-                tabReparentingControllerSupplier, omniboxPedalDelegate,
-                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors, backPressManager);
+                bookmarkModelSupplier, canAnimateNativeBrowserControls, layoutStateProviderSupplier,
+                appMenuCoordinatorSupplier, shouldShowUpdateBadge, tabModelSelectorSupplier,
+                startSurfaceSupplier, omniboxFocusStateSupplier, promoShownOneshotSupplier,
+                windowAndroid, isInOverviewModeSupplier, modalDialogManagerSupplier,
+                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
+                startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
+                tabContentManager, tabCreatorManager, snackbarManager, jankTracker,
+                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
+                omniboxPedalDelegate, ephemeralTabCoordinatorSupplier,
+                initializeWithIncognitoColors, backPressManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -236,8 +235,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
-            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)
-                    || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
+            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)) {
                 mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
                         mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,

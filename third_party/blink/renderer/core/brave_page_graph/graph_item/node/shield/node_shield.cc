@@ -7,7 +7,7 @@
 
 namespace brave_page_graph {
 
-NodeShield::NodeShield(GraphItemContext* context, const std::string& type)
+NodeShield::NodeShield(GraphItemContext* context, const String& type)
     : GraphNode(context), type_(type) {}
 
 NodeShield::~NodeShield() = default;

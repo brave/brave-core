@@ -15,7 +15,7 @@ namespace brave_page_graph {
 EdgeStorageReadCall::EdgeStorageReadCall(GraphItemContext* context,
                                          NodeScript* out_node,
                                          NodeStorage* in_node,
-                                         const std::string& key)
+                                         const String& key)
     : EdgeStorage(context, out_node, in_node, key) {}
 
 EdgeStorageReadCall::~EdgeStorageReadCall() = default;

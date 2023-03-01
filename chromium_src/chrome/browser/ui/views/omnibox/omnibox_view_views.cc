@@ -4,8 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
-#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_contents_view.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 
-#define OmniboxPopupContentsView BraveOmniboxPopupContentsView
+#define OmniboxPopupViewViews BraveOmniboxPopupViewViews
 #include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.cc"
-#undef OmniboxPopupContentsView
+#undef OmniboxPopupViewViews

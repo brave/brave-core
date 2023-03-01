@@ -8,13 +8,14 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_text.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeTextChange::EdgeTextChange(GraphItemContext* context,
                                NodeScript* out_node,
                                NodeHTMLText* in_node,
-                               const std::string& text)
+                               const String& text)
     : GraphEdge(context, out_node, in_node), text_(text) {}
 
 ItemName EdgeTextChange::GetItemName() const {
@@ -22,7 +23,9 @@ ItemName EdgeTextChange::GetItemName() const {
 }
 
 ItemName EdgeTextChange::GetItemDesc() const {
-  return GraphEdge::GetItemDesc() + " [" + text_ + "]";
+  WTF::TextStream ts;
+  ts << GraphEdge::GetItemDesc() << " [" << text_ << "]";
+  return ts.Release();
 }
 
 void EdgeTextChange::AddGraphMLAttributes(xmlDocPtr doc,

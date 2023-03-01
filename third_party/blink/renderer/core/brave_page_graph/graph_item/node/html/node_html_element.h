@@ -6,12 +6,12 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_HTML_ELEMENT_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_HTML_NODE_HTML_ELEMENT_H_
 
-#include <map>
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
@@ -19,17 +19,19 @@ class EdgeEventListenerAdd;
 
 class NodeHTMLElement : public NodeHTML {
  public:
+  using Attributes = HashMap<String, String>;
+
   NodeHTMLElement(GraphItemContext* context,
                   const blink::DOMNodeId dom_node_id,
-                  const std::string& tag_name);
+                  const String& tag_name);
   ~NodeHTMLElement() override;
 
-  const std::string& TagName() const { return tag_name_; }
+  const String& TagName() const { return tag_name_; }
 
   const HTMLNodeList& GetChildNodes() const { return child_nodes_; }
 
-  const AttributeMap& GetAttributes() const { return attributes_; }
-  const AttributeMap& GetInlineStyles() const { return inline_styles_; }
+  const Attributes& GetAttributes() const { return attributes_; }
+  const Attributes& GetInlineStyles() const { return inline_styles_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -51,13 +53,13 @@ class NodeHTMLElement : public NodeHTML {
   void AddInEdge(const GraphEdge* in_edge) override;
 
  private:
-  const std::string tag_name_;
+  const String tag_name_;
 
   HTMLNodeList child_nodes_;
 
-  AttributeMap attributes_;
-  AttributeMap inline_styles_;
-  std::map<EventListenerId, const EdgeEventListenerAdd*> event_listeners_;
+  Attributes attributes_;
+  Attributes inline_styles_;
+  HashMap<EventListenerId, const EdgeEventListenerAdd*> event_listeners_;
 };
 
 }  // namespace brave_page_graph

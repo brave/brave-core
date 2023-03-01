@@ -6,7 +6,7 @@
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #import "brave/ios/browser/svg/svg_image.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "components/favicon/core/favicon_url.h"
 #include "components/favicon/ios/favicon_url_util.h"
