@@ -361,6 +361,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       )
     }
     
+    Task(priority: .low) {
+      // Attempt to clean up pending file uploads in the background
+      await self.cleanUpWebKitPendingFileUploads()
+    }
+    
     return shouldPerformAdditionalDelegateHandling
   }
   
@@ -468,6 +473,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func sceneInfo(for sceneSession: UISceneSession) -> SceneInfoModel? {
     return sceneInfo
+  }
+  
+  private nonisolated func cleanUpWebKitPendingFileUploads() async {
+    // When a user uploads a file through a web page, WebKit will copy said file to the `/tmp` directory in
+    // the app sandbox. If the user does not close the tab they used to upload (thus destroying the WKWebView)
+    // before the app terminates, then WebKit no longer cleans up the file and it remains on disk until
+    // the OS decides to purge /tmp directories to recover disk space. This function will attempt to remove
+    // known temporary folders that WebKit creates to clean up any files that may be lingering there due to
+    // this WebKit bug.
+    let fileManager = FileManager.default
+    let tmp = fileManager.temporaryDirectory
+    let knownFolders: Set<String> = ["WKWebFileUpload", "WKFileUploadPanel", "WKVideoUpload"]
+    guard let enumerator = fileManager.enumerator(
+      at: tmp,
+      includingPropertiesForKeys: [.isDirectoryKey, .nameKey],
+      options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+    ) else { return }
+    while let fileURL = enumerator.nextObject() as? URL {
+      guard
+        let values = try? fileURL.resourceValues(forKeys: [.isDirectoryKey, .nameKey]),
+        let isDirectory = values.isDirectory,
+        let name = values.name,
+        isDirectory,
+        knownFolders.contains(where: name.hasPrefix) else {
+        continue
+      }
+      try? fileManager.removeItem(at: fileURL)
+    }
   }
 }
 
