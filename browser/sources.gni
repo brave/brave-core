@@ -197,7 +197,6 @@ brave_chrome_browser_deps = [
   "//components/content_settings/browser",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
-  "//components/dom_distiller/core",
   "//components/embedder_support",
   "//components/feed/core/shared_prefs:feed_shared_prefs",
   "//components/gcm_driver:gcm_buildflags",
