@@ -243,7 +243,6 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
 
 void SharedPinnedTabService::OnBrowserRemoved(Browser* browser) {
   DVLOG(2) << __FUNCTION__;
-  DCHECK(base::Contains(closing_browsers_, browser));
   closing_browsers_.erase(browser);
 }
 
