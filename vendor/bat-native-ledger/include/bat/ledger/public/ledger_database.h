@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/public/interfaces/ledger_database.mojom.h"
