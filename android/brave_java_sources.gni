@@ -268,6 +268,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceKeyChecker.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/privacy/settings/BravePrivacySettings.java",
