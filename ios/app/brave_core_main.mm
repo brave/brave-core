@@ -37,6 +37,7 @@
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_paths.h"
@@ -106,6 +107,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
+@property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
 @property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @end
@@ -241,6 +243,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncProfileService = nil;
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
+  _webImageDownloader = nil;
 
   _otr_browserList =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
@@ -423,6 +426,14 @@ static bool CustomLogHandler(int severity,
         [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()];
   }
   return _tabGeneratorAPI;
+}
+
+- (WebImageDownloader*)webImageDownloader {
+  if (!_webImageDownloader) {
+    _webImageDownloader = [[WebImageDownloader alloc]
+        initWithBrowserState:_otr_browser->GetBrowserState()];
+  }
+  return _webImageDownloader;
 }
 
 - (BraveWalletAPI*)braveWalletAPI {
