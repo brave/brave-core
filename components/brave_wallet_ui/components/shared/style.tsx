@@ -100,15 +100,24 @@ export const backgroundColorMixin = css<{
 // Containers
 export const Row = styled.div<FlexProps & {
   maxWidth?: CSSProperties['maxWidth']
+  margin?: number | string
+  padding?: number | string
+  width?: '100%' | 'unset'
+  marginBottom?: number
 }>`
+  font-family: 'Poppins';
   display: flex;
   flex-direction: row;
   flex: ${(p) => p.flex ?? 'unset'};
   align-items: ${(p) => p.alignItems ?? 'center'};
   justify-content: ${(p) => p.justifyContent ?? 'center'};
   gap: ${(p) => p.gap ?? 'unset'};
-  width: 100%;
+  width: ${(p) => p.width ?? '100%'};
   max-width: ${(p) => p.maxWidth ?? 'unset'};
+  margin: ${(p) => p.margin ?? 0};
+  position: relative;
+  ${makePaddingMixin(0)}
+  margin-bottom: ${(p) => p.marginBottom ?? 0}px;
 `
 
 export const Column = styled.div<FlexProps & {
@@ -117,6 +126,7 @@ export const Column = styled.div<FlexProps & {
   color?: ThemeColor
   padding?: number | string
 }>`
+  font-family: 'Poppins';
   height: ${(p) => p.fullHeight ? '100%' : 'unset'};
   width: ${(p) => p.fullWidth ? '100%' : 'unset'};
   flex: ${(p) => p.flex ?? 'unset'};
@@ -129,7 +139,7 @@ export const Column = styled.div<FlexProps & {
   ${makePaddingMixin(0)}
 `
 
-export const ScrollableColumn = styled(Column)<{
+export const ScrollableColumn = styled(Column) <{
   scrollDisabled?: boolean
   maxHeight?: string
   marginBottom?: string
@@ -225,7 +235,7 @@ export const ToggleVisibilityButton = styled.button<{
   } 
 `
 
-export const CopyButton = styled(WalletButton)<{
+export const CopyButton = styled(WalletButton) <{
   iconColor?: keyof IThemeProps['color']
 }>`
   cursor: pointer;
@@ -251,6 +261,33 @@ export const DownloadButton = styled(WalletButton)`
   background-color: ${(p) => p.theme.color.text01};
   height: 14px;
   width: 14px;
+`
+
+export const SellButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 54px;
+  height: 100%;
+`
+
+export const SellButton = styled(WalletButton)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 40px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  background-color: ${(p) => p.theme.palette.blurple500};
+  color: ${(p) => p.theme.palette.white};
+  border: none;
 `
 
 // Icons
@@ -315,9 +352,9 @@ export const WarningTriangleFilledIcon = styled.div<{
   @media (prefers-color-scheme: dark) {
     color: ${(p) => p.theme.palette.blurple300};
     background-color: ${(p) => p?.color
-      ? p.theme.color[p.color]
-      : LeoColors['dark.system.feedback.warning.icon']
-    };
+    ? p.theme.color[p.color]
+    : LeoColors['dark.system.feedback.warning.icon']
+  };
   }
 `
 
@@ -336,9 +373,9 @@ export const WarningCircleFilledIcon = styled.div<{
   mask-image: url(${WarningCircleFilled});
   @media (prefers-color-scheme: dark) {
     background-color: ${(p) => p?.color
-      ? p.theme.color[p.color]
-      : LeoColors['dark.system.feedback.error.icon']
-    };
+    ? p.theme.color[p.color]
+    : LeoColors['dark.system.feedback.error.icon']
+  };
   }
 `
 
@@ -366,7 +403,7 @@ export const ErrorXIcon = styled.div`
   display: inline-block;
 `
 
-export const LoadingIcon = styled(LoaderIcon as FC<{}>)<{
+export const LoadingIcon = styled(LoaderIcon as FC<{}>) <{
   size: string
   color: keyof IThemeProps['color']
   opacity: number

@@ -8,7 +8,8 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  WalletAccountType
 } from '../../../../../../constants/types'
 
 // Utils
@@ -27,8 +28,11 @@ import {
   WithHideBalancePlaceholder
 } from '../../../../'
 
+import { SellAssetModal } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
+
 // Hooks
 import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
+import { useMultiChainSellAssets } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 
 // Styled Components
 import {
@@ -70,8 +74,20 @@ export const AccountsAndTransactionsList = ({
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
 
+  // hooks
+  const {
+    allSellAssetOptions,
+    getAllSellAssetOptions,
+    checkIsAssetSellSupported,
+    sellAmount,
+    setSellAmount,
+    openSellAssetLink
+  } = useMultiChainSellAssets()
+
   // state
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+  const [selectedSellAccount, setSelectedSellAccount] = React.useState<WalletAccountType>()
+  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
 
   const isNonFungibleToken = React.useMemo(() => {
     return selectedAsset?.isErc721 || selectedAsset?.isNft
@@ -102,6 +118,23 @@ export const AccountsAndTransactionsList = ({
     return selectedAssetTransactions
       .filter(t => t.status !== BraveWallet.TransactionStatus.Rejected)
   }, [selectedAssetTransactions])
+
+  // Methods
+  const onShowSellModal = React.useCallback((account: WalletAccountType) => {
+    setSelectedSellAccount(account)
+    setShowSellModal(true)
+  }, [])
+
+  const onOpenSellAssetLink = React.useCallback(() => {
+    openSellAssetLink({ sellAddress: selectedSellAccount?.address ?? '', sellAsset: selectedAsset })
+  }, [selectedAsset, selectedSellAccount?.address, openSellAssetLink])
+
+  // Effects
+  React.useEffect(() => {
+    if (allSellAssetOptions.length === 0) {
+      getAllSellAssetOptions()
+    }
+  }, [allSellAssetOptions.length, getAllSellAssetOptions])
 
   return (
     <>
@@ -141,6 +174,8 @@ export const AccountsAndTransactionsList = ({
               selectedNetwork={selectedAssetsNetwork}
               hideBalances={hideBalances}
               isNft={isNonFungibleToken}
+              showSellModal={() => onShowSellModal(account)}
+              isSellSupported={checkIsAssetSellSupported(selectedAsset)}
             />
           )}
           <ButtonRow>
@@ -168,6 +203,18 @@ export const AccountsAndTransactionsList = ({
             </EmptyTransactionContainer>
           )}
         </>
+      }
+      {showSellModal && selectedAsset &&
+        <SellAssetModal
+          selectedAsset={selectedAsset}
+          selectedAssetsNetwork={selectedAssetsNetwork}
+          onClose={() => setShowSellModal(false)}
+          sellAmount={sellAmount}
+          setSellAmount={setSellAmount}
+          openSellAssetLink={onOpenSellAssetLink}
+          showSellModal={showSellModal}
+          sellAssetBalance={getBalance(selectedSellAccount, selectedAsset)}
+        />
       }
     </>
   )

@@ -30,6 +30,7 @@ interface BaseProps {
   disabled?: boolean
   needsTopMargin?: boolean
   maxHeight?: string
+  minHeight?: string
   minWidth?: string
 }
 
@@ -50,6 +51,7 @@ export const NavButton: React.FC<Props> = ({
   buttonType,
   disabled,
   maxHeight,
+  minHeight,
   minWidth,
   needsTopMargin,
   onSubmit,
@@ -92,6 +94,7 @@ export const NavButton: React.FC<Props> = ({
       addTopMargin={needsTopMargin && text ? text.length > 20 : false}
       maxHeight={maxHeight}
       minWidth={minWidth}
+      minHeight={minHeight}
     >
       {buttonContent}
     </StyledButton>

@@ -21,15 +21,15 @@ export const StyledWrapper = styled.div`
   backdrop-filter: blur(16px);
 `
 
-export const Modal = styled.div<{ width?: string }>`
+export const Modal = styled.div<{ width?: string, borderRadius?: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-conent: center;
+  justify-content: center;
   min-width: ${p => p.width ? p.width : '580px'};
   max-width: ${p => p.width ? p.width : '580px'};
   background-color: ${(p) => p.theme.color.background02};
-  border-radius: 8px;
+  border-radius: ${(p) => p.borderRadius ? p.borderRadius : 8}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   @media screen and (max-width: 600px) {
     min-width: 480px;
@@ -37,12 +37,17 @@ export const Modal = styled.div<{ width?: string }>`
   }
 `
 
-export const Header = styled.div`
+export const Header = styled.div<{
+  headerPaddingVertical?: number
+  headerPaddingHorizontal?: number
+}>`
+  --vertical-padding: ${(p) => p.headerPaddingVertical ?? 20}px;
+  --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? 20}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding: 20px;
+  padding: var(--vertical-padding) var(--horizontal-padding);
   width: 100%;
 `
 
