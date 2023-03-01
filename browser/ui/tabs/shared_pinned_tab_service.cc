@@ -268,11 +268,10 @@ void SharedPinnedTabService::TabPinnedStateChanged(
     return;
   }
 
-  LOCK_REENTRANCE(tab_strip_model);
-
   DVLOG(2) << __FUNCTION__ << " index: " << index << " pinned? "
            << tab_strip_model->IsTabPinned(index);
   if (tab_strip_model->IsTabPinned(index)) {
+    LOCK_REENTRANCE(tab_strip_model);
     SharedContentsData::CreateForWebContents(contents);
     auto tab_renderer_data =
         TabRendererData::FromTabInModel(tab_strip_model, index);
@@ -283,23 +282,11 @@ void SharedPinnedTabService::TabPinnedStateChanged(
                              .contents_owner_model = tab_strip_model});
     SynchronizeNewPinnedTab(index);
   } else {
-    // We shouldn't count on |index| in this case. The previous index could be
-    // different from |index|.
-    if (auto* dummy_contents_data =
-            DummyContentsData::FromWebContents(contents)) {
-      contents = dummy_contents_data->shared_contents();
-    }
-    auto iter = base::ranges::find(pinned_tab_data_, contents,
-                                   &PinnedTabData::shared_contents);
-    DCHECK(iter != pinned_tab_data_.end());
-
-    const auto previous_index = std::distance(pinned_tab_data_.begin(), iter);
-    pinned_tab_data_.erase(iter);
-
-    SharedContentsData::RemoveFromWebContents(contents);
-    DummyContentsData::RemoveFromWebContents(contents);
-
-    SynchronizeDeletedPinnedTab(previous_index);
+    // TODO(sko) Check lifecycle, remove Unretained.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&SharedPinnedTabService::OnTabUnpinned,
+                                  base::Unretained(this), tab_strip_model,
+                                  contents->GetWeakPtr(), index));
   }
 }
 
@@ -411,13 +398,6 @@ void SharedPinnedTabService::OnTabMoved(TabStripModel* tab_strip_model,
 void SharedPinnedTabService::OnTabRemoved(
     TabStripModel* tab_strip_model,
     const TabStripModelChange::Remove* remove) {
-  if (last_active_browser_ &&
-      last_active_browser_->tab_strip_model() != tab_strip_model) {
-    // We filters removal events from inactive browsers. Otherwise, unpinning
-    // a tab could delete wrong tabs.
-    return;
-  }
-
   DVLOG(2) << __FUNCTION__;
   DCHECK(remove);
 
@@ -435,11 +415,19 @@ void SharedPinnedTabService::OnTabRemoved(
       continue;
     }
 
+    if (!IsDummyContents(removed_tab.contents) &&
+        !IsSharedContents(removed_tab.contents)) {
+      // This tab is not under our interest. It could be in the middle of
+      // destruction  as a result of synchronization.
+      continue;
+    }
+
     if (auto* dummy_contents_data =
             DummyContentsData::FromWebContents(removed_tab.contents);
         dummy_contents_data && dummy_contents_data->propagation_stopped()) {
-      // Restoring from cached contents removes dummy pinned tabs. In this case,
-      // we shouldn't touch data.
+      // We're restoring from cached contents removes dummy pinned tabs, or
+      // closing tabs as a result of synchronization.
+      // In this case, we shouldn't touch data.
       continue;
     }
 
@@ -485,11 +473,57 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
+  // TODO(sko) Check lifecycle, remove Unretained.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
           &SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser,
           base::Unretained(this), active_index));
+}
+
+void SharedPinnedTabService::OnTabUnpinned(
+    TabStripModel* tab_strip_model,
+    base::WeakPtr<content::WebContents> contents,
+    int index) {
+  DCHECK(contents);
+
+  LOCK_REENTRANCE(tab_strip_model);
+
+  auto* shared_contents = contents.get();
+  if (auto* dummy_contents_data =
+          DummyContentsData::FromWebContents(contents.get())) {
+    shared_contents = dummy_contents_data->shared_contents();
+  }
+
+  // We shouldn't count on |index| in this case. The previous index could be
+  // different from |index|.
+  auto iter = base::ranges::find(pinned_tab_data_, shared_contents,
+                                 &PinnedTabData::shared_contents);
+  DCHECK(iter != pinned_tab_data_.end());
+  const auto previous_index = std::distance(pinned_tab_data_.begin(), iter);
+
+  if (auto* dummy_contents_data =
+          DummyContentsData::FromWebContents(contents.get())) {
+    // We should make this |tab_strip_model| have the shared contents, as
+    // other tabs will be deleted soon.
+    dummy_contents_data->stop_propagation();
+
+    DCHECK_NE(iter->contents_owner_model, tab_strip_model);
+
+    auto unique_shared_contents =
+        iter->contents_owner_model->ReplaceWebContentsAt(
+            previous_index, CreateDummyWebContents(shared_contents));
+    SharedContentsData::RemoveFromWebContents(unique_shared_contents.get());
+
+    tab_strip_model->ReplaceWebContentsAt(index,
+                                          std::move(unique_shared_contents));
+  } else {
+    SharedContentsData::RemoveFromWebContents(contents.get());
+  }
+
+  pinned_tab_data_.erase(iter);
+
+  SynchronizeDeletedPinnedTab(previous_index);
 }
 
 void SharedPinnedTabService::SynchronizeNewPinnedTab(int index) {
@@ -518,6 +552,15 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
     auto* model = browser->tab_strip_model();
     if (model == change_source_model_) {
       continue;
+    }
+
+    auto* contents = model->GetWebContentsAt(index);
+    if (auto* dummy_web_contents =
+            DummyContentsData::FromWebContents(contents)) {
+      dummy_web_contents->stop_propagation();
+    } else {
+      DCHECK(SharedContentsData::FromWebContents(contents));
+      SharedContentsData::RemoveFromWebContents(contents);
     }
 
     // We may not want to keep history for dummy pinned tabs, so pass 0 for

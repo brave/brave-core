@@ -89,6 +89,10 @@ class SharedPinnedTabService : public KeyedService,
                     const TabStripModelChange::Remove* remove);
   void OnActiveTabChanged(TabStripModel* tab_strip_model);
 
+  void OnTabUnpinned(TabStripModel* tab_strip_model,
+                     base::WeakPtr<content::WebContents> contents,
+                     int index);
+
   void SynchronizeNewPinnedTab(int index);
   void SynchronizeDeletedPinnedTab(int index);
   void SynchronizeMovedPinnedTab(int from, int to);
