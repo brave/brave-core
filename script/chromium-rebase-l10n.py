@@ -9,7 +9,8 @@ import argparse
 import os.path
 import sys
 import glob
-from lib.l10n.grd_utils import (get_override_file_path,
+from lib.l10n.grd_utils import (GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
+                                get_override_file_path,
                                 textify,
                                 update_braveified_grd_tree_override,
                                 write_xml_file_from_tree,
@@ -22,16 +23,6 @@ SRC_SOURCE_ROOT = os.path.abspath(os.path.dirname(BRAVE_SOURCE_ROOT))
 sys.path.insert(1, os.path.join(SRC_SOURCE_ROOT, 'tools/grit'))
 
 from grit.extern import tclib  # pylint: disable=import-error,wrong-import-position
-
-# Map of google_chrome_strings.grd resources ids to migrate to brave_strings.grd
-# The resources and all translations will be migrated to grd and xtb files.
-# key - id in google_chrome_strings.
-# value - new id in brave_stirngs.
-GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
-    'IDS_SHORTCUT_NAME_BETA': 'IDS_CHROME_SHORTCUT_NAME_BETA',
-    'IDS_SHORTCUT_NAME_DEV': 'IDS_CHROME_SHORTCUT_NAME_DEV'
-}
-
 
 def write_xtb_content(xml_tree, source_string_path):
     transformed_content = etree.tostring(xml_tree,
