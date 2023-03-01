@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/history/category_content_value_util.h"
 
+#include <string>
+
 #include "bat/ads/category_content_info.h"
 
 namespace ads {
@@ -31,7 +33,7 @@ base::Value::Dict CategoryContentToValue(
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
   CategoryContentInfo category_content;
 
-  if (const auto* value = root.FindString(kCategoryKey)) {
+  if (const std::string* value = root.FindString(kCategoryKey)) {
     category_content.category = *value;
   }
 

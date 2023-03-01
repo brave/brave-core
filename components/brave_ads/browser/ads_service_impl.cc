@@ -1045,8 +1045,8 @@ void AdsServiceImpl::MigratePrefs() {
     VLOG(2) << "Migrating ads preferences";
   }
 
-  auto source_version = GetPrefService()->GetInteger(prefs::kVersion);
-  auto dest_version = ads::kCurrentVersionNumber;
+  const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
+  const int dest_version = ads::kCurrentVersionNumber;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
@@ -1103,8 +1103,9 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = kMappings->find(std::make_pair(from_version, to_version));
-    if (mapping == kMappings->end()) {
+    const auto mapping =
+        kMappings->find(std::make_pair(from_version, to_version));
+    if (mapping == kMappings->cend()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences
       return false;

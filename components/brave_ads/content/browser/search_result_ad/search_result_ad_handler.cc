@@ -86,8 +86,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     return;
   }
 
-  auto iter = search_result_ads_->find(*placement_id);
-  if (iter == search_result_ads_->end()) {
+  const auto iter = search_result_ads_->find(*placement_id);
+  if (iter == search_result_ads_->cend()) {
     return;
   }
 
@@ -130,8 +130,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
     return;
   }
 
-  auto iter = search_result_ads_->find(placement_id);
-  if (iter == search_result_ads_->end()) {
+  const auto iter = search_result_ads_->find(placement_id);
+  if (iter == search_result_ads_->cend()) {
     return;
   }
 
