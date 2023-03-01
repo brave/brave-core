@@ -34,6 +34,7 @@ source_set("browser") {
     "api/url",
     "api/version_info",
     "api/web",
+    "api/web_image",
     "brave_wallet",
     "//base",
     "//brave/browser/sync",
