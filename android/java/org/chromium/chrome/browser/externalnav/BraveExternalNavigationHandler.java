@@ -24,8 +24,13 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     @Override
     public OverrideUrlLoadingResult shouldOverrideUrlLoading(ExternalNavigationParams params) {
         if (isWalletProviderOverride(params)) {
-            completeWalletProviderVerification(params);
-            return OverrideUrlLoadingResult.forNavigateTab(params.getUrl(), params);
+            String originalUrl = params.getUrl().getSpec();
+            String url = originalUrl.replaceFirst("^rewards://", "brave://rewards/");
+            GURL browserFallbackGURL = new GURL(url);
+            if (params.getRedirectHandler() != null) {
+                params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
+            }
+            return OverrideUrlLoadingResult.forNavigateTab(browserFallbackGURL, params);
         }
         return super.shouldOverrideUrlLoading(params);
     }
