@@ -109,7 +109,7 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
 
     if (arms.size() > available_arms) {
       // Sample without replacement
-      base::RandomShuffle(std::begin(arms), std::end(arms));
+      base::RandomShuffle(arms.begin(), arms.end());
       arms.resize(available_arms);
     }
 
@@ -127,7 +127,7 @@ SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
   }
 
   if (segments.size() > kTopArmCount) {
-    base::RandomShuffle(std::begin(segments), std::end(segments));
+    base::RandomShuffle(segments.begin(), segments.end());
     segments.resize(kTopArmCount);
   }
 
