@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index a1a7aefed4bcb78eec3ed843ab7ea46db39d03b9..575e35c4d0c0b10491060f04475031d0b524ca01 100644
+index 77734c8f9d6e30796a6c49f19a3371aad01897e4..8f65324dc61c2c33800722277d0bda698d5dc0d7 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -116,6 +116,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_AUTO_REAUTHN_PERMISSION, 94},
+@@ -117,6 +117,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_REGISTRATION,
       95},
+     {ContentSettingsType::ANTI_ABUSE, 96},
 +     BRAVE_HISTOGRAM_VALUE_LIST
  };
  
