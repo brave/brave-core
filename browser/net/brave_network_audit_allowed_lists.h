@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_ALLOWED_LISTS_H_
 #define BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_ALLOWED_LISTS_H_
 
-#include <string>
-
 namespace brave {
 
 // Before adding to this list, get approval from the security team.
@@ -70,6 +68,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
     "https://dict.brave.com/",
     "https://go-updater.brave.com/",
     "https://p3a.brave.com/",
+    "https://p3a-creative.brave.com/",
     "https://p3a-json.brave.com/",
     "https://redirector.brave.com/",
     "https://safebrowsing.brave.com/",
