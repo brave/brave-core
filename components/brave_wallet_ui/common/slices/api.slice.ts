@@ -50,7 +50,7 @@ import {
   BlockchainTokenEntityAdaptorState,
   combineTokenRegistries
 } from './entities/blockchain-token.entity'
-import { AccountTokenBalanceForChainId } from './entities/token-balance.entity'
+import { AccountTokenBalanceForChainId, TokenBalancesForChainId } from './entities/token-balance.entity'
 import {
   TransactionEntity,
   transactionEntityAdapter,
@@ -132,6 +132,13 @@ type GetCombinedTokenBalanceForAllAccountsArg =
   GetAccountTokenCurrentBalanceArg['token'] &
     Pick<BraveWallet.BlockchainToken, 'coin'>
 
+type GetTokenBalancesForChainIdArg = {
+  contracts: string[]
+  address: string
+  coin: BraveWallet.CoinType
+  chainId: string
+}
+
 export interface IsEip1559ChangedMutationArg {
   id: string
   isEip1559: boolean
@@ -161,6 +168,7 @@ export function createWalletApi (
       'AccountTokenCurrentBalance',
       'ChainIdForCoinType',
       'CombinedTokenBalanceForAllAccounts',
+      'TokenBalancesForChainId',
       'DefaultAccountAddresses',
       'DefaultFiatCurrency',
       'ERC721Metadata',
@@ -1194,6 +1202,61 @@ export function createWalletApi (
         providesTags: cacher.cacheByBlockchainTokenArg(
           'CombinedTokenBalanceForAllAccounts'
         )
+      }),
+      getTokenBalancesForChainId: query<
+        TokenBalancesForChainId,
+        GetTokenBalancesForChainIdArg
+      >({
+        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data
+
+            if (arg.coin === BraveWallet.CoinType.ETH) {
+              const result = await jsonRpcService.getERC20TokenBalances(
+                arg.contracts,
+                arg.address,
+                arg.chainId
+              )
+              if (result.error === BraveWallet.ProviderError.kSuccess) {
+                return {
+                  data: result.balances.reduce((acc, balanceResult) => {
+                    if (balanceResult.balance) {
+                      return {
+                        ...acc,
+                        [balanceResult.contractAddress]: Amount.normalize(balanceResult.balance)
+                      }
+                    }
+
+                    return acc
+                  }, {})
+                }
+              } else {
+                return {
+                  error: result.errorMessage
+                }
+              }
+            }
+
+            return {
+              error: `Unsupported CoinType: ${arg.coin}`
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch pending transactions
+              error: ${error?.message ?? error}`
+            }
+          }
+        },
+        providesTags: (res, err, arg) =>
+          err
+            ? ['UNKNOWN_ERROR']
+            : [
+                {
+                  type: 'TokenBalancesForChainId',
+                  id: `${arg.address}-${arg.coin}-${arg.chainId}`
+                }
+              ]
       }),
       //
       // Transactions
@@ -2554,6 +2617,7 @@ export const {
   useGetAllTransactionsForAddressCoinTypeQuery,
   useGetChainIdForCoinQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
+  useLazyGetTokenBalancesForChainIdQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
