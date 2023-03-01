@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index f96b1200cb87812fcd43a67de8d44326951ec258..64dbb2dfec8c1476b5fde4d99b96310c4349c626 100644
+index 3916b6096af2d41ca8dd22da3a4e0e72447276f0..09cfba401e121e6cf28cf71d6eacfabc09d12305 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -184,6 +184,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::FEDERATED_IDENTITY_AUTO_REAUTHN_PERMISSION, nullptr},
+@@ -185,6 +185,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_REGISTRATION,
       nullptr},
+     {ContentSettingsType::THIRD_PARTY_STORAGE_PARTITIONING, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -372,6 +373,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -373,6 +374,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {
