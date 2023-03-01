@@ -10,8 +10,7 @@ import os.path
 import sys
 import glob
 from lib.l10n.grd_utils import (GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
-                                get_override_file_path,
-                                textify,
+                                get_override_file_path, textify,
                                 update_braveified_grd_tree_override,
                                 write_xml_file_from_tree,
                                 write_braveified_grd_override)
@@ -24,11 +23,10 @@ sys.path.insert(1, os.path.join(SRC_SOURCE_ROOT, 'tools/grit'))
 
 from grit.extern import tclib  # pylint: disable=import-error,wrong-import-position
 
-def write_xtb_content(xml_tree, source_string_path):
-    transformed_content = etree.tostring(xml_tree,
-                                         pretty_print=True,
-                                         xml_declaration=True,
-                                         encoding='utf-8')
+
+def write_xtb_content(xtb_tree, source_string_path):
+    transformed_content = (b'<?xml version="1.0" ?>\n' + etree.tostring(
+        xtb_tree, pretty_print=True, xml_declaration=False, encoding='utf-8'))
     print(f'writing file {source_string_path}')
     transformed_content = transformed_content.replace(b'  <translation',
                                                       b'<translation')
