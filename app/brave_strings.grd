@@ -1643,12 +1643,10 @@ Permissions you've already given to websites and apps may apply to this account.
           </message>
         </if>
       </if>
-      <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
+    <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
-      </message>
-      <message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">
+        </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">
           Google Chrome Dev
-      </message>
-    </messages>
+        </message></messages>
   </release>
 </grit>
