@@ -63,7 +63,11 @@ AcceleratorPrefManager::GetAccelerators() {
   const auto& accelerators = prefs_->GetDict(kAcceleratorsPrefs);
   for (const auto [command_id, shortcuts] : accelerators) {
     int id;
-    DCHECK(base::StringToInt(command_id, &id));
+    if (!base::StringToInt(command_id, &id)) {
+      DCHECK(false) << "Failed to parse " << command_id << " as int";
+      continue;
+    }
+
     for (const auto& accelerator : shortcuts.GetList()) {
       result[id].push_back(accelerator.GetString());
     }

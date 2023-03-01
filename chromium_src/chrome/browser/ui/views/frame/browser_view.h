@@ -23,7 +23,6 @@
   GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
-#define LoadAccelerators() virtual LoadAccelerators()
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
@@ -32,11 +31,18 @@
 
 #if BUILDFLAG(IS_WIN)
 #define GetSupportsTitle virtual GetSupportsTitle
+
+// On Windows <winuser.h> defines LoadAccelerators
+#pragma push_macro("LoadAccelerators")
+#undef LoadAccelerators
 #endif
+#define LoadAccelerators virtual LoadAccelerators
 
 #include "src/chrome/browser/ui/views/frame/browser_view.h"  // IWYU pragma: export
 
+#undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
+#pragma pop_macro("LoadAccelerators")
 #undef GetSupportsTitle
 #endif
 
@@ -45,7 +51,6 @@
 #undef BrowserViewLayoutDelegateImpl
 #undef BrowserWindow
 #undef MaybeShowReadingListInSidePanelIPH
-#undef LoadAccelerators
 #undef BrowserViewLayout
 #undef SidePanel
 #undef GetContentsLayoutManager

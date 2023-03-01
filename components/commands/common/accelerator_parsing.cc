@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/commands/accelerator_parsing.h"
+#include "brave/components/commands/common/accelerator_parsing.h"
 
 #include <cstddef>
 #include <string>
@@ -13,6 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "build/buildflag.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/keycodes/dom/dom_code.h"
@@ -23,9 +24,14 @@
 namespace commands {
 
 namespace {
+
+#if !BUILDFLAG(IS_WIN)
 constexpr char kApplicationClose[] = "AppClose";
 constexpr char kApplicationNew[] = "AppNew";
+#endif
+
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
+#if !BUILDFLAG(IS_WIN)
   if (code == ui::VKEY_CLOSE) {
     return kApplicationClose;
   }
@@ -33,12 +39,14 @@ std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
   if (code == ui::VKEY_NEW) {
     return kApplicationNew;
   }
+#endif
 
   auto domcode = ui::UsLayoutKeyboardCodeToDomCode(code);
   return ui::KeycodeConverter::DomCodeToCodeString(domcode);
 }
 
 ui::KeyboardCode DomCodeStringToKeyboardCode(const std::string& key) {
+#if !BUILDFLAG(IS_WIN)
   if (key == kApplicationClose) {
     return ui::VKEY_CLOSE;
   }
@@ -46,6 +54,7 @@ ui::KeyboardCode DomCodeStringToKeyboardCode(const std::string& key) {
   if (key == kApplicationNew) {
     return ui::VKEY_NEW;
   }
+#endif
 
   auto domcode = ui::KeycodeConverter::CodeStringToDomCode(key);
   return ui::DomCodeToUsLayoutKeyboardCode(domcode);
