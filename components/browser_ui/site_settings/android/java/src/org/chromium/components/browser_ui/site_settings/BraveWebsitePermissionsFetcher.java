@@ -13,6 +13,7 @@ public class BraveWebsitePermissionsFetcher {
             @ContentSettingsType int contentSettingsType) {
         switch (contentSettingsType) {
             case ContentSettingsType.AUTOPLAY:
+            case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
                 return WebsitePermissionsType.CONTENT_SETTING_EXCEPTION;
         }
         return WebsitePermissionsFetcher.getPermissionsType(contentSettingsType);

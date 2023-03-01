@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/speedreader/common/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -29,8 +30,10 @@
     &playlist::features::kPlaylist,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,   \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,     \
-    &speedreader::kSpeedreaderFeature,     \
-    &debounce::features::kBraveDebounce
+    &speedreader::kSpeedreaderFeature,                       \
+    &debounce::features::kBraveDebounce,                     \
+    &google_sign_in_permission::features::kBraveGoogleSignInPermission
+
 // clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"

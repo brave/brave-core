@@ -20,7 +20,6 @@
   BRAVE_SPEEDREADER,                                                           \
   BRAVE_ETHEREUM,                                                              \
   BRAVE_SOLANA,                                                                \
-  BRAVE_GOOGLE_SIGN_IN,                                                        \
   BRAVE_HTTPS_UPGRADE,                                                         \
   NUM_TYPES
 // clang-format on

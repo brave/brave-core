@@ -31,6 +31,8 @@ public class BraveSingleCategorySettings
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
             resource = R.string.website_settings_add_site_description_autoplay;
+        } else if (mCategory.getType() == SiteSettingsCategory.Type.GOOGLE_SIGN_IN) {
+            resource = R.string.website_settings_google_sign_in_allow_exceptions;
         } else {
             return (String) BraveReflectionUtil.InvokeMethod(
                     SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
@@ -47,7 +49,8 @@ public class BraveSingleCategorySettings
         SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
                 SingleCategorySettings.class, "mCategory", this);
 
-        if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
+        if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY
+                || mCategory.getType() == SiteSettingsCategory.Type.GOOGLE_SIGN_IN) {
             exception = true;
         }
         if (exception) {

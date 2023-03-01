@@ -21,6 +21,7 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/content_settings/core",
   "+brave/components/debounce",
+  "+brave/components/google_sign_in_permission",
   "+brave/components/decentralized_dns",
   "+brave/components/ipfs",
   "+brave/components/l10n/common",
