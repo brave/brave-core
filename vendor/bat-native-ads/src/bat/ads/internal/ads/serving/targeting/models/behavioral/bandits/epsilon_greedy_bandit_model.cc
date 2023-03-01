@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
@@ -115,7 +116,7 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
       arms.resize(available_arms);
     }
 
-    top_arms.insert(top_arms.cend(), arms.cbegin(), arms.cend());
+    base::Extend(top_arms, arms);
   }
 
   return top_arms;

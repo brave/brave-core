@@ -13,6 +13,7 @@
 
 #include "absl/types/optional.h"
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
@@ -224,10 +225,7 @@ void MockGetAdEventHistory(const std::unique_ptr<AdsClientMock>& mock) {
 
                 const std::vector<base::Time>& ad_event_timestamps =
                     ad_event_history_item.second;
-
-                timestamps.insert(timestamps.cend(),
-                                  ad_event_timestamps.cbegin(),
-                                  ad_event_timestamps.cend());
+                base::Extend(timestamps, ad_event_timestamps);
               }
             }
 

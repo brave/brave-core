@@ -6,6 +6,7 @@
 #include "bat/ads/ad_event_history.h"
 
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
@@ -73,9 +74,7 @@ std::vector<base::Time> AdEventHistory::Get(
       }
 
       const std::vector<base::Time>& ad_event_timestamps = ad_event.second;
-
-      timestamps.insert(timestamps.cend(), ad_event_timestamps.cbegin(),
-                        ad_event_timestamps.cend());
+      base::Extend(timestamps, ad_event_timestamps);
     }
   }
 

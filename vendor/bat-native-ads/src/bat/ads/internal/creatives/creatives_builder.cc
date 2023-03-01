@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -348,9 +349,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       // Conversions
-      creatives.conversions.insert(creatives.conversions.cend(),
-                                   creative_set.conversions.cbegin(),
-                                   creative_set.conversions.cend());
+      base::Extend(creatives.conversions, creative_set.conversions);
     }
   }
 
