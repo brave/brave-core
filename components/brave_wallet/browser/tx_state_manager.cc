@@ -209,6 +209,7 @@ void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
     return;
   }
   if (!prefs->HasPrefPath(kBraveWalletTransactions)) {
+    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
     return;
   }
 

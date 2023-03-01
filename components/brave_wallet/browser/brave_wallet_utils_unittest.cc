@@ -1209,16 +1209,7 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
   }
 
   auto getChainIdByNetworkIdCheck = [&](const mojom::CoinType& coin_type) {
-    auto chains = GetAllChains(&prefs, coin_type);
-    const auto& custom_networks = prefs.GetDict(kBraveWalletCustomNetworks);
-    auto* custom_list =
-        custom_networks.FindList(GetPrefKeyForCoinType(coin_type));
-    if (custom_list) {
-      for (const auto& it : *custom_list) {
-        chains.push_back(ValueToNetworkInfo(it));
-      }
-    }
-    for (const auto& chain : chains) {
+    for (const auto& chain : GetAllChains(&prefs, coin_type)) {
       std::string nid;
       if (chain->coin == mojom::CoinType::ETH) {
         nid = GetKnownEthNetworkId(chain->chain_id);
@@ -1229,7 +1220,6 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
       if (chain->coin == mojom::CoinType::FIL) {
         nid = GetKnownFilNetworkId(chain->chain_id);
       }
-
       if (nid.empty()) {
         nid = chain->chain_id;
         // GetNetworkId supports only ETH for custom networks atm.

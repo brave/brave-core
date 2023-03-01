@@ -1196,16 +1196,12 @@ absl::optional<std::string> GetChainIdByNetworkId(
   if (network_id.empty()) {
     return absl::nullopt;
   }
-  std::vector<mojom::NetworkInfoPtr> networks = GetAllChains(prefs, coin);
-  absl::optional<std::string> chain_id;
-  for (const auto& network : networks) {
-    std::string id = GetNetworkId(prefs, coin, network->chain_id);
-    if (id == network_id) {
-      chain_id = network->chain_id;
-      break;
+  for (const auto& network : GetAllChains(prefs, coin)) {
+    if (network_id == GetNetworkId(prefs, coin, network->chain_id)) {
+      return network->chain_id;
     }
   }
-  return chain_id;
+  return absl::nullopt;
 }
 
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
