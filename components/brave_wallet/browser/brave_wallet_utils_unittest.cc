@@ -1232,9 +1232,9 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
 
       if (nid.empty()) {
         nid = chain->chain_id;
+        // GetNetworkId supports only ETH for custom networks atm.
         if (chain->coin != mojom::CoinType::ETH) {
-          auto chainId = GetChainIdByNetworkId(&prefs, coin_type, nid);
-          ASSERT_FALSE(chainId.has_value());  // GetNetworkId supports only ETH
+          ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, nid));
           continue;
         }
       }
@@ -1242,6 +1242,7 @@ TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
       ASSERT_TRUE(chainId.has_value());
       EXPECT_EQ(chain->chain_id, chainId.value());
     }
+    ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, ""));
   };
 
   for (auto coin :

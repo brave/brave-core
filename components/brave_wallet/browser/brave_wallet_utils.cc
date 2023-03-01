@@ -1194,27 +1194,17 @@ absl::optional<std::string> GetChainIdByNetworkId(
     const mojom::CoinType& coin,
     const std::string& network_id) {
   if (network_id.empty()) {
-    return "";
+    return absl::nullopt;
   }
-
   std::vector<mojom::NetworkInfoPtr> networks = GetAllChains(prefs, coin);
   absl::optional<std::string> chain_id;
   for (const auto& network : networks) {
-    std::string id = GetKnownNetworkId(coin, network->chain_id);
+    std::string id = GetNetworkId(prefs, coin, network->chain_id);
     if (id == network_id) {
       chain_id = network->chain_id;
+      break;
     }
   }
-
-  if (!chain_id) {
-    for (const auto& network : GetAllCustomChains(prefs, coin)) {
-      std::string id = GetNetworkId(prefs, coin, network->chain_id);
-      if (id == network_id) {
-        chain_id = network->chain_id;
-      }
-    }
-  }
-
   return chain_id;
 }
 
