@@ -18,6 +18,12 @@ namespace chrome {
 class BraveTabStripModelDelegate : public BrowserTabStripModelDelegate {
  public:
   using BrowserTabStripModelDelegate::BrowserTabStripModelDelegate;
+  BraveTabStripModelDelegate(const BraveTabStripModelDelegate&) = delete;
+  BraveTabStripModelDelegate& operator=(const BraveTabStripModelDelegate&) =
+      delete;
+  BraveTabStripModelDelegate(BraveTabStripModelDelegate&&) noexcept = delete;
+  BraveTabStripModelDelegate& operator=(BraveTabStripModelDelegate&&) noexcept =
+      delete;
   ~BraveTabStripModelDelegate() override = default;
 
   // BrowserTabStripModelDelegate:

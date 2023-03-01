@@ -162,6 +162,15 @@ void SharedPinnedTabService::CacheWebContentsIfNeeded(
 void SharedPinnedTabService::Shutdown() {
   DCHECK(cached_shared_contentses_from_closing_browser_.empty())
       << " There're dangled web contentses";
+
+  profile_ = nullptr;
+  browsers_.clear();
+  last_active_browser_ = nullptr;
+  closing_browsers_.clear();
+  pinned_tab_data_.clear();
+  change_source_model_ = nullptr;
+  profile_observation_.Reset();
+  browser_list_observation_.Reset();
 }
 
 void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
@@ -617,7 +626,7 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
     return;
   }
 
-  // Add shared pinned tabs to |browser first.
+  // Add shared pinned tabs to |browser| first.
   LOCK_REENTRANCE(model);
 
   for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
