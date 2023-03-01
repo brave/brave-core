@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "Learn more",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Add to Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Remove from Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }
