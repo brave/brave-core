@@ -1,0 +1,50 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Schema types used by brave today feed.
+
+[generate_error_messages]
+namespace combined_feed {
+
+  // A dictionary with fields representing a feed item.
+  dictionary Item {
+    // A url for the item.
+    DOMString url;
+
+    // A string with a url for an image used for padding.
+    DOMString padded_img;
+
+    // The id code for the publisher.
+    DOMString publisher_id;
+
+    // The category the feed belongs to.
+    DOMString category;
+
+    // The title of the feed.
+    DOMString title;
+
+    // A description field for the feed item to be shown.
+    DOMString description;
+
+    // The name of the publisher of the item.
+    DOMString publisher_name;
+
+    // The score of the item. Should be logged when not present.
+    double? score;
+
+    // A publish date/time string in the format YYYY-MM-DD HH:MM:SS.
+    DOMString publish_time;
+
+    // The type of content of this feed.
+    DOMString content_type;
+
+    // An id for the creative instance.
+    DOMString? creative_instance_id;
+
+    // An offers category field.
+    DOMString? offers_category;
+  };
+
+};

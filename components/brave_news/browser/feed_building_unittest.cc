@@ -11,14 +11,15 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
+#include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/feed_building.h"
-#include "brave/components/brave_news/browser/feed_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -189,8 +190,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV1) {
 
   std::unordered_set<std::string> history_hosts = {"www.espn.com"};
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-  ParseFeedItems(GetFeedJson(), &feed_items);
+  std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());
 
   mojom::Feed feed;
 
@@ -233,8 +233,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeedV2) {
 
   std::unordered_set<std::string> history_hosts = {"www.espn.com"};
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-  ParseFeedItems(GetFeedJson(), &feed_items);
+  std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());
 
   mojom::Feed feed;
 
@@ -465,11 +464,9 @@ TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
 
   std::unordered_set<std::string> history_hosts = {"www.espn.com"};
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-
   // Parse the feed items twice so we get two copies of everything.
-  ParseFeedItems(GetFeedJson(), &feed_items);
-  ParseFeedItems(GetFeedJson(), &feed_items);
+  std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());
+  base::Extend(feed_items, ParseFeedItems(GetFeedJson()));
 
   mojom::Feed feed;
 

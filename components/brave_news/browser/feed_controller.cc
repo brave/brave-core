@@ -23,9 +23,9 @@
 #include "base/strings/string_util.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
+#include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_building.h"
-#include "brave/components/brave_news/browser/feed_parsing.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
@@ -355,9 +355,8 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
                 // Only mark cache time of remote request if
                 // parsing was successful
                 controller->locale_feed_etags_[locale] = etag;
-                FeedItems feed_items;
-                ParseFeedItems(api_request_result.value_body(), &feed_items);
-                std::move(callback).Run(std::move(feed_items));
+                std::move(callback).Run(
+                    ParseFeedItems(api_request_result.value_body()));
               },
               base::Unretained(controller), locale, locales_fetched_callback);
           // Send the request

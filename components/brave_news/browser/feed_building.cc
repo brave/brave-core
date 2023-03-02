@@ -25,7 +25,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
-#include "brave/components/brave_news/browser/feed_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
