@@ -12,6 +12,7 @@ import { ViewType } from './component_types'
 type RootState = {
   hasError: boolean
   isSelectingRegion: boolean
+  expired: boolean
   connectionStatus: ConnectionState
   regions?: Region[]
   currentRegion?: Region
@@ -22,6 +23,7 @@ type RootState = {
 const defaultState: RootState = {
   hasError: false,
   isSelectingRegion: false,
+  expired: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: undefined,
   currentRegion: undefined,
@@ -141,6 +143,7 @@ reducer.on(Actions.resetConnectionState, (state): RootState => {
 reducer.on(Actions.showMainView, (state, payload): RootState => {
   return {
     ...state,
+    expired: payload.expired,
     currentRegion: payload.currentRegion,
     regions: payload.regions,
     connectionStatus: payload.connectionStatus,

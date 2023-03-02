@@ -23,6 +23,7 @@ export type showMainViewPayload = {
   currentRegion: Region
   regions: Region[]
   connectionStatus: ConnectionState
+  expired: boolean
 }
 
 export type initializedPayload = {
@@ -38,6 +39,7 @@ export const disconnect = createAction('disconnect')
 export const connectionFailed = createAction('connectionFailed')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
+export const purchaseExpired = createAction('purchaseExpired')
 export const purchaseFailed = createAction('purchaseFailed')
 export const showSellView = createAction('showSellView')
 export const showLoadingView = createAction('showLoadingView')

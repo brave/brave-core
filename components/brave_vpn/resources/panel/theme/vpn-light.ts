@@ -13,7 +13,7 @@ const vpnLightTheme: ITheme & IThemeVPN = {
   color: {
     ...defaultTheme.color,
     panelBackground: 'linear-gradient(180deg, #FFFFFF 58.56%, #F8F8FF 100%)',
-    warningBackground: '##FFFCF0'
+    warningBackground: '#FFFCF0'
   }
 }
 

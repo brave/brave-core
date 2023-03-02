@@ -101,6 +101,7 @@ enum PurchasedState {
   PURCHASED,
   INVALID,
   LOADING,
+  SESSION_EXPIRED,
   FAILED,
 };
 

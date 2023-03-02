@@ -57,7 +57,22 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
     currentRegion,
     regions,
     connectionStatus: ((state === ConnectionState.CONNECT_FAILED)
-    ? ConnectionState.DISCONNECTED : state) /* Treat connection failure on startup as disconnected */
+    ? ConnectionState.DISCONNECTED : state), /* Treat connection failure on startup as disconnected */
+    expired: false
+  }))
+})
+
+handler.on(Actions.purchaseExpired.getType(), async (store) => {
+  const [{ currentRegion }, { regions }] = await Promise.all([
+    getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
+    getPanelBrowserAPI().serviceHandler.getAllRegions()
+  ])
+
+  store.dispatch(Actions.showMainView({
+    currentRegion,
+    regions,
+    connectionStatus: ConnectionState.DISCONNECTED,
+    expired: true
   }))
 })
 
@@ -81,6 +96,10 @@ handler.on(Actions.initialize.getType(), async (store) => {
 
   if (state === PurchasedState.PURCHASED) {
     store.dispatch(Actions.purchaseConfirmed())
+  }
+
+  if (state === PurchasedState.SESSION_EXPIRED) {
+    store.dispatch(Actions.purchaseExpired())
   }
 
   if (state === PurchasedState.LOADING) {

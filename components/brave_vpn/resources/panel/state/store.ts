@@ -29,6 +29,9 @@ const observer = {
       case PurchasedState.PURCHASED:
         store.dispatch(Actions.purchaseConfirmed())
         break
+      case PurchasedState.SESSION_EXPIRED:
+        store.dispatch(Actions.purchaseExpired())
+        break
       case PurchasedState.FAILED:
         store.dispatch(Actions.purchaseFailed())
         break
