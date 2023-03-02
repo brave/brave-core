@@ -18,7 +18,80 @@
 
 #if defined(USE_AURA)
 #include "ui/views/view_constants_aura.h"
+#include "ui/views/view_utils.h"
+#else
+#include "chrome/browser/ui/browser_list.h"
 #endif
+
+namespace {
+
+class VerticalTabStripRootView : public views::internal::RootView {
+ public:
+  METADATA_HEADER(VerticalTabStripRootView);
+
+  using RootView::RootView;
+  ~VerticalTabStripRootView() override = default;
+
+  // views::internal::RootView:
+  bool OnMousePressed(const ui::MouseEvent& event) override {
+#if defined(USE_AURA)
+    const bool result = RootView::OnMousePressed(event);
+    auto* focus_manager = GetFocusManager();
+    DCHECK(focus_manager);
+
+    // When vertical tab strip area is clicked, shortcut handling process
+    // could get broken on Windows. There are 2 paths where shortcut is handled.
+    // One is BrowserView::AcceleratorPressed(), and the other is
+    // BrowserView::PreHandleKeyboardEvent(). When web view has focus, the
+    // first doesn't deal with it and the latter is responsible for the
+    // shortcuts. when users click the vertical tab strip area with web view
+    // focused, both path don't handle it. This is because focused view state of
+    // views/ framework and focused native window state of Aura is out of sync.
+    // So as a workaround, resets the focused view state so that shortcuts can
+    // be handled properly. This shouldn't change the actually focused view, and
+    // is just reset the status.
+    // https://github.com/brave/brave-browser/issues/28090
+    // https://github.com/brave/brave-browser/issues/27812
+    if (auto* focused_view = focus_manager->GetFocusedView();
+        focused_view && views::IsViewClass<views::WebView>(focused_view)) {
+      focus_manager->ClearFocus();
+      focus_manager->RestoreFocusedView();
+    }
+
+    return result;
+#else
+    // On Mac, Last active browser of BrowserList is not updated in this case.
+    // So update it manually.
+    auto* widget = GetWidget();
+    DCHECK(widget);
+    widget = widget->GetTopLevelWidget();
+
+    auto* browser_view =
+        BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow());
+    DCHECK(browser_view);
+
+    BrowserList::SetLastActive(browser_view->browser());
+
+    return RootView::OnMousePressed(event);
+#endif
+  }
+};
+
+BEGIN_METADATA(VerticalTabStripRootView, views::internal::RootView)
+END_METADATA
+
+class VerticalTabStripWidget : public ThemeCopyingWidget {
+ public:
+  using ThemeCopyingWidget::ThemeCopyingWidget;
+  ~VerticalTabStripWidget() override = default;
+
+  // ThemeCopyingWidget:
+  views::internal::RootView* CreateRootView() override {
+    return new VerticalTabStripRootView(this);
+  }
+};
+
+}  // namespace
 
 // static
 VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
@@ -37,7 +110,8 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   // not get focus.
   params.activatable = views::Widget::InitParams::Activatable::kNo;
 
-  auto widget = std::make_unique<ThemeCopyingWidget>(browser_view->GetWidget());
+  auto widget =
+      std::make_unique<VerticalTabStripWidget>(browser_view->GetWidget());
   widget->Init(std::move(params));
 #if defined(USE_AURA)
   widget->GetNativeView()->SetProperty(views::kHostViewKey, host_view);
