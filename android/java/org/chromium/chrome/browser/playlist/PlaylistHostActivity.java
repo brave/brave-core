@@ -18,6 +18,7 @@ import com.brave.playlist.enums.PlaylistOptions;
 import com.brave.playlist.fragment.AllPlaylistFragment;
 import com.brave.playlist.fragment.PlaylistFragment;
 import com.brave.playlist.listener.PlaylistOptionsListener;
+import com.brave.playlist.model.CreatePlaylistModel;
 import com.brave.playlist.model.DownloadProgressModel;
 import com.brave.playlist.model.MoveOrCopyModel;
 import com.brave.playlist.model.PlaylistEventModel;
@@ -25,6 +26,7 @@ import com.brave.playlist.model.PlaylistItemModel;
 import com.brave.playlist.model.PlaylistItemOptionModel;
 import com.brave.playlist.model.PlaylistModel;
 import com.brave.playlist.model.PlaylistOptionsModel;
+import com.brave.playlist.util.Utils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -93,21 +95,27 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         mPlaylistViewModel =
                 new ViewModelProvider(PlaylistHostActivity.this).get(PlaylistViewModel.class);
 
-        mPlaylistViewModel.getCreatePlaylistOption().observe(PlaylistHostActivity.this, newName -> {
-            if (mPlaylistService != null) {
-                Playlist playlist = new Playlist();
-                playlist.name = newName;
-                playlist.items = new PlaylistItem[0];
-                Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
-                mPlaylistService.createPlaylist(playlist,
-                        createdPlaylist
-                        -> {
-                                // mPlaylistService.setDefaultPlaylistId(createdPlaylist.id);
+        mPlaylistViewModel.getCreatePlaylistOption().observe(
+                PlaylistHostActivity.this, createPlaylistModel -> {
+                    if (mPlaylistService != null) {
+                        Playlist playlist = new Playlist();
+                        playlist.name = createPlaylistModel.getNewPlaylistId();
+                        playlist.items = new PlaylistItem[0];
+                        Log.e(PlaylistUtils.TAG, "Name : " + playlist.name);
+                        mPlaylistService.createPlaylist(playlist, createdPlaylist -> {
+                            // mPlaylistService.setDefaultPlaylistId(createdPlaylist.id);
+                            if (createPlaylistModel.isMoveOrCopy()) {
+                                MoveOrCopyModel tempMoveOrCopyModel = Utils.moveOrCopyModel;
+                                Utils.moveOrCopyModel = new MoveOrCopyModel(
+                                        tempMoveOrCopyModel.getPlaylistOptions(),
+                                        createdPlaylist.id, tempMoveOrCopyModel.getItems());
+                                mPlaylistViewModel.performMoveOrCopy(Utils.moveOrCopyModel);
+                            }
                         });
-                Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
-                loadAllPlaylists();
-            }
-        });
+                        Log.e(PlaylistUtils.TAG, "after Name : " + playlist.name);
+                        loadAllPlaylists();
+                    }
+                });
 
         mPlaylistViewModel.getRenamePlaylistOption().observe(
                 PlaylistHostActivity.this, renamePlaylistModel -> {
