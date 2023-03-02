@@ -218,8 +218,8 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
     /** Adjust the "Learn More" link. */
     private void adjustLearnMore() {
-        final String subtitleText =
-                getContext().getResources().getString(R.string.new_tab_otr_subtitle);
+        final String subtitleText = getContext().getResources().getString(
+                R.string.new_tab_otr_subtitle_with_reading_list);
         boolean learnMoreInSubtitle = mWidthDp > WIDE_LAYOUT_THRESHOLD_DP;
 
         if (!learnMoreInSubtitle) {
