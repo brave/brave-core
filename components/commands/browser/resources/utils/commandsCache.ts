@@ -62,4 +62,8 @@ export class CommandsCache
   reset(commandId: number) {
     this.controller.resetAcceleratorsForCommand(commandId)
   }
+
+  resetAll() {
+    this.controller.resetAccelerators();
+  }
 }

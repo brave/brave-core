@@ -10,18 +10,20 @@ import Keys from './Keys'
 import ConfigureShortcut from './ConfigureShortcut'
 import { commandsCache } from '../commands'
 import { stringToKeys } from '../utils/accelerator'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { color, spacing } from '@brave/leo/tokens/css'
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 200px auto min-content min-content;
-  gap: 16px;
+  column-gap: ${spacing[16]};
   align-items: center;
-  padding: 4px;
-  min-height: 32px;
+  padding: ${spacing[16]};
+  min-height: 68px;
 
-  &:hover {
-    background-color: lightgray;
-  }
+  border-top: 1px solid ${color.divider.subtle};
+  border-bottom: 1px solid ${color.divider.subtle};
 `
 
 const Column = styled.div`
@@ -30,11 +32,19 @@ const Column = styled.div`
   gap: 4px;
 `
 
+const RemoveButton = styled(Button)`
+  visibility: hidden;
+`
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 4px;
+
+  &:hover ${RemoveButton} {
+    visibility: visible;
+  }
 `
 
 function Accelerator({
@@ -44,14 +54,19 @@ function Accelerator({
   commandId: number
   accelerator: CommandsMojo.Accelerator
 }) {
+  console.log(stringToKeys(accelerator.codes))
   return (
     <Row>
       <Keys keys={stringToKeys(accelerator.keys)} />
-      <button
-        onClick={() => commandsCache.unassignAccelerator(commandId, accelerator.codes)}
+      <RemoveButton
+        size="small"
+        kind="plain-faint"
+        onClick={() =>
+          commandsCache.unassignAccelerator(commandId, accelerator.codes)
+        }
       >
-        -
-      </button>
+        <Icon name="trash" />
+      </RemoveButton>
     </Row>
   )
 }
@@ -71,10 +86,23 @@ export default function Command({
           <Accelerator key={i} commandId={command.id} accelerator={a} />
         ))}
       </Column>
-      <button disabled={adding} onClick={() => setAdding(true)}>
+      {command.modified && (
+        <Button
+          size="small"
+          kind="plain-faint"
+          onClick={() => commandsCache.reset(command.id)}
+        >
+          Reset
+        </Button>
+      )}
+      <Button
+        size="small"
+        kind="plain"
+        disabled={adding}
+        onClick={() => setAdding(true)}
+      >
         Add
-      </button>
-      <button onClick={() => commandsCache.reset(command.id)}>Reset</button>
+      </Button>
       {adding && (
         <ConfigureShortcut
           onChange={(info) => {

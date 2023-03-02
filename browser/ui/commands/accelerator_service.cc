@@ -29,10 +29,13 @@ namespace {
 
 mojom::CommandPtr ToMojoCommand(
     int command_id,
-    const std::vector<ui::Accelerator>& accelerators) {
+    const std::vector<ui::Accelerator>& accelerators,
+    const std::vector<ui::Accelerator>& default_accelerators) {
   auto command = mojom::Command::New();
   command->id = command_id;
   command->name = std::string(commands::GetCommandName(command_id));
+  command->modified = accelerators != default_accelerators;
+
   for (const auto& accelerator : accelerators) {
     auto a = mojom::Accelerator::New();
     a->codes = commands::ToCodesString(accelerator);
@@ -43,10 +46,15 @@ mojom::CommandPtr ToMojoCommand(
 }
 
 base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
-    const base::flat_map<int, std::vector<ui::Accelerator>>& commands) {
+    const Accelerators& commands,
+    const Accelerators& default_commands) {
   base::flat_map<int, mojom::CommandPtr> result;
   for (const auto& [command_id, accelerators] : commands) {
-    result[command_id] = ToMojoCommand(command_id, accelerators);
+    auto it = default_commands.find(command_id);
+    result[command_id] = ToMojoCommand(command_id, accelerators,
+                                       it == default_commands.end()
+                                           ? std::vector<ui::Accelerator>()
+                                           : it->second);
   }
   return result;
 }
@@ -172,11 +180,27 @@ void AcceleratorService::ResetAcceleratorsForCommand(int command_id) {
   NotifyCommandsChanged(modified_commands);
 }
 
+void AcceleratorService::ResetAccelerators() {
+  accelerators_ = default_accelerators_;
+
+  std::vector<int> commands;
+  for (const auto command : GetCommands()) {
+    pref_manager_.ClearAccelerators(command);
+    commands.push_back(command);
+
+    // Make sure we add all the accelerators back.
+    for (const auto& accelerator : accelerators_[command]) {
+      pref_manager_.AddAccelerator(command, accelerator);
+    }
+  }
+  NotifyCommandsChanged(commands);
+}
+
 void AcceleratorService::AddCommandsListener(
     mojo::PendingRemote<mojom::CommandsListener> listener) {
   auto id = mojo_listeners_.Add(std::move(listener));
   auto event = mojom::CommandsEvent::New();
-  event->addedOrUpdated = ToMojoCommands(accelerators_);
+  event->addedOrUpdated = ToMojoCommands(accelerators_, default_accelerators_);
   mojo_listeners_.Get(id)->Changed(std::move(event));
 }
 
@@ -232,8 +256,11 @@ void AcceleratorService::NotifyCommandsChanged(
 
   for (const auto& command_id : modified_ids) {
     const auto& changed_command = accelerators_[command_id];
-    event->addedOrUpdated[command_id] =
-        ToMojoCommand(command_id, changed_command);
+    auto it = default_accelerators_.find(command_id);
+    event->addedOrUpdated[command_id] = ToMojoCommand(
+        command_id, changed_command,
+        it == default_accelerators_.end() ? std::vector<ui::Accelerator>()
+                                          : it->second);
     changed[command_id] = changed_command;
   }
 

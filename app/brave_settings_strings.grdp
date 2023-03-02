@@ -383,6 +383,10 @@
     Filter lists
   </message>
 
+  <message name="IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE" desc="The text lable for the shortcuts settings page">
+    Shortcuts
+  </message>
+
   <!-- Settings / Brave Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
     Brave Rewards

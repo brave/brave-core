@@ -6,18 +6,68 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Keys from './Keys'
 import { keysToString, stringToKeys } from '../utils/accelerator'
+import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css'
+import Button from '@brave/leo/react/button'
+import { useCommands } from '../commands'
+
+const Dialog = styled.dialog`
+  border: none;
+  border-radius: ${radius[16]};
+
+  ::backdrop {
+    backdrop-filter: blur(2px);
+  }
+`
 
 const Container = styled.div`
-  background: gray;
-  border-radius: 50px;
-  width: 200px;
-  height: 200px;
+  background: ${color.white};
+  width: 420px;
+  min-height: 252px;
   margin: auto;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+
+  box-shadow: ${effect.elevation[5]};
+`
+
+const KeysContainer = styled.div`
+  align-self: stretch;
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: ${spacing[8]};
+  margin-top: ${spacing[32]};
+`
+
+const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  gap: ${spacing[8]};
+  margin: 0 ${spacing[24]} ${spacing[32]} ${spacing[24]};
+
+  > * {
+    flex: 1;
+  }
+`
+
+const HintText = styled.div`
+  text-align: center;
+  margin: ${spacing[40]};
+  color: ${color.text.tertiary};
+  font: ${font.desktop.primary.default.regular};
+`
+
+// TODO(fallaciousreasoning): Use the Leo Alert component instead of the div
+// once this PR lands https://github.com/brave/leo/pull/241
+const InUseAlert = styled('div')`
+  margin: ${spacing[24]};
 `
 
 const modifiers = ['Control', 'Alt', 'Shift', 'Meta']
@@ -27,13 +77,30 @@ class AcceleratorInfo {
   keys: string[] = []
 
   add(e: KeyboardEvent) {
-    if (modifiers.includes(e.key)) {
-      this.codes.push(e.key)
-    } else {
-      this.codes.push(e.code)
+    if (e.ctrlKey) {
+      this.codes.push('Control')
+      this.keys.push('Control')
+    }
+    if (e.altKey) {
+      this.codes.push('Alt')
+      this.keys.push('Alt')
     }
 
-    this.keys.push(e.key)
+    if (e.shiftKey) {
+      this.codes.push('Shift')
+      this.keys.push('Shift')
+    }
+
+    if (e.metaKey) {
+      this.codes.push('Meta')
+      this.keys.push('Meta')
+    }
+
+    if (!modifiers.includes(e.key)) {
+      this.codes.push(e.code)
+      this.keys.push(e.key)
+    }
+
     this.keys = Array.from(new Set(this.keys))
     this.codes = Array.from(new Set(this.codes))
   }
@@ -51,6 +118,12 @@ export default function ConfigureShortcut(props: {
 }) {
   const [, setCurrentKeys] = React.useState<string[]>([])
   const maxKeys = React.useRef<AcceleratorInfo>(new AcceleratorInfo())
+  const commands = useCommands()
+  const acceleratorLookup = React.useMemo(() => {
+    return Object.values(commands)
+      .flatMap((c) => c.accelerators.map((a) => [c.id, a.codes]))
+      .reduce((prev, next) => ({ ...prev, [next[1]]: next[0] }), {})
+  }, [commands])
 
   React.useEffect(() => {
     const onDown = (e: KeyboardEvent) => {
@@ -89,14 +162,43 @@ export default function ConfigureShortcut(props: {
   React.useEffect(() => {
     dialogRef.current?.showModal()
   }, [])
+
+  const conflict = acceleratorLookup[maxKeys.current.codes.join('+')]
   return (
-    <dialog ref={dialogRef as any}>
+    <Dialog ref={dialogRef as any}>
       <Container>
-        <div>
-          <Keys keys={keys} />
-        </div>
-        <div>
-          <button
+        <KeysContainer>
+          {keys.length ? (
+            <Keys keys={keys} large />
+          ) : (
+            <HintText>
+              Create a new shortcut. Press the desired keys to create a new
+              binding
+            </HintText>
+          )}
+        </KeysContainer>
+        {conflict && (
+          <InUseAlert>
+            This combination is being used for{' '}
+            <b>"{commands[conflict].name}"</b>. Saving will override that
+            shortcut.
+          </InUseAlert>
+        )}
+        <ActionsContainer>
+          <Button
+            size="large"
+            kind="plain-faint"
+            onClick={() => {
+              setCurrentKeys([])
+              maxKeys.current = new AcceleratorInfo()
+              props.onCancel?.()
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="large"
+            kind="filled"
             disabled={!maxKeys.current.isValid()}
             onClick={() => {
               props.onChange({
@@ -105,19 +207,10 @@ export default function ConfigureShortcut(props: {
               })
             }}
           >
-            Accept
-          </button>
-          <button
-            onClick={() => {
-              setCurrentKeys([])
-              maxKeys.current = new AcceleratorInfo()
-              props.onCancel?.()
-            }}
-          >
-            Cancel
-          </button>
-        </div>
+            Save
+          </Button>
+        </ActionsContainer>
       </Container>
-    </dialog>
+    </Dialog>
   )
 }

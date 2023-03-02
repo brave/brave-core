@@ -111,6 +111,7 @@ brave_settings_non_web_component_files = [
   "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
+  "shortcuts_page/shortcuts_page.ts",
 ]
 
 if (enable_pin_shortcut) {

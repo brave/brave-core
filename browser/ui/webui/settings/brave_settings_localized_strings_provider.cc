@@ -674,6 +674,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"siteSettingsCookieSubpage", IDS_SETTINGS_SITE_SETTINGS_COOKIE_SUBPAGE},
     {"siteSettingsCookieRemoveAll",
      IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL},
+
+    {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
   };
 
   html_source->AddLocalizedStrings(localized_strings);

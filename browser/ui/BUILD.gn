@@ -53,8 +53,6 @@ source_set("ui") {
   # It doesn't make sense to view accelerators on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
-      "webui/commands_ui.cc",
-      "webui/commands_ui.h",
       "webui/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter_ui.h",
     ]

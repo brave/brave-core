@@ -48,6 +48,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void UnassignAcceleratorFromCommand(int command_id,
                                       const std::string& accelerator) override;
   void ResetAcceleratorsForCommand(int command_id) override;
+  void ResetAccelerators() override;
+
   void AddCommandsListener(
       mojo::PendingRemote<mojom::CommandsListener> listener) override;
   void AddObserver(Observer* observer);

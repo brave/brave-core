@@ -11,6 +11,10 @@
 
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#include "brave/components/commands/common/commands.mojom.h"
+#endif
+
 namespace content {
 class WebUIDataSource;
 }
@@ -30,6 +34,11 @@ class BraveSettingsUI : public settings::SettingsUI {
   static bool& ShouldDisableCSPForTesting();
 
   static bool& ShouldExposeElementsForTesting();
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  void BindInterface(
+      mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
+#endif
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
