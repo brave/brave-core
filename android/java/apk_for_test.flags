@@ -210,6 +210,10 @@
     *** addOrEditBookmark(...);
 }
 
+-keep class org.chromium.chrome.browser.preferences.ChromePreferenceKeyChecker {
+    *** getInstance(...);
+}
+
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarManager {
     public <init>(...);
 }
