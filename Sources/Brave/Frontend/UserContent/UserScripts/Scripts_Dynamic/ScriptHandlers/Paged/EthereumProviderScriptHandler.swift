@@ -99,13 +99,16 @@ class EthereumProviderScriptHandler: TabContentScript {
       firstAllowedAccount: String,
       updateJSProperties: Bool
     ) {
-      if reject {
-        replyHandler(nil, formedResponse.jsonString)
-      } else {
-        replyHandler(formedResponse.jsonObject, nil)
-      }
-      if updateJSProperties {
-        tab.updateEthereumProperties()
+      Task {
+        if updateJSProperties {
+          await tab.updateEthereumProperties()
+        }
+        
+        if reject {
+          replyHandler(nil, formedResponse.jsonString)
+        } else {
+          replyHandler(formedResponse.jsonObject, nil)
+        }
       }
     }
     

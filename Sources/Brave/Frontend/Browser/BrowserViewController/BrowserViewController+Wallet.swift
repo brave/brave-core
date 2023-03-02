@@ -395,7 +395,7 @@ extension Tab: BraveWalletEventsListener {
       // Ethereum properties have been updated correctly, however, dapp is not updated unless there is a reload
       // We keep the same as Metamask, that, we will reload tab on chain changes.
       emitEthereumEvent(.ethereumChainChanged(chainId: chainId))
-      updateEthereumProperties()
+      await updateEthereumProperties()
       reload()
     }
   }
@@ -409,56 +409,58 @@ extension Tab: BraveWalletEventsListener {
     // emitting the new account, we're seeing correct account change behaviour
     emitEthereumEvent(.ethereumAccountsChanged(accounts: []))
     emitEthereumEvent(.ethereumAccountsChanged(accounts: accounts))
-    updateEthereumProperties()
+    
+    Task {
+      await updateEthereumProperties()
+    }
   }
   
-  func updateEthereumProperties() {
+  @MainActor
+  func updateEthereumProperties() async {
     guard !isPrivate,
           let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
           let walletService = BraveWallet.ServiceFactory.get(privateMode: false),
           Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue else {
       return
     }
-    Task { @MainActor in
-      // Turn an optional value into a string (or quoted string in case of the value being a string) or
-      // return `undefined`
-      func valueOrUndefined<T>(_ value: T?) -> String {
-        switch value {
-        case .some(let string as String):
-          return "\"\(string)\""
-        case .some(let value):
-          return "\(value)"
-        case .none:
-          return "undefined"
-        }
+    
+    // Turn an optional value into a string (or quoted string in case of the value being a string) or
+    // return `undefined`
+    func valueOrUndefined<T>(_ value: T?) -> String {
+      switch value {
+      case .some(let string as String):
+        return "\"\(string)\""
+      case .some(let value):
+        return "\(value)"
+      case .none:
+        return "undefined"
       }
-      guard let webView = webView, let provider = walletEthProvider else {
-        return
-      }
-      let chainId = await provider.chainId()
-      webView.evaluateSafeJavaScript(
-        functionName: "window.ethereum.chainId = \"\(chainId)\"",
-        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
-        asFunction: false,
-        completion: nil
-      )
-      let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
-      webView.evaluateSafeJavaScript(
-        functionName: "window.ethereum.networkVersion = \(networkVersion)",
-        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
-        asFunction: false,
-        completion: nil
-      )
-      let coin = await walletService.selectedCoin()
-      let accounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
-      let selectedAccount = valueOrUndefined(await allowedAccounts(coin, accounts: accounts).1.first)
-      webView.evaluateSafeJavaScript(
-        functionName: "window.ethereum.selectedAddress = \(selectedAccount)",
-        contentWorld: EthereumProviderScriptHandler.scriptSandbox,
-        asFunction: false,
-        completion: nil
-      )
     }
+    guard let webView = webView, let provider = walletEthProvider else {
+      return
+    }
+    
+    let chainId = await provider.chainId()
+    await webView.evaluateSafeJavaScript(
+      functionName: "window.ethereum.chainId = \"\(chainId)\"",
+      contentWorld: EthereumProviderScriptHandler.scriptSandbox,
+      asFunction: false
+    )
+    
+    let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
+    await webView.evaluateSafeJavaScript(
+      functionName: "window.ethereum.networkVersion = \(networkVersion)",
+      contentWorld: EthereumProviderScriptHandler.scriptSandbox,
+      asFunction: false
+    )
+    
+    let coin = await walletService.selectedCoin()
+    let accounts = await keyringService.keyringInfo(coin.keyringId).accountInfos.map(\.address)
+    let selectedAccount = valueOrUndefined(await self.allowedAccounts(coin, accounts: accounts).1.first)
+    await webView.evaluateSafeJavaScript(
+      functionName: "window.ethereum.selectedAddress = \(selectedAccount)",
+      contentWorld: EthereumProviderScriptHandler.scriptSandbox,
+      asFunction: false)
   }
   
   func messageEvent(_ subscriptionId: String, result: MojoBase.Value) {

@@ -636,10 +636,12 @@ extension BrowserViewController: WKNavigationDelegate {
           isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing
         )
       }
-      tab.updateEthereumProperties()
+      
       Task {
+        await tab.updateEthereumProperties()
         await tab.updateSolanaProperties()
       }
+      
       tab.reportPageLoad(to: rewards, redirectionURLs: tab.redirectURLs)
       tab.redirectURLs = []
       if webView.url?.isLocal == false {
