@@ -17,6 +17,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "components/schema_org/common/metadata.mojom.h"
 #include "url/gurl.h"
 
 using ads::mojom::ConversionInfo;

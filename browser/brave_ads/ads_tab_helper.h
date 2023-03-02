@@ -17,7 +17,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_list_observer.h"  // IWYU pragma: keep
 #endif
 
 class Browser;
