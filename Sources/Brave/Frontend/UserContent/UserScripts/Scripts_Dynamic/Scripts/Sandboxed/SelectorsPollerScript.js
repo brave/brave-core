@@ -151,33 +151,45 @@ window.__firefox__.execute(function($) {
     return false
   }
   
+  const makeStyleSheet = () => {
+    const style = document.createElement('style')
+    style.setAttribute('type', 'text/css')
+    document.head.appendChild(style)
+    return style
+  }
+  
   /// Create the style sheet if it isn't already created
   /// We do this in iOS here because we can't initialize a style sheet
   const ensureStyleSheet = () => {
     if (CC.cosmeticStyleSheet === undefined) {
-      const style = document.createElement('style')
-      style.setAttribute('type', 'text/css')
-      document.head.appendChild(style)
-      CC.cosmeticStyleSheet = style.sheet
+      const style = makeStyleSheet()
+      CC.cosmeticStyleSheet = style
+    }
+  }
+  
+  const insertRule = (rule) => {
+    let nextIndex = CC.cosmeticStyleSheet.sheet.cssRules.length
+    
+    try {
+      CC.cosmeticStyleSheet.sheet.insertRule(rule, nextIndex)
+      
+      if (!CC.hide1pContent) {
+        CC.allSelectorsToRules.set(selector, nextIndex)
+        CC.firstRunQueue.add(selector)
+      }
+    } catch (error) {
+      console.error(`Inserting rule: ${rule} failed: ${error}`)
     }
   }
   
   /// Takes selectors and adds them to the style sheet
   const processSelectors = (selectors) => {
     ensureStyleSheet()
-    let nextIndex = CC.cosmeticStyleSheet.rules.length
-
+    
     selectors.forEach(selector => {
       if ((typeof selector === 'string') && (CC.hide1pContent || !CC.allSelectorsToRules.has(selector))) {
         const rule = selector + '{display:none !important;}'
-        CC.cosmeticStyleSheet.insertRule(rule, nextIndex)
-        
-        if (!CC.hide1pContent) {
-          CC.allSelectorsToRules.set(selector, nextIndex)
-          CC.firstRunQueue.add(selector)
-        }
-        
-        nextIndex++
+        insertRule(rule)
       }
     })
   }
@@ -185,19 +197,11 @@ window.__firefox__.execute(function($) {
   /// Takes selectors and adds them to the style sheet
   const processStyleSelectors = (styleSelectors) => {
     ensureStyleSheet()
-    let nextIndex = CC.cosmeticStyleSheet.rules.length
 
     styleSelectors.forEach(entry => {
       if (CC.hide1pContent || !CC.allSelectorsToRules.has(entry.selector)) {
-        let rule = entry.selector + '{' + entry.rules.join() + '}'
-        CC.cosmeticStyleSheet.insertRule(rule, nextIndex)
-        
-        if (!CC.hide1pContent) {
-          CC.allSelectorsToRules.set(selector, nextIndex)
-          CC.firstRunQueue.add(selector)
-        }
-        
-        nextIndex++
+        let rule = entry.selector + '{' + entry.rules.join(';') + ';}'
+        insertRule(rule)
       }
     })
   }
