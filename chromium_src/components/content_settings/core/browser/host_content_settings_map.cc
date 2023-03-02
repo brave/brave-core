@@ -6,6 +6,7 @@
 #include "base/containers/contains.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/features.h"
 
 #if !BUILDFLAG(IS_IOS)
@@ -29,6 +30,7 @@ bool IsMorePermissive_BraveImpl(ContentSettingsType content_type,
       ContentSettingsType::NOTIFICATIONS,
       ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
       ContentSettingsType::IDLE_DETECTION,
+      ContentSettingsType::BRAVE_HTTPS_UPGRADE,
   };
 
   const bool is_more_permissive = IsMorePermissive(setting, initial_setting);

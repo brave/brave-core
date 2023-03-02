@@ -229,3 +229,73 @@ IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest_FlagDisabled, CheckUpgrades) {
     }
   }
 }
+
+IN_PROC_BROWSER_TEST_F(HttpsUpgradeBrowserTest, IsolateSettings) {
+  // Test host URLs.
+  GURL host1("https://example1.test");
+  GURL host2("https://example2.test");
+
+  // Test profiles
+  Profile* normal_profile = chrome_test_utils::GetProfile(this);
+  Profile* incognito_profile = normal_profile->GetOffTheRecordProfile(
+      Profile::OTRProfileID::PrimaryID(), /*create_if_needed=*/true);
+
+  auto* normal_map =
+      HostContentSettingsMapFactory::GetForProfile(normal_profile);
+  auto* incognito_map =
+      HostContentSettingsMapFactory::GetForProfile(incognito_profile);
+
+  // Disable upgrades for a site.
+  brave_shields::SetHttpsUpgradeControlType(normal_map, ControlType::ALLOW,
+                                            host1);
+  brave_shields::SetHttpsUpgradeControlType(incognito_map, ControlType::ALLOW,
+                                            host2);
+
+  // Disabled upgrade per-site in normal windows should not apply to incognito
+  // windows, nor vice versa.
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, host1));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, host1));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, host2));
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, host2));
+
+  // Set strict per-site settings.
+  brave_shields::SetHttpsUpgradeControlType(normal_map, ControlType::BLOCK,
+                                            host1);
+  brave_shields::SetHttpsUpgradeControlType(incognito_map, ControlType::BLOCK,
+                                            host2);
+
+  // A strict per-site setting in normal windows does apply to incognito
+  // windows, but not vice versa.
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, host1));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, host1));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, host2));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, host2));
+
+  // Set global setting to strict.
+  brave_shields::SetHttpsUpgradeControlType(normal_map, ControlType::BLOCK,
+                                            GURL());
+
+  // Strict global upgrades should apply to both normal and incognito windows.
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, GURL()));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, GURL()));
+
+  // Set global setting to disabled.
+  brave_shields::SetHttpsUpgradeControlType(normal_map, ControlType::ALLOW,
+                                            GURL());
+
+  // Disabled global upgrades should apply to normal windows but not incognito.
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetHttpsUpgradeControlType(normal_map, GURL()));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetHttpsUpgradeControlType(incognito_map, GURL()));
+}
