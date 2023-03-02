@@ -85,8 +85,12 @@ struct IPFSCustomGatewayView: View {
       )
     }
     .onAppear {
-      if let url = ipfsAPI.nftIpfsGateway?.absoluteString {
-        self.url = url
+      // SwiftUI bug, has to wait a bit (#7044: bug only exists
+      // in iOS 15. Will revisit once iOS 15 support is removed)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        if let url = ipfsAPI.nftIpfsGateway?.absoluteString {
+          self.url = url
+        }
       }
     }
   }
