@@ -2403,6 +2403,27 @@ export function createWalletApi (
           }
         }
       }),
+      getAddressByteCode: query<string, { address: string, coin: number, chainId: string }>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data
+            const { bytecode, error, errorMessage } = await jsonRpcService.getCode(arg.address, arg.coin, arg.chainId)
+            if (error !== 0 && errorMessage) {
+              return {
+                error: errorMessage
+              }
+            }
+            return {
+              data: bytecode
+            }
+          } catch (error) {
+            console.log(error)
+            return {
+              error: `Was unable to fetch bytecode for address: ${arg.address}.`
+            }
+          }
+        }
+      }),
       //
       // Transactions Fees
       //
@@ -2524,6 +2545,7 @@ export const {
   useCancelTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
+  useGetAddressByteCodeQuery,
   useGetAllNetworksQuery,
   useGetAllPendingTransactionsQuery,
   useGetAllTransactionsForAddressCoinTypeQuery,
@@ -2547,6 +2569,7 @@ export const {
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
+  useLazyGetAddressByteCodeQuery,
   useLazyGetAllNetworksQuery,
   useLazyGetAllPendingTransactionsQuery,
   useLazyGetAllTransactionsForAddressCoinTypeQuery,
