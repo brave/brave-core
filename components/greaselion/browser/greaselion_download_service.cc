@@ -272,7 +272,8 @@ void GreaselionDownloadService::LoadDirectlyFromResourcePath() {
                      weak_factory_.GetWeakPtr()));
 }
 
-void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
+void GreaselionDownloadService::OnDATFileDataReady(
+    const std::string& contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   rules_.clear();
   if (contents.empty()) {

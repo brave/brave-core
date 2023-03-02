@@ -15,7 +15,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension_id.h"
-#include "url/gurl.h"
 
 class GreaselionServiceTest;
 
@@ -53,7 +52,8 @@ class GreaselionService : public KeyedService,
   virtual void UpdateInstalledExtensions() = 0;
   virtual bool IsGreaselionExtension(const std::string& id) = 0;
   virtual std::vector<extensions::ExtensionId> GetExtensionIdsForTesting() = 0;
-  virtual bool ready() = 0;
+  virtual bool update_in_progress() = 0;
+  virtual bool rules_ready() = 0;
 
   // implementation of our own observers
   class Observer : public base::CheckedObserver {

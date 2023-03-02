@@ -320,6 +320,11 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
 #if BUILDFLAG(ENABLE_GREASELION)
   if (greaselion_service_) {
+    // Greaselion's rules may be ready before we register our observer, so check
+    // for that here
+    if (!greaselion_enabled_ && greaselion_service_->rules_ready()) {
+      OnRulesReady(greaselion_service_);
+    }
     greaselion_service_->AddObserver(this);
   }
 #endif
@@ -1375,7 +1380,7 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)
-void RewardsServiceImpl::EnableGreaseLion() {
+void RewardsServiceImpl::EnableGreaselion() {
   if (!greaselion_service_) {
     return;
   }
@@ -1401,11 +1406,13 @@ void RewardsServiceImpl::EnableGreaseLion() {
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
           show_buttons);
+
+  greaselion_enabled_ = true;
 }
 
 void RewardsServiceImpl::OnRulesReady(
     greaselion::GreaselionService* greaselion_service) {
-  EnableGreaseLion();
+  EnableGreaselion();
 }
 #endif
 
