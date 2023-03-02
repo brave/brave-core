@@ -77,7 +77,7 @@ index 120ed70af8385cda741cd1f34d21751c0873d0fd..6cfe5c04ac03735f235b3f3dd931a466
        case IdentityTokenCacheValue::CACHE_STATUS_REMOTE_CONSENT:
          RecordInteractivityMetrics(InteractionType::kConsent);
          ShowRemoteConsentDialog(resolution_data_);
-@@ -611,6 +645,35 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
+@@ -611,6 +645,36 @@ void IdentityGetAuthTokenFunction::OnRemoteConsentSuccess(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_INTERACTIVE);
  }
  
@@ -106,14 +106,15 @@ index 120ed70af8385cda741cd1f34d21751c0873d0fd..6cfe5c04ac03735f235b3f3dd931a466
 +      IsInteractionAllowed(interactivity_status_for_signin_)
 +          ? WebAuthFlow::INTERACTIVE
 +          : WebAuthFlow::SILENT,
-+      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW, extension()->name());
++      WebAuthFlow::LAUNCH_WEB_AUTH_FLOW);
++  web_auth_flow_->SetShouldShowInfoBar(extension()->name());
 +  web_auth_flow_->Start();
 +}
 +
  void IdentityGetAuthTokenFunction::OnRefreshTokenUpdatedForAccount(
      const CoreAccountInfo& account_info) {
    if (account_listening_mode_ != AccountListeningMode::kListeningTokens)
-@@ -761,6 +824,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
+@@ -761,6 +825,84 @@ void IdentityGetAuthTokenFunction::OnGaiaRemoteConsentFlowApproved(
    StartMintTokenFlow(IdentityMintRequestQueue::MINT_TYPE_NONINTERACTIVE);
  }
  
