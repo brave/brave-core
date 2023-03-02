@@ -4,6 +4,8 @@
 
 -keep class org.chromium.chrome.browser.BraveSyncInformers { *; }
 
+-keep class org.chromium.chrome.browser.preferences.BravePreferenceKeyChecker { *; }
+
 # Add methods for invocation below
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
     *** hideOverview(...);
