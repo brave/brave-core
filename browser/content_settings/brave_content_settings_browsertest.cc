@@ -51,6 +51,7 @@ class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
         ContentSettingsType::NOTIFICATIONS,
         ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
         ContentSettingsType::IDLE_DETECTION,
+        ContentSettingsType::BRAVE_HTTPS_UPGRADE,
     };
     if (base::Contains(kOffTheRecordAwareTypes, content_type)) {
       return current_setting;
