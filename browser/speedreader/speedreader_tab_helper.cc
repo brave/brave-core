@@ -66,19 +66,6 @@ std::u16string GetSpeedreaderData(
   return result + u"}\n\n";
 }
 
-std::u16string GetSpeedreaderData(
-    std::initializer_list<std::pair<base::StringPiece, int>> resources) {
-  std::u16string result = u"speedreaderData = {";
-  for (const auto& r : resources) {
-    auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
-    // Make sure that the text doesn't contain js injection
-    base::ReplaceChars(text, u"\"", u"\\\"", &text);
-    result += base::StrCat({base::UTF8ToUTF16(r.first), u": \"", text, u"\","});
-  }
-
-  return result + u"}\n\n";
-}
-
 constexpr const char* kPropertyPrefNames[] = {
     kSpeedreaderPrefTheme, kSpeedreaderPrefFontSize, kSpeedreaderPrefFontFamily,
     kSpeedreaderPrefContentStyle};
