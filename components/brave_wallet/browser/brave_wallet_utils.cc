@@ -1189,6 +1189,21 @@ absl::optional<std::string> GetChainId(PrefService* prefs,
   return absl::nullopt;
 }
 
+absl::optional<std::string> GetChainIdByNetworkId(
+    PrefService* prefs,
+    const mojom::CoinType& coin,
+    const std::string& network_id) {
+  if (network_id.empty()) {
+    return absl::nullopt;
+  }
+  for (const auto& network : GetAllChains(prefs, coin)) {
+    if (network_id == GetNetworkId(prefs, coin, network->chain_id)) {
+      return network->chain_id;
+    }
+  }
+  return absl::nullopt;
+}
+
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kDefaultEthereumWallet));

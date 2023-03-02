@@ -58,6 +58,8 @@ const char kBraveWalletLastTransactionSentTimeDict[] =
     "brave.wallet.last_transaction_sent_time_dict";
 const char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
+const char kBraveWalletTransactionsChainIdMigrated[] =
+    "brave.wallet.transactions.chain_id_migrated";
 
 // DEPRECATED
 const char kShowWalletTestNetworksDeprecated[] =

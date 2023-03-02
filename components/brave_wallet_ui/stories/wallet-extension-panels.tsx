@@ -88,6 +88,7 @@ export default {
 const transactionDummyData: AccountTransactions = {
   [mockUserAccounts[0].id]: [
     {
+      chainId: '',
       fromAddress: 'ETHEREUM ACCOUNT 1',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -123,6 +124,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -158,6 +160,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -193,6 +196,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -228,6 +232,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -265,6 +270,7 @@ const transactionDummyData: AccountTransactions = {
   ],
   [mockUserAccounts[1].id]: [
     {
+      chainId: '',
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -300,6 +306,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {

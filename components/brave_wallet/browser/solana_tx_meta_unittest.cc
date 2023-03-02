@@ -152,10 +152,12 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
   meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
+  meta.set_chain_id("0x66");
 
   base::Value::Dict value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
     {
+      "chain_id" : "0x66",
       "id": "meta_id",
       "status": 4,
       "from": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
