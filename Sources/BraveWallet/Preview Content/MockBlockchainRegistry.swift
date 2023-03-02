@@ -59,4 +59,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   func onRampCurrencies(_ completion: @escaping ([BraveWallet.OnRampCurrency]) -> Void) {
     completion([])
   }
+  
+  func sellTokens(_ provider: BraveWallet.OffRampProvider, chainId: String, completion: @escaping ([BraveWallet.BlockchainToken]) -> Void) {
+    completion([])
+  }
 }
