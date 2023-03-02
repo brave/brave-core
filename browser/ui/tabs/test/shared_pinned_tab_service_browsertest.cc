@@ -109,14 +109,19 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
       tab_strip_model_2->GetWebContentsAt(0)));
 
   // Test: Unpin the tab and see if it's synchronized
+  browser_1->window()->Show();
   tab_strip_model_1->SetTabPinned(0, /* pinned= */ false);
   EXPECT_FALSE(tab_strip_model_1->IsTabPinned(0));
-  EXPECT_FALSE(shared_pinned_tab_service->IsSharedContents(
-      tab_strip_model_1->GetWebContentsAt(0)));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return shared_pinned_tab_service->IsSharedContents(
+        tab_strip_model_1->GetWebContentsAt(0));
+  }));
   EXPECT_FALSE(shared_pinned_tab_service->IsDummyContents(
       tab_strip_model_1->GetWebContentsAt(0)));
 
-  EXPECT_EQ(1, tab_strip_model_2->count());
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() == 1; }));
+
   EXPECT_FALSE(tab_strip_model_2->IsTabPinned(0));
   EXPECT_FALSE(shared_pinned_tab_service->IsSharedContents(
       tab_strip_model_2->GetWebContentsAt(0)));

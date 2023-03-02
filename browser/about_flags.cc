@@ -331,12 +331,10 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHARED_PINNED_TABS \
-    {"brave-shared-pinned-tabs",                                 \
-     "Shared pinned tab",                                        \
-     "Pinned tabs are shared across windows",                    \
-     kOsWin | kOsMac | kOsLinux,                                 \
-     FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs)},
+#define BRAVE_SHARED_PINNED_TABS                                        \
+  {"brave-shared-pinned-tabs", "Shared pinned tab",                     \
+   "Pinned tabs are shared across windows", kOsWin | kOsMac | kOsLinux, \
+   FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs)},
 #else
 #define BRAVE_SHARED_PINNED_TABS
 #endif

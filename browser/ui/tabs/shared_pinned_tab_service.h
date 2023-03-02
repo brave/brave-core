@@ -124,6 +124,8 @@ class SharedPinnedTabService : public KeyedService,
 
   base::ScopedObservation<BrowserList, BrowserListObserver>
       browser_list_observation_{this};
+
+  base::WeakPtrFactory<SharedPinnedTabService> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_H_

@@ -30,6 +30,8 @@ namespace {
 class SharedContentsData
     : public content::WebContentsUserData<SharedContentsData> {
  public:
+  SharedContentsData(const SharedContentsData&) = delete;
+  SharedContentsData& operator=(const SharedContentsData&) = delete;
   ~SharedContentsData() override = default;
 
   static void RemoveFromWebContents(content::WebContents* contents) {
@@ -56,6 +58,8 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(SharedContentsData);
 class DummyContentsData
     : public content::WebContentsUserData<DummyContentsData> {
  public:
+  DummyContentsData(const DummyContentsData&) = delete;
+  DummyContentsData& operator=(const DummyContentsData&) = delete;
   ~DummyContentsData() override = default;
 
   static void RemoveFromWebContents(content::WebContents* contents) {
@@ -290,11 +294,11 @@ void SharedPinnedTabService::TabPinnedStateChanged(
                              .contents_owner_model = tab_strip_model});
     SynchronizeNewPinnedTab(index);
   } else {
-    // TODO(sko) Check lifecycle, remove Unretained.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&SharedPinnedTabService::OnTabUnpinned,
-                                  base::Unretained(this), tab_strip_model,
-                                  contents->GetWeakPtr(), index));
+        FROM_HERE,
+        base::BindOnce(&SharedPinnedTabService::OnTabUnpinned,
+                       weak_ptr_factory_.GetWeakPtr(), tab_strip_model,
+                       contents->GetWeakPtr(), index));
   }
 }
 
@@ -481,12 +485,11 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
-  // TODO(sko) Check lifecycle, remove Unretained.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
           &SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser,
-          base::Unretained(this), active_index));
+          weak_ptr_factory_.GetWeakPtr(), active_index));
 }
 
 void SharedPinnedTabService::OnTabUnpinned(
