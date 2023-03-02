@@ -430,8 +430,8 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
           } else {
             update->Set(publisher_id,
                         (new_status == mojom::UserEnabled::ENABLED));
-            controller->publishers_controller_.EnsurePublishersIsUpdating();
           }
+          controller->publishers_controller_.EnsurePublishersIsUpdating();
         }
       },
       publisher_id, new_status, base::Unretained(this)));
