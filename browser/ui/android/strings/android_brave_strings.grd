@@ -3750,10 +3750,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Make playlists of your favorite audio and videos, and play anytime, anywhere.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_2" desc="Playlist onboarding text">
-      Long press any video or audio to add to Playlist
+      Out of cell range? Need to calm a crying toddler?
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_2" desc="Playlist onboarding text">
-      Lorem ipsum dolor sit amet et vitae lorem un provisio et laurete
+      Whether you're on the subway, a flight, or a long car trip. Playlist has you covered.
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_3" desc="Playlist onboarding text">
       Or tap the Playlist button when it appears
@@ -3815,14 +3815,23 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_DELETE_ITEM" desc="Playlist menu text">
       Delete
     </message>
-    <message name="IDS_PLAYLIST_PERCENTAGE_TEXT">
+    <message name="IDS_PLAYLIST_PERCENTAGE_TEXT" desc="Playlist item download progress text">
       <ph name="PERCENTAGE">%1$s</ph> %%
     </message>
-    <message name="IDS_PLAYLIST_TIME_TEXT">
+    <message name="IDS_PLAYLIST_TIME_TEXT" desc="Playlist duration time text">
       <ph name="TIME_TEXT">%1$s</ph>:
     </message>
-    <message name="IDS_PLAYLIST_DURATION_TEXT">
+    <message name="IDS_PLAYLIST_DURATION_TEXT" desc="Playlist duration text">
       <ph name="HOUR_TEXT">%1$s</ph><ph name="MINUTE_TEXT">%2$s</ph><ph name="SECOND_TEXT">%3$s</ph>
+    </message>
+    <message name="IDS_PLAYLIST_PLEASE_SELECT_ITEMS" desc="Playlist select items error message text">
+      Please select items first
+    </message>
+    <message name="IDS_PLAYLIST_OFFLINE_MESSAGE" desc="Playlist offline error message text">
+      Playlist item is not cached.\nPlease cache the item for offline mode.
+    </message>
+    <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
+      Content expired. Wait a few seconds then try playing again.
     </message>
   </messages>
   </release>
