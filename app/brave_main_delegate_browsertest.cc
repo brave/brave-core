@@ -117,7 +117,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kInterestGroupStorage,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
-    &blink::features::kPrerender2InBackground,
     &blink::features::kPrivacySandboxAdsAPIs,
     &blink::features::kSharedStorageAPI,
     &blink::features::kSharedStorageSelectURLLimit,
