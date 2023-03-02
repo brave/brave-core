@@ -113,10 +113,10 @@ reducer.on(Actions.showLoadingView, (state): RootState => {
   }
 })
 
-reducer.on(Actions.showSubscriptionExpiredView, (state): RootState => {
+reducer.on(Actions.showSubscriptionInvalidView, (state): RootState => {
   return {
     ...state,
-    currentView: ViewType.Expired
+    currentView: ViewType.Invalid
   }
 })
 

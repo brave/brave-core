@@ -775,7 +775,7 @@ TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 }
 
 // Test connection check is asked only when purchased state.
@@ -801,8 +801,8 @@ TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
 
-  SetPurchasedState(env, PurchasedState::EXPIRED);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  SetPurchasedState(env, PurchasedState::INVALID);
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 
   SetPurchasedState(env, PurchasedState::FAILED);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
@@ -818,7 +818,7 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::INVALID);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
   SetAndExpectPurchasedStateChange(&observer, env,
                                    PurchasedState::NOT_PURCHASED);

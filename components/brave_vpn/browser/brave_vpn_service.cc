@@ -682,7 +682,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 
   // Early return when it's already expired.
   if (time < base::Time::Now()) {
-    SetPurchasedState(env, PurchasedState::EXPIRED);
+    SetPurchasedState(env, PurchasedState::INVALID);
     return;
   }
 
@@ -707,7 +707,7 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
 #else
     if (subscriber_credential == kTokenNoLongerValid) {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::EXPIRED);
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::INVALID);
     } else {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
     }
