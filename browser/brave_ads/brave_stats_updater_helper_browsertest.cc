@@ -28,7 +28,7 @@ namespace brave_ads {
 
 class BraveStatsUpdaterHelperBrowserTest : public PlatformBrowserTest {
  public:
-  BraveStatsUpdaterHelperBrowserTest() {}
+  BraveStatsUpdaterHelperBrowserTest() = default;
 
  protected:
   void SetUpOnMainThread() override {
