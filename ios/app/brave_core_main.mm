@@ -48,7 +48,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
-#include "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -297,8 +296,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // Install overrides
   ios::provider::InstallOverrides();
 
-  // Schedule low priority tasks
-  [StartupTasks scheduleDeferredBrowserStateInitialization:_mainBrowserState];
+  // Make sure the system url request getter is called at least once during
+  // startup in case cleanup is done early before first network request
+  GetApplicationContext()->GetSystemURLRequestContext();
 }
 
 - (void)registerComponentsForUpdate:
