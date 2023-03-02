@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 9a60bf8a7acf66728ef166e144c6be4f4428865b..ac50e01ca42475061fbd9cd02e40e3678dd26960 100644
+index ec72da2b743fc5d279fd6d3a548a233dd4fd1e1f..a9c05a25be274835c5aff830c421fdb69697ecc8 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -449,4 +449,5 @@ build_webui("build") {
+@@ -450,4 +450,5 @@ build_webui("build") {
      optimize_webui_excludes =
          [ "chrome://resources/mojo/skia/public/mojom/skcolor.mojom-webui.js" ]
    }
