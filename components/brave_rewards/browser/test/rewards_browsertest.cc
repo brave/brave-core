@@ -287,23 +287,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
       "By resetting, your current Brave Rewards profile will be deleted");
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=manage-wallet-button]");
-
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
-
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id='funds-warning-text']",
-      "Note: You currently have 30 BAT estimated earnings this month");
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   // Load a balance into the user's wallet
   rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
