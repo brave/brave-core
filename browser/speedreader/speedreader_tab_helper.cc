@@ -53,16 +53,6 @@
 
 namespace speedreader {
 
-namespace test {
-
-const std::u16string* g_show_original_link_title = nullptr;
-
-void SetShowOriginalLinkTitle(const std::u16string* title) {
-  g_show_original_link_title = title;
-}
-
-}  // namespace test
-
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<base::StringPiece, int>> resources) {
   std::u16string result = u"speedreaderData = {";
