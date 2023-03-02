@@ -43,6 +43,8 @@ export type Props = {
   getDisplayAd: GetDisplayAdContent
 }
 
+type PossibleInteractionObserver = IntersectionObserver | undefined
+
 export const attributeNameCardCount = 'data-today-card-count'
 
 const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
@@ -55,7 +57,17 @@ export default function BraveNewsSection (props: Props) {
   // Don't ask for initial data more than once
   const hasRequestedLoad = React.useRef(false)
 
-  const loadDataObserver = React.useMemo<IntersectionObserver>(() => {
+  const loadDataObserver = React.useMemo<PossibleInteractionObserver>(() => {
+    // Handle case where we're already told to load content, e.g. when
+    // navigating back to a position in the feed after clicking an article
+    // or ad.
+    if (props.hasInteracted) {
+      dispatch(TodayActions.refresh({ isFirstInteraction: false }))
+      hasRequestedLoad.current = true
+      return
+    }
+    // Handle case where we wait for News content area to hit viewport
+    // before lazy-loading content.
     const handleHits: IntersectionObserverCallback = (entries) => {
       // When the scroll trigger hits the viewport (or is above the viewport),
       // we can start to fetch data.
@@ -73,14 +85,17 @@ export default function BraveNewsSection (props: Props) {
     }
     // Setup intersection observer params
     return new IntersectionObserver(handleHits, intersectionOptions)
-  }, [props.isPrompting])
+  }, [props.isPrompting, props.hasInteracted])
 
   const loadDataTrigger = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     // When we have an element to observe, set it as the target.
     // Don't do anything if we don't need data.
-    if (!loadDataTrigger.current || !optedIn || !!props.feed) {
+    if (!loadDataObserver ||
+          !loadDataTrigger.current ||
+          !optedIn ||
+          !!props.feed) {
       return
     }
     loadDataObserver.observe(loadDataTrigger.current)
