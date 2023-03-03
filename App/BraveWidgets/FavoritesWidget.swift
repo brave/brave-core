@@ -8,6 +8,7 @@ import SwiftUI
 import Strings
 import BraveShared
 import BraveWidgetsModels
+import Favicon
 
 struct FavoritesWidget: Widget {
   var body: some WidgetConfiguration {
@@ -127,6 +128,15 @@ private struct FavoritesGridView: View {
       return redactionReasons.contains(.placeholder)
     }
   }
+  
+  func image(for favicon: Favicon) -> UIImage? {
+    guard let image = favicon.image else { return nil }
+    if #available(iOS 15.0, *) {
+      return image.preparingThumbnail(of: CGSize(width: 128, height: 128))
+    } else {
+      return image.scale(toSize: CGSize(width: 128, height: 128))
+    }
+  }
 
   var body: some View {
     LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 8) {
@@ -136,7 +146,7 @@ private struct FavoritesGridView: View {
             destination: favorite.url,
             label: {
               Group {
-                if let attributes = favorite.favicon, let image = attributes.image {
+                if let attributes = favorite.favicon, let image = image(for: attributes) {
                   FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false)
                     .background(Color(attributes.backgroundColor))
                 } else {
@@ -153,7 +163,7 @@ private struct FavoritesGridView: View {
               .background(Color(UIColor.braveBackground).opacity(0.05).clipShape(itemShape))
               .overlay(
                 itemShape
-                  .strokeBorder(Color(UIColor.braveSeparator).opacity(0.1), lineWidth: pixelLength)
+                  .strokeBorder(Color(UIColor.braveLabel).opacity(0.2), lineWidth: pixelLength)
               )
               .padding(widgetFamily == .systemMedium ? 4 : 0)
             })
