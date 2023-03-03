@@ -164,7 +164,6 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   args.AppendArg("daemon");
   args.AppendArg("--migrate=true");
   args.AppendArg("--enable-gc");
-  args.AppendArg("--routing=dhtclient");
 
   auto version = ipfs::GetVersionFromNodeFilename(
       config->binary_path.BaseName().MaybeAsASCII());
