@@ -10,17 +10,16 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
+#include "ui/views/view_utils.h"
 
 #if defined(USE_AURA)
 #include "ui/views/view_constants_aura.h"
-#include "ui/views/view_utils.h"
-#else
-#include "chrome/browser/ui/browser_list.h"
 #endif
 
 namespace {
