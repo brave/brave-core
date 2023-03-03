@@ -136,8 +136,6 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_ui.h",
       "webui/brave_tip_ui.cc",
       "webui/brave_tip_ui.h",
-      "webui/brave_welcome_ui.cc",
-      "webui/brave_welcome_ui.h",
       "webui/navigation_bar_data_provider.cc",
       "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
@@ -184,6 +182,10 @@ source_set("ui") {
       "webui/speedreader/speedreader_panel_handler_impl.h",
       "webui/speedreader/speedreader_panel_ui.cc",
       "webui/speedreader/speedreader_panel_ui.h",
+      "webui/welcome_page/brave_welcome_ui.cc",
+      "webui/welcome_page/brave_welcome_ui.h",
+      "webui/welcome_page/welcome_dom_handler.cc",
+      "webui/welcome_page/welcome_dom_handler.h",
     ]
 
     if (enable_pin_shortcut) {
