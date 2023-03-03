@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+
 source_set("tabs") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
   check_includes = false
@@ -22,6 +25,7 @@ source_set("tabs") {
     ]
 
     deps = [
+      ":buildflags",
       "//brave/common/",
       "//chrome/app:generated_resources",
       "//components/prefs",
@@ -29,5 +33,14 @@ source_set("tabs") {
       "//content/public/browser",
       "//ui/color",
     ]
+  }
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  if (brave_channel == "development" || brave_channel == "nightly") {
+    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=1" ]
+  } else {
+    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=0" ]
   }
 }
