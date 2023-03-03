@@ -44,7 +44,8 @@ import {
   TokenName,
   HighlightedDetailSectionValue,
   Subdivider,
-  ProjectDetailName
+  ProjectDetailName,
+  AttributesWrapper
 } from './nft-details-styles'
 import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 import { MultimediaWrapper } from '../nft-content/nft-content-styles'
@@ -53,6 +54,7 @@ import { Row } from '../../../components/shared/style'
 import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
 import { NftPinningStatus } from '../../../components/desktop/nft-pinning-status/nft-pinning-status'
 import { PinningStatusType } from '../../../page/constants/action_types'
+import { NftAttribute } from '../nft-attribute/nft-attribute'
 
 interface Props {
   isLoading?: boolean
@@ -196,6 +198,14 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                   <DetailSectionTitle>{getLocale('braveWalletNFTDetailDescription')}</DetailSectionTitle>
                   <ProjectDetailDescription>{nftMetadata.contractInformation.description}</ProjectDetailDescription>
                 </DetailSectionColumn>
+                {nftMetadata?.attributes &&
+                  <DetailSectionColumn>
+                    <DetailSectionTitle>Properties</DetailSectionTitle>
+                    <AttributesWrapper>
+                      {nftMetadata?.attributes?.map((attribute, idx) => (<NftAttribute key={idx} attribute={attribute} />))}
+                    </AttributesWrapper>
+                  </DetailSectionColumn>
+                }
                 {nftPinningStatus?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNED &&
                   <>
                     <Subdivider />

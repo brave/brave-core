@@ -114,6 +114,7 @@ export const ProjectDetailName = styled.span`
   font-weight: 500;
   color: ${(p) => p.theme.color.text01};
   margin-right: 12px;
+  margin-bottom: 10px;
 `
 
 export const ProjectDetailDescription = styled.span`
@@ -124,6 +125,7 @@ export const ProjectDetailDescription = styled.span`
   color: ${(p) => p.theme.color.text02};
   margin-right: 12px;
   max-width: 80%;
+  margin-bottom: 10px;
 `
 
 export const ProjectDetailImage = styled.img`
@@ -279,4 +281,11 @@ export const Subdivider = styled.div`
   background-color: ${p => p.theme.color.divider01};
   margin-bottom: 16px;
   margin-top: 16px;
+`
+
+export const AttributesWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 8px;
+  margin-bottom: 10px;
 `

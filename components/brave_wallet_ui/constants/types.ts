@@ -814,6 +814,11 @@ export interface CreateAccountOptionsType {
   icon: string
 }
 
+export interface NFTAtrribute {
+  traitType: string
+  value: string
+} 
+
 export interface NFTMetadataReturnType {
   chainName: string
   tokenType: string
@@ -832,7 +837,8 @@ export interface NFTMetadataReturnType {
     twitter: string
     facebook: string
     logo: string
-  }
+  },
+  attributes?: NFTAtrribute[] 
 }
 
 export interface TransactionProviderError {

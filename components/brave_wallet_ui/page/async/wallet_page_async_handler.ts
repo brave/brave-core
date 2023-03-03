@@ -296,6 +296,9 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
   const result = await getNFTMetadata(payload)
   if (!result?.error) {
     const response = result?.response && JSON.parse(result.response)
+    const attributes = Array.isArray(response.attributes)
+      ? response.attributes.map((attr: { trait_type: string; value: string }) => ({ traitType: attr.trait_type, value: attr.value }))
+      : []
     const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
     const nftMetadata: NFTMetadataReturnType = {
       chainName: tokenNetwork.chainName,
@@ -317,11 +320,13 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
         facebook: '',
         logo: '',
         twitter: ''
-      }
+      },
+      attributes 
     }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
     store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
   } else {
+    console.error(result)
     store.dispatch(WalletPageActions.updateNftMetadataError(result.errorMessage))
   }
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
