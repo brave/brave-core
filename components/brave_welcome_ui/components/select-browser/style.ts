@@ -101,4 +101,24 @@ export const ActionBox = styled.div`
   button {
     color: white;
   }
+
+  button:nth-child(2) {
+    &[disabled] {
+      min-height: var(--button-line-height);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: calc(var(--button-line-height) / 3);
+
+      font-family: 'Poppins', sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px);
+      border-radius: 48px;
+      color: rgba(255, 255, 255, 0.32);
+    }
+  }
 `
