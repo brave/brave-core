@@ -8,6 +8,8 @@
 
 #include <guiddef.h>
 
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+
 namespace brave_vpn {
 
 constexpr char kBraveVpnHelperInstall[] = "install";
@@ -18,7 +20,7 @@ constexpr wchar_t kBraveVpnHelperFiltersInstalledValue[] = L"filters";
 constexpr int kCheckConnectionIntervalInSeconds = 3;
 
 /* UUID of WFP sublayer used by all instances */
-#if defined(CHANNEL_NIGHTLY)
+#if BUILDFLAG(CHANNEL_NIGHTLY)
 constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Nightly Service DNS Filter";
 constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
@@ -30,7 +32,7 @@ constexpr GUID kVpnDnsSublayerGUID = {
     0xeb83,
     0x4d2c,
     {0x9d, 0x77, 0xf6, 0xe9, 0xb5, 0x47, 0xf3, 0x9c}};
-#elif defined(CHANNEL_BETA)
+#elif BUILDFLAG(CHANNEL_BETA)
 constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Beta Service DNS Filter";
 constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
@@ -42,7 +44,7 @@ constexpr GUID kVpnDnsSublayerGUID = {
     0xe313,
     0x4f5e,
     {0x80, 0x52, 0xfe, 0x8b, 0x15, 0x0f, 0x7d, 0xe0}};
-#elif defined(CHANNEL_DEV)
+#elif BUILDFLAG(CHANNEL_DEV)
 constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Dev Service DNS Filter";
 constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
@@ -53,7 +55,7 @@ constexpr GUID kVpnDnsSublayerGUID = {
     0x729d,
     0x4a89,
     {0x87, 0x9b, 0x1c, 0xf0, 0xcd, 0x24, 0x60, 0xc0}};
-#elif defined(CHANNEL_DEVELOPMENT)
+#elif BUILDFLAG(CHANNEL_DEVELOPMENT)
 constexpr wchar_t kBraveVPNServiceFilter[] =
     L"Brave VPN Development Service DNS Filter";
 constexpr wchar_t kBraveVpnHelperRegistryStoragePath[] =
