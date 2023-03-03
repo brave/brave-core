@@ -17,4 +17,8 @@ BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_LINUX)
 
+BASE_FEATURE(kBraveSharedPinnedTabs,
+             "BraveSharedPinnedTabs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace tabs::features

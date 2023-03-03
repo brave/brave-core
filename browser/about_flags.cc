@@ -330,6 +330,15 @@
 #define BRAVE_SAFE_BROWSING_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_SHARED_PINNED_TABS                                        \
+  {"brave-shared-pinned-tabs", "Shared pinned tab",                     \
+   "Pinned tabs are shared across windows", kOsWin | kOsMac | kOsLinux, \
+   FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs)},
+#else
+#define BRAVE_SHARED_PINNED_TABS
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -706,6 +715,7 @@
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
+  BRAVE_SHARED_PINNED_TABS                                                     \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 
 namespace flags_ui {

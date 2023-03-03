@@ -1,0 +1,32 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_
+
+#include "base/memory/singleton.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
+
+class SharedPinnedTabService;
+
+class SharedPinnedTabServiceFactory : public ProfileKeyedServiceFactory {
+ public:
+  static SharedPinnedTabService* GetForProfile(Profile* profile);
+
+  static SharedPinnedTabServiceFactory* GetInstance();
+
+ private:
+  friend struct base::DefaultSingletonTraits<SharedPinnedTabServiceFactory>;
+
+  SharedPinnedTabServiceFactory();
+  ~SharedPinnedTabServiceFactory() override;
+
+  // BrowserContextKeyedServiceFactory:
+  KeyedService* BuildServiceInstanceFor(
+      content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
+};
+
+#endif  // BRAVE_BROWSER_UI_TABS_SHARED_PINNED_TAB_SERVICE_FACTORY_H_

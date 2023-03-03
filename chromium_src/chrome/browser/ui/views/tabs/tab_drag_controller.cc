@@ -40,6 +40,9 @@
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController
 
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+
 TabDragController::TabDragController() = default;
 
 TabDragController::~TabDragController() = default;
@@ -54,6 +57,18 @@ void TabDragController::Init(TabDragContext* source_context,
   TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                   mouse_offset, source_view_offset,
                                   initial_selection_model, event_source);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    if (base::ranges::any_of(dragging_views, [](auto* slot_view) {
+          // We don't allow sharable pinned tabs to be detached.
+          return slot_view->GetTabSlotViewType() ==
+                     TabSlotView::ViewType::kTab &&
+                 views::AsViewClass<Tab>(slot_view)->data().pinned;
+        })) {
+      detach_behavior_ = NOT_DETACHABLE;
+    }
+  }
+
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 

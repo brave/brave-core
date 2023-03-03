@@ -12,6 +12,8 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -98,6 +100,26 @@ void BraveTabStrip::MaybeStartDrag(
     for (size_t index : original_selection.selected_indices()) {
       if (controller_->IsTabPinned(index) != source_is_pinned)
         return;
+    }
+  }
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    // When source tab is bound for dummy web contents for a shared pinned tab,
+    // we shouldn't kick off drag-and-drop session as the web contents will be
+    // replaced soon.
+    if (source->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
+        static_cast<Tab*>(source)->data().pinned) {
+      auto index = GetModelIndexOf(source).value();
+      auto* browser = controller_->GetBrowser();
+      DCHECK(browser);
+
+      auto* shared_pinned_tab_service =
+          SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+      DCHECK(shared_pinned_tab_service);
+      if (shared_pinned_tab_service->IsDummyContents(
+              browser->tab_strip_model()->GetWebContentsAt(index))) {
+        return;
+      }
     }
   }
 
