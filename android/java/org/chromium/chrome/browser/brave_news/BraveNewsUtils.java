@@ -208,15 +208,6 @@ public class BraveNewsUtils {
         return suggestionsPublisherList;
     }
 
-    public static void updatePublishers(String publisherId, int userEnabled) {
-        for (Publisher publisher : mPublisherList) {
-            if (publisher.publisherId.equals(publisherId)) {
-                publisher.userEnabledStatus = userEnabled;
-                break;
-            }
-        }
-    }
-
     public static void setFollowingPublisherList() {
         List<Publisher> publisherList = new ArrayList<>();
         for (Publisher publisher : mGlobalPublisherList) {
@@ -227,6 +218,15 @@ public class BraveNewsUtils {
             }
         }
         mFollowingPublisherList = publisherList;
+    }
+
+    public static void disableFollowingPublisherList(String publisherId) {
+        for (Publisher publisher : mFollowingPublisherList) {
+            if (publisher.publisherId.equals(publisherId)) {
+                publisher.userEnabledStatus = UserEnabled.DISABLED;
+                break;
+            }
+        }
     }
 
     public static List<Publisher> getFollowingPublisherList() {
