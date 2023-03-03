@@ -86,8 +86,7 @@ class IpfsService : public KeyedService,
       base::OnceCallback<void(bool, const ipfs::NodeInfo&)>;
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
-  using NodeCallback =
-      base::OnceCallback</*stdout*/ void(absl::optional<std::string>)>;
+  using NodeCallback = base::OnceCallback<void(absl::optional<std::string>)>;
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   // Local pins
   using AddPinCallback = base::OnceCallback<void(absl::optional<AddPinResult>)>;

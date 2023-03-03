@@ -71,23 +71,5 @@
     "dependencies": [],
     "contexts": ["webui"],
     "component_extensions_auto_granted": false
-  },
-  "braveWallet.isNftPinningEnabled": {
-    "channel": "stable",
-    "dependencies": [],
-    "contexts": ["webui"],
-    "component_extensions_auto_granted": false
-  },
-  "braveWallet.clearPinnedNft": {
-    "channel": "stable",
-    "dependencies": [],
-    "contexts": ["webui"],
-    "component_extensions_auto_granted": false
-  },
-  "braveWallet.getPinnedNftCount": {
-    "channel": "stable",
-    "dependencies": [],
-    "contexts": ["webui"],
-    "component_extensions_auto_granted": false
   }
 }

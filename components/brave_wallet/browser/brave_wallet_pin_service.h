@@ -123,6 +123,7 @@ class BraveWalletPinService : public KeyedService,
   virtual mojom::TokenPinStatusPtr GetTokenStatus(
       const absl::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);
+  mojom::TokenPinStatusPtr GetTokenStatus(const std::string& path);
   virtual absl::optional<base::Time> GetLastValidateTime(
       const absl::optional<std::string>& service,
       const mojom::BlockchainTokenPtr& token);

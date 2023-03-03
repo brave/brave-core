@@ -8,31 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "base/posix/eintr_wrapper.h"
+#include "base/files/file_util.h"
 #include "base/process/launch.h"
 
 namespace brave {
-namespace {
-bool ReadFdToString(int fd, std::string* ret) {
-  DCHECK(ret);
-  ret->clear();
-
-  ssize_t bytes_read = 0;
-  do {
-    char buf[4096];
-    bytes_read = HANDLE_EINTR(read(fd, buf, sizeof(buf)));
-    if (bytes_read < 0) {
-      return false;
-    }
-    if (bytes_read > 0) {
-      ret->append(buf, static_cast<size_t>(bytes_read));
-    }
-  } while (bytes_read > 0);
-
-  return true;
-}
-
-}  // namespace
 
 ProcessLauncher::ProcessLauncher() = default;
 ProcessLauncher::~ProcessLauncher() = default;
@@ -61,7 +40,8 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   int exit_code = 0;
   std::string result;
   close(pipe_fd[1]);
-  ReadFdToString(pipe_fd[0], &result);
+  bool read_result = base::ReadStreamToString(
+      base::FileToFILE(base::File(pipe_fd[0]), "r"), &result);
   close(pipe_fd[0]);
 
   base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
@@ -70,7 +50,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   if (!exited) {
     process.Terminate(0, true);
   }
-  if (exited && !exit_code) {
+  if (exited && !exit_code && read_result) {
     return result;
   } else {
     return absl::nullopt;

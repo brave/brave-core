@@ -8,6 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -37,25 +38,13 @@ void OnGetActiveOrigin(bool* callback_called,
 }  // namespace
 
 class TestBraveWalletServiceObserver
-    : public brave_wallet::mojom::BraveWalletServiceObserver {
+    : public brave_wallet::BraveWalletServiceObserverBase {
  public:
   TestBraveWalletServiceObserver() = default;
-
-  void OnDefaultEthereumWalletChanged(
-      mojom::DefaultWallet default_wallet) override {}
-  void OnDefaultSolanaWalletChanged(
-      mojom::DefaultWallet default_wallet) override {}
-  void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
-  void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency) override {}
-  void OnNetworkListChanged() override {}
 
   void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {
     active_origin_info_ = origin_info->Clone();
   }
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
-  void OnResetWallet() override {}
 
   const mojom::OriginInfoPtr& active_origin_info() const {
     return active_origin_info_;

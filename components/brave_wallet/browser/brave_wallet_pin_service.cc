@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/json/values_util.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -855,18 +856,11 @@ absl::optional<std::vector<std::string>> BraveWalletPinService::ResolvePinItems(
 }
 
 mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
-    const absl::optional<std::string>& service,
-    const mojom::BlockchainTokenPtr& token) {
+    const std::string& path) {
   const base::Value::Dict& pinned_assets_pref =
       prefs_->GetDict(kPinnedNFTAssets);
 
-  auto path = GetTokenPrefPath(service, token);
-  if (!path) {
-    return nullptr;
-  }
-
-  auto* token_data_as_dict =
-      pinned_assets_pref.FindDictByDottedPath(path.value());
+  auto* token_data_as_dict = pinned_assets_pref.FindDictByDottedPath(path);
   if (!token_data_as_dict) {
     return mojom::TokenPinStatus::New(
         mojom::TokenPinStatusCode::STATUS_NOT_PINNED, nullptr, base::Time());
@@ -906,6 +900,17 @@ mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
 
   return mojom::TokenPinStatus::New(pin_status, std::move(error),
                                     validate_timestamp);
+}
+
+mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
+    const absl::optional<std::string>& service,
+    const mojom::BlockchainTokenPtr& token) {
+  auto path = GetTokenPrefPath(service, token);
+  if (!path) {
+    return nullptr;
+  }
+
+  return GetTokenStatus(path.value());
 }
 
 absl::optional<base::Time> BraveWalletPinService::GetLastValidateTime(
@@ -975,7 +980,16 @@ std::set<std::string> BraveWalletPinService::GetTokens(
 }
 
 size_t BraveWalletPinService::GetPinnedTokensCount() {
-  return GetTokens(absl::nullopt).size();
+  auto tokens = GetTokens(absl::nullopt);
+  auto tokens_vector = std::vector(tokens.begin(), tokens.end());
+  auto removed = base::ranges::remove_if(
+      tokens_vector.begin(), tokens_vector.end(), [this](auto& v) -> bool {
+        auto status = this->GetTokenStatus(v);
+        return !status.is_null() &&
+               status->code != mojom::TokenPinStatusCode::STATUS_PINNED;
+      });
+  tokens_vector.erase(removed, tokens_vector.end());
+  return tokens_vector.size();
 }
 
 }  // namespace brave_wallet

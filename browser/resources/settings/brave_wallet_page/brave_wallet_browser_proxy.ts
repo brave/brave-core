@@ -115,11 +115,6 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return new Promise<boolean>(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
   }
 
-  isNftPinningEnabled() {
-    return new Promise<boolean>(
-        resolve => chrome.braveWallet.isNftPinningEnabled(resolve))
-  }
-
   getAutoLockMinutes () {
     return sendWithPromise('getAutoLockMinutes')
   }
@@ -128,24 +123,16 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return sendWithPromise('getSolanaProviderOptions')
   }
 
+  isNftPinningEnabled() {
+    return sendWithPromise('isNftPinningEnabled')
+  }
+
   getPinnedNftCount() {
-      return new Promise<number>(resolve => {
-        if (!chrome.braveWallet) {
-          resolve(-1)
-          return
-        }
-        chrome.braveWallet.getPinnedNftCount(resolve)
-      })
+    return sendWithPromise('getPinnedNftCount')
   }
 
   clearPinnedNft() {
-      return new Promise<boolean>(resolve => {
-        if (!chrome.braveWallet) {
-          resolve(false)
-          return
-        }
-        chrome.braveWallet.clearPinnedNft(resolve)
-      })
+    return sendWithPromise('clearPinnedNft')
   }
 
   static getInstance() {

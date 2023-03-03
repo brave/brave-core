@@ -437,7 +437,7 @@ void IpfsService::RemovePin(const std::vector<std::string>& cids,
 
 void IpfsService::RemovePinCli(std::set<std::string> cids,
                                BoolCallback callback) {
-  if (cids.begin() == cids.end()) {
+  if (cids.empty()) {
     std::move(callback).Run(true);
     return;
   }
@@ -448,13 +448,19 @@ void IpfsService::RemovePinCli(std::set<std::string> cids,
     return;
   }
 
+  auto cid = *(cids.begin());
+
+  if (!IsValidCID(cid)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   base::CommandLine cmdline(path);
   cmdline.AppendArg("pin");
   cmdline.AppendArg("rm");
   cmdline.AppendArg("-r=true");
 
-  cmdline.AppendArg(*(cids.begin()));
-  cids.erase(cids.begin());
+  cmdline.AppendArg(cid);
   ExecuteNodeCommand(
       cmdline, GetDataPath(),
       base::BindOnce(&IpfsService::OnRemovePinCli, weak_factory_.GetWeakPtr(),
@@ -480,10 +486,14 @@ void IpfsService::LsPinCli(NodeCallback callback) {
 void IpfsService::OnRemovePinCli(BoolCallback callback,
                                  std::set<std::string> cids,
                                  absl::optional<std::string> result) {
-  if (!result) {
+  DCHECK(!cids.empty());
+  if (!result || cids.empty()) {
     std::move(callback).Run(false);
     return;
   }
+
+  cids.erase(cids.begin());
+
   if (cids.empty()) {
     std::move(callback).Run(true);
   } else {

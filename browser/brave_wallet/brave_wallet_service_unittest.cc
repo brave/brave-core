@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -156,7 +157,7 @@ void GetErrorCodeMessage(base::Value formed_response,
 }
 
 class TestBraveWalletServiceObserver
-    : public brave_wallet::mojom::BraveWalletServiceObserver {
+    : public brave_wallet::BraveWalletServiceObserverBase {
  public:
   TestBraveWalletServiceObserver() = default;
 
@@ -168,7 +169,6 @@ class TestBraveWalletServiceObserver
     default_solana_wallet_ = wallet;
     default_solana_wallet_changed_fired_ = true;
   }
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
     currency_ = currency;
     default_base_currency_changed_fired_ = true;
@@ -180,11 +180,6 @@ class TestBraveWalletServiceObserver
   }
 
   void OnNetworkListChanged() override { network_list_changed_fired_ = true; }
-
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
-
-  void OnResetWallet() override {}
 
   mojom::DefaultWallet GetDefaultEthereumWallet() {
     return default_ethereum_wallet_;

@@ -150,23 +150,6 @@
           }
         ]
       }, {
-          "name": "isNftPinningEnabled",
-          "type": "function",
-          "description": "Determine if the nft pinning is enabled",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "function",
-              "description": "Function called with a boolean indicating if the nft pinning is enabled",
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": "boolean"
-                }
-              ]
-            }
-          ]
-      }, {
         "name": "loadUI",
         "type": "function",
         "description": "Called when brave://wallet WebUI wants to load the real UI",
@@ -178,41 +161,7 @@
             "parameters": []
           }
         ]
-      }, {
-        "name": "getPinnedNftCount",
-        "type": "function",
-        "description": "Get pinned NFT count",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with a number indicating count of pinned NFTs",
-            "parameters": [
-              {
-                "name": "val",
-                "type": "number"
-              }
-            ]
-          }
-        ]
-      }, {
-          "name": "clearPinnedNft",
-          "type": "function",
-          "description": "Clear all pinned NFTs",
-          "parameters": [
-            {
-              "name": "callback",
-              "type": "function",
-              "description": "Function called with a boolean indicating whether clearance was successful",
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": "boolean"
-                }
-              ]
-            }
-          ]
-        }
+      }
     ],
     "types": [
     ],

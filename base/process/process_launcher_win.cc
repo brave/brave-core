@@ -8,31 +8,13 @@
 #include <string>
 #include <vector>
 
-#include "base/logging.h"
+#include "base/files/file_util.h"
 #include "base/notreached.h"
-#include "base/posix/eintr_wrapper.h"
 #include "base/process/launch.h"
 #include "base/win/scoped_handle.h"
 #include "base/win/scoped_process_information.h"
 
 namespace brave {
-namespace {
-void ReadHandleToString(HANDLE out_read, std::string* output) {
-  const int kBufferSize = 1024;
-  char buffer[kBufferSize];
-  for (;;) {
-    DWORD bytes_read = 0;
-    BOOL success =
-        ::ReadFile(out_read, buffer, kBufferSize, &bytes_read, nullptr);
-    if (!success || bytes_read == 0) {
-      return;
-    }
-    output->append(buffer, bytes_read);
-  }
-}
-
-}  // namespace
-
 ProcessLauncher::ProcessLauncher() = default;
 ProcessLauncher::~ProcessLauncher() = default;
 
@@ -81,7 +63,8 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   std::string result;
   scoped_out_write.Close();
 
-  ReadHandleToString(out_read, &result);
+  bool read_result = base::ReadStreamToString(
+      base::FileToFILE(base::File(out_read), "r"), &result);
   scoped_out_read.Close();
 
   base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
@@ -90,7 +73,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   if (!exited) {
     process.Terminate(0, true);
   }
-  if (exited && !exit_code) {
+  if (exited && !exit_code && read_result) {
     return result;
   } else {
     return absl::nullopt;
