@@ -126,7 +126,7 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
  private:
   friend class ::GreaselionServiceTest;
 
-  void OnDATFileDataReady(std::string contents);
+  void OnDATFileDataReady(const std::string& contents);
   void OnDevModeLocalFileChanged(bool error);
   void LoadOnTaskRunner();
   void LoadDirectlyFromResourcePath();
