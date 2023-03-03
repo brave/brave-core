@@ -30,6 +30,15 @@ extension BraveSyncAPI {
   var isInSyncGroup: Bool {
     return Preferences.Chromium.syncEnabled.value
   }
+  
+  /// Property that determines if the local sync chain should be resetted
+  var shouldLeaveSyncGroup: Bool {
+    guard isInSyncGroup else {
+      return false
+    }
+    
+    return !(isSyncFeatureActive && isFirstSetupComplete) || isSyncAccountDeletedNoticePending
+  }
 
   var isSendTabToSelfVisible: Bool {
     guard let json = getDeviceListJSON(), let data = json.data(using: .utf8) else {
@@ -47,9 +56,11 @@ extension BraveSyncAPI {
   
   @discardableResult
   func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
-    if self.setSyncCode(codeWords) {
-      Preferences.Chromium.syncEnabled.value = true
+    if setSyncCode(codeWords) {
       enableSyncTypes(syncProfileService: syncProfileService)
+      requestSync()
+      setSetupComplete()
+      Preferences.Chromium.syncEnabled.value = true
 
       return true
     }
@@ -60,10 +71,15 @@ extension BraveSyncAPI {
     deleteDevice(deviceGuid)
   }
 
-  func leaveSyncGroup() {
-    // Remove all observers before leaving the sync chain
-    removeAllObservers()
-
+  /// Method for leaving sync chain
+  /// Removing Observers, clearing local preferences and calling reset chain on brave-core side
+  /// - Parameter preservingObservers: Parameter that decides if observers should be preserved or removed
+  func leaveSyncGroup(preservingObservers: Bool = false) {
+    if !preservingObservers {
+      // Remove all observers before leaving the sync chain
+      removeAllObservers()
+    }
+    
     resetSyncChain()
     Preferences.Chromium.syncEnabled.value = false
   }
@@ -96,11 +112,18 @@ extension BraveSyncAPI {
     }
   }
 
-  func addServiceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {
+  /// Method to add observer for SyncService for onStateChanged and onSyncShutdown
+  /// OnStateChanged can be called in various situations like successful initialization - services unavaiable
+  /// sync shutdown - sync errors - sync chain deleted
+  /// - Parameters:
+  ///   - onStateChanged: Callback for sync service state changes
+  ///   - onServiceShutdown: Callback for sync service shutdown
+  /// - Returns: Listener for service
+  func addServiceStateObserver(_ onStateChanged: @escaping () -> Void, onServiceShutdown: @escaping () -> Void = {}) -> AnyObject {
     let serviceStateListener = BraveSyncServiceListener(onRemoved: { [weak self] observer in
       self?.serviceObservers.remove(observer)
     })
-    serviceStateListener.observer = createSyncServiceObserver(observer, onSyncServiceShutdown: {})
+    serviceStateListener.observer = createSyncServiceObserver(onStateChanged, onSyncServiceShutdown: onServiceShutdown)
 
     serviceObservers.add(serviceStateListener)
     return serviceStateListener

@@ -47,7 +47,8 @@ class TabTrayController: LoadingViewController {
   let tabManager: TabManager
   let braveCore: BraveCoreMain
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
-  
+  private var syncServicStateListener: AnyObject?
+
   weak var delegate: TabTrayDelegate?
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
   
@@ -200,6 +201,17 @@ class TabTrayController: LoadingViewController {
           }
         }
       })
+    
+    // Adding State Sync Observer to watch the states change in sync chain
+    syncServicStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
+      guard let self = self else { return }
+
+      if self.braveCore.syncAPI.shouldLeaveSyncGroup {
+        self.tabSyncView.do {
+          $0.updateSyncStatusPanel(for: self.emptyPanelState)
+        }
+      }
+    }
   }
 
   @available(*, unavailable)

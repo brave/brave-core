@@ -189,7 +189,7 @@ class SyncWelcomeViewController: SyncViewController {
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.syncAPI.isInSyncGroup {
+      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive && !self.syncAPI.isFirstSetupComplete {
         let bvc = self.currentScene?.browserViewController
         self.dismiss(animated: true) {
           bvc?.present(SyncAlerts.initializationError, animated: true)
@@ -208,7 +208,6 @@ class SyncWelcomeViewController: SyncViewController {
   }
 
   @objc func newToSyncAction() {
-    handleSyncSetupFailure()
     let addDevice = SyncSelectDeviceTypeViewController()
     addDevice.syncInitHandler = { [weak self] (title, type) in
       guard let self = self else { return }
@@ -241,15 +240,13 @@ class SyncWelcomeViewController: SyncViewController {
       }
 
       self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
-      self.syncAPI.requestSync()
-      self.syncAPI.setSetupComplete()
+      self.handleSyncSetupFailure()
     }
 
     self.navigationController?.pushViewController(addDevice, animated: true)
   }
 
   @objc func existingUserAction() {
-    handleSyncSetupFailure()
     let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
     pairCamera.delegate = self
     self.navigationController?.pushViewController(pairCamera, animated: true)
@@ -277,16 +274,44 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
 
   func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String) {
     controller.enableNavigationPrevention()
-    syncDeviceInfoObserver = syncAPI.addDeviceStateObserver { [weak self] in
-      guard let self = self else { return }
-      self.syncServiceObserver = nil
-      self.syncDeviceInfoObserver = nil
-      controller.disableNavigationPrevention()
-      self.pushSettings()
+    
+    // DidJoinSyncChain is checking If the chain user trying to join is deleted recently
+    // returning an error accordingly - only error is Deleted Sync Chain atm
+    syncAPI.setDidJoinSyncChain { result in
+      if result {
+        // If chain is not deleted start listening for device state observer
+        // to validate devices are added to chain and show settings
+        self.syncDeviceInfoObserver = self.syncAPI.addDeviceStateObserver { [weak self] in
+          guard let self else { return }
+          self.syncServiceObserver = nil
+          self.syncDeviceInfoObserver = nil
+          
+          controller.disableNavigationPrevention()
+          self.pushSettings()
+        }
+      } else {
+        // Show an alert if the sync hain is deleted
+        let alert = UIAlertController(
+          title: Strings.Sync.syncChainAlreadyDeletedAlertTitle,
+          message: Strings.Sync.syncChainAlreadyDeletedAlertDescription,
+          preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
+          // Leave sync chain should be called if there is deleted chain alert
+          // to reset sync and local preferences with observer
+          self.syncAPI.leaveSyncGroup()
+
+          controller.disableNavigationPrevention()
+          self.navigationController?.popViewController(animated: true)
+        })
+        
+        self.present(alert, animated: true, completion: nil)
+      }
     }
 
+    // In parallel set code words - request sync and setup complete
+    // should be called on brave-core side
     syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
-    syncAPI.requestSync()
-    syncAPI.setSetupComplete()
+    handleSyncSetupFailure()
   }
 }

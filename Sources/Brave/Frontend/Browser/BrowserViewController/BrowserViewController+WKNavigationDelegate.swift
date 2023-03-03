@@ -783,11 +783,11 @@ extension BrowserViewController {
       titleWeight: .semibold,
       titleSize: 21
     )
-    popup.addButton(title: Strings.openExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
+    popup.addButton(title: Strings.openExternalAppURLDontAllow) { () -> PopupViewDismissType in
       removeTabIfEmpty()
       return .flyDown
     }
-    popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
+    popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary) { () -> PopupViewDismissType in
       UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
       removeTabIfEmpty()
       return .flyDown

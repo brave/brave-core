@@ -124,6 +124,7 @@ public class BrowserViewController: UIViewController {
   var pageZoomBar: UIHostingController<PageZoomView>?
   private var pageZoomListener: NSObjectProtocol?
   private var openTabsModelStateListener: SendTabToSelfModelStateListener?
+  private var syncServiceStateListener: AnyObject?
   let collapsedURLBarView = CollapsedURLBarView()
 
   // Single data source used for all favorites vcs
@@ -361,6 +362,16 @@ public class BrowserViewController: UIViewController {
           }
         }
       })
+    
+    // Observer watching state change in sync chain
+    syncServiceStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
+      guard let self = self else { return }
+      // Observe Sync State in order to determine if the sync chain is deleted
+      // from another device - Clean local sync chain
+      if self.braveCore.syncAPI.shouldLeaveSyncGroup {
+        self.braveCore.syncAPI.leaveSyncGroup()
+      }
+    }
   }
 
   deinit {
