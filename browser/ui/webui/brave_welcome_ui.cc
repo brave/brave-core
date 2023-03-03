@@ -130,8 +130,7 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   void HandleGetDefaultBrowser(const base::Value::List& args);
   void SetLocalStateBooleanEnabled(const std::string& path,
                                    const base::Value::List& args);
-  void OnGetDefaultBrowser(const std::string& callback_id,
-                           shell_integration::DefaultWebClientState state,
+  void OnGetDefaultBrowser(shell_integration::DefaultWebClientState state,
                            const std::u16string& name);
   void SetP3AEnabled(const base::Value::List& args);
   void HandleOpenSettingsPage(const base::Value::List& args);
@@ -141,11 +140,18 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   int screen_number_ = 0;
   bool finished_ = false;
   bool skipped_ = false;
+  std::u16string default_browser_name_;
   raw_ptr<Profile> profile_ = nullptr;
   base::WeakPtrFactory<WelcomeDOMHandler> weak_ptr_factory_{this};
 };
 
-WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile) : profile_(profile) {}
+WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile) : profile_(profile) {
+  base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
+      GURL("https://brave.com"))
+      ->StartCheckIsDefaultAndGetDefaultClientName(
+          base::BindOnce(&WelcomeDOMHandler::OnGetDefaultBrowser,
+                         weak_ptr_factory_.GetWeakPtr()));
+}
 
 WelcomeDOMHandler::~WelcomeDOMHandler() {
   RecordP3AHistogram(screen_number_, finished_);
@@ -190,16 +196,11 @@ void WelcomeDOMHandler::HandleGetDefaultBrowser(const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
   AllowJavascript();
-
-  base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
-      GURL("https://brave.com"))
-      ->StartCheckIsDefaultAndGetDefaultClientName(
-          base::BindOnce(&WelcomeDOMHandler::OnGetDefaultBrowser,
-                         weak_ptr_factory_.GetWeakPtr(), callback_id));
+  ResolveJavascriptCallback(base::Value(callback_id),
+                            base::Value(default_browser_name_));
 }
 
 void WelcomeDOMHandler::OnGetDefaultBrowser(
-    const std::string& callback_id,
     shell_integration::DefaultWebClientState state,
     const std::u16string& name) {
   std::u16string browser_name = name;
@@ -210,8 +211,7 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
              l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_DEV)) {
     browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserDev));
   }
-  ResolveJavascriptCallback(base::Value(callback_id),
-                            base::Value(browser_name));
+  default_browser_name_ = browser_name;
 }
 
 void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
