@@ -13,9 +13,9 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/guid.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
@@ -172,8 +172,9 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
   const std::string* wallpaper_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 
-  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id,
-                                                         creative_instance_id);
+  view_counter_service_->BrandedWallpaperWillBeDisplayed(
+      wallpaper_id ? *wallpaper_id : "",
+      creative_instance_id ? *creative_instance_id : "");
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,

@@ -39,6 +39,7 @@ class FilecoinKeyring : public HDKeyring {
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
+  std::unique_ptr<HDKeyBase> DeriveAccount(uint32_t index) const override;
   std::string network_;
 };
 

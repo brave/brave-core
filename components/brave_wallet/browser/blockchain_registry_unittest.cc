@@ -14,6 +14,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
 using testing::ElementsAreArray;
 
 namespace brave_wallet {
@@ -456,49 +458,83 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   run_loop4.Run();
 }
 
-TEST(BlockchainRegistryUnitTest, GetBuyUrlWyre) {
+TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  base::RunLoop run_loop;
-  registry->GetBuyUrl(
-      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC", "99.99",
-      base::BindLambdaForTesting([&](const std::string& url,
-                                     const absl::optional<std::string>& error) {
-        EXPECT_EQ(
-            url,
-            "https://pay.sendwyre.com/"
-            "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&"
-            "amount=99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card");
-        EXPECT_FALSE(error);
+  std::vector<mojom::BlockchainToken> buy_tokens;
+  for (const auto& v : {GetWyreBuyTokens(), GetRampBuyTokens(),
+                        GetSardineBuyTokens(), GetTransakBuyTokens()}) {
+    buy_tokens.insert(buy_tokens.end(), v.begin(), v.end());
+  }
 
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  const char* chains[] = {
+      mojom::kMainnetChainId,          mojom::kPolygonMainnetChainId,
+      mojom::kAvalancheMainnetChainId, mojom::kBinanceSmartChainMainnetChainId,
+      mojom::kSolanaMainnet,           mojom::kCeloMainnetChainId,
+      mojom::kArbitrumMainnetChainId};
+
+  for (auto* chain : chains) {
+    std::vector<mojom::BlockchainTokenPtr> expected_tokens;
+    for (const auto& token : buy_tokens) {
+      if (token.chain_id == chain) {
+        expected_tokens.push_back(mojom::BlockchainToken::New(token));
+      }
+    }
+
+    base::RunLoop run_loop;
+    registry->GetProvidersBuyTokens(
+        {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
+         mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak,
+         mojom::OnRampProvider::kTransak /* test duplicate provider */},
+        chain,
+        base::BindLambdaForTesting(
+            [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+              EXPECT_EQ(expected_tokens, token_list) << chain;
+
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
 }
 
-TEST(BlockchainRegistryUnitTest, GetBuyUrlRamp) {
+TEST(BlockchainRegistryUnitTest, GetSellTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  base::RunLoop run_loop;
-  registry->GetBuyUrl(
-      mojom::OnRampProvider::kRamp, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC",
-      "55000000",  // 55 USDC
-      base::BindLambdaForTesting([&](const std::string& url,
-                                     const absl::optional<std::string>& error) {
-        EXPECT_EQ(url,
-                  "https://buy.ramp.network/"
-                  "?userAddress=0xdeadbeef&swapAsset=USDC&fiatValue=55000000"
-                  "&fiatCurrency=USD&hostApiKey="
-                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf");
-        EXPECT_FALSE(error);
+  // Get Ramp sell tokens
+  base::RunLoop run_loop1;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Ethereum");
+            run_loop1.Quit();
+          }));
+  run_loop1.Run();
 
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  base::RunLoop run_loop2;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kPolygonMainnetChainId,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Polygon");
+            run_loop2.Quit();
+          }));
+  run_loop2.Run();
+
+  base::RunLoop run_loop3;
+  registry->GetSellTokens(
+      mojom::OffRampProvider::kRamp, mojom::kSolanaMainnet,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            EXPECT_NE(token_list.size(), 0UL);
+            EXPECT_EQ(token_list[0]->name, "Solana");
+            run_loop3.Quit();
+          }));
+  run_loop3.Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworks) {
@@ -525,6 +561,23 @@ TEST(BlockchainRegistryUnitTest, GetPrepopulatedNetworksKnownOnesArePreferred) {
   auto found_networks = registry->GetPrepopulatedNetworks();
   EXPECT_EQ(2u, found_networks.size());
   EXPECT_EQ(found_networks[0]->chain_name, "Ethereum Mainnet");
+}
+
+TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
+  base::test::TaskEnvironment task_environment;
+  auto* registry = BlockchainRegistry::GetInstance();
+  TokenListMap token_list_map;
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  registry->UpdateTokenList(std::move(token_list_map));
+
+  // Loop twice to make sure getting the same list twice works
+  // For example, make sure nothing is std::move'd
+  for (size_t i = 0; i < 2; i++) {
+    token_list_map = registry->GetEthTokenListMap({mojom::kMainnetChainId});
+    EXPECT_EQ(token_list_map.size(), 1UL);
+    EXPECT_EQ(token_list_map[mojom::kMainnetChainId].size(), 2UL);
+  }
 }
 
 }  // namespace brave_wallet

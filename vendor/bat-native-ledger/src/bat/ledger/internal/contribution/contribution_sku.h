@@ -28,8 +28,8 @@ class ContributionSKU {
                         const std::string& wallet_type,
                         ledger::LegacyResultCallback callback);
 
-  void Merchant(const mojom::SKUTransaction& transaction,
-                client::TransactionCallback callback);
+  void Merchant(const mojom::SKUTransaction&,
+                client::LegacyResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution,
              ledger::LegacyResultCallback callback);
@@ -64,15 +64,14 @@ class ContributionSKU {
                       ledger::LegacyResultCallback callback);
 
   void GetUnblindedTokens(std::vector<mojom::UnblindedTokenPtr> list,
-                          const mojom::SKUTransaction& transaction,
-                          client::TransactionCallback callback);
+                          const mojom::SKUTransaction&,
+                          client::LegacyResultCallback);
 
-  void GetOrderMerchant(mojom::SKUOrderPtr order,
-                        const credential::CredentialsRedeem& redeem,
-                        client::TransactionCallback callback);
+  void GetOrderMerchant(mojom::SKUOrderPtr,
+                        const credential::CredentialsRedeem&,
+                        client::LegacyResultCallback);
 
-  void OnRedeemTokens(const mojom::Result result,
-                      client::TransactionCallback callback);
+  void OnRedeemTokens(mojom::Result, client::LegacyResultCallback);
 
   void OnOrder(mojom::SKUOrderPtr order,
                std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,

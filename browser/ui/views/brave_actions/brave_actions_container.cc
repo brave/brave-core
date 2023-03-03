@@ -13,8 +13,8 @@
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_today/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -64,7 +64,8 @@ void BraveActionsContainer::Init() {
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
-      brave_rewards::prefs::kShowButton, browser_->profile()->GetPrefs(),
+      brave_rewards::prefs::kShowLocationBarButton,
+      browser_->profile()->GetPrefs(),
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
           base::Unretained(this)));
@@ -75,7 +76,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
     return false;
   }
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kShowButton);
+  return prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton);
 }
 
 void BraveActionsContainer::AddActionViewForShields() {

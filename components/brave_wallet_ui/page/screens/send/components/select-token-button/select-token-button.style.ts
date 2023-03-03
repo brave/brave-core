@@ -53,14 +53,14 @@ export const ButtonIcon = styled(Icon)`
 `
 
 export const IconsWrapper = styled.div<{
-  marginRight?: string
+  marginRight?: number
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   position: relative;
-  margin-right: ${(p) => p.marginRight || '6px'};
+  margin-right: ${(p) => p.marginRight || 6}px;
 `
 
 export const ButtonText = styled(Text) <{ isNFT: boolean }>`

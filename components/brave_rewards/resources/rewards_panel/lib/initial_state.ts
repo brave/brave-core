@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { HostState } from './interfaces'
+import { optional } from '../../shared/lib/optional'
 
 export function getInitialState (): HostState {
   return {
@@ -10,7 +12,7 @@ export function getInitialState (): HostState {
     loading: true,
     requestedView: null,
     rewardsEnabled: false,
-    balance: 0,
+    balance: optional<number>(),
     settings: {
       adsEnabled: false,
       adsPerHour: 0,

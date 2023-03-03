@@ -57,8 +57,11 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
         new BraveVpnDnsObserverService(local_state(), pref_service()));
     dns_observer_service_->SetVPNNotificationCallbackForTesting(
         base::DoNothing());
+    SetDNSHelperLive(false);
   }
-
+  void SetDNSHelperLive(bool value) {
+    dns_observer_service_->SetDNSHelperLiveForTesting(value);
+  }
   void ResetDnsObserverService() { dns_observer_service_.reset(); }
 
   void TearDown() override {
@@ -136,8 +139,7 @@ class BraveVpnDnsObserverServiceUnitTest : public testing::Test {
   }
 
   void SetManagedMode(const std::string& value) {
-    local_state_.SetManagedPref(::prefs::kDnsOverHttpsMode,
-                                std::make_unique<base::Value>(value));
+    local_state_.SetManagedPref(::prefs::kDnsOverHttpsMode, base::Value(value));
   }
 
  private:
@@ -387,6 +389,16 @@ TEST_F(BraveVpnDnsObserverServiceUnitTest, FeatureDisabledWhenVPNConnected) {
   // Do not override anymore because the feature is disabled.
   ExpectDNSMode(SecureDnsConfig::kModeOff, "");
   EXPECT_FALSE(local_state()->GetString(::prefs::kBraveVpnDnsConfig).empty());
+}
+
+TEST_F(BraveVpnDnsObserverServiceUnitTest, HelperServerLiveWhenVPNConnected) {
+  SetDNSHelperLive(true);
+  // DNS mode was set to off by user and the vpn dns observer feature
+  // is enabled by default.
+  SetDNSMode(SecureDnsConfig::kModeOff, "");
+  FireBraveVPNStateChange(mojom::ConnectionState::CONNECTED);
+  // DNS mode was not overriden.
+  ExpectDNSMode(SecureDnsConfig::kModeOff, "");
 }
 
 }  // namespace brave_vpn

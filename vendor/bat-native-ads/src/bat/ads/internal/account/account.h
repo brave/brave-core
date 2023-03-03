@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
-#include <functional>
 #include <memory>
 #include <string>
 
@@ -57,7 +56,8 @@ class Account final : public PrefManagerObserver,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
-  void SetWallet(const std::string& id, const std::string& seed);
+  void SetWallet(const std::string& payment_id,
+                 const std::string& recovery_seed);
   const WalletInfo& GetWallet() const;
 
   void Deposit(const std::string& creative_instance_id,
@@ -71,10 +71,20 @@ class Account final : public PrefManagerObserver,
  private:
   void MaybeGetIssuers() const;
 
+  void OnGetDepositValue(const std::string& creative_instance_id,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
+                         bool success,
+                         double value) const;
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
                       double value) const;
+  void OnDepositProcessed(const std::string& creative_instance_id,
+                          const AdType& ad_type,
+                          const ConfirmationType& confirmation_type,
+                          bool success,
+                          const TransactionInfo& transaction) const;
   void FailedToProcessDeposit(const std::string& creative_instance_id,
                               const AdType& ad_type,
                               const ConfirmationType& confirmation_type) const;
@@ -82,7 +92,9 @@ class Account final : public PrefManagerObserver,
   void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
 
+  void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
+  void OnRewardsReset(bool success) const;
 
   void MaybeResetIssuersAndConfirmations();
 

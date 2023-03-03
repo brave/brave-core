@@ -522,4 +522,43 @@ TEST(EthCallDataBuilderTest, DnsEncode) {
 
 }  // namespace ens
 
+namespace balance_scanner {
+
+TEST(EthCallDataBuilderTest, TokensBalance) {
+  // Invalid owner address is invalid
+  ASSERT_FALSE(
+      TokensBalance("invalid", {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF"}));
+
+  // Valid owner address, invalid contract address is invalid
+  ASSERT_FALSE(
+      TokensBalance("0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5", {"invalid"}));
+
+  // Single token contract address supplied
+  absl::optional<std::string> data;
+  data = TokensBalance("0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961",
+                       {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF"});
+  ASSERT_TRUE(data);
+  EXPECT_EQ(
+      data.value(),
+      "0xe5da1b68000000000000000000000000B4B2802129071b2B9eBb8cBB01EA1E4D14B349"
+      "610000000000000000000000000000000000000000000000000000000000000040000000"
+      "000000000000000000000000000000000000000000000000000000000100000000000000"
+      "00000000000D8775F648430679A709E98d2b0Cb6250d2887EF");
+
+  // Multiple token contract addresses supplied
+  data = TokensBalance("0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961",
+                       {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+                        "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"});
+  ASSERT_TRUE(data);
+  EXPECT_EQ(
+      data.value(),
+      "0xe5da1b68000000000000000000000000B4B2802129071b2B9eBb8cBB01EA1E4D14B349"
+      "610000000000000000000000000000000000000000000000000000000000000040000000"
+      "000000000000000000000000000000000000000000000000000000000200000000000000"
+      "00000000000D8775F648430679A709E98d2b0Cb6250d2887EF0000000000000000000000"
+      "00A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
+}
+
+}  // namespace balance_scanner
+
 }  // namespace brave_wallet

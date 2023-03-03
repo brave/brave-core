@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -66,6 +66,8 @@ class VerticalTabStripRegionView : public views::View,
 
   // This should be called when height of this view or tab strip changes.
   void UpdateNewTabButtonVisibility();
+
+  TabSearchBubbleHost* GetTabSearchBubbleHost();
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;

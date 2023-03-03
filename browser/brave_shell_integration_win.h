@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 #define BRAVE_BROWSER_BRAVE_SHELL_INTEGRATION_WIN_H_
 
-#include "base/callback.h"
-#include "base/callback_helpers.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 
 class Profile;
 

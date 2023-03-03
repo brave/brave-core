@@ -67,7 +67,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
 @interface FaviconDriver () {
   std::unique_ptr<FaviconDriverObserver> driver_observer_;
 }
-@property(nonatomic, weak, readonly) WebState* webState;
+@property(nonatomic, strong, readonly) WebState* webState;
 @end
 
 @implementation FaviconDriver
@@ -154,7 +154,8 @@ void FaviconDriverObserver::OnFaviconUpdated(
   if (!urls.empty()) {
     driver_observer_ = std::make_unique<FaviconDriverObserver>(
         base::BindRepeating(^(const GURL& icon_url, const gfx::Image& icon) {
-          callback(net::NSURLWithGURL(icon_url), icon.ToUIImage());
+          callback(net::NSURLWithGURL(icon_url),
+                   icon.IsEmpty() ? nullptr : icon.ToUIImage());
         }));
     driver->AddObserver(driver_observer_.get());
 

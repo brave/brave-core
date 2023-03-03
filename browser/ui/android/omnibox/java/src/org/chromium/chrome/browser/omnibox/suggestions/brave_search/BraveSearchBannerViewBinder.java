@@ -38,7 +38,8 @@ public class BraveSearchBannerViewBinder {
         boolean isMaybeLaterPressed =
                 OmniboxPrefManager.getInstance().isBraveSearchPromoBannerMaybeLater();
         if (isMaybeLaterPressed) {
-            btnNegative.setText(contentView.getResources().getString(R.string.dismiss));
+            btnNegative.setText(
+                    contentView.getResources().getString(R.string.dismiss_search_promo));
         } else {
             btnNegative.setText(contentView.getResources().getString(R.string.maybe_later));
         }

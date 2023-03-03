@@ -16,7 +16,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signed_token_unittest_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/signing_key_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -24,7 +24,7 @@ namespace ads::privacy::cbr {
 
 namespace {
 constexpr char kDLEQProofBase64[] =
-    R"~(8vp0QItdO24oqOZB8m8rCB85VUftBhnpZ8kDovYP9AvvlaEpwDFbTi72B1ZEJmumS5TazlWlLBlI4HrWDCMvDg==)~";
+    R"(8vp0QItdO24oqOZB8m8rCB85VUftBhnpZ8kDovYP9AvvlaEpwDFbTi72B1ZEJmumS5TazlWlLBlI4HrWDCMvDg==)";
 }  // namespace
 
 TEST(BatAdsDLEQProofTest, FailToInitialize) {

@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_SERVICE_IMPL_H_
 
-#include <memory>
-
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
@@ -40,13 +38,11 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void SetRetryInterval(int32_t interval) override;
   void SetTesting() override;
   void SetStateMigrationTargetVersionForTesting(int32_t version) override;
-  void SetGeminiRetries(int32_t retries) override;
 
   void GetEnvironment(GetEnvironmentCallback callback) override;
   void GetDebug(GetDebugCallback callback) override;
   void GetReconcileInterval(GetReconcileIntervalCallback callback) override;
   void GetRetryInterval(GetRetryIntervalCallback callback) override;
-  void GetGeminiRetries(GetGeminiRetriesCallback callback) override;
 
  private:
   mojo::Receiver<mojom::BatLedgerService> receiver_;

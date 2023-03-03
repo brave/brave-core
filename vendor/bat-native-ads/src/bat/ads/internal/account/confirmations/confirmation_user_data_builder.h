@@ -23,6 +23,9 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
+  void OnGetConversion(UserDataBuilderCallback callback,
+                       base::Value::Dict user_data) const;
+
   base::Time created_at_;
   std::string creative_instance_id_;
   ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;

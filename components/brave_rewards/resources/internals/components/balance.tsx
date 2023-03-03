@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -6,9 +7,12 @@ import * as React from 'react'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { LoadingIcon } from '../../shared/components/icons/loading_icon'
+import * as mojom from '../../shared/lib/mojom'
 
 interface Props {
-  info: RewardsInternals.Balance
+  balance: RewardsInternals.Balance
+  externalWallet: RewardsInternals.ExternalWallet
 }
 
 const getWalletName = (walletKey: string) => {
@@ -30,17 +34,31 @@ const getWalletName = (walletKey: string) => {
   return 'Missing wallet'
 }
 
-const getWalletBalance = (wallets: Record<string, number>) => {
+const getBalances = (
+  balances: Record<string, number>,
+  externalWallet: RewardsInternals.ExternalWallet
+) => {
+  const walletKeys = Object.keys(balances)
+
+  const getBalance = (wallet: string) => {
+    return <div key={'wallet-' + wallet}>
+      {getWalletName(wallet)}: {walletKeys.includes(wallet)
+        ? balances[wallet] + ' ' + getLocale('bat')
+        : <><LoadingIcon />{getLocale('loading')}</>}
+    </div>
+  }
+
   let items = []
-  for (const key in wallets) {
-    items.push(<div key={'wallet-' + key}> {getWalletName(key)}: {wallets[key]} {getLocale('bat')} </div>)
+  items.push(getBalance('blinded'))
+  if (externalWallet.status === mojom.WalletStatus.kConnected) {
+    items.push(getBalance(externalWallet.type))
   }
 
   return items
 }
 
 export const Balance = (props: Props) => {
-  if (!props.info) {
+  if (!props.balance) {
     return null
   }
 
@@ -48,8 +66,8 @@ export const Balance = (props: Props) => {
     <>
       <h3>{getLocale('balanceInfo')}</h3>
       <div>
-        {getLocale('totalBalance')} {props.info.total} {getLocale('bat')}
+        {getLocale('totalBalance')} {props.balance.total} {getLocale('bat')}
       </div>
-      {getWalletBalance(props.info.wallets)}
+      {getBalances(props.balance.wallets, props.externalWallet)}
     </>)
 }

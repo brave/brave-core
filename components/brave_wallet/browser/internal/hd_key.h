@@ -22,6 +22,18 @@ namespace brave_wallet {
 
 using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
 
+enum class ExtendedKeyVersion {
+  // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
+  kXprv = 0x0488ade4,
+  kXpub = 0x0488b21e,
+  // https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki#extended-key-version
+  kYprv = 0x049d7878,
+  kYpub = 0x049d7cb2,
+  // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#extended-key-version
+  kZprv = 0x04b2430c,
+  kZpub = 0x04b24746,
+};
+
 // This class implement basic functionality of bip32 spec
 class HDKey : public HDKeyBase {
  public:
@@ -38,15 +50,19 @@ class HDKey : public HDKeyBase {
   static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
                                                   const std::string& json);
 
-  // base58 encoded of hash160 of private key
-  std::string GetPrivateExtendedKey() const;
+  std::string GetPath() const override;
+
+  std::string GetPrivateExtendedKey(
+      ExtendedKeyVersion version = ExtendedKeyVersion::kXprv) const;
   std::string EncodePrivateKeyForExport() const override;
   std::vector<uint8_t> GetPrivateKeyBytes() const override;
   // TODO(darkdh): For exporting private key as keystore file
   // std::string GetPrivateKeyinV3UTC() const;
 
-  // base58 encoded of hash160 of public key
-  std::string GetPublicExtendedKey() const;
+  std::vector<uint8_t> GetPublicKeyBytes() const override;
+  std::string GetPublicExtendedKey(
+      ExtendedKeyVersion version = ExtendedKeyVersion::kXpub) const;
+  std::string GetSegwitAddress() const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
   absl::optional<std::vector<uint8_t>>
@@ -56,10 +72,10 @@ class HDKey : public HDKeyBase {
       const std::vector<uint8_t>& ephemeral_public_key,
       const std::vector<uint8_t>& ciphertext) const;
 
-  // index should be 0 to 2^32
-  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
-  // If anything failed, nullptr will be returned
-  std::unique_ptr<HDKeyBase> DeriveChild(uint32_t index) override;
+  std::unique_ptr<HDKeyBase> DeriveNormalChild(uint32_t index) override;
+  std::unique_ptr<HDKeyBase> DeriveHardenedChild(uint32_t index) override;
+
+  // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
   // path format: m/[n|n']*/[n|n']*...
   // n: 0 to 2^31-1 (normal derivation)
   // n': n + 2^31 (harden derivation)
@@ -104,10 +120,16 @@ class HDKey : public HDKeyBase {
   // value must be 33 bytes valid public key (compressed)
   void SetPublicKey(const std::vector<uint8_t>& value);
 
-  void GeneratePublicKey();
-  const std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input);
-  std::string Serialize(uint32_t version, base::span<const uint8_t> key) const;
+  // index should be 0 to 2^32
+  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
+  // If anything failed, nullptr will be returned
+  std::unique_ptr<HDKey> DeriveChild(uint32_t index);
 
+  void GeneratePublicKey();
+  std::string Serialize(ExtendedKeyVersion version,
+                        base::span<const uint8_t> key) const;
+
+  std::string path_;
   uint8_t depth_ = 0;
   uint32_t fingerprint_ = 0;
   uint32_t parent_fingerprint_ = 0;

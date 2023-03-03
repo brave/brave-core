@@ -3,15 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// types
 import {
   AppsListType,
   BraveWallet,
-  WalletAccountType
+  SerializableTransactionInfo,
+  WalletAccountType,
+  AssetPriceWithContractAndChainId
 } from '../../constants/types'
+
+// mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 
 export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   return {
+    chainId: '1337',
     id: '1',
     fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
     txHash: '',
@@ -154,7 +160,7 @@ export const mockAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 export const mockSolanaAccount: WalletAccountType = {
@@ -169,7 +175,7 @@ export const mockSolanaAccount: WalletAccountType = {
   coin: BraveWallet.CoinType.SOL,
   accountType: 'Primary',
   tokenBalanceRegistry: {},
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 export const mockFilecoinAccount: WalletAccountType = {
@@ -185,24 +191,30 @@ export const mockFilecoinAccount: WalletAccountType = {
   keyringId: BraveWallet.FILECOIN_TESTNET_KEYRING_ID
 }
 
-export const mockAssetPrices: BraveWallet.AssetPrice[] = [
+export const mockAssetPrices: AssetPriceWithContractAndChainId[] = [
   {
     fromAsset: 'ETH',
     price: '4000',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0x1',
+    chainId: 'ETH'
   },
   {
     fromAsset: 'DOG',
     price: '100',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0xdog',
+    chainId: '0x1'
   },
   {
     fromAsset: mockBasicAttentionToken.symbol,
     price: '0.88',
     toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue'
+    assetTimeframeChange: 'mockValue',
+    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+    chainId: '0x1'
   }
 ]
 
@@ -308,65 +320,86 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
 }
 
 // BraveWallet.TransactionInfo (selectedPendingTransaction)
-export const mockSolDappSignAndSendTransactionRequest = {
-  'id': 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
-  'fromAddress': mockSolanaAccount.address,
-  'txHash': '',
-  'txDataUnion': {
-    'ethTxData': undefined,
-    'ethTxData1559': undefined,
-    'filTxData': undefined,
-    'solanaTxData': {
-      'recentBlockhash': 'C115cyMDVoGGYNd4r8vFy5qPJEUdoJQQCXMYYKQTQimn',
-      'lastValidBlockHeight': 0 as unknown as bigint,
-      'feePayer': mockSolanaAccount.address,
-      'toWalletAddress': '',
-      'splTokenMintAddress': '',
-      'lamports': 0 as unknown as bigint,
-      'amount': 0 as unknown as bigint,
-      'txType': 11,
-      'instructions': [
+export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionInfo = {
+  chainId: '0x67',
+  id: 'e1eae32d-5bc2-40ac-85e5-2a4a5fbe8a5f',
+  fromAddress: mockSolanaAccount.address,
+  txHash: '',
+  txDataUnion: {
+    ethTxData: undefined,
+    ethTxData1559: undefined,
+    filTxData: undefined,
+    solanaTxData: {
+      recentBlockhash: 'C115cyMDVoGGYNd4r8vFy5qPJEUdoJQQCXMYYKQTQimn',
+      lastValidBlockHeight: '0',
+      feePayer: mockSolanaAccount.address,
+      toWalletAddress: '',
+      splTokenMintAddress: '',
+      lamports: '0',
+      amount: '0',
+      txType: 11,
+      instructions: [
         {
-          'programId': '11111111111111111111111111111111',
-          'accountMetas': [
+          programId: '11111111111111111111111111111111',
+          accountMetas: [
             {
-              'pubkey': mockSolanaAccount.address,
-              'isSigner': true,
-              'isWritable': true
+              pubkey: mockSolanaAccount.address,
+              isSigner: true,
+              isWritable: true
             },
             {
-              'pubkey': mockSolanaAccount.address,
-              'isSigner': true,
-              'isWritable': true
+              pubkey: mockSolanaAccount.address,
+              isSigner: true,
+              isWritable: true
             }
           ],
-          'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
-          'decodedData': undefined
+          data: [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+          decodedData: {
+            accountParams: [
+              {
+                localizedName: 'From',
+                name: BraveWallet.FROM_ACCOUNT
+              },
+              {
+                localizedName: 'To',
+                name: BraveWallet.TO_ACCOUNT
+              }
+            ],
+            instructionType: BraveWallet.SolanaSystemInstruction.kTransfer,
+            params: [
+              {
+                localizedName: 'lamports',
+                name: BraveWallet.LAMPORTS,
+                value: '1',
+                type: BraveWallet.SolanaInstructionParamType.kUint64
+              }
+            ]
+          }
         }
       ],
-      'sendOptions': undefined,
-      'signTransactionParam': undefined
+      sendOptions: undefined,
+      signTransactionParam: undefined
     }
   },
-  'txStatus': 0,
-  'txType': 11,
-  'txParams': [],
-  'txArgs': [],
-  'createdTime': { 'microseconds': 1654540245386000 as unknown as bigint },
-  'submittedTime': { 'microseconds': 0 as unknown as bigint },
-  'confirmedTime': { 'microseconds': 0 as unknown as bigint },
-  'originInfo': {
-    'origin': {
-      'scheme': 'https',
-      'host': 'f40y4d.csb.app',
-      'port': 443,
-      'nonceIfOpaque': undefined
+  txStatus: 0,
+  txType: 11,
+  txParams: [],
+  txArgs: [],
+  createdTime: { microseconds: 1654540245386000 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: {
+    origin: {
+      scheme: 'https',
+      host: 'f40y4d.csb.app',
+      port: 443,
+      nonceIfOpaque: undefined
     },
-    'originSpec': 'https://f40y4d.csb.app',
-    'eTldPlusOne': 'csb.app'
+    originSpec: 'https://f40y4d.csb.app',
+    eTldPlusOne: 'csb.app'
   },
-  'groupId': undefined
-} as BraveWallet.TransactionInfo
+  groupId: undefined
+}
 
 export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransactionsRequest = {
   'originInfo': {

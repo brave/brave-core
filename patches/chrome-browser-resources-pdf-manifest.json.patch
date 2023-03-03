@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index dbc6ccd604abb64b62fe7533d1da5ca3e05cc1e1..32394e3106b641c1f14a4f26a0b1a21346184f0d 100644
+index f355f92ac2f37d2ea2f947f84c2d3a3b7e604263..86fba0c85bdbb77a5fa0f4b7802ef22e8d8f0dd2 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
 @@ -8,6 +8,7 @@
@@ -10,7 +10,7 @@ index dbc6ccd604abb64b62fe7533d1da5ca3e05cc1e1..32394e3106b641c1f14a4f26a0b1a213
      "chrome://resources/",
      "chrome://webui-test/",
      "contentSettings",
-@@ -19,6 +20,6 @@
+@@ -20,6 +21,6 @@
    "mime_types": [
      "application/pdf"
    ],

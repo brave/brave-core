@@ -149,6 +149,7 @@ class RewardsDOMHandler
 
   void GetEnabledInlineTippingPlatforms(const base::Value::List& args);
   void SetInlineTippingPlatformEnabled(const base::Value::List& args);
+  void SetInlineTipsEnabled(const base::Value::List& args);
 
   void GetPendingContributions(const base::Value::List& args);
   void OnGetPendingContributions(
@@ -436,6 +437,10 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::SetInlineTippingPlatformEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "brave_rewards.setInlineTipsEnabled",
+      base::BindRepeating(&RewardsDOMHandler::SetInlineTipsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "brave_rewards.getPendingContributions",
       base::BindRepeating(&RewardsDOMHandler::GetPendingContributions,
                           base::Unretained(this)));
@@ -564,6 +569,10 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kInlineTipButtonsEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
   pref_change_registrar_.Add(
       brave_rewards::prefs::kInlineTipTwitterEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
@@ -698,8 +707,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   }
   data.Set("vbatExpired", vbat_expired);
 
-  CallJavascriptFunction("brave_rewards.rewardsParameters",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.rewardsParameters", data);
 }
 
 void RewardsDOMHandler::OnRewardsInitialized(
@@ -758,8 +766,7 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
   values.Set("contributionNonVerified", properties->contribution_non_verified);
   values.Set("contributionVideos", properties->contribution_videos);
 
-  CallJavascriptFunction("brave_rewards.autoContributeProperties",
-                         base::Value(std::move(values)));
+  CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
 }
 
 void RewardsDOMHandler::OnFetchPromotions(
@@ -787,8 +794,7 @@ void RewardsDOMHandler::OnFetchPromotions(
   dict.Set("result", static_cast<int>(result));
   dict.Set("promotions", std::move(promotions));
 
-  CallJavascriptFunction("brave_rewards.promotions",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.promotions", dict);
 }
 
 void RewardsDOMHandler::FetchPromotions(const base::Value::List& args) {
@@ -806,20 +812,20 @@ void RewardsDOMHandler::ClaimPromotion(const base::Value::List& args) {
 
   AllowJavascript();
 
-  const std::string promotion_id = args[0].GetString();
+  const base::Value& promotion_id = args[0];
 
 #if !BUILDFLAG(IS_ANDROID)
   if (auto* coordinator = GetPanelCoordinator(web_ui()->GetWebContents())) {
-    coordinator->ShowGrantCaptcha(promotion_id);
+    coordinator->ShowGrantCaptcha(promotion_id.GetString());
   }
 #else
   // Notify the UI that the claim process for this promotion has started.
-  CallJavascriptFunction("brave_rewards.promotionClaimStarted",
-                         base::Value(promotion_id));
+  CallJavascriptFunction("brave_rewards.promotionClaimStarted", promotion_id);
 
   // No need for a callback. The UI receives "brave_rewards.promotionFinish".
   brave_rewards::AttestPromotionCallback callback = base::DoNothing();
-  rewards_service_->ClaimPromotion(promotion_id, std::move(callback));
+  rewards_service_->ClaimPromotion(promotion_id.GetString(),
+                                   std::move(callback));
 #endif
 }
 
@@ -847,8 +853,7 @@ void RewardsDOMHandler::OnPromotionFinished(
   finish.Set("result", static_cast<int>(result));
   finish.Set("promotion", std::move(promotion_dict));
 
-  CallJavascriptFunction("brave_rewards.promotionFinish",
-                         base::Value(std::move(finish)));
+  CallJavascriptFunction("brave_rewards.promotionFinish", finish);
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
@@ -928,8 +933,7 @@ void RewardsDOMHandler::OnNotificationDeleted(
     finish.Set("expiryTime", 0);
     finish.Set("probi", "0");
 
-    CallJavascriptFunction("brave_rewards.grantFinish",
-                           base::Value(std::move(finish)));
+    CallJavascriptFunction("brave_rewards.grantFinish", finish);
   }
 #endif
 }
@@ -1045,8 +1049,7 @@ void RewardsDOMHandler::OnPublisherList(
     publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.contributeList",
-                         base::Value(std::move(publishers)));
+  CallJavascriptFunction("brave_rewards.contributeList", publishers);
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
@@ -1067,8 +1070,7 @@ void RewardsDOMHandler::OnExcludedSiteList(
     publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.excludedList",
-                         base::Value(std::move(publishers)));
+  CallJavascriptFunction("brave_rewards.excludedList", publishers);
 }
 
 void RewardsDOMHandler::OnGetContributionAmount(double amount) {
@@ -1103,8 +1105,7 @@ void RewardsDOMHandler::OnReconcileComplete(
   complete.Set("result", static_cast<int>(result));
   complete.Set("type", static_cast<int>(type));
 
-  CallJavascriptFunction("brave_rewards.reconcileComplete",
-                         base::Value(std::move(complete)));
+  CallJavascriptFunction("brave_rewards.reconcileComplete", complete);
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::Value::List& args) {
@@ -1146,8 +1147,7 @@ void RewardsDOMHandler::OnGetRecurringTips(
     publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.recurringTips",
-                         base::Value(std::move(publishers)));
+  CallJavascriptFunction("brave_rewards.recurringTips", publishers);
 }
 
 void RewardsDOMHandler::OnGetOneTimeTips(
@@ -1172,8 +1172,7 @@ void RewardsDOMHandler::OnGetOneTimeTips(
     publishers.Append(std::move(publisher));
   }
 
-  CallJavascriptFunction("brave_rewards.currentTips",
-                         base::Value(std::move(publishers)));
+  CallJavascriptFunction("brave_rewards.currentTips", publishers);
 }
 
 void RewardsDOMHandler::GetOneTimeTips(const base::Value::List& args) {
@@ -1229,8 +1228,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   }
 
   ads_data.Set("subdivisions", std::move(subdivisions));
-  CallJavascriptFunction("brave_rewards.adsData",
-                         base::Value(std::move(ads_data)));
+  CallJavascriptFunction("brave_rewards.adsData", ads_data);
 }
 
 void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
@@ -1255,8 +1253,7 @@ void RewardsDOMHandler::OnGetAdsHistory(base::Value::List ads_history) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.adsHistory",
-                         base::Value(std::move(ads_history)));
+  CallJavascriptFunction("brave_rewards.adsHistory", ads_history);
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
@@ -1284,8 +1281,7 @@ void RewardsDOMHandler::OnToggleAdThumbUp(base::Value::Dict dict) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", dict);
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
@@ -1313,8 +1309,7 @@ void RewardsDOMHandler::OnToggleAdThumbDown(base::Value::Dict dict) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", dict);
 }
 
 void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
@@ -1343,8 +1338,7 @@ void RewardsDOMHandler::OnToggleAdOptIn(const std::string& category,
   base::Value::Dict value;
   value.Set("category", category);
   value.Set("action", action);
-  CallJavascriptFunction("brave_rewards.onToggleAdOptIn",
-                         base::Value(std::move(value)));
+  CallJavascriptFunction("brave_rewards.onToggleAdOptIn", value);
 }
 
 void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
@@ -1373,8 +1367,7 @@ void RewardsDOMHandler::OnToggleAdOptOut(const std::string& category,
   base::Value::Dict value;
   value.Set("category", category);
   value.Set("action", action);
-  CallJavascriptFunction("brave_rewards.onToggleAdOptOut",
-                         base::Value(std::move(value)));
+  CallJavascriptFunction("brave_rewards.onToggleAdOptOut", value);
 }
 
 void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
@@ -1402,8 +1395,7 @@ void RewardsDOMHandler::OnToggleSavedAd(base::Value::Dict dict) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleSavedAd",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.onToggleSavedAd", dict);
 }
 
 void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
@@ -1431,8 +1423,7 @@ void RewardsDOMHandler::OnToggleFlaggedAd(base::Value::Dict dict) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", dict);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
@@ -1525,8 +1516,7 @@ void RewardsDOMHandler::OnGetStatement(ads::mojom::StatementInfoPtr statement) {
   dict.Set("adsEarningsThisMonth", statement->earnings_this_month);
   dict.Set("adsEarningsLastMonth", statement->earnings_last_month);
 
-  CallJavascriptFunction("brave_rewards.statement",
-                         base::Value(std::move(dict)));
+  CallJavascriptFunction("brave_rewards.statement", dict);
 }
 
 void RewardsDOMHandler::OnStatementChanged(
@@ -1578,21 +1568,28 @@ void RewardsDOMHandler::GetEnabledInlineTippingPlatforms(
   auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value::List list;
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled))
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled)) {
+    list.Append("enabled");
+  }
+
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled)) {
     list.Append("github");
+  }
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled))
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled)) {
     list.Append("reddit");
+  }
 
-  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled))
+  if (prefs->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled)) {
     list.Append("twitter");
+  }
 
-  CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms",
-                         base::Value(std::move(list)));
+  CallJavascriptFunction("brave_rewards.enabledInlineTippingPlatforms", list);
 }
 
 void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
     const base::Value::List& args) {
+  CHECK_EQ(2U, args.size());
   AllowJavascript();
 
   std::string key = args[0].GetString();
@@ -1601,6 +1598,15 @@ void RewardsDOMHandler::SetInlineTippingPlatformEnabled(
   if (rewards_service_) {
     rewards_service_->SetInlineTippingPlatformEnabled(key, value == "true");
   }
+}
+
+void RewardsDOMHandler::SetInlineTipsEnabled(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  AllowJavascript();
+
+  bool enabled = args[0].GetBool();
+  auto* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  prefs->SetBoolean(brave_rewards::prefs::kInlineTipButtonsEnabled, enabled);
 }
 
 void RewardsDOMHandler::GetPendingContributions(const base::Value::List& args) {
@@ -1637,8 +1643,7 @@ void RewardsDOMHandler::OnGetPendingContributions(
     contributions.Append(std::move(contribution));
   }
 
-  CallJavascriptFunction("brave_rewards.pendingContributions",
-                         base::Value(std::move(contributions)));
+  CallJavascriptFunction("brave_rewards.pendingContributions", contributions);
 }
 
 void RewardsDOMHandler::RemovePendingContribution(
@@ -1697,7 +1702,7 @@ void RewardsDOMHandler::OnFetchBalance(const ledger::mojom::Result result,
   base::Value::Dict data;
   data.Set("status", static_cast<int>(result));
   data.Set("balance", std::move(balance_value));
-  CallJavascriptFunction("brave_rewards.balance", base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.balance", data);
 }
 
 void RewardsDOMHandler::FetchBalance(const base::Value::List& args) {
@@ -1742,8 +1747,7 @@ void RewardsDOMHandler::OnGetExternalWallet(
     data.Set("error", static_cast<int>(result.error()));
   }
 
-  CallJavascriptFunction("brave_rewards.onGetExternalWallet",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.onGetExternalWallet", data);
 }
 
 void RewardsDOMHandler::ConnectExternalWallet(const base::Value::List& args) {
@@ -1775,8 +1779,7 @@ void RewardsDOMHandler::OnConnectExternalWallet(
     data.Set("error", static_cast<int>(result.error()));
   }
 
-  CallJavascriptFunction("brave_rewards.onConnectExternalWallet",
-                         std::move(data));
+  CallJavascriptFunction("brave_rewards.onConnectExternalWallet", data);
 }
 
 void RewardsDOMHandler::OnExternalWalletLoggedOut() {
@@ -1838,8 +1841,7 @@ void RewardsDOMHandler::OnGetBalanceReport(
   data.Set("year", static_cast<int>(year));
   data.Set("report", std::move(report_base));
 
-  CallJavascriptFunction("brave_rewards.balanceReport",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.balanceReport", data);
 }
 
 void RewardsDOMHandler::GetBalanceReport(const base::Value::List& args) {
@@ -1923,8 +1925,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
 
   data.Set("report", std::move(report_base));
 
-  CallJavascriptFunction("brave_rewards.monthlyReport",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.monthlyReport", data);
 }
 
 void RewardsDOMHandler::GetMonthlyReport(const base::Value::List& args) {
@@ -1948,11 +1949,10 @@ void RewardsDOMHandler::OnGetAllMonthlyReportIds(
     const std::vector<std::string>& ids) {
   base::Value::List list;
   for (const auto& item : ids) {
-    list.Append(base::Value(item));
+    list.Append(item);
   }
 
-  CallJavascriptFunction("brave_rewards.monthlyReportIds",
-                         base::Value(std::move(list)));
+  CallJavascriptFunction("brave_rewards.monthlyReportIds", list);
 }
 
 void RewardsDOMHandler::GetAllMonthlyReportIds(const base::Value::List& args) {
@@ -2031,8 +2031,7 @@ void RewardsDOMHandler::GetOnboardingStatus(const base::Value::List& args) {
   base::Value::Dict data;
   data.Set("showOnboarding",
            !profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled));
-  CallJavascriptFunction("brave_rewards.onboardingStatus",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.onboardingStatus", data);
 }
 
 void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
@@ -2062,8 +2061,7 @@ void RewardsDOMHandler::GetExternalWalletProviders(
     data.Append(provider);
   }
 
-  CallJavascriptFunction("brave_rewards.externalWalletProviderList",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards.externalWalletProviderList", data);
 }
 
 }  // namespace

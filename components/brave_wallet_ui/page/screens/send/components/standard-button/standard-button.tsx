@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Assets
-import InfoIcon from '../../../../../assets/svg-icons/info-icon.svg'
+import WarningIcon from '../../assets/warning-icon.svg'
 
 // Styled Components
 import { Button, ErrorIcon, StandardButtonStyleProps, LoadIcon } from './standard-button.style'
@@ -39,7 +39,7 @@ export const StandardButton = (props: Props) => {
       hasError={hasError}
     >
       {hasError &&
-        <ErrorIcon icon={InfoIcon} size={22} />
+        <ErrorIcon icon={WarningIcon} size={22} />
       }
       {isLoading &&
         <LoadIcon />

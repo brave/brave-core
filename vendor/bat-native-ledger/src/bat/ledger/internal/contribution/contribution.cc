@@ -124,6 +124,8 @@ void Contribution::ProcessContributionQueue() {
     return;
   }
 
+  queue_in_progress_ = true;
+
   const auto callback = std::bind(&Contribution::OnProcessContributionQueue,
       this,
       _1);
@@ -137,7 +139,8 @@ void Contribution::OnProcessContributionQueue(
     return;
   }
 
-  queue_in_progress_ = true;
+  DCHECK(queue_in_progress_);
+
   Start(std::move(info));
 }
 
@@ -324,10 +327,9 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
     return;
   }
 
+  const auto balance_it = balance->wallets.find(wallet_type);
   const double wallet_balance =
-      wallet::WalletBalance::GetPerWalletBalance(
-          wallet_type,
-          balance->wallets);
+      balance_it != balance->wallets.cend() ? balance_it->second : 0.0;
   if (wallet_balance == 0) {
     BLOG(1, "Wallet balance is 0 for " << wallet_type);
     CreateNewEntry(
@@ -516,23 +518,23 @@ void Contribution::Process(mojom::ContributionQueuePtr queue,
 void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
                                  const std::string& destination,
                                  const std::string& wallet_type,
-                                 client::TransactionCallback callback) {
+                                 const std::string& contribution_id,
+                                 client::LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
-    ledger_->uphold()->TransferFunds(
-        transaction.amount,
-        destination,
-        callback);
+    ledger_->uphold()->TransferFunds(transaction.amount, destination,
+                                     contribution_id, callback);
     return;
   }
 
   if (wallet_type == constant::kWalletBitflyer) {
     ledger_->bitflyer()->TransferFunds(transaction.amount, destination,
-                                       callback);
+                                       contribution_id, callback);
     return;
   }
 
   if (wallet_type == constant::kWalletGemini) {
-    ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
+    ledger_->gemini()->TransferFunds(transaction.amount, destination,
+                                     contribution_id, callback);
     return;
   }
 
@@ -582,6 +584,11 @@ void Contribution::Result(const mojom::Result result,
                           const std::string& contribution_id) {
   if (result == mojom::Result::RETRY_SHORT) {
     SetRetryTimer(contribution_id, base::Seconds(5));
+    return;
+  }
+
+  if (result == mojom::Result::RETRY_LONG) {
+    SetRetryTimer(contribution_id, base::Minutes(5));
     return;
   }
 

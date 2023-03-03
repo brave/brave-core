@@ -50,7 +50,7 @@ import {
   BlockchainTokenEntityAdaptorState,
   combineTokenRegistries
 } from './entities/blockchain-token.entity'
-import { AccountTokenBalanceForChainId } from './entities/token-balance.entity'
+import { AccountTokenBalanceForChainId, TokenBalancesForChainId } from './entities/token-balance.entity'
 import {
   TransactionEntity,
   transactionEntityAdapter,
@@ -105,7 +105,10 @@ import {
 import { getLocale } from '../../../common/locale'
 import { makeSerializableOriginInfo, makeSerializableTimeDelta } from '../../utils/model-serialization-utils'
 import { SwapExchangeProxy } from '../constants/registry'
-import { getTypedSolanaTxInstructions } from '../../utils/solana-instruction-utils'
+import {
+  getTypedSolanaTxInstructions,
+  TypedSolanaInstructionWithParams
+} from '../../utils/solana-instruction-utils'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
   id: EntityId
@@ -128,6 +131,13 @@ type GetAccountTokenCurrentBalanceArg = {
 type GetCombinedTokenBalanceForAllAccountsArg =
   GetAccountTokenCurrentBalanceArg['token'] &
     Pick<BraveWallet.BlockchainToken, 'coin'>
+
+type GetTokenBalancesForChainIdArg = {
+  contracts: string[]
+  address: string
+  coin: BraveWallet.CoinType
+  chainId: string
+}
 
 export interface IsEip1559ChangedMutationArg {
   id: string
@@ -158,6 +168,7 @@ export function createWalletApi (
       'AccountTokenCurrentBalance',
       'ChainIdForCoinType',
       'CombinedTokenBalanceForAllAccounts',
+      'TokenBalancesForChainId',
       'DefaultAccountAddresses',
       'DefaultFiatCurrency',
       'ERC721Metadata',
@@ -181,7 +192,7 @@ export function createWalletApi (
       getWalletInfoBase: query<WalletInfoBase, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           const { walletHandler } = baseQuery(undefined).data
-          const walletInfo: WalletInfoBase = await walletHandler.getWalletInfo()
+          const walletInfo: WalletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
           return {
             data: walletInfo
           }
@@ -422,7 +433,10 @@ export function createWalletApi (
 
             // normalize list into a registry
             const normalizedNetworksState = networkEntityAdapter.setAll(
-              networkEntityInitialState,
+              {
+                ...networkEntityInitialState,
+                idsByCoinType
+              },
               networksList
             )
             return {
@@ -1189,6 +1203,61 @@ export function createWalletApi (
           'CombinedTokenBalanceForAllAccounts'
         )
       }),
+      getTokenBalancesForChainId: query<
+        TokenBalancesForChainId,
+        GetTokenBalancesForChainIdArg
+      >({
+        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data
+
+            if (arg.coin === BraveWallet.CoinType.ETH) {
+              const result = await jsonRpcService.getERC20TokenBalances(
+                arg.contracts,
+                arg.address,
+                arg.chainId
+              )
+              if (result.error === BraveWallet.ProviderError.kSuccess) {
+                return {
+                  data: result.balances.reduce((acc, balanceResult) => {
+                    if (balanceResult.balance) {
+                      return {
+                        ...acc,
+                        [balanceResult.contractAddress]: Amount.normalize(balanceResult.balance)
+                      }
+                    }
+
+                    return acc
+                  }, {})
+                }
+              } else {
+                return {
+                  error: result.errorMessage
+                }
+              }
+            }
+
+            return {
+              error: `Unsupported CoinType: ${arg.coin}`
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch pending transactions
+              error: ${error?.message ?? error}`
+            }
+          }
+        },
+        providesTags: (res, err, arg) =>
+          err
+            ? ['UNKNOWN_ERROR']
+            : [
+                {
+                  type: 'TokenBalancesForChainId',
+                  id: `${arg.address}-${arg.coin}-${arg.chainId}`
+                }
+              ]
+      }),
       //
       // Transactions
       //
@@ -1289,6 +1358,7 @@ export function createWalletApi (
           extraOptions,
           baseQuery
         ) => {
+          const isFil = coinType === BraveWallet.CoinType.FIL
           try {
             const { txService } = baseQuery(undefined).data
 
@@ -1302,16 +1372,31 @@ export function createWalletApi (
               walletApi.endpoints.getAllNetworks.initiate(undefined)
             ).unwrap()
 
-            // user tokens
-            const userTokensRegistry: BlockchainTokenEntityAdaptorState =
-              await dispatch(
-                walletApi.endpoints.getUserTokensRegistry.initiate(undefined)
-              ).unwrap()
+            // user tokens (skipped for FIL accounts)
+            let userTokensRegistry: BlockchainTokenEntityAdaptorState =
+              blockchainTokenEntityAdaptorInitialState
+            try {
+              userTokensRegistry = isFil
+                ? await dispatch(
+                  walletApi.endpoints.getUserTokensRegistry.initiate(undefined)
+                  ).unwrap()
+                : blockchainTokenEntityAdaptorInitialState
+            } catch (error) {
+              console.log(error)
+            }
 
-            // known tokens
-            let tokensRegistry = await dispatch(
-              walletApi.endpoints.getTokensRegistry.initiate(undefined)
-            ).unwrap()
+            // known tokens (skipped for FIL accounts)
+            let tokensRegistry: BlockchainTokenEntityAdaptorState =
+              blockchainTokenEntityAdaptorInitialState
+            try {
+              tokensRegistry = isFil
+                ? await dispatch(
+                  walletApi.endpoints.getTokensRegistry.initiate(undefined)
+                  ).unwrap()
+                : blockchainTokenEntityAdaptorInitialState
+            } catch (error) {
+              console.log(error)
+            }
 
             // combined token registry
             const combinedTokenRegistry = combineTokenRegistries(
@@ -1346,7 +1431,7 @@ export function createWalletApi (
 
                   // track txs by chain
                   if (idsByChainId[parsedTx.chainId]) {
-                    idsByChainId[parsedTx.chainId].push()
+                    idsByChainId[parsedTx.chainId].push(tx.id)
                   } else {
                     idsByChainId[parsedTx.chainId] = [tx.id]
                   }
@@ -1358,7 +1443,7 @@ export function createWalletApi (
                     pendingIds.push(tx.id)
                     // track pending txs by chain
                     if (pendingIdsByChainId[parsedTx.chainId]) {
-                      pendingIdsByChainId[parsedTx.chainId].push()
+                      pendingIdsByChainId[parsedTx.chainId].push(tx.id)
                     } else {
                       pendingIdsByChainId[parsedTx.chainId] = [tx.id]
                     }
@@ -1370,7 +1455,12 @@ export function createWalletApi (
 
             const state: TransactionEntityState =
               transactionEntityAdapter.setAll(
-                transactionEntityInitialState,
+                {
+                  ...transactionEntityInitialState,
+                  idsByChainId,
+                  pendingIds,
+                  pendingIdsByChainId
+                },
                 parsedTransactionsWithoutPrices
               )
 
@@ -2379,6 +2469,27 @@ export function createWalletApi (
           }
         }
       }),
+      getAddressByteCode: query<string, { address: string, coin: number, chainId: string }>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data
+            const { bytecode, error, errorMessage } = await jsonRpcService.getCode(arg.address, arg.coin, arg.chainId)
+            if (error !== 0 && errorMessage) {
+              return {
+                error: errorMessage
+              }
+            }
+            return {
+              data: bytecode
+            }
+          } catch (error) {
+            console.log(error)
+            return {
+              error: `Was unable to fetch bytecode for address: ${arg.address}.`
+            }
+          }
+        },
+      }),
       //
       // Transactions Fees
       //
@@ -2500,11 +2611,13 @@ export const {
   useCancelTransactionMutation,
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
+  useGetAddressByteCodeQuery,
   useGetAllNetworksQuery,
   useGetAllPendingTransactionsQuery,
   useGetAllTransactionsForAddressCoinTypeQuery,
   useGetChainIdForCoinQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
+  useLazyGetTokenBalancesForChainIdQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetERC721MetadataQuery,
@@ -2523,6 +2636,7 @@ export const {
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
+  useLazyGetAddressByteCodeQuery,
   useLazyGetAllNetworksQuery,
   useLazyGetAllPendingTransactionsQuery,
   useLazyGetAllTransactionsForAddressCoinTypeQuery,
@@ -2674,11 +2788,16 @@ export const parseTransactionWithoutPricesAsync = async ({
   )
 
   // network fees
-  const solFeeEstimates: string = isSolanaTransaction(tx)
-    ? await dispatch(
-        walletApi.endpoints.getSolanaEstimatedFee.initiate(tx.id)
-      ).unwrap()
-    : '0'
+  let solFeeEstimates: string = '0'
+  try {
+    solFeeEstimates = isSolanaTransaction(tx)
+      ? await dispatch(
+          walletApi.endpoints.getSolanaEstimatedFee.initiate(tx.id)
+        ).unwrap()
+      : '0'
+  } catch (error) {
+    console.error(error)
+  }
 
   const to = getTransactionToAddress(tx)
   const combinedTokensList = userVisibleTokensList.concat(fullTokenList)
@@ -2838,7 +2957,8 @@ export const parseTransactionWithoutPricesAsync = async ({
     token
   })
 
-  const instructions = getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
+  const instructions: TypedSolanaInstructionWithParams[] =
+    getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
 
   const sameAddressError = transactionHasSameAddressError(tx)
     ? getLocale('braveWalletSameAddressError')

@@ -3,14 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { LAMPORTS_PER_SOL } from '@solana/web3.js'
-
 // asset
 import { USDCIconUrl } from '../../assets/asset-icons'
 
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
-import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { mockMoonCatNFT } from './mock-asset-options'
@@ -19,6 +17,7 @@ import { mockMoonCatNFT } from './mock-asset-options'
 import { mockNetwork } from '../../common/constants/mocks'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
 import { mockNetworks } from './mock-networks'
+import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
@@ -35,7 +34,7 @@ const mockAccount: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockAccount2: WalletAccountType = {
@@ -53,7 +52,7 @@ const mockAccount2: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockAccount3: WalletAccountType = {
@@ -71,7 +70,7 @@ const mockAccount3: WalletAccountType = {
     [BraveWallet.MAINNET_CHAIN_ID]: '496917339073158043',
     [BraveWallet.GOERLI_CHAIN_ID]: '496917339073158043'
   },
-  keyringId: undefined
+  keyringId: 'default'
 }
 
 const mockCurrency: BraveWallet.OnRampCurrency = {
@@ -232,19 +231,25 @@ export const mockWalletState: WalletState = {
       assetTimeframeChange: '',
       fromAsset: 'eth',
       price: '2581.2',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '',
+      chainId: '0x1'
     },
     {
       assetTimeframeChange: '',
       fromAsset: 'eth',
       price: '0',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '',
+      chainId: '0x1'
     },
     {
       assetTimeframeChange: '-0.18757681821254726',
       fromAsset: 'usdc',
       price: '0.999414',
-      toAsset: 'usd'
+      toAsset: 'usd',
+      contractAddress: '0xusdc',
+      chainId: '0x1'
     }
   ],
   userVisibleTokensInfo: [
@@ -312,9 +317,9 @@ export const mockWalletState: WalletState = {
   ],
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
-  selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: HighToLowAssetsFilterOption,
-  selectedAccountFilter: AllAccountsOption,
+  selectedNetworkFilter: AllNetworksOptionDefault,
+  selectedAssetFilter: HighToLowAssetsFilterOption.id,
+  selectedAccountFilter: AllAccountsOption.id,
   defaultAccounts: [
     {
       address: mockAccount.address,
@@ -322,7 +327,7 @@ export const mockWalletState: WalletState = {
       name: mockAccount.name,
       isImported: false,
       hardware: undefined,
-      keyringId: undefined
+      keyringId: 'default'
     }
   ],
   onRampCurrencies: mockCurrencies,
@@ -330,5 +335,7 @@ export const mockWalletState: WalletState = {
   passwordAttempts: 0,
   isLoadingCoinMarketData: false,
   coinMarketData: mockCoinMarketData,
-  assetAutoDiscoveryCompleted: false
+  assetAutoDiscoveryCompleted: false,
+  isNftPinningFeatureEnabled: false,
+  isPanelV2FeatureEnabled: false
 }

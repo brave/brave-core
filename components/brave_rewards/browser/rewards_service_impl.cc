@@ -6,20 +6,19 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
-#include <string>
-
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_string_value_serializer.h"
@@ -299,6 +298,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
@@ -368,22 +369,6 @@ void RewardsServiceImpl::Init(
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
-  profile_pref_change_registrar_.Add(
-      prefs::kShowButton,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipTwitterEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipRedditEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipGithubEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kAutoContributeEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
@@ -873,6 +858,7 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
+  bat_ledger_client_receiver_.reset();
   url_loaders_.clear();
 
   bat_ledger_.reset();
@@ -1111,23 +1097,40 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
   if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
-    return data_decoder::JsonSanitizer::Sanitize(
-        *response_body,
+    json_sanitizer_task_runner_->PostTask(
+        FROM_HERE,
         base::BindOnce(
-            [](ledger::client::LoadURLCallback callback,
+            [](std::unique_ptr<std::string> response_body,
+               ledger::client::LoadURLCallback callback,
                ledger::mojom::UrlResponse response,
-               data_decoder::JsonSanitizer::Result result) {
-              if (result.value) {
-                response.body = std::move(*result.value);
-              } else {
-                response.body = {};
-                VLOG(0) << "Response sanitization error: "
-                        << (result.error ? *result.error : "unknown");
-              }
+               scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
+              data_decoder::JsonSanitizer::Sanitize(
+                  *response_body,
+                  base::BindOnce(
+                      [](ledger::client::LoadURLCallback callback,
+                         ledger::mojom::UrlResponse response,
+                         const scoped_refptr<base::SequencedTaskRunner>&
+                             post_response_runner,
+                         data_decoder::JsonSanitizer::Result result) {
+                        if (result.value) {
+                          response.body = std::move(*result.value);
+                        } else {
+                          response.body = {};
+                          VLOG(0) << "Response sanitization error: "
+                                  << (result.error ? *result.error : "unknown");
+                        }
 
-              std::move(callback).Run(response);
+                        post_response_runner->PostTask(
+                            FROM_HERE, base::BindOnce(std::move(callback),
+                                                      std::move(response)));
+                      },
+                      std::move(callback), std::move(response),
+                      std::move(post_response_runner)));
             },
-            std::move(callback), std::move(response)));
+            std::move(response_body), std::move(callback), std::move(response),
+            base::SequencedTaskRunner::GetCurrentDefault()));
+
+    return;
   }
 
   std::move(callback).Run(response);
@@ -1384,19 +1387,20 @@ void RewardsServiceImpl::EnableGreaseLion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
 
-  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
+  const bool show_buttons =
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
   greaselion_service_->SetFeatureEnabled(
       greaselion::TWITTER_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::REDDIT_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_button);
+          show_buttons);
 }
 
 void RewardsServiceImpl::OnRulesReady(
@@ -2154,10 +2158,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
     SetRetryInterval(*flags.retry_interval);
   }
 
-  if (flags.gemini_retries) {
-    SetGeminiRetries(*flags.gemini_retries);
-  }
-
   // The "persist-logs" command-line flag is deprecated and will be removed
   // in a future version. Use --enable-features=BraveRewardsVerboseLogging
   // instead.
@@ -2292,10 +2292,6 @@ void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
   bat_ledger_service_->GetRetryInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
-  bat_ledger_service_->GetGeminiRetries(std::move(callback));
-}
-
 void RewardsServiceImpl::SetEnvironment(
     ledger::mojom::Environment environment) {
   bat_ledger_service_->SetEnvironment(environment);
@@ -2311,10 +2307,6 @@ void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
 
 void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
   bat_ledger_service_->SetRetryInterval(interval);
-}
-
-void RewardsServiceImpl::SetGeminiRetries(const int32_t retries) {
-  bat_ledger_service_->SetGeminiRetries(retries);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(

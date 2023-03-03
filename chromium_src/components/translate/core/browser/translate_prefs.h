@@ -9,7 +9,7 @@
 // This is done to allow the same renaming in
 // chromium_src/chrome/browser/prefs/browser_prefs.cc
 #define TranslatePrefs TranslatePrefs_ChromiumImpl
-#include "src/components/translate/core/browser/translate_prefs.h"
+#include "src/components/translate/core/browser/translate_prefs.h"  // IWYU pragma: export
 #undef TranslatePrefs
 
 namespace translate {

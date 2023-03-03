@@ -1,6 +1,6 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file, //
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -79,11 +79,12 @@ void WalletHandler::OnGetWalletInfo(
   }
   const auto& default_keyring = keyring_infos.front();
   DCHECK_EQ(default_keyring->id, brave_wallet::mojom::kDefaultKeyringId);
-  std::move(callback).Run(
+  std::move(callback).Run(brave_wallet::mojom::WalletInfo::New(
       default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
       std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled());
+      brave_wallet::IsSolanaEnabled(), brave_wallet::IsNftPinningEnabled(),
+      brave_wallet::IsPanelV2Enabled()));
 }
 
 void WalletHandler::AddFavoriteApp(

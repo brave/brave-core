@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
 
+#include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -15,6 +17,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/accelerators/accelerator.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
@@ -61,6 +64,7 @@ class BraveBrowserView : public BrowserView {
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
+  std::map<int, std::vector<ui::Accelerator>> GetAcceleratedCommands() override;
 
   // BrowserView overrides:
   void StartTabCycling() override;
@@ -74,6 +78,7 @@ class BraveBrowserView : public BrowserView {
 #endif
   bool ShouldShowWindowTitle() const override;
   void OnThemeChanged() override;
+  TabSearchBubbleHost* GetTabSearchBubbleHost() override;
 
   views::View* sidebar_host_view() { return sidebar_host_view_; }
   bool IsSidebarVisible() const;
@@ -115,7 +120,9 @@ class BraveBrowserView : public BrowserView {
   BraveBrowser* GetBraveBrowser() const;
 
   sidebar::Sidebar* InitSidebar() override;
+  void ToggleSidebar() override;
   bool HasSelectedURL() const override;
+  void CleanAndCopySelectedURL() override;
   void UpdateSideBarHorizontalAlignment();
 
   bool closing_confirm_dialog_activated_ = false;

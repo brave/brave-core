@@ -13,7 +13,6 @@
 #include "base/mac/mac_util.h"
 #include "base/mac/scoped_nsautorelease_pool.h"
 #include "base/mac/scoped_nsobject.h"
-#include "base/mac/sdk_forward_declarations.h"
 
 @interface BackgroundHelperDelegateMac : NSObject {
  @private

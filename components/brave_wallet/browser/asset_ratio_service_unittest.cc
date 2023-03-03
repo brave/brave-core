@@ -123,6 +123,27 @@ class AssetRatioServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSellUrl(mojom::OffRampProvider off_ramp_provider,
+                      const std::string& chain_id,
+                      const std::string& address,
+                      const std::string& symbol,
+                      const std::string& amount,
+                      const std::string& currency_code,
+                      const std::string& expected_url,
+                      absl::optional<std::string> expected_error) {
+    base::RunLoop run_loop;
+    asset_ratio_service_->GetSellUrl(
+        off_ramp_provider, chain_id, address, symbol, amount, currency_code,
+        base::BindLambdaForTesting(
+            [&](const std::string& url,
+                const absl::optional<std::string>& error) {
+              EXPECT_EQ(url, expected_url);
+              EXPECT_EQ(error, expected_error);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
 
@@ -177,6 +198,17 @@ TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Sardine) {
   SetInterceptor(R"({})");
   TestGetBuyUrlV1(mojom::OnRampProvider::kSardine, "ethereum", "0xdeadbeef",
                   "USDC", "55000000", "USD", "", "INTERNAL_SERVICE_ERROR");
+}
+
+TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
+  TestGetSellUrl(mojom::OffRampProvider::kRamp, mojom::kMainnetChainId,
+                 "0xdeadbeef", "ETH_BAT", "250", "USD",
+                 "https://buy.ramp.network/"
+                 "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
+                 "&defaultFlow=OFFRAMP&offrampAsset=ETH_BAT&fiatValue=250"
+                 "&fiatCurrency=USD&hostApiKey="
+                 "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
+                 absl::nullopt);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {

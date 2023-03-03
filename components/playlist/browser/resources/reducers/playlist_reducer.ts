@@ -10,8 +10,8 @@ import { types } from '../constants/playlist_types'
 
 import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
-const playlistReducer: Reducer<Playlist.State|undefined> =
-    (state: Playlist.State|undefined, action) => {
+const playlistReducer: Reducer<Playlist.State | undefined> =
+    (state: Playlist.State | undefined, action) => {
       if (state === undefined) {
         state = { lists: [], currentList: undefined }
       }

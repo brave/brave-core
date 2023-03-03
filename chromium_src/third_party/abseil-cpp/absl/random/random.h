@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_ABSEIL_CPP_ABSL_RANDOM_RANDOM_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_ABSEIL_CPP_ABSL_RANDOM_RANDOM_H_
 
-#include "src/third_party/abseil-cpp/absl/random/random.h"
+#include "src/third_party/abseil-cpp/absl/random/random.h"  // IWYU pragma: export
 
 namespace absl {
 

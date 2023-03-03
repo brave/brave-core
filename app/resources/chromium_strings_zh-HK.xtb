@@ -15,7 +15,6 @@
 <translation id="8905049883018921395">開啟時，Brave 會從閒置分頁釋出記憶體，為使用中的分頁和其他應用程式提供更多電腦資源，同時保持 Brave 的運作速度。閒置分頁會在您使用時自動恢復為「使用中」狀態。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">「節省記憶體」模式可讓 Brave 速度更快</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
-<translation id="6361779936989026201">Brave 的「Brave 助理」</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="8132634101975074716">您已登入 Brave！</translation>
 <translation id="4168469784091952813">您可充分運用 Brave 的所有功能</translation>
@@ -26,7 +25,7 @@
 <translation id="5359574361379286250">如果您只想使用此帳戶一次，可以在 Brave 瀏覽器中使用<ph name="GUEST_LINK_BEGIN"/>訪客模式<ph name="GUEST_LINK_END"/>。如要新增其他人的帳戶，請<ph name="LINK_BEGIN"/>新增使用者<ph name="LINK_END"/>至您的 <ph name="DEVICE_TYPE"/>。
 
 您已向網站和應用程式授予的權限，可能會套用到此帳戶。您可在「<ph name="SETTINGS_LINK_BEGIN"/>設定<ph name="SETTINGS_LINK_END"/>」中管理 Brave 帳戶。</translation>
-<translation id="1640672724030957280">下載中…</translation>
+<translation id="1640672724030957280">正在下載…</translation>
 <translation id="5616153642055197778">更新、更安全的 Brave 版本現已推出。</translation>
 <translation id="5846727201643228411">您可以查看及移除網站用來向您顯示廣告的感興趣主題。Brave 會根據您最近的瀏覽記錄，推測您感興趣的主題。</translation>
 <translation id="6797402139308059782">讓 Brave 在背景執行</translation>
@@ -83,6 +82,7 @@
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
 <translation id="5122472867956731189">如果有網站試圖盜取您的密碼，或當您下載有害檔案時，Brave 亦可能將網址 (包括部分網頁內容) 傳送至「安全瀏覽」功能</translation>
 <translation id="2953892977076487219">Brave 正在嘗試編輯密碼。</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave 已連線至 HID 裝置}other{Brave 已連線至 HID 裝置}}</translation>
 <translation id="8755404239607088219">Brave 無法檢查密碼，請稍後再試。</translation>
 <translation id="8880183781256147665">正在新增至 Brave…</translation>
 <translation id="3038232873781883849">正在等待安裝…</translation>
@@ -112,7 +112,6 @@
 <translation id="5853262807109651878">這會刪除此裝置上的 <ph name="ITEMS_COUNT"/> 個項目。如果日後想擷取資料，請以 <ph name="USER_EMAIL"/> 的身分登入 Brave。</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> 可以切換唔同嘅 Brave 設定檔</translation>
 <translation id="8703492925273919597">請關閉所有 Brave 視窗，然後再試一次。</translation>
-<translation id="5350485513372498152">Brave 的「Brave 助理」可助您完成各網站的操作</translation>
 <translation id="4061445349373849749">為保障您的私隱，我們會自動刪除超過 4 星期的興趣。按瀏覽內容而定，某個主題可能會再次在您的興趣清單中顯示。您亦可移除不希望 Brave 列在興趣喜好清單中的項目。</translation>
 <translation id="691208314680168371">您的瀏覽記錄，亦即您在此裝置上使用 Brave 瀏覽過的網站記錄。</translation>
 <translation id="1384923383737428730">在您的電腦上發現有害軟件。Brave 可移除該軟件、復原設定及停用擴充程式，讓瀏覽器恢復正常運作。</translation>
@@ -148,7 +147,7 @@
 <translation id="1853997773668795891">要將您的 Brave 數據連結至這個帳戶嗎？</translation>
 <translation id="3262506503470845422">取得 Brave 相關說明</translation>
 <translation id="7691786510374174420">不明錯誤導致安裝失敗。如果目前 Brave 正在執行，請關閉 Brave，然後再試一次。</translation>
-<translation id="4304713468139749426">密碼管理員</translation>
+<translation id="4304713468139749426">密碼管理工具</translation>
 <translation id="4334294535648607276">下載完成。</translation>
 <translation id="1068681683510904753">在使用這部裝置前，<ph name="MANAGER"/> 要求您仔細閱讀並接受下列《服務條款》。這些條款不會擴展、修改或限制《Brave 作業系統條款》。</translation>
 <translation id="9183662282810237335">仍要結束 Brave 嗎？</translation>
@@ -199,7 +198,7 @@
 <translation id="232381795826373334">在 Brave 中開啟 PDF</translation>
 <translation id="5381032481466106256">開啟時，您亦將會從 Brave 登出</translation>
 <translation id="1026406809507858026">{0,plural, =0{有可用的 Brave 更新}=1{有可用的 Brave 更新}other{Brave 更新已發佈 # 天}}</translation>
-<translation id="95624393026532554">Brave 只能在 Windows 7 或以上作業系統中執行。</translation>
+<translation id="4378573854226202617">Brave 只能在 Windows 10 或以上作業系統中執行。</translation>
 <translation id="5646769069113654257">請立即重新啟動 Brave</translation>
 <translation id="2335583906071111058">以此語言顯示 Brave</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
@@ -387,4 +386,6 @@ Brave 無法復原您的設定。</translation>
 <translation id="4484434718272972655">誰在使用 Brave？</translation>
 <translation id="7173394303099002355">取得 Brave 最強大的安全防護功能</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="137466361146087520">Google Chrome 測試版</translation>
+<translation id="7535429826459677826">Google Chrome 開發人員版</translation>
 </translationbundle>

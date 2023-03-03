@@ -133,10 +133,14 @@ std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
                             &FilterListCatalogEntry::uuid);
 }
 
-std::vector<FilterListCatalogEntry>::const_iterator
-FindAdBlockFilterListByLocale(
+// Given a locale like `en-US`, find regional lists corresponding to the
+// language (`en`) part.
+std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
+FindAdBlockFilterListsByLocale(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& locale) {
+  std::vector<std::reference_wrapper<FilterListCatalogEntry const>> output;
+
   std::string adjusted_locale;
   std::string::size_type loc = locale.find("-");
   if (loc == std::string::npos) {
@@ -144,11 +148,15 @@ FindAdBlockFilterListByLocale(
   } else {
     adjusted_locale = locale.substr(0, loc);
   }
+
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
-  return base::ranges::find_if(
-      region_lists, [&adjusted_locale](const FilterListCatalogEntry& entry) {
-        return base::Contains(entry.langs, adjusted_locale);
-      });
+  std::copy_if(region_lists.begin(), region_lists.end(),
+               std::back_inserter(output),
+               [&adjusted_locale](const FilterListCatalogEntry& entry) {
+                 return base::Contains(entry.langs, adjusted_locale);
+               });
+
+  return output;
 }
 
 std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(

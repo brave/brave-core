@@ -7,13 +7,14 @@
 
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation IpfsAPI {
+@implementation IpfsAPIImpl {
   ChromeBrowserState* _mainBrowserState;  // NOT OWNED
 }
 

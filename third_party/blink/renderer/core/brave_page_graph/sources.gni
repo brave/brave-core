@@ -1,6 +1,7 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_page_graph/common/buildflags.gni")
 
@@ -155,6 +156,8 @@ if (enable_brave_page_graph) {
     "//brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage_sessionstorage.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graphml.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/graphml.h",
+    "//brave/third_party/blink/renderer/core/brave_page_graph/libxml_utils.cc",
+    "//brave/third_party/blink/renderer/core/brave_page_graph/libxml_utils.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h",

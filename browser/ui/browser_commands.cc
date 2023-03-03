@@ -277,6 +277,17 @@ void ToggleSidebarPosition(Browser* browser) {
                     !prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
 
+void ToggleSidebar(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  if (auto* brave_browser_window =
+          BraveBrowserWindow::From(browser->window())) {
+    brave_browser_window->ToggleSidebar();
+  }
+}
+
 bool HasSelectedURL(Browser* browser) {
   if (!browser) {
     return false;
@@ -285,4 +296,13 @@ bool HasSelectedURL(Browser* browser) {
   return brave_browser_window && brave_browser_window->HasSelectedURL();
 }
 
+void CleanAndCopySelectedURL(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
+  if (brave_browser_window) {
+    brave_browser_window->CleanAndCopySelectedURL();
+  }
+}
 }  // namespace brave

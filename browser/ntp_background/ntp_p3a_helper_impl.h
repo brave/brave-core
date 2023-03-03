@@ -22,12 +22,17 @@ class BraveP3AService;
 enum class MetricLogType;
 }  // namespace brave
 
+namespace brave_ads {
+class AdsService;
+}  // namespace brave_ads
+
 namespace ntp_background_images {
 
 class NTPP3AHelperImpl : public NTPP3AHelper {
  public:
   NTPP3AHelperImpl(PrefService* local_state,
-                   brave::BraveP3AService* p3a_service);
+                   brave::BraveP3AService* p3a_service,
+                   brave_ads::AdsService* ads_service);
   ~NTPP3AHelperImpl() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
@@ -57,6 +62,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<brave::BraveP3AService> p3a_service_;
+  raw_ptr<const brave_ads::AdsService> ads_service_;
 
   absl::optional<std::string> last_tab_hostname_;
 

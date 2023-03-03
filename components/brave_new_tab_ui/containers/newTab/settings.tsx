@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -21,7 +21,7 @@ import {
 
 import { getLocale } from '../../../common/locale'
 import { Publishers } from '../../api/brave_news'
-import { BraveNewsContext } from '../../components/default/braveToday/customize/Context'
+import { BraveNewsContext } from '../../components/default/braveNews/customize/Context'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -30,7 +30,7 @@ import BraveStatsIcon from './settings/icons/braveStats.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import CardsIcon from './settings/icons/cards.svg'
-import TodayIcon from './settings/icons/braveToday.svg'
+import TodayIcon from './settings/icons/braveNews.svg'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -38,7 +38,6 @@ const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
 const CardsSettings = React.lazy(() => import('./settings/cards'))
-const BraveTodaySettings = React.lazy(() => import('./settings/braveToday'))
 
 // Types
 import { NewTabActions } from '../../constants/new_tab_types'
@@ -55,7 +54,6 @@ export interface Props {
   onDisplayTodaySection: () => any
   onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
-  toggleShowToday: () => any
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
   toggleShowRewards: () => void
@@ -69,11 +67,10 @@ export interface Props {
   setColorBackground: (color: string, useRandomColor: boolean) => void
   onEnableRewards: () => void
   showBackgroundImage: boolean
-  showToday: boolean
   showTopSites: boolean
   customLinksEnabled: boolean
   brandedWallpaperOptIn: boolean
-  allowSponsoredWallpaperUI: boolean
+  allowBackgroundCustomization: boolean
   showRewards: boolean
   showBraveTalk: boolean
   braveRewardsSupported: boolean
@@ -87,7 +84,7 @@ export enum TabType {
   BackgroundImage = 'backgroundImage',
   BraveStats = 'braveStats',
   TopSites = 'topSites',
-  BraveToday = 'braveToday',
+  BraveNews = 'braveNews',
   Clock = 'clock',
   Cards = 'cards'
 }
@@ -110,7 +107,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.allTabTypes = [...Object.values(TabType)]
     if (!props.featureFlagBraveNewsEnabled) {
       this.allTabTypes.splice(
-        this.allTabTypes.indexOf(TabType.BraveToday), 1
+        this.allTabTypes.indexOf(TabType.BraveNews), 1
       )
     }
     this.allTabTypesWithoutBackground = [...this.allTabTypes]
@@ -163,7 +160,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   getInitialTab () {
-    let tab = this.props.allowSponsoredWallpaperUI
+    let tab = this.props.allowBackgroundCustomization
       ? TabType.BackgroundImage
       : TabType.BraveStats
     if (this.props.setActiveTab) {
@@ -187,7 +184,7 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   setActiveTab (activeTab: TabType) {
-    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveToday) {
+    if (loadTimeData.getBoolean('featureFlagBraveNewsV2Enabled') && activeTab === TabType.BraveNews) {
       this.context.setCustomizePage('news')
       return
     }
@@ -196,17 +193,10 @@ export default class Settings extends React.PureComponent<Props, State> {
   }
 
   getActiveTabTypes (): TabType[] {
-    // TODO(petemill): We're not allowing
-    // any background image changes when user is not
-    // in a sponsored image region, which is weird.
-    // Seems like this should actually only be for
-    // super referral users, where the bg image is
-    // mandatory. Maybe that's the only case
-    // allowSponsoredWallpaperUI is false?
-    if (!this.props.allowSponsoredWallpaperUI) {
-      return this.allTabTypesWithoutBackground
-    } else {
+    if (this.props.allowBackgroundCustomization) {
       return this.allTabTypes
+    } else {
+      return this.allTabTypesWithoutBackground
     }
   }
 
@@ -222,7 +212,7 @@ export default class Settings extends React.PureComponent<Props, State> {
       case TabType.TopSites:
         srcUrl = TopSitesIcon
         break
-      case TabType.BraveToday:
+      case TabType.BraveNews:
         srcUrl = TodayIcon
         break
       case TabType.Clock:
@@ -246,8 +236,8 @@ export default class Settings extends React.PureComponent<Props, State> {
         return 'statsTitle'
       case TabType.TopSites:
         return 'topSitesTitle'
-      case TabType.BraveToday:
-        return 'braveTodayTitle'
+      case TabType.BraveNews:
+        return 'braveNewsTitle'
       case TabType.Clock:
         return 'clockTitle'
       case TabType.Cards:
@@ -361,19 +351,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                       setMostVisitedSettings={setMostVisitedSettings}
                     />
                   ) : null
-              }
-              {
-                activeTab === TabType.BraveToday
-                ? (
-                  <BraveTodaySettings
-                    publishers={this.props.todayPublishers}
-                    setPublisherPref={this.props.actions.today.setPublisherPref}
-                    onDisplay={this.props.onDisplayTodaySection}
-                    onClearPrefs={this.props.onClearTodayPrefs}
-                    showToday={this.props.showToday}
-                    toggleShowToday={this.props.toggleShowToday}
-                  />
-                ) : null
               }
               {activeTab === TabType.Clock && <ClockSettings />}
               {

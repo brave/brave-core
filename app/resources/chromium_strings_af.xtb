@@ -15,7 +15,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8905049883018921395">Wanneer dit aan is, maak Brave geheue uit onaktiewe oortjies beskikbaar. Dit gee aktiewe oortjies en ander programme meer rekenaarhulpbronne en hou Brave vinnig. Jou onaktiewe oortjies word outomaties weer aktief wanneer jy na hulle toe teruggaan. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Geheuebespaarder het Brave vinniger gemaak</translation>
 <translation id="4798342026247191171">Stel jou nuwe Brave-profiel op</translation>
-<translation id="6361779936989026201">Brave Assistent in Brave</translation>
 <translation id="113959764510199339">Brave probeer tans om wagwoorde te wys.</translation>
 <translation id="8132634101975074716">Jy is by Brave aangemeld!</translation>
 <translation id="4168469784091952813">Jy kan Brave ten beste benut</translation>
@@ -74,6 +73,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="8208853227947884571">Brave is op datum</translation>
 <translation id="5122472867956731189">As 'n werf probeer om jou wagwoord te steel, of wanneer jy 'n skadelike lêer aflaai, sal Brave dalk ook URL'e, insluitend stukkies bladsyinhoud, na Veiligblaai toe stuur</translation>
 <translation id="2953892977076487219">Brave probeer tans wagwoorde wysig.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave is aan ’n HID-toestel gekoppel}other{Brave is aan HID-toestelle gekoppel}}</translation>
 <translation id="8755404239607088219">Brave kan nie jou wagwoorde nagaan nie. Probeer later weer.</translation>
 <translation id="8880183781256147665">Voeg tans by Brave …</translation>
 <translation id="3038232873781883849">Wag tans om te installeer...</translation>
@@ -102,7 +102,6 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="5853262807109651878">Dit sal <ph name="ITEMS_COUNT"/> items op hierdie toestel uitvee. Meld as <ph name="USER_EMAIL"/> by Brave aan om jou data later op te haal.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> kan tussen Brave-profiele wissel</translation>
 <translation id="8703492925273919597">Maak asseblief alle Brave-vensters toe en probeer weer.</translation>
-<translation id="5350485513372498152">Brave Assistent in Brave kan oor webwerwe heen handelinge namens jou voltooi</translation>
 <translation id="4061445349373849749">Ons vee outomaties jou belangstellings uit wat ouer as 4 weke is om jou privaatheid te beskerm. Terwyl jy aanhou blaai, kan ’n belangstelling weer op die lys verskyn. Of jy kan belangstellings verwyder wat jy nie wil hê Brave moet oorweeg nie.</translation>
 <translation id="691208314680168371">Jou blaaigeskiedenis, ’n rekord van werwe wat jy besoek het deur Brave op hierdie toestel te gebruik.</translation>
 <translation id="1384923383737428730">Daar is skadelike sagteware op jou rekenaar. Brave kan dit verwyder, jou instellings teruglaai en uitbreidings deaktiveer om jou blaaier weer normaal te laat werk.</translation>
@@ -185,7 +184,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="232381795826373334">Maak PDF's in Brave oop</translation>
 <translation id="5381032481466106256">Wanneer dit aan is, sal jy ook by Brave afgemeld word</translation>
 <translation id="1026406809507858026">{0,plural, =0{'n Brave-opdatering is beskikbaar}=1{'n Brave-opdatering is beskikbaar}other{'n Brave-opdatering is al # dae lank beskikbaar}}</translation>
-<translation id="95624393026532554">Brave vereis Windows 7 of nuwer.</translation>
+<translation id="4378573854226202617">Brave vereis Windows 10 of nuwer.</translation>
 <translation id="5646769069113654257">Herbegin Brave asseblief nou</translation>
 <translation id="2335583906071111058">Wys Brave in hierdie taal</translation>
 <translation id="7207456302801184289">Welkom by Brave</translation>
@@ -386,4 +385,6 @@ Toestemmings wat jy reeds aan webwerwe en programme gegee het, kan op hierdie re
 <translation id="3829358914761176693">{COUNT,plural, =0{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas}=1{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas}=1{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
 <translation id="2176087127109773485">U kan u aangetekende Brave-sinchroniseerkettings bestuur. U Brave-sinchroniseerkettings word gebruik vir die blaaier, Play Store, Gmail en meer. Indien u ’n rekeninge vir iemand anders wil toevoeg, soos ’n gesinslid, voeg liewer ’n nuwe profiel tot u <ph name="DEVICE_TYPE"/> toe. <ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

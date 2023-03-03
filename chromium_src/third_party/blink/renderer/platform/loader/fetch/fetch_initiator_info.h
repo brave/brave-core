@@ -16,7 +16,7 @@
   int parent_script_id = 0
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/platform/loader/fetch/fetch_initiator_info.h"
+#include "src/third_party/blink/renderer/platform/loader/fetch/fetch_initiator_info.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef referrer

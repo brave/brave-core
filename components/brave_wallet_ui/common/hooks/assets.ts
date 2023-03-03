@@ -55,8 +55,8 @@ export function useAssets () {
       const aBalance = getBalance(selectedAccount, a)
       const bBalance = getBalance(selectedAccount, b)
 
-      const bFiatBalance = computeFiatAmount(bBalance, b.symbol, b.decimals)
-      const aFiatBalance = computeFiatAmount(aBalance, a.symbol, a.decimals)
+      const bFiatBalance = computeFiatAmount(bBalance, b.symbol, b.decimals, b.contractAddress, b.chainId)
+      const aFiatBalance = computeFiatAmount(aBalance, a.symbol, a.decimals, a.contractAddress, a.chainId)
 
       return bFiatBalance.toNumber() - aFiatBalance.toNumber()
     })

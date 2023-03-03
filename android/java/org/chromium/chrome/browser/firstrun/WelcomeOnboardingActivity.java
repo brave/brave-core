@@ -53,7 +53,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsP3aEnabled;
     private boolean mIsTablet;
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
 
     private View mVLeafAlignTop;
@@ -110,41 +110,51 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         LinearLayout layoutData = findViewById(R.id.layout_data);
         LayoutTransition layoutTransition = new LayoutTransition();
         layoutTransition.setDuration(1000);
-        layoutData.setLayoutTransition(layoutTransition);
+        if (layoutData != null) {
+            layoutData.setLayoutTransition(layoutTransition);
+        }
 
         int margin = mIsTablet ? 200 : 50;
 
-        ViewGroup.MarginLayoutParams topLeafParams =
-                (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
-        topLeafParams.bottomMargin = margin;
-        mVLeafAlignTop.setLayoutParams(topLeafParams);
+        if (mVLeafAlignTop != null) {
+            ViewGroup.MarginLayoutParams topLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignTop.getLayoutParams();
+            topLeafParams.bottomMargin = margin;
+            mVLeafAlignTop.setLayoutParams(topLeafParams);
+        }
 
-        ViewGroup.MarginLayoutParams bottomLeafParams =
-                (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
-        bottomLeafParams.topMargin = margin;
-        mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        if (mVLeafAlignBottom != null) {
+            ViewGroup.MarginLayoutParams bottomLeafParams =
+                    (ViewGroup.MarginLayoutParams) mVLeafAlignBottom.getLayoutParams();
+            bottomLeafParams.topMargin = margin;
+            mVLeafAlignBottom.setLayoutParams(bottomLeafParams);
+        }
     }
 
     private void onClickViews() {
-        mBtnPositive.setOnClickListener(view -> {
-            if (mCurrentStep == 1
-                    && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
-                if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+        if (mBtnPositive != null) {
+            mBtnPositive.setOnClickListener(view -> {
+                if (mCurrentStep == 1
+                        && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
+                    BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+                    if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                        nextOnboardingStep();
+                    }
+                } else {
                     nextOnboardingStep();
                 }
-            } else {
-                nextOnboardingStep();
-            }
-        });
+            });
+        }
 
-        mBtnNegative.setOnClickListener(view -> {
-            if (mCurrentStep == 2) {
-                CustomTabActivity.showInfoPage(this, P3A_URL);
-            } else {
-                nextOnboardingStep();
-            }
-        });
+        if (mBtnNegative != null) {
+            mBtnNegative.setOnClickListener(view -> {
+                if (mCurrentStep == 2) {
+                    CustomTabActivity.showInfoPage(this, P3A_URL);
+                } else {
+                    nextOnboardingStep();
+                }
+            });
+        }
     }
 
     private void startTimer(int delayMillis) {
@@ -152,20 +162,29 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void nextOnboardingStep() {
+        if (isActivityFinishingOrDestroyed()) return;
+
         mCurrentStep++;
         if (mCurrentStep == 0) {
             int margin = mIsTablet ? 100 : 0;
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
-            setFadeInAnimation(mTvWelcome, 200);
-            mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
+            if (mTvWelcome != null) {
+                mTvWelcome.animate().alpha(1f).setDuration(200).withEndAction(
+                        () -> mTvWelcome.setVisibility(View.VISIBLE));
+            }
+            if (mIvBrave != null) {
+                mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
+            }
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mTvWelcome.animate()
-                            .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
-                            .setDuration(3000)
-                            .start();
+                    if (mTvWelcome != null) {
+                        mTvWelcome.animate()
+                                .translationYBy(-dpToPx(WelcomeOnboardingActivity.this, 20))
+                                .setDuration(3000)
+                                .start();
+                    }
                 }
             }, 200);
 
@@ -177,17 +196,31 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.3f, margin, false);
 
             if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                mBtnPositive.setText(getResources().getString(R.string.continue_text));
-                mBtnNegative.setVisibility(View.GONE);
+                if (mBtnPositive != null) {
+                    mBtnPositive.setText(getResources().getString(R.string.continue_text));
+                }
+                if (mBtnNegative != null) {
+                    mBtnNegative.setVisibility(View.GONE);
+                }
             }
-            mTvWelcome.setVisibility(View.GONE);
-            mLayoutCard.setVisibility(View.VISIBLE);
-            mIvArrowDown.setVisibility(View.VISIBLE);
-
+            if (mTvWelcome != null) {
+                mTvWelcome.setVisibility(View.GONE);
+            }
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.VISIBLE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.VISIBLE);
+            }
             String countryCode = Locale.getDefault().getCountry();
             if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
-                mTvDefault.setText(getResources().getString(R.string.onboarding_set_default_india));
+                if (mTvCard != null) {
+                    mTvCard.setText(getResources().getString(R.string.privacy_onboarding_india));
+                }
+                if (mTvDefault != null) {
+                    mTvDefault.setText(
+                            getResources().getString(R.string.onboarding_set_default_india));
+                }
             }
 
         } else if (mCurrentStep == 2) {
@@ -195,18 +228,32 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
             setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
 
-            mLayoutCard.setVisibility(View.GONE);
-            mTvDefault.setVisibility(View.GONE);
-            mIvArrowDown.setVisibility(View.GONE);
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.GONE);
+            }
+            if (mTvDefault != null) {
+                mTvDefault.setVisibility(View.GONE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.GONE);
+            }
 
-            mTvCard.setText(getResources().getString(R.string.p3a_title));
-            mBtnPositive.setText(getResources().getString(R.string.continue_text));
-            mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
-            mBtnNegative.setVisibility(View.VISIBLE);
+            if (mTvCard != null) {
+                mTvCard.setText(getResources().getString(R.string.p3a_title));
+            }
+            if (mBtnPositive != null) {
+                mBtnPositive.setText(getResources().getString(R.string.continue_text));
+            }
+            if (mBtnNegative != null) {
+                mBtnNegative.setText(getResources().getString(R.string.learn_more_onboarding));
+                mBtnNegative.setVisibility(View.VISIBLE);
+            }
 
             if (PackageUtils.isFirstInstall(this)
                     && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
-                mCheckboxCrash.setChecked(true);
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(true);
+                }
                 UmaSessionStats.changeMetricsReportingConsent(true);
                 OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
             } else {
@@ -218,19 +265,25 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 } catch (Exception e) {
                     Log.e("isCrashReportingOnboarding", e.getMessage());
                 }
-                mCheckboxCrash.setChecked(isCrashReporting);
+                if (mCheckboxCrash != null) {
+                    mCheckboxCrash.setChecked(isCrashReporting);
+                }
             }
 
-            mCheckboxCrash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    try {
-                        UmaSessionStats.changeMetricsReportingConsent(isChecked);
-                    } catch (Exception e) {
-                        Log.e("CrashReportingOnboarding", e.getMessage());
-                    }
-                }
-            });
+            if (mCheckboxCrash != null) {
+                mCheckboxCrash.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    UmaSessionStats.changeMetricsReportingConsent(isChecked);
+                                } catch (Exception e) {
+                                    Log.e("CrashReportingOnboarding", e.getMessage());
+                                }
+                            }
+                        });
+            }
 
             boolean isP3aEnabled = true;
 
@@ -240,25 +293,41 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 Log.e("P3aOnboarding", e.getMessage());
             }
 
-            mCheckboxP3a.setChecked(isP3aEnabled);
-            mCheckboxP3a.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    try {
-                        BraveLocalState.get().setBoolean(BravePref.P3A_ENABLED, isChecked);
-                        BraveLocalState.get().setBoolean(BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
-                        BraveLocalState.commitPendingWrite();
-                    } catch (Exception e) {
-                        Log.e("P3aOnboarding", e.getMessage());
-                    }
-                }
-            });
+            if (mCheckboxP3a != null) {
+                mCheckboxP3a.setChecked(isP3aEnabled);
+                mCheckboxP3a.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(
+                                    CompoundButton buttonView, boolean isChecked) {
+                                try {
+                                    BraveLocalState.get().setBoolean(
+                                            BravePref.P3A_ENABLED, isChecked);
+                                    BraveLocalState.get().setBoolean(
+                                            BravePref.P3A_NOTICE_ACKNOWLEDGED, true);
+                                    BraveLocalState.commitPendingWrite();
+                                } catch (Exception e) {
+                                    Log.e("P3aOnboarding", e.getMessage());
+                                }
+                            }
+                        });
+            }
 
-            mTvCard.setVisibility(View.VISIBLE);
-            mLayoutCrash.setVisibility(View.VISIBLE);
-            mLayoutP3a.setVisibility(View.VISIBLE);
-            mLayoutCard.setVisibility(View.VISIBLE);
-            mIvArrowDown.setVisibility(View.VISIBLE);
+            if (mTvCard != null) {
+                mTvCard.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutCrash != null) {
+                mLayoutCrash.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutP3a != null) {
+                mLayoutP3a.setVisibility(View.VISIBLE);
+            }
+            if (mLayoutCard != null) {
+                mLayoutCard.setVisibility(View.VISIBLE);
+            }
+            if (mIvArrowDown != null) {
+                mIvArrowDown.setVisibility(View.VISIBLE);
+            }
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
@@ -271,28 +340,26 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private void setFadeInAnimation(View view, int duration) {
-        view.animate().alpha(1f).setDuration(duration).withEndAction(
-                () -> view.setVisibility(View.VISIBLE));
-    }
-
     private void setLeafAnimation(View leafAlignView, ImageView leafView, float scale,
             float leafMargin, boolean isTopLeaf) {
-        if (leafMargin > 0) {
+        if (leafMargin > 0 && leafAlignView != null) {
             int margin = (int) dpToPx(this, leafMargin);
             Animation animation = new Animation() {
                 @Override
                 protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    ViewGroup.MarginLayoutParams layoutParams =
-                            (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
-                    if (isTopLeaf) {
-                        layoutParams.bottomMargin = margin
-                                - (int) ((margin - layoutParams.bottomMargin) * interpolatedTime);
-                    } else {
-                        layoutParams.topMargin = margin
-                                - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+                    if (leafAlignView != null) {
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) leafAlignView.getLayoutParams();
+                        if (isTopLeaf) {
+                            layoutParams.bottomMargin = margin
+                                    - (int) ((margin - layoutParams.bottomMargin)
+                                            * interpolatedTime);
+                        } else {
+                            layoutParams.topMargin = margin
+                                    - (int) ((margin - layoutParams.topMargin) * interpolatedTime);
+                        }
+                        leafAlignView.setLayoutParams(layoutParams);
                     }
-                    leafAlignView.setLayoutParams(layoutParams);
                 }
             };
             animation.setDuration(800);
@@ -305,12 +372,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
             BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
         }
+        if (isActivityFinishingOrDestroyed()) return;
         nextOnboardingStep();
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void finishNativeInitializationPostWork() {
@@ -331,13 +399,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void handleBackPress() {}
 
     @Override
     public void triggerLayoutInflation() {
         super.triggerLayoutInflation();
 
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this, getChildAccountStatusSupplier()) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();

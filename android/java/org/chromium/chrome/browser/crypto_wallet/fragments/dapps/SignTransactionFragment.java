@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import android.content.ActivityNotFoundException;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.OriginInfo;
@@ -55,8 +57,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment {
+    private static final String TAG = "SignTransaction";
+
     private static final String PARAM_ACITITY_TYPE = "sign_param";
     private List<NavigationItem> mTabTitles;
     private List<SignTransactionRequest> mSignTransactionRequests;
@@ -107,9 +110,11 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 new NavigationItem(getString(R.string.details), new TwoLineItemFragment(details)));
         mSignTransactionRequests = Collections.emptyList();
         mSignAllTransactionRequests = Collections.emptyList();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 
@@ -336,8 +341,8 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
 
     private void updateAccount(String fromAddress) {
         if (fromAddress == null) return;
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
                 if (fromAddress == null) return;
                 AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAddress);
@@ -347,17 +352,21 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                         mExecutor, mHandler, mAccountImage, fromAddress, true);
                 mAccountName.setText(accountText);
             });
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "updateAccount " + e);
         }
     }
 
     private void updateNetwork(@CoinType.EnumType int coin) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getCryptoModel().getNetworkModel().getNetwork(
                     coin, networkInfo -> {
                         if (networkInfo == null) return;
                         mNetworkName.setText(networkInfo.chainName);
                     });
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "updateNetwork " + e);
         }
     }
 

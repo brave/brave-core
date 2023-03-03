@@ -64,6 +64,20 @@ public class AssetUtils {
                     && token.contractAddress.equalsIgnoreCase(contractAddress)
                     && token.chainId.equals(chainId);
         }
+
+        public static boolean isSameNFT(
+                BlockchainToken token, String tokenId, String contractAddress) {
+            if (token.isErc721) {
+                return token.tokenId.equals(tokenId);
+            } else if (token.isNft) { // Solana
+                return token.contractAddress.equals(contractAddress);
+            }
+            return false;
+        }
+
+        public static boolean isSameNFT(BlockchainToken token1, BlockchainToken token2) {
+            return isSameNFT(token1, token2.tokenId, token2.contractAddress);
+        }
     }
 
     public static boolean isAuroraAddress(String contractAddress, String chainId) {
@@ -119,21 +133,21 @@ public class AssetUtils {
         return coin;
     }
 
-    public static String mapToRampNetworkSymbol(@NonNull BlockchainToken asset) {
-        String assetChainId = asset.chainId;
-        if (asset.symbol.equalsIgnoreCase("bat")
+    public static String mapToRampNetworkSymbol(
+            String assetChainId, String assetSymbol, String contractAddress) {
+        if (assetSymbol.equalsIgnoreCase("bat")
                 && assetChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
             // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
             return "ETH_BAT";
         } else if (assetChainId.equals(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID)
-                && TextUtils.isEmpty(asset.contractAddress)) {
+                && TextUtils.isEmpty(contractAddress)) {
             // AVAX native token has no prefix
-            return asset.symbol;
+            return assetSymbol;
         } else {
-            String rampNetworkPrefix = getRampNetworkPrefix(asset.chainId);
+            String rampNetworkPrefix = getRampNetworkPrefix(assetChainId);
             return TextUtils.isEmpty(rampNetworkPrefix)
-                    ? asset.symbol.toUpperCase(Locale.ENGLISH)
-                    : rampNetworkPrefix + "_" + asset.symbol.toUpperCase(Locale.ENGLISH);
+                    ? assetSymbol.toUpperCase(Locale.ENGLISH)
+                    : rampNetworkPrefix + "_" + assetSymbol.toUpperCase(Locale.ENGLISH);
         }
     }
 

@@ -37,6 +37,10 @@ struct PlaylistItem {
   string author;
   string duration;
   int32 last_played_position;
+
+  // Playlists that contain this item. Could have multiple |Playlist| in case
+  // user copied this item to another list.
+  array<string> parents;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -58,13 +62,17 @@ interface PlaylistService {
   GetPlaylistItem(string id) => (PlaylistItem? item);
 
   // Store all media files from given URL.
-  AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url);
+  AddMediaFilesFromPageToPlaylist(string playlist_id, url.mojom.Url url,
+                                  bool can_cache);
 
   // Store or find all media files from the active tab.
-  AddMediaFilesFromActiveTabToPlaylist(string playlist_id);
-  FindMediaFilesFromActiveTab() => (array<PlaylistItem> items);
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache);
+  FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
+                                    array<PlaylistItem> items);
 
-  AddMediaFiles(array<PlaylistItem> items, string playlist_id);
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache);
+
+  CopyItemToPlaylist(array<string> item_ids, string playlist_id);
 
   RemoveItemFromPlaylist(string playlist_id, string item_id);
   MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
@@ -72,8 +80,10 @@ interface PlaylistService {
 
   UpdateItem(PlaylistItem item);
 
-  // Try downloading media files again
-  RecoverLocalDataForItem(string id);
+  // Try downloading media files again. Returns PlaylistItem after trying
+  // recovery. If it succeeded, |cached| state of the return itme would be true.
+  RecoverLocalDataForItem(string id, bool update_media_src_before_recovery)
+      => (PlaylistItem result);
 
   // Removes media files for a item stored in local directory.
   RemoveLocalDataForItem(string id);
@@ -86,6 +96,9 @@ interface PlaylistService {
   CreatePlaylist(Playlist playlist) => (Playlist created_list);
 
   RemovePlaylist(string id);
+
+  // Removes all stored data and resets preferences to default values.
+  ResetAll();
 };
 
 // UI-side handler for response from the service.

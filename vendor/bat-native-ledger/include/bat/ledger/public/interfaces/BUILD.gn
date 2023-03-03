@@ -1,6 +1,7 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
+  generate_java = true
   sources = [
     "ledger.mojom",
     "ledger_database.mojom",

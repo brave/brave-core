@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

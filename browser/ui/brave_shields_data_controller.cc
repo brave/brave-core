@@ -7,7 +7,9 @@
 #include "brave/browser/ui/brave_shields_data_controller.h"
 
 #include <string>
+#include <utility>
 
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
@@ -91,6 +93,7 @@ void BraveShieldsDataController::ClearAllResourcesList() {
   resource_list_http_redirects_.clear();
   resource_list_blocked_js_.clear();
   resource_list_blocked_fingerprints_.clear();
+  resource_list_allowed_once_js_.clear();
 
   for (Observer& obs : observer_list_)
     obs.OnResourcesChanged();
@@ -129,10 +132,15 @@ std::vector<GURL> BraveShieldsDataController::GetHttpRedirectsList() {
   return http_redirects;
 }
 
-std::vector<GURL> BraveShieldsDataController::GetJsList() {
+std::vector<GURL> BraveShieldsDataController::GetBlockedJsList() {
   std::vector<GURL> js_list(resource_list_blocked_js_.begin(),
                             resource_list_blocked_js_.end());
+  return js_list;
+}
 
+std::vector<GURL> BraveShieldsDataController::GetAllowedJsList() {
+  std::vector<GURL> js_list(resource_list_allowed_once_js_.begin(),
+                            resource_list_allowed_once_js_.end());
   return js_list;
 }
 
@@ -235,6 +243,20 @@ bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
+HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
+  ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
+  if (control_type == ControlType::ALLOW) {
+    return HttpsUpgradeMode::DISABLED;
+  } else if (control_type == ControlType::BLOCK) {
+    return HttpsUpgradeMode::STRICT;
+  } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
+    return HttpsUpgradeMode::STANDARD;
+  } else {
+    return HttpsUpgradeMode::STANDARD;
+  }
+}
+
 bool BraveShieldsDataController::GetNoScriptEnabled() {
   ControlType control_type = brave_shields::GetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
@@ -320,6 +342,24 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
   ReloadWebContents();
 }
 
+void BraveShieldsDataController::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+  ControlType control_type;
+  if (mode == HttpsUpgradeMode::DISABLED) {
+    control_type = ControlType::ALLOW;
+  } else if (mode == HttpsUpgradeMode::STRICT) {
+    control_type = ControlType::BLOCK;
+  } else if (mode == HttpsUpgradeMode::STANDARD) {
+    control_type = ControlType::BLOCK_THIRD_PARTY;
+  } else {
+    control_type = ControlType::DEFAULT;
+  }
+  brave_shields::SetHttpsUpgradeControlType(
+      GetHostContentSettingsMap(web_contents()), control_type,
+      GetCurrentSiteURL(), g_browser_process->local_state());
+
+  ReloadWebContents();
+}
+
 void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
   ControlType control_type;
 
@@ -341,6 +381,17 @@ void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
       GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 
+  ReloadWebContents();
+}
+
+void BraveShieldsDataController::AllowScriptsOnce(
+    const std::vector<std::string>& origins) {
+  BraveShieldsWebContentsObserver* observer =
+      BraveShieldsWebContentsObserver::FromWebContents(web_contents());
+  if (!observer) {
+    return;
+  }
+  observer->AllowScriptsOnce(origins);
   ReloadWebContents();
 }
 
@@ -371,6 +422,23 @@ void BraveShieldsDataController::HandleItemBlocked(
 
   for (Observer& obs : observer_list_)
     obs.OnResourcesChanged();
+}
+
+void BraveShieldsDataController::HandleItemAllowedOnce(
+    const std::string& allowed_once_type,
+    const std::string& subresource) {
+  GURL subres(subresource);
+  if (allowed_once_type != kJavaScript) {
+    return;
+  }
+  if (resource_list_allowed_once_js_.contains(subres)) {
+    return;
+  }
+  resource_list_allowed_once_js_.insert(std::move(subres));
+
+  for (Observer& obs : observer_list_) {
+    obs.OnResourcesChanged();
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsDataController);

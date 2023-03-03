@@ -20,17 +20,17 @@ import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside
 import { AccountListItem } from '../account-list-item/account-list-item'
 
 // Styled Components
-import { ButtonIcon, ArrowIcon, DropDown } from './account-selector.style'
-import { StyledButton } from '../../shared.styles'
+import { ButtonIcon, ArrowIcon, DropDown, SelectorButton } from './account-selector.style'
 
 interface Props {
   onSelectAddress: (value: string) => void
+  disabled: boolean
 }
 
 const ACCOUNT_SELECTOR_BUTTON_ID = 'account-selector-button-id'
 
 export const AccountSelector = (props: Props) => {
-  const { onSelectAddress } = props
+  const { onSelectAddress, disabled } = props
 
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
@@ -68,10 +68,10 @@ export const AccountSelector = (props: Props) => {
 
   return (
     <>
-      <StyledButton id={ACCOUNT_SELECTOR_BUTTON_ID} onClick={toggleShowAccountSelector}>
+      <SelectorButton disabled={disabled} id={ACCOUNT_SELECTOR_BUTTON_ID} onClick={toggleShowAccountSelector}>
         <ButtonIcon id={ACCOUNT_SELECTOR_BUTTON_ID} icon={PersonIcon} size={16} />
         <ArrowIcon id={ACCOUNT_SELECTOR_BUTTON_ID} icon={CaratDownIcon} size={12} isOpen={showAccountSelector} />
-      </StyledButton>
+      </SelectorButton>
       {showAccountSelector &&
         <DropDown ref={accountSelectorRef}>
           {accountsByNetwork.map((account) =>

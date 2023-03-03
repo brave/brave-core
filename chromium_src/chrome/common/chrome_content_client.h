@@ -6,17 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_
 
-#define kPDFExtensionPluginName     \
-  kPDFExtensionPluginName_Unused[]; \
-  static const char kPDFExtensionPluginName
+#include "content/public/common/content_client.h"
 
-#define kPDFInternalPluginName     \
-  kPDFInternalPluginName_Unused[]; \
-  static const char kPDFInternalPluginName
+#define AddPlugins                                                       \
+  AddPlugins(std::vector<content::ContentPluginInfo>* plugins) override; \
+  void AddPlugins_ChromiumImpl
 
-#include "src/chrome/common/chrome_content_client.h"
+#include "src/chrome/common/chrome_content_client.h"  // IWYU pragma: export
 
-#undef kPDFExtensionPluginName
-#undef kPDFInternalPluginName
+#undef AddPlugins
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_CHROME_CONTENT_CLIENT_H_

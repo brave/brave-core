@@ -12,40 +12,61 @@ import {
   WalletRoutes
 } from '../../../../../constants/types'
 
+// hooks
+import { useNftPin } from '../../../../../common/hooks/nft-pin'
+
+// selectors
+import { useSafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../common/selectors'
+
+// actions
+import { WalletPageActions } from '../../../../../page/actions'
+
 // utils
 import { getLocale } from '$web-common/locale'
+import Amount from '../../../../../utils/amount'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
 import NetworkFilterSelector from '../../../network-filter-selector'
+import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 
 // styles
 import {
-  EmptyStateText,
+  StyledWrapper,
   FilterTokenRow,
-  NftGrid
+  IpfsButton,
+  IpfsIcon,
+  NftGrid,
+  AddIcon,
+  AddButton
 } from './nfts.styles'
-import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
-import { WalletPageActions } from '../../../../../page/actions'
-import Amount from '../../../../../utils/amount'
+import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
+import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
   nftList: BraveWallet.BlockchainToken[]
+  onToggleShowIpfsBanner: () => void
 }
 
 export const Nfts = (props: Props) => {
   const {
     networks,
-    nftList
+    nftList,
+    onToggleShowIpfsBanner
   } = props
+
+  const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
+  const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
 
   // hooks
   const history = useHistory()
   const dispatch = useDispatch()
+  const { nonFungibleTokens } = useNftPin()
 
   // methods
   const onSearchValueChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +78,14 @@ export const Nfts = (props: Props) => {
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
+
+  const onClickIpfsButton = React.useCallback(() => {
+    onToggleShowIpfsBanner()
+  }, [onToggleShowIpfsBanner])
+
+  const toggleShowAddNftModal = React.useCallback(() => {
+    setShowAddNftModal(value => !value)
+  }, [])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -78,12 +107,12 @@ export const Nfts = (props: Props) => {
     })
   }, [searchValue, nftList])
 
-  const emptyStateMessage = React.useMemo(() => {
-    return getLocale(searchValue === '' ? 'braveWalletNftsEmptyState' : 'braveWalletNftsEmptyStateSearch')
-  }, [searchValue])
+  const sortedNfts = React.useMemo(() => {
+    return filteredNfts.sort((a, b) => a.name.localeCompare(b.name))
+  }, [filteredNfts])
 
   return (
-    <>
+    <StyledWrapper>
       <FilterTokenRow>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}
@@ -91,19 +120,33 @@ export const Nfts = (props: Props) => {
           value={searchValue}
         />
         <NetworkFilterSelector networkListSubset={networks} />
+        {isNftPinningFeatureEnabled && nonFungibleTokens.length > 0 &&
+          <IpfsButton onClick={onClickIpfsButton}>
+            <IpfsIcon />
+          </IpfsButton>
+        }
+        <AddButton onClick={toggleShowAddNftModal}>
+          <AddIcon />
+        </AddButton>
       </FilterTokenRow>
-      {filteredNfts.length === 0
-        ? <EmptyStateText>{emptyStateMessage}</EmptyStateText>
+      {sortedNfts.length === 0
+        ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
         : <NftGrid>
-          {filteredNfts.map(nft => (
+          {sortedNfts.map(nft => (
             <NFTGridViewItem
               key={`${nft.tokenId}-${nft.contractAddress}`}
-              token={{ asset: nft, assetBalance: '' }}
+              token={nft}
               onSelectAsset={() => onSelectAsset(nft)}
             />
           ))}
         </NftGrid>
       }
-    </>
+      {showAddNftModal &&
+        <AddOrEditNftModal
+          onClose={toggleShowAddNftModal}
+          onHideForm={toggleShowAddNftModal}
+        />
+      }
+    </StyledWrapper>
   )
 }

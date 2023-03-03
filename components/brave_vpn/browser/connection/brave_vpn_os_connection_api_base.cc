@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/check_is_test.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/power_monitor/power_monitor.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"

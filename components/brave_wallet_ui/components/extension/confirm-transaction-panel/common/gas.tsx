@@ -48,7 +48,7 @@ export function EditPendingTransactionGas (props: Props) {
     <EditGas
       transactionInfo={transactionInfo}
       onCancel={onCancel}
-      networkSpotPrice={findAssetPrice(transactionsNetwork.symbol)}
+      networkSpotPrice={findAssetPrice(transactionsNetwork.symbol, '', transactionsNetwork.chainId)}
       selectedNetwork={transactionsNetwork}
       baseFeePerGas={baseFeePerGas}
       suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}

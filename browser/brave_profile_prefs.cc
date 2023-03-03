@@ -16,6 +16,8 @@
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -26,8 +28,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_today/browser/brave_news_controller.h"
-#include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -148,10 +148,7 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
   // Added 05/2021
-  registry->RegisterBooleanPref(kBraveTodayIntroDismissed, false);
-
-  // Added 01/2022
-  registry->RegisterBooleanPref(brave_rewards::prefs::kHideButton, false);
+  registry->RegisterBooleanPref(kBraveNewsIntroDismissed, false);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Added 11/2022
@@ -179,6 +176,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kNewTabPageShowBinance, false);
   registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, false);
 #endif
+
+  // Added Feb 2023
+  registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -193,7 +193,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(brave_rewards::prefs::kShowButton, true);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);

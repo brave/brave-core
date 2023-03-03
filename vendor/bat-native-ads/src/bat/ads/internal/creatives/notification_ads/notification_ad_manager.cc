@@ -12,7 +12,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/notification_ad_value_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "build/build_config.h"  // IWYU pragma: keep
+#include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "bat/ads/internal/browser/browser_util.h"

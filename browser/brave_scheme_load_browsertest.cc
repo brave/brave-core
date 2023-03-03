@@ -255,3 +255,8 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveSyncPageIsNotAllowedInPrivateWindow) {
   TestURLIsNotLoadedInPrivateWindow("brave://sync");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
+                       BraveWelcomePageIsNotAllowedInPrivateWindow) {
+  TestURLIsNotLoadedInPrivateWindow("brave://welcome");
+}

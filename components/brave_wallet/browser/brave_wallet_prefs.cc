@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -114,7 +115,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
-  registry->RegisterDictionaryPref(kBraveWalletNextAssetDiscoveryFromBlocks);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
   // TODO(djandries): remove the following prefs at some point,
@@ -171,6 +171,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
+
+  // Added 02/2023
+  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -252,12 +255,14 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
-
   // Added 10/2022
   JsonRpcService::MigrateDeprecatedEthereumTestnets(prefs);
 
   // Added 12/2022
   JsonRpcService::MigrateShowTestNetworksToggle(prefs);
+
+  // Added 02/2023
+  TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
 }
 
 }  // namespace brave_wallet

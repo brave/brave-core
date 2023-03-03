@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 
-#include <functional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
@@ -24,12 +23,12 @@ class ConfirmationType;
 namespace transactions {
 
 using AddCallback =
-    std::function<void(const bool, const TransactionInfo& transaction)>;
+    base::OnceCallback<void(const bool, const TransactionInfo& transaction)>;
 
 using GetCallback =
     base::OnceCallback<void(const bool, const TransactionList&)>;
 
-using RemoveAllCallback = std::function<void(const bool)>;
+using RemoveAllCallback = base::OnceCallback<void(const bool)>;
 
 TransactionInfo Add(const std::string& creative_instance_id,
                     double value,

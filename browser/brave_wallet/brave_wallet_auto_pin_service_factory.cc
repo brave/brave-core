@@ -16,6 +16,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -54,6 +55,9 @@ BraveWalletAutoPinServiceFactory::GetServiceForContext(
     return nullptr;
   }
   if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(context)) {
+    return nullptr;
+  }
+  if (!brave_wallet::IsNftPinningEnabled()) {
     return nullptr;
   }
   return static_cast<BraveWalletAutoPinService*>(

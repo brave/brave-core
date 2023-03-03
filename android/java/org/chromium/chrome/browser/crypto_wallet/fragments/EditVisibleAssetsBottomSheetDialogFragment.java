@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
@@ -65,7 +67,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-
 public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialogFragment
         implements View.OnClickListener, OnWalletListItemClick, KeyringServiceObserverImplDelegate {
     public static final String TAG_FRAGMENT =
@@ -172,9 +173,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreateDialog " + e);
         }
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -278,7 +281,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                 TokenUtils.getBuyTokensFiltered(blockchainRegistry, mSelectedNetwork,
-                        TokenUtils.TokenType.ALL,
+                        TokenUtils.TokenType.ALL, BuyModel.SUPPORTED_RAMP_PROVIDERS,
                         tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
             }
         }
@@ -431,17 +434,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             tokenIdEdit.setEnabled(true);
             addButton.setEnabled(false);
 
-            boolean checked = false;
+            boolean isDuplicateToken = false;
             for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
-                // We can have multiple ERC721 tokens with the same name
-                if (!item.getBlockchainToken().isErc721
+                // We can have multiple ERC721 or Solana NFTs with the same name
+                if (!item.isNft()
                         && (item.getTitle().equals(tokenName)
                                 || item.getSubTitle().equals(tokenSymbol))) {
-                    checked = true;
+                    isDuplicateToken = true;
                     break;
                 }
             }
-            if (checked) {
+            if (isDuplicateToken) {
                 return;
             }
 

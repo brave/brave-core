@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { WalletButton } from '../../../shared/style'
 
-export const StyledButton = styled(WalletButton) <{ isTab?: boolean }>`
+export const StyledButton = styled(WalletButton) <{ isTab?: boolean, isSelected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -16,11 +16,15 @@ export const StyledButton = styled(WalletButton) <{ isTab?: boolean }>`
   padding: ${(p) => p.isTab ? 16 : 18}px;
   outline: none;
   border: none;
-  background-color: var(--nav-button-background);
+  background-color: ${(p) => p.isSelected && p.isTab
+    ? 'var(--nav-button-background-hover)'
+    : 'var(--nav-button-background)'};
   border-bottom: ${(p) => p.isTab ? 'none' : `1px solid ${p.theme.color.divider01}`};
   border-radius: ${(p) => p.isTab ? 6 : 0}px;
   margin-bottom: ${(p) => p.isTab ? 16 : 0}px;
-  color: var(--nav-button-color);
+  color: ${(p) => p.isSelected && p.isTab
+    ? 'var(--nav-button-color-hover)'
+    : 'var(--nav-button-color)'};
   font-weight: 600;
   font-size: 16px;
   font-family: 'Poppins';

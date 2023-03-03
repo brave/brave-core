@@ -71,6 +71,8 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetCookieBlockMode();
   settings.is_https_everywhere_enabled =
       active_shields_data_controller_->GetHTTPSEverywhereEnabled();
+  settings.https_upgrade_mode =
+      active_shields_data_controller_->GetHttpsUpgradeMode();
   settings.is_noscript_enabled =
       active_shields_data_controller_->GetNoScriptEnabled();
 
@@ -98,11 +100,28 @@ void ShieldsPanelDataHandler::SetCookieBlockMode(CookieBlockMode mode) {
   active_shields_data_controller_->SetCookieBlockMode(mode);
 }
 
+void ShieldsPanelDataHandler::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->SetHttpsUpgradeMode(mode);
+}
+
 void ShieldsPanelDataHandler::SetIsNoScriptsEnabled(bool is_enabled) {
   if (!active_shields_data_controller_)
     return;
 
   active_shields_data_controller_->SetIsNoScriptEnabled(is_enabled);
+}
+
+void ShieldsPanelDataHandler::AllowScriptsOnce(
+    const std::vector<std::string>& origins) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->AllowScriptsOnce(origins);
 }
 
 void ShieldsPanelDataHandler::SetHTTPSEverywhereEnabled(bool is_enabled) {
@@ -150,7 +169,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
       active_shields_data_controller_->GetBlockedAdsList();
-  site_block_info_.js_list = active_shields_data_controller_->GetJsList();
+  site_block_info_.js_list =
+      active_shields_data_controller_->GetBlockedJsList();
   site_block_info_.fingerprints_list =
       active_shields_data_controller_->GetFingerprintsList();
   site_block_info_.http_redirects_list =

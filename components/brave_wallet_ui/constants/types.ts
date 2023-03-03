@@ -6,6 +6,7 @@
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { HardwareWalletResponseCodeType } from '../common/hardware/types'
+import { NftsPinningStatusType } from '../page/constants/action_types'
 
 // Re-export BraveWallet for use in other modules, to avoid hard-coding the
 // path of generated mojom files.
@@ -35,8 +36,7 @@ export interface WalletAccountType {
   accountType: WalletAccountTypeName
   deviceId?: string
   coin: BraveWallet.CoinType
-  // Used to separate networks for filecoin.
-  keyringId?: string
+  keyringId: string
 }
 
 export interface UserAccountType {
@@ -221,6 +221,11 @@ export interface TokenRegistry {
   [chainID: string]: BraveWallet.BlockchainToken[]
 }
 
+export interface AssetPriceWithContractAndChainId extends BraveWallet.AssetPrice {
+  contractAddress: string
+  chainId: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
@@ -244,12 +249,13 @@ export interface WalletState {
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   networkList: BraveWallet.NetworkInfo[]
   hiddenNetworkList: BraveWallet.NetworkInfo[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
+  transactionSpotPrices: AssetPriceWithContractAndChainId[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
   defaultSolanaWallet: BraveWallet.DefaultWallet
   activeOrigin: SerializableOriginInfo
   solFeeEstimates?: SolFeeEstimates
+  hasFeeEstimatesError?: boolean
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
@@ -258,14 +264,16 @@ export interface WalletState {
   defaultNetworks: BraveWallet.NetworkInfo[]
   isLoadingCoinMarketData: boolean
   coinMarketData: BraveWallet.CoinMarket[]
-  selectedNetworkFilter: BraveWallet.NetworkInfo
-  selectedAssetFilter: AssetFilterOption
-  selectedAccountFilter: WalletAccountType
+  selectedNetworkFilter: NetworkFilterType
+  selectedAssetFilter: string
+  selectedAccountFilter: string
   defaultAccounts: BraveWallet.AccountInfo[]
   onRampCurrencies: BraveWallet.OnRampCurrency[]
   selectedCurrency: BraveWallet.OnRampCurrency | undefined
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
+  isNftPinningFeatureEnabled: boolean
+  isPanelV2FeatureEnabled: boolean
 }
 
 export interface PanelState {
@@ -296,9 +304,11 @@ export interface PageState {
   isFetchingNFTMetadata: boolean
   nftMetadata: NFTMetadataReturnType | undefined
   nftMetadataError: string | undefined
+  enablingAutoPin: boolean
+  isAutoPinEnabled: boolean
   pinStatusOverview: BraveWallet.TokenPinOverview | undefined
-  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetFiatPrice: AssetPriceWithContractAndChainId | undefined
+  selectedAssetCryptoPrice: AssetPriceWithContractAndChainId | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -314,6 +324,8 @@ export interface PageState {
   importWalletAttempts: number
   walletTermsAcknowledged: boolean
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
+  nftsPinningStatus: NftsPinningStatusType
+  isLocalIpfsNodeRunning: boolean
 }
 
 export interface WalletPageState {
@@ -326,29 +338,16 @@ export interface WalletPanelState {
   panel: PanelState
 }
 
-export interface HardwareInfo {
-  vendor: string
-  path: string
-  deviceId: string
-}
-
-export interface AccountInfo {
-  address: string
-  name: string
-  isImported: boolean
-  hardware: HardwareInfo | undefined
-  coin: BraveWallet.CoinType
-  keyringId: string | undefined
-}
-
 export interface WalletInfoBase {
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
-  accountInfos: AccountInfo[]
+  accountInfos: BraveWallet.AccountInfo[]
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isNftPinningFeatureEnabled: boolean
+  isPanelV2FeatureEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {
@@ -370,7 +369,7 @@ export type SwapValidationErrorType =
 
 export interface GetPriceReturnInfo {
   success: boolean
-  values: BraveWallet.AssetPrice[]
+  values: AssetPriceWithContractAndChainId[]
 }
 
 export interface GetPriceHistoryReturnInfo {
@@ -793,6 +792,10 @@ export enum WalletRoutes {
 
   // send
   Send = '/send',
+
+  // NFT Pining
+  LocalIpfsNode = '/crypto/local-ipfs-node',
+  InspectNfts = '/crypto/inspect-nfts'
 }
 
 export const WalletOrigin = 'chrome://wallet'
@@ -860,6 +863,19 @@ export const SupportedOnRampNetworks = [
   BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
   BraveWallet.ARBITRUM_MAINNET_CHAIN_ID,
   BraveWallet.AURORA_MAINNET_CHAIN_ID
+]
+
+export const SupportedOffRampNetworks = [
+  BraveWallet.SOLANA_MAINNET,
+  BraveWallet.MAINNET_CHAIN_ID, // ETH
+  BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+  BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
+  BraveWallet.FANTOM_MAINNET_CHAIN_ID,
+  BraveWallet.CELO_MAINNET_CHAIN_ID,
+  BraveWallet.OPTIMISM_MAINNET_CHAIN_ID,
+  BraveWallet.ARBITRUM_MAINNET_CHAIN_ID
 ]
 
 export const SupportedTestNetworks = [
@@ -994,6 +1010,14 @@ export type AddressMessageInfo = {
   title: string
   description?: string
   url?: string
+  type?: 'error' | 'warning'
 }
 
 export type AlertType = 'danger' | 'warning' | 'info' | 'success'
+
+export type NetworkFilterType = {
+  chainId: string
+  coin: BraveWallet.CoinType
+}
+
+export type SortingOrder = 'ascending' | 'descending'

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-  AccountInfo,
   AccountTransactions,
   BraveWallet,
   GetBlockchainTokenBalanceReturnInfo,
@@ -18,14 +17,14 @@ import {
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
   SolFeeEstimates,
-  AssetFilterOption,
   ApproveERC20Params,
   ER20TransferParams,
   ERC721TransferFromParams,
   SendTransactionParams,
   SPLTransferFromParams,
   SerializableTransactionInfo,
-  SerializableOriginInfo
+  SerializableOriginInfo,
+  NetworkFilterType
 } from '../../constants/types'
 import {
   AddSitePermissionPayloadType,
@@ -51,12 +50,14 @@ import {
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType,
-  UpdateUnapprovedTransactionSpendAllowanceType
+  UpdateUnapprovedTransactionSpendAllowanceType,
+  UpdateUsetAssetType
 } from '../constants/action_types'
 import {
   AddAccountPayloadType,
   AddFilecoinAccountPayloadType
 } from '../../page/constants/action_types'
+import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
@@ -66,10 +67,11 @@ import {
   createTokenBalanceRegistryKey,
   getAccountType
 } from '../../utils/account-utils'
+import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
 // Options
 import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
-import { AllNetworksOption } from '../../options/network-filter-options'
+import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOption } from '../../options/account-filter-options'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
@@ -122,17 +124,19 @@ const defaultState: WalletState = {
   coinMarketData: [],
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
-  selectedNetworkFilter: AllNetworksOption,
-  selectedAssetFilter: HighToLowAssetsFilterOption,
-  selectedAccountFilter: AllAccountsOption,
+  selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
+  selectedAssetFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION) || HighToLowAssetsFilterOption.id,
+  selectedAccountFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION) || AllAccountsOption.id,
   solFeeEstimates: undefined,
   onRampCurrencies: [] as BraveWallet.OnRampCurrency[],
   selectedCurrency: undefined,
   passwordAttempts: 0,
-  assetAutoDiscoveryCompleted: false
+  assetAutoDiscoveryCompleted: false,
+  isNftPinningFeatureEnabled: false,
+  isPanelV2FeatureEnabled: false
 }
 
- // async actions
+// async actions
 export const WalletAsyncActions = {
   initialize: createAction('initialize'),
   lockWallet: createAction('lockWallet'), // keyringService.lock()
@@ -140,7 +144,7 @@ export const WalletAsyncActions = {
   addFavoriteApp: createAction<BraveWallet.AppItem>('addFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
   removeFavoriteApp: createAction<BraveWallet.AppItem>('removeFavoriteApp'), // should use ApiProxy.walletHandler + refreshWalletInfo
   addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
-  updateUserAsset: createAction<BraveWallet.BlockchainToken>('updateUserAsset'),
+  updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
   setUserAssetVisible: createAction<SetUserAssetVisiblePayloadType>(
     'setUserAssetVisible'
@@ -226,10 +230,10 @@ export const WalletAsyncActions = {
     'refreshBalancesAndPriceHistory'
   ),
   getCoinMarkets: createAction<GetCoinMarketPayload>('getCoinMarkets'),
-  setSelectedNetworkFilter: createAction<BraveWallet.NetworkInfo>(
+  setSelectedNetworkFilter: createAction<NetworkFilterType>(
     'setSelectedNetworkFilter'
   ),
-  setSelectedAccountFilterItem: createAction<WalletAccountType>(
+  setSelectedAccountFilterItem: createAction<string>(
     'setSelectedAccountFilterItem'
   ),
   addAccount: createAction<AddAccountPayloadType>('addAccount'), // alias for keyringService.addAccount
@@ -272,19 +276,22 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       initialized (state: WalletState, { payload }: PayloadAction<WalletInfo>) {
-        const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
-          return {
-            id: `${idx + 1}`,
-            name: info.name,
-            address: info.address,
-            accountType: getAccountType(info),
-            deviceId: info.hardware ? info.hardware.deviceId : '',
-            tokenBalanceRegistry: {},
-            nativeBalanceRegistry: {},
-            coin: info.coin,
-            keyringId: info.keyringId
-          } as WalletAccountType
-        })
+        const accounts = payload.accountInfos.map(
+          (info: BraveWallet.AccountInfo, idx: number): WalletAccountType => {
+            return {
+              id: `${idx + 1}`,
+              name: info.name,
+              address: info.address,
+              accountType: getAccountType(info),
+              deviceId: info.hardware ? info.hardware.deviceId : '',
+              tokenBalanceRegistry: {},
+              nativeBalanceRegistry: {},
+              coin: info.coin,
+              keyringId: info.keyringId
+            }
+          }
+        )
+
         const selectedAccount = payload.selectedAccount
           ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
           : accounts[0]
@@ -297,6 +304,9 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.accounts = accounts
         state.isWalletBackedUp = payload.isWalletBackedUp
         state.selectedAccount = selectedAccount
+        state.isNftPinningFeatureEnabled =
+          payload.isNftPinningFeatureEnabled
+        state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
       },
 
       isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
@@ -437,6 +447,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
+        state.hasFeeEstimatesError = false
         state.gasEstimates = payload
       },
 
@@ -460,7 +471,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedAccount = payload
       },
 
-      setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<AssetFilterOption>) {
+      setSelectedAssetFilterItem (state: WalletState, { payload }: PayloadAction<string>) {
         state.selectedAssetFilter = payload
       },
 
@@ -469,7 +480,15 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       },
 
       setSolFeeEstimates (state: WalletState, { payload }: PayloadAction<SolFeeEstimates>) {
+        state.hasFeeEstimatesError = false
         state.solFeeEstimates = payload
+      },
+
+      setHasFeeEstimatesError: (
+        state: WalletState,
+        { payload }: PayloadAction<boolean>
+      ) => {
+        state.hasFeeEstimatesError = payload
       },
 
       setTransactionProviderError (state: WalletState, { payload }: PayloadAction<SetTransactionProviderErrorType>) {
@@ -543,8 +562,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       })
 
       builder.addCase(WalletAsyncActions.setSelectedAccountFilterItem, (state, { payload }) => {
-        // We need to add a getPortfolioAccountFilter and setPortfolioAccountFilter pref to persist this value
-        // https://github.com/brave/brave-browser/issues/25620
         state.isFetchingPortfolioPriceHistory = true
         state.selectedAccountFilter = payload
       })

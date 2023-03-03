@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/common/database/database_bind_util.h"
@@ -121,12 +122,12 @@ CreativeAdList GetCreativeAdsFromResponse(
 }
 
 void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
-                                const GetCreativeAdCallback& callback,
+                                GetCreativeAdCallback callback,
                                 mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
@@ -135,13 +136,13 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
-    callback(/*success*/ false, creative_instance_id, {});
+    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
     return;
   }
 
   const CreativeAdInfo& creative_ad = creative_ads.front();
 
-  callback(/*success*/ true, creative_instance_id, creative_ad);
+  std::move(callback).Run(/*success*/ true, creative_instance_id, creative_ad);
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
@@ -202,7 +203,8 @@ void CreativeAds::GetForCreativeInstanceId(
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
-    callback(/*success*/ false, creative_instance_id, creative_ad);
+    std::move(callback).Run(/*success*/ false, creative_instance_id,
+                            creative_ad);
     return;
   }
 
@@ -242,8 +244,9 @@ void CreativeAds::GetForCreativeInstanceId(
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
-                                             creative_instance_id, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+                     std::move(callback)));
 }
 
 std::string CreativeAds::GetTableName() const {

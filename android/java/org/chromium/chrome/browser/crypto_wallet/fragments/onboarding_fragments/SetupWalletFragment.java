@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -25,8 +27,9 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
-
 public class SetupWalletFragment extends CryptoOnboardingFragment {
+    private static final String TAG = "SetupWalletFragment";
+
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
 
@@ -79,8 +82,10 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     // https://github.com/brave/brave-browser/issues/27887
     // is done.
     private void checkOnBraveActivity(boolean setupAction, boolean restoreAction) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity == null) {
+        try {
+            BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "checkOnBraveActivity " + e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);

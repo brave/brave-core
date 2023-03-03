@@ -12,8 +12,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list_threadsafe.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -112,6 +112,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::CoinType coin,
                   const std::string& chaind_id,
                   GetBalanceCallback callback) override;
+  void GetCode(const std::string& address,
+               mojom::CoinType coin,
+               const std::string& chain_id,
+               GetCodeCallback callback) override;
   using GetFilBlockHeightCallback =
       base::OnceCallback<void(uint64_t height,
                               mojom::FilecoinProviderError error,
@@ -168,6 +172,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& spender_address,
                               GetERC20TokenAllowanceCallback callback) override;
 
+  void GetERC20TokenBalances(
+      const std::vector<std::string>& token_contract_addresses,
+      const std::string& user_address,
+      const std::string& chain_id,
+      GetERC20TokenBalancesCallback callback) override;
+
   using UnstoppableDomainsResolveDnsCallback =
       base::OnceCallback<void(const GURL& url,
                               mojom::ProviderError error,
@@ -183,7 +193,19 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback);
-  void EnableEnsOffchainLookup() override;
+
+  void GetUnstoppableDomainsResolveMethod(
+      GetUnstoppableDomainsResolveMethodCallback callback) override;
+  void GetEnsResolveMethod(GetEnsResolveMethodCallback callback) override;
+  void GetEnsOffchainLookupResolveMethod(
+      GetEnsOffchainLookupResolveMethodCallback callback) override;
+  void GetSnsResolveMethod(GetSnsResolveMethodCallback callback) override;
+
+  void SetUnstoppableDomainsResolveMethod(mojom::ResolveMethod method) override;
+  void SetEnsResolveMethod(mojom::ResolveMethod method) override;
+  void SetEnsOffchainLookupResolveMethod(mojom::ResolveMethod method) override;
+  void SetSnsResolveMethod(mojom::ResolveMethod method) override;
+
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
   void SnsGetSolAddr(const std::string& domain,
@@ -330,10 +352,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                       GetEthTokenUriCallback callback);
 
   void EthGetLogs(const std::string& chain_id,
-                  const std::string& from_block,
-                  const std::string& to_block,
-                  base::Value::List addresses,
-                  base::Value::List topics,
+                  base::Value::Dict filter_options,
                   EthGetLogsCallback callback);
 
   void OnEthGetLogs(EthGetLogsCallback callback,
@@ -443,6 +462,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        APIRequestResult api_request_result);
   void OnFilGetBalance(GetBalanceCallback callback,
                        APIRequestResult api_request_result);
+  void OnGetCode(GetCodeCallback callback, APIRequestResult api_request_result);
   void OnEthGetTransactionCount(GetTxCountCallback callback,
                                 APIRequestResult api_request_result);
   void OnFilGetTransactionCount(GetFilTxCountCallback callback,
@@ -457,6 +477,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               APIRequestResult api_request_result);
   void OnGetERC20TokenAllowance(GetERC20TokenAllowanceCallback callback,
                                 APIRequestResult api_request_result);
+  void OnGetERC20TokenBalances(
+      const std::vector<std::string>& token_contract_addresses,
+      GetERC20TokenBalancesCallback callback,
+      APIRequestResult api_request_result);
   void OnUnstoppableDomainsResolveDns(const std::string& domain,
                                       const std::string& chain_id,
                                       APIRequestResult api_request_result);

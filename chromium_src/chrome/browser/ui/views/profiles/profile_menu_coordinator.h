@@ -10,7 +10,7 @@
   GetProfileMenuViewBaseForTesting();      \
   friend class BraveProfileMenuViewTest
 
-#include "src/chrome/browser/ui/views/profiles/profile_menu_coordinator.h"
+#include "src/chrome/browser/ui/views/profiles/profile_menu_coordinator.h"  // IWYU pragma: export
 
 #undef GetProfileMenuViewBaseForTesting
 

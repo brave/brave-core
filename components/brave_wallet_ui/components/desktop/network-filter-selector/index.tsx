@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 // Types
 import { BraveWallet, SupportedTestNetworks, WalletAccountType, WalletState } from '../../../constants/types'
+import { LOCAL_STORAGE_KEYS } from '../../../common/constants/local-storage-keys'
 
 // Components
 import NetworkFilterItem from './network-filter-item'
@@ -54,13 +55,15 @@ export const NetworkFilterSelector = ({
 
   // redux
   const dispatch = useDispatch()
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
+  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // api
-  const selectedNetwork = networkProp || selectedNetworkFilter
-  const selectedAccount = accountProp || selectedAccountFilter
+  const selectedNetwork = networkProp || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
+  const selectedAccount = accountProp || [...accounts, AllAccountsOption].find(account => account.id === selectedAccountFilter) || AllAccountsOption
 
   // memos
   const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {
@@ -104,7 +107,12 @@ export const NetworkFilterSelector = ({
     if (onSelectNetwork) {
       onSelectNetwork(network)
     } else {
-      dispatch(WalletActions.setSelectedNetworkFilter(network))
+      const networkFilter = {
+        chainId: network.chainId,
+        coin: network.coin
+      }
+      window.localStorage.setItem(LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION, JSON.stringify(networkFilter))
+      dispatch(WalletActions.setSelectedNetworkFilter(networkFilter))
     }
 
     hideNetworkFilter()
@@ -158,7 +166,7 @@ export const NetworkFilterSelector = ({
                   key={`${network.chainId + network.chainName}`}
                   network={network}
                   onSelectNetwork={onSelectAndClose}
-                  selectedNetwork={selectedNetworkFilter}
+                  selectedNetwork={selectedNetwork}
                 />
               )}
             </>

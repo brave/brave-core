@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
 import * as BraveNews from '../api/brave_news'
@@ -15,8 +15,6 @@ type DataReceivedPayload = {
   publishers?: BraveNews.Publishers
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
-
-export const optIn = createAction('optedIn')
 
 /**
  * Scroll has reached a position so that another page of content is needed

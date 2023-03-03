@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_DATABASE_TABLE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_DATABASE_TABLE_H_
 
-#include <functional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "bat/ads/ads_client_callback.h"
 #include "bat/ads/internal/database/database_table_interface.h"
 #include "bat/ads/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
@@ -17,7 +17,7 @@
 namespace ads::database::table {
 
 using GetTextEmbeddingHtmlEventsCallback =
-    std::function<void(const bool, const TextEmbeddingHtmlEventList&)>;
+    base::OnceCallback<void(const bool, const TextEmbeddingHtmlEventList&)>;
 
 class TextEmbeddingHtmlEvents final : public TableInterface {
  public:

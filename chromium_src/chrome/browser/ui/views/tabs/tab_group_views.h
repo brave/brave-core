@@ -11,7 +11,7 @@
   const Browser* GetBrowser() const; \
   void OnGroupVisualsChanged
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_views.h"
+#include "src/chrome/browser/ui/views/tabs/tab_group_views.h"  // IWYU pragma: export
 
 #undef OnGroupVisualsChanged
 

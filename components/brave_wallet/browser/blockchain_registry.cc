@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -100,95 +101,121 @@ void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
                                       GetAllTokensCallback callback) {
   const auto key = GetTokenListKey(coin, chain_id);
   if (!token_list_map_.contains(key)) {
-    std::move(callback).Run(
-        std::vector<brave_wallet::mojom::BlockchainTokenPtr>());
+    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
     return;
   }
   const auto& tokens = token_list_map_[key];
-  std::vector<brave_wallet::mojom::BlockchainTokenPtr> tokens_copy(
-      tokens.size());
+  std::vector<mojom::BlockchainTokenPtr> tokens_copy(tokens.size());
   std::transform(
       tokens.begin(), tokens.end(), tokens_copy.begin(),
-      [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
-          -> brave_wallet::mojom::BlockchainTokenPtr {
-        return current_token.Clone();
-      });
+      [](const mojom::BlockchainTokenPtr& current_token)
+          -> mojom::BlockchainTokenPtr { return current_token.Clone(); });
   std::move(callback).Run(std::move(tokens_copy));
+}
+
+std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
+    const std::vector<mojom::OnRampProvider>& providers,
+    const std::string& chain_id) {
+  std::vector<mojom::BlockchainTokenPtr> blockchain_buy_tokens;
+  base::flat_set<mojom::OnRampProvider> provider_set(providers.begin(),
+                                                     providers.end());
+
+  for (const auto& provider : provider_set) {
+    const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
+    if (provider == mojom::OnRampProvider::kWyre) {
+      buy_tokens = &GetWyreBuyTokens();
+    } else if (provider == mojom::OnRampProvider::kRamp) {
+      buy_tokens = &GetRampBuyTokens();
+    } else if (provider == mojom::OnRampProvider::kSardine) {
+      buy_tokens = &GetSardineBuyTokens();
+    } else if (provider == mojom::OnRampProvider::kTransak) {
+      buy_tokens = &GetTransakBuyTokens();
+    } else {
+      continue;
+    }
+
+    for (const auto& token : *buy_tokens) {
+      if (token.chain_id == chain_id) {
+        blockchain_buy_tokens.push_back(mojom::BlockchainToken::New(token));
+      }
+    }
+  }
+
+  return blockchain_buy_tokens;
+}
+
+TokenListMap BlockchainRegistry::GetEthTokenListMap(
+    const std::vector<std::string>& chain_ids) {
+  // Create a copy of token_list_map with only the chain_ids we want
+  TokenListMap token_list_map_copy;
+  for (const auto& chain_id : chain_ids) {
+    const auto key = GetTokenListKey(mojom::CoinType::ETH, chain_id);
+    // Skip if the key is not in the map.
+    if (!token_list_map_.contains(key)) {
+      continue;
+    }
+
+    // Otherwise, clone the vector of tokens.
+    const auto& tokens = token_list_map_[key];
+    std::vector<brave_wallet::mojom::BlockchainTokenPtr> tokens_copy(
+        tokens.size());
+    std::transform(
+        tokens.begin(), tokens.end(), tokens_copy.begin(),
+        [](const brave_wallet::mojom::BlockchainTokenPtr& current_token)
+            -> brave_wallet::mojom::BlockchainTokenPtr {
+          return current_token.Clone();
+        });
+    token_list_map_copy[chain_id] = std::move(tokens_copy);
+  }
+
+  return token_list_map_copy;
 }
 
 void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
                                       const std::string& chain_id,
                                       GetBuyTokensCallback callback) {
-  std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens;
-  const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
-  if (provider == mojom::OnRampProvider::kWyre)
-    buy_tokens = &GetWyreBuyTokens();
-  else if (provider == mojom::OnRampProvider::kRamp)
-    buy_tokens = &GetRampBuyTokens();
-  else if (provider == mojom::OnRampProvider::kSardine)
-    buy_tokens = &GetSardineBuyTokens();
-  else if (provider == mojom::OnRampProvider::kTransak)
-    buy_tokens = &GetTransakBuyTokens();
+  std::move(callback).Run(GetBuyTokens({provider}, chain_id));
+}
 
-  if (buy_tokens == nullptr) {
-    std::move(callback).Run(std::move(blockchain_buy_tokens));
+void BlockchainRegistry::GetProvidersBuyTokens(
+    const std::vector<mojom::OnRampProvider>& providers,
+    const std::string& chain_id,
+    GetProvidersBuyTokensCallback callback) {
+  std::move(callback).Run(GetBuyTokens(providers, chain_id));
+}
+
+void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
+                                       const std::string& chain_id,
+                                       GetSellTokensCallback callback) {
+  std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
+  const std::vector<mojom::BlockchainToken>* sell_tokens = nullptr;
+  if (provider == mojom::OffRampProvider::kRamp) {
+    sell_tokens = &GetRampSellTokens();
+  }
+
+  if (sell_tokens == nullptr) {
+    std::move(callback).Run(std::move(blockchain_sell_tokens));
     return;
   }
 
-  for (const auto& token : *buy_tokens) {
+  for (const auto& token : *sell_tokens) {
     if (token.chain_id != chain_id) {
       continue;
     }
 
-    blockchain_buy_tokens.push_back(
-        brave_wallet::mojom::BlockchainToken::New(token));
+    blockchain_sell_tokens.push_back(mojom::BlockchainToken::New(token));
   }
-  std::move(callback).Run(std::move(blockchain_buy_tokens));
-}
-// TODO(muliswilliam) - Remove this function when iOS and Android no longer
-// depend on it https://github.com/brave/brave-browser/issues/23503
-void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
-                                   const std::string& chain_id,
-                                   const std::string& address,
-                                   const std::string& symbol,
-                                   const std::string& amount,
-                                   GetBuyUrlCallback callback) {
-  std::string url;
-  const std::string default_currency = "USD";
-  if (provider == mojom::OnRampProvider::kWyre) {
-    GURL wyre_url = GURL(kWyreBaseUrl);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "dest", "ethereum:" + address);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "sourceCurrency", default_currency);
-    wyre_url = net::AppendQueryParameter(wyre_url, "destCurrency", symbol);
-    wyre_url = net::AppendQueryParameter(wyre_url, "amount", amount);
-    wyre_url = net::AppendQueryParameter(wyre_url, "accountId", kWyreID);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "paymentMethod", "debit-card");
-    std::move(callback).Run(std::move(wyre_url.spec()), absl::nullopt);
-  } else if (provider == mojom::OnRampProvider::kRamp) {
-    GURL ramp_url = GURL(kRampBaseUrl);
-    ramp_url = net::AppendQueryParameter(ramp_url, "userAddress", address);
-    ramp_url = net::AppendQueryParameter(ramp_url, "swapAsset", symbol);
-    ramp_url = net::AppendQueryParameter(ramp_url, "fiatValue", amount);
-    ramp_url =
-        net::AppendQueryParameter(ramp_url, "fiatCurrency", default_currency);
-    ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kRampID);
-    std::move(callback).Run(std::move(ramp_url.spec()), absl::nullopt);
-  } else {
-    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
-  }
+  std::move(callback).Run(std::move(blockchain_sell_tokens));
 }
 
 void BlockchainRegistry::GetOnRampCurrencies(
     GetOnRampCurrenciesCallback callback) {
-  std::vector<brave_wallet::mojom::OnRampCurrencyPtr> currencies;
+  std::vector<mojom::OnRampCurrencyPtr> currencies;
   const std::vector<mojom::OnRampCurrency>* onRampCurrencies =
       &GetOnRampCurrenciesList();
 
   for (const auto& currency : *onRampCurrencies) {
-    currencies.push_back(brave_wallet::mojom::OnRampCurrency::New(currency));
+    currencies.push_back(mojom::OnRampCurrency::New(currency));
   }
   std::move(callback).Run(std::move(currencies));
 }

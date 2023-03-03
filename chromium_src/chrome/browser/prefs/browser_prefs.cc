@@ -98,7 +98,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   brave_wallet::MigrateObsoleteProfilePrefs(profile->GetPrefs());
 
   // Added 05/2021
-  profile->GetPrefs()->ClearPref(kBraveTodayIntroDismissed);
+  profile->GetPrefs()->ClearPref(kBraveNewsIntroDismissed);
   // Added 07/2021
   profile->GetPrefs()->ClearPref(prefs::kNetworkPredictionOptions);
 

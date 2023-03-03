@@ -9,7 +9,7 @@
 #define friendly_suggestion_text_ \
   friendly_suggestion_text_;      \
   friend class BraveOmniboxViewViews
-#include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "src/chrome/browser/ui/views/omnibox/omnibox_view_views.h"  // IWYU pragma: export
 #undef friendly_suggestion_text_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_VIEW_VIEWS_H_

@@ -16,12 +16,14 @@ import { findAccountName } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
 import { reduceAddress } from '../../utils/reduce-address'
+import { WalletSelectors } from '../selectors'
 
 // Custom Hooks
 import { useTransactionParser } from './transaction-parser'
 import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
+import { useSafeWalletSelector } from './use-safe-selector'
 
 // Constants
 import { WalletState, BraveWallet } from '../../constants/types'
@@ -46,6 +48,10 @@ export const usePendingTransactions = () => {
     pendingTransactions,
     defaultNetworks
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const hasFeeEstimatesError = useSafeWalletSelector(
+    WalletSelectors.hasFeeEstimatesError
+  )
+
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
 
   const transactionsNetwork = React.useMemo(() => {
@@ -174,7 +180,16 @@ export const usePendingTransactions = () => {
           : getLocale('braveWalletSend')
     , [isSolanaDappTransaction, transactionDetails?.isSwap])
 
+  const isLoadingGasFee =
+    // FIL has gas info provided by txDataUnion
+    !transactionDetails?.isFilecoinTransaction &&
+    transactionDetails?.gasFee === ''
+
   const isConfirmButtonDisabled = React.useMemo(() => {
+    if (hasFeeEstimatesError || isLoadingGasFee) {
+      return true
+    }
+
     if (!transactionDetails) {
       return true
     }
@@ -189,7 +204,7 @@ export const usePendingTransactions = () => {
       !!transactionDetails?.missingGasLimitError ||
       !canSelectedPendingTransactionBeApproved
     )
-  }, [transactionDetails])
+  }, [transactionDetails, hasFeeEstimatesError, isLoadingGasFee])
 
   // effects
   React.useEffect(() => {
@@ -279,6 +294,9 @@ export const usePendingTransactions = () => {
     updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionNonce,
     groupTransactions,
-    selectedPendingTransactionGroupIndex
+    selectedPendingTransactionGroupIndex,
+    hasFeeEstimatesError,
+    selectedPendingTransaction: transactionInfo,
+    isLoadingGasFee
   }
 }

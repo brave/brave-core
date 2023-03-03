@@ -26,7 +26,6 @@
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST"/></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
 <translation id="8988939298652262600">لا يقوم متصفّح Brave بمراجعة الامتدادات لأسباب تتعلق بأمن وسلامة المعلومات. قم بتثبيت هذا الامتداد فقط إذا كنت تثق بالمطور.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="9005883459983913482">نوافذ متصفّح Tor</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="6924909138923993900">اتصال تور جديد لهذا الموقع</translation>
@@ -41,6 +40,9 @@
 <translation id="1725356094208762656">افتح في Tor</translation>
 <translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
 <translation id="7473245612074035141">بدء الإعداد</translation>
+<translation id="496896260395129787">تم حذف حساب Brave Sync هذا من جهاز آخر. إذا كنت لا تقصد تعطيل المزامنة،<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>إعادة إنشاء الحساب</translation>
+<translation id="6965382102122355670">موافق</translation>
 <translation id="3975865347033939965">تعذر بدء تشغيل خدمة المزامنة، مزامنة Brave لا تعمل</translation>
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="4595286989346610620">تحقق من التفاصيل</translation>
@@ -114,8 +116,8 @@
 <translation id="9194637241566114638">ساعد في تحسين<ph name="SEARCH_NAME"/>عن طريق إرسال بيانات استخدام مجهولة الهوية.<ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">بحث Brave</translation>
 <translation id="8184318863960255706">مزيد من المعلومات</translation>
-<translation id="6965382102122355670">موافق</translation>
 <translation id="780301667611848630">لا، شكرًا</translation>
+<translation id="1162706247109707219">بالنقر فوق "موافق"، فإنك تقر بأن تثبيت Brave لن يتلقى إصلاحات أمان مهمة حتى تقوم بالتحديث إلى Windows 10 أو إصدار أحدث. لن يظهر هذا التحذير مرة أخرى.</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -123,8 +125,12 @@
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
 <translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
-<translation id="7986278174934557414">إخفاء أيقونة اللوحة الجانبية</translation>
-<translation id="6915291874524466201">إخفاء أيقونة اللوحة الجانبية</translation>
+<translation id="4375473250631001683">إخفاء أيقونة الشريط الجانبي</translation>
+<translation id="2613033293035359003">إخفاء الشريط الجانبي</translation>
+<translation id="4233010476457917696">إظهار الشريط الجانبي</translation>
+<translation id="7829322605042304637">إخفاء أيقونة الشريط الجانبي</translation>
+<translation id="7349915168363514678">إخفاء الشريط الجانبي</translation>
+<translation id="5404213409401164238">إظهار الشريط الجانبي</translation>
 <translation id="9149866541089851383">تعديل...</translation>
 <translation id="1181037720776840403">إزالة</translation>
 <translation id="7513769021866698486">تحرير العنصر</translation>
@@ -133,7 +139,9 @@
 <translation id="5877900074358050101">عنوان عنصر الشريط الجانبي</translation>
 <translation id="1613695740874407223">عنوان URL لعنصر الشريط الجانبي</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
-<translation id="5404213409401164238">إظهار الشريط الجانبي</translation>
+<translation id="5977931179408079967">موضع</translation>
+<translation id="3790384768741064842">نقل إلى اليمين</translation>
+<translation id="7444424316576061724">نقل إلى اليسار</translation>
 <translation id="7561196759112975576">دائماً</translation>
 <translation id="7060352228894039151">عند تحريك الفأرة</translation>
 <translation id="7961015016161918242">مطلقًا</translation>
@@ -166,6 +174,8 @@
 <translation id="8731422418734770661">قم بإعداد المحافظ المشفرة</translation>
 <translation id="8199661191594897555">بدء تشغيل Crypto Wallets وإعادة التحميل</translation>
 <translation id="8428213095426709021">الإعدادات</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">نطاقات Web3</translation>
 <translation id="72868071984333667">تعرف على المزيد حول IPFS والخصوصية</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
 <translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
@@ -177,10 +187,14 @@
 <translation id="3987546108749866209">استخدام علامات تبويب عمودية</translation>
 <translation id="5860254591544742609">عرض شريط العناوين</translation>
 <translation id="399928467800528208">التنقل عند تحريك الفأرة</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{إعادة صوت علامة تبويب واحدة}zero{إعادة صوت علامات التبويب}two{إعادة صوت علامتيِّ التبويب}few{إعادة صوت علامات التبويب}many{إعادة صوت علامات التبويب}other{إعادة صوت علامات التبويب}}</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="2523967823495420116">استخدام علامات تبويب عمودية</translation>
 <translation id="8888603463702767599">عرض شريط العناوين</translation>
 <translation id="2058818256505091369">التنقل عند تحريك الفأرة</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{إعادة صوت علامة تبويب واحدة}zero{إعادة صوت علامات التبويب}two{إعادة صوت علامتيِّ التبويب}few{إعادة صوت علامات التبويب}many{إعادة صوت علامات التبويب}other{إعادة صوت علامات التبويب}}</translation>
 <translation id="4235920711083356755">إظهار زر VPN</translation>
 <translation id="4070612712151038707">يُظهر زر VPN في شريط الأدوات</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +247,9 @@
 <translation id="4096343215397759358">بطاقة مع معاينة</translation>
 <translation id="5297085818601043899">تعريف الأدوات</translation>
 <translation id="2396127686705429331">عرض زر الإشارات المرجعية</translation>
-<translation id="2369560305991805099">الزر "إظهار اللوحة الجانبية"</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
 <translation id="2858138569776157458">أهم المواقع</translation>
-<translation id="65774893852758517">المواقع المقترحة</translation>
 <translation id="7859704718976024901">تاريخ التصفح</translation>
 <translation id="8820817407110198400">إشارات</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
@@ -248,6 +260,8 @@
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
 <translation id="2025435450953474282">يتم تحميل المقالات تلقائيًا في وضع القارئ، مما يوفر لك الوقت</translation>
+<translation id="2422927186524098759">الشريط الجانبي</translation>
+<translation id="832432428796481785">إظهار زر الشريط الجانبي</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
 <translation id="1988804048511540801">تظهر صفحة علامة تبويب جديدة</translation>
 <translation id="2970343821770026391">لوحة التحكم</translation>
@@ -271,6 +285,8 @@
 <translation id="4800195524776354947">إظهار عدد العناصر المحظورة على أيقونة Shields</translation>
 <translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
 <translation id="7630031867325944356">تفضل عناوين URL لصفحات الناشرين، بدلا من صفحات AMP والإصدارات المشابهة.</translation>
+<translation id="920638232916443453">عناوين URL لتتبع إعادة التوجيه التلقائي</translation>
+<translation id="1118970888826017401">تمكين الدعم لتجاوز عناوين URL لتتبع إعادة التوجيه ذات المستوى الأعلى.</translation>
 <translation id="7607166182943595829">منع المواقع من مسح بصمتي بناءً على تفضيلاتي اللغوية</translation>
 <translation id="3497934980362703405">تمكين هذا الإعداد يقلل كم موقعًا يمكنه التعرّف على تفضيلاتي اللغوية.</translation>
 <translation id="2133317862976486547">حظر برامج التتبع &amp; الإعلانات</translation>
@@ -287,8 +303,6 @@
 <translation id="2360360976480535628">عرض متقدم</translation>
 <translation id="101592339984642584">تصفية المحتوى</translation>
 <translation id="8694564340481124390">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات الإقليمية واللغوية.</translation>
-<translation id="4877657558909976793">قم بتمكين عوامل التصفية المخصصة التي تمنع أدوات التعقب والمضايقات
-    <ph name="BEGIN_LINK"/>الإقليمية واللغوية<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">إضافة قوائم عوامل التصفية المخصصة</translation>
 <translation id="1020877116991797978">أضف قوائم إضافية أنشأها مجتمعك الموثوق واحتفظ بها.</translation>
 <translation id="7617831480435794399">لا تشترك إلا في قوائم من كيانات تثق بها. سيتحقق متصفحك دوريًّا من تحديثات القائمة من رابط URL تُدخله أنت، كاشفًا عن عنوان IP الخاص بك لهذا الخادم.</translation>
@@ -363,6 +377,7 @@
 <translation id="4332558599726753990">تهيئة المزامنة</translation>
 <translation id="2187778349654214731">للبدء ، ستحتاج إلى تثبيت متصفح Brave على جميع الأجهزة التي تخطط لمزامنتها. بعد ذلك، اربط بينها بأمان بواسطة رمز مزامنة.</translation>
 <translation id="7530575064080939974">إدارة أجهزتك التي تمت مزامنتها</translation>
+<translation id="8668872235103666008">تعذر مزامنة Brave على أجهزتك</translation>
 <translation id="7575156386943878014">مدير المزامنة</translation>
 <translation id="1755198127524719638">إعدادات المزامنة</translation>
 <translation id="7558480201297099157">قم بإدارة المعلومات التي تريد مزامنتها بين الأجهزة. تؤثر هذه الإعدادات فقط على هذا الجهاز.</translation>
@@ -392,7 +407,7 @@
 <translation id="4485276108749547761">تعامل مع هذا الرمز على أنه كلمة مرور. إذا تمكن أحدهم من الحصول عليه، فيمكنه قراءة بياناتك المتزامنة وتعديلها.</translation>
 <translation id="3034163433136515805">عرض رمز الاستجابة السريعة</translation>
 <translation id="5373825572723282843">إدخال رمز مزامنة</translation>
-<translation id="5734745018569675530">أدخل كلمات رمز سلسلة المزامنة التي زودت بها في النموذج أدناه.</translation>
+<translation id="1265244359514651398">أدخل عبارة مرور سلسلة المزامنة أدناه.</translation>
 <translation id="1061533051865606843">إضافة جهاز جديد</translation>
 <translation id="5093410893656857925">اختر نوع الجهاز</translation>
 <translation id="4581190919849683048">ما نوع الجهاز الذي ترغب في عمل المزامنة معه؟</translation>
@@ -400,6 +415,7 @@
 <translation id="3995714999835224798">الكود غير صالح</translation>
 <translation id="4432071071853308688">هذا الرمز فارغ</translation>
 <translation id="955848693465029904">خطأ في المزامنة الداخلية</translation>
+<translation id="7456398316301207582">خطأ في حذف الحساب الداخلي</translation>
 <translation id="859506441384380749">تم إنشاء هذا الرمز بواسطة إصدار لا يتلقى تحديثات من Brave، يرجى ترقية جهازك الآخر أولاً</translation>
 <translation id="3132642509209154999">لقد انتهت صلاحية هذا الرمز. يرجى  إنشاء رمز جديد على جهازك الآخر والمحاولة مرة أخرى.</translation>
 <translation id="2859229680945501779">هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.</translation>
@@ -412,6 +428,18 @@
 
 هل أنت متأكد من أنك تريد القيام بهذا؟</translation>
 <translation id="7443185843787879670">لم يتمكن Brave من الوصول إلى التخزين الآمن لنظام التشغيل الخاص بك. هذا ما يستخدم لتأمين البيانات مثل كلمات المرور وملفات تعريف الارتباط.؛ كما أنه مطلوب أيضا لمزامنة Brave لتوصيل ملف تعريف المتصفح الخاص بك بين الأجهزة. هذا يعني أن مزامنة Brave لا تعمل. لحل هذه المشكلة، يرجى مراجعة <ph name="BEGIN_LINK_SYNC_GUIDE"/>دليل استكشاف أخطاء مزامنة Brave وإصلاحها<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">يبدو أن مفتاح تشفير المزامنة يختلف عن المفتاح المستخدم عند إعداد Brave Sync لأول مرة. ويتمثل أسهل حل هنا في إعادة تعيين سلسلة المزامنة وإعادة الانضمام إليها باستخدام عبارة المرور من أحد أجهزتك الأخرى التي تمت مزامنتها.</translation>
+<translation id="4889767840132638381">إعادة تعيين سلسلة المزامنة وإعادة الانضمام إليها</translation>
+<translation id="1680065323266179640">حذف حساب المزامنة</translation>
+<translation id="9064376100690171155">حذف الحساب نهائيا</translation>
+<translation id="228906529296554286">سيؤدي حذف حسابك إلى إزالة بياناتك المشفرة من خوادم Brave وتعطيل المزامنة على جميع أجهزتك المتصلة.</translation>
+<translation id="7578652532113583362">ومع ذلك لن يحذف البيانات المخزنة محليًا على تلك الأجهزة.</translation>
+<translation id="2516405584294312544">هذا الحذف نهائي ولا توجد طريقة لاستعادة البيانات. إذا قررت
+    بدء استخدام المزامنة مرة أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.</translation>
+<translation id="4860996720371753023">حذف الحساب قيد التقدم...</translation>
+<translation id="8199291899164865593">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف الحساب.</translation>
+<translation id="5633907266617216186">العناوين ومعلومات الدفع وما إلى ذلك.</translation>
+<translation id="294985549514492876">تطبيقات الويب (PWAs)</translation>
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
 <translation id="842628013524824194">نافذة عادية - تم استخدام محرك البحث في شريط العنوان</translation>
@@ -465,7 +493,7 @@
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
-<translation id="1241283133946520352">الشبكات</translation>
+<translation id="856371974127598760">شبكات المحفظة</translation>
 <translation id="5975930666279943472">امسح تداولات المحفظة ومعلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
 <translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
@@ -503,6 +531,8 @@
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
 <translation id="8996633027318264334">هل تريد حقًا حذف <ph name="KEY_NAME"/>؟</translation>
+<translation id="3316326558572563182">تكون الشبكة النشطة مرئية دائمًا في قائمة شبكة المحفظة</translation>
+<translation id="232693303726691609">إظهار/إخفاء الشبكة في قائمة شبكة المحفظة</translation>
 <translation id="7893578599666249602">هل تريد بالفعل إعادة تعيين<ph name="KEY_NAME"/>؟</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
 <translation id="9170907049676078643">طريقة حل موارد IPFS</translation>
@@ -557,6 +587,7 @@
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
+<translation id="7984721311211272523">قم بتعطيل وظيفة كتم الصوت في أيقونات سماعات علامات التبويب</translation>
 <translation id="6624718837376802990">الصورة الرمزية للمكافآت الهائجة</translation>
 <translation id="6617313057407561765">الصورة الرمزية للشجاع الهائج</translation>
 <translation id="6754445808455578019">الصورة الرمزية للمحيط الهائج</translation>

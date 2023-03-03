@@ -8,6 +8,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "bat/ads/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/common/timer/backoff_timer.h"
@@ -42,6 +43,7 @@ class RedeemUnblindedPaymentTokens final {
 
  private:
   void Redeem();
+  void OnRedeemUnblindedPaymentTokensUserDataBuilt(base::Value::Dict user_data);
   void OnRedeem(
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
       const mojom::UrlResponseInfo& url_response);

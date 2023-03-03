@@ -10,3 +10,8 @@ export const ENSOffchainLookupMessage: AddressMessageInfo = {
   description: 'braveWalletEnsOffChainLookupDescription',
   url: 'https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup'
 }
+
+export const FailedChecksumMessage: AddressMessageInfo = {
+  title: 'braveWalletFailedChecksumTitle',
+  description: 'braveWalletFailedChecksumDescription'
+}

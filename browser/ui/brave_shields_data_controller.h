@@ -24,6 +24,7 @@
 using brave_shields::mojom::AdBlockMode;
 using brave_shields::mojom::CookieBlockMode;
 using brave_shields::mojom::FingerprintMode;
+using brave_shields::mojom::HttpsUpgradeMode;
 using content::NavigationEntry;
 
 namespace brave_shields {
@@ -49,11 +50,14 @@ class BraveShieldsDataController
 
   void HandleItemBlocked(const std::string& block_type,
                          const std::string& subresource);
+  void HandleItemAllowedOnce(const std::string& allowed_once_type,
+                             const std::string& subresource);
   void ClearAllResourcesList();
   int GetTotalBlockedCount();
   std::vector<GURL> GetBlockedAdsList();
   std::vector<GURL> GetHttpRedirectsList();
-  std::vector<GURL> GetJsList();
+  std::vector<GURL> GetBlockedJsList();
+  std::vector<GURL> GetAllowedJsList();
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
@@ -65,12 +69,15 @@ class BraveShieldsDataController
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
   bool GetHTTPSEverywhereEnabled();
+  HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   void SetAdBlockMode(AdBlockMode mode);
   void SetFingerprintMode(FingerprintMode mode);
   void SetCookieBlockMode(CookieBlockMode mode);
+  void SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetIsHTTPSEverywhereEnabled(bool is_enabled);
+  void AllowScriptsOnce(const std::vector<std::string>& origins);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
@@ -105,6 +112,7 @@ class BraveShieldsDataController
   std::set<GURL> resource_list_blocked_ads_;
   std::set<GURL> resource_list_http_redirects_;
   std::set<GURL> resource_list_blocked_js_;
+  std::set<GURL> resource_list_allowed_once_js_;
   std::set<GURL> resource_list_blocked_fingerprints_;
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};

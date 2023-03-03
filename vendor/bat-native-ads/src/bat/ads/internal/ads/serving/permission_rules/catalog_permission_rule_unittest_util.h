@@ -8,7 +8,7 @@
 
 namespace ads {
 
-void ForceCatalogPermissionRule();
+void ForceCatalogPermissionRuleForTesting();
 
 }  // namespace ads
 

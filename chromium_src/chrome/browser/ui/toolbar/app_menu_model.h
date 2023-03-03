@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
 
 #define BookmarkSubMenuModel BraveBookmarkSubMenuModel
-#include "src/chrome/browser/ui/toolbar/app_menu_model.h"
+#include "src/chrome/browser/ui/toolbar/app_menu_model.h"  // IWYU pragma: export
 #undef BookmarkSubMenuModel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_APP_MENU_MODEL_H_

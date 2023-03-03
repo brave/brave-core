@@ -62,43 +62,11 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/user_wallet_background"
-            android:contentDescription="@null"/>
-
-        <android.widget.Button
-            android:id="@+id/user_wallet_btn1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@android:color/holo_blue_dark"
-            android:padding="12dp"
-	    android:visibility="gone">
-        </android.widget.Button>
-
-        <ImageView
             android:id="@+id/user_wallet_btn2_separator"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/user_wallet_background"
-            android:contentDescription="@null"
-            android:visibility="gone"/>
-
-        <android.widget.Button
-            android:id="@+id/user_wallet_btn2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@android:color/holo_blue_dark"
-            android:padding="12dp"
-            android:visibility="gone">
-        </android.widget.Button>
-
+            android:contentDescription="@null"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -106,14 +74,14 @@
             android:contentDescription="@null"/>
 
         <android.widget.Button
-            android:id="@+id/user_wallet_go_to_provider"
+            android:id="@+id/provider_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
-            android:padding="12dp">
-        </android.widget.Button>
+            android:padding="12dp"/>
+
     </LinearLayout>
 </LinearLayout>

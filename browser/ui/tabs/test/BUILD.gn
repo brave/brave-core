@@ -7,9 +7,13 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "brave_tab_strip_model_browsertest.cc" ]
+  sources = [
+    "brave_tab_strip_model_browsertest.cc",
+    "shared_pinned_tab_service_browsertest.cc",
+  ]
 
   deps = [
+    "//brave/browser/ui/tabs:tabs",
     "//brave/components/constants",
     "//chrome/app:command_ids",
     "//chrome/browser",

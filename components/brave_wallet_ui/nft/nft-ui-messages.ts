@@ -5,8 +5,10 @@
 
 import { loadTimeData } from '../../common/loadTimeData'
 import { BraveWallet, NFTMetadataReturnType } from '../constants/types'
+import { isComponentInStorybook } from '../utils/string-utils'
+import { PinningStatusType } from '../page/constants/action_types'
 
-const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl')
+const nftDisplayOrigin = loadTimeData.getString('braveWalletNftBridgeUrl') || ''
 // remove trailing /
 export const braveNftDisplayOrigin = nftDisplayOrigin.endsWith('/') ? nftDisplayOrigin.slice(0, -1) : nftDisplayOrigin
 
@@ -19,7 +21,9 @@ export const enum NftUiCommand {
   UpdateNFTMetadata = 'update-nft-metadata',
   UpdateNFTMetadataError = 'update-nft-metadata-error',
   UpdateTokenNetwork = 'update-token-network',
-  ToggleNftModal = 'toggle-nft-modal'
+  UpdateNftPinningStatus = 'update-nft-pinning-status',
+  ToggleNftModal = 'toggle-nft-modal',
+  IframeSize = 'iframe-size'
 }
 
 export type CommandMessage = {
@@ -58,12 +62,23 @@ export type UpdateTokenNetworkMessage = CommandMessage & {
   payload: BraveWallet.NetworkInfo
 }
 
+export type UpdateNftPinningStatus = CommandMessage & {
+  payload: PinningStatusType | undefined
+}
+
 export type ToggleNftModal = CommandMessage & {
   payload: boolean
 }
 
+export type IframeSize = CommandMessage & {
+  payload: {
+    width: number
+    height: number
+  }
+}
+
 export const sendMessageToNftUiFrame = (targetWindow: Window | null, message: CommandMessage) => {
-  if (targetWindow) {
+  if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveNftDisplayOrigin)
   }
 }

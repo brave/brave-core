@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_CONTROLLER_H_
 
-#include "src/chrome/browser/ui/views/translate/translate_bubble_controller.h"
+#include "src/chrome/browser/ui/views/translate/translate_bubble_controller.h"  // IWYU pragma: export
 
 template <typename... Args>
 static std::unique_ptr<TranslateBubbleView> MakeTranslateBubbleView(

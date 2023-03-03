@@ -15,11 +15,24 @@
 
 namespace playlist {
 
+// DownloadJob -----------------------------------------------------------------
+
+PlaylistMediaFileDownloadManager::DownloadJob::DownloadJob() = default;
+PlaylistMediaFileDownloadManager::DownloadJob::DownloadJob(
+    PlaylistMediaFileDownloadManager::DownloadJob&&) noexcept = default;
+PlaylistMediaFileDownloadManager::DownloadJob&
+PlaylistMediaFileDownloadManager::DownloadJob::operator=(
+    PlaylistMediaFileDownloadManager::DownloadJob&&) noexcept = default;
+PlaylistMediaFileDownloadManager::DownloadJob::~DownloadJob() = default;
+
+// PlaylistMediaFileDownloadManager --------------------------------------------
+
 PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
     content::BrowserContext* context,
     Delegate* delegate,
     const base::FilePath& base_dir)
     : base_dir_(base_dir), delegate_(delegate) {
+  DCHECK(delegate_) << "We don't consider where |delegate| is null";
   // TODO(pilgrim) dynamically set file extensions based on format.
   media_file_downloader_ = std::make_unique<PlaylistMediaFileDownloader>(
       this, context, kMediaFileName);
@@ -28,8 +41,11 @@ PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
 PlaylistMediaFileDownloadManager::~PlaylistMediaFileDownloadManager() = default;
 
 void PlaylistMediaFileDownloadManager::DownloadMediaFile(
-    const mojom::PlaylistItemPtr& playlist_item) {
-  pending_media_file_creation_jobs_.push(playlist_item.Clone());
+    std::unique_ptr<DownloadJob> request) {
+  DCHECK(request);
+  DCHECK(request->item);
+
+  pending_media_file_creation_jobs_.push(std::move(request));
 
   // If either media file controller is generating a playlist media file,
   // delay the next playlist generation. It will be triggered when the current
@@ -63,24 +79,32 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
   if (pending_media_file_creation_jobs_.empty())
     return;
 
-  current_item_ = GetNextPlaylistItemTarget();
-  if (!current_item_)
+  current_job_ = PopNextJob();
+  if (!current_job_) {
     return;
+  }
 
-  VLOG(2) << __func__ << ": " << current_item_->name;
+  DCHECK(current_job_->item);
 
-  media_file_downloader_->DownloadMediaFileForPlaylistItem(current_item_,
-                                                           base_dir_);
+  if (!pause_download_for_testing_) {
+    VLOG(2) << __func__ << ": " << current_job_->item->name;
+    media_file_downloader_->DownloadMediaFileForPlaylistItem(current_job_->item,
+                                                             base_dir_);
+  }
 }
 
-mojom::PlaylistItemPtr
-PlaylistMediaFileDownloadManager::GetNextPlaylistItemTarget() {
+std::unique_ptr<PlaylistMediaFileDownloadManager::DownloadJob>
+PlaylistMediaFileDownloadManager::PopNextJob() {
   while (!pending_media_file_creation_jobs_.empty()) {
-    auto playlist_item(std::move(pending_media_file_creation_jobs_.front()));
+    auto request = std::move(pending_media_file_creation_jobs_.front());
+    DCHECK(request);
+    DCHECK(request->item);
+
     pending_media_file_creation_jobs_.pop();
 
-    if (delegate_->IsValidPlaylistItem(playlist_item->id))
-      return playlist_item;
+    if (delegate_->IsValidPlaylistItem(request->item->id)) {
+      return request;
+    }
   }
 
   return {};
@@ -96,6 +120,7 @@ PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
 
 void PlaylistMediaFileDownloadManager::CancelCurrentDownloadingPlaylistItem() {
   media_file_downloader_->RequestCancelCurrentPlaylistGeneration();
+  current_job_.reset();
 }
 
 bool PlaylistMediaFileDownloadManager::IsCurrentDownloadingInProgress() const {
@@ -108,18 +133,38 @@ void PlaylistMediaFileDownloadManager::OnMediaFileDownloadProgressed(
     int64_t received_bytes,
     int percent_complete,
     base::TimeDelta time_remaining) {
-  delegate_->OnMediaFileDownloadProgressed(id, total_bytes, received_bytes,
-                                           percent_complete, time_remaining);
+  if (!current_job_ || !current_job_->item) {
+    return;
+  }
+
+  if (current_job_->item->id != id) {
+    return;
+  }
+
+  if (current_job_->on_progress_callback) {
+    current_job_->on_progress_callback.Run(current_job_->item, total_bytes,
+                                           received_bytes, percent_complete,
+                                           time_remaining);
+  }
 }
 
 void PlaylistMediaFileDownloadManager::OnMediaFileReady(
     const std::string& id,
     const std::string& media_file_path) {
   VLOG(2) << __func__ << ": " << id << " is ready.";
+  if (!current_job_ || !current_job_->item) {
+    return;
+  }
 
-  delegate_->OnMediaFileReady(id, media_file_path);
+  if (current_job_->item->id != id) {
+    return;
+  }
 
-  current_item_.reset();
+  if (current_job_->on_finish_callback) {
+    std::move(current_job_->on_finish_callback)
+        .Run(std::move(current_job_->item), media_file_path);
+  }
+  current_job_.reset();
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
@@ -130,9 +175,19 @@ void PlaylistMediaFileDownloadManager::OnMediaFileReady(
 void PlaylistMediaFileDownloadManager::OnMediaFileGenerationFailed(
     const std::string& id) {
   VLOG(2) << __func__ << ": " << id;
+  if (!current_job_ || !current_job_->item) {
+    return;
+  }
 
-  delegate_->OnMediaFileGenerationFailed(id);
+  if (current_job_->item && current_job_->item->id != id) {
+    return;
+  }
 
+  if (current_job_->on_finish_callback) {
+    std::move(current_job_->on_finish_callback)
+        .Run(std::move(current_job_->item), {});
+  }
+  current_job_.reset();
   CancelCurrentDownloadingPlaylistItem();
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(

@@ -7,7 +7,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -75,11 +75,6 @@ KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
   return new BraveNewsController(profile->GetPrefs(), favicon_service,
                                  ads_service, history_service,
                                  profile->GetURLLoaderFactory());
-}
-
-content::BrowserContext* BraveNewsControllerFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 }  // namespace brave_news

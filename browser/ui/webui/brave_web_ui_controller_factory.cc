@@ -13,7 +13,6 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
@@ -42,12 +41,18 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/commands/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #endif
 
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -96,6 +101,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new IPFSUI(web_ui, url.host());
 #endif
 #if !BUILDFLAG(IS_ANDROID)
+  } else if (host == kCommandsHost &&
+             base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    return new commands::CommandsUI(web_ui, url.host());
   } else if (host == kWalletPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
@@ -162,11 +170,16 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
-  } else if (host == kFederatedInternalsHost) {
-    if (base::FeatureList::IsEnabled(
-            brave_federated::features::kFederatedLearning)) {
-      return new brave_federated::FederatedInternalsUI(web_ui);
-    }
+#if BUILDFLAG(IS_ANDROID)
+  } else if (url.is_valid() &&
+             (url.spec() == base::StringPrintf("%s://%s",
+                                               content::kChromeUIScheme,
+                                               kWalletSwapPagePath) ||
+              url.spec() == base::StringPrintf("%s://%s",
+                                               content::kBraveUIScheme,
+                                               kWalletSwapPagePath))) {
+    return new SwapPageUI(web_ui, url.host());
+#endif
   }
   return nullptr;
 }
@@ -186,17 +199,24 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif
+#if BUILDFLAG(IS_ANDROID)
+      (url.is_valid() &&
+       (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+                                         kWalletSwapPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                         kWalletSwapPagePath))) ||
+#endif  // BUILDFLAG(IS_ANDROID)
       url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&
        base::FeatureList::IsEnabled(
            brave_shields::features::kBraveAdblockCookieListOptIn)) ||
       url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kFederatedInternalsHost ||
       url.host_piece() == kRewardsInternalsHost ||
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kTipHost ||
       url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kSpeedreaderPanelHost ||
+      url.host_piece() == kCommandsHost ||
 #endif
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||

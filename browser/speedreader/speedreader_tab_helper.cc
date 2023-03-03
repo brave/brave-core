@@ -7,15 +7,15 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -29,8 +29,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -39,6 +38,12 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_browser_window.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#endif
 
 namespace speedreader {
 
@@ -115,7 +120,11 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
+#if BUILDFLAG(IS_ANDROID)
+  return true;  // skip the preference storage for now
+#else
   return SpeedreaderServiceFactory::GetForProfile(GetProfile())->IsEnabled();
+#endif
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {
@@ -271,6 +280,7 @@ Profile* SpeedreaderTabHelper::GetProfile() const {
 }
 
 void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
+#if !BUILDFLAG(IS_ANDROID)
   auto* contents = web_contents();
   Browser* browser = chrome::FindBrowserWithWebContents(contents);
   DCHECK(browser);
@@ -284,6 +294,7 @@ void SpeedreaderTabHelper::ShowBubble(bool is_bubble_speedreader) {
   speedreader_bubble_ =
       static_cast<BraveBrowserWindow*>(browser->window())
           ->ShowSpeedreaderBubble(this, is_bubble_speedreader);
+#endif
 }
 
 void SpeedreaderTabHelper::HideBubble() {
@@ -438,6 +449,7 @@ void SpeedreaderTabHelper::OnPrefChanged() {
 
 void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
   DCHECK(base::Contains(kPropertyPrefNames, path));
+
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
   if (!speedreader_service)
@@ -462,10 +474,12 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
   if (!is_visible_)
     return;
+#if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
     browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
   }
+#endif
 }
 
 void SpeedreaderTabHelper::DidStartNavigation(
@@ -517,8 +531,8 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
                                                       link_text, nullptr);
 
-  render_frame_host->ExecuteJavaScriptInIsolatedWorld(script, base::DoNothing(),
-                                                      kIsolatedWorldId);
+  render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -570,7 +584,7 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       nullptr);
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), kIsolatedWorldId);
+      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);

@@ -5,10 +5,12 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import { RegisterStyleOverride, RegisterPolymerTemplateModifications } from 'chrome://resources/polymer_overriding.js'
-import { loadTimeData } from '../i18n_setup.js'
 import '../brave_icons.html.js'
+
+import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
+import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+
+import {loadTimeData} from '../i18n_setup.js'
 
 function createMenuElement(title, href, iconName, pageVisibilitySection) {
   const menuEl = document.createElement('a')
@@ -221,6 +223,13 @@ RegisterPolymerTemplateModifications({
     } else {
       menuEl.insertAdjacentElement('afterbegin', titleEl)
     }
+
+    // Hide performance menu. We moved it under system menu instead.
+    const performanceEl = getMenuElement(templateContent, '/performance')
+    if (performanceEl) {
+      performanceEl.remove()
+    }
+
     // Add 'Get Started' item
     const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(

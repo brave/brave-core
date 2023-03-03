@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/bind.h"
-#include "base/callback_helpers.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -48,8 +48,7 @@ bool RewriteManifestFile(const base::FilePath& extension_root,
 
   base::FilePath manifest_path =
       extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
-  int size = base::checked_cast<int>(manifest_json.size());
-  if (base::WriteFile(manifest_path, manifest_json.data(), size) != size) {
+  if (!base::WriteFile(manifest_path, manifest_json)) {
     return false;
   }
   return true;

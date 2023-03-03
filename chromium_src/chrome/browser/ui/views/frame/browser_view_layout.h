@@ -16,7 +16,7 @@
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
 
-#include "src/chrome/browser/ui/views/frame/browser_view_layout.h"
+#include "src/chrome/browser/ui/views/frame/browser_view_layout.h"  // IWYU pragma: export
 
 #undef LayoutContentsContainerView
 #undef LayoutInfoBar

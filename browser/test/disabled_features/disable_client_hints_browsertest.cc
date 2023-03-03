@@ -6,9 +6,9 @@
 #include <functional>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
@@ -43,7 +43,6 @@ const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
     blink::features::kClientHintsResourceWidth_DEPRECATED,
     blink::features::kClientHintsViewportWidth,
     blink::features::kClientHintsViewportWidth_DEPRECATED,
-    blink::features::kPrefersColorSchemeClientHintHeader,
     blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
     // Client hints features

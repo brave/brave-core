@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "base/task/bind_post_task.h"

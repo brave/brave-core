@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -94,10 +95,28 @@ export const batAmount = styled.div`
   }
 `
 
+export const balanceSpinner = styled.div`
+  .icon {
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+`
+
+export const loading = styled.span`
+  font-size: 14px;
+  line-height: 18px;
+  vertical-align: middle;
+`
+
 export const exchangeAmount = styled.div`
   font-size: 12px;
   line-height: 14px;
   opacity: 0.66;
+
+  &.hidden {
+    visibility: hidden;
+  }
 `
 
 export const earningsPanel = styled.div`

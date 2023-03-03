@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 // utils
-import { getLocale } from '$web-common/locale'
 import { getWalletLocationTitle } from '../utils/string-utils'
 
 // actions
@@ -30,9 +29,6 @@ import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-
 // style
 import 'emptykit.css'
 import {
-  ButtonText,
-  FeatureRequestButton,
-  IdeaButtonIcon,
   SimplePageWrapper,
   WalletWidgetStandIn
 } from './screens/page-screen.styles'
@@ -49,8 +45,7 @@ import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
 import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
-
-const featureRequestUrl = 'https://community.brave.com/tags/c/wallet/131/feature-request'
+import { FeatureRequestButton } from '../components/shared/feature-request-button/feature-request-button'
 
 export const Container = () => {
   // routing
@@ -117,14 +112,6 @@ export const Container = () => {
     dispatch(WalletPageActions.openWalletSettings())
   }, [])
 
-  const onClickFeatureRequestButton = React.useCallback(() => {
-    chrome.tabs.create({ url: featureRequestUrl }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }, [])
-
   // computed
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
@@ -152,13 +139,15 @@ export const Container = () => {
     if (
       walletLocation.includes(WalletRoutes.Accounts) ||
       walletLocation.includes(WalletRoutes.Backup) ||
-      walletLocation.includes(WalletRoutes.DepositFundsPage) ||
-      walletLocation.includes(WalletRoutes.FundWalletPage) ||
+      walletLocation.includes(WalletRoutes.DepositFundsPageStart) ||
+      walletLocation.includes(WalletRoutes.FundWalletPageStart) ||
       walletLocation.includes(WalletRoutes.Portfolio) ||
       walletLocation.includes(WalletRoutes.Market) ||
       walletLocation.includes(WalletRoutes.Nfts) ||
       walletLocation.includes(WalletRoutes.Swap) ||
-      walletLocation.includes(WalletRoutes.Send)
+      walletLocation.includes(WalletRoutes.Send) ||
+      walletLocation.includes(WalletRoutes.LocalIpfsNode ||
+        walletLocation.includes(WalletRoutes.InspectNfts))
     ) {
       setSessionRoute(walletLocation)
     }
@@ -172,7 +161,9 @@ export const Container = () => {
         walletLocation === WalletRoutes.Swap ||
         walletLocation === WalletRoutes.Send ||
         walletLocation.includes(WalletRoutes.DepositFundsPage) ||
-        walletLocation.includes(WalletRoutes.FundWalletPage)
+        walletLocation.includes(WalletRoutes.FundWalletPage) ||
+        walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
+        walletLocation.includes(WalletRoutes.InspectNfts)
       ) {
         toobarElement.hidden = true
         rootElement.style.setProperty('min-height', '100vh')
@@ -218,13 +209,17 @@ export const Container = () => {
                 <OnboardingSuccess />
               </Route>
 
-              <Route path={WalletRoutes.FundWalletPage} exact>
-                <FundWalletScreen />
-              </Route>
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.FundWalletPage} exact>
+                  <FundWalletScreen />
+                </Route>
+              }
 
-              <Route path={WalletRoutes.DepositFundsPage} exact>
-                <DepositFundsScreen />
-              </Route>
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.DepositFundsPage} exact>
+                  <DepositFundsScreen />
+                </Route>
+              }
 
               <Route path={WalletRoutes.Restore} exact={true}>
                 <SimplePageWrapper>
@@ -294,11 +289,8 @@ export const Container = () => {
         </WalletWidgetStandIn>
       }
 
-      {!isWalletLocked && walletLocation !== WalletRoutes.Swap &&
-        <FeatureRequestButton onClick={onClickFeatureRequestButton}>
-          <IdeaButtonIcon />
-          <ButtonText>{getLocale('braveWalletRequestFeatureButtonText')}</ButtonText>
-        </FeatureRequestButton>
+      {!isWalletLocked && walletLocation !== WalletRoutes.Swap && walletLocation !== WalletRoutes.Send &&
+        <FeatureRequestButton />
       }
     </WalletPageLayout>
   )

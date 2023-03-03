@@ -20,10 +20,11 @@ namespace brave_wallet {
 
 TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
-  mojom_params.emplace_back(
-      mojom::SolanaInstructionParam::New("test1", "Test1", "TEST1"));
-  mojom_params.emplace_back(
-      mojom::SolanaInstructionParam::New("test2", "Test2", "TEST2"));
+  mojom_params.emplace_back(mojom::SolanaInstructionParam::New(
+      "test1", "Test1", "TEST1", mojom::SolanaInstructionParamType::kUnknown));
+  mojom_params.emplace_back(mojom::SolanaInstructionParam::New(
+      "test2", "Test2", "TEST2",
+      mojom::SolanaInstructionParamType::kPublicKey));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
       static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
       solana_ins_data_decoder::GetMojomAccountParamsForTesting(
@@ -36,8 +37,12 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
   EXPECT_EQ(decoded_data->sys_ins_type,
             mojom::SolanaSystemInstruction::kTransfer);
   EXPECT_FALSE(decoded_data->token_ins_type);
-  std::vector<std::tuple<std::string, std::string, std::string>> expect_params(
-      {{"test1", "Test1", "TEST1"}, {"test2", "Test2", "TEST2"}});
+  std::vector<std::tuple<std::string, std::string, std::string,
+                         mojom::SolanaInstructionParamType>>
+      expect_params({{"test1", "Test1", "TEST1",
+                      mojom::SolanaInstructionParamType::kUnknown},
+                     {"test2", "Test2", "TEST2",
+                      mojom::SolanaInstructionParamType::kPublicKey}});
   auto expect_account_params =
       solana_ins_data_decoder::GetAccountParamsForTesting(
           mojom::SolanaSystemInstruction::kTransfer, absl::nullopt);
@@ -89,13 +94,61 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToMojom) {
 TEST(SolanaInstructionDecodedDataUnitTest, FromToValue) {
   SolanaInstructionDecodedData decoded_data;
   decoded_data.sys_ins_type = mojom::SolanaSystemInstruction::kTransfer;
-  decoded_data.params = {{"test1", "Test1", "TEST1"},
-                         {"test2", "Test2", "TEST2"}};
+  decoded_data.params = {
+      {"test1", "Test1", "TEST1",
+       mojom::SolanaInstructionParamType::kPublicKey},
+      {"test2", "Test2", "TEST2", mojom::SolanaInstructionParamType::kUint8}};
   decoded_data.account_params = {{"param1", "Param1"}, {"param2", "Param2"}};
 
   auto decoded_data_dict = decoded_data.ToValue();
   ASSERT_TRUE(decoded_data_dict);
   auto expect_decoded_data_value = base::test::ParseJson(R"(
+    {
+      "account_params": [
+        {
+          "name": "param1",
+          "localized_name": "Param1"
+        },
+        {
+          "name": "param2",
+          "localized_name": "Param2"
+        }
+      ],
+      "params": [
+        {
+          "name": "test1",
+          "localized_name": "Test1",
+          "value": "TEST1",
+          "type": 3
+        },
+        {
+          "name": "test2",
+          "localized_name": "Test2",
+          "value": "TEST2",
+          "type": 0
+        }
+      ],
+      "sys_ins_type": "2"
+    }
+  )");
+  EXPECT_EQ(*decoded_data_dict, expect_decoded_data_value.GetDict());
+
+  auto decoded_data_from_value =
+      SolanaInstructionDecodedData::FromValue(*decoded_data_dict);
+  EXPECT_EQ(decoded_data, decoded_data_from_value);
+
+  // Test DecodedData objects converted from old values without type info
+  // should have unknown type info.
+  SolanaInstructionDecodedData expected_decoded_data;
+  expected_decoded_data.sys_ins_type =
+      mojom::SolanaSystemInstruction::kTransfer;
+  expected_decoded_data.params = {
+      {"test1", "Test1", "TEST1", mojom::SolanaInstructionParamType::kUnknown},
+      {"test2", "Test2", "TEST2", mojom::SolanaInstructionParamType::kUnknown}};
+  expected_decoded_data.account_params = {{"param1", "Param1"},
+                                          {"param2", "Param2"}};
+
+  auto decoded_data_without_type_info = base::test::ParseJson(R"(
     {
       "account_params": [
         {
@@ -122,11 +175,9 @@ TEST(SolanaInstructionDecodedDataUnitTest, FromToValue) {
       "sys_ins_type": "2"
     }
   )");
-  EXPECT_EQ(*decoded_data_dict, expect_decoded_data_value.GetDict());
-
-  auto decoded_data_from_value =
-      SolanaInstructionDecodedData::FromValue(*decoded_data_dict);
-  EXPECT_EQ(decoded_data, decoded_data_from_value);
+  EXPECT_EQ(expected_decoded_data, SolanaInstructionDecodedData::FromValue(
+                                       decoded_data_without_type_info.GetDict())
+                                       .value());
 
   // Test invalid FromValue cases.
   std::vector<std::string> invalid_value_strings = {

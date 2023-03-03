@@ -28,8 +28,11 @@ bool IsNativeWalletEnabled();
 bool IsFilecoinEnabled();
 bool IsSolanaEnabled();
 bool ShouldShowTxStatusInToolbar();
+bool IsNftPinningEnabled();
+bool IsPanelV2Enabled();
 bool ShouldCreateDefaultSolanaAccount();
 bool IsDappsSupportEnabled();
+bool IsBitcoinEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
@@ -159,6 +162,12 @@ absl::optional<mojom::CoinType> GetCoinTypeFromPrefKey(const std::string& key);
 absl::optional<std::string> GetChainId(PrefService* prefs,
                                        const mojom::CoinType& coin,
                                        const std::string& network_id);
+
+// Resolves chain_id from network_id (including custom networks).
+absl::optional<std::string> GetChainIdByNetworkId(
+    PrefService* prefs,
+    const mojom::CoinType& coin,
+    const std::string& network_id);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium

@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Yoniq boʻlsa, Brave nofaol varaqlar orqali xotirani boʻshatadi. Bunda faol varaqlar va boshqa ilovalar kompyuter resurslarini oshiradi va Brave ishlashi tezlashadi. Nofaol varaqlar ularga qaytilganda avtomatik faollashadi. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Xotirani tejash funksiyasi Braveni tezlashtirdi</translation>
 <translation id="4798342026247191171">Yangi Brave profilini sozlang</translation>
-<translation id="6361779936989026201">Braveda Brave Assistent</translation>
 <translation id="113959764510199339">Kirtilgan parollar Brave brauzerida ko‘rsatiladi.</translation>
 <translation id="8132634101975074716">Brave‘ga xush kelibsiz!</translation>
 <translation id="4168469784091952813">Brave ilovasining barcha imkoniyatlaridan foydalanishingiz mumkin</translation>
@@ -81,6 +80,7 @@ Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave h
 <translation id="8208853227947884571">Siz Brave brauzerining eng oxirgi versiyasidan foydalanyapsiz.</translation>
 <translation id="5122472867956731189">Agar sayt parolingizni oʻgirlashga urinsa yoki zararli fayl yuklab olsangiz, Brave ham URL manzillar kabi sahifa elementlarini Saytlarni xavfsiz kezish tizimiga yuborishi mumkin</translation>
 <translation id="2953892977076487219">Brave parollarni tahrirlashga urinmoqda.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave HID qurilmasiga ulangan}other{Brave HID qurilmalariga ulangan}}</translation>
 <translation id="8755404239607088219">Brave parollaringizni tekshira olmadi. Keyinroq qayta urining.</translation>
 <translation id="8880183781256147665">Brave‘ga o‘rnatilmoqda...</translation>
 <translation id="3038232873781883849">Oʻrnatish kutilmoqda…</translation>
@@ -108,7 +108,6 @@ Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave h
 <translation id="5853262807109651878">Ushbu qurilmadagi <ph name="ITEMS_COUNT"/> ta element butunlay o‘chiriladi. Ma’lumotlaringizni keyinroq olish uchun Brave brauzeriga <ph name="USER_EMAIL"/> sifatida kiring.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> Brave profillarini almashtira oladi</translation>
 <translation id="8703492925273919597">Barcha Brave oynalarini yoping va qaytadan urinib ko‘ring.</translation>
-<translation id="5350485513372498152">Bravedagi Brave Assistent buyruqlaringizni saytlararo bajarishi mumkin</translation>
 <translation id="4061445349373849749">Maxfiylikni himoya qilish maqsadida biz 4 haftadan uzoq saqlangan qiziqishlarni avtomatik oʻchiramiz. Sahifalar takroriy ochilganida qiziqish roʻyxatda yana chiqishi mumkin. Yoki Brave foydalanmasligini istasangiz, qiziqishlarni olib tashlashingiz mumkin.</translation>
 <translation id="691208314680168371">Bu qurilmada Brave orqali siz kirgan saytlar tarixidagi qaydlar.</translation>
 <translation id="1384923383737428730">Kompyuteringizda zararli dasturlar topildi. Brave uni tozalab, sozlamalarni qayta tiklashi, kengaytmalarni oʻchirib qoʻyishi mumkin.</translation>
@@ -195,7 +194,7 @@ Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave h
 <translation id="232381795826373334">PDF fayllarni Brave bilan ochish</translation>
 <translation id="5381032481466106256">Bu yoqilsa, Brave dasturida ham hisobingizdan chiqasiz</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave uchun yangilanish mavjud}=1{Brave uchun yangilanish mavjud}other{Brave uchun yangilanish mavjud (# kun)}}</translation>
-<translation id="95624393026532554">Brave brauzeri ishlashi uchun kompyuterda Windows 7 yoki undan yangiroq versiyadagi operatsion tizim o‘rnatilgan bo‘lishi lozim.</translation>
+<translation id="4378573854226202617">Brave brauzeri ishlashi uchun kompyuterda Windows 10 yoki undan yangiroq versiyadagi operatsion tizim o‘rnatilgan bo‘lishi lozim.</translation>
 <translation id="5646769069113654257">Braveni hozir qayta ishga tushiring</translation>
 <translation id="2335583906071111058">Brave shu tilda ko‘rsatilsin</translation>
 <translation id="7207456302801184289">Brave brauzeriga xush kelibsiz</translation>
@@ -384,4 +383,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="4484434718272972655">Braveni kim ochdi?</translation>
 <translation id="7173394303099002355">Brave brauzerining kuchli xavfsizligidan foydalaning</translation>
 <translation id="8992261409816268381">Brave mualliflari</translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

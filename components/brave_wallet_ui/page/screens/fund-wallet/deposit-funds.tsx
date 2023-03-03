@@ -22,7 +22,6 @@ import {
   SupportedTestNetworks,
   UserAssetInfoType,
   WalletAccountType,
-  WalletRoutes,
   WalletState
 } from '../../../constants/types'
 
@@ -62,6 +61,8 @@ import { NavButton } from '../../../components/extension/buttons/nav-button/inde
 import CreateAccountTab from '../../../components/buy-send-swap/create-account/index'
 import SelectHeader from '../../../components/buy-send-swap/select-header/index'
 import { getBatTokensFromList } from '../../../utils/asset-utils'
+import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import { TabHeader } from '../shared-screen-components/tab-header/tab-header'
 
 export const DepositFundsScreen = () => {
   // routing
@@ -183,14 +184,6 @@ export const DepositFundsScreen = () => {
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
-  const goToPortfolio = React.useCallback(() => {
-    if (tokenId !== undefined) {
-      history.goBack()
-      return
-    }
-    history.push(WalletRoutes.Portfolio)
-  }, [history, tokenId])
-
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
     setSelectedAccount(account)
@@ -311,8 +304,10 @@ export const DepositFundsScreen = () => {
 
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
+    <CenteredPageLayout isTabView={true}>
+      <TabHeader title='braveWalletDepositCryptoButton' />
+      <BuySendSwapDepositNav isTab={true} />
+      <MainWrapper isTabView={true}>
         <StyledWrapper>
 
           {/* Hide nav when creating or searching accounts */}
@@ -321,10 +316,9 @@ export const DepositFundsScreen = () => {
           ) &&
             <StepsNavigation
               goBack={onBack}
-              onSkip={goToPortfolio}
-              skipButtonText={getLocale('braveWalletButtonDone')}
               steps={[]}
               currentStep=''
+              preventGoBack={!showDepositAddress}
             />
           }
 

@@ -48,12 +48,15 @@ class BraveShieldsWebContentsObserver
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
+  static void DispatchAllowedOnceEventForWebContents(
+      const std::string& block_type,
+      const std::string& subresource,
+      content::WebContents* web_contents);
   static void DispatchBlockedEvent(const GURL& request_url,
                                    int frame_tree_node_id,
                                    const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
-  void AllowScriptsOnce(const std::vector<std::string>& origins,
-                        content::WebContents* web_contents);
+  void AllowScriptsOnce(const std::vector<std::string>& origins);
   bool IsBlockedSubresource(const std::string& subresource);
   void AddBlockedSubresource(const std::string& subresource);
 
@@ -68,6 +71,7 @@ class BraveShieldsWebContentsObserver
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
+  void OnJavaScriptAllowedOnce(const std::u16string& details) override;
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;

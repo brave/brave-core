@@ -23,6 +23,7 @@ class CORE_EXPORT ResourcePoolLimiter {
  public:
   enum class ResourceType {
     kWebSocket,
+    kEventSource,
   };
 
   class CORE_EXPORT ResourceInUseTracker {

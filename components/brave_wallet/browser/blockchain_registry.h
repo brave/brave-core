@@ -51,15 +51,17 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   void GetAllTokens(const std::string& chain_id,
                     mojom::CoinType coin,
                     GetAllTokensCallback callback) override;
+  TokenListMap GetEthTokenListMap(const std::vector<std::string>& chain_ids);
   void GetBuyTokens(mojom::OnRampProvider provider,
                     const std::string& chain_id,
                     GetBuyTokensCallback callback) override;
-  void GetBuyUrl(mojom::OnRampProvider provider,
-                 const std::string& chain_id,
-                 const std::string& address,
-                 const std::string& symbol,
-                 const std::string& amount,
-                 GetBuyUrlCallback callback) override;
+  void GetProvidersBuyTokens(
+      const std::vector<mojom::OnRampProvider>& providers,
+      const std::string& chain_id,
+      GetProvidersBuyTokensCallback callback) override;
+  void GetSellTokens(mojom::OffRampProvider provider,
+                     const std::string& chain_id,
+                     GetSellTokensCallback callback) override;
   void GetOnRampCurrencies(GetOnRampCurrenciesCallback callback) override;
   void GetPrepopulatedNetworks(
       GetPrepopulatedNetworksCallback callback) override;
@@ -76,6 +78,9 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
 
  private:
   mojo::ReceiverSet<mojom::BlockchainRegistry> receivers_;
+  std::vector<brave_wallet::mojom::BlockchainTokenPtr> GetBuyTokens(
+      const std::vector<mojom::OnRampProvider>& providers,
+      const std::string& chain_id);
 };
 
 }  // namespace brave_wallet

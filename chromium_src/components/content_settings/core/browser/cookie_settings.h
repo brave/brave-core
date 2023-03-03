@@ -20,7 +20,7 @@
   bool ShouldUseEphemeralStorage(                                             \
       const url::Origin& origin, const net::SiteForCookies& site_for_cookies, \
       const absl::optional<url::Origin>& top_frame_origin,                    \
-      url::Origin& storage_origin);                                           \
+      net::CookieSettingOverrides overrides, url::Origin& storage_origin);    \
   std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(                 \
       const std::string& ephemeral_storage_domain);                           \
                                                                               \
@@ -33,7 +33,7 @@
  public:                                                                      \
   void ShutdownOnUIThread
 
-#include "src/components/content_settings/core/browser/cookie_settings.h"
+#include "src/components/content_settings/core/browser/cookie_settings.h"  // IWYU pragma: export
 
 #undef ShutdownOnUIThread
 

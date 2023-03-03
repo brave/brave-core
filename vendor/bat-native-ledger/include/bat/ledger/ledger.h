@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
@@ -23,7 +23,6 @@
 namespace ledger {
 
 extern mojom::Environment _environment;
-extern int gemini_retries;
 extern bool is_debug;
 extern bool is_testing;
 extern int state_migration_target_version_for_testing;

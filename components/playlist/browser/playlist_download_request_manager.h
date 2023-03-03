@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
@@ -66,7 +66,7 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
       const PlaylistDownloadRequestManager&) = delete;
 
   // Request::callback will be called with generated param.
-  void GetMediaFilesFromPage(Request request);
+  virtual void GetMediaFilesFromPage(Request request);
 
   // Update |web_prefs| if we want for |web_contents|.
   void ConfigureWebPrefsForBackgroundWebContents(

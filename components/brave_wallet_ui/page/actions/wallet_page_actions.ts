@@ -44,5 +44,14 @@ export const {
   walletCreated,
   walletSetupComplete,
   updateNFTPinStatus,
-  getPinStatus
+  getPinStatus,
+  getIsAutoPinEnabled,
+  setAutoPinEnabled,
+  updateEnablingAutoPin,
+  updateAutoPinEnabled,
+  getNftsPinningStatus,
+  setNftsPinningStatus,
+  updateNftPinningStatus,
+  getLocalIpfsNodeStatus,
+  updateLocalIpfsNodeStatus
 } = PageActions

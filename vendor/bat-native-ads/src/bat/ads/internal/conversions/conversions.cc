@@ -6,6 +6,7 @@
 #include "bat/ads/internal/conversions/conversions.h"
 
 #include <set>
+#include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -13,15 +14,12 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/account_util.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/common/time/time_formatting_util.h"
 #include "bat/ads/internal/common/url/url_util.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
 #include "bat/ads/internal/conversions/conversion_queue_database_table.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
 #include "bat/ads/internal/conversions/conversions_database_table.h"
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/conversions/sorts/conversions_sort_factory.h"
@@ -153,9 +151,8 @@ AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
                                         const ConversionInfo& conversion) {
   AdEventList filtered_ad_events;
 
-  std::copy_if(
-      ad_events.cbegin(), ad_events.cend(),
-      std::back_inserter(filtered_ad_events),
+  base::ranges::copy_if(
+      ad_events, std::back_inserter(filtered_ad_events),
       [&conversion](const AdEventInfo& ad_event) {
         if (ad_event.creative_set_id != conversion.creative_set_id) {
           return false;
@@ -185,16 +182,16 @@ ConversionList FilterConversions(const std::vector<GURL>& redirect_chain,
                                  const ConversionList& conversions) {
   ConversionList filtered_conversions;
 
-  std::copy_if(conversions.cbegin(), conversions.cend(),
-               std::back_inserter(filtered_conversions),
-               [&redirect_chain](const ConversionInfo& conversion) {
-                 const auto iter = base::ranges::find_if(
-                     redirect_chain, [&conversion](const GURL& url) {
-                       return MatchUrlPattern(url, conversion.url_pattern);
-                     });
+  base::ranges::copy_if(conversions, std::back_inserter(filtered_conversions),
+                        [&redirect_chain](const ConversionInfo& conversion) {
+                          const auto iter = base::ranges::find_if(
+                              redirect_chain, [&conversion](const GURL& url) {
+                                return MatchUrlPattern(url,
+                                                       conversion.url_pattern);
+                              });
 
-                 return iter != redirect_chain.cend();
-               });
+                          return iter != redirect_chain.cend();
+                        });
 
   return filtered_conversions;
 }
@@ -252,27 +249,30 @@ void Conversions::MaybeConvert(
 
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
-      [=](const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
-        if (!success) {
-          BLOG(1, "Failed to get unprocessed conversions");
-          return;
-        }
-
-        if (conversion_queue_items.empty()) {
-          BLOG(1, "Conversion queue is empty");
-          return;
-        }
-
-        const ConversionQueueItemInfo& conversion_queue_item =
-            conversion_queue_items.front();
-
-        StartTimer(conversion_queue_item);
-      });
+  database_table.GetUnprocessed(base::BindOnce(
+      &Conversions::OnGetUnprocessedConversions, base::Unretained(this)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Conversions::OnGetUnprocessedConversions(
+    const bool success,
+    const ConversionQueueItemList& conversion_queue_items) {
+  if (!success) {
+    BLOG(1, "Failed to get unprocessed conversions");
+    return;
+  }
+
+  if (conversion_queue_items.empty()) {
+    BLOG(1, "Conversion queue is empty");
+    return;
+  }
+
+  const ConversionQueueItemInfo& conversion_queue_item =
+      conversion_queue_items.front();
+
+  StartTimer(conversion_queue_item);
+}
 
 void Conversions::CheckRedirectChain(
     const std::vector<GURL>& redirect_chain,
@@ -281,72 +281,88 @@ void Conversions::CheckRedirectChain(
   BLOG(1, "Checking URL for conversions");
 
   const database::table::AdEvents ad_events_database_table;
-  ad_events_database_table.GetAll([=](const bool success,
-                                      const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Failed to get ad events");
-      return;
+  ad_events_database_table.GetAll(
+      base::BindOnce(&Conversions::OnGetAllAdEvents, base::Unretained(this),
+                     redirect_chain, html, conversion_id_patterns));
+}
+
+void Conversions::OnGetAllAdEvents(
+    std::vector<GURL> redirect_chain,
+    std::string html,
+    ConversionIdPatternMap conversion_id_patterns,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Failed to get ad events");
+    return;
+  }
+
+  const database::table::Conversions conversions_database_table;
+  conversions_database_table.GetAll(
+      base::BindOnce(&Conversions::OnGetAllConversions, base::Unretained(this),
+                     std::move(redirect_chain), std::move(html),
+                     std::move(conversion_id_patterns), ad_events));
+}
+
+void Conversions::OnGetAllConversions(
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html,
+    const ConversionIdPatternMap& conversion_id_patterns,
+    const AdEventList& ad_events,
+    const bool success,
+    const ConversionList& conversions) {
+  if (!success) {
+    BLOG(1, "Failed to get conversions");
+    return;
+  }
+
+  if (conversions.empty()) {
+    BLOG(1, "There are no conversions");
+    return;
+  }
+
+  // Filter conversions by url pattern
+  ConversionList filtered_conversions =
+      FilterConversions(redirect_chain, conversions);
+
+  // Sort conversions in descending order
+  filtered_conversions = SortConversions(filtered_conversions);
+
+  // Create list of creative set ids for already converted ads
+  std::set<std::string> creative_set_ids = GetConvertedCreativeSets(ad_events);
+
+  bool converted = false;
+
+  // Check for conversions
+  for (const auto& conversion : filtered_conversions) {
+    const AdEventList filtered_ad_events =
+        FilterAdEventsForConversion(ad_events, conversion);
+
+    for (const auto& ad_event : filtered_ad_events) {
+      if (creative_set_ids.find(conversion.creative_set_id) !=
+          creative_set_ids.cend()) {
+        // Creative set id has already been converted
+        continue;
+      }
+
+      creative_set_ids.insert(ad_event.creative_set_id);
+
+      VerifiableConversionInfo verifiable_conversion;
+      verifiable_conversion.id = ExtractConversionIdFromText(
+          html, redirect_chain, conversion.url_pattern, conversion_id_patterns);
+      verifiable_conversion.public_key = conversion.advertiser_public_key;
+
+      Convert(ad_event, verifiable_conversion);
+
+      converted = true;
     }
+  }
 
-    const database::table::Conversions conversions_database_table;
-    conversions_database_table.GetAll([=](const bool success,
-                                          const ConversionList& conversions) {
-      if (!success) {
-        BLOG(1, "Failed to get conversions");
-        return;
-      }
-
-      if (conversions.empty()) {
-        BLOG(1, "There are no conversions");
-        return;
-      }
-
-      // Filter conversions by url pattern
-      ConversionList filtered_conversions =
-          FilterConversions(redirect_chain, conversions);
-
-      // Sort conversions in descending order
-      filtered_conversions = SortConversions(filtered_conversions);
-
-      // Create list of creative set ids for already converted ads
-      std::set<std::string> creative_set_ids =
-          GetConvertedCreativeSets(ad_events);
-
-      bool converted = false;
-
-      // Check for conversions
-      for (const auto& conversion : filtered_conversions) {
-        const AdEventList filtered_ad_events =
-            FilterAdEventsForConversion(ad_events, conversion);
-
-        for (const auto& ad_event : filtered_ad_events) {
-          if (creative_set_ids.find(conversion.creative_set_id) !=
-              creative_set_ids.cend()) {
-            // Creative set id has already been converted
-            continue;
-          }
-
-          creative_set_ids.insert(ad_event.creative_set_id);
-
-          VerifiableConversionInfo verifiable_conversion;
-          verifiable_conversion.id = ExtractConversionIdFromText(
-              html, redirect_chain, conversion.url_pattern,
-              conversion_id_patterns);
-          verifiable_conversion.public_key = conversion.advertiser_public_key;
-
-          Convert(ad_event, verifiable_conversion);
-
-          converted = true;
-        }
-      }
-
-      if (!converted) {
-        BLOG(1, "There were no conversion matches");
-      } else {
-        BLOG(1, "There was a conversion match");
-      }
-    });
-  });
+  if (!converted) {
+    BLOG(1, "There were no conversion matches");
+  } else {
+    BLOG(1, "There was a conversion match");
+  }
 }
 
 void Conversions::Convert(
@@ -457,24 +473,27 @@ void Conversions::ConvertedQueueItem(
 
 void Conversions::ProcessQueue() {
   const database::table::ConversionQueue database_table;
-  database_table.GetUnprocessed(
-      [=](const bool success,
-          const ConversionQueueItemList& conversion_queue_items) {
-        if (!success) {
-          BLOG(1, "Failed to get conversion queue");
-          return;
-        }
+  database_table.GetUnprocessed(base::BindOnce(
+      &Conversions::OnGetConversionQueue, base::Unretained(this)));
+}
 
-        if (conversion_queue_items.empty()) {
-          BLOG(1, "Conversion queue is empty");
-          return;
-        }
+void Conversions::OnGetConversionQueue(
+    const bool success,
+    const ConversionQueueItemList& conversion_queue_items) {
+  if (!success) {
+    BLOG(1, "Failed to get conversion queue");
+    return;
+  }
 
-        const ConversionQueueItemInfo& conversion_queue_item =
-            conversion_queue_items.front();
+  if (conversion_queue_items.empty()) {
+    BLOG(1, "Conversion queue is empty");
+    return;
+  }
 
-        ProcessQueueItem(conversion_queue_item);
-      });
+  const ConversionQueueItemInfo& conversion_queue_item =
+      conversion_queue_items.front();
+
+  ProcessQueueItem(conversion_queue_item);
 }
 
 void Conversions::RemoveInvalidQueueItem(
@@ -568,7 +587,7 @@ void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void Conversions::OnResourceDidUpdate(const std::string& id) {
-  if (kCountryComponentIds.find(id) != kCountryComponentIds.cend()) {
+  if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }
 }

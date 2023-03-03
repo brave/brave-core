@@ -111,8 +111,7 @@ class ADS_EXPORT AdsClient {
   // continue to be served ads.
   virtual void ShowScheduledCaptchaNotification(
       const std::string& payment_id,
-      const std::string& captcha_id,
-      bool should_show_tooltip_notification) = 0;
+      const std::string& captcha_id) = 0;
 
   // Clear the scheduled captcha, if any.
   virtual void ClearScheduledCaptcha() = 0;

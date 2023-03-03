@@ -569,24 +569,16 @@ class BraveWalletServiceUnitTest : public testing::Test {
     ASSERT_NE(valid_password, nullptr);
     ASSERT_NE(valid_mnemonic, nullptr);
 
-    keyring_service_->Lock();
-    // Check new password
-    base::RunLoop run_loop;
-    keyring_service_->Unlock(new_password,
-                             base::BindLambdaForTesting([&](bool success) {
-                               *valid_password = success;
-                               run_loop.Quit();
-                             }));
-    run_loop.Run();
+    *valid_password = keyring_service_->ValidatePasswordInternal(new_password);
 
-    base::RunLoop run_loop2;
+    base::RunLoop run_loop;
     keyring_service_->GetMnemonicForDefaultKeyring(
         new_password,
         base::BindLambdaForTesting([&](const std::string& mnemonic) {
           *valid_mnemonic = (mnemonic == in_mnemonic);
-          run_loop2.Quit();
+          run_loop.Quit();
         }));
-    run_loop2.Run();
+    run_loop.Run();
   }
 
   void CheckAddresses(const std::vector<std::string>& addresses,
@@ -1233,7 +1225,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
     ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
     base::Value::List* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
-      auto* chain_id_value = v.FindStringKey("chainId");
+      auto* chain_id_value = v.GetDict().FindString("chainId");
       if (!chain_id_value)
         return false;
       return *chain_id_value == "0x5566";
@@ -1858,10 +1850,10 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -1888,8 +1880,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -1916,10 +1907,10 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
@@ -1941,8 +1932,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 2, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 2, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request2),
@@ -2148,10 +2138,10 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
+  std::string domain = "{}";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      origin_info.Clone(), 1, address,
-      std::string(message.begin(), message.end()), false, absl::nullopt,
+      origin_info.Clone(), 1, address, domain, message, false, absl::nullopt,
       absl::nullopt, absl::nullopt, mojom::CoinType::ETH);
   service_->AddSignMessageRequest(
       std::move(request1),

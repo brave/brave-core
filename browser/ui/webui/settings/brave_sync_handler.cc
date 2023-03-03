@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -117,7 +117,7 @@ void BraveSyncHandler::OnDeviceInfoChange() {
 void BraveSyncHandler::HandleGetDeviceList(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
-  ResolveJavascriptCallback(args[0].Clone(), GetSyncDeviceList());
+  ResolveJavascriptCallback(args[0], GetSyncDeviceList());
 }
 
 void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
@@ -131,13 +131,13 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
 
   auto time_limited_sync_code = TimeLimitedWords::GenerateForNow(sync_code);
   if (time_limited_sync_code.has_value()) {
-    ResolveJavascriptCallback(args[0].Clone(),
+    ResolveJavascriptCallback(args[0],
                               base::Value(time_limited_sync_code.value()));
   } else {
     LOG(ERROR) << "Failed to generate time limited sync code, "
                << TimeLimitedWords::GenerateResultToText(
                       time_limited_sync_code.error());
-    RejectJavascriptCallback(args[0].Clone(), base::Value());
+    RejectJavascriptCallback(args[0], base::Value());
   }
 }
 
@@ -150,7 +150,7 @@ void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(sync_code));
+  ResolveJavascriptCallback(args[0], base::Value(sync_code));
 }
 
 void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
@@ -170,7 +170,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   if (!brave_sync::crypto::PassphraseToBytes32(pure_words_with_status.value(),
                                                &seed)) {
     LOG(ERROR) << "invalid sync code when generating qr code";
-    RejectJavascriptCallback(args[0].Clone(), base::Value("invalid sync code"));
+    RejectJavascriptCallback(args[0], base::Value("invalid sync code"));
     return;
   }
 
@@ -225,9 +225,8 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
     LOG(ERROR) << "Could not validate a sync code, validation_result="
                << static_cast<int>(pure_words_with_status.error()) << " "
                << GetSyncCodeValidationString(pure_words_with_status.error());
-    RejectJavascriptCallback(args[0].Clone(),
-                             base::Value(GetSyncCodeValidationString(
-                                 pure_words_with_status.error())));
+    RejectJavascriptCallback(args[0], base::Value(GetSyncCodeValidationString(
+                                          pure_words_with_status.error())));
     return;
   }
 
@@ -270,8 +269,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
       syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
 }
 
-void BraveSyncHandler::OnJoinChainResult(base::Value callback_id,
-                                         const bool& result) {
+void BraveSyncHandler::OnJoinChainResult(base::Value callback_id, bool result) {
   if (result) {
     ResolveJavascriptCallback(callback_id, base::Value(true));
   } else {
@@ -287,7 +285,7 @@ void BraveSyncHandler::HandleReset(const base::Value::List& args) {
 
   auto* sync_service = GetSyncService();
   if (!sync_service) {
-    ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+    ResolveJavascriptCallback(args[0], base::Value(true));
     return;
   }
 
@@ -338,20 +336,20 @@ void BraveSyncHandler::HandleDeleteDevice(const base::Value::List& args) {
 
   if (device_guid.empty()) {
     LOG(ERROR) << "No device id to remove!";
-    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
+    RejectJavascriptCallback(args[0], base::Value(false));
     return;
   }
 
   auto* sync_service = GetSyncService();
   if (!sync_service) {
-    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    ResolveJavascriptCallback(args[0], base::Value(false));
     return;
   }
 
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   brave_sync::DeleteDevice(sync_service, device_info_sync_service, device_guid);
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
+  ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
 syncer::BraveSyncServiceImpl* BraveSyncHandler::GetSyncService() const {

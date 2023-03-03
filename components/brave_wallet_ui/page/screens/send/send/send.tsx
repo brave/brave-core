@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Messages
-import { ENSOffchainLookupMessage } from '../send-ui-messages'
+import { ENSOffchainLookupMessage, FailedChecksumMessage } from '../send-ui-messages'
 
 // Types
 import { BraveWallet, SendOptionTypes, AddressMessageInfo } from '../../../../constants/types'
@@ -28,6 +28,7 @@ import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
 import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
+import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Styled Components
 import {
@@ -51,6 +52,7 @@ import { AccountSelector } from '../components/account-selector/account-selector
 import { AddressMessage } from '../components/address-message/address-message'
 import { SelectTokenModal } from '../components/select-token-modal/select-token-modal'
 import { CopyAddress } from '../components/copy-address/copy-address'
+import { ChecksumInfoModal } from '../components/checksum-info-modal/checksum-info-modal'
 
 interface Props {
   onShowSelectTokenModal: () => void
@@ -77,9 +79,6 @@ export const Send = (props: Props) => {
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
 
-  // Hooks
-  useBalanceUpdater()
-
   const {
     toAddressOrUrl,
     toAddress,
@@ -99,7 +98,19 @@ export const Send = (props: Props) => {
     processAddressOrUrl
   } = useSend(true)
 
+  // Refs
+  const ref = React.createRef<HTMLDivElement>()
+  const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
+
+  // State
+  const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
+  const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
+  const [domainPosition, setDomainPosition] = React.useState<number>(0)
+  const [showChecksumInfoModal, setShowChecksumInfoModal] = React.useState<boolean>(false)
+
   // Hooks
+  useBalanceUpdater()
+
   const onSelectPresetAmount = usePreset(
     {
       onSetAmount: setSendAmount,
@@ -107,13 +118,11 @@ export const Send = (props: Props) => {
     }
   )
 
-  // Refs
-  const ref = React.createRef<HTMLDivElement>()
-
-  // State
-  const [backgroundHeight, setBackgroundHeight] = React.useState<number>(0)
-  const [backgroundOpacity, setBackgroundOpacity] = React.useState<number>(0.3)
-  const [domainPosition, setDomainPosition] = React.useState<number>(0)
+  useOnClickOutside(
+    checksumInfoModalRef,
+    () => setShowChecksumInfoModal(false),
+    showChecksumInfoModal
+  )
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -210,7 +219,9 @@ export const Send = (props: Props) => {
       symbol: selectedSendAsset.symbol,
       value: new Amount(sendAmount !== '' ? sendAmount : '0')
         .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
-        .toHex()
+        .toHex(),
+      contractAddress: selectedSendAsset.contractAddress,
+      chainId: selectedSendAsset.chainId
     }).formatAsFiat(defaultCurrencies.fiat)
   }, [spotPrices, selectedSendAsset, sendAmount, defaultCurrencies.fiat, sendAssetBalance, selectedSendOption])
 
@@ -223,9 +234,17 @@ export const Send = (props: Props) => {
           ? getLocale('braveWalletDecimalPlacesError')
           : insufficientFundsError
             ? getLocale('braveWalletNotEnoughFunds')
-            : (addressError !== undefined && addressError !== '')
+            : (
+              addressError !== undefined &&
+              addressError !== '' &&
+              addressError !== getLocale('braveWalletNotValidChecksumAddressError')
+            )
               ? addressError
-              : (addressWarning !== undefined && addressWarning !== '')
+              : (
+                addressWarning !== undefined &&
+                addressWarning !== '' &&
+                addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
+              )
                 ? addressWarning
                 : getLocale('braveWalletReviewOrder')
   }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
@@ -240,6 +259,15 @@ export const Send = (props: Props) => {
       sendAmountValidationError !== undefined
   }, [toAddressOrUrl, sendAmount, insufficientFundsError, addressError, sendAmountValidationError, searchingForDomain])
 
+  const reviewButtonHasError = React.useMemo(() => {
+    return searchingForDomain
+      ? false
+      : insufficientFundsError ||
+      (addressError !== undefined &&
+        addressError !== '' &&
+        addressError !== getLocale('braveWalletNotValidChecksumAddressError'))
+  }, [searchingForDomain, insufficientFundsError, addressError])
+
   const selectedTokensNetwork = React.useMemo(() => {
     if (selectedSendAsset) {
       return getTokensNetwork(networks, selectedSendAsset)
@@ -250,17 +278,21 @@ export const Send = (props: Props) => {
   const hasAddressError = React.useMemo(() => {
     return searchingForDomain
       ? false
-      : !!addressError || !!addressWarning
-  }, [searchingForDomain, addressError, addressWarning])
+      : !!addressError
+  }, [searchingForDomain, addressError])
 
   const addressMessageInformation: AddressMessageInfo | undefined = React.useMemo(() => {
-    // ToDo: Implement Invalid Checksum warning and other longer warnings here in the future.
-    // https://github.com/brave/brave-browser/issues/26957
     if (showEnsOffchainWarning) {
       return ENSOffchainLookupMessage
     }
+    if (addressError === getLocale('braveWalletNotValidChecksumAddressError')) {
+      return { ...FailedChecksumMessage, type: 'error' }
+    }
+    if (addressWarning === getLocale('braveWalletAddressMissingChecksumInfoWarning')) {
+      return { ...FailedChecksumMessage, type: 'warning' }
+    }
     return undefined
-  }, [showEnsOffchainWarning])
+  }, [showEnsOffchainWarning, addressError, addressWarning])
 
   const showResolvedDomain = React.useMemo(() => {
     return (addressError === undefined ||
@@ -385,14 +417,18 @@ export const Send = (props: Props) => {
                 verticalAlign='flex-start'
                 horizontalAlign='flex-end'
               >
-                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true}>
+                <Text textSize='14px' textColor='text03' maintainHeight={true} isBold={true} textAlign='right'>
                   {accountNameAndBalance}
                 </Text>
               </Column>
             </Row>
           }
         </SectionBox>
-        <SectionBox hasError={hasAddressError} noPadding={true}>
+        <SectionBox
+          hasError={hasAddressError}
+          hasWarning={addressWarning !== undefined && addressWarning !== ''}
+          noPadding={true}
+        >
           <InputRow
             rowWidth='full'
             verticalAlign='center'
@@ -410,14 +446,23 @@ export const Send = (props: Props) => {
               value={toAddressOrUrl}
               onChange={handleInputAddressChange}
               spellCheck={false}
+              disabled={!selectedSendAsset}
             />
-            <AccountSelector onSelectAddress={updateToAddressOrUrl} />
+            <AccountSelector disabled={!selectedSendAsset} onSelectAddress={updateToAddressOrUrl} />
           </InputRow>
           {showResolvedDomain &&
             <CopyAddress address={toAddress} />
           }
           {addressMessageInformation &&
-            <AddressMessage addressMessageInfo={addressMessageInformation} />
+            <AddressMessage
+              addressMessageInfo={addressMessageInformation}
+              onClickHowToSolve={
+                (addressError === getLocale('braveWalletNotValidChecksumAddressError') ||
+                  addressWarning === getLocale('braveWalletAddressMissingChecksumInfoWarning'))
+                  ? () => setShowChecksumInfoModal(true)
+                  : undefined
+              }
+            />
           }
         </SectionBox>
         <StandardButton
@@ -427,10 +472,7 @@ export const Send = (props: Props) => {
           buttonWidth='full'
           isLoading={searchingForDomain}
           disabled={isReviewButtonDisabled}
-          hasError={searchingForDomain
-            ? false
-            : insufficientFundsError ||
-            (addressError !== undefined && addressError !== '')}
+          hasError={reviewButtonHasError}
         />
       </SendContainer>
       <Background
@@ -448,6 +490,12 @@ export const Send = (props: Props) => {
           selectedSendOption={selectedSendOption}
           ref={selectTokenModalRef}
           selectSendAsset={selectSendAsset}
+        />
+      }
+      {showChecksumInfoModal &&
+        <ChecksumInfoModal
+          onClose={() => setShowChecksumInfoModal(false)}
+          ref={checksumInfoModalRef}
         />
       }
     </>

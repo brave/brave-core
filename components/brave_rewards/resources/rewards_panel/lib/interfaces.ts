@@ -16,6 +16,7 @@ import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { OnboardingResult } from '../../shared/components/onboarding'
 import { ExternalWalletAction, RewardsSummaryData } from '../../shared/components/wallet_card'
 import { Notification, NotificationAction } from '../../shared/components/notifications'
+import { Optional } from '../../shared/lib/optional'
 
 export interface ExchangeInfo {
   currency: string
@@ -83,7 +84,7 @@ export interface HostState {
   loading: boolean
   rewardsEnabled: boolean
   requestedView: RequestedView | null
-  balance: number
+  balance: Optional<number>
   settings: Settings
   options: Options
   grantCaptchaInfo: GrantCaptchaInfo | null

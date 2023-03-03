@@ -6,15 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_INFO_H_
 
-#include <string>
+#include "base/strings/string_piece.h"
 
 namespace brave_ads {
 
 struct ComponentInfo {
-  ComponentInfo(std::string id, std::string public_key);
-
-  std::string id;
-  std::string public_key;
+  base::StringPiece id;
+  base::StringPiece public_key;
 };
 
 }  // namespace brave_ads

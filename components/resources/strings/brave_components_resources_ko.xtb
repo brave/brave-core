@@ -63,7 +63,6 @@
 <translation id="6811221529729056895">지금 Brave 검색 사용해보기</translation>
 <translation id="5525668735313040116">프라이버시를 보호하며 웹 검색</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
-<translation id="6274899614137380422">Binance 표시</translation>
 <translation id="5585019845078534178">카드</translation>
 <translation id="3870475560794762985">스폰 이미지 표시</translation>
 <translation id="8466529005131466476">스폰서 사이트를 보고 보상을 적립할 수 있습니다.</translation>
@@ -102,8 +101,6 @@
 <translation id="1776831331757823105">시계</translation>
 <translation id="7791543448312431591">추가</translation>
 <translation id="7679334366167089823">개인정보 존중 광고를 시청하여 토큰을 획득하십시오.</translation>
-<translation id="2236818903653027036">브라우저에서 바로 Binance로 암호화폐를 거래합니다.</translation>
-<translation id="6508379561970983105">브라우저에서 바로 Gemini로 암호화폐를 거래합니다.</translation>
 <translation id="7191394989411626168">카드를 끄면, 현재 보이는 모든 카드가 숨겨집니다. 그러나 새 카드에 대한 알림은 계속받을 수 있습니다.</translation>
 <translation id="6820526586005233839">Brave Ads 일시중지됨</translation>
 <translation id="5190407395832551012">Brave Rewards를 악용으로부터 안전하게 보호하기 위해 무작위 Captcha를 푸셔야 합니다. 광고를 재개하려면 “풀기”를 클릭하세요.</translation>
@@ -171,31 +168,8 @@
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
-<translation id="2974339193389078578">새로운 인터넷 세상, Brave</translation>
-<translation id="7735138632831241257">개인정보 보호에 최적화된 브라우저로 더욱 빠르고 안전한 검색을 즐겨보세요.</translation>
-<translation id="6001839398155993679">시작</translation>
-<translation id="4225189922025976867">Brave 프라이빗 광고를 시청하는 것으로 <ph name="BEGIN_BOLD"/>토큰 획득<ph name="END_BOLD"/>이 가능하며 자동으로 콘텐츠 제작자를 지원합니다.</translation>
-<translation id="5477721706074111257">클릭함에 따라 <ph name="BEGIN_LINK"/>이용 약관<ph name="END_LINK"/>과 <ph name="BEGIN_LINK"/>개인 정보 처리 방침<ph name="END_LINK"/>에 동의하는 것입니다.</translation>
-<translation id="3505541710659461355">언제든지 설정에서 끌 수 있습니다.</translation>
-<translation id="2965798296974325760">리워드 사용 시작</translation>
-<translation id="3958088479270651626">북마크 및 설정 가져오기</translation>
-<translation id="2609701960545338618">귀하의 예전 브라우저에서 북마크 및 설정을 가져와서 귀하의 일상적인 브라우징 환경을 설정하세요. 설정에서 고급 가져오기 옵션을 이용하실 수 있습니다.</translation>
-<translation id="8275038454117074363">가져오기</translation>
-<translation id="2088479175984386785">다음에서 가져오기...</translation>
-<translation id="5540323067375019678">차단 관리</translation>
-<translation id="3278033011827237847">Brave Shields로 탐색하는 동안 개인 정보를 침해하는 광고와 추적기로부터 보호를 받으세요. 사이트가 제대로 작동하지 않는 것처럼 보이면 Shields를 "해제"로 설정하세요.</translation>
-<translation id="3366308997091824722">차단 설정</translation>
-<translation id="4764692524839457597">기본</translation>
-<translation id="3108122610701115301">기본값으로 설정</translation>
-<translation id="2469440407442116729">검색 엔진 선택</translation>
-<translation id="438216590634144114">주소창에서 웹을 검색할 때 기본으로 사용하실 검색 엔진을 골라 주세요.</translation>
-<translation id="5804484488647369316">기본 검색 엔진 설정</translation>
-<translation id="3829010735958850433">시작 안내 건너뛰기</translation>
-<translation id="1201402288615127009">다음</translation>
-<translation id="7954950242989581218">안전하게 검색하세요</translation>
-<translation id="2188651882929633653">Brave Shields는 웹상에서 사용자를 추적하고 하는 것들과 대부분의 광고를 차단합니다. 사이트가 작동하지 않는 것 같으면 Shield를 "down"으로 설정하세요. Brave는 <ph name="BEGIN_LINK_P3A"/>완전 비공개 제품 분석<ph name="END_LINK_P3A"/>을 사용하여 특정 기능의 전체 사용량을 추정합니다. <ph name="BEGIN_LINK_P3A_SETTINGS"/>설정<ph name="END_LINK_P3A_SETTINGS"/>에서 이 기능을 사용 중지할 수 있습니다.</translation>
 <translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="3114984266384096064">Brave Private Ads를 보면 [[currency]]가 적립됩니다. 광고는 사용자의 관심사를 기반으로 표시되며 브라우저의 성능을 저해하지 않습니다. 개인 데이터나 인터넷 사용 기록은 절대 브라우저에 남지 않습니다.</translation>
+<translation id="6480303618073442141">Brave Private Ads는 근본 설계가 정보 수집을 최소화하고 프라이버시를 보호합니다. 광고는 개인 데이터나 디바이스에 남은 인터넷 사용 기록이 아닌 관심사에만 기반합니다. Brave Private Ads의 정말 좋은 점은 광고를 보는 것만으로 BAT(<ph name="BEGIN_LINK"/>베이직 어텐션 토큰<ph name="END_LINK"/>)를 벌 수 있다는 것입니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="3742599705619405136">발행자 및 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 월별 지불 금액을 설정하고 평소와 같이 탐색하세요. Brave가 측정하는 귀하의 관심에 기반하여, 방문하시는 Brave 인증 사이트가 자동으로 귀하의 기부금을 받게 됩니다.</translation>
 <translation id="3325399124634342726">이번 달 수익 현황(예상)</translation>
@@ -214,7 +188,7 @@
 <translation id="2356652719351432565">지역 광고 관련성</translation>
 <translation id="3216275550298493597">이렇게 하면 거주하고 계신 지역에 특화된 광고가 Brave에 표시됩니다.</translation>
 <translation id="8446884382197647889">자세히 알아보기</translation>
-<translation id="6209514229703649203">[[adsSubdivisionTarget]] 자동 감지됨</translation>
+<translation id="3783399046165388366"><ph name="SUBDIVISION"/> 자동 감지됨</translation>
 <translation id="8010081455002666927">자동 감지</translation>
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="4176463684765177261">사용 중지</translation>
@@ -229,9 +203,6 @@
 <translation id="7577100371127227294">월간 팁</translation>
 <translation id="178390304006113804">반복 월간 팁을 설정하면 마음에 드는 제작자에게 지속적인 도움을 줄 수 있습니다.</translation>
 <translation id="3302159320447117425">아직 설정된 월간 팁이 없습니다.</translation>
-<translation id="1617202384704994799">곧 찾아옵니다.</translation>
-<translation id="2241248417273918295">수입은 매월 지불됩니다.</translation>
-<translation id="68906705461077250">수입을 증가 혹은 감소시키기 위해 귀하께서 원하는 주기를 설정하세요.</translation>
 <translation id="1847863811689960237">마음에 든 콘텐츠 제작자에게 보상하세요.</translation>
 <translation id="4129489167302464118">월간 결제는 방문하는 사이트 전체에 배분됩니다.</translation>
 <translation id="4898632353264854950">여러분이 검색하면 인터넷 사이트가 나타납니다</translation>
@@ -251,9 +222,6 @@
 <translation id="8610523985422563960">1분</translation>
 <translation id="2807328214759298515">최대</translation>
 <translation id="9031738692126722094">이 사이트에서 콘텐츠 레벨 팁 활성화</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="6032511312767282174">GitHub</translation>
-<translation id="2635094637295383009">Twitter</translation>
 <translation id="7583327070390027131">다음 월간 팁 날짜</translation>
 <translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME"/>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
 <translation id="5916536234616514390"><ph name="HASHTAG"/>Brave 덕분에 제작자를 지원할 수 있어 정말 좋습니다! <ph name="NAME"/> 님에게 <ph name="HASHTAG2"/>BAT 팁을 드렸죠. 받은 분이 <ph name="DATE"/>까지 https://creators.brave.com 페이지에서 검증받으면 BAT가 지급됩니다!</translation>
@@ -287,20 +255,19 @@
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
 <translation id="3274650021044762770">브라우저가 Brave Rewards를 <ph name="PROVIDER"/> 계정에 연결하는 요청을 보냈으나 유효성 검증에 문제가 있습니다. <ph name="BEGIN_LINK"/>지원팀에 문의<ph name="END_LINK"/>하여 도움을 받으세요.</translation>
 <translation id="1316066811927496401">오류: 요청의 유효성을 검증할 수 없습니다.</translation>
-<translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
+<translation id="8167256685618982116"><ph name="TITLE"/> 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 <translation id="4123948149985772126">계정 제공자 선택</translation>
 <translation id="2916515880661220182">보호관리 계정을 이미 가지고 계시다면 연결하라는 메시지가 표시됩니다. 보호관리 계정이 없다면 새로 만들면 됩니다.</translation>
 <translation id="2054853229650377447">참고: 귀하의 승인 하에 보호관리 서비스가 귀하의 트랜잭션을 볼 수 있습니다. 예를 들어, 수취인이나 팁 금액 등을 볼 수 있습니다.</translation>
-<translation id="2147158325758481862">확인은 선택 사항</translation>
-<translation id="8228649055483250005">월렛을 만드는 사람의 신원을 확인(사진 부착 신분증 사용 등)하기 위해 보호관리 월렛 제공자가 필요합니다.</translation>
-<translation id="2672513643520959619">보호관리 월렛 파트너로 계정을 설정할 때 <ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/>는 어떠한 개인정보도 처리, 저장, 액세스하지 않습니다.</translation>
-<translation id="6682919029276027868">하지만 현재 사용 중이신 Brave Rewards 기능에는 제한이 있습니다. 보호관리 월렛 파트너로 검증할 경우 다음이 가능합니다.</translation>
-<translation id="9064931634458501855">자유롭게 자금 인출 및 예치</translation>
-<translation id="3222002542796906461">계정에 바로 리워드 적립</translation>
+<translation id="121894865378699201">BAT를 받을 준비가 되셨나요?</translation>
+<translation id="4478996292566912629">신원 확인에 보호관리 계정 제공자가 필요하며, 이 과정에서 사진 부착 신분증을 제출해야 합니다. <ph name="BEGIN_LINK"/>Brave Rewards 개인정보 보호정책<ph name="END_LINK"/>을 참조하세요.</translation>
+<translation id="7730415569603152862">보호관리 계정을 Rewards 프로필에 연결하면 다음을 할 수 있습니다.</translation>
+<translation id="5785531043735482053">BAT 적립액 저장, 관리, 인출</translation>
+<translation id="5155452078869279096">BAT를 구입하여 계정에 충전</translation>
+<translation id="5497001757280825146">마음에 드는 사이트 및 제작자에게 팁 주기</translation>
 <translation id="1233129511866436960">지역 및 지원에 대해 자세히 알아보기</translation>
 <translation id="7329170127335794328">현재 귀하의 지역에서 사용할 수 없음</translation>
 <translation id="8304979233901023264">Brave <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>을 읽었으며 이에 동의합니다.</translation>
-<translation id="2359808026110333948">계속</translation>
 <translation id="1892970806832316900"><ph name="DATE"/>까지 보류 중</translation>
 <translation id="7849926087559412554">사용하고 계신 브라우저가 Brave 프라이빗 광고를 수신할 수 없습니다.</translation>
 <translation id="5177429570315095022">광고를 보려면 브라우저를 업데이트해야 합니다.</translation>
@@ -383,7 +350,6 @@
 <translation id="3363158483789327529">Rewards 프로필이 아직 생성되지 않음</translation>
 <translation id="476272015919848174">Rewards 지급 ID:</translation>
 <translation id="9008441690901662695">Rewards 상태:</translation>
-<translation id="2851097645709765545">월렛 없음</translation>
 <translation id="8874184842967597500">연결되지 않음</translation>
 <translation id="4569155249847375786">검증 완료됨</translation>
 <translation id="6521149675246672063">연결 끊김(확인됨)</translation>
@@ -392,6 +358,7 @@
 <translation id="6582097696555842139">월간 팁 취소</translation>
 <translation id="9087994290002662101">금액 변경</translation>
 <translation id="2521187434582281933">월간 팁 취소 확인</translation>
+<translation id="2359808026110333948">계속</translation>
 <translation id="915758461293673891">팁 금액:</translation>
 <translation id="78017292973022384">이 제작자에게 보내는 월간 팁이 취소되었습니다.</translation>
 <translation id="534368327994110883">현재 이 작성자를 지원하고 있습니다</translation>
@@ -408,7 +375,7 @@
 <translation id="4492470488449820476">최소 팁 금액: <ph name="AMOUNT"/><ph name="CURRENCY"/></translation>
 <translation id="9088057605518918276">월간 팁이 설정되었습니다.</translation>
 <translation id="6306631474379759382">다음 팁 날짜:</translation>
-<translation id="3593485149443019592">토큰이 부족합니다. $2의 <ph name="LINK_BEGIN"/>자금을 추가<ph name="LINK_END"/>.</translation>
+<translation id="4647657427328119430">토큰이 부족합니다.</translation>
 <translation id="3586352807094428968">Brave는 팁 금액의 5%를 처리 수수료로 차감합니다.</translation>
 <translation id="207268487070188114">일회성 팁</translation>
 <translation id="69861679024013299">일회성 팁 금액:</translation>
@@ -418,6 +385,9 @@
 <translation id="1420756770787071946">이 작성자 지원</translation>
 <translation id="3271043362279673449">지원해 주셔서 감사합니다!</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>참고: <ph name="BOLD_END"/>보내신 팁이 몇 분 후에 처리됩니다.</translation>
+<translation id="6516984207843289176">계정 연결</translation>
+<translation id="8775519284782574752">보호관리 계정을 연결하면 BAT 적립을 시작하고 제작자에게 팁을 줄 수 있습니다.</translation>
+<translation id="6485607335663409274">마음에 드는 제작자에게 팁을 주고 싶으십니까?</translation>
 <translation id="3312470408978098625">일회성 팁을 보냈습니다.</translation>
 <translation id="839058704683989763">보류 중인 팁이 설정되었습니다!</translation>
 <translation id="5096821444729034955">그들의 게시물에 대해</translation>
@@ -456,6 +426,7 @@
 <translation id="8802504113265057166">만료일까지 사용하지 않은 [[currency]]는 Brave User Growth Pool로 자동 반환됩니다.</translation>
 <translation id="279567716178902927">만료 일자 승인</translation>
 <translation id="1389143276807887637">불러오기</translation>
+<translation id="3810973564298564668">관리</translation>
 <translation id="6302422639282249274">Brave Rewards 관리</translation>
 <translation id="211044356803193224">월간 팁!</translation>
 <translation id="2487641031722095938">오늘 운이 좋으시네요!</translation>
@@ -502,8 +473,9 @@
 <translation id="5317144262906129592">팁을 보내서 이 콘텐츠 제작자를 지원할 수 있습니다. 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하세요.</translation>
 <translation id="3074127054582480056">주의</translation>
 <translation id="3659457123782988823">Brave Rewards를 초기화하시겠습니까?</translation>
-<translation id="4048187103708861555">Brave Rewards를 초기화하면 <ph name="BAT_AMOUNT"/> 등 귀하의 리워드 데이터가 영구적으로 소실됩니다. <ph name="LINK_BEGIN"/>검증<ph name="LINK_END"/>하면 BAT를 그대로 유지할 수 있습니다.</translation>
-<translation id="3548849774726860833">Brave Rewards를 초기화하면 귀하의 리워드 데이터가 영구적으로 소실됩니다.</translation>
+<translation id="1666001796278936721">초기화하면 현재 Brave Rewards 프로필이 삭제되고 완전히 새로운 Brave Rewards 프로필로 다시 시작하게 됩니다. 만약을 위해 진행하기 전에 초기화에 대해 <ph name="LINK_BEGIN"/>자세히 알아보세요<ph name="LINK_END"/>.</translation>
+<translation id="94095197509579227">참고: 이번 달 현재 예상 적립액이 <ph name="BAT_AMOUNT"/> 있으며, 지금 초기화하면 소실됩니다.</translation>
+<translation id="4806029412510565611">내 현재 Brave Rewards 프로필과 Brave Rewards 데이터가 디바이스에서 삭제된다는 사실을 이해하며, <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 읽었습니다.</translation>
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="3494964159182650590">보상 요약</translation>
 <translation id="2913994227901456490">[[numItems]]개 항목 모두 보기</translation>
@@ -526,7 +498,7 @@
 <translation id="6727483290601442544">세부 내용 보기</translation>
 <translation id="4206899127409458763">Brave Rewards 프로필 생성 중</translation>
 <translation id="1988679729106502285">주의:</translation>
-<translation id="4047340292178074200">아직 구성되지 않아 회원님의 Rewards 보호관리 월렛에서 팁을 받을 수 없는 제작자입니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
+<translation id="942863887222585572">귀하는 <ph name="USER_PROVIDER"/>에 연결되었지만 이 제작자는 <ph name="CREATOR_PROVIDER"/>에 연결되어 있습니다. 그래서 이 제작자에게 팁이 도달하지 못합니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
 <translation id="5530734056858418442">아직 가입하지 않은 제작자입니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
 <translation id="3197752845651180812">기부금 보류</translation>
 <translation id="6964891561514920613">보류 중인 모든 기부금 보이기</translation>
@@ -552,75 +524,11 @@
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
 <translation id="7703007724342399482">Uphold 카드로 2% 크립토백 받으세요</translation>
 <translation id="1109729143147368573">전 세계 거의 5천만 상인과 ATM에서 크립토 및 기타 자산을 사용하십시오. 크립토를 사용하여 크립토를 얻으십시오!</translation>
-<translation id="7840362246306242214">미국 주식 거래 Uphold에서 가능</translation>
-<translation id="3345432088196080137">AAPL, TSLA 또는 AMZN 같은 인기 주식 및 상장지수펀드에 1달러만 투자하세요</translation>
 <translation id="3787061634640932557">카드 편집</translation>
 <translation id="2070991379950719711">Brave Rewards 사용 시작</translation>
 <translation id="5977237145327845546">친구 및 동료와 비공개 화상 통화를 시작하세요.</translation>
 <translation id="8863928195533744356">통화 시작</translation>
 <translation id="3651550649176056334">귀하의 데이터 정보</translation>
-<translation id="223536150967420869">구매</translation>
-<translation id="5110244215256675209">암호 화폐 구매</translation>
-<translation id="5749014321384313843">쓰고 싶습니다...</translation>
-<translation id="5395343599598218467">Binance와 구매 및 거래</translation>
-<translation id="1714829281959608206">Binance 연결을 활성화하여 Binance 계정 잔액을 열람하고 암호 화폐를 거래하세요.</translation>
-<translation id="5431354435912389886">Binance 연결 활성화</translation>
-<translation id="907179430004809517">아니요, 괜찮습니다</translation>
-<translation id="5005595188773471616">순수 자산 가치 (BTC)</translation>
-<translation id="5445249883546575080">BTC</translation>
-<translation id="1366855498335432549">입금</translation>
-<translation id="6861530353669876440">거래</translation>
-<translation id="6941688859692009361">도와주세요.</translation>
-<translation id="271200872751201315">잘못된 입력.</translation>
-<translation id="4983019953897853258">자격 증명 확인 중...</translation>
-<translation id="4166140875593399362">정말로 연결을 해제하시겠습니까?</translation>
-<translation id="4283459172790213529">연결을 해제하면 위젯 설정이 삭제됩니다. 재연결하려면 인증을 다시 해야 합니다.</translation>
-<translation id="4804818685124855865">연결 해제</translation>
-<translation id="6001220899443166468">계정 연결 해제</translation>
-<translation id="8151638057146502721">환경 설정</translation>
-<translation id="7384441892795736634">데이터 새로 고침</translation>
-<translation id="5308380583665731573">연결</translation>
-<translation id="7942389053031334372">전환하셨습니다</translation>
-<translation id="3348017612272241424">변환할 수 없음</translation>
-<translation id="3909193058140362331">전환을 처리할 수 없습니다. 다시 시도하세요.</translation>
-<translation id="5721542149042740780">입력하신 금액은 현재 보유하신 유효 금액을 초과합니다.</translation>
-<translation id="7144878232160441200">재시도</translation>
-<translation id="6896758677409633944">복사하기</translation>
-<translation id="7431764818502638140">사용할 수 없는 정보</translation>
-<translation id="6409345078064530735">입금 주소</translation>
-<translation id="7153116947319792513">입금 메모</translation>
-<translation id="1383876407941801731">검색</translation>
-<translation id="3781412534383755121">환전 최소 금액은 다음과 같습니다.</translation>
-<translation id="6432284126416751397">전환 확인</translation>
-<translation id="1301340234286078471">전환</translation>
-<translation id="6680650203439190394">요율</translation>
-<translation id="7742417737698031726">수수료</translation>
-<translation id="2122225204180056042">수령하시게 됩니다</translation>
-<translation id="8131740175452115882">확인</translation>
-<translation id="8688672835843460752">유효</translation>
-<translation id="4584930231524505442">전환하고 싶습니다...</translation>
-<translation id="6755546361496900700">전환 미리보기</translation>
-<translation id="2956070106555335453">요약</translation>
-<translation id="439104575421522802">세션 만료</translation>
-<translation id="8558560988211507902">Binance 액세스 토큰이 만료됐습니다. 위젯을 계속 사용하시려면 재연결하세요.</translation>
-<translation id="8120782981043104657">Gemini로 암호화폐 구입</translation>
-<translation id="4011891158762138243">Gemini에 연결하여 45여 종의 암호화폐 잔액을 조회하고 거래하세요.</translation>
-<translation id="7604416013180651887">제미니에 연결</translation>
-<translation id="2349109114223854255">제미니 접근 토큰이 만료되어 새로 고칠 수 없습니다. 다시 연결해 주십시오.</translation>
-<translation id="4848984536030986115">거래를 수행할 수 없음</translation>
-<translation id="7097088316781182926">거래 확인</translation>
-<translation id="3488255243387417752">판매</translation>
-<translation id="7969910554171263591">견적 받기</translation>
-<translation id="1848737374354350807">잔액</translation>
-<translation id="8285358301500391177">구매</translation>
-<translation id="8675476238074172660">판매</translation>
-<translation id="3081546448594005997">구매했습니다</translation>
-<translation id="8810136648184657966">팔았습니다</translation>
-<translation id="1833248467354516560">단가</translation>
-<translation id="4763179765154524864">총 사용량</translation>
-<translation id="8851480289992540512">받은 총계</translation>
-<translation id="824449983246282560">계정 내에 잔액이 없습니다. Gemini를 방문하여 구매하세요.</translation>
-<translation id="8624961452383848703">환전하고 싶음...</translation>
 <translation id="1544192797660353713">월렛</translation>
 <translation id="616639131065447379">Brave 암호 지갑에 오신 것을 환영합니다</translation>
 <translation id="1740464057879304704">암호화 지갑을 사용하면 Brave에서 암호 화폐 및 관련 자산으로 작업할 수 있습니다. 암호화 지갑은 수집품뿐만 아니라 ETH 및 BAT와 같은 Ethereum 토큰을 지원하며 Ðapps 및 기타 스마트 계약으로 작업할 수 있습니다. 이 모든 것은 Ethereum 및 기타 블록 체인 시스템에 익숙하거나 — 배우고 싶은 사람들을 위한 것입니다.</translation>
@@ -629,29 +537,19 @@
 <translation id="8327818101454798856">가장 좋아하는 사이트를 지원하고자 한다면, 대신 그쪽으로 가세요.</translation>
 <translation id="412480955826088549">구성 요소를 다운로드하는 중...</translation>
 <translation id="4894106830958548828">이해했습니다</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">crypto.com에서 시장을 보고 암호화폐를 구매하세요.</translation>
-<translation id="4292334826913000023">가격 표시</translation>
-<translation id="5001098083058405168">입금에 대한 2% 보너스 받기</translation>
-<translation id="7336377875970208451">거래 수수료 지급 중지</translation>
-<translation id="5889002303959545585">비트코인 구매</translation>
-<translation id="7243082596932212589">Crypto.com 시장 보기</translation>
-<translation id="2258222996838418990">7d 그래프</translation>
-<translation id="5337526542182802976">지원되는 페어</translation>
-<translation id="1164622162816276433">24시간 거래량</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
-<translation id="689573545156113164">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 Unstoppable Domains에서의 스마트 컨트랙트로 발행하고 .crypto (및 .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin도 해당) 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="3647533686160055812">Brave는 Infura를 사용하여 Unstoppable Domains에 있는 .crypto (및 .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 도메인을 방문하려고 한다는 사실을 Infura가 볼 수 있지만 다른 정보는 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
 <translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
-<translation id="8328137586971750853">Brave는 Infura를 사용하여 이더리움 JSON-RPC 콜을 이더리움 네임 서비스에서의 스마트 컨트랙트로 발행하고 .eth 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 도메인은 Infura가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="4609973808011229683">Brave는 Infura를 사용하여 Ethereum Name Service(ENS)에 있는 .eth 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 .eth 도메인을 방문하려고 한다는 사실을 Infura가 볼 수 있지만 다른 정보는 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="807404806385418949">ENS(Ethereum Name Service) 오프체인 룩업</translation>
 <translation id="4049590838234508776">Brave는 ENS(Ethereum Name Service) 오프체인 룩업 지원을 활성화할까요?</translation>
-<translation id="1769433806670482329">Brave는 오프체인 게이트웨이를 사용하여 .eth 도메인 이름 룩업 요청을 해독합니다. 이를 활성화하면 귀하가 방문하려는 .eth 도메인을 제3자 게이트웨이가 볼 수 있지만 다른 도메인은 볼 수 없습니다. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="5944991147217767764">이 .eth 도메인 이름은 오프체인으로 저장되어 있어 제3자 게이트웨이로 해석합니다. ENS 오프체인 룩업을 왈성화하면 귀하가 방문하려는 .eth 도메인을 제3자 게이트웨이가 볼 수 있습니다. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
 <translation id="4047002754575891955">오프체인 룩업으로 계속</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?</translation>
-<translation id="954404755605517948">Brav는 Coinbase Cloud를 사용하여 Solana JSON-RPC 콜을 Solana Name Service에서의 프로그램으로 발행하고 .sol 도메인 이름 조회 요청을 해석합니다. 이 기능을 활성화하면 귀하가 방문하려는 특정 .sol 도메인은 Coinbase Cloud가 볼 수 있지만 다른 도메인은 볼 수 없습니다. Coinbase Cloud <ph name="BEGIN_COINBASE_TOU_LINK"/>이용 약관<ph name="END_COINBASE_TOU_LINK"/> 및 <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_COINBASE_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="2350552210396418924">Brave는 Coinbase Cloud를 사용하여 .sol 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 .sol 도메인을 방문하려고 한다는 사실을 Coinbase가 볼 수 있지만 다른 정보는 볼 수 없습니다. Coinbase Cloud <ph name="BEGIN_COINBASE_TOU_LINK"/>이용 약관<ph name="END_COINBASE_TOU_LINK"/> 및 <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_COINBASE_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="7378412287463452336">Infura 서버를 사용하여 계속하기</translation>
 <translation id="2313603121968571839">Coinbase Cloud 서버를 이용하여 계속 진행</translation>
 <translation id="2356070529366658676">확인</translation>
@@ -744,16 +642,21 @@
 <translation id="5878420576943709750"><ph name="AMOUNT"/> <ph name="MONTH"/> 리워드가 곧 도착합니다. 곧 확인 가능합니다!</translation>
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/><ph name="PROVIDER"/>에 로그인<ph name="END_BOLD"/>하여 잔액 확인</translation>
 <translation id="2659764755126740206">내 <ph name="PROVIDER"/> 계정으로 가기</translation>
-<translation id="1165667598801520610">자금 추가</translation>
 <translation id="2394961582378297792">로그아웃됨</translation>
-<translation id="6080167751812750226"><ph name="PROVIDER"/>에서 연결 해제</translation>
 <translation id="3600355176618429948">예상 수익</translation>
 <translation id="7934950257968365573"><ph name="PROVIDER"/> 계정에 로그인</translation>
 <translation id="2613359062756190460">일회성 팁</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
-<translation id="6181762795539107980">미검증</translation>
+<translation id="5308380583665731573">연결</translation>
 <translation id="3026978804849658576">명세서 보기</translation>
+<translation id="3368922792935385530">연결됨</translation>
 <translation id="8494748383523030337">귀하의 잔액</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>BAT를 받을 준비가 되셨나요?<ph name="BOLD_END"/> 보호관리 계정을 Rewards 프로필에 연결하면 됩니다. 계정이 없다면 하나 새로 만드세요.</translation>
+<translation id="1772961321862399863">BAT를 적립받으려면, 보호관리 계정을 Brave Rewards에 연결해야 합니다. 안타깝지만 현재 거주하고 계신 지역에 가능한 보호관리 서비스가 없어 적립이 불가능합니다. 지금은 Brave Rewards를 켜면 제작자를 자동으로 지원합니다.</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
+      other {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
+    }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> 리워드: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">귀하의 <ph name="MONTH"/> 광고 리워드입니다!</translation>
 <translation id="7861645265922445992">리워드 받기</translation>
@@ -769,20 +672,25 @@
 <translation id="6278643716658443228">리워드 설정</translation>
 <translation id="2862978891748913252">국가 선택</translation>
 <translation id="3717922248131893262">Brave Rewards를 계속 사용하려면 국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다. <ph name="LINK_BEGIN"/>개인정보 보호정책<ph name="LINK_END"/></translation>
-<translation id="6777169449483742979">이 스폰서 이미지를 보며 토큰이 적립되고 있습니다.</translation>
-<translation id="5486114327664215175">이 이미지를 보고 토큰을 적립하여 콘텐츠 제작자를 후원할 수 있습니다.</translation>
+<translation id="2965798296974325760">리워드 사용 시작</translation>
 <translation id="2940863921746574646">토큰 잔액</translation>
 <translation id="2221902203895354376">토큰 보조금을 받을 수 있습니다!</translation>
+<translation id="2956070106555335453">요약</translation>
 <translation id="2369994359029526515">미인증 제작자</translation>
 <translation id="6020176662032623904">인증된 제작자</translation>
-<translation id="6504037373121113545">보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">제작자 검증 상태 새로고침</translation>
+<translation id="8946576491316456643">보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">아직 가입하지 않은 제작자입니다.</translation>
-<translation id="4025327308776090280">아직 구성되지 않아 회원님의 Rewards 보호관리 월렛에서 팁을 받을 수 없는 제작자입니다.</translation>
+<translation id="3573568055713372419">귀하는 <ph name="USER_PROVIDER"/>에 연결되었지만 이 제작자는 <ph name="CREATOR_PROVIDER"/>에 연결되어 있습니다. 그래서 이 제작자에게 팁이 도달하지 못합니다.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/>, 플랫폼: <ph name="PLATFORM"/></translation>
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="6965382102122355670">확인</translation>
 <translation id="6727102863431372879">설정</translation>
 <translation id="8853725596990766789">금액 변경</translation>
+<translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
+<translation id="1609556006143307897">콘텐츠 제작자를 지원하고 계십니다.</translation>
+<translation id="6605147707233193230">콘텐츠 제작자를 지원하려면 켜세요.</translation>
+<translation id="5430495762768325224">BAT에 대해 자세히 알아보기</translation>
 <translation id="1258144146756156541">사람이 맞는지 확인</translation>
 <translation id="1555514580945108302">음... 잘 모르겠어요. 다시 해 보세요.</translation>
 <translation id="8078414184292711961">BAT 아이콘을 <ph name="HINT"/> 타겟으로 드래그하세요.</translation>
@@ -793,21 +701,16 @@
 <translation id="717952606991220586">이런, 문제가 발생했습니다. 잠시 후에 다시 시도해 주십시오.</translation>
 <translation id="7210234701206674260">Brave Rewards에 문제가 있습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="579702532610384533">재연결</translation>
-<translation id="7550470870580166294">부족한 자금</translation>
-<translation id="2775064702681588061">귀하의 Brave Rewards 계정이 입금을 기다리고 있습니다.</translation>
 <translation id="3358400027937159351"><ph name="AMOUNT"/>를 기부하셨습니다.</translation>
 <translation id="1619753851206150396">로그아웃 상태</translation>
 <translation id="5142174225142816130">이렇게 하면 귀하의 계정이 안전하게 보호됩니다. 재연결하려면 아래를 클릭하세요.</translation>
 <translation id="1677961202754619328">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요.</translation>
-<translation id="2807965672895914288">잔고가 부족하여, 자동 기부를 위해 설정된 정기 월간 결제 및 월간 팁을 완료할 수 없습니다. 30일 후, 저희가 다시 시도하겠습니다.</translation>
 <translation id="2429828319207652823">기부금 처리 중 문제가 생겼습니다.</translation>
-<translation id="2099354965137813181">월간 팁 실패</translation>
+<translation id="6390041270339783491">월 기부 실패</translation>
 <translation id="19033035059466563">기부 및 팁</translation>
 <translation id="2892744985635833293">월간 팁이 처리되었습니다.</translation>
 <translation id="5768819429931807686">기부 대기 중</translation>
 <translation id="7855913851082138664">제작자 <ph name="PUBLISHER_NAME"/> 검증이 최근 완료되었습니다.</translation>
-<translation id="6194996600967335044">자금 부족</translation>
-<translation id="2795080275268642520">부족한 자금으로 인해 보류 중인 팁이 있습니다</translation>
 <translation id="2529827670795983639">제대로 풀리지 않아 Brave Ads가 일시 중지 상태로 유지됩니다. Captcha 관련 도움을 받으려면 문의하세요.</translation>
 <translation id="261607053214862521">최대 시도 횟수 초과</translation>
 <translation id="2323171459178104277">풀었습니다!</translation>
@@ -828,9 +731,13 @@
 <translation id="8622329973403382303">어떻게 작동하는지에 대해 역사에 리워드 락스타로 남을 수 있도록 간단히 복습해 봅시다!</translation>
 <translation id="4331886860862592203">국가 선택</translation>
 <translation id="3115702351969988294">얼마나 자주 광고를 보고 싶으신가요?</translation>
-<translation id="7532131110478098401">(시간당 광고)</translation>
-<translation id="2951964054390325080">좋아하는 크리에이터에게 매달 얼마나 지원하고 싶으신가요?</translation>
-<translation id="3164498053837913829">(광고 수입에서)</translation>
+<translation id="9006929295045381749">{ADS_PER_HOUR, plural,
+      =1 {시간당 광고 #개}
+      other {시간당 광고 #개}
+    }</translation>
+<translation id="6129810595598072828">더욱 프라이빗한 광고, 더 많은 리워드</translation>
+<translation id="8871481223725076571">보는 광고를 늘리면 더 많은 제작자 지원</translation>
+<translation id="9215691564467955056">나중에 설정에서 변경 가능합니다.</translation>
 <translation id="6318696841371191107">빠르게 투어하기</translation>
 <translation id="8465790416279415448">계속하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
 <translation id="5705882733397021510">돌아가기</translation>
@@ -840,25 +747,16 @@
 <translation id="7930505144430343145">Brave Rewards에 오신 것을 환영합니다!</translation>
 <translation id="3477340970981564961">Brave 프라이빗 광고는 종전의 광고와는 달리 콘텐츠 제작자를 지원할 수 있도록 여러분께 토큰을 리워드로 지급하며, 이 과정에서 여러분의 개인 정보는 안전하게 보호됩니다.</translation>
 <translation id="6973095375773523904">광고는 어디에 표시됩니까?</translation>
-<translation id="7556325460112047619">Brave 프라이빗 광고는 일반 알림의 형태로 나타나게 됩니다. 설정에서 이 광고를 얼마나 자주 볼 것인지에 대해 조정할 수 있습니다.</translation>
-<translation id="6897083627729802351">Rewards가 적립되는 시점</translation>
-<translation id="310863932297733723">이번 달 동안 Brave 프라이빗 광고를 통해 획득하신 토큰은 다음 달 5일에 지급됩니다.</translation>
+<translation id="4328028439561659455">Brave Private Ads는 화면상에 알림 형태로 나타납니다. 광고가 표시될 빈도를 직접 제어 가능합니다.</translation>
 <translation id="7712287524451429139">쉽게 돌려주기</translation>
 <translation id="105037569026952831">창작자들은 저희들이 ‘어텐션’으로써 측정하는 여러분의 주의 수준에 따라 자동으로 여러분의 토큰 기부금을 수여받게 됩니다.</translation>
 <translation id="5323267338679539010">팁으로 감사 인사하기</translation>
 <translation id="6042317056594735519">팁은 내가 좋아하는 콘텐츠나 크리에이터를 개인적으로 격려하고 지원하는 방법입니다. 팁을 받으세요!</translation>
-<translation id="7509452925943421624">토큰으로 무엇을 할 수 있습니까?</translation>
-<translation id="5876169128756792273">토큰은 창작자 후원 그 이상의 용도로 사용할 수 있습니다. 공급자가 추가되는 대로 디지털 콘텐츠와 기타 상품을 구매할 수 있습니다.</translation>
-<translation id="1402530520078693620">마지막으로, 기본 설정을 하도록 하겠습니다</translation>
-<translation id="3494356595346329740">나중에 변경할 수 있습니다.</translation>
+<translation id="4215679190414901888">직접 설정하기</translation>
 <translation id="827315274423079662">야호, 설정이 다 끝났습니다!</translation>
 <translation id="8268038362451312235">Brave Rewards를 사용함에 따라 여러분은 웹을 모두를 위한 더 나은 장소로 만드는 데 한 몫을 거들고 있습니다. 대단한 일이지요!</translation>
-<translation id="2318949593486441832">광고를 보고 적립된 BAT를 인출하려면 Brave Rewards를 검증해야 합니다.</translation>
-<translation id="9168436347345867845">나중에</translation>
-<translation id="7193761697942491145">Brave Rewards 검증</translation>
-<translation id="6609621505400013054">bitFlyer 월렛은 bitFlyer, Inc.에서 관리하는 서비스입니다.</translation>
-<translation id="4361456403643555676">Brave Rewards를 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.</translation>
-<translation id="1411121707906693782">Brave 브라우저를 bitFlyer 계정에 연결하는 방법을 <ph name="LINK_BEGIN"/>자세히 알아보세요<ph name="LINK_END"/>.</translation>
+<translation id="6845311459433734326">BAT를 벌고 리워드를 인출할 수 있도록 보호관리 계정 연결</translation>
+<translation id="1443125272907895958">나중에</translation>
 <translation id="1015443539415537847">죄송합니다. Brave Rewards를 사용할 수 없습니다.</translation>
 <translation id="5007776270364097327">Brave Rewards를 사용할 수 없는 지역에 거주하고 계신 것 같습니다.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
@@ -879,6 +777,7 @@
 <translation id="9161147058107529840">객체 매개변수가 한 개 있어야 합니다.</translation>
 <translation id="1875861420974447980">현재 사용 중인 체인 ID</translation>
 <translation id="167698752210114155">내부 오류 발생</translation>
+<translation id="8945668490056243760">미지원 구독 유형</translation>
 <translation id="2326876601333401685">지원되지 않는 RPC 메서드입니다.</translation>
 <translation id="1128992132632883337">응답 파싱 오류 발생</translation>
 <translation id="5382339341735118861">일반 요청 처리 오류 발생</translation>
@@ -923,6 +822,7 @@
 <translation id="8246868867733222286">최대 규모의 NFT 마켓플레이스. 희귀한 디지털 품목을 구매, 판매, 발견하세요.</translation>
 <translation id="8375074247703832257">Rarible</translation>
 <translation id="7826627294887983832">디지털 작품 생성 및 판매</translation>
+<translation id="1383876407941801731">검색</translation>
 <translation id="8767749833522980474">암호화폐</translation>
 <translation id="944736176598169208">리워드</translation>
 <translation id="6122742277607781713">포트폴리오</translation>
@@ -938,12 +838,14 @@
 <translation id="6366007539108097840">3개월</translation>
 <translation id="6977728312178289892">1년</translation>
 <translation id="6598532182053592167">코인 추가</translation>
+<translation id="1848737374354350807">잔액</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> - <ph name="NETWORK"/></translation>
 <translation id="629730747756840877">계정</translation>
 <translation id="3959969108528118741">소유자</translation>
 <translation id="3891414008432200754">가격</translation>
 <translation id="2267753748892043616">계정 추가</translation>
 <translation id="5061574358754621254">CoinGecko에서 제공한 가격 데이터</translation>
+<translation id="223536150967420869">구매</translation>
 <translation id="1483493594462132177">전송</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
 <translation id="9113988219764868805">토큰 보내기</translation>
@@ -951,6 +853,7 @@
 <translation id="3453833142586986467">토큰 선택</translation>
 <translation id="554732459168975059">NFT 선택</translation>
 <translation id="5313430503143128212">보낼 토큰 선택</translation>
+<translation id="5784485862926111563">보낼 NFT 선택</translation>
 <translation id="2791691551852500015">수신자 주소 입력</translation>
 <translation id="570080709303714420">절반</translation>
 <translation id="2784548701748328827">최대</translation>
@@ -960,6 +863,10 @@
 <translation id="5009335307032488349">이름, ID로 NFT 검색</translation>
 <translation id="6295954645230084874"><ph name="NETWORK"/>에는 구매 지원 제공되지 않음</translation>
 <translation id="9209024278910716955">선택한 네트워크에 구매가 지원되지 않음</translation>
+<translation id="4982630604810554641">도메인 검색 중...</translation>
+<translation id="5467044307473123584">Brave는 오프체인 게이트웨어를 사용한 .eth 도메인 해석을 지원합니다.</translation>
+<translation id="4896417414446851895">ENS 주소를 입력하신 것 같습니다. 이 요청을 해석하려면 제3자 해석기를 사용해야 하므로 IP 주소와 도메인을 해당 제3자가 볼 수 있습니다.</translation>
+<translation id="8646078615727397565">ENS 도메인 사용</translation>
 <translation id="4171338820961522154"><ph name="NETWORK"/>에는 스왑 지원 제공되지 않음</translation>
 <translation id="1191686659164947414">트랜잭션이 프론트런일 수 있음</translation>
 <translation id="632241521608275119">슬리피지 허용 오차</translation>
@@ -972,7 +879,9 @@
 <translation id="712738518060477110">견적에 Brave 수수료 <ph name="SWAP_FEE_PERCENTAGE"/> 포함입니다.</translation>
 <translation id="8368540604723748428">소수 자릿수 너무 많음</translation>
 <translation id="6575120282593094155">아직 <ph name="ACCOUNT_TYPE"/> 계정이 없습니다. 새로 만드시겠습니까?</translation>
+<translation id="1201402288615127009">다음</translation>
 <translation id="8712637175834984815">확인</translation>
+<translation id="6896758677409633944">복사하기</translation>
 <translation id="2704606927547763573">복사됨</translation>
 <translation id="6042308850641462728">더보기</translation>
 <translation id="768236965975208017">보안. 멀티체인. 손쉬운 사용. 이런 Brave 월렛까지 클릭 몇 번만 남았습니다</translation>
@@ -1034,6 +943,7 @@
 <translation id="6577166808959668729">솔라나 블록체인에 SPL 호환 자산 지원</translation>
 <translation id="4541295941776129088">FIL 자산 저장</translation>
 <translation id="8500387257977999003">비공개 키 <ph name="PROTOCOL"/></translation>
+<translation id="8275038454117074363">가져오기</translation>
 <translation id="232925166623833246">하드웨어 월렛에서 가져오기</translation>
 <translation id="4324198334837993695">하드웨어</translation>
 <translation id="3067168166931605141">계정 이름</translation>
@@ -1080,6 +990,7 @@
 <translation id="2416098547200943834">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공됩니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">참고: 비공개 키는 비공개 키와 프로토콜 정보가 포함된 헥스 인코디드 JSON 형식으로 제공되어야 합니다. <ph name="LINK_START"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="42126664696688958">내보내기</translation>
+<translation id="1366855498335432549">입금</translation>
 <translation id="2902856457593699108">키 표시</translation>
 <translation id="8033497299373164724">키 숨기기</translation>
 <translation id="2702143907607790516">게정 이름 업데이트에 실패했습니다. 다시 시도하세요.</translation>
@@ -1126,6 +1037,7 @@
 <translation id="9065203028668620118">수정</translation>
 <translation id="7968982339740310781">세부정보 보기</translation>
 <translation id="6452181791372256707">거부</translation>
+<translation id="8131740175452115882">승인</translation>
 <translation id="8904889345035514635">현재 허용 한도</translation>
 <translation id="7073918978411974168">권장 허용 한도</translation>
 <translation id="9019403281000653275">승인 요청 무제한</translation>
@@ -1151,9 +1063,9 @@
 <translation id="793994607260936590">처음</translation>
 <translation id="4709524402122994378">트랜잭션</translation>
 <translation id="4591079278963448049">아직 연결된 토큰 계정이 존재하지 않습니다. 계정을 만들고 자금을 입금하는 데 소액의 SOL가 지출됩니다.</translation>
-<translation id="3368922792935385530">연결됨</translation>
 <translation id="523862956770478816">사이트 권한</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>개의 계정 연결됨</translation>
+<translation id="4804818685124855865">연결 해제</translation>
 <translation id="4305817255990598646">전환</translation>
 <translation id="3423275441470187644">신뢰함</translation>
 <translation id="2391762656119864333">취소</translation>
@@ -1196,6 +1108,7 @@
 <translation id="2331676293859649642">승인됨</translation>
 <translation id="1165039591588034296">오류</translation>
 <translation id="8373210463207847451">중단됨</translation>
+<translation id="8214232307424031138">서명됨</translation>
 <translation id="9065572743819293042">최근 트랜잭션</translation>
 <translation id="4235538284468006757">트랜잭션 세부정보</translation>
 <translation id="7488671812634887146">속도 높이기</translation>
@@ -1290,17 +1203,23 @@
 <translation id="3898731124813934210">Wyre로 구매</translation>
 <translation id="5522073372365069684">Ramp로 구매</translation>
 <translation id="7902920577183739843">Sardine으로 구매</translation>
+<translation id="6534275647567011533">Transak으로 구매</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
 <translation id="8528916244724490964">모든 네트워크</translation>
 <translation id="4038403584813842767">잔액 ↑</translation>
 <translation id="1695096446857675822">잔액 ↓</translation>
+<translation id="8151187584908138100">이름 ↓</translation>
+<translation id="883138507248906253">이름 ↑</translation>
 <translation id="7198018180583855568">모든 계정</translation>
 <translation id="6954150712710630841">트랜잭션 제출됨</translation>
 <translation id="905855245798176174">트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.</translation>
+<translation id="619697073289995370">트랜잭션 서명됨</translation>
+<translation id="7493732383203109611">트랜잭션이 서명되어 DApp으로 네트워크에 전송됩니다.</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/>, 월렛으로 반송됨</translation>
 <translation id="4577432071459867390">트랜잭션 실패</translation>
 <translation id="4359235192593147041">가격 변동폭이 커서 트랜잭션이 실패했습니다. 가격 변동폭이 커도 성공하려면 슬리피지 허용 오차를 늘리세요.</translation>
@@ -1319,6 +1238,7 @@
 <translation id="9104177294757104789"><ph name="VALUE"/> 보내기</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/>에서 <ph name="TAKER"/>(으)로 스왑</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
+<translation id="282560918037172384">테스트 네트워크</translation>
 <translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
 <translation id="3354376789153561654">트랜잭션 데이터 'to'를 지정해야 함</translation>
 <translation id="8728991256628663004">트랜잭션 데이터 'from'은 유효한 Filecoin 주소여야 함</translation>
@@ -1506,6 +1426,50 @@
 <translation id="3033638954295674319">NFT 세부정보를 가져오는 중에 문제가 발생했습니다. 나중에 다시 시도하세요.</translation>
 <translation id="2540568096903252632">계속하려면 비밀번호 입력</translation>
 <translation id="3356580495013324916">월렛 백업을 시작하려면 Brave 월렛 비밀번호를 입력하세요.</translation>
+<translation id="7545441766078366279"><ph name="TOKEN"/> 승인</translation>
+<translation id="3115303896544539834"><ph name="TOKEN"/> 잔액 부족</translation>
+<translation id="4937657825850660613">절반</translation>
+<translation id="7639814793732182496">최대</translation>
+<translation id="6584782231358487640">금액 입력</translation>
+<translation id="2335903728876796191">내게 최적의 가격 찾기</translation>
+<translation id="3835223348537121988">잔액:</translation>
+<translation id="5709875713144853427">스왑할 토큰 선택</translation>
+<translation id="720404198240859011">잔액이 없는 토큰 표시</translation>
+<translation id="4886690455791686940">잔액이 없는 토큰 숨기기</translation>
+<translation id="381485723922188688">옵션</translation>
+<translation id="6680650203439190394">요율</translation>
+<translation id="2538996898605796431">가격 영향</translation>
+<translation id="8007404171238546456">슬리피지 후 최소 수신액</translation>
+<translation id="767199001998615704">네트워크 수수료</translation>
+<translation id="7057870207229052478">Brave 수수료</translation>
+<translation id="3624518972158401291">무료</translation>
+<translation id="5038255447967558645">유동성 제공자</translation>
+<translation id="8450638959928932199">스왑하고 보내기</translation>
+<translation id="476816352791390168">추가 수수료 없음!</translation>
+<translation id="5319981934425923365">위 주소가 정확하다는 사실을 확인합니다.</translation>
+<translation id="7480629155329718561">수신자의 이더리움 주소 입력</translation>
+<translation id="4967749818080339523">계정 선택</translation>
+<translation id="3887241807965836390">내 계정으로</translation>
+<translation id="3079716946572942356">다른 주소로</translation>
+<translation id="8044899503464538266">느리게</translation>
+<translation id="3569512916300900704">평균</translation>
+<translation id="7019805045859631636">빠르게</translation>
+<translation id="1826671530876539299">스왑 설정</translation>
+<translation id="6778140392042462129">거래소</translation>
+<translation id="6173494033320397682">다이렉트 라우팅만</translation>
+<translation id="2440960581098655899">다이렉트 라우팅만 사용하고 스플릿 트레이드 거래는 비활성화합니다.</translation>
+<translation id="6245314729809503023">Brave는 60개 인기 토큰을 사용하여 중간 라우팅을 맡아 성능을 최적화합니다.</translation>
+<translation id="2379187373676242615">코인게코보다 <ph name="VALUE"/>% 저렴</translation>
+<translation id="5351867352310722022">코인게코 대비 <ph name="VALUE"/>% 이내</translation>
+<translation id="7695501918490163821">코인게코보다 <ph name="VALUE"/>% 비쌈</translation>
+<translation id="6065708195277841442">월렛 연결</translation>
+<translation id="4029551149873989025">네트워크 전환</translation>
+<translation id="7561262633951061138">최고</translation>
+<translation id="3143110700666266545">이 앱은 다음 제3자 API를 사용합니다.</translation>
+<translation id="8411419545176806786">Brave 스왑은 지원되는 EVM 네트워크에 DEX 애그리게이터로 0x를 사용합니다. 0x는 이더리움 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). 0x는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="7467728126359974661">Brave 스왑은 Solana 네트워크에 DEX 애그리게이터로 Jupiter를 사용합니다. Jupiter는 Solana 월렛 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). Jupiter는 트랜잭션 처리 목적으로만 이 데이터를 사용합니다.</translation>
+<translation id="8497751359931572880">0x 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
+<translation id="4904748904130272182">Jupiter 개인정보 보호정책을 보려면 여기를 클릭하세요.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1607,6 +1571,7 @@
 <translation id="264682546981571963">쿠키 동의 문구를 보면 지치시지요?</translation>
 <translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
 <translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
+<translation id="2808175374672429053">Brave Shields에는 와일드카드가 허용되지 않습니다.</translation>
 <translation id="6294662480095808915">프라이버시 보호가 기본.</translation>
 <translation id="4366423156486478559">클릭하는 모든 링크에서 Brave가 든든하게 보호해드립니다. Brave를 기본 브라우저로 설정하세요. 남들 모르게 말이죠.</translation>
 <translation id="3830912418080848377">설정 가져오기</translation>
@@ -1679,21 +1644,4 @@
 <translation id="1657858090675311947">이 경고를 다시 표시하지 않습니다.</translation>
 <translation id="2740531572673183784">확인</translation>
 <translation id="9061845622728745852">시간대:</translation>
-<translation id="7586151660465233733"><ph name="SITE_NAME"/>에서 시장 더 보기</translation>
-<translation id="952067063131306699">FTX에서 시장 보기 및 암호화폐 거래</translation>
-<translation id="5963745988819586370">시장</translation>
-<translation id="3795943412467785186">FTX 계정을 연결하면 계정 잔액을 보고, 선물 시장을 확인하고, 암호화폐를 환전할 수 있습니다.</translation>
-<translation id="926958206891985289">선물 시장 보기</translation>
-<translation id="6804537228302563756">계정 연결</translation>
-<translation id="5019698312620117604">24시간 가격 추이</translation>
-<translation id="8720719072204443171">24시간 거래량</translation>
-<translation id="7723176927437578611">계속</translation>
-<translation id="2983078329159689577">제출 중...</translation>
-<translation id="6641102760094059194">확인(<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
-<translation id="2280055104463448482">환전 성공!</translation>
-<translation id="7590653073560839711">환전을 수행하려면 하나 이상의 통화에 잔액이 있어야 합니다.</translation>
-<translation id="4390079506197726228"><ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/> 사용 가능</translation>
-<translation id="6973157709854838218">화면에서 잔액 숨김</translation>
-<translation id="4548946945059463969">화면에 잔액 표시</translation>
-<translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
 </translationbundle>

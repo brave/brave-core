@@ -6,19 +6,18 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_FILTER_NODE_TRACKER_FILTER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_FILTER_NODE_TRACKER_FILTER_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_filter.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
 class NodeTrackerFilter : public NodeFilter {
  public:
-  NodeTrackerFilter(GraphItemContext* context, const std::string& host);
+  NodeTrackerFilter(GraphItemContext* context, const String& host);
 
   ~NodeTrackerFilter() override;
 
-  const std::string& GetHost() const { return host_; }
+  const String& GetHost() const { return host_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -29,7 +28,7 @@ class NodeTrackerFilter : public NodeFilter {
   bool IsNodeTrackerFilter() const override;
 
  private:
-  const std::string host_;
+  const String host_;
 };
 
 }  // namespace brave_page_graph

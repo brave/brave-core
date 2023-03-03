@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin_hash.h"
+#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 
 namespace blink {
 namespace {
@@ -15,7 +15,7 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
   if (!ephemeral_storage_origin) {
     return name;
   }
-  const auto& nonce = SecurityOriginHash::GetNonceForEphemeralStorageKeying(
+  const auto& nonce = SecurityOrigin::GetNonceForEphemeralStorageKeying(
       ephemeral_storage_origin);
   return name + String::FromUTF8(nonce.ToString());
 }
@@ -30,7 +30,7 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
 // the worker is using.
 // The name change is applied only while connecting.
 #define GetRemoteNavigationAssociatedInterfaces                 \
-  should_send_resource_timing_info_to_parent(); /* no-op */     \
+  IsFrameCreatedByAdScript(); /* no-op */                       \
   base::AutoReset<String> ephemeral_name_auto_reset(            \
       &name_, GetEphemeralBroadcastChannelName(window, name_)); \
   frame->GetRemoteNavigationAssociatedInterfaces

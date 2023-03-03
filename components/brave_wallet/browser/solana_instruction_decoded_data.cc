@@ -53,8 +53,9 @@ SolanaInstructionDecodedData::FromMojom(
   }
 
   for (const auto& mojom_param : mojom_decoded_data->params) {
-    decoded_data.params.emplace_back(std::make_tuple(
-        mojom_param->name, mojom_param->localized_name, mojom_param->value));
+    decoded_data.params.emplace_back(
+        std::make_tuple(mojom_param->name, mojom_param->localized_name,
+                        mojom_param->value, mojom_param->type));
   }
 
   for (const auto& mojom_account_param : mojom_decoded_data->account_params) {
@@ -76,7 +77,8 @@ mojom::DecodedSolanaInstructionDataPtr SolanaInstructionDecodedData::ToMojom()
                           : static_cast<uint32_t>(*token_ins_type);
   for (const auto& param : params) {
     mojom_params.emplace_back(mojom::SolanaInstructionParam::New(
-        std::get<0>(param), std::get<1>(param), std::get<2>(param)));
+        std::get<0>(param), std::get<1>(param), std::get<2>(param),
+        std::get<3>(param)));
   }
 
   std::vector<mojom::SolanaInstructionAccountParamPtr> mojom_account_params;
@@ -135,8 +137,18 @@ SolanaInstructionDecodedData::FromValue(const base::Value::Dict& value) {
     const auto* value_local = param_value.GetDict().FindString("value");
     if (!value_local)
       return absl::nullopt;
+
+    mojom::SolanaInstructionParamType type =
+        mojom::SolanaInstructionParamType::kUnknown;
+    auto type_int = param_value.GetDict().FindInt("type");
+    if (type_int &&
+        mojom::IsKnownEnumValue(
+            static_cast<mojom::SolanaInstructionParamType>(*type_int))) {
+      type = static_cast<mojom::SolanaInstructionParamType>(*type_int);
+    }
+
     decoded_data.params.emplace_back(
-        std::make_tuple(*name, *localized_name, *value_local));
+        std::make_tuple(*name, *localized_name, *value_local, type));
   }
 
   const base::Value::List* account_param_list =
@@ -178,6 +190,7 @@ absl::optional<base::Value::Dict> SolanaInstructionDecodedData::ToValue()
     param_dict.Set("name", std::get<0>(param));
     param_dict.Set("localized_name", std::get<1>(param));
     param_dict.Set("value", std::get<2>(param));
+    param_dict.Set("type", static_cast<int>(std::get<3>(param)));
     param_list.Append(std::move(param_dict));
   }
   dict.Set("params", std::move(param_list));

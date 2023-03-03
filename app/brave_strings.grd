@@ -577,7 +577,7 @@ Permissions you've already given to websites and apps may apply to this account.
           Installation failed due to unspecified error. Please download Brave again.
         </message>
         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
-          Brave requires Windows 7 or higher.
+          Brave requires Windows 10 or higher.
         </message>
         <message name="IDS_INSTALL_OS_ERROR" desc="Error displayed when any Windows API call fails and we do not have more specific information.">
           An operating system error occurred during installation. Please download Brave again.
@@ -683,6 +683,9 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
         This file may be dangerous, so Brave has blocked it.
+      </message>
+      <message name="IDS_BLOCK_REASON_PROMPT_FOR_SCANNING" desc="Message shown to the user on chrome://downloads page to explain that this download is recommended to be scanned.">
+        Brave recommends scanning this file because it may be dangerous.
       </message>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
@@ -1640,6 +1643,10 @@ Permissions you've already given to websites and apps may apply to this account.
           </message>
         </if>
       </if>
-    </messages>
+    <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
+          Google Chrome Beta
+        </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">
+          Google Chrome Dev
+        </message></messages>
   </release>
 </grit>

@@ -57,7 +57,7 @@ interface BatAdsClient {
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
-  ShowScheduledCaptchaNotification(string payment_id, string captcha_id, bool should_show_tooltip_notification);
+  ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
   ClearScheduledCaptcha();
 
   RunDBTransaction(ads.mojom.DBTransactionInfo transaction) => (ads.mojom.DBCommandResponseInfo response);
@@ -136,7 +136,7 @@ interface BatAds {
   OnDidCloseTab(int32 tab_id);
 
   // Account
-  OnRewardsWalletDidChange(string payment_id, string seed);
+  OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
   GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
 

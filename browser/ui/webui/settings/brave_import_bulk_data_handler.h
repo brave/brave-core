@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "base/callback.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_importer_observer.h"
@@ -45,7 +45,7 @@ class BraveImportBulkDataHandler : public BraveImportDataHandler {
                              Profile* profile);
   // BraveImportDataHandler
   void NotifyImportProgress(const importer::SourceProfile& source_profile,
-                            const base::Value& info) override;
+                            const base::Value::Dict& info) override;
   void OnImportEnded(const importer::SourceProfile& source_profile) override;
 
   // SettingsPageUIHandler

@@ -26,7 +26,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
 <translation id="8988939298652262600">Brave no revisa la seguretat de les extensions. Instal·leu aquesta extensió només si confieu en el desenvolupador.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="9005883459983913482">Tor windows</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="6924909138923993900">Nova connexió Tor per a aquest lloc</translation>
@@ -41,6 +40,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1725356094208762656">Obrir a Tor</translation>
 <translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
 <translation id="7473245612074035141">Comenceu la Configuració</translation>
+<translation id="496896260395129787">Aquest compte de Sincronització de Brave s'ha suprimit d'un altre dispositiu. Si no volíeu desactivar Sincronització,<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>torneu a crear el compte</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="3975865347033939965">No s'ha pogut iniciar el servei de sincronització, Brave Sync no s'està executant</translation>
 <translation id="4450893287417543264">No ho tornis a mostrar</translation>
 <translation id="4595286989346610620">Consulta els detalls</translation>
@@ -114,8 +116,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="9194637241566114638">Ajudeu a millorar <ph name="SEARCH_NAME"/> enviant dades d'ús anònimes.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Més informació</translation>
-<translation id="6965382102122355670">OK</translation>
 <translation id="780301667611848630">No, gràcies</translation>
+<translation id="1162706247109707219">En fer clic a D'acord, reconeixeu que la vostra instal·lació de Brave NO rebrà correccions de seguretat crítiques fins que actualitzeu a Windows 10 o posterior. Aquest avís NO es tornarà a mostrar.</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="6040143037577758943">Tanca</translation>
@@ -123,8 +125,12 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4174337572777167894">Projecte Web Discovery</translation>
 <translation id="8659271182272561965">Aporteu dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
 <translation id="1516554614404600536">Descripció emergent de Brave</translation>
-<translation id="7986278174934557414">Amaga la icona del panel lateral</translation>
-<translation id="6915291874524466201">Amaga la icona del panel lateral</translation>
+<translation id="4375473250631001683">Amaga la icona de la barra lateral</translation>
+<translation id="2613033293035359003">Amaga la barra lateral</translation>
+<translation id="4233010476457917696">Mostra la barra lateral</translation>
+<translation id="7829322605042304637">Amaga la icona de la barra lateral</translation>
+<translation id="7349915168363514678">Amaga la barra lateral</translation>
+<translation id="5404213409401164238">Mostra la barra lateral</translation>
 <translation id="9149866541089851383">Edita...</translation>
 <translation id="1181037720776840403">Suprimeix</translation>
 <translation id="7513769021866698486">Edita l'element</translation>
@@ -133,7 +139,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5877900074358050101">Títol de l'element de la barra lateral</translation>
 <translation id="1613695740874407223">URL de l'element de la barra lateral</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
-<translation id="5404213409401164238">Mostra la barra lateral</translation>
+<translation id="5977931179408079967">Posició</translation>
+<translation id="3790384768741064842">Mou a la dreta</translation>
+<translation id="7444424316576061724">Mou a l'esquerra</translation>
 <translation id="7561196759112975576">Sempre</translation>
 <translation id="7060352228894039151">En passar-hi el cursor per sobre</translation>
 <translation id="7961015016161918242">Mai</translation>
@@ -166,6 +174,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8731422418734770661">Configura Crypto Wallets</translation>
 <translation id="8199661191594897555">Comenceu els Crypto Moneders i torneu-ho a carregar</translation>
 <translation id="8428213095426709021">Configuració</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Dominis Web3</translation>
 <translation id="72868071984333667">Esbrineu més sobre IPFS i la privacitat.</translation>
 <translation id="4552520379838695057">Ho sentim, no es pot trobar aquesta pàgina.</translation>
 <translation id="2609895996619941644">Voleu comprocar si hi ha una versió guardadad disponible a la Wayback Machine?</translation>
@@ -177,10 +187,14 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3987546108749866209">Utilitza pestanyes verticals</translation>
 <translation id="5860254591544742609">Mostra la barra de títol</translation>
 <translation id="399928467800528208">Flota en passar-hi el cursor per sobre</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Silencia la pestanya}other{Silencia les pestanyes}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Activa el so de la pestanya}other{Activa el so de les pestanyes}}</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2523967823495420116">Utilitza pestanyes verticals</translation>
 <translation id="8888603463702767599">Mostra la barra de títol</translation>
 <translation id="2058818256505091369">Flota en passar-hi el cursor per sobre</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Silencia la pestanya}other{Silencia les pestanyes}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Activa el so de la pestanya}other{Activa el so de les pestanyes}}</translation>
 <translation id="4235920711083356755">Mostra el botó VPN</translation>
 <translation id="4070612712151038707">Mostra el botó VPN a la barra d'eines</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +247,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4096343215397759358">Targeta amb vista prèvia</translation>
 <translation id="5297085818601043899">Informació sobre eines</translation>
 <translation id="2396127686705429331">Mostra el botó d'adreces d'interès</translation>
-<translation id="2369560305991805099">Mostra el botó del panel lateral</translation>
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
 <translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
 <translation id="2858138569776157458">Llocs populars</translation>
-<translation id="65774893852758517">Llocs suggerits</translation>
 <translation id="7859704718976024901">Historial de navegació</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
@@ -248,6 +260,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Cerqueu per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
 <translation id="1013121820689882118">Lector de velocitat</translation>
 <translation id="2025435450953474282">Els articles es carreguen automàticament en el mode de lector, fet que estalvia temps</translation>
+<translation id="2422927186524098759">Barra lateral</translation>
+<translation id="832432428796481785">Mostra el botó de la barra lateral</translation>
 <translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
 <translation id="1988804048511540801">La nova pestanya mostra</translation>
 <translation id="2970343821770026391">Panell</translation>
@@ -271,6 +285,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4800195524776354947">Mostrar el nombre d'elements bloquejats a la icona dels escuts</translation>
 <translation id="5510493033031835532">Redirigeix automàticament les pàgines AMP</translation>
 <translation id="7630031867325944356">Preferiu els URL de les pàgines de l'editor en comptes d'AMP i versions similars.</translation>
+<translation id="920638232916443453">Redirigeix automàticament les URL de seguiment</translation>
+<translation id="1118970888826017401">Habiliteu la compatibilitat per evitar les URL de seguiment de redireccions de nivell superior.</translation>
 <translation id="7607166182943595829">Impedeix que els llocs web em facin empremtes digitals segons les meves preferències d'idioma</translation>
 <translation id="3497934980362703405">Activar aquesta opció de configuració redueix el que poden aprendre els llocs web sobre les teves preferències d'idioma.</translation>
 <translation id="2133317862976486547">Seguidors &amp; bloquejant anuncis</translation>
@@ -287,7 +303,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
 <translation id="101592339984642584">Filtració del contingut</translation>
 <translation id="8694564340481124390">Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de l'idioma.</translation>
-<translation id="4877657558909976793">Habilita filtres personalitzats que bloquegen elements molestos i <ph name="BEGIN_LINK"/> rastrejadors <ph name="END_LINK"/> regionals i específics de l'idioma.</translation>
 <translation id="3482656215021340727">Afegeix llistes de filtres personalitzats</translation>
 <translation id="1020877116991797978">Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.</translation>
 <translation id="7617831480435794399">Subscriu-te només a llistes d'entitats de confiança. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista des de l'URL que introdueixis, revelant la teva adreça IP al seu servidor.</translation>
@@ -363,6 +378,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4332558599726753990">Posada en marxa de la sincronització</translation>
 <translation id="2187778349654214731">Per començar, necessitareu instal·lar Brave a tots els dispositius que planegeu sincronitzar. Després, enllaçar-los de manera segura amb un codi de sincronització.</translation>
 <translation id="7530575064080939974">Gestioneu els dispositius sincronitzats</translation>
+<translation id="8668872235103666008">No s'ha pogut sincronitzar Brave als vostres dispositius</translation>
 <translation id="7575156386943878014">Gestor de sincronització</translation>
 <translation id="1755198127524719638">Configuració de sincronització</translation>
 <translation id="7558480201297099157">Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.</translation>
@@ -392,7 +408,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4485276108749547761">Tracteu aquest codi com una contrasenya. Si se n'apoderen, podran llegir i modificar les vostres dades sincronitzades.</translation>
 <translation id="3034163433136515805">Veure codi QR</translation>
 <translation id="5373825572723282843">Introdueix un codi de sincronització</translation>
-<translation id="5734745018569675530">Escriu en el formulari de sota les paraules del codi de cadena de sincronització proporcionat.</translation>
+<translation id="1265244359514651398">Introduïu la contrasenya de la cadena de sincronització a continuació.</translation>
 <translation id="1061533051865606843">Afegir nou dispositiu</translation>
 <translation id="5093410893656857925">Tria el tipus de dispositiu</translation>
 <translation id="4581190919849683048">Amb quin tipus de dispositiu us agradaria sincronitzar?</translation>
@@ -400,6 +416,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3995714999835224798">El codi no és vàlid</translation>
 <translation id="4432071071853308688">Aquest codi és buit</translation>
 <translation id="955848693465029904">Error intern de la configuració de sincronització</translation>
+<translation id="7456398316301207582">Error intern en suprimir el compte</translation>
 <translation id="859506441384380749">Aquest codi s'ha generat amb una versió obsoleta de Brave, actualitza primer l'altre dispositiu</translation>
 <translation id="3132642509209154999">Aquest codi ha caducat. Genera'n un de nou a l'altre dispositiu i torna-ho a provar.</translation>
 <translation id="2859229680945501779">Aquest codi no és vàlid. Comproveu que l'hora i la zona horària s'han establert correctament al vostre dispositiu.</translation>
@@ -412,6 +429,18 @@ Revisa que aquests codis de paraules s'hagin generat a partir d'un dels teus dis
 
 Segur que vols continuar?</translation>
 <translation id="7443185843787879670">Brave no ha pogut accedir a l'emmagatzematge segur del vostre sistema operatiu. Això és el que s'utilitza per protegir dades com ara contrasenyes i galetes; també és necessari perquè Brave Sync connecti el perfil del navegador entre dispositius. Això vol dir que Brave Sync no s'està executant. Per resoldre aquest problema, consulteu la <ph name="BEGIN_LINK_SYNC_GUIDE"/>Guia de resolució de problemes de Brave Sync<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">Sembla que la clau de xifratge sincronitzada és diferent de la utilitzada la primera vegada que es va configurar la sincronització de Brave. La solució més fàcil aquí és restablir i tornar a unir-se a la cadena de sincronització utilitzant la contrasenya d'un dels vostres altres dispositius sincronitzats.</translation>
+<translation id="4889767840132638381">Reinicieu i torneu a unir-vos a la cadena de sincronització</translation>
+<translation id="1680065323266179640">Suprimeix el compte de Sync</translation>
+<translation id="9064376100690171155">Suprimeix el compte permanentment</translation>
+<translation id="228906529296554286">Si suprimiu el vostre compte, se suprimiran les vostres dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.</translation>
+<translation id="7578652532113583362">No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.</translation>
+<translation id="2516405584294312544">Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decidiu
+    començar a utilitzar Sync de nou, haureu de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
+<translation id="4860996720371753023">La supressió del compte està en curs...</translation>
+<translation id="8199291899164865593">No s'ha pogut unir a aquesta cadena de sincronització. S'ha suprimit el compte.</translation>
+<translation id="5633907266617216186">Adreces, informació de pagament, etc.</translation>
+<translation id="294985549514492876">Aplicacions web (PWA)</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="842628013524824194">Finestra normal - Motor de cerca utilitzat a la barra d'adreces</translation>
@@ -465,7 +494,7 @@ Segur que vols continuar?</translation>
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
 <translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
-<translation id="1241283133946520352">Xarxes</translation>
+<translation id="856371974127598760">Xarxes del moneder</translation>
 <translation id="5975930666279943472">Esborreu la transacció de la cartera i la informació del nonce</translation>
 <translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
 <translation id="4993345308607970390">Reinicieu la Brave Wallet</translation>
@@ -503,6 +532,8 @@ Segur que vols continuar?</translation>
 <translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="8996633027318264334">Realment vols eliminar <ph name="KEY_NAME"/>?</translation>
+<translation id="3316326558572563182">La xarxa activa sempre és visible a la llista de xarxes del moneder</translation>
+<translation id="232693303726691609">Mostra/Amaga la xarxa a la llista de xarxes del moneder</translation>
 <translation id="7893578599666249602">Segur que vols restablir <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
 <translation id="9170907049676078643">Mètode per a resoldre els recursos IPFS</translation>
@@ -556,6 +587,7 @@ Segur que vols continuar?</translation>
 <translation id="2775956301559569472">Mostra el missatge de la Wayback Machine a 404 pàgines</translation>
 <translation id="3095201688102519917">Avisa abans de tancar una finestra amb múltiples pestanyes</translation>
 <translation id="7120553802660696133">Tanca la finestra en tancar l'última pestanya</translation>
+<translation id="7984721311211272523">Desactiva la funció silenci a les icones de les pestanyes dels altaveus</translation>
 <translation id="6624718837376802990">Avatar Provocador Recompenses</translation>
 <translation id="6617313057407561765">Avatar Provocador Brave</translation>
 <translation id="6754445808455578019">Avatar Provocador Oceà</translation>

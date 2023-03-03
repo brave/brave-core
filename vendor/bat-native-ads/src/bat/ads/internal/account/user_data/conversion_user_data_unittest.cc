@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 
 #include "absl/types/optional.h"
+#include "base/functional/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
@@ -34,12 +35,12 @@ TEST_F(BatAdsConversionUserDataTest, GetForConversionConfirmationType) {
   // Act
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kConversion,
-      [](base::Value::Dict user_data) {
+      base::BindOnce([](base::Value::Dict user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>
             verifiable_conversion_envelope =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);
         ASSERT_TRUE(verifiable_conversion_envelope);
-      });
+      }));
 
   // Assert
 }
@@ -51,12 +52,12 @@ TEST_F(BatAdsConversionUserDataTest, DoNotGetForNonConversionConfirmationType) {
   // Act
   GetConversion(
       kCreativeInstanceId, ConfirmationType::kViewed,
-      [](base::Value::Dict user_data) {
+      base::BindOnce([](base::Value::Dict user_data) {
         const absl::optional<security::VerifiableConversionEnvelopeInfo>
             verifiable_conversion_envelope =
                 security::GetVerifiableConversionEnvelopeForUserData(user_data);
         ASSERT_FALSE(verifiable_conversion_envelope);
-      });
+      }));
 
   // Assert
 }

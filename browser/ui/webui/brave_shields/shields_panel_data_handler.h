@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_DATA_HANDLER_H_
 
+#include <string>
+#include <vector>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
@@ -43,11 +46,13 @@ class ShieldsPanelDataHandler
   void SetAdBlockMode(AdBlockMode callback) override;
   void SetFingerprintMode(FingerprintMode mode) override;
   void SetCookieBlockMode(CookieBlockMode mode) override;
+  void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
   void UpdateFavicon() override;
+  void AllowScriptsOnce(const std::vector<std::string>& origins) override;
 
  private:
   void UpdateSiteBlockInfo();

@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -40,9 +40,10 @@ void BraveSearchEnginesHandler::RegisterMessages() {
 void BraveSearchEnginesHandler::OnModelChanged() {
   SearchEnginesHandler::OnModelChanged();
 
-  brave::SetDefaultPrivateSearchProvider(profile_);
+  brave::UpdateDefaultPrivateSearchProviderData(profile_);
 
-  // Sync normal profile's search provider list with private profile's.
+  // Sync normal profile's search provider list with private profile
+  // for using same list on both.
   FireWebUIListener("private-search-engines-changed",
                     GetPrivateSearchEnginesList());
 }
@@ -50,12 +51,11 @@ void BraveSearchEnginesHandler::OnModelChanged() {
 void BraveSearchEnginesHandler::HandleGetPrivateSearchEnginesList(
     const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
-  const base::Value& callback_id = args[0];
   AllowJavascript();
-  ResolveJavascriptCallback(callback_id, GetPrivateSearchEnginesList());
+  ResolveJavascriptCallback(args[0], GetPrivateSearchEnginesList());
 }
 
-base::Value BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
+base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
   // Construct list with normal profile's default list.
   // Normal and Private profile use same default list.
   int last_default_engine_index =
@@ -76,7 +76,7 @@ base::Value BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     defaults.Append(std::move(dict));
   }
 
-  return base::Value(std::move(defaults));
+  return defaults;
 }
 
 base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {

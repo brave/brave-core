@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/auto_reset.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -108,7 +108,7 @@ void SidebarContainerView::Init() {
   DCHECK(browser_view);
 
   auto* side_panel_registry =
-      browser_view->side_panel_coordinator()->GetGlobalSidePanelRegistry();
+      SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
   panel_registry_observation_.Observe(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
@@ -449,13 +449,15 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   }
 }
 
-void SidebarContainerView::OnEntryRegistered(SidePanelEntry* entry) {
+void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
+                                             SidePanelEntry* entry) {
   // Observe when it's shown or hidden
   DVLOG(1) << "Observing panel entry in registry observer: " << entry->name();
   panel_entry_observations_.AddObservation(entry);
 }
 
-void SidebarContainerView::OnEntryWillDeregister(SidePanelEntry* entry) {
+void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
+                                                 SidePanelEntry* entry) {
   // Stop observing
   DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);

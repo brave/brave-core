@@ -9,7 +9,7 @@
 #define ShouldThemifyFaviconForEntry                                          \
   ShouldThemifyFaviconForEntry_ChromiumImpl(content::NavigationEntry* entry); \
   bool ShouldThemifyFaviconForEntry
-#include "src/chrome/browser/favicon/favicon_utils.h"
+#include "src/chrome/browser/favicon/favicon_utils.h"  // IWYU pragma: export
 #undef ShouldThemifyFaviconForEntry
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FAVICON_FAVICON_UTILS_H_

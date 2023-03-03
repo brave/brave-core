@@ -63,7 +63,6 @@
 <translation id="6811221529729056895">ብሬቭ ፍለጋን አሁን ይሞክሩ</translation>
 <translation id="5525668735313040116">ድሩን በግል ይፈልጉ</translation>
 <translation id="3446024864193919737">የ Brave ሽልማቶችን አሳይ</translation>
-<translation id="6274899614137380422">Binance አሳይ</translation>
 <translation id="5585019845078534178">ካርዶች</translation>
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
 <translation id="8466529005131466476">ስፖንሰር የተደረጉ ድህረ-ገጾችን በመመልከት ክፍያ ማግኘት ይችላሉ።</translation>
@@ -102,8 +101,6 @@
 <translation id="1776831331757823105">ሰዓት</translation>
 <translation id="7791543448312431591">አክል</translation>
 <translation id="7679334366167089823">ግላዊነትን የሚያከበሩ ማስታወቂያዎችን ስላዩ ቶክኖችን ያግኙ።</translation>
-<translation id="2236818903653027036">በአሳሽዎ ውስጥ በቀጥታ በ Binance ላይ ክሪፕቶን ይግዙ።</translation>
-<translation id="6508379561970983105">በአሳሽዎ ውስጥ በቀጥታ በ Gemini ላይ ክሪፕቶን ይግዙ።</translation>
 <translation id="7191394989411626168">ካርዶችን በማጥፋት፣ በአሁኑ ጊዜ የሚታዩ ሁሉም ካርዶች ይደበቃሉ። ሆኖም ፣ አሁንም ስለ አዲስ ካርዶች ማሳወቂያ ሊደርስዎት ይችላል።</translation>
 <translation id="6820526586005233839">የ Brave Ads ቆሟል</translation>
 <translation id="5190407395832551012">Brave Rewards ን ከጥቃት ለመጠበቅ፣ ተጠቃሚዎች captcha ን እንዲፈቱ በዘፈቀደ እንጠይቃለን። ማስታወቂያዎችን እንደገና ለማስጀመር “Solve” ን ጠቅ ያድርጉ።</translation>
@@ -171,31 +168,8 @@
 <translation id="7616645803364270729">ኢሜይል፣ ትዊተር፣ ወዘተ.</translation>
 <translation id="5299848999918506028">እናመሰግናለን!</translation>
 <translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Brave አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
-<translation id="2974339193389078578">ብሬቭ አዲሱ ኢንተርኔት</translation>
-<translation id="7735138632831241257">ግላዊነትዎን ለመጠበቅ በተገነባ አሳሽ አማካኝነት በበለጠ ፍጥነት እና ደህንነቱ የተጠበቀ የደሰሳ ተሞክሮ ለመደሰት ይዘጋጁ፡፡</translation>
-<translation id="6001839398155993679">እንሂድ</translation>
-<translation id="4225189922025976867"><ph name="BEGIN_BOLD"/>Earn ማስመሰያዎች<ph name="END_BOLD"/> የ Brave የግል ማስታወቂያዎች ን በማየት እና የ ይዘት ፈጣሪዎች በራስ-ሰር በመደገፍ።</translation>
-<translation id="5477721706074111257">ጠቅ በማድረግ፣ በ <ph name="BEGIN_LINK"/>Terms of Service<ph name="END_LINK"/> and <ph name="BEGIN_LINK"/>Privacy Policy<ph name="END_LINK"/> ይስማማሉ።</translation>
-<translation id="3505541710659461355">በቅንብሮች ውስጥ ይህንን በማንኛውም ጊዜ ማጥፋት ይችላሉ።</translation>
-<translation id="2965798296974325760">ሽልማቶችን መጠቀም ይጀምሩ</translation>
-<translation id="3958088479270651626">ዕልባቶችን እና ቅንብሮችን አስመጣ</translation>
-<translation id="2609701960545338618">እልባቶችንና ቅንብሮችን ከቀድሞው ማሰሻዎ በማምጣት የተለመደ የማሰሻ አካባቢዎን ያደራጁ። የላቁ የማምጫ አማራጮች በቅንብር ውስጥ ሊገኙ ይችላሉ።</translation>
-<translation id="8275038454117074363">ያስመጡ</translation>
-<translation id="2088479175984386785">አስመጣ ከ...</translation>
-<translation id="5540323067375019678">ጋሻዎችዎን ያስተዳድሩ</translation>
-<translation id="3278033011827237847">በ Brave ጋሻዎች ታግዘው በሚዳስሱበት ወቅት ግላዊ መብትን ከሚጋፉ ማስታወቂያዎችና ተከታታዮች ይጠበቃሉ። ድረ ገጹ በትክክል የማይሰራ ከሆነ የጋሻውን ኩነት "የማይሰራ" ያድርጉት።</translation>
-<translation id="3366308997091824722">የተጠበቁ አቀማመጥ</translation>
-<translation id="4764692524839457597">እንደወረደ</translation>
-<translation id="3108122610701115301">ነባሪን ሙላ</translation>
-<translation id="2469440407442116729">የፍለጋ ፍርግም ይምረጡ</translation>
-<translation id="438216590634144114">ከአድራሻ አሞሌ ላይ በድር ለመፈለግ እንደ ዋና ለመጠቀም የሚፈልጉትን የመፈለጊያ ሞተር ይምረጡ።</translation>
-<translation id="5804484488647369316">ነባሪ የፍለጋ ፍርግም ሙላ</translation>
-<translation id="3829010735958850433">እንኳን ደህና መጣቹህ የሚለውን ጉብኝት ይዝለሉ</translation>
-<translation id="1201402288615127009">ቀጣይ</translation>
-<translation id="7954950242989581218">ደህንነቱ በተጠበቀና አስተማማኝ በሆነ መንገድ ያስሱ</translation>
-<translation id="2188651882929633653">የ Brave ጋሻዎች በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳሉ — ይህም አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይሰ’ራ መስሎ ከታየ ለ “down” ጋሻዎች ያዘጋጁ። Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት <ph name="BEGIN_LINK_P3A"/>ሙሉ በሙሉ ግላዊ የምርት ትንተናን<ph name="END_LINK_P3A"/> ይጠቀማል።  ይህን ለማጥፋት ወደ <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>መግባት ይችላሉ።</translation>
 <translation id="4851215387785619212">የ Brave Private ማስታወቂያዎች</translation>
-<translation id="3114984266384096064">Brave Private Ads በመመልከት [[currency]] ያግኙ። የቀረቡት ማስታወቂያዎች በእርስዎ የአሰሳ ባህሪ ላይ በመነሳት በእርስዎ ፍላጎቶች ላይ የተመሰረቱ ናቸው። ምንም የግል ውሂብ ወይም የአሰሳ ታሪክ በጭራሽ ከአሳሽዎ አይወጣም።</translation>
+<translation id="6480303618073442141">Brave ግላዊ ማስታወቂያዎች በንድፍ የማይታወቁ እና ግላዊ ናቸው። ማስታወቂያዎች በእርስዎ ፍላጎቶች ላይ የተመሰረቱ ናቸው ነገር ግን ምንም ግላዊ ውሂብ ወይም የአሳሽ ታሪክ መሳሪያዎን ፍጹም አይተውም። ከሁሉም ምርጡ ነገር፣ Brave ግላዊ ማስታወቂያዎች ስለተመለከቱ ብቻ BAT (<ph name="BEGIN_LINK"/>መሰረታዊ የትኩረት ቶከን<ph name="END_LINK"/>) እንዲያገኙ ያደርግዎታል።</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="3742599705619405136">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ። ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ያስሱ። እርስዎ የሚጎበኟቸው በ Brave የተረጋገጡ ድረ ገጾች በራስ ሰር መንገድ የእርስዎ መዋጮዎች የሚደርሳቸው ሲሆን ይህም በ Brave በሚለካው የእርስዎ ትኩረት መጠን ልክ ነው።</translation>
 <translation id="3325399124634342726">በዚህ ወር ውስጥ አሁን ያሉ ገቢዎች (የተገመተ)</translation>
@@ -214,7 +188,7 @@
 <translation id="2356652719351432565">የአከባቢ ማስታወቂያ ተገቢነት</translation>
 <translation id="3216275550298493597">ይህ Brave ለእርስዎ አከባቢ በተለይ የታሰቡ ማስታወቂያዎችን እንዲያሳየዎት ያስችለዋል።</translation>
 <translation id="8446884382197647889">የበለጠ ይወቁ</translation>
-<translation id="6209514229703649203">እንደ [[adsSubdivisionTarget]] በራስ-ሰር ተገኝቷል</translation>
+<translation id="3783399046165388366">እንደ <ph name="SUBDIVISION"/> በራስ-ሰር ተገኝቷል</translation>
 <translation id="8010081455002666927">ራስ-ፈልግ</translation>
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
@@ -229,9 +203,6 @@
 <translation id="7577100371127227294">ወርሀዊ ምክሮች</translation>
 <translation id="178390304006113804">ተወዳጅ ፈጣሪዎችን ያለማቋረጥ መደገፍ እንዲችሉ፣ ተደጋጋሚ ወርሃዊ ጉርሻዎችን ያዘጋጁ።</translation>
 <translation id="3302159320447117425">እስካሁን ወርሐዊ ጉርሻዎች አልተደራጀም።</translation>
-<translation id="1617202384704994799">በቅርብ ግዜ፡፡</translation>
-<translation id="2241248417273918295">የገቢ ክፍያ በየወሩ ይደረጋል።</translation>
-<translation id="68906705461077250">ገቢን ከፍ ወይም ዝቅ ለማድረግ የሚፈልጉትን የድጎማ ድግግሞሽ ጊዜ ቁጥር ያተካክሉ።</translation>
 <translation id="1847863811689960237">የወደዱት ይዘት ለፈጠሩት ይሸልሙ፡፡</translation>
 <translation id="4129489167302464118">ወርሀዊ ክፍያዎ በሚጎበኟቸው ገፆች መሀከል ይከፋፈላል፡፡</translation>
 <translation id="4898632353264854950">በማሰሻው ሲያስሱ ድረ ገጾች ይታያሉ</translation>
@@ -251,9 +222,6 @@
 <translation id="8610523985422563960">1 ደቂቃ</translation>
 <translation id="2807328214759298515">እስከ</translation>
 <translation id="9031738692126722094">በእነዚህ ጣቢያዎች ላይ የይዘት ደረጃ ድጎማዎችን አንቃ</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="6032511312767282174">GitHub</translation>
-<translation id="2635094637295383009">ትዊተር</translation>
 <translation id="7583327070390027131">ቀጣይ ወርሃዊ የጉርሻ ቀን</translation>
 <translation id="6231182869178328516">አሁን ጠቃሚ ምክሬን አደረግኩ <ph name="NAME"/> የ Brave ን ማሰሻ በመጠቀም፤ በ https://brave.com/tips ይመልከቱት።</translation>
 <translation id="5916536234616514390"><ph name="HASHTAG"/>Brave ፈጣሪዎችን እንድደግፍ ስለሚያስችለኝ ወድጄዋለሁ! <ph name="NAME"/> በ<ph name="HASHTAG2"/>BAT ተሸፍኗል። https://creators.brave.com ላይ ከ<ph name="DATE"/> በፊት ካረጋገጡ the BAT የእነሱ ነው!</translation>
@@ -287,20 +255,19 @@
 <translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
 <translation id="3274650021044762770">የብሬቭ ሽልማቶችን ከእርስዎ<ph name="PROVIDER"/> መለያ ጋር ለማገናኘት የማሰሻዎን ጥያቄ ማረጋገጥ ላይ ችግር አጋጥሟል። ለተጨማሪ እርዳታ <ph name="BEGIN_LINK"/>ድጋፍ ሰጭ<ph name="END_LINK"/> ማግኘት ይችላሉ።</translation>
 <translation id="1316066811927496401">ስህተት: ጥያቄዎ ተቀባይነት አላገኘም</translation>
-<translation id="1737873393693460829">[[title]] 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
+<translation id="8167256685618982116"><ph name="TITLE"/> 'ን በማብራት፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>ግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
 <translation id="4123948149985772126">የመለያ አቅራቢ ይምረጡ</translation>
 <translation id="2916515880661220182">ቀደም ሲል የማቆያ መለያ ካለዎት እሱን እንዲያገናኙት ይጠየቃሉ። ከሌሎት ደግሞ እንዲፈጥሩ እድሉን ያገኛሉ።</translation>
 <translation id="2054853229650377447">ማስታወሻ፡-አንዴ ፍቃድ ከሰጡ ግብይቶችዎ ለጠባቂው ይታያሉ። ለምሳሌ፣ ደረሰኞች እና የሰጡትን መጠን ማየት ይችላሉ።</translation>
-<translation id="2147158325758481862">ማረጋገጥ እንደ አማራጭ ነው</translation>
-<translation id="8228649055483250005">የጠባቂ ዋሌት አቅራቢዎች ፎቶ ያለበት መታወቂያ መጠቀምን ጨምሮ፣ ዋሌት የሚፈጥሩትን ማንነታቸውን ማረጋገጥ ይጠበቅባቸዋል።</translation>
-<translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> ከእኛ ጠባቂ ዋሌት አጋር ጋር አካውንት ሲመሰረቱ፣ ማንኛውንም የግል መረጃ አያስተናግድም ፣ አያከማችም ፣ አያገኝም።</translation>
-<translation id="6682919029276027868">ሆኖም፥ የአሁኑ የእርስዎ የብሬቭ ሽልማቶች ባህርይዎች የተገደቡ ናቸው። በከስቶድያል ዋሌት አጋር ማረጋገጥ የሚፈቅድልዎት:</translation>
-<translation id="9064931634458501855">በነፃ ገንዘብ ማውጣት እና ገንዘብ ማስገባት</translation>
-<translation id="3222002542796906461">ሽልማቶችዎን በቀጥታ በመለያዎ ይቀበሉ</translation>
+<translation id="121894865378699201">BAT ማግኘት ለመጀመር ዝግጁ ነዎት?</translation>
+<translation id="4478996292566912629">የጠባቂ መለያ አቅራቢዎች የእርስዎን መለያ እንዲያረጋግጡ ይጠየቃሉ፣ ይህም የፎቶ መታወቂያን ማስገባት ሊጨምር ይችላል። የእኛን <ph name="BEGIN_LINK"/>Brave የሽልማቶች ግላዊነት ፖሊሲ<ph name="END_LINK"/> ይመልከቱ።</translation>
+<translation id="7730415569603152862">የእርስዎን ጠባቂ መለያ ከሽልማቶች መገለጫዎ ጋር በማገናኘት የሚከተለውን እንዲችሉ ያደርጋል፦</translation>
+<translation id="5785531043735482053">የእርስዎን የBAT ገቢዎች ማስቀመጥ፣ ማስተዳደር እና ማውጣት</translation>
+<translation id="5155452078869279096">እርስዎ በገዙት BAT መለያዎን መሙላት</translation>
+<translation id="5497001757280825146">ተወዳጅ ጣቢያዎችዎን ጉርሻ መስጠት &amp; ፈጣሪዎች</translation>
 <translation id="1233129511866436960">ስለ አካባቢዎች እና ድጋፍ የበለጠ ይወቁ</translation>
 <translation id="7329170127335794328">በአሁኑ ጊዜ በእርስዎ አካባቢ ውስጥ አይገኝም</translation>
 <translation id="8304979233901023264">የሚከተለውን አንብቤ ተስማምቻለው Brave’s <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>።</translation>
-<translation id="2359808026110333948">ቀጥል</translation>
 <translation id="1892970806832316900">እስከ <ph name="DATE"/> በመጠባበቅ ላይ</translation>
 <translation id="7849926087559412554">ውይ! አሳሽዎ የBrave የግል ማስታወቂያዎችን መቀበል አይችልም።</translation>
 <translation id="5177429570315095022">ማስታወቂያዎችን ማየት ለመቀጠል አሳሽዎ መዘመን አለበት።</translation>
@@ -383,7 +350,6 @@
 <translation id="3363158483789327529">የሽልማት መገለጫ ገና አልተፈጠረም</translation>
 <translation id="476272015919848174">የሽልማት የክፍያ መታወቂያ:</translation>
 <translation id="9008441690901662695">የሽልማት ስቴት:</translation>
-<translation id="2851097645709765545">ዋሌት የለም</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
 <translation id="4569155249847375786">ተረጋግጧል</translation>
 <translation id="6521149675246672063">ተቋርጧል (ተረጋግጧል)</translation>
@@ -392,6 +358,7 @@
 <translation id="6582097696555842139">ወርሀዊ ጉርሻዎችን ይሰርዙ</translation>
 <translation id="9087994290002662101">መጠኑን ይቀይሩ</translation>
 <translation id="2521187434582281933">ወርሀዊ ጉርሻዎች መሰረዝን ያረጋግጡ</translation>
+<translation id="2359808026110333948">ቀጥል</translation>
 <translation id="915758461293673891">የጉርሻ መጠን፥</translation>
 <translation id="78017292973022384">ለዚህ ፈጣሪ ያሉት ወርሃዊ ጉርሻ ተሰርዟዋል።</translation>
 <translation id="534368327994110883">እርስዎ’ አሁን ፈጣሪውን እየደገፉ ነው</translation>
@@ -408,7 +375,7 @@
 <translation id="4492470488449820476">ዝቅተኛው የቲፕ ስጦታ መጠን <ph name="AMOUNT"/> <ph name="CURRENCY"/>፤ ይጎብኙ።</translation>
 <translation id="9088057605518918276">ወርሐዊ ጉርሻ ተሞልቷል።</translation>
 <translation id="6306631474379759382">ቀጣይ የጉርሻ ቀን፥</translation>
-<translation id="3593485149443019592">በቂ ሣንቲሞች የሉም። እባክዎን፣ <ph name="LINK_BEGIN"/>ገንዘብ ጨምር <ph name="LINK_END"/>፤ ይጎብኙ።</translation>
+<translation id="4647657427328119430">በቂ ቶክኖች የሉም።</translation>
 <translation id="3586352807094428968">Brave እንደ ስራ ማስኬጂያ ክፍያ ከቲፕ 5%  መጠን ይሰበስባል።</translation>
 <translation id="207268487070188114">የአንድ-ጊዜ ጠቃሚ ምክር</translation>
 <translation id="69861679024013299">የአንድ-ግዜ ጠቃሚ ምክር መጠን:</translation>
@@ -418,6 +385,9 @@
 <translation id="1420756770787071946">ይህንን ፈጣሪ ይደግፉ</translation>
 <translation id="3271043362279673449">ስለ ድጋፍዎ እናመሰግናለን!</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>የእርስዎ ጠቃሚ ምክር እስኪከናወን ብዙ ደቂቃዎችን ሊወስድ ይችላል</translation>
+<translation id="6516984207843289176">መለያ ማገናኘት</translation>
+<translation id="8775519284782574752">የBAT ገቢ ማግኘት እና ፈጣሪዎችን ጉርሻ መስጠት እንዲችሉ የጠባቂ መለያን ብቻ ያገናኙ።</translation>
+<translation id="6485607335663409274">የእርስዎን ተወዳጅ ፈጣሪዎች ጉርሻ መስጠት ይፈልጋሉ?</translation>
 <translation id="3312470408978098625">የእርስዎ የአንድ-ጊዜ ጠቃሚ ምክር ተልኳል።</translation>
 <translation id="839058704683989763">በመጠባበቅ ላይ ያለ ጠቃሚ ምክር አዘጋጅተዋል!</translation>
 <translation id="5096821444729034955">ለነሱ ፖስት</translation>
@@ -456,6 +426,7 @@
 <translation id="8802504113265057166">በሚያበቃበት ቀን ጥቅም ላይ ያልዋለው [[currency]] በራስ-ሰር ወደ Brave የተጠቃሚ ዕድገት ገንዳ ይመለሳል።</translation>
 <translation id="279567716178902927">ድጋፉ የሚያበቃበት ቀን</translation>
 <translation id="1389143276807887637">ያስመጡ</translation>
+<translation id="3810973564298564668">አቀናብር</translation>
 <translation id="6302422639282249274">የ Brave  ሽልማቶችን ያስተዳድሩ</translation>
 <translation id="211044356803193224">ወርሃዊ ድጎማዎች!</translation>
 <translation id="2487641031722095938">ዛሬ እድለኛ የሆኑበት ቀን ነው!</translation>
@@ -502,8 +473,9 @@
 <translation id="5317144262906129592">ይህን መተግበሪያ የፈጠረውን ሰው ጉርሻ በመላክ ማገዝ ይችላሉ። ታላቅ የሆነ መተግበሪያን በመፍጠራቸው ምስጋና የማቅረቢያ መንገድ ነው።</translation>
 <translation id="3074127054582480056">ትኩረት</translation>
 <translation id="3659457123782988823">የብሬቭ ሽልማቶችዎን ዳግም ለማስጀመር መፈልግዎን እርግጠኛ ነዎት?</translation>
-<translation id="4048187103708861555">የእርስዎን የብሬቭ ሽልማቶች እንደገና ካስጀመሩ፥ የእርስዎ <ph name="BAT_AMOUNT"/> እና ሌሎች ሽልማቶች ውሂብ በቋሚነት ይጠፋል።  እባክዎ <ph name="LINK_END"/>BATዎን ለማቆየት <ph name="LINK_BEGIN"/> መረጋገጡን ያረጋግጡ።</translation>
-<translation id="3548849774726860833">የእርስዎን የብሬቭ ሽልማቶች ዳግም ካስጀመሩ የእርስዎ ሽልማቶች ውሂብ በቋሚነት ይጠፋል።</translation>
+<translation id="1666001796278936721">ዳግም በማስጀመር፣ የእርስዎ የአሁን Brave ሽልማቶች መገለጫ ይሰረዛል እና ፍጹም አዲስ በሆነ የBrave ሽልማቶች መገለጫ ጋር ዳግም ይጀምራሉ። ከመቀጠልዎ በፊት፣ ደህንነትዎን ለመጠበቅ ዳግም ስለማስጀመር<ph name="LINK_BEGIN"/>የበለጠ ይወቁ<ph name="LINK_END"/>።</translation>
+<translation id="94095197509579227">ማስታወሻ፦ በአሁኑ ሰዓት እርስዎ <ph name="BAT_AMOUNT"/> ያህል የሚገመት ገቢ በዚህ ወር ሲኖርዎት አሁን ላይ ዳግም ካስጀመሩ የሚጠፋ ይሆናል።</translation>
+<translation id="4806029412510565611">የእኔ Brave ሽልማቶች መገለጫ እና የBrave ሽልማቶች ውሂብ ከመሳሪያዬ ላይ እንደሚሰረዝ እና <ph name="LINK_BEGIN"/>ዳግም ስለማስጀመር ደጋፊ ጽሁፍ<ph name="LINK_END"/>እንዳነበብኩ ተገንዝቤያለሁ።</translation>
 <translation id="4914597931214386232">የቶክን ብድር ተጠይቋል</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
 <translation id="2913994227901456490">ሁሉንም [[numItems]] ንጥሎችን ይመልከቱ</translation>
@@ -526,7 +498,7 @@
 <translation id="6727483290601442544">ዝርዝሩን ይመልከቱ</translation>
 <translation id="4206899127409458763">የራስዎን የብሬቭ ሽልማቶች መገለጫ መፍጠር</translation>
 <translation id="1988679729106502285">ያስታውሱ፤</translation>
-<translation id="4047340292178074200">ይህ ፈጣሪ ከእርስዎ የሽልማቶች ከስቶድያል ዋሌት አገልግሎት ጉርሻዎችን እንዲቀበል አልተዋቀረም። ያቀረቡት ጉርሻ  በራስሰር ደጋግሞ እየሞከረ ለ90 ቀናት በመጠባበቅ ይቆያል።</translation>
+<translation id="942863887222585572">እርስዎ ከ<ph name="USER_PROVIDER"/>, ጋር ተገናኝተዋል፣ ነገር ግን ይህ ፈጣሪ ከ<ph name="CREATOR_PROVIDER"/>ጋር ተገናኝቷል። ይህ ማለት የእርስዎ ጉርሻ ይህንን ፈጣሪ መድረስ አይችልም። ለአሁን፣ እርስዎ የሚያገኙት ማንኛውም ጉርሻ በመጠባበቅ ላይ ሆኖ ይቆያል እና ለ90 ቀናት በራስ-ሰር ዳግም ሙከራ ያደርጋል።</translation>
 <translation id="5530734056858418442">ይህ ፈጣሪ እስካሁን አልተመዘገበም። የሚያቀርቡት ማንኛውም ጉርሻ በራሱ ደጋግሞ እየሞከረ ለ90 ቀናት ይቆያል።</translation>
 <translation id="3197752845651180812">በመጠባበቅ ላይ ያለ አስተዋፅኦ</translation>
 <translation id="6964891561514920613">ሁሉንም በመጠባበቅ ላይ ያሉ አስተዋፅኦዎችን አሳይ</translation>
@@ -552,75 +524,11 @@
 <translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
 <translation id="7703007724342399482">ከመያዣ ካርድ 2% ክሪፕቶ ተመላሽ ያድርጉ</translation>
 <translation id="1109729143147368573">በዓለም ዙሪያ ወደ 50 ሚሊዮን የሚጠጉ ነጋዴዎች እና ATMs የእርስዎን ክሪፕቶ እና ሌሎች ንብረቶችን ያውጡ። ክሪፕቶ ለማግኘት ክሪፕቶ ያውጡ!</translation>
-<translation id="7840362246306242214">የ U.S. የእኩልነት ንግድ ሲጫኑ ይገኛሉ</translation>
-<translation id="3345432088196080137">በታዋቂ አክሲዮኖች ውስጥ እስከ $1 ዶላር ያክሉ ኢንቬስት ያድርጉ እና እንደ AAPL፣ TSLA ወይም AMZN ያሉ በመነገድ ገንዘብ ይለዋወጡ</translation>
 <translation id="3787061634640932557">ካርዶችን ያርትዑ</translation>
 <translation id="2070991379950719711">የ Brave ወሮታዎች ን መጠቀም ይጀምሩ</translation>
 <translation id="5977237145327845546">ከጓደኞችዎና የስራ ባልደረቦችዎ ጋር የግል የቪድዮ ጥሪ ይጀምሩ።</translation>
 <translation id="8863928195533744356">ጥሪ ይጀምሩ</translation>
 <translation id="3651550649176056334">ውሂብዎን በተመለከተ</translation>
-<translation id="223536150967420869">ይግዙ</translation>
-<translation id="5110244215256675209">Crypto ግዛ</translation>
-<translation id="5749014321384313843">ወጪ ማድረግ እፈልጋለሁ...</translation>
-<translation id="5395343599598218467">በ Binance ይሸምቱና ይገበያዩ</translation>
-<translation id="1714829281959608206">የ Binance አካውንት ቀሪ ሒሳብን ለማየትና በ crypto ለመገበያየት የ Binance ትስስርን ያንቁ።</translation>
-<translation id="5431354435912389886">የ Binance ትስስርን አንቃ</translation>
-<translation id="907179430004809517">አልፈልግም አመስግናለሁ</translation>
-<translation id="5005595188773471616">የድርሻ ዋጋ (BTC)</translation>
-<translation id="5445249883546575080">BTC</translation>
-<translation id="1366855498335432549">ማጠራቀም</translation>
-<translation id="6861530353669876440">ንግድ</translation>
-<translation id="6941688859692009361">እገዛ።</translation>
-<translation id="271200872751201315">ልክ ያልሆነ ግቤት</translation>
-<translation id="4983019953897853258">የመታወቂያዎችዎን ትክከለኛነት በማረጋገጥ ላይ...</translation>
-<translation id="4166140875593399362">ግንኙነቱን ለማቋረጥ እንደሚፈልጉ እርግጠኛ ነዎት?</translation>
-<translation id="4283459172790213529">ትስስሩን ማቋረጥ የ widget ቅንብሮችዎን ያጠፋል። ድጋሚ ትስስር ለመፍጠር በድጋሚ ማረጋገጥ ያስፈልግዎታል።</translation>
-<translation id="4804818685124855865">ግንኙነት አቋርጥ</translation>
-<translation id="6001220899443166468">የአካውንቱ ትስስር ተቋርጧል</translation>
-<translation id="8151638057146502721">አዋቅር</translation>
-<translation id="7384441892795736634">ውሂብ አድስ</translation>
-<translation id="5308380583665731573">ይገናኙ</translation>
-<translation id="7942389053031334372">ለውጠዋል</translation>
-<translation id="3348017612272241424">መለወጥ አልተቻለም</translation>
-<translation id="3909193058140362331">ልወጣው ሊከናወን አልቻለም። እባክዎ እንደገና ይሞክሩ።</translation>
-<translation id="5721542149042740780">ያስገቡት የገንዘብ መጠን አሁን ካለዎት የገንዘብ መጠን የበለጠ ነው።</translation>
-<translation id="7144878232160441200">ይሞክሩ</translation>
-<translation id="6896758677409633944">ቅዳ</translation>
-<translation id="7431764818502638140">መረጃ አልተገኘም</translation>
-<translation id="6409345078064530735">የተቀማጭ አድራሻ</translation>
-<translation id="7153116947319792513">የተቀማጭ አጭር ማስታወሻ</translation>
-<translation id="1383876407941801731">ፍለጋ</translation>
-<translation id="3781412534383755121">ለመለወጥ አነስተኛው መጠን የሚሆነው:</translation>
-<translation id="6432284126416751397">ልወጣን ያረጋግጡ</translation>
-<translation id="1301340234286078471">ለውጥ</translation>
-<translation id="6680650203439190394">ደረጃ ይስጡ</translation>
-<translation id="7742417737698031726">የገንዘብ ክፍያ</translation>
-<translation id="2122225204180056042">ያገኛሉ</translation>
-<translation id="8131740175452115882">አረጋግጥ</translation>
-<translation id="8688672835843460752">ይገኛል</translation>
-<translation id="4584930231524505442">መለወጥ እፈልጋለሁ...</translation>
-<translation id="6755546361496900700">የልወጣ ቅድመ እይታ</translation>
-<translation id="2956070106555335453">ማጠቃለያ</translation>
-<translation id="439104575421522802">ክፍለ ጊዜው ተጠናቅቋል</translation>
-<translation id="8558560988211507902">የእርስዎ Binance  መድረሻ  token ጊዜው አልፎበታል። widget መጠቀምዎን ለመቀየር እባክዎ እንደገና ያገናኙ።</translation>
-<translation id="8120782981043104657">ጄሚኒ በመጠቀም ክሪፕቶ ይግዙ</translation>
-<translation id="4011891158762138243">ሂሳብዎን ለማየት እና 45+ ክሪፕቶዎችን ለመገበያየት ከጄሚኒ ጋር ይገናኙ።</translation>
-<translation id="7604416013180651887">ከGemini ጋር ያገናኙ</translation>
-<translation id="2349109114223854255">Gemini መጠቀሚያ ማስመሰያ ጊዜው አልፎበታል እናም ሊታደስ አልቻለም። እባክዎ እንደገና ያገናኙት።</translation>
-<translation id="4848984536030986115">ግብይት ማከናወን አልተቻለም</translation>
-<translation id="7097088316781182926">ግብይቱን ያረጋግጡ</translation>
-<translation id="3488255243387417752">ይሽጡ</translation>
-<translation id="7969910554171263591">የዋጋ ተመን ያግኙ</translation>
-<translation id="1848737374354350807">ቀሪ ሂሳብ</translation>
-<translation id="8285358301500391177">መግዛት</translation>
-<translation id="8675476238074172660">መሸጥ</translation>
-<translation id="3081546448594005997">ገዝተዋል</translation>
-<translation id="8810136648184657966">ሸጠዋል</translation>
-<translation id="1833248467354516560">የአንዱ ዋጋ</translation>
-<translation id="4763179765154524864">ጠቅላላ ወጪ</translation>
-<translation id="8851480289992540512">ጠቅላላ የተገኘው</translation>
-<translation id="824449983246282560">በ መለያዎት ላይ ምንም ዓይነት ሂሳብ የልዎትም። ጄሚኒን በመጎብኘት የተወሰነ ይግዙ።</translation>
-<translation id="8624961452383848703">መለወጥ እፈልጋለሁ…</translation>
 <translation id="1544192797660353713">ዋሌት</translation>
 <translation id="616639131065447379">ወደ Brave Crypto ዋሌቶች እንኳን በደህና መጡ</translation>
 <translation id="1740464057879304704">Crypto Wallets በ Brave ውስጥ ካሉ ምስጠራ እና ተያያዥ ሀብቶች ጋር እንዲሰሩ ያስችልዎታል። Crypto Wallets እንደ ETH እና BAT ያሉ እንዲሁም እንደ ሰብሳቢዎች ያሉ የኢቴሬም ቶከኖችን ይደግፋል እንዲሁም ከ Ðapps እና ከሌሎች ዘመናዊ ኮንትራቶች ጋር አብረው እንዲሰሩ ያስችልዎታል። ይህ ሁሉ ማለት Ethereum ን እና ሌሎች የማገጃ ስርዓቶችን ለሚያውቁ ሰዎች ነው - - ወይም ለመማር ፍላጎት ላላቸው ሰዎች።</translation>
@@ -629,29 +537,19 @@
 <translation id="8327818101454798856">ስለዚህ፣ ተወዳጅ ገጾችዎን ለመደገፍ ፈልገው ከነበረ፣ ከዚህ ይልቅ ወደዚያ ይሂዱ።</translation>
 <translation id="412480955826088549">አካል በማውረድ ላይ ...</translation>
 <translation id="4894106830958548828">ገብቶኛል</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">ገበያዎችን ይመልከቱ እና crypto ከ crypto.com ይግዙ።</translation>
-<translation id="4292334826913000023">ዋጋ አሳይ</translation>
-<translation id="5001098083058405168">በተቀማጮች ላይ 2% ጉርሻ ያግኙ</translation>
-<translation id="7336377875970208451">የንግድ ክፍያዎችን መክፈል ያቁሙ</translation>
-<translation id="5889002303959545585">Bitcoin ይግዙ</translation>
-<translation id="7243082596932212589">የ Crypto.com ገበያዎች ይመልከቱ</translation>
-<translation id="2258222996838418990">7d ግራፍ</translation>
-<translation id="5337526542182802976">ድጋፍ ያላቸው ጥንዶች</translation>
-<translation id="1164622162816276433">24ሰዐት ድምፅ</translation>
 <translation id="7534079972563542000">የማይቆሙ ጎራዎች</translation>
 <translation id="4492298165410552103">Brave ውስጥ የማይቆሙ ጎራዎች ድጋፍ ይንቃ?</translation>
-<translation id="689573545156113164">Brave የ .crypto (እንደዚሁም የ .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) የዶሜይን ስም ፍለጋ ጥያቄዎችን ምላሽ ለመስጠት የ Ethereum JSON-RPC ጥሪዎችን ከ Unstoppable ዶሜይን ወደ ስማርት ውሉ ለማቅረብ Infura ይጠቀማል። ይህን ካስቻሉት፣ Infura እነዛን እርሶ ለመጎብኘት እየሞከሩባቸው ያሉትን ዶሜይኖች የሚያይ ይሆናል ነገር ግን ሌሎች ዶሜይኖችን ማየት አይችሉም። የ Infura ን <ph name="BEGIN_INFURA_TOU_LINK"/>የአጠቃቀም ውሎች<ph name="END_INFURA_TOU_LINK"/> እና <ph name="BEGIN_INFURA_PRIVACY_LINK"/>የግላዊነት ፖሊሲን <ph name="END_INFURA_PRIVACY_LINK"/> ይመልከቱ።</translation>
+<translation id="3647533686160055812">Brave  .crypto (እንዲሁም .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) የጎራ ስሞች የሆኑ የማይቆሙ ጎራዎች ላይ ያሉትን ለመፍታት Infuraን ይጠቀማል። Brave የእርስዎን IP አድራሻ ይደብቃል።ይህንን ካነቁ፣ አንድ ሰው እነዚህን ጎራዎች ለመጎብኘት እየሞከረ እንዳለ Infura ይመለከታል ነገር ግን ከዚህ ያለፈ ምንም የለም። የ Infuraን<ph name="BEGIN_INFURA_TOU_LINK"/>የአጠቃቀም መመሪያ<ph name="END_INFURA_TOU_LINK"/>እና<ph name="BEGIN_INFURA_PRIVACY_LINK"/>የግላዊነት ፖሊሲ<ph name="END_INFURA_PRIVACY_LINK"/>ይመልከቱ።</translation>
 <translation id="6513892817556267573">የEthereum ስም አገልግሎት</translation>
 <translation id="4335039108389860301">በ Brave ውስጥ የEthereum ስም አገልግሎት (ENS) ድጋፍ ይንቃ?</translation>
-<translation id="8328137586971750853">Brave የ Ethereum .eth የጎራ ፍለጋ ጥያቄዎችን ለመፍታት ከ Ethereum ስም አገልግሎት ወደ Ethereum JSON-RPC ጥሪዎችን ዘመናዊ ኮንትራት ለመስጠት Infura ን ይጠቀማል። ይህን ካነቁት Infura ሊጎበኙት የሞከሩትን የ.eth ጎራ ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የ Infura <ph name="BEGIN_INFURA_TOU_LINK"/>የአጠቃቀም ውሎች<ph name="END_INFURA_TOU_LINK"/> እና <ph name="BEGIN_INFURA_PRIVACY_LINK"/>የግላዊነት ፖሊሲን<ph name="END_INFURA_PRIVACY_LINK"/>ይመልከቱ።</translation>
+<translation id="4609973808011229683">Brave Infuraን በመጠቀም  በEthereum Name Service (ENS) ላይ ያሉ የ.eth የጎራ ስሞችን ይፈታል። Brave የእርስዎን IP አድራሻ ይፈታል። ይህንን ካነቁ፣ አንድ ሰው እነዚህን .eth ጎራዎች ለመጎብኘት እየሞከረ እንዳለ Infura ይመለከታል ነገር ግን ከዚህ ያለፈ ምንም የለም። የInfura <ph name="BEGIN_INFURA_TOU_LINK"/>የአጠቃቀም መመሪያ<ph name="END_INFURA_TOU_LINK"/>እና<ph name="BEGIN_INFURA_PRIVACY_LINK"/>የግላዊነት ፖሊሲ<ph name="END_INFURA_PRIVACY_LINK"/>ይመልከቱ።</translation>
 <translation id="807404806385418949">የ Ethereum ስም አገልግሎት ከሰንሰለት ውጪ ፍለጋ</translation>
 <translation id="4049590838234508776">በ Brave ውስጥ የ Ethereum ስም አገልግሎት (ENS) ከሰንሰለት ውጪ ፍለጋ ድጋፍ ይንቃ?</translation>
-<translation id="1769433806670482329">Brave የ .eth የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት ከሰንሰለት ውጪ መግቢያ መንገዶችን ይጠቀማል። ይህን ካነቁ የሶስተኛ ወገን መግቢያ መንገዶች ሊጎበኙት የሞከሩትን የ .eth ጎራ ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>የበለጠ ይወቁ<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="5944991147217767764">ይህ .eth የጎራ ስምከሰንሰለት ውጪ ይቀመጣል እና በሶስተኛ ወገን ጌትዌይ ይፈታል። የENS ከሰንሰለት ውጪ ማየትን ካነቁ፣ የሶስተኛ ወገን ጌትዌይ እርስዎ .eth ጎራን ለመጎብኘት እየሞከሩ እንደሆነ ይመለከታል። <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>የበለጠ ይወቁ<ph name="END_BRAVE_LEARN_MORE_LINK"/>።</translation>
 <translation id="4047002754575891955">ከሰንሰለት ውጪ ፍለጋ ይቀጥሉ</translation>
 <translation id="531747189990625622">Solana ስም አገልግሎት</translation>
 <translation id="1090584614351290462">በ Brave ውስጥ የ Solana ስም አገልግሎት (SNS) ድጋፍ ይንቃ?</translation>
-<translation id="954404755605517948">Brave የ .sol የጎራ ስም ፍለጋ ጥያቄዎችን ለመፍታት ከ Solana ስም አገልግሎት ወደ ፕሮግራሙ የ Solana JSON-RPC ጥሪዎችን ለማቅረብ Coinbase Cloud ን ይጠቀማል። ይህን ካነቁ፣ Coinbase Cloud እርስዎ ሊጎበኟቸው የሚፈልጉትን የ.sol ጎራ ያያሉ ነገር ግን ሌሎች ጎራዎችን ማየት አይችሉም። የ Coinbase Cloud <ph name="BEGIN_COINBASE_TOU_LINK"/>የአጠቃቀም መመሪያ<ph name="END_COINBASE_TOU_LINK"/> እና <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>የግላዊነት ፖሊሲን<ph name="END_COINBASE_PRIVACY_LINK"/>ይመልከቱ።</translation>
+<translation id="2350552210396418924">Brave  የCoinbase Cloud ን በመጠቀም  .sol የጎራ ስሞችን ይፈታል። Brave የእርስዎን IP አድራሻ ይደብቃል። ይህንን ካነቁ፣  Coinbase እርስዎ .sol  ጎራን ለመጎብኘት እየሞከሩ እንደሆነ ይመለከታል ነገር ግን ከዚህ ያለፈ ምንም የለም። የCoinbase Cloud <ph name="BEGIN_COINBASE_TOU_LINK"/>የአጠቃቀም መመሪያ<ph name="END_COINBASE_TOU_LINK"/> እና <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>የግላዊነት ፖሊሲ<ph name="END_COINBASE_PRIVACY_LINK"/> ይመልከቱ።</translation>
 <translation id="7378412287463452336">የInfura አገልጋይ መጠቀሙን ቀጥል</translation>
 <translation id="2313603121968571839">Coinbase Cloud ሰርቨርን በመጠቀም ይቀጥሉ</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
@@ -744,16 +642,21 @@
 <translation id="5878420576943709750">የእርስዎ <ph name="AMOUNT"/> <ph name="MONTH"/> ሽልማቶች በመንገድ ላይ ናቸው። ይከታተሉት!</translation>
 <translation id="3825131544027418568">ሒሳብዎን ለማየት ወደ <ph name="BEGIN_BOLD"/> <ph name="PROVIDER"/><ph name="END_BOLD"/>ይግቡ።</translation>
 <translation id="2659764755126740206">ወደ የእኔ <ph name="PROVIDER"/> መለያ ይሂዱ</translation>
-<translation id="1165667598801520610">ድጎማ ያድርጉ</translation>
 <translation id="2394961582378297792">ወጥቷል</translation>
-<translation id="6080167751812750226">ያለውን ግንኙነት ያቁቋርጡ <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">የተገመቱ ገቢዎች</translation>
 <translation id="7934950257968365573">ወደ <ph name="PROVIDER"/> መለያዎ ይግቡ</translation>
 <translation id="2613359062756190460">የአንድ ግዜ ምክሮች</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
-<translation id="6181762795539107980">ያልተረጋገጠ</translation>
+<translation id="5308380583665731573">አገናኝ</translation>
 <translation id="3026978804849658576">መግለጫውን ይመልከቱ</translation>
+<translation id="3368922792935385530">ተያይዟል</translation>
 <translation id="8494748383523030337">ቀሪ ሂሳብዎ</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>BAT ማግኘት ለመጀመር ዝግጁ ነዎት?<ph name="BOLD_END"/> የእርስዎን ጠባቂ መለያ ከእርስዎ የሽልማቶች መገለጫ ጋር ብቻ ያገናኙ። መለያ ከሌለዎት፣ አንድ የመፍጠር እድል ይኖርዎታል።</translation>
+<translation id="1772961321862399863">BAT ለማግትኘ፣ ተጠቃሚዎች የጠባቂ መለያ ከBrave ሽልማቶች ጋር ማገናኘት ይገባቸዋል። በሚያሳዝን ሁኔታ፣ በእርስዎ ክልል ውስጥ ምንም ጠባቂ አይገኝም፣ ስለዚህ ማግኘት አይኖርም። ለአሁኑ፣ የBrave ሽልማቶችን ማብራት ፈጣሪዎችን በራስ-ሰር ይደግፋል።</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {በዚህ ወር, እርስዎ # ፈጣሪ የሆነውን በBrave ሽልማቶች የሚደገፈውን ጎብኝተዋል}
+      other {በዚህ ወር, እርስዎ # ፈጣሪዎች የሆነውን በBrave ሽልማቶች የሚደገፈውን ጎብኝተዋል}
+    }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> ሽልማቶች:<ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">የእርስዎ<ph name="MONTH"/>የማስታወቂያ ሽልማቶች እዚህ ናቸው!</translation>
 <translation id="7861645265922445992">ሽልማቶችን ይጠይቁ</translation>
@@ -769,20 +672,25 @@
 <translation id="6278643716658443228">የሽልማት ቅንብሮች</translation>
 <translation id="2862978891748913252">ሀገርዎን ይምረጡ</translation>
 <translation id="3717922248131893262">ደፋር ሽልማቶችን መጠቀሙን ለመቀጠል ሀገርዎን ይምረጡ፣ ለእርስዎ ክልል ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎት። <ph name="LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="LINK_END"/></translation>
-<translation id="6777169449483742979">እርስዎ ይህን ስፖንሰር የተደረገበት ምስል በማየትዎ ቶክኖች እያገኙ ነው።</translation>
-<translation id="5486114327664215175">ይህንን ምስል በማየት ቶክኖችን ያግኙ እና የሚወዷቸውን የ ይዘት ፈጣሪዎች በይደግፉ።</translation>
+<translation id="2965798296974325760">ሽልማቶችን መጠቀም ይጀምሩ</translation>
 <translation id="2940863921746574646">የቶክን ቀሪ ሂሳብ</translation>
 <translation id="2221902203895354376">የቶክን ስጦታ አለ!</translation>
+<translation id="2956070106555335453">ማጠቃለያ</translation>
 <translation id="2369994359029526515">ያልተረጋገጠ አዘጋጅ</translation>
 <translation id="6020176662032623904">የተረጋገጠ አዘጋጅ</translation>
-<translation id="6504037373121113545">የምታደርጉት ማንኛውም ጠቃሚ ምክር በመጠባበቅ ላይ ይቆያል እና ለ 90 ቀናት በራስ-ሰር እንደገና ይሞክሩ። <ph name="LINK_BEGIN"/>የበለጠ ይወቁ።<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">የፈጣሪ ማረጋገጫ ሁኔታን ዳግም ያድሱ</translation>
+<translation id="8946576491316456643">ለአሁን፣ እርስዎ የሚያገኙት ማንኛውም ጉርሻ በመጠባበቅ ላይ ይሆናል እና ለ90 ቀናት በራስ-ሰር ዳግም ይሞክራል። <ph name="LINK_BEGIN"/>የበለጠ ይወቁ<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">ይህ የፈጠራ ባለቤት እስካሁን አልተመዘገበም።</translation>
-<translation id="4025327308776090280">ይህ ፈጣሪ ከእርስዎ የሽልማቶች ከስቶድያል ዋሌት አገልግሎት ጉርሻዎችን እንዲቀበል አልተዋቀረም።</translation>
+<translation id="3573568055713372419">እርስዎ ከ<ph name="USER_PROVIDER"/> ጋር ተገናኝተዋል ነገር ግን ይህ ፈጣሪ ከ<ph name="CREATOR_PROVIDER"/> ጋር ተገናኝቷል። ይህ ማለት የእርስዎ ጉርሻ ይህንን ፈጣሪ ሊደርስ አይችልም።</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> በ <ph name="PLATFORM"/></translation>
 <translation id="7335371657242627509">ራስን አስተዋጽኦ ማድረግ መጨመር</translation>
 <translation id="6965382102122355670">እሺ</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
 <translation id="8853725596990766789">መጠኑን ይቀይሩ</translation>
+<translation id="6067959437127691361">የBrave ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
+<translation id="1609556006143307897">እርስዎ የድጋፍ ይዘት ፈጣሪዎችን እያገዙ ነው</translation>
+<translation id="6605147707233193230">የድጋፍ ይዘት ፈጣሪዎችን ለማገዝ ያብሩ</translation>
+<translation id="5430495762768325224">ስለ BAT የበለጠ ይወቁ</translation>
 <translation id="1258144146756156541">ሰው መሆንዎን ያረጋግጡ</translation>
 <translation id="1555514580945108302">ህምም....እንዲህ አይደለም። እንደገና ይሞክሩ።</translation>
 <translation id="8078414184292711961">የ BAT አዶን ወደ <ph name="HINT"/> ኢላማው ይጎትቱት።</translation>
@@ -793,21 +701,16 @@
 <translation id="717952606991220586">ውይ; የሆነ ችግር አለ፤ እባክዎ እንደገና ይሞክሩ::</translation>
 <translation id="7210234701206674260">የብሬቭ ሽልማት ችግር አለው፤ እባክዎ እንደገና ይሞክሩ፡፡</translation>
 <translation id="579702532610384533">በድጋሚ ያገናኙ</translation>
-<translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
-<translation id="2775064702681588061">የእርስዎ Brave Rewards መለያ ተቀማጭ ገንዘብ በመጠባበቅ ላይ ነው።</translation>
 <translation id="3358400027937159351"><ph name="AMOUNT"/>ን አበርክተዋል።</translation>
 <translation id="1619753851206150396">ወጥተዋል</translation>
 <translation id="5142174225142816130">የመለያዎን ደህንነት ለመጠበቅ ይህ ሊከሰት ይችላል። አሁን እንደገና ለመገናኘት ከታች ጠቅ ያድርጉ።</translation>
 <translation id="1677961202754619328">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የ Uphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል። ለምሳሌ፣ ተጨማሪ መረጃ ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
-<translation id="2807965672895914288">በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅዖ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም. በ 30 ቀኖች ውስጥ እንደገና እንሞክራለን::</translation>
 <translation id="2429828319207652823">አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር</translation>
-<translation id="2099354965137813181">ወርሀዊ ጉርሻ አልተሳካም</translation>
+<translation id="6390041270339783491">ወርሀዊ መዋጮዎ አልተሳካም</translation>
 <translation id="19033035059466563">መዋጮዎች እና ጉርሻዎች</translation>
 <translation id="2892744985635833293">የእርስዎ ወርሃዊ ጉርሻዎች ተከናውኗል!</translation>
 <translation id="5768819429931807686">በመጠባበቅ ላይ ያለ መዋጮ</translation>
 <translation id="7855913851082138664">ፈጣሪ <ph name="PUBLISHER_NAME"/> በቅርቡ የተረጋገጠ</translation>
-<translation id="6194996600967335044">በቂ ያልሆኑ ገንዘቦች</translation>
-<translation id="2795080275268642520">ያለዎት ገንዘብ አነስተኛ በመሆኑ ምክንያት በሒደት ላይ ያሉ ፍንጮች አሉዎት</translation>
 <translation id="2529827670795983639">ይህ እየሰራ አይመስልም፣ Brave ads እንደቆመ ይቆያል። በ captcha ላይ እገዛ ከፈለጉ ያነጋግሩን።</translation>
 <translation id="261607053214862521">ከፍተኛ ሙከራዎች አልፈዋል</translation>
 <translation id="2323171459178104277">ተስተካክሏል!</translation>
@@ -828,9 +731,13 @@
 <translation id="8622329973403382303">እንደ የሽልማቶች ሮክስታር ታሪክ ውስጥ ለመግባት እንዴት እንደሚሠራ ለማወቅ በፍጥነት ጉብኝት ያድርጉ!</translation>
 <translation id="4331886860862592203">ሀገር ይምረጡ</translation>
 <translation id="3115702351969988294">ማስታወቂያዎች ምን ያህል ጊዜ ማየት ይፈልጋሉ?</translation>
-<translation id="7532131110478098401">(ማስታወቂያዎች በሰዓት)</translation>
-<translation id="2951964054390325080">ለሚወዷቸው ፈጣሪዎች ምን ያህል ወርሃዊ ድጋፍ መስጠት ይፈልጋሉ?</translation>
-<translation id="3164498053837913829">(ከራስዎ ማስታወቂያዎች የተገኙ ገቢዎች)</translation>
+<translation id="9006929295045381749">{ADS_PER_HOUR, plural,
+      =1 {# ማስታወቂያ በሰዓት}
+      other {# ማስታወቂያዎች በሰዓት}
+    }</translation>
+<translation id="6129810595598072828">ተጨማሪ ግላዊ ማስታወቂያዎች፣ ተጨማሪ ሽልማቶች</translation>
+<translation id="8871481223725076571">ከተጨማሪ ማስታወቂያዎች ጋር፣ የበለጠ ፈጣሪዎችን መደገፍ ይችላሉ</translation>
+<translation id="9215691564467955056">ይህንን በኋላ ላት በቅንብሮች ውስጥ መቀየር ይችላሉ።</translation>
 <translation id="6318696841371191107">ፈጣን ጉብኝት ያድርጉ</translation>
 <translation id="8465790416279415448">ይህን በመቀጠል፣ ለ <ph name="TOS_LINK_BEGIN"/>የአገልግሎት ውሎች<ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="PP_LINK_END"/>፣ ተስማምተዋል።</translation>
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
@@ -840,25 +747,16 @@
 <translation id="7930505144430343145">ወደ Brave ወሮታዎች እንኳን በደህና መጡ!</translation>
 <translation id="3477340970981564961">የግል መረጃዎን በሚስጥር እየጠበቀ፣ የ Brave የግል Ads ከባህላዊ ማስታወቂያዎች በተለየ ይዘት ፈጣሪዎችን ለመደገፍ ቶከኖች አሸልምዎታል።ማስታወቂያዎች</translation>
 <translation id="6973095375773523904">ማስታወቂያዎች የት ይታያሉ?</translation>
-<translation id="7556325460112047619">የ Brave የግል ማስታወቂያዎች እንደ መደበኛ ማሳወቂያ ይታያሉ። እነዚህን ማስታወቂያዎች ምን ያህል ጊዜ ማየት እንደሚፈልጉ በቅንብሮች ውስጥ ይቆጣጠራሉ።</translation>
-<translation id="6897083627729802351">ሽልማቶችን መቼ ይቀበላሉ?</translation>
-<translation id="310863932297733723">በዚህ ወሩ ውስጥ ከ Brave የግል ማስታወቂያዎች ያገኙዋቸው ምልክቶች በሚቀጥለው ወር 5ኛ ቀን ላይ ይደርስዎታል።</translation>
+<translation id="4328028439561659455">Brave ግላዊ ማስታወቂያዎች በእርስዎ ማያ ገጽ ላይ እንደ ማሳወቂያዎች ሆነው ይታያሉ። እነዚህን ማስታወቂያዎች በምን ያህል ጊዜ እንደሚመለከቱ ይቆጣጠራሉ።</translation>
 <translation id="7712287524451429139">መልሶ መስጠት ያለ ምንም ጥረት ሁኗል</translation>
 <translation id="105037569026952831">ፈጣሪዎች እንደ 'ትኩረት' የምንለካቸውን የተሳትፎ ደረጃዎችዎ ላይ በመመርኮዝ የቶክንዎን መዋጮ በራስ-ሰር አሠራር ይቀበላሉ።</translation>
 <translation id="5323267338679539010">ከ ጠቃሚ ምክሮች ጋር አመሰግናለሁ ይበሉ</translation>
 <translation id="6042317056594735519">ቲፕ መስጠት የሚወዱትን ይዘት ወይም ፈጣሪዎች በግል ለማበረታታት እና ለመደገፍ መንገድ ነው። ቲፕ መስጠትዎን ይቀጥሉ!</translation>
-<translation id="7509452925943421624">በ ማስመሰያዎች ምን ማድረግ ይችላሉ?</translation>
-<translation id="5876169128756792273">ቶክኖች ፈጣሪዎችን ከመደገፍ ባለፈ ጥቅም ላይ ሊውሉ ይችላሉ። ነጋዴዎች ሲመጡ ዲጂታል ይዘትን እና ሌሎች ሸቀጦችን መግዛት ይችላሉ።</translation>
-<translation id="1402530520078693620">በመጨረሻም፣ በመሰረታዊ ቅንብሮች ላይ እናዘጋጅልዎ</translation>
-<translation id="3494356595346329740">ይህንን በኋላ መለወጥ ይችላሉ።</translation>
+<translation id="4215679190414901888">በመጨረሻው፣ እንዲዘጋጁ እናድርግ</translation>
 <translation id="827315274423079662">ዎው፣ ሁላችሁም ተዘጋጅታችኋል!</translation>
 <translation id="8268038362451312235">Brave Rewards ን በመጠቀም ድሩ ለሁሉም ሰው የተሻለ ቦታ እንዲሆን እየረዱ ነው። እና ያ ግሩም ነው!</translation>
-<translation id="2318949593486441832">ማስታዎቂያዎችን በመመልከት ያገኙትን BAT ለማውጣት የብሬቭ ሽልማቶችን ያረጋግጡ።</translation>
-<translation id="9168436347345867845">በኋላ ያድርጉት</translation>
-<translation id="7193761697942491145">የብሬቭ ሽልማቶችን ያረጋግጡ</translation>
-<translation id="6609621505400013054">bitFlyer ዋለት በ bitFlyer, Inc. የሚተዳደር አገልግሎት ነው።</translation>
-<translation id="4361456403643555676">የብሬቭ ሽልማቶችን በማረጋገጥ እና ከቢትፍላየር መለያ ጋር በማገናኘት በብሬቭ ሽልማቶች ያገኟቸውን ቶክኖች በቀላሉ ማከማቸት እና ማስተዳደር ይችላሉ።</translation>
-<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>​ለተጨማሪ እውቀት​<ph name="LINK_END"/>​ስለ ብሬቭ አሳሽዎን ከቢትፍላየር መለያዎ ጋር እንዴት እንደሚያገናኙ።</translation>
+<translation id="6845311459433734326">BAT እንዲያገኙ እና ሽልማቶችዎን እንዲያወጡ የጠባቂ መለያን ያገናኙ</translation>
+<translation id="1443125272907895958">በኋላ አደርገዋለሁ</translation>
 <translation id="1015443539415537847">ይቅርታ፣ Brave ሽልማቶች አይገኝም</translation>
 <translation id="5007776270364097327">እንደ አለመታደል ሆኖ Brave ሽልማቶች በማይገኙበት ክልል ውስጥ ያሉ ይመስላል።</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>የበለጠ መረጃ<ph name="LINK_END"/></translation>
@@ -879,6 +777,7 @@
 <translation id="9161147058107529840">የሚጠበቅ ነጠላ፣ የኦብጀክት መለኪያ።</translation>
 <translation id="1875861420974447980">ይህ ቼይን መታወቂያ በአሁኑ ጊዜ ጥቅም ላይ ውሏል</translation>
 <translation id="167698752210114155">ውስጣዊ ስህተት ተፈጥሯል</translation>
+<translation id="8945668490056243760">የማይደገፍ የደንበኝነት ምዝገባ አይነት</translation>
 <translation id="2326876601333401685">ይህ የ RPC ዘዴ አይደገፍም።</translation>
 <translation id="1128992132632883337">የምላሽ መተንተን ስህተት ተፈጥሯል</translation>
 <translation id="5382339341735118861">አጠቃላይ የጥያቄ ማሰናዳት ስህተት ተፈጥሯል</translation>
@@ -923,6 +822,7 @@
 <translation id="8246868867733222286">ትልቁ የNFT የገበያ ቦታ። ይግዙ፣ ይሽጡ፣ እና የማይገኙ ዲጂታል ቁሶችን ያግኙ</translation>
 <translation id="8375074247703832257">የሚታመን</translation>
 <translation id="7826627294887983832">Digital የስነጥበብ ስራዎችን ይፍጠሩ እና ይሸጡ</translation>
+<translation id="1383876407941801731">ፍለጋ</translation>
 <translation id="8767749833522980474">ስወራ</translation>
 <translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="6122742277607781713">ፖርትፎሊዮ</translation>
@@ -938,12 +838,14 @@
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6598532182053592167">ሳንቲም ያክሉ</translation>
+<translation id="1848737374354350807">ቀሪ ሂሳብ</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/>ላይ<ph name="NETWORK"/></translation>
 <translation id="629730747756840877">መለያ</translation>
 <translation id="3959969108528118741">ባለቤት</translation>
 <translation id="3891414008432200754">ዋጋ</translation>
 <translation id="2267753748892043616">መለያ ያክሉ</translation>
 <translation id="5061574358754621254">በCoinGecko የተጠናከረ የዋጋ መረጃ</translation>
+<translation id="223536150967420869">ይግዙ</translation>
 <translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="9113988219764868805">ተለዋጭ ስም ይላኩ</translation>
@@ -951,6 +853,7 @@
 <translation id="3453833142586986467">ተለዋጭ ስም ይምረጡ</translation>
 <translation id="554732459168975059">NFT ይምረጡ</translation>
 <translation id="5313430503143128212">የሚልኩትን ተለዋጭ ስም ይምረጡ</translation>
+<translation id="5784485862926111563">ለመላክ NFT ይምረጡ</translation>
 <translation id="2791691551852500015">የተቀባይ አድራሻ ያስገቡ</translation>
 <translation id="570080709303714420">ግማሽ</translation>
 <translation id="2784548701748328827">ከፍተኛ</translation>
@@ -960,6 +863,10 @@
 <translation id="5009335307032488349">NFT በስም ፣ በመታወቂያ ይፈልጉ</translation>
 <translation id="6295954645230084874">የግዢ ድጋፍ አይገኝም ለ <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">ለተመረጠው አውታረ መረብ መግዛት አይደገፍም</translation>
+<translation id="4982630604810554641">ጎራ በመፈለግ ላይ...</translation>
+<translation id="5467044307473123584">Brave የ .eth ጎራዎችን ለመፍታት ከሰንሰለት ውጪ ጌትዌይስ መጠቀምን ይደግፋል።</translation>
+<translation id="4896417414446851895">እርስዎ ENS አድራሻን ያስገቡ ይመስላል። ይህንን ጥያቄ ለመፍታት የሶስተኛ ወገን ችግር ፈቺን መጠቀም ያስፈልገናል ይህም የእርስዎን IP አድራሻ እና ጎራ ለማየት ሊያስችልዎት ይችላል።</translation>
+<translation id="8646078615727397565">የENS ጎራ ይጠቀሙ</translation>
 <translation id="4171338820961522154">ስዋፕ ድጋፍ አይገኝም ለ <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">ግብይት ግንባር ቀደም ሊሆን ይችላል</translation>
 <translation id="632241521608275119">ተቀባይነት ያለው የዋጋ መንሸራተት</translation>
@@ -974,7 +881,9 @@
 <translation id="6575120282593094155">እስካሁን የ 
 1<ph name="ACCOUNT_TYPE"/> 
 መለያ የሎትም። አሁን መለያ ይፈጠር?</translation>
+<translation id="1201402288615127009">ቀጣይ</translation>
 <translation id="8712637175834984815">ገባኝ</translation>
+<translation id="6896758677409633944">ቅዳ</translation>
 <translation id="2704606927547763573">ተቀድቷል</translation>
 <translation id="6042308850641462728">ተጨማሪ</translation>
 <translation id="768236965975208017">ደህንነቱ የተጠበቀ። ባለብዙ ሰንሰለት። እና ኦህ - ለአጠቃቀም ቀላል። የእርስዎ Brave Wallet በጥቂት ጠቅታዎች ሊገኝ ይችላል።</translation>
@@ -1036,6 +945,7 @@
 <translation id="6577166808959668729">በሶላና ብሎክቼይን ላይ የSPL ተኳኋኝ ንብረቶችን ያግዛል</translation>
 <translation id="4541295941776129088">የ FIL ንብረትን ያከማቹ</translation>
 <translation id="8500387257977999003">ግላዊ ቁልፍ<ph name="PROTOCOL"/></translation>
+<translation id="8275038454117074363">ያስመጡ</translation>
 <translation id="232925166623833246">ከሃርድዌር ዋሌት አስመጣ</translation>
 <translation id="4324198334837993695">ሃርድዌር</translation>
 <translation id="3067168166931605141">የመለያ ስም</translation>
@@ -1082,6 +992,7 @@
 <translation id="2416098547200943834">ማሳሰቢያ፡ የግል ቁልፍ እንደ ሄክስ-ኢኮድ JSON የቀረበ ሲሆን ይህም የግል ቁልፍ እና የፕሮቶኮል መረጃን የያዘ ነው። <ph name="LINK_START"/> የበለጠ ለማወቅ እዚህ ጋር ይሂዱ <ph name="LINK_END"/>።</translation>
 <translation id="7657130382217527063">ማሳሰቢያ፡ የግል ቁልፍ እንደ ሄክስ-ኢኮድ JSON የቀረበ ሲሆን ይህም የግል ቁልፍ እና የፕሮቶኮል መረጃን የያዘ መሆን አለበት። <ph name="LINK_START"/> የበለጠ ለማወቅ እዚህ ጋር ይሂዱ <ph name="LINK_END"/>።</translation>
 <translation id="42126664696688958">ላክ</translation>
+<translation id="1366855498335432549">ማጠራቀም</translation>
 <translation id="2902856457593699108">ቁልፍ አሳይ</translation>
 <translation id="8033497299373164724">ቁልፍን ደብቅ</translation>
 <translation id="2702143907607790516">የመለያ ስም ማዘመን አልተሳካም ፣ እባክዎ እንደገና ይሞክሩ።</translation>
@@ -1128,6 +1039,7 @@
 <translation id="9065203028668620118">አርትዕ</translation>
 <translation id="7968982339740310781">ዝርዝሮችን ይመልከቱ</translation>
 <translation id="6452181791372256707">አይቀበሉ</translation>
+<translation id="8131740175452115882">አረጋግጥ</translation>
 <translation id="8904889345035514635">አሁን ያለው አበል</translation>
 <translation id="7073918978411974168">የታቀደው አበል</translation>
 <translation id="9019403281000653275">ያልተገደበ ፍቃድ ተጠይቋል</translation>
@@ -1153,9 +1065,9 @@
 <translation id="793994607260936590">መጀመሪያ</translation>
 <translation id="4709524402122994378">ግብይቶች</translation>
 <translation id="4591079278963448049">የተያያዘው የማስመሰያ መለያ እስካሁን የለም። ይህ ለመፍጠር እና ለመደገፍ አነስተኛ መጠን ያለው SOL ወጪ ይደረጋል።</translation>
-<translation id="3368922792935385530">ተያይዟል</translation>
 <translation id="523862956770478816">የጣቢያ ፈቃድ</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> መለያው ተገናኝቷል</translation>
+<translation id="4804818685124855865">ግንኙነት አቋርጥ</translation>
 <translation id="4305817255990598646">ቀይር</translation>
 <translation id="3423275441470187644">እምነት</translation>
 <translation id="2391762656119864333">ሻር</translation>
@@ -1198,6 +1110,7 @@
 <translation id="2331676293859649642">ተረጋገጠ</translation>
 <translation id="1165039591588034296">ስህተት</translation>
 <translation id="8373210463207847451">የተጣለ</translation>
+<translation id="8214232307424031138">ተፈርሟል</translation>
 <translation id="9065572743819293042">የቅርብ ጊዜ ግብይቶች</translation>
 <translation id="4235538284468006757">የግብይቶች ዝርዝሮች</translation>
 <translation id="7488671812634887146">ይፍጠኑ</translation>
@@ -1292,17 +1205,23 @@
 <translation id="3898731124813934210">በ Wyre ይግዙ</translation>
 <translation id="5522073372365069684">በRamp ይግዙ</translation>
 <translation id="7902920577183739843">በ Sardine ይግዙ</translation>
+<translation id="6534275647567011533">በ Transak ይግዙ</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">በቪዛ ወይም በማስተርካርድ ክሪፕቶን ይግዙ።</translation>
 <translation id="3101839349578102016">በባንክ ሂሳብዎ ወዲያውኑ ይግዙ። ዝቅተኛ ክፍያዎች።</translation>
 <translation id="8528916244724490964">ሁሉም አውታረ መረቦች</translation>
 <translation id="4038403584813842767">ቀሪ ሒሳብ ↑</translation>
 <translation id="1695096446857675822">ቀሪ ሒሳብ ↓</translation>
+<translation id="8151187584908138100">ስም</translation>
+<translation id="883138507248906253">ስም</translation>
 <translation id="7198018180583855568">ሁሉም መለያዎች</translation>
 <translation id="6954150712710630841">ግብይት ገብቷል</translation>
 <translation id="905855245798176174">ግብይቱ በተሳካ ሁኔታ ወደ አውታረ መረቡ ተልኳል እና ማረጋገጫ ይጠብቃል።</translation>
+<translation id="619697073289995370">ግብይት ተፈርሟል</translation>
+<translation id="7493732383203109611">ግብይቱ ተፈርሟል እና በDApp በኩል ባለው አውታረመረብ ይላካል</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> ወደ የኪስ ቦርሳዎ ተመልሷል</translation>
 <translation id="4577432071459867390">ግብይት አልተሳካም</translation>
 <translation id="4359235192593147041">በትልቅ የዋጋ እንቅስቃሴ ምክንያት ግብይቱ አልተሳካም። በትልቅ የዋጋ እንቅስቃሴ ላይ ስኬታማ ለመሆን የድጎማ መቻቻልን ይጨምሩ።</translation>
@@ -1321,6 +1240,7 @@
 <translation id="9104177294757104789">ይላኩ <ph name="VALUE"/></translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> ወደ <ph name="TAKER"/> ቀይር</translation>
 <translation id="2781668117338732220">ሁለተኛ አውታረ መረቦች</translation>
+<translation id="282560918037172384">አውታረመረቦችን ይሞክሩ</translation>
 <translation id="2816106784624007524">የጋዝ ገደብ ኢንቲጀር ሆኖ ከ 0 በላይ መሆን አለበት</translation>
 <translation id="3354376789153561654">የግብይት ውሂብ 'ወደ' መገለጽ አለበት።</translation>
 <translation id="8728991256628663004">የግብይት ውሂብ 'ከ' ትክክለኛ የ Filecoin አድራሻ መሆን አለበት።</translation>
@@ -1508,6 +1428,50 @@
 <translation id="3033638954295674319">የ NFT ዝርዝሮችን በማምጣት ላይ የሆነ ችግር ተፈጥሯል። እባክዎ ቆየት ብለው ይሞክሩ።</translation>
 <translation id="2540568096903252632">ለመቀጠል የይለፍ ቃል ያስገቡ</translation>
 <translation id="3356580495013324916">የዋሌትዎን መጠባበቂያ መስራት ለመጀመር የ Brave ዋሌት ይለፍ ቃል ያስገቡ።</translation>
+<translation id="7545441766078366279"><ph name="TOKEN"/>ይፍቀዱ</translation>
+<translation id="3115303896544539834">በቂ ያልሆነ <ph name="TOKEN"/> ቀሪ ሂሳብ</translation>
+<translation id="4937657825850660613">ግማሽ</translation>
+<translation id="7639814793732182496">ከፍተኛ</translation>
+<translation id="6584782231358487640">መጠን ይፈልጉ</translation>
+<translation id="2335903728876796191">ለእርስዎ ምርጡን ዋጋ መፈለግ</translation>
+<translation id="3835223348537121988">ሂሳብ፡</translation>
+<translation id="5709875713144853427">ለመቀያየር ቶከን ይምረጡ</translation>
+<translation id="720404198240859011">ያለምንም ቀሪ ሂሳብ ቶከኖችን አሳይ</translation>
+<translation id="4886690455791686940">ዜሮ ቀሪ ሂሳብን ደብቅ</translation>
+<translation id="381485723922188688">አማራጭ</translation>
+<translation id="6680650203439190394">ደረጃ ይስጡ</translation>
+<translation id="2538996898605796431">የዋጋ ተጽዕኖ</translation>
+<translation id="8007404171238546456">ድጎ ከተደረገ በኋላ የደረሰው ዝቅተኛ መጠን</translation>
+<translation id="767199001998615704">የአውታረ መረብ ክፍያ</translation>
+<translation id="7057870207229052478">የBrave ክፍያ</translation>
+<translation id="3624518972158401291">ነጻ</translation>
+<translation id="5038255447967558645">የሊክዊዲቲ አቅራቢ</translation>
+<translation id="8450638959928932199">ቀያይር &amp; ላክ</translation>
+<translation id="476816352791390168">ምንም ተጨማሪ ክፍያዎች የሉም!</translation>
+<translation id="5319981934425923365">ከላይ ያለው አድራሻ ትክክል መሆኑን አረጋግጣለሁ</translation>
+<translation id="7480629155329718561">የተቀባዩን የEthereum አድራሻ ያስገቡ</translation>
+<translation id="4967749818080339523">መለያ ይምረጡ</translation>
+<translation id="3887241807965836390">ወደ እኔ መለያ</translation>
+<translation id="3079716946572942356">ወደሌላ አድራሻ</translation>
+<translation id="8044899503464538266">ቀስ</translation>
+<translation id="3569512916300900704">አማካይ</translation>
+<translation id="7019805045859631636">ፈጣን</translation>
+<translation id="1826671530876539299">ቅንብሮችን ቀያይር</translation>
+<translation id="6778140392042462129">ምንዛሪዎች</translation>
+<translation id="6173494033320397682">የቀጥታ ራውት ብቻ</translation>
+<translation id="2440960581098655899">የቀጥታ ራውቲንግን ብቻ ያረጋግጣል እንዲሁም የተከፈለ ንግድ አነጋገድን እንዲሁ ያቦዝናል</translation>
+<translation id="6245314729809503023">Brave ለከፍተኛ ክንውን የመካከለኛ ራውቲንግ 60 ቶከኖችን ይጠቀማል</translation>
+<translation id="2379187373676242615"><ph name="VALUE"/>% ከCoinGecko የረከሰ</translation>
+<translation id="5351867352310722022">በ <ph name="VALUE"/>% CoinGecko ውስጥ</translation>
+<translation id="7695501918490163821"><ph name="VALUE"/>% ከCoinGecko የበለጠ ውድ</translation>
+<translation id="6065708195277841442">ዋሌት ያገናኙ</translation>
+<translation id="4029551149873989025">አውታረ መረብ ይቀይሩ</translation>
+<translation id="7561262633951061138">ምርጥ</translation>
+<translation id="3143110700666266545">ይህ መተግበሪያ የሚከተሉትን ሶስተኛ ወገን APIs ይጠቀማል፦</translation>
+<translation id="8411419545176806786">Brave Swap፣ 0xን እንደ DEX አሰባሳቢ ለEVM አውታረመረቦች ይጠቀማል። 0x የEthereum ዋሌት አድራሻን እና የIP አድራሻን በማቀናበር ግብይት እንዲፈጸም ያደርጋል (ዋጋዎችን ማግኘት ጨምሮ)። 0x ይህንን ውሂብ ግብይቶችን ለማቀናበር አላማዎች ብቻ ይህንን ውሂብ ይጠቀማል።</translation>
+<translation id="7467728126359974661">Brave Swap፣ Jupiterን እንደ DEX አሰባሳቢ ለSolana አውታረመረብ ይጠቀማል። Jupiter የSolana ዋሌት አድራሻን እና የIP አድራሻን በማቀናበር ግብይት እንዲፈጸም ያደርጋል (ዋጋዎችን ማግኘት ጨምሮ)። Jupiter ይህንን ውሂብ ግብይቶችን ለማቀናበር አላማዎች ብቻ ይህንን ውሂብ ይጠቀማል።</translation>
+<translation id="8497751359931572880">ለ0x ግላዊነት ፖሊሲ እዚህ ጋር ጠቅ ያድርጉ።</translation>
+<translation id="4904748904130272182">ለJupiter የግላዊነት ፖሊሲ እዚህ ጋር ጠቅ ያድርጉ።</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1609,6 +1573,7 @@
 <translation id="264682546981571963">የኩኪ ፈቃድ ማስታወቂያዎች ማየት ስልችትዎታል?</translation>
 <translation id="4986297793092101884">Brave አስቀድሞ የሶስተኛ ወገን ኩኪዎችን አግዷል። የኩኪ ፈቃድ ማስታወቂያዎችንም ማገድ እንችላለን።</translation>
 <translation id="535688588637568715">አዎ፣ የኩኪ ፈቃድ ማስታወቂያዎችን አግድ</translation>
+<translation id="2808175374672429053">Wildcards  ለBrave ጋሻዎች አይፈቀዱም።</translation>
 <translation id="6294662480095808915">መደበኛ ግላዊነት።</translation>
 <translation id="4366423156486478559">ጠቅ ባደረጉት እያንዳንዱ ሊንክ የ Brave ጥበቃን ያግኙ። Braveን እንደ መደበኛ ያቀናብሩ እና በግል ያስሱ።</translation>
 <translation id="3830912418080848377">ቅንብሮችን ማስመጣት</translation>
@@ -1684,21 +1649,4 @@
 <translation id="1657858090675311947">ከእንግዲህ ስለዚህ አታስጠነቅቀኝ።</translation>
 <translation id="2740531572673183784">እሺ</translation>
 <translation id="9061845622728745852">የሰዓት ሰቅ፡</translation>
-<translation id="7586151660465233733">ተጨማሪ ገበያዎች በ​<ph name="SITE_NAME"/></translation>
-<translation id="952067063131306699">ገበያዎች ይመልከቱ እና በ FTX ላይ ክሪፕቶ ይነግዱ</translation>
-<translation id="5963745988819586370">ገበያዎች</translation>
-<translation id="3795943412467785186">የመለያ ሂሳብን ለመመልከት የ FTX ሂሳብን ያገናኙ፣ የወደፊቱን ገበያዎች ያስሱ፣ &amp; ክሪፕቶ ልወጣ።</translation>
-<translation id="926958206891985289">የወደፊቱን ገበያዎችን ይመልከቱ</translation>
-<translation id="6804537228302563756">መለያ ያገናኙ</translation>
-<translation id="5019698312620117604">የ 24 ሰዓት ዋጋ ታሪክ</translation>
-<translation id="8720719072204443171">24 ሰዓት ጥራዝ</translation>
-<translation id="7723176927437578611">ይቀጥላል</translation>
-<translation id="2983078329159689577">በማስገባት ላይ…</translation>
-<translation id="6641102760094059194">አረጋግጥ (​<ph name="NUMBER_OF_SECONDS_LEFT"/>​ዎች)</translation>
-<translation id="2280055104463448482">ልወጣ ስኬታማ ሆኑዋል!</translation>
-<translation id="7590653073560839711">ልወጣ ለማካሄድ ቢያንስ በአንድ ምንዛሬ ሂሳብ ያስፈልግዎታል።</translation>
-<translation id="4390079506197726228">ያለው ​<ph name="QUANTITY"/>​ ​<ph name="CURRENCY_NAME"/></translation>
-<translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
-<translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
-<translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
 </translationbundle>

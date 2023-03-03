@@ -55,18 +55,6 @@ void CookieListOptInService::ShouldShowDialog(
   std::move(callback).Run(should_show_dialog);
 }
 
-void CookieListOptInService::IsFilterListEnabled(
-    IsFilterListEnabledCallback callback) {
-  std::move(callback).Run(
-      ad_block_service_->regional_service_manager()->IsFilterListEnabled(
-          brave_shields::kCookieListUuid));
-}
-
-void CookieListOptInService::EnableFilter(bool shouldEnableFilter) {
-  ad_block_service_->regional_service_manager()->EnableFilterList(
-      brave_shields::kCookieListUuid, shouldEnableFilter);
-}
-
 void CookieListOptInService::OnTooltipShown() {
   local_state_->SetBoolean(prefs::kAdBlockCookieListOptInShown, true);
   base::UmaHistogramExactLinear(kCookieListPromptHistogram, 1, 4);

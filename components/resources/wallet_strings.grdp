@@ -87,6 +87,8 @@
   <message name="IDS_BRAVE_WALLET_SEND" desc="Send tab button">Send</message>
   <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
   <message name="IDS_BRAVE_WALLET_RESET" desc="Reset button text">Reset</message>
+  <message name="IDS_BRAVE_WALLET_SELL" desc="Sell button text">Sell</message>
+  <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_BALANCE" desc="Sell modal not enough of token balance to sell error">You don’t have enough <ph name="TOKEN_SYMBOL"><ex>BAT</ex>$1</ph> in this account.</message>
   <message name="IDS_BRAVE_WALLET_SEND_TOKEN" desc="Send tab Send Token button">Send token</message>
   <message name="IDS_BRAVE_WALLET_SEND_NFT" desc="Send tab Send NFT button">Send NFT</message>
   <message name="IDS_BRAVE_WALLET_SELECT_TOKEN" desc="Send tab Select token button">Select token</message>
@@ -285,6 +287,8 @@
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE" desc="Sign panel EIP-712 message title">Details</message>
+  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
@@ -329,6 +333,9 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FRIST" desc="Confirm transaction panel first transaction button">first</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTIONS" desc="Confirm transaction panel transactions label">transactions</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_ACCOUNT_CREATION_FEE" desc="Confirm transaction panel account creation fee warning">The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_LIMIT" desc="Transaction gas limit">Gas Limit</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_PREMIUM" desc="Transaction gas premium">Gas Premium</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_GAS_FEE_CAP" desc="Transaction gas fee cap">Gas Fee Cap</message>
   <message name="IDS_BRAVE_WALLET_PANEL_TITLE" desc="Brave Wallet panel title">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_PANEL_CONNECTED" desc="Brave Wallet panel connected status">Connected</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE" desc="Site Permissions panel title">Site permissions</message>
@@ -418,14 +425,26 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS" desc="Send input not valid SOL address error">Not a valid SOL address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
-  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="DOMAIN_NAME"><ex>doug.wallet</ex>$1</ph> is not registered</message>
+  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
+  <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
+  <message name="IDS_BRAVE_WALLET_HOW_TO_SOLVE" desc="How to solve button text">How can I solve it?</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_WARNING_TITLE" desc="Send input address missing checksum information title">Missing checksum information</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">This address cannot be verified (missing checksum). Proceed?</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR" desc="Send input address has invalid checksum information">Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.</message>
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS" desc="Invalid recipient address error">Invalid recipient address</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE" desc="Invalid checksum modal title">How can I find the right address?</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION" desc="Invalid checksum modal description">Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_TITLE" desc="Invalid checksum modal step one title">1. Visit</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_DESCRIPTION" desc="Invalid checksum modal step one description">Visit etherscan and paste the wallet address you want to send tokens. Then enter</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_TITLE" desc="Invalid checksum modal step two title">2. Copy and enter ETH address</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_DESCRIPTION" desc="Invalid checksum modal step two description">Copy and enter the correct address. You can see that some characters have been converted correctly.</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_NEED_HELP" desc="Invalid checksum modal need more help">Need more help?</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
@@ -473,6 +492,9 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD" desc="NFT detail screen token standard category">Token standard</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CID" desc="NFT detail CID category">CID</message>
+  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image location or address</message>
   <message name="IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED" desc="The error message when request for method 'eth_chainId' on custom network url failed">Request for method 'eth_chainId' on <ph name="URL">$1<ex>https://some.network/rpc/</ex></ph> failed</message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
     This network is already added.
@@ -502,6 +524,8 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_WYRE" desc="Buy with Wyre option label">Buy with Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
+  <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_SELL_MINIMUM_AMOUNT" desc="Sell minimum amount alert">The minimum amount must be <ph name="FIAT_AMOUNT">$1<ex>$50</ex></ph> or more.</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_SARDINE" desc="Buy with Sardine option label">Buy with Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Buy with Transak option label">Buy with Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
@@ -510,7 +534,7 @@
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_NAME" desc="Transak onramp provider name">Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Instant buy with your bank account. Lower fees.</message>
+  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Aseet Filter Selector Low to High">Balance ↑</message>
@@ -555,6 +579,7 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>
   <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
   <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">Approve transaction</message>
+  
   <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System Program">System Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config Program">Config Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake Program">Stake Program</message>
@@ -562,14 +587,14 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_BP_FLOADER" desc="Name of Solana BPF Loader">BPF Loader</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_ED25519_PROGRAM" desc="Name of Solana Ed25519 Program">Ed25519 Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SECP256K1_PROGRAM" desc="Name of Solana Secp256k1 Program">Secp256k1 Program</message>
-  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_FROMPUBKEY" desc="Name of Solana instruction 'fromPubkey' param">From Address: </message>
-  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_TOPUBKEY" desc="Name of Solana instruction 'toPubkey' param">To Address: </message>
-  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Amount: </message>
-  <message name="IDS_BRAVE_WALLET_SOLANA_PARAM_KEY_NEWACCOUNTPUBKEY" desc="Name of Solana instruction 'newAccountPubkey' param">New Account: </message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_TOKEN_PROGRAM" desc="Name of Solana Token Program">Token Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ASSOCIATED_TOKEN_PROGRAM" desc="Name of Solana Associated Token Program">Associated Token Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_META_DATA_PROGRAM" desc="Name of Solana MetaData Program">MetaData Program</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM" desc="Name of Solana SysvarRent Program">SysvarRent Program</message>
+  
   <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>
-
   <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS" desc="Name of Solana instruction 'lamports' param">Lamports</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE" desc="Name of Solana instruction 'space' param">Space</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM" desc="Name of Solana instruction 'owner_program' param">Owner Program</message>
@@ -621,7 +646,7 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
   <message name="IDS_BRAVE_WALLET_SELECT_CURRENCY" desc="Currency selector title">Select currency</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CURRENCY" desc="Search placeholder for coin search input">Search currencies</message>
-  <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help Center link label">Help Center</message>
+  <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help center link label">Help center</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER_TEXT" desc="Help Center text description below buy-send-swap">Need help? See</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_OPERATION_UNSUPPORTED_ERROR" desc="Error message of unsupported hardware wallet operation">This hardware wallet does not support this operation.</message>
   <message name="IDS_BRAVE_WALLET_ENTER_YOUR_BRAVE_WALLET_PASSWORD" desc="Prompt for the user to enter their Brave Wallet password">Enter your Brave Wallet password</message>
@@ -738,8 +763,6 @@
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
   <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
-  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE" desc="Message displayed when user has no NFTs">No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of the "Portfolio" tab</message>
-  <message name="IDS_BRAVE_WALLET_NFTS_EMPTY_STATE_SEARCH_FILTER" desc="Message displayed no NFTs match search criteria">No NFTs matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES" desc="Proceed with ENS offchain lookup answer">Yes</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO" desc="Proceed with ENS offchain lookup answer">No</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_DONT_SHOW_AGAIN" desc="Proceed with ENS offchain lookup checkbox">Don't show this again</message>
@@ -806,10 +829,9 @@
   <message name="IDS_BRAVE_SWAP_HELP_CENTER" desc="Help center">Help Center</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_POLICY" desc="Privacy policy">Privacy Policy</message>
   <message name="IDS_BRAVE_SWAP_PRIVACY_DESCRIPTION" desc="Privacy policy description">This app uses the following third-party APIs:</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_DISCLAIMER" desc="0x swap privacy policy disclaimer">Brave Swap uses 0x as a DEX aggregator for supported EVM networks. 0x will process the Ethereum wallet address and IP address to fulfill a transaction (including getting quotes). 0x will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_DISCLAIMER" desc="Jupiter swap privacy policy disclaimer">Brave Swap uses Jupiter as a DEX aggregator for Solana network. Jupiter will process the Solana wallet address and IP address to fulfill a transaction (including getting quotes). Jupiter will ONLY use this data for the purposes of processing transactions.</message>
-  <message name="IDS_BRAVE_SWAP_ZERO_EX_PRIVACY" desc="0x swap full privacy policy link text">Click here for 0x Privacy Policy.</message>
-  <message name="IDS_BRAVE_SWAP_JUPITER_PRIVACY" desc="Jupiter swap full privacy policy link text">Click here for Jupiter Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_V2_DISCLAIMER" desc="Swap V2 privacy policy disclaimer">Brave Swap uses <ph name="AGGREGATOR">$1<ex>0x</ex></ph> as a DEX aggregator for supported <ph name="NETWORKS">$2<ex>EVM</ex></ph> networks. <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will process the <ph name="NETWORK">$3<ex>Ethereum</ex></ph> wallet address and IP address to fulfill a transaction (including getting quotes). <ph name="AGGREGATOR">$1<ex>0x</ex></ph> will ONLY use this data for the purposes of processing transactions.</message>
+  <message name="IDS_BRAVE_SWAP_V2_PRIVACY" desc="Swap V2 full privacy policy link text">Click here for <ph name="AGGREGATOR">$1<ex>0x</ex></ph> Privacy Policy.</message>
+  <message name="IDS_BRAVE_SWAP_CHANGE_NETWORK" desc="Swap change network dropdown">Change network</message>
   <message name="IDS_BRAVE_WALLET_ACTIVITY" desc="Wallet activity and transactions">Activity</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_IS_REQUIRED_ERROR" desc="Error explaining that a network has not been selected">Network is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_NAME_IS_REQUIRED_ERROR" desc="Error explaining that a Token name value has not been entered">Token name is required</message>
@@ -818,4 +840,35 @@
   <message name="IDS_BRAVE_WALLET_TOKEN_DECIMALS_IS_REQUIRED_ERROR" desc="Error explaining that a Token decimals value has not been entered">Token decimals of precision value is required</message>
   <message name="IDS_BRAVE_WALLET_TOKEN_MINT_ADDRESS" desc="A title that will be displayed on top of the text field for users to input the custom token mint address">Mint address</message>
   <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR" desc="Error message explaining that fee estimates are unavailable for the current pending transaction">Unable to fetch fee estimates</message>
+
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available?</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">By running IPFS on your computer you can:</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Ensure your NFT data stays online and it cannot be tempered with.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Get content back using content identifier(CID) from an incorrect data.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_THREE" desc="Nft Pinning 3rd benefit">Participate proof of authenticity and make IPFS network rich and healthy.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Keep my NFTs always online</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Enable NFt pinning button text">Enable NFT pinning</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">A big step toward becoming part of web3</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Run IPFS node and keep your NFTs always online</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">Today's centralized internet model doesn't work in space. On today’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">Check which NFTs of mine can be pinned</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">You’re running IPFS node. File is being fetched to local IPFS node.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> out of <ph name="PINNABLE">$2<ex>3</ex></ph> NFTs have been successfully pinned to IPFS.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> out of <ph name="TOTAL">$2<ex>3</ex></ph> are available!</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS" desc="Local IPFS node running status text">You're running IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_NOT_RUNNING_STATUS" desc="Local IPFS node not running status text">Local IPFS node is not running</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED" desc="IPFS pinning status description when pinning failed">Cannot be pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_IMPORT_NFT" desc="NFT tab import NFT dropdown item">Import NFT</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING" desc="NFT tab empty state heading">No NFTs here yet.</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
+  <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
 </grit-part>

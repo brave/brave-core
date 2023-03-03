@@ -10,6 +10,8 @@
 #include <memory>
 #include <string>
 
+#include "base/types/expected.h"
+#include "bat/ledger/internal/database/database_external_transactions.h"
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
@@ -37,12 +39,20 @@ class SKUTransaction {
                           const mojom::SKUTransaction& transaction,
                           const std::string& destination,
                           const std::string& wallet_type,
+                          const std::string& contribution_id,
                           ledger::LegacyResultCallback callback);
 
   void OnTransfer(mojom::Result result,
-                  const std::string& external_transaction_id,
                   const mojom::SKUTransaction& transaction,
+                  const std::string& contribution_id,
+                  const std::string& destination,
                   ledger::LegacyResultCallback callback);
+
+  void OnGetExternalTransaction(
+      ledger::LegacyResultCallback,
+      mojom::SKUTransaction&&,
+      base::expected<mojom::ExternalTransactionPtr,
+                     database::GetExternalTransactionError>);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,

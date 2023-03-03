@@ -15,7 +15,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="8905049883018921395">Kada je uključeno, Brave oslobađa memoriju sa neaktivnih kartica. To aktivnim karticama i drugim aplikacijama pruža više računarskih resursa i održava Brave brzim. Neaktivne kartice se automatski ponovo aktiviraju kada se vratite na njih. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Ušteda memorije je ubrzala Brave</translation>
 <translation id="4798342026247191171">Podesite nov Brave profil</translation>
-<translation id="6361779936989026201">Brave pomoćnik u Brave-u</translation>
 <translation id="113959764510199339">Brave pokušava da prikaže lozinke.</translation>
 <translation id="8132634101975074716">Prijavljeni ste na Brave!</translation>
 <translation id="4168469784091952813">Možete da uživate u Brave-u na najbolji način</translation>
@@ -74,6 +73,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="8208853227947884571">Brave je ažuriran</translation>
 <translation id="5122472867956731189">Ako neki sajt pokuša da ukrade vašu lozinku ili probate da preuzmete štetni fajl, Brave može da pošalje URL-ove, uključujući delove sadržaja stranice, u Bezbedno pregledanje</translation>
 <translation id="2953892977076487219">Brave pokušava da izmeni lozinke.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave je povezan sa HID uređajem}one{Brave je povezan sa HID uređajima}few{Brave je povezan sa HID uređajima}other{Brave je povezan sa HID uređajima}}</translation>
 <translation id="8755404239607088219">Brave ne može da vam proverava lozinke. Probajte ponovo kasnije.</translation>
 <translation id="8880183781256147665">Dodavanje u Brave...</translation>
 <translation id="3038232873781883849">Čeka se instaliranje...</translation>
@@ -102,7 +102,6 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="5853262807109651878">Ovim ćete izbrisati <ph name="ITEMS_COUNT"/> stavke(i) sa ovog uređaja. Da biste kasnije vratili podatke, prijavite se u Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Pomoću prečice <ph name="SHORTCUT"/> možete da prelazite sa jednog Brave profila na drugi</translation>
 <translation id="8703492925273919597">Zatvorite sve Brave prozore i pokušajte ponovo.</translation>
-<translation id="5350485513372498152">Brave pomoćnik u Brave-u može da dovršava radnje za vas na veb-sajtovima</translation>
 <translation id="4061445349373849749">Radi zaštite privatnosti automatski brišemo interesovanja starija od 4 nedelje. Kada nastavite da pregledate, interesovanje će se možda ponovo pojaviti na listi. Možete i da uklanjate interesovanja za koja ne želite da ih Brave uzima u obzir.</translation>
 <translation id="691208314680168371">Istorija pregledanja, evidencija sajtova koje ste posetili pomoću Brave-a na ovom uređaju.</translation>
 <translation id="1384923383737428730">Na računaru postoji štetan softver. Brave može da ga ukloni, vrati podešavanja i onemogući dodatke da bi pregledač mogao ponovo da radi uobičajeno.</translation>
@@ -185,7 +184,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="232381795826373334">Otvarajte PDF-ove u Brave-u</translation>
 <translation id="5381032481466106256">Kada je ovo uključeno, bićete i odjavljeni iz Brave-a</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ažuriranje za Brave je dostupno}=1{Ažuriranje za Brave je dostupno}one{Ažuriranje za Brave je dostupno već # dan}few{Ažuriranje za Brave je dostupno već # dana}other{Ažuriranje za Brave je dostupno već # dana}}</translation>
-<translation id="95624393026532554">Za Brave je potreban Windows 7 ili novija verzija.</translation>
+<translation id="4378573854226202617">Za Brave je potreban Windows 10 ili novija verzija.</translation>
 <translation id="5646769069113654257">Restartujte Brave</translation>
 <translation id="2335583906071111058">Prikazuj Brave na ovom jeziku</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
@@ -388,4 +387,6 @@ Ovlašćenja koja ste već dali veb-sajtovima i aplikacijama mogu se primeniti n
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator traži da ponovo pokrenete Brave da biste primenili ovo ažuriranje}=1{Administrator traži da ponovo pokrenete Brave da biste primenili ovo ažuriranje. Prozor bez arhiviranja se neće ponovo otvoriti.}one{Administrator traži da ponovo pokrenete Brave da biste primenili ovo ažuriranje. # prozor bez arhiviranja se neće ponovo otvoriti.}few{Administrator traži da ponovo pokrenete Brave da biste primenili ovo ažuriranje. # prozora bez arhiviranja se neće ponovo otvoriti.}other{Administrator traži da ponovo pokrenete Brave da biste primenili ovo ažuriranje. # prozora bez arhiviranja se neće ponovo otvoriti.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator zahteva da ponovo pokrenete Brave da biste primenili ažuriranje}=1{Administrator zahteva da ponovo pokrenete Brave da biste primenili ažuriranje. Prozor bez arhiviranja se neće ponovo otvoriti.}one{Administrator zahteva da ponovo pokrenete Brave da biste primenili ažuriranje. # prozor bez arhiviranja se neće ponovo otvoriti.}few{Administrator zahteva da ponovo pokrenete Brave da biste primenili ažuriranje. # prozora bez arhiviranja se neće ponovo otvoriti.}other{Administrator zahteva da ponovo pokrenete Brave da biste primenili ažuriranje. # prozora bez arhiviranja se neće ponovo otvoriti.}}</translation>
 <translation id="2176087127109773485">Možete upravljati svojim prijavljenim Brave lancima sinhronizacije. Vaši Brave lanci sinhronizacije koriste se za Brave pretraživač, Play Store, Gmail itd. Ako želite da dodate nalog za nekog drugog, kao što je član porodice, dodajte nov profil na svoj <ph name="DEVICE_TYPE"/> umesto toga. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome beta</translation>
+<translation id="7535429826459677826">Programerska verzija Google Chrome-a</translation>
 </translationbundle>

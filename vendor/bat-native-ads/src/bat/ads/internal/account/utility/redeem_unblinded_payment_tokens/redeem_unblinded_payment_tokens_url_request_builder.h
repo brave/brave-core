@@ -24,7 +24,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       WalletInfo wallet,
       privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
-      const base::Value::Dict& user_data);
+      base::Value::Dict user_data);
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const RedeemUnblindedPaymentTokensUrlRequestBuilder& other) = delete;
@@ -43,7 +43,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  std::string BuildBody(const std::string& payload) const;
+  std::string BuildBody(const std::string& payload);
 
   std::string CreatePayload() const;
 

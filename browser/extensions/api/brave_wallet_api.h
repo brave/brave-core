@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 
-#include <string>
-
 #include "extensions/browser/extension_function.h"
 
 class Profile;
@@ -113,6 +111,15 @@ class BraveWalletIsNativeWalletEnabledFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletIsNativeWalletEnabledFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletIsNftPinningEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.isNftPinningEnabled", UNKNOWN)
+
+ protected:
+  ~BraveWalletIsNftPinningEnabledFunction() override {}
   ResponseAction Run() override;
 };
 

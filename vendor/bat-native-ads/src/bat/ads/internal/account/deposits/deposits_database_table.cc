@@ -63,17 +63,17 @@ DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
 }
 
 void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
-                                const GetDepositsCallback& callback,
+                                GetDepositsCallback callback,
                                 mojom::DBCommandResponseInfoPtr response) {
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
-    callback(/*success*/ false, absl::nullopt);
+    std::move(callback).Run(/*success*/ false, absl::nullopt);
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback(/*success*/ true, absl::nullopt);
+    std::move(callback).Run(/*success*/ true, absl::nullopt);
     return;
   }
 
@@ -81,7 +81,7 @@ void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
       std::move(response->result->get_records().front());
   DepositInfo deposit = GetFromRecord(record.get());
 
-  callback(/*success*/ true, std::move(deposit));
+  std::move(callback).Run(/*success*/ true, std::move(deposit));
 }
 
 void MigrateToV24(mojom::DBTransactionInfo* transaction) {
@@ -149,7 +149,7 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
-    callback(/*success*/ false, absl::nullopt);
+    std::move(callback).Run(/*success*/ false, absl::nullopt);
     return;
   }
 
@@ -177,8 +177,9 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   transaction->commands.push_back(std::move(command));
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
-      std::move(transaction), base::BindOnce(&OnGetForCreativeInstanceId,
-                                             creative_instance_id, callback));
+      std::move(transaction),
+      base::BindOnce(&OnGetForCreativeInstanceId, creative_instance_id,
+                     std::move(callback)));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {

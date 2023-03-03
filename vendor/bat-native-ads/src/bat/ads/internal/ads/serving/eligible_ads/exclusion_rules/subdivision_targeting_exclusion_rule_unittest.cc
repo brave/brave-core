@@ -89,7 +89,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetected) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -109,7 +109,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedForMultipleGeoTargets) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -131,7 +131,7 @@ TEST_P(
     AllowAdIfSubdivisionTargetingIsSupportedAndAutoDetectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -151,7 +151,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelected) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -172,7 +172,7 @@ TEST_P(
     AllowAdIfSubdivisionTargetingIsSupportedAndManuallySelectedForNonSubdivisionGeoTarget) {  // NOLINT
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -206,7 +206,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        DoNotAllowAdIfSubdivisionTargetingIsSupportedForUnsupportedGeoTarget) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -227,7 +227,7 @@ TEST_P(
     DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -246,7 +246,7 @@ TEST_P(
 TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
        AllowAdIfSubdivisionTargetingIsNotSupportedForNonSubdivisionGeoTarget) {
   // Arrange
-  const URLResponseMap url_responses = {{R"(/v1/getstate)", {{net::HTTP_OK, R"(
+  const URLResponseMap url_responses = {{"/v1/getstate", {{net::HTTP_OK, R"(
             {"country":"XX", "region":"NO REGION"}
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -271,7 +271,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
       prefs::kSubdivisionTargetingCode, "DISABLED");
 
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -294,7 +294,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
       prefs::kSubdivisionTargetingCode, "DISABLED");
 
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
+      {"/v1/getstate", {{net::HTTP_OK, GetGeoTargetResponseParam()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   subdivision_targeting_->MaybeFetch();
@@ -310,7 +310,7 @@ TEST_P(BatAdsSubdivisionTargetingExclusionRuleTest,
   EXPECT_FALSE(should_exclude);
 }
 
-const SubdivisionTargetingExclusionRuleTestParam kTests[] = {
+constexpr SubdivisionTargetingExclusionRuleTestParam kTests[] = {
     {
         "US",  // country
         "AL",  // region

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 
-#include "content/public/browser/service_process_host.h"  // IWYU pragma: keep
+#include "content/public/browser/service_process_host.h"  // IWYU pragma: export
 
 namespace bat_ads::mojom {
 class BatAdsService;

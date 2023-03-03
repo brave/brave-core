@@ -24,7 +24,7 @@
   }                                                           \
   virtual double screenY_ChromiumImpl
 
-#include "src/third_party/blink/renderer/core/events/mouse_event.h"
+#include "src/third_party/blink/renderer/core/events/mouse_event.h"  // IWYU pragma: export
 
 #undef screenX
 #undef screenY

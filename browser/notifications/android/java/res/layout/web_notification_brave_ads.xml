@@ -60,7 +60,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="1dp"
             android:scaleType="centerInside"
-            android:contentDescription="@string/notification_work_profile_badge_content_description"
+            android:contentDescription="@null"
             android:visibility="gone"/>
 
     </RelativeLayout>

@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +49,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveFeatureList;
@@ -61,6 +63,8 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -81,6 +85,9 @@ import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.notifications.RewardsYouAreNotEarningDialog;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
@@ -102,6 +109,7 @@ import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
 import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
+import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabHidingType;
 import org.chromium.chrome.browser.tab.TabImpl;
@@ -159,10 +167,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver,
                    ConnectionErrorHandler {
-    private static final String JAPAN_COUNTRY_CODE = "JP";
+    private static final String TAG = "BraveToolbar";
+
     private static final String YOUTUBE_DOMAIN = "youtube.com";
     private static final List<String> mBraveSearchEngineDefaultRegions =
-            Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR");
+            Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -208,6 +217,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             Collections.synchronizedSet(new HashSet<Integer>());
 
     private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+    private FilterListAndroidHandler mFilterListAndroidHandler;
     private PlaylistService mPlaylistService;
 
     private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
@@ -223,6 +233,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         if (mCookieListOptInPageAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.close();
+        }
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.close();
         }
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && mPlaylistService != null) {
@@ -368,11 +381,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConnectionError(MojoException e) {
         mCookieListOptInPageAndroidHandler = null;
+        mFilterListAndroidHandler = null;
         initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             mPlaylistService = null;
             initPlaylistService();
         }
+    }
+
+    private void initFilterListAndroidHandler() {
+        if (mFilterListAndroidHandler != null) {
+            return;
+        }
+
+        mFilterListAndroidHandler =
+                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
     }
 
     private void initCookieListOptInPageAndroidHandler() {
@@ -397,6 +421,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
         initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             initPlaylistService();
         }
@@ -488,6 +513,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     }
                 }
 
+                if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                        && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                        && url.getSpec().contains("rewards")
+                        && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
+                                || BraveNotificationWarningDialog.shouldShowRewardWarningDialog(
+                                        getContext()))) {
+                    showNotificationNotEarningDialog();
+                }
+
                 String countryCode = Locale.getDefault().getCountry();
                 if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                         && url.domainIs(YOUTUBE_DOMAIN)
@@ -495,6 +529,20 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
                     SharedPreferencesManager.getInstance().writeBoolean(
                             BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
+                }
+            }
+
+            private void showNotificationNotEarningDialog() {
+                try {
+                    RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
+                            RewardsYouAreNotEarningDialog.newInstance();
+                    rewardsYouAreNotEarningDialog.setCancelable(false);
+                    rewardsYouAreNotEarningDialog.show(
+                            BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                            RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
+
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showNotificationNotEarningDialog " + e);
                 }
             }
 
@@ -569,7 +617,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showTooltip(String tooltipPref, int tabId) {
-        if (BraveActivity.getBraveActivity() != null) {
+        try {
             HighlightView highlightView = new HighlightView(getContext(), null);
             highlightView.setColor(ContextCompat.getColor(
                     getContext(), R.color.onboarding_search_highlight_color));
@@ -593,6 +641,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 if (viewGroup != null && highlightView != null) {
                                     highlightView.stopAnimation();
                                     viewGroup.removeView(highlightView);
+                                }
+                                try {
+                                    BraveActivity.getBraveActivity()
+                                            .maybeShowNotificationPermissionRetionale();
+                                } catch (ActivityNotFoundException e) {
+                                    Log.e(TAG, "showTooltip dismiss " + e);
                                 }
                             })
                             .contentView(R.layout.brave_shields_tooltip_layout)
@@ -663,33 +717,41 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
                 BraveShieldsUtils.isTooltipShown = true;
             }
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showTooltip " + e);
         }
     }
 
     private void maybeShowCookieConsentTooltip() {
-        if (mCookieListOptInPageAndroidHandler != null) {
+        if (mCookieListOptInPageAndroidHandler != null && mFilterListAndroidHandler != null) {
             mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
-                mCookieListOptInPageAndroidHandler.isFilterListEnabled(isEnabled -> {
-                    if (!isEnabled && shouldShowDialog
-                            && SharedPreferencesManager.getInstance().readBoolean(
-                                    BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, true)
-                            && SharedPreferencesManager.getInstance().readInt(
-                                       BravePreferenceKeys.LOADED_SITE_COUNT, 0)
-                                    > 5) {
-                        showCookieConsentTooltip();
-                    }
-                });
+                mFilterListAndroidHandler.isFilterListEnabled(
+                        FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                            if (!isEnabled && shouldShowDialog
+                                    && SharedPreferencesManager.getInstance().readBoolean(
+                                            BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE,
+                                            true)
+                                    && SharedPreferencesManager.getInstance().readInt(
+                                               BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                                            > 5) {
+                                showCookieConsentTooltip();
+                            }
+                        });
             });
         }
     }
 
     private void showCookieConsentTooltip() {
-        if (BraveActivity.getBraveActivity() == null) {
+        try {
+            ViewGroup viewGroup =
+                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+                            android.R.id.content);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showCookieConsentTooltip " + e);
             return;
         }
-        ViewGroup viewGroup =
-                BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                        android.R.id.content);
+
         float padding = (float) dpToPx(getContext(), 20);
         mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
                                         .anchorView(mBraveShieldsButton)
@@ -713,9 +775,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         btnAction.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCookieListOptInPageAndroidHandler != null) {
+                if (mCookieListOptInPageAndroidHandler != null
+                        && mFilterListAndroidHandler != null) {
                     mCookieListOptInPageAndroidHandler.onTooltipYesClicked();
-                    mCookieListOptInPageAndroidHandler.enableFilter(true);
+                    mFilterListAndroidHandler.enableFilter(
+                            FilterListConstants.COOKIE_LIST_UUID, true);
                 }
                 mCookieConsentTooltip.dismiss();
             }
@@ -991,19 +1055,23 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         } else if (mHomeButton == v) {
             // Helps Brave News know how to behave on home button action
-            BraveActivity.getBraveActivity().setComesFromNewTab(true);
+            try {
+                BraveActivity.getBraveActivity().setComesFromNewTab(true);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "HomeButton click " + e);
+            }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel(v);
         }
     }
 
     private void maybeShowWalletPanel(View v) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        assert activity != null;
-        if (activity == null) {
-            return;
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.showWalletPanel(true);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "maybeShowWalletPanel " + e);
         }
-        activity.showWalletPanel(true);
     }
 
     private void showWalletPanelInternal(View v) {
@@ -1079,17 +1147,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
         String countryCode = Locale.getDefault().getCountry();
-        if (hasFocus && PackageUtils.isFirstInstall(context)
-                && BraveActivity.getBraveActivity() != null
-                && BraveActivity.getBraveActivity().getActivityTab() != null
-                && UrlUtilities.isNTPUrl(
-                        BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
-                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
-                && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
-                && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
-            Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-            context.startActivity(searchActivityIntent);
+        try {
+            if (hasFocus && PackageUtils.isFirstInstall(context)
+                    && BraveActivity.getBraveActivity().getActivityTab() != null
+                    && UrlUtilities.isNTPUrl(
+                            BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
+                    && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+                    && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
+                    && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
+                Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+                context.startActivity(searchActivityIntent);
+            }
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onUrlFocusChange " + e);
         }
+
         // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
         PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
             if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
@@ -1330,7 +1403,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         if (mWalletIcon != null) {
-            ApiCompatibilityUtils.setImageTintList(mWalletIcon,
+            ImageViewCompat.setImageTintList(mWalletIcon,
                     !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
                                                                             : mLightModeTint);
         }
@@ -1406,12 +1479,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator,
-                isProgressBarVisibleSupplier, historyDelegate, partnerHomepageEnabledSupplier,
-                offlineDownloader);
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, historyDelegate,
+                partnerHomepageEnabledSupplier, offlineDownloader);
+
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
     }
 

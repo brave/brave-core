@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/browser_process.h"
@@ -64,6 +64,16 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setHTTPSEverywhereEnabled",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getHttpsUpgradeControlType",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetHttpsUpgradeControlType,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setHttpsUpgradeControlType",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetHttpsUpgradeControlType,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
@@ -180,6 +190,30 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(
   brave_shields::SetHTTPSEverywhereEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  ControlType setting = brave_shields::GetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(ControlTypeToString(setting)));
+}
+
+void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  std::string value = args[0].GetString();
+
+  brave_shields::SetHttpsUpgradeControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(

@@ -11,7 +11,7 @@
 #include "base/strings/strcat.h"
 #include "bat/ads/internal/common/search_engine/search_engine_domain_extension_constants.h"
 #include "bat/ads/internal/common/search_engine/search_engine_subdomain_constants.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -20,8 +20,7 @@ namespace ads {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetAmazonSearchEngineDomainExtensions();
+  const auto domain_extensions = GetAmazonSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -44,8 +43,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetGoogleSearchEngineDomainExtensions();
+  const auto domain_extensions = GetGoogleSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -68,8 +66,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
   // Arrange
-  const std::vector<std::string>& domain_extensions =
-      GetMojeekSearchEngineDomainExtensions();
+  const auto domain_extensions = GetMojeekSearchEngineDomainExtensions();
 
   // Act
   for (const auto& domain_extension : domain_extensions) {
@@ -92,8 +89,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
   // Arrange
-  const std::vector<std::string>& subdomains =
-      GetWikipediaSearchEngineSubdomains();
+  const auto subdomains = GetWikipediaSearchEngineSubdomains();
 
   // Act
   for (const auto& subdomain : subdomains) {
@@ -116,7 +112,7 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
   // Arrange
-  const std::vector<std::string>& subdomains = GetYahooSearchEngineSubdomains();
+  const auto subdomains = GetYahooSearchEngineSubdomains();
 
   // Act
   for (const auto& subdomain : subdomains) {
@@ -139,35 +135,34 @@ TEST(BatAdsSearchEngineUtilTest, IsNotMultilingualYahooSearchEngine) {
 
 TEST(BatAdsSearchEngineUtilTest, IsMonolingualSearchEngine) {
   // Arrange
-  const std::vector<GURL> urls = {
-      GURL(R"(https://developer.mozilla.org/en-US/)"),
-      GURL(R"(https://duckduckgo.com/)"),
-      GURL(R"(https://fireball.de/)"),
-      GURL(R"(https://github.com/)"),
-      GURL(R"(https://infogalactic.com/)"),
-      GURL(R"(https://search.brave.com/)"),
-      GURL(R"(https://search.yahoo.com/)"),
-      GURL(R"(https://stackoverflow.com/)"),
-      GURL(R"(https://swisscows.com/)"),
-      GURL(R"(https://twitter.com/explore/)"),
-      GURL(R"(https://www.baidu.com/)"),
-      GURL(R"(https://www.bing.com/)"),
-      GURL(R"(https://www.dogpile.com/)"),
-      GURL(R"(https://www.ecosia.org/)"),
-      GURL(R"(https://www.excite.com/)"),
-      GURL(R"(https://www.findx.com/)"),
-      GURL(R"(https://www.gigablast.com/)"),
-      GURL(R"(https://www.lycos.com/)"),
-      GURL(R"(https://www.metacrawler.com/)"),
-      GURL(R"(https://www.petalsearch.com/)"),
-      GURL(R"(https://www.qwant.com/)"),
-      GURL(R"(https://www.semanticscholar.org/)"),
-      GURL(R"(https://www.sogou.com/)"),
-      GURL(R"(https://www.startpage.com/)"),
-      GURL(R"(https://www.webcrawler.com/)"),
-      GURL(R"(https://www.wolframalpha.com/)"),
-      GURL(R"(https://www.youtube.com/)"),
-      GURL(R"(https://yandex.com/)")};
+  const std::vector<GURL> urls = {GURL("https://developer.mozilla.org/en-US/"),
+                                  GURL("https://duckduckgo.com/"),
+                                  GURL("https://fireball.de/"),
+                                  GURL("https://github.com/"),
+                                  GURL("https://infogalactic.com/"),
+                                  GURL("https://search.brave.com/"),
+                                  GURL("https://search.yahoo.com/"),
+                                  GURL("https://stackoverflow.com/"),
+                                  GURL("https://swisscows.com/"),
+                                  GURL("https://twitter.com/explore/"),
+                                  GURL("https://www.baidu.com/"),
+                                  GURL("https://www.bing.com/"),
+                                  GURL("https://www.dogpile.com/"),
+                                  GURL("https://www.ecosia.org/"),
+                                  GURL("https://www.excite.com/"),
+                                  GURL("https://www.findx.com/"),
+                                  GURL("https://www.gigablast.com/"),
+                                  GURL("https://www.lycos.com/"),
+                                  GURL("https://www.metacrawler.com/"),
+                                  GURL("https://www.petalsearch.com/"),
+                                  GURL("https://www.qwant.com/"),
+                                  GURL("https://www.semanticscholar.org/"),
+                                  GURL("https://www.sogou.com/"),
+                                  GURL("https://www.startpage.com/"),
+                                  GURL("https://www.webcrawler.com/"),
+                                  GURL("https://www.wolframalpha.com/"),
+                                  GURL("https://www.youtube.com/"),
+                                  GURL("https://yandex.com/")};
 
   // Act
   for (const auto& url : urls) {

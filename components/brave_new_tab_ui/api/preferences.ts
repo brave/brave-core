@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
 
@@ -26,10 +26,6 @@ export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
 }
 
-export function saveShowToday (value: boolean): void {
-  sendSavePref('showToday', value)
-}
-
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
@@ -44,10 +40,6 @@ export function saveBrandedWallpaperOptIn (value: boolean): void {
 
 export function saveIsBrandedWallpaperNotificationDismissed (value: boolean): void {
   sendSavePref('isBrandedWallpaperNotificationDismissed', value)
-}
-
-export function saveIsBraveTodayOptedIn (value: boolean): void {
-  sendSavePref('isBraveTodayOptedIn', value)
 }
 
 export function saveSetAllStackWidgets (visible: boolean): void {

@@ -10,7 +10,7 @@
   GetChromeChannel_ChromiumImpl(); \
   version_info::Channel GetChromeChannel
 
-#include "src/chrome/install_static/install_util.h"
+#include "src/chrome/install_static/install_util.h"  // IWYU pragma: export
 #undef GetChromeChannel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_INSTALL_STATIC_INSTALL_UTIL_H_

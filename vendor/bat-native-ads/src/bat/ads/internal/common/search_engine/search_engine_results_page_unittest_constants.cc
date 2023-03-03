@@ -16,7 +16,7 @@ const std::vector<GURL>& GetSearchEngineResultsPageUrls() {
   static base::
       NoDestructor<std::vector<GURL>>
           urls(
-              {GURL(R"(https://developer.mozilla.org/en-US/search?q=foobar)"),
+              {GURL("https://developer.mozilla.org/en-US/search?q=foobar"),
                GURL(R"(https://duckduckgo.com/?q=foobar&t=h_&ia=web)"),
                GURL(R"(https://en.wikipedia.org/wiki/Foobar)"),
                GURL(R"(https://fireball.de/search?q=foobar)"),

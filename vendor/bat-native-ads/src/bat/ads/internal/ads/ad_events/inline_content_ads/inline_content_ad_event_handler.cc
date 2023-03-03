@@ -6,8 +6,8 @@
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler.h"
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/inline_content_ad_info.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events_database_table.h"
 #include "bat/ads/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
@@ -38,6 +38,15 @@ bool ShouldDebounceClickedAdEvent(
 
   return event_type == mojom::InlineContentAdEventType::kClicked &&
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kClicked);
+}
+
+bool WasAdServed(const AdInfo& ad,
+                 const AdEventList& ad_events,
+                 const mojom::InlineContentAdEventType& event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+
+  return event_type == mojom::InlineContentAdEventType::kServed ||
+         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServed);
 }
 
 bool IsAdPlaced(const AdInfo& ad,
@@ -86,39 +95,43 @@ void EventHandler::FireEvent(const std::string& placement_id,
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid placement "
          "id");
-    FailedToFireEvent(placement_id, creative_instance_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
 
   if (creative_instance_id.empty()) {
     BLOG(1,
          "Failed to fire inline content ad event due to an invalid creative "
          "instance id");
-    FailedToFireEvent(placement_id, creative_instance_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
   }
 
   const database::table::CreativeInlineContentAds database_table;
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
-      [=](const bool success, const std::string& creative_instance_id,
-          const CreativeInlineContentAdInfo& creative_ad) {
-        if (!success) {
-          BLOG(1,
-               "Failed to fire inline content ad event due to missing creative "
-               "instance id "
-                   << creative_instance_id);
-          FailedToFireEvent(placement_id, creative_instance_id, event_type);
-          return;
-        }
-
-        const InlineContentAdInfo ad =
-            BuildInlineContentAd(creative_ad, placement_id);
-        FireEvent(ad, event_type);
-      });
+      base::BindOnce(&EventHandler::OnGetForCreativeInstanceId,
+                     base::Unretained(this), placement_id, event_type));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void EventHandler::OnGetForCreativeInstanceId(
+    const std::string& placement_id,
+    const mojom::InlineContentAdEventType event_type,
+    const bool success,
+    const std::string& creative_instance_id,
+    const CreativeInlineContentAdInfo& creative_ad) {
+  if (!success) {
+    BLOG(1,
+         "Failed to fire inline content ad event due to missing creative "
+         "instance id "
+             << creative_instance_id);
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type);
+  }
+
+  const InlineContentAdInfo ad =
+      BuildInlineContentAd(creative_ad, placement_id);
+  FireEvent(ad, event_type);
+}
 
 void EventHandler::FireEvent(const InlineContentAdInfo& ad,
                              const mojom::InlineContentAdEventType event_type) {
@@ -127,28 +140,41 @@ void EventHandler::FireEvent(const InlineContentAdInfo& ad,
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      [=](const bool success, const AdEventList& ad_events) {
-        if (!success) {
-          BLOG(1, "Inline content ad: Failed to get ad events");
-          FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                            event_type);
-          return;
-        }
+      base::BindOnce(&EventHandler::OnGetAdEvents, base::Unretained(this), ad,
+                     event_type));
+}
 
-        if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
-          BLOG(1, "Inline content ad: Not allowed as debounced "
-                      << event_type << " event for this placement id "
-                      << ad.placement_id);
-          FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                            event_type);
-          return;
-        }
+void EventHandler::OnGetAdEvents(
+    const InlineContentAdInfo& ad,
+    const mojom::InlineContentAdEventType event_type,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Inline content ad: Failed to get ad events");
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             event_type);
+  }
 
-        const auto ad_event = AdEventFactory::Build(event_type);
-        ad_event->FireEvent(ad);
+  if (!WasAdServed(ad, ad_events, event_type)) {
+    BLOG(1,
+         "Inline content ad: Not allowed because an ad was not served "
+         "for placement id "
+             << ad.placement_id);
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             event_type);
+  }
 
-        NotifyInlineContentAdEvent(ad, event_type);
-      });
+  if (ShouldDebounceAdEvent(ad, ad_events, event_type)) {
+    BLOG(1, "Inline content ad: Not allowed as debounced "
+                << event_type << " event for placement id " << ad.placement_id);
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             event_type);
+  }
+
+  const auto ad_event = AdEventFactory::Build(event_type);
+  ad_event->FireEvent(ad);
+
+  NotifyInlineContentAdEvent(ad, event_type);
 }
 
 void EventHandler::FailedToFireEvent(

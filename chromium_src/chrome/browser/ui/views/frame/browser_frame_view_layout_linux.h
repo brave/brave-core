@@ -8,12 +8,13 @@
 
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
 
-#define GetInputInsets                                  \
-  Unused() { return {}; }                               \
-  int NonClientTopHeight(bool restored) const override; \
+#define GetInputInsets                                                         \
+  GetInputInsets_Unused();                                                     \
+  void SetBoundsForButton(views::FrameButton button_id, views::Button* button, \
+                          ButtonAlignment align) override;                     \
   gfx::Insets GetInputInsets
 
-#include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"
+#include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"  // IWYU pragma: export
 
 #undef GetInputInsets
 

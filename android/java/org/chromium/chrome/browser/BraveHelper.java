@@ -39,8 +39,4 @@ public class BraveHelper {
             BravePrefServiceBridge.getInstance().setDesktopModeEnabled(false);
         }
     }
-
-    public static void cacheNativeFeatures() {
-        BraveFeatureUtil.sTabSwitcherOnReturn.cacheFeature();
-    }
 }

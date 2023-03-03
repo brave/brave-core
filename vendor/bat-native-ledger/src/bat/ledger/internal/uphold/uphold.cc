@@ -16,29 +16,20 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
-#include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/internal/wallet_provider/uphold/connect_uphold_wallet.h"
 #include "bat/ledger/internal/wallet_provider/uphold/get_uphold_wallet.h"
+#include "bat/ledger/internal/wallet_provider/uphold/uphold_transfer.h"
 #include "brave_base/random.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
-namespace {
-const char kFeeMessage[] =
-    "5% transaction fee collected by Brave Software International";
-}  // namespace
-
-namespace ledger {
-namespace uphold {
+namespace ledger::uphold {
 
 Uphold::Uphold(LedgerImpl* ledger)
-    : transfer_(std::make_unique<UpholdTransfer>(ledger)),
-      card_(std::make_unique<UpholdCard>(ledger)),
+    : card_(std::make_unique<UpholdCard>(ledger)),
       connect_wallet_(std::make_unique<ConnectUpholdWallet>(ledger)),
       get_wallet_(std::make_unique<GetUpholdWallet>(ledger)),
+      transfer_(std::make_unique<UpholdTransfer>(ledger)),
       uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)),
       ledger_(ledger) {}
 
@@ -61,31 +52,22 @@ void Uphold::StartContribution(const std::string& contribution_id,
                                ledger::LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(mojom::Result::LEDGER_ERROR, "", contribution_id,
-                          amount, "", callback);
-    return;
+    return callback(mojom::Result::LEDGER_ERROR);
   }
 
-  const double fee = (amount * 1.05) - amount;
-  const double reconcile_amount = amount - fee;
+  const double fee = amount * 0.05;
 
-  auto contribution_callback =
-      std::bind(&Uphold::ContributionCompleted, this, _1, _2, contribution_id,
-                fee, info->publisher_key, callback);
-
-  Transaction transaction;
-  transaction.address = info->address;
-  transaction.amount = reconcile_amount;
-
-  transfer_->Start(transaction, contribution_callback);
+  transfer_->Run(contribution_id, info->address, amount - fee,
+                 base::BindOnce(&Uphold::ContributionCompleted,
+                                base::Unretained(this), std::move(callback),
+                                contribution_id, fee, info->publisher_key));
 }
 
-void Uphold::ContributionCompleted(mojom::Result result,
-                                   const std::string& transaction_id,
+void Uphold::ContributionCompleted(ledger::LegacyResultCallback callback,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
-                                   ledger::LegacyResultCallback callback) {
+                                   mojom::Result result) {
   if (result == mojom::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
@@ -102,7 +84,7 @@ void Uphold::ContributionCompleted(mojom::Result result,
 void Uphold::FetchBalance(FetchBalanceCallback callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 
   auto url_callback = base::BindOnce(
@@ -137,13 +119,14 @@ void Uphold::OnFetchBalance(FetchBalanceCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK, available);
 }
 
-void Uphold::TransferFunds(const double amount,
+void Uphold::TransferFunds(double amount,
                            const std::string& address,
-                           client::TransactionCallback callback) {
-  Transaction transaction;
-  transaction.address = address;
-  transaction.amount = amount;
-  transfer_->Start(transaction, callback);
+                           const std::string& contribution_id,
+                           client::LegacyResultCallback callback) {
+  transfer_->Run(contribution_id, address, amount,
+                 base::BindOnce([](client::LegacyResultCallback callback,
+                                   mojom::Result result) { callback(result); },
+                                std::move(callback)));
 }
 
 void Uphold::ConnectWallet(const base::flat_map<std::string, std::string>& args,
@@ -199,10 +182,9 @@ void Uphold::StartTransferFeeTimer(const std::string& fee_id, int attempts) {
                      fee_id, attempts));
 }
 
-void Uphold::OnTransferFeeCompleted(const mojom::Result result,
-                                    const std::string& transaction_id,
-                                    const std::string& contribution_id,
-                                    int attempts) {
+void Uphold::OnTransferFeeCompleted(const std::string& contribution_id,
+                                    int attempts,
+                                    mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     if (attempts < 3) {
       BLOG(0, "Transaction fee failed, retrying");
@@ -217,17 +199,12 @@ void Uphold::OnTransferFeeCompleted(const mojom::Result result,
 }
 
 void Uphold::TransferFee(const std::string& contribution_id,
-                         const double amount,
+                         double amount,
                          int attempts) {
-  auto transfer_callback = std::bind(&Uphold::OnTransferFeeCompleted, this, _1,
-                                     _2, contribution_id, attempts);
-
-  Transaction transaction;
-  transaction.address = GetFeeAddress();
-  transaction.amount = amount;
-  transaction.message = kFeeMessage;
-
-  transfer_->Start(transaction, transfer_callback);
+  transfer_->Run(
+      contribution_id, GetFeeAddress(), amount,
+      base::BindOnce(&Uphold::OnTransferFeeCompleted, base::Unretained(this),
+                     contribution_id, attempts));
 }
 
 void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
@@ -285,5 +262,4 @@ void Uphold::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace uphold
-}  // namespace ledger
+}  // namespace ledger::uphold

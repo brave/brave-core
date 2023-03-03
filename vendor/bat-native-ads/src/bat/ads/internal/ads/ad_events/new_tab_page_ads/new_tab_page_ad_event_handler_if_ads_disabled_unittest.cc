@@ -99,9 +99,12 @@ class BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest
 
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kServed);
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -123,9 +126,12 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireViewedEvent) {
 
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kServed);
 
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kViewed);
@@ -153,9 +159,12 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest, FireClickedEvent) {
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
+
+  event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kServed);
 
   // Act
   event_handler_->FireEvent(kPlacementId, creative_ad.creative_instance_id,
@@ -229,7 +238,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventForUnknownCreativeInstanceId) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   // Act
   event_handler_->FireEvent(kPlacementId, kCreativeInstanceId,
@@ -249,7 +258,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -266,6 +275,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 
   AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
 
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kServed);
+
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kViewed);
@@ -280,7 +292,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
 
@@ -309,7 +321,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
 
@@ -326,6 +338,9 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
+  event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
+                            mojom::NewTabPageAdEventType::kServed);
+
   // Act
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kViewed);
@@ -340,7 +355,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
 TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  ForcePermissionRules();
+  ForcePermissionRulesForTesting();
 
   const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
 

@@ -30,7 +30,7 @@ class BatAdsNotificationAdForMobileIntegrationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
-    ForcePermissionRules();
+    ForcePermissionRulesForTesting();
   }
 
   void SetUpMocks() override {

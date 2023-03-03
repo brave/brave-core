@@ -1,0 +1,30 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "search_result_ad/search_result_ad_handler.cc",
+    "search_result_ad/search_result_ad_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core/browser",
+    "//brave/components/brave_search/common",
+    "//components/schema_org/common:mojom",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/blink/public/common",
+  ]
+
+  public_deps = [
+    "//brave/vendor/bat-native-ads",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
+  ]
+}

@@ -47,10 +47,6 @@ source_set("ui") {
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
-    "webui/brave_federated/federated_internals_page_handler.cc",
-    "webui/brave_federated/federated_internals_page_handler.h",
-    "webui/brave_federated/federated_internals_ui.cc",
-    "webui/brave_federated/federated_internals_ui.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
@@ -64,6 +60,14 @@ source_set("ui") {
     "webui/webcompat_reporter_ui.cc",
     "webui/webcompat_reporter_ui.h",
   ]
+
+  # It doesn't make sense to view accelerators on iOS & Android.
+  if (!is_android && !is_ios) {
+    sources += [
+      "webui/commands_ui.cc",
+      "webui/commands_ui.h",
+    ]
+  }
 
   if (enable_ipfs) {
     sources += [
@@ -90,6 +94,8 @@ source_set("ui") {
       "brave_pages.h",
       "brave_shields_data_controller.cc",
       "brave_shields_data_controller.h",
+      "brave_tab_strip_model_delegate.cc",
+      "brave_tab_strip_model_delegate.h",
       "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",
@@ -215,7 +221,7 @@ source_set("ui") {
     }
 
     public_deps += [ "//brave/vendor/bat-native-ads" ]
-  }  # !is_android
+  }
 
   if (toolkit_views) {
     sources += [
@@ -235,6 +241,8 @@ source_set("ui") {
       "views/brave_news/brave_news_feeds_container_view.h",
       "views/brave_shields/cookie_list_opt_in_bubble_host.cc",
       "views/brave_shields/cookie_list_opt_in_bubble_host.h",
+      "views/brave_tab_search_bubble_host.cc",
+      "views/brave_tab_search_bubble_host.h",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",
       "views/download/brave_download_item_view.cc",
@@ -253,8 +261,8 @@ source_set("ui") {
       "views/frame/brave_opaque_browser_frame_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
-      "views/omnibox/brave_omnibox_popup_contents_view.cc",
-      "views/omnibox/brave_omnibox_popup_contents_view.h",
+      "views/omnibox/brave_omnibox_popup_view_views.cc",
+      "views/omnibox/brave_omnibox_popup_view_views.h",
       "views/omnibox/brave_omnibox_result_view.cc",
       "views/omnibox/brave_omnibox_result_view.h",
       "views/omnibox/brave_omnibox_view_views.cc",
@@ -293,8 +301,8 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout_helper.cc",
       "views/tabs/brave_tab_strip_layout_helper.h",
-      "views/tabs/features.cc",
-      "views/tabs/features.h",
+      "views/tabs/vertical_tab_utils.cc",
+      "views/tabs/vertical_tab_utils.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
@@ -330,6 +338,13 @@ source_set("ui") {
       sources += [
         "views/frame/brave_glass_browser_frame_view.cc",
         "views/frame/brave_glass_browser_frame_view.h",
+      ]
+    }
+
+    if (is_linux) {
+      sources += [
+        "views/frame/brave_browser_frame_view_linux_native.cc",
+        "views/frame/brave_browser_frame_view_linux_native.h",
       ]
     }
 
@@ -387,11 +402,9 @@ source_set("ui") {
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
-    "//brave/browser/resources/federated_internals:resources",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
-    "//brave/browser/ui/webui/brave_federated:mojo_bindings",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
@@ -500,7 +513,7 @@ source_set("ui") {
     ]
   }
 
-  if (enable_speedreader) {
+  if (enable_speedreader && !is_android) {
     deps += [ "//brave/components/speedreader" ]
 
     sources += [
@@ -568,6 +581,8 @@ source_set("ui") {
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/common",
       "//brave/components/brave_private_new_tab_ui/common",
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
@@ -581,11 +596,10 @@ source_set("ui") {
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:sync_service_impl_helper",
-      "//brave/components/brave_today/browser",
-      "//brave/components/brave_today/common",
       "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
+      "//brave/components/commands/common",
       "//brave/components/speedreader/common",
       "//brave/components/speedreader/common:mojom",
       "//brave/components/speedreader/resources/panel:generated_resources",
@@ -702,7 +716,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn/browser",
-      "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
+      "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
     ]
@@ -781,8 +795,28 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
+      "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
+    ]
+  }
+  if (is_android) {
+    sources += [
+      "webui/brave_wallet/android/swap_page_ui.cc",
+      "webui/brave_wallet/android/swap_page_ui.h",
+      "webui/brave_wallet/common_handler/wallet_handler.cc",
+      "webui/brave_wallet/common_handler/wallet_handler.h",
+      "webui/brave_wallet/page_handler/wallet_page_handler.cc",
+      "webui/brave_wallet/page_handler/wallet_page_handler.h",
+      "webui/brave_wallet/wallet_common_ui.cc",
+      "webui/brave_wallet/wallet_common_ui.h",
+    ]
+    deps += [
+      "//brave/browser/ui/webui/brave_wallet/common_handler",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/brave_wallet_ui:resources",
+      "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
   }
 

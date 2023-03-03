@@ -63,7 +63,6 @@
 <translation id="6811221529729056895">Vyskúšajte nástroj Brave Search teraz</translation>
 <translation id="5525668735313040116">Vyhľadávajte na webe súkromne</translation>
 <translation id="3446024864193919737">Zobraziť Odmeny Brave</translation>
-<translation id="6274899614137380422">Zobraziť Binance</translation>
 <translation id="5585019845078534178">Karty</translation>
 <translation id="3870475560794762985">Zobraziť sponzorované obrázky</translation>
 <translation id="8466529005131466476">Za prehliadanie sponzorovaných stránok môžete získať tokeny.</translation>
@@ -102,8 +101,6 @@
 <translation id="1776831331757823105">Hodiny</translation>
 <translation id="7791543448312431591">Pridať</translation>
 <translation id="7679334366167089823">Získajte tokeny sledovaním reklám rešpektujúcich súkromie.</translation>
-<translation id="2236818903653027036">Obchodujte s kryptomenami na Binance priamo vo vašom prehliadači.</translation>
-<translation id="6508379561970983105">Obchodujte s kryptomenami na Gemini priamo vo vašom prehliadači.</translation>
 <translation id="7191394989411626168">Vypnutím kariet sa skryjú všetky karty, ktoré sú momentálne viditeľné. Stále však môžete dostávať upozornenia na nové karty.</translation>
 <translation id="6820526586005233839">Brave Ads pozastavené</translation>
 <translation id="5190407395832551012">Aby boli Brave Rewards zabezpečené proti zneužívaniu, náhodne požiadame používateľov, aby vyriešili test captcha. Kliknite na “Solve” pre obnovenie reklám.</translation>
@@ -171,31 +168,8 @@
 <translation id="7616645803364270729">E-mail, Twitter atď.</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
-<translation id="2974339193389078578">Vitajte v prehliadači Brave</translation>
-<translation id="7735138632831241257">Pripravte sa na rýchlejšie a bezpečnejšie prehliadanie pomocou prehliadača navrhnutého tak, aby ochránil vaše súkromie.</translation>
-<translation id="6001839398155993679">Poďme</translation>
-<translation id="4225189922025976867"><ph name="BEGIN_BOLD"/>Získajte žetóny<ph name="END_BOLD"/> zobrazením Súkromných reklám Brave a automatickou podporou tvorcov obsahu.</translation>
-<translation id="5477721706074111257">Kliknutím na tlačidlo vyjadrujete súhlas s <ph name="BEGIN_LINK"/>Podmienkami služby<ph name="END_LINK"/> a <ph name="BEGIN_LINK"/>Zásadami ochrany osobných údajov<ph name="END_LINK"/>.</translation>
-<translation id="3505541710659461355">Túto funkciu môžete kedykoľvek vypnúť v nastaveniach.</translation>
-<translation id="2965798296974325760">Začnite používať Odmeny</translation>
-<translation id="3958088479270651626">Importovať záložky a nastavenia</translation>
-<translation id="2609701960545338618">Nastavte si bežné prostredie prehliadača prenesením záložiek a nastavení z vášho starého prehliadača. V Nastaveniach nájdete aj možnosť pokročilého prenosu položiek.</translation>
-<translation id="8275038454117074363">Importovať</translation>
-<translation id="2088479175984386785">Importovať z...</translation>
-<translation id="5540323067375019678">Spravujte svoje štíty</translation>
-<translation id="3278033011827237847">Pomocou Brave Štíty chráni pred reklamami a trackermi, ktoré útočia na súkromie. Štíty nastavte na hodnotu „nadol“, ak sa zdá, že stránka ne pracuje správne.</translation>
-<translation id="3366308997091824722">Nastavenia ochrany</translation>
-<translation id="4764692524839457597">predvolené</translation>
-<translation id="3108122610701115301">Nastaviť predvolené</translation>
-<translation id="2469440407442116729">Vyberte vyhľadávač</translation>
-<translation id="438216590634144114">Ak prehľadávate web z adresného riadku, vyberte vyhľadávací nástroj, ktorý by ste chceli používať predvolene.</translation>
-<translation id="5804484488647369316">Nastaviť predvolený vyhľadávač</translation>
-<translation id="3829010735958850433">Preskočiť prehliadku na uvítanie</translation>
-<translation id="1201402288615127009">Ďalej</translation>
-<translation id="7954950242989581218">Surfujte bezpečne a riadne</translation>
-<translation id="2188651882929633653">Brave Shields blokuje hrozné veci, ktoré sa vás snažia sledovať na webe — vrátane väčšiny reklám. Nastavte Štíty na “dole” ak sa zdá, že stránka nefunguje. Brave používa <ph name="BEGIN_LINK_P3A"/>úplne súkromný analýzu produktov<ph name="END_LINK_P3A"/> na odhadovanie celkového využitia určitých funkcií. Toto môžete vypnúť v <ph name="BEGIN_LINK_P3A_SETTINGS"/>nastaveniach<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
 <translation id="4851215387785619212">Súkromné reklamy Brave</translation>
-<translation id="3114984266384096064">Získajte [[currency]] prezeraním súkromných reklám Brave. Prezentované reklamy sú na základe vašich záujmov, ako to vyplýva z vášho správania pri prehliadaní. Z vášho prehliadača nikdy neodídu žiadne osobné údaje ani história prehliadania.</translation>
+<translation id="6480303618073442141">Brave Súkromné Reklamy sú navrhnuté tak, aby boli dôverné a nerušivé. Reklamy sa zobrazujú na základe vašich záujmov, ale osobné údaje ani história prehliadania nikdy vaše zariadenie neopustia. Navyše vám Brave Súkromné Reklamy za ich pozretie umožňujú zarábať BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>).</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
 <translation id="3742599705619405136">Automatická podpora autorov a tvorcov obsahu. Nastavte mesačné platby a normálne surfujte. Overeným stránkam Brave, ktoré navštívite, bude automaticky odoslaný príspevok. Výšku príspevku vypočíta Brave podľa miery vašej pozornosti venovanej jednotlilvým stránkam.</translation>
 <translation id="3325399124634342726">Aktuálne výnosy za tento mesiac (odhadované)</translation>
@@ -214,7 +188,7 @@
 <translation id="2356652719351432565">Relevancia regionálnej reklamy</translation>
 <translation id="3216275550298493597">Toto umožňuje prehliadaču Brave ukazovať vám reklamy zamerané špecificky pre váš región.</translation>
 <translation id="8446884382197647889">Ďalšie informácie</translation>
-<translation id="6209514229703649203">Automaticky nájdené ako [[adsSubdivisionTarget]]</translation>
+<translation id="3783399046165388366">Automaticky nájdené ako <ph name="SUBDIVISION"/></translation>
 <translation id="8010081455002666927">Automaticky detekované</translation>
 <translation id="4394049700291259645">Zakázať</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
@@ -229,9 +203,6 @@
 <translation id="7577100371127227294">Mesačné príspevky</translation>
 <translation id="178390304006113804">Stanovte mesačné opakujúce sa príspevky, aby ste mohli neustále podporovať svojich obľúbených tvorcov.</translation>
 <translation id="3302159320447117425">Zatiaľ neboli stanovené žiadne mesačné príspevky.</translation>
-<translation id="1617202384704994799">Už čoskoro.</translation>
-<translation id="2241248417273918295">Zárobky sa vyplácajú každý mesiac.</translation>
-<translation id="68906705461077250">Nastavte si požadovanú frekvenciu, aby ste si zvýšili alebo znížili svoje zárobky.</translation>
 <translation id="1847863811689960237">Odmeňte autorov za obsah, ktorý máte radi.</translation>
 <translation id="4129489167302464118">Vaša mesačná platba sa rozdelí medzi stránky, ktoré navštívite.</translation>
 <translation id="4898632353264854950">Stránky sa zobrazia pri prehliadaní</translation>
@@ -251,9 +222,6 @@
 <translation id="8610523985422563960">1 minúta</translation>
 <translation id="2807328214759298515">Do</translation>
 <translation id="9031738692126722094">Povoliť na týchto stránkach príspevky za úroveň obsahu</translation>
-<translation id="3905400818082450708">Reddit</translation>
-<translation id="6032511312767282174">GitHub</translation>
-<translation id="2635094637295383009">Twitter</translation>
 <translation id="7583327070390027131">Dátum nasledujúcich mesačných príspevkov</translation>
 <translation id="6231182869178328516">Práve som dal príspevok <ph name="NAME"/> pomocou prehliadača Brave. Skontrolujte to na stránke https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Je skvelé, že pomocou prehliadača <ph name="HASHTAG"/>Brave môžem podporiť tvorcov obsahu! Práve som daroval používateľovi <ph name="NAME"/> BAT <ph name="HASHTAG2"/>. Ak používateľ vykoná overenie na stránke https://creators.brave.com pred <ph name="DATE"/>, získa BAT!</translation>
@@ -287,20 +255,19 @@
 <translation id="6996157559236886133">Chyba: Obmedzená funkčnosť účtu Uphold</translation>
 <translation id="3274650021044762770">Pri overovaní požiadavky vášho prehliadača na pripojenie Brave Rewards k vášmu účtu<ph name="PROVIDER"/> sa vyskytol problém. So žiadosťou o pomoc <ph name="BEGIN_LINK"/>kontaktujte<ph name="END_LINK"/> podporu.</translation>
 <translation id="1316066811927496401">Chyba: požiadavku nebolo možné overiť</translation>
-<translation id="1737873393693460829">Zapnutím [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
+<translation id="8167256685618982116">Zapnutím <ph name="TITLE"/> vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
 <translation id="4123948149985772126">Vyberte poskytovateľa účtu</translation>
 <translation id="2916515880661220182">Ak už máte účet správcu, zobrazí sa výzva na jeho pripojenie. Ak ho nemáte, dostanete možnosť si ho vytvoriť.</translation>
 <translation id="2054853229650377447">Poznámka: Po povolení budú vaše transakcie viditeľné pre správcu. Uvidí napríklad príjemcu a množstvo vašich príspevkov.</translation>
-<translation id="2147158325758481862">Overenie je voliteľné</translation>
-<translation id="8228649055483250005">Poskytovatelia služieb peňaženky sú povinní overiť identitu kohokoľvek, kto vytvára peňaženku, a to vrátane použitia preukazu totožnosti s fotografiou.</translation>
-<translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> nespracováva, neuchováva, ani nemá prístup k akýmkoľvek osobným údajom, keď si vytvoríte účet u našich partnerov pre správu peňaženky.</translation>
-<translation id="6682919029276027868">Vaše súčasné funkcie Brave Rewards sú však limitované. Overenie u partnera pre správu peňaženky vám umožňuje:</translation>
-<translation id="9064931634458501855">Voľne vyberať a vkladať finančné prostriedky</translation>
-<translation id="3222002542796906461">Dostávajte Rewards priamo na účet</translation>
+<translation id="121894865378699201">Ste pripravený začať zarábať BAT?</translation>
+<translation id="4478996292566912629">Poskytovatelia správcovských účtov musia overiť vašu identitu, čo môže zahŕňať predloženie preukazu totožnosti s fotografiou. Prečítajte si naše <ph name="BEGIN_LINK"/> Zásady ochrany osobných údajov pre Brave odmeny<ph name="END_LINK"/></translation>
+<translation id="7730415569603152862">Pripojte si správcovský účet k vášmu profilu Odmien, aby ste mohli:</translation>
+<translation id="5785531043735482053">Ukladať, spravovať a vyberať svoje zarobené BAT</translation>
+<translation id="5155452078869279096">Doplniť svoj účet o zakúpené BAT</translation>
+<translation id="5497001757280825146">Podporiť svoje obľúbené stránky a tvorcov</translation>
 <translation id="1233129511866436960">Získajte viac informácií o regiónoch a podpore</translation>
 <translation id="7329170127335794328">Momentálne nie je k dispozícii vo vašom regióne</translation>
 <translation id="8304979233901023264">Prečítal som si a súhlasím s Brave’s <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> &amp; <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
-<translation id="2359808026110333948">Pokračovať</translation>
 <translation id="1892970806832316900">Čakajúci do <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Ľutujeme, váš prehliadač nemôže prijímať súkromné reklamy Brave.</translation>
 <translation id="5177429570315095022">Aby ste mohli pokračovať v prezeraní reklám, je potrebné aktualizovať váš prehliadač.</translation>
@@ -383,7 +350,6 @@
 <translation id="3363158483789327529">Ešte sa nevytvoril profil odmien</translation>
 <translation id="476272015919848174">ID platby odmien:</translation>
 <translation id="9008441690901662695">Stav odmien:</translation>
-<translation id="2851097645709765545">Žiadna peňaženka</translation>
 <translation id="8874184842967597500">Nepripojené</translation>
 <translation id="4569155249847375786">Overené</translation>
 <translation id="6521149675246672063">Odpojené (Overené)</translation>
@@ -392,6 +358,7 @@
 <translation id="6582097696555842139">Zrušiť mesačný príspevok</translation>
 <translation id="9087994290002662101">Zmeniť množstvo</translation>
 <translation id="2521187434582281933">Potvrdiť zrušenie mesačného príspevku</translation>
+<translation id="2359808026110333948">Pokračovať</translation>
 <translation id="915758461293673891">Suma príspevku:</translation>
 <translation id="78017292973022384">Váš mesačný príspevok pre tohto tvorcu bol zrušený.</translation>
 <translation id="534368327994110883">Vy’ momentálne podporujete tohto tvorcu</translation>
@@ -408,7 +375,7 @@
 <translation id="4492470488449820476">Minimálna suma daru je <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
 <translation id="9088057605518918276">Mesačný príspevok bol stanovený.</translation>
 <translation id="6306631474379759382">Dátum ďalšieho príspevku:</translation>
-<translation id="3593485149443019592">Nedostatok tokenov. Pridajte <ph name="LINK_BEGIN"/>finančné prostriedky<ph name="LINK_END"/>.</translation>
+<translation id="4647657427328119430">Nedostatok tokenov.</translation>
 <translation id="3586352807094428968">Brave si ako poplatok za spracovanie účtuje 5 % sumy príspevku.</translation>
 <translation id="207268487070188114">Jednorazový príspevok</translation>
 <translation id="69861679024013299">Výška jednorazového príspevku:</translation>
@@ -418,6 +385,9 @@
 <translation id="1420756770787071946">Podporovať tohto tvorcu</translation>
 <translation id="3271043362279673449">Vďaka za vašu podporu!</translation>
 <translation id="4995870125735453485"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Spracovanie vášho príspevku môže niekoľko minút trvať</translation>
+<translation id="6516984207843289176">Pripojiť účet</translation>
+<translation id="8775519284782574752">Pripojte svoj správcovský účet, aby ste mohli začať zarábať BAT a podporovať tvorcov.</translation>
+<translation id="6485607335663409274">Chcete podporiť svojich obľúbených tvorcov?</translation>
 <translation id="3312470408978098625">Váš jednorazový príspevok bol odoslaný.</translation>
 <translation id="839058704683989763">Nastavili ste prebiehajúce prepitné!</translation>
 <translation id="5096821444729034955">za ich príspevok</translation>
@@ -456,6 +426,7 @@
 <translation id="8802504113265057166">[[currency]], ktoré neboli použité pred dátumom expirácie, budú automaticky zaradené naspäť do rastového fondu používateľov Brave.</translation>
 <translation id="279567716178902927">Dátum vypršania grantu</translation>
 <translation id="1389143276807887637">importovať</translation>
+<translation id="3810973564298564668">Spravovať</translation>
 <translation id="6302422639282249274">Spravovať Brave odmeny</translation>
 <translation id="211044356803193224">Mesačné príspevky!</translation>
 <translation id="2487641031722095938">To je váš šťastný deň!</translation>
@@ -502,8 +473,9 @@
 <translation id="5317144262906129592">Tohto tvorcu obsahu môžete podporiť zaslaním príspevku. Je to spôsob, ako mu poďakovať za tvorbu skvelého obsahu.</translation>
 <translation id="3074127054582480056">Pozornosť</translation>
 <translation id="3659457123782988823">Naozaj chcete reštartovať svoje Brave Rewards?</translation>
-<translation id="4048187103708861555">Vaše <ph name="BAT_AMOUNT"/> a ďalšie údaje o Rewards sa natrvalo stratia, ak reštartujete Brave Rewards. Uistite sa, že ste <ph name="LINK_BEGIN"/>overili<ph name="LINK_END"/>, aby ste si mohli ponechať BAT.</translation>
-<translation id="3548849774726860833">Ak svoje Brave Rewards reštartujete, údaje o Rewards budú natrvalo stratené.</translation>
+<translation id="1666001796278936721">Resetovaním vymažete svoj aktuálny profil Brave Odmien a začnete odznova s úplne novým profilom Brave Odmien. Pred pokračovaním si o resetovaní<ph name="LINK_BEGIN"/>zistite viac<ph name="LINK_END"/>, len pre istotu.</translation>
+<translation id="94095197509579227">Poznámka: Aktuálne máte v tomto mesiaci <ph name="BAT_AMOUNT"/> odhadovaných zárobkov, o ktoré resetovaním prídete.</translation>
+<translation id="4806029412510565611">Rozumiem, že môj aktuálny profil Brave Odmien a údaje o Brave Odmenách budú z môjho zariadenia vymazané a prečítal/a som si <ph name="LINK_BEGIN"/> pomocný článok o resetovaní <ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Kupónové granty nárokované</translation>
 <translation id="3494964159182650590">Súhrn odmien</translation>
 <translation id="2913994227901456490">Pozrieť všetkých [[numItems]] položiek</translation>
@@ -526,7 +498,7 @@
 <translation id="6727483290601442544">Zobraziť podrobnosti</translation>
 <translation id="4206899127409458763">Vytvorenie profilu Brave Rewards</translation>
 <translation id="1988679729106502285">POZNÁMKA:</translation>
-<translation id="4047340292178074200">Tento tvorca nie je aktuálne nakonfigurovaný na prijímanie príspevkov z vašej služby peňaženky Rewards. Akýkoľvek príspevok, ktorý zadáte, zostane čakajúci vo vašej peňaženke a bude sa opakovať automaticky počas 90 dní.</translation>
+<translation id="942863887222585572">Ste pripojený na <ph name="USER_PROVIDER"/>, ale tento tvorca je pripojený na <ph name="CREATOR_PROVIDER"/>. Znamená to, že sa k nemu vaša podpora nedostane. Všetka odoslaná podpora ostane nateraz v štádiu riešenia a automaticky sa skúsi odoslať znova o 90 dní.</translation>
 <translation id="5530734056858418442">Tento tvorca ešte nie je zaregistrovaný. Akýkoľvek príspevok, ktorý zadáte, zostane čakajúci a bude sa opakovať automaticky počas 90 dní.</translation>
 <translation id="3197752845651180812">Čakajúce dary</translation>
 <translation id="6964891561514920613">Zobraziť všetky čakajúce príspevky</translation>
@@ -552,75 +524,11 @@
 <translation id="6915065518766963119">* Vyžaduje sa potvrdená verifikácia.</translation>
 <translation id="7703007724342399482">Získajte späť 2 % kryptomenu s kartou Uphold</translation>
 <translation id="1109729143147368573">Míňajte vaše krypto a iné aktíva u viac ako 50 miliónov obchodníkov a bankomatov po celom svete. Míňajte krypto a získajte krypto!</translation>
-<translation id="7840362246306242214">Obchodovanie s americkými akciami dostupné na Upholde</translation>
-<translation id="3345432088196080137">Investujte len 1 $ do obľúbených akcií a fondov obchodovaných na burze ako napríklad AAPL, TSLA alebo AMZN</translation>
 <translation id="3787061634640932557">Upraviť karty</translation>
 <translation id="2070991379950719711">Začnite používať Odmeny Brave</translation>
 <translation id="5977237145327845546">Zahájte súkromný videohovor s priateľmi a kolegami.</translation>
 <translation id="8863928195533744356">Začať hovor</translation>
 <translation id="3651550649176056334">O vašich údajoch</translation>
-<translation id="223536150967420869">Kúpiť</translation>
-<translation id="5110244215256675209">Kúpiť krypto</translation>
-<translation id="5749014321384313843">Chcem minúť...</translation>
-<translation id="5395343599598218467">Nakupujte a obchodujte s Binance</translation>
-<translation id="1714829281959608206">Na zobrazenie zostatku na účte Binance a krypto obchodovanie povoľte pripojenie Binance.</translation>
-<translation id="5431354435912389886">Povoliť pripojenie Binance</translation>
-<translation id="907179430004809517">Nie, ďakujem</translation>
-<translation id="5005595188773471616">Hodnota vlastného kapitálu (BTC)</translation>
-<translation id="5445249883546575080">BTC</translation>
-<translation id="1366855498335432549">Depozit</translation>
-<translation id="6861530353669876440">Obchodovať</translation>
-<translation id="6941688859692009361">Pomoc.</translation>
-<translation id="271200872751201315">Neplatný vstup.</translation>
-<translation id="4983019953897853258">Overujú sa vaše poverenia...</translation>
-<translation id="4166140875593399362">Naozaj sa chcete odpojiť?</translation>
-<translation id="4283459172790213529">Po odpojení sa vymažú vaše nastavenia miniaplikácie. Ak sa budete chcieť opäť pripojiť, budete musieť znova overiť totožnosť.</translation>
-<translation id="4804818685124855865">Odpojiť</translation>
-<translation id="6001220899443166468">Účet bol odpojený</translation>
-<translation id="8151638057146502721">Konfigurovať</translation>
-<translation id="7384441892795736634">Obnoviť údaje</translation>
-<translation id="5308380583665731573">Pripojiť</translation>
-<translation id="7942389053031334372">Konvertovali ste</translation>
-<translation id="3348017612272241424">Nemožno konvertovať</translation>
-<translation id="3909193058140362331">Konverziu sa nepodarilo spracovať. Prosím skúste znova.</translation>
-<translation id="5721542149042740780">Zadaná suma prevyšuje čiastku, ktorú máte momentálne k dispozícii.</translation>
-<translation id="7144878232160441200">Skúsiť znova</translation>
-<translation id="6896758677409633944">Kopírovať</translation>
-<translation id="7431764818502638140">Informácie nie sú k dispozícii</translation>
-<translation id="6409345078064530735">Adresa depozitu</translation>
-<translation id="7153116947319792513">Memo vkladu</translation>
-<translation id="1383876407941801731">Vyhľadať</translation>
-<translation id="3781412534383755121">Minimálna suma na konvertovanie je:</translation>
-<translation id="6432284126416751397">Potvrdenie konverzie</translation>
-<translation id="1301340234286078471">Konvertovať</translation>
-<translation id="6680650203439190394">Kurz</translation>
-<translation id="7742417737698031726">Poplatok</translation>
-<translation id="2122225204180056042">Dostanete</translation>
-<translation id="8131740175452115882">Potvrdiť</translation>
-<translation id="8688672835843460752">Dostupné</translation>
-<translation id="4584930231524505442">Chcem konvertovať...</translation>
-<translation id="6755546361496900700">Ukážka konverzie</translation>
-<translation id="2956070106555335453">Zhrnutie</translation>
-<translation id="439104575421522802">Relácia vypršala</translation>
-<translation id="8558560988211507902">Platnosť vášho tokenu na prístup Binance vypršala. Ak chcete pokračovať v používaní miniaplikácie, znova sa pripojte.</translation>
-<translation id="8120782981043104657">Kúpiť kryptomenu pomocou Gemini</translation>
-<translation id="4011891158762138243">Pripojte sa do Gemini, aby ste videli svoj zostatok, a obchodujte s viac ako 45 kryptomenami.</translation>
-<translation id="7604416013180651887">Pripojiť sa k Gemini</translation>
-<translation id="2349109114223854255">Platnosť vášho prístupového tokena do Gemini vypršala a nedá sa obnoviť. Pripojte sa znovu.</translation>
-<translation id="4848984536030986115">Nie je možné vykonať obchod</translation>
-<translation id="7097088316781182926">Potvrdiť obchod</translation>
-<translation id="3488255243387417752">Predať</translation>
-<translation id="7969910554171263591">Dostať ponuku</translation>
-<translation id="1848737374354350807">Zůstatek:</translation>
-<translation id="8285358301500391177">Kupuje</translation>
-<translation id="8675476238074172660">Predáva</translation>
-<translation id="3081546448594005997">Kúpili ste</translation>
-<translation id="8810136648184657966">Predali ste</translation>
-<translation id="1833248467354516560">Jednotková cena</translation>
-<translation id="4763179765154524864">Minutých celkom</translation>
-<translation id="8851480289992540512">Získaných celkom:</translation>
-<translation id="824449983246282560">Na svojom účte nemáte žiadne zostatky. Navštívte Gemini a niečo si zakúpte.</translation>
-<translation id="8624961452383848703">Chcem zameniť…</translation>
 <translation id="1544192797660353713">Peňaženka</translation>
 <translation id="616639131065447379">Vitajte v Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Krypto peňaženky vám umožňujú pracovať s kryptomenou a súvisiacimi aktívami v službe Brave. Krypto peňaženky podporujú ethereum tokeny ako ETH a BAT, ako aj zberateľské predmety a umožňujú vám pracovať s Ðapps a inými inteligentnými zmluvami. To všetko je určené pre ľudí, ktorí sú oboznámení s Ethereom a inými blockchainovými systémami - alebo sú nadšení, že sa môžu učiť.</translation>
@@ -629,29 +537,19 @@
 <translation id="8327818101454798856">Takže namiesto chcenia podporiť svoje obľúbené stránky, si to tam namierte.</translation>
 <translation id="412480955826088549">Sťahovanie komponentu...</translation>
 <translation id="4894106830958548828">Rozumiem</translation>
-<translation id="2880025073956220119">Crypto.com</translation>
-<translation id="8237504256665975959">Zobraziť trhy a kúpiť kryptomenu od crypto.com.</translation>
-<translation id="4292334826913000023">Zobraziť cenu</translation>
-<translation id="5001098083058405168">Získajte bonus 2 % na vkladoch</translation>
-<translation id="7336377875970208451">Prestaňte platiť obchodné poplatky</translation>
-<translation id="5889002303959545585">Kúpiť Bitcoin</translation>
-<translation id="7243082596932212589">Zobraziť trhy Crypto.com</translation>
-<translation id="2258222996838418990">7 d. graf</translation>
-<translation id="5337526542182802976">Podporované páry</translation>
-<translation id="1164622162816276433">24 h objem</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
 <translation id="4492298165410552103">Povoliť podporu nezastaviteľných domén v prehliadači Brave?</translation>
-<translation id="689573545156113164">Brave využije spoločnosť Infura na vydávanie Ethereum JSON-RPC volaní do smart kontraktu od Unstoppable Domains na riešenie .crypto (a tiež .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) žiadostí o vyhľadávanie názvu domény. Ak to povolíte, spoločnosť Infura uvidí konkrétne domény, ktoré sa pokúšate navštíviť, ale nebude môcť vidieť iné domény. Pozrite si  <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/> spoločnosti Infura.</translation>
+<translation id="3647533686160055812">Brave využije službu Infura na riešenie názvov domén .crypto (a tiež .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) z Unstoppable Domains. Brave skrýva vašu IP adresu. Povolením tejto možnosti Infura uvidí len to, že sa niekto pokúša tieto domény navštíviť. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/> podmienky používania <ph name="END_INFURA_TOU_LINK"/> a<ph name="BEGIN_INFURA_PRIVACY_LINK"/> zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/>spoločnosti Infura.</translation>
 <translation id="6513892817556267573">služba Ethereum Name Service</translation>
 <translation id="4335039108389860301">Povoliť podporu službe Ethereum Name Service (ENS) v prehliadači Brave?</translation>
-<translation id="8328137586971750853">Brave bude používať službu Infura na prenos hovorov Ethereum JSON-RPC do smart kontraktu z Ethereum Name Service na vyriešenie požiadaviek na vyhľadanie názvu domény .eth. Ak povolíte túto možnosť, Infura uvidí doménu .eth, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/> spoločnosti Infura.</translation>
+<translation id="4609973808011229683">Brave využije službu Infura na riešenie názvov domén .eth z Ethereum Name Service (ENS). Brave skrýva vašu IP adresu. Povolením tejto možnosti Infura uvidí len to, že sa niekto pokúša tieto .eth domény navštíviť. Prečítajte si <ph name="BEGIN_INFURA_TOU_LINK"/>podmienky používania<ph name="END_INFURA_TOU_LINK"/> a <ph name="BEGIN_INFURA_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_INFURA_PRIVACY_LINK"/> spoločnosti Infura.</translation>
 <translation id="807404806385418949">Vyhľadávanie mimo reťazca v službe Ethereum Name Service</translation>
 <translation id="4049590838234508776">Povoliť podporu vyhľadávania mimo reťazca Ethereum Name Service (ENS) v prehliadači Brave?</translation>
-<translation id="1769433806670482329">Prehliadač Brave bude na riešenie požiadaviek na vyhľadávanie názvov domén .eth používať brány mimo reťazca. Ak to povolíte, brány tretích strán uvidia doménu .eth, ktorú sa pokúšate navštíviť, ale nebudú môcť vidieť iné domény. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Ďalšie informácie<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
+<translation id="5944991147217767764">Táto .eth doména je uložená mimo reťazca a bude riešená cez bránu tretej strany. Povolením vyhľadávania mimo reťazca ENS tretia strana uvidí, že sa pokúšate .eth doménu navštíviť . <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Zistiť viac<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
 <translation id="4047002754575891955">Pokračovať vo vyhľadávaní mimo reťazca</translation>
 <translation id="531747189990625622">Služba Solana Name Service</translation>
 <translation id="1090584614351290462">Povoliť podporu služby Solana Name Service (SNS) v prehliadači Brave?</translation>
-<translation id="954404755605517948">Brave bude používať službu Coinbase Cloud na prenos hovorov Solana JSON-RPC do programu zo Solana Name Service na vyriešenie požiadaviek na vyhľadanie názvu domény .sol. Ak povolíte túto možnosť, Coinbase Cloud uvidí doménu .sol, ktorú sa pokúšate navštíviť, ale nebude vidieť ďalšie domény. Prečítajte si <ph name="BEGIN_COINBASE_TOU_LINK"/>podmienky používania<ph name="END_COINBASE_TOU_LINK"/> a <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_COINBASE_PRIVACY_LINK"/> spoločnosti Coinbase Cloud.</translation>
+<translation id="2350552210396418924">Brave využije službu Coinbase Cloud na riešenie názvov domén .sol. Brave skrýva vašu IP adresu. Povolením tejto možnosti Coinbase uvidí len to, že sa niekto pokúša tieto .sol domény navštíviť. Prečítajte si <ph name="BEGIN_COINBASE_TOU_LINK"/>podmienky používania<ph name="END_COINBASE_TOU_LINK"/> a <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>zásady ochrany osobných údajov<ph name="END_COINBASE_PRIVACY_LINK"/> spoločnosti Coinbase Cloud.</translation>
 <translation id="7378412287463452336">Pokračovať pomocou servera Infura</translation>
 <translation id="2313603121968571839">Pokračovať pomocou servera Coinbase Cloud</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
@@ -744,16 +642,21 @@
 <translation id="5878420576943709750">Vaše odmeny vo výške <ph name="AMOUNT"/> za mesiac <ph name="MONTH"/> sú na ceste. Sledujte to.</translation>
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Prihláste sa do služby <ph name="PROVIDER"/><ph name="END_BOLD"/>, aby ste videli svoj zostatok.</translation>
 <translation id="2659764755126740206">Prejsť na môj účet <ph name="PROVIDER"/></translation>
-<translation id="1165667598801520610">Pridať finančný príspevok</translation>
 <translation id="2394961582378297792">Odhlásené</translation>
-<translation id="6080167751812750226">Odpojiť od <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Odhadované výnosy</translation>
 <translation id="7934950257968365573">Prihláste sa do svojho účtu <ph name="PROVIDER"/></translation>
 <translation id="2613359062756190460">Jednorazové príspevky</translation>
 <translation id="590733288489975971">Odmeny za reklamy</translation>
-<translation id="6181762795539107980">Neoverené</translation>
+<translation id="5308380583665731573">Pripojenie</translation>
 <translation id="3026978804849658576">Zobraziť oznámenie</translation>
+<translation id="3368922792935385530">Pripojené</translation>
 <translation id="8494748383523030337">Váš zostatok</translation>
+<translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>Pripravený začať zarábať BAT?<ph name="BOLD_END"/> Pripojte si správcovský účet k svojmu profilu Odmien. Ak účet nemáte, budete mať možnosť si ho vytvoriť.</translation>
+<translation id="1772961321862399863">Aby mohli používatelia zarábať BAT, musia si k Brave Odmenám pripojiť správcovský účet. Bohužiaľ, vo vašej oblasti nie je k dispozícii žiaden správca, takže zarábanie nie je dostupné. Zapnutie Brave Odmien bude nateraz automaticky podporovať tvorcov.</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {Tento mesiac ste navštívili # používateľa s podporou Brave Odmien}
+      other {Tento mesiac ste navštívili # používateľov s podporou Brave Odmien}
+    }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481">Vaše <ph name="MONTH"/> Ad Rewards sú tu!</translation>
 <translation id="7861645265922445992">Uplatniť Rewards</translation>
@@ -769,20 +672,25 @@
 <translation id="6278643716658443228">Nastavenia odmien</translation>
 <translation id="2862978891748913252">Vyberte krajinu</translation>
 <translation id="3717922248131893262">Ak chcete pokračovať v používaní Brave Rewards, vyberte svoju krajinu, aby sme vám mohli zobraziť správne možnosti a reklamy pre váš región. <ph name="LINK_BEGIN"/>Zásady ochrany osobných údajov<ph name="LINK_END"/></translation>
-<translation id="6777169449483742979">Získavate tokeny za zobrazenie tohto sponzorovaného obrázka.</translation>
-<translation id="5486114327664215175">Získajte tokeny za zobrazenie tohto obrázka a podporte tvorcov obsahu.</translation>
+<translation id="2965798296974325760">Začnite používať Odmeny</translation>
 <translation id="2940863921746574646">Zostatok tokenov</translation>
 <translation id="2221902203895354376">Je dostupná dotácia tokenov!</translation>
+<translation id="2956070106555335453">Zhrnutie</translation>
 <translation id="2369994359029526515">Neoverený tvorca</translation>
 <translation id="6020176662032623904">Overený tvorca</translation>
-<translation id="6504037373121113545">Akékoľvek vaše prepitné zostane vo fáze vybavovania a automaticky sa pokúsi o opätovné vybavenie počas doby 90 dní. <ph name="LINK_BEGIN"/>Zistite viac<ph name="LINK_END"/></translation>
+<translation id="215037911651623564">Obnoviť stav overovania tvorcu</translation>
+<translation id="8946576491316456643">Všetka odoslaná podpora ostane nateraz v štádiu riešenia a automaticky sa skúsi odoslať znova o 90 dní. <ph name="LINK_BEGIN"/>Zistiť viac<ph name="LINK_END"/></translation>
 <translation id="7826318737761918938">Tento tvorca ešte nie je zaregistrovaný.</translation>
-<translation id="4025327308776090280">Tento tvorca momentálne nie je nakonfigurovaný, aby prijímal príspevky z vašej služby peňaženky Rewards</translation>
+<translation id="3573568055713372419">Ste pripojený na <ph name="USER_PROVIDER"/>, ale tento tvorca je pripojený na <ph name="CREATOR_PROVIDER"/>. Znamená to, že sa k nemu vaša podpora nedostane.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> na<ph name="PLATFORM"/></translation>
 <translation id="7335371657242627509">Zapojte do automatického prispievania</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">Nastaviť</translation>
 <translation id="8853725596990766789">Zmeniť množstvo</translation>
+<translation id="6067959437127691361">Používanie Brave Odmien podporuje tvorcov obsahu a umožňuje vám zarábať BAT.</translation>
+<translation id="1609556006143307897">Pomáhate podporovať tvorcov obsahu</translation>
+<translation id="6605147707233193230">Zapnite, aby ste pomohli podporiť tvorov obsahu</translation>
+<translation id="5430495762768325224">Zistite viac o BAT</translation>
 <translation id="1258144146756156541">Potvrďte, že ste ľudská bytosť</translation>
 <translation id="1555514580945108302">Hmm...nie celkom. Skúste to znovu.</translation>
 <translation id="8078414184292711961">Potiahnite ikonu BAT do cieľu <ph name="HINT"/>.</translation>
@@ -793,21 +701,16 @@
 <translation id="717952606991220586">Ups, niečo je zle. Prosím, skúste neskôr.</translation>
 <translation id="7210234701206674260">Brave rewards majú nejaký problém. Prosím, skúste to znovu.</translation>
 <translation id="579702532610384533">Znova pripojiť</translation>
-<translation id="7550470870580166294">Nedostatok prostriedkov</translation>
-<translation id="2775064702681588061">Na vašom účte Brave odmeny sa očakáva vklad.</translation>
 <translation id="3358400027937159351">Prispeli ste <ph name="AMOUNT"/>.</translation>
 <translation id="1619753851206150396">Ste odhlásení</translation>
 <translation id="5142174225142816130">To sa môže stať, aby zostal váš účet zabezpečený. Kliknutím nižšie sa znova pripojíte.</translation>
 <translation id="1677961202754619328">Podľa údajov spoločnosti Uphold existujú v súčasnosti určité obmedzenia týkajúce sa vášho účtu Uphold. Prihláste sa do účtu Uphold a skontrolujte, či máte nejaké oznámenia alebo zostávajúce požiadavky na účet, ktoré treba splniť, a potom to skúste znova.</translation>
-<translation id="2807965672895914288">Vaša plánovaná automatická mesačná platba a mesačné príspevky nemohli byť zrealizované pre nedostatok peňazí. Skúsime to znovu o 30 dní.</translation>
 <translation id="2429828319207652823">Pri spracovávaní vášho príspevku vznikol problém.</translation>
-<translation id="2099354965137813181">Mesačný príspevok zlyhal</translation>
+<translation id="6390041270339783491">Mesačný príspevok zlyhal</translation>
 <translation id="19033035059466563">Príspevky a tipy</translation>
 <translation id="2892744985635833293">Vaše mesačné príspevky boli spracované.</translation>
 <translation id="5768819429931807686">Čakajúci príspevok</translation>
 <translation id="7855913851082138664">Tvorca<ph name="PUBLISHER_NAME"/> bol nedávno verifikovaný.</translation>
-<translation id="6194996600967335044">Nedostatok finančných prostriedkov</translation>
-<translation id="2795080275268642520">Máte čakajúce príspevky z dôvodu nedostatočných finančných prostriedkov</translation>
 <translation id="2529827670795983639">Zdá sa, že to nefunguje, Brave ads zostanú pozastavené. Kontaktujte nás, ak potrebujete pomoc s testom captcha.</translation>
 <translation id="261607053214862521">Bol prekročený maximálny počet pokusov</translation>
 <translation id="2323171459178104277">Vyriešené!</translation>
@@ -828,9 +731,13 @@
 <translation id="8622329973403382303">Urobte si krátku prehliadku, aby ste si osvojili, ako funguje vstup do histórie ako rocková hviezda Odmien!</translation>
 <translation id="4331886860862592203">Vyberte krajinu</translation>
 <translation id="3115702351969988294">Ako často chcete vidieť reklamy?</translation>
-<translation id="7532131110478098401">(reklamy za hodinu)</translation>
-<translation id="2951964054390325080">Akú mesačnú podporu by ste chceli dať svojim obľúbeným tvorcom?</translation>
-<translation id="3164498053837913829">(z vašich príjmov za reklamu)</translation>
+<translation id="9006929295045381749">{ADS_PER_HOUR, plural,
+      =1 {# reklama za hodinu}
+      other {# reklamy za hodinu}
+    }</translation>
+<translation id="6129810595598072828">Viac súkromných reklám, viac odmien</translation>
+<translation id="8871481223725076571">Väčším množstvom reklám podporíte viac tvorcov</translation>
+<translation id="9215691564467955056">Zmeniť to môžete neskôr v nastaveniach.</translation>
 <translation id="6318696841371191107">Urobte si rýchlu prehliadku</translation>
 <translation id="8465790416279415448">Pokračovaním vyjadrujete súhlas s <ph name="TOS_LINK_BEGIN"/>Podmienkami poskytovania služby<ph name="TOS_LINK_END"/> a <ph name="PP_LINK_BEGIN"/>Pravidlami ochrany osobných údajov<ph name="PP_LINK_END"/>.</translation>
 <translation id="5705882733397021510">Ísť naspäť</translation>
@@ -840,25 +747,16 @@
 <translation id="7930505144430343145">Vitajte v Odmenách Brave!</translation>
 <translation id="3477340970981564961">Súkromné reklamy Brave vás odmenia žetónmi na podporu tvorcov obsahu na rozdiel od tradičných reklám, a to všetko pri zachovaní súkromia vašich osobných údajov.</translation>
 <translation id="6973095375773523904">Kde sa zobrazujú reklamy?</translation>
-<translation id="7556325460112047619">Súkromné reklamy Brave sa zobrazia ako bežné upozornenie. V nastaveniach môžete určiť, ako často sa tieto reklamy zobrazia.</translation>
-<translation id="6897083627729802351">Kedy dostávate odmeny?</translation>
-<translation id="310863932297733723">Vaše získané žetóny zo služby Súkromné reklamy Brave za celý aktuálny mesiac dorazia 5. deň nasledujúceho mesiaca.</translation>
+<translation id="4328028439561659455">Brave Súkromné Reklamy sa zobrazujú ako upozornenia. Vy určujete, ako často sa tieto reklamy zobrazia.</translation>
 <translation id="7712287524451429139">Dávajte naspäť bez akejkoľvek námahy</translation>
 <translation id="105037569026952831">Autori dostávajú vaše tokenové príspevky automaticky na základe vašich úrovní zapojenia, ktoré meriame ako „pozornosť“.</translation>
 <translation id="5323267338679539010">Poďakujte sa tringeltami</translation>
 <translation id="6042317056594735519">Dávanie tringeltov je spôsob, ako osobne povzbudiť a podporiť obsah alebo autorov, ktorých máte radi. Získavajte tringelty!</translation>
-<translation id="7509452925943421624">Čo môžete robiť so žetónmi?</translation>
-<translation id="5876169128756792273">Žetóny je možné používať nad rámec podpory tvorcov. Keď pribudnú obchodníci, môžete si kúpiť digitálny obsah a ďalší tovar.</translation>
-<translation id="1402530520078693620">Nakoniec si nastaviť základné nastavenia</translation>
-<translation id="3494356595346329740">Toto môžete neskôr zmeniť.</translation>
+<translation id="4215679190414901888">Nakoniec poďme všetko nastaviť</translation>
 <translation id="827315274423079662">Juchúúú, všetko je hotové!</translation>
 <translation id="8268038362451312235">Používaním služby Odmeny Brave pomáhate robiť z webu lepšie miesto pre všetkých. A to je úžasné!</translation>
-<translation id="2318949593486441832">Ak si chcete vybrať BAT, ktoré ste získali pozeraním reklám, musíte overiť Brave Rewards.</translation>
-<translation id="9168436347345867845">Urobiť to neskôr</translation>
-<translation id="7193761697942491145">Overiť Brave Rewards</translation>
-<translation id="6609621505400013054">Peňaženka bitFlyer je služba spravovaná spoločnosťou bitFlyer, Inc.</translation>
-<translation id="4361456403643555676">Keď svoje Brave Rewards overíte a prepojíte s účtom bitFlyer, budete môcť jednoduchšie ukladať a spravovať tokeny, ktoré ste získali cez Brave Rewards</translation>
-<translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Získajte viac informácií<ph name="LINK_END"/> o tom, ako prepojiť prehliadač Brave s vašim účtom bitFlyer.</translation>
+<translation id="6845311459433734326">Pripojte správcovský účet, aby ste mohli začať zarábať BAT a vyberať odmeny</translation>
+<translation id="1443125272907895958">Urobím to neskôr</translation>
 <translation id="1015443539415537847">Ľutujeme, Brave Rewards nie sú k dispozícii</translation>
 <translation id="5007776270364097327">Zdá sa, že sa nachádzate v regióne, kde Brave Rewards nie sú k dispozícii.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
@@ -879,6 +777,7 @@
 <translation id="9161147058107529840">Očakávaný samostatný, objektívny parameter.</translation>
 <translation id="1875861420974447980">Toto ID reťazca sa momentálne používa</translation>
 <translation id="167698752210114155">Vyskytla sa interná chyba</translation>
+<translation id="8945668490056243760">Nepodporovaný typ členstva</translation>
 <translation id="2326876601333401685">Táto metóda RPC nie je podporovaná.</translation>
 <translation id="1128992132632883337">Vyskytla sa chyba pri analyzovaní odpovede</translation>
 <translation id="5382339341735118861">Vyskytla sa všeobecná chyba spracovania požiadavky</translation>
@@ -923,6 +822,7 @@
 <translation id="8246868867733222286">Najväčší trh NFT. Nakupujte, predávajte a objavujte vzácne digitálne položky.</translation>
 <translation id="8375074247703832257">Rarible</translation>
 <translation id="7826627294887983832">Vytvárajte a predávajte digitálne umelecké diela</translation>
+<translation id="1383876407941801731">Vyhľadať</translation>
 <translation id="8767749833522980474">Krypto</translation>
 <translation id="944736176598169208">Odmeny</translation>
 <translation id="6122742277607781713">Portfólio</translation>
@@ -938,12 +838,14 @@
 <translation id="6366007539108097840">3 mesiace</translation>
 <translation id="6977728312178289892">1 rok</translation>
 <translation id="6598532182053592167">Pridať mincu</translation>
+<translation id="1848737374354350807">Zůstatek:</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
 <translation id="629730747756840877">Účet</translation>
 <translation id="3959969108528118741">Vlastník</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Pridať účet</translation>
 <translation id="5061574358754621254">Údaje o cenách zabezpečuje CoinGecko</translation>
+<translation id="223536150967420869">Koupit</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="9113988219764868805">Poslať token</translation>
@@ -951,6 +853,7 @@
 <translation id="3453833142586986467">Vybrať token</translation>
 <translation id="554732459168975059">Vybrať NFT</translation>
 <translation id="5313430503143128212">Vyberte token na odoslanie</translation>
+<translation id="5784485862926111563">Vyberte NFT na odoslanie</translation>
 <translation id="2791691551852500015">Zadajte adresu príjemcu</translation>
 <translation id="570080709303714420">POLOVICA</translation>
 <translation id="2784548701748328827">MAX.</translation>
@@ -960,6 +863,10 @@
 <translation id="5009335307032488349">Hľadať NFT podľa názvu, id</translation>
 <translation id="6295954645230084874">Podpora pri nákupe nie je k dispozícii pre <ph name="NETWORK"/></translation>
 <translation id="9209024278910716955">Nakupovanie sa pri zvolenej sieti nepodporuje</translation>
+<translation id="4982630604810554641">Hľadám doménu...</translation>
+<translation id="5467044307473123584">Brave podporuje využitie domén mimo reťazca na riešenie .eth domén.</translation>
+<translation id="4896417414446851895">Zdá sa, že ste vložili ENS adresu. Na vyriešenie tejto požiadavky musíme použiť službu tretej strany, ktorá môže vidieť vašu IP adresu alebo doménu.</translation>
+<translation id="8646078615727397565">Použiť ENS doménu</translation>
 <translation id="4171338820961522154">Podpora pre výmenu nie je k dispozícii pre <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Pri tejto transakcii je možný frontrunning</translation>
 <translation id="632241521608275119">Tolerancia sklzu</translation>
@@ -972,7 +879,9 @@
 <translation id="712738518060477110">Cenová ponuka zahŕňa poplatok <ph name="SWAP_FEE_PERCENTAGE"/> Brave.</translation>
 <translation id="8368540604723748428">Príliš veľa desatinných miest</translation>
 <translation id="6575120282593094155">Ešte nemáte účet <ph name="ACCOUNT_TYPE"/>. Chcete ho teraz vytvoriť?</translation>
+<translation id="1201402288615127009">Další</translation>
 <translation id="8712637175834984815">Dobre</translation>
+<translation id="6896758677409633944">Kopírovať</translation>
 <translation id="2704606927547763573">Skopírované</translation>
 <translation id="6042308850641462728">Viac</translation>
 <translation id="768236965975208017">Zabezpečiť. Viacreťazcový. A tak jednoduché použitie. Vaša peňaženka Brave je vzdialená len pár kliknutí</translation>
@@ -1034,6 +943,7 @@
 <translation id="6577166808959668729">Podporuje aktíva kompatibilné so SLP na blockchaine Solana</translation>
 <translation id="4541295941776129088">Uložiť aktívum FIL</translation>
 <translation id="8500387257977999003">Súkromný kľúč <ph name="PROTOCOL"/></translation>
+<translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import z hardvérovej peňaženky</translation>
 <translation id="4324198334837993695">Hardvér</translation>
 <translation id="3067168166931605141">Názov účtu</translation>
@@ -1080,6 +990,7 @@
 <translation id="2416098547200943834">POZNÁMKA: Súkromný kľúč sa poskytuje ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">POZNÁMKA: Súkromný kľúč musí byť poskytnutý ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">Exportovať</translation>
+<translation id="1366855498335432549">Záloha</translation>
 <translation id="2902856457593699108">Zobraziť kľúč</translation>
 <translation id="8033497299373164724">Skryť kľúč</translation>
 <translation id="2702143907607790516">Aktualizácia názvu účtu zlyhala, skúste to znova.</translation>
@@ -1126,6 +1037,7 @@
 <translation id="9065203028668620118">Upraviť</translation>
 <translation id="7968982339740310781">Zobraziť podrobnosti</translation>
 <translation id="6452181791372256707">Odmítnout</translation>
+<translation id="8131740175452115882">Potvrdiť</translation>
 <translation id="8904889345035514635">Aktuálny príspevok</translation>
 <translation id="7073918978411974168">Navrhovaný príspevok</translation>
 <translation id="9019403281000653275">Vyžaduje sa neobmedzené schválenie</translation>
@@ -1151,9 +1063,9 @@
 <translation id="793994607260936590">prvá</translation>
 <translation id="4709524402122994378">transakce</translation>
 <translation id="4591079278963448049">Príslušný tokenový účet zatiaľ neexistuje. Na jeho vytvorenie a financovanie sa vynaloží malé množstvo SOL.</translation>
-<translation id="3368922792935385530">Pripojené</translation>
 <translation id="523862956770478816">Povolenia lokality</translation>
 <translation id="1575262454612599115">Pripojené účty: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
+<translation id="4804818685124855865">Odpojiť</translation>
 <translation id="4305817255990598646">Prepnúť</translation>
 <translation id="3423275441470187644">Dôverovať</translation>
 <translation id="2391762656119864333">Odvolať</translation>
@@ -1196,6 +1108,7 @@
 <translation id="2331676293859649642">Potvrzeno</translation>
 <translation id="1165039591588034296">Chyba</translation>
 <translation id="8373210463207847451">Zrušeno</translation>
+<translation id="8214232307424031138">Podepsáno</translation>
 <translation id="9065572743819293042">Nedávne transakcie</translation>
 <translation id="4235538284468006757">Podrobnosti transakcie</translation>
 <translation id="7488671812634887146">Zrýchliť</translation>
@@ -1290,17 +1203,23 @@
 <translation id="3898731124813934210">Kúpiť s Wyre</translation>
 <translation id="5522073372365069684">Kúpiť s Ramp</translation>
 <translation id="7902920577183739843">Kúpte si so službou Sardine</translation>
+<translation id="6534275647567011533">Kúpiť pomocou Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
 <translation id="7623800836425615432">Wyre</translation>
 <translation id="1130009472404762036">Služba Sardine</translation>
+<translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Kupujte kryptomeny pomocou karty Visa alebo Mastercard.</translation>
 <translation id="3101839349578102016">Okamžitý nákup pomocou bankového účtu. Nižšie poplatky.</translation>
 <translation id="8528916244724490964">Všetky siete</translation>
 <translation id="4038403584813842767">Zostatok ↑</translation>
 <translation id="1695096446857675822">Zostatok ↓</translation>
+<translation id="8151187584908138100">Názov ↓</translation>
+<translation id="883138507248906253">Názov ↑</translation>
 <translation id="7198018180583855568">Všetky účty</translation>
 <translation id="6954150712710630841">Transakcia odoslaná</translation>
 <translation id="905855245798176174">Transakcia bola úspešne odoslaná do siete a čaká na potvrdenie.</translation>
+<translation id="619697073289995370">Transakcia podpísaná</translation>
+<translation id="7493732383203109611">Transakcia bola podpísaná a bude odoslaná do siete pomocou DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> bol vrátený do vašej peňaženky</translation>
 <translation id="4577432071459867390">Transakcia zlyhala</translation>
 <translation id="4359235192593147041">Transakcia zlyhala z dôvodu veľkého pohybu ceny. Zvýšte toleranciu sklzu, aby bola transakcia úspešná pri väčšom pohybe ceny.</translation>
@@ -1319,6 +1238,7 @@
 <translation id="9104177294757104789">Poslať <ph name="VALUE"/></translation>
 <translation id="4048336522751528394">Zmeniť <ph name="MAKER"/> na <ph name="TAKER"/></translation>
 <translation id="2781668117338732220">Sekundárne siete</translation>
+<translation id="282560918037172384">Testovacie Siete</translation>
 <translation id="2816106784624007524">Limit paliva musí byť celé číslo väčšie ako 0</translation>
 <translation id="3354376789153561654">Musia byť uvedené transakčné údaje „to“</translation>
 <translation id="8728991256628663004">Transakčné údaje „from“ musia byť platnou adresou Filecoin</translation>
@@ -1506,6 +1426,50 @@
 <translation id="3033638954295674319">Pri načítavaní údajov NFT došlo k chybe. Skúste to znova neskôr.</translation>
 <translation id="2540568096903252632">Pokračujte zadaním hesla</translation>
 <translation id="3356580495013324916">Zadaním hesla k Brave Wallet spustite zálohovanie peňaženky.</translation>
+<translation id="7545441766078366279">Schváliť <ph name="TOKEN"/></translation>
+<translation id="3115303896544539834">Nedostatok prostriedkov <ph name="TOKEN"/></translation>
+<translation id="4937657825850660613">Polovica</translation>
+<translation id="7639814793732182496">Max</translation>
+<translation id="6584782231358487640">Zadajte sumu</translation>
+<translation id="2335903728876796191">Hľadám pre vás najlepšiu cenu</translation>
+<translation id="3835223348537121988">Zostatok:</translation>
+<translation id="5709875713144853427">Vyberte si token na výmenu</translation>
+<translation id="720404198240859011">Ukázať tokeny s nulovým zostatkom</translation>
+<translation id="4886690455791686940">Skryť nulový zostatok</translation>
+<translation id="381485723922188688">Opcia</translation>
+<translation id="6680650203439190394">Ohodnotiť</translation>
+<translation id="2538996898605796431">Cenový vplyv</translation>
+<translation id="8007404171238546456">Minimálny príjem po sklze</translation>
+<translation id="767199001998615704">Sieťový poplatok</translation>
+<translation id="7057870207229052478">Poplatok Brave</translation>
+<translation id="3624518972158401291">Zdarma</translation>
+<translation id="5038255447967558645">Poskytovateľ likvidity</translation>
+<translation id="8450638959928932199">Vymeniť a odoslať</translation>
+<translation id="476816352791390168">Žiadne ďalšie poplatky!</translation>
+<translation id="5319981934425923365">Potvrdzujem, že adresa je správna</translation>
+<translation id="7480629155329718561">Zadajte Ethereum adresu používateľa</translation>
+<translation id="4967749818080339523">Vyberte účet</translation>
+<translation id="3887241807965836390">Na môj účet</translation>
+<translation id="3079716946572942356">Na inú adresu</translation>
+<translation id="8044899503464538266">Pomalé</translation>
+<translation id="3569512916300900704">Priemerný</translation>
+<translation id="7019805045859631636">Rýchle</translation>
+<translation id="1826671530876539299">Nastavenia výmeny</translation>
+<translation id="6778140392042462129">Burzy</translation>
+<translation id="6173494033320397682">Len priame spojenie</translation>
+<translation id="2440960581098655899">Zabezpečí priame spojenie a znemožní split trade obchodovanie</translation>
+<translation id="6245314729809503023">Brave na okamžité spojenie používa 60 najlepších tokenov na optimalizáciu výkonu</translation>
+<translation id="2379187373676242615"><ph name="VALUE"/>% lacnejšie ako CoinGecko</translation>
+<translation id="5351867352310722022">V rozmedzí <ph name="VALUE"/>% oproti CoinGecko</translation>
+<translation id="7695501918490163821"><ph name="VALUE"/>% drahšie ako CoinGecko</translation>
+<translation id="6065708195277841442">Pripojiť Peňaženku</translation>
+<translation id="4029551149873989025">Zmeniť Sieť</translation>
+<translation id="7561262633951061138">Najlepšie</translation>
+<translation id="3143110700666266545">Táto aplikácia používa nasledujúce API tretích strán:</translation>
+<translation id="8411419545176806786">Brave Výmena používa 0x ako DEX agregátor pre podporované EVM siete. Na vykonanie transakcie (vrátane získania cenových ponúk) 0x spracuje adresu Ethereum peňaženky a IP adresu. 0x tieto údaje použije IBA na účely spracovania transakcií.</translation>
+<translation id="7467728126359974661">Brave Výmena používa Jupiter ako DEX agregátor pre sieť Solana. Na vykonanie transakcie (vrátane získania cenových ponúk) Jupiter spracuje adresu Solana peňaženky a IP adresu. Jupiter tieto údaje použije IBA na účely spracovania transakcií.</translation>
+<translation id="8497751359931572880">Kliknutím sem zobrazíte Zásady ochrany osobných údajov 0x.</translation>
+<translation id="4904748904130272182">Kliknutím sem zobrazíte Zásady ochrany osobných údajov Jupiter.</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>
@@ -1608,6 +1572,7 @@
 <translation id="264682546981571963">Už vás nebavia upozornenia na súhlas so súbormi cookie?</translation>
 <translation id="4986297793092101884">Brave už blokuje súbory cookie tretích strán. Môžeme tiež zablokovať oznámenia o súhlase so súbormi cookie.</translation>
 <translation id="535688588637568715">Áno, blokovať upozornenia na súhlas so súbormi cookie</translation>
+<translation id="2808175374672429053">Divoké karty nie sú pre Brave Štíty povolené.</translation>
 <translation id="6294662480095808915">Ochrana súkromia ako štandard.</translation>
 <translation id="4366423156486478559">Získajte ochranu Brave na každom prepojení, na ktoré kliknete. Stačí nastaviť prehliadač Brave ako predvolený a môžete prehľadávať webové lokality. Súkromne.</translation>
 <translation id="3830912418080848377">Importovať nastavenia</translation>
@@ -1680,21 +1645,4 @@
 <translation id="1657858090675311947">Už ma na toto neupozorňujte</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="9061845622728745852">Časové pásmo:</translation>
-<translation id="7586151660465233733">Viac trhov na webovej stránke <ph name="SITE_NAME"/></translation>
-<translation id="952067063131306699">Zobraziť trhy a obchodovať s kryptomenami na FTX</translation>
-<translation id="5963745988819586370">Trhy</translation>
-<translation id="3795943412467785186">Pripojiť účet FTX a pozrieť si zostatok na účte, preskúmať termínované trhy a zameniť kryptomeny.</translation>
-<translation id="926958206891985289">Zobraziť termínované trhy</translation>
-<translation id="6804537228302563756">Pripojiť účet</translation>
-<translation id="5019698312620117604">24 hodinová cenová história</translation>
-<translation id="8720719072204443171">24 hodinový objem</translation>
-<translation id="7723176927437578611">Výnos</translation>
-<translation id="2983078329159689577">Prebieha odosielanie...</translation>
-<translation id="6641102760094059194">Potvrdiť (<ph name="NUMBER_OF_SECONDS_LEFT"/>s)</translation>
-<translation id="2280055104463448482">Zámena prebehla úspešne!</translation>
-<translation id="7590653073560839711">Na realizovanie zámeny potrebujete zostatok v aspoň jednej mene.</translation>
-<translation id="4390079506197726228">K dispozícii <ph name="QUANTITY"/> <ph name="CURRENCY_NAME"/></translation>
-<translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
-<translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
-<translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
 </translationbundle>

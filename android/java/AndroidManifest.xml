@@ -7,7 +7,7 @@
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
 
 <activity android:name="org.chromium.chrome.browser.BraveRewardsSiteBannerActivity"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    android:theme="@style/BraveTranslucent"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity" />
 
@@ -82,6 +82,11 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.SelectPurchaseMethodActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

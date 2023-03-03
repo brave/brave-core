@@ -10,8 +10,9 @@
 #include <vector>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
@@ -36,8 +37,7 @@ void BraveCompoundTabContainer::SetAvailableWidthCallback(
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()) &&
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
       available_width_callback) {
     pinned_tab_container_->SetAvailableWidthCallback(
         base::BindRepeating(&views::View::width, base::Unretained(this)));
@@ -143,9 +143,7 @@ gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {
 
 views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
     const views::View* child) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser())) {
+  if (!ShouldShowVerticalTabs()) {
     return CompoundTabContainer::GetAvailableSize(child);
   }
 
@@ -153,9 +151,74 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
                            /*height=*/views::SizeBound());
 }
 
+Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
+                                       int model_index,
+                                       TabPinned pinned) {
+  auto* result =
+      CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
+      !tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
+    return result;
+  }
+
+  if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
+    // When the browser was initialized without any pinned tabs, pinned tabs
+    // could be hidden initially by the FlexLayout.
+    pinned_tab_container_->SetVisible(true);
+  }
+  return result;
+}
+
+int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetUnpinnedContainerIdealLeadingX();
+  }
+
+  return 0;
+}
+
+BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
+    gfx::Point loc_in_local_coords) {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetDropTarget(loc_in_local_coords);
+  }
+
+  // At this moment, upstream doesn't have implementation for this path yet.
+  // TODO(1346023): Implement text drag and drop.
+
+  if (!GetLocalBounds().Contains(loc_in_local_coords)) {
+    return nullptr;
+  }
+
+  return GetTabContainerAt(loc_in_local_coords);
+}
+
+TabContainer* BraveCompoundTabContainer::GetTabContainerAt(
+    gfx::Point point_in_local_coords) {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::GetTabContainerAt(point_in_local_coords);
+  }
+
+  return point_in_local_coords.y() < pinned_tab_container_->bounds().bottom()
+             ? base::to_address(pinned_tab_container_)
+             : base::to_address(unpinned_tab_container_);
+}
+
+gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
+    gfx::Rect ideal_bounds) const {
+  if (!ShouldShowVerticalTabs()) {
+    return CompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
+        ideal_bounds);
+  }
+
+  ideal_bounds.Offset(0, unpinned_tab_container_->y());
+  return ideal_bounds;
+}
+
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
   return base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
-         tabs::features::ShouldShowVerticalTabs(
+         tabs::utils::ShouldShowVerticalTabs(
              tab_slot_controller_->GetBrowser());
 }
 

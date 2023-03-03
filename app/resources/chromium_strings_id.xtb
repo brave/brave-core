@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Jika diaktifkan, Brave akan membebaskan memori dari tab yang tidak aktif. Tindakan ini akan memberikan lebih banyak resource komputer untuk tab aktif dan aplikasi lainnya, serta menjaga Brave tetap cepat. Tab yang tidak aktif akan otomatis menjadi aktif lagi saat Anda kembali ke tab tersebut. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Penghemat Memori Membuat Brave Lebih Cepat</translation>
 <translation id="4798342026247191171">Siapkan profil Brave baru Anda</translation>
-<translation id="6361779936989026201">Asisten Brave di Brave</translation>
 <translation id="113959764510199339">Brave mencoba menampilkan sandi.</translation>
 <translation id="8132634101975074716">Anda sudah masuk ke Brave!</translation>
 <translation id="4168469784091952813">Anda dapat menikmati manfaat optimal Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave sudah diperbarui</translation>
 <translation id="5122472867956731189">Jika situs berusaha mencuri sandi Anda, atau jika Anda mendownload file berbahaya, Brave mungkin juga mengirimkan URL, termasuk bit konten halaman, ke Safe Browsing</translation>
 <translation id="2953892977076487219">Brave mencoba mengedit sandi.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave terhubung ke perangkat HID}other{Brave terhubung ke perangkat HID}}</translation>
 <translation id="8755404239607088219">Brave tidak dapat memeriksa sandi Anda. Coba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambahkan Brave...</translation>
 <translation id="3038232873781883849">Menunggu untuk menginstal...</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Tindakan ini akan menghapus <ph name="ITEMS_COUNT"/> item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> dapat membuat berpindah-pindah profil Brave</translation>
 <translation id="8703492925273919597">Tutup semua jendela Brave dan coba lagi.</translation>
-<translation id="5350485513372498152">Asisten Brave di Brave dapat menyelesaikan tindakan di seluruh situs untuk Anda</translation>
 <translation id="4061445349373849749">Untuk melindungi privasi Anda, kami otomatis menghapus minat Anda yang tersimpan lebih dari 4 minggu. Saat Anda terus menjelajah, minat dapat kembali muncul di daftar. Atau Anda dapat menghapus minat yang tidak perlu dipertimbangkan oleh Brave.</translation>
 <translation id="691208314680168371">Histori penjelajahan Anda, catatan situs yang telah Anda buka menggunakan Brave di perangkat ini.</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
@@ -183,7 +182,7 @@
 <translation id="232381795826373334">Buka PDF di Brave</translation>
 <translation id="5381032481466106256">Jika aktif, Anda juga akan logout dari Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
-<translation id="95624393026532554">Brave memerlukan Windows 7 atau lebih tinggi.</translation>
+<translation id="4378573854226202617">Brave memerlukan Windows 10 atau lebih tinggi.</translation>
 <translation id="5646769069113654257">Mulai ulang Brave sekarang</translation>
 <translation id="2335583906071111058">Tampilkan Brave dalam bahasa ini</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
@@ -386,4 +385,6 @@ Izin yang telah Anda berikan ke situs web dan aplikasi dapat berlaku untuk akun 
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini}=1{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update}=1{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
 <translation id="2176087127109773485">Anda dapat mengatur rantai sinkronisasi Brave yang Anda masuki. Rantai sinkronisasi Brave Anda digunakan untuk peramban Brave, Play Store, Gmail, dan banyak lagi. Jika Anda ingin menambahkan akun untuk orang lain, misalnya anggota keluarga, tambahkan profil baru ke <ph name="DEVICE_TYPE"/> Anda. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

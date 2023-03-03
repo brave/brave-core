@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
@@ -21,9 +22,11 @@
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
+
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -35,10 +38,49 @@
 #include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+// MARK: - BraveSyncAPISyncProtocolErrorResult
+
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultSuccess =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::SYNC_SUCCESS);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultNotMyBirthday =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::NOT_MY_BIRTHDAY);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultThrottled =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::THROTTLED);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultClearPending =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::CLEAR_PENDING);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultTransientError =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::TRANSIENT_ERROR);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultMigrationDone =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::MIGRATION_DONE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDisabledByAdmin = static_cast<NSInteger>(
+        syncer::SyncProtocolErrorType::DISABLED_BY_ADMIN);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultPartialFailure =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::PARTIAL_FAILURE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultDataObsolete = static_cast<NSInteger>(
+        syncer::SyncProtocolErrorType::CLIENT_DATA_OBSOLETE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultEncryptionObsolete =
+        static_cast<NSInteger>(
+            syncer::SyncProtocolErrorType::ENCRYPTION_OBSOLETE);
+BraveSyncAPISyncProtocolErrorResult const
+    BraveSyncAPISyncProtocolErrorResultUnknown =
+        static_cast<NSInteger>(syncer::SyncProtocolErrorType::UNKNOWN_ERROR);
 
 // MARK: - QrCodeDataValidationResult
 
@@ -63,22 +105,22 @@ BraveSyncAPIQrCodeDataValidationResult const
 
 // MARK: - TimeLimitedWords::ValidationStatus
 
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
-    BraveSyncAPIWordsValidationStatusValid = static_cast<NSInteger>(
+BraveSyncAPIWordsValidationStatus const BraveSyncAPIWordsValidationStatusValid =
+    static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kValid);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusNotValidPureWords = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kNotValidPureWords);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusVersionDeprecated = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kVersionDeprecated);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusExpired = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kExpired);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusValidForTooLong = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kValidForTooLong);
-OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
+BraveSyncAPIWordsValidationStatus const
     BraveSyncAPIWordsValidationStatusWrongWordsNumber = static_cast<NSInteger>(
         brave_sync::TimeLimitedWords::ValidationStatus::kWrongWordsNumber);
 
@@ -94,8 +136,8 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 - (instancetype)initWithDeviceInfoTracker:(syncer::DeviceInfoTracker*)tracker
                                  callback:(void (^)())onDeviceInfoChanged {
   if ((self = [super init])) {
-    _device_observer =
-        std::make_unique<BraveSyncDeviceTracker>(tracker, onDeviceInfoChanged);
+    _device_observer = std::make_unique<BraveSyncDeviceTracker>(
+        tracker, base::BindRepeating(onDeviceInfoChanged));
   }
   return self;
 }
@@ -112,10 +154,12 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
 
 - (instancetype)initWithSyncServiceImpl:
                     (syncer::SyncServiceImpl*)syncServiceImpl
-                               callback:(void (^)())onSyncServiceStateChanged {
+                   stateChangedCallback:(void (^)())onSyncServiceStateChanged
+                   syncShutdownCallback:(void (^)())onSyncServiceShutdown {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
-        syncServiceImpl, onSyncServiceStateChanged);
+        syncServiceImpl, base::BindRepeating(onSyncServiceStateChanged),
+        base::BindRepeating(onSyncServiceShutdown));
   }
   return self;
 }
@@ -264,7 +308,7 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
   auto device_list = _worker->GetDeviceList();
   auto* local_device_info = _worker->GetLocalDeviceInfo();
 
-  base::Value device_list_value(base::Value::Type::LIST);
+  base::Value::List device_list_value;
 
   for (const auto& device : device_list) {
     auto device_value = device->ToValue();
@@ -288,6 +332,42 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
   _worker->ResetSync();
 }
 
+- (void)setDidJoinSyncChain:(void (^)(bool success))completion {
+  _worker->SetJoinSyncChainCallback(base::BindOnce(completion));
+}
+
+- (void)permanentlyDeleteAccount:
+    (void (^)(BraveSyncAPISyncProtocolErrorResult))completion {
+  _worker->PermanentlyDeleteAccount(base::BindOnce(
+      [](void (^completion)(BraveSyncAPISyncProtocolErrorResult),
+         const syncer::SyncProtocolError& error) {
+        completion(
+            static_cast<BraveSyncAPISyncProtocolErrorResult>(error.error_type));
+      },
+      completion));
+}
+
+- (bool)isSyncAccountDeletedNoticePending {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  return brave_sync_prefs.IsSyncAccountDeletedNoticePending();
+}
+
+- (void)setIsSyncAccountDeletedNoticePending:
+    (bool)isSyncAccountDeletedNoticePending {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
+}
+
+- (bool)isFailedDecryptSeedNoticeDismissed {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  return brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed();
+}
+
+- (void)dismissFailedDecryptSeedNotice {
+  brave_sync::Prefs brave_sync_prefs(_chromeBrowserState->GetPrefs());
+  brave_sync_prefs.DismissFailedDecryptSeedNotice();
+}
+
 - (void)deleteDevice:(NSString*)guid {
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
 }
@@ -306,12 +386,13 @@ OBJC_EXPORT BraveSyncAPIWordsValidationStatus const
                        callback:onDeviceInfoChanged];
 }
 
-- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
-  auto* service =
-      SyncServiceFactory::GetAsSyncServiceImplForBrowserStateForTesting(
-          _chromeBrowserState);
+- (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged
+          onSyncServiceShutdown:(void (^)())onSyncServiceShutdown {
+  auto* service = static_cast<syncer::SyncServiceImpl*>(
+      SyncServiceFactory::GetForBrowserState(_chromeBrowserState));
   return [[BraveSyncServiceObserver alloc]
       initWithSyncServiceImpl:service
-                     callback:onSyncServiceStateChanged];
+         stateChangedCallback:onSyncServiceStateChanged
+         syncShutdownCallback:onSyncServiceShutdown];
 }
 @end

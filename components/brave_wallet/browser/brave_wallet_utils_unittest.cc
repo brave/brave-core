@@ -1187,4 +1187,58 @@ TEST(BraveWalletUtilsUnitTest, GetSnsRpcUrl) {
   EXPECT_EQ(GURL("https://mainnet-beta-solana.brave.com/rpc"), GetSnsRpcUrl());
 }
 
+TEST(BraveWalletUtilsUnitTest, GetChainIdByNetworkId) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+
+  for (auto coin :
+       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+    ASSERT_TRUE(GetAllCustomChains(&prefs, coin).empty());
+    std::vector<base::Value::Dict> values;
+    mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+    chain1.coin = coin;
+    values.push_back(NetworkInfoToValue(chain1));
+    mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
+    chain2.coin = coin;
+    if (coin != mojom::CoinType::ETH) {
+      chain2.is_eip1559 = false;
+    }
+    values.push_back(NetworkInfoToValue(chain2));
+    UpdateCustomNetworks(&prefs, std::move(values), coin);
+  }
+
+  auto getChainIdByNetworkIdCheck = [&](const mojom::CoinType& coin_type) {
+    for (const auto& chain : GetAllChains(&prefs, coin_type)) {
+      std::string nid;
+      if (chain->coin == mojom::CoinType::ETH) {
+        nid = GetKnownEthNetworkId(chain->chain_id);
+      }
+      if (chain->coin == mojom::CoinType::SOL) {
+        nid = GetKnownSolNetworkId(chain->chain_id);
+      }
+      if (chain->coin == mojom::CoinType::FIL) {
+        nid = GetKnownFilNetworkId(chain->chain_id);
+      }
+      if (nid.empty()) {
+        nid = chain->chain_id;
+        // GetNetworkId supports only ETH for custom networks atm.
+        if (chain->coin != mojom::CoinType::ETH) {
+          ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, nid));
+          continue;
+        }
+      }
+      auto chainId = GetChainIdByNetworkId(&prefs, coin_type, nid);
+      ASSERT_TRUE(chainId.has_value());
+      EXPECT_EQ(chain->chain_id, chainId.value());
+    }
+    ASSERT_FALSE(GetChainIdByNetworkId(&prefs, coin_type, ""));
+  };
+
+  for (auto coin :
+       {mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL}) {
+    getChainIdByNetworkIdCheck(coin);
+  }
+}
+
 }  // namespace brave_wallet

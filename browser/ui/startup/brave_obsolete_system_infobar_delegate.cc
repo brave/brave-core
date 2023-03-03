@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/browser/infobars/brave_confirm_infobar_creator.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/grit/brave_generated_resources.h"

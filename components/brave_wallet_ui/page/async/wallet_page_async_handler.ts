@@ -25,7 +25,8 @@ import {
   ImportFilecoinAccountPayloadType,
   RestoreWalletPayloadType,
   ImportWalletErrorPayloadType,
-  ShowRecoveryPhrasePayload
+  ShowRecoveryPhrasePayload,
+  UpdateNftPinningStatusType
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
@@ -36,7 +37,7 @@ import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
 import { getTokensNetwork } from '../../utils/network-utils'
-import { httpifyIpfsUrl } from '../../utils/string-utils'
+import { addIpfsGateway } from '../../utils/string-utils'
 import { getLocale } from '../../../common/locale'
 
 const handler = new AsyncActionHandler()
@@ -47,7 +48,7 @@ function getWalletState (store: Store): WalletState {
 
 async function refreshWalletInfo (store: Store) {
   const walletHandler = getWalletPageApiProxy().walletHandler
-  const result = await walletHandler.getWalletInfo()
+  const result = (await walletHandler.getWalletInfo()).walletInfo
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
@@ -140,11 +141,29 @@ handler.on(WalletPageActions.selectAsset.type, async (store: Store, payload: Upd
     const selectedAsset = payload.asset
     const defaultPrices = await assetRatioService.getPrice([getTokenParam(selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
     const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
-    store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
+    store.dispatch(WalletPageActions.updatePriceInfo(
+      {
+        priceHistory: priceHistory,
+        defaultFiatPrice: {
+          ...defaultPrices.values[0],
+          contractAddress: payload.asset.contractAddress,
+          chainId: payload.asset.chainId
+        },
+        defaultCryptoPrice: {
+          ...defaultPrices.values[1],
+          contractAddress: payload.asset.contractAddress,
+          chainId: payload.asset.chainId
+        },
+        timeFrame: payload.timeFrame
+      }
+    ))
 
     if (payload.asset.isErc721 || payload.asset.isNft) {
       store.dispatch(WalletPageActions.getNFTMetadata(payload.asset))
-      store.dispatch(WalletPageActions.getPinStatus(payload.asset))
+
+      if (store.getState().wallet.isNftPinningFeatureEnabled) {
+        store.dispatch(WalletPageActions.getPinStatus(payload.asset))
+      }
     }
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))
@@ -221,7 +240,6 @@ handler.on(WalletPageActions.removeHardwareAccount.type, async (store: Store, pa
   const { keyringService } = getWalletPageApiProxy()
   const { success } = await keyringService.removeHardwareAccount(
     payload.address,
-    payload.password,
     payload.coin
   )
 
@@ -287,7 +305,7 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
           ? 'SPL'
           : '',
       tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : httpifyIpfsUrl(response.image),
+      imageURL: response.image.startsWith('data:image/') ? response.image : addIpfsGateway(response.image),
       imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',
@@ -296,9 +314,9 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
         name: response.name,
         description: response.description,
         website: '',
-        twitter: '',
         facebook: '',
-        logo: ''
+        logo: '',
+        twitter: ''
       }
     }
     store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
@@ -309,7 +327,28 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
   store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
 })
 
+handler.on(WalletPageActions.getIsAutoPinEnabled.type, async (store) => {
+  if (!store.getState().wallet.isNftPinningFeatureEnabled) return
+
+  const { braveWalletAutoPinService } = getWalletPageApiProxy()
+  const { enabled } = await braveWalletAutoPinService.isAutoPinEnabled()
+  store.dispatch(WalletPageActions.updateAutoPinEnabled(enabled))
+})
+
+handler.on(WalletPageActions.setAutoPinEnabled.type, async (store, payload: boolean) => {
+  if (!store.getState().wallet.isNftPinningFeatureEnabled) return
+
+  const { braveWalletAutoPinService } = getWalletPageApiProxy()
+  store.dispatch(WalletPageActions.updateEnablingAutoPin(true))
+  await braveWalletAutoPinService.setAutoPinEnabled(payload)
+  store.dispatch(WalletPageActions.updateEnablingAutoPin(false))
+  const { enabled } = await braveWalletAutoPinService.isAutoPinEnabled()
+  store.dispatch(WalletPageActions.updateAutoPinEnabled(enabled))
+})
+
 handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWallet.BlockchainToken) => {
+  if (!store.getState().wallet.isNftPinningFeatureEnabled) return
+
   const braveWalletPinService = getWalletPageApiProxy().braveWalletPinService
   const result = await braveWalletPinService.getTokenStatus(payload)
   if (result.status) {
@@ -317,6 +356,32 @@ handler.on(WalletPageActions.getPinStatus.type, async (store, payload: BraveWall
   } else {
     store.dispatch(WalletPageActions.updateNFTPinStatus(undefined))
   }
+})
+
+handler.on(WalletPageActions.getNftsPinningStatus.type, async (store, payload: BraveWallet.BlockchainToken[]) => {
+  if (!store.getState().wallet.isNftPinningFeatureEnabled) return
+
+  const { braveWalletPinService } = getWalletPageApiProxy()
+  const getTokenStatusPromises = payload.map((token) => braveWalletPinService.getTokenStatus(token))
+  const results = await Promise.all(getTokenStatusPromises)
+  const nftsPinningStatus = results.map((result, index) => {
+    const status: UpdateNftPinningStatusType = {
+      token: payload[index],
+      status: result.status?.local || undefined,
+      error: result.error || undefined
+    }
+
+    return status
+  })
+  store.dispatch(WalletPageActions.setNftsPinningStatus(nftsPinningStatus))
+})
+
+handler.on(WalletPageActions.getLocalIpfsNodeStatus.type, async (store) => {
+  if (!store.getState().wallet.isNftPinningFeatureEnabled) return
+
+  const { braveWalletPinService } = getWalletPageApiProxy()
+  const isNodeRunning = await braveWalletPinService.isLocalNodeRunning()
+  store.dispatch(WalletPageActions.updateLocalIpfsNodeStatus(isNodeRunning.result))
 })
 
 export default handler.middleware

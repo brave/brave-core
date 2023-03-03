@@ -5,37 +5,38 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/js/edge_js_call.h"
 
-#include <sstream>
+#include <utility>
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 using ::blink::To;
 
 namespace brave_page_graph {
 
-std::string BuildArgumentsString(const std::vector<std::string>& arguments) {
-  std::stringstream builder;
+String BuildArgumentsString(const Vector<String>& arguments) {
+  WTF::TextStream ts;
   const size_t num_args = arguments.size();
   const size_t last_index = num_args - 1;
-  for (size_t i = 0; i < num_args; i += 1) {
+  for (wtf_size_t i = 0; i < num_args; i += 1) {
     if (i == last_index) {
-      builder << arguments.at(i);
+      ts << arguments.at(i);
     } else {
-      builder << arguments.at(i) << ", ";
+      ts << arguments.at(i) << ", ";
     }
   }
-  return builder.str();
+  return ts.Release();
 }
 
 EdgeJSCall::EdgeJSCall(GraphItemContext* context,
                        NodeScript* out_node,
                        NodeJS* in_node,
-                       const std::vector<std::string>& arguments,
+                       Vector<String> arguments,
                        const int script_position)
     : EdgeJS(context, out_node, in_node),
-      arguments_(arguments),
+      arguments_(std::move(arguments)),
       script_position_(script_position) {}
 
 EdgeJSCall::~EdgeJSCall() = default;
@@ -50,8 +51,10 @@ ItemName EdgeJSCall::GetItemName() const {
 }
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
-  return GetItemName() + " [arguments: " + BuildArgumentsString(arguments_) +
-         "]";
+  WTF::TextStream ts;
+  ts << GetItemName() << " [arguments: " << BuildArgumentsString(arguments_)
+     << "]";
+  return ts.Release();
 }
 
 void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,

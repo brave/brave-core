@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/account/deposits/cash_deposit.h"
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -42,10 +43,10 @@ TEST_F(BatAdsCashDepositIntegrationTest, GetValue) {
 
   // Assert
   deposit.GetValue(kCreativeInstanceId,
-                   [](const bool success, const double value) {
+                   base::BindOnce([](const bool success, const double value) {
                      EXPECT_TRUE(success);
                      EXPECT_EQ(1.0, value);
-                   });
+                   }));
 }
 
 TEST_F(BatAdsCashDepositIntegrationTest,
@@ -57,10 +58,10 @@ TEST_F(BatAdsCashDepositIntegrationTest,
 
   // Assert
   deposit.GetValue(kMissingCreativeInstanceId,
-                   [](const bool success, const double value) {
+                   base::BindOnce([](const bool success, const double value) {
                      EXPECT_FALSE(success);
                      EXPECT_EQ(0.0, value);
-                   });
+                   }));
 }
 
 }  // namespace ads

@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Når indstillingen er aktiveret, frigør Brave hukommelse fra inaktive faner. Dette tildeler aktive faner og andre apps flere computerressourcer og gør Brave hurtig. Dine inaktive faner bliver automatisk aktive igen, når du vender tilbage til dem. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Hukommelsessparefunktion har gjort Brave hurtigere</translation>
 <translation id="4798342026247191171">Konfigurer din nye Brave-profil</translation>
-<translation id="6361779936989026201">Brave Assistent i Brave</translation>
 <translation id="113959764510199339">Brave forsøger at vise adgangskoder.</translation>
 <translation id="8132634101975074716">Du er logget ind på Brave.</translation>
 <translation id="4168469784091952813">Få mest muligt ud af Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">Brave er opdateret</translation>
 <translation id="5122472867956731189">Hvis et website forsøger at stjæle din adgangskode, eller hvis du downloader en skadelig fil, sender Brave muligvis også webadresser, bl.a. mindre mængder sideindhold, til Beskyttet browsing</translation>
 <translation id="2953892977076487219">Brave forsøger at redigere adgangskoder.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave har forbindelse til en HID-enhed}one{Brave har forbindelse til en HID-enhed}other{Brave har forbindelse til HID-enheder}}</translation>
 <translation id="8755404239607088219">Brave kan ikke tjekke dine adgangskoder. Prøv igen senere.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
 <translation id="3038232873781883849">Venter på at installere…</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Denne handling sletter <ph name="ITEMS_COUNT"/> elementer på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> kan skifte mellem Brave-profiler</translation>
 <translation id="8703492925273919597">Luk alle Brave-vinduer, og prøv igen.</translation>
-<translation id="5350485513372498152">Brave Assistent i Brave kan udføre handlinger for dig på websites</translation>
 <translation id="4061445349373849749">Vi sletter automatisk de interesser, der er ældre end 4 uger, for at beskytte dine personlige oplysninger Mens du surfer, kan en interesse vises på listen igen. Du kan også fjerne interesser, som du ikke vil have, at Brave skal tage med i betragtning.</translation>
 <translation id="691208314680168371">Din browserhistorik, dvs. en oversigt over, hvilke websites du har besøgt i Brave på denne enhed</translation>
 <translation id="1384923383737428730">Der er skadelig software på din computer. Brave kan fjerne den, gendanne dine indstillinger og deaktivere udgivelser, så din browser fungerer normalt igen.</translation>
@@ -183,7 +182,7 @@
 <translation id="232381795826373334">Åbn PDF-filer i Brave</translation>
 <translation id="5381032481466106256">Når den er slået til, bliver du også logget ud af Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Der er en tilgængelig Brave-opdatering}=1{Der er en tilgængelig Brave-opdatering}one{En Brave-opdatering har været tilgængelig i # dag}other{En Brave-opdatering har været tilgængelig i # dage}}</translation>
-<translation id="95624393026532554">Brave kræver Windows 7 eller nyere.</translation>
+<translation id="4378573854226202617">Brave kræver Windows 10 eller nyere.</translation>
 <translation id="5646769069113654257">Genstart Brave nu</translation>
 <translation id="2335583906071111058">Vis Brave på dette sprog</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
@@ -386,4 +385,6 @@ Tilladelser, som du allerede har givet til websider og apps kan være gældende 
 <translation id="3829358914761176693">{COUNT,plural, =0{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering}=1{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Din administrator kræver, at du genstarter Brave for at anvende en opdatering}=1{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
 <translation id="2176087127109773485">Du kan tilpasse dine synkroniseringskæder, når du er logget ind i Brave. Dine Brave-synkroniseringskæder bruges til Brave-browseren, Play Store, Gmail og andet. Hvis du vil tilføje en konto for en anden, f.eks. et familiemedlem, skal du tilføje en ny profil til <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome beta</translation>
+<translation id="7535429826459677826">Udviklerversionen af Chrome</translation>
 </translationbundle>

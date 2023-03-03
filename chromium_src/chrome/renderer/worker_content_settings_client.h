@@ -10,7 +10,7 @@
   BraveFarblingLevel GetBraveFarblingLevel() override; \
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
 
-#include "src/chrome/renderer/worker_content_settings_client.h"
+#include "src/chrome/renderer/worker_content_settings_client.h"  // IWYU pragma: export
 
 #undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H
 

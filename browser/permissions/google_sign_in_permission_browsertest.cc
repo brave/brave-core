@@ -46,7 +46,13 @@ const char kTestDomain[] = "a.com";
 const char kThirdPartyTestDomain[] = "b.com";
 
 // Used to identify the buttons on the test page.
-const char kAuthButtonHtmlId[] = "auth-button";
+const char kGoogleAuthButtonHtmlId[] = "auth-button-google";
+const char kFirebaseAuthButtonHtmlId[] = "auth-button-firebase";
+const char kGoogleAuthButtonWithoutParamHtmlId[] =
+    "auth-button-google-without-param";
+const char kFirebaseAuthButtonDiffParamHtmlId[] =
+    "auth-button-firebase-diff-param";
+const char kGoogleAuthButtonPopupHtmlId[] = "auth-button-google-popup";
 
 }  // namespace
 
@@ -188,11 +194,6 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                                                  value);
   }
 
-  bool GetGoogleSignInPref() {
-    return browser()->profile()->GetPrefs()->GetBoolean(
-        kGoogleLoginControlType);
-  }
-
   void ClickButtonWithId(const std::string& id) {
     std::string click_script = content::JsReplace(
         R"(
@@ -217,7 +218,8 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
                   ContentSettingsType::BRAVE_GOOGLE_SIGN_IN),
               content_setting);
     EXPECT_EQ(cookie_settings()->GetCookieSetting(
-                  GURL(kAccountsGoogleUrl), embedding_url_, nullptr,
+                  GURL(kAccountsGoogleUrl), embedding_url_,
+                  net::CookieSettingOverrides(), nullptr,
                   content_settings::CookieSettingsBase::QueryReason::kCookies),
               cookie_setting);
   }
@@ -246,14 +248,14 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
   }
 
-  void CheckAskAndAcceptFlow() {
+  void CheckAskAndAcceptFlow(std::string button_id = kGoogleAuthButtonHtmlId) {
     EXPECT_EQ(0, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     // Accept prompt.
     prompt_factory()->set_response_type(
         permissions::PermissionRequestManager::ACCEPT_ALL);
     // Have website issue request for Google auth URL.
-    ClickButtonWithId(kAuthButtonHtmlId);
+    ClickButtonWithId(button_id);
     prompt_factory()->WaitForPermissionBubble();
     // Make sure prompt came up.
     EXPECT_EQ(1, prompt_factory()->show_count());
@@ -264,14 +266,14 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     CheckIf3PCookiesCanBeSetFromAuthDomain(true);
   }
 
-  void CheckAskAndDenyFlow() {
+  void CheckAskAndDenyFlow(std::string button_id = kGoogleAuthButtonHtmlId) {
     EXPECT_EQ(0, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     // Deny prompt.
     prompt_factory()->set_response_type(
         permissions::PermissionRequestManager::DENY_ALL);
     // Have website issue request for Google auth URL.
-    ClickButtonWithId(kAuthButtonHtmlId);
+    ClickButtonWithId(button_id);
     prompt_factory()->WaitForPermissionBubble();
     // Make sure prompt comes up.
     EXPECT_EQ(1, prompt_factory()->show_count());
@@ -281,11 +283,12 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
   }
 
-  void CheckAllowedFlow(int initial_prompts_shown = 0) {
+  void CheckAllowedFlow(int initial_prompts_shown = 0,
+                        std::string button_id = kGoogleAuthButtonHtmlId) {
     EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     // Have website issue request for Google auth URL.
-    ClickButtonWithId(kAuthButtonHtmlId);
+    ClickButtonWithId(button_id);
     // Make sure prompt did not come up again.
     EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
     // Check content settings and cookie settings are ALLOWed
@@ -295,11 +298,12 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     CheckIf3PCookiesCanBeSetFromAuthDomain(true);
   }
 
-  void CheckBlockedFlow(int initial_prompts_shown = 0) {
+  void CheckBlockedFlow(int initial_prompts_shown = 0,
+                        std::string button_id = kGoogleAuthButtonHtmlId) {
     EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
     // Have website issue request for Google auth URL.
-    ClickButtonWithId(kAuthButtonHtmlId);
+    ClickButtonWithId(button_id);
     // Make sure prompt did not come up again.
     EXPECT_EQ(initial_prompts_shown, prompt_factory()->show_count());
     // Check content settings and cookie settings are BLOCKed
@@ -309,12 +313,12 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
   }
 
-  void CheckPrefOffFlow() {
+  void CheckPrefOffFlow(std::string button_id = kGoogleAuthButtonHtmlId) {
     EXPECT_EQ(0, prompt_factory()->show_count());
     // Try to set 3p cookies from auth domain, should not work.
     CheckIf3PCookiesCanBeSetFromAuthDomain(false);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
-    ClickButtonWithId(kAuthButtonHtmlId);
+    ClickButtonWithId(button_id);
     CheckCookiesAndContentSetting(ContentSetting::CONTENT_SETTING_ASK,
                                   ContentSetting::CONTENT_SETTING_BLOCK);
     // No prompt shown.
@@ -337,53 +341,67 @@ class GoogleSignInBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
 };
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllow) {
-  SetGoogleSignInPref(true);
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllowGoogle) {
   CheckAskAndAcceptFlow();
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDeny) {
-  SetGoogleSignInPref(true);
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDenyGoogle) {
   CheckAskAndDenyFlow();
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, Default) {
-  SetGoogleSignInPref(true);
   CheckCurrentStatusIsAsk();
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismiss) {
-  SetGoogleSignInPref(true);
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionAllowFirebase) {
+  CheckAskAndAcceptFlow(kFirebaseAuthButtonHtmlId);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDenyFirebase) {
+  CheckAskAndDenyFlow(kFirebaseAuthButtonHtmlId);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissGoogle) {
   EXPECT_EQ(0, prompt_factory()->show_count());
   prompt_factory()->set_response_type(
       permissions::PermissionRequestManager::DISMISS);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
   // Have website issue request for Google auth URL.
-  ClickButtonWithId(kAuthButtonHtmlId);
+  ClickButtonWithId(kGoogleAuthButtonHtmlId);
   prompt_factory()->WaitForPermissionBubble();
   // Confirm that content and cookie settings did not change.
   CheckCurrentStatusIsAsk();
   EXPECT_EQ(1, prompt_factory()->show_count());
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefTurnedOff) {
-  SetGoogleSignInPref(false);
-  CheckPrefOffFlow();
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PermissionDismissFirebase) {
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::DISMISS);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  // Have website issue request for Google auth URL.
+  ClickButtonWithId(kFirebaseAuthButtonHtmlId);
+  prompt_factory()->WaitForPermissionBubble();
+  // Confirm that content and cookie settings did not change.
+  CheckCurrentStatusIsAsk();
+  EXPECT_EQ(1, prompt_factory()->show_count());
 }
 
-IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, PrefOffInheritedInIncognito) {
-  // Allowed permission for a website is inherited in incognito
-  SetGoogleSignInPref(false);
-  Profile* profile = browser()->profile();
-  Browser* incognito_browser = CreateIncognitoBrowser(profile);
-  SetBrowser(incognito_browser);
-  SetPromptFactory(GetPermissionRequestManager());
-  CheckPrefOffFlow();
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       kGoogleLoginControlTypePrefIsOff) {
+  CheckCurrentStatusIsAsk();
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, GoogleAuthButNoParam) {
+  CheckPrefOffFlow(kGoogleAuthButtonWithoutParamHtmlId);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, FirebaseAuthButNoParam) {
+  CheckPrefOffFlow(kFirebaseAuthButtonDiffParamHtmlId);
 }
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
   // Allowed permission for a website is inherited in incognito
-  SetGoogleSignInPref(true);
   CheckAskAndAcceptFlow();
   Profile* profile = browser()->profile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
@@ -394,7 +412,6 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritAllow) {
 
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   // Blocked permission for a website is inherited in incognito
-  SetGoogleSignInPref(true);
   CheckAskAndDenyFlow();
   Profile* profile = browser()->profile();
   Browser* incognito_browser = CreateIncognitoBrowser(profile);
@@ -403,9 +420,44 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeInheritBlock) {
   CheckBlockedFlow();
 }
 
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       PopupAuthWindowAllowReloadsTab) {
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  // Wait for the page to reload after the popup window is closed.
+  content::TestNavigationObserver reload_observer(contents(), 2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  // Have website issue request for Google auth URL in a popup window.
+  ClickButtonWithId(kGoogleAuthButtonPopupHtmlId);
+  reload_observer.Wait();
+  EXPECT_TRUE(reload_observer.last_navigation_succeeded());
+  EXPECT_EQ(embedding_url_, reload_observer.last_navigation_url());
+  EXPECT_EQ(1, prompt_factory()->show_count());
+  // Check current status is ALLOW.
+  CheckAllowedFlow(1);
+}
+
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest,
+                       PopupAuthWindowDenyDoesNotReloadTab) {
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::DENY_ALL);
+  // Wait for the page to reload after the popup window is closed.
+  content::TestNavigationObserver reload_observer(contents(), 1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  // Have website issue request for Google auth URL in a popup window.
+  ClickButtonWithId(kGoogleAuthButtonPopupHtmlId);
+  reload_observer.Wait();
+  EXPECT_TRUE(reload_observer.last_navigation_succeeded());
+  EXPECT_EQ(embedding_url_, reload_observer.last_navigation_url());
+  EXPECT_EQ(1, prompt_factory()->show_count());
+  // Check current status is DENY.
+  CheckBlockedFlow(1);
+}
+
 IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   // Permission set in Incognito does not leak back to normal mode.
-  SetGoogleSignInPref(true);
   Browser* original_browser = browser();
   Browser* incognito_browser = CreateIncognitoBrowser();
   SetBrowser(incognito_browser);
@@ -415,6 +467,18 @@ IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, IncognitoModeDoesNotLeak) {
   SetBrowser(original_browser);
   SetPromptFactory(GetPermissionRequestManager());
   CheckCurrentStatusIsAsk();
+}
+
+// No prompt shown when current website is a google.com domain
+IN_PROC_BROWSER_TEST_F(GoogleSignInBrowserTest, GoogleDomain) {
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Go to website that is a google.com domain.
+  auto google_domain =
+      https_server_->GetURL("developers.google.com", kEmbeddingPageUrl);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), google_domain));
+  ClickButtonWithId(kGoogleAuthButtonHtmlId);
+  // No prompt shown.
+  EXPECT_EQ(0, prompt_factory()->show_count());
 }
 
 class GoogleSignInFlagDisabledTest : public GoogleSignInBrowserTest {

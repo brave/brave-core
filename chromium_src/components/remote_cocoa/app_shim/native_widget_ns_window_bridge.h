@@ -12,7 +12,7 @@
   void ResetWindowControlsPosition() override;     \
   void OnSizeChanged
 
-#include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.h"
+#include "src/components/remote_cocoa/app_shim/native_widget_ns_window_bridge.h"  // IWYU pragma: export
 
 #undef OnSizeChanged
 

@@ -6,8 +6,10 @@
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
@@ -23,6 +25,7 @@
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/protocol/sync_protocol_error.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -40,7 +43,7 @@ static const size_t SEED_BYTES_COUNT = 32u;
 
 BraveSyncDeviceTracker::BraveSyncDeviceTracker(
     syncer::DeviceInfoTracker* device_info_tracker,
-    std::function<void()> on_device_info_changed_callback)
+    const base::RepeatingCallback<void()>& on_device_info_changed_callback)
     : on_device_info_changed_callback_(on_device_info_changed_callback) {
   DCHECK(device_info_tracker);
   device_info_tracker_observer_.Observe(device_info_tracker);
@@ -52,14 +55,16 @@ BraveSyncDeviceTracker::~BraveSyncDeviceTracker() {
 
 void BraveSyncDeviceTracker::OnDeviceInfoChange() {
   if (on_device_info_changed_callback_) {
-    on_device_info_changed_callback_();
+    on_device_info_changed_callback_.Run();
   }
 }
 
 BraveSyncServiceTracker::BraveSyncServiceTracker(
     syncer::SyncServiceImpl* sync_service_impl,
-    std::function<void()> on_state_changed_callback)
-    : on_state_changed_callback_(on_state_changed_callback) {
+    const base::RepeatingCallback<void()>& on_state_changed_callback,
+    const base::RepeatingCallback<void()>& on_sync_shutdown_callback)
+    : on_state_changed_callback_(on_state_changed_callback),
+      on_sync_shutdown_callback_(on_sync_shutdown_callback) {
   DCHECK(sync_service_impl);
   sync_service_observer_.Observe(sync_service_impl);
 }
@@ -70,7 +75,13 @@ BraveSyncServiceTracker::~BraveSyncServiceTracker() {
 
 void BraveSyncServiceTracker::OnStateChanged(syncer::SyncService* sync) {
   if (on_state_changed_callback_) {
-    on_state_changed_callback_();
+    on_state_changed_callback_.Run();
+  }
+}
+
+void BraveSyncServiceTracker::OnSyncShutdown(syncer::SyncService* sync) {
+  if (on_sync_shutdown_callback_) {
+    on_sync_shutdown_callback_.Run();
   }
 }
 
@@ -324,6 +335,30 @@ void BraveSyncWorker::DeleteDevice(const std::string& device_guid) {
   DCHECK(device_info_service);
 
   brave_sync::DeleteDevice(sync_service, device_info_service, device_guid);
+}
+
+void BraveSyncWorker::SetJoinSyncChainCallback(
+    base::OnceCallback<void(bool)> callback) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
+
+  if (!sync_service) {
+    return;
+  }
+
+  sync_service->SetJoinChainResultCallback(std::move(callback));
+}
+
+void BraveSyncWorker::PermanentlyDeleteAccount(
+    base::OnceCallback<void(const syncer::SyncProtocolError&)> callback) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
+
+  if (!sync_service) {
+    return;
+  }
+
+  sync_service->PermanentlyDeleteAccount(std::move(callback));
 }
 
 syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {

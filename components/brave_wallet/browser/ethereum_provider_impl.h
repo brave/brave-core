@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_logs_tracker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -89,6 +88,7 @@ class EthereumProviderImpl final
                       base::Value id);
 
   void EthSubscribe(const std::string& event_type,
+                    absl::optional<base::Value::Dict> filter,
                     RequestCallback callback,
                     base::Value id);
   void EthUnsubscribe(const std::string& subscription_id,
@@ -173,6 +173,8 @@ class EthereumProviderImpl final
                            RequestEthereumPermissionsWithAccounts);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribe);
   FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest, EthSubscribeLogs);
+  FRIEND_TEST_ALL_PREFIXES(EthereumProviderImplUnitTest,
+                           EthSubscribeLogsFiltered);
   friend class EthereumProviderImplUnitTest;
 
   // mojom::BraveWalletProvider:
@@ -248,6 +250,7 @@ class EthereumProviderImpl final
       mojom::ProviderError error,
       const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
+                           const std::string& domain,
                            const std::string& message,
                            std::vector<uint8_t>&& message_to_sign,
                            const absl::optional<std::string>& domain_hash,
@@ -377,7 +380,8 @@ class EthereumProviderImpl final
   bool UnsubscribeBlockObserver(const std::string& subscription_id);
 
   // EthLogsTracker::Observer:
-  void OnLogsReceived(base::Value rawlogs) override;
+  void OnLogsReceived(const std::string& subscription,
+                      base::Value rawlogs) override;
   bool UnsubscribeLogObserver(const std::string& subscription_id);
 
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
@@ -399,15 +403,15 @@ class EthereumProviderImpl final
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
-  std::vector<std::string> known_allowed_accounts;
+  std::vector<std::string> known_allowed_accounts_;
   std::vector<std::string> eth_subscriptions_;
   std::vector<std::string> eth_log_subscriptions_;
   EthBlockTracker eth_block_tracker_;
   EthLogsTracker eth_logs_tracker_;
-  bool first_known_accounts_check = true;
+  bool first_known_accounts_check_ = true;
   PrefService* prefs_ = nullptr;
   bool wallet_onboarding_shown_ = false;
-  base::WeakPtrFactory<EthereumProviderImpl> weak_factory_;
+  base::WeakPtrFactory<EthereumProviderImpl> weak_factory_{this};
 };
 
 }  // namespace brave_wallet

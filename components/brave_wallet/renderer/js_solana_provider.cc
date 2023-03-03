@@ -52,6 +52,11 @@ constexpr char kSignatures[] = "signatures";
 constexpr char kToString[] = "toString";
 constexpr char kSolanaProviderScript[] = "solana_provider.js";
 constexpr char kWalletStandardScript[] = "wallet_standard.js";
+constexpr char kWalletStandardOnDemandScript[] = R"((function () {
+  window.addEventListener('wallet-standard:app-ready', (e) => {
+    window.braveSolana.walletStandardInit()
+  })
+})())";
 
 }  // namespace
 
@@ -96,14 +101,14 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                                content::RenderFrame* render_frame) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
       render_frame->GetWebFrame()->MainWorldScriptContext();
   if (context.IsEmpty()) {
     return;
   }
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
   // check window.braveSolana existence
@@ -139,7 +144,8 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
   // Non-function properties are readonly guaranteed by gin::Wrappable
   for (const std::string& method :
        {"connect", "disconnect", "signAndSendTransaction", "signMessage",
-        "request", "signTransaction", "signAllTransactions"}) {
+        "request", "signTransaction", "signAllTransactions",
+        "walletStandardInit"}) {
     SetOwnPropertyWritable(context,
                            provider_value->ToObject(context).ToLocalChecked(),
                            gin::StringToV8(isolate, method), false);
@@ -151,6 +157,9 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                 LoadDataResource(
                     IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
                 kSolanaProviderScript);
+
+  ExecuteScript(web_frame, kWalletStandardOnDemandScript,
+                kWalletStandardScript);
 }
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
@@ -169,7 +178,10 @@ gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
       // Deprecated
       .SetMethod("signTransaction", &JSSolanaProvider::SignTransaction)
       // Deprecated
-      .SetMethod("signAllTransactions", &JSSolanaProvider::SignAllTransactions);
+      .SetMethod("signAllTransactions", &JSSolanaProvider::SignAllTransactions)
+      // Internal function used to load and initialize wallet-standard natively.
+      // It only function once and further calls do nothing.
+      .SetMethod("walletStandardInit", &JSSolanaProvider::WalletStandardInit);
 }
 
 const char* JSSolanaProvider::GetTypeName() {
@@ -195,16 +207,6 @@ void JSSolanaProvider::AccountChangedEvent(
     args.push_back(std::move(v8_public_key));
   }
   FireEvent(solana::kAccountChangedEvent, std::move(args));
-}
-
-void JSSolanaProvider::DidFinishLoad() {
-  if (wallet_standard_loaded_) {
-    return;
-  }
-  solana_provider_->IsSolanaKeyringCreated(
-      // We don't need weak ptr for mojo bindings when owning mojo::Remote
-      base::BindOnce(&JSSolanaProvider::OnIsSolanaKeyringCreated,
-                     base::Unretained(this)));
 }
 
 void JSSolanaProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -562,6 +564,33 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
   return resolver.ToLocalChecked()->GetPromise();
 }
 
+void JSSolanaProvider::WalletStandardInit(gin::Arguments* arguments) {
+  if (wallet_standard_loaded_) {
+    render_frame()->GetWebFrame()->AddMessageToConsole(
+        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
+                                 "Wallet Standard has already been loaded."));
+    return;
+  }
+  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
+  std::string wallet_standard_module_str = base::StrCat(
+      {"(function() {", LoadDataResource(IDR_BRAVE_WALLET_STANDARD_JS),
+       "return walletStandardBrave; })()"});
+
+  v8::Local<v8::Value> wallet_standard =
+      ExecuteScript(web_frame, wallet_standard_module_str,
+                    "wallet_standard_brave")
+          .ToLocalChecked();
+  v8::Local<v8::Value> object;
+  v8::Isolate* isolate = arguments->isolate();
+  v8::Local<v8::Context> context = isolate->GetCurrentContext();
+  if (!GetProperty(context, context->Global(), kBraveSolana).ToLocal(&object)) {
+    return;
+  }
+  CallMethodOfObject(web_frame, wallet_standard, "initialize",
+                     std::vector<v8::Local<v8::Value>>({object}));
+  wallet_standard_loaded_ = true;
+}
+
 void JSSolanaProvider::FireEvent(
     const std::string& event,
     std::vector<v8::Local<v8::Value>>&& event_args) {
@@ -622,9 +651,9 @@ void JSSolanaProvider::OnSignAndSendTransaction(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     base::Value value(std::move(result));
@@ -647,9 +676,9 @@ void JSSolanaProvider::OnSignMessage(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
@@ -751,9 +780,9 @@ void JSSolanaProvider::OnRequest(
     const std::string& error_message,
     base::Value::Dict result) {
   v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
@@ -960,7 +989,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
     return v8::Undefined(isolate);
   }
 
-  v8::MicrotasksScope microtasks(isolate,
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Context::Scope context_scope(context);
 
@@ -990,20 +1019,6 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
   }
 
   return transaction.ToLocalChecked();
-}
-
-void JSSolanaProvider::OnIsSolanaKeyringCreated(bool created) {
-  if (!created) {
-    return;
-  }
-  v8::Isolate* isolate = blink::MainThreadIsolate();
-  v8::HandleScope handle_scope(isolate);
-  blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
-  ExecuteScript(web_frame,
-                LoadDataResource(
-                    IDR_BRAVE_WALLET_SCRIPT_WALLET_STANDARD_SCRIPT_BUNDLE_JS),
-                kWalletStandardScript);
-  wallet_standard_loaded_ = true;
 }
 
 }  // namespace brave_wallet

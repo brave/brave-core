@@ -5,9 +5,10 @@
 
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/root_view.h"
@@ -25,7 +26,7 @@
 #define GetHorizontalDragThreshold()                                       \
   GetHorizontalDragThreshold() -                                           \
       (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
-               tabs::features::ShouldShowVerticalTabs(                     \
+               tabs::utils::ShouldShowVerticalTabs(                        \
                    BrowserView::GetBrowserViewForNativeWindow(             \
                        GetAttachedBrowserWidget()->GetNativeWindow())      \
                        ->browser())                                        \
@@ -39,7 +40,8 @@
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController
 
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
 TabDragController::TabDragController() = default;
 
@@ -55,6 +57,18 @@ void TabDragController::Init(TabDragContext* source_context,
   TabDragControllerChromium::Init(source_context, source_view, dragging_views,
                                   mouse_offset, source_view_offset,
                                   initial_selection_model, event_source);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    if (base::ranges::any_of(dragging_views, [](auto* slot_view) {
+          // We don't allow sharable pinned tabs to be detached.
+          return slot_view->GetTabSlotViewType() ==
+                     TabSlotView::ViewType::kTab &&
+                 views::AsViewClass<Tab>(slot_view)->data().pinned;
+        })) {
+      detach_behavior_ = NOT_DETACHABLE;
+    }
+  }
+
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return;
 
@@ -63,7 +77,7 @@ void TabDragController::Init(TabDragContext* source_context,
   const auto* browser =
       BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
           ->browser();
-  is_showing_vertical_tabs_ = tabs::features::ShouldShowVerticalTabs(browser);
+  is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_)
     return;

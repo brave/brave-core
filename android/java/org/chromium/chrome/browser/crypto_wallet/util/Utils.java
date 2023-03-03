@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -104,6 +105,7 @@ import org.chromium.url.GURL;
 import java.io.InputStream;
 import java.lang.Number;
 import java.lang.NumberFormatException;
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -129,6 +131,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Predicate;
 
 public class Utils {
+    private static final String TAG = "Utils";
+
     public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
     public static int ONBOARDING_ACTION = 2;
     public static int UNLOCK_WALLET_ACTION = 3;
@@ -1336,7 +1340,7 @@ public class Utils {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public static boolean isBiometricAvailable(Context context) {
         // Only Android versions 9 and above are supported.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || context == null) {
             return false;
         }
 
@@ -1398,7 +1402,12 @@ public class Utils {
 
     @NonNull
     public static Profile getProfile(boolean isIncognito) {
-        ChromeActivity chromeActivity = BraveActivity.getBraveActivity();
+        ChromeActivity chromeActivity = null;
+        try {
+            chromeActivity = BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "getProfile " + e);
+        }
         if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
         if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
 
@@ -1509,19 +1518,26 @@ public class Utils {
 
     // Please only use this function when you need all the info (tokens, prices and balances) at the
     // same time!
-    public static void getTxExtraInfo(BraveWalletBaseActivity activity, NetworkInfo[] allNetworks,
-            NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+    public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
+            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
+        BraveWalletBaseActivity activity = activityRef.get();
+        if (activity == null || activity.isFinishing()) return;
         BraveWalletService braveWalletService = activity.getBraveWalletService();
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         AssetRatioService assetRatioService = activity.getAssetRatioService();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
-        assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
-                && jsonRpcService != null;
-
         BraveWalletP3a braveWalletP3A = activity.getBraveWalletP3A();
+        assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
+                && jsonRpcService != null
+                && braveWalletP3A != null : "Invalid service initialization";
+
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry, assetRatioService,
+                    jsonRpcService, braveWalletP3A))
+            return;
+
         AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(4);
 
         TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
@@ -1558,7 +1574,7 @@ public class Utils {
                             new AsyncUtils.GetP3ABalancesContext(
                                     multiResponse.singleResponseComplete);
                     BalanceHelper.getP3ABalances(
-                            activity, allNetworks, selectedNetwork, getP3ABalancesContext);
+                            activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
 
                     multiResponse.setWhenAllCompletedAction(() -> {
                         // P3A active accounts

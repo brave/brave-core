@@ -16,7 +16,7 @@
       const override;                                                        \
   void ForcePulseForTest
 
-#include "src/components/sync_device_info/fake_device_info_tracker.h"
+#include "src/components/sync_device_info/fake_device_info_tracker.h"  // IWYU pragma: export
 
 #undef ForcePulseForTest
 

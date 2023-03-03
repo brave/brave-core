@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 #include "bat/ads/internal/account/user_data/platform_user_data.h"
@@ -29,7 +30,7 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
   user_data.Merge(user_data::GetPlatform());
   user_data.Merge(user_data::GetTotals(unblinded_payment_tokens_));
 
-  callback(user_data);
+  std::move(callback).Run(std::move(user_data));
 }
 
 }  // namespace ads

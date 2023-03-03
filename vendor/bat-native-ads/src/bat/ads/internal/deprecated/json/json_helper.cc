@@ -7,7 +7,11 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/rapidjson/src/include/rapidjson/error/en.h"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wexit-time-destructors"
 #include "brave/third_party/rapidjson/src/include/rapidjson/schema.h"
+#pragma clang diagnostic pop
 
 namespace ads::helper::json {
 

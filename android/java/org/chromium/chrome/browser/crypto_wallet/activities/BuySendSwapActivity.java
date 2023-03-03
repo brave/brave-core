@@ -113,7 +113,7 @@ import java.util.concurrent.Executors;
 public class BuySendSwapActivity extends BraveWalletBaseActivity
         implements AdapterView.OnItemSelectedListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
                    ApprovedTxObserver {
-    private final static String TAG = "BuySendSwapActivity";
+    private static final String TAG = "BuySendSwap";
     private static final int RC_HANDLE_CAMERA_PERM = 113;
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -243,10 +243,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         mFromValueBlock = findViewById(R.id.from_value_block);
 
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mSendModel = mWalletModel.getCryptoModel().createSendModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
@@ -971,18 +973,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                             });
                 }
             } else if (mActivityType == ActivityType.BUY) {
-                assert mBlockchainRegistry != null;
-                String symbol = AssetUtils.mapToRampNetworkSymbol(mCurrentBlockchainToken);
-                mBlockchainRegistry.getBuyUrl(OnRampProvider.RAMP, mCurrentBlockchainToken.chainId,
-                        from, symbol, amount, (url, error) -> {
-                            if (error != null && !error.isEmpty() && Utils.isDebuggable(this)) {
-                                Log.e(TAG, "Could not get buy URL: " + error);
-                                return;
-                            }
+                Intent selectPurchaseMethodIntent = SelectPurchaseMethodActivity.getIntent(this,
+                        mCurrentBlockchainToken.chainId, from, mCurrentBlockchainToken.symbol,
+                        mCurrentBlockchainToken.contractAddress, amount);
+                startActivity(selectPurchaseMethodIntent);
 
-                            TabUtils.openUrlInNewTab(false, url);
-                            TabUtils.bringChromeTabbedActivityToTheTop(this);
-                        });
             } else if (mActivityType == ActivityType.SWAP) {
                 if (mCurrentBlockchainToken != null) {
                     String btnText = mBtnBuySendSwap.getText().toString();

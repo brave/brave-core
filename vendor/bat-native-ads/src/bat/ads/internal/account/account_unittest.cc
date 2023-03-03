@@ -18,6 +18,7 @@
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
+#include "bat/ads/internal/account/wallet/wallet_unittest_util.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "bat/ads/internal/common/unittest/unittest_time_util.h"
@@ -37,15 +38,6 @@ namespace ads {
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace {
-
-constexpr char kWalletId[] = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-constexpr char kWalletSeed[] = "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=";
-constexpr char kInvalidWalletSeed[] =
-    "y6vCwhJ6NUUWZ7tkHw76f0FIs9w8j-VylGC0rWd6gQ1=";
-
-}  // namespace
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
@@ -108,7 +100,8 @@ TEST_F(BatAdsAccountTest, SetWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
@@ -120,7 +113,8 @@ TEST_F(BatAdsAccountTest, SetInvalidWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(kWalletId, kInvalidWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetInvalidWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_FALSE(wallet_did_update_);
@@ -130,10 +124,12 @@ TEST_F(BatAdsAccountTest, SetInvalidWallet) {
 
 TEST_F(BatAdsAccountTest, ChangeWallet) {
   // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Act
-  account_->SetWallet("c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3", kWalletSeed);
+  account_->SetWallet(/*payment_id*/ "c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3",
+                      GetWalletRecoverySeedForTesting());
 
   // Assert
   EXPECT_TRUE(wallet_did_update_);
@@ -143,17 +139,19 @@ TEST_F(BatAdsAccountTest, ChangeWallet) {
 
 TEST_F(BatAdsAccountTest, GetWallet) {
   // Arrange
-  account_->SetWallet(kWalletId, kWalletSeed);
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
 
   // Act
   const WalletInfo& wallet = account_->GetWallet();
 
   // Assert
   WalletInfo expected_wallet;
-  expected_wallet.id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
+  expected_wallet.payment_id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
+  expected_wallet.public_key = "BiG/i3tfNLSeOA9ZF5rkPCGyhkc7KCRbQS3bVGMvFQ0=";
   expected_wallet.secret_key =
-      "93052310477323AAE423A84BA32C68B1AE3B66B71952F6D8A69026E33BD817980621BF8B"
-      "7B5F34B49E380F59179AE43C21B286473B28245B412DDB54632F150D";
+      "kwUjEEdzI6rkI6hLoyxosa47ZrcZUvbYppAm4zvYF5gGIb+"
+      "Le180tJ44D1kXmuQ8IbKGRzsoJFtBLdtUYy8VDQ==";
 
   EXPECT_EQ(expected_wallet, wallet);
 }
@@ -163,7 +161,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v3/issuers/)",
+                                         "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -229,16 +227,16 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   const IssuersInfo expected_issuers = BuildIssuers(
       /*ping*/ 7'200'000,
       /*confirmation_public_keys*/
-      {{R"~(JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=)~", 0.0},
-       {R"~(crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=)~", 0.0}},
+      {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
       /*payments_public_keys*/
-      {{R"~(JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=)~", 0.0},
-       {R"~(bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=)~", 0.1},
-       {R"~(XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=)~", 0.1},
-       {R"~(wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=)~", 0.1},
-       {R"~(ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=)~", 0.1},
-       {R"~(JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=)~", 0.1},
-       {R"~(hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=)~", 0.1}});
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
+       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
+       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
+       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
+       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
+       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
 
   EXPECT_EQ(expected_issuers, *issuers);
 }
@@ -248,7 +246,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v3/issuers/)",
+                                         "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -321,7 +319,7 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v3/issuers/)",
+                                         "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
         {
           "ping": 7200000,
@@ -418,13 +416,13 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v3/issuers/)",
+                                         "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": []
-        }
-        )"}}}};
+                                          {
+                                            "ping": 7200000,
+                                            "issuers": []
+                                          }
+                                         )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
@@ -444,7 +442,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   const URLResponseMap url_responses = {{// Get issuers request
-                                         R"(/v3/issuers/)",
+                                         "/v3/issuers/",
                                          {{net::HTTP_OK, "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -466,7 +464,16 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   const URLResponseMap url_responses = {
       {// Create confirmation request
-       R"(/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
+       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/"
+       "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVR"
+       "xeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidG"
+       "VzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjM"
+       "C1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIs"
+       "XCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVUR"
+       "yR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYm"
+       "JmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TW"
+       "GpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3"
+       "Zz09In0=",
        {{net::HTTP_CREATED, R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -477,7 +484,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
             }
           )"}}},
       {// Fetch payment token request
-       R"(/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)",
+       "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken",
        {{net::HTTP_OK, R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",

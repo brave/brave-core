@@ -20,6 +20,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAnonymousIframeOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -35,6 +36,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSharedStorageSelectURLLimit, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSharedStorageReportEventLimit, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -70,15 +73,20 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
              "BraveBlockScreenFingerprinting",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Enables HTTPS-Only Mode in Private Windows with Tor by default.
-BASE_FEATURE(kBraveTorWindowsHttpsOnly,
-             "BraveTorWindowsHttpsOnly",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
              "BraveRoundTimeStamps",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Enable EventSource connection pool limit per eTLD+1.
+BASE_FEATURE(kRestrictEventSourcePool,
+             "RestrictEventSourcePool",
+#if BUILDFLAG(IS_ANDROID)
+             base::FEATURE_DISABLED_BY_DEFAULT
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+);
 
 }  // namespace features
 }  // namespace blink

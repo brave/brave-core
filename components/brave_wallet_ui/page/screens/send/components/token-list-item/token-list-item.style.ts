@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { StyledButton, StyledDiv } from '../../shared.styles'
+import { StyledButton, StyledDiv, Row } from '../../shared.styles'
 
 import {
   AssetIconProps,
@@ -29,6 +29,7 @@ export const NetworkIconWrapper = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 100%;
   padding: 2px;
+  z-index: 3;
 `
 
 export const ButtonWrapper = styled(StyledDiv)`
@@ -66,4 +67,10 @@ export const IconsWrapper = styled.div`
   flex-direction: row;
   position: relative;
   margin-right: 16px;
+`
+
+export const IconAndName = styled(Row)`
+  width: 80%;
+  overflow: hidden;
+  white-space: pre-line;
 `

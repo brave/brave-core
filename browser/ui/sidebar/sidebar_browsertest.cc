@@ -3,25 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -37,6 +41,7 @@
 #include "ui/gfx/geometry/point.h"
 
 using ::testing::Eq;
+using ::testing::Ne;
 using ::testing::Optional;
 
 namespace sidebar {
@@ -142,6 +147,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   // Check sidebar UI is initalized properly.
   EXPECT_TRUE(!!controller()->sidebar());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !!model()->active_index(); }));
+  // Check active index is non-null.
+  EXPECT_THAT(model()->active_index(), Ne(absl::nullopt));
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_SIDEBAR);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !model()->active_index(); }));
+  // Check active index is null.
+  EXPECT_THAT(model()->active_index(), Eq(absl::nullopt));
 
   // Currently we have 4 default items.
   EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
@@ -341,7 +358,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithVerticalTabs,
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::features::ShouldShowVerticalTabs(browser()));
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
 
   auto* prefs = browser()->profile()->GetPrefs();
 

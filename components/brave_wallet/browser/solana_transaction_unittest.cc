@@ -500,7 +500,8 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
                    {
                      "name": "lamports",
                      "localized_name": "Lamports",
-                     "value": "10000000"
+                     "value": "10000000",
+                     "type": 2
                    }
                  ],
                  "sys_ins_type": "2"

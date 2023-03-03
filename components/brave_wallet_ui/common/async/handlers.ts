@@ -19,7 +19,8 @@ import {
   GetCoinMarketPayload,
   RetryTransactionPayload,
   SpeedupTransactionPayload,
-  CancelTransactionPayload
+  CancelTransactionPayload,
+  UpdateUsetAssetType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -33,7 +34,8 @@ import {
   TransactionProviderError,
   SendFilTransactionParams,
   SendSolTransactionParams,
-  SPLTransferFromParams
+  SPLTransferFromParams,
+  NetworkFilterType
 } from '../../constants/types'
 import {
   AddAccountPayloadType,
@@ -53,6 +55,7 @@ import {
   refreshBalances,
   refreshVisibleTokenInfo,
   refreshPrices,
+  refreshPortfolioFilterOptions,
   sendEthTransaction,
   sendFilTransaction,
   sendSolTransaction,
@@ -115,7 +118,7 @@ async function updateAccountInfo (store: Store) {
   const state = getWalletState(store)
   const apiProxy = getAPIProxy()
   const { walletHandler } = apiProxy
-  const walletInfo = await walletHandler.getWalletInfo()
+  const walletInfo = (await walletHandler.getWalletInfo()).walletInfo
   if (state.accounts.length === walletInfo.accountInfos.length) {
     await store.dispatch(WalletActions.refreshAccountInfo(walletInfo))
   } else {
@@ -158,6 +161,7 @@ handler.on(WalletActions.refreshNetworksAndTokens.type, async (store: Store) => 
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
+  await store.dispatch(refreshPortfolioFilterOptions())
 })
 
 handler.on(WalletActions.initialize.type, async (store) => {
@@ -279,6 +283,7 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
     await store.dispatch(refreshNetworkInfo())
     await store.dispatch(refreshVisibleTokenInfo())
     await store.dispatch(refreshBalances())
+    await store.dispatch(refreshPortfolioFilterOptions())
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
     await braveWalletService.discoverAssetsOnAllSupportedChains()
@@ -332,13 +337,28 @@ handler.on(WalletActions.addUserAsset.type, async (store: Store, payload: BraveW
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
-handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: BraveWallet.BlockchainToken) => {
+handler.on(WalletActions.updateUserAsset.type, async (store: Store, payload: UpdateUsetAssetType) => {
   const { braveWalletService } = getAPIProxy()
-  const deleteResult = await braveWalletService.removeUserAsset(payload)
+  const { existing, updated } = payload
+  // fetch NFT metadata if tokenId or contract address has changed
+  if ((updated.isNft || updated.isErc721) && (updated.tokenId !== existing.tokenId || updated.contractAddress !== existing.contractAddress)) {
+    const result = await getNFTMetadata(updated)
+    if (!result?.error) {
+      try {
+        const nftMetadata = result?.response && JSON.parse(result.response)
+        updated.logo = nftMetadata?.image || ''
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  const deleteResult = await braveWalletService.removeUserAsset(existing)
   if (deleteResult.success) {
-    const addResult = await braveWalletService.addUserAsset(payload)
+    const addResult = await braveWalletService.addUserAsset(updated)
     if (addResult.success) {
       refreshBalancesPricesAndHistory(store)
+      refreshVisibleTokenInfo()
     }
   }
 })
@@ -519,12 +539,15 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
   const { ethTxManagerProxy, solanaTxManagerProxy } = getAPIProxy()
 
   if (isSolanaTransaction(txInfo)) {
-    const getSolFee = await solanaTxManagerProxy.getEstimatedTxFee(txInfo.id)
-    if (!getSolFee.fee) {
-      console.error('Failed to fetch SOL Fee estimates')
+    const { fee, errorMessage } = await solanaTxManagerProxy.getEstimatedTxFee(
+      txInfo.id
+    )
+    if (!fee) {
+      console.error('Failed to fetch SOL Fee estimates: ' + errorMessage)
+      store.dispatch(WalletActions.setHasFeeEstimatesError(true))
       return
     }
-    store.dispatch(WalletActions.setSolFeeEstimates({ fee: getSolFee.fee }))
+    store.dispatch(WalletActions.setSolFeeEstimates({ fee }))
     return
   }
 
@@ -533,16 +556,18 @@ handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: 
     selectedAccount &&
     !hasEIP1559Support(selectedAccount.accountType, selectedNetwork)
   ) {
+    store.dispatch(WalletActions.setHasFeeEstimatesError(false))
     return
   }
 
-  const basicEstimates = await ethTxManagerProxy.getGasEstimation1559()
-  if (!basicEstimates.estimation) {
+  const { estimation } = await ethTxManagerProxy.getGasEstimation1559()
+  if (!estimation) {
     console.error('Failed to fetch gas estimates')
+    store.dispatch(WalletActions.setHasFeeEstimatesError(true))
     return
   }
 
-  store.dispatch(WalletActions.setGasEstimates(basicEstimates.estimation))
+  store.dispatch(WalletActions.setGasEstimates(estimation))
 })
 
 handler.on(WalletActions.updateUnapprovedTransactionGasFields.type, async (store: Store, payload: UpdateUnapprovedTransactionGasFieldsType) => {
@@ -718,13 +743,13 @@ handler.on(WalletActions.getCoinMarkets.type, async (store: Store, payload: GetC
   store.dispatch(WalletActions.setCoinMarkets(result))
 })
 
-handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedNetworkFilter.type, async (store: Store, payload: NetworkFilterType) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
 })
 
-handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
+handler.on(WalletActions.setSelectedAccountFilterItem.type, async (store: Store, payload: string) => {
   const state = getWalletState(store)
   const { selectedPortfolioTimeline } = state
   await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))

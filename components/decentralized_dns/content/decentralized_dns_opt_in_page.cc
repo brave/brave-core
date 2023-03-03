@@ -71,9 +71,9 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
       u"https://consensys.net/terms-of-use/",
       u"https://consensys.net/privacy-policy/"};
 
-  const std::vector<std::u16string> coinbase_links = {
-      u"https://www.coinbase.com/legal/cloud/terms-of-service/",
-      u"https://www.coinbase.com/legal/privacy/"};
+  const std::vector<std::u16string> syndica_links = {
+      u"https://syndica.io/terms-and-conditions/",
+      u"https://syndica.io/privacy-policy/"};
 
   if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
@@ -106,7 +106,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                        base::ReplaceStringPlaceholders(
                            brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
-                           coinbase_links, nullptr));
+                           syndica_links, nullptr));
   } else {
     NOTREACHED();
   }
@@ -115,7 +115,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     load_time_data.Set(
         "primaryButtonText",
         brave_l10n::GetLocalizedResourceUTF16String(
-            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_COINBASE_BUTTON));
+            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SYNDICA_BUTTON));
   } else {
     load_time_data.Set("primaryButtonText",
                        brave_l10n::GetLocalizedResourceUTF16String(

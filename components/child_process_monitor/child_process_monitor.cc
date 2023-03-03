@@ -121,6 +121,7 @@ void MonitorChild(base::ProcessHandle p_handle,
       }
     } else {
       // pipes closed
+      std::move(callback).Run(child_pid);
       break;
     }
   }

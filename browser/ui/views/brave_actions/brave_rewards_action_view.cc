@@ -100,7 +100,7 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
   // ui::SimpleMenuModel::Delegate override:
   void ExecuteCommand(int command_id, int event_flags) override {
     if (command_id == kHideBraveRewardsIcon) {
-      prefs_->SetBoolean(brave_rewards::prefs::kShowButton, false);
+      prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
     }
   }
 

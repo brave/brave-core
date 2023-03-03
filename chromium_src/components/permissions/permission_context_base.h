@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 
 namespace permissions {
 class PermissionContextBase;
@@ -25,7 +25,7 @@ class PermissionLifetimeManager;
       permission_lifetime_manager_factory_;
 #define CleanUpRequest virtual CleanUpRequest
 
-#include "src/components/permissions/permission_context_base.h"
+#include "src/components/permissions/permission_context_base.h"  // IWYU pragma: export
 
 #undef BRAVE_PERMISSION_CONTEXT_BASE_H_
 #undef CleanUpRequest

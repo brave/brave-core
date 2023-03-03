@@ -36,8 +36,11 @@ static_library("bitcoin-core") {
   sources = [
     "src/src/base58.cpp",
     "src/src/base58.h",
+    "src/src/bech32.cpp",
+    "src/src/bech32.h",
     "src/src/crypto/ripemd160.cpp",
     "src/src/crypto/ripemd160.h",
+    "src/src/util/strencodings.h",
   ]
 
   sources += [
@@ -53,7 +56,6 @@ static_library("bitcoin-core") {
     "src/src/hash.cpp",
     "src/src/hash.h",
     "src/src/span.h",
-    "src/src/util/strencodings.h",
   ]
 
   deps = [ "//base" ]

@@ -82,7 +82,7 @@ function excludedList (list: Rewards.ExcludedPublisher[]) {
   actions.onExcludedList(list)
 }
 
-function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
+function balanceReport (properties: { month: number, year: number, report: Rewards.BalanceReport }) {
   actions.onBalanceReport(properties)
 }
 
@@ -175,11 +175,11 @@ function excludedSiteChanged () {
   actions.getContributeList()
 }
 
-function balance (properties: {status: number, balance: Rewards.Balance}) {
+function balance (properties: { status: number, balance: Rewards.Balance }) {
   actions.onBalance(properties.status, properties.balance)
 }
 
-function reconcileComplete (properties: {type: number, result: number}) {
+function reconcileComplete (properties: { type: number, result: number }) {
   chrome.send('brave_rewards.getReconcileStamp')
   actions.getContributeList()
   actions.getBalance()
@@ -214,7 +214,7 @@ function unblindedTokensReady () {
   actions.getBalance()
 }
 
-function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) {
+function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) {
   actions.onMonthlyReport(properties)
 }
 
@@ -247,7 +247,7 @@ function enabledInlineTippingPlatforms (list: string[]) {
 }
 
 function externalWalletLogin (url: string) {
-  window.open(url, '_self')
+  window.open(url, '_self', 'noreferrer')
 }
 
 function onPrefChanged (key: string) {

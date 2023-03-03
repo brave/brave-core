@@ -123,7 +123,7 @@ describe('classnames', function () {
     }
     Class2.prototype = Object.create(Class1.prototype)
     // @ts-expect-error (empty class is always 'any')
-    const instance: { toString: () => string} = new Class2()
+    const instance: { toString: () => string } = new Class2()
     assert.equal(classnames(instance), 'classFromMethod')
   })
 })

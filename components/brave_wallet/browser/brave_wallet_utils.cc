@@ -689,6 +689,16 @@ bool IsSolanaEnabled() {
       brave_wallet::features::kBraveWalletSolanaFeature);
 }
 
+bool IsNftPinningEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletNftPinningFeature);
+}
+
+bool IsPanelV2Enabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletPanelV2Feature);
+}
+
 bool ShouldCreateDefaultSolanaAccount() {
   return IsSolanaEnabled() &&
          brave_wallet::features::kCreateDefaultSolanaAccount.Get();
@@ -696,6 +706,11 @@ bool ShouldCreateDefaultSolanaAccount() {
 
 bool ShouldShowTxStatusInToolbar() {
   return brave_wallet::features::kShowToolbarTxStatus.Get();
+}
+
+bool IsBitcoinEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave_wallet::features::kBraveWalletBitcoinFeature);
 }
 
 std::vector<brave_wallet::mojom::NetworkInfoPtr>
@@ -1174,6 +1189,21 @@ absl::optional<std::string> GetChainId(PrefService* prefs,
   return absl::nullopt;
 }
 
+absl::optional<std::string> GetChainIdByNetworkId(
+    PrefService* prefs,
+    const mojom::CoinType& coin,
+    const std::string& network_id) {
+  if (network_id.empty()) {
+    return absl::nullopt;
+  }
+  for (const auto& network : GetAllChains(prefs, coin)) {
+    if (network_id == GetNetworkId(prefs, coin, network->chain_id)) {
+      return network->chain_id;
+    }
+  }
+  return absl::nullopt;
+}
+
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
       prefs->GetInteger(kDefaultEthereumWallet));
@@ -1377,6 +1407,8 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
+    case mojom::CoinType::BTC:
+      return kBitcoinPrefKey;
     case mojom::CoinType::ETH:
       return kEthereumPrefKey;
     case mojom::CoinType::FIL:
@@ -1448,6 +1480,8 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
     return mojom::CoinType::FIL;
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     return mojom::CoinType::SOL;
+  } else if (keyring_id == mojom::kBitcoinKeyringId) {
+    return mojom::CoinType::BTC;
   }
 
   DCHECK_EQ(keyring_id, mojom::kDefaultKeyringId);

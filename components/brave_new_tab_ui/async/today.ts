@@ -1,12 +1,11 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
-import { saveIsBraveTodayOptedIn } from '../api/preferences'
 import getBraveNewsController, * as BraveNews from '../api/brave_news'
 import store from '../store'
 import { addFeedListener } from '../api/brave_news/feedListener'
@@ -51,10 +50,6 @@ handler.on<Actions.RefreshPayload>(
     }
   }
 )
-
-handler.on(Actions.optIn.getType(), async () => {
-  saveIsBraveTodayOptedIn(true)
-})
 
 handler.on(Actions.ensureSettingsData.getType(), async (store) => {
   const state = store.getState() as ApplicationState
@@ -116,7 +111,7 @@ handler.on<Actions.ReadFeedItemPayload>(
       // visit article url
       window.location.href = data.url.url
     } else {
-      window.open(data.url.url, '_blank')
+      window.open(data.url.url, '_blank', 'noreferrer')
     }
   }
 )
@@ -228,7 +223,7 @@ handler.on<Actions.VisitDisplayAdPayload>(
       // visit article url
       window.location.href = destinationUrl
     } else {
-      window.open(destinationUrl, '_blank')
+      window.open(destinationUrl, '_blank', 'noreferrer')
     }
   }
 )

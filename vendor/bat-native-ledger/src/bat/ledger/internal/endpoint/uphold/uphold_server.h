@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/endpoint/uphold/get_me/get_me.h"
 #include "bat/ledger/internal/endpoint/uphold/patch_card/patch_card.h"
 #include "bat/ledger/internal/endpoint/uphold/post_cards/post_cards.h"
-#include "bat/ledger/internal/endpoint/uphold/post_transaction/post_transaction.h"
-#include "bat/ledger/internal/endpoint/uphold/post_transaction_commit/post_transaction_commit.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -40,10 +38,6 @@ class UpholdServer {
 
   uphold::PatchCard* patch_card() const;
 
-  uphold::PostTransaction* post_transaction() const;
-
-  uphold::PostTransactionCommit* post_transaction_commit() const;
-
  private:
   std::unique_ptr<uphold::GetCapabilities> get_capabilities_;
   std::unique_ptr<uphold::GetCards> get_cards_;
@@ -51,8 +45,6 @@ class UpholdServer {
   std::unique_ptr<uphold::GetMe> get_me_;
   std::unique_ptr<uphold::PostCards> post_cards_;
   std::unique_ptr<uphold::PatchCard> patch_card_;
-  std::unique_ptr<uphold::PostTransaction> post_transaction_;
-  std::unique_ptr<uphold::PostTransactionCommit> post_transaction_commit_;
 };
 
 }  // namespace endpoint

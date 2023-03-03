@@ -10,7 +10,7 @@
 #define ShouldShowAlwaysTranslateShortcut \
   virtual ShouldShowAlwaysTranslateShortcut
 #define ShouldAutoAlwaysTranslate virtual ShouldAutoAlwaysTranslate
-#include "src/components/translate/core/browser/translate_ui_delegate.h"
+#include "src/components/translate/core/browser/translate_ui_delegate.h"  // IWYU pragma: export
 #undef ShouldAutoAlwaysTranslate
 #undef ShouldShowAlwaysTranslateShortcut
 #undef TranslateUIDelegate

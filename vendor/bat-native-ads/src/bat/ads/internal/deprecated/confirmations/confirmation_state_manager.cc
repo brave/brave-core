@@ -20,6 +20,7 @@
 #include "bat/ads/internal/account/confirmations/confirmation_util.h"
 #include "bat/ads/internal/account/confirmations/opted_in_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/common/crypto/crypto_util.h"
 #include "bat/ads/internal/common/logging_util.h"
 #include "bat/ads/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
@@ -28,6 +29,7 @@
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_value_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
+#include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_token_value_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -50,61 +52,6 @@ void SetHash(const std::string& value) {
 bool IsMutated(const std::string& value) {
   return AdsClientHelper::GetInstance()->GetUint64Pref(
              prefs::kConfirmationsHash) != GenerateHash(value);
-}
-
-absl::optional<OptedInInfo> GetOptedIn(const base::Value::Dict& dict) {
-  OptedInInfo opted_in;
-
-  // Token
-  if (const std::string* const value = dict.FindString("payment_token")) {
-    opted_in.token = privacy::cbr::Token(*value);
-  } else {
-    return absl::nullopt;
-  }
-
-  // Blinded token
-  if (const std::string* const value =
-          dict.FindString("blinded_payment_token")) {
-    opted_in.blinded_token = privacy::cbr::BlindedToken(*value);
-  } else {
-    return absl::nullopt;
-  }
-
-  // Unblinded token
-  if (const base::Value::Dict* const unblinded_token =
-          dict.FindDict("token_info")) {
-    // Value
-    if (const std::string* const value =
-            unblinded_token->FindString("unblinded_token")) {
-      opted_in.unblinded_token.value = privacy::cbr::UnblindedToken(*value);
-    } else {
-      return absl::nullopt;
-    }
-
-    // Public key
-    if (const std::string* const value =
-            unblinded_token->FindString("public_key")) {
-      opted_in.unblinded_token.public_key = privacy::cbr::PublicKey(*value);
-    } else {
-      return absl::nullopt;
-    }
-  }
-
-  // User data
-  if (const base::Value::Dict* const value = dict.FindDict("user_data")) {
-    opted_in.user_data = value->Clone();
-  } else {
-    return absl::nullopt;
-  }
-
-  // Credential
-  if (const std::string* const value = dict.FindString("credential")) {
-    opted_in.credential_base64url = *value;
-  } else {
-    return absl::nullopt;
-  }
-
-  return opted_in;
 }
 
 base::Value::Dict GetFailedConfirmationsAsDictionary(
@@ -165,6 +112,10 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
       }
       unblinded_token.Set("public_key", *public_key_base64);
 
+      const absl::optional<std::string> signature =
+          confirmation.opted_in->unblinded_token.signature;
+      unblinded_token.Set("signature", *signature);
+
       confirmation_dict.Set("token_info", std::move(unblinded_token));
 
       // User data
@@ -187,8 +138,185 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
   return dict;
 }
 
-bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
-                                          ConfirmationList* confirmations) {
+}  // namespace
+
+ConfirmationStateManager::ConfirmationStateManager()
+    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
+      unblinded_payment_tokens_(
+          std::make_unique<privacy::UnblindedPaymentTokens>()) {
+  DCHECK(!g_confirmation_state_manager_instance);
+  g_confirmation_state_manager_instance = this;
+}
+
+ConfirmationStateManager::~ConfirmationStateManager() {
+  DCHECK_EQ(this, g_confirmation_state_manager_instance);
+  g_confirmation_state_manager_instance = nullptr;
+}
+
+// static
+ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
+  DCHECK(g_confirmation_state_manager_instance);
+  return g_confirmation_state_manager_instance;
+}
+
+// static
+bool ConfirmationStateManager::HasInstance() {
+  return !!g_confirmation_state_manager_instance;
+}
+
+void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
+                                          InitializeCallback callback) {
+  DCHECK(wallet.IsValid());
+
+  BLOG(3, "Loading confirmations state");
+
+  wallet_ = wallet;
+
+  AdsClientHelper::GetInstance()->Load(
+      kConfirmationStateFilename,
+      base::BindOnce(&ConfirmationStateManager::OnLoaded,
+                     base::Unretained(this), std::move(callback)));
+}
+
+bool ConfirmationStateManager::IsInitialized() const {
+  return is_initialized_;
+}
+
+void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
+                                        const bool success,
+                                        const std::string& json) {
+  if (!success) {
+    BLOG(3, "Confirmations state does not exist, creating default state");
+
+    is_initialized_ = true;
+
+    Save();
+  } else {
+    if (!FromJson(json)) {
+      BLOG(0, "Failed to load confirmations state");
+
+      BLOG(3, "Failed to parse confirmations state: " << json);
+
+      std::move(callback).Run(/*success*/ false);
+      return;
+    }
+
+    BLOG(3, "Successfully loaded confirmations state");
+
+    is_initialized_ = true;
+  }
+
+  is_mutated_ = IsMutated(ToJson());
+  if (is_mutated_) {
+    BLOG(9, "Confirmation state is mutated");
+  }
+
+  std::move(callback).Run(/*success*/ true);
+}
+
+void ConfirmationStateManager::Save() {
+  if (!is_initialized_) {
+    return;
+  }
+
+  BLOG(9, "Saving confirmations state");
+
+  const std::string json = ToJson();
+
+  if (!is_mutated_) {
+    SetHash(json);
+  }
+
+  AdsClientHelper::GetInstance()->Save(
+      kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
+        if (!success) {
+          BLOG(0, "Failed to save confirmations state");
+          return;
+        }
+
+        BLOG(9, "Successfully saved confirmations state");
+      }));
+}
+
+absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
+    const base::Value::Dict& dict) const {
+  OptedInInfo opted_in;
+
+  // Token
+  if (const std::string* const value = dict.FindString("payment_token")) {
+    opted_in.token = privacy::cbr::Token(*value);
+  } else {
+    return absl::nullopt;
+  }
+
+  // Blinded token
+  if (const std::string* const value =
+          dict.FindString("blinded_payment_token")) {
+    opted_in.blinded_token = privacy::cbr::BlindedToken(*value);
+  } else {
+    return absl::nullopt;
+  }
+
+  // Unblinded token
+  if (const base::Value::Dict* const unblinded_token =
+          dict.FindDict("token_info")) {
+    // Value
+    if (const std::string* const value =
+            unblinded_token->FindString("unblinded_token")) {
+      opted_in.unblinded_token.value = privacy::cbr::UnblindedToken(*value);
+    } else {
+      return absl::nullopt;
+    }
+
+    // Public key
+    if (const std::string* const value =
+            unblinded_token->FindString("public_key")) {
+      opted_in.unblinded_token.public_key = privacy::cbr::PublicKey(*value);
+    } else {
+      return absl::nullopt;
+    }
+
+    // Signature
+    if (const std::string* const value =
+            unblinded_token->FindString("signature")) {
+      opted_in.unblinded_token.signature = *value;
+    } else {
+      const absl::optional<std::string> unblinded_token_base64 =
+          opted_in.unblinded_token.value.EncodeBase64();
+      if (!unblinded_token_base64) {
+        return absl::nullopt;
+      }
+
+      const absl::optional<std::string> signature =
+          crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
+      if (!signature) {
+        return absl::nullopt;
+      }
+
+      opted_in.unblinded_token.signature = *signature;
+    }
+  }
+
+  // User data
+  if (const base::Value::Dict* const value = dict.FindDict("user_data")) {
+    opted_in.user_data = value->Clone();
+  } else {
+    return absl::nullopt;
+  }
+
+  // Credential
+  if (const std::string* const value = dict.FindString("credential")) {
+    opted_in.credential_base64url = *value;
+  } else {
+    return absl::nullopt;
+  }
+
+  return opted_in;
+}
+
+bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
+    const base::Value::Dict& dict,
+    ConfirmationList* confirmations) const {
   DCHECK(confirmations);
 
   // Confirmations
@@ -278,101 +406,6 @@ bool GetFailedConfirmationsFromDictionary(const base::Value::Dict& dict,
   *confirmations = new_failed_confirmations;
 
   return true;
-}
-
-}  // namespace
-
-ConfirmationStateManager::ConfirmationStateManager()
-    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
-      unblinded_payment_tokens_(
-          std::make_unique<privacy::UnblindedPaymentTokens>()) {
-  DCHECK(!g_confirmation_state_manager_instance);
-  g_confirmation_state_manager_instance = this;
-}
-
-ConfirmationStateManager::~ConfirmationStateManager() {
-  DCHECK_EQ(this, g_confirmation_state_manager_instance);
-  g_confirmation_state_manager_instance = nullptr;
-}
-
-// static
-ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
-  DCHECK(g_confirmation_state_manager_instance);
-  return g_confirmation_state_manager_instance;
-}
-
-// static
-bool ConfirmationStateManager::HasInstance() {
-  return !!g_confirmation_state_manager_instance;
-}
-
-void ConfirmationStateManager::Initialize(InitializeCallback callback) {
-  BLOG(3, "Loading confirmations state");
-
-  AdsClientHelper::GetInstance()->Load(
-      kConfirmationStateFilename,
-      base::BindOnce(&ConfirmationStateManager::OnLoaded,
-                     base::Unretained(this), std::move(callback)));
-}
-
-bool ConfirmationStateManager::IsInitialized() const {
-  return is_initialized_;
-}
-
-void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
-                                        const bool success,
-                                        const std::string& json) {
-  if (!success) {
-    BLOG(3, "Confirmations state does not exist, creating default state");
-
-    is_initialized_ = true;
-
-    Save();
-  } else {
-    if (!FromJson(json)) {
-      BLOG(0, "Failed to load confirmations state");
-
-      BLOG(3, "Failed to parse confirmations state: " << json);
-
-      std::move(callback).Run(/*success*/ false);
-      return;
-    }
-
-    BLOG(3, "Successfully loaded confirmations state");
-
-    is_initialized_ = true;
-  }
-
-  is_mutated_ = IsMutated(ToJson());
-  if (is_mutated_) {
-    BLOG(9, "Confirmation state is mutated");
-  }
-
-  std::move(callback).Run(/*success*/ true);
-}
-
-void ConfirmationStateManager::Save() {
-  if (!is_initialized_) {
-    return;
-  }
-
-  BLOG(9, "Saving confirmations state");
-
-  const std::string json = ToJson();
-
-  if (!is_mutated_) {
-    SetHash(json);
-  }
-
-  AdsClientHelper::GetInstance()->Save(
-      kConfirmationStateFilename, json, base::BindOnce([](const bool success) {
-        if (!success) {
-          BLOG(0, "Failed to save confirmations state");
-          return;
-        }
-
-        BLOG(9, "Successfully saved confirmations state");
-      }));
 }
 
 const ConfirmationList& ConfirmationStateManager::GetFailedConfirmations()
@@ -477,8 +510,24 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
     return false;
   }
 
-  unblinded_tokens_->SetTokens(
-      privacy::UnblindedTokensFromValue(*unblinded_tokens));
+  privacy::UnblindedTokenList filtered_unblinded_tokens =
+      privacy::UnblindedTokensFromValue(*unblinded_tokens);
+
+  const std::string public_key = wallet_.public_key;
+
+  filtered_unblinded_tokens.erase(
+      base::ranges::remove_if(
+          filtered_unblinded_tokens,
+          [&public_key](const privacy::UnblindedTokenInfo& unblinded_token) {
+            const absl::optional<std::string> unblinded_token_base64 =
+                unblinded_token.value.EncodeBase64();
+            return !unblinded_token_base64 ||
+                   !crypto::Verify(*unblinded_token_base64, public_key,
+                                   unblinded_token.signature);
+          }),
+      filtered_unblinded_tokens.cend());
+
+  unblinded_tokens_->SetTokens(filtered_unblinded_tokens);
 
   return true;
 }

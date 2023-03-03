@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -54,9 +55,9 @@ export const deletePromotion = (promotionId: string) => action(types.DELETE_PROM
   promotionId
 })
 
-export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
+export const onModalResetClose = () => action(types.ON_MODAL_RESET_CLOSE)
 
-export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
+export const onModalResetOpen = () => action(types.ON_MODAL_RESET_OPEN)
 
 export const onModalConnectClose = () => action(types.ON_MODAL_CONNECT_CLOSE)
 
@@ -78,7 +79,7 @@ export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(type
   list
 })
 
-export const onBalanceReport = (properties: {month: number, year: number, report: Rewards.BalanceReport}) => action(types.ON_BALANCE_REPORT, {
+export const onBalanceReport = (properties: { month: number, year: number, report: Rewards.BalanceReport }) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
   year: properties.year,
   report: properties.report
@@ -220,6 +221,9 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
   value
 })
 
+export const onInlineTipsEnabledChange = (enabled: boolean) =>
+  action(types.ON_INLINE_TIPS_ENABLED_CHANGE, { enabled })
+
 export const removePendingContribution = (id: number) =>
   action(types.REMOVE_PENDING_CONTRIBUTION, {
     id
@@ -264,7 +268,7 @@ export const getMonthlyReport = (month?: number, year?: number) => action(types.
   year
 })
 
-export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) => action(types.ON_MONTHLY_REPORT, {
+export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) => action(types.ON_MONTHLY_REPORT, {
   result: properties.result,
   month: properties.month,
   year: properties.year,

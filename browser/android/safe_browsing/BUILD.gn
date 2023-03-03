@@ -3,7 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/buildflag_header.gni")
 import("//build/config/android/rules.gni")
+
+declare_args() {
+  brave_safebrowsing_api_key = ""
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "SAFEBROWSING_API_KEY=\"$brave_safebrowsing_api_key\"" ]
+}
 
 source_set("safe_browsing") {
   sources = [
@@ -11,5 +21,8 @@ source_set("safe_browsing") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    ":buildflags",
+    "//base",
+  ]
 }

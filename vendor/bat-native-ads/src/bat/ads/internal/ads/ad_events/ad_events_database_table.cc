@@ -196,7 +196,7 @@ void AdEvents::LogEvent(const AdEventInfo& ad_event, ResultCallback callback) {
 }
 
 void AdEvents::GetIf(const std::string& condition,
-                     const GetAdEventsCallbackDeprecated& callback) const {
+                     GetAdEventsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -212,15 +212,10 @@ void AdEvents::GetIf(const std::string& condition,
       "ORDER BY timestamp DESC ",
       GetTableName().c_str(), condition.c_str());
 
-  RunTransaction(
-      query,
-      base::BindOnce(
-          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
-             const AdEventList& ad_events) { callback(success, ad_events); },
-          callback));
+  RunTransaction(query, std::move(callback));
 }
 
-void AdEvents::GetAll(const GetAdEventsCallbackDeprecated& callback) const {
+void AdEvents::GetAll(GetAdEventsCallback callback) const {
   const std::string query = base::StringPrintf(
       "SELECT "
       "ae.uuid, "
@@ -235,22 +230,7 @@ void AdEvents::GetAll(const GetAdEventsCallbackDeprecated& callback) const {
       "ORDER BY timestamp DESC",
       GetTableName().c_str());
 
-  RunTransaction(
-      query,
-      base::BindOnce(
-          [](const GetAdEventsCallbackDeprecated& callback, const bool success,
-             const AdEventList& ad_events) { callback(success, ad_events); },
-          callback));
-}
-
-void AdEvents::GetForType(const mojom::AdType ad_type,
-                          const GetAdEventsCallbackDeprecated& callback) const {
-  GetForType(ad_type, base::BindOnce(
-                          [](const GetAdEventsCallbackDeprecated& callback,
-                             const bool success, const AdEventList& ad_events) {
-                            callback(success, ad_events);
-                          },
-                          callback));
+  RunTransaction(query, std::move(callback));
 }
 
 void AdEvents::GetForType(const mojom::AdType ad_type,

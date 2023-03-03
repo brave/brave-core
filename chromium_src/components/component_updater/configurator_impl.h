@@ -13,7 +13,7 @@
   EnabledBackgroundDownloader_ChromiumImpl() const; \
   bool EnabledBackgroundDownloader
 
-#include "src/components/component_updater/configurator_impl.h"
+#include "src/components/component_updater/configurator_impl.h"  // IWYU pragma: export
 
 #undef EnabledBackgroundDownloader
 

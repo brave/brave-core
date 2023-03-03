@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Solana from '@solana/web3.js'
 import { EntityState } from '@reduxjs/toolkit'
 
 // types
@@ -16,7 +15,9 @@ import {
   SerializableTransactionInfo,
   TimeDelta,
   SerializableTimeDelta,
-  SerializableOriginInfo
+  SerializableOriginInfo,
+  SortingOrder,
+  AssetPriceWithContractAndChainId
 } from '../constants/types'
 import { SolanaTransactionTypes } from '../common/constants/solana'
 import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../common/constants/magics'
@@ -26,13 +27,14 @@ import { SwapExchangeProxy } from '../common/constants/registry'
 import { getLocale } from '../../common/locale'
 import { loadTimeData } from '../../common/loadTimeData'
 import {
+  getSolInstructionAccountParamsObj,
+  getSolInstructionParamsObj,
   getTypedSolanaTxInstructions,
-  SolanaParamsWithLamports,
   TypedSolanaInstructionWithParams
 } from './solana-instruction-utils'
 import { findTokenByContractAddress } from './asset-utils'
 import Amount from './amount'
-import { getCoinFromTxDataUnion } from './network-utils'
+import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { getBalance } from './balance-utils'
 import { toProperCase } from './string-utils'
 import { computeFiatAmount, findAssetPrice } from './pricing-utils'
@@ -43,8 +45,6 @@ import {
   makeSerializableOriginInfo
 } from './model-serialization-utils'
 import { weiToEther } from './web3-utils'
-
-type Order = 'ascending' | 'descending'
 
 export type TransactionInfo = BraveWallet.TransactionInfo | SerializableTransactionInfo
 
@@ -159,37 +159,43 @@ export const sortTransactionByDate = <
   T extends { createdTime: TimeDelta | SerializableTimeDelta }
 >(
   transactions: T[],
-  order: Order = 'ascending'
+  order: SortingOrder = 'ascending'
 ): T[] => {
   return [...transactions].sort(transactionSortByDateComparer<T>(order))
 }
 
-export const getTransactionStatusString = (statusId: number) => {
-  switch (statusId) {
+export const getLocaleKeyForTxStatus = (
+  status: BraveWallet.TransactionStatus
+) => {
+  switch (status) {
     case BraveWallet.TransactionStatus.Unapproved:
-      return getLocale('braveWalletTransactionStatusUnapproved')
+      return 'braveWalletTransactionStatusUnapproved'
     case BraveWallet.TransactionStatus.Approved:
-      return getLocale('braveWalletTransactionStatusApproved')
+      return 'braveWalletTransactionStatusApproved'
     case BraveWallet.TransactionStatus.Rejected:
-      return getLocale('braveWalletTransactionStatusRejected')
+      return 'braveWalletTransactionStatusRejected'
     case BraveWallet.TransactionStatus.Submitted:
-      return getLocale('braveWalletTransactionStatusSubmitted')
+      return 'braveWalletTransactionStatusSubmitted'
     case BraveWallet.TransactionStatus.Confirmed:
-      return getLocale('braveWalletTransactionStatusConfirmed')
+      return 'braveWalletTransactionStatusConfirmed'
     case BraveWallet.TransactionStatus.Error:
-      return getLocale('braveWalletTransactionStatusError')
+      return 'braveWalletTransactionStatusError'
     case BraveWallet.TransactionStatus.Dropped:
-      return getLocale('braveWalletTransactionStatusDropped')
+      return 'braveWalletTransactionStatusDropped'
     case BraveWallet.TransactionStatus.Signed:
-      return getLocale('braveWalletTransactionStatusSigned')
+      return 'braveWalletTransactionStatusSigned'
     default:
       return ''
   }
 }
 
+export const getTransactionStatusString = (statusId: number) => {
+  return getLocale(getLocaleKeyForTxStatus(statusId))
+}
+
 export const transactionSortByDateComparer = <
   T extends { createdTime: TimeDelta | SerializableTimeDelta }
-> (order: Order = 'ascending'): ((a: T, b: T) => number) | undefined => {
+> (order: SortingOrder = 'ascending'): ((a: T, b: T) => number) | undefined => {
   return function (x: T, y: T) {
     return order === 'ascending'
       ? Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
@@ -240,8 +246,18 @@ export function isSolanaDappTransaction (tx: TransactionInfo): tx is SolanaTrans
   )
 }
 
-export function isFilecoinTransaction (tx: TransactionInfo): tx is FileCoinTransactionInfo {
+export const isFilecoinTransaction = (tx: {
+  txDataUnion: TxDataPresence
+}): tx is FileCoinTransactionInfo => {
   return tx.txDataUnion.filTxData !== undefined
+}
+
+export const isFilecoinTestnetTx = (tx: {
+  txDataUnion: TxDataPresence
+}): boolean => {
+  return tx.txDataUnion?.filTxData?.from?.startsWith(
+    BraveWallet.FILECOIN_TESTNET
+  ) || false
 }
 
 export const getToAddressesFromSolanaTransaction = (
@@ -256,21 +272,29 @@ export const getToAddressesFromSolanaTransaction = (
   }
 
   const addresses = instructions.map((instruction) => {
+    const {
+      toAccount,
+      newAccount
+    } = getSolInstructionAccountParamsObj(
+      instruction.accountParams,
+      instruction.accountMetas
+    )
+
     switch (instruction.type) {
       case 'Transfer':
       case 'TransferWithSeed':
       case 'WithdrawNonceAccount': {
-        const { toPubkey } = instruction.params
-        return toPubkey.toString() ?? ''
+        return toAccount ?? ''
       }
 
-      case 'Create':
-      case 'CreateWithSeed': {
-        const { newAccountPubkey } = instruction.params
-        return newAccountPubkey.toString() ?? ''
+      case 'CreateAccount':
+      case 'CreateAccountWithSeed': {
+        return (
+          newAccount ?? ''
+        )
       }
 
-      case 'Unknown':
+      case undefined:
       default: return to ?? ''
     }
   })
@@ -434,47 +458,50 @@ export function getLamportsMovedFromInstructions (
   fromAddress: string
 ) {
   return instructions.reduce((acc, instruction) => {
-    const lamportsAmount = (instruction.params as SolanaParamsWithLamports)?.lamports?.toString() ?? '0'
+    const { lamports } = getSolInstructionParamsObj(instruction.params)
+
+    const {
+      fromAccount,
+      nonceAccount,
+      toAccount
+    } = getSolInstructionAccountParamsObj(
+      instruction.accountParams,
+      instruction.accountMetas
+    )
 
     switch (instruction.type) {
       case 'Transfer':
       case 'TransferWithSeed': {
-        const { fromPubkey, toPubkey } = instruction.params
-
         // only show lamports as transferred if
         // the amount is going to a different pubKey
-        if (!toPubkey.equals(fromPubkey)) {
-          return acc.plus(lamportsAmount)
+        if (toAccount !== fromAccount) {
+          return acc.plus(lamports)
         }
         return acc
       }
 
       case 'WithdrawNonceAccount': {
-        const { noncePubkey, toPubkey } = instruction.params
-
-        if (noncePubkey.equals(new Solana.PublicKey(fromAddress))) {
-          return acc.plus(lamportsAmount)
+        if (nonceAccount === fromAddress) {
+          return acc.plus(lamports)
         }
 
-        if (toPubkey.equals(new Solana.PublicKey(fromAddress))) {
-          return acc.minus(lamportsAmount)
-        }
-
-        return acc
-      }
-
-      case 'Create':
-      case 'CreateWithSeed': {
-        const { fromPubkey } = instruction.params
-
-        if (fromPubkey.toString() === fromAddress) {
-          return acc.plus(lamportsAmount)
+        if (toAccount === fromAddress) {
+          return acc.minus(lamports)
         }
 
         return acc
       }
 
-      default: return acc.plus(lamportsAmount)
+      case 'CreateAccount':
+      case 'CreateAccountWithSeed': {
+        if (fromAccount === fromAddress) {
+          return acc.plus(lamports)
+        }
+
+        return acc
+      }
+
+      default: return acc.plus(lamports)
     }
   }, new Amount(0)) ?? 0
 }
@@ -1291,7 +1318,7 @@ export const getTransactionFiatValues = ({
   normalizedTransferredValue: string
   sellAmountWei?: string
   sellToken?: BraveWallet.BlockchainToken
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
   token?: BraveWallet.BlockchainToken
   transferredValueWei?: string
   tx: TransactionInfo
@@ -1313,7 +1340,9 @@ export const getTransactionFiatValues = ({
       ? computeFiatAmount(spotPrices, {
           decimals: txNetwork.decimals,
           symbol: txNetwork.symbol,
-          value: transferredValueWei || ''
+          value: transferredValueWei || '',
+          contractAddress: '',
+          chainId: txNetwork.chainId
         })
       : Amount.empty()
 
@@ -1330,7 +1359,7 @@ export const getTransactionFiatValues = ({
   if (tx.txType === BraveWallet.TransactionType.ERC20Transfer) {
     const [, amount] = tx.txArgs // (address recipient, uint256 amount) → bool
 
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
 
     const sendAmountFiat = new Amount(amount)
       .divideByDecimals(token?.decimals ?? 18)
@@ -1373,7 +1402,7 @@ export const getTransactionFiatValues = ({
 
   // SPL
   if (isSolanaSplTransaction(tx)) {
-    const price = findAssetPrice(spotPrices, token?.symbol ?? '')
+    const price = findAssetPrice(spotPrices, token?.symbol ?? '', token?.contractAddress ?? '', token?.chainId ?? '')
     const sendAmountFiat = new Amount(normalizedTransferredValue).times(price)
 
     return {
@@ -1393,7 +1422,9 @@ export const getTransactionFiatValues = ({
         ? computeFiatAmount(spotPrices, {
             decimals: sellToken.decimals,
             symbol: sellToken.symbol,
-            value: sellAmountWei
+            value: sellAmountWei,
+            contractAddress: sellToken.contractAddress,
+            chainId: sellToken.chainId
           })
         : Amount.empty()
 
@@ -1411,7 +1442,9 @@ export const getTransactionFiatValues = ({
     ? computeFiatAmount(spotPrices, {
         decimals: txNetwork.decimals,
         symbol: txNetwork.symbol,
-        value: getTransactionBaseValue(tx) || ''
+        value: getTransactionBaseValue(tx) || '',
+        contractAddress: '',
+        chainId: txNetwork.chainId
       })
     : Amount.empty()
 
@@ -1422,29 +1455,6 @@ export const getTransactionFiatValues = ({
       .plus(sendAmountFiat)
       .toNumber()
       .toString()
-  }
-}
-
-export const getLocaleKeyForTxStatus = (
-  status: BraveWallet.TransactionStatus
-) => {
-  switch (status) {
-    case BraveWallet.TransactionStatus.Unapproved:
-      return 'braveWalletTransactionStatusUnapproved'
-    case BraveWallet.TransactionStatus.Approved:
-      return 'braveWalletTransactionStatusApproved'
-    case BraveWallet.TransactionStatus.Rejected:
-      return 'braveWalletTransactionStatusRejected'
-    case BraveWallet.TransactionStatus.Submitted:
-      return 'braveWalletTransactionStatusSubmitted'
-    case BraveWallet.TransactionStatus.Confirmed:
-      return 'braveWalletTransactionStatusConfirmed'
-    case BraveWallet.TransactionStatus.Error:
-      return 'braveWalletTransactionStatusError'
-    case BraveWallet.TransactionStatus.Dropped:
-      return 'braveWalletTransactionStatusDropped'
-    default:
-      return ''
   }
 }
 
@@ -1675,12 +1685,14 @@ export const parseTransactionWithPrices = ({
   tx: TransactionInfo
   transactionNetwork?: BraveWallet.NetworkInfo
   userVisibleTokensList: BraveWallet.BlockchainToken[]
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
 }): ParsedTransaction => {
   const networkSpotPrice = transactionNetwork
     ? findAssetPrice(
         spotPrices,
-        transactionNetwork.symbol
+        transactionNetwork.symbol,
+        '',
+        transactionNetwork.chainId
       )
     : ''
 

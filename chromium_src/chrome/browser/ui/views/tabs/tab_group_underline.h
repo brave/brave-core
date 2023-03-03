@@ -8,14 +8,16 @@
 
 #define UpdateBounds virtual UpdateBounds
 #define GetInsetsForUnderline virtual GetInsetsForUnderline
-#define GetPath                        \
-  Unused_GetPath() { return {}; }      \
-  friend class BraveTabGroupUnderline; \
-  virtual SkPath GetPath
+#define CalculateTabGroupUnderlineBounds      \
+  Unused_CalculateTabGroupUnderlineBounds() { \
+    return {};                                \
+  }                                           \
+  friend class BraveTabGroupUnderline;        \
+  virtual gfx::Rect CalculateTabGroupUnderlineBounds
 
-#include "src/chrome/browser/ui/views/tabs/tab_group_underline.h"
+#include "src/chrome/browser/ui/views/tabs/tab_group_underline.h"  // IWYU pragma: export
 
-#undef GetPath
+#undef CalculateTabGroupUnderlineBounds
 #undef GetInsetsForUnderline
 #undef UpdateBounds
 

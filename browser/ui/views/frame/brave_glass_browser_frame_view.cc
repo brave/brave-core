@@ -5,9 +5,11 @@
 
 #include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
 
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/hit_test.h"
@@ -45,8 +47,8 @@ int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
     return GlassBrowserFrameView::GetTopInset(restored);
 
   if (auto* browser = browser_view()->browser();
-      tabs::features::ShouldShowVerticalTabs(browser) &&
-      !tabs::features::ShouldShowWindowTitleForVerticalTabs(browser)) {
+      tabs::utils::ShouldShowVerticalTabs(browser) &&
+      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
     return 0;
   }
 

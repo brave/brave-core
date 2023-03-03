@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine/syncer.cc b/components/sync/engine/syncer.cc
+index c927a5e12fcb709761f6d3c04d89f55f35a902ec..6079d94ab56761587c1b305e02e1689b6830f606 100644
+--- a/components/sync/engine/syncer.cc
++++ b/components/sync/engine/syncer.cc
+@@ -188,6 +188,7 @@ SyncerError Syncer::BuildAndPostCommits(const ModelTypeSet& request_types,
+     }
+     nudge_tracker->RecordSuccessfulCommitMessage(
+         commit->GetContributingDataTypes());
++    BRAVE_SYNCER_BUILD_AND_POST_COMMITS_POLLER_CHECK
+   }
+ 
+   return SyncerError(SyncerError::SYNCER_OK);

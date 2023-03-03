@@ -13,7 +13,6 @@
 <translation id="8905049883018921395">Quando está ativado, o Brave liberta memória dos separadores inativos. Isto permite que os separadores ativos e outras apps tenham mais recursos do computador e mantém o Brave rápido. Os seus separadores inativos ficam novamente ativos de forma automática quando regressa aos mesmos. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">A Poupança de memória tornou o Brave mais rápido</translation>
 <translation id="4798342026247191171">Configure o seu novo perfil do Brave</translation>
-<translation id="6361779936989026201">Assistente Brave no Brave</translation>
 <translation id="113959764510199339">O Brave está a tentar mostrar palavras-passe.</translation>
 <translation id="8132634101975074716">Tem sessão iniciada no Brave!</translation>
 <translation id="4168469784091952813">Pode tirar o máximo partido do Brave</translation>
@@ -72,6 +71,7 @@
 <translation id="8208853227947884571">O Brave está atualizado</translation>
 <translation id="5122472867956731189">Se um site tentar roubar a sua palavra-passe, ou quando transferir um ficheiro prejudicial, o Brave também pode enviar URLs, incluindo bits de conteúdo das páginas, para a Navegação segura</translation>
 <translation id="2953892977076487219">O Brave está a tentar editar palavras-passe.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{O Brave está associado a um dispositivo HID (dispositivo de interface humana)}other{O Brave está associado a dispositivos HID}}</translation>
 <translation id="8755404239607088219">O Brave não consegue verificar as suas palavras-passe. Tente mais tarde.</translation>
 <translation id="8880183781256147665">A adicionar ao Brave...</translation>
 <translation id="3038232873781883849">A aguardar a instalação…</translation>
@@ -100,7 +100,6 @@
 <translation id="5853262807109651878">Esta ação elimina <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">O atalho <ph name="SHORTCUT"/> permite alternar entre perfis do Brave</translation>
 <translation id="8703492925273919597">Feche todas as janelas do Brave e tente novamente.</translation>
-<translation id="5350485513372498152">O Assistente Brave no Brave pode concluir ações em Websites por si</translation>
 <translation id="4061445349373849749">Para proteger a sua privacidade, eliminamos automaticamente os seus interesses com mais de 4 semanas. Enquanto navega, um interesse pode aparecer novamente na lista. Em alternativa, pode remover os interesses que não quer que o Brave considere.</translation>
 <translation id="691208314680168371">O seu histórico de navegação, um registo dos sites que visitou através do Brave neste dispositivo.</translation>
 <translation id="1384923383737428730">Existe software prejudicial no seu computador. O Brave pode removê-lo, restaurar as suas definições e desativar as extensões para que o navegador volte a funcionar normalmente.</translation>
@@ -183,7 +182,7 @@
 <translation id="232381795826373334">Abrir PDFs no Brave</translation>
 <translation id="5381032481466106256">Quando está ativado, a sua sessão também é terminada no Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Está disponível uma atualização do Brave}=1{Está disponível uma atualização do Brave}other{Está disponível uma atualização do Brave há # dias}}</translation>
-<translation id="95624393026532554">O Brave requer o Windows 7 ou superior.</translation>
+<translation id="4378573854226202617">O Brave requer o Windows 10 ou superior.</translation>
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="2335583906071111058">Apresentar o Brave neste idioma</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
@@ -386,4 +385,6 @@ As permissões que atribuiu a sites e aplicações podem aplicar-se a esta conta
 <translation id="3829358914761176693">{COUNT,plural, =0{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização.}=1{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{O seu administrador necessita que reinicie o Brave para aplicar uma atualização.}=1{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="2176087127109773485">Pode gerir as suas cadeias de sincronização Brave com sessão iniciada. Estas são utilizadas no navegador Brave, na Play Store e no Gmail, entre outros. Caso pretenda adicionar uma conta para outra pessoa, como um familiar, adicione um novo perfil a <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

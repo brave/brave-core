@@ -15,7 +15,7 @@ ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
   ml::pipeline::TextEmbeddingInfo text_embedding;
   text_embedding.text = "The quick brown fox jumps over the lazy dog";
   text_embedding.hashed_text_base64 =
-      base::Base64Encode(security::Sha256(text_embedding.text));
+      base::Base64Encode(crypto::Sha256(text_embedding.text));
   text_embedding.locale = kDefaultLocale;
   text_embedding.embedding = ml::VectorData({0.0853, -0.1789, 0.4221});
 

@@ -16,24 +16,38 @@ import {
 import { Nfts } from './components/nfts'
 import { AllNetworksOption } from '../../../../options/network-filter-options'
 
-export const NftView = () => {
+interface Props {
+  onToggleShowIpfsBanner: () => void
+}
+
+export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
   // redux
   const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState}) => wallet.userVisibleTokensInfo)
+  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
 
+  // memos
   const nonFungibleTokens = React.useMemo(() => {
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId) && (token.isErc721 || token.isNft))
+      return userVisibleTokensInfo.filter(
+        (token) =>
+          !SupportedTestNetworks.includes(token.chainId) &&
+          (token.isErc721 || token.isNft)
+      )
     }
 
-    return userVisibleTokensInfo.filter(token => token.chainId === selectedNetworkFilter.chainId && (token.isErc721 || token.isNft))
-  }, [userVisibleTokensInfo, selectedNetworkFilter])
+    return userVisibleTokensInfo.filter(
+      (token) =>
+        token.chainId === selectedNetworkFilter.chainId &&
+        (token.isErc721 || token.isNft)
+    )
+  }, [userVisibleTokensInfo, selectedNetworkFilter.chainId])
 
   return (
     <Nfts
       networks={networkList}
       nftList={nonFungibleTokens}
+      onToggleShowIpfsBanner={onToggleShowIpfsBanner}
     />
   )
 }

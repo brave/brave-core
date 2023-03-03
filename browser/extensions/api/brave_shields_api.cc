@@ -26,12 +26,9 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
       brave_shields::AddSiteCosmeticFilter::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* custom_filters_provider =
-      g_brave_browser_process->ad_block_service()->custom_filters_provider();
-  std::string custom_filters = custom_filters_provider->GetCustomFilters();
-  custom_filters_provider->UpdateCustomFilters(custom_filters + '\n' +
-                                               params->host + "##" +
-                                               params->css_selector + '\n');
+  g_brave_browser_process->ad_block_service()
+      ->custom_filters_provider()
+      ->HideElementOnHost(params->css_selector, params->host);
 
   return RespondNow(NoArguments());
 }

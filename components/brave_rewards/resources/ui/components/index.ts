@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -14,11 +15,11 @@ import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
 import ModalActivity from './modalActivity'
-import ModalBackupReset from './modalBackupReset'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
 import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
+import ModalReset from './modalReset'
 import ModalShowAdsHistory from './modalShowAdsHistory'
 import NextContribution from './nextContribution'
 import Profile from './profile'
@@ -50,11 +51,11 @@ export {
   ListToken,
   MainToggle,
   ModalActivity,
-  ModalBackupReset,
   ModalContribute,
   ModalDonation,
   ModalPending,
   ModalRedirect,
+  ModalReset,
   ModalShowAdsHistory,
   NextContribution,
   Profile,

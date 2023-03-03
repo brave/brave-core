@@ -10,6 +10,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -93,8 +94,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK},
     {"siteSettingsGoogleSignInBlock",
      IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK},
-    {"siteSettingsGoogleSignInAllow",
-     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW},
+    {"siteSettingsGoogleSignInBlockExceptions",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK_EXCEPTIONS},
+    {"siteSettingsGoogleSignInAllowExceptions",
+     IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS},
     {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
     {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
     {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
@@ -108,8 +111,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
     {"appearanceSettingsLocationBarIsWide",
      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
-    {"appearanceSettingsShowBraveRewardsButtonLabel",
-     IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
     {"appearanceSettingsShowBraveNewsButtonLabel",
      IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
     {"appearanceSettingsBookmarBar", IDS_SETTINGS_SHOW_BOOKMARK_BAR},
@@ -190,6 +191,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"cookieControlLabel", IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL},
     {"fingerprintingControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL},
+    {"httpsUpgradeControlLabel",
+     IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL},
     {"reduceLanguageControlLabel",
      IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL},
     {"reduceLanguageDesc", IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM},
@@ -219,6 +222,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"standardFingerprinting", IDS_SETTINGS_STANDARD_FINGERPRINTING},
     {"allowAllFingerprinting", IDS_SETTINGS_ALLOW_ALL_FINGERPRINTING},
     {"strictFingerprinting", IDS_SETTINGS_STRICT_FINGERPRINTING},
+    {"standardHttpsUpgrade", IDS_SETTINGS_STANDARD_HTTPS_UPGRADE},
+    {"disabledHttpsUpgrade", IDS_SETTINGS_DISABLED_HTTPS_UPGRADE},
+    {"strictHttpsUpgrade", IDS_SETTINGS_STRICT_HTTPS_UPGRADE},
     {"webRTCPolicyLabel", IDS_SETTINGS_WEBRTC_POLICY_LABEL},
     {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
     {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
@@ -377,8 +383,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_SHOW_NON_VERIFIED_SITES_LABEL},
     {"braveRewardsAutoContributeAllowVideoContributionsLabel",
      IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL},  // NOLINT
-    {"braveRewardsTipButtonsTitle",
-     IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE},
+    {"braveRewardsShowBraveRewardsButtonLabel",
+     IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
+    {"braveRewardsShowTipButtonsLabel",
+     IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL},
     {"braveRewardsInlineTipRedditLabel",
      IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL},
     {"braveRewardsInlineTipTwitterLabel",
@@ -513,6 +521,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
     {"resetTransactionInfoDesc",
      IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC},
+    {"enableNftPinning", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING},
+    {"enableNftPinningDesc", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC},
     {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION},
     {"walletResetTransactionInfoConfirmation",
      IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION},
@@ -580,7 +590,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletNetworkReset", IDS_BRAVE_WALLET_NETWORK_RESET},
     {"walletNetworkSetAsActive", IDS_BRAVE_WALLET_NETWORK_SET_AS_ACTIVE},
     {"adblockContentFilteringLabel", IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_LABEL},
-    {"adblockContentFilteringDesc", IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC},
     {"adblockAddCustomFiltersListsLabel",
      IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL},
     {"adblockContentFilterLabelDesc",
@@ -599,8 +608,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"adblockContentFiltersLabel", IDS_BRAVE_ADBLOCK_CONTENT_FILTERS},
     {"adblockFilterListsInputPlaceHolder",
      IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER},
-    {"adblockFilterListsTableUrlHeader",
-     IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER},
+    {"adblockFilterListsTableTitleHeader",
+     IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_TITLE_HEADER},
     {"adblockFilterListsTableUpdatedHeader",
      IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER},
     {"adblockUpdateNowButtonLabel", IDS_BRAVE_ADBLOCK_UPDATE_NOW_BUTTON_LABEL},
@@ -721,6 +730,20 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
   BraveAddSyncStrings(html_source);
 
+  // Load time data for brave://settings/rewards
+  html_source->AddBoolean("inlineTipButtonsEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipButtonsEnabled));
+  html_source->AddBoolean("inlineTipTwitterEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipTwitterEnabled));
+  html_source->AddBoolean("inlineTipRedditEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipRedditEnabled));
+  html_source->AddBoolean("inlineTipGithubEnabled",
+                          profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kInlineTipGithubEnabled));
+
   // Load time data for brave://settings/extensions
   html_source->AddBoolean(
       "signInAllowedOnNextStartupInitialValue",
@@ -736,6 +759,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isSnsEnabled",
                           base::FeatureList::IsEnabled(
                               brave_wallet::features::kBraveWalletSnsFeature));
+
+  html_source->AddBoolean(
+      "isHttpsByDefaultEnabled",
+      base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

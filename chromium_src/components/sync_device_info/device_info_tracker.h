@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_TRACKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_TRACKER_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 
 namespace syncer {
 
@@ -21,7 +21,7 @@ class BraveDeviceInfo;
   GetAllBraveDeviceInfo() const = 0;                                           \
   virtual void ForcePulseForTest
 
-#include "src/components/sync_device_info/device_info_tracker.h"
+#include "src/components/sync_device_info/device_info_tracker.h"  // IWYU pragma: export
 
 #undef ForcePulseForTest
 

@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -23,6 +23,19 @@
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+DomainMetricTypeIOS const DomainMetricTypeIOSNoMetric =
+    static_cast<history::DomainMetricType>(
+        history::DomainMetricType::kNoMetric);
+DomainMetricTypeIOS const DomainMetricTypeIOSLast1DayMetric =
+    static_cast<history::DomainMetricType>(
+        history::DomainMetricType::kEnableLast1DayMetric);
+DomainMetricTypeIOS const DomainMetricTypeIOSLast7DayMetric =
+    static_cast<history::DomainMetricType>(
+        history::DomainMetricType::kEnableLast7DayMetric);
+DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
+    static_cast<history::DomainMetricType>(
+        history::DomainMetricType::kEnableLast28DayMetric);
 
 #pragma mark - IOSHistoryNode
 
@@ -229,6 +242,56 @@
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
       base::BindOnce(search_with_query, queryArg, maxCountArg, callback));
+}
+
+- (void)fetchDomainDiversityForType:(DomainMetricTypeIOS)type
+                         completion:(void (^)(NSInteger count))completion {
+  __weak BraveHistoryAPI* weak_history_api = self;
+  auto fetchDomainDiversity =
+      ^(DomainMetricTypeIOS metricType, void (^callback)(NSInteger)) {
+        BraveHistoryAPI* historyAPI = weak_history_api;
+        if (!historyAPI) {
+          callback(0);
+          return;
+        }
+        // At the moment we'll never use this API other than to fetch the past 7
+        // days worth of unique domains at the current time so hard-coding now &
+        // 1
+        historyAPI->history_service_->GetDomainDiversity(
+            base::Time::Now(), /*number_of_days_to_report*/ 1,
+            static_cast<history::DomainMetricType>(type),
+            base::BindOnce(^(std::vector<history::DomainMetricSet> metricsSet) {
+              if (!metricsSet.size()) {
+                callback(0);
+                return;
+              }
+              auto metric = metricsSet.front();
+              NSInteger value = 0;
+              switch (metricType) {
+                case DomainMetricTypeIOSNoMetric:
+                  break;
+                case DomainMetricTypeIOSLast1DayMetric:
+                  if (metric.one_day_metric) {
+                    value = metric.one_day_metric.value().count;
+                  }
+                  break;
+                case DomainMetricTypeIOSLast7DayMetric:
+                  if (metric.seven_day_metric) {
+                    value = metric.seven_day_metric.value().count;
+                  }
+                  break;
+                case DomainMetricTypeIOSLast28DayMetric:
+                  if (metric.twenty_eight_day_metric) {
+                    value = metric.twenty_eight_day_metric.value().count;
+                  }
+                  break;
+              }
+              callback(value);
+            }),
+            &historyAPI->tracker_);
+      };
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(fetchDomainDiversity, type, completion));
 }
 
 @end

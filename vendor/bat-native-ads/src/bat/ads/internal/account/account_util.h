@@ -6,15 +6,15 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 
-#include <functional>
+#include "base/functional/callback_forward.h"
 
 namespace ads {
 
-using ResetRewardsCallback = std::function<void(const bool)>;
+using ResetRewardsCallback = base::OnceCallback<void(const bool)>;
 
 bool ShouldRewardUser();
 
-void ResetRewards(const ResetRewardsCallback& callback);
+void ResetRewards(ResetRewardsCallback callback);
 
 }  // namespace ads
 

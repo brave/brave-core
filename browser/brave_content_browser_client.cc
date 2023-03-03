@@ -10,12 +10,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_ads/brave_ads_host.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -180,25 +179,30 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
+#endif  // BUILDFLAG(IS_ANDROID)
+
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals.mojom.h"
-#include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/commands_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
-#include "brave/components/brave_today/common/brave_news.mojom.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -233,19 +237,6 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
           g_brave_browser_process->ad_block_service()),
-      std::move(receiver));
-}
-
-void BindBraveAdsHost(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  auto* profile = Profile::FromBrowserContext(context);
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_ads::BraveAdsHost>(profile, web_contents),
       std::move(receiver));
 }
 
@@ -495,6 +486,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<playlist::mojom::PageHandlerFactory>();
   }
 #endif
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    registry.ForWebUI<commands::CommandsUI>().Add<CommandsService>();
+  }
+#endif
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -577,12 +574,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_ads::features::kSupportBraveSearchResultAdConfirmationEvents)) {
-    map->Add<brave_ads::mojom::BraveAdsHost>(
-        base::BindRepeating(&BindBraveAdsHost));
-  }
-
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
@@ -601,11 +592,17 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
 #endif
+
+#if BUILDFLAG(IS_ANDROID)
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PageHandlerFactory, SwapPageUI>(map);
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
-  content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_private_new_tab::mojom::PageHandler, BravePrivateNewTabUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
@@ -618,23 +615,17 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::PanelHandlerFactory, RewardsPanelUI>(map);
-  if (base::FeatureList::IsEnabled(
-          brave_federated::features::kFederatedLearning)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        federated_internals::mojom::PageHandlerFactory,
-        brave_federated::FederatedInternalsUI>(map);
-  }
 #endif
 
 // Brave News
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     content::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
   }
 #endif
 
-#if BUILDFLAG(ENABLE_SPEEDREADER)
+#if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   if (speedreader::IsSpeedreaderPanelV2Enabled()) {
     content::RegisterWebUIControllerInterfaceBinder<
         speedreader::mojom::PanelFactory, SpeedreaderPanelUI>(map);

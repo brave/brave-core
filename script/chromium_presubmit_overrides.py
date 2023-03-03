@@ -96,6 +96,8 @@ def override_canned_checks(canned_checks):
 # Overrides canned checks and installs per-check file filter.
 def modify_input_api(input_api):
     input_api.PRESUBMIT_FIX = os.environ.get('PRESUBMIT_FIX') == '1'
+    input_api.DEFAULT_FILES_TO_CHECK += (
+        *config['additional_default_files_to_check'], )
     override_canned_checks(input_api.canned_checks)
     setup_per_check_file_filter(input_api)
 

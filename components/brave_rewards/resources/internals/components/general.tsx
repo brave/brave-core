@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -9,7 +10,7 @@ import { WalletHistory } from './walletHistory'
 import { Balance } from './balance'
 import { ExternalWallet } from './externalWallet'
 import { Button } from 'brave-ui/components'
-import { ButtonWrapper } from '../style'
+import { BalanceWrapper, ButtonWrapper } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -36,7 +37,11 @@ export class General extends React.Component<Props, {}> {
           paymentId={this.props.data.info.walletPaymentId}
           logEntries={this.props.data.eventLogs}
         />
-        <Balance info={this.props.data.balance} />
+        <BalanceWrapper>
+          <Balance
+            balance={this.props.data.balance}
+            externalWallet={this.props.data.externalWallet} />
+        </BalanceWrapper>
         <ExternalWallet info={this.props.data.externalWallet} />
       </>
     )

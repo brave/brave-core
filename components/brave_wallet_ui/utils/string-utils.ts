@@ -6,6 +6,9 @@
 import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
+const IPFS_GATEWAY = 'https://ipfs.io/ipfs/'
+const IPFS_PROTOCOL = 'ipfs://'
+
 export const stripERC20TokenImageURL = (url?: string) =>
   url?.replace('chrome://erc-token-images/', '')
 
@@ -13,30 +16,38 @@ export const toProperCase = (value: string) =>
   value.replace(/\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 
+export const isIpfs = (url?: string) => url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
+
 export const isRemoteImageURL = (url?: string) =>
-  url?.startsWith('http://') || url?.startsWith('https://') || url?.startsWith('data:image/') || url?.startsWith('ipfs://')
+  url?.startsWith('http://') || url?.startsWith('https://') || url?.startsWith('data:image/') || isIpfs(url)
 
 export const isValidIconExtension = (url?: string) =>
   url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || url?.endsWith('.svg') || url?.endsWith('.gif')
 
-export const httpifyIpfsUrl = (url: string | undefined) => {
+export const addIpfsGateway = (url: string | undefined) => {
   const trimmedUrl = url ? url.trim() : ''
-  return trimmedUrl.startsWith('ipfs://') ? trimmedUrl.replace('ipfs://', 'https://ipfs.io/ipfs/') : trimmedUrl
+  return isIpfs(trimmedUrl) ? trimmedUrl.replace(IPFS_PROTOCOL, IPFS_GATEWAY) : trimmedUrl
 }
 
-export const isIpfs = (url?: string) => url?.startsWith('ipfs://')
+export const reverseHttpifiedIpfsUrl = (url: string | undefined) => {
+  const trimmedUrl = url ? url.trim() : ''
+  return trimmedUrl.startsWith(IPFS_GATEWAY) ? trimmedUrl.replace(IPFS_GATEWAY, IPFS_PROTOCOL) : trimmedUrl
+}
 
 export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')
 
-export const getRampNetworkPrefix = (chainId: string) => {
+export const getRampNetworkPrefix = (chainId: string, isOfframp?: boolean) => {
   switch (chainId) {
-    case BraveWallet.MAINNET_CHAIN_ID: return ''
+    // Offramp uses ETH prefix
+    case BraveWallet.MAINNET_CHAIN_ID: return isOfframp ? 'ETH' : ''
     case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return 'AVAXC'
     case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: return 'BSC'
     case BraveWallet.POLYGON_MAINNET_CHAIN_ID: return 'MATIC'
     case BraveWallet.SOLANA_MAINNET: return 'SOLANA'
     case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: return 'OPTIMISM'
-    case BraveWallet.CELO_MAINNET_CHAIN_ID: return ''
+    // Offramp uses CELO prefix
+    case BraveWallet.CELO_MAINNET_CHAIN_ID: return isOfframp ? 'CELO' : ''
+    case BraveWallet.FANTOM_MAINNET_CHAIN_ID: return 'FANTOM'
     case BraveWallet.FILECOIN_MAINNET: return 'FILECOIN'
     default: return ''
   }
@@ -114,4 +125,18 @@ export const getNFTTokenStandard = (token: BraveWallet.BlockchainToken) => {
     return TokenStandards.ERC721
   }
   return ''
+}
+
+/**
+ * Checks if the component is displayed in a local storybook env
+ * Uses hostname for the check
+ * There maybe a better way to do this
+ * @returns true if the hostname is local
+ */
+export const isComponentInStorybook = (hostname: string = window.location.hostname) => {
+  return ['localhost', '127.0.0.1'].includes(window.location.hostname)
+}
+
+export const isNftPinnable = (tokenLogo: string) => {
+  return reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(tokenLogo)).startsWith('ipfs://')
 }

@@ -12,7 +12,7 @@
 namespace ads {
 
 namespace {
-const char* const kSwitches[] = {"enable-automation"};
+constexpr const char* kSwitches[] = {"enable-automation"};
 }  // namespace
 
 bool DidOverrideCommandLineSwitches() {

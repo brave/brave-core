@@ -44,7 +44,7 @@ interface Props {
   errorMsg?: string
 }
 
-function Eta ({ torrent }: {torrent: TorrentObj}) {
+function Eta ({ torrent }: { torrent: TorrentObj }) {
    // Zero download speed
   if (torrent.timeRemaining === 0 || torrent.timeRemaining === Infinity) return null
 

@@ -24,6 +24,7 @@ export const NetworkButton = styled(WalletButton) <{ useWithSearch?: boolean }>`
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background02};
   min-width: ${(p) => p.useWithSearch ? 'fit-content' : '265px'};
+  width: ${(p) => p.useWithSearch ? 'unset' : '100%'};
   height: 40px;
   cursor: pointer;
   outline: none;

@@ -29,7 +29,6 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/component_updater/component_updater_switches.h"
-#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
@@ -151,8 +150,19 @@ absl::optional<int> BraveMainDelegate::PostEarlyInitialization(
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   std::string update_url = GetUpdateURLHost();
   if (!update_url.empty()) {
-    std::string source = "url-source=" + update_url;
-    command_line.AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
+    auto* cmd = base::CommandLine::ForCurrentProcess();
+    std::string current_value;
+    if (cmd->HasSwitch(switches::kComponentUpdater)) {
+      current_value = cmd->GetSwitchValueASCII(switches::kComponentUpdater);
+      cmd->RemoveSwitch(switches::kComponentUpdater);
+    }
+    if (!current_value.empty()) {
+      current_value += ',';
+    }
+
+    command_line.AppendSwitchASCII(
+        switches::kComponentUpdater,
+        (current_value + "url-source=" + update_url).c_str());
   }
   return result;
 }

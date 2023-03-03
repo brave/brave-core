@@ -12,15 +12,12 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -92,8 +89,7 @@ EthereumProviderImpl::EthereumProviderImpl(
       brave_wallet_service_(brave_wallet_service),
       eth_block_tracker_(json_rpc_service),
       eth_logs_tracker_(json_rpc_service),
-      prefs_(prefs),
-      weak_factory_(this) {
+      prefs_(prefs) {
   DCHECK(json_rpc_service);
   json_rpc_service_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
@@ -515,12 +511,12 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
-      false, base::BindOnce(&EthereumProviderImpl::ContinueSignMessage,
-                            weak_factory_.GetWeakPtr(),
-                            checksum_address.ToChecksumAddress(), message_str,
-                            std::move(message_bytes), absl::nullopt,
-                            absl::nullopt, false, std::move(callback),
-                            std::move(id), delegate_->GetOrigin()));
+      false,
+      base::BindOnce(
+          &EthereumProviderImpl::ContinueSignMessage,
+          weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(), "",
+          message_str, std::move(message_bytes), absl::nullopt, absl::nullopt,
+          false, std::move(callback), std::move(id), delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::RecoverAddress(const std::string& message,
@@ -578,9 +574,11 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                           false);
 }
 
-void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
-                                        RequestCallback callback,
-                                        base::Value id) {
+void EthereumProviderImpl::EthSubscribe(
+    const std::string& event_type,
+    absl::optional<base::Value::Dict> filter,
+    RequestCallback callback,
+    base::Value id) {
   const auto generateHexBytes = [](std::vector<std::string>& subscriptions) {
     std::vector<uint8_t> bytes(16);
     crypto::RandBytes(&bytes.front(), bytes.size());
@@ -597,11 +595,15 @@ void EthereumProviderImpl::EthSubscribe(const std::string& event_type,
     }
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
-  } else if (event_type == kEthSubscribeLogs) {
+  } else if (event_type == kEthSubscribeLogs && filter) {
     const auto gen_res = generateHexBytes(eth_log_subscriptions_);
+
     if (std::get<0>(gen_res)) {
       eth_logs_tracker_.Start(base::Seconds(kLogTrackerDefaultTimeInSeconds));
     }
+
+    eth_logs_tracker_.AddSubscriber(std::get<1>(gen_res), std::move(*filter));
+
     std::move(callback).Run(std::move(id), base::Value(std::get<1>(gen_res)),
                             false, "", false);
   } else {
@@ -641,9 +643,10 @@ bool EthereumProviderImpl::UnsubscribeBlockObserver(
 bool EthereumProviderImpl::UnsubscribeLogObserver(
     const std::string& subscription_id) {
   if (base::Erase(eth_log_subscriptions_, subscription_id)) {
-    if (eth_log_subscriptions_.empty())
+    eth_logs_tracker_.RemoveSubscriber(subscription_id);
+    if (eth_log_subscriptions_.empty()) {
       eth_logs_tracker_.Stop();
-
+    }
     return true;
   }
   return false;
@@ -807,7 +810,9 @@ void EthereumProviderImpl::SignTypedMessage(
     RequestCallback callback,
     base::Value id) {
   bool reject = false;
-  if (!EthAddress::IsValidAddress(address) || domain_hash.empty() ||
+  std::string domain_string;
+  if (!base::JSONWriter::Write(domain, &domain_string) ||
+      !EthAddress::IsValidAddress(address) || domain_hash.empty() ||
       primary_hash.empty()) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -861,16 +866,17 @@ void EthereumProviderImpl::SignTypedMessage(
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
       false,
-      base::BindOnce(&EthereumProviderImpl::ContinueSignMessage,
-                     weak_factory_.GetWeakPtr(),
-                     checksum_address.ToChecksumAddress(), message,
-                     std::move(*message_to_sign), base::HexEncode(domain_hash),
-                     base::HexEncode(primary_hash), true, std::move(callback),
-                     std::move(id), delegate_->GetOrigin()));
+      base::BindOnce(
+          &EthereumProviderImpl::ContinueSignMessage,
+          weak_factory_.GetWeakPtr(), checksum_address.ToChecksumAddress(),
+          domain_string, message, std::move(*message_to_sign),
+          base::HexEncode(domain_hash), base::HexEncode(primary_hash), true,
+          std::move(callback), std::move(id), delegate_->GetOrigin()));
 }
 
 void EthereumProviderImpl::ContinueSignMessage(
     const std::string& address,
+    const std::string& domain,
     const std::string& message,
     std::vector<uint8_t>&& message_to_sign,
     const absl::optional<std::string>& domain_hash,
@@ -904,8 +910,8 @@ void EthereumProviderImpl::ContinueSignMessage(
   }
 
   auto request = mojom::SignMessageRequest::New(
-      MakeOriginInfo(origin), -1, address, message, is_eip712, domain_hash,
-      primary_hash, absl::nullopt, mojom::CoinType::ETH);
+      MakeOriginInfo(origin), -1, address, domain, message, is_eip712,
+      domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH);
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),
@@ -945,7 +951,7 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
   }
 
   base::Value formed_response;
-  if (!keyring_service_->IsHardwareAccount(address)) {
+  if (!keyring_service_->IsHardwareAccount(mojom::kDefaultKeyringId, address)) {
     auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
         address, message, is_eip712);
     if (!signature_with_err.signature) {
@@ -1234,12 +1240,15 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(base::ValueView input_value,
     Web3ClientVersion(std::move(callback), std::move(id));
   } else if (method == kEthSubscribe) {
     std::string event_type;
-    if (!ParseEthSubscribeParams(normalized_json_request, &event_type)) {
+    base::Value::Dict filter;
+    if (!ParseEthSubscribeParams(normalized_json_request, &event_type,
+                                 &filter)) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
     }
-    EthSubscribe(event_type, std::move(callback), std::move(id));
+    EthSubscribe(event_type, std::move(filter), std::move(callback),
+                 std::move(id));
   } else if (method == kEthUnsubscribe) {
     std::string subscription_id;
     if (!ParseEthUnsubscribeParams(normalized_json_request, &subscription_id)) {
@@ -1523,13 +1532,13 @@ void EthereumProviderImpl::OnUpdateKnownAccounts(
   if (error != mojom::ProviderError::kSuccess) {
     return;
   }
-  bool accounts_changed = allowed_accounts != known_allowed_accounts;
-  known_allowed_accounts = allowed_accounts;
-  if (!first_known_accounts_check && events_listener_.is_bound() &&
+  bool accounts_changed = allowed_accounts != known_allowed_accounts_;
+  known_allowed_accounts_ = allowed_accounts;
+  if (!first_known_accounts_check_ && events_listener_.is_bound() &&
       accounts_changed) {
-    events_listener_->AccountsChangedEvent(known_allowed_accounts);
+    events_listener_->AccountsChangedEvent(known_allowed_accounts_);
   }
-  first_known_accounts_check = false;
+  first_known_accounts_check_ = false;
 }
 
 void EthereumProviderImpl::Web3ClientVersion(RequestCallback callback,
@@ -1702,7 +1711,8 @@ void EthereumProviderImpl::OnGetBlockByNumber(
 
 void EthereumProviderImpl::OnNewBlock(uint256_t block_num) {}
 
-void EthereumProviderImpl::OnLogsReceived(base::Value rawlogs) {
+void EthereumProviderImpl::OnLogsReceived(const std::string& subscription,
+                                          base::Value rawlogs) {
   if (!rawlogs.is_dict() || !events_listener_.is_bound()) {
     return;
   }
@@ -1715,8 +1725,7 @@ void EthereumProviderImpl::OnLogsReceived(base::Value rawlogs) {
   }
 
   for (auto& results_item : *results) {
-    for (const auto& subscription_id : eth_log_subscriptions_)
-      events_listener_->MessageEvent(subscription_id, results_item.Clone());
+    events_listener_->MessageEvent(subscription, results_item.Clone());
   }
 }
 

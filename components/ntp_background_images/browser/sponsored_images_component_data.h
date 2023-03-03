@@ -8,14 +8,15 @@
 
 #include <string>
 
+#include "base/strings/string_piece.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ntp_background_images {
 
 struct SponsoredImagesComponentData {
-  std::string region;
-  std::string component_base64_public_key;
-  std::string component_id;
+  base::StringPiece region;
+  base::StringPiece component_base64_public_key;
+  base::StringPiece component_id;
 };
 
 absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(

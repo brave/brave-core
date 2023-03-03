@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/version.h"
 #include "bat/ads/supported_subdivisions.h"
@@ -112,7 +112,7 @@ ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool is_supported = ::brave_rewards::IsSupportedForProfile(
       profile, ::brave_rewards::IsSupportedOptions::kSkipRegionCheck);
-  return RespondNow(OneArgument(base::Value(is_supported)));
+  return RespondNow(WithArguments(is_supported));
 }
 
 BraveRewardsIsUnsupportedRegionFunction::
@@ -121,14 +121,13 @@ BraveRewardsIsUnsupportedRegionFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsIsUnsupportedRegionFunction::Run() {
   bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
-  return RespondNow(OneArgument(base::Value(is_unsupported_region)));
+  return RespondNow(WithArguments(is_unsupported_region));
 }
 
 BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
-  return RespondNow(
-      OneArgument(base::Value(brave_l10n::GetDefaultLocaleString())));
+  return RespondNow(WithArguments(brave_l10n::GetDefaultLocaleString()));
 }
 
 BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
@@ -206,7 +205,7 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     const ledger::mojom::Result result,
     ledger::mojom::PublisherInfoPtr info) {
   if (!info) {
-    Respond(OneArgument(base::Value(static_cast<int>(result))));
+    Respond(WithArguments(static_cast<int>(result)));
     return;
   }
 
@@ -221,8 +220,7 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)),
-                       base::Value(std::move(dict))));
+  Respond(WithArguments(static_cast<int>(result), std::move(dict)));
 }
 
 BraveRewardsSetPublisherIdForTabFunction::
@@ -296,7 +294,7 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(OneArgument(base::Value(std::move(dict))));
+  Respond(WithArguments(std::move(dict)));
 }
 
 BraveRewardsGetPublisherPanelInfoFunction::
@@ -329,7 +327,7 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     const ledger::mojom::Result result,
     ledger::mojom::PublisherInfoPtr info) {
   if (!info) {
-    Respond(OneArgument(base::Value(static_cast<int>(result))));
+    Respond(WithArguments(static_cast<int>(result)));
     return;
   }
 
@@ -344,8 +342,7 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
   dict.Set("provider", info->provider);
   dict.Set("favIconUrl", info->favicon_url);
 
-  Respond(TwoArguments(base::Value(static_cast<int>(result)),
-                       base::Value(std::move(dict))));
+  Respond(WithArguments(static_cast<int>(result), std::move(dict)));
 }
 
 BraveRewardsSavePublisherInfoFunction::
@@ -381,7 +378,7 @@ ExtensionFunction::ResponseAction BraveRewardsSavePublisherInfoFunction::Run() {
 
 void BraveRewardsSavePublisherInfoFunction::OnSavePublisherInfo(
     const ledger::mojom::Result result) {
-  Respond(OneArgument(base::Value(static_cast<int>(result))));
+  Respond(WithArguments(static_cast<int>(result)));
 }
 
 BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() = default;
@@ -606,7 +603,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     data.Set("payoutStatus", base::Value::Dict());
     data.Set("walletProviderRegions", base::Value::Dict());
     data.Set("vbatExpired", false);
-    return Respond(OneArgument(base::Value(std::move(data))));
+    return Respond(WithArguments(std::move(data)));
   }
 
   data.Set("rate", parameters->rate);
@@ -651,7 +648,7 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
   }
   data.Set("vbatExpired", parameters->vbat_expired);
 
-  Respond(OneArgument(base::Value(std::move(data))));
+  Respond(WithArguments(std::move(data)));
 }
 
 BraveRewardsCreateRewardsWalletFunction::
@@ -679,7 +676,7 @@ BraveRewardsCreateRewardsWalletFunction::Run() {
 
 void BraveRewardsCreateRewardsWalletFunction::CreateRewardsWalletCallback(
     ledger::mojom::CreateRewardsWalletResult result) {
-  Respond(OneArgument(base::Value(StringifyResult(result))));
+  Respond(WithArguments(StringifyResult(result)));
 }
 
 BraveRewardsGetAvailableCountriesFunction::
@@ -707,7 +704,7 @@ void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
   for (auto& country : countries) {
     country_list.Append(std::move(country));
   }
-  Respond(OneArgument(base::Value(std::move(country_list))));
+  Respond(WithArguments(std::move(country_list)));
 }
 
 BraveRewardsGetDeclaredCountryFunction::
@@ -717,7 +714,7 @@ ExtensionFunction::ResponseAction
 BraveRewardsGetDeclaredCountryFunction::Run() {
   auto* prefs = Profile::FromBrowserContext(browser_context())->GetPrefs();
   std::string country = prefs->GetString(::brave_rewards::prefs::kDeclaredGeo);
-  return RespondNow(OneArgument(base::Value(std::move(country))));
+  return RespondNow(WithArguments(std::move(country)));
 }
 
 BraveRewardsGetUserTypeFunction::~BraveRewardsGetUserTypeFunction() = default;
@@ -726,7 +723,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetUserTypeFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(std::string())));
+    return RespondNow(WithArguments(std::string()));
   }
 
   rewards_service->GetUserType(
@@ -747,7 +744,7 @@ void BraveRewardsGetUserTypeFunction::Callback(
         return "unconnected";
     }
   };
-  Respond(OneArgument(base::Value(map_user_type(user_type))));
+  Respond(WithArguments(map_user_type(user_type)));
 }
 
 BraveRewardsGetPublishersVisitedCountFunction::
@@ -758,7 +755,7 @@ BraveRewardsGetPublishersVisitedCountFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(0)));
+    return RespondNow(WithArguments(0));
   }
 
   rewards_service->GetPublishersVisitedCount(base::BindOnce(
@@ -768,7 +765,7 @@ BraveRewardsGetPublishersVisitedCountFunction::Run() {
 }
 
 void BraveRewardsGetPublishersVisitedCountFunction::Callback(int count) {
-  Respond(OneArgument(base::Value(count)));
+  Respond(WithArguments(count));
 }
 
 BraveRewardsGetBalanceReportFunction::~BraveRewardsGetBalanceReportFunction() =
@@ -800,7 +797,7 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
   data.Set("grant", report ? report->grants : 0.0);
   data.Set("tips", report ? report->one_time_donation : 0.0);
   data.Set("monthly", report ? report->recurring_donation : 0.0);
-  Respond(OneArgument(base::Value(std::move(data))));
+  Respond(WithArguments(std::move(data)));
 }
 
 BraveRewardsFetchPromotionsFunction::~BraveRewardsFetchPromotionsFunction() =
@@ -834,7 +831,7 @@ void BraveRewardsFetchPromotionsFunction::OnPromotionsFetched(
     dict.Set("amount", item->approximate_value);
     list.Append(std::move(dict));
   }
-  Respond(OneArgument(base::Value(std::move(list))));
+  Respond(WithArguments(std::move(list)));
 }
 
 BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() =
@@ -869,7 +866,7 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
   data.Set("captchaImage", captcha_image);
   data.Set("captchaId", captcha_id);
   data.Set("hint", hint);
-  Respond(OneArgument(base::Value(std::move(data))));
+  Respond(WithArguments(std::move(data)));
 }
 
 BraveRewardsAttestPromotionFunction::~BraveRewardsAttestPromotionFunction() =
@@ -900,16 +897,14 @@ void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
   data.Set("promotionId", promotion_id);
 
   if (!promotion) {
-    Respond(TwoArguments(base::Value(static_cast<int>(result)),
-                         base::Value(std::move(data))));
+    Respond(WithArguments(static_cast<int>(result), std::move(data)));
     return;
   }
 
   data.Set("expiresAt", static_cast<double>(promotion->expires_at));
   data.Set("amount", static_cast<double>(promotion->approximate_value));
   data.Set("type", static_cast<int>(promotion->type));
-  Respond(TwoArguments(base::Value(static_cast<int>(result)),
-                       base::Value(std::move(data))));
+  Respond(WithArguments(static_cast<int>(result), std::move(data)));
 }
 
 BraveRewardsGetPendingContributionsTotalFunction::
@@ -922,7 +917,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
       RewardsServiceFactory::GetForProfile(profile);
 
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(0.0)));
+    return RespondNow(WithArguments(0.0));
   }
 
   rewards_service->GetPendingContributionsTotal(base::BindOnce(
@@ -933,7 +928,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
 
 void BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal(
     double amount) {
-  Respond(OneArgument(base::Value(amount)));
+  Respond(WithArguments(amount));
 }
 
 BraveRewardsSaveAdsSettingFunction::~BraveRewardsSaveAdsSettingFunction() =
@@ -995,7 +990,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetACEnabledFunction::Run() {
 }
 
 void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
-  Respond(OneArgument(base::Value(enabled)));
+  Respond(WithArguments(enabled));
 }
 
 BraveRewardsSaveRecurringTipFunction::~BraveRewardsSaveRecurringTipFunction() =
@@ -1078,7 +1073,7 @@ void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
   }
 
   result.Set("recurringTips", std::move(recurringTips));
-  Respond(OneArgument(base::Value(std::move(result))));
+  Respond(WithArguments(std::move(result)));
 }
 
 BraveRewardsRefreshPublisherFunction::~BraveRewardsRefreshPublisherFunction() =
@@ -1092,8 +1087,7 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(
-        TwoArguments(base::Value(false), base::Value(std::string())));
+    return RespondNow(WithArguments(false, std::string()));
   }
   rewards_service->RefreshPublisher(
       params->publisher_key,
@@ -1105,8 +1099,7 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
 void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
     const ledger::mojom::PublisherStatus status,
     const std::string& publisher_key) {
-  Respond(TwoArguments(base::Value(static_cast<int>(status)),
-                       base::Value(publisher_key)));
+  Respond(WithArguments(static_cast<int>(status), publisher_key));
 }
 
 BraveRewardsGetAllNotificationsFunction::
@@ -1121,7 +1114,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   base::Value::List list;
 
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(std::move(list))));
+    return RespondNow(WithArguments(std::move(list)));
   }
 
   auto notifications = rewards_service->GetAllNotifications();
@@ -1141,7 +1134,7 @@ BraveRewardsGetAllNotificationsFunction::Run() {
     list.Append(std::move(item));
   }
 
-  return RespondNow(OneArgument(base::Value(std::move(list))));
+  return RespondNow(WithArguments(std::move(list)));
 }
 
 BraveRewardsGetInlineTippingPlatformEnabledFunction::
@@ -1157,7 +1150,7 @@ BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
   RewardsService* rewards_service =
       RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    return RespondNow(OneArgument(base::Value(false)));
+    return RespondNow(WithArguments(false));
   }
 
   rewards_service->GetInlineTippingPlatformEnabled(
@@ -1170,7 +1163,7 @@ BraveRewardsGetInlineTippingPlatformEnabledFunction::Run() {
 
 void BraveRewardsGetInlineTippingPlatformEnabledFunction::OnInlineTipSetting(
     bool value) {
-  Respond(OneArgument(base::Value(value)));
+  Respond(WithArguments(value));
 }
 
 BraveRewardsIsAutoContributeSupportedFunction::
@@ -1186,7 +1179,7 @@ BraveRewardsIsAutoContributeSupportedFunction::Run() {
   }
 
   return RespondNow(
-      OneArgument(base::Value(rewards_service->IsAutoContributeSupported())));
+      WithArguments(rewards_service->IsAutoContributeSupported()));
 }
 
 BraveRewardsFetchBalanceFunction::~BraveRewardsFetchBalanceFunction() = default;
@@ -1199,30 +1192,44 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
     return RespondNow(Error("Rewards service is not available"));
   }
 
-  rewards_service->FetchBalance(
-      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnBalance, this));
+  rewards_service->GetExternalWallet(base::BindOnce(
+      &BraveRewardsFetchBalanceFunction::OnGetExternalWallet, this));
+
   return RespondLater();
 }
 
-void BraveRewardsFetchBalanceFunction::OnBalance(
-    const ledger::mojom::Result result,
-    ledger::mojom::BalancePtr balance) {
-  base::Value::Dict balance_value;
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    balance_value.Set("total", balance->total);
-
-    base::Value::Dict wallets;
-    for (auto const& rate : balance->wallets) {
-      wallets.Set(rate.first, rate.second);
-    }
-    balance_value.Set("wallets", std::move(wallets));
-  } else {
-    balance_value.Set("total", 0.0);
-    base::Value::Dict wallets;
-    balance_value.Set("wallets", std::move(wallets));
+void BraveRewardsFetchBalanceFunction::OnGetExternalWallet(
+    base::expected<ledger::mojom::ExternalWalletPtr,
+                   ledger::mojom::GetExternalWalletError> result) {
+  std::string connected_wallet_type;
+  if (auto wallet = std::move(result).value_or(nullptr);
+      wallet && wallet->status == ledger::mojom::WalletStatus::kConnected) {
+    connected_wallet_type = std::move(wallet->type);
   }
 
-  Respond(OneArgument(base::Value(std::move(balance_value))));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return Release();
+  }
+
+  rewards_service->FetchBalance(
+      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this,
+                     std::move(connected_wallet_type)));
+}
+
+void BraveRewardsFetchBalanceFunction::OnFetchBalance(
+    const std::string& connected_wallet_type,
+    ledger::mojom::Result,
+    ledger::mojom::BalancePtr balance) {
+  if (!balance || !balance->wallets.contains("blinded") ||
+      (!connected_wallet_type.empty() &&
+       !balance->wallets.contains(connected_wallet_type))) {
+    return Respond(NoArguments());
+  }
+
+  Respond(WithArguments(balance->total));
 }
 
 BraveRewardsGetExternalWalletProvidersFunction::
@@ -1238,7 +1245,7 @@ BraveRewardsGetExternalWalletProvidersFunction::Run() {
       providers.Append(provider);
     }
   }
-  return RespondNow(OneArgument(base::Value(std::move(providers))));
+  return RespondNow(WithArguments(std::move(providers)));
 }
 
 BraveRewardsGetExternalWalletFunction::
@@ -1274,7 +1281,7 @@ void BraveRewardsGetExternalWalletFunction::OnGetExternalWallet(
   data.Set("loginUrl", wallet->login_url);
   data.Set("activityUrl", wallet->activity_url);
 
-  Respond(OneArgument(base::Value(std::move(data))));
+  Respond(WithArguments(std::move(data)));
 }
 
 BraveRewardsGetRewardsEnabledFunction::
@@ -1284,7 +1291,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetRewardsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   bool enabled =
       profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled);
-  return RespondNow(OneArgument(base::Value(enabled)));
+  return RespondNow(WithArguments(enabled));
 }
 
 BraveRewardsGetAdsEnabledFunction::~BraveRewardsGetAdsEnabledFunction() =
@@ -1295,11 +1302,11 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsEnabledFunction::Run() {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (!ads_service) {
-    return RespondNow(OneArgument(base::Value(false)));
+    return RespondNow(WithArguments(false));
   }
 
   const bool enabled = ads_service->IsEnabled();
-  return RespondNow(OneArgument(base::Value(enabled)));
+  return RespondNow(WithArguments(enabled));
 }
 
 BraveRewardsGetAdsAccountStatementFunction::
@@ -1325,7 +1332,7 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
-    Respond(OneArgument(base::Value(false)));
+    Respond(WithArguments(false));
   } else {
     base::Value::Dict dict;
     dict.Set("nextPaymentDate",
@@ -1334,7 +1341,7 @@ void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
     dict.Set("earningsThisMonth", statement->earnings_this_month);
     dict.Set("earningsLastMonth", statement->earnings_last_month);
 
-    Respond(TwoArguments(base::Value(true), base::Value(std::move(dict))));
+    Respond(WithArguments(true, std::move(dict)));
   }
 
   Release();  // Balanced in Run()
@@ -1348,11 +1355,11 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
 
   if (!ads_service) {
-    return RespondNow(OneArgument(base::Value(false)));
+    return RespondNow(WithArguments(false));
   }
 
   const bool supported = ads_service->IsSupportedLocale();
-  return RespondNow(OneArgument(base::Value(supported)));
+  return RespondNow(WithArguments(supported));
 }
 
 BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() = default;
@@ -1395,7 +1402,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   }
   ads_data.Set("subdivisions", std::move(subdivisions));
 
-  return RespondNow(OneArgument(base::Value(std::move(ads_data))));
+  return RespondNow(WithArguments(std::move(ads_data)));
 }
 
 BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
@@ -1404,8 +1411,8 @@ BraveRewardsIsInitializedFunction::~BraveRewardsIsInitializedFunction() =
 ExtensionFunction::ResponseAction BraveRewardsIsInitializedFunction::Run() {
   auto* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  return RespondNow(OneArgument(
-      base::Value(rewards_service && rewards_service->IsInitialized())));
+  return RespondNow(
+      WithArguments(rewards_service && rewards_service->IsInitialized()));
 }
 
 BraveRewardsGetScheduledCaptchaInfoFunction::
@@ -1432,7 +1439,7 @@ BraveRewardsGetScheduledCaptchaInfoFunction::Run() {
   dict.Set("url", url);
   dict.Set("maxAttemptsExceeded", max_attempts_exceeded);
 
-  return RespondNow(OneArgument(base::Value(std::move(dict))));
+  return RespondNow(WithArguments(std::move(dict)));
 }
 
 BraveRewardsUpdateScheduledCaptchaResultFunction::
@@ -1505,7 +1512,7 @@ void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
     prefs.Set("adsPerHour", 0.0);
   }
 
-  Respond(OneArgument(base::Value(std::move(prefs))));
+  Respond(WithArguments(std::move(prefs)));
 }
 
 BraveRewardsUpdatePrefsFunction::~BraveRewardsUpdatePrefsFunction() = default;

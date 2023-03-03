@@ -15,7 +15,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
-#include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/inline_content_ad.h"
 #include "bat/ads/internal/ads/new_tab_page_ad.h"
@@ -143,14 +142,12 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
 
   account_->AddObserver(this);
   conversions_->AddObserver(this);
-  database_manager_->AddObserver(this);
   transfer_->AddObserver(this);
 }
 
 AdsImpl::~AdsImpl() {
   account_->RemoveObserver(this);
   conversions_->RemoveObserver(this);
-  database_manager_->RemoveObserver(this);
   transfer_->RemoveObserver(this);
 }
 
@@ -197,15 +194,19 @@ void AdsImpl::OnPrefDidChange(const std::string& path) {
 void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const std::string& html) {
-  TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
-                                                    html);
+  if (IsInitialized()) {
+    TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
+                                                      html);
+  }
 }
 
 void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const std::string& text) {
-  TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
-                                                    text);
+  if (IsInitialized()) {
+    TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
+                                                      text);
+  }
 }
 
 void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
@@ -276,8 +277,8 @@ void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
 }
 
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
-                                       const std::string& seed) {
-  account_->SetWallet(payment_id, seed);
+                                       const std::string& recovery_seed) {
+  account_->SetWallet(payment_id, recovery_seed);
 }
 
 void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
@@ -377,6 +378,8 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
               return;
             }
 
+            RebuildAdEventHistoryFromDatabase();
+
             BLOG(1, "Successfully purged orphaned ad events for " << ad_type);
             std::move(callback).Run(/*success*/ true);
           },
@@ -461,6 +464,33 @@ void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
     return;
   }
 
+  PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::OnPurgeExpiredAdEvents,
+                                      base::Unretained(this),
+                                      std::move(callback)));
+}
+
+void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
+                                     const bool success) {
+  if (!success) {
+    FailedToInitialize(std::move(callback));
+    return;
+  }
+
+  PurgeOrphanedAdEvents(
+      mojom::AdType::kNewTabPageAd,
+      base::BindOnce(&AdsImpl::OnPurgeOrphanedAdEvents, base::Unretained(this),
+                     std::move(callback)));
+}
+
+void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
+                                      const bool success) {
+  if (!success) {
+    FailedToInitialize(std::move(callback));
+    return;
+  }
+
+  RebuildAdEventHistoryFromDatabase();
+
   conversions::Migrate(base::BindOnce(&AdsImpl::OnMigrateConversions,
                                       base::Unretained(this),
                                       std::move(callback)));
@@ -520,6 +550,7 @@ void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
   }
 
   ConfirmationStateManager::GetInstance()->Initialize(
+      account_->GetWallet(),
       base::BindOnce(&AdsImpl::OnLoadConfirmationState, base::Unretained(this),
                      std::move(callback)));
 }
@@ -582,10 +613,6 @@ void AdsImpl::OnConversion(
   account_->Deposit(conversion_queue_item.creative_instance_id,
                     conversion_queue_item.ad_type,
                     ConfirmationType::kConversion);
-}
-
-void AdsImpl::OnDatabaseIsReady() {
-  PurgeExpiredAdEvents();
 }
 
 void AdsImpl::OnDidTransferAd(const AdInfo& ad) {

@@ -23,11 +23,14 @@ import { getLocale } from '../../../../common/locale'
 import { WalletActions } from '../../../common/actions'
 import {
   getGasFeeFiatValue,
-  getLocaleKeyForTxStatus,
+  getTransactionStatusString,
   ParsedTransactionWithoutFiatValues
 } from '../../../utils/tx-utils'
 import { findTokenBySymbol } from '../../../utils/asset-utils'
-import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
+import {
+  accountInfoEntityAdaptor,
+  accountInfoEntityAdaptorInitialState
+} from '../../../common/slices/entities/account-info.entity'
 import { selectAllUserAssetsFromQueryResult } from '../../../common/slices/entities/blockchain-token.entity'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
@@ -138,7 +141,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
     isLoading: isLoadingAccountInfos
   } = useGetAccountInfosRegistryQuery(undefined)
-  const account = accountInfosRegistry.entities[transaction.accountAddress]
+
+  const account =
+    accountInfosRegistry.entities[
+      accountInfoEntityAdaptor.selectId({ address: transaction.accountAddress })
+    ]
 
   const {
     fiatValue,
@@ -268,7 +275,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       return
     }
 
-    const account = accountInfosRegistry.entities[address]
+    const account = accountInfosRegistry.entities[
+      accountInfoEntityAdaptor.selectId({ address })
+    ]
 
     if (account !== undefined) {
       onSelectAccount(account)
@@ -471,7 +480,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               <DetailTextLight>
                 {isLoadingAccountInfos
                   ? <Skeleton {...skeletonProps} />
-                  : account?.name
+                  : account.name
                 }
               </DetailTextLight>
             }
@@ -503,7 +512,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         <StatusRow>
           <StatusBubble status={transaction.status} />
           <DetailTextDarkBold>
-            {getLocale(getLocaleKeyForTxStatus(transaction.status))}
+            {getTransactionStatusString(transaction.status)}
           </DetailTextDarkBold>
         </StatusRow>
 

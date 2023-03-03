@@ -10,6 +10,7 @@ import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
+  chainId: '0x0',
   fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],

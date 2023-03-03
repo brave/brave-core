@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,19 +33,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
@@ -58,6 +56,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -71,10 +70,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
 public class PortfolioFragment
         extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
-    private static String TAG = "PortfolioFragment";
+    private static final String TAG = "PortfolioFragment";
     private TextView mBalance;
     private Button mBtnChangeNetwork;
     private HashMap<String, TransactionInfo[]> mPendingTxInfos;
@@ -114,15 +112,6 @@ public class PortfolioFragment
         return null;
     }
 
-    private TxService getTxService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getTxService();
-        }
-
-        return null;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,11 +120,13 @@ public class PortfolioFragment
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
             mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 
@@ -363,13 +354,8 @@ public class PortfolioFragment
         }
 
         if (asset.isErc721 || asset.isNft) {
-            PortfolioModel.NftDataModel selectedNft = null;
-            for (PortfolioModel.NftDataModel nftDataModel : mNftDataModels) {
-                if (nftDataModel.token.tokenId.equals(asset.tokenId)) {
-                    selectedNft = nftDataModel;
-                    break;
-                }
-            }
+            PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
+                    nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
             if (selectedNft == null) {
                 return;
             }
@@ -383,38 +369,12 @@ public class PortfolioFragment
     }
 
     private void openNetworkSelection() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        assert activity != null;
-        activity.openNetworkSelection();
-    }
-
-    private AssetRatioService getAssetRatioService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioService();
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openNetworkSelection();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openNetworkSelection " + e);
         }
-
-        return null;
-    }
-
-    private KeyringService getKeyringService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        }
-
-        return null;
-    }
-
-    BraveWalletService getBraveWalletService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletService();
-        } else {
-            assert false;
-        }
-
-        return null;
     }
 
     private void AdjustTrendControls() {
@@ -470,8 +430,6 @@ public class PortfolioFragment
     }
 
     private void updatePortfolioGetPendingTx() {
-        KeyringService keyringService = getKeyringService();
-        assert keyringService != null;
         if (mWalletModel == null) return;
 
         final NetworkInfo selectedNetwork =
@@ -479,8 +437,9 @@ public class PortfolioFragment
         if (selectedNetwork == null) {
             return;
         }
-        keyringService.getKeyringInfo(
+        mWalletModel.getKeyringModel().getKeyringPerId(
                 AssetUtils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
+                    if (keyringInfo == null) return;
                     AccountInfo[] accountInfos = new AccountInfo[] {};
                     if (keyringInfo != null) {
                         accountInfos = keyringInfo.accountInfos;

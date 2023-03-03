@@ -9,7 +9,7 @@
 
 namespace ads {
 
-void ForceIssuersPermissionRule() {
+void ForceIssuersPermissionRuleForTesting() {
   BuildAndSetIssuers();
 }
 

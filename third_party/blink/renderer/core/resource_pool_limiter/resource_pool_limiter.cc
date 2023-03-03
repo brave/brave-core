@@ -50,6 +50,8 @@ int GetResourceLimit(ResourcePoolLimiter::ResourceType resource_type) {
   switch (resource_type) {
     case ResourcePoolLimiter::ResourceType::kWebSocket:
       return 30;
+    case ResourcePoolLimiter::ResourceType::kEventSource:
+      return 250;
   }
   NOTREACHED();
   return 0;

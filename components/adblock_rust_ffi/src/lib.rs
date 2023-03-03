@@ -9,6 +9,7 @@ use adblock::resources::{MimeType, Resource, ResourceType};
 use adblock::regex_manager::RegexManagerDiscardPolicy;
 use core::ptr;
 use libc::size_t;
+use std::collections::HashSet;
 use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::c_char;
@@ -457,18 +458,35 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
     exceptions: *const *const c_char,
     exceptions_size: size_t,
 ) -> *mut c_char {
-    let classes = std::slice::from_raw_parts(classes, classes_size);
-    let classes: Vec<String> = (0..classes_size)
-        .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
-        .collect();
-    let ids = std::slice::from_raw_parts(ids, ids_size);
-    let ids: Vec<String> = (0..ids_size)
-        .map(|index| CStr::from_ptr(ids[index]).to_str().unwrap().to_owned())
-        .collect();
-    let exceptions = std::slice::from_raw_parts(exceptions, exceptions_size);
-    let exceptions: std::collections::HashSet<String> = (0..exceptions_size)
-        .map(|index| CStr::from_ptr(exceptions[index]).to_str().unwrap().to_owned())
-        .collect();
+    // Note checks for `size == 0` - `std::vector<T>::data()`'s return value when empty is
+    // undefined behavior and should never be used.
+    let classes = if classes_size == 0 {
+        Vec::new()
+    } else {
+        let classes = std::slice::from_raw_parts(classes, classes_size);
+        (0..classes_size)
+            .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
+            .collect()
+    };
+
+    let ids = if ids_size == 0 {
+        Vec::new()
+    } else {
+        let ids = std::slice::from_raw_parts(ids, ids_size);
+        (0..ids_size)
+            .map(|index| CStr::from_ptr(ids[index]).to_str().unwrap().to_owned())
+            .collect()
+    };
+    
+    let exceptions = if exceptions_size == 0 {
+        HashSet::new()
+    } else {
+        let exceptions = std::slice::from_raw_parts(exceptions, exceptions_size);
+        (0..exceptions_size)
+            .map(|index| CStr::from_ptr(exceptions[index]).to_str().unwrap().to_owned())
+            .collect()
+    };
+
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
     let stylesheet = engine.hidden_class_id_selectors(&classes, &ids, &exceptions);
@@ -480,12 +498,13 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
 #[cfg(feature = "ios")]
 #[no_mangle]
 pub unsafe extern "C" fn convert_rules_to_content_blocking(rules: *const c_char) -> *mut c_char {
+    use adblock::lists::{ParseOptions, RuleTypes};
     let rules = CStr::from_ptr(rules).to_str().unwrap_or_else(|_| {
         eprintln!("Failed to parse filter list with invalid UTF-8 content");
         ""
     });
     let mut filter_set = adblock::lists::FilterSet::new(true);
-    filter_set.add_filter_list(&rules, Default::default());
+    filter_set.add_filter_list(&rules, ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() });
     // `unwrap` is safe here because `into_content_blocking` only panics if the `FilterSet` was not
     // created in debug mode
     let (cb_rules, _) = filter_set.into_content_blocking().unwrap();

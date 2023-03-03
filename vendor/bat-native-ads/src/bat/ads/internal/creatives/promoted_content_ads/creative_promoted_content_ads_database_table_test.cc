@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
+#include "base/functional/bind.h"
 #include "bat/ads/internal/common/unittest/unittest_base.h"
 #include "bat/ads/internal/common/unittest/unittest_mock_util.h"
 #include "net/http/http_status_code.h"
@@ -40,11 +41,12 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
       creative_promoted_content_ads;
   creative_promoted_content_ads.GetForSegments(
       segments,
-      [](const bool success, const SegmentList& /*segments*/,
-         const CreativePromotedContentAdList& creative_promoted_content_ads) {
+      base::BindOnce([](const bool success, const SegmentList& /*segments*/,
+                        const CreativePromotedContentAdList&
+                            creative_promoted_content_ads) {
         EXPECT_TRUE(success);
         EXPECT_EQ(1UL, creative_promoted_content_ads.size());
-      });
+      }));
 }
 
 }  // namespace ads

@@ -9,7 +9,7 @@
 #define CreateLayoutProvider             \
     CreateLayoutProvider_ChromiumImpl(); \
     static std::unique_ptr<views::LayoutProvider> CreateLayoutProvider
-#include "src/chrome/browser/ui/views/chrome_layout_provider.h"
+#include "src/chrome/browser/ui/views/chrome_layout_provider.h"  // IWYU pragma: export
 #undef CreateLayoutProvider
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_CHROME_LAYOUT_PROVIDER_H_

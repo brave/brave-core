@@ -11,6 +11,7 @@ specific_include_rules = {
     "+brave/build/android/jni_headers/BraveQAPreferences_jni.h",
     "+brave/components/brave_sync/buildflags.h",
     "+brave/components/variations/buildflags.h",
+    "+components/dom_distiller/core/dom_distiller_switches.h",
     "+components/signin/public/base/account_consistency_method.h",
     "+components/sync/base/command_line_switches.h",
   ],

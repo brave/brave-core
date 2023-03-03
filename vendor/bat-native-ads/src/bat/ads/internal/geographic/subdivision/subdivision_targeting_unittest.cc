@@ -33,8 +33,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
        AutoDetectSubdivisionTargetingAllowedRegion) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)",
-       {{net::HTTP_OK, R"({"country":"US", "region":"AL"})"}}}};
+      {"/v1/getstate", {{net::HTTP_OK, R"({"country":"US", "region":"AL"})"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
@@ -52,7 +51,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
 TEST_F(BatAdsSubdivisionTargetingTest, AutoDetectSubdivisionTargetingNoRegion) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)",
+      {"/v1/getstate",
        {{net::HTTP_OK, R"({"country":"US", "region":"NO REGION"})"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -69,8 +68,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
        AutoDetectSubdivisionTargetingWrongRegion) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)",
-       {{net::HTTP_OK, R"({"country":"ES", "region":"AN"})"}}}};
+      {"/v1/getstate", {{net::HTTP_OK, R"({"country":"ES", "region":"AN"})"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
@@ -133,7 +131,7 @@ TEST_P(BatAdsSubdivisionTargetingRetryOnInvalidResponseTest,
        FetchSubdivisionTargetingRetryOnInvalidResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {R"(/v1/getstate)",
+      {"/v1/getstate",
        {{net::HTTP_OK, GetParam()},
         {net::HTTP_OK, R"({"country":"US", "region":"AL"})"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);

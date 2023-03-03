@@ -86,7 +86,8 @@ int UnblindedTokenCount() {
 
 bool IsValid(const UnblindedTokenInfo& unblinded_token) {
   return unblinded_token.value.has_value() &&
-         unblinded_token.public_key.has_value();
+         unblinded_token.public_key.has_value() &&
+         !unblinded_token.signature.empty();
 }
 
 }  // namespace ads::privacy

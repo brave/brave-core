@@ -5,7 +5,7 @@
 
 #include "brave/browser/search_engines/search_engine_tracker.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_search_conversion/p3a.h"

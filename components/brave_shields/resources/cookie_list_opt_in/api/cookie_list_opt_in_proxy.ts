@@ -5,7 +5,7 @@
 
 import * as mojom from 'gen/brave/components/brave_shields/common/cookie_list_opt_in.mojom.m.js'
 
-let instance: CookieListOptInProxy|null = null
+let instance: CookieListOptInProxy | null = null
 
 export class CookieListOptInProxy {
   handler: mojom.CookieListOptInPageHandlerRemote

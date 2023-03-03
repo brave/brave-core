@@ -6,14 +6,15 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
 
 namespace brave_page_graph {
 
 EdgeAttributeSet::EdgeAttributeSet(GraphItemContext* context,
                                    NodeActor* out_node,
                                    NodeHTMLElement* in_node,
-                                   const std::string& name,
-                                   const std::string& value,
+                                   const String& name,
+                                   const String& value,
                                    const bool is_style)
     : EdgeAttribute(context, out_node, in_node, name, is_style),
       value_(value) {}
@@ -25,7 +26,10 @@ ItemName EdgeAttributeSet::GetItemName() const {
 }
 
 ItemDesc EdgeAttributeSet::GetItemDesc() const {
-  return EdgeAttribute::GetItemDesc() + " [" + GetName() + "=" + value_ + "]";
+  WTF::TextStream ts;
+  ts << EdgeAttribute::GetItemDesc() << " [" << GetName() << "=" << value_
+     << "]";
+  return ts.Release();
 }
 
 void EdgeAttributeSet::AddGraphMLAttributes(xmlDocPtr doc,

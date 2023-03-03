@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/user_interaction/user_activity/page_transition_util.h"
 
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -17,8 +18,8 @@ export const enum types {
   DELETE_PROMOTION = '@@rewards/DELETE_PROMOTION',
   ON_PROMOTION_CLAIM_STARTED = '@@rewards/ON_PROMOTION_CLAIM_STARTED',
   ON_PROMOTION_FINISH = '@@rewards/ON_PROMOTION_FINISH',
-  ON_MODAL_BACKUP_CLOSE = '@@rewards/ON_MODAL_BACKUP_CLOSE',
-  ON_MODAL_BACKUP_OPEN = '@@rewards/ON_MODAL_BACKUP_OPEN',
+  ON_MODAL_RESET_CLOSE = '@@rewards/ON_MODAL_RESET_CLOSE',
+  ON_MODAL_RESET_OPEN = '@@rewards/ON_MODAL_RESET_OPEN',
   ON_MODAL_CONNECT_CLOSE = '@@rewards/ON_MODAL_CONNECT_CLOSE',
   ON_MODAL_CONNECT_OPEN = '@@rewards/ON_MODAL_CONNECT_OPEN',
   ON_CLEAR_ALERT = '@@rewards/ON_CLEAR_ALERT',
@@ -63,6 +64,7 @@ export const enum types {
   ON_RECURRING_TIP_SAVED = '@@rewards/ON_RECURRING_TIP_SAVED',
   ON_RECURRING_TIP_REMOVED = '@@rewards/ON_RECURRING_TIP_REMOVED',
   ON_INLINE_TIP_SETTINGS_CHANGE = '@@rewards/ON_INLINE_TIP_SETTINGS_CHANGE',
+  ON_INLINE_TIPS_ENABLED_CHANGE = '@@rewards/ON_INLINE_TIPS_ENABLED_CHANGE',
   REMOVE_PENDING_CONTRIBUTION = '@@rewards/REMOVE_PENDING_CONTRIBUTION',
   REMOVE_ALL_PENDING_CONTRIBUTION = '@@rewards/REMOVE_ALL_PENDING_CONTRIBUTION',
   ON_EXCLUDED_LIST = '@@rewards/ON_EXCLUDED_LIST',

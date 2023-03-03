@@ -15,7 +15,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8905049883018921395">When on, Brave frees up memory from inactive tabs. This gives active tabs and other apps more computer resources and keeps Brave fast. Your inactive tabs automatically become active again when you go back to them. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Memory Saver Made Brave Faster</translation>
 <translation id="4798342026247191171">Set up your new Brave profile</translation>
-<translation id="6361779936989026201">Brave Assistant in Brave</translation>
 <translation id="113959764510199339">Brave is trying to show passwords.</translation>
 <translation id="8132634101975074716">You're signed in to Brave!</translation>
 <translation id="4168469784091952813">You can enjoy the most out of Brave</translation>
@@ -74,6 +73,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8208853227947884571">Brave is up to date</translation>
 <translation id="5122472867956731189">If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing</translation>
 <translation id="2953892977076487219">Brave is trying to edit passwords.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave is connected to a HID device}other{Brave is connected to HID devices}}</translation>
 <translation id="8755404239607088219">Brave can't check your passwords. Try again later.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="3038232873781883849">Waiting to install…</translation>
@@ -102,7 +102,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> can switch between Brave profiles</translation>
 <translation id="8703492925273919597">Please close all Brave windows and try again.</translation>
-<translation id="5350485513372498152">Brave Assistant in Brave can complete actions across websites for you</translation>
 <translation id="4061445349373849749">To protect your privacy, we auto-delete your interests that are older than four weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don't want Brave to consider.</translation>
 <translation id="691208314680168371">Your browsing history, a record of sites that you've visited using Brave on this device.</translation>
 <translation id="1384923383737428730">There's harmful software on your computer. Brave can remove it, restore your settings and disable extensions to make your browser work normally again.</translation>
@@ -185,7 +184,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="232381795826373334">Open PDFs in Brave</translation>
 <translation id="5381032481466106256">When on, you'll also be signed out of Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
-<translation id="95624393026532554">Brave requires Windows 7 or higher.</translation>
+<translation id="4378573854226202617">Brave requires Windows 10 or higher.</translation>
 <translation id="5646769069113654257">Please restart Brave now</translation>
 <translation id="2335583906071111058">Display Brave in this language</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
@@ -387,4 +386,6 @@ Permissions you've already given to websites and apps may apply to this account.
 <translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}</translation>
 <translation id="2176087127109773485">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

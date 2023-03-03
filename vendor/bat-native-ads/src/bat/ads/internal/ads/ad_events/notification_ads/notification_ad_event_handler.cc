@@ -39,8 +39,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
   if (!ad) {
     BLOG(1, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
-    FailedToFireEvent(placement_id, event_type);
-    return;
+    return FailedToFireEvent(placement_id, event_type);
   }
 
   const auto ad_event = AdEventFactory::Build(event_type);

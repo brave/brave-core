@@ -12,7 +12,6 @@ import {
   AccountTransactions,
   AppsListType,
   BraveWallet,
-  BuySendSwapViewTypes,
   PanelTypes,
   SerializableTransactionInfo,
   WalletAccountType,
@@ -39,14 +38,9 @@ import {
   EncryptionKeyPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
-import {
-  Send,
-  Buy,
-  SelectAsset,
-  SelectNetworkWithHeader,
-  SelectAccount,
-  CreateAccountTab
-} from '../components/buy-send-swap'
+import { SelectAccountWithHeader } from '../components/buy-send-swap/select-account-with-header'
+import { CreateAccountTab } from '../components/buy-send-swap/create-account'
+import { SelectNetworkWithHeader } from '../components/buy-send-swap/select-network-with-header'
 import LockPanel from '../components/extension/lock-panel'
 import {
   StyledExtensionWrapperLonger,
@@ -75,12 +69,11 @@ import { mockTransactionSpotPrices } from './mock-data/current-price-data'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
-import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { mockPanelState } from './mock-data/mock-panel-state'
 import { mockPageState } from './mock-data/mock-page-state'
 import { mockWalletState } from './mock-data/mock-wallet-state'
 import { mockUserAccounts } from './mock-data/user-accounts'
-import { BuyOptions } from '../options/buy-with-options'
 
 export default {
   title: 'Wallet/Extension/Panels',
@@ -95,6 +88,7 @@ export default {
 const transactionDummyData: AccountTransactions = {
   [mockUserAccounts[0].id]: [
     {
+      chainId: '',
       fromAddress: 'ETHEREUM ACCOUNT 1',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -130,6 +124,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -165,6 +160,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -200,6 +196,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -235,6 +232,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -272,6 +270,7 @@ const transactionDummyData: AccountTransactions = {
   ],
   [mockUserAccounts[1].id]: [
     {
+      chainId: '',
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -307,6 +306,7 @@ const transactionDummyData: AccountTransactions = {
       groupId: undefined
     },
     {
+      chainId: '',
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txDataUnion: {
@@ -480,6 +480,7 @@ export const _SignData = () => {
     id: 0,
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
+    domain: '',
     originInfo: mockOriginInfo,
     coin: BraveWallet.CoinType.ETH,
     isEip712: true,
@@ -593,18 +594,12 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [selectedBuyAsset, setSelectedBuyAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
-  const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
-  const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [selectedTransaction, setSelectedTransaction] = React.useState<SerializableTransactionInfo | undefined>(transactionList[1][0])
-  const [buyAmount, setBuyAmount] = React.useState<string>('')
-
-  const onChangeSendView = (view: BuySendSwapViewTypes) => {
-    if (view === 'assets') {
-      setShowSelectAsset(true)
-    }
-  }
+  const [filteredAppsList, setFilteredAppsList] = React.useState<
+    AppsListType[]
+  >(AppsList())
+  const [selectedTransaction, setSelectedTransaction] = React.useState<
+    SerializableTransactionInfo | undefined
+  >(transactionList[1][0])
 
   const onBack = () => {
     setSelectedPanel('main')
@@ -617,19 +612,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const onSelectAccount = (account: WalletAccountType) => () => {
     setSelectedAccount(account)
     setSelectedPanel('main')
-  }
-
-  const onHideSelectAsset = () => {
-    setShowSelectAsset(false)
-  }
-
-  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
-    if (selectedPanel === 'buy') {
-      setSelectedBuyAsset(asset)
-    } else {
-      setSelectedAsset(asset)
-    }
-    setShowSelectAsset(false)
   }
 
   const getTitle = (path: PanelTypes) => {
@@ -706,46 +688,20 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(selectedTransaction)
   }
 
-  const onShowCurrencySelection = React.useCallback(() => {
-    navigateTo('currencies')
-  }, [])
-
-  const onChangeBuyAmount = React.useCallback((amount: string) => {
-    setBuyAmount(amount)
-  }, [])
-
-  const onOpenBuyAssetLink = React.useCallback(() => {
-    console.log('Open buy asset link')
-  }, [])
-
   return (
     <WalletPanelStory>
       <StyledExtensionWrapper>
         {walletLocked ? (
-          <LockPanel
-            onSubmit={unlockWallet}
-            onClickRestore={onRestore}
-          />
+          <LockPanel onSubmit={unlockWallet} onClickRestore={onRestore} />
         ) : (
           <>
             {selectedPanel === 'main' ? (
-              <ConnectedPanel
-                navAction={navigateTo}
-              />
+              <ConnectedPanel navAction={navigateTo} />
             ) : (
               <>
-                {showSelectAsset &&
+                {selectedPanel === 'accounts' && (
                   <SelectContainer>
-                    <SelectAsset
-                      assets={mockAccountAssetOptions}
-                      onSelectAsset={onSelectAsset}
-                      onBack={onHideSelectAsset}
-                    />
-                  </SelectContainer>
-                }
-                {selectedPanel === 'accounts' &&
-                  <SelectContainer>
-                    <SelectAccount
+                    <SelectAccountWithHeader
                       accounts={mockAccounts}
                       onBack={onBack}
                       onSelectAccount={onSelectAccount}
@@ -754,8 +710,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       selectedAccount={selectedAccount}
                     />
                   </SelectContainer>
-                }
-                {selectedPanel === 'networks' &&
+                )}
+                {selectedPanel === 'networks' && (
                   <SelectContainer>
                     <SelectNetworkWithHeader
                       onBack={onBack}
@@ -763,84 +719,74 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       onAddNetwork={onAddNetwork}
                     />
                   </SelectContainer>
-                }
-                {selectedPanel === 'transactionDetails' && selectedTransaction &&
-                  <SelectContainer>
-                    <TransactionDetailPanel
-                      transaction={selectedTransaction}
-                      onBack={onBackToTransactions}
-                      onCancelTransaction={onClickCancelTransaction}
-                      onRetryTransaction={onClickRetryTransaction}
-                      onSpeedupTransaction={onClickSpeedupTransaction}
-                      accounts={mockAccounts}
-                      defaultCurrencies={mockDefaultCurrencies}
-                      selectedNetwork={mockNetworks[0]}
-                      visibleTokens={mockNewAssetOptions}
-                      transactionSpotPrices={[]}
-                    />
-                  </SelectContainer>
-                }
-                {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' && selectedPanel !== 'transactionDetails' &&
-                  < Panel
-                    navAction={navigateTo}
-                    title={panelTitle}
-                    useSearch={selectedPanel === 'apps'}
-                    searchAction={selectedPanel === 'apps' ? filterList : undefined}
-                  >
-                    <ScrollContainer>
-                      {selectedPanel === 'apps' &&
-                        <AppList
-                          list={filteredAppsList}
-                          favApps={favoriteApps}
-                          addToFav={addToFavorites}
-                          removeFromFav={removeFromFavorites}
-                          action={browseMore}
-                        />
+                )}
+                {selectedPanel === 'transactionDetails' &&
+                  selectedTransaction && (
+                    <SelectContainer>
+                      <TransactionDetailPanel
+                        transaction={selectedTransaction}
+                        onBack={onBackToTransactions}
+                        onCancelTransaction={onClickCancelTransaction}
+                        onRetryTransaction={onClickRetryTransaction}
+                        onSpeedupTransaction={onClickSpeedupTransaction}
+                        accounts={mockAccounts}
+                        defaultCurrencies={mockDefaultCurrencies}
+                        selectedNetwork={mockNetworks[0]}
+                        visibleTokens={mockNewAssetOptions}
+                        transactionSpotPrices={[]}
+                      />
+                    </SelectContainer>
+                  )}
+                {selectedPanel !== 'networks' &&
+                  selectedPanel !== 'accounts' &&
+                  selectedPanel !== 'transactionDetails' && (
+                    <Panel
+                      navAction={navigateTo}
+                      title={panelTitle}
+                      useSearch={selectedPanel === 'apps'}
+                      searchAction={
+                        selectedPanel === 'apps' ? filterList : undefined
                       }
-                      {selectedPanel === 'send' &&
-                        <Send
-                          onChangeSendView={onChangeSendView}
-                        />
-                      }
-                      {selectedPanel === 'buy' &&
-                        <Buy
-                          onChangeBuyView={onChangeSendView}
-                          selectedAsset={selectedBuyAsset}
-                          onShowCurrencySelection={onShowCurrencySelection}
-                          isSelectedNetworkSupported={true}
-                          buyAmount={buyAmount}
-                          buyOptions={BuyOptions}
-                          onChangeBuyAmount={onChangeBuyAmount}
-                          openBuyAssetLink={onOpenBuyAssetLink}
-                        />
-                      }
-                      {selectedPanel === 'sitePermissions' &&
-                        <SitePermissions />
-                      }
+                    >
+                      <ScrollContainer>
+                        {selectedPanel === 'apps' && (
+                          <AppList
+                            list={filteredAppsList}
+                            favApps={favoriteApps}
+                            addToFav={addToFavorites}
+                            removeFromFav={removeFromFavorites}
+                            action={browseMore}
+                          />
+                        )}
 
-                      {/* Transactions */}
-                      {selectedPanel === 'activity' &&
-                        <TransactionsPanel
-                          onSelectTransaction={onSelectTransaction}
-                          selectedNetwork={mockNetworks[0]}
-                          selectedAccountAddress={mockedTransactionAccounts[0].address}
-                        />
-                      }
-                      {selectedPanel === 'assets' &&
-                        <AssetsPanel
-                          selectedAccount={selectedAccount}
-                          userAssetList={mockAccountAssetOptions}
-                          onAddAsset={onAddAsset}
-                        />
-                      }
-                    </ScrollContainer>
-                  </Panel>
-                }
+                        {selectedPanel === 'sitePermissions' && (
+                          <SitePermissions />
+                        )}
+
+                        {/* Transactions */}
+                        {selectedPanel === 'activity' && (
+                          <TransactionsPanel
+                            onSelectTransaction={onSelectTransaction}
+                            selectedNetwork={mockNetworks[0]}
+                            selectedAccountAddress={
+                              mockedTransactionAccounts[0].address
+                            }
+                          />
+                        )}
+                        {selectedPanel === 'assets' && (
+                          <AssetsPanel
+                            selectedAccount={selectedAccount}
+                            userAssetList={mockAccountAssetOptions}
+                            onAddAsset={onAddAsset}
+                          />
+                        )}
+                      </ScrollContainer>
+                    </Panel>
+                  )}
               </>
             )}
           </>
-        )
-        }
+        )}
       </StyledExtensionWrapper>
     </WalletPanelStory>
   )
@@ -881,7 +827,7 @@ export const _ConnectHardwareWallet = () => {
 
   const onClickInstructions = () => {
     // Open support link in new tab
-    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank')
+    window.open('https://support.brave.com/hc/en-us/articles/4409309138701', '_blank', 'noreferrer')
   }
 
   return (

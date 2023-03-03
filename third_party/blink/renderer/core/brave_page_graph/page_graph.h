@@ -9,7 +9,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
@@ -25,9 +24,12 @@
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/inspector/protocol/dom.h"
 #include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
+#include "third_party/blink/renderer/platform/allow_discouraged_type.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl_hash.h"
+#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace base {
@@ -193,7 +195,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::ExecutionContext* execution_context,
       const char* name,
       const blink::PageGraphBlinkReceiverData& receiver_data,
-      const blink::PageGraphBlinkArgs& args,
+      blink::PageGraphBlinkArgs args,
       const blink::ExceptionState* exception_state,
       const absl::optional<String>& result);
   // Event listeners tracking:
@@ -215,7 +217,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                            v8::Local<v8::String> source);
   void RegisterV8JSBuiltinCall(v8::Isolate* isolate,
                                const char* builtin_name,
-                               const std::vector<std::string>& args,
+                               blink::PageGraphBlinkArgs args,
                                const std::string* result);
   // *** v8 handlers end ***
 
@@ -319,29 +321,29 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   void DoRegisterRequestStart(const InspectorId request_id,
                               GraphNode* requesting_node,
-                              const std::string& local_url,
-                              const std::string& resource_type);
+                              const KURL& local_url,
+                              const String& resource_type);
   void PossiblyWriteRequestsIntoGraph(
       scoped_refptr<const TrackedRequestRecord> record);
   void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
                                    const InspectorId request_id,
                                    const blink::KURL& url,
-                                   const std::string& resource_type);
+                                   const String& resource_type);
   void RegisterRequestStartFromCurrentScript(
       blink::ExecutionContext* execution_context,
       const InspectorId request_id,
       const blink::KURL& url,
-      const std::string& resource_type);
+      const String& resource_type);
   void RegisterRequestStartFromScript(
       blink::ExecutionContext* execution_context,
       const ScriptId script_id,
       const InspectorId request_id,
       const blink::KURL& url,
-      const std::string& resource_type);
+      const String& resource_type);
   void RegisterRequestStartFromCSSOrLink(blink::DocumentLoader* loader,
                                          const InspectorId request_id,
                                          const blink::KURL& url,
-                                         const std::string& resource_type);
+                                         const String& resource_type);
   void RegisterRequestStartForDocument(blink::Document* document,
                                        const InspectorId request_id,
                                        const blink::KURL& url,
@@ -352,10 +354,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                           const int64_t size);
   void RegisterRequestError(const InspectorId request_id);
 
-  void RegisterResourceBlockAd(const blink::WebURL& url,
-                               const std::string& rule);
+  void RegisterResourceBlockAd(const blink::WebURL& url, const String& rule);
   void RegisterResourceBlockTracker(const blink::WebURL& url,
-                                    const std::string& host);
+                                    const String& host);
   void RegisterResourceBlockJavaScript(const blink::WebURL& url);
   void RegisterResourceBlockFingerprinting(const blink::WebURL& url,
                                            const FingerprintingRule& rule);
@@ -388,17 +389,17 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   void RegisterWebAPICall(blink::ExecutionContext* execution_context,
                           const MethodName& method,
-                          const std::vector<String>& arguments);
+                          blink::PageGraphBlinkArgs arguments);
   void RegisterWebAPIResult(blink::ExecutionContext* execution_context,
                             const MethodName& method,
                             const String& result);
 
   void RegisterJSBuiltInCall(blink::ExecutionContext* execution_context,
                              const char* builtin_name,
-                             const std::vector<std::string>& args);
+                             const blink::PageGraphBlinkArgs args);
   void RegisterJSBuiltInResponse(blink::ExecutionContext* execution_context,
                                  const char* builtin_name,
-                                 const std::string& result);
+                                 const String& result);
 
   void RegisterBindingEvent(blink::ExecutionContext* execution_context,
                             const Binding binding,
@@ -412,9 +413,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::ExecutionContext* execution_context,
       ScriptPosition* out_script_position = nullptr) const;
 
-  NodeResource* GetResourceNodeForUrl(const std::string& url);
-  NodeAdFilter* GetAdFilterNodeForRule(const std::string& rule);
-  NodeTrackerFilter* GetTrackerFilterNodeForHost(const std::string& host);
+  NodeResource* GetResourceNodeForUrl(const KURL& url);
+  NodeAdFilter* GetAdFilterNodeForRule(const String& rule);
+  NodeTrackerFilter* GetTrackerFilterNodeForHost(const String& host);
   NodeFingerprintingFilter* GetFingerprintingFilterNodeForRule(
       const FingerprintingRule& rule);
   NodeBinding* GetBindingNode(const Binding binding,
@@ -427,7 +428,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   bool IsRootFrame() const;
 
   // The blink assigned frame id for the local root's frame.
-  const std::string frame_id_;
+  const String frame_id_;
   // Script tracker helper.
   ScriptTracker script_tracker_;
   // Page Graph start time stamp.
@@ -460,30 +461,33 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   // Index structure for looking up HTML nodes.
   // This map does not own the references.
-  std::map<blink::DOMNodeId, NodeHTMLElement*> element_nodes_;
-  std::map<blink::DOMNodeId, NodeHTMLText*> text_nodes_;
+  HashMap<blink::DOMNodeId, NodeHTMLElement*> element_nodes_;
+  HashMap<blink::DOMNodeId, NodeHTMLText*> text_nodes_;
 
   // Makes sure we don't have more than one node in the graph representing
   // a single URL (not required for correctness, but keeps things tidier
   // and makes some kinds of queries nicer).
-  std::map<RequestURL, NodeResource*> resource_nodes_;
+  HashMap<RequestURL, NodeResource*> resource_nodes_;
 
   // Index structure for looking up binding nodes.
   // This map does not own the references.
-  std::map<Binding, NodeBinding*> binding_nodes_;
+  HashMap<Binding, NodeBinding*> binding_nodes_;
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
-  std::map<MethodName, NodeJSWebAPI*> js_webapi_nodes_;
+  HashMap<MethodName, NodeJSWebAPI*> js_webapi_nodes_;
   // Index structure for storing and looking up nodes representing built
   // in JS funcs and methods. This map does not own the references.
-  std::map<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
+  HashMap<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
+
+  using FingerprintingFilterNodes ALLOW_DISCOURAGED_TYPE(
+      "TODO(https://github.com/brave/brave-browser/issues/28238)") =
+      std::map<FingerprintingRule, NodeFingerprintingFilter*>;
 
   // Index structure for looking up filter nodes.
   // These maps do not own the references.
-  std::map<std::string, NodeAdFilter*> ad_filter_nodes_;
-  std::map<std::string, NodeTrackerFilter*> tracker_filter_nodes_;
-  std::map<FingerprintingRule, NodeFingerprintingFilter*>
-      fingerprinting_filter_nodes_;
+  HashMap<String, NodeAdFilter*> ad_filter_nodes_;
+  HashMap<String, NodeTrackerFilter*> tracker_filter_nodes_;
+  FingerprintingFilterNodes fingerprinting_filter_nodes_;
 
   NodeShields* shields_node_;
   NodeShield* ad_shield_node_;

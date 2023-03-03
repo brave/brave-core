@@ -210,10 +210,6 @@ interface SolanaProvider {
   Request(mojo_base.mojom.DictionaryValue arg)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DictionaryValue result);
-
-  // DO NOT USE: This is supposed to be a temporary solution for us to decide
-  // whether to load wallet-standard js module
-  IsSolanaKeyringCreated() => (bool created);
 };
 
 enum WalletPinServiceErrorCode {
@@ -532,6 +528,8 @@ const string kFilecoinTestnetKeyringId = "filecoin_testnet";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
+const string kBitcoinKeyringId = "bitcoin";
+
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
 const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
 
@@ -562,9 +560,7 @@ struct AccountInfo {
   bool is_imported;
   HardwareInfo? hardware;
   CoinType coin;
-  // Keyring, account is attached on.
-  // Used for separate filecoin networks in the UI.
-  string? keyring_id;
+  string keyring_id;
 };
 
 struct KeyringInfo {
@@ -575,15 +571,22 @@ struct KeyringInfo {
   array<AccountInfo> account_infos;
 };
 
+struct WalletInfo {
+  bool isWalletCreated;
+  bool isWalletLocked;
+  array<AppItem> favoriteApps;
+  bool isWalletBackedUp;
+  array<AccountInfo> accountInfos;
+  bool isFilecoinEnabled;
+  bool isSolanaEnabled;
+  bool isNftPinningFeatureEnabled;
+  bool IsPanelV2FeatureEnabled;
+};
+
 // Browser-side handler for common panel / page things
 interface WalletHandler {
   // Obtains basic information about the wallet that is needed for first render
-  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
-                      array<AppItem> favoriteApps,
-                      bool isWalletBackedUp,
-                      array<AccountInfo> accountInfos,
-                      bool isFilecoinEnabled,
-                      bool isSolanaEnabled);
+  GetWalletInfo() => (WalletInfo walletInfo);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);
@@ -654,6 +657,10 @@ enum OnRampProvider {
   kTransak = 3
 };
 
+enum OffRampProvider {
+  kRamp = 1
+};
+
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup.
@@ -666,11 +673,13 @@ interface BlockchainRegistry {
   GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
   // Below APIs are Ethereum only for the moment.
-  // Obtains all tokens for the Buy UI
+  // Obtains all tokens for a single provider for the Buy UI
   GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
+  // Obtains all tokens for multiple providers for the Buy UI 
+  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
 
-  // Obtains the URL used for buying assets.
-  GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
+  // Obtains all tokens for the Sell UI
+  GetSellTokens(OffRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
@@ -760,7 +769,7 @@ interface KeyringService {
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address, string password, CoinType coin) => (bool success);
+  RemoveHardwareAccount(string address, CoinType coin) => (bool success);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
@@ -806,6 +815,9 @@ interface KeyringService {
 interface AssetRatioService {
   // Obtains the URL for buying assets specifying currency
   GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+
+  // Obtains the URL for selling assets specifying currency
+  GetSellUrl(OffRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
 
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
@@ -897,6 +909,18 @@ const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5D
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
 const string kSolanaMetadataProgramId = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
+const string kSolanaConfigProgramId =
+  "Config1111111111111111111111111111111111111";
+const string kSolanaStakeProgramId =
+  "Stake11111111111111111111111111111111111111";
+const string kSolanaVoteProgramId =
+  "Vote111111111111111111111111111111111111111";
+const string kSolanaBPFLoaderUpgradeableProgramId =
+  "BPFLoaderUpgradeab1e11111111111111111111111";
+const string kSolanaEd25519SigVerifyProgramId =
+  "Ed25519SigVerify111111111111111111111111111";
+const string kSolanaKeccakSecp256kProgramId =
+  "KeccakSecp256k11111111111111111111111111111";
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
@@ -917,7 +941,9 @@ const string kSolanaDevnet = "0x67";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
+  BTC = 0,
   ETH = 60,
   FIL = 461,
   SOL = 501
@@ -978,6 +1004,17 @@ struct SolanaSendTransactionOptions {
   OptionalSkipPreflight? skip_preflight;
 };
 
+struct ERC20BalanceResult {
+  string contract_address;
+  string? balance;
+};
+
+enum ResolveMethod {
+   kAsk = 0,
+   kDisabled = 1,
+   kEnabled = 2,
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1012,10 +1049,24 @@ interface JsonRpcService {
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
   GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
 
+  // Obtains the associated bytecode for the contract
+  GetCode(string address, CoinType coin, string chain_id) => (string bytecode, ProviderError error, string error_message);
+
   // Obtains the contract's ERC20 compatible balance for an address
+  // Supported by all EVM chains.
   GetERC20TokenBalance(string contract,
                        string address,
                        string chain_id) => (string balance, ProviderError error, string error_message);
+
+  // Fetches the balances of multiple ERC20 tokens for an address. Requires a
+  // BalanceScanner contract to be deployed on that network. See
+  // GetEthBalanceScannerContractAddresses() in brave_wallet_constants.cc for
+  // the list of supported chains.
+  GetERC20TokenBalances(array<string> contracts,
+                        string address,
+                        string chain_id) => (array<ERC20BalanceResult> balances,
+                                             ProviderError error,
+                                             string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
@@ -1027,8 +1078,18 @@ interface JsonRpcService {
   // Obtains the metadata JSON for a token ID of an ERC1155 contract
   GetERC1155Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
 
+  GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
+  GetEnsResolveMethod() => (ResolveMethod method);
+  GetEnsOffchainLookupResolveMethod() => (ResolveMethod method);
+  GetSnsResolveMethod() => (ResolveMethod method);
+
+  // Calling these setters should be approved by privacy review.
+  SetUnstoppableDomainsResolveMethod(ResolveMethod method);
+  SetEnsResolveMethod(ResolveMethod method);
+  SetEnsOffchainLookupResolveMethod(ResolveMethod method);
+  SetSnsResolveMethod(ResolveMethod method);
+
   // ENS lookups
-  EnableEnsOffchainLookup();
   EnsGetEthAddr(string domain) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
 
   // SNS lookups
@@ -1135,6 +1196,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
   OriginInfo? origin_info;
   string? group_id;
+  string chain_id;
 };
 
 interface TxServiceObserver {
@@ -1290,6 +1352,7 @@ struct SignMessageRequest {
   OriginInfo origin_info;
   int32 id;
   string address;
+  string domain;
   string message;
   bool is_eip712;
   // These fields are for hardware eip712 signing and
@@ -1562,10 +1625,34 @@ enum SolanaTokenInstruction {
   kInitializeMint2 = 20,
 };
 
+// Solana instruction parameter names shared between C++ backend and UI.
+// Note: UI can add names they need here, and please update
+// solana_instruction_data_decoder.cc to use the same constant.
+const string kLamports = "lamports";
+const string kAmount = "amount";
+const string kDecimals = "decimals";
+const string kFromAccount = "from_account";
+const string kToAccount = "to_account";
+const string kSigners = "signers";
+const string kNonceAccount = "nonce_account";
+const string kNewAccount = "new_account";
+
+enum SolanaInstructionParamType {
+  kUint8 = 0,
+  kUint32 = 1,
+  kUint64 = 2,
+  kPublicKey = 3,
+  kOptionalPublicKey = 4,
+  kString = 5,
+  kAuthorityType = 6,
+  kUnknown = -1,
+};
+
 struct SolanaInstructionParam {
   string name;
   string localized_name;  // For UI display.
   string value;
+  SolanaInstructionParamType type = SolanaInstructionParamType.kUnknown;
 };
 
 struct SolanaInstructionAccountParam {

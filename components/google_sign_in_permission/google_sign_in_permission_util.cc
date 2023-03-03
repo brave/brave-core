@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -35,10 +36,16 @@ constexpr char kGoogleAuthPattern[] =
     "https://accounts.google.com/o/oauth2/auth/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/__/auth/*";
 
+bool IsFirebaseAuthUrl(const GURL& gurl) {
+  return GetFirebaseAuthPattern().Matches(gurl);
+}
+
 bool IsGoogleAuthUrl(const GURL& gurl) {
-  // Check if pattern matches the URL.
-  return GetGoogleAuthPattern().Matches(gurl) ||
-         GetFirebaseAuthPattern().Matches(gurl);
+  return GetGoogleAuthPattern().Matches(gurl);
+}
+
+bool RequestMatchesAuthPatterns(const GURL& gurl) {
+  return IsFirebaseAuthUrl(gurl) || IsGoogleAuthUrl(gurl);
 }
 
 }  // namespace
@@ -55,24 +62,45 @@ const ContentSettingsPattern& GetFirebaseAuthPattern() {
   return *firebase_pattern;
 }
 
+// Heuristics to determine if the auth flow uses 3P cookies
+bool AuthFlowUses3PCookies(const GURL& request_url) {
+  if (IsGoogleAuthUrl(request_url)) {
+    // Check `redirect_uri` param in request_url for string "storagerelay"
+    // Ref: manual inspection
+    return request_url.has_query() &&
+           request_url.query_piece().find("redirect_uri=storagerelay") !=
+               std::string::npos;
+  }
+  if (IsFirebaseAuthUrl(request_url)) {
+    // Check if redirect sign-in via authType=signInViaRedirect param
+    // Ref:
+    // https://firebase.google.com/docs/auth/web/redirect-best-practices
+    return request_url.has_query() &&
+           request_url.query_piece().find("authType=signInViaRedirect") !=
+               std::string::npos;
+  }
+  return false;
+}
+
 bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url) {
+  static const base::NoDestructor<GURL> kGoogleAuthUrl([] {
+    DCHECK(!GetGoogleAuthPattern().HasDomainWildcard());
+    DCHECK(!GetGoogleAuthPattern().GetHost().empty());
+    return GURL("https://" + GetGoogleAuthPattern().GetHost());
+  }());
   return request_url.SchemeIsHTTPOrHTTPS() &&
          request_initiator_url.SchemeIsHTTPOrHTTPS() &&
-         IsGoogleAuthUrl(request_url) &&
-         !IsGoogleAuthUrl(request_initiator_url) &&
+         RequestMatchesAuthPatterns(request_url) &&
+         !RequestMatchesAuthPatterns(request_initiator_url) &&
          !net::registry_controlled_domains::SameDomainOrHost(
-             request_initiator_url, GURL(GetGoogleAuthPattern().GetHost()),
-             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+             request_initiator_url, *kGoogleAuthUrl,
+             net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) &&
+         AuthFlowUses3PCookies(request_url);
 }
 
 bool IsGoogleSignInFeatureEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveGoogleSignInPermission);
-}
-
-bool IsGoogleSignInPrefEnabled(PrefService* prefs) {
-  return prefs->FindPreference(kGoogleLoginControlType) &&
-         prefs->GetBoolean(kGoogleLoginControlType);
 }
 
 blink::mojom::PermissionStatus GetCurrentGoogleSignInPermissionStatus(
@@ -140,6 +168,19 @@ GURL GetRequestInitiatingUrlFromRequest(
   return request.request_initiator->GetURL();
 }
 
+// Reloads the top-level tab after the user has made a decision on the
+// permission prompt. Only used for popups, and only if the user has granted the
+// permission.
+void ReloadTab(
+    base::WeakPtr<content::WebContents> contents,
+    const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
+  DCHECK_EQ(1u, permission_statuses.size());
+  if (contents &&
+      permission_statuses[0] == blink::mojom::PermissionStatus::GRANTED) {
+    contents->GetController().Reload(content::ReloadType::NORMAL, true);
+  }
+}
+
 bool CanCreateWindow(content::RenderFrameHost* opener,
                      const GURL& opener_url,
                      const GURL& target_url) {
@@ -148,13 +189,9 @@ bool CanCreateWindow(content::RenderFrameHost* opener,
 
   if (IsGoogleSignInFeatureEnabled() &&
       IsGoogleAuthRelatedRequest(target_url, opener_url)) {
-    if (!IsGoogleSignInPrefEnabled(
-            user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
-      return false;
-    }
-
-    return GetPermissionAndMaybeCreatePrompt(contents, opener_url, nullptr,
-                                             base::DoNothing());
+    return GetPermissionAndMaybeCreatePrompt(
+        contents, opener_url, nullptr,
+        base::BindOnce(&ReloadTab, contents->GetWeakPtr()));
   }
   // If not applying Google Sign-In permission logic, open window
   return true;

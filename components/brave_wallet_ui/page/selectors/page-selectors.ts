@@ -25,6 +25,9 @@ export const showAddModal = ({ page }: State) => page.showAddModal
 export const showIsRestoring = ({ page }: State) => page.showIsRestoring
 export const showRecoveryPhrase = ({ page }: State) => page.showRecoveryPhrase
 export const walletTermsAcknowledged = ({ page }: State) => page.walletTermsAcknowledged
+export const enablingAutoPin = ({ page }: State) => page.enablingAutoPin
+export const isAutoPinEnabled = ({ page }: State) => page.isAutoPinEnabled
+export const isLocalIpfsNodeRunning = ({ page }: State) => page.isLocalIpfsNodeRunning
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects and lists)
 export const importWalletError = ({ page }: State) => page.importWalletError
@@ -38,3 +41,4 @@ export const selectedAssetCryptoPrice = ({ page }: State) => page.selectedAssetC
 export const selectedAssetFiatPrice = ({ page }: State) => page.selectedAssetFiatPrice
 export const selectedAssetPriceHistory = ({ page }: State) => page.selectedAssetPriceHistory
 export const selectedCoinMarket = ({ page }: State) => page.selectedCoinMarket
+export const nftsPinningStatus = ({ page }: State) => page.nftsPinningStatus

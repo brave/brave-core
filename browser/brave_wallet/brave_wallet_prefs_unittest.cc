@@ -8,11 +8,13 @@
 #include <memory>
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -156,6 +158,7 @@ TEST_F(BraveWalletPrefsUnitTest,
 
 TEST_F(BraveWalletPrefsUnitTest,
        MigrateObsoleteProfilePrefsBraveWalletEthereumTransactionsCoinType) {
+  GetPrefs()->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
   // Migration when kBraveWalletTransactions is default value (empty dict).
   ASSERT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
@@ -169,6 +172,7 @@ TEST_F(BraveWalletPrefsUnitTest,
   // Migration with existing transactions.
   GetPrefs()->ClearPref(kBraveWalletEthereumTransactionsCoinTypeMigrated);
   GetPrefs()->ClearPref(kBraveWalletTransactions);
+  GetPrefs()->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
   ASSERT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated));
   base::Value::Dict tx1;
@@ -272,6 +276,62 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
               ElementsAreArray({"0x123"}));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::SOL), SizeIs(0));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kShowWalletTestNetworksDeprecated));
+}
+
+TEST_F(BraveWalletPrefsUnitTest, MigrateAddChainIdToTransactionInfo) {
+  GetPrefs()->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated,
+                         true);
+  EXPECT_FALSE(
+      GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));
+
+  base::Value::Dict txs;
+  const char ethTxId[] = "b1e8dda1";
+  const auto ethPath = base::JoinString({"mainnet", ethTxId}, ".");
+  base::Value::Dict tx1;
+  tx1.SetByDottedPath(base::JoinString({ethPath, "id"}, "."), ethTxId);
+
+  const char solTxId[] = "887e878f";
+  const auto solPath = base::JoinString({"devnet", solTxId}, ".");
+  base::Value::Dict tx2;
+  tx2.SetByDottedPath(base::JoinString({solPath, "id"}, "."), solTxId);
+
+  const char filTxId[] = "197ea1e5";
+  const auto filPath = base::JoinString({"testnet", filTxId}, ".");
+  base::Value::Dict tx3;
+  tx3.SetByDottedPath(base::JoinString({filPath, "id"}, "."), filTxId);
+
+  {
+    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletTransactions);
+    update->SetByDottedPath("ethereum", std::move(tx1));
+    update->SetByDottedPath("solana", std::move(tx2));
+    update->SetByDottedPath("filecoin", std::move(tx3));
+  }
+  MigrateObsoleteProfilePrefs(GetPrefs());
+
+  EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactionsChainIdMigrated));
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletTransactionsChainIdMigrated));
+
+  const base::Value::Dict* transactions =
+      &GetPrefs()->GetDict(kBraveWalletTransactions);
+
+  const std::string* ethChainId = transactions->FindStringByDottedPath(
+      base::JoinString({"ethereum", ethPath, "chain_id"}, "."));
+
+  EXPECT_TRUE(ethChainId != nullptr);
+  EXPECT_EQ(*ethChainId, "0x1");
+
+  const std::string* solChainId = transactions->FindStringByDottedPath(
+      base::JoinString({"solana", solPath, "chain_id"}, "."));
+
+  EXPECT_FALSE(solChainId == nullptr);
+  EXPECT_EQ(*solChainId, "0x67");
+
+  const std::string* filChainId = transactions->FindStringByDottedPath(
+      base::JoinString({"filecoin", filPath, "chain_id"}, "."));
+
+  EXPECT_FALSE(filChainId == nullptr);
+  EXPECT_EQ(*filChainId, "t");
 }
 
 }  // namespace brave_wallet

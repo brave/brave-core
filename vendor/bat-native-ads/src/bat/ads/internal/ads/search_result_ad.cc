@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/internal/account/account.h"
@@ -47,16 +48,15 @@ void SearchResultAd::TriggerEvent(
 
   if (event_type == mojom::SearchResultAdEventType::kViewed) {
     ad_viewed_event_queue_.push_front(std::move(ad_mojom));
-    MaybeTriggerAdViewedEventFromQueue();
-    return;
+    return MaybeTriggerAdViewedEventFromQueue();
   }
 
   event_handler_->FireEvent(
       std::move(ad_mojom), event_type,
-      [](const bool success, const std::string& placement_id,
-         const mojom::SearchResultAdEventType event_type) {
+      base::BindOnce([](const bool success, const std::string& placement_id,
+                        const mojom::SearchResultAdEventType event_type) {
         // Intentionally do nothing.
-      });
+      }));
 }
 
 // static
@@ -91,21 +91,25 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
       std::move(ad_viewed_event_queue_.back());
   ad_viewed_event_queue_.pop_back();
 
-  event_handler_->FireEvent(
-      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
-      [=](const bool /*success*/, const std::string& /*placement_id*/,
-          const mojom::SearchResultAdEventType event_type) {
-        DCHECK(mojom::IsKnownEnumValue(event_type));
+  event_handler_->FireEvent(std::move(ad_mojom),
+                            mojom::SearchResultAdEventType::kViewed,
+                            base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
+                                           base::Unretained(this)));
+}
 
-        if (event_type == mojom::SearchResultAdEventType::kViewed) {
-          if (g_defer_triggering_of_ad_viewed_event_for_testing) {
-            g_deferred_search_result_ad_for_testing = this;
-            return;
-          }
-          trigger_ad_viewed_event_in_progress_ = false;
-          MaybeTriggerAdViewedEventFromQueue();
-        }
-      });
+void SearchResultAd::OnFireAdViewedEvent(
+    const bool /*success*/,
+    const std::string& /*placement_id*/,
+    const mojom::SearchResultAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
+  DCHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
+
+  if (g_defer_triggering_of_ad_viewed_event_for_testing) {
+    g_deferred_search_result_ad_for_testing = this;
+    return;
+  }
+  trigger_ad_viewed_event_in_progress_ = false;
+  MaybeTriggerAdViewedEventFromQueue();
 }
 
 void SearchResultAd::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {

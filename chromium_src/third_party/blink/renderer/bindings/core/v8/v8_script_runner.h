@@ -20,7 +20,7 @@
                 v8::ScriptCompiler::NoCacheReason, const ReferrerScriptInfo&); \
   static v8::MaybeLocal<v8::Module> CompileModule_ChromiumImpl
 
-#include "src/third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"
+#include "src/third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"  // IWYU pragma: export
 
 #undef CompileModule
 #undef CompileScript

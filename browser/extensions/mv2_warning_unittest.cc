@@ -25,7 +25,7 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
         .Set("description", "An awesome extension");
     if (manifest_version)
       builder.Set("manifest_version", *manifest_version);
-    return builder.BuildDict();
+    return builder.Build();
   };
 
   std::string error;

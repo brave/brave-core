@@ -86,6 +86,8 @@ provideStrings({
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
   braveWalletReset: 'Reset',
+  braveWalletSell: 'Sell',
+  braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletBuyNotSupportedTooltip: 'Buy not supported',
   braveWalletSwapNotSupportedTooltip: 'Swap not supported',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
@@ -434,12 +436,14 @@ provideStrings({
   braveWalletBuyTransakName: 'Transak',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
-  braveWalletBuySardineDescription: 'Instant buy with your bank account. Lower fees.',
+  braveWalletBuySardineDescription: 'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
   braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
+  braveWalletSellWithProvider: 'Sell with $1',
+  braveWalletSellMinimumAmount: 'The minimum amount must be $1 or more.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
@@ -457,6 +461,8 @@ provideStrings({
   braveWalletSignWarning: 'Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.',
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
+  braveWalletSignTransactionEIP712MessageTitle: 'Details',
+  braveWalletSignTransactionEIP712MessageDomain: 'Domain',
   braveWalletSignTransactionButton: 'Sign',
   braveWalletApproveTransaction: 'Approve transaction',
 
@@ -510,6 +516,9 @@ provideStrings({
   braveWalletConfirmTransactionAccountCreationFee: 'The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.',
   braveWalletAllowSpendCurrentAllowance: 'Current allowance',
   braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
+  braveWalletTransactionGasLimit: 'Gas Limit',
+  braveWalletTransactionGasPremium: 'Gas Premium',
+  braveWalletTransactionGasFeeCap: 'Gas Fee Cap',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
@@ -616,14 +625,25 @@ provideStrings({
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidSolAddress: 'Not a valid SOL address',
   braveWalletNotValidAddress: 'Not a valid address',
-  braveWalletNotDomain: 'Domain is not registered',
+  braveWalletNotDomain: 'Domain doesn\'t have a linked $ address',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
+  braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
+  braveWalletFailedChecksumDescription: 'Check your address to make sure it’s the right address (e.g. letters with lower or upper case).',
+  braveWalletHowToSolve: 'How can I solve it?',
   braveWalletAddressMissingChecksumInfoWarning: 'This address cannot be verified (missing checksum). Proceed?',
   braveWalletNotValidChecksumAddressError: 'Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
+  braveWalletInvalidRecipientAddress: 'Invalid recipient address',
+  braveWalletChecksumModalTitle: 'How can I find the right address?',
+  braveWalletChecksumModalDescription: 'Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.',
+  braveWalletChecksumModalStepOneTitle: '1. Visit',
+  braveWalletChecksumModalStepOneDescription: 'Visit etherscan and paste the wallet address you want to send tokens. Then enter.',
+  braveWalletChecksumModalStepTwoTitle: '2. Copy and enter ETH address',
+  braveWalletChecksumModalStepTwoDescription: 'Copy and enter the correct address. You can see that some characters have been converted correctly.',
+  braveWalletChecksumModalNeedHelp: 'Need more help?',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
@@ -659,6 +679,9 @@ provideStrings({
   braveWalletNFTDetailTokenStandard: 'Token standard',
   braveWalletNFTDetailTokenID: 'Token ID',
   braveWalletNFTDetailContractAddress: 'Contract address',
+  braveWalletNFTDetailDescription: 'Description',
+  braveWalletNFTDetailCid: 'CID',
+  braveWalletNFTDetailImageAddress: 'Image location or address',
 
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
@@ -738,12 +761,12 @@ provideStrings({
   braveWalletSolanaBPFLoader: 'BPF Loader',
   braveWalletSolanaEd25519Program: 'Ed25519 Program',
   braveWalletSolanaSecp256k1Program: 'Secp256k1 Program',
+  braveWalletSolanaTokenProgram: 'Token Program',
+  braveWalletSolanaAssociatedTokenProgram: 'Associated Token Program',
+  braveWalletSolanaMetaDataProgram: 'MetaData Program',
+  braveWalletSolanaSysvarRentProgram: 'SysvarRent Program',
 
-  // Solana Instruction Paramater Names
-  braveWalletSolanaParamKeyFromPubkey: 'From Address: ',
-  braveWalletSolanaParamKeyToPubkey: 'To Address: ',
-  braveWalletSolanaParamKeyLamports: 'Amount: ',
-  braveWalletSolanaParamKeyNewAccountPubkey: 'New Account: ',
+  // Solana Instruction Parameter Names
   braveWalletSolanaAccounts: 'Accounts:',
   braveWalletSolanaData: 'Data:',
   braveWalletSolanaProgramID: 'Program ID:',
@@ -752,7 +775,7 @@ provideStrings({
   braveWalletSolanaSkipPreflight: 'Skip Preflight:',
 
   // Help Center
-  braveWalletHelpCenter: 'Help Center',
+  braveWalletHelpCenter: 'Help center',
   braveWalletHelpCenterText: 'Need help? See',
 
   // Remove Account Modal
@@ -797,9 +820,10 @@ provideStrings({
   braveWalletViewDecodedMessage: 'View message in ASCII encoding',
 
   // NFTs Tab
-  braveWalletNftsEmptyState: 'No NFTs found in your wallet. You can add NFTs by clicking the "+ Visible assets" button at the bottom of' +
-    ' the "Portfolio" tab',
-  braveWalletNftsEmptyStateSearch: 'No NFTs matching search or filter found',
+  braveNftsTabImportNft: 'Import NFT',
+  braveNftsTabEmptyStateHeading: 'No NFTs here yet.',
+  braveNftsTabEmptyStateSubHeading: 'Ready to add some? Just click the button below to import.',
+  braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
 
   // Add asset tabs
   braveWalletAddAssetTokenTabTitle: 'Token',
@@ -817,5 +841,33 @@ provideStrings({
     'Token decimals of precision value is required',
   braveWalletTokenContractAddress: 'Token Contract Address',
   braveWalletTokenDecimal: 'Token Decimal',
-  braveWalletTokenMintAddress: 'Mint address'
+  braveWalletTokenMintAddress: 'Mint address',
+  braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates',
+
+  // NFT Pinning
+  braveWalletNftPinningWhyNotAvailable: 'Why not available?',
+  braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
+  braveWalletNftPinningBenefitsHeading: 'By running IPFS on your computer you can:',
+  braveWalletNftPinningBenefitOne: 'Ensure your NFT data stays online and it cannot be tempered with.',
+  braveWalletNftPinningBenefitTwo: 'Get content back using content identifier(CID) from an incorrect data.',
+  braveWalletNftPinningBenefitThree: 'Participate proof of authenticity and make IPFS network rich and healthy.',
+  braveWalletNftPinningPinNftsButton: 'Keep my NFTs always online',
+  braveWalletNftPinningRunNodeButton: 'Enable NFT pinning',
+  braveWalletNftPinningBackButton: 'Back',
+  braveWalletNftPinningCloseButton: 'Close',
+  braveWalletNftPinningHeading: 'A big step toward becoming part of web3',
+  braveWalletNftPinningRunNodeHeading: 'Run IPFS node and keep your NFTs always online',
+  braveWalletNftPinningRunNodeDescription: 'Today\'s centralized internet model doesn\'t work in space. On today\’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.',
+  braveWalletNftPinningCheckNftsButton: 'Check which NFTs of mine can be pinned',
+  braveWalletNftPinningBannerStart: 'Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.',
+  braveWalletNftPinningBannerUploading: 'You\’re running IPFS node. File is being uploaded to IPFS.',
+  braveWalletNftPinningBannerSuccess: '$1 out of $2 NFTs have been successfully pinned to IPFS.',
+  braveWalletNftPinningBannerLearnMore: 'Learn more',
+  braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
+  braveWalletNftPinningUnableToPin: 'Unable to pin',
+  braveWalletNftPinningNodeRunningStatus: 'You\’re running IPFS node',
+  braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
+  braveWalletNftPinningStatusPinned: 'NFT data is being pinned to your local IPFS node',
+  braveWalletNftPinningStatusPinning: 'Cannot be pinned to your local IPFS node',
+  braveWalletNftPinningStatusPinningFailed: 'Pinned to your local IPFS node'
 })

@@ -53,6 +53,7 @@ std::string GetLoginUrl(const std::string& state) {
       "cards:read "
       "cards:write "
       "user:read "
+      "transactions:read "
       "transactions:transfer:application "
       "transactions:transfer:others"
       "&intention=login&"

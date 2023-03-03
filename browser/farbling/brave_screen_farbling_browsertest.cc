@@ -70,10 +70,10 @@ class WidgetBoundsChangeWaiter final : public views::WidgetObserver {
 
  private:
   bool BoundsChangeMeetsThreshold(const gfx::Rect& rect) const {
-    return std::abs(rect.x() - initial_bounds_.x()) >= threshold_ &&
-           std::abs(rect.y() - initial_bounds_.y()) >= threshold_ &&
-           std::abs(rect.width() - initial_bounds_.width()) >= threshold_ &&
-           std::abs(rect.height() - initial_bounds_.height()) >= threshold_;
+    return (std::abs(rect.x() - initial_bounds_.x()) >= threshold_ &&
+            std::abs(rect.y() - initial_bounds_.y()) >= threshold_) ||
+           (std::abs(rect.width() - initial_bounds_.width()) >= threshold_ &&
+            std::abs(rect.height() - initial_bounds_.height()) >= threshold_);
   }
 
   const raw_ptr<views::Widget> widget_;
@@ -156,6 +156,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   gfx::Rect SetBounds(const gfx::Rect& bounds) {
     browser()->window()->SetBounds(bounds);
+    content::RunAllPendingInMessageLoop();
     return browser()->window()->GetBounds();
   }
 
@@ -273,20 +274,17 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   void FarbleScreenPopupPosition(int j) {
     gfx::Rect parent_bounds;
-    // Make sure parent_bounds dimensions aren't unexpectedly large.
-    do {
-      parent_bounds = SetBounds(kTestWindowBounds[j]);
-    } while (parent_bounds.width() > 600 || parent_bounds.height() > 600);
+    parent_bounds = SetBounds(kTestWindowBounds[j]);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
       NavigateToURLUntilLoadStop(parent_url());
       for (bool test_iframe : {false, true}) {
         const char* script =
             "open('/simple.html', '', `"
-            "left=10,"
-            "top=10,"
-            "width=${outerWidth + 200},"
-            "height=${outerHeight + 200}"
+            "left=30,"
+            "top=30,"
+            "width=${outerWidth + 20},"
+            "height=${outerHeight + 20}"
             "`);";
         Browser* popup = OpenPopup(script, test_iframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
@@ -306,20 +304,26 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
           EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
         if (!test_iframe) {
-          auto bounds_before = popup->window()->GetBounds();
           auto* widget = views::Widget::GetWidgetForNativeWindow(
               popup->window()->GetNativeWindow());
-          auto waiter = WidgetBoundsChangeWaiter(widget, 10);
+
+          auto bounds_before = popup->window()->GetBounds();
+          auto waiter1 = WidgetBoundsChangeWaiter(widget, 10);
+          ASSERT_TRUE(ExecJs(popup_contents,
+                             "resizeTo(outerWidth - 13, outerHeight - 14)"));
+          waiter1.Wait();
+          auto bounds_after = popup->window()->GetBounds();
+          EXPECT_EQ(-13, bounds_after.width() - bounds_before.width());
+          EXPECT_EQ(-14, bounds_after.height() - bounds_before.height());
+
+          bounds_before = popup->window()->GetBounds();
+          auto waiter2 = WidgetBoundsChangeWaiter(widget, 10);
           ASSERT_TRUE(
               ExecJs(popup_contents, "moveTo(screenX + 11, screenY + 12)"));
-          ASSERT_TRUE(ExecJs(popup_contents,
-                             "resizeTo(outerWidth + 13, outerHeight + 14)"));
-          waiter.Wait();
-          auto bounds_after = popup->window()->GetBounds();
+          waiter2.Wait();
+          bounds_after = popup->window()->GetBounds();
           EXPECT_EQ(11, bounds_after.x() - bounds_before.x());
           EXPECT_EQ(12, bounds_after.y() - bounds_before.y());
-          EXPECT_EQ(13, bounds_after.width() - bounds_before.width());
-          EXPECT_EQ(14, bounds_after.height() - bounds_before.height());
         }
       }
     }

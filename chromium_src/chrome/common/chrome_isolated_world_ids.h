@@ -9,7 +9,7 @@
 #define ISOLATED_WORLD_ID_CHROME_INTERNAL \
   ISOLATED_WORLD_ID_CHROME_INTERNAL, ISOLATED_WORLD_ID_BRAVE_INTERNAL
 
-#include "src/chrome/common/chrome_isolated_world_ids.h"
+#include "src/chrome/common/chrome_isolated_world_ids.h"  // IWYU pragma: export
 
 #undef ISOLATED_WORLD_ID_CHROME_INTERNAL
 

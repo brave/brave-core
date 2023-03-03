@@ -6,19 +6,18 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_REMOTE_FRAME_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_REMOTE_FRAME_H_
 
-#include <string>
-
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/graph_node.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_page_graph {
 
 class NodeRemoteFrame : public GraphNode {
  public:
-  NodeRemoteFrame(GraphItemContext* context, const std::string& frame_id);
+  NodeRemoteFrame(GraphItemContext* context, const String& frame_id);
   ~NodeRemoteFrame() override;
 
-  const std::string& GetFrameId() const { return frame_id_; }
+  const String& GetFrameId() const { return frame_id_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -29,7 +28,7 @@ class NodeRemoteFrame : public GraphNode {
   bool IsNodeRemoteFrame() const override;
 
  private:
-  const std::string frame_id_;
+  const String frame_id_;
 };
 
 }  // namespace brave_page_graph

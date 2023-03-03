@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { action } from 'typesafe-actions'
 import { types } from '../constants/rewards_types'
@@ -11,7 +11,7 @@ export const onAdsEnabled = (enabled: boolean) => action(types.ON_ADS_ENABLED, {
   enabled
 })
 
-export const onBalanceReport = (properties: {month: number, year: number, report: NewTab.RewardsBalanceReport}) => action(types.ON_BALANCE_REPORT, {
+export const onBalanceReport = (properties: { month: number, year: number, report: NewTab.RewardsBalanceReport }) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
   year: properties.year,
   report: properties.report

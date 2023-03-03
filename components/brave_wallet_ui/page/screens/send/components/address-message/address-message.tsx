@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Assets
+import WarningIcon from '../../assets/warning-icon.svg'
+
 // Types
 import { AddressMessageInfo } from '../../../../../constants/types'
 
@@ -12,15 +15,16 @@ import { AddressMessageInfo } from '../../../../../constants/types'
 import { getLocale } from '../../../../../../common/locale'
 
 // Styled Components
-import { LearnMoreLink } from './address-message.style'
+import { LearnMoreLink, HowToSolveButton, ErrorIcon } from './address-message.style'
 import { Column, Row, Text, VerticalDivider, VerticalSpacer } from '../../shared.styles'
 
 interface Props {
   addressMessageInfo: AddressMessageInfo
+  onClickHowToSolve?: () => void
 }
 
 export const AddressMessage = (props: Props) => {
-  const { addressMessageInfo } = props
+  const { addressMessageInfo, onClickHowToSolve } = props
 
   return (
     <Column
@@ -29,15 +33,21 @@ export const AddressMessage = (props: Props) => {
       horizontalAlign='flex-start'
     >
       <VerticalDivider marginBottom={16} />
-      <Text
-        textSize='14px'
-        textColor='text01'
-        isBold={true}
-        textAlign='left'
-      >
-        {getLocale(addressMessageInfo.title)}
-      </Text>
-      {addressMessageInfo.description &&
+      <Row>
+        {addressMessageInfo.type &&
+          <ErrorIcon icon={WarningIcon} size={15} type={addressMessageInfo.type} />
+        }
+        <Text
+          textSize='14px'
+          textColor='text01'
+          isBold={true}
+          textAlign='left'
+        >
+          {getLocale(addressMessageInfo.title)}
+        </Text>
+      </Row>
+      {
+        addressMessageInfo.description &&
         <>
           <VerticalSpacer size={8} />
           <Row
@@ -57,12 +67,17 @@ export const AddressMessage = (props: Props) => {
                   {getLocale('braveWalletLearnMore')}
                 </LearnMoreLink>
               }
+              {onClickHowToSolve &&
+                <HowToSolveButton onClick={onClickHowToSolve}>
+                  {getLocale('braveWalletHowToSolve')}
+                </HowToSolveButton>
+              }
             </Text>
           </Row>
         </>
       }
       <VerticalSpacer size={16} />
-    </Column>
+    </Column >
   )
 }
 

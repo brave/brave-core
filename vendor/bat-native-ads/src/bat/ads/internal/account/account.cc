@@ -6,7 +6,10 @@
 #include "bat/ads/internal/account/account.h"
 
 #include <utility>
+#include <vector>
 
+#include "absl/types/optional.h"
+#include "base/base64.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "bat/ads/internal/account/account_util.h"
@@ -74,10 +77,19 @@ void Account::RemoveObserver(AccountObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Account::SetWallet(const std::string& id, const std::string& seed) {
+void Account::SetWallet(const std::string& payment_id,
+                        const std::string& recovery_seed) {
+  const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
+      base::Base64Decode(recovery_seed);
+  if (!raw_recovery_seed) {
+    BLOG(0, "Failed to set wallet");
+    NotifyInvalidWallet();
+    return;
+  }
+
   const WalletInfo last_wallet_copy = GetWallet();
 
-  if (!wallet_->Set(id, seed)) {
+  if (!wallet_->Set(payment_id, *raw_recovery_seed)) {
     BLOG(0, "Failed to set wallet");
     NotifyInvalidWallet();
     return;
@@ -86,8 +98,7 @@ void Account::SetWallet(const std::string& id, const std::string& seed) {
   const WalletInfo& wallet = GetWallet();
 
   if (wallet.WasUpdated(last_wallet_copy)) {
-    BLOG(1, "Successfully set wallet");
-    NotifyWalletDidUpdate(wallet);
+    WalletDidUpdate(wallet);
   }
 
   if (wallet.HasChanged(last_wallet_copy)) {
@@ -126,15 +137,9 @@ void Account::Deposit(const std::string& creative_instance_id,
   }
 
   deposit->GetValue(
-      creative_instance_id, [=](const bool success, const double value) {
-        if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
-        }
-
-        ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
-      });
+      creative_instance_id,
+      base::BindOnce(&Account::OnGetDepositValue, base::Unretained(this),
+                     creative_instance_id, ad_type, confirmation_type));
 }
 
 // static
@@ -157,31 +162,50 @@ void Account::MaybeGetIssuers() const {
   issuers_->MaybeFetch();
 }
 
+void Account::OnGetDepositValue(const std::string& creative_instance_id,
+                                const AdType& ad_type,
+                                const ConfirmationType& confirmation_type,
+                                const bool success,
+                                const double value) const {
+  if (!success) {
+    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
+    return;
+  }
+
+  ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
+}
+
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const AdType& ad_type,
                              const ConfirmationType& confirmation_type,
                              const double value) const {
   transactions::Add(
       creative_instance_id, value, ad_type, confirmation_type,
-      [=](const bool success, const TransactionInfo& transaction) {
-        if (!success) {
-          FailedToProcessDeposit(creative_instance_id, ad_type,
-                                 confirmation_type);
-          return;
-        }
+      base::BindOnce(&Account::OnDepositProcessed, base::Unretained(this),
+                     creative_instance_id, ad_type, confirmation_type));
+}
 
-        BLOG(3, "Successfully processed deposit for "
-                    << transaction.ad_type << " with creative instance id "
-                    << transaction.creative_instance_id << " and "
-                    << transaction.confirmation_type << " valued at "
-                    << transaction.value);
+void Account::OnDepositProcessed(const std::string& creative_instance_id,
+                                 const AdType& ad_type,
+                                 const ConfirmationType& confirmation_type,
+                                 const bool success,
+                                 const TransactionInfo& transaction) const {
+  if (!success) {
+    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
+    return;
+  }
 
-        NotifyDidProcessDeposit(transaction);
+  BLOG(3, "Successfully processed deposit for "
+              << transaction.ad_type << " with creative instance id "
+              << transaction.creative_instance_id << " and "
+              << transaction.confirmation_type << " valued at "
+              << transaction.value);
 
-        NotifyStatementOfAccountsDidChange();
+  NotifyDidProcessDeposit(transaction);
 
-        confirmations_->Confirm(transaction);
-      });
+  NotifyStatementOfAccountsDidChange();
+
+  confirmations_->Confirm(transaction);
 }
 
 void Account::FailedToProcessDeposit(
@@ -211,23 +235,32 @@ void Account::ProcessUnclearedTransactions() const {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
+void Account::WalletDidUpdate(const WalletInfo& wallet) const {
+  BLOG(1, "Successfully set wallet");
+
+  NotifyWalletDidUpdate(wallet);
+}
+
 void Account::WalletDidChange(const WalletInfo& wallet) const {
   BLOG(1, "Wallet changed");
 
   NotifyWalletDidChange(wallet);
 
-  ResetRewards([=](const bool success) {
-    if (!success) {
-      BLOG(0, "Failed to reset rewards state");
-      return;
-    }
+  ResetRewards(
+      base::BindOnce(&Account::OnRewardsReset, base::Unretained(this)));
+}
 
-    BLOG(3, "Successfully reset rewards state");
+void Account::OnRewardsReset(const bool success) const {
+  if (!success) {
+    BLOG(0, "Failed to reset rewards state");
+    return;
+  }
 
-    NotifyStatementOfAccountsDidChange();
+  BLOG(3, "Successfully reset rewards state");
 
-    TopUpUnblindedTokens();
-  });
+  NotifyStatementOfAccountsDidChange();
+
+  TopUpUnblindedTokens();
 }
 
 void Account::MaybeResetIssuersAndConfirmations() {
@@ -369,14 +402,9 @@ void Account::OnDidRefillUnblindedTokens() {
 void Account::OnCaptchaRequiredToRefillUnblindedTokens(
     const std::string& captcha_id) {
   const WalletInfo& wallet = GetWallet();
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  const bool should_show_tooltip_notification = false;
-#else   // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  const bool should_show_tooltip_notification = true;
-#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   AdsClientHelper::GetInstance()->ShowScheduledCaptchaNotification(
-      wallet.id, captcha_id, should_show_tooltip_notification);
+      wallet.payment_id, captcha_id);
 }
 
 }  // namespace ads

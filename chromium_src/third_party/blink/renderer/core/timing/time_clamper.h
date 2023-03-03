@@ -20,7 +20,7 @@
   static base::TimeDelta MaybeRoundTimeDelta(base::TimeDelta value); \
   int dummy
 
-#include "src/third_party/blink/renderer/core/timing/time_clamper.h"
+#include "src/third_party/blink/renderer/core/timing/time_clamper.h"  // IWYU pragma: export
 
 #undef kCoarseResolutionMicroseconds
 #undef kFineResolutionMicroseconds

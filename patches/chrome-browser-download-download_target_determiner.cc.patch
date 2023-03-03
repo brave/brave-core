@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/download_target_determiner.cc b/chrome/browser/download/download_target_determiner.cc
+index bbb859c169ce3f028141c14b6224a65919e6c1bc..203ebfcf0f434ff35573bfd48add644dd121fe33 100644
+--- a/chrome/browser/download/download_target_determiner.cc
++++ b/chrome/browser/download/download_target_determiner.cc
+@@ -1253,6 +1253,7 @@ DownloadFileType::DangerLevel DownloadTargetDeterminer::GetDangerLevel(
+   // contains malware.
+   if (HasPromptedForPath() ||
+       confirmation_reason_ != DownloadConfirmationReason::NONE ||
++      BRAVE_DOWNLOAD_TARGET_DETERMINER_GET_DANGER_LEVEL
+       !download_->GetForcedFilePath().empty())
+     return DownloadFileType::NOT_DANGEROUS;
+ 

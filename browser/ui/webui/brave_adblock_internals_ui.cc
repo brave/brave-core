@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/process/process.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -120,7 +120,7 @@ class BraveAdblockInternalsMessageHandler
     result.Set("default_engine", std::move(default_engine_info));
     result.Set("additional_engine", std::move(additional_engine_info));
     result.Set("memory", std::move(mem_info));
-    ResolveJavascriptCallback(base::Value(callback_id), std::move(result));
+    ResolveJavascriptCallback(base::Value(callback_id), result);
   }
 
   base::WeakPtrFactory<BraveAdblockInternalsMessageHandler> weak_ptr_factory_{

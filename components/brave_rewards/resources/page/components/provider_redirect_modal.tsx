@@ -24,7 +24,7 @@ export function ProviderRedirectModal () {
   const onRedirectError = () => {
     actions.hideRedirectModal()
     if (externalWallet && externalWallet.loginUrl) {
-      window.open(externalWallet.loginUrl, '_self')
+      window.open(externalWallet.loginUrl, '_self', 'noreferrer')
     }
   }
 

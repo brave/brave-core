@@ -253,10 +253,14 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON" desc="Description about turning on sponsored image">You can earn for seeing sponsored sites.</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF" desc="Description about turning off sponsored image">You're earning for seeing sponsored images.</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about sponsored image">Sponsored images support Brave. With Brave Rewards, you can earn part of the revenue from sponsored images and support content creators too!</message>
-      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_DESCRIPTION" desc="Description about sponsored image">Turning off sponsored sites will decrease how many tokens you earn and the support given to content creators each month.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_EARNING_TITLE" desc="Title of message about already earning from sponsored images">You're earning BAT for Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS" desc="Text of the button to enable Rewards">Enable Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION" desc="Description about turning on Sponsored Images when Rewards is on">As a Brave Rewards user, you can earn BAT for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_ADS_OFF_DESCRIPTION" desc="Description about Sponsored Images when Ads is off">You can earn BAT for seeing Sponsored Images when you enable Brave Ads. When Brave Ads is off, turning on Sponsored Images still supports Brave's mission.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about turning off Sponsored Images">As a Brave Rewards user, you earn BAT for Sponsored Images you see. Disabling Sponsored Images will reduce how much you earn.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION" desc="Description about sponsored images when Rewards is off">You can earn BAT for seeing Sponsored Images with Brave Rewards. Not a Rewards user? Turning on Sponsored Images still supports Brave's mission.</message>
       <message name="IDS_BRAVE_NEW_TAB_TOP_SITES" desc="Top Sites title">top sites</message>
       <message name="IDS_BRAVE_NEW_TAB_STATS" desc="Brave Stats title">Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK" desc="Clock title">clock</message>
@@ -280,7 +284,7 @@
         Try it out
       </message>
 
-      <message name="IDS_BRAVE_TODAY_TITLE" translateable="false" desc="Title for Brave News news feed section">
+      <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Brave News news feed section">
         Brave News
       </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING" desc="The text displayed while a feed is being subscribed or unsubscribed">
@@ -304,34 +308,34 @@
       <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
         Manage Feeds
       </message>
-      <message name="IDS_BRAVE_TODAY_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
+      <message name="IDS_BRAVE_NEWS_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
         Fetching…
       </message>
-      <message name="IDS_BRAVE_TODAY_ACTION_REFRESH" desc="Button text to refresh the feed content">
+      <message name="IDS_BRAVE_NEWS_ACTION_REFRESH" desc="Button text to refresh the feed content">
         Load new content
       </message>
-      <message name="IDS_BRAVE_TODAY_SCROLL_HINT" desc="Indicator text that Brave News content must be scrolled down to. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_SCROLL_HINT" desc="Indicator text that Brave News content must be scrolled down to. Do not translate the title Brave News.">
         Scroll for Brave News
       </message>
-      <message name="IDS_BRAVE_TODAY_RESET_ACTION" desc="Button text to reset all Brave News publisher options. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_RESET_ACTION" desc="Button text to reset all Brave News publisher options. Do not translate the title Brave News.">
         Reset Brave News sources
       </message>
-      <message name="IDS_BRAVE_TODAY_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave News settings. Do not translate the title Brave News.">
+      <message name="IDS_BRAVE_NEWS_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave News settings. Do not translate the title Brave News.">
         Reset all your Brave News publisher choices to their default?
       </message>
-      <message name="IDS_BRAVE_TODAY_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
+      <message name="IDS_BRAVE_NEWS_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
         All sources
       </message>
-      <message name="IDS_BRAVE_TODAY_SOURCES_TITLE" desc="Title for the list of source publishers in Brave News settings">
+      <message name="IDS_BRAVE_NEWS_SOURCES_TITLE" desc="Title for the list of source publishers in Brave News settings">
         Sources
       </message>
-      <message name="IDS_BRAVE_TODAY_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
+      <message name="IDS_BRAVE_NEWS_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
         Disable content from <ph name="PUBLISHER_NAME">$1<ex>The New York Times</ex></ph>
       </message>
-      <message name="IDS_BRAVE_TODAY_PROMOTED" desc="Label for promoted content">
+      <message name="IDS_BRAVE_NEWS_PROMOTED" desc="Label for promoted content">
         Promoted
       </message>
-      <message name="IDS_BRAVE_TODAY_DISPLAY_AD_LABEL" desc="Label for an advertisement">
+      <message name="IDS_BRAVE_NEWS_DISPLAY_AD_LABEL" desc="Label for an advertisement">
         Ad
       </message>
 
@@ -492,7 +496,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable content-level tips on these sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Show Tip buttons on sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tips date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
@@ -707,7 +711,6 @@
       <message name="IDS_BRAVE_UI_ADS_SAVE_AD">Save</message>
       <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
-      <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TRANSACTION" desc="">Auto-Contribute [[processor]]</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
@@ -732,8 +735,6 @@
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
-      <message name="IDS_BRAVE_UI_MANAGE" desc="">Manage</message>
-      <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Brave Rewards</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
@@ -776,10 +777,9 @@
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated [[reservedAmount]] [[currency]] for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
+      <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT1" desc="">If your Brave Rewards is not verified, your BAT balance is stored in local files on your device.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_NOTICE_TEXT2" desc="">If you'd like to secure your BAT in case you need to do a clean reinstall of the browser or reformat your device, and would like to enjoy other benefits such as adding or withdrawing your BAT, we recommend <ph name="LINK_BEGIN">$1</ph>verifying<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this content creator by sending a tip. It’s a way of thanking them for making great content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
@@ -812,7 +812,6 @@
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE" desc="">NOTE:</message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">You're connected to <ph name="USER_PROVIDER">$1<ex>Uphold</ex></ph>, but this creator is connected to <ph name="CREATOR_PROVIDER">$2<ex>Gemini</ex></ph>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOT_REGISTERED" desc="">This creator is not signed up yet. Any tip you make will remain pending and retry automatically for 90 days.</message>
       <message name="IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE" desc="">Learn more.</message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTIONS" desc="Title of pending contribution modal">Pending contributions</message>
@@ -834,8 +833,8 @@
       <message name="IDS_BRAVE_UI_PROMO_LEARN_MORE" desc="">Learn more</message>
       <message name="IDS_BRAVE_UI_PROMO_DISMISS" desc="">Don't show again</message>
 
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Verify</message>
-      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Verifying is optional. However, by verifying, you will be able to withdraw your BAT earned from Brave Rewards to a custodial wallet directly.</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Connect to bitFlyer</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Connecting Brave Rewards to a bitFlyer account will let you earn BAT and withdraw your BAT earnings from Brave Rewards.</message>
 
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
       <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>

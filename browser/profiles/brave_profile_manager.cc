@@ -16,9 +16,10 @@
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -92,6 +93,8 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   brave::RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
+  perf::MaybeEnableBraveFeatureForPerfTesting(profile);
+  brave::MigrateHttpsUpgradeSettings(profile);
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
@@ -114,7 +117,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     brave_news::BraveNewsControllerFactory::GetForContext(profile);
   }
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
@@ -130,8 +133,8 @@ bool BraveProfileManager::IsAllowedProfilePath(
 }
 
 bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
-                         bool incognito,
-                         ProfileLoadedCallback callback) {
+                                            bool incognito,
+                                            ProfileLoadedCallback callback) {
 #if BUILDFLAG(ENABLE_TOR)
   // Prevent legacy tor session profile to be loaded so we won't hit
   // DCHECK(!GetProfileAttributesWithPath(...)). Workaround for legacy tor guest

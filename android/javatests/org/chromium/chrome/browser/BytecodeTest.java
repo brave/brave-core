@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.logo.LogoView;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
@@ -298,8 +299,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/BraveIntentHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFlag"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/BraveCachedFlag"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoCoordinator"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/BraveLogoMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
@@ -458,6 +459,8 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl",
                 "isVisibleToUser", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoMediator",
+                "updateVisibility", true, void.class));
     }
 
     @Test
@@ -548,12 +551,12 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
-                StatusBarColorController.class, AppMenuDelegate.class,
-                ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
-                Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                SnackbarManager.class, JankTracker.class, Supplier.class, OneshotSupplier.class,
-                OmniboxPedalDelegate.class, Supplier.class, boolean.class, BackPressManager.class));
+                WindowAndroid.class, Supplier.class, Supplier.class, StatusBarColorController.class,
+                AppMenuDelegate.class, ActivityLifecycleDispatcher.class, Supplier.class,
+                BottomSheetController.class, Supplier.class, TabContentManager.class,
+                TabCreatorManager.class, SnackbarManager.class, JankTracker.class, Supplier.class,
+                OneshotSupplier.class, OmniboxPedalDelegate.class, Supplier.class, boolean.class,
+                BackPressManager.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -614,10 +617,10 @@ public class BytecodeTest {
                 ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
                 ButtonDataProvider.class, Callback.class, Supplier.class, Supplier.class,
-                ObservableSupplier.class, BooleanSupplier.class, boolean.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class, Callback.class,
-                boolean.class, ObservableSupplier.class, ObservableSupplier.class,
+                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                boolean.class, HistoryDelegate.class, BooleanSupplier.class,
+                OfflineDownloader.class, boolean.class, Callback.class, boolean.class,
+                ObservableSupplier.class, ObservableSupplier.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -709,14 +712,18 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/BraveAppHooks"));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/flags/CachedFlag",
                 "org/chromium/chrome/browser/flags/BraveCachedFlag", String.class, boolean.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoCoordinator",
-                "org/chromium/chrome/browser/logo/BraveLogoCoordinator", Context.class,
-                Callback.class, LogoView.class, boolean.class, Callback.class, Runnable.class,
-                boolean.class, LogoCoordinator.VisibilityObserver.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/logo/LogoMediator",
+                "org/chromium/chrome/browser/logo/BraveLogoMediator", Context.class, Callback.class,
+                PropertyModel.class, boolean.class, Callback.class, Runnable.class, boolean.class,
+                LogoCoordinator.VisibilityObserver.class, CachedTintedBitmap.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
                 "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
                 Context.class, ModalDialogManager.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
+                "org/chromium/chrome/browser/notifications/BraveNotificationBuilder",
+                Context.class));
     }
 
     @Test
@@ -831,6 +838,9 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
         Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "mToolbarColorObserverManager"));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
                         "mActiveTabSwitcherToolbar"));
         Assert.assertTrue(
@@ -908,7 +918,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "mAssistantVoiceSearchServiceSupplier"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/logo/LogoCoordinator", "mLogoModel"));
+                fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mLogoModel"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mShouldShowLogo"));
     }
 
     @Test

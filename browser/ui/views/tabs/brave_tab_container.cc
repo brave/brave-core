@@ -9,8 +9,10 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -40,8 +42,9 @@ BraveTabContainer::BraveTabContainer(
     return;
   }
 
-  if (!tabs::features::SupportsVerticalTabs(browser))
+  if (!tabs::utils::SupportsVerticalTabs(browser)) {
     return;
+  }
 
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled,
@@ -85,7 +88,7 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   if (layout_locked_)
     return {};
 
-  if (!tabs::features::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     return TabContainerImpl::CalculatePreferredSize();
   }
@@ -133,9 +136,9 @@ void BraveTabContainer::UpdateClosingModeOnRemovedTab(int model_index,
   }
 
   // Don't shrink vertical tab strip's width
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     return;
+  }
 
   TabContainerImpl::UpdateClosingModeOnRemovedTab(model_index, was_active);
 }
@@ -148,10 +151,11 @@ gfx::Rect BraveTabContainer::GetTargetBoundsForClosingTab(
                                                           former_model_index);
   }
 
-  if (!tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+  if (!tabs::utils::ShouldShowVerticalTabs(
+          tab_slot_controller_->GetBrowser())) {
     return TabContainerImpl::GetTargetBoundsForClosingTab(tab,
                                                           former_model_index);
+  }
 
   gfx::Rect target_bounds = tab->bounds();
   if (tab->data().pinned) {
@@ -174,8 +178,7 @@ void BraveTabContainer::EnterTabClosingMode(absl::optional<int> override_width,
   }
 
   // Don't shrink vertical tab strip's width
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser())) {
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     return;
   }
 
@@ -187,9 +190,9 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
     return TabContainerImpl::ShouldTabBeVisible(tab);
 
   // We don't have to clip tabs out of bounds. Scroll view will handle it.
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     return true;
+  }
 
   return TabContainerImpl::ShouldTabBeVisible(tab);
 }
@@ -205,7 +208,7 @@ void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   if (layout_locked_)
     return;
 
-  if (!tabs::features::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::StartInsertTabAnimation(model_index);
     return;
@@ -235,9 +238,9 @@ void BraveTabContainer::RemoveTab(int index, bool was_active) {
     return;
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     closing_tabs_.insert(tabs_view_model_.view_at(index));
+  }
 
   TabContainerImpl::RemoveTab(index, was_active);
 }
@@ -248,9 +251,9 @@ void BraveTabContainer::OnTabCloseAnimationCompleted(Tab* tab) {
     return;
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(
-          tab_slot_controller_->GetBrowser()))
+  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
     closing_tabs_.erase(tab);
+  }
 
   TabContainerImpl::OnTabCloseAnimationCompleted(tab);
 
@@ -263,8 +266,8 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This method should be called only when the flag is on.";
 
-  layout_helper_->set_use_vertical_tabs(tabs::features::ShouldShowVerticalTabs(
-      tab_slot_controller_->GetBrowser()));
+  layout_helper_->set_use_vertical_tabs(
+      tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
   InvalidateLayout();
 }
 
@@ -299,7 +302,7 @@ void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {
     return;
   }
 
-  if (tabs::features::ShouldShowVerticalTabs(
+  if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
     TabContainerImpl::OnPaintBackground(canvas);
     return;

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 
 namespace syncer {

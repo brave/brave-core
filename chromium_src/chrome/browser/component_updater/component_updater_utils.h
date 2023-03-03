@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "src/chrome/browser/component_updater/component_updater_utils.h"
+#include "src/chrome/browser/component_updater/component_updater_utils.h"  // IWYU pragma: export
 
 namespace component_updater {
 

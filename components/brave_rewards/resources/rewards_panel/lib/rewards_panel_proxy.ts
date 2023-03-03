@@ -4,7 +4,7 @@
 
 import * as mojom from 'gen/brave/components/brave_rewards/common/brave_rewards_panel.mojom.m.js'
 
-let instance: RewardsPanelProxy|null = null
+let instance: RewardsPanelProxy | null = null
 
 export class RewardsPanelProxy {
   callbackRouter: mojom.PanelCallbackRouter

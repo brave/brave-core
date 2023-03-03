@@ -10,9 +10,8 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/bind.h"
 #include "base/feature_list.h"
-#include "base/json/json_writer.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -42,10 +41,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -57,9 +53,12 @@
 #include "url/origin.h"
 
 using api_request_helper::APIRequestHelper;
-using decentralized_dns::EnsOffchainResolveMethod;
 
 namespace {
+
+using brave_wallet::mojom::ResolveMethod;
+using decentralized_dns::EnsOffchainResolveMethod;
+using decentralized_dns::ResolveMethodTypes;
 
 // The domain name should be a-z | A-Z | 0-9 and hyphen(-).
 // The domain name should not start or end with hyphen (-).
@@ -135,10 +134,66 @@ bool EnsOffchainPrefDisabled(PrefService* local_state_prefs) {
          EnsOffchainResolveMethod::kDisabled;
 }
 
-void SetEnsOffchainPref(PrefService* local_state_prefs, bool enabled) {
-  decentralized_dns::SetEnsOffchainResolveMethod(
-      local_state_prefs, enabled ? EnsOffchainResolveMethod::kEnabled
-                                 : EnsOffchainResolveMethod::kDisabled);
+brave_wallet::mojom::ResolveMethod ToMojomResolveMethod(
+    decentralized_dns::ResolveMethodTypes method) {
+  switch (method) {
+    case ResolveMethodTypes::ASK:
+      return ResolveMethod::kAsk;
+    case ResolveMethodTypes::DISABLED:
+      return ResolveMethod::kDisabled;
+    case ResolveMethodTypes::ENABLED:
+      return ResolveMethod::kEnabled;
+    case ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS:
+      break;
+  }
+
+  NOTREACHED();
+  return ResolveMethod::kDisabled;
+}
+
+decentralized_dns::ResolveMethodTypes FromMojomResolveMethod(
+    brave_wallet::mojom::ResolveMethod method) {
+  switch (method) {
+    case ResolveMethod::kAsk:
+      return ResolveMethodTypes::ASK;
+    case ResolveMethod::kDisabled:
+      return ResolveMethodTypes::DISABLED;
+    case ResolveMethod::kEnabled:
+      return ResolveMethodTypes::ENABLED;
+  }
+
+  NOTREACHED();
+  return ResolveMethodTypes::DISABLED;
+}
+
+brave_wallet::mojom::ResolveMethod ToMojomEnsOffchainResolveMethod(
+    decentralized_dns::EnsOffchainResolveMethod method) {
+  switch (method) {
+    case EnsOffchainResolveMethod::kAsk:
+      return ResolveMethod::kAsk;
+    case EnsOffchainResolveMethod::kDisabled:
+      return ResolveMethod::kDisabled;
+    case EnsOffchainResolveMethod::kEnabled:
+      return ResolveMethod::kEnabled;
+  }
+
+  NOTREACHED();
+  return ResolveMethod::kDisabled;
+}
+
+decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
+    brave_wallet::mojom::ResolveMethod method) {
+  switch (method) {
+    case ResolveMethod::kAsk:
+      return EnsOffchainResolveMethod::kAsk;
+    case ResolveMethod::kDisabled:
+      return EnsOffchainResolveMethod::kDisabled;
+    case ResolveMethod::kEnabled:
+      return EnsOffchainResolveMethod::kEnabled;
+  }
+
+  NOTREACHED();
+  return EnsOffchainResolveMethod::kDisabled;
 }
 
 namespace solana {
@@ -676,6 +731,25 @@ void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
                   std::move(internal_callback));
 }
 
+void JsonRpcService::GetCode(const std::string& address,
+                             mojom::CoinType coin,
+                             const std::string& chain_id,
+                             GetCodeCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, coin);
+  if (coin != mojom::CoinType::ETH || !network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetCode, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback));
+  RequestInternal(eth::eth_getCode(address, "latest"), true, network_url,
+                  std::move(internal_callback));
+}
+
 void JsonRpcService::OnGetFilStateSearchMsgLimited(
     GetFilStateSearchMsgLimitedCallback callback,
     const std::string& cid,
@@ -1095,6 +1169,27 @@ void JsonRpcService::OnGetERC20TokenBalance(
   std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::OnGetCode(GetCodeCallback callback,
+                               APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Result is 0x when the address was an EOA
+  auto result = ParseSingleStringResult(api_request_result.value_body());
+  if (!result) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
+}
+
 void JsonRpcService::GetERC20TokenAllowance(
     const std::string& contract_address,
     const std::string& owner_address,
@@ -1145,6 +1240,105 @@ void JsonRpcService::OnGetERC20TokenAllowance(
   }
 
   std::move(callback).Run(args->at(0), mojom::ProviderError::kSuccess, "");
+}
+
+void JsonRpcService::GetERC20TokenBalances(
+    const std::vector<std::string>& token_contract_addresses,
+    const std::string& user_address,
+    const std::string& chain_id,
+    GetERC20TokenBalancesCallback callback) {
+  const auto& balance_scanner_contract_addresses =
+      GetEthBalanceScannerContractAddresses();
+  if (!base::Contains(balance_scanner_contract_addresses, chain_id)) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  const auto& balance_scanner_contract_address =
+      balance_scanner_contract_addresses.at(chain_id);
+
+  if (token_contract_addresses.empty() || user_address.empty()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  absl::optional<std::string> calldata =
+      balance_scanner::TokensBalance(user_address, token_contract_addresses);
+  if (!calldata) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // Makes the eth_call request to the balance scanner contract.
+  auto internal_callback = base::BindOnce(
+      &JsonRpcService::OnGetERC20TokenBalances, weak_ptr_factory_.GetWeakPtr(),
+      token_contract_addresses, std::move(callback));
+  RequestInternal(
+      eth::eth_call(balance_scanner_contract_address, calldata.value()), true,
+      network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetERC20TokenBalances(
+    const std::vector<std::string>& token_contract_addresses,
+    GetERC20TokenBalancesCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result = eth::ParseEthCall(api_request_result.value_body());
+  if (!result) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+    std::move(callback).Run({}, error, error_message);
+    return;
+  }
+
+  auto results = eth::DecodeGetERC20TokenBalancesEthCallResponse(*result);
+  if (!results) {
+    std::move(callback).Run({}, mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  // The number of contract addresses supplied to the BalanceScanner
+  // should match the number of balances it returns
+  if (token_contract_addresses.size() != results->size()) {
+    std::move(callback).Run(
+        {}, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Match up the balances with the contract addresses
+  std::vector<mojom::ERC20BalanceResultPtr> erc20_balance_results;
+  for (size_t i = 0; i < token_contract_addresses.size(); i++) {
+    auto erc20_balance_result = mojom::ERC20BalanceResult::New();
+    erc20_balance_result->contract_address = token_contract_addresses[i];
+    erc20_balance_result->balance = results->at(i);
+    erc20_balance_results.push_back(std::move(erc20_balance_result));
+  }
+
+  std::move(callback).Run(std::move(erc20_balance_results),
+                          mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::EnsRegistryGetResolver(const std::string& domain,
@@ -1282,8 +1476,49 @@ void JsonRpcService::OnEnsGetContentHash(EnsGetContentHashCallback callback,
                           "");
 }
 
-void JsonRpcService::EnableEnsOffchainLookup() {
-  SetEnsOffchainPref(local_state_prefs_, true);
+void JsonRpcService::GetUnstoppableDomainsResolveMethod(
+    GetUnstoppableDomainsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetUnstoppableDomainsResolveMethod(
+          local_state_prefs_)));
+}
+
+void JsonRpcService::GetEnsResolveMethod(GetEnsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetENSResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::GetEnsOffchainLookupResolveMethod(
+    GetEnsOffchainLookupResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomEnsOffchainResolveMethod(
+      decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::GetSnsResolveMethod(GetSnsResolveMethodCallback callback) {
+  std::move(callback).Run(ToMojomResolveMethod(
+      decentralized_dns::GetSnsResolveMethod(local_state_prefs_)));
+}
+
+void JsonRpcService::SetUnstoppableDomainsResolveMethod(
+    mojom::ResolveMethod method) {
+  decentralized_dns::SetUnstoppableDomainsResolveMethod(
+      local_state_prefs_, FromMojomResolveMethod(method));
+}
+
+void JsonRpcService::SetEnsResolveMethod(mojom::ResolveMethod method) {
+  decentralized_dns::SetENSResolveMethod(local_state_prefs_,
+                                         FromMojomResolveMethod(method));
+}
+
+void JsonRpcService::SetEnsOffchainLookupResolveMethod(
+    mojom::ResolveMethod method) {
+  decentralized_dns::SetEnsOffchainResolveMethod(
+      local_state_prefs_, FromMojomEnsOffchainResolveMethod(method));
+}
+
+void JsonRpcService::SetSnsResolveMethod(mojom::ResolveMethod method) {
+  decentralized_dns::SetSnsResolveMethod(local_state_prefs_,
+                                         FromMojomResolveMethod(method));
 }
 
 void JsonRpcService::EnsGetEthAddr(const std::string& domain,
@@ -2168,10 +2403,7 @@ void JsonRpcService::GetERC1155TokenBalance(
 }
 
 void JsonRpcService::EthGetLogs(const std::string& chain_id,
-                                const std::string& from_block,
-                                const std::string& to_block,
-                                base::Value::List contract_addresses,
-                                base::Value::List topics,
+                                base::Value::Dict filter_options,
                                 EthGetLogsCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
@@ -2184,10 +2416,8 @@ void JsonRpcService::EthGetLogs(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnEthGetLogs,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      eth::eth_getLogs(from_block, to_block, std::move(contract_addresses),
-                       std::move(topics), ""),
-      true, network_url, std::move(internal_callback));
+  RequestInternal(eth::eth_getLogs(std::move(filter_options)), true,
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnEthGetLogs(EthGetLogsCallback callback,

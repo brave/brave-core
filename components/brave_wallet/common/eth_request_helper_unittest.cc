@@ -136,19 +136,19 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
 
   mojom::AccountInfoPtr primary_account = mojom::AccountInfo::New(
       "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", false, nullptr,
-      mojom::CoinType::ETH, absl::nullopt);
+      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   mojom::AccountInfoPtr ledger_account = mojom::AccountInfo::New(
       ledger_address, "ledger", false,
       mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "123"),
-      mojom::CoinType::ETH, absl::nullopt);
+      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   mojom::AccountInfoPtr trezor_account = mojom::AccountInfo::New(
       trezor_address, "trezor", false,
       mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"),
-      mojom::CoinType::ETH, absl::nullopt);
+      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   mojom::AccountInfoPtr hw_account = mojom::AccountInfo::New(
       hw_address, "hw", false,
       mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"),
-      mojom::CoinType::ETH, absl::nullopt);
+      mojom::CoinType::ETH, mojom::kDefaultKeyringId);
   std::vector<mojom::AccountInfoPtr> account_infos;
   account_infos.push_back(std::move(primary_account));
   account_infos.push_back(std::move(ledger_account));

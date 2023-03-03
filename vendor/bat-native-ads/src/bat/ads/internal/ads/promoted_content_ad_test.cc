@@ -29,7 +29,7 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUpForTesting(/*is_integration_test*/ true);
 
-    ForcePermissionRules();
+    ForcePermissionRulesForTesting();
   }
 
   void SetUpMocks() override {
@@ -41,6 +41,9 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kServed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
@@ -58,6 +61,9 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  GetAds()->TriggerPromotedContentAdEvent(
+      kPlacementId, kCreativeInstanceIdId,
+      mojom::PromotedContentAdEventType::kServed);
   GetAds()->TriggerPromotedContentAdEvent(
       kPlacementId, kCreativeInstanceIdId,
       mojom::PromotedContentAdEventType::kViewed);

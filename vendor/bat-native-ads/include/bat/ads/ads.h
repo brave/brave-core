@@ -143,7 +143,7 @@ class ADS_EXPORT Ads {
 
   // Called when the user's Brave Rewards wallet has changed.
   virtual void OnRewardsWalletDidChange(const std::string& payment_id,
-                                        const std::string& seed) = 0;
+                                        const std::string& recovery_seed) = 0;
 
   // Called to get the statement of accounts. The callback takes one argument -
   // |mojom::StatementInfo| containing info of the obtained statement of

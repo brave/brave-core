@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-#include "base/feature_list.h"  // IWYU pragma: keep
+#include "base/feature_list.h"
 
 namespace base {
 class TimeDelta;

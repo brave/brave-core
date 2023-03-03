@@ -15,7 +15,6 @@
 <translation id="8905049883018921395">‏آن ہونے پر، Brave غیر فعال ٹیبز سے میموری کو خالی کرتا ہے۔ یہ فعال ٹیبز اور دیگر ایپس کو کمپیوٹر کے مزید وسائل فراہم کرتا ہے اور Brave کو تیز رکھتا ہے۔ جب آپ ان پر واپس جاتے ہیں تو آپ کے غیر فعال ٹیبز خودکار طور پر دوبارہ فعال ہو جاتے ہیں۔ <ph name="BEGIN_LINK"/>مزید جانیں<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">‏میموری سیور نے Brave کو تیز تر بنا دیا</translation>
 <translation id="4798342026247191171">‏اپنی نئی Brave پروفائل سیٹ اپ کریں</translation>
-<translation id="6361779936989026201">‏Brave میں Brave اسسٹنٹ</translation>
 <translation id="113959764510199339">‏Brave پاس ورڈز دکھانے کی کوشش کر رہا ہے۔</translation>
 <translation id="8132634101975074716">‏آپ Brave میں سائن ان ہیں!</translation>
 <translation id="4168469784091952813">‏آپ Brave سے زیادہ سے زیادہ لطف اٹھا سکتے ہیں</translation>
@@ -83,6 +82,7 @@
 <translation id="8208853227947884571">‏Brave اپ ٹو ڈیٹ ہے</translation>
 <translation id="5122472867956731189">‏اگر کوئی سائٹ آپ کا پاس ورڈ چرانے کی کوشش کرتی ہے یا جب آپ نقصان دہ فائل ڈاؤن لوڈ کرتے ہیں تو Brave محفوظ براؤزنگ پر صفحہ کے مواد کے کچھ حصوں سمیت URLs بھی بھیج سکتا ہے</translation>
 <translation id="2953892977076487219">‏Brave پاس ورڈز میں ترمیم کرنے کی کوشش کر رہا ہے۔</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{‏Brave ایک HID آلے سے منسلک ہے}other{‏Brave ‏HID آلات سے منسلک ہے}}</translation>
 <translation id="8755404239607088219">‏Brave آپ کے پاس ورڈز چیک نہیں کر سکتا ہے۔ بعد میں دوبارہ کوشش کریں۔</translation>
 <translation id="8880183781256147665">‏Brave میں شامل کیا جا رہا ہے…</translation>
 <translation id="3038232873781883849">انسٹال ہونے کا انتظار ہے...</translation>
@@ -112,7 +112,6 @@
 <translation id="5853262807109651878">‏یہ اس آلہ سے <ph name="ITEMS_COUNT"/> آئٹمز کو حذف کر دے گا۔ بعد میں اپنے ڈیٹا کی بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>
 <translation id="2024972335338126423">‏<ph name="SHORTCUT"/> سے Brave پروفائل کے درمیان سوئچ کیا جا سکتا ہے</translation>
 <translation id="8703492925273919597">‏براہ کرم سبھی Brave ونڈوز بند کریں اور دوبارہ کوشش کریں۔</translation>
-<translation id="5350485513372498152">‏Brave میں موجود Brave اسسٹنٹ سبھی ویب سائٹس پر آپ کے لیے کارروائیوں کو مکمل کر سکتی ہے</translation>
 <translation id="4061445349373849749">‏آپ کی رازداری کے تحفظ کے لئے، ہم 4 ہفتے سے زیادہ پرانی آپ کی دلچسپیوں کو خودکار طور پر حذف کر دیتے ہیں۔ جب تک آپ براؤزنگ جاری رکھتے ہیں، فہرست پر دلچسپی دوبارہ ظاہر ہو سکتی ہے۔ یا آپ ان دلچسپیوں کو ہٹا سکتے ہیں جنہیں آپ چاہتے ہیں کہ Brave نہ دکھائے۔</translation>
 <translation id="691208314680168371">‏آپ کی براؤزنگ کی سرگزشت، ان سائٹس کا ریکارڈ جو آپ اس آلے پر Brave کا استعمال کر کے ملاحظہ کر چکے ہیں۔</translation>
 <translation id="1384923383737428730">‏آپ کے کمپیوٹر میں نقصان دہ سافٹ ویئر ہے۔ Brave اسے ہٹا کر آپ کی ترتیبات بحال اور ایکسٹینشنز کو غیر فعال کر سکتا ہے تاکہ آپ کا براؤزر دوبارہ حسب معمول کام کر سکے۔</translation>
@@ -199,7 +198,7 @@
 <translation id="232381795826373334">‏Brave میں PDFs کھولیں</translation>
 <translation id="5381032481466106256">‏آن ہونے پر، آپ Brave سے بھی سائن آؤٹ ہو جائیں گے</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏Brave کا اپ ڈیٹ دستیاب ہے}=1{‏Brave کا اپ ڈیٹ دستیاب ہے}other{‏Brave کا اپ ڈیٹ # دن سے دستیاب ہے}}</translation>
-<translation id="95624393026532554">‏Brave کیلئے Windows 7 یا اس کے بعد کا ورژن درکار ہے۔</translation>
+<translation id="4378573854226202617">‏Brave کیلئے Windows 10 یا اس کے بعد کا ورژن درکار ہے۔</translation>
 <translation id="5646769069113654257">‏براہ کرم ابھی Brave کو ری اسٹارٹ کریں</translation>
 <translation id="2335583906071111058">‏Brave کو اس زبان میں ڈسپلے کریں</translation>
 <translation id="7207456302801184289">‏Brave میں خوش آمدید</translation>
@@ -387,4 +386,6 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="4484434718272972655">‏Brave کون استعمال کر رہا ہے؟</translation>
 <translation id="7173394303099002355">‏Brave کی مضبوط ترین سیکیورٹی حاصل کریں</translation>
 <translation id="8992261409816268381">‏Brave مصنّفین</translation>
+<translation id="137466361146087520">‏Google Chrome بی ٹا</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

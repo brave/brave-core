@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
@@ -26,6 +26,7 @@
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -73,8 +75,9 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 
     auto redirector = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      if (request.GetURL().path_piece() != kTestPageRedirect)
+      if (request.GetURL().path_piece() != kTestPageRedirect) {
         return nullptr;
+      }
       const std::string dest =
           base::UnescapeBinaryURLComponent(request.GetURL().query_piece());
 
@@ -230,15 +233,15 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   // style is injected.
   EXPECT_LT(0, content::EvalJs(ActiveWebContents(), kGetStyleLength,
                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                               speedreader::kIsolatedWorldId)
+                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                    .ExtractInt());
   EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kGetFontsExists,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              speedreader::kIsolatedWorldId)
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
   EXPECT_GT(17750, content::EvalJs(ActiveWebContents(), kGetContentLength,
                                    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                   speedreader::kIsolatedWorldId)
+                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                        .ExtractInt());
 
   EXPECT_TRUE(console_observer.messages().empty());
@@ -248,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_LT(106000, content::EvalJs(ActiveWebContents(), kGetContentLength,
                                     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                    speedreader::kIsolatedWorldId)
+                                    ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                         .ExtractInt());
 }
 
@@ -264,7 +267,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
 
   EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckNoStyle,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              speedreader::kIsolatedWorldId)
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
 }
 
@@ -419,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   EXPECT_EQ(base::UTF16ToUTF8(title),
             content::EvalJs(web_contents, kClickLinkAndGetTitle,
                             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                            speedreader::kIsolatedWorldId)
+                            ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                 .ExtractString());
   content::WaitForLoadStop(web_contents);
   auto* tab_helper =
@@ -449,7 +452,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
 
   EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoElement,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              speedreader::kIsolatedWorldId)
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
 
   constexpr const char kCheckNoApi[] =
@@ -459,7 +462,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
 
   EXPECT_TRUE(content::EvalJs(web_contents, kCheckNoApi,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              speedreader::kIsolatedWorldId)
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
 }
 
@@ -490,7 +493,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
 
   EXPECT_EQ(nullptr, content::EvalJs(contents, GetDataAttribute("data-theme"),
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                     speedreader::kIsolatedWorldId));
+                                     ISOLATED_WORLD_ID_BRAVE_INTERNAL));
   auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(contents);
   tab_helper->SetTheme(speedreader::mojom::Theme::kDark);
@@ -503,7 +506,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   auto EvalAttr = [&](content::WebContents* contents, const std::string& attr) {
     return content::EvalJs(contents, GetDataAttribute(attr),
                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                           speedreader::kIsolatedWorldId)
+                           ISOLATED_WORLD_ID_BRAVE_INTERNAL)
         .ExtractString();
   };
 
@@ -546,7 +549,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
 
   EXPECT_EQ(nullptr, content::EvalJs(ActiveWebContents(), kNoStyleInjected,
                                      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                                     speedreader::kIsolatedWorldId));
+                                     ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 class SpeedReaderBrowserPanelV2Test : public SpeedReaderBrowserTest {

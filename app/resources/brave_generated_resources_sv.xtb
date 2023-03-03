@@ -26,7 +26,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
 <translation id="8988939298652262600">Brave granskar inte tillägg gällande säkerhet och trygghet. Installera bara det här tillägget om du litar på utvecklaren.</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="9005883459983913482">Tor windows</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="6924909138923993900">Ny Tor-anslutning för denna webbplats</translation>
@@ -41,6 +40,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
 <translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
 <translation id="7473245612074035141">Påbörja installation</translation>
+<translation id="496896260395129787">Detta konto för Synkning i Brave togs bort från en annan enhet. Om du inte ville inaktivera Synkning kan du<ph name="LINK_TEXT"/></translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> återskapa kontot</translation>
+<translation id="6965382102122355670">Ok</translation>
 <translation id="3975865347033939965">Synkroniseringstjänsten kunde inte startas, Brave Sync körs inte</translation>
 <translation id="4450893287417543264">Visa inte igen.</translation>
 <translation id="4595286989346610620">Kontrollera detaljer</translation>
@@ -114,8 +116,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="9194637241566114638">Hjälp till att förbättra <ph name="SEARCH_NAME"/> genom att skicka anonyma användningsdata.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Mer info</translation>
-<translation id="6965382102122355670">Ok</translation>
 <translation id="780301667611848630">Nej tack</translation>
+<translation id="1162706247109707219">Genom att klicka på OK bekräftar du att din installation av Brave INTE kommer att få kritiska säkerhetskorrigeringar förrän du uppdaterar till Windows 10 eller senare. Denna varning kommer INTE att visas igen.</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
 <translation id="6040143037577758943">Stäng</translation>
@@ -123,8 +125,12 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
 <translation id="1516554614404600536">Brave-knappbeskrivning</translation>
-<translation id="7986278174934557414">Dölj sidopanelsikon</translation>
-<translation id="6915291874524466201">Dölj sidopanelsikon</translation>
+<translation id="4375473250631001683">Dölj sidofältsikon</translation>
+<translation id="2613033293035359003">Dölj sidofält</translation>
+<translation id="4233010476457917696">Visa sidofält</translation>
+<translation id="7829322605042304637">Dölj sidofältsikon</translation>
+<translation id="7349915168363514678">Dölj sidofält</translation>
+<translation id="5404213409401164238">Visa sidofält</translation>
 <translation id="9149866541089851383">Redigera...</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="7513769021866698486">Redigera objekt</translation>
@@ -133,7 +139,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5877900074358050101">Objekttitel i sidofält</translation>
 <translation id="1613695740874407223">Objekt-URL i sidofält</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
-<translation id="5404213409401164238">Visa sidofält</translation>
+<translation id="5977931179408079967">Placering</translation>
+<translation id="3790384768741064842">Flytta till höger</translation>
+<translation id="7444424316576061724">Flytta till vänster</translation>
 <translation id="7561196759112975576">Alltid</translation>
 <translation id="7060352228894039151">Vid musöverdragning</translation>
 <translation id="7961015016161918242">Aldrig</translation>
@@ -166,6 +174,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8731422418734770661">Ställ in Crypto Wallets</translation>
 <translation id="8199661191594897555">Starta Crypto Wallets och ladda om</translation>
 <translation id="8428213095426709021">Inställningar</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3-domäner</translation>
 <translation id="72868071984333667">Läs mer om IPFS och sekretess</translation>
 <translation id="4552520379838695057">Tyvärr, den sidan saknas.</translation>
 <translation id="2609895996619941644">Vill du kolla om det finns en sparad version tillgänglig på Wayback Machine?</translation>
@@ -177,10 +187,14 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3987546108749866209">Använd lodräta flikar</translation>
 <translation id="5860254591544742609">Visa namnlist</translation>
 <translation id="399928467800528208">Sväva vid muspekning</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Stäng av ljud från flik}other{Stäng av ljud från flikar}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Slå på ljud från flik}other{Slå på ljud från flikar}}</translation>
 <translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
 <translation id="2523967823495420116">Använd lodräta flikar</translation>
 <translation id="8888603463702767599">Visa namnlist</translation>
 <translation id="2058818256505091369">Sväva vid muspekning</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Stäng av ljud från flik}other{Stäng av ljud från flikar}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Slå på ljud från flik}other{Slå på ljud från flikar}}</translation>
 <translation id="4235920711083356755">Visa VPN-knapp</translation>
 <translation id="4070612712151038707">Visar VPN-knappen i verktygsfältet</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +247,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4096343215397759358">Kort med förhandsvisning</translation>
 <translation id="5297085818601043899">Verktygstips</translation>
 <translation id="2396127686705429331">Visa bokmärkesknapp</translation>
-<translation id="2369560305991805099">Visa sidpanelknapp</translation>
 <translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="4109670531935487117">Visa textförslag i adressfältet</translation>
 <translation id="2858138569776157458">Populärt</translation>
-<translation id="65774893852758517">Föreslagna webbplatser</translation>
 <translation id="7859704718976024901">Webbhistorik</translation>
 <translation id="8820817407110198400">Bokmärkesfältet</translation>
 <translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
@@ -248,6 +260,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Bläddra igenom de senast använda flikarna med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artiklar läses in automatiskt i läsarläget, vilket sparar tid</translation>
+<translation id="2422927186524098759">Sidofält</translation>
+<translation id="832432428796481785">Knappen Visa sidfält</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="1988804048511540801">Ny fliksida visas</translation>
 <translation id="2970343821770026391">Instrumentpanel</translation>
@@ -271,6 +285,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4800195524776354947">Visa antalet saker som blockeras på ikonen med en sköld</translation>
 <translation id="5510493033031835532">Automatiskt omdirigerade AMP-sidor</translation>
 <translation id="7630031867325944356">Föredra webbadresser till utgivarsidor istället för AMP och liknande versioner.</translation>
+<translation id="920638232916443453">Automatisk omdirigering av spårningsadresser</translation>
+<translation id="1118970888826017401">Aktivera stöd för att kringgå spårningsadresser för omdirigering på toppnivå.</translation>
 <translation id="7607166182943595829">Förhindra webbplatser från att ta mitt fingeravtryck baserat på mina språkinställningar</translation>
 <translation id="3497934980362703405">Aktivering av den här inställningen minskar hur mycket webbplatser kan lära sig om dina språkinställningar.</translation>
 <translation id="2133317862976486547">Blockning av spårare och annonser</translation>
@@ -287,8 +303,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
 <translation id="101592339984642584">Innehållsfiltrering</translation>
 <translation id="8694564340481124390">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.</translation>
-<translation id="4877657558909976793">Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och 
- <ph name="BEGIN_LINK"/>irritationsmoment<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">Lägg till anpassade filterlistor</translation>
 <translation id="1020877116991797978">Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.</translation>
 <translation id="7617831480435794399">Prenumerera bara på listor från entiteter som du litar på. Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger och avslöjar din IP-adress för deras server.</translation>
@@ -363,6 +377,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4332558599726753990">Synkinställning</translation>
 <translation id="2187778349654214731">För att börja måste du har Brave installerat på alla enheter du vill synka. Därefter sammankopplar du dem med en synkningskod.</translation>
 <translation id="7530575064080939974">Hantera synkade enheter</translation>
+<translation id="8668872235103666008">Det gick inte att synkronisera Brave på enheterna</translation>
 <translation id="7575156386943878014">Synkningshanterare</translation>
 <translation id="1755198127524719638">Synkroniseringsinställningar</translation>
 <translation id="7558480201297099157">Hantera vilken information du vill synka mellan enheter. Dessa inställningar påverkar endast denna enhet.</translation>
@@ -392,7 +407,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4485276108749547761">Behandla den här koden som ett lösenord. Om någon får tag i det kan de läsa och ändra dina synkroniserade data.</translation>
 <translation id="3034163433136515805">Visa QR-kod</translation>
 <translation id="5373825572723282843">Ange en Sync-kod</translation>
-<translation id="5734745018569675530">Skriv in de givna kodorden till synkkedjan i formuläret nedan.</translation>
+<translation id="1265244359514651398">Ange lösenfrasen för synkkedjan nedan.</translation>
 <translation id="1061533051865606843">Lägg till ny enhet</translation>
 <translation id="5093410893656857925">Välj enhetstyp</translation>
 <translation id="4581190919849683048">Vilken slags enhet vill du synka med?</translation>
@@ -400,6 +415,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3995714999835224798">Den här koden är ogiltig</translation>
 <translation id="4432071071853308688">Koden är tom</translation>
 <translation id="955848693465029904">Installationsfel för intern synkronisering</translation>
+<translation id="7456398316301207582">Internt fel vid borttagning av konto</translation>
 <translation id="859506441384380749">Den här koden genererades av en Brave-version som är för gammal, uppgradera enheten först</translation>
 <translation id="3132642509209154999">Den här koden har upphört att gälla. Generera en ny på din andra enhet och försök igen.</translation>
 <translation id="2859229680945501779">Den här koden är ogiltig. Kontrollera att tid och tidszon är korrekt inställda på din enhet.</translation>
@@ -412,6 +428,18 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 
 Är du säker på att du vill göra detta?</translation>
 <translation id="7443185843787879670">Brave kunde inte komma åt ditt operativsystems säkra lagring. Detta är vad som används för att säkra data som lösenord och cookies; det krävs också för att Brave Sync ska kunna ansluta din webbläsarprofil mellan enheter. Det betyder att Brave Sync inte körs. För att lösa det här problemet, se <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync-felsökningsguiden<ph name="END_LINK_SYNC_GUIDE"/>.</translation>
+<translation id="6802736947576520626">Det ser ut som att krypteringsnyckeln för synkronisering skiljer sig från den som användes när du först konfigurerade Brave Synkning. Den enklaste lösningen här är att återställa och återansluta synkroniseringskedjan med hjälp av lösenfrasen från en av dina andra synkroniserade enheter.</translation>
+<translation id="4889767840132638381">Återställ och gå med i synkroniseringskedjan igen</translation>
+<translation id="1680065323266179640">Ta bort synkroniseringskonto</translation>
+<translation id="9064376100690171155">Ta bort konto permanent</translation>
+<translation id="228906529296554286">Om du tar bort ditt konto kommer dina krypterade data att tas bort från Brave-servrar och synkronisering inaktiveras på alla dina anslutna enheter.</translation>
+<translation id="7578652532113583362">Data som lagras lokalt på dessa enheter kommer dock inte att tas bort.</translation>
+<translation id="2516405584294312544">Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att
+börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.</translation>
+<translation id="4860996720371753023">Kontot tas bort...</translation>
+<translation id="8199291899164865593">Det gick inte att gå med i den här synkroniseringskedjan. Kontot togs bort.</translation>
+<translation id="5633907266617216186">Adresser, betalningsinformation etc.</translation>
+<translation id="294985549514492876">Webbappar (PWA:er)</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="842628013524824194">Normalt fönster – sökmotorn som används i adressfältet</translation>
@@ -465,7 +493,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
-<translation id="1241283133946520352">Nätverk</translation>
+<translation id="856371974127598760">Plånboksnätverk</translation>
 <translation id="5975930666279943472">Rensa plånbokstransaktion och nonce-information</translation>
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
@@ -503,6 +531,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2234108191702901162">Kunde inte lägga till nätverk</translation>
 <translation id="8996633027318264334">Vill du verkligen radera <ph name="KEY_NAME"/>?</translation>
+<translation id="3316326558572563182">Det aktiva nätverker är alltid synligt i plånbokens nätverkslista</translation>
+<translation id="232693303726691609">Visa/dölj nätverk i plånbokens nätverkslista</translation>
 <translation id="7893578599666249602">Vill du verkligen återställa <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
@@ -556,6 +586,7 @@ Obs: Om lokal nod är vald kommer resurs att begäras direkt från din dator och
 <translation id="2775956301559569472">Visa  Wayback Machine-prompt på 404-sidor</translation>
 <translation id="3095201688102519917">Varna mig innan fönster med flera flikar stängs</translation>
 <translation id="7120553802660696133">Stäng fönstret när du stänger den sista fliken</translation>
+<translation id="7984721311211272523">Inaktivera funktionen Ljud av för högtalarikoner på flikar</translation>
 <translation id="6624718837376802990">Avataren Vassa belöningar</translation>
 <translation id="6617313057407561765">Avataren Vasst modig</translation>
 <translation id="6754445808455578019">Avataren Vass ocean</translation>

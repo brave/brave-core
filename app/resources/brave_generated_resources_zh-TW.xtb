@@ -26,7 +26,6 @@
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="9005883459983913482">Tor 視窗</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="6924909138923993900">此網站的新 Tor 連線</translation>
@@ -41,6 +40,9 @@
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
 <translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
 <translation id="7473245612074035141">開始設定</translation>
+<translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/>。</translation>
+<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
+<translation id="6965382102122355670">確定</translation>
 <translation id="3975865347033939965">同步服務無法啟動，Brave 同步未執行</translation>
 <translation id="4450893287417543264">不要再顯示</translation>
 <translation id="4595286989346610620">查看詳情</translation>
@@ -114,8 +116,8 @@
 <translation id="9194637241566114638">匿名傳送使用情況的相關資料，協助改善 <ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 搜尋</translation>
 <translation id="8184318863960255706">更多資訊</translation>
-<translation id="6965382102122355670">確定</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
+<translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="6040143037577758943">關閉</translation>
@@ -123,8 +125,12 @@
 <translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
-<translation id="7986278174934557414">隱藏側邊面板圖示</translation>
-<translation id="6915291874524466201">隱藏側邊面板圖示</translation>
+<translation id="4375473250631001683">隱藏側邊欄圖示</translation>
+<translation id="2613033293035359003">隱藏側邊欄</translation>
+<translation id="4233010476457917696">顯示側邊欄</translation>
+<translation id="7829322605042304637">隱藏側邊欄圖示</translation>
+<translation id="7349915168363514678">隱藏側邊欄</translation>
+<translation id="5404213409401164238">顯示側邊欄</translation>
 <translation id="9149866541089851383">編輯...</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="7513769021866698486">編輯項目</translation>
@@ -133,7 +139,9 @@
 <translation id="5877900074358050101">側邊欄項目標題</translation>
 <translation id="1613695740874407223">側邊欄項目 URL</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
-<translation id="5404213409401164238">顯示側邊欄</translation>
+<translation id="5977931179408079967">位置</translation>
+<translation id="3790384768741064842">移至右側</translation>
+<translation id="7444424316576061724">移至左側</translation>
 <translation id="7561196759112975576">總是</translation>
 <translation id="7060352228894039151">滑鼠游標懸停其上時</translation>
 <translation id="7961015016161918242">一律不要</translation>
@@ -166,6 +174,8 @@
 <translation id="8731422418734770661">設定加密錢包</translation>
 <translation id="8199661191594897555">啟動加密錢包並重新載入</translation>
 <translation id="8428213095426709021">設定</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="4738583579791001083">Web3 網域</translation>
 <translation id="72868071984333667">深入了解 IPFS 和隱私權</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
@@ -177,10 +187,14 @@
 <translation id="3987546108749866209">使用垂直分頁</translation>
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="399928467800528208">滑鼠游標停在上方時浮動</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{開啟分頁音訊}other{開啟多個分頁的音訊}}</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="2523967823495420116">使用垂直分頁</translation>
 <translation id="8888603463702767599">顯示標題列</translation>
 <translation id="2058818256505091369">滑鼠游標停在上方時浮動</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{開啟分頁音訊}other{開啟多個分頁的音訊}}</translation>
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -233,11 +247,9 @@
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
-<translation id="2369560305991805099">顯示側邊面板按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
 <translation id="2858138569776157458">熱門網站</translation>
-<translation id="65774893852758517">建議的網站</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
@@ -248,6 +260,8 @@
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
+<translation id="2422927186524098759">側邊欄</translation>
+<translation id="832432428796481785">顯示側邊欄按鈕</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
@@ -271,6 +285,8 @@
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
 <translation id="7630031867325944356">首選發佈商頁面 URL，而不是 AMP 和類似版本。</translation>
+<translation id="920638232916443453">自動重新導向追蹤 URL</translation>
+<translation id="1118970888826017401">啟用對繞過頂層重新導向追蹤 URL 的支援。</translation>
 <translation id="7607166182943595829">根據我的語言偏好設定，防止網站識別我的指紋</translation>
 <translation id="3497934980362703405">啟用此設定會降低網站瞭解您語言偏好設定的程度。</translation>
 <translation id="2133317862976486547">追蹤器與廣告封鎖</translation>
@@ -287,8 +303,6 @@
 <translation id="2360360976480535628">進階瀏覽</translation>
 <translation id="101592339984642584">內容過濾</translation>
 <translation id="8694564340481124390">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容。</translation>
-<translation id="4877657558909976793">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及
-    <ph name="BEGIN_LINK"/>惱人的內容<ph name="END_LINK"/>.</translation>
 <translation id="3482656215021340727">新增自訂過濾器清單</translation>
 <translation id="1020877116991797978">新增由您信任的社群所建立及維護的額外清單。</translation>
 <translation id="7617831480435794399">僅訂閱來自您信任實體的清單。您的瀏覽器會定期從您輸入的 URL 中檢查清單更新，並將您的 IP 位址向其伺服器顯示。</translation>
@@ -363,6 +377,7 @@
 <translation id="4332558599726753990">同步設定</translation>
 <translation id="2187778349654214731">要開始，您必須在您所有要同步的裝置上安裝 Brave。然後，將它們使用同步代碼相互連結。</translation>
 <translation id="7530575064080939974">管理您的同步裝置</translation>
+<translation id="8668872235103666008">無法在裝置上同步 Brave</translation>
 <translation id="7575156386943878014">同步管理程式</translation>
 <translation id="1755198127524719638">同步設定</translation>
 <translation id="7558480201297099157">管理您想要在裝置間同步的資訊。這些設定只會影響這個裝置。</translation>
@@ -392,7 +407,7 @@
 <translation id="4485276108749547761">將此代碼視為密碼。如果有人取得它，他們可以讀取和修改您的同步資料。</translation>
 <translation id="3034163433136515805">檢視 QR 碼</translation>
 <translation id="5373825572723282843">輸入同步代碼</translation>
-<translation id="5734745018569675530">在下方表格鍵入提供的同步鏈碼字。</translation>
+<translation id="1265244359514651398">在下方輸入您的同步鏈通關密語。</translation>
 <translation id="1061533051865606843">增加新裝置</translation>
 <translation id="5093410893656857925">選擇裝置類型</translation>
 <translation id="4581190919849683048">您想要同步的是哪種類型的裝置？</translation>
@@ -400,6 +415,7 @@
 <translation id="3995714999835224798">此代碼無效</translation>
 <translation id="4432071071853308688">此代碼為空</translation>
 <translation id="955848693465029904">內部同步設定錯誤</translation>
+<translation id="7456398316301207582">內部帳戶刪除錯誤</translation>
 <translation id="859506441384380749">此代碼由已淘汰的 Brave 版本產生，請先升級您的其他裝置</translation>
 <translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
 <translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
@@ -412,6 +428,19 @@
 
 確定要這麼做嗎？</translation>
 <translation id="7443185843787879670">Brave 無法存取您作業系統的安全儲存。安全儲存用於保護密碼和 Cookie 等資料；Brave 同步也需要安全儲存，才能在裝置之間連結您的瀏覽器設定檔。因此這表示 Brave 同步目前並未運作。若要解決此問題，請參閱 <ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave 同步疑難排解指南<ph name="END_LINK_SYNC_GUIDE"/>。</translation>
+<translation id="6802736947576520626">同步加密金鑰似乎與您第一次設定 Brave Sync 時使用的金鑰不同。最簡單的解決方法是使用其他同步裝置的通關密語重設，並重新加入同步鏈。</translation>
+<translation id="4889767840132638381">重設並重新加入同步鏈</translation>
+<translation id="1680065323266179640">刪除同步帳戶</translation>
+<translation id="9064376100690171155">永久刪除帳戶</translation>
+<translation id="228906529296554286">刪除帳戶會從 Brave 伺服器移除加密資料，且所有連結的裝置都會停用 Sync。</translation>
+<translation id="7578652532113583362">不過，儲存在這些本機裝置的資料不會刪除。</translation>
+<translation id="2516405584294312544">刪除帳戶是永久性操作，無法復原。如果您決定
+
+再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。</translation>
+<translation id="4860996720371753023">正在刪除帳戶…</translation>
+<translation id="8199291899164865593">無法加入此同步鏈。帳戶已刪除。</translation>
+<translation id="5633907266617216186">地址、付款資訊等</translation>
+<translation id="294985549514492876">Web 應用程式 (PWA)</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
@@ -465,7 +494,7 @@
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
-<translation id="1241283133946520352">網路</translation>
+<translation id="856371974127598760">錢包網路</translation>
 <translation id="5975930666279943472">清除錢包交易和 nonce 資訊</translation>
 <translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
 <translation id="4993345308607970390">重設 Brave 錢包</translation>
@@ -503,6 +532,8 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="8996633027318264334">確定要刪除 <ph name="KEY_NAME"/> 嗎？</translation>
+<translation id="3316326558572563182">使用中的網路會一律顯示在錢包網路清單</translation>
+<translation id="232693303726691609">在錢包網路清單中顯示/隱藏網路</translation>
 <translation id="7893578599666249602">您是否真的想要重設 <ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
 <translation id="9170907049676078643">解析 IPFS 資源的方法</translation>
@@ -556,6 +587,7 @@
 <translation id="2775956301559569472">在 404 頁面上顯示 Wayback Machine 提示</translation>
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
+<translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
 <translation id="6624718837376802990">俐落獎勵化身</translation>
 <translation id="6617313057407561765">俐落 Brave 化身</translation>
 <translation id="6754445808455578019">俐落海洋化身</translation>

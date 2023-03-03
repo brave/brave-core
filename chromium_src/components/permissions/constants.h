@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_CONSTANTS_H_
 
 #define kChooserBluetoothOverviewURL kChooserBluetoothOverviewURL_ChromeOverride
-#include "src/components/permissions/constants.h"
+#include "src/components/permissions/constants.h"  // IWYU pragma: export
 #undef kChooserBluetoothOverviewURL
 
 namespace permissions {

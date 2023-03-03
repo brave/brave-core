@@ -13,7 +13,7 @@
                             const String& feature);         \
   bool IsPluginDocument
 
-#include "src/third_party/blink/public/web/web_document.h"
+#include "src/third_party/blink/public/web/web_document.h"  // IWYU pragma: export
 
 #undef IsPluginDocument
 

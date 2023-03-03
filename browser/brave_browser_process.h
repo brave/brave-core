@@ -55,6 +55,10 @@ namespace debounce {
 class DebounceComponentInstaller;
 }  // namespace debounce
 
+namespace https_upgrade_exceptions {
+class HttpsUpgradeExceptionsService;
+}  // namespace https_upgrade_exceptions
+
 namespace misc_metrics {
 class MenuMetrics;
 }  // namespace misc_metrics
@@ -66,7 +70,7 @@ class NTPBackgroundImagesService;
 namespace tor {
 class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
-}
+}  // namespace tor
 
 namespace ipfs {
 class BraveIpfsClientUpdater;
@@ -86,6 +90,8 @@ class BraveBrowserProcess {
   virtual ~BraveBrowserProcess();
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
+  virtual https_upgrade_exceptions::HttpsUpgradeExceptionsService*
+  https_upgrade_exceptions_service() = 0;
 #if BUILDFLAG(ENABLE_GREASELION)
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;

@@ -33,9 +33,10 @@ import {
   NetworkIconWrapper,
   Button,
   IconsWrapper,
-  ButtonWrapper
+  ButtonWrapper,
+  IconAndName
 } from './token-list-item.style'
-import { Row, Column, Text } from '../../shared.styles'
+import { Column, Text } from '../../shared.styles'
 
 interface Props {
   onClick: () => void
@@ -68,8 +69,21 @@ export const TokenListItem = (props: Props) => {
   }, [token, networks])
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: balance })
-  }, [spotPrices, balance, token.symbol, token.decimals])
+    return computeFiatAmount(spotPrices, {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      value: balance,
+      contractAddress: token.contractAddress,
+      chainId: token.chainId
+    })
+  }, [
+    spotPrices,
+    balance,
+    token.symbol,
+    token.decimals,
+    token.contractAddress,
+    token.chainId
+  ])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
@@ -95,7 +109,7 @@ export const TokenListItem = (props: Props) => {
   return (
     <ButtonWrapper>
       <Button onClick={onClick}>
-        <Row>
+        <IconAndName horizontalAlign='flex-start'>
           <IconsWrapper>
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
             {tokensNetwork && token?.contractAddress !== '' && (
@@ -105,14 +119,14 @@ export const TokenListItem = (props: Props) => {
             )}
           </IconsWrapper>
           <Column horizontalAlign='flex-start'>
-            <Text textColor='text01' textSize='14px' isBold={true}>
+            <Text textColor='text01' textSize='14px' isBold={true} textAlign='left'>
               {tokenDisplayName}
             </Text>
-            <Text textColor='text03' textSize='12px' isBold={false}>
+            <Text textColor='text03' textSize='12px' isBold={false} textAlign='left'>
               {networkDescription}
             </Text>
           </Column>
-        </Row>
+        </IconAndName>
         {!token.isErc721 && !token.isNft &&
           <Column horizontalAlign='flex-end'>
             <Text textColor='text01' textSize='14px' isBold={true}>

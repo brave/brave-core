@@ -68,7 +68,8 @@ void TextEmbedding::Process(const std::string& html) {
   }
 
   LogTextEmbeddingHtmlEvent(
-      BuildTextEmbeddingHtmlEvent(text_embedding), [](const bool success) {
+      BuildTextEmbeddingHtmlEvent(text_embedding),
+      base::BindOnce([](const bool success) {
         if (!success) {
           BLOG(1, "Failed to log text embedding HTML event");
           return;
@@ -76,15 +77,16 @@ void TextEmbedding::Process(const std::string& html) {
 
         BLOG(3, "Successfully logged text embedding HTML event");
 
-        PurgeStaleTextEmbeddingHtmlEvents([](const bool success) {
-          if (!success) {
-            BLOG(1, "Failed to purge stale text embedding HTML events");
-            return;
-          }
+        PurgeStaleTextEmbeddingHtmlEvents(
+            base::BindOnce([](const bool success) {
+              if (!success) {
+                BLOG(1, "Failed to purge stale text embedding HTML events");
+                return;
+              }
 
-          BLOG(3, "Successfully purged stale text embedding HTML events");
-        });
-      });
+              BLOG(3, "Successfully purged stale text embedding HTML events");
+            }));
+      }));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -94,7 +96,7 @@ void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
 }
 
 void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
-  if (kLanguageComponentIds.find(id) != kLanguageComponentIds.end()) {
+  if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
 }

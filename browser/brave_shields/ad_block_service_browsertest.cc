@@ -2446,14 +2446,7 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
     EXPECT_EQ(true, *lists[0].GetDict().FindBool("enabled"));
   }
 
-  // Enable the filter list, and then disable it again.
-  {
-    CookieListPrefObserver pref_observer(g_browser_process->local_state());
-    g_brave_browser_process->ad_block_service()
-        ->regional_service_manager()
-        ->EnableFilterList(brave_shields::kCookieListUuid, true);
-    pref_observer.Wait();
-  }
+  // Disable the filter list.
   {
     CookieListPrefObserver pref_observer(g_browser_process->local_state());
     g_brave_browser_process->ad_block_service()

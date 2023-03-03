@@ -8,19 +8,21 @@ import os
 import re
 from typing import Tuple, Optional
 
-from components.browser_type import BrowserType
+from components.browser_type import BrowserType, BraveVersion
 
 
-def ParseTarget(target: str) -> Tuple[Optional[str], str]:
+def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   m = re.match(r'^(v\d+\.\d+\.\d+)(?::(.+)|$)', target)
   if not m:
     return None, target
-  logging.debug('Parsed tag: %s, location : %s', m.group(1), m.group(2))
-  return m.group(1), m.group(2)
+  tag = BraveVersion(m.group(1))
+  location = m.group(2)
+  logging.debug('Parsed tag: %s, location : %s', tag, location)
+  return tag, location
 
 
-def PrepareBinary(out_dir: str, tag: Optional[str], location: Optional[str],
-                  browser_type: BrowserType) -> str:
+def PrepareBinary(out_dir: str, tag: Optional[BraveVersion],
+                  location: Optional[str], browser_type: BrowserType) -> str:
   if location:  # local binary
     if os.path.exists(location):
       return location

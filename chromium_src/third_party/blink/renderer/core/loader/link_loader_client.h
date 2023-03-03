@@ -14,7 +14,7 @@ class HTMLLinkElement;
   IsLinkCreatedByParser() = 0; \
   virtual HTMLLinkElement* GetOwner
 
-#include "src/third_party/blink/renderer/core/loader/link_loader_client.h"
+#include "src/third_party/blink/renderer/core/loader/link_loader_client.h"  // IWYU pragma: export
 
 #undef IsLinkCreatedByParser
 

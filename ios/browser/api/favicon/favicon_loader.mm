@@ -75,11 +75,12 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
                    sizeInPoints:(FaviconLoaderSize)sizeInPoints
                 minSizeInPoints:(FaviconLoaderSize)minSizeInPoints
                      completion:
-                         (void (^)(FaviconAttributes* attributes))completion {
+                         (void (^)(FaviconLoader* loader,
+                                   FaviconAttributes* attributes))completion {
   favicon_loader_->FaviconForPageUrlOrHost(net::GURLWithNSURL(url),
                                            sizeInPoints, minSizeInPoints,
                                            ^(FaviconAttributes* attributes) {
-                                             completion(attributes);
+                                             completion(self, attributes);
                                            });
 }
 @end

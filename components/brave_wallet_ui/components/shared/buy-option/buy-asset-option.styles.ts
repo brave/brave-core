@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import { WalletButton } from '../style'
 
-export const BuyAssetOptionWrapper = styled(WalletButton)<{ isSelected?: boolean}>`
+export const BuyAssetOptionWrapper = styled(WalletButton)<{ isSelected?: boolean }>`
   width: 100%;
   height: 76px;
   box-sizing: border-box;

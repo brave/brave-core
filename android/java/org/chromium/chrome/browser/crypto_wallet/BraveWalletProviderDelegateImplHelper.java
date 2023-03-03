@@ -5,7 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
+import android.content.ActivityNotFoundException;
+
 import org.chromium.base.Callback;
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
@@ -16,27 +19,35 @@ import org.chromium.mojo.bindings.Callbacks;
 
 @JNINamespace("brave_wallet")
 public class BraveWalletProviderDelegateImplHelper {
+    private static final String TAG = "BraveWalletProvider";
+
     @CalledByNative
     public static void showPanel() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletPanel(false);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showPanel " + e);
         }
     }
 
     @CalledByNative
     public static void showWalletOnboarding() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletOnboarding();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showWalletOnboarding " + e);
         }
     }
 
     @CalledByNative
     public static void walletInteractionDetected(WebContents webContents) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.walletInteractionDetected(webContents);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "walletInteractionDetected " + e);
         }
     }
 
@@ -47,9 +58,11 @@ public class BraveWalletProviderDelegateImplHelper {
 
     @CalledByNative
     public static void ShowAccountCreation(String keyringId) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showAccountCreation(keyringId);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "ShowAccountCreation " + e);
         }
     }
 

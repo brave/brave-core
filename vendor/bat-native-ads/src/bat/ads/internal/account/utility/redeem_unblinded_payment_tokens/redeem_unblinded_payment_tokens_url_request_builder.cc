@@ -91,10 +91,10 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
         WalletInfo wallet,
         privacy::UnblindedPaymentTokenList unblinded_payment_tokens,
-        const base::Value::Dict& user_data)
+        base::Value::Dict user_data)
     : wallet_(std::move(wallet)),
       unblinded_payment_tokens_(std::move(unblinded_payment_tokens)),
-      user_data_(user_data.Clone()) {
+      user_data_(std::move(user_data)) {
   DCHECK(wallet_.IsValid());
   DCHECK(!unblinded_payment_tokens_.empty());
 }
@@ -122,13 +122,14 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 GURL RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::StringPrintf(
       "%s/v3/confirmation/payment/%s", server::GetNonAnonymousHost().c_str(),
-      wallet_.id.c_str());
+      wallet_.payment_id.c_str());
   return GURL(spec);
 }
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
-    const std::string& payload) const {
+    const std::string& payload) {
   DCHECK(!payload.empty());
+  DCHECK(!user_data_.empty());
 
   base::Value::Dict dict;
 
@@ -136,7 +137,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
   dict.Set("paymentCredentials", std::move(payment_request_dto));
   dict.Set("payload", payload);
 
-  dict.Merge(user_data_.Clone());
+  dict.Merge(std::move(user_data_));
 
   std::string json;
   CHECK(base::JSONWriter::Write(dict, &json));
@@ -146,7 +147,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
     const {
   base::Value::Dict payload;
-  payload.Set("paymentId", wallet_.id);
+  payload.Set("paymentId", wallet_.payment_id);
 
   std::string json;
   CHECK(base::JSONWriter::Write(payload, &json));

@@ -27,7 +27,7 @@ describe('settings component tests', () => {
     toggleShowRewards: () => undefined,
     toggleBrandedWallpaperOptIn: () => undefined,
     brandedWallpaperOptIn: false,
-    allowSponsoredWallpaperUI: false,
+    allowBackgroundCustomization: false,
     showRewards: false
   }
 
@@ -48,7 +48,7 @@ describe('settings component tests', () => {
         toggleShowRewards={mockProps.toggleShowRewards}
         toggleBrandedWallpaperOptIn={mockProps.toggleBrandedWallpaperOptIn}
         brandedWallpaperOptIn={mockProps.brandedWallpaperOptIn}
-        allowSponsoredWallpaperUI={mockProps.allowSponsoredWallpaperUI}
+        allowBackgroundCustomization={mockProps.allowBackgroundCustomization}
         showRewards={mockProps.showRewards}
       />)
     expect(wrapper.find(SettingsMenu)).toHaveLength(0)
@@ -71,7 +71,7 @@ describe('settings component tests', () => {
         toggleShowRewards={mockProps.toggleShowRewards}
         toggleBrandedWallpaperOptIn={mockProps.toggleBrandedWallpaperOptIn}
         brandedWallpaperOptIn={mockProps.brandedWallpaperOptIn}
-        allowSponsoredWallpaperUI={mockProps.allowSponsoredWallpaperUI}
+        allowBackgroundCustomization={mockProps.allowBackgroundCustomization}
         showRewards={mockProps.showRewards}
       />)
     expect(wrapper.find(SettingsMenu)).toHaveLength(1)

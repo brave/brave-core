@@ -89,9 +89,6 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
-  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
     Show Brave News button in address bar
   </message>
@@ -102,13 +99,13 @@
     Always
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS_DESC" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Bookmark bar is visible on all pages
+    Bookmarks bar is visible on all pages
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
     Only on the new tab page
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP description">
-    Bookmark bar is hidden on all pages except the new tab page
+    Bookmarks bar is hidden on all pages except the new tab page
   </message>
   <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the visibility of bookmarks bar">
     Never
@@ -205,7 +202,7 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN" desc="Label for shields status down site settings.">
     Shields Down
-  </message>  
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_TITLE" desc="The title for Brave shields section in settings">
     Shields
   </message>
@@ -269,6 +266,18 @@
   <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
     Strict, may break sites
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL" desc="Default Brave https upgrade control setting label">
+    Upgrade connections to HTTPS
+  </message>
+  <message name="IDS_SETTINGS_STANDARD_HTTPS_UPGRADE" desc="Select value">
+    Standard
+  </message>
+  <message name="IDS_SETTINGS_DISABLED_HTTPS_UPGRADE" desc="Select value">
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_STRICT_HTTPS_UPGRADE" desc="Select value">
+    Strict
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
     Block cookies
   </message>
@@ -298,10 +307,6 @@
   <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION" desc="Long description describing what Content Filtering does">
     Enable custom filters that block regional and language-specific trackers and Annoyances.
   </message>
-  <message name="IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC" desc="Long description describing what Content Filtering does">
-    Enable custom filters that block regional and language-specific trackers and
-    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Annoyances<ph name="END_LINK">&lt;/a&gt;</ph>.
-  </message>
   <message name="IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL" desc="Label for custom filters lists section">
     Add custom filter lists
   </message>
@@ -320,8 +325,8 @@
   <message name="IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL" desc="Label for button that adds filter lists URL">
     Add
   </message>
-  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER" desc="List URL header label for custom filters table">
-    List URL
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_TITLE_HEADER" desc="List URL header label for custom filters table">
+    List title
   </message>
   <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER" desc="Last updated header label for custom filters table">
     Last updated
@@ -424,8 +429,11 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
     By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE" desc="The text label for the Rewards Tip Buttons section">
-    Tip buttons
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
+    Show Brave Rewards icon in address bar
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons">
+    Show Tip buttons on sites
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Reddit">
     Reddit
@@ -548,13 +556,16 @@
     Google Sign-In
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
-    Ask when a site wants to use legacy Google Sign-In
+    Sites can ask to use legacy Google Sign-In via third-party cookies
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
-    Block sites from using legacy Google Sign-In
+    Don't allow legacy Google Sign-In via third-party cookies
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
-    Allow sites to use legacy Google Sign-In
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Not allowed to use third-party cookies for legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Allowed to use third-party cookies for legacy Google Sign-In
   </message>
 
   <!-- Settings / Privacy and security / Safety Check -->
@@ -755,7 +766,7 @@
     Account deletion is in progress...
   </message>
   <message name="IDS_BRAVE_SYNC_JOINING_DELETED_ACCOUNT" desc="The error text for the case when trying to connect to the permanently deleted chain">
-    Could not join this sync chain. Account was deleted.
+    Could not join this sync chain. The sync chain was deleted.
   </message>
   <message name="IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing autofill settings between multiple browser instances.">
     Addresses, payment info, etc.
@@ -835,7 +846,7 @@
   </message>
   <message name="IDS_SETTINGS_TOR_SNOWFLAKE_INSTALL_FAILED" desc="">
     The Snowflake extension necessary for this functionality could not be downloaded. Please check your Internet connection and try again.
-  </message>  
+  </message>
   <message name="IDS_SETTINGS_TOR_SELECT_BUILT_IN_RADIO" desc="">
     Select a built-in bridge
   </message>
@@ -942,6 +953,13 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING" desc="Enable NFT pinning">
+    Automatically pin NFTs
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
+    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
+    Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset Brave Wallet

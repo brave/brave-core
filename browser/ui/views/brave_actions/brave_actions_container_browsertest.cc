@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -66,22 +66,22 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
-  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowButton));
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
   CheckBraveRewardsActionShown(true);
 
   // Set to hide.
-  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, false);
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
   CheckBraveRewardsActionShown(false);
 
   // Set to show.
-  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, true);
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, true);
   CheckBraveRewardsActionShown(true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
   // By default the action should be shown.
-  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowButton));
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
   CheckBraveRewardsActionShown(true);
 
   // Open a Guest window.
@@ -109,7 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
-  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, false);
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
   CheckBraveRewardsActionShown(false);
 
   // Send a request to open the Rewards panel.

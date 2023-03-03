@@ -37,6 +37,7 @@
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_paths.h"
@@ -67,7 +68,6 @@
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
-#include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -107,8 +107,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
+@property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
-@property(nonatomic) IpfsAPI* ipfsAPI;
+@property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @end
 
 @implementation BraveCoreMain
@@ -242,6 +243,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncProfileService = nil;
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
+  _webImageDownloader = nil;
 
   _otr_browserList =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
@@ -426,6 +428,14 @@ static bool CustomLogHandler(int severity,
   return _tabGeneratorAPI;
 }
 
+- (WebImageDownloader*)webImageDownloader {
+  if (!_webImageDownloader) {
+    _webImageDownloader = [[WebImageDownloader alloc]
+        initWithBrowserState:_otr_browser->GetBrowserState()];
+  }
+  return _webImageDownloader;
+}
+
 - (BraveWalletAPI*)braveWalletAPI {
   if (!_braveWalletAPI) {
     _braveWalletAPI =
@@ -438,9 +448,9 @@ static bool CustomLogHandler(int severity,
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
 
-- (IpfsAPI*)ipfsAPI {
+- (id<IpfsAPI>)ipfsAPI {
   if (!_ipfsAPI) {
-    _ipfsAPI = [[IpfsAPI alloc] initWithBrowserState:_mainBrowserState];
+    _ipfsAPI = [[IpfsAPIImpl alloc] initWithBrowserState:_mainBrowserState];
   }
   return _ipfsAPI;
 }

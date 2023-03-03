@@ -13,14 +13,15 @@
 #include <set>
 #include <string>
 
-#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/timer/timer.h"
 #include "bat/ledger/internal/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "bat/ledger/internal/endpoint/uphold/get_me/get_me.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/internal/wallet_provider/connect_external_wallet.h"
 #include "bat/ledger/internal/wallet_provider/get_external_wallet.h"
+#include "bat/ledger/internal/wallet_provider/transfer.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -32,13 +33,6 @@ class UpholdServer;
 
 namespace uphold {
 
-struct Transaction {
-  std::string address;
-  double amount;
-  std::string message;
-};
-
-class UpholdTransfer;
 class UpholdCard;
 
 using FetchBalanceCallback = base::OnceCallback<void(mojom::Result, double)>;
@@ -64,7 +58,8 @@ class Uphold {
 
   void TransferFunds(double amount,
                      const std::string& address,
-                     client::TransactionCallback);
+                     const std::string& contribution_id,
+                     client::LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ledger::ConnectExternalWalletCallback);
@@ -91,12 +86,11 @@ class Uphold {
   [[nodiscard]] bool LogOutWallet(const std::string& notification = "");
 
  private:
-  void ContributionCompleted(mojom::Result result,
-                             const std::string& transaction_id,
+  void ContributionCompleted(ledger::LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
-                             ledger::LegacyResultCallback callback);
+                             mojom::Result);
 
   void OnFetchBalance(FetchBalanceCallback, mojom::Result, double available);
 
@@ -104,23 +98,22 @@ class Uphold {
 
   void StartTransferFeeTimer(const std::string& fee_id, int attempts);
 
-  void OnTransferFeeCompleted(const mojom::Result result,
-                              const std::string& transaction_id,
-                              const std::string& contribution_id,
-                              int attempts);
+  void OnTransferFeeCompleted(const std::string& contribution_id,
+                              int attempts,
+                              mojom::Result);
 
   void TransferFee(const std::string& contribution_id,
-                   const double amount,
+                   double amount,
                    int attempts);
 
   void OnTransferFeeTimerElapsed(const std::string& id, int attempts);
 
   void RemoveTransferFee(const std::string& contribution_id);
 
-  std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;
   std::unique_ptr<wallet_provider::ConnectExternalWallet> connect_wallet_;
   std::unique_ptr<wallet_provider::GetExternalWallet> get_wallet_;
+  std::unique_ptr<wallet_provider::Transfer> transfer_;
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;

@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 
 import { NetworkInfo, Swap as SwapInterface } from '@brave/swap-interface'
 import '@brave/swap-interface/dist/style.css'
@@ -21,9 +20,10 @@ import {
 
 // Hooks
 import { useLib } from '../../../common/hooks'
+import { useLazyGetTokenBalancesForChainIdQuery } from '../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet, WalletAccountType, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
 // Components
 import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
@@ -45,11 +45,15 @@ import {
 } from './adapters'
 import { hasEIP1559Support } from '../../../utils/network-utils'
 
-export const Swap = () => {
+export interface Props {
+  hideNav?: boolean
+}
+
+export const Swap = (props: Props) => {
+  const { hideNav } = props
+
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
-  const selectedAccount = useUnsafeWalletSelector(
-    WalletSelectors.selectedAccount
-  )
+  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const accounts: WalletAccountType[] = useUnsafeWalletSelector(WalletSelectors.accounts)
   const networks: BraveWallet.NetworkInfo[] = useUnsafeWalletSelector(WalletSelectors.networkList)
   const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
@@ -64,7 +68,7 @@ export const Swap = () => {
 
   const tokensList = React.useMemo(() => {
     return [
-      ...userVisibleTokensInfo.filter(asset => asset.isErc20),
+      ...userVisibleTokensInfo.filter(asset => asset.contractAddress !== ''),
       ...fullTokenList.filter(
         asset =>
           !userVisibleTokensInfo.some(
@@ -85,10 +89,23 @@ export const Swap = () => {
     sendEthTransaction
   } = useLib()
 
+  const [getTokenBalancesForChainId] = useLazyGetTokenBalancesForChainIdQuery()
+  const getTokenBalancesForChainIdWrapped = React.useCallback(
+    async (contracts: string[], address: string, coin: BraveWallet.CoinType, chainId: string) => {
+      return await getTokenBalancesForChainId({
+        contracts,
+        address,
+        coin,
+        chainId
+      }).unwrap()
+    },
+    [getTokenBalancesForChainId]
+  )
+
   const swapServiceMojo = getSwapService()
 
   React.useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const results = await Promise.all(
         networks.map(async e => (await swapServiceMojo.isSwapSupported(e.chainId)).result)
       )
@@ -124,14 +141,9 @@ export const Swap = () => {
     }
   }, [])
 
-  let history = useHistory()
-  const goBack = React.useCallback(() => {
-    history.push(WalletRoutes.Portfolio)
-  }, [history])
-
   return (
     <div>
-      <BuySendSwapDepositNav isTab={true} isSwap={true} />
+      {!hideNav && <BuySendSwapDepositNav isTab={true} isSwap={true} />}
       {selectedNetwork && selectedAccount && (
         <SwapInterface
           getLocale={getLocale}
@@ -142,6 +154,7 @@ export const Swap = () => {
           switchNetwork={makeSwitchNetwork()}
           getBalance={getBalanceForChainId}
           getTokenBalance={getTokenBalanceForChainId}
+          getTokenBalances={getTokenBalancesForChainIdWrapped}
           // // FIXME - remove isSwapSupported()
           swapService={makeSwapService()}
           // // FIXME - implement mojo method to query available 0x exchanges
@@ -156,7 +169,6 @@ export const Swap = () => {
           getTokenPrice={makeGetTokenPrice(defaultFiatCurrency)}
           supportedNetworks={supportedNetworks}
           defaultBaseCurrency={defaultFiatCurrency}
-          routeBackToWallet={goBack}
           isWalletConnected={true}
           isReady={!!selectedNetwork}
         />

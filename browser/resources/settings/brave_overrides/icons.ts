@@ -5,17 +5,18 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {OverrideIronIcons} from 'chrome://resources/polymer_overriding.js'
-
 import '../icons.html.js'
 import '../brave_icons.html.js'
+
+import {OverrideIronIcons} from 'chrome://resources/brave/polymer_overriding.js'
 
 OverrideIronIcons('settings', 'brave_settings', {
   palette: 'appearance',
   assignment: 'autofill',
   language: 'language',
   build: 'system',
-  restore: 'reset-settings'
+  restore: 'reset-settings',
+  performance: 'performance'
 })
 OverrideIronIcons('cr', 'brave_settings', {
   security: 'privacy-security',

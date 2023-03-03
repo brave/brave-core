@@ -11,6 +11,9 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -18,7 +21,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -97,6 +100,26 @@ void BraveTabStrip::MaybeStartDrag(
     for (size_t index : original_selection.selected_indices()) {
       if (controller_->IsTabPinned(index) != source_is_pinned)
         return;
+    }
+  }
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    // When source tab is bound for dummy web contents for a shared pinned tab,
+    // we shouldn't kick off drag-and-drop session as the web contents will be
+    // replaced soon.
+    if (source->GetTabSlotViewType() == TabSlotView::ViewType::kTab &&
+        static_cast<Tab*>(source)->data().pinned) {
+      auto index = GetModelIndexOf(source).value();
+      auto* browser = controller_->GetBrowser();
+      DCHECK(browser);
+
+      auto* shared_pinned_tab_service =
+          SharedPinnedTabServiceFactory::GetForProfile(browser->profile());
+      DCHECK(shared_pinned_tab_service);
+      if (shared_pinned_tab_service->IsDummyContents(
+              browser->tab_strip_model()->GetWebContentsAt(index))) {
+        return;
+      }
     }
   }
 
@@ -292,13 +315,15 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->SetLayoutManager(nullptr);
     }
   }
+
+  hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return false;
 
-  return tabs::features::ShouldShowVerticalTabs(GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
 }
 
 void BraveTabStrip::Layout() {

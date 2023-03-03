@@ -22,10 +22,11 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -42,8 +43,9 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #else
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
@@ -80,6 +82,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();
+  SearchEngineProviderServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionServiceFactory::GetInstance();
 #endif
@@ -91,12 +94,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !BUILDFLAG(IS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
-  SearchEngineProviderServiceFactory::GetInstance();
 #else
   ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     brave_news::BraveNewsControllerFactory::GetInstance();
   }
 
@@ -132,6 +134,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
   BraveSyncAlertsServiceFactory::GetInstance();
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    SharedPinnedTabServiceFactory::GetInstance();
+  }
+#endif
 }
 
 }  // namespace brave
