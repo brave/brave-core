@@ -15,6 +15,9 @@ namespace google_apis {
 COMPONENT_EXPORT(GOOGLE_APIS)
 void SetAPIKeyForTesting(const std::string& api_key);
 
+COMPONENT_EXPORT(GOOGLE_APIS)
+bool BraveHasAPIKeyConfigured();
+
 }  // namespace google_apis
 
 #endif  // BRAVE_CHROMIUM_SRC_GOOGLE_APIS_GOOGLE_API_KEYS_H_

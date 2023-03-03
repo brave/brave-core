@@ -8,14 +8,3 @@
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
 #include "src/components/translate/core/browser/translate_manager.cc"
 #undef HasAPIKeyConfigured
-
-namespace google_apis {
-
-bool BraveHasAPIKeyConfigured() {
-  // Google API key is not used in brave for translation service, always return
-  // true for the API key check so the flow won't be blocked because of missing
-  // keys.
-  return true;
-}
-
-}  // namespace google_apis
