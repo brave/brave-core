@@ -283,6 +283,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
 
+#if defined(TOOLKIT_VIEWS)
+  // Disable side search by default.
+  // Copied from side_search_prefs.cc because it's not exported.
+  constexpr char kSideSearchEnabled[] = "side_search.enabled";
+  registry->SetDefaultPrefValue(kSideSearchEnabled, base::Value(false));
+#endif
+
   // Disable search suggestion
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
                                 base::Value(false));
