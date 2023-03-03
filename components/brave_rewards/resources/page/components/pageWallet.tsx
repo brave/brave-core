@@ -480,15 +480,6 @@ class PageWallet extends React.Component<Props, State> {
     )
   }
 
-  getInternalFunds = () => {
-    const { balance } = this.props.rewardsData
-    if (!balance.wallets) {
-      return 0
-    }
-
-    return (balance.wallets.blinded || 0)
-  }
-
   isWalletProviderEnabled = (walletProvider: string) => {
     const { currentCountryCode, parameters } = this.props.rewardsData
     const regions = parameters.walletProviderRegions[walletProvider] || null
@@ -589,7 +580,6 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalReset
               onClose={this.onModalResetClose}
               onReset={this.onModalResetOnReset}
-              internalFunds={this.getInternalFunds()}
             />
             : null
         }
