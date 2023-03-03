@@ -43,6 +43,10 @@ class SharedPinnedTabService : public KeyedService,
   SharedPinnedTabService& operator=(const SharedPinnedTabService&) = delete;
   ~SharedPinnedTabService() override;
 
+  // There are two types of contents for pinned tabs. "Shared contents" is a
+  // single instance contents for a pinned tab shared across multiple windows.
+  // "Dummy contents" is a empty contents used as a placeholder for inactive
+  // windows.
   bool IsSharedContents(content::WebContents* contents) const;
   bool IsDummyContents(content::WebContents* contents) const;
 
