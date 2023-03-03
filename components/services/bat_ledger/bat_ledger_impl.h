@@ -15,7 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
-#include "bat/ledger/ledger.h"
+#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
 namespace bat_ledger {

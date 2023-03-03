@@ -83,7 +83,6 @@ source_set("browser") {
 
   public_deps += [
     "//brave/components/services/bat_ads/public/interfaces",
-    "//brave/vendor/bat-native-ledger",
     "//services/network/public/mojom",
   ]
 }

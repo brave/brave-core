@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#include "bat/ledger/ledger_client.h"
+#include "brave/components/brave_rewards/core/ledger_client.h"
 
 @protocol LedgerClientBridge
 @required

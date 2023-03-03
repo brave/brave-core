@@ -1,6 +1,4 @@
 include_rules = [
-  "+bat/ledger",
-  "-bat/ledger/internal",
   "+content/public/browser",
   "+content/public/common",
   "+extensions/buildflags",

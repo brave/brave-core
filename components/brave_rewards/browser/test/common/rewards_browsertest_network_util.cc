@@ -6,8 +6,8 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/request_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
+#include "brave/components/brave_rewards/core/common/request_util.h"
 #include "content/public/test/browser_test_utils.h"
 
 namespace rewards_browsertest_util {

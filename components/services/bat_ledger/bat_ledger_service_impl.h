@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_SERVICE_IMPL_H_
 
-#include "bat/ledger/ledger.h"
+#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"

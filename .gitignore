@@ -1,6 +1,5 @@
 .cache/clangd
 /vendor/*
-!/vendor/bat-native-ledger
 .DS_Store
 .brave_gclient_*
 .gclient_*

@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
-#include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
