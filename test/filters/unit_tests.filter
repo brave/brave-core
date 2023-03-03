@@ -47,6 +47,12 @@
 -ChromeAppsIconFactoryTest.LoadStandardIcon
 -ChromeAppsIconFactoryTest.LoadUncompressedIcon
 
+# These tests crash due to disabled side search prefs - side_search.enabled
+-SideSearchSideContentsHelperTest.EmitsPerJourneyMetrics
+-SideSearchSideContentsHelperTest.EmitsPerJourneyMetricsAutotriggered
+-SideSearchSideContentsHelperTest.EmitsPerJourneyMetricsFromMenuOption
+-SideSearchSideContentsHelperTest.RedirectionConfigNavigatesTabContents
+
 # These tests crash when BraveExtensionManagement is initialized via a
 # TestExtensionSystem
 # https://github.com/brave/brave-browser/issues/25727
