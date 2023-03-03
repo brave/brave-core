@@ -22,9 +22,9 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
-  std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
-      brave_shields::AddSiteCosmeticFilter::Params::Create(args()));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
+  absl::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
+      brave_shields::AddSiteCosmeticFilter::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
 
   g_brave_browser_process->ad_block_service()
       ->custom_filters_provider()
