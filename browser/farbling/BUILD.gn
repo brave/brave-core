@@ -18,6 +18,7 @@ if (!is_android) {
       "brave_navigator_keyboard_api_browsertest.cc",
       "brave_navigator_languages_farbling_browsertest.cc",
       "brave_navigator_plugins_farbling_browsertest.cc",
+      "brave_navigator_usb_farbling_browsertest.cc",
       "brave_navigator_useragent_farbling_browsertest.cc",
       "brave_offscreencanvas_farbling_browsertest.cc",
       "brave_screen_farbling_browsertest.cc",

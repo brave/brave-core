@@ -119,7 +119,7 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
-  const std::string kExpectedRandomString = "UKlSpUqV,TJEix48e";
+  const std::string kExpectedRandomString = "USRQv2Ep,t9e2jwYU";
   // Farbling level: maximum
   // WebGL getParameter of restricted values: pseudo-random data with no
   // relation to original data

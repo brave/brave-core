@@ -150,16 +150,16 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
-            "8.fPHDhw");
+            "8mTJjRv2");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].filename);",
                 contents()),
-            "06du37du3bt2bNmT");
+            "0iZUpzhYrVxgvf2b");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0].description);",
           contents()),
-      "BgwYMmTpUq1aNmTJky5cOnTp069ePnTp");
+      "z8eu2Eh36GLs9mTRIMtWyZrdOuf2bNl5");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[0].length);",
                 contents()),
@@ -172,20 +172,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0][0].description);",
           contents()),
-      "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
+      "6pc1iZMOHDBny4cOuf2j4FCgYrVpzhYz");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
-            "Xr1at27");
+            "JjZUxgv");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].filename);",
                 contents()),
-            "SJEChw48ev3bNGD");
+            "2nyCJECgYrVp7GD");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1].description);",
           contents()),
-      "rVqVqVqVqVKlSpUqVqVKlSJEChQIECh");
+      "nb0Do7GLs9mb0DgYzCJMteXq8HiwYUx");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[1].length);",
                 contents()),
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1][0].description);",
           contents()),
-      "HDBAgQo0aNGDBgw48.fvXrVKFiRIkyZM");
+      "pzhQIECgYzCBny4cOuXLFh3Epc1aseXq");
 }
 
 // Tests that names of built-in plugins get farbled by default

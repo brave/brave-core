@@ -56,9 +56,9 @@ const int kFarbledUserAgentMaxExtraSpaces = 5;
 
 // acceptable letters for generating random strings
 const char kLettersForRandomStrings[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. ";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 // length of kLettersForRandomStrings array
-const size_t kLettersForRandomStringsLength = 64;
+const size_t kLettersForRandomStringsLength = 62;
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context) {
