@@ -1393,7 +1393,7 @@ void AdsServiceImpl::Shutdown() {
   if (database_) {
     const bool success =
         file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-    VLOG_IF(1, !success) << "Failed to release database";
+    DCHECK(success) << "Failed to release database";
   }
 
   VLOG(2) << "Shutdown bat-ads service";
