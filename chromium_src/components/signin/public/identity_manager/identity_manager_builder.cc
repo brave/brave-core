@@ -27,7 +27,7 @@ IdentityManager::InitParameters BuildIdentityManagerInitParameters(
           init_params.account_tracker_service.get(),
           init_params.token_service.get(),
           init_params.primary_account_manager.get(), params->pref_service,
-          params->account_consistency);
+          params->signin_client, params->account_consistency);
 
   return init_params;
 }
