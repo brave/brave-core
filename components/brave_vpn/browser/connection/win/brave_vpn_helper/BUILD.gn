@@ -24,25 +24,14 @@ source_set("common") {
     "brave_vpn_helper_state.h",
     "scoped_sc_handle.h",
   ]
-  public_configs = [ ":brave_vpn_helper_config" ]
+
+  public_deps = [ "//brave/components/brave_vpn/common/buildflags" ]
+
   deps = [
     "//base",
     "//brave/components/brave_vpn/common",
     "//chrome/install_static:install_static_util",
   ]
-}
-
-config("brave_vpn_helper_config") {
-  defines = []
-  if (brave_channel == "nightly") {
-    defines += [ "CHANNEL_NIGHTLY" ]
-  } else if (brave_channel == "beta") {
-    defines += [ "CHANNEL_BETA" ]
-  } else if (brave_channel == "dev") {
-    defines += [ "CHANNEL_DEV" ]
-  } else if (brave_channel == "development") {
-    defines += [ "CHANNEL_DEVELOPMENT" ]
-  }
 }
 
 source_set("lib") {
