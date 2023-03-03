@@ -64,6 +64,7 @@ void RewardsBrowserTestContribution::TipViaCode(
       std::move(publisher));
 
   if (recurring) {
+    WaitForRecurringTipToBeSaved();
     return;
   }
 
@@ -372,6 +373,7 @@ void RewardsBrowserTestContribution::UpdateContributionBalance(
 
 void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
   if (recurring_tip_saved_) {
+    recurring_tip_saved_ = false;
     return;
   }
 
@@ -382,13 +384,11 @@ void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
 void RewardsBrowserTestContribution::OnRecurringTipSaved(
     brave_rewards::RewardsService* rewards_service,
     const bool success) {
-  if (!success) {
-    return;
-  }
-
   recurring_tip_saved_ = true;
   if (wait_for_recurring_tip_saved_loop_) {
     wait_for_recurring_tip_saved_loop_->Quit();
+  } else {
+    recurring_tip_saved_ = true;
   }
 }
 

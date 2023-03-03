@@ -640,6 +640,7 @@ void LedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
   WhenReady([this, info = std::move(info), callback]() mutable {
     database()->SaveRecurringTip(
         std::move(info), [this, callback](mojom::Result result) {
+          LOG(ERROR) << "Recurring tip saved " << result;
           contribution()->SetMonthlyContributionTimer();
           callback(result);
         });

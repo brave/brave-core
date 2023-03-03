@@ -77,6 +77,8 @@ class RewardsBrowserTestContribution
   void WaitForMultipleACReconcileCompleted(
     const int32_t needed);
 
+  void WaitForRecurringTipToBeSaved();
+
   ledger::mojom::Result GetACStatus();
 
   std::vector<ledger::mojom::Result> GetMultipleACStatus();
@@ -113,8 +115,6 @@ class RewardsBrowserTestContribution
       const double amount,
       const ledger::mojom::RewardsType type,
       const ledger::mojom::ContributionProcessor processor) override;
-
-  void WaitForRecurringTipToBeSaved();
 
   void OnRecurringTipSaved(
       brave_rewards::RewardsService* rewards_service,

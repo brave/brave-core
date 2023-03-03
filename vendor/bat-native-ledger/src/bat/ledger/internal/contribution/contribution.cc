@@ -26,6 +26,9 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+#undef BLOG
+#define BLOG(n, msg) LOG(ERROR) << msg
+
 namespace {
 
 bool IsRevivedAC(const ledger::mojom::ContributionInfo& contribution) {
@@ -185,14 +188,14 @@ void Contribution::StartMonthlyContributions(
   monthly_contribution_timer_.Stop();
   monthly_contributions_processing_ = true;
 
-  base::Time cutoff_time = base::Time::Now();
+  absl::optional<base::Time> cutoff_time = base::Time::Now();
 
   // Existing tests expect the ability to trigger all monthly and AC
   // contributions, regardless of their "next contribution dates". If we are
   // triggering all contributions, pass a null cutoff time to the monthly
   // contribution processor so that it will send them all.
   if (options == MonthlyContributionOptions::kSendAllContributions) {
-    cutoff_time = base::Time();
+    cutoff_time = absl::nullopt;
   }
 
   BLOG(1, "Starting monthly contributions");

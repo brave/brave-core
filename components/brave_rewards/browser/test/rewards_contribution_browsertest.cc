@@ -521,6 +521,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       verified);
 
   rewards_service_->OnTip("duckduckgo.com", 2.5, true, base::DoNothing());
+  contribution_->WaitForRecurringTipToBeSaved();
   rewards_service_->StartContributionsForTesting();
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::mojom::Result::LEDGER_OK);

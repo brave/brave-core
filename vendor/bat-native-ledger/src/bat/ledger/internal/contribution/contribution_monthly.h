@@ -10,6 +10,7 @@
 
 #include "base/time/time.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -22,11 +23,12 @@ class ContributionMonthly {
 
   ~ContributionMonthly();
 
-  void Process(base::Time cutoff_time, ledger::LegacyResultCallback callback);
+  void Process(absl::optional<base::Time> cutoff_time,
+               ledger::LegacyResultCallback callback);
 
  private:
   void AdvanceContributionDates(
-      base::Time cutoff_time,
+      absl::optional<base::Time> cutoff_time,
       ledger::LegacyResultCallback callback,
       std::vector<mojom::PublisherInfoPtr> publishers);
 

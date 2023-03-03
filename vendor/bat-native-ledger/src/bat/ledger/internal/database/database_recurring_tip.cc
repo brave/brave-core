@@ -17,6 +17,9 @@
 
 using std::placeholders::_1;
 
+#undef BLOG
+#define BLOG(n, msg) LOG(ERROR) << msg
+
 namespace ledger {
 namespace database {
 

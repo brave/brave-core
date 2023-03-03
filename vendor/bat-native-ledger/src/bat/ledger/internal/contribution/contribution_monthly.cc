@@ -23,7 +23,7 @@ ContributionMonthly::ContributionMonthly(LedgerImpl* ledger) :
 
 ContributionMonthly::~ContributionMonthly() = default;
 
-void ContributionMonthly::Process(base::Time cutoff_time,
+void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
                                   ledger::LegacyResultCallback callback) {
   ledger_->contribution()->GetRecurringTips(
       [this, cutoff_time,
@@ -33,21 +33,17 @@ void ContributionMonthly::Process(base::Time cutoff_time,
 }
 
 void ContributionMonthly::AdvanceContributionDates(
-    base::Time cutoff_time,
+    absl::optional<base::Time> cutoff_time,
     ledger::LegacyResultCallback callback,
     std::vector<mojom::PublisherInfoPtr> publishers) {
-  // A null cutoff time indicates that all monthly contributions should be sent,
-  // regardless of their next contribution date. This should only be used in
-  // tests.
-  if (cutoff_time.is_null()) {
-    cutoff_time = base::Time::Max();
-  }
-
   // Remove any contributions whose next contribution date is in the future.
-  uint64_t now = static_cast<uint64_t>(cutoff_time.ToDoubleT());
-  base::EraseIf(publishers, [now](const mojom::PublisherInfoPtr& publisher) {
-    return !publisher || publisher->id.empty() ||
-           publisher->reconcile_stamp > now;
+  base::EraseIf(publishers, [cutoff_time](const mojom::PublisherInfoPtr& publisher) {
+    if (!publisher || publisher->id.empty()) {
+      return true;
+    }
+    base::Time next_contribution = base::Time::FromDoubleT(
+        static_cast<double>(publisher->reconcile_stamp));
+    return cutoff_time && next_contribution > cutoff_time;
   });
 
   std::vector<std::string> publisher_ids;
