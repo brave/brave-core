@@ -9,8 +9,69 @@ import BraveCore
 import BraveUI
 import os.log
 
-class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, UITableViewDataSource {
+  
+  private enum Sections: Int, CaseIterable {
+    case deviceList, deviceActions, syncTypes, chainRemoval
+  }
 
+  private enum SyncDataTypes: Int, CaseIterable {
+    case bookmarks = 0
+    case history
+    case passwords
+    case openTabs
+
+    var title: String {
+      switch self {
+      case .bookmarks:
+        return Strings.bookmarksMenuItem
+      case .history:
+        return Strings.historyMenuItem
+      case .passwords:
+        return Strings.passwordsMenuItem
+      case .openTabs:
+        return Strings.openTabsMenuItem
+      }
+    }
+  }
+
+  private enum AlertActionType {
+    case lastDeviceLeft
+    case currentDeviceLeft
+    case otherDeviceLeft
+    case syncChainDeleteConfirmation
+    case syncChainDeleteError
+  }
+  
+  // MARK: Private
+
+  private let syncAPI: BraveSyncAPI
+  private let syncProfileService: BraveSyncProfileServiceIOS
+  private let tabManager: TabManager
+
+  private var syncDeviceObserver: AnyObject?
+  private var syncServiceObserver: AnyObject?
+  private var devices = [BraveSyncDevice]()
+
+  /// After synchronization is completed, user needs to tap on `Done` to go back.
+  /// Standard navigation is disabled then.
+  private var showDoneButton = false
+  
+  private var tableView = UITableView(frame: .zero, style: .grouped)
+  private let loadingView = UIView().then {
+    $0.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+    $0.isHidden = true
+  }
+  private let loadingSpinner = UIActivityIndicatorView(style: .large).then {
+    $0.startAnimating()
+  }
+
+  private lazy var emptyStateOverlayView = EmptyStateOverlayView(
+    overlayDetails: EmptyOverlayStateDetails(
+      title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
+      description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
+      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")))
+  
   // MARK: Lifecycle
 
   init(showDoneButton: Bool = false, syncAPI: BraveSyncAPI, syncProfileService: BraveSyncProfileServiceIOS, tabManager: TabManager) {
@@ -33,26 +94,23 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
     tableView.do {
       $0.dataSource = self
       $0.delegate = self
+      $0.tableHeaderView = makeInformationTextView(with: Strings.syncSettingsHeader)
     }
     
-    view.addSubview(tableView)
+    doLayout()
 
-    tableView.snp.makeConstraints { make in
-      make.edges.equalTo(self.view)
+    syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
+      // Observe Sync State in order to determine if the sync chain is deleted
+      // from another device - Clean local sync chain
+      self?.restartSyncSetupIfNecessary()
     }
     
     syncDeviceObserver = syncAPI.addDeviceStateObserver { [weak self] in
       self?.updateDeviceList()
     }
-
-    let codeWords = syncAPI.getSyncCode()
-    syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileService)
-    syncAPI.requestSync()
-    syncAPI.setSetupComplete()
-
-    self.updateDeviceList()
-
-    tableView.tableHeaderView = makeInformationTextView(with: Strings.syncSettingsHeader)
+    
+    restartSyncSetupIfNecessary()
+    updateDeviceList()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -82,112 +140,100 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
     let newSize = headerView.systemLayoutSizeFitting(CGSize(width: self.view.bounds.width, height: 0))
     headerView.frame.size.height = newSize.height
   }
-
-  // MARK: Private
-
-  private let syncAPI: BraveSyncAPI
-  private let syncProfileService: BraveSyncProfileServiceIOS
-  private let tabManager: TabManager
-
-  private var syncDeviceObserver: AnyObject?
-  private var devices = [BraveSyncDevice]()
-
-  private enum Sections: Int {
-    case deviceList, deviceActions, syncTypes
-  }
-
-  private enum SyncDataTypes: Int {
-    case bookmarks = 0
-    case history
-    case passwords
-    case openTabs
-
-    var title: String {
-      switch self {
-      case .bookmarks:
-        return Strings.bookmarksMenuItem
-      case .history:
-        return Strings.historyMenuItem
-      case .passwords:
-        return Strings.passwordsMenuItem
-      case .openTabs:
-        return Strings.openTabsMenuItem
-      }
-    }
-
-    static var count: Int {
-      return SyncDataTypes.openTabs.rawValue + 1
-    }
-  }
-
-  /// A different logic and UI is used depending on what device was selected to remove and if it is the only device
-  /// left in the Sync Chain.
-  private enum DeviceRemovalType {
-    case lastDeviceLeft, currentDevice, otherDevice
-  }
-
-  /// After synchronization is completed, user needs to tap on `Done` to go back.
-  /// Standard navigation is disabled then.
-  private var showDoneButton = false
   
-  private var tableView = UITableView(frame: .zero, style: .grouped)
-
-  private lazy var emptyStateOverlayView = EmptyStateOverlayView(
-    overlayDetails: EmptyOverlayStateDetails(
-      title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
-      description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
-      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")))
-  
-  // MARK: Actions
-
-  @objc
-  private func doneTapped() {
-    navigationController?.dismiss(animated: true)
+  private func restartSyncSetupIfNecessary() {
+    if syncAPI.shouldLeaveSyncGroup {
+      syncAPI.leaveSyncGroup()
+      navigationController?.popToRootViewController(animated: true)
+    }
   }
+  
+  private func doLayout() {
+    view.addSubview(tableView)
+    loadingView.addSubview(loadingSpinner)
+    view.addSubview(loadingView)
 
-  @objc
-  private func onSyncInternalsTapped() {
-    let syncInternalsController = syncAPI.createSyncInternalsController().then {
-      $0.title = Strings.braveSyncInternalsTitle
+    tableView.snp.makeConstraints {
+      $0.edges.equalTo(view)
+    }
+    
+    loadingView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
 
-    navigationController?.pushViewController(syncInternalsController, animated: true)
+    loadingSpinner.snp.makeConstraints {
+      $0.center.equalTo(loadingView)
+    }
   }
 
-  private func presentAlertPopup(for type: DeviceRemovalType, device: BraveSyncDevice) {
+  private func presentAlertPopup(for type: AlertActionType, device: BraveSyncDevice? = nil) {
     var title: String?
     var message: String?
     var removeButtonName: String?
-    let deviceName = device.name?.htmlEntityEncodedString ?? Strings.syncRemoveDeviceDefaultName
+    let deviceName = device?.name?.htmlEntityEncodedString ?? Strings.syncRemoveDeviceDefaultName
 
     switch type {
     case .lastDeviceLeft:
       title = String(format: Strings.syncRemoveLastDeviceTitle, deviceName)
       message = Strings.syncRemoveLastDeviceMessage
       removeButtonName = Strings.syncRemoveLastDeviceRemoveButtonName
-    case .currentDevice:
+    case .currentDeviceLeft:
       title = String(format: Strings.syncRemoveCurrentDeviceTitle, "\(deviceName) (\(Strings.syncThisDevice))")
       message = Strings.syncRemoveCurrentDeviceMessage
       removeButtonName = Strings.removeDevice
-    case .otherDevice:
+    case .otherDeviceLeft:
       title = String(format: Strings.syncRemoveOtherDeviceTitle, deviceName)
       message = Strings.syncRemoveOtherDeviceMessage
       removeButtonName = Strings.removeDevice
+    case .syncChainDeleteConfirmation:
+      title = Strings.Sync.syncDeleteAccountAlertTitle
+      message = "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1).\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)"
+      removeButtonName = Strings.delete
+    case .syncChainDeleteError:
+      title = Strings.Sync.syncChainAccountDeletionErrorTitle
+      message = Strings.Sync.syncChainAccountDeletionErrorDescription
+      removeButtonName = Strings.OKString
     }
 
     guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName else { fatalError() }
 
-    let popup = AlertPopupView(imageView: nil, title: popupTitle, message: popupMessage)
-    let fontSize: CGFloat = 15
+    let popup = AlertPopupView(title: popupTitle, message: popupMessage)
 
-    popup.addButton(title: Strings.cancelButtonTitle, fontSize: fontSize) { return .flyDown }
-    popup.addButton(title: popupButtonName, type: .destructive, fontSize: fontSize) {
+    popup.addButton(title: Strings.cancelButtonTitle) { return .flyDown }
+    popup.addButton(title: popupButtonName, type: .destructive) {
       switch type {
-      case .lastDeviceLeft, .currentDevice:
+      case .lastDeviceLeft, .currentDeviceLeft:
         self.syncAPI.leaveSyncGroup()
         self.navigationController?.popToRootViewController(animated: true)
-      case .otherDevice:
-        self.syncAPI.removeDeviceFromSyncGroup(deviceGuid: device.guid)
+      case .otherDeviceLeft:
+        if let guid = device?.guid {
+          self.syncAPI.removeDeviceFromSyncGroup(deviceGuid: guid)
+        }
+      case .syncChainDeleteConfirmation:
+        self.doIfConnected {
+          // Observers have to be removed before permanentlyDeleteAccount is called
+          // to prevent glitch in settings screen
+          self.syncAPI.removeAllObservers()
+          // Start  loading and diable navigation while delete action is happening
+          self.enableNavigationPrevention()
+          
+          // Permanently Delete action is called on brave-core side
+          self.syncAPI.permanentlyDeleteAccount { status in
+            
+            switch status {
+            case .throttled, .partialFailure, .transientError:
+              self.presentAlertPopup(for: .syncChainDeleteError)
+            default:
+              // Clearing local preferences and calling reset chain on brave-core side
+              self.syncAPI.leaveSyncGroup(preservingObservers: true)
+            }
+            
+            self.disableNavigationPrevention()
+            self.navigationController?.popToRootViewController(animated: true)
+          }
+        }
+      case .syncChainDeleteError:
+        break
       }
       return .flyDown
     }
@@ -234,6 +280,22 @@ class SyncSettingsTableViewController: UIViewController, UITableViewDelegate, UI
       }
     }
   }
+  
+  // MARK: Actions
+
+  @objc
+  private func doneTapped() {
+    navigationController?.dismiss(animated: true)
+  }
+
+  @objc
+  private func onSyncInternalsTapped() {
+    let syncInternalsController = syncAPI.createSyncInternalsController().then {
+      $0.title = Strings.braveSyncInternalsTitle
+    }
+
+    navigationController?.pushViewController(syncInternalsController, animated: true)
+  }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -247,11 +309,19 @@ extension SyncSettingsTableViewController {
       return
     }
 
+    // Device Actions - Add New Device
     if section == .deviceActions {
       addAnotherDevice()
       return
     }
+    
+    // Delete Sync Chain
+    if section == .chainRemoval {
+      presentAlertPopup(for: .syncChainDeleteConfirmation)
+      return
+    }
 
+    // Device List
     guard section == .deviceList,
           !devices.isEmpty,
           let device = devices[safe: indexPath.row] else {
@@ -281,12 +351,12 @@ extension SyncSettingsTableViewController {
         return
       }
 
-      var alertType = DeviceRemovalType.otherDevice
+      var alertType = AlertActionType.otherDeviceLeft
 
       if self.devices.count == 1 {
         alertType = .lastDeviceLeft
       } else if device.isCurrentDevice {
-        alertType = .currentDevice
+        alertType = .currentDeviceLeft
       }
 
       self.presentAlertPopup(for: alertType, device: device)
@@ -301,7 +371,7 @@ extension SyncSettingsTableViewController {
   }
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 3
+    return Sections.allCases.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -311,7 +381,9 @@ extension SyncSettingsTableViewController {
     case Sections.deviceActions.rawValue:
       return 1
     case Sections.syncTypes.rawValue:
-      return SyncDataTypes.count
+      return SyncDataTypes.allCases.count
+    case Sections.chainRemoval.rawValue:
+      return 1
     default:
       return 0
     }
@@ -371,8 +443,8 @@ extension SyncSettingsTableViewController {
 
       cell.textLabel?.text = deviceName
       cell.textLabel?.textColor = .braveLabel
-    case Sections.deviceActions.rawValue:
-      configureButtonCell(cell)
+    case Sections.deviceActions.rawValue, Sections.chainRemoval.rawValue:
+      configureButtonCell(cell, atIndexPath: indexPath)
     case Sections.syncTypes.rawValue:
       configureToggleCell(cell, for: SyncDataTypes(rawValue: indexPath.row) ?? .bookmarks)
     default:
@@ -380,18 +452,25 @@ extension SyncSettingsTableViewController {
     }
   }
 
-  private func configureButtonCell(_ cell: UITableViewCell) {
-    // By default all cells have separators with left inset. Our buttons are based on table cells,
-    // we need to style them so they look more like buttons with full width separator between them.
+  private func configureButtonCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
     cell.preservesSuperviewLayoutMargins = false
     cell.separatorInset = UIEdgeInsets.zero
     cell.layoutMargins = UIEdgeInsets.zero
-
+    
     cell.textLabel?.do {
-      $0.text = Strings.syncAddAnotherDevice
       $0.textAlignment = .center
-      $0.textColor = .braveBlurpleTint
       $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
+    }
+    
+    switch indexPath.section {
+    case Sections.deviceActions.rawValue:
+      cell.textLabel?.text = Strings.syncAddAnotherDevice
+      cell.textLabel?.textColor = .braveBlurpleTint
+    case Sections.chainRemoval.rawValue:
+      cell.textLabel?.text = Strings.syncDeleteAccount
+      cell.textLabel?.textColor = .braveErrorLabel
+    default:
+      return
     }
   }
 
@@ -473,5 +552,21 @@ extension SyncSettingsTableViewController {
       self.navigationController?.pushViewController(view, animated: true)
     }
     navigationController?.pushViewController(view, animated: true)
+  }
+}
+
+// MARK: NavigationPrevention
+
+extension SyncSettingsTableViewController: NavigationPrevention {
+  func enableNavigationPrevention() {
+    loadingView.isHidden = false
+    navigationItem.rightBarButtonItem?.isEnabled = false
+    navigationItem.hidesBackButton = true
+  }
+
+  func disableNavigationPrevention() {
+    loadingView.isHidden = true
+    navigationItem.rightBarButtonItem?.isEnabled = true
+    navigationItem.hidesBackButton = false
   }
 }

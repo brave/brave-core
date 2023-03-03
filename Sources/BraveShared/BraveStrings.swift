@@ -909,6 +909,7 @@ extension Strings {
   public static let syncRemoveThisDeviceQuestionDesc = NSLocalizedString("SyncRemoveThisDeviceQuestionDesc", tableName: "BraveShared", bundle: .module, value: "This device will be disconnected from sync group and no longer receive or send sync data. All existing data will remain on device.", comment: "Sync remove device?")
   public static let pair = NSLocalizedString("Pair", tableName: "BraveShared", bundle: .module, value: "Pair", comment: "Sync pair device settings section title")
   public static let syncAddAnotherDevice = NSLocalizedString("SyncAddAnotherDevice", tableName: "BraveShared", bundle: .module, value: "Add New Device", comment: "Add New Device cell button.")
+  public static let syncDeleteAccount = NSLocalizedString("SyncDeleteAccount", tableName: "BraveShared", bundle: .module, value: "Delete Sync Account", comment: "Delete Sync Account cell title for button.")
   public static let syncTabletOrMobileDevice = NSLocalizedString("SyncTabletOrMobileDevice", tableName: "BraveShared", bundle: .module, value: "Tablet or Phone", comment: "Tablet or phone button title")
   public static let syncAddTabletOrPhoneTitle = NSLocalizedString("SyncAddTabletOrPhoneTitle", tableName: "BraveShared", bundle: .module, value: "Add a Tablet or Phone", comment: "Add Tablet or phone title")
   public static let syncComputerDevice = NSLocalizedString("SyncComputerDevice", tableName: "BraveShared", bundle: .module, value: "Computer", comment: "Computer device button title")
@@ -2940,7 +2941,11 @@ extension Strings {
         comment: "Bookmarks migration website page description")
     /// Important: Do NOT change the `KEY` parameter without updating it in
     /// BraveCore's brave_bookmarks_importer.mm file.
-    public static let importFolderName = NSLocalizedString("SyncImportFolderName", tableName: "BraveShared", bundle: .module, value: "Imported Bookmarks", comment: "Folder name for where bookmarks are imported into when the root folder is not empty.")
+    public static let importFolderName =
+      NSLocalizedString(
+        "SyncImportFolderName", tableName: "BraveShared", bundle: .module,
+        value: "Imported Bookmarks",
+        comment: "Folder name for where bookmarks are imported into when the root folder is not empty.")
     public static let v2MigrationTitle =
       NSLocalizedString(
         "sync.v2MigrationTitle", tableName: "BraveShared", bundle: .module,
@@ -2977,6 +2982,41 @@ extension Strings {
         "sync.syncSettingsTitle", tableName: "BraveShared", bundle: .module,
         value: "Sync Settings",
         comment: "Title for Sync Settings Toggle Header")
+    public static let syncDeleteAccountAlertTitle =
+      NSLocalizedString(
+        "sync.syncDeleteAccount", tableName: "BraveShared", bundle: .module,
+        value: "Delete Sync Account",
+        comment: "Title for Alert used action Delete Sync Account.")
+    public static let syncDeleteAccountAlertDescriptionPart1 =
+      NSLocalizedString(
+        "sync.syncDeleteAccountAlertDescriptionPart1", tableName: "BraveShared", bundle: .module,
+        value: "Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.",
+        comment: "Part 1 Description for Alert used action Delete Sync Account.")
+    public static let syncDeleteAccountAlertDescriptionPart2 =
+      NSLocalizedString(
+        "sync.syncDeleteAccountAlertDescriptionPart2", tableName: "BraveShared", bundle: .module,
+        value: "This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.",
+        comment: "Part 2 Description for Alert used action Delete Sync Account.")
+    public static let syncChainAlreadyDeletedAlertTitle =
+      NSLocalizedString(
+        "sync.syncChainAlreadyDeletedAlertTitle", tableName: "BraveShared", bundle: .module,
+        value: "Sync Device",
+        comment: "Alert title for the occasion when an user is trying to join a already deleted account")
+    public static let syncChainAlreadyDeletedAlertDescription =
+      NSLocalizedString(
+        "sync.syncChainAlreadyDeletedAlertDescription", tableName: "BraveShared", bundle: .module,
+        value: "Could not join this chain. Account was deleted.",
+        comment: "Alert description for the occasion when an user is trying to join a already deleted account")
+    public static let syncChainAccountDeletionErrorTitle =
+      NSLocalizedString(
+        "sync.syncChainAccountDeletionErrorTitle", tableName: "BraveShared", bundle: .module,
+        value: "Sync Device",
+        comment: "Alert title for error while deleting sync chain")
+    public static let syncChainAccountDeletionErrorDescription =
+      NSLocalizedString(
+        "sync.syncChainAccountDeletionErrorDescription", tableName: "BraveShared", bundle: .module,
+        value: "Sync Device",
+        comment: "Alert description for error while deleting sync chain")
   }
 }
 

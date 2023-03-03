@@ -498,7 +498,7 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  public func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = nil, tapped: (() -> PopupViewDismissType)?) {
+  public func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = 15, tapped: (() -> PopupViewDismissType)?) {
     let buttonData: ButtonData = ButtonData()
     buttonData.title = title
     buttonData.handler = tapped
