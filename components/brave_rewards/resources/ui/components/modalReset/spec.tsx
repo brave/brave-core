@@ -17,7 +17,6 @@ describe('ModalReset tests', () => {
         id='modal'
         onClose={doNothing}
         onReset={doNothing}
-        internalFunds={0}
         {...props}
       />
     </TestThemeProvider>

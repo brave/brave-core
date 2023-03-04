@@ -336,7 +336,7 @@ class RewardsServiceImpl : public RewardsService,
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
 #if BUILDFLAG(ENABLE_GREASELION)
-  void EnableGreaseLion();
+  void EnableGreaselion();
 
   // GreaselionService::Observer:
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
@@ -599,6 +599,7 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
+  bool greaselion_enabled_ = false;
 #endif
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;

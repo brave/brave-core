@@ -148,6 +148,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        DisableGoogleServicesByDefault) {
+#if defined(TOOLKIT_VIEWS)
+  constexpr char kSideSearchEnabled[] = "side_search.enabled";
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      kSideSearchEnabled));
+#endif
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       embedder_support::kAlternateErrorPagesEnabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(

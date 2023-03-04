@@ -167,7 +167,7 @@ export const FundWalletScreen = () => {
       buyOption,
       depositAddress: selectedAccount.address
     })
-  }, [selectedAsset, selectedAssetNetwork, buyAmount, selectedAccount])
+  }, [selectedAsset, selectedAssetNetwork, selectedAccount, selectedCurrency])
 
   const goBackToSelectAssets = React.useCallback(() => {
     setShowBuyOptions(false)

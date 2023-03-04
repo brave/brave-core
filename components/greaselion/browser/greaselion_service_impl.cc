@@ -29,7 +29,6 @@
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
-#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/version_info//version_info.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -45,7 +44,6 @@
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 using extensions::Extension;
 using extensions::mojom::ManifestLocation;
@@ -418,8 +416,12 @@ void GreaselionServiceImpl::SetFeatureEnabled(GreaselionFeature feature,
   UpdateInstalledExtensions();
 }
 
-bool GreaselionServiceImpl::ready() {
-  return !update_in_progress_;
+bool GreaselionServiceImpl::update_in_progress() {
+  return update_in_progress_;
+}
+
+bool GreaselionServiceImpl::rules_ready() {
+  return !download_service_->rules()->empty();
 }
 
 void GreaselionServiceImpl::SetBrowserVersionForTesting(
