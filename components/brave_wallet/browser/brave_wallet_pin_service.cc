@@ -88,6 +88,10 @@ absl::optional<mojom::WalletPinServiceErrorCode> StringToErrorCode(
 absl::optional<std::string> ExtractCID(const std::string& ipfs_url) {
   GURL gurl = GURL(ipfs_url);
 
+  if (!gurl.is_valid()) {
+    return absl::nullopt;
+  }
+
   if (!gurl.SchemeIs(ipfs::kIPFSScheme)) {
     return absl::nullopt;
   }
@@ -571,8 +575,8 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
     return;
   }
 
-  GURL token_gurl = GURL(token_url);
-  if (!token_gurl.SchemeIs(ipfs::kIPFSScheme)) {
+  auto metadata_cid = ExtractCID(token_url);
+  if (!metadata_cid) {
     auto pin_error = mojom::PinError::New(
         mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
         "Metadata has non-ipfs url");
@@ -595,25 +599,29 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
     return;
   }
 
-  std::vector<std::string> cids;
-
-  cids.push_back(ExtractCID(token_url).value());
   auto* image_url = parsed_result->FindStringKey("image");
-  if (image_url) {
-    auto image_cid = ExtractCID(*image_url);
-    if (image_cid) {
-      cids.push_back(*image_cid);
-      content_type_checker_->CheckContentTypeSupported(
-          *image_url,
-          base::BindOnce(&BraveWalletPinService::OnContentTypeChecked,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(service),
-                         std::move(token), std::move(cids),
-                         std::move(callback)));
-      return;
-    }
+  auto image_cid =
+      image_url != nullptr ? ExtractCID(*image_url) : absl::nullopt;
+
+  if (!image_cid) {
+    auto pin_error = mojom::PinError::New(
+        mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
+        "Can't find proper image field");
+    SetTokenStatus(service, token,
+                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, pin_error);
+    std::move(callback).Run(false, std::move(pin_error));
+    return;
   }
-  OnContentTypeChecked(std::move(service), std::move(token), std::move(cids),
-                       std::move(callback), true);
+
+  std::vector<std::string> cids;
+  cids.push_back(metadata_cid.value());
+  cids.push_back(image_cid.value());
+
+  content_type_checker_->CheckContentTypeSupported(
+      *image_url,
+      base::BindOnce(&BraveWalletPinService::OnContentTypeChecked,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(service),
+                     std::move(token), std::move(cids), std::move(callback)));
 }
 
 void BraveWalletPinService::OnContentTypeChecked(
@@ -644,6 +652,8 @@ void BraveWalletPinService::OnContentTypeChecked(
 
   auto path = GetTokenPrefPath(service, token);
   if (!path) {
+    SetTokenStatus(service, token,
+                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, nullptr);
     std::move(callback).Run(
         false, mojom::PinError::New(
                    mojom::WalletPinServiceErrorCode::ERR_WRONG_METADATA_FORMAT,
