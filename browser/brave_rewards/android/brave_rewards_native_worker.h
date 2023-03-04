@@ -265,8 +265,8 @@ class BraveRewardsNativeWorker
 
   void OnGetUserType(const ledger::mojom::UserType user_type);
 
-  void OnBalance(const ledger::mojom::Result result,
-                 ledger::mojom::BalancePtr balance);
+  void OnBalance(base::expected<ledger::mojom::BalancePtr,
+                                ledger::mojom::FetchBalanceError> result);
 
   void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
 

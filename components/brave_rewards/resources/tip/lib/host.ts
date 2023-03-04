@@ -13,13 +13,14 @@ import {
   HostState,
   PublisherInfo,
   RewardsParameters,
-  BalanceInfo,
   ExternalWalletInfo,
   DialogArgs,
   EntryPoint,
   TipKind,
   ShareTarget
 } from './interfaces'
+
+import * as mojom from '../../shared/lib/mojom'
 
 interface RecurringTipInfo {
   publisherKey: string
@@ -144,16 +145,18 @@ export function createHost (): Host {
       stateManager.update({ nextReconcileDate: new Date(stamp * 1000) })
     },
 
-    balanceUpdated (result: { status: number, balance: BalanceInfo }) {
-      if (result.status === 0) {
+    balanceUpdated (result: mojom.FetchBalanceResult) {
+      const { value, error } = result
+
+      if (value) {
         stateManager.update({
-          balanceInfo: result.balance
+          balanceInfo: value.balance
         })
       } else {
         stateManager.update({
           hostError: {
             type: 'ERR_FETCH_BALANCE',
-            code: result.status
+            code: error
           }
         })
       }

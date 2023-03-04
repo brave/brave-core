@@ -1,10 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Reducer } from 'redux'
 import { types } from '../actions/rewards_types'
 import * as mojom from '../../shared/lib/mojom'
+import {
+  optional
+} from '../../../../brave_rewards/resources/shared/lib/optional'
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   if (!state) {
@@ -83,20 +87,18 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_BALANCE: {
-      const status = action.payload.status
-      let ui = state.ui
+      const { value, error } = action.payload.result
 
-      if (status === 0) { // on ledger::mojom::Result::LEDGER_OK
-        state.balance = action.payload.balance
-      } else if (status === 24) { // on ledger::type::Result::EXPIRED_TOKEN
-        chrome.send('brave_rewards.getExternalWallet')
-        state.balance.total = action.payload.balance.total || 0
+      if (value) {
+        state = { ...state, balance: optional(value.balance.total) }
+      } else {
+        state = { ...state, balance: optional<number>() }
+
+        if (error === mojom.FetchBalanceError.kAccessTokenExpired) {
+          chrome.send('brave_rewards.getExternalWallet')
+        }
       }
 
-      state = {
-        ...state,
-        ui
-      }
       break
     }
     case types.GET_EXTERNAL_WALLET_PROVIDERS: {

@@ -26,7 +26,7 @@ export const dismissNotification = (id: string) => action(types.DISMISS_NOTIFICA
   id
 })
 
-export const onBalance = (balance: NewTab.RewardsBalance) => action(types.ON_BALANCE, {
+export const onBalance = (balance?: number) => action(types.ON_BALANCE, {
   balance
 })
 

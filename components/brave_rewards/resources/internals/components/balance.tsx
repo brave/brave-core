@@ -11,7 +11,7 @@ import { LoadingIcon } from '../../shared/components/icons/loading_icon'
 import * as mojom from '../../shared/lib/mojom'
 
 interface Props {
-  balance: RewardsInternals.Balance
+  balance: mojom.Balance
   externalWallet: RewardsInternals.ExternalWallet
 }
 
@@ -58,10 +58,6 @@ const getBalances = (
 }
 
 export const Balance = (props: Props) => {
-  if (!props.balance) {
-    return null
-  }
-
   return (
     <>
       <h3>{getLocale('balanceInfo')}</h3>

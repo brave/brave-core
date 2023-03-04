@@ -109,9 +109,7 @@ class Contribution {
 
   void NotCompletedContributions(std::vector<mojom::ContributionInfoPtr> list);
 
-  void OnBalance(mojom::ContributionQueuePtr queue,
-                 const mojom::Result result,
-                 mojom::BalancePtr info);
+  void OnBalance(mojom::ContributionQueuePtr queue, FetchBalanceResult result);
 
   void CreateNewEntry(const std::string& wallet_type,
                       mojom::BalancePtr balance,
