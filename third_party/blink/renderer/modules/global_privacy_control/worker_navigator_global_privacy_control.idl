@@ -5,6 +5,6 @@
 
 [
     ImplementedAs=GlobalPrivacyControl
-] partial interface Navigator {
+] partial interface WorkerNavigator {
     readonly attribute boolean globalPrivacyControl;
 };
