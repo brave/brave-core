@@ -6,21 +6,29 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
 
+#include "third_party/blink/renderer/core/execution_context/navigator_base.h"
 #include "third_party/blink/renderer/modules/modules_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
-#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 
 namespace blink {
 
 class ScriptPromise;
 class ScriptState;
 
-class MODULES_EXPORT Brave final
-    : public ScriptWrappable {
+class MODULES_EXPORT Brave final : public ScriptWrappable,
+                                   public Supplement<NavigatorBase> {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  Brave() = default;
+  static const char kSupplementName[];
+
+  static Brave* brave(NavigatorBase& navigator);
+
+  explicit Brave(NavigatorBase& navigator);
+  ~Brave() override = default;
+
+  void Trace(Visitor*) const override;
+
   ScriptPromise isBrave(ScriptState*);
 };
 
