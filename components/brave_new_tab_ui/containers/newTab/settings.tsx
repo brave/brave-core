@@ -281,10 +281,9 @@ export default class Settings extends React.PureComponent<Props, State> {
         <SettingsMenu
           ref={this.settingsMenuRef}
           textDirection={textDirection}
-          title={getLocale('dashboardSettingsTitle')}
         >
           <SettingsTitle id='settingsTitle'>
-            <h1>{getLocale('dashboardSettingsTitle')}</h1>
+            <h1 title={getLocale('dashboardSettingsTitle')}>{getLocale('dashboardSettingsTitle')}</h1>
             <SettingsCloseIcon onClick={this.props.onClose}>
               <CloseStrokeIcon />
             </SettingsCloseIcon>
