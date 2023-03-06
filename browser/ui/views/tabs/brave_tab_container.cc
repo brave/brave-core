@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
@@ -111,7 +112,8 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
   }
 
   const auto slots_bounds = layout_helper_->CalculateIdealBounds(
-      available_width_callback_.is_null()
+      available_width_callback_.is_null() ||
+              base::FeatureList::IsEnabled(features::kScrollableTabStrip)
           ? absl::nullopt
           : absl::optional<int>(available_width_callback_.Run()));
   height =
