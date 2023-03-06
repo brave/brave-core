@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/command_line.h"
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
@@ -30,7 +30,7 @@ Browser* OpenNewBrowser(Profile* profile) {
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr);
   return chrome::FindBrowserWithProfile(profile);
 }
-}
+}  // namespace
 
 using BraveWelcomeUIBrowserTest = InProcessBrowserTest;
 
@@ -43,10 +43,12 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
   content::WebContents* web_contents = tab_strip->GetWebContentsAt(0);
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
-  EXPECT_STREQ("chrome://welcome/",
-            tab_strip->GetWebContentsAt(0)
-                ->GetController().GetLastCommittedEntry()
-                    ->GetVirtualURL().possibly_invalid_spec().c_str());
+  EXPECT_STREQ("chrome://welcome/", tab_strip->GetWebContentsAt(0)
+                                        ->GetController()
+                                        .GetLastCommittedEntry()
+                                        ->GetVirtualURL()
+                                        .possibly_invalid_spec()
+                                        .c_str());
 }
 
 // Check wheter startup url is not welcome ui at second run.
