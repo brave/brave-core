@@ -239,6 +239,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3507835409099344374">Odprite nastavitve obvestil v Braveu</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="245693535809364497">Brave potrebuje dovoljenje za dostop do fotoaparata zaradi ustvarjanja tridimenzionalnega zemljevida okolice.</translation>
+<translation id="5060669762365466104">Spletna mesta bodo verjetno delovala po pričakovanjih, vendar si vas ne bodo zapomnila, ko zaprete vsa okna Bravea.</translation>
 <translation id="6676384891291319759">Dostop do interneta</translation>
 <translation id="1363996462118479832">Chrome OS ni mogel sinhronizirati podatkov zaradi napake pri prijavi.</translation>
 <translation id="1257247502847251159">Brave potrebuje dovoljenje za mikrofon za to spletno mesto.</translation>
@@ -248,6 +249,7 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="7870748924073900361">Varčevanje s pomnilnikom je pospešilo Brave</translation>
 <translation id="6666624454809779082">Brave je že nameščen za vse uporabnike v računalniku.</translation>
 <translation id="5360050006043219962">Če želite do stvari v Braveu dostopati v vseh svojih napravah, se prijavite in nato vklopite sinhronizacijo.</translation>
+<translation id="3136039682492230890">Brave priporoča, da pregledate to datoteko, saj je morda nevarna.</translation>
 <translation id="8291513491595858997">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Omogočanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">Chrome OS omogoča dodatna <ph name="BEGIN_LINK_CROS_OSS"/>odprtokodna programska oprema<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
@@ -270,7 +272,6 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="1008530050039597147">Brave potrebuje dovoljenje za fotoaparat za to spletno mesto.</translation>
 <translation id="1197672524850678392">Bravea ni bilo mogoče zagnati. Poskusite znova.</translation>
 <translation id="3405035915691517126">Brave ne more preveriti gesel. Poskusite znova čez 24 ur.</translation>
-<translation id="5101812148953915496">Spletna mesta, ki jih obiščete, si zapomnijo vaše podatke, dokler ne zaprete Bravea.</translation>
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="713191641919118540">Vaša zanimanja po Braveovi oceni</translation>
 <translation id="9068395155143628872">Merjenje oglasov spletnim mestom omogoča, da od Bravea zahtevajo podatke, ki jim pomagajo pri merjenju učinkovitosti oglasov. Merjenje oglasov omejuje sledenje na več spletnih mestih s prenašanjem čim manj podatkov med spletnimi mesti.</translation>
@@ -341,8 +342,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="6283840329609797763">Namestitev ni uspela zaradi nenavedene napake. Znova prenesite Brave.</translation>
 <translation id="2433912322225810055">Določa tudi, katera stran je prikazana, ko zaženete Brave ali iščete v naslovni vrstici.</translation>
 <translation id="4100716194836114130">To je vaš Brave</translation>
-<translation id="6208136456999964972">Ko zaprete vsa okna Bravea, so piškotki in podatki spletnih mest samodejno izbrisani.</translation>
-<translation id="6371875426681214174">Ko zaprete Brave, boste <ph name="BEGIN_BOLD"/>odjavljeni z večine spletnih mest<ph name="END_BOLD"/>. Če je sinhronizacija izklopljena, boste prav tako <ph name="BEGIN_BOLD"/>odjavljeni iz Googlovih storitev in Bravea<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave potrebuje dovoljenje za dostop do fotoaparata in mikrofona za to spletno mesto</translation>
 <translation id="6933858244219479645">Sistem Chrome OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Kateri podatki se uporabljajo:<ph name="END_BOLD"/> Zgodovina brskanja, evidenca spletnih mest, ki ste jih obiskali s Braveom v tej napravi.</translation>
@@ -369,6 +368,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="1611678871603620428">Če želite prejemati prihodnje posodobitve Bravea, potrebujete macOS 10.13 ali novejšega. V tem računalniku je nameščen OS X 10.11.</translation>
 <translation id="4484434718272972655">Kdo uporablja Brave?</translation>
 <translation id="7173394303099002355">Prejmite Braveovo najmočnejšo varnost</translation>
+<translation id="5775101967851558962">Podatki spletnih mest se vedno izbrišejo iz naprave, ko zaprete Brave</translation>
 <translation id="8992261409816268381">Ustvarjalci Bravea</translation>
 <translation id="479793348545936567">Če želite ta račun uporabiti le enkrat, lahko v brskalniku Brave uporabite način za goste. Če želite dodati račun za nekoga drugega, <ph name="LINK_BEGIN"/>dodajte profil<ph name="LINK_END"/> za vaš <ph name="DEVICE_TYPE"/>.
 

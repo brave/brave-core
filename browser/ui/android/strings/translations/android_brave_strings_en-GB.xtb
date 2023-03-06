@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">You're not earning Brave Rewards</translation>
 <translation id="1483391942610220726">You're not receiving Privacy Reports</translation>
 <translation id="4683790942451502796">Turn notifications back on if you'd like to keep earning BAT and receiving weekly privacy reports.</translation>
-<translation id="8618359751943259593">Turn notifications back on if you'd like to keep earning BAT</translation>
+<translation id="8618359751943259593">Turn notifications back on if you'd like to keep earning BAT.</translation>
 <translation id="760355165169399836">Turn notifications back on if you'd like to keep receiving weekly privacy reports.</translation>
 <translation id="6268959058971634697">You're not earning Rewards</translation>
 <translation id="1088637159642753509">Enable device notifications to earn Brave Rewards and see Privacy Reports.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave shields global defaults</translation>
 <translation id="2675679258824361492">Other privacy settings</translation>
 <translation id="8026334261755873520">Clear browsing data</translation>
-<translation id="5965081608816406060">Background video playback</translation>
+<translation id="1690924763769415936">Background play</translation>
 <translation id="6332924730165919598">Closing all tabs closes Brave</translation>
-<translation id="3872768973878059926">Allows audio to continue playing when you switch to another tab in Brave, switch to another app or your device screen is off.</translation>
+<translation id="8308305244351876417">Allows audio to play when you switch to another tab in Brave or another app, or your device screen is off.</translation>
 <translation id="4150201353443180367">Display</translation>
 <translation id="2433507940547922241">Appearance</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.</translation>
 <translation id="635752162765375187">NOTE: this creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
+<translation id="2734870894159530879">Log in to <ph name="WALLET_PROVIDER"/> to see your balance</translation>
 <translation id="5830114181292529917">You can support this site by sending a tip. It's a way of thanking them for making great content.</translation>
 <translation id="7658239707568436148">Cancel</translation>
 <translation id="1201402288615127009">Next</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Show ads when Brave is not in use</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
 <translation id="6606319453795180219">This will delete your Brave Rewards and reset all of your Brave Rewards data</translation>
-<translation id="6810078320346589989">Create a bookmark</translation>
+<translation id="8293206222192510085">Add bookmark</translation>
+<translation id="340492034650766959">Delete bookmark</translation>
+<translation id="2149973817440762519">Edit bookmark</translation>
+<translation id="6819319915092566548">View bookmarks</translation>
 <translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
 <translation id="7473245612074035141">Begin Setup</translation>
 <translation id="8985635554450124959">Sync could not be set up</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Don't show again</translation>
 <translation id="496896260395129787">This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>re-create the account</translation>
-<translation id="8199291899164865593">Could not join this sync chain. Account was deleted.</translation>
+<translation id="4094590686212463338">Could not join this sync chain. The sync chain was deleted.</translation>
 <translation id="5633907266617216186">Addresses, payment info, etc.</translation>
 <translation id="1056898198331236512">Warning</translation>
 <translation id="1426410128494586442">Yes</translation>
@@ -371,6 +375,7 @@ Are you sure you want to do this?</translation>
 <translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
 <translation id="3200197118442451932">Brave Software Inc. does not process, store or access any of the personal information that you provide to <ph name="WALLET_PROVIDER"/> when you establish an account with them.</translation>
 <translation id="1665118090708049096">Go to my <ph name="WALLET_PROVIDER"/> account</translation>
+<translation id="4858636682078269312">Log in to your <ph name="WALLET_PROVIDER"/> account</translation>
 <translation id="8874184842967597500">Not connected</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Share Brave with your friends!</translation>
@@ -388,10 +393,10 @@ Are you sure you want to do this?</translation>
 <translation id="3624048886326677117">Block trackers &amp; ads (Aggressive)</translation>
 <translation id="7151914815476509258">Block trackers &amp; ads (Standard)</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
-<translation id="4941539331405513605">Block cross-site cookies</translation>
 <translation id="3763681089644577874">Block Cookies</translation>
 <translation id="614747795780742163">Prevents websites from storing information about your previous visits</translation>
 <translation id="6883611015375728278">Block all cookies</translation>
+<translation id="4941539331405513605">Block cross-site cookies</translation>
 <translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="3895527457258986253">Block fingerprinting</translation>
 <translation id="7854108565842971747">These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.</translation>
@@ -490,6 +495,8 @@ Are you sure you want to do this?</translation>
 <translation id="5705882733397021510">Go Back</translation>
 <translation id="3985567919248057638">Let's take a quick tour</translation>
 <translation id="7889432931837317731">Automatically open when possible</translation>
+<translation id="1029304566263314007">Show download progress notifications</translation>
+<translation id="2910433761530295035">Ask where to save files (if SD card is detected)</translation>
 <translation id="8967385052772844086">View full Privacy Report</translation>
 <translation id="6864343534748973390">Most popular</translation>
 <translation id="4608192160278975831">Private and no tracking</translation>
@@ -498,6 +505,7 @@ Are you sure you want to do this?</translation>
 <translation id="7320542277711359296">Second most popular</translation>
 <translation id="8295049095570748497">A leading search engine in Russia</translation>
 <translation id="2642661895835126239">Plants trees, based in Berlin</translation>
+<translation id="2422627462367776805">South Korean web portal &amp; search</translation>
 <translation id="177282784098234156">Private, independent, user-first</translation>
 <translation id="1410130669636877548">Some search engines protect your privacy better than others when you search the web.</translation>
 <translation id="5187052478998910855">Need a refresher on Rewards?</translation>
@@ -1016,7 +1024,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="9074594632540931067">Error: BAT unavailable</translation>
 <translation id="5382684862562314222">BAT is not yet supported in your region on Uphold.</translation>
 <translation id="6996157559236886133">Error: Limited Uphold account functionality</translation>
-<translation id="842321566508373706">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.</translation>
+<translation id="1677961202754619328">According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5425006356459378415">Brave Rewards not available</translation>
 <translation id="833643743158564518">New sign-ups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4071347720273751665">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Use ENS offchain domain</translation>
 <translation id="4982630604810554641">Searching for domain ...</translation>
+<translation id="4159738248012488342">Please select amount to tip</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="707569835145765061">Action required: connect a custodial account or your vBATs will be lost</translation>
+<translation id="1776742005329298234">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.</translation>
+<translation id="5089752671190341407">You still have time to contribute your vBATs to your favourite creators</translation>
+<translation id="171158953146804144">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION"/>) to withdraw your earnings. Until then, you can still contribute to your favourite creators.</translation>
 </translationbundle>

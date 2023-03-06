@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
+<translation id="7561196759112975576">हमेशा</translation>
+<translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="4615489450165434530">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="8097438084542431276">क्लीन लिंक को कॉपी करें</translation>
+<translation id="4678672101289648246">सिर्फ़ नए टैब पेज पर</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
+<translation id="8294286161128352783">सिर्फ़ नए टैब पेज पर</translation>
 <translation id="6406506848690869874">सिंक</translation>
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="2445484935443597917">नई प्रोफ़ाइल बनाएं</translation>
@@ -143,9 +147,7 @@
 <translation id="5977931179408079967">जगह</translation>
 <translation id="3790384768741064842">दाईं ओर ले जाएँ</translation>
 <translation id="7444424316576061724">बाईं ओर ले जाएँ</translation>
-<translation id="7561196759112975576">हमेशा</translation>
 <translation id="7060352228894039151">माउसओवर पर</translation>
-<translation id="7961015016161918242">कभी नहीं</translation>
 <translation id="8981254605840444865">सेटिंग दिखाएँ</translation>
 <translation id="59174027418879706">सक्षम किया गया</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -196,6 +198,10 @@
 <translation id="2058818256505091369">माउसओवर के दौरान फ़्लोट की सुविधा</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{टैब म्यूट करें}one{टैब म्यूट करें}other{टैब म्यूट करें}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{टैब अनम्‍यूट करें}one{टैब अनम्‍यूट करें}other{टैब अनम्‍यूट करें}}</translation>
+<translation id="3704707436873245822">ईमेज से टेक्स्ट कॉपी करें</translation>
+<translation id="5268098808165185458">ईमेज से टेक्स्ट कॉपी हो रहा है...</translation>
+<translation id="4046485130884276245">ईमेज से टेक्स्ट कॉपी हो गया है</translation>
+<translation id="3639779775496569782">टेक्स्ट कॉपी नहीं हो पाया</translation>
 <translation id="4235920711083356755">VPN बटन दिखाएं</translation>
 <translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -221,6 +227,7 @@
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
+<translation id="2702801445560668637">रीडिंग लिस्ट</translation>
 <translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
@@ -288,7 +295,10 @@ Binance
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="6333347122924254968">एड्रेस बार में  Brave Rewards आइकॉन दिखाएं</translation>
 <translation id="2245286910966863912">एड्रेस बार में Brave न्यूज़ का बटन दिखाएँ</translation>
-<translation id="1811404036171336214">हमेशा नए टैब पेज पर बुकमार्क दिखाएं</translation>
+<translation id="383007806262310953">बुकमार्क बार दिखाएं</translation>
+<translation id="4054323497808446566">बुकमार्क बार सभी पेज पर दिखाई देता है</translation>
+<translation id="8693858092251192712">नए टैब पेज को छोड़कर सभी पेज पर बुकमार्क बार छिपा हुआ रहता है</translation>
+<translation id="7158817046543187970">बुकमार्क बार सभी पेज छिपा हुआ रहता है</translation>
 <translation id="3416468988018290825">हमेशा पूरे URL दिखाएँ</translation>
 <translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
@@ -379,7 +389,6 @@ Binance
 <translation id="2635094637295383009">ट्विटर</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
-<translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -406,6 +415,10 @@ Binance
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">पूछें कि Solana प्रोवाइडर API को साइट कब ऐक्सेस करना चाहती है</translation>
 <translation id="2777102601740875941">साइट को Solana प्रोवाइडर API का ऐक्सेस करने से रोकें</translation>
+<translation id="4206299587103092719">Google में साइन-इन करें</translation>
+<translation id="7458736153596040880">जब कोई साइट लेगसी Google साइन-इन का इस्तेमाल करना चाहे, तो पूछें</translation>
+<translation id="459266451581663214">साइट को लेगसी Google साइन-इन का इस्तेमाल करने से रोकें</translation>
+<translation id="8098954941070626949">साइट को लेगसी Google साइन-इन का इस्तेमाल करने की इजाज़त दें</translation>
 <translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
 <translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
 <translation id="4332558599726753990">सिंक सेटअप</translation>
@@ -471,7 +484,7 @@ Binance
 <translation id="2516405584294312544">मिटाने की यह प्रक्रिया स्थायी होगी और डेटा को वापस नहीं पाया जा सकेगा. अगर आप फिर से
   सिंक इस्तेमाल करने के बारे में सोचते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से जोड़ना होगा.</translation>
 <translation id="4860996720371753023">अकाउंट मिटाया जा रहा है...</translation>
-<translation id="8199291899164865593">इस सिंक चेन में शामिल नहीं हो सकते. अकाउंट मिट चुका है.</translation>
+<translation id="4094590686212463338">इस सिंक चेन में शामिल नहीं हो सकते. यह सिंक चेन मिट चुकी है.</translation>
 <translation id="5633907266617216186">पते, भुगतान की जानकारी, वगैरह.</translation>
 <translation id="294985549514492876">वेब ऐप (PWA)</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
@@ -521,7 +534,6 @@ Binance
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
 <translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
-<translation id="3695088618483091287">Brave Wallet (एक्सटेंशन हो तो बेहतर है)</translation>
 <translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
 <translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>

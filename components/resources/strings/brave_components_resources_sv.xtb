@@ -171,7 +171,7 @@
 <translation id="4851215387785619212">Braves privata annonser</translation>
 <translation id="6480303618073442141">Privata annonser i Brave är diskreta och privata till sin utformning. Annonserna baseras på dina intressen, men inga personliga data eller webbhistorik lämnar din enhet någonsin. Det bästa med Privata annonser i Brave är att du tjänar BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) när de visas.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
-<translation id="3742599705619405136">Ett automatiskt sätt att stödja utgivare och contentskapare. Ställ in en månatlig betalning och surfa som vanligt. De Braveverifierade webbplatserna du besöker kommer att ta emot dina bidrag automatiskt, baserat på din uppmärksamhet som den mätts av Brave.</translation>
+<translation id="7437775146229396839">Ett automatiskt sätt att stödja webbplatser och innehållskreatörer. Ställ in ett månatligt bidragsbelopp och surfa normalt. <ph name="BEGIN_LINK"/>Verifierade webbplatser och kreatörer<ph name="END_LINK"/> som du besöker kommer att få bidrag från dig varje månad baserat på hur mycket tid du spenderar på deras innehåll.</translation>
 <translation id="3325399124634342726">Nuvarande förtjänster denna månad (beräknat)</translation>
 <translation id="8593551638387217772">Nästa betalningsdatum</translation>
 <translation id="4428871418618312983">Annonser mottagna denna månad</translation>
@@ -203,8 +203,6 @@
 <translation id="7577100371127227294">Månatliga dricks</translation>
 <translation id="178390304006113804">Ställ in återkommande månatliga dricks så att du kontinuerligt kan stödja dina favoritkreatörer.</translation>
 <translation id="3302159320447117425">Ingen månatlig dricks har konfigurerats än.</translation>
-<translation id="1847863811689960237">Belöna kreatörer för det innehåll du älskar.</translation>
-<translation id="4129489167302464118">Din månatliga budget distribueras över de webbplatser du besöker.</translation>
 <translation id="4898632353264854950">Webbplatser kommer dyka upp vartefter du surfar på webben</translation>
 <translation id="3024485967181749006">Total dricks denna månad</translation>
 <translation id="8183455888546367148">Totalt månatlig dricks denna månad</translation>
@@ -272,6 +270,8 @@
 <translation id="7849926087559412554">Hoppsan! Din webbläsare kan inte ta emot privata annonser från Brave.</translation>
 <translation id="5177429570315095022">För att fortsätta visa annonser behöver din webbläsare uppdateras.</translation>
 <translation id="7352651011704765696">Något gick fel</translation>
+<translation id="4593680147181354667">Diagnostik-id</translation>
+<translation id="3995471429906554168">Information om diagnostik</translation>
 <translation id="752216563428219524">Annonser har inte initierats, uppdatera sidan.</translation>
 <translation id="7422678632904904341">Belopp:</translation>
 <translation id="6969783933307596818">Uppdatera automatiskt var 5:e sekund</translation>
@@ -353,6 +353,8 @@
 <translation id="8874184842967597500">Inte ansluten</translation>
 <translation id="4569155249847375786">Verifierad</translation>
 <translation id="6521149675246672063">Frånkopplad (verifierad)</translation>
+<translation id="5058161306698404465">Skapandemiljö:</translation>
+<translation id="5856438412804207598">Nuvarande miljö:</translation>
 <translation id="5906820630265272615">BAT-fonder</translation>
 <translation id="5814098892838785557">Är du säker på att du vill sluta stödja den här skaparen?</translation>
 <translation id="6582097696555842139">Avsluta månatlig dricks</translation>
@@ -392,6 +394,7 @@
 <translation id="839058704683989763">Du har skapat en väntande dricks!</translation>
 <translation id="5096821444729034955">för deras inlägg</translation>
 <translation id="2978223787436054634">Tweeta om ditt stöd</translation>
+<translation id="976068305210640982">Du är för närvarande <ph name="BEGIN_LINK"/>utloggad.<ph name="LINK_END"/></translation>
 <translation id="5916290544882167205">Brave Software. Brave är ett registrerat varumärke tillhörande Brave Software. Namn på sajter kan vara skyddade namn eller registrerade varumärken tillhörande respektive sajts ägare.</translation>
 <translation id="9026369588205476247">För att skydda din integritet kommer detta kontoutdrag för Brave Rewards inte att sparas, spelas in eller loggas någon annanstans än på din enhet (den här datorn). Det kan inte hämtas från Brave i händelse av att din enhet förlorar data.</translation>
 <translation id="3587482841069643663">Alla</translation>
@@ -512,8 +515,8 @@
 <translation id="923467487918828349">Visa alla</translation>
 <translation id="5113531205597573951">Besökta webbplatser</translation>
 <translation id="4450893287417543264">Visa inte igen.</translation>
-<translation id="6518133107902771759">Verifiera</translation>
-<translation id="422369484771082705">Det är valfritt att verifiera. Men genom att verifiera kommer du att kunna ta ut dina BAT som tjänats in från Brave Rewards till en plånbok direkt.</translation>
+<translation id="7642372245223412840">Anslut till bitFlyer</translation>
+<translation id="6143701117592994599">Genom att ansluta Brave Rewards till ett bitFlyer-konto kan du tjäna BAT och ta ut dina BAT-intäkter från Brave Rewards.</translation>
 <translation id="4354564238172327160">Bli Brave-kreatör!</translation>
 <translation id="4639659520811817892">Besök creators.brave.com för att registrera dig idag och börja tjäna BAT från dina fans och följare.</translation>
 <translation id="4816455138209470435">Brave stöder YouTube, Twitch, Vimeo med flera!</translation>
@@ -549,9 +552,9 @@
 <translation id="4047002754575891955">Fortsätt med sökning utanför kedja</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Aktivera stöd för Solana Name Service (SNS) i Brave?</translation>
-<translation id="2350552210396418924">Brave kommer att använda Coinbase Cloud för namnuppslag av .sol-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer Coinbase att se att någon försöker besöka dessa .sol-domäner men inget annat. Se Coinbase Clouds<ph name="BEGIN_COINBASE_TOU_LINK"/>användningsvillkor<ph name="END_COINBASE_TOU_LINK"/> och<ph name="BEGIN_COINBASE_PRIVACY_LINK"/>sekretesspolicy<ph name="END_COINBASE_PRIVACY_LINK"/>.</translation>
+<translation id="3664848774480475984">Brave använder Syndica för att matcha .sol-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer Syndica att se att någon försöker besöka dessa .sol-domäner men inget annat. Se Syndicas <ph name="BEGIN_SYNDICA_TOU_LINK"/>användarvillkor<ph name="END_SYNDICA_TOU_LINK"/> och <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>integritetspolicy<ph name="END_SYNDICA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Fortsätt med Infura-server</translation>
-<translation id="2313603121968571839">Fortsätt med Coinbase Cloud-server</translation>
+<translation id="2824725477135051831">Fortsätt med Syndica-server</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="2468755552460246661">Blockerad domän</translation>
@@ -636,6 +639,7 @@
 <translation id="6318437367327684789">för alltid</translation>
 <translation id="8797999629784150206">Du kan ändra dina <ph name="SITE_PERMISSIONS"/> när som helst. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">webbplatsbehörighet</translation>
+<translation id="4355784577209159847">Tillåt användning av cookies från tredje part för äldre Google-inloggning</translation>
 <translation id="7717357606512850995">Kontrollera status</translation>
 <translation id="7306880305145342514">Grattis! Din <ph name="MONTH"/> är här!</translation>
 <translation id="3007207731685398329">Dina <ph name="AMOUNT"/> <ph name="MONTH"/> kommer om <ph name="DAYS"/></translation>
@@ -663,6 +667,7 @@
 <translation id="9013419433042554094">Hämta tokens</translation>
 <translation id="5544777623605368410">Vinstmedel</translation>
 <translation id="3273637494083639780">Tokens du tjänar den här månaden börjar behandlas den <ph name="DATE"/>.</translation>
+<translation id="5572389477027204985">Aktivera Brave-annonser</translation>
 <translation id="1029300693989825319">Detta kan variera beroende på marknadens volatilitet.</translation>
 <translation id="8334559352278209120">Ge</translation>
 <translation id="4782365133987903299">Du har <ph name="DAYS"/> kvar att göra anspråk</translation>
@@ -691,6 +696,10 @@
 <translation id="1609556006143307897">Du hjälper till att stödja innehållsskapare</translation>
 <translation id="6605147707233193230">Aktivera för att stödja innehållsskapare</translation>
 <translation id="5430495762768325224">Läs mer om BAT</translation>
+<translation id="4105212447337987768"><ph name="DATE"/> kommer vi att upphöra med stödet för befintliga virtuella BAT-saldon. Anslut ett depåkonto före detta datum så att vi kan överföra ditt intjänade saldo till ditt depåkonto, annars kommer ditt saldo att gå förlorat.</translation>
+<translation id="5684206602316433615"><ph name="DATE"/> kommer vi att upphöra med stödet för befintliga virtuella BAT-saldon. Tyvärr finns det inga tillgängliga förvaltare i din region (<ph name="REGION"/>) för att ta ut dina intäkter. Fram till dess kan du fortfarande ge bidrag till dina favoritkreatörer.</translation>
+<translation id="707569835145765061">Åtgärd krävs: Anslut ett depåkonto annars kommer dina vBAT att gå förlorade</translation>
+<translation id="5089752671190341407">Du har fortfarande tid att ge bidrag med din vBAT till dina favoritkreatörer</translation>
 <translation id="1258144146756156541">Bekräfta att du är en människa</translation>
 <translation id="1555514580945108302">Hmm… Inte direkt. Försök igen.</translation>
 <translation id="8078414184292711961">Dra BAT-ikonen till <ph name="HINT"/>-målet.</translation>
@@ -882,7 +891,8 @@
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="8712637175834984815">Uppfattat</translation>
 <translation id="6896758677409633944">Kopiera</translation>
-<translation id="2704606927547763573">Kopierat</translation>
+<translation id="7885157704277298658">Kopierades!</translation>
+<translation id="6518133107902771759">Verifiera</translation>
 <translation id="6042308850641462728">Mer</translation>
 <translation id="768236965975208017">Säkra. Flerkedja. Och ack så lätt att använda. Din Brave Wallet är bara några klick bort</translation>
 <translation id="3157931365184549694">Återställ</translation>
@@ -912,7 +922,7 @@
 <translation id="5168349973342709369">Ange lösenord för att låsa upp plånboken</translation>
 <translation id="9111102763498581341">Lås upp</translation>
 <translation id="5045550434625856497">Felaktigt lösenord</translation>
-<translation id="5242300593039211344">Lås plånbok</translation>
+<translation id="9175546523521600401">Lås plånbok</translation>
 <translation id="765834632354589737">Säkerhetskopiera plånbok</translation>
 <translation id="1108298724135935307">Anslutna webbplatser</translation>
 <translation id="163697698769819510">Säkerhetskopiera din plånbok nu för att skydda dina tillgångar och se till att du aldrig förlorar åtkomst.</translation>
@@ -926,7 +936,6 @@
 <translation id="4359319875297001084">Importera från äldre Brave krypto-plånböcker?</translation>
 <translation id="3331452756822160641">Nytt lösenord</translation>
 <translation id="8624315169751085215">Kopiera till Urklipp</translation>
-<translation id="7885157704277298658">Kopierad!</translation>
 <translation id="6346952829206698721">Klistra in från urklipp</translation>
 <translation id="1121335910737476837">Primära kryptokonton</translation>
 <translation id="6969147029062037757">Importerade konton</translation>
@@ -981,6 +990,7 @@
 <translation id="7978047524114351365">Inga tillgångar är namngivna</translation>
 <translation id="9040455159722359521">Sök efter tillgångar eller kontraktadress</translation>
 <translation id="6018178824574796106">Det gick inte att lägga till anpassad token. Vänligen försök igen.</translation>
+<translation id="5138307340667775659">Denna token har redan lagts till i din portfölj.</translation>
 <translation id="547122651977318828">Token-ID (endast för ERC721)</translation>
 <translation id="7544552854944350190">Token-ID är obligatoriskt</translation>
 <translation id="3842236145820483340">Coingecko-ID</translation>
@@ -1023,6 +1033,7 @@
 <translation id="5294062982587710720">Uppmärksamma att Brave inte kan’ verifiera vad som händer om du signerar. En signatur kan godkänna nästan alla operationer på ditt konto eller för dina räkning, inklusive (men inte begränsat till) att ge fullständig kontroll över ditt konto och kryptotillgångar till webbplatsen som gör begäran. Skriv bara om du’är säker på att du vill vidta denna åtgärden och lita på den begärande webbplatsen.</translation>
 <translation id="3474375934783434676">Registrera på egen risk</translation>
 <translation id="5488357322146334497">Meddelande</translation>
+<translation id="7702907602086592255">Domän</translation>
 <translation id="3586752056660754651">Signera</translation>
 <translation id="3484981968509595506">En DApp begär att få din offentliga krypteringsnyckel</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> begär din plånboks offentliga krypteringsnyckel. Om du samtycker till att tillhandahålla den här nyckeln kan webbplatsen skriva krypterade meddelanden till dig.</translation>
@@ -1147,6 +1158,7 @@
 <translation id="4667144295226514387">Gasgräns saknas</translation>
 <translation id="2021522108838444624">Beloppet måste vara större än 0</translation>
 <translation id="8464365289405373974">Till-adress krävs</translation>
+<translation id="4884792073752467460">Ogiltig mottagaradress</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="1118876217803190221">Otillräcklig balans</translation>
@@ -1215,7 +1227,7 @@
 <translation id="1695096446857675822">Saldo ↓</translation>
 <translation id="8151187584908138100">Namn ↓</translation>
 <translation id="883138507248906253">Namn ↑</translation>
-<translation id="7198018180583855568">Alla konton</translation>
+<translation id="7662492121143629144">Alla konton</translation>
 <translation id="6954150712710630841">Transaktion skickad</translation>
 <translation id="905855245798176174">Transaktionen har skickats till nätverket och väntar på bekräftelse.</translation>
 <translation id="619697073289995370">Transaktionen har signerats</translation>
@@ -1412,6 +1424,8 @@
 <translation id="1763942310723636241">Tokeninformation</translation>
 <translation id="2938264474197978104">Dölj <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">Dölja token?</translation>
+<translation id="6779155810671793329">Kontraktsadress för token</translation>
+<translation id="871123550184744265">Token Decimal</translation>
 <translation id="4038384774641714579">Du kan göra den här tillgången synlig igen i framtiden genom att klicka på knappen "+ Synliga tillgångar" längst ner på fliken "Portfölj"</translation>
 <translation id="1026825928738055872">Vill du ta bort "<ph name="ACCOUNT_NAME"/>"?</translation>
 <translation id="3910551537328657217">Begär funktion</translation>
@@ -1466,10 +1480,16 @@
 <translation id="4029551149873989025">Växla nätverk</translation>
 <translation id="7561262633951061138">Bästa</translation>
 <translation id="3143110700666266545">Den här appen använder följande API:er från tredje part:</translation>
-<translation id="8411419545176806786">Växla i Brave använder 0x som en DEX-aggregator för EVM-nätverk som stöds. 0x kommer att bearbeta Ethereums plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). 0x kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
-<translation id="7467728126359974661">Växla i Brave använder Jupiter som en DEX-aggregator för Solana-nätverket. Jupiter kommer att bearbeta Solanas plånboksadress och IP-adress för att genomföra en transaktion (inklusive att få offerter). Jupiter kommer ENDAST att använda dessa uppgifter i syfte att bearbeta transaktioner.</translation>
-<translation id="8497751359931572880">Klicka här för att visa sekretesspolicyn för 0x.</translation>
-<translation id="4904748904130272182">Klicka här för att visa sekretesspolicyn för Jupiter.</translation>
+<translation id="163536108506359457">Brave Swap använder <ph name="AGGREGATOR"/> som en DEX-aggregator för <ph name="NETWORKS"/>-nätverk som stöds. <ph name="AGGREGATOR"/> kommer att behandla <ph name="NETWORK"/>-plånbokadressen och IP-adressen för att uppfylla en transaktion (inklusive att få offerter). <ph name="AGGREGATOR"/> kommer ENDAST att använda dessa data för att behandla transaktioner.</translation>
+<translation id="1847885264294023691">Klicka här för <ph name="AGGREGATOR"/> integritetspolicy.</translation>
+<translation id="9218424917282368512">Ändra nätverk</translation>
+<translation id="644984757357042735">Nätverk krävs</translation>
+<translation id="132243864024778443">Tokennamn krävs</translation>
+<translation id="3617263699756744037">Ogiltig eller tom tokenkontraktsadress</translation>
+<translation id="2077392865355605472">Tokensymbol krävs</translation>
+<translation id="4636925020451566238">Tokendecimaler med precisionsvärde krävs</translation>
+<translation id="3797613444743816037">Minta adress</translation>
+<translation id="7951915459354237451">Avgiftsgränsen är lägre än grundavgiften. Din transaktion kan ta lång tid eller misslyckas.</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>

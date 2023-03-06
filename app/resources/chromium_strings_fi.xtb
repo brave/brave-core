@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
 <translation id="245693535809364497">Brave tarvitsee kameran luvan, jotta se voi luoda 3D-kartan ympäristöstäsi</translation>
+<translation id="5060669762365466104">Sivustot toimivat todennäköisesti odotetulla tavalla, mutta ne eivät muista sinua suljettuasi kaikki Brave-ikkunat</translation>
 <translation id="6676384891291319759">Käytä internetiä</translation>
 <translation id="1363996462118479832">Brave-käyttöjärjestelmä ei voi synkronoida dataa kirjautumisvirheen vuoksi.</translation>
 <translation id="1257247502847251159">Brave tarvitsee mikrofonin luvan tällä sivustolla</translation>
@@ -246,6 +247,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="7870748924073900361">Muistinsäästö nopeuttaa Braveia</translation>
 <translation id="6666624454809779082">Brave on jo asennettuna kaikille tietokoneen käyttäjille.</translation>
 <translation id="5360050006043219962">Jos haluat pääsyn Brave-sisältöösi kaikilla laitteilla, kirjaudu sisään ja laita sitten synkronointi päälle.</translation>
+<translation id="3136039682492230890">Brave suosittelee tiedoston skannaamista, koska se voi olla vaarallinen.</translation>
 <translation id="8291513491595858997">Vanhempasi ovat laittaneet Bravein sivustojen, sovellusten ja laajennusten käyttöluvat pois päältä. Käyttöönottoa (<ph name="EXTENSION_TYPE_PARAMETER"/>) ei sallita.</translation>
 <translation id="1547295885616600893">Toinen <ph name="BEGIN_LINK_CROS_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_CROS_OSS"/> tukee Brave-käyttöjärjestelmää.</translation>
 <translation id="8211837073776713955">Brave ilmoittaa sinulle, jos salasanasi ovat vaarantuneet</translation>
@@ -268,7 +270,6 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="1008530050039597147">Brave tarvitsee kameran luvan tällä sivustolla</translation>
 <translation id="1197672524850678392">Bravein käynnistäminen epäonnistui. Yritä uudelleen.</translation>
 <translation id="3405035915691517126">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin päästä.</translation>
-<translation id="5101812148953915496">Avaamasi sivustot muistavat tietosi, kunnes suljet Bravein</translation>
 <translation id="5516268345616100622">Tehtävänhallinta - Brave</translation>
 <translation id="713191641919118540">Bravein arvio kiinnostuksen kohteistasi</translation>
 <translation id="9068395155143628872">Mainosten mittaamisen avulla käyttämäsi sivustot voivat pyytää Braveilta tietoja, jotka auttavat mittaamaan sivustoilla näkyvien mainosten suoriutumista. Mainosten mittaaminen rajoittaa sivustojen välistä seurantaa siirtämällä mahdollisimman vähän tietoja sivustojen välillä.</translation>
@@ -339,8 +340,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="6283840329609797763">Asennus epäonnistui määrittelemättömän virheen vuoksi. Lataa Brave uudelleen.</translation>
 <translation id="2433912322225810055">Määrittää myös Bravein ja omnibox-hakujen aloitussivun.</translation>
 <translation id="4100716194836114130">Tämä on oma Braveisi</translation>
-<translation id="6208136456999964972">Kun suljet kaikki Brave-ikkunat, evästeet ja sivustodata tyhjennetään automaattisesti</translation>
-<translation id="6371875426681214174">Kun suljet Bravein, sinut <ph name="BEGIN_BOLD"/>kirjataan ulos useimmilta sivustoilta<ph name="END_BOLD"/>. Jos synkronointi on pois päältä, sinut <ph name="BEGIN_BOLD"/>kirjataan ulos myös Braven palveluista ja Braveista<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave tarvitsee oikeuden käyttää kameraasi ja mikrofoniasi tällä sivustolla.</translation>
 <translation id="6933858244219479645">Brave-käyttöjärjestelmä</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Mitä dataa käytetään:<ph name="END_BOLD"/> Selaushistoriaasi eli tietoa sivustoista, jotka olet avannut Braveissa tällä laitteella</translation>
@@ -367,6 +366,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1611678871603620428">Jotta saat tulevia Bravein päivityksiä, sinulla on oltava macOS 10.13 tai uudempi. Tällä tietokoneella on OS X 10.11.</translation>
 <translation id="4484434718272972655">Kuka käyttää Braveia?</translation>
 <translation id="7173394303099002355">Ota Bravein tehokkain suojaus käyttöön</translation>
+<translation id="5775101967851558962">Tyhjennä sivustodata aina laitteelta, kun suljet Bravein</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Jos haluat käyttää tätä tiliä vain kerran, voit käyttää Brave-selaimen vierastilaa. Jos haluat lisätä tilin toiselle käyttäjälle, <ph name="LINK_BEGIN"/>lisää uusi profiili<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>.
 

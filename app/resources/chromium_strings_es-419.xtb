@@ -235,6 +235,7 @@
 <translation id="3507835409099344374">Ir a la configuración de notificaciones Brave</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="245693535809364497">Brave necesita permiso de acceso a la cámara para crear un mapa 3D de tu entorno.</translation>
+<translation id="5060669762365466104">Es probable que los sitios funcionen como esperas, pero no te recordarán cuando cierres todas las ventanas de Brave</translation>
 <translation id="6676384891291319759">Acceder a Internet</translation>
 <translation id="1363996462118479832">Brave OS no pudo sincronizar los datos porque se produjo un error de acceso.</translation>
 <translation id="1257247502847251159">Brave necesita permiso de acceso al micrófono para este sitio.</translation>
@@ -242,6 +243,7 @@
 <translation id="7870748924073900361">El Ahorro de memoria hizo que Brave sea más rápido</translation>
 <translation id="6666624454809779082">Brave ya está instalado para todos los usuarios en tu computadora.</translation>
 <translation id="5360050006043219962">A fin de ver tu contenido de Brave en todos tus dispositivos, accede a tu cuenta y activa la sincronización.</translation>
+<translation id="3136039682492230890">Brave recomienda analizar el archivo porque puede ser peligroso.</translation>
 <translation id="8291513491595858997">Tu padre o madre desactivaron la opción "Permisos para sitios, apps y extensiones" para Brave. No se permite habilitar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">Brave OS es posible gracias a los <ph name="BEGIN_LINK_CROS_OSS"/>software de código abierto<ph name="END_LINK_CROS_OSS"/> adicionales.</translation>
 <translation id="8211837073776713955">Brave te informará si tus contraseñas se ven comprometidas</translation>
@@ -264,7 +266,6 @@
 <translation id="1008530050039597147">Brave necesita permiso de acceso a la cámara para este sitio.</translation>
 <translation id="1197672524850678392">No se pudo iniciar Brave. Vuelve a intentarlo.</translation>
 <translation id="3405035915691517126">Brave no puede revisar las contraseñas. Vuelve a intentarlo después de 24 horas.</translation>
-<translation id="5101812148953915496">Los sitios que visitas recordarán tu información hasta que cierres Brave</translation>
 <translation id="5516268345616100622">Administrador de tareas - Brave</translation>
 <translation id="713191641919118540">Tus intereses estimados por Brave</translation>
 <translation id="9068395155143628872">La medición de anuncios les permite a los sitios que visitas solicitar información a Brave a fin de medir el rendimiento de los anuncios. La medición de anuncios restringe el seguimiento entre sitios web, ya que se transfiere la menor cantidad de información posible entre sitios.</translation>
@@ -333,8 +334,6 @@
 <translation id="6283840329609797763">La instalación falló debido a un error no especificado. Descarga Brave otra vez.</translation>
 <translation id="2433912322225810055">También controla qué página se muestra al iniciar Brave o al realizar búsquedas desde el cuadro multifunción.</translation>
 <translation id="4100716194836114130">Este es tu Brave</translation>
-<translation id="6208136456999964972">Cuando cierres todas las ventanas de Brave, se borrarán automáticamente las cookies y los datos de sitios</translation>
-<translation id="6371875426681214174"><ph name="BEGIN_BOLD"/>Saldrás de la mayoría de los sitios<ph name="END_BOLD"/> cuando cierres Brave. Si la sincronización está desactivada, también <ph name="BEGIN_BOLD"/>saldrás de los servicios de Brave y Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave necesita permiso para acceder a tu cámara y micrófono para este sitio</translation>
 <translation id="6933858244219479645">Sistema de Brave OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Qué información se usa:<ph name="END_BOLD"/> Tu historial de navegación, un registro de los sitios que visitaste con Brave en este dispositivo.</translation>
@@ -361,6 +360,7 @@
 <translation id="1611678871603620428">Para obtener próximas actualizaciones de Brave, necesitarás macOS 10.13 o versiones posteriores. Esta computadora usa OS X 10.11.</translation>
 <translation id="4484434718272972655">¿Quién usa Brave?</translation>
 <translation id="7173394303099002355">Obtén la seguridad más sólida de Brave</translation>
+<translation id="5775101967851558962">Siempre borrar los datos de sitios de tu dispositivo cuando cierras Brave</translation>
 <translation id="8992261409816268381">Los creadores de Brave</translation>
 <translation id="479793348545936567">Si solo quieres utilizar esta cuenta una vez, puedes usar el navegador de Brave en modo invitado. Si quieres añadir una cuenta para otra persona, <ph name="LINK_BEGIN"/> añade un nuevo perfil<ph name="LINK_END"/> a tu <ph name="DEVICE_TYPE"/>.
 

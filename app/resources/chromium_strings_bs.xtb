@@ -239,6 +239,7 @@ Neke funkcije možda neće biti dostupne i promjene postavki se neće sačuvati.
 <translation id="3507835409099344374">Idi u postavke obavještenja Bravea</translation>
 <translation id="9156965752763025780">Vaše promjene će stupiti na snagu kada sljedeći put budete ponovo pokrenuli Brave.</translation>
 <translation id="245693535809364497">Braveu je potrebno odobrenje za kameru radi kreiranja 3D mape vašeg okruženja</translation>
+<translation id="5060669762365466104">Web lokacije će vjerovatno funkcionirati kako očekujete, ali vas neće zapamtiti nakon što zatvorite sve prozore Bravea</translation>
 <translation id="6676384891291319759">Pristupite internetu</translation>
 <translation id="1363996462118479832">ChromeOS nije sinhronizirao vaše podatke zbog greške prilikom prijave.</translation>
 <translation id="1257247502847251159">Braveu je za ovu web lokaciju potrebno odobrenje za mikrofon</translation>
@@ -248,6 +249,7 @@ Moguće je da neke funkcije neće biti dostupne. Odredite drugi direktorij profi
 <translation id="7870748924073900361">Ušteda memorije ubrzava rad Bravea</translation>
 <translation id="6666624454809779082">Brave je već instaliran za sve korisnike na računaru.</translation>
 <translation id="5360050006043219962">Prijavite se, a zatim uključite sinhronizaciju da pristupite svojim Brave stvarima na svim svojim uređajima.</translation>
+<translation id="3136039682492230890">Brave preporučuje skeniranje ovog fajla jer bi mogao biti opasan.</translation>
 <translation id="8291513491595858997">Tvoj roditelj je isključio "Odobrenja za web lokacije, aplikacije i ekstenzije" za Brave. Omogućavanje ove stavke (<ph name="EXTENSION_TYPE_PARAMETER"/>) nije dozvoljeno.</translation>
 <translation id="1547295885616600893">ChromeOS omogućava dodatni <ph name="BEGIN_LINK_CROS_OSS"/>softver otvorenog koda<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave vas obavještava ako sigurnost vaših lozinki bude ugrožena</translation>
@@ -270,7 +272,6 @@ uparivanjem. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/><
 <translation id="1008530050039597147">Braveu je za ovu web lokaciju potrebno odobrenje za kameru</translation>
 <translation id="1197672524850678392">Pokretanje Bravea nije uspjelo. Pokušajte ponovo.</translation>
 <translation id="3405035915691517126">Brave ne može provjeravati vaše lozinke. Pokušajte ponovo za 24 sata.</translation>
-<translation id="5101812148953915496">Web lokacije koje posjetite pamte vaše podatke dok ne zatvorite Brave</translation>
 <translation id="5516268345616100622">Upravitelj zadataka za Brave</translation>
 <translation id="713191641919118540">Vaša interesovanja prema Braveovoj procjeni</translation>
 <translation id="9068395155143628872">Mjerenje oglasa omogućava web lokacijama koje posjećujete da zatraže informaciju iz Bravea koja će im pomoći da izmjere performanse svojih oglasa. Mjerenje oglasa ograničava unakrsno praćenje web lokacija prenoseći minimalnu količinu informacija između njih.</translation>
@@ -341,8 +342,6 @@ Brave ne može vratiti vaše postavke.</translation>
 <translation id="6283840329609797763">Instalacija nije uspjela zbog neodređene greške. Ponovo preuzmite Brave.</translation>
 <translation id="2433912322225810055">Također kontrolira koja stranica će se prikazati kada pokrenete Brave ili budete pretraživali iz višenamjenskog okvira.</translation>
 <translation id="4100716194836114130">Ovo je vaš Brave</translation>
-<translation id="6208136456999964972">Kada zatvorite sve prozore Bravea, kolačići i podaci web lokacija se automatski brišu</translation>
-<translation id="6371875426681214174"><ph name="BEGIN_BOLD"/>Odjavit ćete se s većine web lokacija<ph name="END_BOLD"/> kada zatvorite Brave. Ako je sinhronizacija isključena, također ćete se <ph name="BEGIN_BOLD"/>odjaviti s Braveovih usluga i Bravea<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave traži odobrenje za pristup vašoj kameri i mikrofonu na ovoj web lokaciji</translation>
 <translation id="6933858244219479645">Sistem ChromeOS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Koji podaci se koriste:<ph name="END_BOLD"/> vaša historija pregledanja, zapisi o web lokacijama koje ste posjetili koristeći Brave na ovom uređaju.</translation>
@@ -369,6 +368,7 @@ Brave ne može vratiti vaše postavke.</translation>
 <translation id="1611678871603620428">Da primate buduća ažuriranja za Brave, trebat će vam macOS 10.13 ili novija verzija. Ovaj računar koristi OS X 10.11.</translation>
 <translation id="4484434718272972655">Ko koristi Brave?</translation>
 <translation id="7173394303099002355">Odaberite maksimalnu sigurnost koju nudi Brave</translation>
+<translation id="5775101967851558962">Uvijek obrišite podatke web lokacije s uređaja kada zatvorite Brave</translation>
 <translation id="8992261409816268381">Autori Bravea</translation>
 <translation id="479793348545936567">Ako želite koristiti ovaj račun samo jednom, možete koristiti Način rada za gosta u pregledniku Brave. Ako želite dodati račun za nekog drugog, <ph name="LINK_BEGIN"/>dodajte novu osobu<ph name="LINK_END"/> na uređaj <ph name="DEVICE_TYPE"/>.
 

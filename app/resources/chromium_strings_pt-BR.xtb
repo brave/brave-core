@@ -235,6 +235,7 @@
 <translation id="3507835409099344374">Acessar as configurações de notificação do Brave</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="245693535809364497">O Brave precisa da permissão de acesso à câmera para criar um mapa 3D do ambiente</translation>
+<translation id="5060669762365466104">Os sites provavelmente vão funcionar conforme o esperado, mas não se lembrarão dos seus dados depois que você fechar todas as janelas do Brave</translation>
 <translation id="6676384891291319759">Acessar a internet</translation>
 <translation id="1363996462118479832">O ChromeOS não pôde sincronizar seus dados devido a um erro durante o login.</translation>
 <translation id="1257247502847251159">O Brave precisa da permissão de acesso ao microfone para este site</translation>
@@ -242,6 +243,7 @@
 <translation id="7870748924073900361">A Economia de memória tornou o Brave mais rápido</translation>
 <translation id="6666624454809779082">O Brave já está instalado para todos os usuários do seu computador.</translation>
 <translation id="5360050006043219962">Para ter acesso aos recursos do Brave em todos os seus dispositivos, faça login e ative a sincronização.</translation>
+<translation id="3136039682492230890">O Brave recomenda verificar esse arquivo, porque ele pode ser perigoso.</translation>
 <translation id="8291513491595858997">Seu familiar responsável desativou "Permissões para sites, apps e extensões" no Brave. Não é permitido ativar <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">A existência do ChromeOS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8211837073776713955">O Brave avisa se suas senhas forem comprometidas</translation>
@@ -264,7 +266,6 @@
 <translation id="1008530050039597147">O Brave precisa da permissão de acesso à câmera para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">Não foi possível verificar suas senhas. Tente novamente em 24 horas.</translation>
-<translation id="5101812148953915496">Os sites que você acessar armazenarão suas informações até que o Brave seja fechado</translation>
 <translation id="5516268345616100622">Gerenciador de tarefas - Brave</translation>
 <translation id="713191641919118540">Seus interesses estimados pelo Brave</translation>
 <translation id="9068395155143628872">A medição de anúncios permite que os sites que você visita solicitem informações do Brave, ajudando a medir o desempenho dos anúncios. Ela também restringe o rastreamento entre sites transferindo o mínimo de informações possível entre eles.</translation>
@@ -333,8 +334,6 @@
 <translation id="6283840329609797763">Falha na instalação devido a um erro não especificado. Faça o download do Brave novamente.</translation>
 <translation id="2433912322225810055">Controla também qual página deve ser exibida quando você inicia o Brave ou faz uma pesquisa na Omnibox.</translation>
 <translation id="4100716194836114130">Este é seu Brave</translation>
-<translation id="6208136456999964972">Quando você fechar todas as janelas do Brave, os cookies e os dados dos sites serão apagados automaticamente</translation>
-<translation id="6371875426681214174">Sua conta será <ph name="BEGIN_BOLD"/>desconectada da maioria dos sites<ph name="END_BOLD"/> quando você fechar o Brave. Se a sincronização estiver desativada, a conta também será <ph name="BEGIN_BOLD"/>desconectada dos Serviços do Brave e do navegador<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">O Brave precisa de permissão para este site acessar sua câmera e seu microfone</translation>
 <translation id="6933858244219479645">Sistema ChromeOS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Quais dados são usados<ph name="END_BOLD"/>: seu histórico de navegação, um registro de sites visitados usando o Brave neste dispositivo.</translation>
@@ -361,6 +360,7 @@
 <translation id="1611678871603620428">Para receber as próximas atualizações do Brave, você vai precisar do macOS 10.13 ou mais recente. Este computador está usando o OS X 10.11.</translation>
 <translation id="4484434718272972655">Quem está usando o Brave?</translation>
 <translation id="7173394303099002355">Use o nível mais alto de segurança do Brave</translation>
+<translation id="5775101967851558962">Sempre limpar os dados do site do seu dispositivo ao fechar o Brave</translation>
 <translation id="8992261409816268381">Autores do Brave</translation>
 <translation id="479793348545936567">Se você deseja usar esta conta apenas uma vez, é possível utilizar o modo visitante no navegador Brave. Se você deseja adicionar uma conta para outra finalidade, <ph name="LINK_BEGIN"/>adicione um novo perfil<ph name="LINK_END"/> ao seu <ph name="DEVICE_TYPE"/>.
 

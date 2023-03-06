@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">A Brave értesítési beállításainak megnyitása</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="245693535809364497">A Bravenak kamerahasználati engedélyre van szüksége, hogy 3D-s térképet készíthessen az Ön környezetéről</translation>
+<translation id="5060669762365466104">A webhelyek valószínűleg a várt módon fognak működni, de nem fognak emlékezni az Ön tevékenységeire, miután bezárta az összes Brave-ablakot.</translation>
 <translation id="6676384891291319759">Internetelérés</translation>
 <translation id="1363996462118479832">A ChromeOS egy bejelentkezési hiba miatt nem tudta szinkronizálni az adatokat.</translation>
 <translation id="1257247502847251159">A Bravenak mikrofonhasználati engedélyre van szüksége ehhez a webhelyhez</translation>
@@ -244,6 +245,7 @@
 <translation id="7870748924073900361">A memóriatakarékos mód felgyorsította a Braveot</translation>
 <translation id="6666624454809779082">A Brave már telepítve van az összes felhasználó számára a számítógépen.</translation>
 <translation id="5360050006043219962">Ha szeretne minden eszközén hozzáférni Brave-anyagaihoz, jelentkezzen be, majd kapcsolja be a szinkronizálást.</translation>
+<translation id="3136039682492230890">A Brave a fájl ellenőrzését javasolja, mert veszélyes lehet.</translation>
 <translation id="8291513491595858997">Szülőd kikapcsolta a Brave „Engedélyek webhelyek, alkalmazások és bővítmények számára” beállítását. A(z) <ph name="EXTENSION_TYPE_PARAMETER"/> nem engedélyezhető.</translation>
 <translation id="1547295885616600893">A ChromeOS létrejöttéhez további <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak.</translation>
 <translation id="8211837073776713955">A Brave tájékoztatja arról, ha jelszavai illetéktelen kezekbe kerülnek</translation>
@@ -266,7 +268,6 @@
 <translation id="1008530050039597147">A Bravenak kamerahasználati engedélyre van szüksége ehhez a webhelyhez</translation>
 <translation id="1197672524850678392">Nem sikerült a Brave elindítása. Próbálkozzon újra.</translation>
 <translation id="3405035915691517126">A Brave nem tudja ellenőrizni a jelszavait. Próbálja újra 24 óra múlva.</translation>
-<translation id="5101812148953915496">A felkeresett webhelyek megjegyzik az Ön adatait a Brave bezárásáig</translation>
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
 <translation id="713191641919118540">Az Ön Brave által megbecsült érdeklődési körei</translation>
 <translation id="9068395155143628872">A hirdetésmérés segítségével az Ön által felkeresett webhelyek olyan adatokat kérhetnek a Bravetól, amelyek segítségével a webhely mérheti hirdetéseinek teljesítményét. A hirdetésmérés azáltal korlátozza a webhelyeken átnyúló nyomon követést, hogy a lehető legkevesebb adatot továbbítja a webhelyek között.</translation>
@@ -337,8 +338,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6283840329609797763">A telepítés egy meg nem határozott hiba miatt nem sikerült. Kérjük, töltse le újra a Braveot.</translation>
 <translation id="2433912322225810055">Továbbá azt is szabályozza, hogy melyik oldal jelenik meg a Brave indításakor vagy a cím- és keresősávban indított kereséskor.</translation>
 <translation id="4100716194836114130">Ez az Ön Braveja</translation>
-<translation id="6208136456999964972">A Brave ablakainak bezárásakor a cookie-kat és webhelyadatokat automatikusan törli a rendszer.</translation>
-<translation id="6371875426681214174">A <ph name="BEGIN_BOLD"/>legtöbb webhelyről kijelentkezteti<ph name="END_BOLD"/> Önt a rendszer a Brave bezárásakor. Ha pedig a szinkronizálás is ki van kapcsolva, akkor <ph name="BEGIN_BOLD"/>a Brave-szolgáltatásokból és a Braveból is megtörténik a kijelentkezés<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a kamerához és a mikrofonhoz ennél a webhelynél</translation>
 <translation id="6933858244219479645">ChromeOS rendszer</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>A felhasznált adatok:<ph name="END_BOLD"/> Böngészési előzményei, az Ön által az ezen az eszközön használt Braveban felkeresett webhelyek jegyzéke.</translation>
@@ -365,6 +364,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="1611678871603620428">Ha a jövőben Brave-frissítéseket szeretne kapni, akkor a macOS 10.13-as vagy újabb verziójára lesz szüksége. Ezen a számítógépen az OS X 10.11 fut.</translation>
 <translation id="4484434718272972655">Ki használja a Braveot?</translation>
 <translation id="7173394303099002355">Állítsa be a Brave legerősebb védelmét</translation>
+<translation id="5775101967851558962">Mindig törölje a webhelyadatokat az eszközről a Brave bezárásakor</translation>
 <translation id="8992261409816268381">A Brave szerzői</translation>
 <translation id="479793348545936567">Ha ezt a fiókot csak egyszer szeretné használni, használhatja a vendég üzemmódot a Brave böngészőben. Ha másvalaki számára szeretne fiókot hozzáadni, <ph name="LINK_BEGIN"/>adjon hozzá új profilt <ph name="LINK_END"/><ph name="DEVICE_TYPE"/> eszközéhez.
 

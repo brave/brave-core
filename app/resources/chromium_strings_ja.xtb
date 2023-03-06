@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="245693535809364497">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
+<translation id="5060669762365466104">サイトはおおむね想定どおりに機能しますが、Brave のウィンドウをすべて閉じるとユーザーに関する情報は失われます</translation>
 <translation id="6676384891291319759">インターネットにアクセス</translation>
 <translation id="1363996462118479832">ログイン時にエラーが発生したため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="1257247502847251159">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
@@ -246,6 +247,7 @@
 <translation id="7870748924073900361">メモリセーバーで Brave の速度を向上</translation>
 <translation id="6666624454809779082">Brave は既にパソコンのすべてのユーザーに対してインストールされています。</translation>
 <translation id="5360050006043219962">お使いのすべてのデバイスで Brave の設定やデータを使用するには、ログインして同期を有効にしてください。</translation>
+<translation id="3136039682492230890">このファイルは危害を及ぼす可能性があるため、スキャンすることをおすすめします。</translation>
 <translation id="8291513491595858997">保護者が Brave の「サイト、アプリ、拡張機能の権限」をオフにしました。この <ph name="EXTENSION_TYPE_PARAMETER"/> を有効にすることはできません。</translation>
 <translation id="1547295885616600893">Chrome OS は、追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
 <translation id="8211837073776713955">Brave では、特定のパスワードが侵害された事実の有無がわかります</translation>
@@ -267,7 +269,6 @@
 <translation id="1008530050039597147">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
 <translation id="3405035915691517126">Brave でパスワードを確認できません。24 時間後にもう一度お試しください。</translation>
-<translation id="5101812148953915496">Brave を閉じるまで、アクセスしたサイトにお客様の情報が保存されます</translation>
 <translation id="5516268345616100622">タスク マネージャ - Brave</translation>
 <translation id="713191641919118540">Brave が推定したお客様の興味 / 関心</translation>
 <translation id="9068395155143628872">広告の測定により、アクセスしたサイトは、サイトが広告のパフォーマンスを測定する際に役立つ Brave の情報をリクエストできます。広告の測定は、サイト間で転送する情報をできるだけ少なくすることで、クロスサイト トラッキングを制限します。</translation>
@@ -338,8 +339,6 @@
 <translation id="6283840329609797763">原因不明のエラーによりインストールに失敗しました。Brave をもう一度ダウンロードしてください。</translation>
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
 <translation id="4100716194836114130">自分好みに設定</translation>
-<translation id="6208136456999964972">Brave のウィンドウをすべて閉じると、Cookie とサイトデータは自動的に削除されます</translation>
-<translation id="6371875426681214174">Brave を閉じると、<ph name="BEGIN_BOLD"/>ほとんどのサイトからログアウト<ph name="END_BOLD"/>します。同期がオフの場合は、<ph name="BEGIN_BOLD"/>Brave サービスと Brave からもログアウト<ph name="END_BOLD"/>します。</translation>
 <translation id="4831743161813926460">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="6933858244219479645">Chrome OS システム</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>使用されるデータ:<ph name="END_BOLD"/> 閲覧履歴（このデバイスで Brave を使用してアクセスしたサイトの記録）。</translation>
@@ -366,6 +365,7 @@
 <translation id="1611678871603620428">今後、Brave のアップデートを受信するには、macOS 10.13 以降が必要となります。このコンピュータでは OS X 10.11 が実行されています。</translation>
 <translation id="4484434718272972655">Brave はどなたが使用しますか？</translation>
 <translation id="7173394303099002355">Brave の最高のセキュリティ強度で保護</translation>
+<translation id="5775101967851558962">Brave を閉じるとき、常にデバイスからサイトデータを削除する</translation>
 <translation id="8992261409816268381">Brave 開発者</translation>
 <translation id="479793348545936567">このアカウントを一度だけ使用したい場合は、Braveブラウザのゲストモードを使用することができます。他のユーザー用にアカウントを追加したい場合は、<ph name="DEVICE_TYPE"/>に<ph name="LINK_BEGIN"/>新しいプロフィールを追加<ph name="LINK_END"/>してください。
 

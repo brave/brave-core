@@ -171,7 +171,7 @@
 <translation id="4851215387785619212">Braven yksityiset mainokset</translation>
 <translation id="6480303618073442141">Braven yksityiset mainokset on suunniteltu huomaamattomiksi ja yksityisiksi. Mainokset perustuvat kiinnostuksen kohteisiisi, mutta mitään henkilötietoja tai selaushistoriaa ei koskaan poistu laitteestasi. Ja mikä parasta, Braven yksityisten mainosten kautta voit ansaita BATeja (<ph name="BEGIN_LINK"/>Basic Attention Tokeneita<ph name="END_LINK"/>) vain katsomisesta.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
-<translation id="3742599705619405136">Automaattinen tapa tukea julkaisijoita ja sisällönluojia. Määrää kuukausittainen maksu ja selaa tavalliseen tapaan. Braven vahvistamat sivut, joilla vierailet, saavat kannatusmaksusi automaattisesti sen mukaan, miten Brave on mitannut sinun osoittavan niille huomiotasi.</translation>
+<translation id="7437775146229396839">Automaattinen tapa tukea sivustoja ja sisällönluojia. Määritä kuukausittainen lahjoitussumma ja selaa normaalisti. <ph name="BEGIN_LINK"/>Vahvistetut sivustot ja luojat<ph name="END_LINK"/>, joiden luona käyt, saavat sinulta lahjoituksen joka kuukausi perustuen siihen, kuinka paljon aikaa käytät niiden sisältöön.</translation>
 <translation id="3325399124634342726">Nykyiset ansiot tässä kuussa (arvioitu)</translation>
 <translation id="8593551638387217772">Seuraava maksupäivä</translation>
 <translation id="4428871418618312983">Tässä kuussa vastaanotetut mainokset</translation>
@@ -203,8 +203,6 @@
 <translation id="7577100371127227294">Kuukausittaiset tipit</translation>
 <translation id="178390304006113804">Aseta kuukausittain toistuvia tippejä, jotta voit säännöllisesti tukea haluamiasi tuottajia.</translation>
 <translation id="3302159320447117425">Kuukausittaisia tippejä ei ole vielä asetettu.</translation>
-<translation id="1847863811689960237">Palkitse sisällöntuottajia, joista pidät.</translation>
-<translation id="4129489167302464118">Kuukausimaksusi jaetaan vierailtujesi sivustojen kesken.</translation>
 <translation id="4898632353264854950">Sivustoja ilmaantuu, kun selaat</translation>
 <translation id="3024485967181749006">Kuukauden kaikki tipit</translation>
 <translation id="8183455888546367148">Kuukausittaiset tipit yhteensä tässä kuussa</translation>
@@ -272,6 +270,8 @@
 <translation id="7849926087559412554">Oho! Selaimesi ei voi vastaanottaa yksityisiä Brave-mainoksia.</translation>
 <translation id="5177429570315095022">Selaimesi on päivitettävä, jotta voit jatkaa mainosten näkemistä.</translation>
 <translation id="7352651011704765696">Jotakin meni vikaan</translation>
+<translation id="4593680147181354667">Diagnostinen tunnus</translation>
+<translation id="3995471429906554168">Diagnostiset tiedot</translation>
 <translation id="752216563428219524">Mainoksia ei ole alustettu, päivitä sivu.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="6969783933307596818">Päivittyy automaattisesti 5 sekunnin välein</translation>
@@ -353,6 +353,8 @@
 <translation id="8874184842967597500">Ei yhdistetty</translation>
 <translation id="4569155249847375786">Vahvistettu</translation>
 <translation id="6521149675246672063">Ei yhteyttä (Todennettu)</translation>
+<translation id="5058161306698404465">Luomisympäristö:</translation>
+<translation id="5856438412804207598">Nykyinen ympäristö:</translation>
 <translation id="5906820630265272615">BAT-varat</translation>
 <translation id="5814098892838785557">Haluatko varmasti lopettaa tämän tuottajan tukemisen?</translation>
 <translation id="6582097696555842139">Peru kuukausittainen tippi</translation>
@@ -392,6 +394,7 @@
 <translation id="839058704683989763">Olet asettanut käsittelyssä olevan tipin!</translation>
 <translation id="5096821444729034955">julkaisulleen</translation>
 <translation id="2978223787436054634">Twiittaa tuestasi</translation>
+<translation id="976068305210640982">Olet tällä hetkellä <ph name="BEGIN_LINK"/>kirjautunut ulos.<ph name="LINK_END"/></translation>
 <translation id="5916290544882167205">Brave Software. Brave on Brave Softwaren rekisteröity tavaramerkki. Sivustojen nimet voivat olla sivuston omistajan tavaramerkkejä tai rekisteröityjä tavaramerkkejä.</translation>
 <translation id="9026369588205476247">Yksityisyytesi suojaamiseksi tätä Brave -palkinto-otetta ei tallenneta tai kirjata minnekään muualle kuin laitteeseesi (tähän tietokoneeseen). Sitä ei voi noutaa Bravesta, vaikka tiedot katoaisivat laitteestasi.</translation>
 <translation id="3587482841069643663">Kaikki</translation>
@@ -512,8 +515,8 @@
 <translation id="923467487918828349">Näytä kaikki</translation>
 <translation id="5113531205597573951">Katsotut sivustot</translation>
 <translation id="4450893287417543264">Älä näytä uudelleen</translation>
-<translation id="6518133107902771759">Vahvista</translation>
-<translation id="422369484771082705">Vahvistaminen on valinnaista. Kun suoritat vahvistamisen, voit kuitenkin nostaa Brave-palkintojen kautta ansaitsemiasi BATeja suoraan lompakon säilytyspalveluun.</translation>
+<translation id="7642372245223412840">Yhdistä bitFlyeriin</translation>
+<translation id="6143701117592994599">Kun yhdistät Brave-palkinnot bitFlyer-tiliin, voit ansaita BATeja ja nostaa BAT-ansiosi Brave-palkinnoista.</translation>
 <translation id="4354564238172327160">Ryhdy Brave-luojaksi!</translation>
 <translation id="4639659520811817892">Käy osoitteessa creators.brave.com rekisteröityäksesi jo tänään ja aloita BATien ansaitseminen faneiltasi ja seuraajiltasi.</translation>
 <translation id="4816455138209470435">Brave tukee YouTubea, Twitchiä, Vimeota ja monia muita!</translation>
@@ -549,9 +552,9 @@
 <translation id="4047002754575891955">Jatka ketjun ulkopuolista hakua</translation>
 <translation id="531747189990625622">Solana-nimipalvelu</translation>
 <translation id="1090584614351290462">Haluatko ottaa Ethereum-nimipalvelun (SNS) käyttöön Bravessa?</translation>
-<translation id="2350552210396418924">Brave tulee käyttämään Coinbase Cloudia selvittääkseen .sol-verkkotunnuksia. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Coinbase näkee, että joku yrittää vierailla näissä .sol-verkkotunnuksissa, muttei mitään muuta. Tutustu Coinbase Cloudin <ph name="BEGIN_COINBASE_TOU_LINK"/>käyttöehtoihin<ph name="END_COINBASE_TOU_LINK"/> ja <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_COINBASE_PRIVACY_LINK"/>.</translation>
+<translation id="3664848774480475984">Brave tulee käyttämään Syndicaa selvittääkseen .sol-verkkotunnuksia. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Syndica näkee, että joku yrittää vierailla näissä .sol-verkkotunnuksissa, muttei mitään muuta. Tutustu Syndican <ph name="BEGIN_SYNDICA_TOU_LINK"/>käyttöehtoihin<ph name="END_SYNDICA_TOU_LINK"/> ja <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_SYNDICA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Jatka Infura-palvelimella</translation>
-<translation id="2313603121968571839">Jatka Coinbase-pilvipalvelimella</translation>
+<translation id="2824725477135051831">Jatka Syndica-palvelimella</translation>
 <translation id="2356070529366658676">Kysy</translation>
 <translation id="59174027418879706">Sallittu</translation>
 <translation id="2468755552460246661">Verkkotunnus estetty</translation>
@@ -636,6 +639,7 @@
 <translation id="6318437367327684789">ikuisesti</translation>
 <translation id="8797999629784150206">Voit vaihtaa <ph name="SITE_PERMISSIONS"/> milloin tahansa. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">sivuston valtuudet</translation>
+<translation id="4355784577209159847">Salli kolmannen osapuolen evästeiden käyttö vanhaan Google-sisäänkirjautumiseen</translation>
 <translation id="7717357606512850995">Tarkista tila</translation>
 <translation id="7306880305145342514">Onneksi olkoon! Sinun <ph name="MONTH"/> palkintosi ovat saapuneet!</translation>
 <translation id="3007207731685398329">Sinun <ph name="AMOUNT"/> <ph name="MONTH"/> saapuvat <ph name="DAYS"/> päivässä</translation>
@@ -663,6 +667,7 @@
 <translation id="9013419433042554094">Lunasta tokenit</translation>
 <translation id="5544777623605368410">Ansiot</translation>
 <translation id="3273637494083639780">Tässä kuussa ansaitsemiesi tokenien käsittely alkaa <ph name="DATE"/>.</translation>
+<translation id="5572389477027204985">Ota Brave-mainokset käyttöön</translation>
 <translation id="1029300693989825319">Tämä voi vaihdella markkinoiden volatiliteetin mukaan.</translation>
 <translation id="8334559352278209120">Lahjoittaminen</translation>
 <translation id="4782365133987903299">Sinulla on <ph name="DAYS"/> jäljellä lunastaa</translation>
@@ -691,6 +696,10 @@
 <translation id="1609556006143307897">Tuet sisällönluojia</translation>
 <translation id="6605147707233193230">Laita päälle tukeaksesi sisällönluojia</translation>
 <translation id="5430495762768325224">Lue lisää BATeista</translation>
+<translation id="4105212447337987768"><ph name="DATE"/> lopetamme tuen nykyisille virtuaalisille BAT-saldoille. Yhdistä säilytystili ennen tätä päivämäärää niin voimme siirtää ansaitun saldosi säilytystilillesi, tai muuten saldosi menetetään.</translation>
+<translation id="5684206602316433615"><ph name="DATE"/> lopetamme tuen nykyisille virtuaalisille BAT-saldoille. Valitettavasti alueellasi (<ph name="REGION"/>) ei ole saatavilla valvojaa nostamaan ansioitasi. Siihen asti voit silti tehdä lahjoituksen suosikkiluojillesi.</translation>
+<translation id="707569835145765061">Aiheellinen toimenpide: Yhdistä säilytytili tai vBATisi menetetään</translation>
+<translation id="5089752671190341407">Sinulla on vielä aikaa lahjoittaa vBATisi suosikkiluojillesi</translation>
 <translation id="1258144146756156541">Vahvista, että olet ihminen</translation>
 <translation id="1555514580945108302">Hmm... ei aivan. Yritä uudelleen.</translation>
 <translation id="8078414184292711961">Vedä BAT-kuvake <ph name="HINT"/>-kohteeseen.</translation>
@@ -882,7 +891,8 @@
 <translation id="1201402288615127009">Seuraava</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="6896758677409633944">Kopioi</translation>
-<translation id="2704606927547763573">Kopioitu</translation>
+<translation id="7885157704277298658">Kopioitu</translation>
+<translation id="6518133107902771759">Vahvista</translation>
 <translation id="6042308850641462728">Lisää</translation>
 <translation id="768236965975208017">Turvallinen. Moniketjuinen. Ja niin helppokäyttöinen. Brave-lompakko on vain muutaman napsautuksen päässä</translation>
 <translation id="3157931365184549694">Palauta</translation>
@@ -912,7 +922,7 @@
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
-<translation id="5242300593039211344">Lukitse lompakko</translation>
+<translation id="9175546523521600401">Lukitse lompakko</translation>
 <translation id="765834632354589737">Lompakon varmuuskopio</translation>
 <translation id="1108298724135935307">Yhdistetyt sivustot</translation>
 <translation id="163697698769819510">Varmuuskopioi lompakkosi nyt, jotta voit suojata varojasi ja varmistaa, ettet menetä pääsyä niihin.</translation>
@@ -926,7 +936,6 @@
 <translation id="4359319875297001084">Tuo vanhasta Brave-kryptolomlakoista?</translation>
 <translation id="3331452756822160641">Uusi salasana</translation>
 <translation id="8624315169751085215">Kopioi leikepöydälle</translation>
-<translation id="7885157704277298658">Kopioitu</translation>
 <translation id="6346952829206698721">Liitä leikepöydältä</translation>
 <translation id="1121335910737476837">Ensisijaiset kryptotilit</translation>
 <translation id="6969147029062037757">Tuodut tilit</translation>
@@ -981,6 +990,7 @@
 <translation id="7978047524114351365">Ei nimettyjä varoja</translation>
 <translation id="9040455159722359521">Hae varoja tai yhteystiedon osoitteita</translation>
 <translation id="6018178824574796106">Mukautetun tokenin lisäys epäonnistui. Yritä uudelleen.</translation>
+<translation id="5138307340667775659">Tämä tokeni on jo lisätty salkkuusi.</translation>
 <translation id="547122651977318828">Tokenitunnus (vain ERC721)</translation>
 <translation id="7544552854944350190">Tokenitunnus on pakollinen</translation>
 <translation id="3842236145820483340">Coingecko-tunnus</translation>
@@ -1023,6 +1033,7 @@
 <translation id="5294062982587710720">Huomaa, että Brave ei voi tarkistaa, mitä tapahtuu, jos allekirjoitat. Allekirjoitus voi valtuuttaa melkein minkä tahansa toiminnon tililläsi tai puolestasi, mukaan lukien (mutta ei rajoittuen) tilin ja kryptovarojen täydellisen hallinnan antaminen pyynnön esittäneelle sivustolle. Allekirjoita vain, jos olet varma, että haluat suorittaa tämän toiminnon ja että pystyt luottamaan pyytävään sivustoon.</translation>
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
 <translation id="5488357322146334497">Viesti</translation>
+<translation id="7702907602086592255">Verkkotunnus</translation>
 <translation id="3586752056660754651">Allekirjoita</translation>
 <translation id="3484981968509595506">DApp pyytää julkista salausavaintasi</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> pyytää lompakkojesi julkista salausavainta. Jos suostut antamaan avaimen, sivusto voi luoda sinulle salattuja viestejä.</translation>
@@ -1147,6 +1158,7 @@
 <translation id="4667144295226514387">Polttoaineraja puuttuu</translation>
 <translation id="2021522108838444624">Summan tulee olla yli 0</translation>
 <translation id="8464365289405373974">Vastaanottajan osoite on pakollinen</translation>
+<translation id="4884792073752467460">Virheellinen vastaanottajan osoite</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Hylkää <ph name="TRANSACTION_LENGTH"/> maksutapahtumaa</translation>
 <translation id="1118876217803190221">Riittämätön saldo</translation>
@@ -1184,7 +1196,7 @@
 <translation id="4378475168089649292">Lohkoketju</translation>
 <translation id="1904295039023858291">Tokenistandardi</translation>
 <translation id="9033453977881595182">Tokenin tunnus</translation>
-<translation id="6332387008245531841">Yhteystiedot</translation>
+<translation id="6332387008245531841">Sopimusosoite</translation>
 <translation id="2962388922926051374">Pyyntö menetelmälle 'eth_chainId' kohteessa <ph name="URL"/> epäonnistui</translation>
 <translation id="8325036459845654666">Tämä verkko on jo lisätty.</translation>
 <translation id="554350381160981853">Kirjoitettujen tietojen allekirjoittaminen on tuettu vain Trezor Model One -lompakossa, jossa on laiteohjelmisto 1.10.5 tai uudempi</translation>
@@ -1215,7 +1227,7 @@
 <translation id="1695096446857675822">Saldo ↓</translation>
 <translation id="8151187584908138100">Nimi ↓</translation>
 <translation id="883138507248906253">Nimi ↑</translation>
-<translation id="7198018180583855568">Kaikki tilit</translation>
+<translation id="7662492121143629144">Kaikki tilit</translation>
 <translation id="6954150712710630841">Maksutapahtuma lähetetty</translation>
 <translation id="905855245798176174">Maksutapahtuman lähetys verkkoon onnistui ja se odottaa vahvistusta.</translation>
 <translation id="619697073289995370">Maksutapahtuma allekirjoitettu</translation>
@@ -1412,6 +1424,8 @@
 <translation id="1763942310723636241">Tokenitiedot</translation>
 <translation id="2938264474197978104">Piilota <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">Piilota tokeni?</translation>
+<translation id="6779155810671793329">Käyttötunnuksen yhteysosoite</translation>
+<translation id="871123550184744265">Tokenin desimaali</translation>
 <translation id="4038384774641714579">Voit tehdä tästä varasta näkyvän tulevaisuudessa napsauttamalla + Näkyvät varat -painiketta Portfolio-välilehden alaosassa.</translation>
 <translation id="1026825928738055872">Haluatko varmasti poistaa kohteen <ph name="ACCOUNT_NAME"/>?</translation>
 <translation id="3910551537328657217">Pyydä toimintoa</translation>
@@ -1466,10 +1480,16 @@
 <translation id="4029551149873989025">Vaihda verkkoa</translation>
 <translation id="7561262633951061138">Paras</translation>
 <translation id="3143110700666266545">Tämä sovellus käyttää seuraavia kolmannen osapuolen sovellusrajapintoja:</translation>
-<translation id="8411419545176806786">Brave-vaihto käyttää 0xia DEX-aggregaattorina tuetuille EVM-verkoille. 0x käsittelee Ethereum-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). 0x käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
-<translation id="7467728126359974661">Brave-vaihto käyttää Jupiteria DEX-aggregaattorina Solana-verkolle. Jupiter käsittelee Solana-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). Jupiter käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
-<translation id="8497751359931572880">Napsuta tästä nähdäksesi 0xin tietosuojakäytännön.</translation>
-<translation id="4904748904130272182">Napsuta tästä nähdäksesi Jupiterin tietosuojakäytännön.</translation>
+<translation id="163536108506359457">Brave-vaihto käyttää <ph name="AGGREGATOR"/> DEX-aggregaattorina tuetuille <ph name="NETWORKS"/>-verkoille. <ph name="AGGREGATOR"/> käsittelee <ph name="NETWORK"/>-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). <ph name="AGGREGATOR"/> käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
+<translation id="1847885264294023691">Napsauta tästä <ph name="AGGREGATOR"/> tietosuojakäytäntöön.</translation>
+<translation id="9218424917282368512">Vaihda verkkoa</translation>
+<translation id="644984757357042735">Verkko on pakollinen</translation>
+<translation id="132243864024778443">Tokenin nimi on pakollinen</translation>
+<translation id="3617263699756744037">Virheellinen tai tyhjä tokenin sopimusosoite</translation>
+<translation id="2077392865355605472">Tokenin symboli on pakollinen</translation>
+<translation id="4636925020451566238">Tokenin tarkkuuden desimaalien arvo on pakollinen</translation>
+<translation id="3797613444743816037">Minttauksen osoite</translation>
+<translation id="7951915459354237451">Maksuraja on määritetty alemmaksi kuin perusmaksu. Maksutapahtumasi voi kestää kauan tai epäonnistua.</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>

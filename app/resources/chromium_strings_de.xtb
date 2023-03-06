@@ -132,7 +132,7 @@
 <translation id="1853997773668795891">Deine Brave-Daten mit diesem Konto verknüpfen?</translation>
 <translation id="3262506503470845422">Hilfe für Brave aufrufen</translation>
 <translation id="7691786510374174420">Die Installation konnte aufgrund eines undefinierten Fehlers nicht abgeschlossen werden. Falls Brave derzeit ausgeführt wird, schließe es bitte und versuche es erneut.</translation>
-<translation id="4304713468139749426">Passwortmanager</translation>
+<translation id="4304713468139749426">Passwort­manager</translation>
 <translation id="4334294535648607276">Download abgeschlossen.</translation>
 <translation id="1068681683510904753">Für <ph name="MANAGER"/> ist erforderlich, dass du vor der Verwendung dieses Geräts die folgenden Nutzungsbedingungen akzeptierst. Durch diese Nutzungsbedingungen werden die Brave OS-Nutzungsbedingungen nicht erweitert, geändert oder eingeschränkt.</translation>
 <translation id="9183662282810237335">Brave trotzdem beenden?</translation>
@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Zu Brave-Benachrichtigungseinstellungen wechseln</translation>
 <translation id="9156965752763025780">Deine Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="245693535809364497">Brave benötigt die Kameraberechtigung, um eine 3D-Karte deiner Umgebung zu erstellen</translation>
+<translation id="5060669762365466104">Websites funktionieren wahrscheinlich erwartungsgemäß, sie werden sich aber nach dem Schließen aller Brave-Fenster nicht mehr an dich erinnern</translation>
 <translation id="6676384891291319759">Internetzugriff</translation>
 <translation id="1363996462118479832">Brave OS konnte deine Daten aufgrund eines Fehlers bei der Anmeldung nicht synchronisieren.</translation>
 <translation id="1257247502847251159">Brave benötigt die Mikrofonberechtigung für diese Website</translation>
@@ -246,6 +247,7 @@ Einige Funktionen stehen möglicherweise nicht zur Verfügung. Gib bitte ein and
 <translation id="7870748924073900361">Dank Arbeitsspeicher-Sparmodus ist Brave jetzt noch schneller</translation>
 <translation id="6666624454809779082">Brave ist bereits für alle Nutzer auf deinem Computer installiert.</translation>
 <translation id="5360050006043219962">Wenn du auf allen deinen Geräten auf deine Brave-Inhalte zugreifen möchtest, melde dich an und aktiviere die Synchronisierung.</translation>
+<translation id="3136039682492230890">Brave empfiehlt, diese Datei zu scannen, da sie gefährlich sein könnte.</translation>
 <translation id="8291513491595858997">Dein Elternteil hat "Berechtigungen für Websites, Apps und Erweiterungen" für Brave deaktiviert. Das Aktivieren dieser <ph name="EXTENSION_TYPE_PARAMETER"/> ist nicht zulässig.</translation>
 <translation id="1547295885616600893">Brave OS wird durch zusätzliche <ph name="BEGIN_LINK_CROS_OSS"/>Open-Source-Software<ph name="END_LINK_CROS_OSS"/> ermöglicht.</translation>
 <translation id="8211837073776713955">Brave wird dich informieren, sollten deine Passwörter nicht mehr sicher sein</translation>
@@ -267,7 +269,6 @@ Einige Funktionen stehen möglicherweise nicht zur Verfügung. Gib bitte ein and
 <translation id="1008530050039597147">Brave benötigt die Kameraberechtigung für diese Website</translation>
 <translation id="1197672524850678392">Brave konnte nicht gestartet werden. Versuche es noch einmal.</translation>
 <translation id="3405035915691517126">Brave kann deine Passwörter nicht prüfen. Bitte versuche es in 24 Stunden noch einmal.</translation>
-<translation id="5101812148953915496">Websites, die du besuchst, speichern deine Daten, bis du Brave schließt</translation>
 <translation id="5516268345616100622">Task-Manager - Brave</translation>
 <translation id="713191641919118540">Deine von Brave geschätzten Interessen</translation>
 <translation id="9068395155143628872">Mithilfe der Anzeigenanalyse können von dir besuchte Websites Informationen von Brave anfordern, mit denen sie die Leistung ihrer Werbung analysieren können. Durch die Anzeigenanalyse wird das websiteübergreifende Tracking eingeschränkt, indem so wenig Informationen wie möglich zwischen Websites ausgetauscht werden.</translation>
@@ -338,8 +339,6 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="6283840329609797763">Die Installation konnte aufgrund eines undefinierten Fehlers nicht abgeschlossen werden. Bitte lade Brave erneut herunter.</translation>
 <translation id="2433912322225810055">Die Erweiterung legt auch fest, welche Seite beim Start von Brave oder bei der Suche über die Omnibox angezeigt wird.</translation>
 <translation id="4100716194836114130">Dies ist dein persönlicher Brave-Browser</translation>
-<translation id="6208136456999964972">Wenn du alle Brave-Fenster schließt, werden alle Cookies und Websitedaten automatisch gelöscht</translation>
-<translation id="6371875426681214174">Du wirst <ph name="BEGIN_BOLD"/>auf den meisten Websites abgemeldet<ph name="END_BOLD"/>, wenn du Brave schließt. Wenn die Synchronisierung deaktiviert ist, wirst du auch <ph name="BEGIN_BOLD"/>bei Brave-Diensten und Brave abgemeldet<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave benötigt für diese Website die Berechtigung, auf deine Kamera und dein Mikrofon zuzugreifen</translation>
 <translation id="6933858244219479645">Brave OS-System</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Welche Daten werden verwendet?<ph name="END_BOLD"/> Dein Browserverlauf, das heißt eine Liste der von dir auf diesem Gerät in Brave besuchten Websites.</translation>
@@ -366,6 +365,7 @@ Brave kann deine Einstellungen nicht wiederherstellen.</translation>
 <translation id="1611678871603620428">Du benötigst macOS 10.13 oder höher, um zukünftige Brave-Updates zu erhalten. Auf diesem Computer wird OS X 10.11 ausgeführt.</translation>
 <translation id="4484434718272972655">Wer verwendet gerade Brave?</translation>
 <translation id="7173394303099002355">Höchste Sicherheit in Brave erhalten</translation>
+<translation id="5775101967851558962">Beim Schließen von Brave immer die Websitedaten von deinem Gerät löschen</translation>
 <translation id="8992261409816268381">Die Brave-Autoren</translation>
 <translation id="479793348545936567">Wenn Sie dieses Konto nur einmal verwenden möchten, können Sie den Gastmodus im Brave-Browser verwenden. Wenn Sie ein Konto für jemand anderen hinzufügen möchten, <ph name="LINK_BEGIN"/>fügen Sie ein neues Profil<ph name="LINK_END"/> zu Ihrem <ph name="DEVICE_TYPE"/>hinzu.
 

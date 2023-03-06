@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Bạn không kiếm được Phần thưởng</translation>
 <translation id="1483391942610220726">Bạn không nhận được Báo cáo về quyền riêng tư</translation>
 <translation id="4683790942451502796">Bật lại thông báo nếu bạn muốn tiếp tục kiếm BAT và nhận báo cáo quyền riêng tư hàng tuần.</translation>
-<translation id="8618359751943259593">Bật lại thông báo nếu bạn muốn tiếp tục kiếm BAT</translation>
+<translation id="8618359751943259593">Bật lại thông báo nếu bạn muốn tiếp tục kiếm BAT.</translation>
 <translation id="760355165169399836">Bật lại thông báo nếu bạn muốn tiếp tục nhận báo cáo quyền riêng tư hàng tuần.</translation>
 <translation id="6268959058971634697">Bạn không kiếm được Phần thưởng</translation>
 <translation id="1088637159642753509">Bật thông báo trên thiết bị để kiếm Phần thưởng Brave và xem Báo cáo về quyền riêng tư.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Cài đặt mặc định toàn cục của lá chắn Brave</translation>
 <translation id="2675679258824361492">Cài đặt quyền riêng tư khác</translation>
 <translation id="8026334261755873520">Xóa dữ liệu duyệt web</translation>
-<translation id="5965081608816406060">Phát lại video nền</translation>
+<translation id="1690924763769415936">Phát nền</translation>
 <translation id="6332924730165919598">Việc đóng tất cả các tab sẽ đóng Brave</translation>
-<translation id="3872768973878059926">Cho phép âm thanh tiếp tục phát khi bạn chuyển sang tab khác trong Brave, chuyển sang ứng dụng khác hoặc màn hình thiết bị của bạn tắt.</translation>
+<translation id="8308305244351876417">Cho phép phát âm thanh khi bạn chuyển sang tab khác trong Brave hoặc ứng dụng khác hoặc khi màn hình thiết bị của bạn tắt.</translation>
 <translation id="4150201353443180367">Hiển thị</translation>
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Người tạo chưa đăng ký nhận đóng góp từ người dùng Brave. Chúng tôi sẽ không ngừng nỗ lực để đóng góp cho đến khi họ xác minh hoặc sau khi hết thời hạn 90 ngày.</translation>
 <translation id="635752162765375187">LƯU Ý: Người tạo nội dung này hiện không được cấu hình để nhận tiền thưởng từ dịch vụ ví lưu ký Phần thưởng của bạn. Mọi tiền thưởng bạn thực hiện sẽ vẫn đang chờ xử lý và tự động thử lại trong 90 ngày.</translation>
 <translation id="1910721550319506122">Chào mừng!</translation>
+<translation id="2734870894159530879">Đăng nhập vào <ph name="WALLET_PROVIDER"/> để xem số dư của bạn</translation>
 <translation id="5830114181292529917">Bạn có thể hỗ trợ trang web này bằng cách gửi tiền thưởng. Đó là cách để cảm ơn họ vì đã tạo ra nội dung tuyệt vời.</translation>
 <translation id="7658239707568436148">Hủy</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Hiển thị quảng cáo khi không dùng Brave</translation>
 <translation id="3349204812119681938">Đặt lại Phần thưởng Brave</translation>
 <translation id="6606319453795180219">Thao tác này sẽ xóa Phần thưởng Brave của bạn và đặt lại mọi dữ liệu Phần thưởng Brave của bạn</translation>
-<translation id="6810078320346589989">Tạo một dấu trang</translation>
+<translation id="8293206222192510085">Thêm Dấu trang</translation>
+<translation id="340492034650766959">Xóa Dấu trang</translation>
+<translation id="2149973817440762519">Sửa Dấu trang</translation>
+<translation id="6819319915092566548">Xem Dấu trang</translation>
 <translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
 <translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
 <translation id="8985635554450124959">Không thể thiết lập đồng bộ hóa</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Không hiển thị lại</translation>
 <translation id="496896260395129787">Tài khoản Brave Đồng bộ này đã bị xóa khỏi thiết bị khác. Nếu bạn không định tắt Đồng bộ hóa, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>tạo lại tài khoản</translation>
-<translation id="8199291899164865593">Không thể tham gia chuỗi đồng bộ này. Tài khoản đã bị xóa.</translation>
+<translation id="4094590686212463338">Không thể tham gia chuỗi đồng bộ hóa này. Chuỗi đồng bộ hóa đã bị xóa.</translation>
 <translation id="5633907266617216186">Địa chỉ, thông tin thanh toán, v.v.</translation>
 <translation id="1056898198331236512">Cảnh báo</translation>
 <translation id="1426410128494586442">Có</translation>
@@ -371,6 +375,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
 <translation id="3200197118442451932">Brave Software Inc. không xử lý, lưu trữ hoặc truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho <ph name="WALLET_PROVIDER"/> khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="1665118090708049096">Đi đến tài khoản <ph name="WALLET_PROVIDER"/> của tôi</translation>
+<translation id="4858636682078269312">Đăng nhập vào tài khoản <ph name="WALLET_PROVIDER"/> của bạn</translation>
 <translation id="8874184842967597500">Chưa kết nối</translation>
 <translation id="2495032782748793764">Mặc định của Brave</translation>
 <translation id="9132378787893584761">Chia sẻ Brave với bạn bè của bạn!</translation>
@@ -388,10 +393,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3624048886326677117">Chặn trình theo dõi &amp; quảng cáo (Tích cực)</translation>
 <translation id="7151914815476509258">Chặn trình theo dõi &amp; quảng cáo (Tiêu chuẩn)</translation>
 <translation id="7384778069178817075">Cho phép tất cả trình theo dõi và quảng cáo</translation>
-<translation id="4941539331405513605">Chặn cookie liên trang</translation>
 <translation id="3763681089644577874">Chặn Cookie</translation>
 <translation id="614747795780742163">Ngăn chặn các trang web lưu trữ thông tin về các lần truy cập trước của bạn</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
+<translation id="4941539331405513605">Chặn cookie liên trang</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="3895527457258986253">Chặn Vân tay</translation>
 <translation id="7854108565842971747">Đây là những cài đặt Lá chắn mặc định cho các trang web mới. Thay đổi chúng sẽ không ảnh hưởng đến các cài đặt cho từng trang web hiện tại của bạn.</translation>
@@ -490,6 +495,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5705882733397021510">Quay Lại</translation>
 <translation id="3985567919248057638">Hãy cùng tham quan nhanh</translation>
 <translation id="7889432931837317731">Tự động mở khi có thể</translation>
+<translation id="1029304566263314007">Hiển thị thông báo tiến trình tải xuống</translation>
+<translation id="2910433761530295035">Hỏi vị trí lưu tệp (nếu thấy có thẻ SD)</translation>
 <translation id="8967385052772844086">Xem toàn văn Báo cáo Quyền riêng tư</translation>
 <translation id="6864343534748973390">Phổ biến nhất</translation>
 <translation id="4608192160278975831">Riêng tư và không theo dõi</translation>
@@ -498,6 +505,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="7320542277711359296">Phổ biến thứ hai</translation>
 <translation id="8295049095570748497">Công cụ tìm kiếm hàng đầu ở Nga</translation>
 <translation id="2642661895835126239">Trồng cây, có trụ sở ở Berlin</translation>
+<translation id="2422627462367776805">Cổng thông tin điện tử &amp; tìm kiếm của Hàn Quốc</translation>
 <translation id="177282784098234156">Riêng tư, độc lập, người dùng là trên hết</translation>
 <translation id="1410130669636877548">Một vài công cụ tìm kiếm bảo vệ quyền riêng tư của bạn tốt hơn những công cụ khác khi bạn tìm kiếm trên web</translation>
 <translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
@@ -1016,7 +1024,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="9074594632540931067">Lỗi: BAT không khả dụng</translation>
 <translation id="5382684862562314222">BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.</translation>
 <translation id="6996157559236886133">Lỗi: Chức năng tài khoản Uphold bị giới hạn</translation>
-<translation id="842321566508373706">Theo Uphold, hiện tại tài khoản Uphold của bạn có một số hạn chế. Vui lòng đăng nhập vào tài khoản Uphold của bạn và kiểm tra xem có bất kỳ thông báo nào hay còn yêu cầu tài khoản nào cần hoàn thành hay không, sau đó thử lại.</translation>
+<translation id="1677961202754619328">Theo Uphold, hiện tại tài khoản Uphold của bạn có một số hạn chế. Vui lòng đăng nhập vào tài khoản Uphold của bạn và kiểm tra xem có bất kỳ thông báo nào hay còn yêu cầu tài khoản nào cần hoàn thành hay không, sau đó thử lại.</translation>
 <translation id="6417420737057016607">Quảng cáo Brave</translation>
 <translation id="5425006356459378415">Phần thưởng Brave không khả dụng</translation>
 <translation id="833643743158564518">Các đăng ký mới cho Phần thưởng Brave hiện đã bị vô hiệu hóa ở khu vực của bạn. Tuy nhiên, bạn luôn có thể thử lại sau. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4071347720273751665">Có vẻ như bạn đã nhập địa chỉ ENS. Chúng tôi sẽ cần sử dụng trình phân giải của bên thứ ba để giải quyết yêu cầu này. Trình phân giải này có thể xem địa chỉ IP và tên miền của bạn. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Sử dụng tên miền ngoại tuyến ENS</translation>
 <translation id="4982630604810554641">Đang tìm tên miền...</translation>
+<translation id="4159738248012488342">Vui lòng chọn số tiền để thưởng</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="707569835145765061">Hành động bắt buộc: Kết nối tài khoản lưu ký nếu không vBAT của bạn sẽ bị mất</translation>
+<translation id="1776742005329298234">Vào <ph name="DUE_DATE"/>, chúng tôi sẽ ngừng hỗ trợ cho số dư BAT ảo hiện có. Kết nối tài khoản lưu ký trước ngày này để chúng tôi có thể chuyển số dư kiếm được của bạn sang tài khoản lưu ký của bạn, nếu không số dư của bạn sẽ bị mất.</translation>
+<translation id="5089752671190341407">Bạn vẫn còn thời gian để đóng góp vBAT của mình cho những người sáng tạo nội dung yêu thích của mình</translation>
+<translation id="171158953146804144">Vào <ph name="DUE_DATE"/>, chúng tôi sẽ ngừng hỗ trợ cho số dư BAT ảo hiện có. Rất tiếc, không có người giám sát nào trong khu vực của bạn (<ph name="REGION"/>) để rút phần kiếm được của bạn. Cho đến lúc đó, bạn vẫn có thể đóng góp cho những người sáng tạo nội dung yêu thích của mình.</translation>
 </translationbundle>
