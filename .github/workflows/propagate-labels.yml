@@ -15,28 +15,26 @@ jobs:
     steps:
       - name: propagate labels
         run: |
-          pr_number="{{ github.event.pull_request.number }}"
+          set -xeEo pipefail
+          shopt -s inherit_errexit
 
-          read -ra pr_issues <<<"$(gh api graphql -f query="{
-            repository(owner: \"${GITHUB_REPOSITORY_OWNER:?}\", name: \"${GITHUB_REPOSITORY##*/}\") {
-              pullRequest(number: ${pr_number:?}) {
-                closingIssuesReferences (first: 100) {
-                  edges {
-                    node {
-                      url
-                    }
-                  }
+          pr_number="${{ github.event.pull_request.number }}"
+          read -ra relevant_pr_labels <<<"$(gh pr view -R "$GITHUB_REPOSITORY" "$pr_number" --json labels -q ".labels[].name"|grep -E "${LABELS// /|}")"
+
+          if [[ "${relevant_pr_labels[*]}" ]]; then
+            read -ra pr_issues <<<"$(gh api graphql -f query="{
+              repository(owner: \"${GITHUB_REPOSITORY_OWNER:?}\", name: \"${GITHUB_REPOSITORY##*/}\") {
+                pullRequest(number: ${pr_number:?}) {
+                  closingIssuesReferences (first: 100) { edges { node { url } } }
                 }
               }
-            }
-          }" -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url")"
+            }" -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url")"
 
-          read -ra relevant_pr_labels <<<"$(gh pr view "$pr_number" --json labels -q ".labels[].name"|grep -E "${LABELS// /|}")"
-
-          for label in "${relevant_pr_labels[@]}"; do
-            for issue in "${pr_issues[@]}"; do
-              if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" --json name -q ".[]|select(.name==\"${label:?}\").name")" ]]; then
-                gh issue edit "$issue" --add-label "$label"
-              fi
+            for label in "${relevant_pr_labels[@]}"; do
+              for issue in "${pr_issues[@]}"; do
+                if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" --json name -q ".[]|select(.name==\"${label:?}\").name")" ]]; then
+                  gh issue edit "$issue" --add-label "$label"
+                fi
+              done
             done
-          done
+          fi
