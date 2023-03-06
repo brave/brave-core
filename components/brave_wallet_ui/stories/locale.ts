@@ -869,5 +869,7 @@ provideStrings({
   braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
   braveWalletNftPinningStatusPinned: 'NFT data is being pinned to your local IPFS node',
   braveWalletNftPinningStatusPinning: 'Cannot be pinned to your local IPFS node',
-  braveWalletNftPinningStatusPinningFailed: 'Pinned to your local IPFS node'
+  braveWalletNftPinningStatusPinningFailed: 'Pinned to your local IPFS node',
+  braveWalletImportNftModalTitle: 'Import NFT',
+  braveWalletEditNftModalTitle: 'Edit NFT'
 })
