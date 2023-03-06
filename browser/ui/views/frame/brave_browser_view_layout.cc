@@ -107,7 +107,7 @@ int BraveBrowserViewLayout::LayoutInfoBar(int top) {
     return BrowserViewLayout::LayoutInfoBar(top);
 
   if (ShouldPushBookmarkBarForVerticalTabs()) {
-    // Inserts are already applied from LayoutBookmarkAndInfoBar().
+    // Insets are already applied from LayoutBookmarkAndInfoBar().
     return BrowserViewLayout::LayoutInfoBar(top);
   }
 
