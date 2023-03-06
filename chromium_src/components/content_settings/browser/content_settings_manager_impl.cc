@@ -17,7 +17,7 @@ void ContentSettingsManagerImpl::AllowEphemeralStorageAccess(
     AllowEphemeralStorageAccessCallback callback) {
   url::Origin storage_origin;
   const bool should_use = cookie_settings_->ShouldUseEphemeralStorage(
-      origin, site_for_cookies, top_frame_origin, net::CookieSettingOverride(),
+      origin, site_for_cookies, top_frame_origin, net::CookieSettingOverrides(),
       storage_origin);
   std::move(callback).Run(should_use
                               ? absl::make_optional<url::Origin>(storage_origin)
