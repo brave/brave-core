@@ -38,9 +38,9 @@ CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
   if (const auto value = root.FindInt(kOptActionKey)) {
     category_content.opt_action_type =
         static_cast<CategoryContentOptActionType>(*value);
-  } else if (const auto value = root.FindInt(kLegacyOptActionKey)) {
+  } else if (const auto legacy_value = root.FindInt(kLegacyOptActionKey)) {
     category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*value);
+        static_cast<CategoryContentOptActionType>(*legacy_value);
   }
 
   return category_content;
