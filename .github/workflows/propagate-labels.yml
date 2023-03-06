@@ -19,16 +19,14 @@ jobs:
           shopt -s inherit_errexit
 
           pr_number="${{ github.event.pull_request.number }}"
-          read -ra relevant_pr_labels <<<"$(gh pr view -R "$GITHUB_REPOSITORY" "$pr_number" --json labels -q ".labels[].name"|grep -E "${LABELS// /|}")"
+          read -ra relevant_pr_labels <<<"$(gh pr view -R "$GITHUB_REPOSITORY" "$pr_number" --json labels -q ".labels[].name"|\
+            grep -E "${LABELS// /|}"|tr '\n' '\t')"
 
           if [[ "${relevant_pr_labels[*]}" ]]; then
-            read -ra pr_issues <<<"$(gh api graphql -f query="{
+            read -ra pr_issues <<<"$(gh api graphql -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url" -f query="{
               repository(owner: \"${GITHUB_REPOSITORY_OWNER:?}\", name: \"${GITHUB_REPOSITORY##*/}\") {
-                pullRequest(number: ${pr_number:?}) {
-                  closingIssuesReferences (first: 100) { edges { node { url } } }
-                }
-              }
-            }" -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url")"
+                pullRequest(number: ${pr_number:?}) { closingIssuesReferences (first: 100) { edges { node { url } } } }
+              } }"|tr '\n' '\t')"
 
             for label in "${relevant_pr_labels[@]}"; do
               for issue in "${pr_issues[@]}"; do
