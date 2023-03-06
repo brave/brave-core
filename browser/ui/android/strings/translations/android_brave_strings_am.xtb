@@ -150,9 +150,9 @@
 <translation id="181905442828471321">የብሬቭ ጥበቃ ግሎባል ዲፎልት</translation>
 <translation id="2675679258824361492">ሌሎች የግላዊነት ቅንብሮች</translation>
 <translation id="8026334261755873520">የአሰሳ ውሂብ አጽዳ</translation>
-<translation id="5965081608816406060">የዳራ ቪድዮ መልሰህ አጫውት</translation>
+<translation id="1690924763769415936">የበስተጀርባ ጨዋታ</translation>
 <translation id="6332924730165919598">ሁሉንም ትሮች መዝጋት Braveን ይዘጋል</translation>
-<translation id="3872768973878059926">በ Brave ውስጥ ወደ ሌላ ትር ሲቀይሩ፣ ወደ ሌላ መተግበሪያ ሲቀይሩ፣ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ኦዲዮ መጫወቱን እንዲቀጥል ይፈቅዳል።</translation>
+<translation id="8308305244351876417">በ Brave ውስጥ ወይም በሌላ መተግበሪያ ውስጥ ወደሌላ ትር ሲቀይሩ ወይም የመሣሪያዎ ማያ ገጽ ሲጠፋ፣ ድምጽ እንዲጫወት ይፈቅዳል።</translation>
 <translation id="4150201353443180367">ማሳያ</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">ይህ ፈጣሪ ከ Brave ተጠቃሚዎች መዋጮዎችን ለማግኘት ገና አልተመዘገበም። እነርሱ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ እንሞክራለን።</translation>
 <translation id="635752162765375187">ማስታወሻ፦ ይህ ፈጣሪ ከእርስዎ የሽልማቶች ከስቶድያል ዋሌት አገልግሎት ጉርሻዎችን እንዲቀበል አልተዋቀረም። የሚሰጡት ጉርሻ  በራስሰር ደጋግሞ እየሞከረ ለ90 ቀናት በመጠባበቅ ይቆያል።</translation>
 <translation id="1910721550319506122">እንኳን ደህና መጡ!</translation>
+<translation id="2734870894159530879">ሒሳብዎን ለማየት ወደ <ph name="WALLET_PROVIDER"/> ይግቡ።</translation>
 <translation id="5830114181292529917">ይህንን ጣቢያ ጉርሻ በመላክ ማገዝ ይችላሉ። ታላቅ የሆነ መተግበሪያን በመፍጠራቸው ምስጋና የማቅረቢያ መንገድ ነው።</translation>
 <translation id="7658239707568436148">አቋርጥ</translation>
 <translation id="1201402288615127009">ቀጣይ</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Brave አገልግሎት በማይሰጥበት ጊዜ ማስታወቂያዎችን አሳይ</translation>
 <translation id="3349204812119681938">የ Brave ሽልማቶችን እንደገና አዘጋጅ</translation>
 <translation id="6606319453795180219">ይህ የ Brave ሽልማቶችን ይሰርዛል እና ሁሉንም የ Brave ሽልማቶች ውሂብዎን እንደገና ያስጀምራል።</translation>
-<translation id="6810078320346589989">ዕልባት ፍጠር</translation>
+<translation id="8293206222192510085">ዕልባት ያክሉ</translation>
+<translation id="340492034650766959">ዕልባት ይሰርዙ</translation>
+<translation id="2149973817440762519">ዕልባት ያርትዑ</translation>
+<translation id="6819319915092566548">ዕልባቶችን ይመልከቱ</translation>
 <translation id="3396347744975515056">Brave አስምር የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
 <translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="8985635554450124959">ማመሳሰል ሊዘጋጅ አልቻለም</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="496896260395129787">ይህ Brave Sync መለያ ከሌላ መሳሪያ ተሰርዟል። ማመሳሰልን ለማሰናከል ፈልገው ካልሆነ፣ <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> መለያውን እንደገና ይፍጠሩ</translation>
-<translation id="8199291899164865593">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። መለያ ተሰርዟል።</translation>
+<translation id="4094590686212463338">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። የማመሳሰል ሰንሰለት ተሰርዟል።</translation>
 <translation id="5633907266617216186">አድራሻዎች፣ የክፍያ መረጃ፣ ወዘተ.</translation>
 <translation id="1056898198331236512">ማስጠንቀቂያ</translation>
 <translation id="1426410128494586442">አዎ</translation>
@@ -371,6 +375,7 @@
 <translation id="8465442795593991224">በተጠየቁ አገልግሎቶች ላይ ተመስርተው ማንነትዎን እንዲያረጋግጡ ድጋፍ ሊጠይቅዎ ይችላል፡፡</translation>
 <translation id="3200197118442451932">Brave Software Inc. ከእነሱ ጋር መለያ ሲፈጥሩ ለ<ph name="WALLET_PROVIDER"/> የሚያቀርቡትን ማንኛውንም የግል መረጃ አያስኬድም፣ አያከማችም ወይም አይደርስበትም።</translation>
 <translation id="1665118090708049096">ወደ መለያዬ <ph name="WALLET_PROVIDER"/> ሂድ</translation>
+<translation id="4858636682078269312">ወደ እርስዎ <ph name="WALLET_PROVIDER"/> መለያ ይግቡ</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
 <translation id="2495032782748793764">የ Brave ነባሪ</translation>
 <translation id="9132378787893584761">Brave ን ለጓደኞችዎ ያጋሩ!</translation>
@@ -388,10 +393,10 @@
 <translation id="3624048886326677117">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (ጠበኛ)</translation>
 <translation id="7151914815476509258">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (መደበኛ)</translation>
 <translation id="7384778069178817075">ሁሉንም ተከታታዮች &amp; ማስታወቂያዎች ፍቀድ</translation>
-<translation id="4941539331405513605">ድረ ገጽ ተሻጋሪ ኩኪዎችን አግድ</translation>
 <translation id="3763681089644577874">ኩኪዎችን አግድ</translation>
 <translation id="614747795780742163">ድረ ገጾች የቀድሞ ጉብኝቶችዎን በተመለከተ መረጃ እንዳያከማቹ ይከለክላል</translation>
 <translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
+<translation id="4941539331405513605">ድረ ገጽ ተሻጋሪ ኩኪዎችን አግድ</translation>
 <translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
 <translation id="3895527457258986253">የጣት አሻራዎችን አግድ</translation>
 <translation id="7854108565842971747">እነዚህ ነባሪ የአዲስ ድረ ገጽ የጋሻ ቅንብሮች ናቸው። እነዚህን መቀየር ነባር የድረ ገጽ ቅንብሮችዎ ላይ ተጽእኖ አያሳድርም።</translation>
@@ -490,6 +495,8 @@
 <translation id="5705882733397021510">ወደ ኋላ ተመለስ</translation>
 <translation id="3985567919248057638">ፈጣን ጉብኝት እናድርግ</translation>
 <translation id="7889432931837317731">ሲቻል በራስ-ሰር ይክፈቱ</translation>
+<translation id="1029304566263314007">የማውረድ ሂደት ማሳወቂያዎችን ያሳዩ</translation>
+<translation id="2910433761530295035">ፋይሎችን የት እንደሚቀመጡ ይጠይቁ (የSD ካርድ ከተገኘ)</translation>
 <translation id="8967385052772844086">ሙሉውን የግላዊነት ሪፖርት ይመልከቱ</translation>
 <translation id="6864343534748973390">በጣም ታዋቂ</translation>
 <translation id="4608192160278975831">የግል እና መከታተያ የሌለው</translation>
@@ -498,6 +505,7 @@
 <translation id="7320542277711359296">ሁለተኛ በጣም ታዋቂ</translation>
 <translation id="8295049095570748497">በሩሲያ ውስጥ መሪ የመፈለጊያ ማሸን</translation>
 <translation id="2642661895835126239">ዛፎች ይተክላል፣ በርሊን ውስጥ የተመሠረተ</translation>
+<translation id="2422627462367776805">የደቡብ ኮሪያ የድር ፖርታል &amp; ፈልግ</translation>
 <translation id="177282784098234156">የግል ፣ ገለልተኛ ፣ ለተጠቃሚ-ቅድሚያ</translation>
 <translation id="1410130669636877548">አንዳንድ የፍለጋ ማሽኖች ድሩን ሲፈልጉ ከሌሎች በተሻለ ሚስጥራዊነትዎን ይከላከላሉ።</translation>
 <translation id="5187052478998910855">በሽልማቶች ላይ አዳሽ ይፈልጋሉ?</translation>
@@ -1020,7 +1028,7 @@
 <translation id="9074594632540931067">ስህተት፡ BAT አይገኝም</translation>
 <translation id="5382684862562314222">BAT በ Uphold ላይ ባለው በክልልዎ ውስጥ አልተፈቀደም።</translation>
 <translation id="6996157559236886133">ስህተት፡ የተገደበ የማቆየት መለያ ተግባር</translation>
-<translation id="842321566508373706">በUphold መሰረት በአሁኑ ጊዜ በUphold  መለያዎ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የ Uphold መለያዎ ይግቡና ለማጠናቀቅ ማናቸውም ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
+<translation id="1677961202754619328">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የ Uphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል። ለምሳሌ፣ ተጨማሪ መረጃ ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
 <translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
 <translation id="5425006356459378415">Brave ሽልማቶች አይገኝም</translation>
 <translation id="833643743158564518">ለ Brave ሽልማቶች አዲስ ምዝገባዎች በአሁኑ ጊዜ በአከባቢዎ ውስጥ ተሰናክለዋል። ነገር ግን፣ ሁልጊዜ በኋላ እንደገና መሞከር ይችላሉ። <ph name="LEARN_MORE"/></translation>
@@ -1030,5 +1038,10 @@
 <translation id="4071347720273751665">እርስዎ ENS አድራሻን ያስገቡ ይመስላል። ይህንን ጥያቄ ለመፍታት የሶስተኛ ወገን ችግር ፈቺን መጠቀም ያስፈልገናል ይህም የእርስዎን IP አድራሻ እና ጎራ ለማየት ሊያስችልዎት ይችላል። <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">የ ENSን የ offchain ጎራ ይጠቀሙ</translation>
 <translation id="4982630604810554641">ጎራ በመፈለግ ላይ...</translation>
+<translation id="4159738248012488342">ጉርሻ ለመስጠት እባክዎ መጠኑን ይምረጡ</translation>
 <translation id="3586775666459823714">NFT ዎች</translation>
+<translation id="707569835145765061">እርምጃ መውሰድ ያስፈልጋል፦ በአዋቂ የሚተዳደር የልጅ መለያን ያገናኙ አለበለዚያ የእርስዎ vBAT ይጠፋል</translation>
+<translation id="1776742005329298234">በ <ph name="DUE_DATE"/> ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። የተገኘውን ሒሳብዎን በአዋቂ ወደሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት በአዋቂ ወደሚተዳደር ሒሳብ ጋር ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳብዎ ይጠፋል።</translation>
+<translation id="5089752671190341407">የእርስዎን vBAT ለሚወዷቸው ፈጣሪዎች አስተዋጽኦ ለማበርከት አሁንም ጊዜ አለዎት</translation>
+<translation id="171158953146804144">በ <ph name="DUE_DATE"/>ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። በሚያሳዝን ሁኔታ፣ በእርስዎ ክልል ውስጥ (<ph name="REGION"/>) ያገኙትን ገንዘብ ለማውጣት በአዋቂ የሚተዳደሩ የሉም፡፡ እስካዛው ድረስ፣ ወደሚወዷቸው ፈጣሪዎች አሁንም አስተዋጽዖ ማድረግ ይችላሉ።</translation>
 </translationbundle>

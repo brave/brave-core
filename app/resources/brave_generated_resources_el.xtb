@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
 <translation id="3333887201479867589">Ανταμοιβές Brave</translation>
+<translation id="7561196759112975576">Πάντα</translation>
+<translation id="7961015016161918242">Ποτέ</translation>
 <translation id="4615489450165434530">Αναφέρετε μη λειτουργούντα ιστότοπο</translation>
 <translation id="8097438084542431276">Αντιγραφή καθαρού συνδέσμου</translation>
+<translation id="4678672101289648246">Μόνο στη σελίδα νέας καρτέλας</translation>
 <translation id="1209739344687072997">Αναφέρετε μη λειτουργούντα ιστότοπο</translation>
 <translation id="7630214457764713113">Αντιγραφή καθαρού συνδέσμου</translation>
+<translation id="8294286161128352783">Μόνο στη σελίδα νέας καρτέλας</translation>
 <translation id="6406506848690869874">Συγχρονισμός</translation>
 <translation id="1544192797660353713">Πορτοφόλι</translation>
 <translation id="2445484935443597917">Δημιουργία νέου προφίλ</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">Θέση</translation>
 <translation id="3790384768741064842">Μετακίνηση προς τα δεξιά</translation>
 <translation id="7444424316576061724">Μετακίνηση προς τα αριστερά</translation>
-<translation id="7561196759112975576">Πάντα</translation>
 <translation id="7060352228894039151">Με πέρασμα του ποντικιού από πάνω</translation>
-<translation id="7961015016161918242">Ποτέ</translation>
 <translation id="8981254605840444865">Εμφάνιση ρυθμίσεων</translation>
 <translation id="59174027418879706">Ενεργή</translation>
 <translation id="4176463684765177261">Απενεργοποιημένη</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">Αιώρηση με πέρασμα του ποντικιού από πάνω</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
+<translation id="3704707436873245822">Αντιγραφή κειμένου από εικόνα</translation>
+<translation id="5268098808165185458">Αντιγράφεται κείμενο από εικόνα...</translation>
+<translation id="4046485130884276245">Αντιγράφηκε κείμενο από εικόνα</translation>
+<translation id="3639779775496569782">Η αντιγραφή κειμένου απέτυχε</translation>
 <translation id="4235920711083356755">Εμφάνιση κουμπιού VPN</translation>
 <translation id="4070612712151038707">Εμφανίζει το κουμπί VPN στη γραμμή εργαλείων</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">Για να προσθέσετε έναν σελιδοδείκτη, κάντε κλικ στο κουμπί σελιδοδείκτη δίπλα στη γραμμή διευθύνσεων</translation>
 <translation id="8487693399751278191">Εισαγωγή σελιδοδεικτών τώρα...</translation>
 <translation id="2557899542277210112">Για γρήγορη πρόσβαση, τοποθετήστε τους σελιδοδείκτες σας εδώ στη γραμμή σελιδοδεικτών.</translation>
+<translation id="2702801445560668637">Λίστα ανάγνωσης</translation>
 <translation id="1968543937259008435">Έτοιμοι για το καλύτερο επίπεδο ιδιωτικότητας online;</translation>
 <translation id="6817415381278637662">Ορίστε το Brave ως προεπιλεγμένο πρόγραμμα περιήγησης, για να επωφελείστε από την προστασία ιδιωτικότητας του Brave σε κάθε σελίδα που ανοίγετε.</translation>
 <translation id="8722651357687610395">Ορίστε το Brave ως προεπιλογή</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">Γραμμή σελιδοδεικτών</translation>
 <translation id="6333347122924254968">Εμφάνιση εικονιδίου Ανταμοιβές Brave στη γραμμή διευθύνσεων</translation>
 <translation id="2245286910966863912">Εμφάνιση του κουμπιού Brave News στη γραμμή διεύθυνσης</translation>
-<translation id="1811404036171336214">Να εμφανίζονται πάντα οι σελιδοδείκτες στη σελίδα νέας καρτέλας</translation>
+<translation id="383007806262310953">Εμφάνιση σελιδοδεικτών</translation>
+<translation id="4054323497808446566">Η γραμμή σελιδοδεικτών είναι ορατή σε όλες τις σελίδες</translation>
+<translation id="8693858092251192712">Η γραμμή σελιδοδεικτών είναι κρυφή σε όλες τις σελίδες πλην της σελίδας νέας καρτέλας</translation>
+<translation id="7158817046543187970">Η γραμμή σελιδοδεικτών είναι κρυφή σε όλες τις σελίδες</translation>
 <translation id="3416468988018290825">Να εμφανίζονται πάντα οι πλήρεις διευθύνσεις URL</translation>
 <translation id="5529693968082667490">Εμφάνιση κουμπιού αναζήτησης καρτελών</translation>
 <translation id="1643029991199044105">Μεταβείτε διαδοχικά στις καρτέλες που χρησιμοποιήσατε πιο πρόσφατα με Ctrl-Tab</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Αποκλεισμός μέσων κοινωνικής δικτύωσης</translation>
-<translation id="7498695072878479744">Να επιτρέπονται τα κουμπιά σύνδεσης Google σε ιστοτόπους τρίτων</translation>
 <translation id="863171915776379000">Να επιτρέπονται οι συνδέσεις στο Facebook και οι ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Να επιτρέπονται ενσωματωμένα tweet από το Twitter</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Να ερωτηθώ όταν ένας ιστότοπος θέλει να αποκτήσει πρόσβαση στο API του παρόχου Solana</translation>
 <translation id="2777102601740875941">Αποκλείστε τοποθεσίες από την πρόσβαση στο API παρόχου του Solana</translation>
+<translation id="4206299587103092719">Σύνδεση μέσω Google</translation>
+<translation id="7458736153596040880">Ερώτηση όταν ένας ιστότοπος θέλει να χρησιμοποιήσει την παλιά Σύνδεση μέσω Google</translation>
+<translation id="459266451581663214">Να μην επιτρέπεται σε ιστοτόπους να χρησιμοποιούν την παλιά Σύνδεση μέσω Google</translation>
+<translation id="8098954941070626949">Να επιτρέπεται σε ιστοτόπους να χρησιμοποιούν την παλιά Σύνδεση μέσω Google</translation>
 <translation id="6414370348346025511">Η τυπική προστασία είναι ενεργοποιημένη.</translation>
 <translation id="5565355416171743213">Έναρξη με χρήση συγχρονισμού</translation>
 <translation id="4332558599726753990">Ρύθμιση συγχρονισμού</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">Αυτή η διαγραφή είναι οριστική και δεν υπάρχει τρόπος ανάκτησης των δεδομένων. Αν αποφασίσετε να
     αρχίσετε ξανά να χρησιμοποιείτε τον Συγχρονισμό, θα πρέπει να δημιουργήσετε έναν νέο λογαριασμό και να προσθέσετε ξανά κάθε συσκευή μία-μία.</translation>
 <translation id="4860996720371753023">Η διαγραφή του λογαριασμού είναι σε εξέλιξη...</translation>
-<translation id="8199291899164865593">Δεν ήταν δυνατή η σύνδεση σε αυτήν την αλυσίδα συγχρονισμού. Ο λογαριασμός διαγράφηκε.</translation>
+<translation id="4094590686212463338">Δεν ήταν δυνατή η σύνδεση σε αυτήν την αλυσίδα συγχρονισμού. Η αλυσίδα συγχρονισμού διαγράφηκε.</translation>
 <translation id="5633907266617216186">Διευθύνσεις, στοιχεία πληρωμών κ.λπ.</translation>
 <translation id="294985549514492876">Εφαρμογές ιστού (PWA)</translation>
 <translation id="6285118765755298263">Ευρετηριοποίηση άλλων μηχανών αναζήτησης</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">Να ερωτηθώ</translation>
 <translation id="7701040980221191251">Καμία</translation>
 <translation id="1274962333945373242">Crypto Wallets (Καταργημένο)</translation>
-<translation id="3695088618483091287">Πορτοφόλι Brave (Επεκτάσεις προτίμησης)</translation>
 <translation id="4718664830805652430">Προεπιλεγμένο νόμισμα βάσης</translation>
 <translation id="7992507032049865603">Προεπιλεγμένο κρυπτονόμισμα βάσης</translation>
 <translation id="1834467296210148203">Εμφάνιση του εικονιδίου του Πορτοφολιού Brave στη γραμμή εργαλείων</translation>

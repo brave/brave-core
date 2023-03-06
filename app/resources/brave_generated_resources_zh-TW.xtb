@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-TW">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7561196759112975576">總是</translation>
+<translation id="7961015016161918242">一律不要</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
 <translation id="8097438084542431276">複製清除連結</translation>
+<translation id="4678672101289648246">僅在新索引標籤頁面</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="7630214457764713113">複製潔淨連結</translation>
+<translation id="8294286161128352783">僅在新索引標籤頁面</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
 <translation id="2445484935443597917">建立新的個人資料</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">移至右側</translation>
 <translation id="7444424316576061724">移至左側</translation>
-<translation id="7561196759112975576">總是</translation>
 <translation id="7060352228894039151">滑鼠游標懸停其上時</translation>
-<translation id="7961015016161918242">一律不要</translation>
 <translation id="8981254605840444865">顯示設定</translation>
 <translation id="59174027418879706">已啟用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">滑鼠游標停在上方時浮動</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{開啟分頁音訊}other{開啟多個分頁的音訊}}</translation>
+<translation id="3704707436873245822">從圖片複製文字</translation>
+<translation id="5268098808165185458">正在從圖片複製文字…</translation>
+<translation id="4046485130884276245">已從圖片複製文字</translation>
+<translation id="3639779775496569782">複製文字失敗</translation>
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
+<translation id="2702801445560668637">閱讀清單</translation>
 <translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="2245286910966863912">在網址列顯示 Brave 新聞按鈕</translation>
-<translation id="1811404036171336214">總是在新分頁上顯示書籤</translation>
+<translation id="383007806262310953">顯示書籤列</translation>
+<translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
+<translation id="8693858092251192712">書籤列在除索引標籤頁面之外的所有頁面上都為隱藏</translation>
+<translation id="7158817046543187970">書籤在所有頁面上都為隱藏</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
-<translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">網站希望存取 Solana 提供者 API 時詢問我</translation>
 <translation id="2777102601740875941">禁止網站存取 Solana 提供者 API</translation>
+<translation id="4206299587103092719">Google 登入</translation>
+<translation id="7458736153596040880">在網站想要使用舊版 Google 登入時詢問</translation>
+<translation id="459266451581663214">阻止網站使用舊版 Google 登入</translation>
+<translation id="8098954941070626949">允許網站使用舊版 Google 登入</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="5565355416171743213">開始使用同步</translation>
 <translation id="4332558599726753990">同步設定</translation>
@@ -438,7 +451,7 @@
 
 再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。</translation>
 <translation id="4860996720371753023">正在刪除帳戶…</translation>
-<translation id="8199291899164865593">無法加入此同步鏈。帳戶已刪除。</translation>
+<translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
 <translation id="5633907266617216186">地址、付款資訊等</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
@@ -488,7 +501,6 @@
 <translation id="2356070529366658676">詢問</translation>
 <translation id="7701040980221191251">無</translation>
 <translation id="1274962333945373242">Crypto Wallets（已棄用）</translation>
-<translation id="3695088618483091287">Brave 錢包 (偏好延伸)</translation>
 <translation id="4718664830805652430">預設基礎貨幣</translation>
 <translation id="7992507032049865603">預設基礎加密貨幣</translation>
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>

@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave shields 全域預設值</translation>
 <translation id="2675679258824361492">其他私隱設定</translation>
 <translation id="8026334261755873520">清除瀏覽資料</translation>
-<translation id="5965081608816406060">背景影片播放</translation>
+<translation id="1690924763769415936">背景播放</translation>
 <translation id="6332924730165919598">如關閉所有分頁，Brave 也會隨之關閉</translation>
-<translation id="3872768973878059926">您在 Brave 中切換至其他分頁、前往其他應用程式，或您的裝置螢幕關閉時，允許音訊繼續播放。</translation>
+<translation id="8308305244351876417">當您切換到 Brave 或其他應用程式中的另一個分頁或您的裝置螢幕關閉時，允許播放音訊。</translation>
 <translation id="4150201353443180367">顯示設定</translation>
 <translation id="2433507940547922241">外觀</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">此創作者尚未註冊以接受 Brave 使用者的贊助。我們會繼續嘗試贊助，直到創作者驗證或 90 天過後為止。</translation>
 <translation id="635752162765375187">注意：此創作者尚未完成設定，無法從您的獎勵錢包保管服務接收小費。您給予的任何小費會先進入待處理狀態，並會在 90 天期間自動重試。</translation>
 <translation id="1910721550319506122">歡迎！</translation>
+<translation id="2734870894159530879">登入 <ph name="WALLET_PROVIDER"/> 以查看您的餘額</translation>
 <translation id="5830114181292529917">您可以藉由發送打賞來支持該網站。這是感謝他們提供優質內容的方式。</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="1201402288615127009">繼續</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">在未有使用 Brave 時顯示廣告</translation>
 <translation id="3349204812119681938">重設 Brave 獎賞</translation>
 <translation id="6606319453795180219">這麼做將刪除您的 Brave 獎勵並重設您所有的 Brave 獎勵資料</translation>
-<translation id="6810078320346589989">建立書籤</translation>
+<translation id="8293206222192510085">新增書籤</translation>
+<translation id="340492034650766959">刪除書籤</translation>
+<translation id="2149973817440762519">編輯書籤</translation>
+<translation id="6819319915092566548">檢視書籤</translation>
 <translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
 <translation id="7473245612074035141">開始設定</translation>
 <translation id="8985635554450124959">無法設定同步</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">不要再顯示</translation>
 <translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
-<translation id="8199291899164865593">無法加入此同步鏈。帳戶已刪除。</translation>
+<translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
 <translation id="5633907266617216186">地址、付款資訊等</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">是</translation>
@@ -371,6 +375,7 @@
 <translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
 <translation id="3200197118442451932">Brave Software Inc. 不會處理、儲存或存取任何您在設定帳戶時提供給 <ph name="WALLET_PROVIDER"/> 的個人資料。</translation>
 <translation id="1665118090708049096">前往我的 <ph name="WALLET_PROVIDER"/> 帳戶</translation>
+<translation id="4858636682078269312">登入您的 <ph name="WALLET_PROVIDER"/> 帳戶</translation>
 <translation id="8874184842967597500">未連線</translation>
 <translation id="2495032782748793764">Brave 預設值</translation>
 <translation id="9132378787893584761">分享 Brave 給您的朋友！</translation>
@@ -388,10 +393,10 @@
 <translation id="3624048886326677117">封鎖追蹤程式 &amp; 廣告（積極）</translation>
 <translation id="7151914815476509258">封鎖追蹤程式 &amp; 廣告（標準）</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
-<translation id="4941539331405513605">封鎖跨網站 cookies</translation>
 <translation id="3763681089644577874">封鎖 Cookies</translation>
 <translation id="614747795780742163">防止網站儲存您上一次造訪的資訊</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
+<translation id="4941539331405513605">封鎖跨網站 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="3895527457258986253">封鎖指紋識別</translation>
 <translation id="7854108565842971747">這些是新網站的 Shields 預設設定。變更此些設定不會影響您現時對每個網站的設定。</translation>
@@ -490,6 +495,8 @@
 <translation id="5705882733397021510">返回</translation>
 <translation id="3985567919248057638">讓我們快速瀏覽一下</translation>
 <translation id="7889432931837317731">可能的話自動開啟</translation>
+<translation id="1029304566263314007">顯示下載進度通知</translation>
+<translation id="2910433761530295035">詢問檔案儲存位置（若偵測到 SD 卡）</translation>
 <translation id="8967385052772844086">檢視完整的隱私權報告</translation>
 <translation id="6864343534748973390">最熱門</translation>
 <translation id="4608192160278975831">私人且沒有追蹤</translation>
@@ -498,6 +505,7 @@
 <translation id="7320542277711359296">第二熱門</translation>
 <translation id="8295049095570748497">俄羅斯領先的搜尋引擎</translation>
 <translation id="2642661895835126239">植樹，總部設於柏林</translation>
+<translation id="2422627462367776805">南韓入口網站 &amp; 搜尋</translation>
 <translation id="177282784098234156">私人、獨立、使用者至上</translation>
 <translation id="1410130669636877548">當您搜尋網路時，一些搜尋引擎會比其他搜尋引擎更好地保護您的隱私權。</translation>
 <translation id="5187052478998910855">需要複習一下獎勵嗎？</translation>
@@ -1016,7 +1024,7 @@
 <translation id="9074594632540931067">錯誤：無法使用 BAT</translation>
 <translation id="5382684862562314222">您所在地區的 Uphold 服務尚未支援 BAT。</translation>
 <translation id="6996157559236886133">錯誤：Uphold 帳戶功能受限</translation>
-<translation id="842321566508373706">Uphold 指出，您的 Uphold 帳戶目前受到部分限制。請登入您的 Uphold 帳戶，查看是否還有任何通知或其他帳戶規定有待完成，然後再試一次。</translation>
+<translation id="1677961202754619328">Uphold 指出，您的 Uphold 帳戶目前受到部分限制。請登入您的 Uphold 帳戶，查看是否還有任何通知或其他帳戶規定有待完成，然後再試一次。</translation>
 <translation id="6417420737057016607">Brave 廣告</translation>
 <translation id="5425006356459378415">Brave 獎勵不可用</translation>
 <translation id="833643743158564518">您所在的地區目前停用註冊 Brave 獎勵，不過您可稍後再試。<ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@
 <translation id="4071347720273751665">您似乎輸入的是 ENS 位址。我們需要使用第三方解析程式來解析此要求，這麼做可能會看見您的 IP 位址和網域。<ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">使用 ENS 鏈下網域</translation>
 <translation id="4982630604810554641">正在搜尋網域…</translation>
+<translation id="4159738248012488342">請選擇小費金額</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="707569835145765061">需要採取動作：連接託管帳戶，否則您的 vBAT 將遺失</translation>
+<translation id="1776742005329298234">我們將於 <ph name="DUE_DATE"/> 止現有虛擬 BAT 餘額的支援。請在此日期之前連接到一個託管帳戶，以讓我們將您賺取的餘額轉移到您的託管帳戶，否則您的餘額將會遺失。</translation>
+<translation id="5089752671190341407">您仍有時間將您的 vBAT 用於贊助您喜愛的創作者</translation>
+<translation id="171158953146804144">我們將於 <ph name="DUE_DATE"/> 止現有虛擬 BAT 餘額的支援。很抱歉，您所在的區域（<ph name="REGION"/>）沒有可用於提領餘額的託管帳戶。您仍可以在該日期前贊助您喜愛的創作者。</translation>
 </translationbundle>
