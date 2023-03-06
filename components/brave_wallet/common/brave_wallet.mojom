@@ -652,10 +652,9 @@ interface KeyringServiceObserver {
 };
 
 enum OnRampProvider {
-  kWyre = 0,
-  kRamp = 1,
-  kSardine = 2,
-  kTransak = 3
+  kRamp = 0,
+  kSardine = 1,
+  kTransak = 2
 };
 
 enum OffRampProvider {

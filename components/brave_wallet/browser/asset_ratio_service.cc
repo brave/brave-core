@@ -185,19 +185,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
                                     const std::string& currency_code,
                                     GetBuyUrlV1Callback callback) {
   std::string url;
-  if (provider == mojom::OnRampProvider::kWyre) {
-    GURL wyre_url = GURL(kWyreBaseUrl);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "dest", "ethereum:" + address);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "sourceCurrency", currency_code);
-    wyre_url = net::AppendQueryParameter(wyre_url, "destCurrency", symbol);
-    wyre_url = net::AppendQueryParameter(wyre_url, "amount", amount);
-    wyre_url = net::AppendQueryParameter(wyre_url, "accountId", kWyreID);
-    wyre_url =
-        net::AppendQueryParameter(wyre_url, "paymentMethod", "debit-card");
-    std::move(callback).Run(std::move(wyre_url.spec()), absl::nullopt);
-  } else if (provider == mojom::OnRampProvider::kRamp) {
+  if (provider == mojom::OnRampProvider::kRamp) {
     GURL ramp_url = GURL(kRampBaseUrl);
     ramp_url = net::AppendQueryParameter(ramp_url, "userAddress", address);
     ramp_url = net::AppendQueryParameter(ramp_url, "swapAsset", symbol);
