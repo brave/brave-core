@@ -999,7 +999,6 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/browser/ethereum_remote_client",
-      "//brave/browser/infobars",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//components/infobars/content",
