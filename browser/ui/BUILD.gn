@@ -385,7 +385,6 @@ source_set("ui") {
     "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/brave_rewards:util",
-    "//brave/browser/brave_rewards/rewards_panel",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/gcm_driver",
     "//brave/browser/infobars",
@@ -810,6 +809,8 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "brave_rewards/rewards_panel/rewards_panel_coordinator.cc",
+      "brave_rewards/rewards_panel/rewards_panel_coordinator.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",

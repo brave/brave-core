@@ -8,8 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_handler.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_panel_generated_map.h"
