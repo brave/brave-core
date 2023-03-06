@@ -27,7 +27,6 @@ feature/web3/wallet:
 - browser/ui/brave_wallet/**/*
 - browser/ui/webui/brave_wallet/**/*
 - components/brave_wallet/**/*
-- components/brave_wallet/**/*
 - components/brave_wallet_ui/**/*
 
 feature/web3/wallet/core:
