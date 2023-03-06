@@ -52,6 +52,8 @@ class BraveTabContainer : public TabContainerImpl {
   raw_ptr<TabDragContext> drag_context_;
 
   BooleanPrefMember show_vertical_tabs_;
+  BooleanPrefMember vertical_tabs_floating_mode_enabled_;
+  BooleanPrefMember vertical_tabs_collapsed_;
 
   bool layout_locked_ = false;
 };

@@ -21,20 +21,25 @@ class TabWidthConstraints;
 class TabStripController;
 class TabContainer;
 class TabSlotView;
+class TabStrip;
 struct TabLayoutConstants;
 
 namespace tabs {
 
-constexpr int kVerticalTabMinWidth = 48;
-constexpr int kVerticalTabHeight = 38;
+constexpr int kVerticalTabHeight = 36;
+constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
+constexpr int kVerticalTabsSpacing = 4;
+constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing * 2;
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
-    absl::optional<int> width);
+    absl::optional<int> width,
+    bool is_floating_mode);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<TabSlotView*>& views);
+    const std::vector<TabSlotView*>& views,
+    TabStrip* tab_strip);
 
 void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
@@ -45,7 +50,8 @@ void UpdateInsertionIndexForVerticalTabs(
     TabStripController* tab_strip_controller,
     TabContainer* tab_container,
     int& min_distance,
-    int& min_distance_index);
+    int& min_distance_index,
+    TabStrip* tab_strip);
 
 }  // namespace tabs
 
