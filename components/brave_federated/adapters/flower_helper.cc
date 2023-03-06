@@ -109,11 +109,16 @@ std::string BuildPostTaskResultsPayload(TaskResult result) {
   }
   flower_task.add_ancestry(task_id.id);
 
-  flower::Node node;
-  node.set_node_id(0);
-  node.set_anonymous(true);
+  flower::Node producer_node;
+  producer_node.set_node_id(0);
+  producer_node.set_anonymous(true);
+  
+  flower::Node consumer_node;
+  consumer_node.set_node_id(0);
+  consumer_node.set_anonymous(true);
 
-  *flower_task.mutable_producer() = node;
+  *flower_task.mutable_consumer() = consumer_node;
+  *flower_task.mutable_producer() = producer_node;
   *flower_task.mutable_legacy_client_message() = client_message;
 
   flower::PushTaskResRequest task_results;
