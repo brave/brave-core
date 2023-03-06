@@ -3693,19 +3693,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Browse and add
     </message>
     <message name="IDS_PLAYLIST_BROWSE_AND_ADD_MESSAGE" desc="Browse and add button description text">
-      Add any media from any website. Look for the + button in your address bar and tap it to add.
+      Add your favorite content. Look for the + button in the lower right part of your screen.
     </message>
     <message name="IDS_PLAYLIST_BROWSE_FOR_MEDIA" desc="Browse for media text">
       Browse for media
     </message>
     <message name="IDS_PLAYLIST_NEW_TEXT" desc="New playlist text">
-      New Playlist
+      New playlist
     </message>
     <message name="IDS_PLAYLIST_NAME_TEXT" desc="Playlist name text">
       Playlist name
     </message>
     <message name="IDS_PLAYLIST_UNTITLED_TEXT" desc="Untitled playlist text">
-      Untitled Playlist
+      Untitled playlist
     </message>
     <message name="IDS_PLAYLIST_CANCEL" desc="Playlist cancel button text">
       Cancel
@@ -3732,7 +3732,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Next
     </message>
     <message name="IDS_PLAYLIST_TAP_LONG_PRESS_OR_DRAG" desc="Onboarding toast text">
-      Tap, long press or drag
+      Tap, long press, or drag
     </message>
     <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="Add to playlist button text">
       Add to Playlist
@@ -3744,7 +3744,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Add media
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TITLE_1" desc="Playlist onboarding text">
-      Save videos with Brave Playlist and watch later, even offline
+      Add videos to Brave Playlist and watch later, even offline
     </message>
     <message name="IDS_PLAYLIST_ONBOARDING_TEXT_1" desc="Playlist onboarding text">
       Make playlists of your favorite audio and videos, and play anytime, anywhere.
@@ -3786,10 +3786,10 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Remove all offline data
     </message>
     <message name="IDS_PLAYLIST_DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE" desc="Playlist menu text">
-      Download playlist for offline use
+      Keep playlist for offline use
     </message>
     <message name="IDS_PLAYLIST_DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE" desc="Playlist menu text">
-      Download all playlists for offline use
+      Keep all playlists for offline use
     </message>
     <message name="IDS_PLAYLIST_DELETE_PLAYLIST" desc="Playlist menu text">
       Delete playlist
@@ -3831,7 +3831,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Playlist item is not cached.\nPlease cache the item for offline mode.
     </message>
     <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
-      Content expired. Wait a few seconds then try playing again.
+      Content expired. Try again in a few seconds.
     </message>
   </messages>
   </release>

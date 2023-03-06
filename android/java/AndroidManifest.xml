@@ -213,6 +213,14 @@
     </intent-filter>
 </service>
 
+<activity
+    android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
+    android:exported="false"
+    android:launchMode="singleTask"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
+<service android:name="com.brave.playlist.PlaylistVideoService"
+    android:exported="false"/>
+
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
     android:theme="@style/Theme.Chromium.SearchActivity"
