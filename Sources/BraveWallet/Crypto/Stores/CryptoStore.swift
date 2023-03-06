@@ -386,12 +386,31 @@ public class CryptoStore: ObservableObject {
     return pendingRequest != nil
   }
 
-  func handleWebpageRequestResponse(_ response: WebpageRequestResponse) {
+  // Helper to store the completion block of an Add Network dapp request.
+  typealias AddNetworkCompletion = (_ error: String?) -> Void
+  // The completion closure(s) are handled in `onAddEthereumChainRequestCompleted`
+  // when we determine if the chain was added successfully or not.
+  var addNetworkDappRequestCompletion: [String: AddNetworkCompletion] = [:]
+  
+  func handleWebpageRequestResponse(
+    _ response: WebpageRequestResponse,
+    completion: ((_ error: String?) -> Void)? = nil
+  ) {
     switch response {
     case let .switchChain(approved, originInfo):
       rpcService.notifySwitchChainRequestProcessed(approved, origin: originInfo.origin)
     case let .addNetwork(approved, chainId):
-      rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+      // for add network request, approval requires network call so we must
+      // wait for `onAddEthereumChainRequestCompleted` to know success/failure
+      if approved, let completion {
+        // store `completion` closure until notified of `onAddEthereumChainRequestCompleted` event
+        addNetworkDappRequestCompletion[chainId] = completion
+        rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+      } else { // not approved, or no completion closure provided.
+        completion?(nil)
+        rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+      }
+      return
     case let .addSuggestedToken(approved, contractAddresses):
       walletService.notifyAddSuggestTokenRequestsProcessed(approved, contractAddresses: contractAddresses)
     case let .signMessage(approved, id):
@@ -406,6 +425,7 @@ public class CryptoStore: ObservableObject {
       walletService.notifySignAllTransactionsRequestProcessed(approved, id: id, signatures: nil, error: nil)
     }
     pendingRequest = nil
+    completion?(nil)
   }
   
   public func rejectAllPendingWebpageRequests() {
@@ -491,6 +511,10 @@ extension CryptoStore: BraveWalletJsonRpcServiceObserver {
   }
   
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+    if let addNetworkDappRequestCompletion = addNetworkDappRequestCompletion[chainId] {
+      addNetworkDappRequestCompletion(error.isEmpty ? nil : error)
+      self.addNetworkDappRequestCompletion[chainId] = nil
+    }
   }
   
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
