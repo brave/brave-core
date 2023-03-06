@@ -192,7 +192,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       UnstoppableDomainsGetWalletAddrCallback callback) override;
 
   void EnsGetContentHash(const std::string& domain,
-                         EnsGetContentHashCallback callback);
+                         EnsGetContentHashCallback callback) override;
 
   void GetUnstoppableDomainsResolveMethod(
       GetUnstoppableDomainsResolveMethodCallback callback) override;
