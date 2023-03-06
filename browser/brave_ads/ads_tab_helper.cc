@@ -123,7 +123,10 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
-  if (navigation_handle->HasUserGesture()) {
+  // Some browser initiated navigations have HasUserGesture set to false. This
+  // should eventually be fixed in crbug.com/617904.
+  if (navigation_handle->HasUserGesture() ||
+      !navigation_handle->IsRendererInitiated()) {
     const int32_t page_transition =
         static_cast<int32_t>(navigation_handle->GetPageTransition());
 
