@@ -35,6 +35,7 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_system.h"
@@ -705,6 +706,20 @@ void BraveRewardsGetAvailableCountriesFunction::GetAvailableCountriesCallback(
     country_list.Append(std::move(country));
   }
   Respond(WithArguments(std::move(country_list)));
+}
+
+BraveRewardsGetDefaultCountryFunction::
+    ~BraveRewardsGetDefaultCountryFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetDefaultCountryFunction::Run() {
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  return RespondNow(WithArguments(rewards_service->GetCountryCode()));
 }
 
 BraveRewardsGetDeclaredCountryFunction::

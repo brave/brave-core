@@ -220,6 +220,16 @@ class BraveRewardsGetAvailableCountriesFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetDefaultCountryFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getDefaultCountry", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetDefaultCountryFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetDeclaredCountryFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getDeclaredCountry", UNKNOWN)

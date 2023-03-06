@@ -832,6 +832,23 @@
         ]
       },
       {
+        "name": "getDefaultCountry",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "defaultCountry",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getDeclaredCountry",
         "type": "function",
         "description": "",

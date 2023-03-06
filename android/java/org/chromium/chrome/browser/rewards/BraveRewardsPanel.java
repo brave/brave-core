@@ -98,6 +98,7 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.CountrySelectionSpinnerAdapter;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -1631,6 +1632,14 @@ public class BraveRewardsPanel
             ArrayList<String> countryList = new ArrayList<String>();
             countryList.add(mActivity.getResources().getString(R.string.select_your_country_title));
             countryList.addAll(sortedCountryMap.keySet());
+            String defaultCountry = mBraveRewardsNativeWorker.getCountryCode() != null
+                    ? new Locale("", mBraveRewardsNativeWorker.getCountryCode()).getDisplayCountry()
+                    : null;
+            if (defaultCountry != null && countryList.contains(defaultCountry)) {
+                countryList.remove(defaultCountry);
+                countryList.add(1, defaultCountry);
+            }
+
             String[] countryArray = countryList.toArray(new String[countryList.size()]);
             Spinner countrySpinner;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1641,11 +1650,9 @@ public class BraveRewardsPanel
                         R.id.country_spinner_low_device);
             }
             countrySpinner.setVisibility(View.VISIBLE);
-            ArrayAdapter countryArrayAdapter =
-                    new ArrayAdapter(mActivity, android.R.layout.simple_spinner_item, countryArray);
-            countryArrayAdapter.setDropDownViewResource(
-                    android.R.layout.simple_spinner_dropdown_item);
-            countrySpinner.setAdapter(countryArrayAdapter);
+            CountrySelectionSpinnerAdapter countrySelectionSpinnerAdapter =
+                    new CountrySelectionSpinnerAdapter(mActivity, countryList);
+            countrySpinner.setAdapter(countrySelectionSpinnerAdapter);
             countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

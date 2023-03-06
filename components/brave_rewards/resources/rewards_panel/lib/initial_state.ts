@@ -50,6 +50,7 @@ export function getInitialState (): HostState {
     },
     notifications: [],
     availableCountries: [],
+    defaultCountry: '',
     declaredCountry: '',
     userType: 'unconnected',
     publishersVisitedCount: 0

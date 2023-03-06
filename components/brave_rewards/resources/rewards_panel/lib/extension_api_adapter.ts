@@ -256,6 +256,12 @@ export function getAvailableCountries () {
   })
 }
 
+export function getDefaultCountry () {
+  return new Promise<string>((resolve) => {
+    chrome.braveRewards.getDefaultCountry(resolve)
+  })
+}
+
 function getMonthlyTipAmount (publisherKey: string) {
   return new Promise<number>((resolve) => {
     chrome.braveRewards.getRecurringTips((result) => {
