@@ -100,10 +100,7 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_service_delegate_impl.cc",
       "brave_wallet_service_delegate_impl.h",
     ]
-    deps += [
-      "//brave/browser/ui",
-      "//chrome/browser/ui",
-    ]
+    deps += [ "//chrome/browser/ui" ]
     if (enable_extensions) {
       deps += [ ":external_wallets_importer" ]
     }
@@ -220,11 +217,11 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
-      "//brave/browser/ui",
       "//brave/browser/ui/sidebar",
       "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/sidebar",
+      "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/policy/core/browser",

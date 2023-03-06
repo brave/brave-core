@@ -1,4 +1,5 @@
 source_set("rewards_panel") {
+  check_includes = false
   if (!is_android) {
     sources = [
       "rewards_panel_coordinator.cc",
@@ -12,7 +13,6 @@ source_set("rewards_panel") {
       "//brave/components/brave_rewards/common:mojom",
       "//brave/components/constants",
       "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
       "//url",
     ]
   }

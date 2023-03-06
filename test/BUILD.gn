@@ -183,7 +183,6 @@ test("brave_unit_tests") {
     "//brave/browser/safebrowsing",
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
-    "//brave/browser/ui",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui/new_tab_page:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
@@ -264,6 +263,7 @@ test("brave_unit_tests") {
     "//chrome:dependencies",
     "//chrome/app:command_ids",
     "//chrome/browser/favicon",
+    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/assist_ranker",
     "//components/assist_ranker/proto",
@@ -594,8 +594,8 @@ static_library("browser_test_support") {
   ]
 
   deps = [
-    "//brave/browser/ui",
     "//chrome/browser",
+    "//chrome/browser/ui",
   ]
 }
 
@@ -631,7 +631,6 @@ if (!is_android) {
 
     deps = [
       "//base",
-      "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
@@ -825,7 +824,6 @@ test("brave_browser_tests") {
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
-    "//brave/browser/ui",
     "//brave/browser/ui:browser_tests",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/tabs",

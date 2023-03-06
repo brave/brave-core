@@ -164,7 +164,7 @@ static_library("browser") {
       "brave_wallet_pin_service.h",
     ]
   }
-  deps = [
+  public_deps = [
     ":constants",
     ":generated_json_rpc_responses",
     ":generated_swap_responses",
@@ -172,6 +172,8 @@ static_library("browser") {
     ":pref_names",
     ":transaction",
     ":utils",
+  ]
+  deps = [
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
