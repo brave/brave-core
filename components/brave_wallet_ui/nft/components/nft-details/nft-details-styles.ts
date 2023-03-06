@@ -285,7 +285,7 @@ export const Subdivider = styled.div`
 
 export const AttributesWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 8px;
   margin-bottom: 10px;
 `

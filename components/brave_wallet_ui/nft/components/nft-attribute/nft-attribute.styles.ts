@@ -12,6 +12,7 @@ export const StyledWrapper = styled.div`
   border: 1px solid ${p => p.theme.color.divider01};
   margin-bottom: 8px;
   border-radius: 8px;
+  text-align: center;
 `
 
 export const TraitType = styled.span`
