@@ -76,7 +76,7 @@ std::string BuildGetTasksPayload() {
   std::string request;
 
   flower::Node node;
-  node.set_node_id(1);
+  node.set_node_id(0);
   node.set_anonymous(true);
 
   flower::PullTaskInsRequest pull_task_instructions_request;
