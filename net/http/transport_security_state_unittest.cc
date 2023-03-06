@@ -44,7 +44,8 @@ class TransportSecurityStateTestBase : public ::testing::Test,
   static NetworkAnonymizationKey CreateNetworkAnonymizationKey(
       const url::Origin& top_frame_origin) {
     SchemefulSite schemeful_site(top_frame_origin);
-    return NetworkAnonymizationKey(schemeful_site, schemeful_site);
+    return net::NetworkAnonymizationKey::CreateFromFrameSite(schemeful_site,
+                                                             schemeful_site);
   }
 
   void ExpectNoHSTS(TransportSecurityState* state,

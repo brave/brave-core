@@ -131,8 +131,9 @@ GetHostBoundPartitionHashForHSTS(const std::string& host) {
     return absl::nullopt;
   }
   SchemefulSite schemeful_site(url::Origin::Create(GURL("https://" + host)));
-  NetworkAnonymizationKey network_anonymization_key(schemeful_site,
-                                                    schemeful_site);
+  auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(schemeful_site,
+                                                        schemeful_site);
   return GetHSTSPartitionHash(network_anonymization_key);
 }
 
