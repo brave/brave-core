@@ -53,6 +53,7 @@ class ShieldsPanelDataHandler
   void OpenWebCompatWindow() override;
   void UpdateFavicon() override;
   void AllowScriptsOnce(const std::vector<std::string>& origins) override;
+  void BlockAllowedScripts(const std::vector<std::string>& origins) override;
 
  private:
   void UpdateSiteBlockInfo();

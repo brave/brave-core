@@ -255,6 +255,16 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       });
 }
 
+void BraveShieldsWebContentsObserver::BlockAllowedScripts(
+    const std::vector<std::string>& origins) {
+  for (const auto& it : origins) {
+    allowed_script_origins_.erase(
+        std::remove(allowed_script_origins_.begin(),
+                    allowed_script_origins_.end(), it),
+        allowed_script_origins_.end());
+  }
+}
+
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   allowed_script_origins_.insert(std::end(allowed_script_origins_),

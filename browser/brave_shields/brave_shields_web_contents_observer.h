@@ -57,6 +57,7 @@ class BraveShieldsWebContentsObserver
                                    const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
+  void BlockAllowedScripts(const std::vector<std::string>& origins);
   bool IsBlockedSubresource(const std::string& subresource);
   void AddBlockedSubresource(const std::string& subresource);
 

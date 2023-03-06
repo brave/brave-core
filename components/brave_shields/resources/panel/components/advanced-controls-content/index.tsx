@@ -104,7 +104,7 @@ function AdvancedControlsContent () {
 
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
-  const jsListCount = siteBlockInfo?.jsList.length ?? 0
+  const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
 
