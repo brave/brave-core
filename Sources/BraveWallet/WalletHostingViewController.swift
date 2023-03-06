@@ -68,8 +68,8 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         presentingContext: presentingContext
       )
     )
-    rootView.dismissAction = { [unowned self] in
-      self.dismiss(animated: true)
+    rootView.dismissAction = { [weak self] in
+      self?.dismiss(animated: true)
     }
     rootView.openWalletURLAction = { [unowned self] url in
       (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
