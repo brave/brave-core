@@ -106,6 +106,11 @@ int BraveBrowserViewLayout::LayoutInfoBar(int top) {
   if (!vertical_tab_strip_host_)
     return BrowserViewLayout::LayoutInfoBar(top);
 
+  if (ShouldPushBookmarkBarForVerticalTabs()) {
+    // Inserts are already applied from LayoutBookmarkAndInfoBar().
+    return BrowserViewLayout::LayoutInfoBar(top);
+  }
+
   auto new_rect = vertical_layout_rect_;
   new_rect.Inset(GetInsetsConsideringVerticalTabHost());
   base::AutoReset resetter(&vertical_layout_rect_, new_rect);
