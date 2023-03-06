@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
+<translation id="7561196759112975576">সবসময়য়</translation>
+<translation id="7961015016161918242">কখনই নয়</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="8097438084542431276">ক্লিন লিঙ্ক কপি করুন</translation>
+<translation id="4678672101289648246">শুধুমাত্র নতুন ট্যাব পেজে</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="7630214457764713113">ক্লিন লিঙ্ক কপি করুন</translation>
+<translation id="8294286161128352783">শুধুমাত্র নতুন ট্যাব পেজে</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="1544192797660353713">ওয়ালেট</translation>
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">পজিশন</translation>
 <translation id="3790384768741064842">ডান দিকে সরান</translation>
 <translation id="7444424316576061724">বামে সরান</translation>
-<translation id="7561196759112975576">সবসময়য়</translation>
 <translation id="7060352228894039151">মাউসওভারে</translation>
-<translation id="7961015016161918242">কখনই নয়</translation>
 <translation id="8981254605840444865">সেটিংস দেখান</translation>
 <translation id="59174027418879706">সক্ষম করা হযেছে</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">মাউসওভারে ফ্লোট করুন</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
+<translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
+<translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
+<translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
+<translation id="3639779775496569782">টেক্সট কপি করা যায়নি</translation>
 <translation id="4235920711083356755">VPN বোতাম দেখান</translation>
 <translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="8487693399751278191">বুকমার্কগুলি এখনই আমদানি করুন...</translation>
 <translation id="2557899542277210112">দ্রুত ব্যবহারের জন্য, আপনার বুকমার্কগুলি এখানে বুকমার্ক বারে রাখুন।</translation>
+<translation id="2702801445560668637">পড়ার তালিকা</translation>
 <translation id="1968543937259008435">অনলাইন সেরা গোপনীয়তার জন্য প্রস্তুত?</translation>
 <translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
 <translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">বুকমার্ক বার</translation>
 <translation id="6333347122924254968">ঠিকানা বারে Brave পুরস্কারসমূহ দেখান</translation>
 <translation id="2245286910966863912">অ্যাড্রেস বারে Brave সংবাদ বোতাম দেখান</translation>
-<translation id="1811404036171336214">বুকমার্কগুলি সবর্দা নতুন ট্যাব পৃষ্ঠাতে দেখান</translation>
+<translation id="383007806262310953">বুকমার্ক বার দেখান</translation>
+<translation id="4054323497808446566">বুকমার্ক বার সব পেজে দেখা যাচ্ছে</translation>
+<translation id="8693858092251192712">নতুন ট্যাব পেজটি ছাড়া বুকমার্ক বার সব পেজে লুকানো রয়েছে</translation>
+<translation id="7158817046543187970">বুকমার্ক বার সব পেজে লুকানো রয়েছে</translation>
 <translation id="3416468988018290825">সর্বদা সম্পূর্ণ URL গুলি দেখান৷</translation>
 <translation id="5529693968082667490">ট্যাব সার্চ বাটন দেখান</translation>
 <translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
-<translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">যখন কোনও সাইট Solana প্রদানকারী API অ্যাক্সেস করতে চায় সে বিষয়ে জিজ্ঞাসা করুন</translation>
 <translation id="2777102601740875941">যখন কোনও সাইট Solana প্রদানকারী API অ্যাক্সেস করতে তাদের ব্লক করুন</translation>
+<translation id="4206299587103092719">Google সাইন-ইন</translation>
+<translation id="7458736153596040880">কোনো সাইট লিগ্যাসি Google সাইন-ইন ব্যবহার করতে চাইলে জিজ্ঞাসা করুন</translation>
+<translation id="459266451581663214">লিগ্যাসি Google সাইন-ইন ব্যবহার করা থেকে সাইটগুলোকে ব্লক করুন</translation>
+<translation id="8098954941070626949">লিগ্যাসি Google সাইন-ইন ব্যবহার করতে সাইটগুলোকে অনুমতি দিন</translation>
 <translation id="6414370348346025511">স্ট্যান্ডার্ড সুরক্ষা চালু আছে।</translation>
 <translation id="5565355416171743213">সিঙ্কের ব্যবহার শুরু করুন</translation>
 <translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">এটি চিরস্থায়ীভাবে মোছা হবে এবং ডেটা পুনরুদ্ধার করার কোনো উপায় থাকবে না। আপনি আবার সিঙ্ক
     করার সিদ্ধান্ত নিলে, আপনাকে একটি নতুন অ্যাকাউন্ট তৈরি করতে হবে এবং এক এক করে প্রত্যেকটি ডিভাইস আবার যোগ করতে হবে।</translation>
 <translation id="4860996720371753023">অ্যাকাউন্ট মোছার কাজ চলছে...</translation>
-<translation id="8199291899164865593">এই সিঙ্ক চেনে যোগ দিতে পারেনি। অ্যাকাউন্ট মোছা হয়েছে।</translation>
+<translation id="4094590686212463338">এই সিঙ্ক চেইনে যোগ দেওয়া যায়নি। সিঙ্ক চেইনটি মুছে ফেলা হয়েছিল।</translation>
 <translation id="5633907266617216186">অ্যাড্রেস, পেমেন্টের তথ্য ইত্যাদি।</translation>
 <translation id="294985549514492876">ওয়েব অ্যাপ (PWAs)</translation>
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>
 <translation id="1274962333945373242">ক্রিপ্টো ওয়ালেট (অপ্রচলিত)</translation>
-<translation id="3695088618483091287">Brave ওয়ালেট (এক্সটেনশন পছন্দ করুন)</translation>
 <translation id="4718664830805652430">ডিফল্ট বেস মুদ্রা</translation>
 <translation id="7992507032049865603">ডিফল্ট বেস ক্রিপ্টোকারেন্সি</translation>
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>

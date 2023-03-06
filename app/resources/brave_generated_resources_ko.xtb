@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7561196759112975576">항상</translation>
+<translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
 <translation id="8097438084542431276">클린 링크 복사</translation>
+<translation id="4678672101289648246">새 탭 페이지에서만</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="7630214457764713113">클린 링크 복사</translation>
+<translation id="8294286161128352783">새 탭 페이지에서만</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
 <translation id="2445484935443597917">새 프로필 만들기</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">위치</translation>
 <translation id="3790384768741064842">오른쪽으로 이동</translation>
 <translation id="7444424316576061724">왼쪽으로 이동</translation>
-<translation id="7561196759112975576">항상</translation>
 <translation id="7060352228894039151">온마우스오버</translation>
-<translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="8981254605840444865">설정 표시</translation>
 <translation id="59174027418879706">사용 설정됨</translation>
 <translation id="4176463684765177261">사용 중지</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">마우스오버 위로 플로팅</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{탭 숨기기}other{탭 숨기기}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{탭 숨기기 취소}other{탭 숨기기 취소}}</translation>
+<translation id="3704707436873245822">이미지에서 텍스트 복사</translation>
+<translation id="5268098808165185458">이미지에서 텍스트 복사 중...</translation>
+<translation id="4046485130884276245">이미지에서 텍스트 복사됨</translation>
+<translation id="3639779775496569782">텍스트 복사 실패</translation>
 <translation id="4235920711083356755">VPN 버튼 표시</translation>
 <translation id="4070612712151038707">툴바에 VPN 버튼 표시</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
+<translation id="2702801445560668637">읽기 목록</translation>
 <translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
 <translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">북마크</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="2245286910966863912">주소 표시줄에 Brave News 버튼 표시</translation>
-<translation id="1811404036171336214">새 탭 페이지에 책갈피 항상 표시</translation>
+<translation id="383007806262310953">북마크바 표시</translation>
+<translation id="4054323497808446566">모든 페이지에서 북마크 바 표시</translation>
+<translation id="8693858092251192712">새 탭 페이지를 제외한 모든 페이지에서 북마크 바 숨김</translation>
+<translation id="7158817046543187970">모든 페이지에서 북마크 바 숨김</translation>
 <translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
-<translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">사이트가 Solana 제공자 API에 액세스하려고 할 때 묻기</translation>
 <translation id="2777102601740875941">사이트의 Solana 제공자 API 액세스 차단</translation>
+<translation id="4206299587103092719">Google 로그인</translation>
+<translation id="7458736153596040880">사이트가 기존 Google 로그인 사용을 요구하면 묻기</translation>
+<translation id="459266451581663214">사이트가 기존 Google 로그인을 사용하지 못하도록 차단</translation>
+<translation id="8098954941070626949">사이트가 기존 Google 로그인을 사용할 수 있도록 허용</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="5565355416171743213">동기화 사용 시작</translation>
 <translation id="4332558599726753990">동기화 설정</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면
     새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
 <translation id="4860996720371753023">계정 삭제 진행 중...</translation>
-<translation id="8199291899164865593">이 동기화 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.</translation>
+<translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
 <translation id="5633907266617216186">주소, 결제 정보 등</translation>
 <translation id="294985549514492876">웹 앱(PWA)</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">확인</translation>
 <translation id="7701040980221191251">없음</translation>
 <translation id="1274962333945373242">암호화폐 월렛(지원 중단)</translation>
-<translation id="3695088618483091287">Brave 월렛(확장 프로그램 권장)</translation>
 <translation id="4718664830805652430">기본 기준 통화</translation>
 <translation id="7992507032049865603">기본 기준 암호화폐</translation>
 <translation id="1834467296210148203">툴바에 Brave 월렛 아이콘 표시</translation>

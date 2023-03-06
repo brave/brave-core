@@ -172,7 +172,7 @@
 <translation id="4851215387785619212">Privatumo nepažeidžiančios „Brave“ reklamos</translation>
 <translation id="6480303618073442141">Privatumo nepažeidžiančios „Brave“ reklamos sukurtos taip, kad nekliudytų ir būtų privačios. Reklamos paremtos jūsų pomėgiais, bet iš jūsų įrenginio niekada nesiunčiami jokie asmens duomenys ar naršymo istorija. O geriausia tai, kad privatumo nepažeidžiančios „Brave“ reklamos leidžia uždirbti BAT (<ph name="BEGIN_LINK"/>„Basic Attention Token“<ph name="END_LINK"/>) vien už tai, kad jas peržiūrite.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
-<translation id="3742599705619405136">Automatinis būdas paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomos „Brave“ patvirtintos svetainės gaus jūsų įmokas automatiškai, atsižvelgdama į jūsų dėmesį, kurį vertina „Brave“.</translation>
+<translation id="7437775146229396839">Automatinis būdas palaikyti svetaines ir turinio kūrėjus. Nustatykite mėnesio įmokos sumą ir naršykite įprastai. <ph name="BEGIN_LINK"/>Patvirtintos svetainės ir kūrėjai, <ph name="END_LINK"/> kuriuos peržiūrite, gaus jūsų indėlį kiekvieną mėnesį, atsižvelgiant į tai, kiek laiko praleidžiate apžvelgdami jų turinį.</translation>
 <translation id="3325399124634342726">Šio mėnesio uždarbis (numatomas)</translation>
 <translation id="8593551638387217772">Kita mokėjimo data</translation>
 <translation id="4428871418618312983">Šį mėnesį gautos reklamos</translation>
@@ -204,8 +204,6 @@
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
 <translation id="178390304006113804">Nustatykite pasikartojančius mėnesinius arbatpinigius, kad galėtumėte nuolat remti savo mėgstamus kūrėjus.</translation>
 <translation id="3302159320447117425">Dar nenustatyta jokių mėnesinių arbatpinigių.</translation>
-<translation id="1847863811689960237">Atlyginkite kūrėjams už savo mėgstamą turinį.</translation>
-<translation id="4129489167302464118">Jūsų mėnesinė įmoka paskirstoma svetainėms, kuriose lankotės.</translation>
 <translation id="4898632353264854950">Svetainės bus rodomos jums naršant</translation>
 <translation id="3024485967181749006">Iš viso arbatpinigių šį mėnesį</translation>
 <translation id="8183455888546367148">Iš viso mėnesinių arbatpinigių šį mėnesį</translation>
@@ -273,6 +271,8 @@
 <translation id="7849926087559412554">Oi! Jūsų naršyklė negali priimti „Brave“ privačios reklamos.</translation>
 <translation id="5177429570315095022">Reikia atnaujinti jūsų naršyklę, kad toliau matytumėte reklamas.</translation>
 <translation id="7352651011704765696">Kažkas negerai</translation>
+<translation id="4593680147181354667">Diagnostikos ID</translation>
+<translation id="3995471429906554168">Diagnostikos informacija</translation>
 <translation id="752216563428219524">Reklamos neinicijuotos, atnaujinkite puslapį.</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Automatiškai atnaujinti kas 5 sekundes</translation>
@@ -354,6 +354,8 @@
 <translation id="8874184842967597500">Neprisijungta</translation>
 <translation id="4569155249847375786">Jūsų piniginė patvirtinta</translation>
 <translation id="6521149675246672063">Atjungta (patvirtinta)</translation>
+<translation id="5058161306698404465">Kūrybinė aplinka:</translation>
+<translation id="5856438412804207598">Dabartinė aplinka:</translation>
 <translation id="5906820630265272615">BAT lėšos</translation>
 <translation id="5814098892838785557">Ar tikrai nebenorite remti šio kūrėjo?</translation>
 <translation id="6582097696555842139">Atšaukti mėnesinius arbatpinigius</translation>
@@ -393,6 +395,7 @@
 <translation id="839058704683989763">Nustatėte laukiamus arbatpinigius!</translation>
 <translation id="5096821444729034955">už jo (jos) įrašą</translation>
 <translation id="2978223787436054634">Parašykite „Tweet“ žinutę apie savo paramą</translation>
+<translation id="976068305210640982">Dabar jūs esate <ph name="BEGIN_LINK"/>atjungtas nuo paskyros.<ph name="LINK_END"/></translation>
 <translation id="5916290544882167205">„Brave Software“. „Brave“ yra registruotasis „Brave Software“ prekių ženklas. Svetainių pavadinimai gali būti jų savininkų prekių ženklai arba registruotieji prekių ženklai.</translation>
 <translation id="9026369588205476247">Siekiant apsaugoti jūsų privatumą, ši „Brave Rewards“ ataskaita neįrašoma, neregistruojama ir nelaikoma niekur kitur, o tik jūsų įrenginyje (šiame kompiuteryje). Įrenginyje praradus duomenis, iš „Brave“ jos gauti nebus galima.</translation>
 <translation id="3587482841069643663">Visi</translation>
@@ -513,8 +516,8 @@
 <translation id="923467487918828349">Rodyti viską</translation>
 <translation id="5113531205597573951">Peržiūrėtos svetainės</translation>
 <translation id="4450893287417543264">Neberodyti</translation>
-<translation id="6518133107902771759">Patvirtinti</translation>
-<translation id="422369484771082705">Patvirtinimas neprivalomas. Vis dėlto patvirtinę galėsite iš „Brave“ atlygio uždirbtus BAT gauti tiesiai į saugomą piniginę.</translation>
+<translation id="7642372245223412840">Jungtis prie „bitFlyer“</translation>
+<translation id="6143701117592994599">Prijungę „Brave Rewards“ prie „bitFlyer“ paskyros, galėsite uždirbti BAT ir atsiimti BAT iš „Brave Rewards“.</translation>
 <translation id="4354564238172327160">Tapkite „Brave“ turinio kūrėju!</translation>
 <translation id="4639659520811817892">Apsilankykite creators.brave.com, užsiregistruokite ir uždirbkite BAT žetonų kurdami turinį savo gerbėjams.</translation>
 <translation id="4816455138209470435">„Brave“ palaiko „YouTube“, „Twitch“, „Vimeo“ ir kitas platformas!</translation>
@@ -550,9 +553,9 @@
 <translation id="4047002754575891955">Tęsti vykdant paiešką už blokų grandinės ribų</translation>
 <translation id="531747189990625622">„Solana Name Service“</translation>
 <translation id="1090584614351290462">Įjungti „Solana Name Service“ (SNS) palaikymą „Brave“?</translation>
-<translation id="2350552210396418924">Ieškodama .sol domeno pavadinimo, „Brave“ naudos „Coinbase Cloud“ sistemą. „Brave“ slepia jūsų IP adresą. Jei įjungsite šią funkciją, „Coinbase Cloud“ matys, kad kažkas bando apsilankyti šiuose .sol domenuose, bet daugiau nieko nematys. Žr. „Coinbase Cloud“ <ph name="BEGIN_COINBASE_TOU_LINK"/>naudojimo sąlygas<ph name="END_COINBASE_TOU_LINK"/> ir <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>privatumo politiką<ph name="END_COINBASE_PRIVACY_LINK"/>.</translation>
+<translation id="3664848774480475984">Ieškodama .sol domeno pavadinimo, „Brave“ naudos „Syndica“ sistemą. „Brave“ slepia jūsų IP adresą. Jei įjungsite šią funkciją, „Syndica“ matys, kad kažkas bando apsilankyti šiuose .sol domenuose, bet daugiau nieko nematys. Žr. „Syndica“ <ph name="BEGIN_SYNDICA_TOU_LINK"/>naudojimo sąlygas<ph name="END_SYNDICA_TOU_LINK"/> ir <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>privatumo politiką<ph name="END_SYNDICA_PRIVACY_LINK"/>.</translation>
 <translation id="7378412287463452336">Tęskite naudodami „Infura“ serverį</translation>
-<translation id="2313603121968571839">Toliau naudoti „Coinbase Cloud“ serverį</translation>
+<translation id="2824725477135051831">Tęsti naudojant Syndica serverį</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="59174027418879706">Aktyvinta</translation>
 <translation id="2468755552460246661">Domenas užblokuotas</translation>
@@ -637,6 +640,7 @@
 <translation id="6318437367327684789">visam laikui</translation>
 <translation id="8797999629784150206">Savo <ph name="SITE_PERMISSIONS"/> galite pakeisti bet kuriuo metu. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">svetainės leidimas</translation>
+<translation id="4355784577209159847">Suteikti leidimą trečiųjų šalių slapukams prisijungti prie Google paskyros</translation>
 <translation id="7717357606512850995">Tikrinti būseną</translation>
 <translation id="7306880305145342514">Sveikiname! Gavote atlygį už šį mėnesį – <ph name="MONTH"/></translation>
 <translation id="3007207731685398329"><ph name="AMOUNT"/> atlygį už šį mėnesį – <ph name="MONTH"/> – gausite po <ph name="DAYS"/></translation>
@@ -664,6 +668,7 @@
 <translation id="9013419433042554094">Reikalauti žetonų</translation>
 <translation id="5544777623605368410">Uždarbis</translation>
 <translation id="3273637494083639780">Per šį mėnesį gauti žetonai bus pradėti apdoroti <ph name="DATE"/>.</translation>
+<translation id="5572389477027204985">Įgalinti „Brave“ reklamas</translation>
 <translation id="1029300693989825319">Tai gali kisti dėl rinkos nepastovumo.</translation>
 <translation id="8334559352278209120">Dalijimasis</translation>
 <translation id="4782365133987903299">Jums liko  <ph name="DAYS"/> pareikalauti</translation>
@@ -692,6 +697,10 @@
 <translation id="1609556006143307897">Padedate palaikyti turinio kūrėjus</translation>
 <translation id="6605147707233193230">Įjunkite, kad padėtumėte palaikyti turinio kūrėjus</translation>
 <translation id="5430495762768325224">Daugiau sužinokite apie BAT</translation>
+<translation id="4105212447337987768"><ph name="DATE"/> nebepalaikysime esamų virtualių BAT likučių. Iki šios datos prijunkite atsarginę sąskaitą, kad galėtume pervesti jūsų uždirbtą likutį į saugojimo sąskaitą, kitaip jūsų likutis bus prarastas.</translation>
+<translation id="5684206602316433615"><ph name="DATE"/> nebepalaikysime esamų virtualių BAT likučių. Deja, jūsų regione nėra saugojimo vietų (<ph name="REGION"/>), kuriose galėtumėte atsiimti savo pajamas. Iki tol vis tiek galite prisidėti prie mėgstamų kūrėjų.</translation>
+<translation id="707569835145765061">Būtinas veiksmas: prisijunkite prie savo atsarginės sąskaitos arba jūsų vBAT bus prarasti.</translation>
+<translation id="5089752671190341407">Vis dar galite paskirti savo vBAT mėgstamiems kūrėjams</translation>
 <translation id="1258144146756156541">Patvirtinkite, kad esate žmogus</translation>
 <translation id="1555514580945108302">Hmm… Ne visai. Bandykite vėl.</translation>
 <translation id="8078414184292711961">Nutempkite BAT piktogramą ant<ph name="HINT"/> taikinio.</translation>
@@ -884,7 +893,8 @@
 <translation id="1201402288615127009">Kitas</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="6896758677409633944">Kopijuoti</translation>
-<translation id="2704606927547763573">Nukopij.</translation>
+<translation id="7885157704277298658">Nukopijuota!</translation>
+<translation id="6518133107902771759">Patvirtinti</translation>
 <translation id="6042308850641462728">Daugiau</translation>
 <translation id="768236965975208017">Saugi. Veikianti keliose grandinėse. Ir tokia paprasta naudoti. Jūsų „Brave“ piniginė pasiekiama vos keliais spustelėjimais</translation>
 <translation id="3157931365184549694">Atkurti</translation>
@@ -914,7 +924,7 @@
 <translation id="5168349973342709369">Įveskite slaptažodį, kad atrakintumėte piniginę</translation>
 <translation id="9111102763498581341">Atrakinti</translation>
 <translation id="5045550434625856497">Neteisingas slaptažodis</translation>
-<translation id="5242300593039211344">Užrakinti piniginę</translation>
+<translation id="9175546523521600401">Užrakinti piniginę</translation>
 <translation id="765834632354589737">Atsarginė piniginė</translation>
 <translation id="1108298724135935307">Prijungtos svetainės</translation>
 <translation id="163697698769819510">Susikurkite atsarginę piniginės kopiją dabar, kad apsaugotumėte savo turtą ir pasirūpintumėte, kad niekada neprarastumėte prieigos.</translation>
@@ -928,7 +938,6 @@
 <translation id="4359319875297001084">Importuoti iš senesnių „Brave“ kriptovaliutos piniginių?</translation>
 <translation id="3331452756822160641">Naujas slaptažodis</translation>
 <translation id="8624315169751085215">Kopijuoti į iškarpinę</translation>
-<translation id="7885157704277298658">Nukopijuota!</translation>
 <translation id="6346952829206698721">Įklijuoti iš mainų srities</translation>
 <translation id="1121335910737476837">Pagrindinės kriptovaliutų sąskaitos</translation>
 <translation id="6969147029062037757">Importuotos paskyros</translation>
@@ -983,6 +992,7 @@
 <translation id="7978047524114351365">Nėra pavadintų aktyvų</translation>
 <translation id="9040455159722359521">Ieškoti aktyvų arba sutarties adreso</translation>
 <translation id="6018178824574796106">Pridėti pasirinktinio žetono nepavyko, bandykite dar kartą.</translation>
+<translation id="5138307340667775659">Šis žetonas jau yra pridėtas prie jūsų portfelio.</translation>
 <translation id="547122651977318828">Žetono ID (tik ERC721)</translation>
 <translation id="7544552854944350190">Reikalingas žetono ID</translation>
 <translation id="3842236145820483340">„Coingecko“ ID</translation>
@@ -1025,6 +1035,7 @@
 <translation id="5294062982587710720">Atminkite, kad „Brave“ negali atsakyti už tai, kas nutiks pasirašius. Parašas gali suteikti įgaliojimą atlikti beveik bet kokį su jūsų sąskaita susijusį veiksmą arba jūsų vardu, įskaitant (bet neapsiribojant) suteikti visišką jūsų sąskaitos ir kriptovaliutų aktyvų kontrolę svetainei, kuri teikia užklausą. Pasirašykite tik tuo atveju, kai esate įsitikinę, jog norite atlikti šį veiksmą ir pasitikite užklausą teikiančia svetaine.</translation>
 <translation id="3474375934783434676">Pasirašydami prisiimate sau visą atsakomybę</translation>
 <translation id="5488357322146334497">Pranešimas</translation>
+<translation id="7702907602086592255">Domenas</translation>
 <translation id="3586752056660754651">Prisijunkite</translation>
 <translation id="3484981968509595506">„DApp“ prašo jūsų viešojo šifravimo rakto</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> prašo jūsų piniginės viešojo šifravimo rakto. Jei pateikti šį raktą sutinkate, svetainė galės jums kurti šifruotas žinutes.</translation>
@@ -1149,6 +1160,7 @@
 <translation id="4667144295226514387">Trūksta dujų limito</translation>
 <translation id="2021522108838444624">Suma turi būti didesnė nei 0</translation>
 <translation id="8464365289405373974">Reikalingas gavėjo adresas</translation>
+<translation id="4884792073752467460">Netinkamas gavėjo adresas</translation>
 <translation id="862585889767884824">nuo</translation>
 <translation id="9106265941552476098">Atmesti <ph name="TRANSACTION_LENGTH"/> operacijas</translation>
 <translation id="1118876217803190221">Nepakankamas likutis</translation>
@@ -1217,7 +1229,7 @@
 <translation id="1695096446857675822">Likutis ↓</translation>
 <translation id="8151187584908138100">Pavadinimas ↓</translation>
 <translation id="883138507248906253">Pavadinimas ↑</translation>
-<translation id="7198018180583855568">Visos paskyros</translation>
+<translation id="7662492121143629144">Visos paskyros</translation>
 <translation id="6954150712710630841">Operacija pateikta</translation>
 <translation id="905855245798176174">Operacija sėkmingai nusiųsta tinklui ir laukia patvirtinimo.</translation>
 <translation id="619697073289995370">Operacija pasirašyta</translation>
@@ -1414,6 +1426,8 @@
 <translation id="1763942310723636241">Išsami prieigos rakto informacija</translation>
 <translation id="2938264474197978104">Slėpti <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">Slėpti prieigos raktą?</translation>
+<translation id="6779155810671793329">Žetono kontaktinis adresas</translation>
+<translation id="871123550184744265">Dešimtoji žetono dalis</translation>
 <translation id="4038384774641714579">Jei ateityje norėsite, kad šis išteklius vėl būtų matomas, spustelėkite mygtuką „+  matomi ištekliai“, esantį kortelės „Profilis“ apačioje</translation>
 <translation id="1026825928738055872">Ar tikrai norite pašalinti „<ph name="ACCOUNT_NAME"/>“?</translation>
 <translation id="3910551537328657217">Prašyti funkcijos</translation>
@@ -1468,10 +1482,16 @@
 <translation id="4029551149873989025">Perjungti tinklą</translation>
 <translation id="7561262633951061138">Geriausias</translation>
 <translation id="3143110700666266545">Ši programa naudoja tokias trečiųjų šalių API:</translation>
-<translation id="8411419545176806786">„Brave“ mainai naudoja „0x“ kaip DEX rinktuvą palaikomiems EVM tinklams. „0x“ apdoros eterio piniginės adresą ir IP adresą, kad įvykdytų operaciją (įskaitant pasiūlymų gavimą). „0x“ šiuos duomenis naudos TIK operacijoms apdoroti.</translation>
-<translation id="7467728126359974661">„Brave“ mainai naudoja „Jupiter“ kaip DEX rinktuvą „Solana“ tinklui. „Jupiter“ apdoros „Solana“ piniginės adresą ir IP adresą, kad įvykdytų operaciją (įskaitant pasiūlymų gavimą). „Jupiter“ šiuos duomenis naudos TIK operacijoms apdoroti.</translation>
-<translation id="8497751359931572880">Spustelėkite čia, jei norite peržiūrėti „0x“ privatumo politiką.</translation>
-<translation id="4904748904130272182">Spustelėkite čia, jei norite peržiūrėti „Jupiter“ privatumo politiką.</translation>
+<translation id="163536108506359457">"Brave" apsikeitimui naudoja <ph name="AGGREGATOR"/> kaip DEX agregatorių <ph name="NETWORKS"/> palaikomiems tinklams. <ph name="AGGREGATOR"/> apdoros <ph name="NETWORK"/> piniginės ir IP adresus siekiant atlikti pervedimą (įskaitant citavimą). <ph name="AGGREGATOR"/> naudos šiuos duomenis TIK pervedimų atlikimo tikslu.</translation>
+<translation id="1847885264294023691">Spustelėkite, kad rastumėte <ph name="AGGREGATOR"/> Privatumo politiką.</translation>
+<translation id="9218424917282368512">Pakeisti tinklą</translation>
+<translation id="644984757357042735">Reikalingas tinklas</translation>
+<translation id="132243864024778443">Reikalingas žetono ID</translation>
+<translation id="3617263699756744037">Neteisingas arba neįvestas žetono sutarties adresas</translation>
+<translation id="2077392865355605472">Reikalingas žetono simbolis</translation>
+<translation id="4636925020451566238">Reikalinga žetono dešimtosios dalies vertė</translation>
+<translation id="3797613444743816037">Kasimo adresas</translation>
+<translation id="7951915459354237451">Mokesčio limitas nustatytas mažesnis nei bazinis mokestis. Jūsų operacija gali ilgai užtrukti arba nepavykti.</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>

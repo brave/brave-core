@@ -150,9 +150,9 @@
 <translation id="181905442828471321">הגדרות ברירת מחדל של Brave Shields</translation>
 <translation id="2675679258824361492">הגדרות פרטיות אחרות</translation>
 <translation id="8026334261755873520">ניקוי נתוני גלישה</translation>
-<translation id="5965081608816406060">הפעלת וידאו ברקע</translation>
+<translation id="1690924763769415936">ניגון ברקע</translation>
 <translation id="6332924730165919598">סגירת כל הכרטיסיות סוגרת את Brave</translation>
-<translation id="3872768973878059926">מאפשר לשמע להמשיך להתנגן כשעוברים ללשונית אחרת ב-Brave, לאפליקציה אחרת או אם מסך המכשיר כבוי.</translation>
+<translation id="8308305244351876417">מאפשר לשמע להמשיך להתנגן כשעוברים ללשונית אחרת ב-Brave, לאפליקציה אחרת או אם מסך המכשיר כבוי.</translation>
 <translation id="4150201353443180367">תצוגה</translation>
 <translation id="2433507940547922241">מראה</translation>
 <translation id="6333347122924254968">הצג את סמליל תגמולי Brave בשורת הכתובת</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">יוצר זה טרם נרשם לקבלת תרומות ממשתמשי Brave. אנו נמשיך לנסות לתרום עד שהם יאמתו, או עד שיחלפו 90 יום.</translation>
 <translation id="635752162765375187">לתשומך לבך: יוצר זה אינו מוגדר כעת באפשרות לקבל טיפים משירות ארנק המשמורת שלך ב-Rewards. כל טיפ שינתן על ידך יישאר בהמתנה עד לניסיון נוסף אוטומטי למשך 90 יום.</translation>
 <translation id="1910721550319506122">ברוכים הבאים!</translation>
+<translation id="2734870894159530879">עליך להתחבר אל <ph name="WALLET_PROVIDER"/> כדי לראות את היתרה שלך</translation>
 <translation id="5830114181292529917">אתם יכולים לתמוך באתר זה על ידי שליחת טיפ. זו דרך להודות להם על יצירת תוכן נהדר.</translation>
 <translation id="7658239707568436148">ביטול</translation>
 <translation id="1201402288615127009">הבא</translation>
@@ -311,7 +312,10 @@
 <translation id="6393502589311632553">הצג מודעות כאשר Brave אינו בשימוש</translation>
 <translation id="3349204812119681938">איפוס Brave Rewards</translation>
 <translation id="6606319453795180219">פעולה זו תמחק את תגמולי ה-Brave ותאפס את כל נתוני תגמולי ה-Brave שלך</translation>
-<translation id="6810078320346589989">צור סימניה</translation>
+<translation id="8293206222192510085">הוספת סימניה</translation>
+<translation id="340492034650766959">מחיקת סימניה</translation>
+<translation id="2149973817440762519">עריכת סימניה</translation>
+<translation id="6819319915092566548">הצגת סימניה</translation>
 <translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
 <translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="8985635554450124959">לא ניתן להגדיר סנכרון</translation>
@@ -321,7 +325,7 @@
 <translation id="4450893287417543264">אל תציג שוב</translation>
 <translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>מחדש את החשבון</translation>
-<translation id="8199291899164865593">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. החשבון נמחק.</translation>
+<translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
 <translation id="5633907266617216186">כתובות, פרטי תשלום וכו'.</translation>
 <translation id="1056898198331236512">אזהרה</translation>
 <translation id="1426410128494586442">כן</translation>
@@ -372,6 +376,7 @@
 <translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
 <translation id="3200197118442451932">Brave Software Inc. אינה מעבדת, מאחסנת או ניגשת למידע האישי שאתה מספק ל-<ph name="WALLET_PROVIDER"/> כאשר אתה מקים חשבון אצלם.</translation>
 <translation id="1665118090708049096">עבור לחשבון <ph name="WALLET_PROVIDER"/> 1 שלי</translation>
+<translation id="4858636682078269312">כניסה לחשבון <ph name="WALLET_PROVIDER"/> שלך</translation>
 <translation id="8874184842967597500">לא מחובר</translation>
 <translation id="2495032782748793764">ברירת מחדל Brave</translation>
 <translation id="9132378787893584761">שתפ/י את Brave עם חבריך!</translation>
@@ -389,10 +394,10 @@
 <translation id="3624048886326677117">חסום עוקבים ופרסומות (אגרסיבי)</translation>
 <translation id="7151914815476509258">חסום עוקבים ופרסומות (סטנדרטי)</translation>
 <translation id="7384778069178817075">אפשר את כל העוקבים  &amp; הפרסומות</translation>
-<translation id="4941539331405513605">חסום קבצי עוגייה חוצי-אתרים</translation>
 <translation id="3763681089644577874">חסום קבצי עוגייה</translation>
 <translation id="614747795780742163">מונע מאתרים לאחסן מידע אודות הביקורים הקודמים שלך</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
+<translation id="4941539331405513605">חסום קבצי עוגייה חוצי-אתרים</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="3895527457258986253">חסום טביעות אצבע</translation>
 <translation id="7854108565842971747">אלו הן הגדרות ברירת המחדל של Shields עבור אתרים חדשים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
@@ -491,6 +496,8 @@
 <translation id="5705882733397021510">חזור</translation>
 <translation id="3985567919248057638">נערוך סיור קצר</translation>
 <translation id="7889432931837317731">פתח אוטומטית כאשר ניתן</translation>
+<translation id="1029304566263314007">הצג התראות על התקדמות ההורדה</translation>
+<translation id="2910433761530295035">שאל היכן לשמור קבצים (אם מזוהה כרטיס SD)</translation>
 <translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
 <translation id="6864343534748973390">הכי פופולרי</translation>
 <translation id="4608192160278975831">פרטי וללא מעקב</translation>
@@ -499,6 +506,7 @@
 <translation id="7320542277711359296">השני הכי פופולרי</translation>
 <translation id="8295049095570748497">מנוע חיפוש מוביל ברוסיה</translation>
 <translation id="2642661895835126239">נוטע עצים, מבוסס בברלין</translation>
+<translation id="2422627462367776805">חיפוש ופורטל אינטרנט דרום קוריאני</translation>
 <translation id="177282784098234156">פרטי, בלתי תלוי, המשתמש קודם</translation>
 <translation id="1410130669636877548">מנועי חיפוש מסוימים מגנים על פרטיותכם טוב יותר מאחרים בעת חיפוש באינטרנט.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
@@ -1018,7 +1026,7 @@
 <translation id="9074594632540931067">שגיאה: BAT אינו זמין</translation>
 <translation id="5382684862562314222">BAT עדין לא נתמך באזור שלך ב-Uphold.</translation>
 <translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
-<translation id="842321566508373706">על פי Uphold, יש כרגע כמה מגבלות על חשבון Uphold שלכם. התחברו לחשבון Uphold שלכם ובדקו אם יש הודעות או דרישות חשבון שנותרו להשלים, ולאחר מכן נסו שוב.</translation>
+<translation id="1677961202754619328">לפי Uphold, יש כרגע מגבלות מסוימות על החשבון שלכם ב-Uphold. התחברו לחשבון ה-Uphold שלכם ובדקו אם יש הודעות או דרישות חשבון שנותרו להשלים, ולאחר מכן נסו שוב.</translation>
 <translation id="6417420737057016607">פרסומות Brave</translation>
 <translation id="5425006356459378415">Brave Rewards לא זמינים</translation>
 <translation id="833643743158564518">הרשמות חדשות ל-Brave Rewards מושבתות כעת באזורכם. עם זאת, תמיד אפשר לנסות שוב מאוחר יותר. <ph name="LEARN_MORE"/></translation>
@@ -1028,5 +1036,10 @@
 <translation id="4071347720273751665">נראה שהזנת כתובת ENS. נצטרך להשתמש בפותר צד שלישי כדי לפתור בקשה זו, שאולי יוכל לראות את כתובת ה-IP והדומיין שלך. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">השתמשו בדומיין אופ-צ'יין ENS</translation>
 <translation id="4982630604810554641">מחפש דומיין...</translation>
+<translation id="4159738248012488342">אנא בחר סכום לטיפ</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="707569835145765061">פעולה נדרשת: יש לשייך חשבון משמורת, אחרת ה-vBAT שלך יאבדו</translation>
+<translation id="1776742005329298234">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. יש לחבר חשבון משמורת לפני תאריך זה כדי לאפשר לנו להעביר את היתרה שהרווחת לחשבון משמורת שלך, אחרת היתרה שלך תבוטל.</translation>
+<translation id="5089752671190341407">נותר עדיין זמן כדי לתרום את ה-vBAT שלך ליוצרים האהובים עליך</translation>
+<translation id="171158953146804144">בתאריך <ph name="DUE_DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. לצערנו לא קיימים אפוטרופוסים זמינים באזור שלך (<ph name="REGION"/>) כדי למשוך את הרווחים שלך. עד למועד שצוין תוכל עדיין לתרום ליוצרים האהובים עליך.</translation>
 </translationbundle>

@@ -171,7 +171,7 @@
 <translation id="4851215387785619212">Anunțuri private Brave</translation>
 <translation id="6480303618073442141">Anunțurile private Brave sunt concepute să fie discrete și private. Acestea se afișează în funcție de interesele dvs., însă fără ca datele personale sau istoricul de navigare să părăsească vreodată dispozitivul. Mai mult decât atât, puteți câștiga BAT (<ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) doar urmărind Anunțurile private Brave.</translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
-<translation id="3742599705619405136">Orice mod automat de a sprijini editorii și creatorii de conținut. Setați o plată lunară și navigați normal. Siteurile verificate de Brave pe care le vizitați vor primi contribuțiile dumneavoastră automat, în funcție de atenția dumneavoastră măsurată de Brave.</translation>
+<translation id="7437775146229396839">O modalitate automată de a sprijini site-urile și creatorii de conținut. Stabiliți o sumă lunară de contribuție și navigați în mod normal. <ph name="BEGIN_LINK"/>Site-uri și creatori verificați<ph name="END_LINK"/> pe care îi vizitați vor primi contribuții din partea dvs. în fiecare lună, în funcție de timpul pe care îl petreceți pe conținutul lor.</translation>
 <translation id="3325399124634342726">Câștiguri curente în luna aceasta (estimate)</translation>
 <translation id="8593551638387217772">Data următoarei plăți</translation>
 <translation id="4428871418618312983">Reclame primite luna aceasta</translation>
@@ -203,8 +203,6 @@
 <translation id="7577100371127227294">Plăți Lunare</translation>
 <translation id="178390304006113804">Configurați plăți lunare recurente pentru a vă putea susține în mod continuu creatorii preferați.</translation>
 <translation id="3302159320447117425">Nu au fost configurate încă plăți lunare.</translation>
-<translation id="1847863811689960237">Răsplătiți creatorii pentru conținutul care vă place.</translation>
-<translation id="4129489167302464118">Plata lunară este distribuită tuturor siteurilor pe care le vizitați.</translation>
 <translation id="4898632353264854950">Siteurile vor apărea în timp ce navigați</translation>
 <translation id="3024485967181749006">Plăți totale în această lună</translation>
 <translation id="8183455888546367148">Total plăți lunare în această lună</translation>
@@ -272,6 +270,8 @@
 <translation id="7849926087559412554">Ups! Browserul dvs. nu poate primi reclame confidențiale Brave.</translation>
 <translation id="5177429570315095022">Trebuie să actualizați browserul pentru a putea să vizualizați reclame în continuare.</translation>
 <translation id="7352651011704765696">A apărut o eroare</translation>
+<translation id="4593680147181354667">ID diagnosticare</translation>
+<translation id="3995471429906554168">Informații despre diagnosticare</translation>
 <translation id="752216563428219524">Anunțurile nu sunt inițializate. Reîmprospătați pagina!</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="6969783933307596818">Se actualizează automat la fiecare 5 secunde</translation>
@@ -353,6 +353,8 @@
 <translation id="8874184842967597500">Neconectat</translation>
 <translation id="4569155249847375786">Verificat</translation>
 <translation id="6521149675246672063">Deconectat (verificat)</translation>
+<translation id="5058161306698404465">Mediu de creație</translation>
+<translation id="5856438412804207598">Mediu curent:</translation>
 <translation id="5906820630265272615">Fonduri BAT</translation>
 <translation id="5814098892838785557">Sunteți sigur că vreți să nu mai susțineți acest creator?</translation>
 <translation id="6582097696555842139">Anulați plățile lunare</translation>
@@ -392,6 +394,7 @@
 <translation id="839058704683989763">Ați setat o contribuție în așteptare!</translation>
 <translation id="5096821444729034955">pentru postarea lor</translation>
 <translation id="2978223787436054634">Tweet despre susținerea dumneavoastră</translation>
+<translation id="976068305210640982">Sunteți <ph name="BEGIN_LINK"/>deconectat(ă).<ph name="LINK_END"/></translation>
 <translation id="5916290544882167205">Brave Software. Brave este o marcă înregistrată a Brave Software. Este posibil ca numele site-urilor să fie mărci sau mărci înregistrate ale proprietarilor site-urilor.</translation>
 <translation id="9026369588205476247">Pentru a vă proteja confidențialitatea, acest extras de cont Brave Rewards nu este salvat, înregistrat sau trecut în jurnal decât pe dispozitivul dvs. (computerul pe care îl folosiți). Dacă pierdeți datele de pe dispozitivul dvs., nu veți putea obține acest extras din partea Brave.</translation>
 <translation id="3587482841069643663">Toate</translation>
@@ -512,8 +515,8 @@
 <translation id="923467487918828349">Afișează-le pe toate</translation>
 <translation id="5113531205597573951">Siteuri Vizualizate</translation>
 <translation id="4450893287417543264">Nu mai afișa</translation>
-<translation id="6518133107902771759">Confirmați</translation>
-<translation id="422369484771082705">Confirmarea este opțională. Totuși, prin confirmare, vă veți putea retrage BAT câștigate din Recompensele Brave direct într-un portofel în custodie.</translation>
+<translation id="7642372245223412840">Conectați-vă la bitFlyer</translation>
+<translation id="6143701117592994599">Conectarea Brave Rewards la un cont bitFlyer vă va permite să câștigați BAT și să vă retrageți câștigurile BAT din Brave Rewards.</translation>
 <translation id="4354564238172327160">Deveniți un creator Brave!</translation>
 <translation id="4639659520811817892">Vizitați creators.brave.com pentru a vă înscrie astăzi și pentru a începe să câștigați BAT de la fanii și followerșii dumneavoastră.</translation>
 <translation id="4816455138209470435">Brave este compatibil cu YouTube, Twitch, Vimeo și multe altele!</translation>
@@ -549,9 +552,9 @@
 <translation id="4047002754575891955">Continuați cu căutarea offchain</translation>
 <translation id="531747189990625622">Serviciul de Nume Solana</translation>
 <translation id="1090584614351290462">Activați compatibilitatea pentru Serviciul de Nume Solana (SNS) în Brave?</translation>
-<translation id="2350552210396418924">Brave va folosi Coinbase Cloud pentru a rezolva numele de domenii .sol. Brave vă ascunde adresa IP. Dacă activați opțiunea, Coinbase va vedea că cineva încearcă să acceseze aceste domenii .sol, însă nu va obține nicio informație în plus. Consultați <ph name="BEGIN_COINBASE_TOU_LINK"/>condițiile de utilizare<ph name="END_COINBASE_TOU_LINK"/> și <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_COINBASE_PRIVACY_LINK"/> Coinbase Cloud.</translation>
+<translation id="3664848774480475984">Brave va folosi Syndica pentru a rezolva numele de domenii .sol. Brave vă ascunde adresa IP. Dacă activați opțiunea, Syndica va vedea că cineva încearcă să acceseze aceste domenii .sol, însă nu va obține nicio informație în plus. Consultați <ph name="BEGIN_SYNDICA_TOU_LINK"/>condițiile de utilizare<ph name="END_SYNDICA_TOU_LINK"/> și <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>politica de confidențialitate<ph name="END_SYNDICA_PRIVACY_LINK"/> Syndica.</translation>
 <translation id="7378412287463452336">Continuați folosind serverul Infura</translation>
-<translation id="2313603121968571839">Continuați utilizând serverul Coinbase Cloud</translation>
+<translation id="2824725477135051831">Continuați folosind serverul Syndica</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="59174027418879706">Activat</translation>
 <translation id="2468755552460246661">Domeniu blocat</translation>
@@ -636,6 +639,7 @@
 <translation id="6318437367327684789">totdeauna</translation>
 <translation id="8797999629784150206">Puteți să schimbați <ph name="SITE_PERMISSIONS"/> oricând. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permisiunea site-ului</translation>
+<translation id="4355784577209159847">Permiteți utilizarea modulelor cookie ale terților pentru conectarea cu Google anterioară</translation>
 <translation id="7717357606512850995">Verificați starea</translation>
 <translation id="7306880305145342514">Felicitări! Recompensele dvs. pentru <ph name="MONTH"/> au intrat în cont!</translation>
 <translation id="3007207731685398329">Recompensa dvs. de <ph name="AMOUNT"/> pentru <ph name="MONTH"/> va intra în cont în <ph name="DAYS"/></translation>
@@ -663,6 +667,7 @@
 <translation id="9013419433042554094">Revendicați tokenurile</translation>
 <translation id="5544777623605368410">Sumă câștigată</translation>
 <translation id="3273637494083639780">Procesarea token-urilor pe care le câștigați luna aceasta va începe în data de <ph name="DATE"/>.</translation>
+<translation id="5572389477027204985">Activare anunțuri Brave</translation>
 <translation id="1029300693989825319">Aceasta poate varia în funcție de volatilitatea pieței.</translation>
 <translation id="8334559352278209120">Sumă oferită</translation>
 <translation id="4782365133987903299">Mai trebuie să revendicați <ph name="DAYS"/></translation>
@@ -691,6 +696,10 @@
 <translation id="1609556006143307897">Contribuiți la susținerea creatorilor de conținut</translation>
 <translation id="6605147707233193230">Activați pentru a susține creatorii de conținut</translation>
 <translation id="5430495762768325224">Aflați mai multe despre BAT</translation>
+<translation id="4105212447337987768">Pe <ph name="DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Conectați un cont de custode înainte de această dată pentru a vă putea transfera soldul câștigat în contul de custode, altfel soldul dvs. va fi pierdut.</translation>
+<translation id="5684206602316433615">Pe <ph name="DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Din păcate, nu există custozi disponibili în regiunea dvs. (<ph name="REGION"/>) pentru a vă retrage câștigurile. Până atunci, puteți contribui în continuare la creatorii dvs. favoriți.</translation>
+<translation id="707569835145765061">Acțiune necesară: Conectați un cont de custode sau vBAT-ul va fi pierdut.</translation>
+<translation id="5089752671190341407">Încă mai aveți timp să contribuiți cu vBAT-ul la creatorii dvs. favoriți</translation>
 <translation id="1258144146756156541">Confirmați că sunteți o persoană</translation>
 <translation id="1555514580945108302">Hmm… Nu Chiar. Încercați Din Nou.</translation>
 <translation id="8078414184292711961">Trageți pictograma BAT pe ținta <ph name="HINT"/>.</translation>
@@ -882,7 +891,8 @@
 <translation id="1201402288615127009">Următorul</translation>
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="6896758677409633944">Copiază</translation>
-<translation id="2704606927547763573">Copiat</translation>
+<translation id="7885157704277298658">Copiat!</translation>
+<translation id="6518133107902771759">Confirmați</translation>
 <translation id="6042308850641462728">Mai multe</translation>
 <translation id="768236965975208017">Sigur. Multilanț. Și atât de ușor de utilizat. Portofelul dvs. Brave este la doar câteva clicuri distanță</translation>
 <translation id="3157931365184549694">Restabilește</translation>
@@ -912,7 +922,7 @@
 <translation id="5168349973342709369">Introduceți parola pentru a debloca portofelul</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="5045550434625856497">Parolă incorectă</translation>
-<translation id="5242300593039211344">Blocați portofelul</translation>
+<translation id="9175546523521600401">Blocați portofelul</translation>
 <translation id="765834632354589737">Rezervă Portofel</translation>
 <translation id="1108298724135935307">Site-uri conectate</translation>
 <translation id="163697698769819510">Realizați o copie de rezervă după portofelul dvs. pentru a vă proteja activele și a vă asigura că nu pierdeți accesul niciodată.</translation>
@@ -926,7 +936,6 @@
 <translation id="4359319875297001084">Importați din vechile portofele de criptomonede Brave?</translation>
 <translation id="3331452756822160641">Parolă nouă</translation>
 <translation id="8624315169751085215">Copiază în Clipboard</translation>
-<translation id="7885157704277298658">Copiat!</translation>
 <translation id="6346952829206698721">Lipire din clipboard</translation>
 <translation id="1121335910737476837">Principalele conturi de criptomonede</translation>
 <translation id="6969147029062037757">Conturi importate</translation>
@@ -981,6 +990,7 @@
 <translation id="7978047524114351365">Nu sunt active</translation>
 <translation id="9040455159722359521">Căutați activele sau adresa contractelor</translation>
 <translation id="6018178824574796106">Nu s-a reușit adăugarea token-ului personalizat. Încercați din nou!</translation>
+<translation id="5138307340667775659">Acest token a fost deja adăugat în portofoliul dvs.</translation>
 <translation id="547122651977318828">Identificator token (numai pentru ERC721)</translation>
 <translation id="7544552854944350190">Identificatorul token-ului este obligatoriu</translation>
 <translation id="3842236145820483340">ID CoinGecko</translation>
@@ -1023,6 +1033,7 @@
 <translation id="5294062982587710720">Rețineți că Brave nu poate verifica ce se va întâmpla dacă semnați. O semnătură ar putea autoriza aproape orice operațiune în contul dvs. sau în numele dvs. Este posibil inclusiv să oferiți controlul total asupra contului și activelor dvs. (fără limitare la acestea) site-ului care face solicitarea. Semnați numai dacă aveți certitudinea că doriți să faceți acest pas și aveți încredere în site-ul care vă cere acest lucru.</translation>
 <translation id="3474375934783434676">Semnați pe propria răspundere</translation>
 <translation id="5488357322146334497">Mesaj</translation>
+<translation id="7702907602086592255">Domeniu</translation>
 <translation id="3586752056660754651">Semnați</translation>
 <translation id="3484981968509595506">A DApp vă solicită cheia publică de criptare</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> solicită cheia de criptare personală a portofelului dvs. Dacă sunteți de acord să oferiți această cheie, site-ul va putea redacta mesaje criptate spre  dvs.</translation>
@@ -1147,6 +1158,7 @@
 <translation id="4667144295226514387">Limită gas lipsă</translation>
 <translation id="2021522108838444624">Suma trebuie să fie mai mare decât 0</translation>
 <translation id="8464365289405373974">Adresa destinatarului este solicitată</translation>
+<translation id="4884792073752467460">Adresă destinatar nevalidă</translation>
 <translation id="862585889767884824">din</translation>
 <translation id="9106265941552476098">Respingeți tranzacțiile <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Sold insuficient</translation>
@@ -1215,7 +1227,7 @@
 <translation id="1695096446857675822">Sold ↓</translation>
 <translation id="8151187584908138100">Nume ↓</translation>
 <translation id="883138507248906253">Nume ↑</translation>
-<translation id="7198018180583855568">Toate conturile</translation>
+<translation id="7662492121143629144">Toate conturile</translation>
 <translation id="6954150712710630841">Tranzacție trimisă</translation>
 <translation id="905855245798176174">Tranzacția a fost trimisă cu succes rețelei și așteaptă confirmare.</translation>
 <translation id="619697073289995370">Tranzacție semnată</translation>
@@ -1412,6 +1424,8 @@
 <translation id="1763942310723636241">Detaliile tokenului</translation>
 <translation id="2938264474197978104">Ascundeți <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">Ascundeți tokenul?</translation>
+<translation id="6779155810671793329">Adresa din contractul de token</translation>
+<translation id="871123550184744265">Zecimală token</translation>
 <translation id="4038384774641714579">Activul va redeveni vizibil în viitor dacă dați clic pe butonul „+ Active vizibile” din partea de jos a filei „Portofoliu”</translation>
 <translation id="1026825928738055872">Sigur doriți să excludeți „<ph name="ACCOUNT_NAME"/>”?</translation>
 <translation id="3910551537328657217">Solicitați funcția</translation>
@@ -1466,10 +1480,16 @@
 <translation id="4029551149873989025">Comutați rețeaua</translation>
 <translation id="7561262633951061138">Cea mai bună</translation>
 <translation id="3143110700666266545">Această aplicație folosește următoarele API-uri terțe:</translation>
-<translation id="8411419545176806786">Brave Swap folosește 0x ca agregator DEX pentru rețelele EVM compatibile. Ox va procesa adresa portofelului Ethereum și adresa IP pentru a realiza o tranzacție (inclusiv pentru obținerea de cotații). Ox va folosi aceste date EXCLUSIV cu scopul de a procesa tranzacții.</translation>
-<translation id="7467728126359974661">Brave Swap folosește Jupiter ca agregator DEX pentru rețeaua Solana. Jupiter va procesa adresa portofelului Solana și adresa IP pentru a realiza o tranzacție (inclusiv pentru obținerea de cotații). Jupiter va folosi aceste date EXCLUSIV cu scopul de a procesa tranzacții.</translation>
-<translation id="8497751359931572880">Dați clic aici pentru a consulta Politica de confidențialitate Ox.</translation>
-<translation id="4904748904130272182">Dați clic aici pentru a consulta Politica de confidențialitate Jupiter.</translation>
+<translation id="163536108506359457">Brave Swap utilizează <ph name="AGGREGATOR"/> ca agregator DEX pentru rețelele <ph name="NETWORKS"/> acceptate. <ph name="AGGREGATOR"/> va procesa adresa portofelului <ph name="NETWORK"/> și adresa IP pentru a îndeplini o tranzacție (inclusiv pentru a obține cotații). <ph name="AGGREGATOR"/> va utiliza aceste date DOAR în scopul procesării tranzacțiilor.</translation>
+<translation id="1847885264294023691">Faceți clic aici pentru Politica de confidențialitate <ph name="AGGREGATOR"/> .</translation>
+<translation id="9218424917282368512">Schimbare rețea</translation>
+<translation id="644984757357042735">Rețeaua este necesară</translation>
+<translation id="132243864024778443">Este necesar numele tokenului</translation>
+<translation id="3617263699756744037">Adresă contract token nevalidă sau necompletată</translation>
+<translation id="2077392865355605472">Simbolul tokenului este necesar</translation>
+<translation id="4636925020451566238">Este necesară o valoare de precizie în zecimale de token</translation>
+<translation id="3797613444743816037">Adresa emiterii</translation>
+<translation id="7951915459354237451">Limita taxei este stabilită la un nivel mai mic decât taxa de bază. Este posibil ca tranzacția dvs. să dureze mult timp sau să eșueze.</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
