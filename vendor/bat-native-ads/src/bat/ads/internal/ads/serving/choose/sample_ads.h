@@ -21,8 +21,7 @@ double CalculateNormalizingConstant(
     const CreativeAdPredictorMap<T>& creative_ad_predictors) {
   double normalizing_constant = 0.0;
 
-  for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    const AdPredictorInfo<T>& ad_predictor = creative_ad_predictor.second;
+  for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
     normalizing_constant += ad_predictor.score;
   }
 
@@ -41,9 +40,7 @@ absl::optional<T> SampleAdFromPredictors(
   const double rand = base::RandDouble();
   double sum = 0;
 
-  for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    const AdPredictorInfo<T> ad_predictor = creative_ad_predictor.second;
-
+  for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
     const double probability = ad_predictor.score / normalizing_constant;
     sum += probability;
 

@@ -12,7 +12,7 @@
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window.h"  // IWYU pragma: keep
 #include "ui/gfx/native_widget_types.h"
 
 namespace brave_ads {

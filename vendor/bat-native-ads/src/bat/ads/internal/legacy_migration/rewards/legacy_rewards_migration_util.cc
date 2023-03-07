@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 
+#include "base/containers/extend.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_util.h"
@@ -41,8 +42,7 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   const absl::optional<TransactionList> reconciled_transactions =
       BuildTransactionsForReconciledTransactionsThisMonth(*payments);
   if (reconciled_transactions) {
-    transactions.insert(transactions.cend(), reconciled_transactions->cbegin(),
-                        reconciled_transactions->cend());
+    base::Extend(transactions, *reconciled_transactions);
   }
 
   // Append a single transaction with an accumulated value for reconciled

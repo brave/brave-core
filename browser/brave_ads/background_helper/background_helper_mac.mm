@@ -30,16 +30,16 @@
   if ((self = [super init])) {
     helper_ = helper;
 
-    NSNotificationCenter* notificationCenter =
+    NSNotificationCenter* notification_center =
         [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(appDidBecomeActive:)
-                               name:NSApplicationDidBecomeActiveNotification
-                             object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(appDidResignActive:)
-                               name:NSApplicationDidResignActiveNotification
-                             object:nil];
+    [notification_center addObserver:self
+                            selector:@selector(appDidBecomeActive:)
+                                name:NSApplicationDidBecomeActiveNotification
+                              object:nil];
+    [notification_center addObserver:self
+                            selector:@selector(appDidResignActive:)
+                                name:NSApplicationDidResignActiveNotification
+                              object:nil];
   }
   return self;
 }

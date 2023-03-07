@@ -122,10 +122,8 @@ void NotificationAdManager::CloseAll() {
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
   DCHECK(!placement_id.empty());
 
-  const auto iter =
-      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
-
-  return iter != ads_.cend();
+  return base::ranges::find(ads_, placement_id,
+                            &NotificationAdInfo::placement_id) != ads_.cend();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

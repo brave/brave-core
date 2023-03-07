@@ -36,13 +36,13 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
 
   if (confirmation.opted_in) {
     base::Value::List blinded_tokens;
-    if (const auto value =
+    if (const absl::optional<std::string> value =
             confirmation.opted_in->blinded_token.EncodeBase64()) {
       blinded_tokens.Append(*value);
     }
     payload.Set(kBlindedTokensKey, std::move(blinded_tokens));
 
-    if (const auto value =
+    if (const absl::optional<std::string> value =
             confirmation.opted_in->unblinded_token.public_key.EncodeBase64()) {
       payload.Set(kPublicKeyKey, *value);
     }

@@ -46,7 +46,7 @@
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/service_sandbox_type.h"
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -1045,8 +1045,8 @@ void AdsServiceImpl::MigratePrefs() {
     VLOG(2) << "Migrating ads preferences";
   }
 
-  auto source_version = GetPrefService()->GetInteger(prefs::kVersion);
-  auto dest_version = ads::kCurrentVersionNumber;
+  const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
+  const int dest_version = ads::kCurrentVersionNumber;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
@@ -1103,8 +1103,9 @@ bool AdsServiceImpl::MigratePrefs(const int source_version,
   int to_version = from_version + 1;
 
   do {
-    auto mapping = kMappings->find(std::make_pair(from_version, to_version));
-    if (mapping == kMappings->end()) {
+    const auto mapping =
+        kMappings->find(std::make_pair(from_version, to_version));
+    if (mapping == kMappings->cend()) {
       // Migration path does not exist. It is highly recommended to perform a
       // dry-run before migrating preferences
       return false;
@@ -1392,7 +1393,7 @@ void AdsServiceImpl::Shutdown() {
   if (database_) {
     const bool success =
         file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-    VLOG_IF(1, !success) << "Failed to release database";
+    DCHECK(success) << "Failed to release database";
   }
 
   VLOG(2) << "Shutdown bat-ads service";

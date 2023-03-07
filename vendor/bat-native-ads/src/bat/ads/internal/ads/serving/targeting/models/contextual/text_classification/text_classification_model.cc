@@ -23,16 +23,12 @@ SegmentProbabilityMap GetSegmentProbabilities(
   SegmentProbabilityMap segment_probabilities;
 
   for (const auto& probabilities : text_classification_probabilities) {
-    for (const auto& probability : probabilities) {
-      const std::string segment = probability.first;
+    for (const auto& [segment, page_score] : probabilities) {
       DCHECK(!segment.empty());
-
-      const double page_score = probability.second;
 
       const auto iter = segment_probabilities.find(segment);
       if (iter == segment_probabilities.cend()) {
-        SegmentProbabilityPair segment_probability = {segment, page_score};
-        segment_probabilities.insert(segment_probability);
+        segment_probabilities.insert({segment, page_score});
       } else {
         iter->second += page_score;
       }
@@ -60,8 +56,7 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
 SegmentList ToSegmentList(const SegmentProbabilityList& segment_probabilities) {
   SegmentList segments;
 
-  for (const auto& segment_probability : segment_probabilities) {
-    const std::string segment = segment_probability.first;
+  for (const auto& [segment, probability] : segment_probabilities) {
     DCHECK(!segment.empty());
 
     segments.push_back(segment);

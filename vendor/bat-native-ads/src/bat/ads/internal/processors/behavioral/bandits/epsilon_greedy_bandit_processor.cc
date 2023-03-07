@@ -57,16 +57,16 @@ void MaybeAddOrResetArms(targeting::EpsilonGreedyBanditArmMap* arms) {
 void MaybeDeleteArms(targeting::EpsilonGreedyBanditArmMap* arms) {
   DCHECK(arms);
 
-  for (auto arm_iter = arms->cbegin(); arm_iter != arms->cend();) {
-    if (base::Contains(targeting::GetSegments(), arm_iter->first)) {
-      ++arm_iter;
+  for (auto iter = arms->cbegin(); iter != arms->cend();) {
+    if (base::Contains(targeting::GetSegments(), iter->first)) {
+      ++iter;
       continue;
     }
 
-    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm_iter->first
+    BLOG(2, "Epsilon greedy bandit arm was deleted for " << iter->first
                                                          << " segment ");
 
-    arm_iter = arms->erase(arm_iter);
+    iter = arms->erase(iter);
   }
 }
 
