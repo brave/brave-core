@@ -116,10 +116,10 @@ void LearningService::OnPostTaskResults(TaskResultResponse response) {
   int reconnect = 0;
 
   if (response.IsSuccessful()) {
-    reconnect = features::GetFederatedLearningUpdateCycleInMinutes() * 60;
+    reconnect = features::GetFederatedLearningUpdateCycleInSeconds();
     VLOG(2) << "Task results posted successfully";
   } else {
-    reconnect = features::GetFederatedLearningUpdateCycleInMinutes()/2 * 60;
+    reconnect = features::GetFederatedLearningUpdateCycleInSeconds()/2;
     VLOG(2) << "Task results posting failed";
   }
 
