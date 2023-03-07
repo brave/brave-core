@@ -15,9 +15,9 @@ namespace {
 
 const char kFeatureName[] = "BraveFederated";
 
-const char kFieldTrialParameterFederatedLearningUpdateCycleInMinutes[] =
-    "federated_learning_update_cycle_in_minutes";
-const int kDefaultFederatedLearningUpdateCycleInMinutes = 5;
+const char kFieldTrialParameterFederatedLearningUpdateCycleInSeconds[] =
+    "federated_learning_update_cycle_in_seconds";
+const int kDefaultFederatedLearningUpdateCycleInSeconds = 300;
 
 const char kFieldTrialParameterFederatedLearningTaskEndpoint[] =
     "federated_learning_task_endpoint";
