@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
+<translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="2445484935443597917">नवीन प्रोफाइल तयार करा</translation>
 <translation id="2666990579225592931">अतिथी विंडो उघडा</translation>
@@ -17,7 +18,6 @@
 <translation id="1181037720776840403">काढून टाका</translation>
 <translation id="4002066346123236978">शीर्षक</translation>
 <translation id="7400418766976504921">URL</translation>
-<translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="59174027418879706">सक्षम केलेले</translation>
 <translation id="4176463684765177261">अक्षम</translation>
 <translation id="8712637175834984815">समजले</translation>
@@ -43,6 +43,7 @@
 <translation id="2414886740292270097">गडद</translation>
 <translation id="2858138569776157458">टॉप साइट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
+<translation id="383007806262310953">बुकमार्क बार दर्शवा</translation>
 <translation id="7461924472993315131">पिन</translation>
 <translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="7740996059027112821">मानक</translation>
@@ -53,7 +54,6 @@
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7498695072878479744">तृतीय पक्ष साइटवर Google लॉगिन बटणांना अनुमती द्या</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="5165042248369837294">ट्विटरला एम्बेड केलेल्या ट्विटस परवानगी द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>

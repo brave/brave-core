@@ -235,6 +235,7 @@
 <translation id="3507835409099344374">Brave bildirim ayarlarına git</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="245693535809364497">Çevrenizin 3D haritasını oluşturmak için Brave'un kamera iznine ihtiyacı var</translation>
+<translation id="5060669762365466104">Siteler muhtemelen beklediğiniz gibi çalışır ancak tüm Brave pencereleri kapatıldıktan sonra sizi hatırlamaz</translation>
 <translation id="6676384891291319759">İnternet'e erişin</translation>
 <translation id="1363996462118479832">Oturum açma sırasındaki bir hata nedeniyle ChromeOS, verilerinizi senkronize edemedi.</translation>
 <translation id="1257247502847251159">Bu site için Brave'un mikrofon iznine ihtiyacı var</translation>
@@ -244,6 +245,7 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="7870748924073900361">Bellek Tasarrufu sayesinde Brave artık daha hızlı</translation>
 <translation id="6666624454809779082">Brave zaten bilgisayarınızdaki tüm kullanıcılar için yüklendi.</translation>
 <translation id="5360050006043219962">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açın ve senkronizasyonu etkinleştirin.</translation>
+<translation id="3136039682492230890">Brave, tehlikeli olabileceği için bu dosyanın taranmasını öneriyor.</translation>
 <translation id="8291513491595858997">Ebeveyniniz, Brave'a yönelik "Siteler, uygulamalar ve uzantılar için izinler"i kapattı. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> uzantısının etkinleştirilmesine izin verilmiyor.</translation>
 <translation id="1547295885616600893">Chrome OS, ek <ph name="BEGIN_LINK_CROS_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_CROS_OSS"/> ile hazırlanmıştır.</translation>
 <translation id="8211837073776713955">Brave, şifrelerinizin güvenliğinin ihlal edilip edilmediğini size bildirir</translation>
@@ -265,7 +267,6 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="1008530050039597147">Bu site için Brave'un kamera iznine ihtiyacı var</translation>
 <translation id="1197672524850678392">Brave başlatılamadı. Tekrar deneyin.</translation>
 <translation id="3405035915691517126">Brave, şifrelerinizi kontrol edemiyor. 24 saat sonra tekrar deneyin.</translation>
-<translation id="5101812148953915496">Ziyaret ettiğiniz siteler, Brave'u kapatana kadar bilgilerinizi hatırlar</translation>
 <translation id="5516268345616100622">Görev Yöneticisi - Brave</translation>
 <translation id="713191641919118540">Brave'un tahmin ettiği ilgi alanlarınız</translation>
 <translation id="9068395155143628872">Reklam ölçümü, ziyaret ettiğiniz sitelerin Brave'dan bilgi istemesine olanak tanır. Bu bilgiler de sitenin, reklamlarının performansını ölçmesine yardımcı olur. Reklam ölçümü, siteler arasında mümkün olduğunca az bilgi aktararak siteler arası izlemeyi kısıtlar.</translation>
@@ -336,8 +337,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="6283840329609797763">Yükleme belirtilmeyen bir hata nedeniyle başarısız oldu. Lütfen Brave'u tekrar indirin.</translation>
 <translation id="2433912322225810055">Ayrıca Brave'u başlattığınızda veya Çok Amaçlı Adres Çubuğu'ndan arama yaptığınızda gösterilecek sayfayı da denetler.</translation>
 <translation id="4100716194836114130">Bu sizin Brave'unuz</translation>
-<translation id="6208136456999964972">Tüm Brave pencerelerini kapattığınızda çerezler ve site verileri otomatik olarak silinir</translation>
-<translation id="6371875426681214174">Brave'u kapattığınızda <ph name="BEGIN_BOLD"/>çoğu sitede oturumunuz kapatılır<ph name="END_BOLD"/>. Senkronizasyon kapalıysa <ph name="BEGIN_BOLD"/>Brave hizmetleri ve Brave oturumunuz da kapatılır<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave'un bu sitede kameranıza ve mikrofonunuza erişmesi için izin gerekiyor</translation>
 <translation id="6933858244219479645">ChromeOS Sistemi</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Kullanılan veriler:<ph name="END_BOLD"/> Tarama geçmişiniz, bu cihazda Brave'u kullanarak ziyaret ettiğiniz sitelerin kaydı.</translation>
@@ -364,6 +363,7 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="1611678871603620428">Gelecekteki Brave güncellemelerini almak için macOS 10.13 veya sonraki bir sürümün yüklü olması gerekir. Bu bilgisayar OS X 10.11 kullanıyor.</translation>
 <translation id="4484434718272972655">Brave'u kim kullanıyor?</translation>
 <translation id="7173394303099002355">Brave'un en güçlü güvenlik özelliğinden faydalanın</translation>
+<translation id="5775101967851558962">Brave'u kapattığımda site verileri her zaman cihazımdan temizlensin</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Bu hesabı sadece bir defa kullanmak istiyorsanız, Brave tarayıcısında Konuk modunu kullanabilirsiniz. Başka biri için hesap eklemek istiyorsanız, <ph name="DEVICE_TYPE"/> cihazınıza  <ph name="LINK_BEGIN"/>yeni bir profil ekleyin<ph name="LINK_END"/>.
 

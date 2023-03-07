@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
 <translation id="3333887201479867589">Вознаграждение Brave</translation>
+<translation id="7561196759112975576">Всегда</translation>
+<translation id="7961015016161918242">Никогда</translation>
 <translation id="4615489450165434530">Сообщить о неисправности сайта</translation>
 <translation id="8097438084542431276">Копировать человекопонятную ссылку</translation>
+<translation id="4678672101289648246">Только на новой вкладке</translation>
 <translation id="1209739344687072997">Сообщить о неработающем сайте</translation>
 <translation id="7630214457764713113">Копировать человекопонятную ссылку</translation>
+<translation id="8294286161128352783">Только на новой вкладке</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="1544192797660353713">Кошелек</translation>
 <translation id="2445484935443597917">Создать профиль</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">Расположение</translation>
 <translation id="3790384768741064842">Сдвинуть вправо</translation>
 <translation id="7444424316576061724">Сдвинуть влево</translation>
-<translation id="7561196759112975576">Всегда</translation>
 <translation id="7060352228894039151">При наведении курсора</translation>
-<translation id="7961015016161918242">Никогда</translation>
 <translation id="8981254605840444865">Показать настройки</translation>
 <translation id="59174027418879706">Включено</translation>
 <translation id="4176463684765177261">Отключено</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">Развертывание при наведении курсора</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Отключить звук на вкладке}one{Отключить звук на вкладках}few{Отключить звук на вкладках}many{Отключить звук на вкладках}other{Отключить звук на вкладках}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Включить звук на вкладке}one{Включить звук на вкладках}few{Включить звук на вкладках}many{Включить звук на вкладках}other{Включить звук на вкладках}}</translation>
+<translation id="3704707436873245822">Скопировать текст с изображения</translation>
+<translation id="5268098808165185458">Копирование текста с изображения…</translation>
+<translation id="4046485130884276245">Текст скопирован</translation>
+<translation id="3639779775496569782">Не удалось скопировать текст</translation>
 <translation id="4235920711083356755">Показать кнопку VPN</translation>
 <translation id="4070612712151038707">Показывает кнопку VPN на панели инструментов</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">Для добавления закладки нажмите кнопку закладки рядом с адресной строкой.</translation>
 <translation id="8487693399751278191">Импортировать закладки...</translation>
 <translation id="2557899542277210112">Разместите свои закладки на панели закладок для быстрого доступа.</translation>
+<translation id="2702801445560668637">Список для чтения</translation>
 <translation id="1968543937259008435">Представляем самый конфиденциальный браузер</translation>
 <translation id="6817415381278637662">Сделайте Brave браузером по умолчанию, чтобы на каждой открытой странице ваша конфиденциальность была под защитой.</translation>
 <translation id="8722651357687610395">Установить Brave по умолчанию</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">Закладки</translation>
 <translation id="6333347122924254968">Показывать значок сервиса «Brave Награды» в адресной строке</translation>
 <translation id="2245286910966863912">Показывать кнопку Brave Новостей в адресной строке</translation>
-<translation id="1811404036171336214">Всегда отображать закладки на странице новой вкладки</translation>
+<translation id="383007806262310953">Показывать панель закладок</translation>
+<translation id="4054323497808446566">Панель закладок закреплена на всех вкладках</translation>
+<translation id="8693858092251192712">Панель закладок закреплена только на новых вкладках</translation>
+<translation id="7158817046543187970">Панель закладок скрыта на всех вкладках</translation>
 <translation id="3416468988018290825">Всегда показывать полные URL-адреса</translation>
 <translation id="5529693968082667490">Показать кнопку «Поиск по вкладкам»</translation>
 <translation id="1643029991199044105">Циклически просматривайте последние использованные вкладки, нажимая Ctrl-Tab</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Блокировка социальных сетей</translation>
-<translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Спрашивать, когда сайт пытается получить доступ к API Solana</translation>
 <translation id="2777102601740875941">Блокировать доступ сайтов к API Solana</translation>
+<translation id="4206299587103092719">Вход с аккаунтом Google</translation>
+<translation id="7458736153596040880">Спрашивать, когда сайт запрашивает разрешение на использование устаревшей системы входа с аккаунтом Google</translation>
+<translation id="459266451581663214">Не разрешать сайтам использовать устаревшую систему входа с аккаунтом Google</translation>
+<translation id="8098954941070626949">Разрешать сайтам использовать устаревшую систему входа с аккаунтом Google</translation>
 <translation id="6414370348346025511">Включена стандартная защита.</translation>
 <translation id="5565355416171743213">Начать использование синхронизации</translation>
 <translation id="4332558599726753990">Настроить синхронизацию</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">Удаление необратимо — вы не сможете восстановить данные. Если вы захотите
     опять использовать Brave Синхронизацию, создайте новый аккаунт и повторно добавьте устройства.</translation>
 <translation id="4860996720371753023">Удаление аккаунта…</translation>
-<translation id="8199291899164865593">Не удалось присоединиться к цепи синхронизации, потому что аккаунт удален.</translation>
+<translation id="4094590686212463338">Не удалось присоединиться к цепи синхронизации, потому что она удалена.</translation>
 <translation id="5633907266617216186">Адреса, платежные данные и т. д.</translation>
 <translation id="294985549514492876">Веб-приложения (PWA)</translation>
 <translation id="6285118765755298263">Добавлять другие поисковые системы</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">Спрашивать</translation>
 <translation id="7701040980221191251">Нет</translation>
 <translation id="1274962333945373242">Криптокошельки (устарело)</translation>
-<translation id="3695088618483091287">Кошелек Brave (предпочтительнее расширения)</translation>
 <translation id="4718664830805652430">Основная валюта по умолчанию</translation>
 <translation id="7992507032049865603">Основная криптовалюта по умолчанию</translation>
 <translation id="1834467296210148203">Показывает значок кошелька Brave на панели инструментов.</translation>

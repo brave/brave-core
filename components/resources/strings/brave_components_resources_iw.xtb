@@ -172,7 +172,7 @@
 <translation id="6480303618073442141">Brave Private Ads אינן פולשניות ופרטיות בעיצובן. המודעות מבוססות על תחומי העניין שלך, אבל שום מידע אישי או היסטוריית גלישה לא יוצאים מהמכשיר שלך. והכי חשוב, Brave Private Ads מאפשרות לך להרוויח BAT
 <ph name="BEGIN_LINK"/>Basic Attention Token<ph name="END_LINK"/>) just for viewing.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="3742599705619405136">שיטה אוטומטית לתמיכה במו"לים וביוצרי תוכן. הגדר/י תשלום חודשים והמשך/י לגלוש כרגיל. האתרים המאומתים ע"י Brave שביקרת בהם יקבלו את התרומות שלך באופן אוטומטי, על פי מידת העניין שלך שנמדדת על ידי Brave.</translation>
+<translation id="7437775146229396839">שיטה אוטומטית לתמיכה באתרים וביוצרי תוכן. הגדר סכום תרומה חודשית ודפדף כרגיל. <ph name="BEGIN_LINK"/>האתרים והיוצרים המאומתים<ph name="END_LINK"/> שביקרת יקבלו תרומתך כל חודש ביחס לזמן שבילית בתוכן שלהם.</translation>
 <translation id="3325399124634342726">הרווחים הנוכחיים לחודש זה (הערכה)</translation>
 <translation id="8593551638387217772">תאריך התשלום הבא</translation>
 <translation id="4428871418618312983">פרסומות שהתקבלו החודש</translation>
@@ -204,8 +204,6 @@
 <translation id="7577100371127227294">טיפים חודשיים</translation>
 <translation id="178390304006113804">הגדירו טיפים על בסיס חודשי בחיוב חוזר כדי שתוכלו לתמוך באופן קבוע ביוצרים האהובים עליכם.</translation>
 <translation id="3302159320447117425">עדיין לא הוגדרו טיפים חודשיים.</translation>
-<translation id="1847863811689960237">תגמלו יוצרים של התוכן שאתם אוהבים.</translation>
-<translation id="4129489167302464118">התשלומים החודשיים שלכם מתחלקים בין האתרים בהם גלשתם.</translation>
 <translation id="4898632353264854950">אתרים יופיעו במהלך הגלישה</translation>
 <translation id="3024485967181749006">סך כל הטיפים החודש</translation>
 <translation id="8183455888546367148">סך כל הטיפים החודשיים נכון לחודש הנוכחי</translation>
@@ -274,6 +272,8 @@
 <translation id="7849926087559412554">אופס! הדפדפן שלך לא יכול לקבל Brave Ads פרטיות.</translation>
 <translation id="5177429570315095022">עליך לעדכן את הדפדפן שלך כדי להמשיך ולראות מודעות.</translation>
 <translation id="7352651011704765696">משהו השתבש</translation>
+<translation id="4593680147181354667">מזהה אבחון</translation>
+<translation id="3995471429906554168">מידע על אבחון</translation>
 <translation id="752216563428219524">פרסומות לא אותחלו, נא לרענן את הדף.</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="6969783933307596818">רענן אוטומטית כל 5 שניות</translation>
@@ -355,6 +355,8 @@
 <translation id="8874184842967597500">לא מחובר</translation>
 <translation id="4569155249847375786">מאומת</translation>
 <translation id="6521149675246672063">מנותק (מאומת)</translation>
+<translation id="5058161306698404465">סביבת יצירה:</translation>
+<translation id="5856438412804207598">סביבה נוכחית:</translation>
 <translation id="5906820630265272615">כספי BAT</translation>
 <translation id="5814098892838785557">האם הנך בטוח/ה שברצונך להפסיק לתמוך ביוצר זה?</translation>
 <translation id="6582097696555842139">ביטול טיפ חודשי</translation>
@@ -394,6 +396,7 @@
 <translation id="839058704683989763">הגדרת טיפ בהמתנה!</translation>
 <translation id="5096821444729034955">עבור הפוסט שלהם</translation>
 <translation id="2978223787436054634">צייצו לגבי התמיכה שלכם</translation>
+<translation id="976068305210640982">הנך <ph name="BEGIN_LINK"/>מנותק<ph name="LINK_END"/> כעת</translation>
 <translation id="5916290544882167205">Brave .Brave Software הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
 <translation id="9026369588205476247">על מנת להגן על הפרטיות שלכם, הצהרה זו של Brave Rewards לא נשמרת, רשומה או מתועדת בשום מקום פרט למכשיר שלך (מחשב זה). לא ניתן לשחזר אותה מ-Brave במקרה של אובדן נתונים במכשירכם.</translation>
 <translation id="3587482841069643663">הכל</translation>
@@ -526,8 +529,8 @@
 <translation id="923467487918828349">הצג הכל</translation>
 <translation id="5113531205597573951">האתרים שנצפו</translation>
 <translation id="4450893287417543264">אל תציג שוב</translation>
-<translation id="6518133107902771759">אימות</translation>
-<translation id="422369484771082705">אימות איננו חובה. עם זאת, באמצעות אימות, יתאפשר לך למשוך את ה-BAT שלך שנצבר מ-Brave Rewards ישירות אל ארנק משמורת.</translation>
+<translation id="7642372245223412840">התחברות ל-bitFlyer</translation>
+<translation id="6143701117592994599">חיבור Brave Rewards לחשבון bitFlyer יאפשר לך להרוויח BAT ולמשוך את רווחי ה-BAT שלך מ- Brave Rewards.</translation>
 <translation id="4354564238172327160">בואו להיות יוצרים ב-Brave</translation>
 <translation id="4639659520811817892">גלשו אל creators.brave.com כדי להירשם היום ולהתחיל להרוויח BAT מהמעריצים והעוקבים שלכם.</translation>
 <translation id="4816455138209470435">Brave תומך ב-YouTube, Twitch, Vimeo ועוד!</translation>
@@ -580,17 +583,10 @@
 <translation id="4047002754575891955">המשך בחיפוש אופ-צ'יין</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">האם לאפשר תמיכה של Solana Name Service (SNS) ב-Brave?</translation>
-<translation id="2350552210396418924">Brave תשתמש ב-Coinbase Cloud כדי לפתור שמות דומיינים מסוג .sol. 
-Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase יראה שמישהו מנסה לבקר בדומיינים .sol אלה אך שום דבר אחר. ראה את של Coinbase Cloud
-<ph name="BEGIN_COINBASE_TOU_LINK"/>
-תנאי שימוש
-<ph name="END_COINBASE_TOU_LINK"/>
-ו-
-<ph name="BEGIN_COINBASE_PRIVACY_LINK"/>
-מדיניות פרטיות
-<ph name="END_COINBASE_PRIVACY_LINK"/></translation>
+<translation id="3664848774480475984">Brave ישתמש ב-Syndica כדי לפתור שמות דומיינים מסוג .sol. 
+Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Syndica תיראה שמישהו מנסה לבקר בדומיינים .sol אלה אך שום דבר אחר. עיין ב<ph name="BEGIN_SYNDICA_TOU_LINK"/>תנאי השימוש<ph name="END_SYNDICA_TOU_LINK"/> וב<ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>מדיניות הפרטיות<ph name="END_SYNDICA_PRIVACY_LINK"/> של Syndica</translation>
 <translation id="7378412287463452336">המשך להשתמש בשרת Infura</translation>
-<translation id="2313603121968571839">המשיכו להשתמש בשרת Coinbase Cloud</translation>
+<translation id="2824725477135051831">להמשיך להשתמש בשרת Syndica</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="59174027418879706">מאופשר</translation>
 <translation id="2468755552460246661">הדומיין חסום</translation>
@@ -676,6 +672,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="8797999629784150206">באפשרותך לשנות את ה-<ph name="SITE_PERMISSIONS"/> שלך בכל עת.
  <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">הרשאת אתר</translation>
+<translation id="4355784577209159847">אפשר להשתמש בקובצי Cookie של צד שלישי לכניסה ב-Google מהדור הקודם</translation>
 <translation id="7717357606512850995">בדקו את המצב</translation>
 <translation id="7306880305145342514">ברכותינו! התגמולים שלכם עבור <ph name="MONTH"/>הגיעו!</translation>
 <translation id="3007207731685398329">התגמולים שלכם עבור <ph name="AMOUNT"/><ph name="MONTH"/> יגיעו בעוד<ph name="DAYS"/>.</translation>
@@ -700,6 +697,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="9013419433042554094">תבע אסימונים</translation>
 <translation id="5544777623605368410">רווחים</translation>
 <translation id="3273637494083639780">עיבוד אסימונים שהרווחת החודש יתחיל ב-<ph name="DATE"/>.</translation>
+<translation id="5572389477027204985">הפעלת מודעות Brave</translation>
 <translation id="1029300693989825319">זה עשוי להשתנות בהתבסס על תנודתיות השוק.</translation>
 <translation id="8334559352278209120">נתינה</translation>
 <translation id="4782365133987903299">יש לך <ph name="DAYS"/> נותר לתבוע</translation>
@@ -736,6 +734,10 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="1609556006143307897">אתה עוזר לתמוך ביוצרי תוכן</translation>
 <translation id="6605147707233193230">הפעל כדי לעזור לתמוך ביוצרי תוכן</translation>
 <translation id="5430495762768325224">למידע נוסף על BAT</translation>
+<translation id="4105212447337987768">בתאריך <ph name="DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. יש לחבר חשבון משמורת לפני תאריך זה כדי לאפשר לנו להעביר את היתרה שהרווחת לחשבון משמורת שלך, אחרת היתרה שלך תבוטל.</translation>
+<translation id="5684206602316433615">בתאריך <ph name="DATE"/> אנו נפסיק את התמיכה ביתרות BAT וירטואליות הקיימות. לצערנו לא קיימים אפוטרופוסים באזור שלך (<ph name="REGION"/>) כדי למשוך את הרווחים שלך. עד למועד שצוין תוכל עדיין לתרום ליוצרים האהובים עליך.</translation>
+<translation id="707569835145765061">פעולה נדרשת: יש לשייך חשבון משמורת, אחרת ה-vBAT שלך יאבדו</translation>
+<translation id="5089752671190341407">נותר עדיין זמן כדי לתרום את ה-vBAT שלך ליוצרים האהובים עליך</translation>
 <translation id="1258144146756156541">אשר שאתה בן אדם</translation>
 <translation id="1555514580945108302">מממ ... לא ממש. נסו שוב.</translation>
 <translation id="8078414184292711961">גרור את אייקון BAT ליעד ה-<ph name="HINT"/></translation>
@@ -924,7 +926,8 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="1201402288615127009">הבא</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="6896758677409633944">העתיקו</translation>
-<translation id="2704606927547763573">הועתק</translation>
+<translation id="7885157704277298658">הועתק!</translation>
+<translation id="6518133107902771759">אימות</translation>
 <translation id="6042308850641462728">עוד</translation>
 <translation id="768236965975208017">בטוח. רב שרשרת. וקל לשימוש. ה-Brave Wallet שלך נמצא במרחק של כמה קליקים בלבד</translation>
 <translation id="3157931365184549694">שחזר</translation>
@@ -954,7 +957,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="5168349973342709369">הזן סיסמה כדי לפתוח את הארנק</translation>
 <translation id="9111102763498581341">בטל נעילה</translation>
 <translation id="5045550434625856497">סיסמה שגויה</translation>
-<translation id="5242300593039211344">נעילת ארנק</translation>
+<translation id="9175546523521600401">נעילת ארנק</translation>
 <translation id="765834632354589737">ארנק גיבוי</translation>
 <translation id="1108298724135935307">אתרים מחוברים</translation>
 <translation id="163697698769819510">מומלץ לבצע גיבוי של הארנק שלך עכשיו כדי להגן על הנכסים שלך ולהבטיח שלעולם לא תאבד לך הגישה.</translation>
@@ -968,7 +971,6 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
 <translation id="3331452756822160641">סיסמה חדשה</translation>
 <translation id="8624315169751085215">העתק ללוח מודעות</translation>
-<translation id="7885157704277298658">הועתק!</translation>
 <translation id="6346952829206698721">הדבק מהלוח</translation>
 <translation id="1121335910737476837">חשבונות קריפטו עיקריים</translation>
 <translation id="6969147029062037757">חשבונות מיובאים</translation>
@@ -1023,6 +1025,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="7978047524114351365">לא ניתנו שמות לנכסים</translation>
 <translation id="9040455159722359521">חיפוש נכסים או כתובות חוזה</translation>
 <translation id="6018178824574796106">הוספת האסימון המותאם אישית נכשלה. נסה שוב.</translation>
+<translation id="5138307340667775659">אסימון זה כבר נוסך לתיק שלך.</translation>
 <translation id="547122651977318828">ID של טוקן (רק עבור ERC721)</translation>
 <translation id="7544552854944350190">נדרש ID של טוקן</translation>
 <translation id="3842236145820483340">זיהוי Coingecko</translation>
@@ -1065,6 +1068,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="5294062982587710720">שים לב כי Brave לא יכול לאמת מה יקרה אם תחתום. חתימה יכולה לאשר כמעט כל פעולה בחשבונך או בשמך, כולל (אך לא מוגבל ל)מתן שליטה מוחלטת בחשבונך ובנכסי הקריפטו לאתר המבקש את הבקשה. חתום רק אם אתה בטוח שאתה רוצה לבצע פעולה זו וסומך על האתר המבקש.</translation>
 <translation id="3474375934783434676">הירשם על אחריותך בלבד</translation>
 <translation id="5488357322146334497">הודעה</translation>
+<translation id="7702907602086592255">דומיין</translation>
 <translation id="3586752056660754651">חתימה</translation>
 <translation id="3484981968509595506">אפליקציית DApp מבקשת את מפתח ההצפנה הפומבי שלך</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> מבקש את מפתח ההצפנה הציבורי של הארנק שלך. חשוב לדעת שאם החלטת לאפשר מתן מפתח זה, אתר זה יוכל לשלוח אליך הודעות מוצפנות.</translation>
@@ -1189,6 +1193,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="4667144295226514387">חסרה מגבלת גז</translation>
 <translation id="2021522108838444624">הסכום חייב להיות גדול מ-0</translation>
 <translation id="8464365289405373974">יש להזין כתובת</translation>
+<translation id="4884792073752467460">כתובת נמען לא חוקית</translation>
 <translation id="862585889767884824">של</translation>
 <translation id="9106265941552476098">דחה<ph name="TRANSACTION_LENGTH"/> עסקאות</translation>
 <translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
@@ -1257,7 +1262,7 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="1695096446857675822">איזון ↓</translation>
 <translation id="8151187584908138100">שם ↓</translation>
 <translation id="883138507248906253">שם ↑</translation>
-<translation id="7198018180583855568">כל החשבונות</translation>
+<translation id="7662492121143629144">כל החשבונות</translation>
 <translation id="6954150712710630841">העסקה נשלחה</translation>
 <translation id="905855245798176174">העסקה נשלחה בהצלחה לרשת וממתינה לאישור.</translation>
 <translation id="619697073289995370">עסקה נחתמה</translation>
@@ -1458,6 +1463,8 @@ Brave מסתיר את כתובת ה-IP שלך. אם תאפשר זאת, Coinbase 
 <translation id="1763942310723636241">פרטי טוקן</translation>
 <translation id="2938264474197978104">הסתרת <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">להסתיר טוקן?</translation>
+<translation id="6779155810671793329">כתובת חוזה טוקן</translation>
+<translation id="871123550184744265">אסימון עסרוני</translation>
 <translation id="4038384774641714579">אתם יכולים להפוך את הנכס הזה לגלוי שוב בעתיד באמצעות לחיצה על "+ נכסים גלויים" בתחתית הכרטיסייה "פורטפוליו"</translation>
 <translation id="1026825928738055872">בטוח שברצונך להסיר את "<ph name="ACCOUNT_NAME"/>"?</translation>
 <translation id="3910551537328657217">תכונת בקשה</translation>
@@ -1516,11 +1523,16 @@ CoinGecko</translation>
 <translation id="4029551149873989025">החלף רשת</translation>
 <translation id="7561262633951061138">הטוב ביותר</translation>
 <translation id="3143110700666266545">אפליקציה זו משתמשת בממשקי ה-API של צד שלישי הבאים:</translation>
-<translation id="8411419545176806786">Brave לְהַחלִיף משתמש ב-0x בתור אגרגטור DEX עבור רשתות EVM נתמכות. 0x תעבד את כתובת ארנק Ethereum ואת כתובת ה-IP כדי למלא עסקה (כולל קבלת הצעות מחיר). 0x ישתמש בנתונים אלה רק למטרות עיבוד עסקאות.</translation>
-<translation id="7467728126359974661">Brave Swap משתמש ב-Jupiter בתור אגרגטור DEX עבור רשת Solana.
- Jupiter יעבד את כתובת הארנק וכתובת ה-IP של Solana כדי לבצע עסקה (כולל קבלת הצעות מחיר). Jupiter ישתמש בנתונים אלה רק למטרות עיבוד עסקאות.</translation>
-<translation id="8497751359931572880">לחץ כאן למדיניות הפרטיות של 0x.</translation>
-<translation id="4904748904130272182">לחץ כאן למדיניות הפרטיות של Jupiter.</translation>
+<translation id="163536108506359457">Brave Swap משתמש ב-<ph name="AGGREGATOR"/> כצובר DEX עבור רשתות <ph name="NETWORKS"/> נתמכות. <ph name="AGGREGATOR"/> יעבד את כתובת הארנק וכתובת ה-IP של <ph name="NETWORK"/> כדי למלא עסקה (כולל קבלת הצעות). <ph name="AGGREGATOR"/> ישתמש בנתונים אלה למטרת עיבוד עסקאות בלבד.</translation>
+<translation id="1847885264294023691">לחץ כאן למדיניות הפרטיות של <ph name="AGGREGATOR"/>.</translation>
+<translation id="9218424917282368512">שינוי רשת</translation>
+<translation id="644984757357042735">נדרשת רשת</translation>
+<translation id="132243864024778443">שם אסימון נדרש</translation>
+<translation id="3617263699756744037">כתובת חוזה אסימון ריקה או לא חוקית</translation>
+<translation id="2077392865355605472">סמל אסימון נדרש</translation>
+<translation id="4636925020451566238">עשרוני אסימונים לערך מדויק נדרשים</translation>
+<translation id="3797613444743816037">כתובת הטבעה</translation>
+<translation id="7951915459354237451">מגבלת העמלה נקבעת לפי ערך שהוא נמוך יותר מעמלת הבסיס. העסקה שלך עשויה להימשך זמן רב או להיכשל.</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>

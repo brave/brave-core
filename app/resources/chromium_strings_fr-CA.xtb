@@ -239,6 +239,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="3507835409099344374">Accéder aux paramètres de notification Brave</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="245693535809364497">Brave requiert l'autorisation d'accéder à l'appareil photo pour créer une carte 3D de votre environnement</translation>
+<translation id="5060669762365466104">Il est probable que les sites fonctionneront comme prévu, mais vos données de navigation ne seront peut-être pas enregistrées lorsque vous fermerez toutes les fenêtres de Brave</translation>
 <translation id="6676384891291319759">Accéder à Internet</translation>
 <translation id="1363996462118479832">Brave OS ne peut pas synchroniser vos données, car une erreur s'est produite lors de la connexion.</translation>
 <translation id="1257247502847251159">Brave requiert l'autorisation d'accéder au microphone pour ce site</translation>
@@ -248,6 +249,7 @@ Certaines fonctionnalités seront peut-être inaccessibles. Veuillez spécifier 
 <translation id="7870748924073900361">L'économiseur de mémoire a permis à Brave d'être plus rapide</translation>
 <translation id="6666624454809779082">Brave est déjà installé pour tous les utilisateurs sur votre ordinateur.</translation>
 <translation id="5360050006043219962">Pour accéder à vos données Brave sur tous vos appareils, connectez-vous et activez la synchronisation.</translation>
+<translation id="3136039682492230890">Brave recommande d'analyser ce fichier, car il pourrait être dangereux.</translation>
 <translation id="8291513491595858997">Ton parent a désactivé le paramètre « Autorisations pour les sites, les applications et les extensions » dans Brave. L'activation de ce <ph name="EXTENSION_TYPE_PARAMETER"/> n'est pas autorisée.</translation>
 <translation id="1547295885616600893">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave vous informera si jamais vos mots de passe sont compromis</translation>
@@ -269,7 +271,6 @@ Certaines fonctionnalités seront peut-être inaccessibles. Veuillez spécifier 
 <translation id="1008530050039597147">Brave requiert l'autorisation d'accéder à l'appareil photo pour ce site</translation>
 <translation id="1197672524850678392">Impossible de lancer Brave. Réessayez.</translation>
 <translation id="3405035915691517126">Brave ne peut pas vérifier vos mots de passe. Réessayez dans 24 heures.</translation>
-<translation id="5101812148953915496">Les sites que vous consultez gardent vos informations en mémoire tant que vous ne fermez pas Brave</translation>
 <translation id="5516268345616100622">Gestionnaire de tâches – Brave</translation>
 <translation id="713191641919118540">Vos centres d'intérêt estimés par Brave</translation>
 <translation id="9068395155143628872">La mesure des annonces permet aux sites que vous visitez de demander des informations à Brave afin de leur permettre de mesurer la performance de leurs annonces. La mesure des annonces limite les suivis intersites en transférant le moins d'informations possible entre les sites.</translation>
@@ -340,8 +341,6 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="6283840329609797763">Échec de l'installation en raison d'une erreur non spécifiée. Veuillez télécharger Brave à nouveau.</translation>
 <translation id="2433912322225810055">Elle définit également quelle page s'affiche lorsque vous démarrez Brave ou que vous effectuez une recherche dans l'omnibox.</translation>
 <translation id="4100716194836114130">Voici votre Brave</translation>
-<translation id="6208136456999964972">Lorsque vous fermez toutes les fenêtres de Brave, les témoins et les données relatives aux sites sont automatiquement effacés</translation>
-<translation id="6371875426681214174">Vous serez <ph name="BEGIN_BOLD"/>déconnecté de la plupart des sites<ph name="END_BOLD"/> lorsque vous fermerez Brave. Si la synchronisation est désactivée, vous serez également <ph name="BEGIN_BOLD"/>déconnecté des services Brave et de Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave a besoin de votre autorisation pour accéder à votre appareil photo et à votre micro pour ce site</translation>
 <translation id="6933858244219479645">Système Brave OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Quelles données sont utilisées :<ph name="END_BOLD"/> votre historique de navigation, soit un enregistrement des sites que vous avez visités à l'aide de Brave sur cet appareil.</translation>
@@ -368,6 +367,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="1611678871603620428">Vous devez disposer de macOS 10.13 ou d'une version ultérieure pour recevoir les futures mises à jour de Brave. Or, c'est la version OS X 10.11 qui est installée sur cet ordinateur.</translation>
 <translation id="4484434718272972655">Qui utilise Brave?</translation>
 <translation id="7173394303099002355">Profiter de la sécurité la plus robuste de Brave</translation>
+<translation id="5775101967851558962">Toujours effacer les données relatives aux sites sur votre appareil lorsque vous fermez Brave</translation>
 <translation id="8992261409816268381">Les auteurs de Brave</translation>
 <translation id="479793348545936567">Si vous souhaitez utiliser ce compte une seule fois, vous pouvez utiliser le mode invité du navigateur Brave. Si vous voulez ajouter un compte pour quelqu'un d'autre,, <ph name="LINK_BEGIN"/>ajoutez un nouveau profil<ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
 

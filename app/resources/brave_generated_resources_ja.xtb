@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7561196759112975576">常に表示</translation>
+<translation id="7961015016161918242">使用しない</translation>
 <translation id="4615489450165434530">サイト表示の不具合を報告</translation>
 <translation id="8097438084542431276">クリーンリンクをコピー</translation>
+<translation id="4678672101289648246">新しいタブページのみ</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="7630214457764713113">クリーンリンクをコピー</translation>
+<translation id="8294286161128352783">新しいタブページのみ</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">右に移動</translation>
 <translation id="7444424316576061724">左に移動</translation>
-<translation id="7561196759112975576">常に表示</translation>
 <translation id="7060352228894039151">マウスオーバーで表示</translation>
-<translation id="7961015016161918242">使用しない</translation>
 <translation id="8981254605840444865">設定を表示</translation>
 <translation id="59174027418879706">有効</translation>
 <translation id="4176463684765177261">無効</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">マウスオーバーでフロート</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{タブのミュートを解除}other{タブのミュートを解除}}</translation>
+<translation id="3704707436873245822">画像からテキストをコピー</translation>
+<translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
+<translation id="4046485130884276245">画像からテキストをコピーしました</translation>
+<translation id="3639779775496569782">テキストのコピーに失敗しました</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
+<translation id="2702801445560668637">リーディングリスト</translation>
 <translation id="1968543937259008435">オンライン上のプライバシーを確保しましょう</translation>
 <translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="2245286910966863912">アドレスバーに「Braveニュース」ボタンを表示</translation>
-<translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
+<translation id="383007806262310953">ブックマーク バーを表示する</translation>
+<translation id="4054323497808446566">ブックマーク バーをすべてのページに表示</translation>
+<translation id="8693858092251192712">新しいタブページを除き、ブックマーク バーをすべてのページで非表示</translation>
+<translation id="7158817046543187970">ブックマーク バーをすべてのページで非表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
-<translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">サイトのSolanaプロバイダーAPIへのアクセス可否を確認</translation>
 <translation id="2777102601740875941">SolanaプロバイダーAPIのアクセスからサイトをブロック</translation>
+<translation id="4206299587103092719">Google サインイン</translation>
+<translation id="7458736153596040880">サイトがレガシーのGoogleサインインを使用したい場合に確認を表示</translation>
+<translation id="459266451581663214">レガシーのGoogleサインインの使用をブロック</translation>
+<translation id="8098954941070626949">レガシーのGoogleサインインの使用を許可</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="5565355416171743213">同期機能を利用開始</translation>
 <translation id="4332558599726753990">同期設定</translation>
@@ -437,7 +450,7 @@
 <translation id="7578652532113583362">ただし、それらのデバイスでローカルに格納されたデータは削除されません。</translation>
 <translation id="2516405584294312544">これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。</translation>
 <translation id="4860996720371753023">アカウントの削除を処理中です...</translation>
-<translation id="8199291899164865593">この同期チェーンに参加できません。アカウントが削除されています。</translation>
+<translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
 <translation id="5633907266617216186">住所、支払い情報など</translation>
 <translation id="294985549514492876">ウェブアプリ（PWA）</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">確認する</translation>
 <translation id="7701040980221191251">なし</translation>
 <translation id="1274962333945373242">暗号資産ウォレット (非推奨)</translation>
-<translation id="3695088618483091287">Braveウォレット (拡張機能の利用を推奨)</translation>
 <translation id="4718664830805652430">デフォルトのベース通貨</translation>
 <translation id="7992507032049865603">デフォルトのベース暗号資産</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>

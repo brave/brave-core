@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave Shields 전역 기본값</translation>
 <translation id="2675679258824361492">기타 프라이버시 설정</translation>
 <translation id="8026334261755873520">인터넷 사용 기록 삭제</translation>
-<translation id="5965081608816406060">백그라운드 동영상 재생</translation>
+<translation id="1690924763769415936">백그라운드 재생</translation>
 <translation id="6332924730165919598">모든 탭을 닫으면 Brave를 닫습니다</translation>
-<translation id="3872768973878059926">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 기기 화면이 꺼져도 오디오가 계속 재생됩니다.</translation>
+<translation id="8308305244351876417">Brave 내 다른 탭 또는 다른 앱으로 전환하거나 디바이스 화면이 꺼져도 오디오가 재생됩니다.</translation>
 <translation id="4150201353443180367">디스플레이</translation>
 <translation id="2433507940547922241">모양</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.</translation>
 <translation id="635752162765375187">참고: 아직 구성되지 않아 회원님의 Rewards 보호관리 월렛에서 팁을 받을 수 없는 제작자입니다. 보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
 <translation id="1910721550319506122">환영합니다!</translation>
+<translation id="2734870894159530879"><ph name="WALLET_PROVIDER"/> 에 로그인하여 잔액 확인</translation>
 <translation id="5830114181292529917">팁을 보내서 이 사이트를 지원할 수 있습니다. 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하세요.</translation>
 <translation id="7658239707568436148">취소</translation>
 <translation id="1201402288615127009">다음</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Brave를 사용하지 않을 때 광고 보이기</translation>
 <translation id="3349204812119681938">Brave Rewards 초기화</translation>
 <translation id="6606319453795180219">이렇게 하면 Brave Rewards가 삭제되고 모든 Brave Rewards 데이터가 초기화됩니다.</translation>
-<translation id="6810078320346589989">북마크 만들기</translation>
+<translation id="8293206222192510085">북마크 추가</translation>
+<translation id="340492034650766959">북마크 삭제</translation>
+<translation id="2149973817440762519">북마크 편집</translation>
+<translation id="6819319915092566548">북마크 보기</translation>
 <translation id="3396347744975515056">Brave 동기화가 업그레이드되었고 설정이 필요합니다</translation>
 <translation id="7473245612074035141">설치 시작</translation>
 <translation id="8985635554450124959">동기화 설정할 수 없음</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
-<translation id="8199291899164865593">이 동기화 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.</translation>
+<translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
 <translation id="5633907266617216186">주소, 결제 정보 등</translation>
 <translation id="1056898198331236512">경고</translation>
 <translation id="1426410128494586442">예</translation>
@@ -371,6 +375,7 @@
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
 <translation id="3200197118442451932">Brave Software Inc.는 사용자가 계정을 생성할 때 <ph name="WALLET_PROVIDER"/>에 제공하는 개인 정보를 처리, 저장 또는 액세스하지 않습니다.</translation>
 <translation id="1665118090708049096">내 <ph name="WALLET_PROVIDER"/> 계정으로 이동</translation>
+<translation id="4858636682078269312"><ph name="WALLET_PROVIDER"/> 계정에 로그인</translation>
 <translation id="8874184842967597500">연결되지 않음</translation>
 <translation id="2495032782748793764">Brave 기본</translation>
 <translation id="9132378787893584761">친구들과 Brave를 공유하세요!</translation>
@@ -388,10 +393,10 @@
 <translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
-<translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
 <translation id="3763681089644577874">쿠키 차단</translation>
 <translation id="614747795780742163">웹사이트가 이전 방문에 대한 정보를 저장하지 못하도록 합니다</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
+<translation id="4941539331405513605">교차 사이트 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="3895527457258986253">지문 차단</translation>
 <translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
@@ -490,6 +495,8 @@
 <translation id="5705882733397021510">돌아가기</translation>
 <translation id="3985567919248057638">둘러보기</translation>
 <translation id="7889432931837317731">가능한 경우 자동으로 열림</translation>
+<translation id="1029304566263314007">다운로드 진행률 알림 표시</translation>
+<translation id="2910433761530295035">파일을 저장할 위치 묻기(SD 카드 감지 시)</translation>
 <translation id="8967385052772844086">전체 개인 정보 보호 보고서 보기</translation>
 <translation id="6864343534748973390">가장 인기있는</translation>
 <translation id="4608192160278975831">개인 정보가 보호되고 추적 요소 없음</translation>
@@ -498,6 +505,7 @@
 <translation id="7320542277711359296">두 번째로 인기가 많은</translation>
 <translation id="8295049095570748497">러시아의 상위권 검색 엔진</translation>
 <translation id="2642661895835126239">베를린 소재, 나무를 심습니다</translation>
+<translation id="2422627462367776805">대한민국 웹 포털 및 검색</translation>
 <translation id="177282784098234156">프라이빗, 독립적, 사용자 우선</translation>
 <translation id="1410130669636877548">여러분이 웹에서 검색을 할 때, 어떤 검색 엔진은 다른 엔진에 비해 여러분의 개인 정보를 더욱 잘 보호합니다.</translation>
 <translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
@@ -1016,7 +1024,7 @@
 <translation id="9074594632540931067">오류: BAT 이용 불가</translation>
 <translation id="5382684862562314222">거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.</translation>
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
-<translation id="842321566508373706">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요.</translation>
+<translation id="1677961202754619328">Uphold의 규정에 따라 현재 귀하의 Uphold 계정에 몇 가지 제한이 걸려 있습니다. Uphold 계정에 로그인하여 이에 대한 알림이 있는지, 완료해야 하는 계정 요건이 남아있는지 확인한 다음 다시 시도하세요.</translation>
 <translation id="6417420737057016607">Brave 광고</translation>
 <translation id="5425006356459378415">Brave Rewards 사용 불가</translation>
 <translation id="833643743158564518">귀하가 계신 지역에서는 현재 Brave Rewards 신규 가입이 중단되었습니다. 나중에 언제든 다시 시도해주세요. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@
 <translation id="4071347720273751665">ENS 주소를 입력하신 것 같습니다. 이 요청을 해석하려면 제3자 해석기를 사용해야 하므로 IP 주소와 도메인을 해당 제3자가 볼 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENS 오프체인 도메인 사용</translation>
 <translation id="4982630604810554641">도메인 검색 중...</translation>
+<translation id="4159738248012488342">팁을 보낼 금액 선택</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="707569835145765061">조치 필요: 보호관리 계정을 연결하지 않으면 vBAT 소실 예정</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 이 날짜 이전에 보호관리 계정을 연결하시면 적립되어 있는 잔액을 보호관리 계정으로 이전해드릴 수 있으나, 이를 원치 않으시면 잔액이 소실됩니다.</translation>
+<translation id="5089752671190341407">아직은 vBAT를 마음에 드는 제작자에게 기부할 시간이 충분함</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 안타깝지만 현재 계신 지역(<ph name="REGION"/>)에서는 사용 가능한 보호관리 서비스가 없어 적립액을 인출할 수 없습니다. 이 날짜 전까지는 마음에 드는 제작자에게 기부하실 수 있습니다.</translation>
 </translationbundle>

@@ -172,7 +172,7 @@
 <translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
 <translation id="6480303618073442141">Brave के प्राइवेट विज्ञापन, डिज़ाइन से ही प्राइवेट और ध्यान ना खींचने वाले होते हैं. विज्ञापन आपकी दिलचस्पी के आधार पर होते हैं, लेकिन कोई भी निजी डेटा या ब्राउज़िंग का पूरा ब्यौरा कभी भी आपके डिवाइस से बाहर नहीं जाता है. सबसे अच्छी बात यह है कि Brave के प्राइवेट विज्ञापन को बस देख कर BAT(<ph name="BEGIN_LINK"/>बेसिक अटेंशन टोकन<ph name="END_LINK"/>) कमाए जा सकते हैं.</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
-<translation id="3742599705619405136">प्रकाशकों और सामग्री रचनाकारों का समर्थन करने का एक स्वचालित तरीका।  मासिक भुगतान सेट करें और सामान्य रूप से ब्राउज़ करें।  Brave सत्यापित साइटें जो आप देखते हैं, वे आपके योगदान को स्वचालित रूप से प्राप्त करेंगी, जो कि आपके ध्यान में Brave द्वारा मापी गई हैं।</translation>
+<translation id="7437775146229396839">यह कंटेंट क्रिएटर और साइट को अपने-आप सपोर्ट करता है. बस मासिक योगदान की राशि सेट करें और जैसे ब्राउज़ करते हैं, वैसे करते रहें. जिन <ph name="BEGIN_LINK"/>वेरिफ़ाइड साइट और क्रिएटर<ph name="END_LINK"/> को आप देखेंगे और जितना समय उनके कंटेंट को देखने में बिताएँगे उन्हें उसके आधार पर राशि मिलेगी.</translation>
 <translation id="3325399124634342726">इस महीने की मौजूदा कमाई (अनुमानित)</translation>
 <translation id="8593551638387217772">अगली भुगतान तिथि</translation>
 <translation id="4428871418618312983">इस महीने प्राप्त हुए विज्ञापन</translation>
@@ -204,8 +204,6 @@
 <translation id="7577100371127227294">मासिक टिप्स</translation>
 <translation id="178390304006113804">आप लगातार अपने पसंदीदा क्रिएटर को सपोर्ट कर सकें इसके लिए दोहराए जाने वाले योगदान सेट करें.</translation>
 <translation id="3302159320447117425">अभी तक कोई मासिक योगदान सेट नहीं किया गया है.</translation>
-<translation id="1847863811689960237">अपनी पसंद की सामग्री के लिए निर्माता को पुरस्कार दें।</translation>
-<translation id="4129489167302464118">आपका मासिक भुगतान उन साइट्स में वितरित हो जाता है जिन्हें आप देखते हैं।</translation>
 <translation id="4898632353264854950">जैसे जैसे आप ब्राउज़ करते जाएंगे साइट्स दिखते चले जाएंगे</translation>
 <translation id="3024485967181749006">इस महीने के कुल टिप्स</translation>
 <translation id="8183455888546367148">इस महीने का कुल योगदान</translation>
@@ -273,6 +271,8 @@
 <translation id="7849926087559412554">ओह! आपके ब्राउज़र पर Brave प्राइवेसी विज्ञापन नहीं आ सकते हैं</translation>
 <translation id="5177429570315095022">विज्ञापन देखना जारी रखने के लिए आपको अपना ब्राउज़र अपडेट करना होगा</translation>
 <translation id="7352651011704765696">कुछ गलत हो गया</translation>
+<translation id="4593680147181354667">डायग्नोस्टिक आईडी</translation>
+<translation id="3995471429906554168">डायग्नोस्टिक की जानकारी</translation>
 <translation id="752216563428219524">विज्ञापन शुरू नहीं किए गए, कृपया पेज रेफ़्रेश करें.</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="6969783933307596818">हर 5 सेकंड में स्वचालित रूप से रिफ़्रेश करें</translation>
@@ -354,6 +354,8 @@
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
 <translation id="4569155249847375786">सत्यापित है</translation>
 <translation id="6521149675246672063">डिस्कनेक्ट किया गया (सत्यापित)</translation>
+<translation id="5058161306698404465">जिस प्लैटफ़ॉर्म में निर्माण हुआ :</translation>
+<translation id="5856438412804207598">मौजूदा प्लैटफ़ॉर्म :</translation>
 <translation id="5906820630265272615">BAT फंड</translation>
 <translation id="5814098892838785557">क्या आप सच में इस क्रिएटर का सपोर्ट करना चाहते हैं?</translation>
 <translation id="6582097696555842139">मासिक योगदान कैंसिल करें</translation>
@@ -393,6 +395,7 @@
 <translation id="839058704683989763">आपने एक पेंडिंग बख्शीश सेट अप की है!</translation>
 <translation id="5096821444729034955">उनके पोस्ट के लिए</translation>
 <translation id="2978223787436054634">अपने सपोर्ट के बारे में ट्वीट करें</translation>
+<translation id="976068305210640982">आप फ़िलहाल <ph name="BEGIN_LINK"/>लॉग आउट<ph name="LINK_END"/> कर चुके हैं.</translation>
 <translation id="5916290544882167205">Brave सॉफ़्टवेयर। Brave, Brave सॉफ़्टवेयर का एक पंजीकृत ट्रेडमार्क है। साइट के नाम साइट के मालिकों के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
 <translation id="9026369588205476247">आपकी निजता को सुरक्षित रखने के लिए, इस Brave रिवार्ड्स के लेखा जोखा को आपके डिवाइस(इस कंप्यूटर) के आलावा कहीं और सुरक्षित, दर्ज़ और जोड़ा नहीं गया है| आपके डिवाइस पर डाटा हानि की स्थिति में ये Brave से पुनःप्राप्त नहीं किया जा सकता|</translation>
 <translation id="3587482841069643663">सभी</translation>
@@ -513,8 +516,8 @@
 <translation id="923467487918828349">सभी दिखाएं</translation>
 <translation id="5113531205597573951">साइटें देखी गईं</translation>
 <translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
-<translation id="6518133107902771759">सत्यापित करें</translation>
-<translation id="422369484771082705">वेरिफ़ाई करना वैकल्पिक है. हालाँकि अगर आप वेरिफ़ाई करते हैं, तो Brave रिवॉर्ड से कमाए हुए अपने BAT को सीधे कस्टोडियल वॉलेट में ले पाएँगे.</translation>
+<translation id="7642372245223412840">bitFlyer से कनेक्ट करें</translation>
+<translation id="6143701117592994599">Brave रिवॉर्ड को bitFlyer अकाउंट से कनेक्ट करके आप BAT कमा पाएँगे और Brave रिवॉर्ड से अपने कमाए हुए BAT निकाल भी पाएँगे.</translation>
 <translation id="4354564238172327160">Brave क्रिएटर बनें!</translation>
 <translation id="4639659520811817892">creators.brave.com पर जाकर आज ही साइन अप करें और अपने प्रशंसकों और फ़ॉलोअर से BAT कमाना शुरू करें.</translation>
 <translation id="4816455138209470435">YouTube, Twitch, Vimeo के साथ ही Brave और भी कई प्लैटफ़ॉर्म पर काम करता है!</translation>
@@ -550,9 +553,9 @@
 <translation id="4047002754575891955">ऑफ़चेन खोजना शुरू करें</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">क्या आप Brave में Solana Name Service (SNS) का सपोर्ट चालू करना चाहते हैं?</translation>
-<translation id="2350552210396418924">Brave .sol डोमेन नेम को हल करने के लिए Coinbase Cloud का इस्तेमाल करेगा. Brave आपके IP पते को छुपा देता है. अगर आप इसे चालू करते हैं, तो Coinbase सिर्फ़ यह देख पाएगा कि कोई .sol डोमेन पर जाने की कोशिश कर रहे हैं, लेकिन इसके अलावा कुछ नहीं देख पाएगा. Coinbase Cloud की <ph name="BEGIN_COINBASE_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_COINBASE_TOU_LINK"/> और <ph name="BEGIN_COINBASE_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_COINBASE_PRIVACY_LINK"/> देखें.</translation>
+<translation id="3664848774480475984">Brave .sol डोमेन नेम को हल करने के लिए Syndica का इस्तेमाल करेगा. Brave आपके IP पते को छिपा देता है. अगर आप इसे चालू करते हैं, तो Syndica सिर्फ़ यह देख पाएगा कि कोई .sol डोमेन पर जाने की कोशिश कर रहे हैं, लेकिन इसके अलावा कुछ नहीं देख पाएगा. Syndica की <ph name="BEGIN_SYNDICA_TOU_LINK"/>इस्तेमाल की शर्तें<ph name="END_SYNDICA_TOU_LINK"/> और <ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_SYNDICA_PRIVACY_LINK"/> देखें.</translation>
 <translation id="7378412287463452336">Infura सर्वर का इस्तेमाल करके आगे बढ़ें</translation>
-<translation id="2313603121968571839">Coinbase Cloud सर्वर का इस्तेमाल करके आगे बढ़ें</translation>
+<translation id="2824725477135051831">Syndica सर्वर का इस्तेमाल करके आगे बढ़ें</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="59174027418879706">सक्रिय</translation>
 <translation id="2468755552460246661">डोमेन ब्लॉक है</translation>
@@ -637,6 +640,7 @@
 <translation id="6318437367327684789">हमेशा के लिए</translation>
 <translation id="8797999629784150206">आप अपना <ph name="SITE_PERMISSIONS"/> at any time. <ph name="LEARN_MORE"/> बदल सकते हैं</translation>
 <translation id="581582843259146919">साइट की अनुमति</translation>
+<translation id="4355784577209159847">लेगसी Google साइन-इन के लिए थर्ड पार्टी कुकीज़ के इस्तेमाल की इजाज़त दें</translation>
 <translation id="7717357606512850995">स्टेटस देखें</translation>
 <translation id="7306880305145342514">मुबारक हो! आपका <ph name="MONTH"/> रिवॉर्ड आ गया</translation>
 <translation id="3007207731685398329">आपका <ph name="AMOUNT"/><ph name="MONTH"/> रिवॉर्ड <ph name="DAYS"/>में आएगा</translation>
@@ -664,6 +668,7 @@
 <translation id="9013419433042554094">टोकन क्लेम करें</translation>
 <translation id="5544777623605368410">कमाई</translation>
 <translation id="3273637494083639780">आप इस महीने जो टोकन कमाते हैं, उनकी प्रोसेसिंग <ph name="DATE"/> से शुरू होगी.</translation>
+<translation id="5572389477027204985">Brave विज्ञापन को चालू करें</translation>
 <translation id="1029300693989825319">बाज़ार के उतार-चढ़ाव के मुताबिक अलग हो सकता है.</translation>
 <translation id="8334559352278209120">दान</translation>
 <translation id="4782365133987903299">आपके पास क्लेम करने के लिए <ph name="DAYS"/> बचे हैं</translation>
@@ -692,6 +697,10 @@
 <translation id="1609556006143307897">आप कंटेंट क्रिएटर को सपोर्ट करने में मदद कर रहे हैं</translation>
 <translation id="6605147707233193230">कंटेंट क्रिएटर को सपोर्ट करने के लिए चालू करें</translation>
 <translation id="5430495762768325224">BAT के बारे में और जानें</translation>
+<translation id="4105212447337987768"><ph name="DATE"/> को हम मौजूदा वर्चुअल BAT बैलेंस को सपोर्ट करना बंद कर देंगे. इस तारीख से पहले एक कस्टोडियल अकाउंट को कनेक्ट करें ताकि हम आपके कमाए गए बैलेंस को आपके कस्टोडियल अकाउंट में ट्रांसफ़र कर सकें, नहीं तो आप अपना बैलेंस खो देंगे.</translation>
+<translation id="5684206602316433615"><ph name="DATE"/> को हम मौजूदा वर्चुअल BAT बैलेंस को सपोर्ट करना बंद कर देंगे. बदकिस्मती से, आपकी कमाई को वापस निकालने के लिए आपके क्षेत्र (<ph name="REGION"/>) में कोई कस्टोडियन उपलब्ध नहीं हैं. तब तक, आप अपने पसंदीदा क्रिएटर का सहयोग कर सकते हैं.</translation>
+<translation id="707569835145765061">कार्रवाई ज़रूरी है : कोई कस्टोडियल अकाउंट कनेक्ट करें वरना आप अपना vBAT खो देंगे</translation>
+<translation id="5089752671190341407">आपके पास अपने पसंदीदा क्रिएटर को अपने vBAT देने का समय अब भी बचा है</translation>
 <translation id="1258144146756156541">कन्फ़र्म करें कि आप एक इंसान हैं</translation>
 <translation id="1555514580945108302">हम्म्… सही नहीं, दोबारा कोशिश करें.</translation>
 <translation id="8078414184292711961">BAT आइकन को <ph name="HINT"/> टारगेट तक लाएँ.</translation>
@@ -883,7 +892,8 @@
 <translation id="1201402288615127009">अगला</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="6896758677409633944">कॉपी बनाएं</translation>
-<translation id="2704606927547763573">कॉपी किया गया</translation>
+<translation id="7885157704277298658">कॉपी की गई!</translation>
+<translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="6042308850641462728">अधिक</translation>
 <translation id="768236965975208017">सुरक्षित. मल्टी-चेन. और हाँ, इस्तेमाल में काफ़ी आसान. आपका Brave वॉलेट बस कुछ ही क्लिक दूर है</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
@@ -913,7 +923,7 @@
 <translation id="5168349973342709369">वॉलेट अनलॉक करने के लिए पासवर्ड एंटर करें</translation>
 <translation id="9111102763498581341">अनलॉक करें</translation>
 <translation id="5045550434625856497">ग़लत पासवर्ड</translation>
-<translation id="5242300593039211344">वॉलेट लॉक करें</translation>
+<translation id="9175546523521600401">वॉलेट लॉक करें</translation>
 <translation id="765834632354589737">बैकअप बटुआ</translation>
 <translation id="1108298724135935307">जुड़ी हुई साइटें</translation>
 <translation id="163697698769819510">अपनी संपत्ति को सुरक्षित रखने और यह सुनिश्चित करने के लिए कि इसका ऐक्सेस आप कभी न खोएँ, अभी अपने वॉलेट का बैकअप लें.</translation>
@@ -927,7 +937,6 @@
 <translation id="4359319875297001084">लिगेसी Brave क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
 <translation id="3331452756822160641">नया पासवर्ड</translation>
 <translation id="8624315169751085215">क्लिपबोर्ड पर कॉपी करें</translation>
-<translation id="7885157704277298658">कॉपी की गई!</translation>
 <translation id="6346952829206698721">क्लिपबोर्ड से पेस्ट करें</translation>
 <translation id="1121335910737476837">प्राथमिक क्रिप्टो अकाउंट्स</translation>
 <translation id="6969147029062037757">इम्पोर्ट किए गए अकाउंट</translation>
@@ -982,6 +991,7 @@
 <translation id="7978047524114351365">नाम की कोई संपत्ति नहीं</translation>
 <translation id="9040455159722359521">प्रॉपर्टी या कॉन्ट्रैक्ट एड्रेस खोजें</translation>
 <translation id="6018178824574796106">कस्टम टोकन नहीं जोड़ा जा सका, कृपया दोबारा कोशिश करें.</translation>
+<translation id="5138307340667775659">यह टोकन आपके पोर्टफ़ोलियो में पहले ही जोड़ दिया गया है.</translation>
 <translation id="547122651977318828">टोकन आईडी (सिर्फ़ ERC721 के लिए)</translation>
 <translation id="7544552854944350190">टोकन आईडी ज़रूरी है</translation>
 <translation id="3842236145820483340">Coingecko ID</translation>
@@ -1024,6 +1034,7 @@
 <translation id="5294062982587710720">ध्यान दें कि यदि आप हस्ताक्षर करते हैं तो Brave यह सत्यापित नहीं कर सकता कि क्या होगा. एक हस्ताक्षर आपके अकाउंट में या आपकी ओर से लगभग किसी भी संचालन को अधिकृत कर सकता है, जिसमें अनुरोध करने वाली साइट को आपके अकाउंट और क्रिप्टो संपत्तियों का पूरा कंट्रोल देना शामिल है (लेकिन इन्हीं तक सीमित नहीं). केवल तभी हस्ताक्षर करें जब आप सुनिश्चित हों कि आप यह कार्रवाई करना चाहते हैं, और अनुरोध करने वाली साइट पर विश्वास करें.</translation>
 <translation id="3474375934783434676">अपने जोखिम पर साइन करें</translation>
 <translation id="5488357322146334497">संदेश</translation>
+<translation id="7702907602086592255">डोमेन</translation>
 <translation id="3586752056660754651">साइन</translation>
 <translation id="3484981968509595506">एक DApp आपके पब्लिक एनक्रिप्शन पासवर्ड का अनुरोध कर रहा है</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> की ओर से आपके वॉलेट की पब्लिक एनक्रिप्शन की का अनुरोध किया जा रहा है. अगर आप यह की शेयर करने की सहमति देते हैं, तो यह साइट आपको एनक्रिप्ट किए हुए मैसेज भेज पाएगी।</translation>
@@ -1148,6 +1159,7 @@
 <translation id="4667144295226514387">गैस की सीमा नहीं मिली</translation>
 <translation id="2021522108838444624">राशि 0 से ज़्यादा होनी चाहिए</translation>
 <translation id="8464365289405373974">जहाँ भेजना है, वहाँ का पता देना ज़रूरी है</translation>
+<translation id="4884792073752467460">पाने वाले का पता अमान्य है</translation>
 <translation id="862585889767884824">का</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> लेन-देन रिजेक्ट करें</translation>
 <translation id="1118876217803190221">अपर्याप्त बैलेंस</translation>
@@ -1216,7 +1228,7 @@
 <translation id="1695096446857675822">बैलेंस ↓</translation>
 <translation id="8151187584908138100">नाम ↓</translation>
 <translation id="883138507248906253">नाम ↑</translation>
-<translation id="7198018180583855568">सभी अकाउंट</translation>
+<translation id="7662492121143629144">सभी अकाउंट</translation>
 <translation id="6954150712710630841">ट्रांज़ैक्शन सबमिट हो गया है</translation>
 <translation id="905855245798176174">लेनदेन नेटवर्क पर भेज दिया गया है और कन्फ़र्मेशन का इंतज़ार किया जा रहा है.</translation>
 <translation id="619697073289995370">लेन-देन साइन हो गया है</translation>
@@ -1413,6 +1425,8 @@
 <translation id="1763942310723636241">टोकन का ब्यौरा</translation>
 <translation id="2938264474197978104"><ph name="SYMBOL"/> छिपाएँ</translation>
 <translation id="3614009429760094268">टोकन छिपाएँ?</translation>
+<translation id="6779155810671793329">टोकन संपर्क पता</translation>
+<translation id="871123550184744265">टोकन डेसिमल</translation>
 <translation id="4038384774641714579">आप बाद में "पोर्टफ़ोलियो" टैब के नीचे मौजूद "+ विज़िबल ऐसेट" बटन को क्लिक करके इस ऐसेट को फिर से दिखा सकते हैं.</translation>
 <translation id="1026825928738055872">क्या आप वाकई "<ph name="ACCOUNT_NAME"/>" को मिटाना चाहते हैं?</translation>
 <translation id="3910551537328657217">सुविधा का अनुरोध करें</translation>
@@ -1467,10 +1481,16 @@
 <translation id="4029551149873989025">नेटवर्क स्विच करें</translation>
 <translation id="7561262633951061138">सबसे बढ़िया</translation>
 <translation id="3143110700666266545">यह ऐप इन थर्ड पार्टी API का इस्तेमाल करता है :</translation>
-<translation id="8411419545176806786">Brave स्वैप सपोर्ट करने वाले EVM नेटवर्क के लिए DEX एग्रीगेटर के तौर पर 0x का इस्तेमाल करता है. 0x लेन-देन (राशि की जानकारी पाने के साथ) को पूरा करने के लिए Ethereum वॉलेट पते और IP पते को प्रोसेस करेगा. 0x इस डेटा का इस्तेमाल सिर्फ़ लेन-देन को प्रोसेस करने के लिए करेगा.</translation>
-<translation id="7467728126359974661">Brave स्वैप Solana नेटवर्क के लिए DEX एग्रीगेटर के तौर पर Jupiter का इस्तेमाल करता है. Jupiter लेन-देन (राशि की जानकारी पाने के साथ) को पूरा करने के लिए Solana वॉलेट पते और IP पते को प्रोसेस करेगा. Jupiter इस डेटा का इस्तेमाल सिर्फ़ लेन-देन को प्रोसेस करने के लिए करेगा.</translation>
-<translation id="8497751359931572880">0x की गोपनीयता नीति के लिए यहाँ क्लिक करें.</translation>
-<translation id="4904748904130272182">Jupiter की गोपनीयता नीति के लिए यहाँ क्लिक करें.</translation>
+<translation id="163536108506359457">Brave स्वैप सपोर्ट करने वाले <ph name="NETWORKS"/> नेटवर्क के लिए DEX एग्रीगेटर के तौर पर <ph name="AGGREGATOR"/> का इस्तेमाल करता है. <ph name="AGGREGATOR"/> लेन-देन (राशि की जानकारी पाने के साथ) को पूरा करने के लिए <ph name="NETWORK"/> वॉलेट पते और IP पते को प्रोसेस करेगा. <ph name="AGGREGATOR"/> इस डेटा का इस्तेमाल सिर्फ़ लेन-देन को प्रोसेस करने के लिए करेगा.</translation>
+<translation id="1847885264294023691"><ph name="AGGREGATOR"/> की गोपनीयता नीति के लिए यहाँ क्लिक करें.</translation>
+<translation id="9218424917282368512">नेटवर्क बदलें</translation>
+<translation id="644984757357042735">नेटवर्क ज़रूरी है</translation>
+<translation id="132243864024778443">टोकन का नाम ज़रूरी है</translation>
+<translation id="3617263699756744037">टोकन कॉन्ट्रैक्ट का पता अमान्य है या खाली है</translation>
+<translation id="2077392865355605472">टोकन सिंबल ज़रूरी है</translation>
+<translation id="4636925020451566238">सटीक मान के टोकन डेसिमल ज़रूरी है</translation>
+<translation id="3797613444743816037">मिंट का पता</translation>
+<translation id="7951915459354237451">शुल्क सीमा मूल शुल्क से कम तय की गई होती है. आपके लेन-देन में ज़्यादा समय लग सकता है या विफल हो सकता है.</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>

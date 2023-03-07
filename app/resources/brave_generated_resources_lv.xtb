@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
 <translation id="3333887201479867589">Brave balvas</translation>
+<translation id="7561196759112975576">Vienmēr</translation>
+<translation id="7961015016161918242">Nekad</translation>
 <translation id="4615489450165434530">Ziņot par bojātu vietni</translation>
 <translation id="8097438084542431276">Kopēt tikai saiti</translation>
+<translation id="4678672101289648246">Tikai jaunā cilnes lapā</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="7630214457764713113">Kopēt tikai saiti</translation>
+<translation id="8294286161128352783">Tikai jaunā cilnes lapā</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
 <translation id="1544192797660353713">Maks</translation>
 <translation id="2445484935443597917">Izveidot jaunu profilu</translation>
@@ -141,9 +145,7 @@
 <translation id="5977931179408079967">Pozīcija</translation>
 <translation id="3790384768741064842">Pāriet pa labi</translation>
 <translation id="7444424316576061724">Pāriet pa kreisi</translation>
-<translation id="7561196759112975576">Vienmēr</translation>
 <translation id="7060352228894039151">Uzbraucot ar peles kursoru</translation>
-<translation id="7961015016161918242">Nekad</translation>
 <translation id="8981254605840444865">Rādīt iestatījumus</translation>
 <translation id="59174027418879706">Iespējots</translation>
 <translation id="4176463684765177261">Atspējots</translation>
@@ -194,6 +196,10 @@
 <translation id="2058818256505091369">Peldināt zem kursora</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Nerādīt cilni}zero{Nerādīt cilnes}one{Nerādīt cilnes}other{Nerādīt cilnes}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Rādīt cilni}zero{Rādīt cilnes}one{Rādīt cilnes}other{Rādīt cilnes}}</translation>
+<translation id="3704707436873245822">Kopēt tekstu no attēla</translation>
+<translation id="5268098808165185458">Kopē tekstu no attēla...</translation>
+<translation id="4046485130884276245">Teksts nokopēts no attēla</translation>
+<translation id="3639779775496569782">Teksta kopēšana neizdevās</translation>
 <translation id="4235920711083356755">Rādīt VPN pogu</translation>
 <translation id="4070612712151038707">Rāda VPN pogu rīkjoslā</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -219,6 +225,7 @@
 <translation id="796831669370432378">Lai pievienotu grāmatzīmi, klikšķinet uz grāmatzīmes pogas, kas atrodas blakus adrešu joslai</translation>
 <translation id="8487693399751278191">Importēt grāmatzīmes tagad...</translation>
 <translation id="2557899542277210112">Ātrai piekļuvei ievietojiet savas grāmatzīmes šeit, grāmatzīmju joslā.</translation>
+<translation id="2702801445560668637">Lasīšanas saraksts</translation>
 <translation id="1968543937259008435">Vai esat gatavs izbaudīt drošāko privātumu tiešsaistē?</translation>
 <translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
@@ -253,7 +260,10 @@
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
 <translation id="2245286910966863912">Rādīt Brave ziņu pogu adreses joslā</translation>
-<translation id="1811404036171336214">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
+<translation id="383007806262310953">Rādīt grāmatzīmju joslu</translation>
+<translation id="4054323497808446566">Grāmatzīmju josla ir redzama visās lapās</translation>
+<translation id="8693858092251192712">Grāmatzīmju josla ir noslēpta visās lapās, izņemot jaunās cilnes lapu</translation>
+<translation id="7158817046543187970">Grāmatzīmju josla ir noslēpta visās lapās</translation>
 <translation id="3416468988018290825">Vienmēr rādīt pilnus URL vietrāžus</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
 <translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
@@ -344,7 +354,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
-<translation id="7498695072878479744">Atļaut Google pieteikšanās pogas trešo pušu vietnēs</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
@@ -371,6 +380,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Jautāt, kad vietne vēlas piekļūt Solana pakalpojuma sniedzēja API</translation>
 <translation id="2777102601740875941">Neļaut vietnēm piekļūt Solana pakalpojuma sniedzēja API</translation>
+<translation id="4206299587103092719">Pierakstīšanās ar Google</translation>
+<translation id="7458736153596040880">Vaicāt, ja vietne vēlas izmantot pierakstīšanos ar Google</translation>
+<translation id="459266451581663214">Bloķēt vietnes, kas vēlas izmantot pierakstīšanos ar Google</translation>
+<translation id="8098954941070626949">Atļaut vietnēm izmantot pierakstīšanos ar Google</translation>
 <translation id="6414370348346025511">Ieslēgta standarta aizsardzība.</translation>
 <translation id="5565355416171743213">Sākt lietot sinhronizāciju</translation>
 <translation id="4332558599726753990">Sinhronizācijas iestatīšana</translation>
@@ -436,7 +449,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2516405584294312544">Šī dzēšana ir neatgriezeniska, un nav nekādu iespēju atjaunot datus. Ja izlemsiet
     atkal sākt izmantot sinhronizēšanu, jums būs jāveido jauns konts un atkal jāpievieno katra ierīce.</translation>
 <translation id="4860996720371753023">Notiek konta dzēšana...</translation>
-<translation id="8199291899164865593">Šīs sinhronizēšanas ķēdes izveidošana neizdevās. Konts tika dzēsts.</translation>
+<translation id="4094590686212463338">Nevarēja pievienoties šai sinhronizēšanas ķēdei. Sinhronizēšanas ķēde tika dzēsta.</translation>
 <translation id="5633907266617216186">Adreses, maksājumu informācija u. c.</translation>
 <translation id="294985549514492876">Tīmekļa lietotnes (PWA)</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
@@ -486,7 +499,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="7701040980221191251">Neviens</translation>
 <translation id="1274962333945373242">Kriptovalūtas maciņi (samazināti)</translation>
-<translation id="3695088618483091287">Brave maciņš (priekšrocība paplašinājumi)</translation>
 <translation id="4718664830805652430">Noklusējuma pamata valūta</translation>
 <translation id="7992507032049865603">Noklusējuma pamata kriptovalūta</translation>
 <translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>

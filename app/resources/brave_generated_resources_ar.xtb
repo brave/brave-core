@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
 <translation id="3333887201479867589">مكافآت Brave</translation>
+<translation id="7561196759112975576">دائماً</translation>
+<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8097438084542431276">نسخ الرابط النظيف</translation>
+<translation id="4678672101289648246">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
+<translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
 <translation id="2445484935443597917">إنشاء ملف شخصي جديد</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">موضع</translation>
 <translation id="3790384768741064842">نقل إلى اليمين</translation>
 <translation id="7444424316576061724">نقل إلى اليسار</translation>
-<translation id="7561196759112975576">دائماً</translation>
 <translation id="7060352228894039151">عند تحريك الفأرة</translation>
-<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="8981254605840444865">إعدادات العرض</translation>
 <translation id="59174027418879706">تم التمكين</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">التنقل عند تحريك الفأرة</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{كتم صوت علامة تبويب واحدة}zero{كتم صوت علامات التبويب}two{كتم صوت علامتيِّ التبويب}few{كتم صوت علامات التبويب}many{كتم صوت علامات التبويب}other{كتم صوت علامات التبويب}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{إعادة صوت علامة تبويب واحدة}zero{إعادة صوت علامات التبويب}two{إعادة صوت علامتيِّ التبويب}few{إعادة صوت علامات التبويب}many{إعادة صوت علامات التبويب}other{إعادة صوت علامات التبويب}}</translation>
+<translation id="3704707436873245822">نسخ النص من الصورة</translation>
+<translation id="5268098808165185458">جارٍ نسخ النص من الصورة...</translation>
+<translation id="4046485130884276245">تم نسخ النص من الصورة</translation>
+<translation id="3639779775496569782">فشل نسخ النص</translation>
 <translation id="4235920711083356755">إظهار زر VPN</translation>
 <translation id="4070612712151038707">يُظهر زر VPN في شريط الأدوات</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 <translation id="8487693399751278191">استيراد الإشارات المرجعية الآن...</translation>
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
+<translation id="2702801445560668637">قائمة القراءة</translation>
 <translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">إشارات</translation>
 <translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="2245286910966863912">إظهار زر أخبار Brave في شريط العناوين</translation>
-<translation id="1811404036171336214">اظهر دائماً الإشارات المرجعية على صفحة علامة تبويب جديدة</translation>
+<translation id="383007806262310953">عرض شريط الإشارات</translation>
+<translation id="4054323497808446566">شريط الإشارات مرئي في جميع الصفحات</translation>
+<translation id="8693858092251192712">شريط الإشارات مخفي في كل الصفحات باستثناء صفحة علامة التبويب الجديدة</translation>
+<translation id="7158817046543187970">شريط الإشارات مخفي في كل الصفحات</translation>
 <translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">جيت هاب</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
-<translation id="7498695072878479744">السماح بأزرار تسجيل الدخول إلى Google على مواقع أطراف خارجية</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">اسأل عندما يريد أحد المواقع الوصول إلى واجهة برمجة تطبيقات موفر Solana</translation>
 <translation id="2777102601740875941">حظر المواقع من الوصول إلى واجهة برمجة تطبيقات موفر Solana</translation>
+<translation id="4206299587103092719">تسجيل الدخول إلى Google</translation>
+<translation id="7458736153596040880">اسأل عندما يريد أحد المواقع استخدام تسجيل الدخول القديم إلى Google</translation>
+<translation id="459266451581663214">حظر المواقع من استخدام تسجيل الدخول القديم إلى Google</translation>
+<translation id="8098954941070626949">السماح للمواقع باستخدام تسجيل الدخول القديم إلى Google</translation>
 <translation id="6414370348346025511">الحماية القياسية قيد التشغيل.</translation>
 <translation id="5565355416171743213">البدء باستخدام المزامنة</translation>
 <translation id="4332558599726753990">تهيئة المزامنة</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">هذا الحذف نهائي ولا توجد طريقة لاستعادة البيانات. إذا قررت
     بدء استخدام المزامنة مرة أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.</translation>
 <translation id="4860996720371753023">حذف الحساب قيد التقدم...</translation>
-<translation id="8199291899164865593">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف الحساب.</translation>
+<translation id="4094590686212463338">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف سلسلة المزامنة.</translation>
 <translation id="5633907266617216186">العناوين ومعلومات الدفع وما إلى ذلك.</translation>
 <translation id="294985549514492876">تطبيقات الويب (PWAs)</translation>
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">طلب</translation>
 <translation id="7701040980221191251">بلا</translation>
 <translation id="1274962333945373242">محافظ العملات المشفرة (مهملة)</translation>
-<translation id="3695088618483091287">محفظة Brave (يفضل الامتدادات)</translation>
 <translation id="4718664830805652430">العملة الأساسية الافتراضية</translation>
 <translation id="7992507032049865603">العملة المشفرة الأساسية الافتراضية</translation>
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>

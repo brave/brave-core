@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Ne zarađujete Nagrade Brave</translation>
 <translation id="1483391942610220726">Ne primate izvješća o privatnosti</translation>
 <translation id="4683790942451502796">Ponovno uključite obavijesti ako želite nastaviti zarađivati BAT i primati tjedna izvješća o privatnosti.</translation>
-<translation id="8618359751943259593">Ponovno uključite obavijesti ako želite nastaviti zarađivati BAT</translation>
+<translation id="8618359751943259593">Ponovno uključite obavijesti ako želite nastaviti zarađivati BAT.</translation>
 <translation id="760355165169399836">Ponovno uključite obavijesti ako želite nastaviti primati tjedna izvješća o privatnosti.</translation>
 <translation id="6268959058971634697">Ne zarađujete Nagrade</translation>
 <translation id="1088637159642753509">Omogućite obavijesti uređaja da biste zaradili Nagrade Brave i vidjeli izvješća o privatnosti.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Zadane postavke značajke Brave Shields</translation>
 <translation id="2675679258824361492">Ostale postavke privatnosti</translation>
 <translation id="8026334261755873520">Brisanje podataka o pregledavanju</translation>
-<translation id="5965081608816406060">Reproduciranje videozapisa u pozadini</translation>
+<translation id="1690924763769415936">Reprodukcija u pozadini</translation>
 <translation id="6332924730165919598">Zatvaranjem se svih kartica zatvara preglednik Brave</translation>
-<translation id="3872768973878059926">Omogućuje nastavak reprodukcije zvuka kada se prebacite na drugu karticu u pregledniku Brave, prijeđite na drugu aplikaciju ili je zaslon vašeg uređaja isključen.</translation>
+<translation id="8308305244351876417">Omogućuje nastavak reprodukcije zvuka kada se prebacite na drugu karticu u pregledniku Brave, prijeđete na drugu aplikaciju ili je zaslon vašeg uređaja isključen.</translation>
 <translation id="4150201353443180367">Zaslon</translation>
 <translation id="2433507940547922241">Prikaz</translation>
 <translation id="6333347122924254968">Prikaži ikonu Nagrade Brave u adresnoj traci</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Ovaj se stvaratelj još nije prijavio za primanje doprinosa korisnika preglednika Brave. Nastojat ćemo mu ustupiti doprinose dok ne potvrdi ili do isteka roka od 90 dana.</translation>
 <translation id="635752162765375187">NAPOMENA: Taj stvaratelj trenutačno nije konfiguriran za primanje savjeta od vaše usluge skrbničkog novčanika za Nagrade. Svaki vaš savjet ostat će na čekanju i automatski će se pokušavati slati 90 dana.</translation>
 <translation id="1910721550319506122">Dobro došli!</translation>
+<translation id="2734870894159530879">Prijavite se u <ph name="WALLET_PROVIDER"/> kako biste vidjeli svoje raspoloživo stanje</translation>
 <translation id="5830114181292529917">Mrežno mjesto možete podržati slanjem napojnice. To je način iskazivanja zahvalnosti za stvaranje sjajnog sadržaja.</translation>
 <translation id="7658239707568436148">Odustani</translation>
 <translation id="1201402288615127009">Sljedeće</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Prikaži oglase kada se preglednik Brave ne upotrebljava</translation>
 <translation id="3349204812119681938">Ponovno postavi Brave Rewards</translation>
 <translation id="6606319453795180219">Ovom se radnjom brišu nagrade Brave i poništavaju svi podatci o nagradama Brave</translation>
-<translation id="6810078320346589989">Stvori knjižnu oznaku</translation>
+<translation id="8293206222192510085">Dodaj oznaku</translation>
+<translation id="340492034650766959">Izbriši oznaku</translation>
+<translation id="2149973817440762519">Uredi oznaku</translation>
+<translation id="6819319915092566548">Prikaži oznaku</translation>
 <translation id="3396347744975515056">Značajka Sinkronizacije preglednika Brave ažurirana je i potrebno ju je postaviti</translation>
 <translation id="7473245612074035141">Započni postavljanje</translation>
 <translation id="8985635554450124959">Sinkroniziranje se ne može postaviti</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Ne prikazuj ponovno</translation>
 <translation id="496896260395129787">Račun za značajku Sinkronizacija Brave izbrisan je s drugog uređaja. Ako niste mislili onemogućiti značajku Sinkronizacija, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ponovno izradite račun</translation>
-<translation id="8199291899164865593">Nije moguće pridružiti se ovom lancu sinkronizacije. Račun je izbrisan.</translation>
+<translation id="4094590686212463338">Nije moguće pridružiti se ovom lancu sinkronizacije. Lanac sinkronizacije je izbrisan.</translation>
 <translation id="5633907266617216186">Adrese, podaci o plaćanju itd.</translation>
 <translation id="1056898198331236512">Upozorenje</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -371,6 +375,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
 <translation id="3200197118442451932">Poduzeće Brave Software Inc. ne obrađuje, pohranjuje ili pristupa osobnim informacijama koje dajete <ph name="WALLET_PROVIDER"/> kada otvarate račun.</translation>
 <translation id="1665118090708049096">Idi na moj račun <ph name="WALLET_PROVIDER"/></translation>
+<translation id="4858636682078269312">Prijavite se u račun za <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Niste povezani</translation>
 <translation id="2495032782748793764">Zadani Brave</translation>
 <translation id="9132378787893584761">Podijelite Brave sa svojim prijateljima!</translation>
@@ -388,10 +393,10 @@ Sigurno želite to napraviti?</translation>
 <translation id="3624048886326677117">Blokiraj elemente za praćenje &amp; oglase (agresivno)</translation>
 <translation id="7151914815476509258">Blokiraj elemente za praćenje &amp; oglase (standardno)</translation>
 <translation id="7384778069178817075">Dopusti sve elemente za praćenje i oglase</translation>
-<translation id="4941539331405513605">Blokiraj kolačiće na više mjesta</translation>
 <translation id="3763681089644577874">Blokiraj kolačiće</translation>
 <translation id="614747795780742163">Sprječavaju se mrežna mjesta da pohrane informacije o prethodnim posjetima</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
+<translation id="4941539331405513605">Blokiraj kolačiće na više mjesta</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="3895527457258986253">Blokiraj izrade digitalnog otiska</translation>
 <translation id="7854108565842971747">Ovo su zadane postavke značajke Brave Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.</translation>
@@ -490,6 +495,8 @@ Sigurno želite to napraviti?</translation>
 <translation id="5705882733397021510">Idi natrag</translation>
 <translation id="3985567919248057638">Obavimo kratkotrajni demonstracijski pregled</translation>
 <translation id="7889432931837317731">Automatski se otvara kad god je to moguće</translation>
+<translation id="1029304566263314007">Prikaz obavijesti o napretku preuzimanja</translation>
+<translation id="2910433761530295035">Upit gdje spremiti datoteke (ako se otkrije SD kartica)</translation>
 <translation id="8967385052772844086">Prikaži cijelo izvješće o privatnosti</translation>
 <translation id="6864343534748973390">Najpopularnije</translation>
 <translation id="4608192160278975831">Privatno i bez praćenja</translation>
@@ -498,6 +505,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="7320542277711359296">Drugi najpopularniji</translation>
 <translation id="8295049095570748497">Vodeća tražilica u Rusiji</translation>
 <translation id="2642661895835126239">Sađenje stabala, sjedište u Berlinu</translation>
+<translation id="2422627462367776805">Južnokorejski mrežni portal i pretraživanje</translation>
 <translation id="177282784098234156">Privatnost, neovisnost i korisnik na prvom mjestu</translation>
 <translation id="1410130669636877548">Nekim se tražilicama štiti vaša privatnost bolje od drugih kada se pretražuje internet.</translation>
 <translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
@@ -1021,7 +1029,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="9074594632540931067">Greška: BAT nije dostupan</translation>
 <translation id="5382684862562314222">Još se ne podržava BAT u vašoj regiji putem usluge Uphold.</translation>
 <translation id="6996157559236886133">Pogreška: Ograničena funkcionalnost računa za uslugu  Uphold</translation>
-<translation id="842321566508373706">Prema banci Uphold trenutačno postoje određena ograničenja na vašem računu Uphold. Prijavite se u svoj račun Uphold i provjerite ima li obavijesti ili preostalih zahtjeva za račun koje treba ispuniti, a zatim pokušajte ponovno.</translation>
+<translation id="1677961202754619328">Prema banci Uphold trenutačno postoje određena ograničenja na vašem računu Uphold. Prijavite se u svoj račun Uphold i provjerite ima li bilo kojih obavijesti ili preostalih zahtjeva za račun koje je potrebno ispuniti, a zatim pokušajte ponovno.</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5425006356459378415">Značajka Nagrade Brave nije dostupna</translation>
 <translation id="833643743158564518">Nove su registracije za značajku Nagrade Brave trenutačno onemogućene u vašoj regiji. Međutim, uvijek možete pokušati ponovno poslije. <ph name="LEARN_MORE"/></translation>
@@ -1031,5 +1039,10 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="4071347720273751665">Čini se da ste unijeli adresu ENS. Za rješavanje tog zahtjeva morat ćemo upotrijebiti uređaj za razrješavanje treće strane, koji će možda moći vidjeti vašu IP adresu i domenu. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Upotrijebi domenu ENS-a van tehnologije blokova</translation>
 <translation id="4982630604810554641">Traženje domene...</translation>
+<translation id="4159738248012488342">Odaberite iznos napojnice</translation>
 <translation id="3586775666459823714">NFT-ovi</translation>
+<translation id="707569835145765061">Potrebna je radnja: Povežite skrbnički račun inače će vaši virtualni tokeni osnovne pozornosti (vBAT) biti izgubljeni</translation>
+<translation id="1776742005329298234">Dana <ph name="DUE_DATE"/> ukinut ćemo podršku za postojeće raspoložive iznose virtualnih tokena BAT. Povežite skrbnički račun prije ovog datuma kako bismo mogli prenijeti zarađeni iznos na vaš skrbnički račun, inače će vaš zarađeni iznos biti izgubljen.</translation>
+<translation id="5089752671190341407">Još uvijek imate vremena pridonijeti svoje virtualne tokene osobne pozornosti (vBAT) svojim omiljenim stvarateljima sadržaja</translation>
+<translation id="171158953146804144">Dana <ph name="DUE_DATE"/> ukinut ćemo podršku za postojeće raspoložive iznose virtualnih tokena BAT. Nažalost, nema dostupnih skrbničkih računa u vašoj regiji (<ph name="REGION"/>) kako biste preuzeli svoju zaradu. Do tada i dalje možete pridonijeti svojim omiljenim stvarateljima.</translation>
 </translationbundle>

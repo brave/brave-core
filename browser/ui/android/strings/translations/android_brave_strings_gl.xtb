@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Non vas gañar recompensas de Brave</translation>
 <translation id="1483391942610220726">Non vas recibir informes de privacidade</translation>
 <translation id="4683790942451502796">Volve activar as notificacións se non queres deixar de gañar BAT nin de recibir informes de privacidade semanais.</translation>
-<translation id="8618359751943259593">Volve activar as notificacións se non queres deixar de gañar BAT</translation>
+<translation id="8618359751943259593">Volve activar as notificacións se non queres deixar de gañar BAT.</translation>
 <translation id="760355165169399836">Volve activar as notificacións se non queres deixar de recibir informes de privacidade semanais.</translation>
 <translation id="6268959058971634697">Non vas gañar recompensas</translation>
 <translation id="1088637159642753509">Activa as notificacións no dispositivo para gañar recompensas de Brave e ver os informes de privacidade.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Opcións predeterminadas globais dos escudos de Brave</translation>
 <translation id="2675679258824361492">Outras opcións de configuración de privacidade</translation>
 <translation id="8026334261755873520">Borrar datos de navegación</translation>
-<translation id="5965081608816406060">Reprodutor de vídeo en segundo plano</translation>
+<translation id="1690924763769415936">Reprodución en segundo plano</translation>
 <translation id="6332924730165919598">Cando se peche Brave, péchanse todas as lapelas</translation>
-<translation id="3872768973878059926">Permite que o audio se siga reproducindo cando cambias de separador en Brave, cando cambias de aplicación ou cando a pantalla do dispositivo está apagada.</translation>
+<translation id="8308305244351876417">Permite que o audio se reproduza cando cambias de separador en Brave, cando cambias de aplicación ou cando a pantalla do dispositivo está apagada.</translation>
 <translation id="4150201353443180367">Pantalla</translation>
 <translation id="2433507940547922241">Aparencia</translation>
 <translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Este creador aínda non se rexistrou para recibir contribucións de usuarios de Brave. Seguiremos intentando contribuír ata que se verifique ou ata que pasen 90 días.</translation>
 <translation id="635752162765375187">ATENCIÓN: Este creador aínda non configurou a súa conta para recibir propinas do servizo de carteira de custodia de Recompensas de Brave. Todas as propinas que envíes permanecerán pendentes; intentaremos enviar o pago automaticamente durante 90 días.</translation>
 <translation id="1910721550319506122">Benvido/a!</translation>
+<translation id="2734870894159530879">Inicia sesión en <ph name="WALLET_PROVIDER"/> para ver o teu saldo</translation>
 <translation id="5830114181292529917">Podes apoiar este sitio enviando unha propina. É un xeito de agradecerlles que fixeran un gran contido.</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="1201402288615127009">Seguinte</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Amosar anuncios cando non se estea usando Brave</translation>
 <translation id="3349204812119681938">Restablecer as recompensas de Brave</translation>
 <translation id="6606319453795180219">Isto eliminará as túas recompensas de Brave e restablecerá todos os teus datos de Recompensas de Brave</translation>
-<translation id="6810078320346589989">Crear un marcador</translation>
+<translation id="8293206222192510085">Engadir marcador</translation>
+<translation id="340492034650766959">Eliminar marcador</translation>
+<translation id="2149973817440762519">Editar marcador</translation>
+<translation id="6819319915092566548">Ver marcador</translation>
 <translation id="3396347744975515056">A sincronización de Brave foi actualizado e require configuración</translation>
 <translation id="7473245612074035141">Comece a configurar</translation>
 <translation id="8985635554450124959">Non se puido establecer a sincronización</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Non mostrar outra vez</translation>
 <translation id="496896260395129787">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>volve crear a conta.</translation>
-<translation id="8199291899164865593">Non foi posible unirse a esta cadea de sincronización. Eliminouse a conta.</translation>
+<translation id="4094590686212463338">Non foi posible unirse a esta cadea de sincronización. Eliminouse a cadea de sincronización.</translation>
 <translation id="5633907266617216186">Direccións, información de pago, etc.</translation>
 <translation id="1056898198331236512">Advertencia</translation>
 <translation id="1426410128494586442">Si</translation>
@@ -371,6 +375,7 @@ Seguro que queres facelo?</translation>
 <translation id="8465442795593991224">Uphold requeriría verificar a súa identidade baseada nos servizos solicitados.</translation>
 <translation id="3200197118442451932">Brave Software Inc. non procesa, almacena nin accede á información persoal que proporcionas a <ph name="WALLET_PROVIDER"/> cando abres unha conta.</translation>
 <translation id="1665118090708049096">Ir á miña conta de <ph name="WALLET_PROVIDER"/></translation>
+<translation id="4858636682078269312">Inicia sesión na túa conta de <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Non conectada</translation>
 <translation id="2495032782748793764">Brave predeterminado</translation>
 <translation id="9132378787893584761">Compartir Brave cos teus amigos!</translation>
@@ -388,10 +393,10 @@ Seguro que queres facelo?</translation>
 <translation id="3624048886326677117">Bloquear rastreadores e anuncios (opción agresiva)</translation>
 <translation id="7151914815476509258">Bloquear os rastreadores e os anuncios (opción estándar)</translation>
 <translation id="7384778069178817075">Permitir todos os rastreadores e os anuncios</translation>
-<translation id="4941539331405513605">Bloquear as cookies cruzadas</translation>
 <translation id="3763681089644577874">Bloquear cookies</translation>
 <translation id="614747795780742163">Evita que os sitios web almacenen información sobre as túas visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
+<translation id="4941539331405513605">Bloquear as cookies cruzadas</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="3895527457258986253">Bloquear as pegadas dixitais</translation>
 <translation id="7854108565842971747">Esta é a configuración predeterminada de Escudos para novos sitios. Cambiala non afectará á configuración existente de cada sitio.</translation>
@@ -490,6 +495,8 @@ Seguro que queres facelo?</translation>
 <translation id="5705882733397021510">Volver</translation>
 <translation id="3985567919248057638">Fagamos un percorrido rápido</translation>
 <translation id="7889432931837317731">Abrir automaticamente cando sexa posible</translation>
+<translation id="1029304566263314007">Mostrar notificacións do progreso de descarga</translation>
+<translation id="2910433761530295035">Preguntar onde gardar os ficheiros (se se detecta unha tarxeta SD)</translation>
 <translation id="8967385052772844086">Ver informe de privacidade completo</translation>
 <translation id="6864343534748973390">O máis popular</translation>
 <translation id="4608192160278975831">Privado e sen seguimento</translation>
@@ -498,6 +505,7 @@ Seguro que queres facelo?</translation>
 <translation id="7320542277711359296">Segundo máis popular</translation>
 <translation id="8295049095570748497">Un motor de busca líder en Rusia</translation>
 <translation id="2642661895835126239">Plant trees, con sede en Berlín</translation>
+<translation id="2422627462367776805">Busca e portal web de Corea do Sur</translation>
 <translation id="177282784098234156">Privado, independente, con prioridade para o usuario</translation>
 <translation id="1410130669636877548">Algúns motores de busca protexen a túa privacidade mellor que outros cando fas buscas na web.</translation>
 <translation id="5187052478998910855">¿Necesitas un refresco en Recompensas?</translation>
@@ -1016,7 +1024,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="9074594632540931067">Erro: no hay BAT</translation>
 <translation id="5382684862562314222">Uphold aínda non admite BAT na túa rexión.</translation>
 <translation id="6996157559236886133">Erro: conta de Uphold con funcionalidades limitadas</translation>
-<translation id="842321566508373706">Segundo Uphold, a túa conta de Uphold ten algunhas limitacións neste intre. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente. Despois, téntao de novo.</translation>
+<translation id="1677961202754619328">Segundo Uphold, a túa conta de Uphold ten algunhas limitacións neste intre. Inicia sesión en Uphold e comproba se tes algún aviso ou requisito de conta pendente. Despois, téntao de novo.</translation>
 <translation id="6417420737057016607">Anuncios en Brave</translation>
 <translation id="5425006356459378415">Brave Rewards non está dispoñible</translation>
 <translation id="833643743158564518">Actualmente, Recompensas de Brave non admite máis rexistros na túa rexión. Porén, podes tentalo de novo máis tarde. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="4071347720273751665">Parece que introduciches un enderezo ENS. Precisaremos usar un solucionador de terceiros para resolver esta solicitude. É posible que este poida ver o teu enderezo IP e o teu dominio. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Usar dominio ENS fóra da cadea</translation>
 <translation id="4982630604810554641">Buscando dominio...</translation>
+<translation id="4159738248012488342">Selecciona o importe da propina</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="707569835145765061">Acción necesaria: conecta una conta de custodia se non queres perder os teus vBAT</translation>
+<translation id="1776742005329298234">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Conecta unha conta de custodia antes desta data para que poidamos transferir o saldo gañado á túa conta de custodia; se non o fas, perderás o saldo.</translation>
+<translation id="5089752671190341407">Aínda estás a tempo de apoiar os teus creadores favoritos con vBAT</translation>
+<translation id="171158953146804144">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Desafortunadamente, non hai contas de custodia dispoñibles na túa rexión (<ph name="REGION"/>) para retirar as túas ganancias. Ata entón,  podes contribuír cos teus creadores favoritos.</translation>
 </translationbundle>
