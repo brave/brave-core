@@ -258,8 +258,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         "" /* spl_token_mint_address */, 10000000u /* lamport */,
         0 /* amount */,
         brave_wallet::mojom::TransactionType::SolanaSystemTransfer,
-        std::vector<brave_wallet::mojom::SolanaInstructionPtr>(), nullptr,
-        nullptr);
+        std::vector<brave_wallet::mojom::SolanaInstructionPtr>(),
+        brave_wallet::mojom::SolanaMessageVersion::kLegacy,
+        brave_wallet::mojom::SolanaMessageHeader::New(0, 0, 0),
+        std::vector<std::string>(),
+        std::vector<brave_wallet::mojom::SolanaMessageAddressTableLookupPtr>(),
+        nullptr, nullptr);
 
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),

@@ -1624,8 +1624,15 @@ struct EncryptionKeyRequest {
   string? message;
 };
 
+struct OptionalUint8 {
+  uint8 val;
+};
+
 struct SolanaAccountMeta {
+  // Account's address or lookup table address.
   string pubkey;
+  // Index of the account address in the address lookup table.
+  OptionalUint8? addr_table_lookup_index;
   bool is_signer;
   bool is_writable;
 };
@@ -1725,6 +1732,23 @@ struct SolanaInstruction {
   DecodedSolanaInstructionData? decoded_data;
 };
 
+enum SolanaMessageVersion {
+  kLegacy = 0,
+  kV0 = 1,
+};
+
+struct SolanaMessageAddressTableLookup {
+  string account_key;
+  array<uint8> write_indexes;
+  array<uint8> read_indexes;
+};
+
+struct SolanaMessageHeader {
+  uint8 num_required_signatures;
+  uint8 num_readonly_signed_accounts;
+  uint8 num_readonly_unsigned_accounts;
+};
+
 struct SolanaTxData {
   string recent_blockhash;
   uint64 last_valid_block_height;
@@ -1735,6 +1759,11 @@ struct SolanaTxData {
   uint64 amount;
   TransactionType tx_type;
   array<SolanaInstruction> instructions;
+
+  SolanaMessageVersion version;
+  SolanaMessageHeader message_header;
+  array<string> static_account_keys;
+  array<SolanaMessageAddressTableLookup> address_table_lookups;
 
   // Currently it might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.

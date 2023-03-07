@@ -31,12 +31,15 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, true, true),
-       SolanaAccountMeta(to_account, false, true)},
+      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
+       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
       data);
-  auto tx = std::make_unique<SolanaTransaction>(
+
+  auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account,
       std::vector<SolanaInstruction>({instruction}));
+  ASSERT_TRUE(msg);
+  auto tx = std::make_unique<SolanaTransaction>(std::move(*msg));
   tx->set_to_wallet_address(to_account);
   tx->set_lamports(10000000u);
   tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
@@ -82,9 +85,9 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_TRUE(ti->tx_args.empty());
 
   auto solana_account_meta1 =
-      mojom::SolanaAccountMeta::New(from_account, true, true);
+      mojom::SolanaAccountMeta::New(from_account, nullptr, true, true);
   auto solana_account_meta2 =
-      mojom::SolanaAccountMeta::New(to_account, false, true);
+      mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
   std::vector<mojom::SolanaAccountMetaPtr> account_metas;
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
@@ -108,10 +111,15 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   ASSERT_TRUE(ti->tx_data_union->is_solana_tx_data());
   EXPECT_EQ(
       ti->tx_data_union->get_solana_tx_data(),
-      mojom::SolanaTxData::New(recent_blockhash, last_valid_block_height,
-                               from_account, to_account, "", 10000000, 0,
-                               mojom::TransactionType::SolanaSystemTransfer,
-                               std::move(instructions), nullptr, nullptr));
+      mojom::SolanaTxData::New(
+          recent_blockhash, last_valid_block_height, from_account, to_account,
+          "", 10000000, 0, mojom::TransactionType::SolanaSystemTransfer,
+          std::move(instructions), mojom::SolanaMessageVersion::kLegacy,
+          mojom::SolanaMessageHeader::New(1, 0, 1),
+          std::vector<std::string>(
+              {from_account, to_account, mojom::kSolanaSystemProgramId}),
+          std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+          nullptr));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {
@@ -125,12 +133,14 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       // Program ID
       mojom::kSolanaSystemProgramId,
       // Accounts
-      {SolanaAccountMeta(from_account, true, true),
-       SolanaAccountMeta(to_account, false, true)},
+      {SolanaAccountMeta(from_account, absl::nullopt, true, true),
+       SolanaAccountMeta(to_account, absl::nullopt, false, true)},
       data);
-  auto tx = std::make_unique<SolanaTransaction>(
+  auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account,
       std::vector<SolanaInstruction>({instruction}));
+  ASSERT_TRUE(msg);
+  auto tx = std::make_unique<SolanaTransaction>(std::move(*msg));
   tx->set_to_wallet_address(to_account);
   tx->set_lamports(10000000u);
   tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
@@ -168,9 +178,20 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       "submitted_time": "11996733597000000",
       "tx": {
         "message": {
+          "version": 0,
           "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
           "last_valid_block_height": "3090",
           "fee_payer": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+          "message_header": {
+            "num_required_signatures": "1",
+            "num_readonly_signed_accounts": "0",
+            "num_readonly_unsigned_accounts": "1"
+          },
+          "static_account_keys": [
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+            "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+            "11111111111111111111111111111111"
+          ],
           "instructions": [
             {
               "program_id": "11111111111111111111111111111111",
@@ -209,7 +230,8 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
                 "sys_ins_type": "2"
               }
             }
-          ]
+          ],
+          "address_table_lookups": []
         },
         "to_wallet_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
         "spl_token_mint_address": "",

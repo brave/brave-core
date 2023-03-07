@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
-#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_decoded_data.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -21,6 +20,11 @@ class Value;
 }  // namespace base
 
 namespace brave_wallet {
+
+class SolanaAddress;
+class SolanaCompiledInstruction;
+class SolanaMessageAddressTableLookup;
+struct SolanaMessageHeader;
 
 // Instruction specifies a single program, a subset of the transaction's
 // accounts that should be passed to the program, and a data byte array that is
@@ -44,17 +48,19 @@ class SolanaInstruction {
   SolanaInstruction& operator=(SolanaInstruction&&);
   bool operator==(const SolanaInstruction&) const;
 
-  bool Serialize(const std::vector<SolanaAccountMeta>& message_account_metas,
-                 std::vector<uint8_t>* bytes) const;
-  static absl::optional<SolanaInstruction> Deserialize(
-      const std::vector<SolanaAccountMeta>& message_account_metas,
-      const std::vector<uint8_t>& bytes,
-      size_t* bytes_index);
+  static absl::optional<SolanaInstruction> FromCompiledInstruction(
+      const SolanaCompiledInstruction& compiled_instruction,
+      const SolanaMessageHeader& message_header,
+      const std::vector<SolanaAddress>& static_accounts,
+      const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
+      uint8_t num_of_write_indexes,
+      uint8_t num_of_read_indexes);
 
   const std::vector<SolanaAccountMeta>& GetAccounts() const {
     return accounts_;
   }
   const std::string& GetProgramId() const { return program_id_; }
+  const std::vector<uint8_t>& data() const { return data_; }
 
   mojom::SolanaInstructionPtr ToMojomSolanaInstruction() const;
   base::Value::Dict ToValue() const;

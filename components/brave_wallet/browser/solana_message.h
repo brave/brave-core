@@ -12,6 +12,8 @@
 
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
+#include "brave/components/brave_wallet/browser/solana_message_header.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -23,16 +25,27 @@ namespace brave_wallet {
 
 class SolanaMessage {
  public:
-  SolanaMessage(const std::string& recent_blockhash,
-                uint64_t last_valid_block_height,
-                const std::string& fee_payer,
-                std::vector<SolanaInstruction>&& instructions);
+  SolanaMessage(
+      mojom::SolanaMessageVersion version,
+      const std::string& recent_blockhash,
+      uint64_t last_valid_block_height,
+      const std::string& fee_payer,
+      const SolanaMessageHeader& message_header,
+      std::vector<SolanaAddress>&& static_account_keys,
+      std::vector<SolanaInstruction>&& instructions,
+      std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups);
   SolanaMessage(const SolanaMessage&) = delete;
   SolanaMessage(SolanaMessage&&);
   SolanaMessage& operator=(const SolanaMessage&) = delete;
   SolanaMessage& operator=(SolanaMessage&&);
   ~SolanaMessage();
   bool operator==(const SolanaMessage&) const;
+
+  static absl::optional<SolanaMessage> CreateLegacyMessage(
+      const std::string& recent_blockhash,
+      uint64_t last_valid_block_height,
+      const std::string& fee_payer,
+      std::vector<SolanaInstruction>&& instructions);
 
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
@@ -68,15 +81,31 @@ class SolanaMessage {
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
 
-  void GetUniqueAccountMetas(
-      std::vector<SolanaAccountMeta>* unique_account_metas) const;
+  static void GetUniqueAccountMetas(
+      const std::string& fee_payer,
+      const std::vector<SolanaInstruction>& instructions,
+      std::vector<SolanaAccountMeta>* unique_account_metas);
 
+  mojom::SolanaMessageVersion version_;
   std::string recent_blockhash_;
   uint64_t last_valid_block_height_ = 0;
 
   // The account responsible for paying the cost of executing a transaction.
   std::string fee_payer_;
+
+  // Describe how many signed accounts, readonly signed accounts, readonly
+  // unsigned accounts are in the static_account_keys. Note that it describes
+  // static accounts only and does not describe accounts loaded via address
+  // table lookups.
+  SolanaMessageHeader message_header_;
+
+  // Sorted by signer-writable, signer-readonly, non-signer-writable,
+  // non-signer-readonly. If two accounts have same is_signer and is_writable
+  // properties, keep them as the insertion order.
+  std::vector<SolanaAddress> static_account_keys_;
   std::vector<SolanaInstruction> instructions_;
+  std::vector<SolanaMessageAddressTableLookup>
+      address_table_lookups_;  // Empty for legacy transactions.
 };
 
 }  // namespace brave_wallet

@@ -13,19 +13,167 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
 
-SolanaMessage::SolanaMessage(const std::string& recent_blockhash,
-                             uint64_t last_valid_block_height,
-                             const std::string& fee_payer,
-                             std::vector<SolanaInstruction>&& instructions)
-    : recent_blockhash_(recent_blockhash),
+namespace {
+
+constexpr uint8_t kV0MessagePrefix = 0x80;
+constexpr uint8_t kVersionPrefixMask = 0x7f;
+constexpr char kVersion[] = "version";
+constexpr char kRecentBlockhash[] = "recent_blockhash";
+constexpr char kLastValidBlockHeight[] = "last_valid_block_height";
+constexpr char kFeePayer[] = "fee_payer";
+constexpr char kMessageHeader[] = "message_header";
+constexpr char kStaticAccountKeys[] = "static_account_keys";
+constexpr char kInstructions[] = "instructions";
+constexpr char kAddressTableLookups[] = "address_table_lookups";
+
+bool MaybeAddVersionPrefix(mojom::SolanaMessageVersion version,
+                           std::vector<uint8_t>* message_bytes) {
+  DCHECK(message_bytes);
+
+  if (version == mojom::SolanaMessageVersion::kV0) {
+    message_bytes->emplace_back(kV0MessagePrefix);
+  } else if (version == mojom::SolanaMessageVersion::kLegacy) {
+    // Do nothing.
+  } else {  // Version not supported yet.
+    return false;
+  }
+
+  return true;
+}
+
+// Deserialize message header from a serialized message.
+// Returns the bytes_index after message header part, deserialized version and
+// message header.
+absl::optional<
+    std::tuple<size_t, mojom::SolanaMessageVersion, SolanaMessageHeader>>
+DeserializeMessageHeader(const std::vector<uint8_t>& bytes) {
+  // Check version
+  if (bytes.size() < 1) {
+    return absl::nullopt;
+  }
+  mojom::SolanaMessageVersion version;
+  if (bytes[0] == (bytes[0] & kVersionPrefixMask)) {
+    version = mojom::SolanaMessageVersion::kLegacy;
+  } else if (bytes[0] == kV0MessagePrefix) {
+    version = mojom::SolanaMessageVersion::kV0;
+  } else {
+    return absl::nullopt;
+  }
+
+  size_t bytes_index = version == mojom::SolanaMessageVersion::kLegacy ? 0 : 1;
+  if (bytes_index + 3 > bytes.size()) {  // Message header length.
+    return absl::nullopt;
+  }
+
+  // Message header
+  SolanaMessageHeader message_header;
+  message_header.num_required_signatures = bytes[bytes_index++];
+  message_header.num_readonly_signed_accounts = bytes[bytes_index++];
+  message_header.num_readonly_unsigned_accounts = bytes[bytes_index++];
+
+  return std::make_tuple(bytes_index, version, message_header);
+}
+
+absl::optional<std::vector<SolanaMessageAddressTableLookup>>
+DeserializeAddressTableLookups(const std::vector<uint8_t>& bytes,
+                               size_t* bytes_index) {
+  DCHECK(bytes_index);
+
+  auto ret = CompactU16Decode(bytes, *bytes_index);
+  if (!ret) {
+    return absl::nullopt;
+  }
+  *bytes_index += std::get<1>(*ret);
+  size_t num_of_addr_table_lookups = std::get<0>(*ret);
+
+  std::vector<SolanaMessageAddressTableLookup> addr_table_lookups;
+  for (size_t i = 0; i < num_of_addr_table_lookups; i++) {
+    auto addr_table_lookup =
+        SolanaMessageAddressTableLookup::Deserialize(bytes, bytes_index);
+    if (!addr_table_lookup) {
+      return absl::nullopt;
+    }
+    addr_table_lookups.emplace_back(std::move(*addr_table_lookup));
+  }
+
+  return addr_table_lookups;
+}
+
+}  // namespace
+
+SolanaMessage::SolanaMessage(
+    mojom::SolanaMessageVersion version,
+    const std::string& recent_blockhash,
+    uint64_t last_valid_block_height,
+    const std::string& fee_payer,
+    const SolanaMessageHeader& message_header,
+    std::vector<SolanaAddress>&& static_account_keys,
+    std::vector<SolanaInstruction>&& instructions,
+    std::vector<SolanaMessageAddressTableLookup>&& address_table_lookups)
+    : version_(version),
+      recent_blockhash_(recent_blockhash),
       last_valid_block_height_(last_valid_block_height),
       fee_payer_(fee_payer),
-      instructions_(std::move(instructions)) {}
+      message_header_(message_header),
+      static_account_keys_(std::move(static_account_keys)),
+      instructions_(std::move(instructions)),
+      address_table_lookups_(std::move(address_table_lookups)) {}
+
+// static
+absl::optional<SolanaMessage> SolanaMessage::CreateLegacyMessage(
+    const std::string& recent_blockhash,
+    uint64_t last_valid_block_height,
+    const std::string& fee_payer,
+    std::vector<SolanaInstruction>&& instructions) {
+  uint16_t num_required_signatures = 0;
+  uint16_t num_readonly_signed_accounts = 0;
+  uint16_t num_readonly_unsigned_accounts = 0;
+  std::vector<SolanaAccountMeta> unique_account_metas;
+  GetUniqueAccountMetas(fee_payer, instructions, &unique_account_metas);
+  std::vector<SolanaAddress> static_accounts;
+  for (const auto& meta : unique_account_metas) {
+    if (meta.address_table_lookup_index) {  // Not legacy.
+      return absl::nullopt;
+    }
+
+    auto addr = SolanaAddress::FromBase58(meta.pubkey);
+    if (!addr) {
+      return absl::nullopt;
+    }
+
+    if (meta.is_signer) {
+      num_required_signatures++;
+    }
+    if (meta.is_signer && !meta.is_writable) {
+      num_readonly_signed_accounts++;
+    }
+    if (!meta.is_signer && !meta.is_writable) {
+      num_readonly_unsigned_accounts++;
+    }
+
+    if (num_required_signatures > UINT8_MAX ||
+        num_readonly_signed_accounts > UINT8_MAX ||
+        num_readonly_unsigned_accounts > UINT8_MAX ||
+        static_accounts.size() == UINT8_MAX) {
+      return absl::nullopt;
+    }
+
+    static_accounts.emplace_back(*addr);
+  }
+
+  return SolanaMessage(
+      mojom::SolanaMessageVersion::kLegacy, recent_blockhash,
+      last_valid_block_height, fee_payer,
+      SolanaMessageHeader(num_required_signatures, num_readonly_signed_accounts,
+                          num_readonly_unsigned_accounts),
+      std::move(static_accounts), std::move(instructions), {});
+}
 
 SolanaMessage::SolanaMessage(SolanaMessage&&) = default;
 SolanaMessage& SolanaMessage::operator=(SolanaMessage&&) = default;
@@ -33,10 +181,14 @@ SolanaMessage& SolanaMessage::operator=(SolanaMessage&&) = default;
 SolanaMessage::~SolanaMessage() = default;
 
 bool SolanaMessage::operator==(const SolanaMessage& message) const {
-  return recent_blockhash_ == message.recent_blockhash_ &&
+  return version_ == message.version_ &&
+         recent_blockhash_ == message.recent_blockhash_ &&
          last_valid_block_height_ == message.last_valid_block_height_ &&
          fee_payer_ == message.fee_payer_ &&
-         instructions_ == message.instructions_;
+         message_header_ == message.message_header_ &&
+         static_account_keys_ == message.static_account_keys_ &&
+         instructions_ == message.instructions_ &&
+         address_table_lookups_ == message.address_table_lookups_;
 }
 
 // Process instructions to return an unique account meta array with following
@@ -45,15 +197,22 @@ bool SolanaMessage::operator==(const SolanaMessage& message) const {
 // 2. Order by signer-read-write, signer-readonly, non-signer-read-write,
 // non-signer-readonly.
 // 3. Fee payer will always be placed as the first item.
-// 4. Program IDs will be put at last.
+// This function is currently only used when creating legacy messages and does
+// not support address table lookups.
+// static
 void SolanaMessage::GetUniqueAccountMetas(
-    std::vector<SolanaAccountMeta>* unique_account_metas) const {
+    const std::string& fee_payer,
+    const std::vector<SolanaInstruction>& instructions,
+    std::vector<SolanaAccountMeta>* unique_account_metas) {
   DCHECK(unique_account_metas);
   unique_account_metas->clear();
 
   std::vector<SolanaAccountMeta> account_metas;
   // Get accounts from each instruction.
-  for (const auto& instruction : instructions_) {
+  for (const auto& instruction : instructions) {
+    account_metas.emplace_back(
+        SolanaAccountMeta(instruction.GetProgramId(), absl::nullopt,
+                          false /* is_signer */, false /* is_writable */));
     account_metas.insert(account_metas.end(), instruction.GetAccounts().begin(),
                          instruction.GetAccounts().end());
   }
@@ -66,22 +225,18 @@ void SolanaMessage::GetUniqueAccountMetas(
   // 4. Accounts do not need to sign and read-only.
   std::stable_sort(account_metas.begin(), account_metas.end(),
                    [](SolanaAccountMeta a, SolanaAccountMeta b) {
-                     if (a.is_signer != b.is_signer)
+                     if (a.is_signer != b.is_signer) {
                        return a.is_signer;
-                     if (a.is_writable != b.is_writable)
+                     }
+                     if (a.is_writable != b.is_writable) {
                        return a.is_writable;
+                     }
                      return false;
                    });
 
-  // Get program ID from each instruction and put at the end.
-  for (const auto& instruction : instructions_) {
-    account_metas.emplace_back(instruction.GetProgramId(),
-                               false /* is_signer */, false /* is_writable */);
-  }
-
   // Fee payer will always be placed at first.
   unique_account_metas->push_back(SolanaAccountMeta(
-      fee_payer_, true /* is_signer */, true /* is_writable */));
+      fee_payer, absl::nullopt, true /* is_signer */, true /* is_writable */));
 
   // Remove duplicate accounts. is_writable is updated if later account meta
   // with the same pubkey is writable.
@@ -89,10 +244,11 @@ void SolanaMessage::GetUniqueAccountMetas(
     auto it = base::ranges::find(*unique_account_metas, account_meta.pubkey,
                                  &SolanaAccountMeta::pubkey);
 
-    if (it == unique_account_metas->end())
+    if (it == unique_account_metas->end()) {
       unique_account_metas->push_back(account_meta);
-    else
+    } else {
       it->is_writable |= account_meta.is_writable;
+    }
   }
 }
 
@@ -104,91 +260,112 @@ void SolanaMessage::GetUniqueAccountMetas(
 // for details.
 absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
     std::vector<std::string>* signers) const {
-  if (recent_blockhash_.empty() || instructions_.empty() || fee_payer_.empty())
+  if (recent_blockhash_.empty() || instructions_.empty() ||
+      fee_payer_.empty()) {
     return absl::nullopt;
+  }
 
-  if (signers)
-    signers->clear();
-
-  std::vector<uint8_t> message_bytes;
-  std::vector<SolanaAccountMeta> unique_account_metas;
-  GetUniqueAccountMetas(&unique_account_metas);
-
-  // Message header.
-  uint8_t num_required_signatures = 0;
-  uint8_t num_readonly_signed_accounts = 0;
-  uint8_t num_readonly_unsigned_accounts = 0;
-  for (const auto& account_meta : unique_account_metas) {
-    if (account_meta.is_signer) {
-      if (signers)
-        signers->push_back(account_meta.pubkey);
-      if (num_required_signatures == UINT8_MAX)
-        return absl::nullopt;
-      num_required_signatures++;
-      if (!account_meta.is_writable) {
-        if (num_readonly_signed_accounts == UINT8_MAX)
-          return absl::nullopt;
-        num_readonly_signed_accounts++;
-      }
-    } else if (!account_meta.is_writable) {
-      if (num_readonly_unsigned_accounts == UINT8_MAX)
-        return absl::nullopt;
-      num_readonly_unsigned_accounts++;
+  // Calculate read and write indexes size.
+  uint16_t num_of_write_indexes = 0;
+  uint16_t num_of_read_indexes = 0;
+  for (const auto& address_table_lookup : address_table_lookups_) {
+    num_of_write_indexes += address_table_lookup.write_indexes().size();
+    num_of_read_indexes += address_table_lookup.read_indexes().size();
+    if (num_of_write_indexes > UINT8_MAX || num_of_read_indexes > UINT8_MAX) {
+      return absl::nullopt;
     }
   }
-  message_bytes.push_back(num_required_signatures);
-  message_bytes.push_back(num_readonly_signed_accounts);
-  message_bytes.push_back(num_readonly_unsigned_accounts);
+
+  // This is the size of the combined array of static_accounts, write_indexes
+  // from address table lookups, and read_indexes from address table lookups.
+  // It cannot exceed UINT8_MAX as the account indexes used in transaction is
+  // limited to UINT8_MAX.
+  if ((static_account_keys_.size() + num_of_write_indexes +
+       num_of_read_indexes) > UINT8_MAX) {
+    return absl::nullopt;
+  }
+
+  if (signers) {
+    signers->clear();
+  }
+
+  // Version prefix.
+  std::vector<uint8_t> message_bytes;
+  if (!MaybeAddVersionPrefix(version_, &message_bytes)) {
+    return absl::nullopt;
+  }
+
+  // Message header.
+  message_bytes.emplace_back(message_header_.num_required_signatures);
+  message_bytes.emplace_back(message_header_.num_readonly_signed_accounts);
+  message_bytes.emplace_back(message_header_.num_readonly_unsigned_accounts);
 
   // Compact array of account addresses.
-  CompactU16Encode(unique_account_metas.size(), &message_bytes);
-  for (const auto& account_meta : unique_account_metas) {
-    std::vector<uint8_t> pubkey(kSolanaPubkeySize);
-    if (!Base58Decode(account_meta.pubkey, &pubkey, pubkey.size()))
-      return absl::nullopt;
-    message_bytes.insert(message_bytes.end(), pubkey.begin(), pubkey.end());
+  CompactU16Encode(static_account_keys_.size(), &message_bytes);
+  for (size_t i = 0; i < static_account_keys_.size(); ++i) {
+    message_bytes.insert(message_bytes.end(),
+                         static_account_keys_[i].bytes().begin(),
+                         static_account_keys_[i].bytes().end());
+
+    if (signers && i < message_header_.num_required_signatures) {
+      signers->emplace_back(static_account_keys_[i].ToBase58());
+    }
   }
 
   // Recent blockhash.
   std::vector<uint8_t> recent_blockhash_bytes(kSolanaBlockhashSize);
   if (!Base58Decode(recent_blockhash_, &recent_blockhash_bytes,
-                    recent_blockhash_bytes.size()))
+                    recent_blockhash_bytes.size())) {
     return absl::nullopt;
+  }
   message_bytes.insert(message_bytes.end(), recent_blockhash_bytes.begin(),
                        recent_blockhash_bytes.end());
 
   // Compact array of instructions.
   CompactU16Encode(instructions_.size(), &message_bytes);
   for (const auto& instruction : instructions_) {
-    if (!instruction.Serialize(unique_account_metas, &message_bytes))
+    auto compiled_instruction = SolanaCompiledInstruction::FromInstruction(
+        instruction, static_account_keys_, address_table_lookups_,
+        num_of_write_indexes);
+    if (!compiled_instruction) {
       return absl::nullopt;
+    }
+    compiled_instruction->Serialize(&message_bytes);
+  }
+
+  // Compact array of address table lookups.
+  if (version_ == mojom::SolanaMessageVersion::kV0) {
+    CompactU16Encode(address_table_lookups_.size(), &message_bytes);
+    for (const auto& address_table_lookup : address_table_lookups_) {
+      address_table_lookup.Serialize(&message_bytes);
+    }
   }
 
   return message_bytes;
 }
 
-// static
 absl::optional<std::vector<std::string>>
 SolanaMessage::GetSignerAccountsFromSerializedMessage(
     const std::vector<uint8_t>& serialized_message) {
-  size_t index = 0;
-  if (serialized_message.size() < 3)  // Message header length.
+  auto tuple = DeserializeMessageHeader(serialized_message);
+  if (!tuple) {
     return absl::nullopt;
-
-  // Message header
-  uint8_t num_required_signatures = serialized_message[index++];
-  index += 2;  // Skip num of readonly signers/unsigned accounts.
+  }
+  size_t index = std::get<0>(*tuple);
+  SolanaMessageHeader message_header = std::get<2>(*tuple);
 
   // Consume length of account array.
   auto ret = CompactU16Decode(serialized_message, index);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   index += std::get<1>(*ret);
 
   std::vector<std::string> signers;
-  for (size_t i = 0; i < num_required_signatures; ++i) {
-    if (index + kSolanaPubkeySize > serialized_message.size())
+  for (size_t i = 0; i < message_header.num_required_signatures; ++i) {
+    if (index + kSolanaPubkeySize > serialized_message.size()) {
       return absl::nullopt;
+    }
 
     const std::vector<uint8_t> address_bytes(
         serialized_message.begin() + index,
@@ -203,94 +380,167 @@ SolanaMessage::GetSignerAccountsFromSerializedMessage(
 // static
 absl::optional<SolanaMessage> SolanaMessage::Deserialize(
     const std::vector<uint8_t>& bytes) {
-  size_t bytes_index = 0;
-  if (bytes.size() < 3)  // Message header length.
+  auto tuple = DeserializeMessageHeader(bytes);
+  if (!tuple) {
     return absl::nullopt;
-  // Message header
-  uint8_t num_required_signatures = bytes[bytes_index++];
-  uint8_t num_readonly_signed_accounts = bytes[bytes_index++];
-  uint8_t num_readonly_unsigned_accounts = bytes[bytes_index++];
+  }
+  size_t bytes_index = std::get<0>(*tuple);
+  mojom::SolanaMessageVersion version = std::get<1>(*tuple);
+  SolanaMessageHeader message_header = std::get<2>(*tuple);
 
   // Compact array of account addresses
   auto ret = CompactU16Decode(bytes, bytes_index);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   const uint16_t num_of_accounts = std::get<0>(*ret);
+  if (num_of_accounts == 0 || num_of_accounts > UINT8_MAX) {
+    return absl::nullopt;
+  }
   bytes_index += std::get<1>(*ret);
-  std::vector<SolanaAccountMeta> accounts;
+
+  std::vector<SolanaAddress> accounts;
   for (size_t i = 0; i < num_of_accounts; ++i) {
-    if (bytes_index + kSolanaPubkeySize > bytes.size())
+    if (bytes_index + kSolanaPubkeySize > bytes.size()) {
       return absl::nullopt;
-
-    const std::vector<uint8_t> address_bytes(
-        bytes.begin() + bytes_index,
-        bytes.begin() + bytes_index + kSolanaPubkeySize);
-    bool is_signer = i < num_required_signatures;
-    bool is_writable =
-        (i < (num_required_signatures - num_readonly_signed_accounts)) ||
-        (i >= num_required_signatures &&
-         i < num_of_accounts - num_readonly_unsigned_accounts);
-
-    accounts.emplace_back(Base58Encode(address_bytes), is_signer, is_writable);
+    }
+    auto account_key = SolanaAddress::FromBytes(
+        base::make_span(bytes).subspan(bytes_index, kSolanaPubkeySize));
+    if (!account_key) {
+      return absl::nullopt;
+    }
+    accounts.emplace_back(*account_key);
     bytes_index += kSolanaPubkeySize;
   }
+  std::string fee_payer = accounts[0].ToBase58();
 
-  if (bytes_index + kSolanaBlockhashSize > bytes.size())
+  // Blockhash
+  if (bytes_index + kSolanaBlockhashSize > bytes.size()) {
     return absl::nullopt;
+  }
   const std::vector<uint8_t> blockhash_bytes(
       bytes.begin() + bytes_index,
       bytes.begin() + bytes_index + kSolanaBlockhashSize);
   bytes_index += kSolanaBlockhashSize;
   const std::string recent_blockhash = Base58Encode(blockhash_bytes);
 
-  // instructions length
+  // Instructions length
   ret = CompactU16Decode(bytes, bytes_index);
-  if (!ret)
+  if (!ret) {
     return absl::nullopt;
+  }
   bytes_index += std::get<1>(*ret);
   size_t num_of_instructions = std::get<0>(*ret);
 
-  std::vector<SolanaInstruction> instructions;
+  std::vector<SolanaCompiledInstruction> compiled_instructions;
   for (size_t i = 0; i < num_of_instructions; ++i) {
-    auto instruction =
-        SolanaInstruction::Deserialize(accounts, bytes, &bytes_index);
-    if (!instruction)
+    auto compiled_instruction =
+        SolanaCompiledInstruction::Deserialize(bytes, &bytes_index);
+    if (!compiled_instruction) {
       return absl::nullopt;
-    instructions.emplace_back(std::move(instruction.value()));
+    }
+    compiled_instructions.emplace_back(std::move(*compiled_instruction));
+  }
+
+  absl::optional<std::vector<SolanaMessageAddressTableLookup>>
+      addr_table_lookups = std::vector<SolanaMessageAddressTableLookup>();
+  if (version == mojom::SolanaMessageVersion::kV0) {
+    addr_table_lookups = DeserializeAddressTableLookups(bytes, &bytes_index);
+    if (!addr_table_lookups) {
+      return absl::nullopt;
+    }
   }
 
   // Byte array needs to be exact without any left over bytes.
-  if (bytes_index != bytes.size())
+  if (bytes_index != bytes.size()) {
     return absl::nullopt;
+  }
 
-  return SolanaMessage(recent_blockhash, 0, accounts[0].pubkey,
-                       std::move(instructions));
+  // Size of combined array of static_accounts_array, write_indexes_array,
+  // read_indexes_array cannot exceed UINT8_MAX.
+  uint16_t num_of_write_indexes = 0;
+  uint16_t num_of_read_indexes = 0;
+  for (const auto& addr_table_lookup : *addr_table_lookups) {
+    num_of_write_indexes += addr_table_lookup.write_indexes().size();
+    num_of_read_indexes += addr_table_lookup.read_indexes().size();
+    if (num_of_write_indexes > UINT8_MAX || num_of_read_indexes > UINT8_MAX) {
+      return absl::nullopt;
+    }
+  }
+  if ((accounts.size() + num_of_write_indexes + num_of_read_indexes) >
+      UINT8_MAX) {
+    return absl::nullopt;
+  }
+
+  // Convert compiled_instructions to instructions.
+  std::vector<SolanaInstruction> instructions;
+  for (const auto& compiled_instruction : compiled_instructions) {
+    auto ins = SolanaInstruction::FromCompiledInstruction(
+        compiled_instruction, message_header, accounts, *addr_table_lookups,
+        num_of_write_indexes, num_of_read_indexes);
+    if (!ins) {
+      return absl::nullopt;
+    }
+    instructions.emplace_back(std::move(*ins));
+  }
+
+  return SolanaMessage(version, recent_blockhash, 0, fee_payer, message_header,
+                       std::move(accounts), std::move(instructions),
+                       std::move(*addr_table_lookups));
 }
 
 mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
   std::vector<mojom::SolanaInstructionPtr> mojom_instructions;
-  for (const auto& instruction : instructions_)
+  for (const auto& instruction : instructions_) {
     mojom_instructions.push_back(instruction.ToMojomSolanaInstruction());
+  }
 
   auto solana_tx_data = mojom::SolanaTxData::New();
+  solana_tx_data->version = version_;
   solana_tx_data->recent_blockhash = recent_blockhash_;
   solana_tx_data->last_valid_block_height = last_valid_block_height_;
   solana_tx_data->fee_payer = fee_payer_;
   solana_tx_data->instructions = std::move(mojom_instructions);
+
+  std::vector<std::string> base58_static_account_keys;
+  for (const auto& static_account_key : static_account_keys_) {
+    base58_static_account_keys.emplace_back(static_account_key.ToBase58());
+  }
+  solana_tx_data->static_account_keys = base58_static_account_keys;
+
+  solana_tx_data->message_header = message_header_.ToMojom();
+  solana_tx_data->address_table_lookups =
+      SolanaMessageAddressTableLookup::ToMojomArray(address_table_lookups_);
   return solana_tx_data;
 }
 
 base::Value::Dict SolanaMessage::ToValue() const {
   base::Value::Dict dict;
-  dict.Set("recent_blockhash", recent_blockhash_);
-  dict.Set("last_valid_block_height",
+
+  dict.Set(kVersion, static_cast<int32_t>(version_));
+  dict.Set(kRecentBlockhash, recent_blockhash_);
+  dict.Set(kLastValidBlockHeight,
            base::NumberToString(last_valid_block_height_));
-  dict.Set("fee_payer", fee_payer_);
+  dict.Set(kFeePayer, fee_payer_);
+  dict.Set(kMessageHeader, message_header_.ToValue());
+
+  base::Value::List static_account_key_list;
+  for (const auto& static_account_key : static_account_keys_) {
+    static_account_key_list.Append(static_account_key.ToBase58());
+  }
+  dict.Set(kStaticAccountKeys, std::move(static_account_key_list));
 
   base::Value::List instruction_list;
-  for (const auto& instruction : instructions_)
+  for (const auto& instruction : instructions_) {
     instruction_list.Append(instruction.ToValue());
-  dict.Set("instructions", std::move(instruction_list));
+  }
+  dict.Set(kInstructions, std::move(instruction_list));
+
+  base::Value::List address_table_lookup_list;
+  for (const auto& address_table_lookup : address_table_lookups_) {
+    address_table_lookup_list.Append(address_table_lookup.ToValue());
+  }
+  dict.Set(kAddressTableLookups, std::move(address_table_lookup_list));
 
   return dict;
 }
@@ -298,39 +548,101 @@ base::Value::Dict SolanaMessage::ToValue() const {
 // static
 absl::optional<SolanaMessage> SolanaMessage::FromValue(
     const base::Value::Dict& value) {
-  const std::string* recent_blockhash = value.FindString("recent_blockhash");
-  if (!recent_blockhash)
+  auto version = value.FindInt(kVersion);
+  if (!version || !mojom::IsKnownEnumValue(
+                      static_cast<mojom::SolanaMessageVersion>(*version))) {
     return absl::nullopt;
+  }
+
+  const std::string* recent_blockhash = value.FindString(kRecentBlockhash);
+  if (!recent_blockhash) {
+    return absl::nullopt;
+  }
 
   const std::string* last_valid_block_height_string =
-      value.FindString("last_valid_block_height");
+      value.FindString(kLastValidBlockHeight);
   uint64_t last_valid_block_height = 0;
   if (!last_valid_block_height_string ||
       !base::StringToUint64(*last_valid_block_height_string,
-                            &last_valid_block_height))
+                            &last_valid_block_height)) {
     return absl::nullopt;
+  }
 
-  const std::string* fee_payer = value.FindString("fee_payer");
-  if (!fee_payer)
+  const std::string* fee_payer = value.FindString(kFeePayer);
+  if (!fee_payer) {
     return absl::nullopt;
+  }
 
-  const base::Value::List* instruction_list = value.FindList("instructions");
-  if (!instruction_list)
+  const base::Value::Dict* message_header_dict = value.FindDict(kMessageHeader);
+  if (!message_header_dict) {
     return absl::nullopt;
+  }
+  auto message_header = SolanaMessageHeader::FromValue(*message_header_dict);
+  if (!message_header) {
+    return absl::nullopt;
+  }
+
+  const base::Value::List* static_account_key_list =
+      value.FindList(kStaticAccountKeys);
+  if (!static_account_key_list) {
+    return absl::nullopt;
+  }
+  std::vector<SolanaAddress> static_account_keys;
+  for (const auto& static_account_key_value : *static_account_key_list) {
+    if (!static_account_key_value.is_string()) {
+      return absl::nullopt;
+    }
+    auto address =
+        SolanaAddress::FromBase58(static_account_key_value.GetString());
+    if (!address) {
+      return absl::nullopt;
+    }
+    static_account_keys.emplace_back(*address);
+  }
+
+  const base::Value::List* instruction_list = value.FindList(kInstructions);
+  if (!instruction_list) {
+    return absl::nullopt;
+  }
   std::vector<SolanaInstruction> instructions;
   for (const auto& instruction_value : *instruction_list) {
-    if (!instruction_value.is_dict())
+    if (!instruction_value.is_dict()) {
       return absl::nullopt;
+    }
 
     absl::optional<SolanaInstruction> instruction =
         SolanaInstruction::FromValue(instruction_value.GetDict());
-    if (!instruction)
+    if (!instruction) {
       return absl::nullopt;
+    }
     instructions.emplace_back(std::move(instruction.value()));
   }
 
-  return SolanaMessage(*recent_blockhash, last_valid_block_height, *fee_payer,
-                       std::move(instructions));
+  const base::Value::List* address_table_lookup_list =
+      value.FindList(kAddressTableLookups);
+  if (!address_table_lookup_list) {
+    return absl::nullopt;
+  }
+  std::vector<SolanaMessageAddressTableLookup> address_table_lookups;
+  for (const auto& address_table_lookup_value : *address_table_lookup_list) {
+    if (!address_table_lookup_value.is_dict()) {
+      return absl::nullopt;
+    }
+
+    absl::optional<SolanaMessageAddressTableLookup> address_table_lookup =
+        SolanaMessageAddressTableLookup::FromValue(
+            address_table_lookup_value.GetDict());
+    if (!address_table_lookup) {
+      return absl::nullopt;
+    }
+    address_table_lookups.emplace_back(std::move(address_table_lookup.value()));
+  }
+
+  return SolanaMessage(static_cast<mojom::SolanaMessageVersion>(*version),
+                       *recent_blockhash, last_valid_block_height, *fee_payer,
+                       *message_header, std::move(static_account_keys),
+                       std::move(instructions),
+                       std::move(address_table_lookups));
 }
 
 }  // namespace brave_wallet
