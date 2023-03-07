@@ -266,8 +266,14 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;
 
+  // DEPRECATED: Use `SetMonthlyContribution` instead.
   virtual void SaveRecurringTip(mojom::RecurringTipPtr info,
                                 LegacyResultCallback callback) = 0;
+
+  virtual void SetMonthlyContribution(
+      const std::string& publisher_id,
+      double amount,
+      base::OnceCallback<void(bool)> callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
 
@@ -276,7 +282,7 @@ class LEDGER_EXPORT Ledger {
   virtual void RefreshPublisher(const std::string& publisher_key,
                                 OnRefreshPublisherCallback callback) = 0;
 
-  virtual void StartMonthlyContribution() = 0;
+  virtual void StartContributionsForTesting() = 0;
 
   virtual void UpdateMediaDuration(uint64_t window_id,
                                    const std::string& publisher_key,

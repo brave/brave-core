@@ -188,7 +188,8 @@ void LedgerImpl::StartServices() {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   publisher()->SetPublisherServerListTimer();
-  contribution()->SetReconcileTimer();
+  contribution()->SetAutoContributeTimer();
+  contribution()->SetMonthlyContributionTimer();
   promotion()->Refresh(false);
   contribution()->Initialize();
   promotion()->Initialize();
@@ -637,8 +638,23 @@ void LedgerImpl::GetRewardsInternalsInfo(
 void LedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
                                   LegacyResultCallback callback) {
   WhenReady([this, info = std::move(info), callback]() mutable {
-    database()->SaveRecurringTip(std::move(info), callback);
+    database()->SaveRecurringTip(
+        std::move(info), [this, callback](mojom::Result result) {
+          contribution()->SetMonthlyContributionTimer();
+          callback(result);
+        });
   });
+}
+
+void LedgerImpl::SetMonthlyContribution(
+    const std::string& publisher_id,
+    double amount,
+    base::OnceCallback<void(bool)> callback) {
+  WhenReady(
+      [this, publisher_id, amount, callback = std::move(callback)]() mutable {
+        contribution()->SetMonthlyContribution(publisher_id, amount,
+                                               std::move(callback));
+      });
 }
 
 void LedgerImpl::GetRecurringTips(PublisherInfoListCallback callback) {
@@ -659,8 +675,10 @@ void LedgerImpl::RefreshPublisher(const std::string& publisher_key,
   });
 }
 
-void LedgerImpl::StartMonthlyContribution() {
-  WhenReady([this]() { contribution()->StartMonthlyContribution(); });
+void LedgerImpl::StartContributionsForTesting() {
+  WhenReady([this]() {
+    contribution()->StartContributionsForTesting();  // IN-TEST
+  });
 }
 
 void LedgerImpl::UpdateMediaDuration(uint64_t window_id,

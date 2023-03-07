@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
 #include <utility>
 
+#include "base/containers/cxx20_erase.h"
+#include "base/functional/bind.h"
 #include "base/guid.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/ledger_impl.h"
-
-using std::placeholders::_1;
-using std::placeholders::_2;
 
 namespace ledger {
 namespace contribution {
@@ -22,92 +23,79 @@ ContributionMonthly::ContributionMonthly(LedgerImpl* ledger) :
 
 ContributionMonthly::~ContributionMonthly() = default;
 
-void ContributionMonthly::Process(ledger::LegacyResultCallback callback) {
-  auto get_callback = std::bind(&ContributionMonthly::PrepareTipList,
-      this,
-      _1,
-      callback);
-
-  ledger_->contribution()->GetRecurringTips(get_callback);
+void ContributionMonthly::Process(absl::optional<base::Time> cutoff_time,
+                                  ledger::LegacyResultCallback callback) {
+  ledger_->contribution()->GetRecurringTips(
+      [this, cutoff_time,
+       callback](std::vector<mojom::PublisherInfoPtr> publishers) {
+        AdvanceContributionDates(cutoff_time, callback, std::move(publishers));
+      });
 }
 
-void ContributionMonthly::PrepareTipList(
-    std::vector<mojom::PublisherInfoPtr> list,
-    ledger::LegacyResultCallback callback) {
-  std::vector<mojom::PublisherInfoPtr> verified_list;
-  GetVerifiedTipList(list, &verified_list);
+void ContributionMonthly::AdvanceContributionDates(
+    absl::optional<base::Time> cutoff_time,
+    ledger::LegacyResultCallback callback,
+    std::vector<mojom::PublisherInfoPtr> publishers) {
+  // Remove any contributions whose next contribution date is in the future.
+  base::EraseIf(publishers,
+                [cutoff_time](const mojom::PublisherInfoPtr& publisher) {
+                  if (!publisher || publisher->id.empty()) {
+                    return true;
+                  }
+                  base::Time next_contribution = base::Time::FromDoubleT(
+                      static_cast<double>(publisher->reconcile_stamp));
+                  return cutoff_time && next_contribution > cutoff_time;
+                });
 
-  mojom::ContributionQueuePtr queue;
-  mojom::ContributionQueuePublisherPtr publisher;
-  for (const auto &item : verified_list) {
-    std::vector<mojom::ContributionQueuePublisherPtr> queue_list;
-    publisher = mojom::ContributionQueuePublisher::New();
+  std::vector<std::string> publisher_ids;
+  for (const auto& publisher_info : publishers) {
+    publisher_ids.push_back(publisher_info->id);
+  }
+
+  // Advance the next contribution dates before attempting to add contributions.
+  ledger_->database()->AdvanceMonthlyContributionDates(
+      publisher_ids,
+      base::BindOnce(&ContributionMonthly::OnNextContributionDateAdvanced,
+                     base::Unretained(this), std::move(publishers), callback));
+}
+
+void ContributionMonthly::OnNextContributionDateAdvanced(
+    std::vector<mojom::PublisherInfoPtr> publishers,
+    ledger::LegacyResultCallback callback,
+    bool success) {
+  if (!success) {
+    BLOG(0, "Unable to advance monthly contribution dates.");
+    callback(mojom::Result::LEDGER_ERROR);
+    return;
+  }
+
+  // Remove entries for zero contribution amounts or unverified creators. Note
+  // that in previous versions, pending contributions would be created if the
+  // creator was unverified.
+  base::EraseIf(publishers, [](const mojom::PublisherInfoPtr& publisher) {
+    DCHECK(publisher);
+    return publisher->weight <= 0 ||
+           publisher->status == mojom::PublisherStatus::NOT_VERIFIED;
+  });
+
+  for (const auto& item : publishers) {
+    auto publisher = mojom::ContributionQueuePublisher::New();
     publisher->publisher_key = item->id;
     publisher->amount_percent = 100.0;
-    queue_list.push_back(std::move(publisher));
 
-    queue = mojom::ContributionQueue::New();
+    auto queue = mojom::ContributionQueue::New();
     queue->id = base::GenerateGUID();
     queue->type = mojom::RewardsType::RECURRING_TIP;
     queue->amount = item->weight;
     queue->partial = false;
-    queue->publishers = std::move(queue_list);
+    queue->publishers.push_back(std::move(publisher));
 
     ledger_->database()->SaveContributionQueue(std::move(queue),
-                                               [](const mojom::Result _) {});
+                                               [](mojom::Result) {});
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/8804):
-  // we should change this logic and do batch insert with callback
   ledger_->contribution()->CheckContributionQueue();
   callback(mojom::Result::LEDGER_OK);
-}
-
-void ContributionMonthly::GetVerifiedTipList(
-    const std::vector<mojom::PublisherInfoPtr>& list,
-    std::vector<mojom::PublisherInfoPtr>* verified_list) {
-  DCHECK(verified_list);
-  std::vector<mojom::PendingContributionPtr> non_verified;
-
-  for (const auto& publisher : list) {
-    if (!publisher || publisher->id.empty() || publisher->weight == 0.0) {
-      continue;
-    }
-
-    if (publisher->status != mojom::PublisherStatus::NOT_VERIFIED) {
-      verified_list->push_back(publisher->Clone());
-      continue;
-    }
-
-    auto contribution = mojom::PendingContribution::New();
-    contribution->amount = publisher->weight;
-    contribution->publisher_key = publisher->id;
-    contribution->viewing_id = "";
-    contribution->type = mojom::RewardsType::RECURRING_TIP;
-
-    non_verified.push_back(std::move(contribution));
-  }
-
-  if (non_verified.empty()) {
-    return;
-  }
-
-  auto save_callback = std::bind(
-      &ContributionMonthly::OnSavePendingContribution,
-      this,
-      _1);
-  ledger_->database()->SavePendingContribution(
-      std::move(non_verified),
-      save_callback);
-}
-
-void ContributionMonthly::OnSavePendingContribution(
-    const mojom::Result result) {
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Problem saving pending");
-  }
-
-  ledger_->ledger_client()->PendingContributionSaved(result);
 }
 
 }  // namespace contribution

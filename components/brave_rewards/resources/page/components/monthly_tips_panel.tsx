@@ -11,10 +11,8 @@ import { LocaleContext } from '../../shared/lib/locale_context'
 import {
   SettingsPanel,
   PanelHeader,
-  PanelItem,
   PanelTable,
-  TokenAmountWithExchange,
-  MonthDay
+  TokenAmountWithExchange
 } from './settings_panel'
 
 import { PageModal } from './page_modal'
@@ -24,6 +22,12 @@ import { TrashIcon } from './icons/trash_icon'
 import * as style from './monthly_tips_panel.style'
 
 const maxTableSize = 5
+
+const nextContributionFormatter = new Intl.DateTimeFormat(undefined, {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric'
+})
 
 export function MonthlyTipsPanel () {
   const { getString } = React.useContext(LocaleContext)
@@ -37,10 +41,20 @@ export function MonthlyTipsPanel () {
 
   const [showAllModal, setShowAllModal] = React.useState(false)
 
-  const totalTips = data.recurringList.reduce(
-    (total, item) => total + item.percentage, 0)
-
   const toggleShowAll = () => { setShowAllModal(!showAllModal) }
+
+  function renderNextContribution (time: number) {
+    const nextContribution = time * 1000
+    if (!nextContribution) {
+      return null
+    }
+    return (
+      <>
+        {getString('nextContribution')}:&nbsp;
+        {nextContributionFormatter.format(new Date(nextContribution))}
+      </>
+    )
+  }
 
   function renderTable (maxRows?: number) {
     let rows = data.recurringList
@@ -73,7 +87,9 @@ export function MonthlyTipsPanel () {
                         icon={item.favIcon}
                         platform={item.provider}
                         verified={item.status > 0}
-                      />
+                      >
+                        {renderNextContribution(item.tipDate || 0)}
+                      </PublisherLink>
                     </td>
                     <td className='number'>
                       <TokenAmountWithExchange
@@ -125,16 +141,6 @@ export function MonthlyTipsPanel () {
         <style.description>
           {getString('monthlyTipsDesc')}
         </style.description>
-        <PanelItem label={getString('donationTotalMonthlyTips')}>
-          <TokenAmountWithExchange
-            amount={totalTips}
-            exchangeRate={data.parameters.rate}
-            exchangeCurrency='USD'
-          />
-        </PanelItem>
-        <PanelItem label={getString('donationNextDate')}>
-          <MonthDay date={new Date(data.reconcileStamp * 1000)} />
-        </PanelItem>
         {renderTable(maxTableSize)}
         {
           data.recurringList.length > maxTableSize &&

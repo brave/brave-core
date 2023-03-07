@@ -118,7 +118,12 @@ class BatLedgerImpl :
   void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) override;
-  void StartMonthlyContribution() override;
+
+  void StartContributionsForTesting() override;
+
+  void SetMonthlyContribution(const std::string& publisher_id,
+                              double amount,
+                              SetMonthlyContributionCallback callback) override;
 
   void SaveRecurringTip(ledger::mojom::RecurringTipPtr info,
                         SaveRecurringTipCallback callback) override;
