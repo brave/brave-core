@@ -137,7 +137,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         });
 
         mSubscriptionStatus = (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_STATUS);
+        mSubscriptionStatus.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
         mSubscriptionExpires = (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_EXPIRES);
+        mSubscriptionExpires.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
 
         mServerHost = (ChromeBasePreference) findPreference(PREF_SERVER_HOST);
 
@@ -159,8 +161,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     }
                 });
 
-        findPreference(PREF_SUBSCRIPTION_MANAGE)
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        ChromeBasePreference manageSubscription =
+                (ChromeBasePreference) findPreference(PREF_SUBSCRIPTION_MANAGE);
+        manageSubscription.setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         Intent browserIntent =
@@ -169,6 +173,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         return true;
                     }
                 });
+        manageSubscription.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
 
         findPreference(PREF_SERVER_RESET_CONFIGURATION)
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
