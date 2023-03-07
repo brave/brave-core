@@ -172,9 +172,9 @@
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
 <translation id="4851215387785619212">Braveプライベート広告</translation>
-<translation id="6480303618073442141">Braveプライベート広告はさりげない、プライベートな広告です。広告はあなたの興味に合わせて調整されますが、個人データや表示履歴がデバイスから漏れることはありません。とりわけ嬉しいのは、Braveプライベート広告でBAT（<ph name="BEGIN_LINK"/>ベーシックアテンショントークン<ph name="END_LINK"/>）を獲得できる点です。</translation>
+<translation id="6480303618073442141">Brave Private Adsは目立たず、プライバシーを尊重するように設計された広告です。広告はあなたの興味に合わせて調整されますが、個人データや表示履歴がデバイスから漏れることはありません。とりわけ嬉しいのは、Brave Private AdsでBAT（<ph name="BEGIN_LINK"/>ベーシックアテンショントークン<ph name="END_LINK"/>）を獲得できる点です。</translation>
 <translation id="6112368337882254910">自動支援</translation>
-<translation id="3742599705619405136">パブリッシャーやコンテンツクリエイターを自動的に支援する方法です。毎月支援する金額を設定し、通常通りブラウジングをしましょう。あなたが訪問したサイトがBraveの認証を完了していた場合、あなたのアテンションに基づいて自動的に支援が行われます。</translation>
+<translation id="7437775146229396839">サイトやコンテンツクリエイターを自動的に支援することができます。毎月の寄付金額を設定し、通常通りブラウジングするだけ。<ph name="BEGIN_LINK"/>認証済みのサイトおよびクリエイター<ph name="END_LINK"/>に、あなたが費やしたコンテンツの利用時間に応じた寄付金が毎月送られます。</translation>
 <translation id="3325399124634342726">今月の現在の収益 (推定)</translation>
 <translation id="8593551638387217772">次回支払日</translation>
 <translation id="4428871418618312983">今月受信した広告</translation>
@@ -206,8 +206,6 @@
 <translation id="7577100371127227294">毎月のチップ</translation>
 <translation id="178390304006113804">毎月のチップを設定することで、お気に入りのクリエイターを継続的にサポートすることができます。</translation>
 <translation id="3302159320447117425">毎月のチップ額が設定されていません。</translation>
-<translation id="1847863811689960237">あなたのお気に入りのコンテンツを作成したクリエイターにRewardを支払う。</translation>
-<translation id="4129489167302464118">あなたの月々の支払額は、訪問したサイトに分配されます</translation>
 <translation id="4898632353264854950">サイトは閲覧する際に表示されます</translation>
 <translation id="3024485967181749006">今月のチップ合計</translation>
 <translation id="8183455888546367148">今月のチップ合計</translation>
@@ -263,7 +261,7 @@
 <translation id="2916515880661220182">すでにカストディアルアカウントをお持ちの場合は、接続するよう促されます。まだの場合は作成してください。</translation>
 <translation id="2054853229650377447">注意: 認証すると、取引内容がカストディアンに公開されます。たとえば、カストディアンはあなたが送ったチップの受取人や金額を見ることができるようになります。</translation>
 <translation id="121894865378699201">BATの獲得を開始しますか?</translation>
-<translation id="4478996292566912629">カストディアルアカウントプロバイダーによるIDの検証が必要であり、写真付き身分証明書を送信するよう要求される場合があります。<ph name="BEGIN_LINK"/>Braveリワード<ph name="END_LINK"/>のプライバシーポリシーをご覧ください。</translation>
+<translation id="4478996292566912629">カストディアルアカウントプロバイダーによるIDの検証が必要であり、写真付き身分証明書を送信するよう要求される場合があります。<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>のプライバシーポリシーをご覧ください。</translation>
 <translation id="7730415569603152862">カストディアルアカウントをリワードのプロフィールに関連付けると、次が可能になります。</translation>
 <translation id="5785531043735482053">獲得したBATの保存、管理、引き出し</translation>
 <translation id="5155452078869279096">BATを購入してアカウントに追加する</translation>
@@ -275,6 +273,8 @@
 <translation id="7849926087559412554">ご使用のブラウザではBraveプライベート広告を受信できません。</translation>
 <translation id="5177429570315095022">引き続き広告を表示するには、ブラウザをアップデートする必要があります。</translation>
 <translation id="7352651011704765696">エラーが発生しました</translation>
+<translation id="4593680147181354667">診断ID</translation>
+<translation id="3995471429906554168">診断情報</translation>
 <translation id="752216563428219524">広告が初期化されていません。ページを更新してください。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="6969783933307596818">5秒毎に自動的にリフレッシュします</translation>
@@ -356,6 +356,8 @@
 <translation id="8874184842967597500">未接続</translation>
 <translation id="4569155249847375786">認証済み</translation>
 <translation id="6521149675246672063">切断（認証済み）</translation>
+<translation id="5058161306698404465">作成環境:</translation>
+<translation id="5856438412804207598">作成環境:</translation>
 <translation id="5906820630265272615">BATファンド</translation>
 <translation id="5814098892838785557">このクリエイターのサポートをやめてもよろしいですか？</translation>
 <translation id="6582097696555842139">毎月のチップをキャンセル</translation>
@@ -378,7 +380,7 @@
 <translation id="4492470488449820476">チップの最低額: <ph name="AMOUNT"/><ph name="CURRENCY"/></translation>
 <translation id="9088057605518918276">毎月のチップが設定されました。</translation>
 <translation id="6306631474379759382">次のチップ支払日:</translation>
-<translation id="4647657427328119430">ポイントが不足しています。</translation>
+<translation id="4647657427328119430">トークンが不足しています。</translation>
 <translation id="3586352807094428968">Braveはチップ金額の5%を処理手数料として徴収します。</translation>
 <translation id="207268487070188114">ワンタイムチップ</translation>
 <translation id="69861679024013299">ワンタイムチップ額:</translation>
@@ -395,6 +397,7 @@
 <translation id="839058704683989763">保留チップを設定しました！</translation>
 <translation id="5096821444729034955">投稿に</translation>
 <translation id="2978223787436054634">チッピングについてツイートする</translation>
+<translation id="976068305210640982">現在<ph name="BEGIN_LINK"/>ログアウト<ph name="LINK_END"/>しています。</translation>
 <translation id="5916290544882167205">「Brave Software」や「Brave」は、Brave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
 <translation id="9026369588205476247">プライバシーの保護のため、このBrave Rewardsステートメントはあなたのデバイス（このコンピュータ）以外の場所に保管・保存・記録されません。万が一あなたのデバイスからデータが損なわれた場合、Brave側から再発行することはできません。</translation>
 <translation id="3587482841069643663">すべて</translation>
@@ -476,9 +479,9 @@
 <translation id="5317144262906129592">チップを送信することで、このコンテンツクリエイターを支援できます。素晴らしいコンテンツの作成に対する謝意を示すひとつの方法です。</translation>
 <translation id="3074127054582480056">アテンション</translation>
 <translation id="3659457123782988823">Braveリワードをリセットしてよろしいですか？</translation>
-<translation id="1666001796278936721">リセットすると、Braveリワードプロファイルが削除されるため、まったく新しいプロファイルからやり直すことが必要になります。続行する前に、リセットの<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/>を確認してください。</translation>
+<translation id="1666001796278936721">リセットすると、Brave Rewardsプロファイルが削除されるため、まったく新しいプロファイルからやり直すことが必要になります。続行する前に、リセットの<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/>を確認してください。</translation>
 <translation id="94095197509579227">注: 現状で、今月中に<ph name="BAT_AMOUNT"/>獲得する予定ですが、ここでリセットすると獲得できません。</translation>
-<translation id="4806029412510565611">私は、現在のBraveリワードプロファイルとBraveリワードデータが、デバイスから削除されることを理解しています。また、<ph name="LINK_BEGIN"/>リセットに関するサポート記事<ph name="LINK_END"/>も読んでいます。</translation>
+<translation id="4806029412510565611">私は、現在のBrave RewardsプロファイルとBraveリワードデータが、デバイスから削除されることを理解しています。また、<ph name="LINK_BEGIN"/>リセットに関するサポート記事<ph name="LINK_END"/>も読んでいます。</translation>
 <translation id="4914597931214386232">取得済のトークン付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>
 <translation id="2913994227901456490">全[[numItems]]件の項目を表示</translation>
@@ -515,8 +518,8 @@
 <translation id="923467487918828349">すべてを表示</translation>
 <translation id="5113531205597573951">閲覧したサイト</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
-<translation id="6518133107902771759">認証する</translation>
-<translation id="422369484771082705">認証はオプションです。しかし、認証を受けることで、Braveリワードから獲得したBATをカストディアルウォレットに直接出金できるようになります。</translation>
+<translation id="7642372245223412840">bitFlyerに接続</translation>
+<translation id="6143701117592994599">BraveリワードをbitFlyerのアカウントに接続すると、BATを獲得したり、Braveリワードで獲得したBATを引き出したりすることができるようになります。</translation>
 <translation id="4354564238172327160">Braveのクリエイターになろう！</translation>
 <translation id="4639659520811817892">creators.brave.comにアクセスして今すぐ登録し、あなたのファンやフォロワーからさっそくBATを獲得しましょう。</translation>
 <translation id="4816455138209470435">BraveはYouTube、Twitch、Vimeoおよびその他多数のツールをサポートしています！</translation>
@@ -552,9 +555,9 @@
 <translation id="4047002754575891955">オフチェーン検索を続行</translation>
 <translation id="531747189990625622">ソラナネームサービス</translation>
 <translation id="1090584614351290462">Braveでソラナネームサービス（SNS）のサポートを有効にしますか？</translation>
-<translation id="2350552210396418924">BraveはCoinbase Cloudを使用して、.solのドメイン名を解決します。IPアドレスは非表示になります。これを有効にすると、Coinbase は他のユーザーが訪問しようとしているこれらの.solドメインを参照できますが、他のドメインは参照できなくなります。Coinbase Cloudの<ph name="BEGIN_COINBASE_TOU_LINK"/>利用規約<ph name="END_COINBASE_TOU_LINK"/>と<ph name="BEGIN_COINBASE_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_COINBASE_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="3664848774480475984">BraveはSyndicaを使用して、.solのドメイン名を解決します。IPアドレスは非表示になります。これを有効にすると、Syndicaは他のユーザーが訪問しようとしているこれらの.solドメインを参照できますが、他のドメインは参照できなくなります。Syndicaの<ph name="BEGIN_SYNDICA_TOU_LINK"/>利用規約<ph name="END_SYNDICA_TOU_LINK"/>と<ph name="BEGIN_SYNDICA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_SYNDICA_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="7378412287463452336">Infuraサーバーを使用して続行する</translation>
-<translation id="2313603121968571839">Coinbase Cloudサーバーを使用して続行する</translation>
+<translation id="2824725477135051831">Syndicaサーバーを使用して続行する</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="59174027418879706">有効化済み</translation>
 <translation id="2468755552460246661">ドメインがブロックされました</translation>
@@ -639,6 +642,7 @@
 <translation id="6318437367327684789">無期限</translation>
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/>をいつでも変更できます。 <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">サイトのアクセス許可</translation>
+<translation id="4355784577209159847">レガシーのGoogleサインインにサードパーティCookieの使用を許可</translation>
 <translation id="7717357606512850995">ステータスを確認</translation>
 <translation id="7306880305145342514">おめでとうございます！<ph name="MONTH"/>のリワードを獲得しました！</translation>
 <translation id="3007207731685398329"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>が<ph name="DAYS"/>後以降に順次送付されます。</translation>
@@ -655,10 +659,10 @@
 <translation id="3368922792935385530">接続済み</translation>
 <translation id="8494748383523030337">残高</translation>
 <translation id="2721354750791363122"><ph name="BOLD_BEGIN"/>BATの獲得を開始する準備ができたら<ph name="BOLD_END"/>、カストディアルアカウントをRewardsプロファイルに接続してください。アカウントをお持ちでない場合は、この後作成してください。</translation>
-<translation id="1772961321862399863">BATを獲得するには、カストディアルアカウントをRewardsリワードに接続する必要がありますが、この地域で使用できるカストディアンが存在しないため獲得できません。当面は、Braveリワードをオンにすることで、クリエイターを自動で支援してください。</translation>
+<translation id="1772961321862399863">BATを獲得するには、カストディアルアカウントをRewardsに接続する必要がありますが、この地域で使用できるカストディアンが存在しないため獲得できません。当面は、Braveリワードをオンにすることで、クリエイターを自動で支援してください。</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
-      =1 {今月アクセスした、Braveリワードから支援されているクリエイターの数は#人です}
-      other {今月アクセスした、Braveリワードから支援されているクリエイターの数は#人です}
+      =1 {今月アクセスした、Brave Rewardsから支援されているクリエイターの数は#人です}
+      other {今月アクセスした、Brave Rewardsから支援されているクリエイターの数は#人です}
     }</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/>のリワード: <ph name="AMOUNT"/></translation>
 <translation id="3274366539954332481"><ph name="MONTH"/>のリワードが届きました！</translation>
@@ -666,6 +670,7 @@
 <translation id="9013419433042554094">トークンの獲得</translation>
 <translation id="5544777623605368410">報酬</translation>
 <translation id="3273637494083639780">あなたが今月獲得したトークンは<ph name="DATE"/>以降に処理が開始されます。</translation>
+<translation id="5572389477027204985">Brave広告を有効化</translation>
 <translation id="1029300693989825319">これは、市場のボラティリティに応じて変化する可能性があります。</translation>
 <translation id="8334559352278209120">支援:</translation>
 <translation id="4782365133987903299">獲得まであと<ph name="DAYS"/></translation>
@@ -690,10 +695,14 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6727102863431372879">設定</translation>
 <translation id="8853725596990766789">金額を変更</translation>
-<translation id="6067959437127691361">Braveリワードを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
+<translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="1609556006143307897">あなたはコンテンツクリエイターを支援中です</translation>
 <translation id="6605147707233193230">有効にしてコンテンツクリエイターを支援</translation>
 <translation id="5430495762768325224">BATに関する詳細</translation>
+<translation id="4105212447337987768"><ph name="DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。この日までにカストディアルアカウントを接続し、獲得した残高をカストディアルアカウントに移行できるようにしてください。この設定を行わない場合、残高は失われます。</translation>
+<translation id="5684206602316433615"><ph name="DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。残念ながら、お住まいの地域 (<ph name="REGION"/>) には、収益を引き出すために利用可能なカストディアンが存在しません。上記の日程まではお気に入りのクリエイターに貢献することができます。</translation>
+<translation id="707569835145765061">要対応: vBATを引き続き保管するためにカストディアルアカウントを接続してください</translation>
+<translation id="5089752671190341407">サポート終了前までは、お気に入りのクリエイターにvBATで貢献できます</translation>
 <translation id="1258144146756156541">人間による操作であることを確認します</translation>
 <translation id="1555514580945108302">うーん、少し違います。もう一度試してみてください。</translation>
 <translation id="8078414184292711961">BAT アイコンを <ph name="HINT"/> ターゲットまでドラッグします。</translation>
@@ -738,7 +747,7 @@
       =1 {1時間あたり#件の広告}
       other {1時間あたり#件の広告}
     }</translation>
-<translation id="6129810595598072828">プライベート広告が増えるとリワードが追加されます</translation>
+<translation id="6129810595598072828">より多くのPrivate Adsが配信されれば、より多くのリワードを得ることができます</translation>
 <translation id="8871481223725076571">広告が増えると支援できるクリエイターの数も増えます</translation>
 <translation id="9215691564467955056">これは後から設定で変更できます。</translation>
 <translation id="6318696841371191107">クイックツアーに参加</translation>
@@ -750,7 +759,7 @@
 <translation id="7930505144430343145">Brave Rewardsへようこそ！</translation>
 <translation id="3477340970981564961">Braveプライベート広告は、従来の広告とは異なり、コンテンツクリエイターをサポートするためのトークンで報酬がもらえ、すべては個人情報を守られた状態で行われます。</translation>
 <translation id="6973095375773523904">広告はどこに表示されますか？</translation>
-<translation id="4328028439561659455">Braveプライベート広告が画面に通知として表示されています。これらの広告を表示する頻度を設定してください。</translation>
+<translation id="4328028439561659455">Brave Private Adsが画面に通知として表示されています。これらの広告を表示する頻度を設定してください。</translation>
 <translation id="7712287524451429139">クリエイターへの支援がもっと簡単に</translation>
 <translation id="105037569026952831">クリエイターは、弊社が「アテンション」として測定するあなたのエンゲージメントレベルに基づいて、あなたからのトークンによる寄付を自動的に受け取ります。</translation>
 <translation id="5323267338679539010">チップでお礼を言おう</translation>
@@ -885,7 +894,8 @@
 <translation id="1201402288615127009">Next</translation>
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="6896758677409633944">コピー</translation>
-<translation id="2704606927547763573">コピーしました</translation>
+<translation id="7885157704277298658">コピーしました！</translation>
+<translation id="6518133107902771759">認証する</translation>
 <translation id="6042308850641462728">もっと見る</translation>
 <translation id="768236965975208017">セキュア。マルチチェーン。そして使いやすい。Braveウォレットは、数回のクリックでご利用いただけます。</translation>
 <translation id="3157931365184549694">復元</translation>
@@ -915,7 +925,7 @@
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
 <translation id="9111102763498581341">ロック解除</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
-<translation id="5242300593039211344">ウォレットをロック</translation>
+<translation id="9175546523521600401">ウォレットをロック</translation>
 <translation id="765834632354589737">ウォレットをバックアップする</translation>
 <translation id="1108298724135935307">接続したサイト</translation>
 <translation id="163697698769819510">今すぐウォレットをバックアップして資産を保護し、アクセスを失わないようにしてください。</translation>
@@ -929,7 +939,6 @@
 <translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
 <translation id="3331452756822160641">新しいパスワード</translation>
 <translation id="8624315169751085215">クリップボードにコピー</translation>
-<translation id="7885157704277298658">コピー完了!</translation>
 <translation id="6346952829206698721">クリップボードから貼り付け</translation>
 <translation id="1121335910737476837">プライマリ暗号資産アカウント</translation>
 <translation id="6969147029062037757">インポート済みのアカウント</translation>
@@ -984,6 +993,7 @@
 <translation id="7978047524114351365">名前の付いたアセットはありません</translation>
 <translation id="9040455159722359521">アセットまたは契約アドレスを検索</translation>
 <translation id="6018178824574796106">カスタムトークンの追加に失敗しました。もう一度やり直してください。</translation>
+<translation id="5138307340667775659">このトークンはすでにポートフォリオに追加されています。</translation>
 <translation id="547122651977318828">トークンID (ERC721のみ)</translation>
 <translation id="7544552854944350190">トークンIDが必要です</translation>
 <translation id="3842236145820483340">CoinGecko ID</translation>
@@ -1026,6 +1036,7 @@
 <translation id="5294062982587710720">Brave は、署名した場合に何が起こるかを認証しているわけではないことに注意してください。署名は、リクエストを行うサイトにアカウントと暗号資産の完全な制御を与えることを含む (ただしこれらに限定されない)、あなたに代わってアカウント内外のほぼ全ての操作を許可する可能性があります。このアクションを実行することを望み、要求元のサイトを信頼する場合にのみ署名してください。</translation>
 <translation id="3474375934783434676">ご自身の責任で署名してください</translation>
 <translation id="5488357322146334497">メッセージ</translation>
+<translation id="7702907602086592255">ドメイン</translation>
 <translation id="3586752056660754651">署名</translation>
 <translation id="3484981968509595506">DAppがあなたの公開暗号鍵を要求しています。</translation>
 <translation id="2950511942409261729"><ph name="URL_BEFORE"/>$url<ph name="URL_AFTER"/> は、ウォレットの公開暗号化キーを要求しています。このキーを提供することに同意すると、暗号化されたメッセージがサイトで作成されます。</translation>
@@ -1150,6 +1161,7 @@
 <translation id="4667144295226514387">ガスリミットが入力されていません</translation>
 <translation id="2021522108838444624">金額は0より大きい値で入力してください</translation>
 <translation id="8464365289405373974">送信先アドレスが必要です</translation>
+<translation id="4884792073752467460">受取人のアドレスが無効です</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/>件のトランザクションを拒否</translation>
 <translation id="1118876217803190221">残高不足です</translation>
@@ -1218,7 +1230,7 @@
 <translation id="1695096446857675822">残高↓</translation>
 <translation id="8151187584908138100">名前 ↓</translation>
 <translation id="883138507248906253">名前 ↑</translation>
-<translation id="7198018180583855568">すべてのアカウント</translation>
+<translation id="7662492121143629144">すべてのアカウント</translation>
 <translation id="6954150712710630841">トランザクションを送信しました</translation>
 <translation id="905855245798176174">トランザクションをネットワークに送信し、確認を待っています。</translation>
 <translation id="619697073289995370">トランザクション署名済み</translation>
@@ -1415,6 +1427,8 @@
 <translation id="1763942310723636241">トークンの詳細</translation>
 <translation id="2938264474197978104"><ph name="SYMBOL"/>を非表示</translation>
 <translation id="3614009429760094268">トークンを非表示にしますか？</translation>
+<translation id="6779155810671793329">Token Contract Address</translation>
+<translation id="871123550184744265">トークンの小数部分</translation>
 <translation id="4038384774641714579">再度このアセットを表示するには、「ポートフォリオ」タブの下部にある「+ 表示アセット」ボタンをクリックします。</translation>
 <translation id="1026825928738055872">「<ph name="ACCOUNT_NAME"/>」を削除しますか？</translation>
 <translation id="3910551537328657217">機能のリクエスト</translation>
@@ -1443,8 +1457,8 @@
 <translation id="6680650203439190394">速度</translation>
 <translation id="2538996898605796431">価格による影響</translation>
 <translation id="8007404171238546456">価格変動後に受け取る最低金額</translation>
-<translation id="767199001998615704">ネットワーク費用</translation>
-<translation id="7057870207229052478">Brave費用</translation>
+<translation id="767199001998615704">ネットワーク手数料</translation>
+<translation id="7057870207229052478">Brave手数料</translation>
 <translation id="3624518972158401291">無料</translation>
 <translation id="5038255447967558645">流動性プロバイダー</translation>
 <translation id="8450638959928932199">スワップして送信</translation>
@@ -1469,10 +1483,16 @@
 <translation id="4029551149873989025">ネットワークを変更</translation>
 <translation id="7561262633951061138">最良</translation>
 <translation id="3143110700666266545">このアプリでは次のサードパーティAPIを使用します:</translation>
-<translation id="8411419545176806786">Braveスワップは、DEXアグレゲーターとして0xを使用しています。0xは、取引を完了するためにイーサリアムウォレットのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
-<translation id="7467728126359974661">Braveスワップは、SolanaネットワークのDEXアグレゲーターとしてJupiterを使用しています。Jupiterは、取引を完了するためにSolanaウォレットのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
-<translation id="8497751359931572880">0xのプライバシーポリシーを確認するにはここをクリックしてください。</translation>
-<translation id="4904748904130272182">Jupiterのプライバシーポリシーを確認するにはここをクリックしてください。</translation>
+<translation id="163536108506359457">Braveスワップは<ph name="AGGREGATOR"/>を、サポート対象の<ph name="NETWORKS"/>ネットワークのDEXアグリゲーターとして使用します。<ph name="AGGREGATOR"/>は<ph name="NETWORK"/>ウォレットのアドレスとIPアドレスを処理してトランザクションを実行します (相場価格の取得を含む)。<ph name="AGGREGATOR"/>はこのデータをトランザクションの処理目的にのみ使用します。</translation>
+<translation id="1847885264294023691"><ph name="AGGREGATOR"/>のプライバシーポリシーを使用します。</translation>
+<translation id="9218424917282368512">ネットワークの変更</translation>
+<translation id="644984757357042735">ネットワークは必須です</translation>
+<translation id="132243864024778443">トークン名は必須です</translation>
+<translation id="3617263699756744037">トークンのコントラクトアドレスが無効または空になっています</translation>
+<translation id="2077392865355605472">トークンシンボルは必須です</translation>
+<translation id="4636925020451566238">トークンの小数点桁数は必須です</translation>
+<translation id="3797613444743816037">ミントアドレス</translation>
+<translation id="7951915459354237451">手数料の上限が基本手数料より低く設定されています。トランザクションに時間を要する、または失敗する可能性があります。</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>

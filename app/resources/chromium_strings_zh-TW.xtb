@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="245693535809364497">Brave 需要相機權限，才能根據你的周遭環境製作 3D 地圖</translation>
+<translation id="5060669762365466104">網站可能會正常運作，但不會在所有 Brave 視窗關閉後記住你的偏好設定和與你有關的資訊</translation>
 <translation id="6676384891291319759">連線到網際網路</translation>
 <translation id="1363996462118479832">登入時發生錯誤，因此 Chrome OS 無法同步處理你的資料。</translation>
 <translation id="1257247502847251159">Brave 需要麥克風權限，才能執行這個網站要求的功能</translation>
@@ -246,6 +247,7 @@
 <translation id="7870748924073900361">記憶體節省模式可以提升 Brave 運作速度</translation>
 <translation id="6666624454809779082">電腦上的所有使用者都已經安裝 Brave 了。</translation>
 <translation id="5360050006043219962">如要透過所有裝置存取你的 Brave 資料，請登入並開啟同步處理功能。</translation>
+<translation id="3136039682492230890">這個檔案可能有危險內容，因此 Brave 建議掃描檔案。</translation>
 <translation id="8291513491595858997">你的家長已停用 Brave 的「網站、應用程式和擴充功能的權限」設定，因此你無法啟用這個<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
 <translation id="1547295885616600893">Chrome OS 受惠於其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>技術才能成功發布。</translation>
 <translation id="8211837073776713955">Brave 會通知你密碼是否曾遭外洩</translation>
@@ -267,7 +269,6 @@
 <translation id="1008530050039597147">Brave 需要相機權限，才能執行這個網站要求的功能</translation>
 <translation id="1197672524850678392">無法啟動 Brave，請再試一次。</translation>
 <translation id="3405035915691517126">Brave 無法檢查你的密碼，請於 24 小時後再試。</translation>
-<translation id="5101812148953915496">在 Brave 關閉前，你造訪的網站會記住你的資訊</translation>
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="713191641919118540">Brave 推測的興趣喜好</translation>
 <translation id="9068395155143628872">廣告評估功能會允許你造訪的網站向 Brave 要求資訊，以便協助網站評估自家廣告的成效。廣告評估功能會盡可能減少網站之間分享資訊的情況，藉此限制跨網站追蹤行為。</translation>
@@ -339,8 +340,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="6283840329609797763">不明錯誤導致安裝失敗，請重新下載 Brave。</translation>
 <translation id="2433912322225810055">這個擴充功能也會控管 Brave 啟動時或你使用網址列搜尋時所顯示的網頁。</translation>
 <translation id="4100716194836114130">這是你專屬的 Brave</translation>
-<translation id="6208136456999964972">當你關閉所有 Brave 視窗時，系統會自動清除 Cookie 和網站資料</translation>
-<translation id="6371875426681214174">關閉 Brave 會導致你<ph name="BEGIN_BOLD"/>從大部分的網站登出<ph name="END_BOLD"/>。如果關閉同步處理功能，你也會<ph name="BEGIN_BOLD"/>從 Brave 服務和 Brave 登出<ph name="END_BOLD"/>。</translation>
 <translation id="4831743161813926460">Brave 需要相關權限，才能讓這個網站使用你的攝影機和麥克風</translation>
 <translation id="6933858244219479645">Chrome OS 系統</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>我們會使用哪些資料：<ph name="END_BOLD"/>你的瀏覽記錄，也就是在這部裝置上透過 Brave 造訪網站的記錄。</translation>
@@ -367,6 +366,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="1611678871603620428">如要取得日後的 Brave 更新，必須使用 macOS 10.13 以上版本。這部電腦目前版本為 OS X 10.11。</translation>
 <translation id="4484434718272972655">誰在使用 Brave？</translation>
 <translation id="7173394303099002355">獲得 Brave 最強大的安全防護</translation>
+<translation id="5775101967851558962">在 Brave 關閉後一律清除裝置上的網站資料</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">如果您只需要使用這個帳戶一次，您可以使用 Brave 瀏覽器的訪客模式。若您要為其他使用者新增帳戶，請<ph name="LINK_BEGIN"/>新增個人資料<ph name="LINK_END"/>至您的 <ph name="DEVICE_TYPE"/>。
 

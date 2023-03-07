@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
+<translation id="7561196759112975576">همیشه</translation>
+<translation id="7961015016161918242">هرگز</translation>
 <translation id="4615489450165434530">گزارش خرابی سایت</translation>
 <translation id="8097438084542431276">کپی کردن پیوند تمیز</translation>
+<translation id="4678672101289648246">فقط در صفحه زبانه جدید</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
+<translation id="8294286161128352783">فقط در صفحه زبانه جدید</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="1544192797660353713">کیف پول</translation>
 <translation id="2445484935443597917">ایجاد نمایه جدید</translation>
@@ -141,9 +145,7 @@
 <translation id="5977931179408079967">موقعیت</translation>
 <translation id="3790384768741064842">حرکت به سمت راست</translation>
 <translation id="7444424316576061724">حرکت به سمت چپ</translation>
-<translation id="7561196759112975576">همیشه</translation>
 <translation id="7060352228894039151">با حرکت ماوس</translation>
-<translation id="7961015016161918242">هرگز</translation>
 <translation id="8981254605840444865">نمایش تنظیمات</translation>
 <translation id="59174027418879706">فعال شد</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
@@ -194,6 +196,10 @@
 <translation id="2058818256505091369">شناور با حرکت ماوس</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{بی‌صدا کردن برگه}one{بی‌صدا کردن برگه‌ها}other{بی‌صدا کردن برگه‌ها}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{باصدا کردن برگه}one{باصدا کردن برگه‌ها}other{باصدا کردن برگه‌ها}}</translation>
+<translation id="3704707436873245822">کپی کردن متن از تصویر</translation>
+<translation id="5268098808165185458">در حال کپی کردن متن از تصویر...</translation>
+<translation id="4046485130884276245">متن از تصویر کپی شد</translation>
+<translation id="3639779775496569782">کپی کردن متن ناموفق بود</translation>
 <translation id="4235920711083356755">نمایش دکمه VPN</translation>
 <translation id="4070612712151038707">دکمه VPN را در نوار ابزار نمایش می‌دهد</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -219,6 +225,7 @@
 <translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
 <translation id="8487693399751278191">اکنون نشانک‌ها را وارد کنید...</translation>
 <translation id="2557899542277210112">برای دسترسی سریع، نشانک‌های خود را در اینجا روی نوار نشانک‌ها قرار دهید.</translation>
+<translation id="2702801445560668637">لیست خواندن</translation>
 <translation id="1968543937259008435">برای بهترین حریم خصوصی آنلاین آماده‌اید؟</translation>
 <translation id="6817415381278637662">Brave را به‌عنوان مرورگر پیش‌فرضتان تنظیم کنید تا در هر صفحه وبی که باز می‌کنید از قابلیت‌های حفاظت حریم خصوصی Brave بهره‌مند شوید.</translation>
 <translation id="8722651357687610395">Brave را به‌عنوان پیش فرض تنظیم کنید</translation>
@@ -253,7 +260,10 @@
 <translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="2245286910966863912">نمایش دکمه Brave News در نوار آدرس</translation>
-<translation id="1811404036171336214">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
+<translation id="383007806262310953">نمایش نوار نشانک‌ها</translation>
+<translation id="4054323497808446566">نوار نشانک روی همه صفحات قابل مشاهده است</translation>
+<translation id="8693858092251192712">نوار نشانک در همه صفحات،‌ به غیر از صفحه زبانه جدید، مخفی شده است</translation>
+<translation id="7158817046543187970">نوار نشانک در همه صفحات مخفی شده است</translation>
 <translation id="3416468988018290825">همیشه آدرس وب کامل نشان داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
@@ -344,7 +354,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
-<translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
@@ -371,6 +380,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">وقتی سایتی می‌خواهد به «API ارائه‌دهنده Solana» دسترسی پیدا کند سؤال شود</translation>
 <translation id="2777102601740875941">مسدود کردن دسترسی سایت‌ها به «API ارائه‌دهنده Solana»</translation>
+<translation id="4206299587103092719">ورود به سیستم Google</translation>
+<translation id="7458736153596040880">وقتی سایتی می‌خواهد از «ورود به سیستم Google» یادبود استفاده کند، پرسیده شود</translation>
+<translation id="459266451581663214">مسدود کردن سایت‌ها از استفاده از «ورود به سیستم Google» قدیمی</translation>
+<translation id="8098954941070626949">مجاز کردن استفاده سایت‌ها از «ورود به سیستم Google» قدیمی</translation>
 <translation id="6414370348346025511">محافظت استاندارد روشن است.</translation>
 <translation id="5565355416171743213">شروع استفاده از همگام‌سازی</translation>
 <translation id="4332558599726753990">راه‌اندازی همگام‌سازی</translation>
@@ -436,7 +449,7 @@
 <translation id="2516405584294312544">این حذف حساب دائمی است و هیچ راهی برای برگرداندن داده‌ها وجود ندارد. شما باید تصمیم بگیرید
  برای شروع استفاده مجدد از «همگام‌سازی»، به ساخت یک حساب جدید و افزودن مجدد همه دستگاه‌ها یکی پس از دیگری نیاز دارید.</translation>
 <translation id="4860996720371753023">حذف حساب در حال پردازش است...</translation>
-<translation id="8199291899164865593">امکان پیوستن به این زنجیره همگام‌سازی وجود ندارد. حساب کاربری پاک شده است.</translation>
+<translation id="4094590686212463338">امکان پیوستن به این زنجیره همگام‌سازی وجود ندارد. زنجیره همگام‌سازی پاک شده است.</translation>
 <translation id="5633907266617216186">آدرس‌ها، اطلاعات پرداخت و غیره.</translation>
 <translation id="294985549514492876">برنامه‌های وب ‎(PWAs)</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
@@ -486,7 +499,6 @@
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="7701040980221191251">هیچ کدام</translation>
 <translation id="1274962333945373242">کیف پول‌های رمز ارز (منسوخ)</translation>
-<translation id="3695088618483091287">کیف پول Brave (افزونه‌های ترجیحی)</translation>
 <translation id="4718664830805652430">ارز پایه پیش‌فرض</translation>
 <translation id="7992507032049865603">رمزارز پایه پیش‌فرض</translation>
 <translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>

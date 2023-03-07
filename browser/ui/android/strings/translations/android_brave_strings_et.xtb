@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Te ei teeni Brave'i preemiaid</translation>
 <translation id="1483391942610220726">Te ei saa privaatsusaruandeid</translation>
 <translation id="4683790942451502796">Lülitage teated jälle sisse, kui sooviksite edaspidigi BAT-i teenida ja nädala privaatsusaruandeid saada.</translation>
-<translation id="8618359751943259593">Lülitage teated jälle sisse, kui sooviksite edaspidigi BAT-i teenida</translation>
+<translation id="8618359751943259593">Lülitage teated jälle sisse, kui sooviksite edaspidigi BAT-i teenida.</translation>
 <translation id="760355165169399836">Kui soovite jätkuvalt saada iganädalasi privaatsusaruandeid, lülitage märguanded uuesti sisse.</translation>
 <translation id="6268959058971634697">Te ei teeni preemiaid</translation>
 <translation id="1088637159642753509">Brave preemiate teenimiseks ja privaatsusaruannete nägemiseks lubage seadme teated.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave'i kaitsete globaalsed vaikeväärtused</translation>
 <translation id="2675679258824361492">Muud privaatsusseaded</translation>
 <translation id="8026334261755873520">Sirvimisandmete kustutamine</translation>
-<translation id="5965081608816406060">Video taasesitus taustal</translation>
+<translation id="1690924763769415936">Taasesitus taustal</translation>
 <translation id="6332924730165919598">Kõikide kaartide sulgemine sulgeb Brave'i</translation>
-<translation id="3872768973878059926">Võimaldab jätkata heli taasesitust, kui liigute teisele Brave'i vahelehele, hakkate kasutama muud rakendust või seadme ekraan on välja lülitatud.</translation>
+<translation id="8308305244351876417">Võimaldab heli taasesitust, kui liigute teisele Brave'i vahelehele, hakkate kasutama muud rakendust või seadme ekraan on välja lülitatud.</translation>
 <translation id="4150201353443180367">Kuva</translation>
 <translation id="2433507940547922241">Välimus</translation>
 <translation id="6333347122924254968">Kuva aadressiribal Brave'i preemiate ikoon</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">See looja ei ole end veel Brave'i kasutajate maksete vastuvõtmiseks registreerinud. Jätkame panustamiskatseid, kuni ta kinnitab või kuni 90 päeva möödumiseni.</translation>
 <translation id="635752162765375187">MÄRKUS: see looja ei ole praegu konfigureeritud teie Preemiate kolmanda osapoole rahakotiteenuse kaudu preemiaid saama. Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="1910721550319506122">Tere tulemast!</translation>
+<translation id="2734870894159530879">Oma saldo vaatamiseks logige sisse platvormile <ph name="WALLET_PROVIDER"/></translation>
 <translation id="5830114181292529917">Võite toetada seda veebisaiti preemia saatmisega. Nii saate tegijaid suurepärase sisu loomise eest tänada.</translation>
 <translation id="7658239707568436148">Tühista</translation>
 <translation id="1201402288615127009">Edasi</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Näita reklaame, kui Brave’i ei kasutata</translation>
 <translation id="3349204812119681938">Taasta Brave Rewards</translation>
 <translation id="6606319453795180219">See kustutab Brave'i Preemiad ja lähtestab kõik teie Brave'i Preemiate andmed</translation>
-<translation id="6810078320346589989">Loo järjehoidja</translation>
+<translation id="8293206222192510085">Lisa järjehoidja</translation>
+<translation id="340492034650766959">Kustuta järjehoidja</translation>
+<translation id="2149973817440762519">Muuda järjehoidjat</translation>
+<translation id="6819319915092566548">Kuva järjehoidjad</translation>
 <translation id="3396347744975515056">Brave sünkroonimine on täiendatud ja vajab seadistamist</translation>
 <translation id="7473245612074035141">Alusta seadistust</translation>
 <translation id="8985635554450124959">Ajakohastamist ei suudetud seadistada</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Ära enam näita</translation>
 <translation id="496896260395129787">See Brave'i sünkroonimise konto kustutati teisest seadmest. Kui te ei soovinud sünkroonimist keelata, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>looge konto uuesti</translation>
-<translation id="8199291899164865593">Selle sünkroonimisahelaga ühendamine ei õnnestunud. Konto kustutati.</translation>
+<translation id="4094590686212463338">Selle sünkroonimisahelaga liitumine ei õnnestunud. Sünkroonimisahel kustutati.</translation>
 <translation id="5633907266617216186">Aadressid, makseteave jne.</translation>
 <translation id="1056898198331236512">Hoiatus</translation>
 <translation id="1426410128494586442">Jah</translation>
@@ -371,6 +375,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8465442795593991224">Uphold võib olenevalt taotletud teenustest nõuda teie identiteedi kinnitamist</translation>
 <translation id="3200197118442451932">Brave Software Inc. ei töötle ega säilita teenusepakkujale <ph name="WALLET_PROVIDER"/> konto loomisel esitatud isikuandmeid ega pääse neile juurde.</translation>
 <translation id="1665118090708049096">Ava minu <ph name="WALLET_PROVIDER"/>'i konto</translation>
+<translation id="4858636682078269312">Logige sisse oma rahakotiteenuse pakkuja <ph name="WALLET_PROVIDER"/> kontole</translation>
 <translation id="8874184842967597500">Ühendus puudub</translation>
 <translation id="2495032782748793764">Brave’i tavavalikud</translation>
 <translation id="9132378787893584761">Jagage Brave’i oma sõpradele!</translation>
@@ -388,10 +393,10 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="3624048886326677117">Blokeeri jälitajad ja reklaamid (agressiivne)</translation>
 <translation id="7151914815476509258">Blokeeri jälitajad ja reklaamid (tavapärane)</translation>
 <translation id="7384778069178817075">Luba kõik jälgijad ja reklaamid</translation>
-<translation id="4941539331405513605">Blokeeri lehtedevahelised küpsised</translation>
 <translation id="3763681089644577874">Blokeeri küpsisefailid</translation>
 <translation id="614747795780742163">Takistab veebisaitidel eelmiste külastuste teabe salvestamist</translation>
 <translation id="6883611015375728278">Blokeeri kõik küpsised</translation>
+<translation id="4941539331405513605">Blokeeri saitidevahelised küpsised</translation>
 <translation id="5657156137487675418">Luba kõik küpsised</translation>
 <translation id="3895527457258986253">Blokeeri sõrmejälje võtmine</translation>
 <translation id="7854108565842971747">Need on kaitsete vaikeseaded uute veebisaitide jaoks. Nende muutmine ei mõjuta teie olemasolevaid saidipõhiseid seadeid.</translation>
@@ -490,6 +495,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5705882733397021510">Mine tagasi</translation>
 <translation id="3985567919248057638">Teeme kiire ringkäigu</translation>
 <translation id="7889432931837317731">Võimalusel avatakse automaatselt</translation>
+<translation id="1029304566263314007">Kuva allalaadimise edenemise teated</translation>
+<translation id="2910433761530295035">Küsi, kuhu failid salvestada (kui on tuvastatud SD-kaart)</translation>
 <translation id="8967385052772844086">Kuva täielik privaatsusaruanne</translation>
 <translation id="6864343534748973390">Kõige populaarsem</translation>
 <translation id="4608192160278975831">Privaatne ja jälitamiseta</translation>
@@ -498,6 +505,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7320542277711359296">Populaarsuselt teine</translation>
 <translation id="8295049095570748497">Venemaa juhtiv otsimootor</translation>
 <translation id="2642661895835126239">Istutab puid, tegutseb Berliinis</translation>
+<translation id="2422627462367776805">Lõuna-Korea veebiportaal ja otsing</translation>
 <translation id="177282784098234156">Privaatne, sõltumatu, suunatud eelkõige kasutajatele</translation>
 <translation id="1410130669636877548">Veebist otsimisel kaitseb mõni otsimootor teie privaatsust teistest paremini.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
@@ -1016,7 +1024,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="9074594632540931067">Tõrge: BAT pole saadaval</translation>
 <translation id="5382684862562314222">Teie piirkonnas Uphold veel BAT-i ei toeta.</translation>
 <translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
-<translation id="842321566508373706">Upholdi andmetel kehtivad teie Upholdi kontole praegu mõned piirangud. Logige oma Upholdi kontole sisse ja kontrollige, kas on mingeid teateid või seni täitmata nõudeid konto suhtes, seejärel proovige uuesti.</translation>
+<translation id="1677961202754619328">Upholdi andmetel kehtivad teie Upholdi kontole praegu mõned piirangud. Logige oma Upholdi kontole sisse ja kontrollige, kas on mingeid teateid või seni täitmata nõudeid konto suhtes, seejärel proovige uuesti.</translation>
 <translation id="6417420737057016607">Brave'i reklaamid</translation>
 <translation id="5425006356459378415">Brave'i Preemiaid ei saa kasutada</translation>
 <translation id="833643743158564518">Praegu on Brave'i Preemiate uute kasutajate registreerimine teie piirkonnas keelatud. Võite aga alati hiljem uuesti proovida. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="4071347720273751665">Paistab, et sisestasite ENS-i aadressi. Selle päringu lahendamiseks peame kasutama kolmanda isiku resolverit, mis võib näha teie IP-aadressi ja domeeni. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Kasuta ENS-i ahelavälist domeeni</translation>
 <translation id="4982630604810554641">Domeeni otsimine...</translation>
+<translation id="4159738248012488342">Valige preemiaks antav summa</translation>
 <translation id="3586775666459823714">NFT-d</translation>
+<translation id="707569835145765061">Vajalik toiming: ühendage hallatav konto, vastasel juhul läheb teie vBAT kaduma</translation>
+<translation id="1776742005329298234">Seisuga <ph name="DUE_DATE"/> lõpetame olemasolevate virtuaalsete BAT-i saldode toetamise. Ühendage enne seda kuupäeva hallatav konto, et saaksime kanda teie teenitud saldo hallatavale kontole, vastasel korral läheb saldo kaduma.</translation>
+<translation id="5089752671190341407">Teil on veel aega oma lemmikloojate toetamiseks vBAT-iga</translation>
+<translation id="171158953146804144">Seisuga <ph name="DUE_DATE"/> lõpetame olemasolevate virtuaalsete BAT-i saldode toetamise. Kahjuks ei ole teie piirkonnas (<ph name="REGION"/>) ühtegi andmevaldajat, kelle kaudu saaks tulu välja võtta. Seni saate endiselt oma lemmikloojatele annetada.</translation>
 </translationbundle>

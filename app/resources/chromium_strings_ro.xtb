@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Accesează setările pentru notificări Brave</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="245693535809364497">Brave are nevoie de acces la cameră pentru a crea o hartă 3D a lucrurilor din jurul tău</translation>
+<translation id="5060669762365466104">Probabil că site-urile vor funcționa conform așteptărilor, dar nu te vor reține după ce închizi toate ferestrele Brave</translation>
 <translation id="6676384891291319759">Accesează internetul</translation>
 <translation id="1363996462118479832">Sistemul de operare Brave nu a putut sincroniza datele din cauza unei erori la conectare.</translation>
 <translation id="1257247502847251159">Brave are nevoie de acces la microfon pentru acest site</translation>
@@ -246,6 +247,7 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="7870748924073900361">Datorită Economisirii memoriei, Brave este mai rapid</translation>
 <translation id="6666624454809779082">Brave este instalat deja pentru toți utilizatorii de pe computerul tău.</translation>
 <translation id="5360050006043219962">Pentru a accesa informațiile din Brave pe toate dispozitivele, conectează-te, apoi activează sincronizarea.</translation>
+<translation id="3136039682492230890">Brave îți recomandă să scanezi acest fișier, deoarece ar putea fi periculos.</translation>
 <translation id="8291513491595858997">Părintele tău a dezactivat opțiunea „Permisiuni pentru site-uri, aplicații și extensii” în Brave. Activarea acestei <ph name="EXTENSION_TYPE_PARAMETER"/> nu este permisă.</translation>
 <translation id="1547295885616600893">Sistemul de operare Brave este posibil datorită unui <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> suplimentar.</translation>
 <translation id="8211837073776713955">Brave te anunță dacă parolele tale sunt compromise</translation>
@@ -267,7 +269,6 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="1008530050039597147">Brave are nevoie de acces la cameră pentru acest site</translation>
 <translation id="1197672524850678392">Brave nu a putut fi lansat. Încearcă din nou.</translation>
 <translation id="3405035915691517126">Brave nu îți poate verifica parolele. Încearcă din nou după 24 de ore.</translation>
-<translation id="5101812148953915496">Site-urile pe care le accesezi rețin informațiile tale până când închizi Brave</translation>
 <translation id="5516268345616100622">Manager de activități - Brave</translation>
 <translation id="713191641919118540">Interesele tale estimate de Brave</translation>
 <translation id="9068395155143628872">Ad measurement le dă site-urilor pe care le accesezi posibilitatea de a solicita informații de la Brave care le ajută să măsoare performanța anunțurilor asociate. Ad measurement restricționează urmărirea pe mai multe site-uri prin transferul câtor mai puține informații între site-uri.</translation>
@@ -338,8 +339,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="6283840329609797763">Instalarea nu a reușit din cauza unei erori neprecizate. Descărcați Brave din nou.</translation>
 <translation id="2433912322225810055">Stabilește și ce pagină se afișează când porniți Brave sau când căutați din caseta polivalentă.</translation>
 <translation id="4100716194836114130">Acesta este browserul dvs. Brave</translation>
-<translation id="6208136456999964972">Când închizi toate ferestrele Brave, cookie-urile și datele privind site-urile sunt șterse automat</translation>
-<translation id="6371875426681214174">Vei fi <ph name="BEGIN_BOLD"/>deconectat(ă) de pe majoritatea site-urilor<ph name="END_BOLD"/> când închizi Brave. Dacă sincronizarea este dezactivată, vei fi <ph name="BEGIN_BOLD"/>deconectat(ă) și de la serviciile Brave și de la Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave are nevoie de permisiune ca să acceseze camera foto și microfonul pentru acest site</translation>
 <translation id="6933858244219479645">Sistemul de operare Brave</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Ce date sunt folosite:<ph name="END_BOLD"/> istoricul tău de navigare, o evidență a site-urilor pe care le-ai accesat folosind Brave pe acest dispozitiv.</translation>
@@ -366,6 +365,7 @@ Brave nu poate recupera setările.</translation>
 <translation id="1611678871603620428">Pentru a primi actualizările Brave viitoare, vei avea nevoie de macOS 10.13 sau o versiune ulterioară. Acest computer folosește OS X 10.11.</translation>
 <translation id="4484434718272972655">Cine folosește Brave?</translation>
 <translation id="7173394303099002355">Beneficiază de cel mai înalt nivel de securitate de la Brave</translation>
+<translation id="5775101967851558962">Șterge întotdeauna datele privind site-urile de pe dispozitiv când închizi Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Dacă doriți să utilizați acest cont o singură dată, puteți utiliza modul pentru Invitați în browserul Brave. Dacă doriți să creați un cont pentru altcineva, <ph name="LINK_BEGIN"/> adăugați un nou profil<ph name="LINK_END"/> la <ph name="DEVICE_TYPE"/>.
 

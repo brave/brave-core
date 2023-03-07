@@ -249,6 +249,7 @@ Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave h
 <translation id="3507835409099344374">Brave bildirishnomalar sozlamalarini ochish</translation>
 <translation id="9156965752763025780">O‘zgartirishlar Brave qaytadan ishga tushirilganda kuchga kiradi.</translation>
 <translation id="245693535809364497">Brave atrofingiz 3D xxaritasini yaratishi uchun kameradan foydalanishiga ruxsat kerak</translation>
+<translation id="5060669762365466104">Saytlar siz kutganingizdek ishlaydi, lekin barcha Brave oynalarini yopganingizdan keyin sizni eslay olmaydi</translation>
 <translation id="6676384891291319759">Internetga ulanish</translation>
 <translation id="1363996462118479832">Hisobga kirishdagi xatolik sababli ChromeOS maʼlumotlarni sinxronlay olmadi.</translation>
 <translation id="1257247502847251159">Brave bu saytda mikrofondan foydalanishiga ruxsat kerak</translation>
@@ -258,6 +259,7 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="7870748924073900361">Xotirani tejash funksiyasi Braveni tezlashtirdi</translation>
 <translation id="6666624454809779082">Brave allaqachon kompyuterdagi barcha foydalanuvchilar uchun o‘rnatilgan.</translation>
 <translation id="5360050006043219962">Brave brauzeridagi axborotlardan barcha qurilmalaringizda foydalanish uchun hisobingizga kiring va sinxronizatsiyani yoqing.</translation>
+<translation id="3136039682492230890">Bu fayl xavfli boʻlishi mumkin, Brave uni tekshirishni tavsiya qiladi.</translation>
 <translation id="8291513491595858997">Bravedagi “Sayt, ilova va kengaytmalarga ruxsat” ota-onangiz tomonidan faolsizlantirilgan. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> yoqilishi taqiqlangan.</translation>
 <translation id="1547295885616600893">ChromeOS tizimini ishlab chiqishda <ph name="BEGIN_LINK_CROS_OSS"/>ochiq kodli DT<ph name="END_LINK_CROS_OSS"/> vositalaridan foydalanilgan.</translation>
 <translation id="8211837073776713955">Parollaringiz oshkor etilsa, Brave bu haqida xabar qiladi</translation>
@@ -281,7 +283,6 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="1008530050039597147">Brave bu saytda kameradan foydalanishiga ruxsat kerak</translation>
 <translation id="1197672524850678392">Brave ishga tushmadi. Qayta urining.</translation>
 <translation id="3405035915691517126">Brave parollaringizni tekshira olmadi. 24 soatdan keyin qayta urining.</translation>
-<translation id="5101812148953915496">Siz ochgan saytlar maʼlumotlaringizni Brave yopilmaguncha esda saqlaydi</translation>
 <translation id="5516268345616100622">Vazifalar menejeri – Brave</translation>
 <translation id="713191641919118540">Brave taxmin qilgan qiziqishlaringiz</translation>
 <translation id="9068395155143628872">Reklamani oʻlchash orqali siz kiradigan saytlar oʻzidagi reklama unumdorligini hisoblashga yordam beradigan maʼlumotlarni Brave ilovasidan soʻray oladi. Reklama statistikasi imkon qadar kam axborotni saytlararo ulashish orqali saytlardagi kuzatuv mexanizmlarini taqiqlaydi.</translation>
@@ -353,8 +354,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="6283840329609797763">O‘rnatish vaqtida kutilmagan xatolik yuz berdi. Brave‘ni qaytadan yuklab oling.</translation>
 <translation id="2433912322225810055">Bundan tashqari kengaytma Brave boshlash sahifasini va omniboksdagi so‘rovlar uchun foydalaniladigan birlamchi qidiruv tizimini o‘zgartirdi.</translation>
 <translation id="4100716194836114130">Bu sizning shaxsiy Brave brauzeringiz</translation>
-<translation id="6208136456999964972">Barcha Brave oynalari yopilganda, cookie fayllar va sayt maʼlumotlari avtomatik ravishda tozalanadi</translation>
-<translation id="6371875426681214174">Brave yopilganda <ph name="BEGIN_BOLD"/>aksar saytlardan chiqib ketasiz<ph name="END_BOLD"/>. Agar sinxronizatsiya oʻchiq boʻlsa, <ph name="BEGIN_BOLD"/>Brave xizmatlari va Brave hisobingizdan ham chiqib ketasiz<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Bu sayt kamera va mikrofoningizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
 <translation id="6933858244219479645">ChromeOS tizimi</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Qanday maʼlumotlar ishlatilishi:<ph name="END_BOLD"/> Bu qurilmada Brave orqali siz kirgan saytlar tarixidagi qaydlar.</translation>
@@ -382,5 +381,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="1611678871603620428">Brave yangilanishlari macOS 10.13 yoki undan yuqori versiyalarda ishlaydi. Bu kompyuterdagi versiya: OS X 10.11.</translation>
 <translation id="4484434718272972655">Braveni kim ochdi?</translation>
 <translation id="7173394303099002355">Brave brauzerining kuchli xavfsizligidan foydalaning</translation>
+<translation id="5775101967851558962">Brave yopilganda har doim qurilmadan sayt maʼlumotlarini oʻchirib tashlang</translation>
 <translation id="8992261409816268381">Brave mualliflari</translation>
 </translationbundle>

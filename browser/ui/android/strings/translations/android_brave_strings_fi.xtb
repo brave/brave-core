@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Et ansaitse Brave-palkintoja</translation>
 <translation id="1483391942610220726">Et saa yksityisyysraportteja</translation>
 <translation id="4683790942451502796">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen ansaita BATeja ja saada viikottaisia yksityisyysraportteja.</translation>
-<translation id="8618359751943259593">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen ansaita BATeja</translation>
+<translation id="8618359751943259593">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen ansaita BATeja.</translation>
 <translation id="760355165169399836">Ota ilmoitukset uudelleen käyttöön, jos haluat edelleen saada viikottaisia yksityisyysraportteja.</translation>
 <translation id="6268959058971634697">Et ansaitse palkintoja</translation>
 <translation id="1088637159642753509">Ota laitteen ilmoitukset käyttöön, jotta voit ansaita Brave-palkintoja ja nähdä yksityisyysraportteja.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave-suojausten yleiset oletukset</translation>
 <translation id="2675679258824361492">Muut tietosuoja-asetukset</translation>
 <translation id="8026334261755873520">Poista selaustiedot</translation>
-<translation id="5965081608816406060">Videoiden toisto taustalla</translation>
+<translation id="1690924763769415936">Taustatoisto</translation>
 <translation id="6332924730165919598">Kun kaikki välilehdet suljetaan, myös Brave sulkeutuu</translation>
-<translation id="3872768973878059926">Sallii äänen jatkaa toistoa, kun vaihdat toiseen välilehteen Bravessa, vaihdat toiseen sovellukseen tai laitteen näyttö ei ole päällä.</translation>
+<translation id="8308305244351876417">Sallii äänen toistaa, kun vaihdat toiseen välilehteen Bravessa tai toiseen sovellukseen tai laitteen näyttö ei ole päällä.</translation>
 <translation id="4150201353443180367">Näyttö</translation>
 <translation id="2433507940547922241">Ulkonäkö</translation>
 <translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Tämä sisällöntuottaja ei ole vielä rekisteröitynyt vastaanottamaan lahjoituksia Brave-käyttäjiltä. Yritämme antaa lahjoituksen, kunnes hän vahvistaa tai kunnes 90 päivää on kulunut.</translation>
 <translation id="635752162765375187">HUOMIO: Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä palkintojesi lompakon säilytyspalvelusta. Kaikki antamasi tipit jäävät odottamaan, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
 <translation id="1910721550319506122">Tervetuloa!</translation>
+<translation id="2734870894159530879">Kirjaudu sisään <ph name="WALLET_PROVIDER"/>-tilillesi tarkastaaksesi saldosi</translation>
 <translation id="5830114181292529917">Voit tukea tätä sivustoa lähettämällä tipin. Se on tapa kiittää hienosta sisällöstä.</translation>
 <translation id="7658239707568436148">Peruuta</translation>
 <translation id="1201402288615127009">Seuraava</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Näytä mainoksia, kun Brave ei ole käytössä</translation>
 <translation id="3349204812119681938">Nollaa Brave Rewards</translation>
 <translation id="6606319453795180219">Tämä poistaa Brave Rewards -palkintosi ja nollaa kaikki Brave Rewards -tietosi</translation>
-<translation id="6810078320346589989">Luo kirjanmerkki</translation>
+<translation id="8293206222192510085">Lisää kirjanmerkki</translation>
+<translation id="340492034650766959">Poista kirjanmerkki</translation>
+<translation id="2149973817440762519">Muokkaa kirjanmerkkiä</translation>
+<translation id="6819319915092566548">Näytä kirjanmerkit</translation>
 <translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
 <translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="8985635554450124959">Synkronoinnin valmisteleminen epäonnistui</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Älä näytä uudelleen</translation>
 <translation id="496896260395129787">Tämä Brave-synkronointitili poistettiin toisesta laitteesta. Jos et halunnut poistaa synkronointia käytöstä, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>luo tili uudelleen</translation>
-<translation id="8199291899164865593">Ei voi liittyä tähän synkronointiketjuun. Tili poistettiin.</translation>
+<translation id="4094590686212463338">Ei voi liittyä tähän synkronointiketjuun. Synkronointiketju poistettiin.</translation>
 <translation id="5633907266617216186">Osoitteet, maksutiedot jne.</translation>
 <translation id="1056898198331236512">Varoitus</translation>
 <translation id="1426410128494586442">Kyllä</translation>
@@ -371,6 +375,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
 <translation id="3200197118442451932">Brave Software Inc. ei käsittele, tallenna tai käytä henkilökohtaisia tietoja, joita annat palveluntarjoajalle <ph name="WALLET_PROVIDER"/> luodessasi tilin heidän palveluunsa.</translation>
 <translation id="1665118090708049096">Siirry <ph name="WALLET_PROVIDER"/> -tililleni</translation>
+<translation id="4858636682078269312">Kirjaudu sisään <ph name="WALLET_PROVIDER"/> -tilillesi</translation>
 <translation id="8874184842967597500">Ei yhdistetty</translation>
 <translation id="2495032782748793764">Braven oletusasetukset</translation>
 <translation id="9132378787893584761">Jaa Brave ystävillesi!</translation>
@@ -388,10 +393,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3624048886326677117">Estä seuraimet ja mainokset (Aggressiivinen)</translation>
 <translation id="7151914815476509258">Estä seuraimet ja mainokset (Standardi)</translation>
 <translation id="7384778069178817075">Salli kaikki seuraimet &amp; mainokset</translation>
-<translation id="4941539331405513605">Estä sivustojenväliset evästeet</translation>
 <translation id="3763681089644577874">Estä evästeet</translation>
 <translation id="614747795780742163">Estää verkkosivustoja tallentamasta aiempia käyntikertojasi koskevia tietoja</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
+<translation id="4941539331405513605">Estä sivustojenväliset evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="3895527457258986253">Estä sormenjälkitunnistus</translation>
 <translation id="7854108565842971747">Nämä ovat oletusarvoiset suojausasetukset uusille sivustoille. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.</translation>
@@ -490,6 +495,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5705882733397021510">Palaa takaisin</translation>
 <translation id="3985567919248057638">Lyhyt esittely</translation>
 <translation id="7889432931837317731">Avaa automaattisesti aina kun mahdollista</translation>
+<translation id="1029304566263314007">Näytä latauksen edistymisilmoitukset</translation>
+<translation id="2910433761530295035">Kysy, mihin tiedostot tallennetaan (jos SD-kortti on havaittu)</translation>
 <translation id="8967385052772844086">Näytä yksityisyysraportti kokonaisuudessaan</translation>
 <translation id="6864343534748973390">Suosituimmat</translation>
 <translation id="4608192160278975831">Yksityinen, ei seurantaa</translation>
@@ -498,6 +505,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7320542277711359296">Toiseksi suosituin</translation>
 <translation id="8295049095570748497">Venäjän johtava hakukone</translation>
 <translation id="2642661895835126239">Istuttaa puita, toimii Beriliinistä käsin</translation>
+<translation id="2422627462367776805">Etelä-korealainen verkkoportaali ja hakukone</translation>
 <translation id="177282784098234156">Yksityinen, riippumaton, käyttäjä ensin</translation>
 <translation id="1410130669636877548">Jotkin hakukoneet suojaavat yksityisyyttäsi muita paremmin tehdessäsi verkkohakuja.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
@@ -1016,7 +1024,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
 <translation id="5382684862562314222">BATtia ei vielä tueta alueellasi Uphold-palvelussa.</translation>
 <translation id="6996157559236886133">Virhe: Rajoitettu Uphold-tilin toiminnallisuus</translation>
-<translation id="842321566508373706">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen.</translation>
+<translation id="1677961202754619328">Upholdin mukaan Uphold-tililläsi on tällä hetkellä joitain rajoituksia. Kirjaudu sisään Uphold-tilillesi ja tarkista, onko sinulla ilmoituksia tai tilivaatimuksia jäljellä, ja yritä sitten uudelleen.</translation>
 <translation id="6417420737057016607">Brave-mainokset</translation>
 <translation id="5425006356459378415">Brave-palkinnot eivät ole käytettävissä</translation>
 <translation id="833643743158564518">Uudet rekisteröitymiset Brave-palkintoihin on poistettu käytöstä alueellasi. Voit kuitenkin aina yrittää myöhemmin uudelleen. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4071347720273751665">Näyttää siltä, että olet syöttänyt ENS-osoitteen. Meidän täytyy käyttää kolmannen osapuolen ratkaisijaa selvittääksemme tämän pyynnön, joka saattaa nähdä IP-osoitteesi ja verkkotunnuksesi. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Käytä ketjun ulkopuolista ENS-verkkotunnusta</translation>
 <translation id="4982630604810554641">Etsitään verkkotunnusta...</translation>
+<translation id="4159738248012488342">Valitse tipattava summa</translation>
 <translation id="3586775666459823714">NFT:t</translation>
+<translation id="707569835145765061">Aiheellinen toimenpide: Yhdistä säilytytili tai vBATisi menetetään</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/> lopetamme tuen nykyisille virtuaalisille BAT-saldoille. Yhdistä säilytystili ennen tätä päivämäärää niin voimme siirtää ansaitun saldosi säilytystilillesi, tai muuten saldosi menetetään.</translation>
+<translation id="5089752671190341407">Sinulla on vielä aikaa lahjoittaa vBATisi suosikkiluojillesi</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/> lopetamme tuen nykyisille virtuaalisille BAT-saldoille. Valitettavasti alueellasi (<ph name="REGION"/>) ei ole saatavilla valvojaa nostamaan ansioitasi. Siihen asti voit silti tehdä lahjoituksen suosikkiluojillesi.</translation>
 </translationbundle>

@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Brave Ödüllerini kazanmıyorsunuz</translation>
 <translation id="1483391942610220726">Gizlilik Raporlarını almıyorsunuz</translation>
 <translation id="4683790942451502796">BAT kazanmaya ve haftalık gizlilik raporlarını almaya devam etmek isterseniz bildirimleri tekrar açın.</translation>
-<translation id="8618359751943259593">BAT kazanmaya devam etmek isterseniz bildirimleri tekrar açın</translation>
+<translation id="8618359751943259593">BAT kazanmaya devam etmek isterseniz bildirimleri tekrar açın.</translation>
 <translation id="760355165169399836">Haftalık gizlilik raporlarını almaya devam etmek isterseniz bildirimleri tekrar açın.</translation>
 <translation id="6268959058971634697">Ödülleri kazanmıyorsunuz</translation>
 <translation id="1088637159642753509">Brave Ödüllerini kazanmak ve Gizlilik Raporlarını görmek için cihaz bildirimlerini etkinleştirin.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave kalkanları genel varsayılanları</translation>
 <translation id="2675679258824361492">Diğer gizlilik ayarları</translation>
 <translation id="8026334261755873520">Tarama verilerini temizle</translation>
-<translation id="5965081608816406060">Arka planda kayıttan video oynatma</translation>
+<translation id="1690924763769415936">Arka planda oynat</translation>
 <translation id="6332924730165919598">Tüm sekmelerin kapatılması, Brave'i kapatır</translation>
-<translation id="3872768973878059926">Brave'de başka bir sekmeye geçerken, başka bir uygulamaya geçerken veya cihaz ekranınız kapalıyken sesin çalmaya devam etmesine izin verir.</translation>
+<translation id="8308305244351876417">Brave'de veya başka bir uygulamada sekme değiştirirken ya da cihaz ekranınız kapalıyken sesin çalmasına izin verir.</translation>
 <translation id="4150201353443180367">Ekran</translation>
 <translation id="2433507940547922241">Görünüm</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Bu oluşturucu, Brave kullanıcılarından katkı almak için henüz kaydolmadı. Kendisi doğrulama yapana veya 90 gün geçene kadar katkı yapmayı deneyeceğiz.</translation>
 <translation id="635752162765375187">NOT: Bu oluşturucu şu an Ödüller korumalı cüzdan hizmetinizden bahşiş alacak şekilde yapılandırılmadı. Gönderdiğiniz bütün bahşişler beklemede kalacak ve 90 gün boyunca otomatik olarak yeniden denenecektir.</translation>
 <translation id="1910721550319506122">Hoş geldiniz!</translation>
+<translation id="2734870894159530879">Bakiyenizi görmek için <ph name="WALLET_PROVIDER"/> giriş yapın.</translation>
 <translation id="5830114181292529917">Bahşiş göndererek bu siteyi destekleyebilirsiniz. Bu, harika içerikler için onlara teşekkür etmenin bir yoludur.</translation>
 <translation id="7658239707568436148">İptal et</translation>
 <translation id="1201402288615127009">İleri</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Brave kullanımda olmadığında reklamları göster</translation>
 <translation id="3349204812119681938">Brave Ödüllerini Sıfırla</translation>
 <translation id="6606319453795180219">Bu, Brave Rewards'unuzu siler ve tüm Brave Rewards verilerinizi sıfırlar</translation>
-<translation id="6810078320346589989">Bir yer imi oluştur</translation>
+<translation id="8293206222192510085">Yer İşareti Ekle</translation>
+<translation id="340492034650766959">Yer İşaretini Sil</translation>
+<translation id="2149973817440762519">Yer İşaretini Düzenle</translation>
+<translation id="6819319915092566548">Yer İşaretlerini Görüntüle</translation>
 <translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
 <translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="8985635554450124959">Eşitleme ayarlanamadı</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Tekrar gösterme</translation>
 <translation id="496896260395129787">Bu Brave Sync hesabı, başka bir cihazdan silindi. Senkronizasyonu devre dışı bırakmak istemediyseniz <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hesabı yeniden oluşturun</translation>
-<translation id="8199291899164865593">Senkronizasyon zincirine katılınamadı. Hesap silindi.</translation>
+<translation id="4094590686212463338">Bu senkronizasyon zincirine katılınamadı. Senkronizasyon zinciri silindi.</translation>
 <translation id="5633907266617216186">Adresler, ödeme bilgileri, vb.</translation>
 <translation id="1056898198331236512">Uyarı</translation>
 <translation id="1426410128494586442">Evet</translation>
@@ -372,6 +376,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
 <translation id="3200197118442451932">Brave Software Inc., <ph name="WALLET_PROVIDER"/> için onunla bir hesap oluşturduğunuzda verdiğiniz kişisel bilgilerin hiçbirini işlemez, kaydetmez veya bunlara erişmez.</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/> hesabıma git</translation>
+<translation id="4858636682078269312"><ph name="WALLET_PROVIDER"/> hesabınıza giriş yapın</translation>
 <translation id="8874184842967597500">Bağlı değil</translation>
 <translation id="2495032782748793764">Varsayılan Brave</translation>
 <translation id="9132378787893584761">Brave'i arkadaşlarınızla paylaşın!</translation>
@@ -389,10 +394,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3624048886326677117">İzleyicileri &amp; reklamları engelle (Agresif)</translation>
 <translation id="7151914815476509258">İzleyicileri &amp; reklamları engelle (Standart)</translation>
 <translation id="7384778069178817075">Tüm izleyicilere &amp; reklamlara izin ver</translation>
-<translation id="4941539331405513605">Siteler arası çerezleri engelle</translation>
 <translation id="3763681089644577874">Çerezleri Engelle</translation>
 <translation id="614747795780742163">Websitelerinin önceki ziyaretleriniz hakkında bilgi depolamasının önüne geçer</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
+<translation id="4941539331405513605">Siteler arası çerezleri engelle</translation>
 <translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="3895527457258986253">Parmak İzi Kontrolünü Engelle</translation>
 <translation id="7854108565842971747">Bunlar yeni siteler için varsayılan Kalkan ayarlarıdır. Değiştirilmeleri, site başına mevcut ayarlarınızı etkilemeyecektir.</translation>
@@ -491,6 +496,8 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5705882733397021510">Geri Git</translation>
 <translation id="3985567919248057638">Hızlı Bir Tur Atalım</translation>
 <translation id="7889432931837317731">Mümkün olduğunda otomatik olarak aç</translation>
+<translation id="1029304566263314007">İndirme ilerleme durumu bildirimlerini göster</translation>
+<translation id="2910433761530295035">Dosyaların nereye kaydedileceğini sor (SD kartı algılandıysa)</translation>
 <translation id="8967385052772844086">Tüm Gizlilik Raporunu görüntüleyin</translation>
 <translation id="6864343534748973390">En popüler</translation>
 <translation id="4608192160278975831">Gizli ve izleme yok</translation>
@@ -499,6 +506,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7320542277711359296">En popüler ikinci</translation>
 <translation id="8295049095570748497">Rusya'nın önde gelen bir arama motoru</translation>
 <translation id="2642661895835126239">Ağaç diker, Berlin'de yer alır</translation>
+<translation id="2422627462367776805">Güney Kore web portalı ve araması</translation>
 <translation id="177282784098234156">Gizli, bağımsız, kullanıcı öncelikli</translation>
 <translation id="1410130669636877548">Webde arama yaptığınızda, bazı arama motorları gizliliğinizi diğerlerinden daha iyi korur.</translation>
 <translation id="5187052478998910855">Rewards'la ilgili bir hatırlatıcı mı lazım?</translation>
@@ -1017,7 +1025,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="9074594632540931067">Hata: BAT kullanılamıyor</translation>
 <translation id="5382684862562314222">Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.</translation>
 <translation id="6996157559236886133">Hata: Sınırlı Uphold hesabı işlevleri</translation>
-<translation id="842321566508373706">Uphold'a göre şu anda Uphold hesabınızda bazı sınırlamalar mevcut. Lütfen Uphold hesabınıza giriş yapın ve tamamlamanız gereken herhangi bir bildirim veya kalan hesap gereksinimleri olup olmadığını kontrol edip tekrar deneyin.</translation>
+<translation id="1677961202754619328">Uphold'a göre şu anda Uphold hesabınızda bazı sınırlamalar mevcut. Lütfen Uphold hesabınıza giriş yapın ve tamamlamanız gereken herhangi bir bildirim veya kalan hesap gereksinimleri olup olmadığını kontrol edin, ardından tekrar deneyin.</translation>
 <translation id="6417420737057016607">Brave Reklamları</translation>
 <translation id="5425006356459378415">Brave Ödülleri mevcut değil</translation>
 <translation id="833643743158564518">Brave Ödülleri için yeni kayıtlar şu anda bölgenizde devre dışı bırakılmıştır. Yine de daha sonra tekrar deneyebilirsiniz. <ph name="LEARN_MORE"/></translation>
@@ -1027,5 +1035,10 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4071347720273751665">Bir ENS adresi girdiniz gibi görünüyor. Bu talebi çözmek için bir üçüncü taraf çözümleyici kullanmamız gerekeceği için üçüncü taraf çözümleyici, IP adresinizi ve alan adınızı görebilir. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENS offchain alan adını kullan</translation>
 <translation id="4982630604810554641">Alan adı aranıyor...</translation>
+<translation id="4159738248012488342">Lütfen bahşiş miktarını seçin</translation>
 <translation id="3586775666459823714">NFT'ler</translation>
+<translation id="707569835145765061">Eylem gerekli: Bir korumalı hesap bağlamazsanız vBAT'ınız kaybolacak</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Kazandığınız bakiyenizi korumalı hesabınıza aktarabilmemiz için bu tarihten önce bir korumalı hesap bağlayın, aksi takdirde bakiyenizi kaybedersiniz.</translation>
+<translation id="5089752671190341407">Favori oluşturucularınıza vBAT bağışı yapmak için hala zamanınız var</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Ne yazık ki bölgenizde (<ph name="REGION"/>) kazancınızı çekebileceğiniz kullanılabilir korumalı hesaplar mevcut değil. O zamana kadar, favori oluşturucularınıza destek vermeye devam edebilirsiniz.</translation>
 </translationbundle>

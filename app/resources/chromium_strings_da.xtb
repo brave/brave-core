@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Gå til indstillinger for Brave-notifikationer</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="245693535809364497">Brave skal have adgangstilladelse til kamera for at oprette et 3D-kort over dine omgivelser</translation>
+<translation id="5060669762365466104">Websites fungerer sandsynligvis som forventet, men de husker dig ikke, når du har lukket alle Brave-vinduer</translation>
 <translation id="6676384891291319759">Få adgang til internettet</translation>
 <translation id="1363996462118479832">Chrome OS kunne ikke synkronisere dine data på grund af en loginfejl.</translation>
 <translation id="1257247502847251159">Brave skal have adgangstilladelse til mikrofon for at bruge dette website</translation>
@@ -246,6 +247,7 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="7870748924073900361">Hukommelsessparefunktion har gjort Brave hurtigere</translation>
 <translation id="6666624454809779082">Brave er allerede installeret for alle brugere på computeren.</translation>
 <translation id="5360050006043219962">Log ind, og aktivér derefter synkronisering for at få adgang til dine Brave-ting på alle dine enheder.</translation>
+<translation id="3136039682492230890">Brave anbefaler, at du scanner denne fil, da den kan være skadelig.</translation>
 <translation id="8291513491595858997">Din forælder har deaktiveret "Tilladelser til websites, apps og udvidelser" for Brave. Det er ikke tilladt at aktivere denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">Chrome OS leveres ved hjælp af <ph name="BEGIN_LINK_CROS_OSS"/>open source-software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave giver dig besked, hvis dine adgangskoder kompromitteres</translation>
@@ -268,7 +270,6 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="1008530050039597147">Brave skal have adgangstilladelse til kamera for at bruge dette website</translation>
 <translation id="1197672524850678392">Brave kunne ikke startes. Prøv igen.</translation>
 <translation id="3405035915691517126">Brave kan ikke tjekke dine adgangskoder. Prøv igen efter 24 timer.</translation>
-<translation id="5101812148953915496">Websites, du besøger, husker dine oplysninger, indtil du lukker Brave</translation>
 <translation id="5516268345616100622">Jobliste – Brave</translation>
 <translation id="713191641919118540">Dine interesser, sådan som de er estimeret af Brave</translation>
 <translation id="9068395155143628872">Ad measurement giver websites, du besøger, mulighed for at anmode om oplysninger fra Brave, som hjælper websitet med at måle, hvor godt dets annoncer klarer sig. Ad measurement begrænser sporing på tværs af websites ved at overføre så få oplysninger som muligt mellem websites.</translation>
@@ -339,8 +340,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="6283840329609797763">Installationen mislykkedes på grund af en uspecificeret fejl. Download Brave igen.</translation>
 <translation id="2433912322225810055">Den styrer også, hvilken side der vises, når du åbner Brave eller søger via omnifeltet.</translation>
 <translation id="4100716194836114130">Dette er din Brave-browser</translation>
-<translation id="6208136456999964972">Når du lukker alle Brave-vinduer, ryddes cookies og websitedata automatisk</translation>
-<translation id="6371875426681214174">Du <ph name="BEGIN_BOLD"/>logges ud af de fleste websites<ph name="END_BOLD"/>, når du lukker Brave. Hvis synkronisering er deaktiveret, <ph name="BEGIN_BOLD"/>logges du desuden ud af Braves tjenester og Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave skal have tilladelse til at bruge dit kamera og din mikrofon på dette website</translation>
 <translation id="6933858244219479645">Chrome OS-system</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Disse data bruges:<ph name="END_BOLD"/> Din browserhistorik, dvs. en oversigt over, hvilke websites du har besøgt i Brave på denne enhed.</translation>
@@ -367,6 +366,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="1611678871603620428">Hvis du vil have fremtidige Brave-opdateringer, skal du have macOS 10.13 eller nyere. Denne computer anvender OS X 10.11.</translation>
 <translation id="4484434718272972655">Hvem bruger Brave?</translation>
 <translation id="7173394303099002355">Få Braves stærkeste beskyttelse</translation>
+<translation id="5775101967851558962">Ryd altid websitedata fra din enhed, når du lukker Brave</translation>
 <translation id="8992261409816268381">Forfatterne til Brave</translation>
 <translation id="479793348545936567">Hvis du kun vil bruge denne konto én gang, kan du vælge Guest i Brave-browseren. Hvis du vil tilføje en konto til en anden, <ph name="LINK_BEGIN"/>så tilføj en ny profil<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
 

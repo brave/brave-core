@@ -239,6 +239,7 @@
 <translation id="3507835409099344374">ወደ የBrave ማሳወቂያ ቅንብሮች ይሂዱ</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="245693535809364497">Brave የዙሪያዎን የ3ል ካርታ ለመፍጠር የካሜራ ፈቃድ ያስፈልገዋል</translation>
+<translation id="5060669762365466104">ጣቢያዎች እርስዎ እንደሚጠብቁት ሊሰሩ ይችላሉ ነገር ግን ሁሉንም የBrave መስኮቶች ከዘጉ በኋላ እርስዎን አያስታውሱዎትም</translation>
 <translation id="6676384891291319759">በይነመረብን ተዳረስ</translation>
 <translation id="1363996462118479832">በመለያ ሲገባ በነበረ ስህተት ምክንያት &amp;ChromeOS ውሂብዎን ማስመር አልቻለም።</translation>
 <translation id="1257247502847251159">Brave ለዚህ ጣቢያ የማይክሮፎን ፈቃድ ያስፈልገዋል</translation>
@@ -248,6 +249,7 @@
 <translation id="7870748924073900361">የማህደረ ትውስታ ቆጣቢ Braveን ፈጣን አድርጎታል</translation>
 <translation id="6666624454809779082">Brave ለሁሉም በእርስዎ ኮምፒውተር ላይ ላሉ ተጠቃሚዎች አስቀድሞ ተጭኗል።</translation>
 <translation id="5360050006043219962">በሁሉም መሣሪያዎችዎ ላይ የእርስዎን Brave ነገሮች ለመድረስ ይግቡ፣ ከዚያ ስምረትን ያብሩ።</translation>
+<translation id="3136039682492230890">Brave ይህ ፋይል አደገኛ ሊሆን ስለሚችል እንዲቃኙት ይመክራል።</translation>
 <translation id="8291513491595858997">የእርስዎ ወላጅ ለBrave «የጣቢያዎች፣ መተግበሪያዎች እና ቅጥያዎች ፈቃዶች»ን አጥፍተዋል። ይህን <ph name="EXTENSION_TYPE_PARAMETER"/> ማንቃት አይፈቀድም።</translation>
 <translation id="1547295885616600893">ChromeOS በተጨማሪ <ph name="BEGIN_LINK_CROS_OSS"/>ክፍት ምንጭ ሶፍትዌር<ph name="END_LINK_CROS_OSS"/> እውን ሊሆን ችሏል።</translation>
 <translation id="8211837073776713955">Brave የእርስዎ የይለፍ ቃላት ከተነጠቁ እርስዎ እንዲያውቁት ያደርግዎታል</translation>
@@ -269,7 +271,6 @@
 <translation id="1008530050039597147">Brave ለዚህ ጣቢያ የካሜራ ፈቃድ ያስፈልገዋል</translation>
 <translation id="1197672524850678392">Braveን ማስጀመር አልተቻለም። እንደገና ይሞክሩ።</translation>
 <translation id="3405035915691517126">Brave የእርስዎን የይለፍ ቃላት መፈተሽ አይችልም። ከ24 ሰዓቶች በኋላ እንደገና ይሞክሩ።</translation>
-<translation id="5101812148953915496">እርስዎ የጎበኟቸው ጣቢያዎች Braveን እስኪዘጉ ድረስ መረጃዎን ያስታውሳሉ</translation>
 <translation id="5516268345616100622">ተግባር መሪ - Brave</translation>
 <translation id="713191641919118540">በBrave የተገመቱ የእርስዎ ዝንባሌዎች</translation>
 <translation id="9068395155143628872">የማስታወቂያ ልኬት እርስዎ የሚጎበኟቸው ጣቢያዎች የማስታወቂያዎቻቸውን አፈጻጸም የሚለካው ጣቢያ የሚያግዘውን መረጃ ከBrave እንዲጠይቁ ያስችላቸዋል። የማስታወቂያ ልኬት በተቻለ መጠን ትንሽ መረጃን በጣቢያዎች መካከል በማስተላለፍ የጣቢያ ተሻጋሪ ክትትልን ይገድባል።</translation>
@@ -340,8 +341,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="6283840329609797763">ተለይቶ ባልታወቀ ስህተት ምክንያት ጭነት ከሽፏል። እባክዎ Braveን እንደገና ያውርዱ።</translation>
 <translation id="2433912322225810055">እንዲሁም Braveን ሲጀምሩት ወይም ከኦምኒቦክሱ ሆነው ሲፈልጉ የሚታየውን ገጽ ይቆጣጠራል።</translation>
 <translation id="4100716194836114130">ይሄ የእርስዎ Brave ነው</translation>
-<translation id="6208136456999964972">ሁሉንም የBrave መስኮቶች ሲዘጉ፣ ኩኪዎች እና የጣቢያ ውሂብ በራስሰር ይጸዳሉ</translation>
-<translation id="6371875426681214174">Braveን ሲዘጉ <ph name="BEGIN_BOLD"/>ከብዙ ጣቢያዎች ዘግተው እንዲወጡ<ph name="END_BOLD"/> ይደረጋሉ። ማስመር ጠፍቶ ከሆነ <ph name="BEGIN_BOLD"/>ከBrave አገልግሎቶች እና Brave<ph name="END_BOLD"/> ዘግተው እንዲወጡ ይደረጋሉ።</translation>
 <translation id="4831743161813926460">Brave ለዚህ ጣቢያ የእርስዎን ካሜራ እና ማይክሮፎን ለመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="6933858244219479645">የChromeOS ስርዓት</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>ምን ውሂብ ጥቅም ላይ እንደሚውል፦<ph name="END_BOLD"/> የአሰሳ ታሪክዎ፣ በዚህ መሣሪያ ላይ Braveን ተጠቅመው የጎበኟቸው የጣቢያዎች መዝገብ።</translation>
@@ -368,6 +367,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="1611678871603620428">የወደፊቱን የBrave ዝመኔዎችን ለማግኘት፣ macOS 10.13 ወይም ከዚያ በኋላ ያለው ያስፈልግዎታል። ይህ ኮምፒተር OS X 10.11 እየተጠቀመ ነው።</translation>
 <translation id="4484434718272972655">ማነው Braveን የሚጠቀመው?</translation>
 <translation id="7173394303099002355">የBraveን ጠንካራ ደህንነት ያግኙ</translation>
+<translation id="5775101967851558962">Braveን በሚዘጉበት ጊዜ የጣቢያ ውሂብን ሁልጊዜ ከመሣሪያዎ ላይ ያጽዱ</translation>
 <translation id="8992261409816268381">የBrave ደራሲዎች</translation>
 <translation id="479793348545936567">ይህንን መለያ ለአንድ ጊዜ ብቻ ለመጠቀም ከፈለጉ፣ በ Brave አሳሽ ውስጥ የ Guest ሁነታን መጠቀም ይችላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ፣ <ph name="LINK_BEGIN"/>አዲስ መገለጫ ያክሉ<ph name="LINK_END"/> ወደ የእርስዎ <ph name="DEVICE_TYPE"/>።
 

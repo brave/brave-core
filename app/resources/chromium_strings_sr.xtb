@@ -239,6 +239,7 @@
 <translation id="3507835409099344374">Иди на подешавања обавештења за Brave</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="245693535809364497">Brave-у треба дозвола за камеру да би направио 3D мапу окружења</translation>
+<translation id="5060669762365466104">Сајтови ће вероватно радити на очекивани начин, али вас неће запамтити када затворите све Brave прозоре</translation>
 <translation id="6676384891291319759">Приступите Интернету</translation>
 <translation id="1363996462118479832">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
 <translation id="1257247502847251159">Brave-у треба дозвола за микрофон за овај сајт</translation>
@@ -248,6 +249,7 @@
 <translation id="7870748924073900361">Уштеда меморије је убрзала Brave</translation>
 <translation id="6666624454809779082">Brave је већ инсталиран за све кориснике на рачунару.</translation>
 <translation id="5360050006043219962">Да бисте приступали Brave садржају на свим уређајима, пријавите се, па укључите синхронизацију.</translation>
+<translation id="3136039682492230890">Brave препоручује скенирање овог фајла јер може да буде опасан.</translation>
 <translation id="8291513491595858997">Родитељ је искључио Дозволе за сајтове, апликације и додатке за Brave. Омогућавање ове ставке (<ph name="EXTENSION_TYPE_PARAMETER"/>) није дозвољено.</translation>
 <translation id="1547295885616600893">Brave ОС омогућава додатни <ph name="BEGIN_LINK_CROS_OSS"/>софтвер отвореног кода<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave вас обавештава ако су лозинке угрожене</translation>
@@ -270,7 +272,6 @@
 <translation id="1008530050039597147">Brave-у треба дозвола за камеру за овај сајт</translation>
 <translation id="1197672524850678392">Није могуће покренути Brave. Покушајте поново.</translation>
 <translation id="3405035915691517126">Brave не може да вам проверава лозинке. Пробајте поново за 24 сата.</translation>
-<translation id="5101812148953915496">Сајтови које посећујете памте ваше информације док не затворите Brave</translation>
 <translation id="5516268345616100622">Менаџер задатака – Brave</translation>
 <translation id="713191641919118540">Ваша интересовања према процени Brave-а</translation>
 <translation id="9068395155143628872">Мерење огласа омогућава сајтовима које посећујете да од Brave-а затраже информације које сајту помажу да мери учинак огласа. Мерење огласа ограничава праћење на више сајтова тако што преноси што мање информација између сајтова.</translation>
@@ -341,8 +342,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="6283840329609797763">Инсталација није успела због неодређене грешке. Преузмите Brave поново.</translation>
 <translation id="2433912322225810055">Контролише и страницу која се приказује када покренете Brave или претражујете из омнибокса.</translation>
 <translation id="4100716194836114130">Ово је ваш Brave</translation>
-<translation id="6208136456999964972">Када затворите све Brave прозоре, подаци о колачићима и сајтовима се аутоматски бришу</translation>
-<translation id="6371875426681214174">Бићете <ph name="BEGIN_BOLD"/>одјављени са већине сајтова<ph name="END_BOLD"/> када затворите Brave. Ако је синхронизација искључена, такође ћете бити <ph name="BEGIN_BOLD"/>одјављени из Brave услуга и Brave-а<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave тражи дозволу да приступи камери и микрофону за овај сајт</translation>
 <translation id="6933858244219479645">Систем Brave ОС</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Који подаци се користе:<ph name="END_BOLD"/> Историја прегледања, евиденција сајтова које сте посетили помоћу Brave-а на овом уређају.</translation>
@@ -369,6 +368,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="1611678871603620428">Да бисте добијали будућа Brave ажурирања, треба вам macOS 10.13 или новија верзија. Овај рачунар користи ОС X 10.11.</translation>
 <translation id="4484434718272972655">Ко користи Brave?</translation>
 <translation id="7173394303099002355">Набавите најјачу Brave заштиту</translation>
+<translation id="5775101967851558962">Увек обришите податке о сајтовима са уређаја када затворите Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Ako želite da koristite ovaj nalog samo jednom, možete koristiti režim gosta u Brave pretraživaču. Ako želite da dodate nalog za nekog drugog, <ph name="LINK_BEGIN"/>dodajte novi profil<ph name="LINK_END"/> na vaš <ph name="DEVICE_TYPE"/>.
 

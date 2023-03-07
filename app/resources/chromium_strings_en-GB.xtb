@@ -239,6 +239,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3507835409099344374">Go to Brave notification settings</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
 <translation id="245693535809364497">Brave needs camera permission to create a 3D map of your surroundings</translation>
+<translation id="5060669762365466104">Sites will probably work as you expect but won't remember you after you close all Brave windows</translation>
 <translation id="6676384891291319759">Access the Internet</translation>
 <translation id="1363996462118479832">Chrome OS could not sync your data due to an error signing in.</translation>
 <translation id="1257247502847251159">Brave needs microphone permission for this site</translation>
@@ -248,6 +249,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="7870748924073900361">Memory saver made Brave faster</translation>
 <translation id="6666624454809779082">Brave is already installed for all users on your computer.</translation>
 <translation id="5360050006043219962">To access your Brave stuff across all your devices, sign in, then turn on sync.</translation>
+<translation id="3136039682492230890">Brave recommends scanning this file because it may be dangerous.</translation>
 <translation id="8291513491595858997">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER"/> is not allowed.</translation>
 <translation id="1547295885616600893">Chrome OS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS"/>open-source software<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Brave lets you know if your passwords are ever compromised</translation>
@@ -269,7 +271,6 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="1008530050039597147">Brave needs camera permission for this site</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
 <translation id="3405035915691517126">Brave can't check your passwords. Try again after 24 hours.</translation>
-<translation id="5101812148953915496">Sites that you visit remember your information until you close Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="713191641919118540">Your interests as estimated by Brave</translation>
 <translation id="9068395155143628872">Ad measurement allows sites that you visit to request information from Brave that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.</translation>
@@ -340,8 +341,6 @@ Brave is unable to recover your settings.</translation>
 <translation id="6283840329609797763">Installation failed due to unspecified error. Please download Brave again.</translation>
 <translation id="2433912322225810055">It also controls what page is shown when you start Brave or search from the Omnibox.</translation>
 <translation id="4100716194836114130">This is your Brave</translation>
-<translation id="6208136456999964972">When you close all Brave windows, cookies and site data are automatically cleared</translation>
-<translation id="6371875426681214174">You will be <ph name="BEGIN_BOLD"/>signed out of most sites<ph name="END_BOLD"/> when you close Brave. If sync is off, you will also be <ph name="BEGIN_BOLD"/>signed out of Brave services and Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave needs permission to access your camera and microphone for this site</translation>
 <translation id="6933858244219479645">Chrome OS system</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>What data is used:<ph name="END_BOLD"/> Your browsing history, a record of sites that you’ve visited using Brave on this device.</translation>
@@ -368,6 +367,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="1611678871603620428">To get future Brave updates, you'll need macOS 10.13 or later. This computer is using OS X 10.11.</translation>
 <translation id="4484434718272972655">Who's using Brave?</translation>
 <translation id="7173394303099002355">Get Brave's strongest security</translation>
+<translation id="5775101967851558962">Always clear site data from your device when you close Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">If you want to use this account one-time only, you can use Guest mode in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN"/>add a new profile<ph name="LINK_END"/> to your <ph name="DEVICE_TYPE"/>.
 

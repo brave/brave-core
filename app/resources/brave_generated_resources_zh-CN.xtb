@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <translation id="3333887201479867589">Brave 奖励</translation>
+<translation id="7561196759112975576">始终</translation>
+<translation id="7961015016161918242">一律不</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="8097438084542431276">拷贝清除链接</translation>
+<translation id="4678672101289648246">只在新标签页</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
+<translation id="8294286161128352783">只在新标签页</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
 <translation id="2445484935443597917">创建新的个人资料</translation>
@@ -141,9 +145,7 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">移到右边</translation>
 <translation id="7444424316576061724">移到左边</translation>
-<translation id="7561196759112975576">始终</translation>
 <translation id="7060352228894039151">鼠标悬停时</translation>
-<translation id="7961015016161918242">一律不</translation>
 <translation id="8981254605840444865">显示设置</translation>
 <translation id="59174027418879706">已启用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -194,6 +196,10 @@
 <translation id="2058818256505091369">鼠标悬停时浮动</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{将这个标签页静音}other{将这些标签页静音}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{将这个标签页取消静音}other{将这些标签页取消静音}}</translation>
+<translation id="3704707436873245822">从图像中复制文本</translation>
+<translation id="5268098808165185458">从图像中复制文本……</translation>
+<translation id="4046485130884276245">文本已从图像中复制成功</translation>
+<translation id="3639779775496569782">文本复制失败</translation>
 <translation id="4235920711083356755">显示 VPN 按钮</translation>
 <translation id="4070612712151038707">显示工具栏中的 VPN 按钮</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -219,6 +225,7 @@
 <translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
 <translation id="8487693399751278191">立即导入书签...</translation>
 <translation id="2557899542277210112">要快速访问，请将书签放在书签栏的此处。</translation>
+<translation id="2702801445560668637">读取列表</translation>
 <translation id="1968543937259008435">准备好在线获得最佳隐私了吗？</translation>
 <translation id="6817415381278637662">将 Brave 设置为你的默认浏览器，以便你打开的每个网页都获得 Brave 的隐私保护。</translation>
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
@@ -253,7 +260,10 @@
 <translation id="8820817407110198400">书签栏</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="2245286910966863912">在地址栏显示 Brave 新闻按钮</translation>
-<translation id="1811404036171336214">总是显示新标签页上的书签</translation>
+<translation id="383007806262310953">显示书签栏</translation>
+<translation id="4054323497808446566">所有页面均可见书签栏</translation>
+<translation id="8693858092251192712">除了新标签页，书签栏已在所有页面上隐藏</translation>
+<translation id="7158817046543187970">书签栏已在所有页面上隐藏</translation>
 <translation id="3416468988018290825">始终显示完整的URL</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
@@ -344,7 +354,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">阻止社交媒体</translation>
-<translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
@@ -371,6 +380,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">网站希望访问以太坊提供商的 API 时询问我</translation>
 <translation id="2777102601740875941">阻止网站访问 Solana 提供商的 API</translation>
+<translation id="4206299587103092719">Google 登录</translation>
+<translation id="7458736153596040880">网站想要使用传统 Google 登录时询问</translation>
+<translation id="459266451581663214">阻止网站使用传统 Google 登录</translation>
+<translation id="8098954941070626949">允许网站使用传统 Google 登录</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="5565355416171743213">开始使用同步</translation>
 <translation id="4332558599726753990">同步设置</translation>
@@ -436,7 +449,7 @@
 <translation id="2516405584294312544">这种删除是永久性的，没有办法恢复数据。您应该决定
 再次开始使用同步时，您需要创建一个新账户，并逐个重新添加每个设备。</translation>
 <translation id="4860996720371753023">正在删除账户……</translation>
-<translation id="8199291899164865593">无法加入此同步链。账户已删除。</translation>
+<translation id="4094590686212463338">无法加入此同步链。同步链已删除。</translation>
 <translation id="5633907266617216186">地址、付款信息等。</translation>
 <translation id="294985549514492876">Web 应用程序（PWA）</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
@@ -486,7 +499,6 @@
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>
 <translation id="1274962333945373242">Crypto Wallets（已废弃）</translation>
-<translation id="3695088618483091287">Brave 钱包（首选扩展）</translation>
 <translation id="4718664830805652430">默认基础货币</translation>
 <translation id="7992507032049865603">默认基础加密货币</translation>
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>

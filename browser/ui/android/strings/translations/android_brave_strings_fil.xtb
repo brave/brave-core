@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Hindi ka nakakakuha ng Mga Reward ng Brave</translation>
 <translation id="1483391942610220726">Hindi ka nakakatanggap ng Mga Ulat sa Privacy</translation>
 <translation id="4683790942451502796">I-on ulit ang mga notification kung gusto mong patuloy na kumita ng BAT at makatanggap ng mga lingguhang ulat sa privacy.</translation>
-<translation id="8618359751943259593">I-on ulit ang mga notification kung gusto mong patuloy na kumita ng BAT</translation>
+<translation id="8618359751943259593">I-on ulit ang mga notification kung gusto mong patuloy na kumita ng BAT.</translation>
 <translation id="760355165169399836">I-on ulit ang mga notification kung gusto mong patuloy na makatanggap ng mga lingguhang ulat sa privacy.</translation>
 <translation id="6268959058971634697">Hindi ka nakakakuha ng Mga Reward</translation>
 <translation id="1088637159642753509">I-enable ang mga notification sa device para makakuha ng Mga Reward ng Brave at makita ang Mga Ulat sa Privacy.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Mga global default ng Brave shields</translation>
 <translation id="2675679258824361492">Iba pang mga setting sa privacy</translation>
 <translation id="8026334261755873520">I-clear ang data sa pag-browse</translation>
-<translation id="5965081608816406060">Pag-playback ng video sa background</translation>
+<translation id="1690924763769415936">Pag-play sa background</translation>
 <translation id="6332924730165919598">Magsasara ang Brave kapag isinara ang lahat ng tab</translation>
-<translation id="3872768973878059926">Binibigyang-daan ang audio na patuloy na mag-play kapag lumipat ka sa ibang tab sa Brave, lumipat sa ibang app, o naka-off ang screen ng device mo.</translation>
+<translation id="8308305244351876417">Hinahayaang mag-play ang audio kapag lumipat ka sa ibang tab sa Brave o iba pang app o kung naka-off ang screen ng device mo.</translation>
 <translation id="4150201353443180367">Display</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Brave Rewards sa address bar</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Hindi pa nagsa-sign up ang creator na ito para makatanggap ng mga ambag mula sa mga user ng Brave. Patuloy naming susubukang mag-ambag hanggang sa mag-verify siya o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="635752162765375187">TANDAAN: Kasalukuyang hindi pa na-configure ang creator na ito para tumanggap ng mga tip mula sa iyong Rewards custodial wallet service. Mananatiling nakabinbin ang anumang tip na ibibigay mo at awtomatikong susubukan ulit sa loob ng 90 araw.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
+<translation id="2734870894159530879">Mag-log in sa <ph name="WALLET_PROVIDER"/> para makita ang iyong balanse</translation>
 <translation id="5830114181292529917">Puwede mong suportahan ang site na ito sa pamamagitan ng pagpapadala ng tip. Paraan ito ng pasasalamat sa kanila dahil sa paggawa ng magandang content.</translation>
 <translation id="7658239707568436148">I-cancel</translation>
 <translation id="1201402288615127009">Susunod</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Ipakita ang Mga Ad kapag hindi ginagamit ang Brave</translation>
 <translation id="3349204812119681938">I-reset ang Brave Rewards</translation>
 <translation id="6606319453795180219">Made-delete nito ang iyong Brave Rewards at mare-reset nito ang lahat ng data ng iyong Brave Rewards</translation>
-<translation id="6810078320346589989">Gumawa ng bookmark</translation>
+<translation id="8293206222192510085">Idagdag ng Bookmark</translation>
+<translation id="340492034650766959">I-delete ang Bookmark</translation>
+<translation id="2149973817440762519">I-edit ang Bookmark</translation>
+<translation id="6819319915092566548">Tingnan ang Bookmark</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="8985635554450124959">Hindi ma-set up ang Sync</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Huwag ipakita ulit</translation>
 <translation id="496896260395129787">Na-delete ang Brave Sync account na ito mula sa ibang device. Kung di mo sinasadyang i-disable ang Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ire-create ang account</translation>
-<translation id="8199291899164865593">Hindi maka-join sa sync chain na ito. Na-delete na ang account.</translation>
+<translation id="4094590686212463338">Hindi makasama sa sync chain na ito. Na-delete na ang sync chain.</translation>
 <translation id="5633907266617216186">Mga address, impormasyon sa pagbabayad, atbp.</translation>
 <translation id="1056898198331236512">Babala</translation>
 <translation id="1426410128494586442">Oo</translation>
@@ -371,6 +375,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
 <translation id="3200197118442451932">Hindi ipoproseso, iso-store, o ia-access ng Brave Software Inc. ang alinman sa mga personal na impormasyong ibibigay mo sa <ph name="WALLET_PROVIDER"/> kapag bumuo ka ng account sa kanila.</translation>
 <translation id="1665118090708049096">Pumunta sa aking<ph name="WALLET_PROVIDER"/> account</translation>
+<translation id="4858636682078269312">Mag-log in sa iyong account sa <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Hindi nakakonekta</translation>
 <translation id="2495032782748793764">Default ng Brave</translation>
 <translation id="9132378787893584761">I-share ang Brave sa iyong mga kaibigan!</translation>
@@ -388,10 +393,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3624048886326677117">I-block ang mga tracker at ads (Agresibo)</translation>
 <translation id="7151914815476509258">I-block ang trackers at ads (Standard)</translation>
 <translation id="7384778069178817075">Payagan ang lahat ng tracker at ad</translation>
-<translation id="4941539331405513605">I-block ang cross-site cookies</translation>
 <translation id="3763681089644577874">I-block ang Cookies</translation>
 <translation id="614747795780742163">Pinipigilan ang mga website sa pag-store ng impormasyon tungkol sa iyong mga nakaraang pagbisita</translation>
 <translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
+<translation id="4941539331405513605">Block cross-site cookies</translation>
 <translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
 <translation id="3895527457258986253">I-block ang Pag-fingerprint</translation>
 <translation id="7854108565842971747">Ito ang default na settings ng Shields para sa mga bagong site. Kapag pinalitan ang mga ito, hindi maaapektuhan ang iyong per-site settings.</translation>
@@ -490,6 +495,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5705882733397021510">Bumalik</translation>
 <translation id="3985567919248057638">Mag-tour Tayo Nang Mabilis</translation>
 <translation id="7889432931837317731">Awtomatikong buksan kung posible</translation>
+<translation id="1029304566263314007">Ipakita ang mga notification sa pagtakbo ng pag-download</translation>
+<translation id="2910433761530295035">Itanong kung saan ise-save ang mga file (kung na-detect ang SD card)</translation>
 <translation id="8967385052772844086">Tingnan ang buong Ulat sa Privacy</translation>
 <translation id="6864343534748973390">Pinakasikat</translation>
 <translation id="4608192160278975831">Pribado at bawal ang pag-track</translation>
@@ -498,6 +505,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7320542277711359296">Pangalawang pinakasikat</translation>
 <translation id="8295049095570748497">Isang nangungunang search engine sa Russia</translation>
 <translation id="2642661895835126239">Nagtatanim ng mga puno, nasa Berlin</translation>
+<translation id="2422627462367776805">Web portal at search mula sa South Korea</translation>
 <translation id="177282784098234156">Pribado, independent, at binibigyang-priyoridad ang user</translation>
 <translation id="1410130669636877548">Pinoprotektahan ng ilang search engine ang iyong privacy nang mas mahusay sa iba kapag naghahanap ka sa web.</translation>
 <translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
@@ -1016,7 +1024,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="9074594632540931067">Error: Hindi available ang BAT</translation>
 <translation id="5382684862562314222">Hindi pa sinusuportahan ang BAT sa iyong rehiyon sa Uphold.</translation>
 <translation id="6996157559236886133">Error: Limitadong kakayanan ng Uphold account</translation>
-<translation id="842321566508373706">Ayon sa Uphold, kasalukuyang may ilang limitasyon sa iyong Uphold account. Mag-log in sa iyong Uphold account at suriin kung may kahit na anong abiso o kung mayroon pang kinakailangan sa account para makumpleto, at subukang muli pagkatapos.</translation>
+<translation id="1677961202754619328">Ayon sa Uphold, kasalukuyang may ilang limitasyon sa Uphold account mo. Mag-log in sa Uphold account mo at tingnan kung may anumang abiso o natitirang kinakailangan sa account na kukumpletuhin, pagkatapos ay subukan ulit.</translation>
 <translation id="6417420737057016607">Mga Patalastas sa Brave</translation>
 <translation id="5425006356459378415">Hindi available ang Mga Reward ng Brave</translation>
 <translation id="833643743158564518">Kasalukuyang naka-disable ang mga bagong pag-sign up. Gayunpaman, puwede mong subukan ulit sa ibang pagkakataon kahit kailan. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4071347720273751665">Mukhang naglagay ka ng ENS address. Kailangan naming gumamit ng third-party resolver para iresolba ang kahilingang ito, na maaaring makakita ng iyong IP address at domain. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Gamitin ang offchain domain ng ENS</translation>
 <translation id="4982630604810554641">Naghahanap ng domain...</translation>
+<translation id="4159738248012488342">Piliin ang halaga para sa tip</translation>
 <translation id="3586775666459823714">Mga NFT</translation>
+<translation id="707569835145765061">Kinakailangan ang pagkilos: Ikonekta ang isang custodial account kung hindi, mawawala ang vBAT mo.</translation>
+<translation id="1776742005329298234">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Ikonekta ang isang custodial account bago ang petsang ito para mai-transfer namin ang naipon mong balance sa iyong custodial account, kung hindi, mawawala ang balance mo.</translation>
+<translation id="5089752671190341407">May panahon ka pa para iambag ang iyong vBAT sa mga paborito mong creator</translation>
+<translation id="171158953146804144">Sa <ph name="DUE_DATE"/>, ititigil na namin ang pagsuporta sa mga umiiral na virtual BAT balance. Sa kasamaang palad, walang available na custodian sa lugar mo (<ph name="REGION"/>) para i-withdraw ang mga ipon mo. Samantala, puwede ka pa ring mag-ambag sa iyong mga paboritong creator.</translation>
 </translationbundle>
