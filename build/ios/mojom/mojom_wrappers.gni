@@ -86,7 +86,9 @@ template("ios_objc_mojom_wrappers") {
     ]
   }
 
-  config("type_headers") {
+  type_headers_target_name = "${target_name}_type_headers"
+
+  config(type_headers_target_name) {
     include_dirs = [
       "//brave/build/ios/mojom/public/base",
       "//brave/ios/browser/api/url",
@@ -105,7 +107,7 @@ template("ios_objc_mojom_wrappers") {
     }
     sources = generate_wrappers_output
     configs += [ "//build/config/compiler:enable_arc" ]
-    public_configs = [ ":type_headers" ]
+    public_configs = [ ":$type_headers_target_name" ]
     public_deps += [
       ":$generate_wrappers_target",
       "//base",

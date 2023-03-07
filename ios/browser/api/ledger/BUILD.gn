@@ -34,6 +34,7 @@ source_set("ledger") {
 
   deps = [
     ":ledger_mojom_wrappers",
+    ":ledger_types_mojom_wrappers",
     "//base",
     "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
@@ -55,4 +56,9 @@ ios_objc_mojom_wrappers("ledger_mojom_wrappers") {
   mojom_target =
       "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
   sources = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom" ]
+}
+
+ios_objc_mojom_wrappers("ledger_types_mojom_wrappers") {
+  mojom_target = "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:ledger_types"
+  sources = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom" ]
 }

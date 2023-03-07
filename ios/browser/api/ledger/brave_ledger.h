@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ledger.mojom.objc.h"
+#import "ledger_types.mojom.objc.h"
 
 @class BraveLedgerObserver, PromotionSolution, RewardsNotification;
 
