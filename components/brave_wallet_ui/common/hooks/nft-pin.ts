@@ -64,7 +64,7 @@ export function useNftPin () {
   }, [nftsPinningStatus])
 
   const pinningStatusSummary: BraveWallet.TokenPinStatusCode = React.useMemo(() => {
-    if (pinnedNftsCount > 0 && inProgressNftCount == 0) {
+    if (pinnedNftsCount > 0 && inProgressNftCount === 0) {
       return BraveWallet.TokenPinStatusCode.STATUS_PINNED
     } else if (inProgressNftCount > 0) {
       return BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
