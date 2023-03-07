@@ -3,7 +3,6 @@ Resolves
 
 <!-- CI-related labels that can be applied to this PR:
 * CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
-* CI/run-draft - run CI builds on a draft PR (otherwise only on non-draft PRs)
 * CI/run-network-audit (1) - run network-audit
 * CI/run-upstream-tests - run Chromium unit and browser tests on Linux and Windows (otherwise only on Linux)
 * CI/skip - do not run CI builds (except noplatform)
