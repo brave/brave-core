@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7561196759112975576">เสมอ</translation>
+<translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8097438084542431276">คัดลอกคลีนลิงก์</translation>
+<translation id="4678672101289648246">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="7630214457764713113">คัดลอกลิงก์เท่านั้น</translation>
+<translation id="8294286161128352783">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="2445484935443597917">สร้างโปรไฟล์ใหม่</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">ตำแหน่ง</translation>
 <translation id="3790384768741064842">ย้ายไปทางขวา</translation>
 <translation id="7444424316576061724">ย้ายไปทางซ้าย</translation>
-<translation id="7561196759112975576">เสมอ</translation>
 <translation id="7060352228894039151">วางเมาส์เหนือ</translation>
-<translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="8981254605840444865">แสดงการตั้งค่า</translation>
 <translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">Float เมื่อชี้เมาส์</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ซ่อนแท็บ}other{ซ่อนแท็บ}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{เลิกซ่อนแท็บ}other{เลิกซ่อนแท็บ}}</translation>
+<translation id="3704707436873245822">คัดลอกข้อความจากรูปภาพ</translation>
+<translation id="5268098808165185458">กำลังคัดลอกข้อความจากรูปภาพ...</translation>
+<translation id="4046485130884276245">คัดลอกข้อความจากรูปภาพแล้ว</translation>
+<translation id="3639779775496569782">การคัดลอกข้อความล้มเหลว</translation>
 <translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
 <translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 <translation id="8487693399751278191">นำเข้าบุ๊กมาร์กเดี๋ยวนี้...</translation>
 <translation id="2557899542277210112">สำหรับการเข้าถึงแบบด่วน วางบุ๊กมาร์กไว้ที่นี่บนแถบบุ๊กมาร์ก</translation>
+<translation id="2702801445560668637">รายการรออ่าน</translation>
 <translation id="1968543937259008435">พร้อมท่องโลกออนไลน์แบบส่วนตัวที่สุดแล้วหรือยัง</translation>
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">บุ๊กมาร์ก</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="2245286910966863912">แสดงปุ่ม Brave News ในแถบที่อยู่</translation>
-<translation id="1811404036171336214">แสดงบุ๊กมาร์คบนหน้าแท็บใหม่</translation>
+<translation id="383007806262310953">แสดงแถบบุ๊กมาร์ก</translation>
+<translation id="4054323497808446566">แถบบุ๊กมาร์กจะแสดงให้เห็นบนทุกหน้า</translation>
+<translation id="8693858092251192712">แถบบุ๊กมาร์กจะซ่อนอยู่บนทุกหน้า ยกเว้นหน้าแท็บใหม่</translation>
+<translation id="7158817046543187970">แถบบุ๊กมาร์กจะซ่อนอยู่บนทุกหน้า</translation>
 <translation id="3416468988018290825">แสดง URL แบบเต็มเสมอ</translation>
 <translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
 <translation id="1643029991199044105">ย้อนกลับไปแท็บที่ใช้ไปล่าสุดด้วย Ctrl-Tab</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
-<translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">ถามเมื่อเว็บไซต์ต้องการเข้าถึง API ของผู้ให้บริการ Solana</translation>
 <translation id="2777102601740875941">บล็อกเว็บไซต์ไม่ให้เข้าถึง API ของผู้ให้บริการ Solana</translation>
+<translation id="4206299587103092719">การลงชื่อเข้าใช้ด้วย Google</translation>
+<translation id="7458736153596040880">ถามเมื่อเว็บไซต์ต้องการใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
+<translation id="459266451581663214">บล็อกไม่ให้เว็บไซต์ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
+<translation id="8098954941070626949">อนุญาตให้เว็บไซต์ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
 <translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
 <translation id="5565355416171743213">เริ่มใช้การซิงค์</translation>
 <translation id="4332558599726753990">ตั้งค่าการซิงค์</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">การลบนั้นเป็นถาวรและจะไม่สามารถกู้คืนข้อมูลได้ ถ้าคุณตัดสินใจที่จะ
  เริ่มใช้การซิงค์อีกครั้ง คุณจะต้องสร้างบัญชีใหม่และเพิ่มอุปกรณ์ใหม่ทีละเครื่อง</translation>
 <translation id="4860996720371753023">กำลังทำการลบบัญชี...</translation>
-<translation id="8199291899164865593">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากบัญชีถูกลบแล้ว</translation>
+<translation id="4094590686212463338">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากกลุ่มการซิงค์ถูกลบไปแล้ว</translation>
 <translation id="5633907266617216186">ที่อยู่ ข้อมูลการชำระเงิน เป็นต้น</translation>
 <translation id="294985549514492876">เว็บแอป (PWA)</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
 <translation id="1274962333945373242">กระเป๋าเงินคริปโต (ที่เลิกใช้แล้ว)</translation>
-<translation id="3695088618483091287">Brave Wallet (ต้องการส่วนขยาย)</translation>
 <translation id="4718664830805652430">สกุลเงินพื้นฐานเริ่มต้น</translation>
 <translation id="7992507032049865603">สกุลเงินคริปโตพื้นฐานเริ่มต้น</translation>
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>

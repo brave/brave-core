@@ -239,6 +239,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="3507835409099344374">Ewch i osodiadau hysbysu Brave</translation>
 <translation id="9156965752763025780">Bydd eich newidiadau yn dod i rym y tro nesaf y byddwch yn ail-lansio Brave.</translation>
 <translation id="245693535809364497">Mae angen caniatâd camera ar Brave i greu map 3D o'ch amgylchoedd</translation>
+<translation id="5060669762365466104">Mae'n debyg y bydd gwefannau'n gweithio fel y disgwyliwch ond ni fyddant yn eich cofio ar ôl i chi gau pob ffenestr Brave</translation>
 <translation id="6676384891291319759">Cyrchu'r Rhyngrwyd</translation>
 <translation id="1363996462118479832">Ni allai ChromeOS gysoni'ch data oherwydd gwall wrth fewngofnodi.</translation>
 <translation id="1257247502847251159">Mae angen caniatâd meicroffon ar Brave ar gyfer y wefan hon</translation>
@@ -248,6 +249,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael. Rhowch gyfeiriadur proffil gwahanol
 <translation id="7870748924073900361">Mae Arbedwr Cof wedi gwneud Brave yn gyflymach</translation>
 <translation id="6666624454809779082">Mae Brave eisoes wedi'i osod ar gyfer pob defnyddiwr ar eich cyfrifiadur.</translation>
 <translation id="5360050006043219962">I gael mynediad at eich holl bethau Brave ar draws eich holl ddyfeisiau, mewngofnodwch, yna trowch gysoni ymlaen.</translation>
+<translation id="3136039682492230890">Mae Brave yn argymell sganio'r ffeil hon oherwydd y gallai fod yn beryglus.</translation>
 <translation id="8291513491595858997">Mae dy riant wedi diffodd "Caniatadau ar gyfer gwefannau, apiau ac estyniadau" ar gyfer Brave. Ni chaniateir galluogi'r <ph name="EXTENSION_TYPE_PARAMETER"/> hwn.</translation>
 <translation id="1547295885616600893">Mae ChromeOS yn bosib drwy <ph name="BEGIN_LINK_CROS_OSS"/>feddalwedd ffynhonnell agored<ph name="END_LINK_CROS_OSS"/> ychwanegol.</translation>
 <translation id="8211837073776713955">Mae Brave yn gadael i chi wybod a yw'ch cyfrineiriau byth wedi'u darganfod</translation>
@@ -270,7 +272,6 @@ baru <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></transla
 <translation id="1008530050039597147">Mae angen caniatâd camera ar Brave ar gyfer y wefan hon</translation>
 <translation id="1197672524850678392">Methu â lansio Brave. Rhowch gynnig arall arni.</translation>
 <translation id="3405035915691517126">Ni all Brave wirio'ch cyfrineiriau. Rhowch gynnig arall arni ar ôl 24 awr.</translation>
-<translation id="5101812148953915496">Mae gwefannau rydych yn ymweld â nhw yn cofio'ch gwybodaeth nes i chi gau Brave</translation>
 <translation id="5516268345616100622">Rheolydd Tasgau - Brave</translation>
 <translation id="713191641919118540">Eich diddordebau fel yr amcangyfrifir gan Brave</translation>
 <translation id="9068395155143628872">Mae Mesur hysbysebion yn caniatáu i wefannau rydych yn ymweld â nhw ofyn am wybodaeth o Brave sy'n helpu'r wefan i fesur perfformiad eu hysbysebion. Mae Mesur hysbysebion yn cyfyngu ar olrhain traws-wefan drwy drosglwyddo cyn lleied o wybodaeth â phosib rhwng gwefannau.</translation>
@@ -341,8 +342,6 @@ Ni all Brave adfer eich gosodiadau.</translation>
 <translation id="6283840329609797763">Methwyd y gosodiad oherwydd gwall amhenodol. Lawrlwythwch Brave eto.</translation>
 <translation id="2433912322225810055">Mae hefyd yn rheoli pa dudalen sy'n cael ei dangos pan fyddwch yn cychwyn Brave neu'n chwilio o'r Omniflwch.</translation>
 <translation id="4100716194836114130">Dyma eich Brave</translation>
-<translation id="6208136456999964972">Pan fyddwch yn cau holl ffenestri Brave, mae cwcis a data gwefan yn cael eu clirio'n awtomatig</translation>
-<translation id="6371875426681214174">Byddwch yn cael eich <ph name="BEGIN_BOLD"/>allgofnodi o'r mwyafrif o wefannau<ph name="END_BOLD"/> pan fyddwch yn cau Brave. Os yw cysoni wedi'i ddiffodd, byddwch hefyd yn cael eich <ph name="BEGIN_BOLD"/>allgofnodi o wasanaethau Brave a Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Mae angen caniatâd ar Brave i gael mynediad at eich camera a'ch meicroffon ar gyfer y wefan hon</translation>
 <translation id="6933858244219479645">System ChromeOS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Pa ddata a ddefnyddir:<ph name="END_BOLD"/> Eich hanes pori, cofnod o wefannau rydych wedi ymweld â nhw drwy ddefnyddio Brave ar y ddyfais hon.</translation>
@@ -369,6 +368,7 @@ Ni all Brave adfer eich gosodiadau.</translation>
 <translation id="1611678871603620428">I gael diweddariadau Brave yn y dyfodol, bydd angen macOS 10.13 neu'n hwyrach arnoch. Mae'r cyfrifiadur hwn yn defnyddio OS X 10.11.</translation>
 <translation id="4484434718272972655">Pwy sy'n defnyddio Brave?</translation>
 <translation id="7173394303099002355">Cael diogelwch cryfaf Brave</translation>
+<translation id="5775101967851558962">Clirio data gwefan o'ch dyfais bob amser pan fyddwch yn cau Brave</translation>
 <translation id="8992261409816268381">Awduron Brave</translation>
 <translation id="479793348545936567">Os hoffech ddefnyddio'r cyfrif hwn unwaith yn unig, gallwch ddefnyddio'r modd Gwestai yn y porwr Brave. Os hoffech ychwanegu cyfrif ar gyfer rhywun arall, <ph name="LINK_BEGIN"/>ychwanegwch berson newydd<ph name="LINK_END"/> at eich <ph name="DEVICE_TYPE"/>.
 

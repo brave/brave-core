@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
+<translation id="7961015016161918242">ಎಂದಿಗೂ ಇಲ್ಲ</translation>
 <translation id="4615489450165434530">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="8097438084542431276">ಕ್ಲೀನ್ ಲಿಂಕ್ ಅನ್ನು ನಕಲು ಮಾಡಿ</translation>
+<translation id="4678672101289648246">ಹೊಸ ಟ್ಯಾಬ್‌ ಪುಟದಲ್ಲಿ ಮಾತ್ರ</translation>
 <translation id="1209739344687072997">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="7630214457764713113">ಕ್ಲೀನ್ ಲಿಂಕ್ ಅನ್ನು ನಕಲು ಮಾಡಿ</translation>
+<translation id="8294286161128352783">ಹೊಸ ಟ್ಯಾಬ್‌ ಪುಟದಲ್ಲಿ ಮಾತ್ರ</translation>
 <translation id="6406506848690869874">ಸಿಂಕ್</translation>
 <translation id="1544192797660353713">ವ್ಯಾಲೆಟ್</translation>
 <translation id="2445484935443597917">ಹೊಸ ಪ್ರೊಫೈಲ್ ರಚಿಸಿ</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">ಸ್ಥಿತಿ</translation>
 <translation id="3790384768741064842">ಬಲಕ್ಕೆ ಸರಿಸಿ</translation>
 <translation id="7444424316576061724">ಎಡಕ್ಕೆ ಸರಿಸಿ</translation>
-<translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
 <translation id="7060352228894039151">ಮೌಸ್ಓವರ್‌ನಲ್ಲಿ</translation>
-<translation id="7961015016161918242">ಎಂದಿಗೂ ಇಲ್ಲ</translation>
 <translation id="8981254605840444865">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="59174027418879706">ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="4176463684765177261">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">ಮೌಸ್ಓವರ್‌ನಲ್ಲಿ ಫ್ಲೋಟ್ ಮಾಡಿ</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ಟ್ಯಾಬ್ ಅನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}one{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}other{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{ಟ್ಯಾಬ್ ಅನ್‌ಮ್ಯೂಟ್ ಮಾಡಿ}one{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಅನ್‌ಮ್ಯೂಟ್ ಮಾಡಿ}other{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಅನ್‌ಮ್ಯೂಟ್ ಮಾಡಿ}}</translation>
+<translation id="3704707436873245822">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಿ</translation>
+<translation id="5268098808165185458">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="4046485130884276245">ಚಿತ್ರದಿಂದ ಪಠ್ಯವನ್ನು ನಕಲಿಸಲಾಗಿದೆ</translation>
+<translation id="3639779775496569782">ಪಠ್ಯ ನಕಲು ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="4235920711083356755">VPN ಬಟನ್‌ ತೋರಿಸು</translation>
 <translation id="4070612712151038707">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ VPN ಬಟನ್ ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಸೇರಿಸಲು, ವಿಳಾಸ ಪಟ್ಟಿಯ ಪಕ್ಕದಲ್ಲಿರುವ ಬುಕ್‌ಮಾರ್ಕ್ ಬಟನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="8487693399751278191">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಈಗ ಆಮದು ಮಾಡಿ...</translation>
 <translation id="2557899542277210112">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಇರಿಸಿ.</translation>
+<translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="1968543937259008435">ಉತ್ತಮ ಆನ್‌ಲೈನ್‌ ಗೌಪ್ಯತೆಗೆ ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?</translation>
 <translation id="6817415381278637662">ನೀವು ತೆರೆಯುವ ಪ್ರತಿ ವೆಬ್‌ ಪೇಜ್‌ನಲ್ಲಿ Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಪಡೆಯಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ Brave ಅನ್ನು ನಿಗದಿಸಿ.</translation>
 <translation id="8722651357687610395">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
 <translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
 <translation id="2245286910966863912">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ನ್ಯೂಸ್ ಬಟನ್ ತೋರಿಸಿ</translation>
-<translation id="1811404036171336214">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ತೋರಿಸಿ</translation>
+<translation id="383007806262310953">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ</translation>
+<translation id="4054323497808446566">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಾರ್‌ ಎಲ್ಲ ಪುಟಗಳಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ</translation>
+<translation id="8693858092251192712">ಹೊಸ ಟ್ಯಾಬ್‌ ಪುಟವನ್ನು ಹೊರತುಪಡಿಸಿ ಎಲ್ಲ ಪುಟಗಳಲ್ಲಿ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಾರ್‌ ಅನ್ನು ಮರೆಮಾಡಲಾಗಿದೆ</translation>
+<translation id="7158817046543187970">ಎಲ್ಲ ಪುಟಗಳಲ್ಲಿ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಾರ್‌ ಮರೆಯಾಗಿದೆ</translation>
 <translation id="3416468988018290825">ಯಾವಾಗಲೂ ಪೂರ್ಣ URL ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5529693968082667490">ಟ್ಯಾಬ್ ಹುಡುಕಾಟ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="1643029991199044105">Ctrl-Tab ಮೂಲಕ ಹೆಚ್ಚು ಇತ್ತೀಚಿಗೆ ಬಳಸಲಾದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಆವರ್ತನಗೊಳಿಸಿ</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮವನ್ನು ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
-<translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Solana ಪ್ರೊವೈಡರ್ API ಅನ್ನು ಪ್ರವೇಶಿಸಲು ಸೈಟ್ ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
 <translation id="2777102601740875941">Solana ಪೂರೈಕೆದಾರ API ಅನ್ನು ಪ್ರವೇಶಿಸದಂತೆ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
+<translation id="4206299587103092719">Google ಸೈನ್-ಇನ್</translation>
+<translation id="7458736153596040880">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಅನ್ನು ಯಾವಾಗ ಸೈಟ್ ಬಳಸಲು ಬಯಸುತ್ತದೆ ಎಂದು ಕೇಳಿ</translation>
+<translation id="459266451581663214">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಬಳಕೆ ಮಾಡುವುದರಿಂದ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
+<translation id="8098954941070626949">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಬಳಕೆ ಮಾಡಲು ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="6414370348346025511">ಪ್ರಮಾಣಿತ ರಕ್ಷಣೆ ಆನ್ ಆಗಿದೆ.</translation>
 <translation id="5565355416171743213">ಸಿಂಕ್ ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="4332558599726753990">ಸಿಂಕ್ ಸೆಟಪ್</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">ಈ ಅಳಿಸುವಿಕೆಯು ಶಾಶ್ವತವಾಗಿದೆ ಮತ್ತು ಡೇಟಾ ಪುನಃಪಡೆಯುವಿಕೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ. ಮತ್ತೊಮ್ಮೆ ಸಿಂಕ್ ಬಳಸುವುದನ್ನು
     ಆರಂಭಿಸಲು ನೀವು ನಿರ್ಧರಿಸಿದರೆ, ನೀವು ಹೊಸ ಖಾತೆಯನ್ನು ರಚಿಸಬೇಕಾಗುತ್ತದೆ ಮತ್ತು ಪ್ರತಿ ಸಾಧನವನ್ನು ಒಂದಾದರೊಂದರಂತೆ ಮರು-ಸೇರಿಸಬೇಕಾಗುತ್ತದೆ.</translation>
 <translation id="4860996720371753023">ಖಾತೆ ಅಳಿಸುವಿಕೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ...</translation>
-<translation id="8199291899164865593">ಈ ಸಿಂಕ್ ಚೈನ್‌ಗೆ ಸೇರಲಾಗಲಿಲ್ಲ. ಖಾತೆಯನ್ನು ಅಳಿಸಲಾಗಿದೆ.</translation>
+<translation id="4094590686212463338">ಈ ಸಿಂಕ್ ಚೈನ್‌ಗೆ ಸೇರಲಾಗಲಿಲ್ಲ. ಸಿಂಕ್ ಚೈನ್ ಅನ್ನು ಅಳಿಸಲಾಗಿದೆ.</translation>
 <translation id="5633907266617216186">ವಿಳಾಸಗಳು, ಪಾವತಿ ಮಾಹಿತಿ, ಇತರೆ.</translation>
 <translation id="294985549514492876">ವೆಬ್ ಆ್ಯಪ್‌ಗಳು (PWA ಗಳು)</translation>
 <translation id="6285118765755298263">ಇತರ ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಇಂಡೆಕ್ಸ್ ಮಾಡಿ</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="7701040980221191251">ಯಾವುದೂ ಇಲ್ಲ</translation>
 <translation id="1274962333945373242">ಕ್ರಿಪ್ಟೋ ವ್ಯಾಲೆಟ್‌ಗಳು (ಡೆಪ್ರಿಕೇಟೆಡ್)</translation>
-<translation id="3695088618483091287">Brave ವ್ಯಾಲೆಟ್ (ವಿಸ್ತರಣೆಗಳಿಗೆ ಆದ್ಯತೆ)</translation>
 <translation id="4718664830805652430">ಡೀಫಾಲ್ಟ್ ಬೇಸ್ ಕರೆನ್ಸಿ</translation>
 <translation id="7992507032049865603">ಡೀಫಾಲ್ಟ್ ಬೇಸ್ ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ</translation>
 <translation id="1834467296210148203">ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ Brave ವ್ಯಾಲೆಟ್ ತೋರಿಸಿ</translation>

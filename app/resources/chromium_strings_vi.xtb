@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Chuyển đến phần cài đặt thông báo của Brave</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="245693535809364497">Brave cần có quyền truy cập máy ảnh để tạo bản đồ 3D về các khu vực xung quanh bạn</translation>
+<translation id="5060669762365466104">Các trang web có thể sẽ hoạt động như mong đợi nhưng sẽ không ghi nhớ thông tin của bạn sau khi bạn đóng tất cả cửa sổ Brave</translation>
 <translation id="6676384891291319759">Truy cập Internet</translation>
 <translation id="1363996462118479832">ChromeOS không thể đồng bộ hoá dữ liệu của bạn do lỗi khi đăng nhập.</translation>
 <translation id="1257247502847251159">Brave cần có quyền truy cập micrô đối với trang web này</translation>
@@ -246,6 +247,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="7870748924073900361">Trình tiết kiệm bộ nhớ giúp Brave hoạt động nhanh hơn</translation>
 <translation id="6666624454809779082">Brave đã được cài đặt cho tất cả người dùng trên máy tính của bạn.</translation>
 <translation id="5360050006043219962">Để truy cập vào nội dung của bạn trên Brave bằng mọi thiết bị, hãy đăng nhập rồi bật tính năng đồng bộ hóa.</translation>
+<translation id="3136039682492230890">Brave đề xuất quét tệp này vì tệp này có thể nguy hiểm.</translation>
 <translation id="8291513491595858997">Cha mẹ bạn đã tắt tùy chọn "Quyền của các trang web, ứng dụng và tiện ích" đối với Brave. Bạn không được phép bật <ph name="EXTENSION_TYPE_PARAMETER"/> này.</translation>
 <translation id="1547295885616600893">ChromeOS có thể hoạt động được là nhờ <ph name="BEGIN_LINK_CROS_OSS"/>phần mềm nguồn mở<ph name="END_LINK_CROS_OSS"/> bổ sung.</translation>
 <translation id="8211837073776713955">Brave cho bạn biết mật khẩu của bạn có bị đánh cắp hay không</translation>
@@ -268,7 +270,6 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="1008530050039597147">Brave cần có quyền truy cập máy ảnh đối với trang web này</translation>
 <translation id="1197672524850678392">Không thể mở Brave. Hãy thử lại.</translation>
 <translation id="3405035915691517126">Brave không thể kiểm tra mật khẩu của bạn. Hãy thử lại sau 24 giờ.</translation>
-<translation id="5101812148953915496">Các trang web bạn truy cập ghi nhớ thông tin của bạn cho đến khi bạn đóng Brave</translation>
 <translation id="5516268345616100622">Trình quản lý tác vụ - Brave</translation>
 <translation id="713191641919118540">Mối quan tâm của bạn theo ước đoán của Brave</translation>
 <translation id="9068395155143628872">Tính năng Đo lường quảng cáo cho phép các trang web bạn truy cập đề nghị Brave cung cấp thông tin để đo lường hiệu quả quảng cáo. Tính năng Đo lường quảng cáo hạn chế hoạt động theo dõi qua nhiều trang web bằng cách chuyển ít thông tin nhất có thể giữa các trang web.</translation>
@@ -339,8 +340,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="6283840329609797763">Không thể cài đặt do xảy ra lỗi không xác định. Hãy tải xuống Brave lại lần nữa.</translation>
 <translation id="2433912322225810055">Tiện ích này cũng điều khiển trang nào được hiển thị khi bạn khởi động Brave hoặc tìm kiếm từ Thanh địa chỉ.</translation>
 <translation id="4100716194836114130">Đây là Brave của bạn</translation>
-<translation id="6208136456999964972">Khi bạn đóng tất cả cửa sổ Brave, thì cookie và dữ liệu trang web sẽ tự động bị xóa</translation>
-<translation id="6371875426681214174">Bạn sẽ bị <ph name="BEGIN_BOLD"/>đăng xuất khỏi hầu hết các trang web<ph name="END_BOLD"/> khi bạn đóng Brave. Nếu tính năng đồng bộ hóa đang tắt, thì bạn cũng sẽ bị <ph name="BEGIN_BOLD"/>đăng xuất khỏi các dịch vụ của Brave và Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave cần có quyền truy cập vào máy ảnh và micrô của bạn cho trang web này</translation>
 <translation id="6933858244219479645">Hệ thống ChromeOS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Loại dữ liệu được sử dụng:<ph name="END_BOLD"/> Nhật ký duyệt web của bạn, một bản ghi các trang web bạn từng truy cập bằng Brave trên thiết bị này.</translation>
@@ -367,6 +366,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1611678871603620428">Để nhận các bản cập nhật Brave sau này, bạn cần có macOS 10.13 trở lên. Máy tính này đang dùng OS X 10.11.</translation>
 <translation id="4484434718272972655">Ai đang sử dụng Brave?</translation>
 <translation id="7173394303099002355">Có được chế độ bảo mật mạnh nhất của Brave</translation>
+<translation id="5775101967851558962">Luôn xoá dữ liệu trang web khỏi thiết bị của bạn khi bạn đóng Brave</translation>
 <translation id="8992261409816268381">Tác giả Brave</translation>
 <translation id="479793348545936567">Nếu bạn chỉ muốn sử dụng tài khoản này một lần, bạn có thể sử dụng chế độ Khách trong trình duyệt Brave. Nếu bạn muốn thêm tài khoản cho người khác, <ph name="LINK_BEGIN"/>thêm hồ sơ mới<ph name="LINK_END"/> vào <ph name="DEVICE_TYPE"/> của bạn.
 

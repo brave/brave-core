@@ -150,9 +150,9 @@
 <translation id="181905442828471321">„Brave“ numatytieji visuotiniai skydai</translation>
 <translation id="2675679258824361492">Kitos privatumo nuostatos</translation>
 <translation id="8026334261755873520">Išvalyti naršymo duomenis</translation>
-<translation id="5965081608816406060">Vaizdo įrašo atkūrimas fone</translation>
+<translation id="1690924763769415936">Vaizdo įrašo atkūrimas fone</translation>
 <translation id="6332924730165919598">Užveriant visus skirtukus užveriama „Brave“</translation>
-<translation id="3872768973878059926">Leidžia toliau atkurti garsą jums perjungus kitą „Brave“ skirtuką, atvėrus kitą programą arba esant išjungtam ekranui.</translation>
+<translation id="8308305244351876417">Leidžia toliau atkurti garsą jums perjungus kitą „Brave“ skirtuką, atvėrus kitą programą arba esant išjungtam ekranui.</translation>
 <translation id="4150201353443180367">Pateiktis</translation>
 <translation id="2433507940547922241">Išvaizda</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Šis kūrėjas dar neužsiregistravo gauti įmokų iš „Brave“ naudotojų. Bandysime paaukoti, kol jis patvirtins arba praeis 90 dienų.</translation>
 <translation id="635752162765375187">Šis kūrėjas šiuo metu nesukonfigūruotas gauti arbatpinigių iš jūsų „Atlygio“ saugomos piniginės paslaugos. Visi jūsų įnešti arbatpinigiai liks neišmokėti ir bus automatiškai pakartoti 90 dienų.</translation>
 <translation id="1910721550319506122">Sveiki!</translation>
+<translation id="2734870894159530879">Prisijunkite prie „<ph name="WALLET_PROVIDER"/>“, kad pamatytumėte savo likutį</translation>
 <translation id="5830114181292529917">Galite paremti šią svetainę nusiųsdami arbatpinigių. Taip galėsite atsidėkoti už puikų turinį.</translation>
 <translation id="7658239707568436148">Atšaukti</translation>
 <translation id="1201402288615127009">Kitas</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Rodyti reklamą, kai „Brave“ nenaudojama</translation>
 <translation id="3349204812119681938">Iš naujo nustatyti „Brave Rewards“</translation>
 <translation id="6606319453795180219">Tai ištrins jūsų „Brave“ atlygį ir iš naujo nustatys visus „Brave“ atlygio duomenis</translation>
-<translation id="6810078320346589989">Kurti žymę</translation>
+<translation id="8293206222192510085">Žymės pridėjimas</translation>
+<translation id="340492034650766959">Žymės pašalinimas</translation>
+<translation id="2149973817440762519">Žymės redagavimas</translation>
+<translation id="6819319915092566548">Peržiūrėti žymes</translation>
 <translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
 <translation id="7473245612074035141">Pradėti sąranką</translation>
 <translation id="8985635554450124959">Sinchronizavimo nustatyti nepavyko</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Neberodyti</translation>
 <translation id="496896260395129787">Ši „Brave“ sinchronizavimo paskyra buvo ištrinta iš kito įrenginio. Jei nenorėjote išjungti sinchronizavimo, tuomet turite <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>iš naujo sukurti paskyrą</translation>
-<translation id="8199291899164865593">Prie šios sinchronizavimo grandinės prisijungti nepavyko. Paskyra buvo ištrinta.</translation>
+<translation id="4094590686212463338">Prie šios sinchronizavimo grandinės prisijungti nepavyko. Sinchronizavimo grandinė buvo ištrinta.</translation>
 <translation id="5633907266617216186">Adresai, mokėjimo informacija ir kt.</translation>
 <translation id="1056898198331236512">Įspėjimas</translation>
 <translation id="1426410128494586442">Taip</translation>
@@ -375,6 +379,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
 <translation id="3200197118442451932">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate <ph name="WALLET_PROVIDER"/>, kai ten susikuriate paskyrą.</translation>
 <translation id="1665118090708049096">Eiti į mano <ph name="WALLET_PROVIDER"/> paskyrą</translation>
+<translation id="4858636682078269312">Prisijunkite prie savo <ph name="WALLET_PROVIDER"/> paskyros</translation>
 <translation id="8874184842967597500">Neprisijungta</translation>
 <translation id="2495032782748793764">„Brave“ numatytasis</translation>
 <translation id="9132378787893584761">Pasidalykite „Brave“ su draugais!</translation>
@@ -392,10 +397,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="3624048886326677117">Blokuoti sekiklius ir reklamas (agresyvus)</translation>
 <translation id="7151914815476509258">Blokuoti sekiklius ir reklamas (standartinis)</translation>
 <translation id="7384778069178817075">Leisti visus sekiklius ir reklamas</translation>
-<translation id="4941539331405513605">Blokuoti kelių svetainių slapukus</translation>
 <translation id="3763681089644577874">Blokuoti slapukus</translation>
 <translation id="614747795780742163">Neleidžia svetainėms laikyti informacijos apie jūsų ankstesnius apsilankymus</translation>
 <translation id="6883611015375728278">Blokuoti visus slapukus</translation>
+<translation id="4941539331405513605">Blokuoti kelių svetainių slapukus</translation>
 <translation id="5657156137487675418">Leisti visus slapukus</translation>
 <translation id="3895527457258986253">Blokuoti kontrolinius kodus</translation>
 <translation id="7854108565842971747">Tai numatytosios skydo nuostatos naujoms svetainėms. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
@@ -494,6 +499,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5705882733397021510">Grįžti</translation>
 <translation id="3985567919248057638">Peržiūrėkite trumpą apžvalgą</translation>
 <translation id="7889432931837317731">Kai galima, atverti automatiškai</translation>
+<translation id="1029304566263314007">Parodyti atsisiuntimo eigos pranešimus</translation>
+<translation id="2910433761530295035">Klausti dėl failų išsaugojimo vietos (Jei aptikta SD kortelė)</translation>
 <translation id="8967385052772844086">Peržiūrėti visą privatumo ataskaitą</translation>
 <translation id="6864343534748973390">Populiariausia</translation>
 <translation id="4608192160278975831">Privatu ir jokio sekimo</translation>
@@ -502,6 +509,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7320542277711359296">Antra pagal populiarumą</translation>
 <translation id="8295049095570748497">Rusijoje populiariausia paieškos sistema</translation>
 <translation id="2642661895835126239">Berlyne sodinami medžiai</translation>
+<translation id="2422627462367776805">Pietų Korėjos interneto portalas ir &amp; paieškos sistema</translation>
 <translation id="177282784098234156">Privati, nepriklausoma, pritaikyta pirmiausia naudotojui</translation>
 <translation id="1410130669636877548">Kai naršote internete, vienos paieškos sistemos jūsų privatumą saugo geriau nei kitos.</translation>
 <translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
@@ -1021,7 +1029,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="9074594632540931067">Klaida: BAT nepasiekiami</translation>
 <translation id="5382684862562314222">„Uphold“ dar nepalaiko BAT jūsų regione.</translation>
 <translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
-<translation id="842321566508373706">„Uphold“ duomenimis, šiuo metu jūsų „Uphold“ paskyrai taikomi tam tikri apribojimai. Prisijunkite prie savo „Uphold“ paskyros ir patikrinkite, ar yra pranešimų arba neįvykdytų paskyros reikalavimų, tada bandykite dar kartą.</translation>
+<translation id="1677961202754619328">„Uphold“ duomenimis, šiuo metu jūsų „Uphold“ paskyrai taikomi tam tikri apribojimai. Prisijunkite prie savo „Uphold“ paskyros ir patikrinkite, ar yra pranešimų arba neįvykdytų reikalavimų, tada bandykite dar kartą.</translation>
 <translation id="6417420737057016607">„Brave“ reklamos</translation>
 <translation id="5425006356459378415">„Brave“ atlygis nepasiekiamas</translation>
 <translation id="833643743158564518">Šiuo metu jūsų regione nepasiekiama naujos „Brave Rewards“ paskyros registravimo funkcija. Pabandykite vėliau. <ph name="LEARN_MORE"/></translation>
@@ -1031,5 +1039,10 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4071347720273751665">Atrodo, kad įvedėte ENS adresą. Šiai užklausai išspręsti turime pasitelkti trečiosios šalies vertimo priemonę, kuri gali matyti jūsų IP adresą ir domeną. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Naudoti ENS domeną už blokų grandinės ribų</translation>
 <translation id="4982630604810554641">Ieškoma domeno...</translation>
+<translation id="4159738248012488342">Prašome pasirinkti arbatpinigių dydį</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="707569835145765061">Būtinas veiksmas: prisijunkite prie atsarginės sąskaitos arba jūsų vBAT bus prarastas</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/>, nutrauksime esamų virtualių BAT likučių palaikymą. Iki šios datos prijunkite atsarginę sąskaitą, kad galėtume pervesti jūsų uždirbtą likutį į atsarginę sąskaitą, kitaip jūsų likutis bus prarastas.</translation>
+<translation id="5089752671190341407">Vis dar galite paaukoti jūsų vBAT savo mėgstamiems kūrėjams</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/>, nutrauksime esamų virtualių BAT likučių palaikymą. Deja, jūsų regione nėra galimų saugojimo vietų (<ph name="REGION"/>) norint išsiimti savo likučius. Iki to laiko, jūs vis dar galite juos panaudoti savo mėgstamiems kūrėjams.</translation>
 </translationbundle>

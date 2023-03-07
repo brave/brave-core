@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Společnost Brave chrání globální výchozí nastavení</translation>
 <translation id="2675679258824361492">Ostatní nastavení ochrany osobních údajů</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
-<translation id="5965081608816406060">Přehrávání videa na pozadí</translation>
+<translation id="1690924763769415936">Přehrávání na pozadí</translation>
 <translation id="6332924730165919598">Zavřením všech karet zavřete Brave</translation>
-<translation id="3872768973878059926">Umožňuje pokračovat v přehrávání zvuku, i když přejdete na jinou kartu Brave, do jiné aplikace nebo s vypnutou obrazovkou.</translation>
+<translation id="8308305244351876417">Umožňuje přehrávání zvuku, i když přejdete na jinou kartu v Brave, do jiné aplikace nebo s vypnutou obrazovkou.</translation>
 <translation id="4150201353443180367">Obrazovka</translation>
 <translation id="2433507940547922241">Vzhled</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Tento tvůrce se zatím nepřihlásil k přijímání příspěvků od uživatelů Brave. Budeme se snažit přispívat, dokud to neověří nebo dokud neuplyne 90 dní.</translation>
 <translation id="635752162765375187">POZNÁMKA: Nastavení tohoto tvůrce nejsou v této chvíli konfigurována tak, aby mohl přijímat příspěvky z Odměn ve vaší svěřené peněžence. Pokus o jakékoli odeslání příspěvku se bude po dobu 90 dnů automaticky opakovat.</translation>
 <translation id="1910721550319506122">Vítejte!</translation>
+<translation id="2734870894159530879">Pro zobrazení zůstatku se přihlaste k účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="5830114181292529917">Tuto stránku můžete podpořit zasláním tipu. Je to způsob, jak jim poděkovat za vytváření skvělého obsahu.</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="1201402288615127009">Další</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Zobrazovat reklamy, když Brave nepoužíváte</translation>
 <translation id="3349204812119681938">Obnovit odměny Brave</translation>
 <translation id="6606319453795180219">Odstraníte tak Brave Rewards a obnovíte všechna data z programu Brave Rewards</translation>
-<translation id="6810078320346589989">Vytvořit záložku</translation>
+<translation id="8293206222192510085">Přidat záložku</translation>
+<translation id="340492034650766959">Odstranit záložku</translation>
+<translation id="2149973817440762519">Upravit záložku</translation>
+<translation id="6819319915092566548">Zobrazit záložky</translation>
 <translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
 <translation id="7473245612074035141">Začít nastavení</translation>
 <translation id="8985635554450124959">Synchronizaci se nepodařilo nastavit</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Znovu neukazovat</translation>
 <translation id="496896260395129787">Tento účet synchronizace Brave byl odstraněn z jiného zařízení. Pokud jste synchronizaci nechtěli deaktivovat,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>účet znovu vytvořte</translation>
-<translation id="8199291899164865593">K řetězu synchronizace se nepodařilo připojit. Účet byl smazán.</translation>
+<translation id="4094590686212463338">K řetězu synchronizace se nepodařilo připojit. Řetěz synchronizace byl odstraněn.</translation>
 <translation id="5633907266617216186">Adresy, platební údaje, atd.</translation>
 <translation id="1056898198331236512">Varování</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -371,6 +375,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8465442795593991224">Společnost Uphold může v závislosti na požadovaných službách vyžadovat ověření vaší totožnosti.</translation>
 <translation id="3200197118442451932">Společnost Brave Software Inc. nezpracovává, neukládá ani nepřistupuje k žádným osobním údajům, které poskytnete službě <ph name="WALLET_PROVIDER"/>, když si u ní vytvoříte účet.</translation>
 <translation id="1665118090708049096">Přejít do mého účtu <ph name="WALLET_PROVIDER"/></translation>
+<translation id="4858636682078269312">Přihlásit se do mého účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Nepřipojeno</translation>
 <translation id="2495032782748793764">Brave Výchozí</translation>
 <translation id="9132378787893584761">Sdílejte Brave se svými přáteli!</translation>
@@ -388,10 +393,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3624048886326677117">Blokovat sledovací &amp; reklamy (agresivní)</translation>
 <translation id="7151914815476509258">Blokovat sledovací &amp; reklamy (standardní)</translation>
 <translation id="7384778069178817075">Umožnit všechny sledující &amp; reklamy</translation>
-<translation id="4941539331405513605">Blokovat cookies napříč stránkami</translation>
 <translation id="3763681089644577874">Blokovat Cookies</translation>
 <translation id="614747795780742163">Zabraňuje internetovým stránkám ukládat informace o vašich předchozích návštěvách</translation>
 <translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
+<translation id="4941539331405513605">Blokovat cookies napříč stránkami</translation>
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="3895527457258986253">Blokovat otisky prstů</translation>
 <translation id="7854108565842971747">Toto jsou výchozí nastavení štítů pro nové stránky. Jejich změna neovlivní vaše stávající nastavení pro jednotlivé stránky.</translation>
@@ -490,6 +495,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5705882733397021510">Přejít zpět</translation>
 <translation id="3985567919248057638">Udělejme si krátkou prohlídku</translation>
 <translation id="7889432931837317731">Pokud to lze, tak automaticky otevřít</translation>
+<translation id="1029304566263314007">Zobrazovat oznámení o průběhu stahování</translation>
+<translation id="2910433761530295035">Zeptat se, kam uložit soubory (pokud je detekována karta SD)</translation>
 <translation id="8967385052772844086">Zobrazit celou zprávu o ochraně osobních údajů</translation>
 <translation id="6864343534748973390">Nejpopulárnější</translation>
 <translation id="4608192160278975831">Bezpečný a bez sledování</translation>
@@ -498,6 +505,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7320542277711359296">Druhý nejpopulárnější</translation>
 <translation id="8295049095570748497">Přední vyhledávač v Rusku</translation>
 <translation id="2642661895835126239">Sází stromy, založeno v Berlíně</translation>
+<translation id="2422627462367776805">Jihokorejský webový portál a vyhledávání</translation>
 <translation id="177282784098234156">Soukromý, nezávislý, zaměřený na uživatele</translation>
 <translation id="1410130669636877548">Při vyhledávání na webu některé vyhledávače chrání vaše soukromí lépe než jiné.</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
@@ -1016,7 +1024,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="9074594632540931067">Chyba: BAT není dostupný</translation>
 <translation id="5382684862562314222">Služba BAT zatím není ve vašem regionu v systému Uphold podporována.</translation>
 <translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
-<translation id="842321566508373706">Podle společnosti Uphold se v současné době na váš účet vztahují určitá omezení. Přihlaste se ke svému účtu Uphold a zkontrolujte, zda nepřišla nějaká upozornění nebo požadavky ohledně účtu, které je třeba splnit, a poté to zkuste znovu.</translation>
+<translation id="1677961202754619328">Podle společnosti Uphold se v současné době na váš účet vztahují určitá omezení. Přihlaste se ke svému účtu Uphold a zkontrolujte, zda nepřišla nějaká upozornění nebo požadavky ohledně účtu, které je třeba splnit, a poté to zkuste znovu.</translation>
 <translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="5425006356459378415">Brave Rewards nejsou k dispozici</translation>
 <translation id="833643743158564518">Nové registrace do odměn Brave Rewards nejsou v tuto chvíli ve vašem regionu povoleny. Vždy to však můžete zkusit později. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4071347720273751665">Vypadá to, že jste zadali adresu ENS. K vyřešení tohoto požadavku budeme muset použít překladač třetí strany, který může vidět vaši IP adresu a doménu. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Použít domény ENS mimo řetězec</translation>
 <translation id="4982630604810554641">Vyhledávání domény</translation>
+<translation id="4159738248012488342">Určete výši příspěvku</translation>
 <translation id="3586775666459823714">NFT</translation>
+<translation id="707569835145765061">Nutná akce: Připojte účet se správcem, jinak budou vaše tokeny vBAT ztraceny.</translation>
+<translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> ukončíme podporu stávajících zůstatků virtuálních tokenů BAT. Připojte si před tímto datem účet se správcem, abychom na něj mohli váš zůstatek převést, jinak vydělané tokeny ztratíte.</translation>
+<translation id="5089752671190341407">Stále máte čas přispět přispět své tokeny vBAT svým oblíbeným autorům</translation>
+<translation id="171158953146804144">Dne <ph name="DUE_DATE"/> ukončíme podporu stávajících zůstatků virtuálních tokenů BAT. Bohužel ve vašem regionu (<ph name="REGION"/>) nejsou k dispozici žádní správci, ke kterým bychom vám mohli vaše tokeny převést. Do té doby můžete stále přispívat svým oblíbeným tvůrcům.</translation>
 </translationbundle>

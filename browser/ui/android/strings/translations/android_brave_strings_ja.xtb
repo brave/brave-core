@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
 <translation id="2675679258824361492">その他のプライバシー設定</translation>
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
-<translation id="5965081608816406060">バックグラウンドでの動画再生</translation>
+<translation id="1690924763769415936">バックグラウンド再生</translation>
 <translation id="6332924730165919598">すべてのタブが閉じられた際に、Braveも閉じる</translation>
-<translation id="3872768973878059926">Braveの他のタブに切り替えたり、他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオの再生を継続できるようにします。</translation>
+<translation id="8308305244351876417">Braveの他のタブや他のアプリに切り替えたり、デバイスの画面がオフの状態でもオーディオを再生できるようにします。</translation>
 <translation id="4150201353443180367">表示</translation>
 <translation id="2433507940547922241">デザイン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">このクリエイターは、まだBraveユーザーからの支援を受け取るための設定が完了していません。今後90日間、設定が完了するまで支援の実行を試みます。</translation>
 <translation id="635752162765375187">注: このクリエイターは現在、あなたのリワード管理ウォレットサービスからチップを受け取る設定が完了していません。あなたが作成したチップは保留され、90日間自動的に再試行されます。</translation>
 <translation id="1910721550319506122">ようこそ！</translation>
+<translation id="2734870894159530879"><ph name="WALLET_PROVIDER"/> にログインして残高を確認</translation>
 <translation id="5830114181292529917">チップを送信することで、このサイトを支援できます。素晴らしいコンテンツの作成に対する謝意を示すひとつの方法です。</translation>
 <translation id="7658239707568436148">キャンセル</translation>
 <translation id="1201402288615127009">次へ</translation>
@@ -244,7 +245,7 @@
 <translation id="4781696154289395607">あなたは<ph name="BAT_VALUE"/> BATを寄付しました。</translation>
 <translation id="2429828319207652823">支援の実行中に問題が発生しました。</translation>
 <translation id="2221902203895354376">トークンの付与が可能です！</translation>
-<translation id="2377929997600454162"><ph name="MONTH_VALUE"/>の広告リワードが届きました！</translation>
+<translation id="2377929997600454162"><ph name="MONTH_VALUE"/>の広告閲覧報酬が届きました！</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/>のリワード: <ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">獲得まであと<ph name="TOKEN"/>日</translation>
 <translation id="2323069945529668668">おっと！</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Braveを使用していない時にも広告を表示</translation>
 <translation id="3349204812119681938">Brave Rewards をリセット</translation>
 <translation id="6606319453795180219">これにより、Brave Rewardsが削除され、「Brave Rewards」データがすべてリセットされます</translation>
-<translation id="6810078320346589989">ブックマークを作成します</translation>
+<translation id="8293206222192510085">ブックマークに追加</translation>
+<translation id="340492034650766959">ブックマークを削除</translation>
+<translation id="2149973817440762519">ブックマークを編集</translation>
+<translation id="6819319915092566548">ブックマークを表示</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="8985635554450124959">同期を設定できませんでした</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
-<translation id="8199291899164865593">この同期チェーンに参加できません。アカウントが削除されています。</translation>
+<translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
 <translation id="5633907266617216186">住所、支払い情報など</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -371,6 +375,7 @@
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を必要とする場合があります。</translation>
 <translation id="3200197118442451932">Brave Software Inc.では、アカウントを開設する際に<ph name="WALLET_PROVIDER"/>に提供される個人情報について処理、保存、アクセスすることは一切ありません。</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/>アカウントへ移動</translation>
+<translation id="4858636682078269312"><ph name="WALLET_PROVIDER"/>アカウントにログイン</translation>
 <translation id="8874184842967597500">未接続</translation>
 <translation id="2495032782748793764">Braveのデフォルト</translation>
 <translation id="9132378787893584761">友だちとBraveを共有しましょう！</translation>
@@ -388,10 +393,10 @@
 <translation id="3624048886326677117">トラッカーと広告をブロック（アグレッシブ）</translation>
 <translation id="7151914815476509258">トラッカーと広告をブロック（標準）</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
-<translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
 <translation id="3763681089644577874">クッキーをブロック</translation>
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
+<translation id="4941539331405513605">クロスサイトクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="3895527457258986253">フィンガープリントをブロック</translation>
 <translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
@@ -490,6 +495,8 @@
 <translation id="5705882733397021510">戻る</translation>
 <translation id="3985567919248057638">簡単な説明動画を見る</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
+<translation id="1029304566263314007">ダウンロード進捗通知を表示</translation>
+<translation id="2910433761530295035">ファイルの保存先を確認 (SDカードを検出した場合)</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
 <translation id="6864343534748973390">最も人気のある</translation>
 <translation id="4608192160278975831">プライベートでトラッキングなし</translation>
@@ -498,6 +505,7 @@
 <translation id="7320542277711359296">2番目に人気のある</translation>
 <translation id="8295049095570748497">ロシアにおける主要な検索エンジン</translation>
 <translation id="2642661895835126239">ベルリンを拠点に、木を植える</translation>
+<translation id="2422627462367776805">韓国のWebポータルを検索</translation>
 <translation id="177282784098234156">プライベート、独立型、ユーザーファースト</translation>
 <translation id="1410130669636877548">一部の検索エンジンは、ウェブを検索する際に、他の検索エンジンよりもうまくユーザーのプライバシーを保護します。</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
@@ -968,7 +976,7 @@
 <translation id="2862978891748913252">国を選択</translation>
 <translation id="3832588024105436400">国を選択すると、お住まいの地域に適したオプションと広告を表示することができます。<ph name="PRIVACY_POLICY"/></translation>
 <translation id="5666264859501108700">Braveリワードの地域を<ph name="COUNTRY_NAME"/>に設定しました。</translation>
-<translation id="909076461795862330">Braveリワードの設定時にエラーが発生しました。もう一度お試しください。</translation>
+<translation id="909076461795862330">Brave Rewardsの設定時にエラーが発生しました。もう一度お試しください。</translation>
 <translation id="7352651011704765696">エラーが発生しました</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -999,14 +1007,14 @@
 <translation id="7954263306665462056">このデバイスではセーフ ブラウジングが無効になっています。有効化するには、Google Playのサービスをインストール済みで、それらが最新版であることをご確認いただく必要があります。</translation>
 <translation id="6605147707233193230">有効にしてコンテンツクリエイターを支援</translation>
 <translation id="1609556006143307897">あなたはコンテンツクリエイターを支援中です</translation>
-<translation id="6067959437127691361">Braveリワードを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
+<translation id="6067959437127691361">Brave Rewardsを使用するとコンテンツクリエイターを支援することができ、BATも獲得できます。</translation>
 <translation id="121894865378699201">BATの獲得を開始しますか?</translation>
 <translation id="2648805457288107211">カストディアルアカウントをRewardsプロファイルに接続してください。アカウントをお持ちでない場合は、この後作成してください。</translation>
-<translation id="1772961321862399863">BATを獲得するには、カストディアルアカウントをRewardsリワードに接続する必要がありますが、この地域で使用できるカストディアンが存在しないため獲得できません。当面は、Braveリワードをオンにすることで、クリエイターを自動で支援してください。</translation>
+<translation id="1772961321862399863">BATを獲得するには、カストディアルアカウントをRewardsに接続する必要がありますが、この地域で使用できるカストディアンが存在しないため獲得できません。当面は、Braveリワードをオンにすることで、クリエイターを自動で支援してください。</translation>
 <translation id="5430495762768325224">BATに関する詳細</translation>
 <translation id="6278643716658443228">Rewards設定</translation>
 <translation id="6516984207843289176">アカウントの接続</translation>
-<translation id="4272136334824111854">今月は、Braveリワードで支援されている<ph name="CREATOR_COUNT"/>人のクリエイターを訪問しました</translation>
+<translation id="4272136334824111854">今月は、Brave Rewardsで支援されている<ph name="CREATOR_COUNT"/>人のクリエイターを訪問しました</translation>
 <translation id="6845311459433734326">BATの獲得やリワードの引き出しを行うために、カストディアルアカウントを接続してください</translation>
 <translation id="928980476243133540">後で行う</translation>
 <translation id="579702532610384533">再接続</translation>
@@ -1016,15 +1024,20 @@
 <translation id="9074594632540931067">エラー: BATの利用不可</translation>
 <translation id="5382684862562314222">お住まいの地域では、UpholdでBATがサポートされていません。</translation>
 <translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
-<translation id="842321566508373706">Upholdによると、現在あなたのUpholdアカウントにいくつかの制限が適用されています。Upholdアカウントにログインし、お知らせやアカウントに必要なものが残っていないかを確認して再度お試しください。</translation>
+<translation id="1677961202754619328">Upholdによると、現在お客様のUpholdアカウントに何らかの制限があるようです。Upholdアカウントにログインし、お知らせまたは満たすべきアカウント要件  (Upholdに送信すべき追加の情報など) がないかをご確認ください。</translation>
 <translation id="6417420737057016607">Brave広告</translation>
-<translation id="5425006356459378415">Braveリワードをご利用いただけません</translation>
-<translation id="833643743158564518">現在お住まいの地域では、Braveリワードの新規登録が無効化されています。後ほどもう一度お試しください。<ph name="LEARN_MORE"/></translation>
+<translation id="5425006356459378415">Brave Rewardsをご利用いただけません</translation>
+<translation id="833643743158564518">現在お住まいの地域では、Brave Rewardsの新規登録が無効化されています。後ほどもう一度お試しください。<ph name="LEARN_MORE"/></translation>
 <translation id="8528916244724490964">すべてのネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="6309721369749814582">ドメイン「<ph name="DOMAIN"/>」は登録されていません</translation>
 <translation id="4071347720273751665">ENSアドレスが入力されたようです。この要求を解決するには、サードパーティのリゾルバを使用する必要がありますが、IPアドレスとドメインが表示される可能性があります。<ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENSオフチェーンドメインを使用する</translation>
 <translation id="4982630604810554641">ドメインを検索中...</translation>
+<translation id="4159738248012488342">チップ金額を選択してください</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="707569835145765061">要対応: vBATを引き続き保管するためにカストディアルアカウントを接続してください</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。この日までにカストディアルアカウントを接続し、獲得した残高をカストディアルアカウントに移行できるようにしてください。この設定を行わない場合、残高は失われます。</translation>
+<translation id="5089752671190341407">サポート終了前までは、お気に入りのクリエイターにvBATで貢献できます</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。残念ながら、お住まいの地域 (<ph name="REGION"/>) には、収益を引き出すために利用可能なカストディアンが存在しません。上記の日程まではお気に入りのクリエイターに貢献することができます。</translation>
 </translationbundle>
