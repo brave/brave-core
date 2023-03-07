@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/ranges/algorithm.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -47,10 +48,9 @@ class ExtensionWebstoreInstaller final
  private:
   ~ExtensionWebstoreInstaller() final = default;
 
-  bool ShouldShowAppInstalledBubble() const final { return false; }
   bool ShouldShowPostInstallUI() const final { return true; }
 
-  std::unique_ptr<ExtensionInstallPrompt> CreateInstallUI() override {
+  std::unique_ptr<ExtensionInstallPrompt> CreateInstallUI() final {
     return std::make_unique<ExtensionInstallPrompt>(web_contents_);
   }
 
@@ -163,8 +163,7 @@ void BraveExtensionsManifestV2Handler::NotifyExtensionManifestV2Changed(
       browser_context != web_ui()->GetWebContents()->GetBrowserContext()) {
     return;
   }
-  auto fnd = std::find_if(extensions_.begin(), extensions_.end(),
-                          [&id](const auto& e) { return e.id == id; });
+  auto fnd = base::ranges::find(extensions_, id, &ExtensionManifestV2::id);
   if (fnd == extensions_.end()) {
     return;
   }
