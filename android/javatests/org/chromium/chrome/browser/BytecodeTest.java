@@ -307,6 +307,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/settings/BravePreferenceFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/WarmupManager"));
     }
 
     @Test
@@ -466,6 +467,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker",
                         "getInstance", false, null));
+        // We expect Chromium's WarmupManager.initializeViewHierarchy to be removed by the bytecode
+        // patching and BraveWarmupManager.initializeViewHierarchy to be used instead
+        Assert.assertFalse(methodExists("org/chromium/chrome/browser/WarmupManager",
+                "initializeViewHierarchy", false, null));
     }
 
     @Test
