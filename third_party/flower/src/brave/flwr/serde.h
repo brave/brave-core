@@ -38,7 +38,7 @@ class ScalarValue {
 };
 
 typedef std::map<std::string, float> Configs;
-typedef std::map<std::string, float> Metrics;
+typedef std::map<std::string, double> Metrics;
 
 /**
  * Serialize client scalar type to protobuf scalar type

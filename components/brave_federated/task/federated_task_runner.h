@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
@@ -24,10 +23,10 @@ class Model;
 class Task;
 using ModelWeights = std::tuple<Weights, float>;
 
-class TaskRunner final {
+class FederatedTaskRunner final {
  public:
-  TaskRunner(Task task, Model* model);
-  ~TaskRunner();
+  FederatedTaskRunner(Task task, Model* model);
+  ~FederatedTaskRunner();
 
   Model* GetModel();
 

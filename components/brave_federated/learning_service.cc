@@ -14,12 +14,10 @@
 #include "brave/components/brave_federated/communication_adapter.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_federated/notification_ad_task_constants.h"
+#include "brave/components/brave_federated/task/federated_task_runner.h"
 #include "brave/components/brave_federated/task/model.h"
-#include "brave/components/brave_federated/task/task_runner.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -96,7 +94,7 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   Model* model = new Model(spec);
   model->SetWeights(task.GetParameters().at(0));
   model->SetBias(task.GetParameters().at(1).at(0));
-  TaskRunner* task_runner = new TaskRunner(task, model);
+  FederatedTaskRunner* task_runner = new FederatedTaskRunner(task, model);
 
   SyntheticDataset* local_training_data = new SyntheticDataset(500);
   SyntheticDataset* local_test_data = new SyntheticDataset(50);
