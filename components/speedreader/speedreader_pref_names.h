@@ -9,7 +9,8 @@
 namespace speedreader {
 
 // Is Speedreader currently enabled
-constexpr char kSpeedreaderPrefEnabled[] = "brave.speedreader.enabled";
+// java_cpp_string.py doesn't work when the variable is constexpr
+const char kSpeedreaderPrefEnabled[] = "brave.speedreader.enabled";
 
 // Set if Speedreader was enabled at least once
 constexpr char kSpeedreaderPrefEverEnabled[] = "brave.speedreader.ever_enabled";

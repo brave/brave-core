@@ -526,6 +526,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/paint_preview/StartupPaintPreviewHelper",
                         "isEnabled", true, boolean.class));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/tab/TabHelpers",
+                "initTabHelpers", true, void.class, Tab.class, Tab.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
