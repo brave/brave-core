@@ -88,7 +88,7 @@ pipeline {
 
                     params = [
                         string(name: 'CHANNEL', value: params.CHANNEL),
-                        string(name: 'BUILD_TYPE', value: params.BUILD_TYPE),
+                        string(name: 'BUILD_TYPE', value: PLATFORM == 'android' ? 'Release' : params.BUILD_TYPE),
                         booleanParam(name: 'WIPE_WORKSPACE', value: params.WIPE_WORKSPACE),
                         booleanParam(name: 'USE_GOMA', value: params.USE_GOMA),
                         booleanParam(name: 'SKIP_SIGNING', value: params.SKIP_SIGNING),
