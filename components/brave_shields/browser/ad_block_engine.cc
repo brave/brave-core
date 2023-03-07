@@ -11,15 +11,9 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/files/file_path.h"
-#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/memory/ptr_util.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"

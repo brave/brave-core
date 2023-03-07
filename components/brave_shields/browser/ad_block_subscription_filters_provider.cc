@@ -7,13 +7,9 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace brave_shields {
 

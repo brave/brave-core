@@ -10,10 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/base64url.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
@@ -23,9 +21,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "components/prefs/pref_service.h"
@@ -35,14 +31,10 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
-#include "extensions/common/url_pattern.h"
-#include "mojo/public/cpp/bindings/remote.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/public/dns_query_type.h"
 #include "services/network/host_resolver.h"
-#include "services/network/network_context.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "ui/base/resource/resource_bundle.h"
-#include "url/url_canon.h"
 
 namespace brave {
 

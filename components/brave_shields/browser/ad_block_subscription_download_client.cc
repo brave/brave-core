@@ -13,9 +13,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/metrics/histogram_macros_local.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "components/download/public/background_service/download_metadata.h"

@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/files/file_path.h"
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

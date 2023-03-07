@@ -14,13 +14,11 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/one_shot_event.h"
+#include "base/observer_list.h"
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/ad_block_engine.h"
-#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
@@ -80,6 +78,11 @@ class AdBlockSubscriptionServiceManager {
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
       const base::FilePath& profile_dir);
   ~AdBlockSubscriptionServiceManager();
+
+  AdBlockSubscriptionServiceManager(const AdBlockSubscriptionServiceManager&) =
+      delete;
+  AdBlockSubscriptionServiceManager& operator=(
+      const AdBlockSubscriptionServiceManager&) = delete;
 
   // Returns a `file://` URL that points directly to the cached list text file
   // used for the given subscription.
@@ -149,11 +152,6 @@ class AdBlockSubscriptionServiceManager {
 
   base::WeakPtrFactory<AdBlockSubscriptionServiceManager> weak_ptr_factory_{
       this};
-
-  AdBlockSubscriptionServiceManager(const AdBlockSubscriptionServiceManager&) =
-      delete;
-  AdBlockSubscriptionServiceManager& operator=(
-      const AdBlockSubscriptionServiceManager&) = delete;
 };
 
 }  // namespace brave_shields
