@@ -8,8 +8,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
-namespace brave_federated {
-namespace features {
+namespace brave_federated::features {
 
 namespace {
 
@@ -67,11 +66,11 @@ bool IsFederatedLearningEnabled() {
   return base::FeatureList::IsEnabled(kFederatedLearning);
 }
 
-int GetFederatedLearningUpdateCycleInMinutes() {
+int GetFederatedLearningUpdateCycleInSeconds() {
   return GetFieldTrialParamByFeatureAsInt(
       kFederatedLearning,
-      kFieldTrialParameterFederatedLearningUpdateCycleInMinutes,
-      kDefaultFederatedLearningUpdateCycleInMinutes);
+      kFieldTrialParameterFederatedLearningUpdateCycleInSeconds,
+      kDefaultFederatedLearningUpdateCycleInSeconds);
 }
 
 std::string GetFederatedLearningTaskEndpoint() {
@@ -130,5 +129,4 @@ bool MockCollectionRequests() {
       kDefaultMockCollectionRequests);
 }
 
-}  // namespace features
-}  // namespace brave_federated
+}  // namespace brave_federated::features

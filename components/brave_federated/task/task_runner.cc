@@ -4,25 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/task_runner.h"
-#include <__fwd/get.h>
 
 #include <list>
 #include <map>
 #include <sstream>
 
 #include "base/check.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/thread_pool.h"
-#include "base/threading/sequence_bound.h"
 
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
-
-#include "net/http/http_request_headers.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace brave_federated {
 
@@ -37,7 +27,7 @@ Model* TaskRunner::GetModel() {
 }
 
 TaskResult TaskRunner::Run() {
-  PerformanceReport report(0, 0, 0, {});
+  PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::Training) {
     report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::Evaluation) {

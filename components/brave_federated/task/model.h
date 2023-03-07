@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 
+#include <map>
 #include <memory>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -27,11 +29,13 @@ struct PerformanceReport {
   float loss;
   float accuracy;
   std::vector<Weights> parameters;
+  std::map<std::string, float> metrics;
 
   PerformanceReport(size_t dataset_size,
                     float loss,
                     float accuracy,
-                    std::vector<Weights> parameters);
+                    std::vector<Weights> parameters,
+                    std::map<std::string, float> metrics);
   PerformanceReport(const PerformanceReport& other);
   ~PerformanceReport();
 };

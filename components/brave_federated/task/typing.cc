@@ -12,8 +12,13 @@ namespace brave_federated {
 Task::Task(TaskId task_id,
            TaskType type,
            std::string token,
-           std::vector<Weights> parameters)
-    : task_id_(task_id), type_(type), token_(token), parameters_(parameters) {}
+           std::vector<Weights> parameters,
+           std::map<std::string, float> config)
+    : task_id_(task_id),
+      type_(type),
+      token_(token),
+      parameters_(parameters),
+      config_(config) {}
 Task::Task(const Task& other) = default;
 Task::~Task() = default;
 
@@ -31,6 +36,10 @@ std::string Task::GetToken() {
 
 std::vector<Weights> Task::GetParameters() {
   return parameters_;
+}
+
+std::map<std::string, float> Task::GetConfig() {
+  return config_;
 }
 
 TaskResult::TaskResult(Task task, PerformanceReport report)

@@ -8,14 +8,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_federated/adapters/flower_helper.h"
-#include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_federated/util/linear_algebra_util.h"
+#include "brave/components/brave_federated/task/typing.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"

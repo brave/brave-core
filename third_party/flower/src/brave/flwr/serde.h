@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_FLOWER_SRC_BRAVE_FLWR_SERDE_H_
 #define BRAVE_THIRD_PARTY_FLOWER_SRC_BRAVE_FLWR_SERDE_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -36,6 +37,9 @@ class ScalarValue {
   std::optional<std::string> string_value_ = std::nullopt;
 };
 
+typedef std::map<std::string, float> Configs;
+typedef std::map<std::string, float> Metrics;
+
 /**
  * Serialize client scalar type to protobuf scalar type
  */
@@ -45,6 +49,18 @@ flower::Scalar ScalarToProto(ScalarValue scalar_msg);
  * Deserialize protobuf scalar type to client scalar type
  */
 ScalarValue ScalarFromProto(flower::Scalar scalar_msg);
+
+/**
+ * Deserialize protobuf configs type to client metrics type
+ */
+Configs ConfigsFromProto(
+    google::protobuf::Map<std::string, flower::Scalar> proto);
+
+/**
+ * Serialize client metrics type to protobuf metrics type
+ */
+google::protobuf::Map<std::string, flower::Scalar> MetricsToProto(
+    Metrics metrics);
 
 /**
  * Deserialize bytes to float vector

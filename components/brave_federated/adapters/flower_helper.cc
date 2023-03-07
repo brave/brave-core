@@ -10,10 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/strings/string_util.h"
-#include "base/values.h"
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/third_party/flower/src/brave/flwr/serde.h"
@@ -46,13 +43,16 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
 
       TaskType type;
       std::vector<Weights> parameters = {};
+      Configs config = {};
       if (message.has_fit_ins()) {
         type = TaskType::Training;
         parameters = GetVectorsFromParameters(message.fit_ins().parameters());
+        config = ConfigsFromProto(message.fit_ins().config());
       } else if (message.has_evaluate_ins()) {
         type = TaskType::Evaluation;
         parameters =
             GetVectorsFromParameters(message.evaluate_ins().parameters());
+        config = ConfigsFromProto(message.evaluate_ins().config());
       } else if (message.has_reconnect_ins()) {
         VLOG(2) << "**: Legacy reconnect instruction received from FL service";
         continue;
@@ -61,7 +61,7 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
         continue;
       }
 
-      Task task = Task(task_id, type, "token", parameters);
+      Task task = Task(task_id, type, "token", parameters, config);
       task_list.push_back(task);
     }
 
@@ -100,11 +100,17 @@ std::string BuildPostTaskResultsPayload(TaskResult result) {
     flower::ClientMessage_FitRes fit_res;
     fit_res.set_num_examples(report.dataset_size);
     *fit_res.mutable_parameters() = GetParametersFromVectors(report.parameters);
+    if (report.metrics.size() > 0) {
+      *fit_res.mutable_metrics() = MetricsToProto(report.metrics);
+    }
     *client_message.mutable_fit_res() = fit_res;
   } else {
     flower::ClientMessage_EvaluateRes eval_res;
     eval_res.set_num_examples(report.dataset_size);
     eval_res.set_loss(report.loss);
+    if (report.metrics.size() > 0) {
+      *eval_res.mutable_metrics() = MetricsToProto(report.metrics);
+    }
     *client_message.mutable_evaluate_res() = eval_res;
   }
   flower_task.add_ancestry(task_id.id);
@@ -112,7 +118,7 @@ std::string BuildPostTaskResultsPayload(TaskResult result) {
   flower::Node producer_node;
   producer_node.set_node_id(0);
   producer_node.set_anonymous(true);
-  
+
   flower::Node consumer_node;
   consumer_node.set_node_id(0);
   consumer_node.set_anonymous(true);
