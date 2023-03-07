@@ -905,7 +905,7 @@
     Manifest V2 extensions
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_SUBLABEL" desc="The sub label of manage v2 extensions link in settings">
-    The following Manifest V2 extensions are no longer available in the Chrome Web Store, but still supported in Brave. Click to download and install.
+    The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Brave. Click to download and install.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
     Close
@@ -920,7 +920,7 @@
     Enable uBlock Origin&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_DESC" desc="Manifest V2 extension toggle's sub label">
-    uBlock Origin is a Manifest V2 extension that provides ad blocking features and controls specific to uBlock.
+    uBlock Origin is a Manifest V2 extension that provides powerful content blocking tools with lots of options for advanced users.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME" desc="Manifest V2 extension toggle's label">
     Enable uMatrix&#x2122;
@@ -929,10 +929,10 @@
     uMatrix is a Manifest V2 extension that provides point-and-click matrix-based firewall, with many privacy-enhancing tools.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME" desc="Manifest V2 extension toggle's label">
-    Enable AdBlock&#x2122;
+    Enable AdGuard&#x2122;
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC" desc="Manifest V2 extension toggle's sub label">
-    AdGuard is a Manifest V2 extension that effectively blocks all types of ads on all web pages, even on Facebook, YouTube and others.
+    AdGuard is a Manifest V2 extension that provides ad blocking, parental control options, and integration with other AdGuard service offerings.
   </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
     Manage extensions
