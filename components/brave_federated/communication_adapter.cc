@@ -102,11 +102,11 @@ void CommunicationAdapter::OnGetTasks(
 
     if (task_list.empty()) {
       VLOG(1) << "No tasks received from FL service, retrying in 60s";
-      std::move(callback).Run({}, features::GetFederatedLearningUpdateCycleInMinutes() * 60);
+      std::move(callback).Run({}, features::GetFederatedLearningUpdateCycleInSeconds());
       return;
     }
 
-    std::move(callback).Run(task_list, features::GetFederatedLearningUpdateCycleInMinutes() * 60);
+    std::move(callback).Run(task_list, features::GetFederatedLearningUpdateCycleInSeconds());
     return;
   }
 

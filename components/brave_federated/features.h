@@ -17,7 +17,7 @@ BASE_DECLARE_FEATURE(kFederatedLearning);
 bool IsFederatedLearningEnabled();
 
 // Federated Learning
-int GetFederatedLearningUpdateCycleInMinutes();
+int GetFederatedLearningUpdateCycleInSeconds();
 std::string GetFederatedLearningTaskEndpoint();
 std::string GetFederatedLearningResultsEndpoint();
 
