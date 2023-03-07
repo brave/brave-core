@@ -65,23 +65,23 @@ TEST_P(GetParameters, Paths) {
 
   ON_CALL(mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
+          [lambda_status_code = status_code, lambda_body = body](
               mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
             mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
+            response.status_code = lambda_status_code;
+            response.body = std::move(lambda_body);
             std::move(callback).Run(response);
           }));
 
   RequestFor<endpoints::GetParameters>(&mock_ledger_impl_)
       .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
+          [lambda_expected_result = expected_result](Result&& result) {
             if (result.has_value()) {
-              EXPECT_TRUE(expected_result->has_value());
-              EXPECT_EQ(*result.value(), *expected_result->value());
+              EXPECT_TRUE(lambda_expected_result->has_value());
+              EXPECT_EQ(*result.value(), *lambda_expected_result->value());
             } else {
-              EXPECT_FALSE(expected_result->has_value());
-              EXPECT_EQ(result.error(), expected_result->error());
+              EXPECT_FALSE(lambda_expected_result->has_value());
+              EXPECT_EQ(result.error(), lambda_expected_result->error());
             }
           }));
 }
