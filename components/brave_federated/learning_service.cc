@@ -69,11 +69,20 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   }
 
   // TODO(lminto): for now, disregard all tasks beyond the first one
+  // TODO(stevelaskaridis): extract into a utility function
   Task task = tasks.at(0);
+  float lr = 0.01;
+  std::map<std::string, float> config = task.GetConfig();
+  auto cursor = config.find("lr");
+  if (cursor != config.end()) {
+    lr = cursor->second;
+    VLOG(2) << "Learning rate applied from server: " << lr;
+  }
+
   ModelSpec spec{
       32,    // num_params
       64,    // batch_size
-      0.01,  // learning_rate
+      lr,    // learning_rate
       500,   // num_iterations
       0.5    // threshold
   };
