@@ -6,6 +6,7 @@
 #include "brave/components/brave_federated/task/model.h"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <random>
 
@@ -15,7 +16,7 @@ PerformanceReport::PerformanceReport(size_t dataset_size,
                                      float loss,
                                      float accuracy,
                                      std::vector<Weights> parameters,
-                                     std::map<std::string, float> metrics)
+                                     std::map<std::string, double> metrics)
     : dataset_size(dataset_size),
       loss(loss),
       accuracy(accuracy),
@@ -79,8 +80,12 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
 }
 
 PerformanceReport Model::Train(const DataSet& train_dataset) {
-  int features = train_dataset[0].size() - 1;
+  double data_prep_cumulative_duration = 0;
+  double train_exec_cumulative_duration = 0;
 
+  auto data_start_ts = std::chrono::high_resolution_clock::now();
+
+  int features = train_dataset[0].size() - 1;
   std::vector<float> data_indices(train_dataset.size());
   for (size_t i = 0; i < train_dataset.size(); i++) {
     data_indices.push_back(i);
@@ -90,7 +95,13 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   std::vector<float> err(batch_size_, 10000);
   Weights p_w(features);
   float training_loss = 0.0;
+
+  auto data_end_ts = std::chrono::high_resolution_clock::now();
+
+  data_prep_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(data_end_ts - data_start_ts).count();
+
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
+    auto data_start_ts = std::chrono::high_resolution_clock::now();
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(data_indices.begin(), data_indices.end(), g);
@@ -98,6 +109,7 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     DataSet x(batch_size_, std::vector<float>(features));
     std::vector<float> y(batch_size_);
 
+    auto exec_start_ts = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < batch_size_; i++) {
       std::vector<float> point = train_dataset[data_indices[i]];
       y[i] = point.back();
@@ -126,8 +138,17 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     if (iteration % 250 == 0) {
       training_loss = ComputeNLL(y, Predict(x));
     }
+    auto exec_end_ts = std::chrono::high_resolution_clock::now();
+
+    data_prep_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts - data_start_ts).count();
+    train_exec_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts - exec_start_ts).count();
   }
+
   float accuracy = training_loss;
+
+  std::map<std::string, double> metrics = std::map<std::string, double>();
+  metrics.insert({"data_prep_duration", data_prep_cumulative_duration});
+  metrics.insert({"train_duration", train_exec_cumulative_duration});
 
   std::vector<Weights> reported_model;
   reported_model.push_back(weights_);
@@ -136,11 +157,13 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
                            training_loss,         // loss
                            accuracy,              // accuracy
                            reported_model,        // parameters
-                           {}                     // metrics
+                           metrics                // metrics
   );
 }
 
 PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
+  auto data_start_ts = std::chrono::high_resolution_clock::now();
+
   int num_features = test_dataset[0].size();
   DataSet X(test_dataset.size(), std::vector<float>(num_features));
   std::vector<float> y(test_dataset.size());
@@ -151,6 +174,8 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
     point.pop_back();
     X[i] = point;
   }
+
+  auto exec_start_ts = std::chrono::high_resolution_clock::now();
 
   std::vector<float> predicted_value = Predict(X);
   int total_correct = 0;
@@ -168,11 +193,20 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
   float accuracy = total_correct * 1.0 / test_dataset.size();
   float test_loss = ComputeNLL(y, Predict(X));
 
+  auto exec_end_ts = std::chrono::high_resolution_clock::now();
+
+  auto data_prep_duration = std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts - data_start_ts).count();
+  auto train_exec_duration = std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts - exec_start_ts).count();
+
+  std::map<std::string, double> metrics = std::map<std::string, double>();
+  metrics.insert({"data_prep_duration", data_prep_duration});
+  metrics.insert({"eval_duration", train_exec_duration});
+
   return PerformanceReport(test_dataset.size(),  // dataset_size
                            test_loss,            // loss
                            accuracy,             // accuracy
                            {},                   // parameters
-                           {}                    // metrics
+                           metrics               // metrics
   );
 }
 

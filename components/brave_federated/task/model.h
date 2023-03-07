@@ -29,13 +29,13 @@ struct PerformanceReport {
   float loss;
   float accuracy;
   std::vector<Weights> parameters;
-  std::map<std::string, float> metrics;
+  std::map<std::string, double> metrics;
 
   PerformanceReport(size_t dataset_size,
                     float loss,
                     float accuracy,
                     std::vector<Weights> parameters,
-                    std::map<std::string, float> metrics);
+                    std::map<std::string, double> metrics);
   PerformanceReport(const PerformanceReport& other);
   ~PerformanceReport();
 };
