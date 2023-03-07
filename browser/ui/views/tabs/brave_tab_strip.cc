@@ -43,6 +43,15 @@ BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
 
 BraveTabStrip::~BraveTabStrip() = default;
 
+bool BraveTabStrip::IsVerticalTabsFloating() const {
+  DCHECK(ShouldShowVerticalTabs())
+      << "This method should be called when vertical tab strip is enabled";
+
+  const auto* prefs = controller_->GetProfile()->GetPrefs();
+  return prefs->GetBoolean(brave_tabs::kVerticalTabsFloatingEnabled) &&
+         prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed);
+}
+
 bool BraveTabStrip::ShouldDrawStrokes() const {
   if (ShouldShowVerticalTabs()) {
     // Prevent root view from drawing lines. For tabs, we're overriding
