@@ -7,12 +7,8 @@
 
 #include <sstream>
 
-#include "base/strings/string_util.h"
 #include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
 
-/**
- * Serialize client scalar type to protobuf scalar type
- */
 flower::Scalar ScalarToProto(ScalarValue scalar_msg) {
   flower::Scalar s;
   if (scalar_msg.GetBool() != std::nullopt) {
@@ -39,9 +35,6 @@ flower::Scalar ScalarToProto(ScalarValue scalar_msg) {
   return s;
 }
 
-/**
- * Deserialize protobuf scalar type to client scalar type
- */
 ScalarValue ScalarFromProto(flower::Scalar scalar_msg) {
   ScalarValue scalar;
   switch (scalar_msg.scalar_case()) {
@@ -65,25 +58,42 @@ ScalarValue ScalarFromProto(flower::Scalar scalar_msg) {
   }
 }
 
-/**
- * Deserialize bytes to float vector
- */
+google::protobuf::Map<std::string, flower::Scalar> MetricsToProto(
+    Metrics metrics) {
+  google::protobuf::Map<std::string, flower::Scalar> proto;
+
+  for (auto& [key, value] : metrics) {
+    ScalarValue scalar = ScalarValue();
+    scalar.SetDouble(value);
+    proto[key] = ScalarToProto(scalar);
+  }
+
+  return proto;
+}
+
+Configs ConfigsFromProto(
+    google::protobuf::Map<std::string, flower::Scalar> proto) {
+  Configs config;
+
+  for (auto& [key, value] : proto) {
+    config[key] = ScalarFromProto(value).GetDouble().value();
+  }
+  return config;
+}
+
 std::vector<float> GetVectorFromString(std::string string) {
-  int vector_size = string.size() / sizeof(double);
-  double parameters_array[vector_size];
+  const int k_vector_size = string.size() / sizeof(double);
+  double parameters_array[k_vector_size];
   std::memcpy(parameters_array, string.data(), string.size());
 
   std::vector<double> parameters_vector(parameters_array,
-                                        parameters_array + vector_size);
+                                        parameters_array + k_vector_size);
 
   std::vector<float> parameters_vector_float(parameters_vector.begin(),
                                              parameters_vector.end());
   return parameters_vector_float;
 }
 
-/**
- * Serialize float vector into bytes
- */
 std::string GetStringFromVector(std::vector<float> vector) {
   std::vector<double> double_vector(vector.begin(), vector.end());
   std::ostringstream oss;
@@ -93,9 +103,6 @@ std::string GetStringFromVector(std::vector<float> vector) {
   return oss.str();
 }
 
-/**
- * Get list of vectors from flower::Parameters
- */
 std::vector<std::vector<float>> GetVectorsFromParameters(
     flower::Parameters parameters_msg) {
   std::vector<std::vector<float>> tensors;
@@ -109,9 +116,6 @@ std::vector<std::vector<float>> GetVectorsFromParameters(
   return tensors;
 }
 
-/**
- * Get flower::Parameters from list of vectors
- */
 flower::Parameters GetParametersFromVectors(
     std::vector<std::vector<float>> parameters_vector) {
   flower::Parameters flower_parameters;

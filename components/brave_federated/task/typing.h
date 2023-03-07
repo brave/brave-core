@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TYPING_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TYPING_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,8 @@ class Task {
   Task(TaskId task_id,
        TaskType type,
        std::string token,
-       std::vector<Weights> parameters);
+       std::vector<Weights> parameters,
+       std::map<std::string, float> config);
   Task(const Task& other);
   ~Task();
 
@@ -38,12 +40,14 @@ class Task {
   TaskType GetType();
   std::string GetToken();
   std::vector<Weights> GetParameters();
+  std::map<std::string, float> GetConfig();
 
  private:
   TaskId task_id_;
   TaskType type_;
   std::string token_;
   std::vector<Weights> parameters_;
+  std::map<std::string, float> config_;
 };
 
 class TaskResult {
