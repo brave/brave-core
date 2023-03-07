@@ -95,11 +95,11 @@ TEST_P(ConnectExternalWalletTest, Paths) {
       .WillByDefault(Return(std::move(test_wallet)));
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
-      .Run(query_parameters,
-           base::BindLambdaForTesting([expected_result = expected_result](
-                                          ConnectExternalWalletResult result) {
-             EXPECT_EQ(result, expected_result);
-           }));
+      .Run(query_parameters, base::BindLambdaForTesting(
+                                 [lambda_expected_result = expected_result](
+                                     ConnectExternalWalletResult result) {
+                                   EXPECT_EQ(result, lambda_expected_result);
+                                 }));
 }
 
 // clang-format off
