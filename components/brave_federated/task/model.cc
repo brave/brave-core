@@ -8,20 +8,19 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
-#include <vector>
-
-#include "base/check.h"
 
 namespace brave_federated {
 
 PerformanceReport::PerformanceReport(size_t dataset_size,
                                      float loss,
                                      float accuracy,
-                                     std::vector<Weights> parameters)
+                                     std::vector<Weights> parameters,
+                                     std::map<std::string, float> metrics)
     : dataset_size(dataset_size),
       loss(loss),
       accuracy(accuracy),
-      parameters(parameters) {}
+      parameters(parameters),
+      metrics(metrics) {}
 
 PerformanceReport::PerformanceReport(const PerformanceReport& other) = default;
 PerformanceReport::~PerformanceReport() = default;
@@ -87,45 +86,45 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     data_indices.push_back(i);
   }
 
-  Weights dW(features);
+  Weights d_w(features);
   std::vector<float> err(batch_size_, 10000);
-  Weights pW(features);
+  Weights p_w(features);
   float training_loss = 0.0;
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(data_indices.begin(), data_indices.end(), g);
 
-    DataSet X(batch_size_, std::vector<float>(features));
+    DataSet x(batch_size_, std::vector<float>(features));
     std::vector<float> y(batch_size_);
 
     for (int i = 0; i < batch_size_; i++) {
       std::vector<float> point = train_dataset[data_indices[i]];
       y[i] = point.back();
       point.pop_back();
-      X[i] = point;
+      x[i] = point;
     }
 
-    pW = weights_;
-    float pB = bias_;
-    float dB;
+    p_w = weights_;
+    float p_b = bias_;
+    float d_b;
 
-    std::vector<float> pred = Predict(X);
+    std::vector<float> pred = Predict(x);
 
     err = LinearAlgebraUtil::SubtractVector(y, pred);
 
-    dW = LinearAlgebraUtil::MultiplyMatrixVector(
-        LinearAlgebraUtil::TransposeVector(X), err);
-    dW = LinearAlgebraUtil::MultiplyVectorScalar(dW, (-2.0 / batch_size_));
+    d_w = LinearAlgebraUtil::MultiplyMatrixVector(
+        LinearAlgebraUtil::TransposeVector(x), err);
+    d_w = LinearAlgebraUtil::MultiplyVectorScalar(d_w, (-2.0 / batch_size_));
 
-    dB = (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);
+    d_b = (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);
 
     weights_ = LinearAlgebraUtil::SubtractVector(
-        pW, LinearAlgebraUtil::MultiplyVectorScalar(dW, learning_rate_));
-    bias_ = pB - learning_rate_ * dB;
+        p_w, LinearAlgebraUtil::MultiplyVectorScalar(d_w, learning_rate_));
+    bias_ = p_b - learning_rate_ * d_b;
 
     if (iteration % 250 == 0) {
-      training_loss = ComputeNLL(y, Predict(X));
+      training_loss = ComputeNLL(y, Predict(x));
     }
   }
   float accuracy = training_loss;
@@ -136,7 +135,8 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   return PerformanceReport(train_dataset.size(),  // dataset_size
                            training_loss,         // loss
                            accuracy,              // accuracy
-                           reported_model         // parameters
+                           reported_model,        // parameters
+                           {}                     // metrics
   );
 }
 
@@ -171,7 +171,8 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
   return PerformanceReport(test_dataset.size(),  // dataset_size
                            test_loss,            // loss
                            accuracy,             // accuracy
-                           {}                    // parameters
+                           {},                   // parameters
+                           {}                    // metrics
   );
 }
 
