@@ -11,11 +11,14 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   z-index: 3;
-  background-color: #1e2029;
-  width: 238px;
+  background-color: #FFFFFF;
+  @media (prefers-color-scheme: dark) {
+    background-color: #000000
+  }
+  width: 280px;
   border-radius: 6px;
-  top: 25px;
-  right: -76px;
+  bottom: 30px;
+  right: -10px;
 `
 
 export const TooltipContent = styled.div`
@@ -23,27 +26,47 @@ export const TooltipContent = styled.div`
   padding: 24px;
   width: 100%;
   height: 100%;
+  color: #1D1F25;
+  @media (prefers-color-scheme: dark) {
+    color: #ECEFF2
+  }
 `
 
-export const TooltipText = styled.p`
+export const Heading = styled.p`
   font-family: 'Poppins';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
   padding: 0;
   margin: 0;
-  color: #f6f6fa;
 `
 
-export const ArrowUp = styled.div`
+export const List = styled.ul`
+  margin: 0%;
+  padding-left: 20px;
+
+  li {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    padding: 0;
+    margin: 0;
+  }
+`
+
+export const ArrowDown = styled.div`
   width: 0;
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid #1e2029;
   position: absolute;
-  right: 74px;
-  top: -8px;
+  border-top: 8px solid #000000;
+  position: absolute;
+  right: 50%;
+  bottom: -8px;
 `
