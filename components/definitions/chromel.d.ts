@@ -83,6 +83,7 @@ declare namespace chrome.braveRewards {
 
   const createRewardsWallet: (country: string, callback: (result?: string) => void) => void
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
+  const getDefaultCountry: (callback: (defaultCountry: string) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
   const getUserType: (callback: (userType: string) => void) => void
   const getPublishersVisitedCount: (callback: (count: number) => void) => void
