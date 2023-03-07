@@ -38,6 +38,7 @@ class BraveVPNOSConnectionAPI {
   };
 
   virtual mojom::ConnectionState GetConnectionState() const = 0;
+  virtual void ResetConnectionState() = 0;
   virtual void RemoveVPNConnection() = 0;
   virtual void Connect() = 0;
   virtual void Disconnect() = 0;

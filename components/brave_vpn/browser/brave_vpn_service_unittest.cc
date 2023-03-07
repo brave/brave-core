@@ -598,6 +598,29 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
 }
 
+TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
+  // Prepare valid connection info.
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  // Set failed state before setting observer.
+  test_api->SetConnectionState(ConnectionState::CONNECT_FAILED);
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  service_->ResetConnectionState();
+
+  base::RunLoop loop;
+  observer.WaitConnectionStateChange(loop.QuitClosure());
+  loop.Run();
+
+  // Check state is changed to disconnected after reset connection state.
+  EXPECT_EQ(ConnectionState::DISCONNECTED, test_api->GetConnectionState());
+  EXPECT_EQ(ConnectionState::DISCONNECTED, observer.GetConnectionState());
+}
+
 TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   // Prepare valid connection info.
   auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
