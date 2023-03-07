@@ -4,7 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-@preconcurrency import WebKit.WKContentRuleListStore
+@preconcurrency import WebKit
 import Data
 import Shared
 import BraveShared
@@ -35,7 +35,6 @@ final public class ContentBlockerManager: Sendable {
   public enum GeneralBlocklistTypes: String, CaseIterable {
     case blockAds = "block-ads"
     case blockCookies = "block-cookies"
-    case upgradeHTTP = "upgrade-http"
     case blockTrackers = "block-trackers"
     
     var fileName: String {
@@ -45,12 +44,7 @@ final public class ContentBlockerManager: Sendable {
     /// List of all bundled content blockers.
     /// Regional lists are downloaded on fly and not included here.
     static var validLists: Set<GeneralBlocklistTypes> {
-      // TODO: Downgrade to 14.5 once api becomes available.
-      if #available(iOS 15, *) {
-        return Set(allCases).subtracting([.upgradeHTTP])
-      } else {
-        return Set(allCases)
-      }
+      return Set(allCases)
     }
   }
   

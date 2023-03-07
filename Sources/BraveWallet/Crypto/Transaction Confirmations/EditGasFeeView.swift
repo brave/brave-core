@@ -76,13 +76,6 @@ struct EditGasFeeView: View {
     List {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.perGasPriceTitle))
-          .osAvailabilityModifiers { content in
-            if #available(iOS 15.0, *) {
-              content  // Padding already applied
-            } else {
-              content.padding(.top)
-            }
-          }
       ) {
         TextField("", text: $perGasPrice)
           .keyboardType(.numberPad)

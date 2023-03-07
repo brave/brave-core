@@ -32,12 +32,12 @@ class BraveSkusScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
-                                                    securityToken: scriptId,
-                                                    script: script),
-                               injectionTime: .atDocumentStart,
-                               forMainFrameOnly: true,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
+                                             securityToken: scriptId,
+                                             script: script),
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: true,
+                        in: scriptSandbox)
   }()
   
   private enum Method: Int {

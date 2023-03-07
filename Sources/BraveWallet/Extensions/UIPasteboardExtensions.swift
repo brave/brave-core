@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import CoreServices
+import UniformTypeIdentifiers
 
 extension UIPasteboard {
   /// Copies a string into the pasteboard that is excluded from Handoff and expires at a certain date
@@ -16,7 +17,7 @@ extension UIPasteboard {
     expirationDate: Date = Date().addingTimeInterval(60)
   ) {
     setItems(
-      [[kUTTypeUTF8PlainText as String: string]],
+      [[UTType.utf8PlainText.identifier: string]],
       options: [
         .localOnly: true,
         .expirationDate: expirationDate,

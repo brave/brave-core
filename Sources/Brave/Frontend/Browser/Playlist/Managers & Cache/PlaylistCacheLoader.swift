@@ -29,7 +29,7 @@ public class PlaylistMimeTypeDetector {
       self.mimeType = mimeTypeMap.first(where: { $0.value == supportedExtension })?.key
     } else if let fileExtension = PlaylistMimeTypeDetector.supportedAVAssetFileExtensions().first(where: { $0.lowercased() == possibleFileExtension }) {
       self.fileExtension = fileExtension
-      self.mimeType = PlaylistMimeTypeDetector.fileExtensionToMimeType(fileExtension)
+      self.mimeType = UTType(filenameExtension: fileExtension)?.preferredMIMEType
     }
   }
 
@@ -39,7 +39,7 @@ public class PlaylistMimeTypeDetector {
       self.fileExtension = fileExtension
     } else if let mimeType = PlaylistMimeTypeDetector.supportedAVAssetMimeTypes().first(where: { $0.lowercased() == mimeType.lowercased() }) {
       self.mimeType = mimeType
-      self.fileExtension = PlaylistMimeTypeDetector.mimeTypeToFileExtension(mimeType)
+      self.fileExtension = UTType(mimeType: mimeType)?.preferredFilenameExtension
     }
   }
 
@@ -157,50 +157,16 @@ public class PlaylistMimeTypeDetector {
     return [UInt8](data[offset..<(offset + header.count)]) == header
   }
 
-  /// Converts a File Extension to a Mime-Type
-  private static func fileExtensionToMimeType(_ fileExtension: String) -> String? {
-    if #available(iOS 14.0, *) {
-      return UTType(tag: fileExtension, tagClass: .filenameExtension, conformingTo: nil)?.preferredMIMEType
-    } else {
-      if let tag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension as CFString, nil)?.takeRetainedValue() {
-        return UTTypeCopyPreferredTagWithClass(tag, kUTTagClassMIMEType)?.takeRetainedValue() as String?
-      }
-      return nil
-    }
-  }
-
-  /// Converts a Mime-Type to File Extension
-  private static func mimeTypeToFileExtension(_ mimeType: String) -> String? {
-    if #available(iOS 14.0, *) {
-      return UTType(tag: mimeType, tagClass: .mimeType, conformingTo: nil)?.preferredFilenameExtension
-    } else {
-      if let tag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() {
-        return UTTypeCopyPreferredTagWithClass(tag, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?
-      }
-      return nil
-    }
-  }
-
   /// Converts a list of AVFileType to a list of file extensions
   private static func supportedAVAssetFileExtensions() -> [String] {
-    if #available(iOS 14.0, *) {
-      let types = AVURLAsset.audiovisualTypes()
-      return types.compactMap({ UTType($0.rawValue)?.preferredFilenameExtension }).filter({ !$0.isEmpty })
-    } else {
-      let types = AVURLAsset.audiovisualTypes()
-      return types.compactMap({ UTTypeCopyPreferredTagWithClass($0 as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue() as String? }).filter({ !$0.isEmpty })
-    }
+    let types = AVURLAsset.audiovisualTypes()
+    return types.compactMap({ UTType($0.rawValue)?.preferredFilenameExtension }).filter({ !$0.isEmpty })
   }
 
   /// Converts a list of AVFileType to a list of mime-types
   private static func supportedAVAssetMimeTypes() -> [String] {
-    if #available(iOS 14.0, *) {
-      let types = AVURLAsset.audiovisualTypes()
-      return types.compactMap({ UTType($0.rawValue)?.preferredMIMEType }).filter({ !$0.isEmpty })
-    } else {
-      let types = AVURLAsset.audiovisualTypes()
-      return types.compactMap({ UTTypeCopyPreferredTagWithClass($0 as CFString, kUTTagClassMIMEType)?.takeRetainedValue() as String? }).filter({ !$0.isEmpty })
-    }
+    let types = AVURLAsset.audiovisualTypes()
+    return types.compactMap({ UTType($0.rawValue)?.preferredMIMEType }).filter({ !$0.isEmpty })
   }
 
   private let knownFileExtensions = [
@@ -605,21 +571,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
       pendingRequests[url.absoluteString] = navigationAction.request
 
-      // TODO: Downgrade to 14.5 once api becomes available.
-      if #unavailable(iOS 15.0) {
-        if Preferences.Shields.httpsEverywhere.value,
-          url.scheme == "http",
-          let urlHost = url.normalizedHost() {
-          HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
-            DispatchQueue.main.async {
-              if shouldupgrade {
-                self.pendingHTTPUpgrades[urlHost] = navigationAction.request
-              }
-            }
-          }
-        }
-      }
-
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
         !(InternalURL(url)?.isSessionRestore ?? false),
@@ -705,7 +656,8 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
        let trust = challenge.protectionSpace.serverTrust,
-       let cert = SecTrustGetCertificateAtIndex(trust, 0), certStore?.containsCertificate(cert, forOrigin: origin) == true {
+       let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first,
+       certStore?.containsCertificate(cert, forOrigin: origin) == true {
       return (.useCredential, URLCredential(trust: trust))
     }
     

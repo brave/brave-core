@@ -8,28 +8,6 @@
 import Foundation
 import SwiftUI
 
-extension ContentSizeCategory {
-  /// A `Bool` value indicating whether the content size category is one that
-  /// is associated with accessibility.
-  ///
-  /// - note: This should function identically to `isAccessibilityCategory`, however is available
-  ///         prior to iOS 13.4. Can be removed when target is greater than 13.4
-  @available(iOS, introduced: 13.0, obsoleted: 13.4)
-  @_disfavoredOverload
-  var isAccessibilityCategory: Bool {
-    switch self {
-    case .accessibilityExtraExtraExtraLarge,
-      .accessibilityExtraExtraLarge,
-      .accessibilityExtraLarge,
-      .accessibilityLarge,
-      .accessibilityMedium:
-      return true
-    default:
-      return false
-    }
-  }
-}
-
 struct AccessibilityEmbedInScrollViewViewModifier: ViewModifier {
   @Environment(\.sizeCategory) private var sizeCategory
 

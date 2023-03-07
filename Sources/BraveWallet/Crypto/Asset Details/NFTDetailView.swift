@@ -14,7 +14,7 @@ struct NFTDetailView: View {
   @Binding var buySendSwapDestination: BuySendSwapDestination? 
   var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
   
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   @ViewBuilder private var noImageView: some View {
     Text(Strings.Wallet.nftDetailImageNotAvailable)
@@ -107,7 +107,7 @@ struct NFTDetailView: View {
                     }
                     
                     if let url = nftURL {
-                      openWalletURL?(url)
+                      openWalletURL(url)
                     }
                   }
                 }) {
@@ -136,12 +136,12 @@ struct NFTDetailView: View {
                     if let components = nftDetailStore.networkInfo.blockExplorerUrls.first?.separatedBy("/?cluster="), let baseURL = components.first {
                       let cluster = components.last ?? ""
                       if let nftURL = URL(string: "\(baseURL)/address/\(nftDetailStore.nft.contractAddress)/?cluster=\(cluster)") {
-                        openWalletURL?(nftURL)
+                        openWalletURL(nftURL)
                       }
                     }
                   } else {
                     if let explorerURL = nftDetailStore.networkInfo.blockExplorerUrls.first, let nftURL = URL(string: "\(explorerURL)/address/\(nftDetailStore.nft.contractAddress)") {
-                      openWalletURL?(nftURL)
+                      openWalletURL(nftURL)
                     }
                   }
                 }) {

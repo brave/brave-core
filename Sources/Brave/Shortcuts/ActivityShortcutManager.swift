@@ -16,6 +16,7 @@ import BraveNews
 import Growth
 import os.log
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Shortcut Activity Types and detailed information to create and perform actions
 public enum ActivityType: String {
@@ -100,7 +101,7 @@ public class ActivityShortcutManager: NSObject {
   // MARK: Activity Creation Methods
 
   public func createShortcutActivity(type: ActivityType) -> NSUserActivity {
-    let attributes = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+    let attributes = CSSearchableItemAttributeSet(itemContentType: UTType.item.identifier)
     attributes.contentDescription = type.description
 
     let activity = NSUserActivity(activityType: type.identifier)

@@ -15,11 +15,7 @@ struct ManageWebsiteDataView: View {
   @State private var filter: String = ""
   @State private var selectedRecordsIds: Set<String> = []
   @State private var editMode: EditMode = .inactive
-
-  // PresentationMode from a UIHostingController does not work in iOS 14, we should
-  // replace this when we are 15+
-  @available(iOS, deprecated: 15.0, message: "Use PresentationMode")
-  var onDismiss: () -> Void
+  @Environment(\.presentationMode) @Binding private var presentationMode
 
   private var filteredRecords: [WKWebsiteDataRecord] {
     if filter.isEmpty {
@@ -116,19 +112,11 @@ struct ManageWebsiteDataView: View {
                 }
               }
               .frame(maxWidth: .infinity, alignment: .leading)
-              .osAvailabilityModifiers { content in
-                if #available(iOS 15.0, *) {
-                  // Better swipe gestures
-                  content
-                    .swipeActions(edge: .trailing) {
-                      Button(role: .destructive, action: {
-                        removeRecords([record])
-                      }) {
-                        Label(Strings.removeDataRecord, systemImage: "trash")
-                      }
-                    }
-                } else {
-                  content
+              .swipeActions(edge: .trailing) {
+                Button(role: .destructive, action: {
+                  removeRecords([record])
+                }) {
+                  Label(Strings.removeDataRecord, systemImage: "trash")
                 }
               }
             }
@@ -154,7 +142,9 @@ struct ManageWebsiteDataView: View {
       )
       .toolbar {
         ToolbarItemGroup(placement: .confirmationAction) {
-          Button(action: onDismiss) {
+          Button(action: {
+            presentationMode.dismiss()
+          }) {
             Text(Strings.done)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -189,7 +179,10 @@ struct ManageWebsiteDataView: View {
           .disabled(visibleRecords.isEmpty)
         }
       }
-      .filterable(text: $filter)
+      .searchable(
+        text: $filter,
+        placement: .navigationBarDrawer(displayMode: .always)
+      )
       .navigationTitle(Strings.manageWebsiteDataTitle)
       .navigationBarTitleDisplayMode(.inline)
     }

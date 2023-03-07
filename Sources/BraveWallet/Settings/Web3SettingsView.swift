@@ -275,7 +275,7 @@ private struct Web3DomainSettingsView: View {
 
   @ObservedObject var settingsStore: SettingsStore
 
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
 
   var body: some View {
     Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {

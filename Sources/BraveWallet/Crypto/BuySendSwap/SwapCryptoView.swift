@@ -170,7 +170,7 @@ struct SwapCryptoView: View {
   @State var hideSlippage = true
   @State private var isSwapDisclaimerVisible: Bool = false
 
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   @Environment(\.appRatingRequestAction) private var appRatingRequest
 
   var completion: ((_ success: Bool) -> Void)?
@@ -495,7 +495,7 @@ struct SwapCryptoView: View {
             Text(Strings.learnMore),
             action: {
               guard let url = dexAggregator.url else { return }
-              openWalletURL?(url)
+              openWalletURL(url)
             }),
           secondaryButton: Alert.Button.cancel(Text(Strings.OKString))
         )

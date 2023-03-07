@@ -5,10 +5,11 @@
 import MobileCoreServices
 import Shared
 import UIKit
+import UniformTypeIdentifiers
 
 extension UIPasteboard {
   fileprivate func imageTypeKey(_ isGIF: Bool) -> String {
-    return (isGIF ? kUTTypeGIF : kUTTypePNG) as String
+    return (isGIF ? UTType.gif : UTType.png).identifier
   }
 
   private var syncURL: URL? {

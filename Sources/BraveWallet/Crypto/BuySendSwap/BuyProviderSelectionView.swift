@@ -12,7 +12,7 @@ struct BuyProviderSelectionView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
   @ObservedObject var keyringStore: KeyringStore
   
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
@@ -64,7 +64,7 @@ struct BuyProviderSelectionView: View {
                   guard let urlString = urlString, let url = URL(string: urlString) else {
                     return
                   }
-                  openWalletURL?(url)
+                  openWalletURL(url)
                 }
               } label: {
                 Text(String.localizedStringWithFormat(Strings.Wallet.providerSelectionButtonTitle, provider.shortName))

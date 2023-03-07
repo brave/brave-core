@@ -203,14 +203,6 @@ struct AddAccountView: View {
           .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.bravePrimary))
       )
-      .osAvailabilityModifiers { content in
-        if #available(iOS 15.0, *) {
-          content  // Padding already applied
-        } else {
-          content
-            .padding(.top)
-        }
-      }
     ) {
       TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))

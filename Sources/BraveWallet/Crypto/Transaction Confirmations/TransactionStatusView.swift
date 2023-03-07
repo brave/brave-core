@@ -16,7 +16,7 @@ struct TransactionStatusView: View {
  
   let onDismiss: () -> Void
   
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   @ViewBuilder private var signedOrSubmittedTxView: some View {
     GeometryReader { geometry in
@@ -42,7 +42,7 @@ struct TransactionStatusView: View {
             if let baseURL = networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
                let tx = confirmationStore.allTxs.first(where: { $0.id == confirmationStore.activeTransactionId }),
                let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
-              openWalletURL?(url)
+              openWalletURL(url)
             }
           } label: {
             HStack {

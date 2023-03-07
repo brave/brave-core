@@ -48,15 +48,6 @@ class ContentBlockerManagerTests: XCTestCase {
             // Check for bundled rule type
             XCTAssertEqual(returnedSourceType, .bundled)
             XCTAssertNotNil(returnedCachedRuleList)
-          case .upgradeHTTP:
-            if #available(iOS 15, *) {
-              // We don't compile this except below iOS 15
-              XCTAssertNil(returnedSourceType)
-              XCTAssertNil(returnedCachedRuleList)
-            } else {
-              XCTAssertEqual(returnedSourceType, .bundled)
-              XCTAssertNotNil(returnedCachedRuleList)
-            }
           }
         }
       }

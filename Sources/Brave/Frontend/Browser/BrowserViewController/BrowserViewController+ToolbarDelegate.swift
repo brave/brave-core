@@ -72,9 +72,7 @@ extension BrowserViewController: TopToolbarDelegate {
     let host = webView.url?.host
 
     Task.detached {
-      let serverCertificates = Array(
-        (0..<SecTrustGetCertificateCount(trust))
-          .compactMap { SecTrustGetCertificateAtIndex(trust, $0) })  // Should be `OrderedSet`
+      let serverCertificates: [SecCertificate] = SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
       
       // TODO: Instead of showing only the first cert in the chain,
       // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
@@ -730,7 +728,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
       let pasteGoAction = UIAction(
         title: Strings.pasteAndGoTitle,
         image: UIImage(systemName: "doc.on.clipboard.fill"),
-        identifier: .backportedPasteAndGo,
+        identifier: .pasteAndGo,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
             self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
@@ -740,7 +738,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
       let pasteAction = UIAction(
         title: Strings.pasteTitle,
         image: UIImage(systemName: "doc.on.clipboard"),
-        identifier: .backportedPaste,
+        identifier: .paste,
         handler: UIAction.deferredActionHandler { _ in
           if let pasteboardContents = UIPasteboard.general.string {
             // Enter overlay mode and make the search controller appear.

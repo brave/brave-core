@@ -21,22 +21,18 @@ open class Site: Identifiable, Hashable {
     
     public var icon: UIImage? {
       switch self {
-        case .history:
-          return UIImage(systemName: "clock.fill")
-        case .bookmark:
-          return UIImage(systemName: "book.fill")
-        case .tab:
-          if #available(iOS 15, *) {
-            return UIImage(systemName: "square.filled.on.square")
-          } else {
-            return UIImage(systemName: "square.stack.3d.down.right.fill")
-          }
-        default:
-          return nil
+      case .history:
+        return UIImage(systemName: "clock.fill")
+      case .bookmark:
+        return UIImage(systemName: "book.fill")
+      case .tab:
+        return UIImage(systemName: "square.filled.on.square")
+      default:
+        return nil
       }
     }
   }
-    
+  
   open var id: Int?
   var guid: String?
   // The id of associated Tab - Used for Tab Suggestions

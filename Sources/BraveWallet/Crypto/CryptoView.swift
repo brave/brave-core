@@ -14,10 +14,7 @@ public struct CryptoView: View {
   var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
   var presentingContext: PresentingContext
-
-  // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
-  // but for now we'll have to manage this ourselves
-  var dismissAction: (() -> Void)?
+  @Environment(\.presentationMode) @Binding private var presentationMode
 
   var openWalletURLAction: ((URL) -> Void)?
   
@@ -58,7 +55,7 @@ public struct CryptoView: View {
           request.decisionHandler(.rejected)
           onPermittedAccountsUpdated([])
         }
-        dismissAction?()
+        dismissAction()
       }) {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
@@ -86,7 +83,7 @@ public struct CryptoView: View {
                 cryptoStore: store,
                 toolbarDismissContent: dismissButtonToolbarContents,
                 onDismiss: {
-                  dismissAction?()
+                  dismissAction()
                 }
               )
               .onDisappear {
@@ -103,12 +100,12 @@ public struct CryptoView: View {
                 onConnect: {
                   request.decisionHandler(.granted(accounts: $0))
                   onPermittedAccountsUpdated($0)
-                  dismissAction?()
+                  dismissAction()
                 },
                 onDismiss: {
                   request.decisionHandler(.rejected)
                   onPermittedAccountsUpdated([])
-                  dismissAction?()
+                  dismissAction()
                 }
               )
             case .panelUnlockOrSetup:
@@ -117,7 +114,7 @@ public struct CryptoView: View {
               AccountListView(
                 keyringStore: keyringStore,
                 onDismiss: {
-                  dismissAction?()
+                  dismissAction()
                 }
               )
             case .transactionHistory:
@@ -144,7 +141,7 @@ public struct CryptoView: View {
                   buyTokenStore: store.openBuyTokenStore(destination.initialToken),
                   onDismiss: {
                     store.closeBSSStores()
-                    dismissAction?()
+                    dismissAction()
                   }
                 )
               case .send:
@@ -155,12 +152,12 @@ public struct CryptoView: View {
                   completion: { success in
                     if success {
                       store.closeBSSStores()
-                      dismissAction?()
+                      dismissAction()
                     }
                   },
                   onDismiss: {
                     store.closeBSSStores()
-                    dismissAction?()
+                    dismissAction()
                   }
                 )
               case .swap:
@@ -171,12 +168,12 @@ public struct CryptoView: View {
                   completion: { success in
                     if success {
                       store.closeBSSStores()
-                      dismissAction?()
+                      dismissAction()
                     }
                   },
                   onDismiss: {
                     store.closeBSSStores()
-                    dismissAction?()
+                    dismissAction()
                   }
                 )
               }
@@ -199,7 +196,7 @@ public struct CryptoView: View {
                 coin: keyringStore.selectedAccount.coin,
                 onDismiss: { accounts in
                   handler(accounts)
-                  dismissAction?()
+                  dismissAction()
                 }
               )
             case .createAccount(let request):
@@ -210,12 +207,12 @@ public struct CryptoView: View {
                   onCreate: {
                     // request is fullfilled.
                     request.responseHandler(.created)
-                    dismissAction?()
+                    dismissAction()
                   },
                   onDismiss: {
                     // request get declined by clicking `Cancel`
                     request.responseHandler(.rejected)
-                    dismissAction?()
+                    dismissAction()
                   }
                 )
               }
@@ -246,11 +243,10 @@ public struct CryptoView: View {
     }
     .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .environment(
-      \.openWalletURLAction,
-      .init(action: { [openWalletURLAction] url in
-        openWalletURLAction?(url)
-      }))
+    .environment(\.openURL, .init(handler: { [openWalletURLAction] url in
+      openWalletURLAction?(url)
+      return .handled
+    }))
     .environment(
       \.appRatingRequestAction,
       .init(action: { [appRatingRequestAction] in
@@ -258,9 +254,13 @@ public struct CryptoView: View {
       }))
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
-        dismissAction?()
+        dismissAction()
       }
     }
+  }
+  
+  private func dismissAction() {
+    presentationMode.dismiss()
   }
 }
 

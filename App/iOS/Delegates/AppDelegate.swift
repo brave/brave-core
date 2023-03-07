@@ -146,11 +146,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     migration = Migration(braveCore: braveCore)
 
-    // TODO: Downgrade to 14.5 once api becomes available.
-    if #unavailable(iOS 15.0) {
-      HttpsEverywhereStats.shared.startLoading()
-    }
-
     // Must happen before passcode check, otherwise may unnecessarily reset keychain
     migration?.moveDatabaseToApplicationDirectory()
 

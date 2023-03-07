@@ -125,11 +125,7 @@ class LoginListViewController: LoginAuthViewController {
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.saveLoginsRowIdentifier)
       $0.register(TwoLineTableViewCell.self)
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 0
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 0
     }
 
     searchController.do {

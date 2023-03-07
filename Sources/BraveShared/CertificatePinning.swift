@@ -149,9 +149,9 @@ public class PinningCertificateEvaluator: NSObject, URLSessionDelegate {
 
     // Certificate binary matching
     let serverCertificates = Set(
-      (0..<SecTrustGetCertificateCount(trust))
-        .compactMap { SecTrustGetCertificateAtIndex(trust, $0) }
-        .compactMap({ SecCertificateCopyData($0) as Data }))
+      (SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? [])
+        .map({ SecCertificateCopyData($0) as Data })
+    )
 
     // Set Certificate validation
     let clientCertificates = Set(certificates.compactMap({ SecCertificateCopyData($0) as Data }))

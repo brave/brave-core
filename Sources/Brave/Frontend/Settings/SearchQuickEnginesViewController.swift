@@ -49,11 +49,7 @@ class SearchQuickEnginesViewController: UITableViewController {
     tableView.do {
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 5
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 5
     }
 
     navigationItem.rightBarButtonItem = editButtonItem

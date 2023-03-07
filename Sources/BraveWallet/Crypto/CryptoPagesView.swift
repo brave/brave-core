@@ -19,7 +19,7 @@ struct CryptoPagesView: View {
   @State private var isShowingSearch: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
 
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
@@ -109,22 +109,12 @@ struct CryptoPagesView: View {
               .imageScale(.medium)  // Menu inside nav bar implicitly gets large
           }
           Divider()
-          Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
+          Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
             Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
           }
         } label: {
           Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, systemImage: "ellipsis.circle")
             .labelStyle(.iconOnly)
-            .osAvailabilityModifiers { content in
-              if #available(iOS 15.0, *) {
-                content
-              } else {
-                // iOS 14 does not correctly apply a large image scale to a `Menu`s label inside of a
-                // `ToolbarItemGroup` like it does with a `Button` using `DefaultButtonStyle`
-                content
-                  .imageScale(.large)
-              }
-            }
             .foregroundColor(Color(.braveBlurpleTint))
         }
         .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)

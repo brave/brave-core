@@ -317,11 +317,7 @@ class Tab: NSObject {
       configuration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration!.ignoresViewportScaleLimits = true
-
-      // TODO: Downgrade to 14.5 once api becomes available.
-      if #available(iOS 15.0, *) {
-        configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
-      }
+      configuration!.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsEverywhere.value
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
         configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
@@ -784,7 +780,7 @@ class Tab: NSObject {
     }
     if let path = Bundle.module.path(forResource: fileName, ofType: type),
       let source = try? String(contentsOfFile: path) {
-      let userScript = WKUserScript.create(source: source, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly, in: contentWorld)
+      let userScript = WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly, in: contentWorld)
       webView.configuration.userContentController.addUserScript(userScript)
     }
   }
@@ -851,11 +847,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     // If this helper handles script messages, then get the handler name and register it. The Tab
     // receives all messages and then dispatches them to the right TabHelper.
     let scriptMessageHandlerName = type(of: helper).messageHandlerName
-    if #available(iOS 14.3, *) {
-      tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
-    } else {
-      tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
-    }
+    tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
   }
   
   func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {

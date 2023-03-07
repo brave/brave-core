@@ -32,7 +32,7 @@ struct SuggestedNetworkView: View {
   private let maxFaviconSize: CGFloat = 96
 
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   var onDismiss: () -> Void
   
@@ -150,7 +150,7 @@ struct SuggestedNetworkView: View {
           .multilineTextAlignment(.center)
         if case .addNetwork = mode {
           Button {
-            openWalletURL?(BraveUX.braveWalletNetworkLearnMoreURL)
+            openWalletURL(BraveUX.braveWalletNetworkLearnMoreURL)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
               .foregroundColor(Color(.braveBlurpleTint))

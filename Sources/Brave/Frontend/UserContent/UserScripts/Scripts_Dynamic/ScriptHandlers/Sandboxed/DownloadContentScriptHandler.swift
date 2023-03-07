@@ -8,6 +8,7 @@ import Shared
 import WebKit
 import MobileCoreServices
 import os.log
+import UniformTypeIdentifiers
 
 private struct BlobDownloadInfo: Codable {
   let url: URL
@@ -42,14 +43,6 @@ class DownloadContentScriptHandler: TabContentScript {
                                         args: [safeUrl],
                                         contentWorld: scriptSandbox)
     return true
-  }
-  
-  private static func fileExtensionFromMIMEType(_ mimeType: String) -> String? {
-    if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue(),
-       let fileExtension = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension)?.takeRetainedValue() {
-      return fileExtension as String
-    }
-    return nil
   }
   
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
@@ -91,7 +84,7 @@ class DownloadContentScriptHandler: TabContentScript {
       }
 
       if !filename.contains(".") {
-        if let fileExtension = Self.fileExtensionFromMIMEType(info.mimeType) {
+        if let fileExtension = UTType(mimeType: info.mimeType)?.preferredFilenameExtension {
           filename += ".\(fileExtension)"
         }
       }

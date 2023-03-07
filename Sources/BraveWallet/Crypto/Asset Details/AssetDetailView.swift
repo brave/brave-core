@@ -31,7 +31,7 @@ struct AssetDetailView: View {
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
 
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
 
   var body: some View {
     List {
@@ -115,7 +115,7 @@ struct AssetDetailView: View {
                   Button(action: {
                     if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
                        let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                      openWalletURL?(url)
+                      openWalletURL(url)
                     }
                   }) {
                     Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")
@@ -192,7 +192,7 @@ struct AssetDetailView: View {
         action: { proceed, _ in
           isShowingAuroraBridgeAlert = false
           if proceed, let link = WalletConstants.auroraBridgeLink {
-            openWalletURL?(link)
+            openWalletURL(link)
           }
           return true
         },
@@ -220,7 +220,7 @@ struct AssetDetailView: View {
             Button {
               isShowingAuroraBridgeAlert = false
               if let link = WalletConstants.auroraBridgeOverviewLink {
-                openWalletURL?(link)
+                openWalletURL(link)
               }
             } label: {
               Text(Strings.Wallet.auroraBridgeLearnMore)
@@ -231,7 +231,7 @@ struct AssetDetailView: View {
             Button {
               isShowingAuroraBridgeAlert = false
               if let link = WalletConstants.auroraBridgeRiskLink {
-                openWalletURL?(link)
+                openWalletURL(link)
               }
             } label: {
               Text(Strings.Wallet.auroraBridgeRisk)

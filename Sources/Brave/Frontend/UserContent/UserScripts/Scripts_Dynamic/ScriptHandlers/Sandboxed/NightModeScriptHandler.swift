@@ -24,12 +24,12 @@ class NightModeScriptHandler: TabContentScript {
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = {
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
-                                                    securityToken: scriptId,
-                                                    script: "window.__firefox__.NightMode.setEnabled(true);"),
-                               injectionTime: .atDocumentStart,
-                               forMainFrameOnly: true,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
+                                             securityToken: scriptId,
+                                             script: "window.__firefox__.NightMode.setEnabled(true);"),
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: true,
+                        in: scriptSandbox)
   }()
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {

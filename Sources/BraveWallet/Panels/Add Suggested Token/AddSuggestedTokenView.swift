@@ -15,7 +15,7 @@ struct AddSuggestedTokenView: View {
   var onDismiss: () -> Void
   
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   var body: some View {
     ScrollView(.vertical) {
@@ -40,7 +40,7 @@ struct AddSuggestedTokenView: View {
           Button(action: {
             if let baseURL = cryptoStore.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
                let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)") {
-              openWalletURL?(url)
+              openWalletURL(url)
             }
           }) {
             HStack {

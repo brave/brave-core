@@ -333,21 +333,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
       pendingRequests[url.absoluteString] = navigationAction.request
 
-      // TODO: Downgrade to 14.5 once api becomes available.
-      if #unavailable(iOS 15.0) {
-        if Preferences.Shields.httpsEverywhere.value,
-          url.scheme == "http",
-          let urlHost = url.normalizedHost() {
-          HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
-            DispatchQueue.main.async {
-              if shouldupgrade {
-                self.pendingHTTPUpgrades[urlHost] = navigationAction.request
-              }
-            }
-          }
-        }
-      }
-
       // Adblock logic,
       // Only use main document URL, not the request URL
       // If an iFrame is loaded, shields depending on the main frame, not the iFrame request
@@ -502,8 +487,8 @@ extension BrowserViewController: WKNavigationDelegate {
     // accepted by the user.
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust,
-      let cert = SecTrustGetCertificateAtIndex(trust, 0), profile.certStore.containsCertificate(cert, forOrigin: origin) {
+       let trust = challenge.protectionSpace.serverTrust,
+       let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first, profile.certStore.containsCertificate(cert, forOrigin: origin) {
       return (.useCredential, URLCredential(trust: trust))
     }
     
@@ -516,8 +501,7 @@ extension BrowserViewController: WKNavigationDelegate {
         let result = BraveCertificateUtility.verifyTrust(serverTrust,
                                                          host: host,
                                                          port: port)
-        let certificateChain = (0..<SecTrustGetCertificateCount(serverTrust))
-          .compactMap { SecTrustGetCertificateAtIndex(serverTrust, $0) }
+        let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
         
         // Cert is valid and should be pinned
         if result == 0 {

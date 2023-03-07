@@ -114,11 +114,7 @@ class SearchSettingsTableViewController: UITableViewController {
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showRecentSearchesRowIdentifier)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.customSearchEngineRowIdentifier)
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 5
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 5
     }
 
     // Insert Done button if being presented outside of the Settings Nav stack

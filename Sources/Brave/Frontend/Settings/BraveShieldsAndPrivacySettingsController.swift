@@ -308,9 +308,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         Row(
           text: Strings.manageWebsiteDataTitle,
           selection: { [unowned self] in
-            var view = ManageWebsiteDataView(onDismiss: { [weak self] in
-              self?.dismiss(animated: true, completion: nil)
-            })
+            var view = ManageWebsiteDataView()
             let controller = UIHostingController(rootView: view)
             // pushing SwiftUI with navigation/toolbars inside the PanModal is buggy…
             // presenting over context is also buggy (eats swipe gestures)
@@ -348,15 +346,13 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         .boolRow(title: Strings.followUniversalLinks, option: Preferences.General.followUniversalLinks),
       ]
     )
-    if #available(iOS 14.0, *) {
-      section.rows.append(
-        .boolRow(
-          title: Strings.googleSafeBrowsing,
-          detailText: Strings.googleSafeBrowsingUsingWebKitDescription,
-          option: Preferences.Shields.googleSafeBrowsing
-        )
+    section.rows.append(
+      .boolRow(
+        title: Strings.googleSafeBrowsing,
+        detailText: Strings.googleSafeBrowsingUsingWebKitDescription,
+        option: Preferences.Shields.googleSafeBrowsing
       )
-    }
+    )
     section.rows.append(p3aRow)
     
     return section

@@ -25,7 +25,7 @@ struct AssetDetailHeaderView: View {
 
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   @State private var selectedCandle: BraveWallet.AssetTimePrice?
 
   private var deltaText: some View {
@@ -115,7 +115,7 @@ struct AssetDetailHeaderView: View {
           isShowingBridgeAlert = true
         } else {
           if let link = WalletConstants.auroraBridgeLink {
-            openWalletURL?(link)
+            openWalletURL(link)
           }
         }
       }

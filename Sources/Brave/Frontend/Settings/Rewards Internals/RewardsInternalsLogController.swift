@@ -32,26 +32,22 @@ struct RewardsInternalsLogsGenerator: RewardsInternalsFileGenerator {
                      completion: @escaping (Error?) -> Void) {
     
     do {
-      if #available(iOS 15, *) {
-        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("rewards_log.txt")
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        
-        let store = try OSLogStore(scope: .currentProcessIdentifier)
-        let logs = try store.getEntries()
-          .compactMap { $0 as? OSLogEntryLog }
-          .filter { $0.category == "ads-rewards" && $0.subsystem == Bundle.main.bundleIdentifier }
-          .map { "\(formatter.string(from: $0.date)): \($0.composedMessage)" }
-          .joined(separator: "\n")
-        
-        try logs.write(toFile: tempURL.path, atomically: true, encoding: .utf8)
-        let logPath = URL(fileURLWithPath: path).appendingPathComponent(tempURL.lastPathComponent)
-        try FileManager.default.copyItem(atPath: tempURL.path, toPath: logPath.path)
-        try FileManager.default.removeItem(atPath: tempURL.path)
-      } else {
-        Logger.module.info("Generating Rewards Internals logs requires iOS 15 or higher")
-      }
+      let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("rewards_log.txt")
+      let formatter = DateFormatter()
+      formatter.dateStyle = .short
+      formatter.timeStyle = .short
+      
+      let store = try OSLogStore(scope: .currentProcessIdentifier)
+      let logs = try store.getEntries()
+        .compactMap { $0 as? OSLogEntryLog }
+        .filter { $0.category == "ads-rewards" && $0.subsystem == Bundle.main.bundleIdentifier }
+        .map { "\(formatter.string(from: $0.date)): \($0.composedMessage)" }
+        .joined(separator: "\n")
+      
+      try logs.write(toFile: tempURL.path, atomically: true, encoding: .utf8)
+      let logPath = URL(fileURLWithPath: path).appendingPathComponent(tempURL.lastPathComponent)
+      try FileManager.default.copyItem(atPath: tempURL.path, toPath: logPath.path)
+      try FileManager.default.removeItem(atPath: tempURL.path)
       
       completion(nil)
     } catch {

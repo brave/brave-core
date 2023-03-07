@@ -22,12 +22,12 @@ class FingerprintingProtection: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
-                                                    securityToken: scriptId,
-                                                    script: script),
-                               injectionTime: .atDocumentStart,
-                               forMainFrameOnly: false,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
+                                             securityToken: scriptId,
+                                             script: script),
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: false,
+                        in: scriptSandbox)
   }()
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {

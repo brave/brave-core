@@ -76,9 +76,7 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
     // Prevents the textLabel from getting squished in relation to other view priorities.
     textLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-    if #available(iOS 13.4, *) {
-      addInteraction(UIPointerInteraction(delegate: self))
-    }
+    addInteraction(UIPointerInteraction(delegate: self))
   }
 
   deinit {
@@ -107,7 +105,6 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   }
 }
 
-@available(iOS 13.4, *)
 extension FavoriteCell: UIPointerInteractionDelegate {
   func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
     let preview = UITargetedPreview(view: imageView)

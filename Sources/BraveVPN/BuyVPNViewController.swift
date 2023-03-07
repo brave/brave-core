@@ -69,12 +69,7 @@ class BuyVPNViewController: UIViewController {
     title = Strings.VPN.vpnName
 
     navigationItem.standardAppearance = BraveVPNCommonUI.navigationBarAppearance
-
-    #if swift(>=5.5)
-    if #available(iOS 15.0, *) {
-      navigationItem.scrollEdgeAppearance = BraveVPNCommonUI.navigationBarAppearance
-    }
-    #endif
+    navigationItem.scrollEdgeAppearance = BraveVPNCommonUI.navigationBarAppearance
 
     navigationItem.rightBarButtonItem = .init(
       title: Strings.VPN.restorePurchases, style: .done,

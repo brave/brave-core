@@ -70,18 +70,11 @@ struct CustomNetworkListView: View {
         .padding(.vertical, 6)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      .osAvailabilityModifiers { content in
-        if #available(iOS 15.0, *) {
-          content
-            .swipeActions(edge: .trailing) {
-              Button(role: .destructive, action: {
-                removeNetwork(network)
-              }) {
-                Label(Strings.Wallet.delete, systemImage: "trash")
-              }
-            }
-        } else {
-          content
+      .swipeActions(edge: .trailing) {
+        Button(role: .destructive, action: {
+          removeNetwork(network)
+        }) {
+          Label(Strings.Wallet.delete, systemImage: "trash")
         }
       }
     }

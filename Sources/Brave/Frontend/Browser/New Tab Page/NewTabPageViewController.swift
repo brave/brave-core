@@ -154,8 +154,8 @@ class NewTabPageViewController: UIViewController {
         }
         
         let host = UIHostingController(rootView: PrivacyReportsManager.prepareView())
-        host.rootView.onDismiss = { [weak self, weak host] in
-          host?.dismiss(animated: true) {
+        host.rootView.onDismiss = { [weak self] in
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             guard let self = self else { return }
             
             // Handle App Rating

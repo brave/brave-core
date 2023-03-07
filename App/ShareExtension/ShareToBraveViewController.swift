@@ -5,6 +5,7 @@
 import UIKit
 import Social
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 extension String {
   /// The first URL found within this String, or nil if no URL is found
@@ -81,7 +82,7 @@ class ShareToBraveViewController: SLComposeServiceViewController {
       return []
     }
 
-    provider.loadItem(of: provider.isUrl ? kUTTypeURL : kUTTypeText) { item, error in
+    provider.loadItem(forTypeIdentifier: provider.isUrl ? UTType.url.identifier : UTType.text.identifier) { item, error in
       DispatchQueue.main.async {
         guard let item = item, let schemeUrl = Scheme(item: item)?.schemeUrl else {
           self.cancel()
@@ -126,15 +127,11 @@ class ShareToBraveViewController: SLComposeServiceViewController {
 
 extension NSItemProvider {
   var isText: Bool {
-    return hasItemConformingToTypeIdentifier(String(kUTTypeText))
+    return hasItemConformingToTypeIdentifier(UTType.text.identifier)
   }
 
   var isUrl: Bool {
-    return hasItemConformingToTypeIdentifier(String(kUTTypeURL))
-  }
-
-  func loadItem(of type: CFString, completion: CompletionHandler?) {
-    loadItem(forTypeIdentifier: String(type), options: nil, completionHandler: completion)
+    return hasItemConformingToTypeIdentifier(UTType.url.identifier)
   }
 }
 
