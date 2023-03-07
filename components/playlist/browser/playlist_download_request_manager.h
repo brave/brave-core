@@ -99,9 +99,6 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   // Pop a task from queue and detect media from the page if any.
   void FetchPendingRequest();
 
-  void ScheduleWebContentsDestroying();
-  void DestroyWebContents();
-
   // content::WebContentsObserver overrides:
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
@@ -121,11 +118,11 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
   // destroying task will be scheduled.
   int in_progress_urls_count_ = 0;
   Request::Callback callback_for_current_request_ = base::NullCallback();
+  base::Time request_start_time_;
 
   raw_ptr<content::BrowserContext> context_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
-  std::unique_ptr<base::RetainingOneShotTimer> web_contents_destroy_timer_;
 
   bool run_script_on_main_world_ = false;
 
