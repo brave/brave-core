@@ -60,11 +60,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
 
     tableView.do {
       $0.accessibilityIdentifier = "History List"
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 5
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 5
     }
 
     navigationItem.do {

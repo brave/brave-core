@@ -34,16 +34,9 @@ struct PlaylistPopoverView: View {
   private var addToPlaylistView: some View {
     VStack(alignment: .leading) {
       VStack(spacing: 20) {
-        if #available(iOS 14.0, *) {
-          Text(Strings.PlayList.playlistPopoverAddTitle)
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .font(.title2.weight(.medium))
-        } else {
-          Text(Strings.PlayList.playlistPopoverAddTitle)
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .font(.headline.weight(.medium))
-        }
-
+        Text(Strings.PlayList.playlistPopoverAddTitle)
+          .foregroundColor(Color(UIColor.primaryButtonTint))
+          .font(.title2.weight(.medium))
         Text(Strings.PlayList.playlistPopoverAddBody)
           .foregroundColor(Color(UIColor.braveLabel))
           .font(.body)
@@ -51,19 +44,11 @@ struct PlaylistPopoverView: View {
       Button(action: {
         onPrimaryButtonPressed?()
       }) {
-        if #available(iOS 14.0, *) {
-          Text(Strings.PlayList.addToPlayListAlertTitle)
-            .frame(maxWidth: .infinity)
-            .font(.title3.weight(.medium))
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .padding()
-        } else {
-          Text(Strings.PlayList.addToPlayListAlertTitle)
-            .frame(maxWidth: .infinity)
-            .font(.body.weight(.medium))
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .padding()
-        }
+        Text(Strings.PlayList.addToPlayListAlertTitle)
+          .frame(maxWidth: .infinity)
+          .font(.title3.weight(.medium))
+          .foregroundColor(Color(UIColor.primaryButtonTint))
+          .padding()
       }
       .buttonStyle(BraveOutlineButtonStyle(size: .normal))
       .foregroundColor(Color(UIColor.secondaryButtonTint))
@@ -81,32 +66,17 @@ struct PlaylistPopoverView: View {
   private var addedToPlaylistView: some View {
     VStack(alignment: .leading) {
       VStack(spacing: 20.0) {
-        if #available(iOS 14.0, *) {
-          Text(Strings.PlayList.playlistPopoverAddedTitle)
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .font(.title2.weight(.medium))
-        } else {
-          Text(Strings.PlayList.playlistPopoverAddedTitle)
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .font(.headline.weight(.medium))
-        }
-
+        Text(Strings.PlayList.playlistPopoverAddedTitle)
+          .foregroundColor(Color(UIColor.primaryButtonTint))
+          .font(.title2.weight(.medium))
         Button(action: {
           onPrimaryButtonPressed?()
         }) {
-          if #available(iOS 14.0, *) {
-            Text(Strings.PlayList.playlistPopoverOpenInBravePlaylist)
-              .frame(maxWidth: .infinity)
-              .font(.title3.weight(.medium))
-              .foregroundColor(.white)
-              .padding()
-          } else {
-            Text(Strings.PlayList.playlistPopoverOpenInBravePlaylist)
-              .frame(maxWidth: .infinity)
-              .font(.body.weight(.medium))
-              .foregroundColor(.white)
-              .padding()
-          }
+          Text(Strings.PlayList.playlistPopoverOpenInBravePlaylist)
+            .frame(maxWidth: .infinity)
+            .font(.title3.weight(.medium))
+            .foregroundColor(.white)
+            .padding()
         }
         .buttonStyle(BraveFilledButtonStyle(size: .small))
         .foregroundColor(Color(UIColor.braveBlurpleTint))
@@ -115,19 +85,11 @@ struct PlaylistPopoverView: View {
       Button(action: {
         onSecondaryButtonPressed?()
       }) {
-        if #available(iOS 14.0, *) {
-          Text(Strings.PlayList.playlistPopoverRemoveFromBravePlaylist)
-            .frame(maxWidth: .infinity)
-            .font(.title3.weight(.medium))
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .padding()
-        } else {
-          Text(Strings.PlayList.playlistPopoverRemoveFromBravePlaylist)
-            .frame(maxWidth: .infinity)
-            .font(.body.weight(.medium))
-            .foregroundColor(Color(UIColor.primaryButtonTint))
-            .padding()
-        }
+        Text(Strings.PlayList.playlistPopoverRemoveFromBravePlaylist)
+          .frame(maxWidth: .infinity)
+          .font(.title3.weight(.medium))
+          .foregroundColor(Color(UIColor.primaryButtonTint))
+          .padding()
       }
       .buttonStyle(BraveOutlineButtonStyle(size: .small))
       .foregroundColor(Color(UIColor.secondaryButtonTint))

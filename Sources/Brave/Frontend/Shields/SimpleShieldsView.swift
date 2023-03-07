@@ -159,9 +159,6 @@ extension SimpleShieldsView {
         return string
       }()
       $0.backgroundColor = .clear
-      if #unavailable(iOS 15.0) {
-        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-      }
 
       $0.isAccessibilityElement = false
       $0.textColor = .braveLabel

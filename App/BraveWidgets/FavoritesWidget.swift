@@ -122,20 +122,12 @@ private struct FavoritesGridView: View {
   }
 
   private var placeholderOrPrivacyRedaction: Bool {
-    if #available(iOS 15, *) {
-      return redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
-    } else {
-      return redactionReasons.contains(.placeholder)
-    }
+    redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
   }
   
   func image(for favicon: Favicon) -> UIImage? {
     guard let image = favicon.image else { return nil }
-    if #available(iOS 15.0, *) {
-      return image.preparingThumbnail(of: CGSize(width: 128, height: 128))
-    } else {
-      return image.scale(toSize: CGSize(width: 128, height: 128))
-    }
+    return image.preparingThumbnail(of: CGSize(width: 128, height: 128))
   }
 
   var body: some View {

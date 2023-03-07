@@ -41,12 +41,12 @@ class BraveTalkScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
-                                                    securityToken: scriptId,
-                                                    script: script),
-                               injectionTime: .atDocumentStart,
-                               forMainFrameOnly: false,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
+                                             securityToken: scriptId,
+                                             script: script),
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: false,
+                        in: scriptSandbox)
   }()
 
   private struct Payload: Decodable {

@@ -7,6 +7,7 @@ import MobileCoreServices
 import PassKit
 import WebKit
 import Shared
+import UniformTypeIdentifiers
 
 struct MIMEType {
   static let bitmap = "image/bmp"
@@ -30,11 +31,10 @@ struct MIMEType {
   }
 
   static func mimeTypeFromFileExtension(_ fileExtension: String) -> String {
-    if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension as CFString, nil)?.takeRetainedValue(), let mimeType = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
-      return mimeType as String
+    guard let mimeType = UTType(filenameExtension: fileExtension)?.preferredMIMEType else {
+      return MIMEType.octetStream
     }
-
-    return MIMEType.octetStream
+    return mimeType
   }
 }
 

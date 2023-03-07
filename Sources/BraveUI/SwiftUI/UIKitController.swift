@@ -19,12 +19,8 @@ public struct UIKitController: View {
   }
 
   public var body: some View {
-    if #available(iOS 14.0, *) {
-      controller
-        .ignoresSafeArea()
-    } else {
-      controller
-    }
+    controller
+      .ignoresSafeArea()
   }
 
   private struct _UIKitController: UIViewControllerRepresentable {

@@ -33,14 +33,8 @@ struct PrivacyReportsView: View {
   }
   
   private func dismissView() {
-    // Dismiss on presentation mode does not work on iOS 14
-    // when using the UIHostingController is parent view.
-    // As a workaround a completion handler is used instead.
-    if #available(iOS 15, *) {
-      presentationMode.dismiss()
-    } else {
-      onDismiss?()
-    }
+    presentationMode.dismiss()
+    onDismiss?()
   }
   
   private var clearAllDataButton: some View {
@@ -125,24 +119,13 @@ struct PrivacyReportsView: View {
         .padding()
         .navigationTitle(Strings.PrivacyHub.privacyReportsTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .osAvailabilityModifiers { content in
-          if #available(iOS 15.0, *) {
-            content
-              .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                  doneButton
-                }
-
-                ToolbarItem(placement: .cancellationAction) {
-                  clearAllDataButton
-                }
-              }
-          } else {
-            // Bug: On iOS 14 Action Sheets do not work when placed in `.toolbar/ToolbarItem`.
-            // .navigationBarItems is used as a workaround.
-            // This view modifier is deprecated in iOS 15.4+
-            content
-              .navigationBarItems(leading: clearAllDataButton, trailing: doneButton)
+        .toolbar {
+          ToolbarItem(placement: .confirmationAction) {
+            doneButton
+          }
+          
+          ToolbarItem(placement: .cancellationAction) {
+            clearAllDataButton
           }
         }
       }

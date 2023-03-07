@@ -164,13 +164,7 @@ struct SendTokenView: View {
             HStack(spacing: 14.0) {
               TextField(Strings.Wallet.sendToCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
                 .autocorrectionDisabled()
-                .osAvailabilityModifiers {
-                  if #available(iOS 15, *) {
-                    $0.textInputAutocapitalization(.never)
-                  } else {
-                    $0.autocapitalization(.none)
-                  }
-                }
+                .textInputAutocapitalization(.never)
               Button(action: {
                 if let string = UIPasteboard.general.string {
                   sendTokenStore.sendAddress = string

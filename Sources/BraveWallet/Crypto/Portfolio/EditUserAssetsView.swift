@@ -126,14 +126,6 @@ struct EditUserAssetsView: View {
             )
             Spacer()
           }
-          .osAvailabilityModifiers { content in
-            if #available(iOS 15.0, *) {
-              content  // Padding already applied
-            } else {
-              content
-                .padding(.top)
-            }
-          }
         ) {
           Group {
             let tokens = tokenStores
@@ -147,25 +139,11 @@ struct EditUserAssetsView: View {
               ForEach(tokens, id: \.token.id) { store in
                 if store.isCustomToken {
                   EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
-                    .osAvailabilityModifiers { content in
-                      if #available(iOS 15.0, *) {
-                        content
-                          .swipeActions(edge: .trailing) {
-                            Button(role: .destructive, action: {
-                              removeCustomToken(store.token)
-                            }) {
-                              Label(Strings.Wallet.delete, systemImage: "trash")
-                            }
-                          }
-                      } else {
-                        content
-                          .contextMenu {
-                            Button {
-                              removeCustomToken(store.token)
-                            } label: {
-                              Label(Strings.Wallet.delete, systemImage: "trash")
-                            }
-                          }
+                    .swipeActions(edge: .trailing) {
+                      Button(role: .destructive, action: {
+                        removeCustomToken(store.token)
+                      }) {
+                        Label(Strings.Wallet.delete, systemImage: "trash")
                       }
                     }
                 } else {
@@ -182,7 +160,10 @@ struct EditUserAssetsView: View {
       .navigationTitle(Strings.Wallet.editVisibleAssetsButtonTitle)
       .navigationBarTitleDisplayMode(.inline)
       .navigationViewStyle(StackNavigationViewStyle())
-      .filterable(text: $query)
+      .searchable(
+        text: $query,
+        placement: .navigationBarDrawer(displayMode: .always)
+      )
       .onAppear {
         userAssetsStore.update()
       }

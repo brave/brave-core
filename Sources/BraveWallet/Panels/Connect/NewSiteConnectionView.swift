@@ -17,8 +17,6 @@ public struct NewSiteConnectionView: View {
   var accounts: [String]
   var coin: BraveWallet.CoinType
   var onConnect: (_ addresses: [String]) -> Void
-  
-  @available(iOS, introduced: 14.0, deprecated: 15.0, message: "Use PresentationMode on iOS 15")
   var onDismiss: () -> Void
   
   public init(

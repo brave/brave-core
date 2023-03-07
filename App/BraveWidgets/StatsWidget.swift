@@ -52,11 +52,7 @@ private struct StatsView: View {
   @Environment(\.redactionReasons) var redactionReasons
 
   private var placeholderOrPrivacyRedaction: Bool {
-    if #available(iOS 15, *) {
-      return redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
-    } else {
-      return redactionReasons.contains(.placeholder)
-    }
+    redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
   }
 
   var body: some View {

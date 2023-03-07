@@ -21,7 +21,6 @@ struct CookieNotificationBlockingConsentView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var showAnimation = false
-  var onDismiss: (() -> Void)?
   
   private var yesButton: some View {
     Button(Strings.yesBlockCookieConsentNotices) {
@@ -101,14 +100,7 @@ struct CookieNotificationBlockingConsentView: View {
   }
   
   private func dismiss() {
-    // Dismiss on presentation mode does not work on iOS 14
-    // when using the UIHostingController is parent view.
-    // As a workaround a completion handler is used instead.
-    if #available(iOS 15, *) {
-      presentationMode.dismiss()
-    } else {
-      onDismiss?()
-    }
+    presentationMode.dismiss()
   }
   
   private enum P3AAnswer: Int, CaseIterable {

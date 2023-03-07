@@ -19,7 +19,7 @@ struct AccountActivityView: View {
   @State private var transactionDetails: TransactionDetailsStore?
   
   @Environment(\.presentationMode) @Binding private var presentationMode
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
 
   private struct DetailsPresentation: Identifiable {
     var inEditMode: Bool
@@ -123,7 +123,7 @@ struct AccountActivityView: View {
                   Button(action: {
                     if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
                        let url = baseURL?.appendingPathComponent("tx/\(txSummary.txHash)") {
-                      openWalletURL?(url)
+                      openWalletURL(url)
                     }
                   }) {
                     Label(Strings.Wallet.viewOnBlockExplorer, systemImage: "arrow.up.forward.square")

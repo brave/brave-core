@@ -161,20 +161,7 @@ struct PortfolioView: View {
           networkFilterButton
         }
         .textCase(nil)
-        .osAvailabilityModifiers { content in
-          if #available(iOS 15.0, *) {
-            content
-              .padding(.horizontal, -8)
-          } else if #available(iOS 14.5, *) {
-            // In iOS 14.4-14.8 for some reason List does not apply correct padding
-            // or insets to headers and footers
-            content
-              .padding(.horizontal, 8)
-          } else {
-            content
-              .padding(.horizontal, -8)
-          }
-        }
+        .padding(.horizontal, -8)
         .frame(maxWidth: .infinity, alignment: .leading)
       })
       

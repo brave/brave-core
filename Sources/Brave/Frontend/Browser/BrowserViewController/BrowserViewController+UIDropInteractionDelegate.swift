@@ -6,7 +6,6 @@ import Foundation
 import Storage
 import UIKit
 
-@available(iOS 11.0, *)
 extension BrowserViewController: UIDropInteractionDelegate {
   public func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
     // Prevent tabs from being dragged and dropped into the address bar.

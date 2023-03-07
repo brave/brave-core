@@ -302,12 +302,10 @@ extension BrowserViewController {
 #endif
 
     // In iOS 15+, certain keys events are delivered to the text input or focus systems first, unless specified otherwise
-    if #available(iOS 15, *) {
-      searchLocationCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
-      tabMovementCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
-      tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
-      additionalPriorityCommandKeys.forEach { $0.wantsPriorityOverSystemBehavior = true }
-    }
+    searchLocationCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+    tabMovementCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+    tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+    additionalPriorityCommandKeys.forEach { $0.wantsPriorityOverSystemBehavior = true }
 
     if topToolbar.inOverlayMode {
       keyCommandList.append(contentsOf: searchLocationCommands)

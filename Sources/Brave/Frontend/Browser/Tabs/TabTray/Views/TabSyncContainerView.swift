@@ -43,9 +43,7 @@ extension TabTrayController {
         $0.estimatedSectionHeaderHeight = SiteTableViewControllerUX.rowHeight
         $0.separatorColor = .braveSeparator
         $0.cellLayoutMarginsFollowReadableWidth = false
-        if #available(iOS 15.0, *) {
-          $0.sectionHeaderTopPadding = UX.sectionTopPadding
-        }
+        $0.sectionHeaderTopPadding = UX.sectionTopPadding
       }
       
       let tableTitleLabel = UILabel().then {

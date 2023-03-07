@@ -31,7 +31,7 @@ extension ContentBlockerHelper: TabContentScript {
       return nil
     }
     
-    return WKUserScript.create(
+    return WKUserScript(
       source: secureScript(
         handlerName: messageHandlerName,
         securityToken: UserScriptManager.securityToken,
@@ -93,13 +93,6 @@ extension ContentBlockerHelper: TabContentScript {
         
         guard let blockedType = blockedType else { return }
         
-        if blockedType == .http && dto.data.resourceType != .image && currentTabURL.scheme == "https" && requestURL.scheme == "http" {
-          // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
-          // Unfortunately, it does not check to see if a content blocker would promote said URL to https
-          // before blocking the load
-          return
-        }
-        
         assertIsMainThread("Result should happen on the main thread")
         
         // Ensure we check that the stats we're tracking is still for the same page
@@ -130,9 +123,6 @@ extension ContentBlockerHelper: TabContentScript {
         case .ad:
           stats.adblock += 1
           self.stats = self.stats.adding(adCount: 1)
-        case .http:
-          stats.httpse += 1
-          self.stats = self.stats.adding(httpsCount: 1)
         case .image:
           stats.images += 1
         }

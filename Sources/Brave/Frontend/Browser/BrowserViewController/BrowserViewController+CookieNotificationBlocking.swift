@@ -42,10 +42,6 @@ class CookieNotificationBlockingConsentViewController: UIHostingController<Cooki
       width: CookieNotificationBlockingConsentView.contentWidth,
       height: CookieNotificationBlockingConsentView.contentHeight
     )
-    
-    self.rootView.onDismiss = { [weak self] in
-      self?.dismiss(animated: true)
-    }
   }
 
   required init?(coder aDecoder: NSCoder) {

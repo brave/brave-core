@@ -27,12 +27,12 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       return nil
     }
     
-    return WKUserScript.create(source: secureScript(handlerName: messageHandlerName,
-                                                    securityToken: scriptId,
-                                                    script: script),
-                               injectionTime: .atDocumentEnd,
-                               forMainFrameOnly: true,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
+                                             securityToken: scriptId,
+                                             script: script),
+                        injectionTime: .atDocumentEnd,
+                        forMainFrameOnly: true,
+                        in: scriptSandbox)
   }()
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {

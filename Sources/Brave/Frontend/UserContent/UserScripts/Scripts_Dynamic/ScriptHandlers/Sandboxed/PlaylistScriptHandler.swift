@@ -74,13 +74,13 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return nil
     }
     
-    return WKUserScript.create(source: secureScript(handlerNamesMap: ["$<message_handler>": messageHandlerName,
-                                                                      "$<tagUUID>": "tagId_\(uniqueID)"],
-                                                    securityToken: scriptId,
-                                                    script: script),
-                               injectionTime: .atDocumentStart,
-                               forMainFrameOnly: false,
-                               in: scriptSandbox)
+    return WKUserScript(source: secureScript(handlerNamesMap: ["$<message_handler>": messageHandlerName,
+                                                               "$<tagUUID>": "tagId_\(uniqueID)"],
+                                             securityToken: scriptId,
+                                             script: script),
+                        injectionTime: .atDocumentStart,
+                        forMainFrameOnly: false,
+                        in: scriptSandbox)
   }()
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {

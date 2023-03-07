@@ -308,12 +308,6 @@ extension BrowserViewController: TabManagerDelegate {
             // After opening the Recently Closed in a new tab delete it from list
             RecentlyClosed.remove(with: recentlyClosed.url)
           }
-          recentlyClosedTabsView.onDismiss = { [weak self] cleared in
-            // Dismiss on presentation mode does not work on iOS 14
-            if #unavailable(iOS 15) {
-              self?.dismiss(animated: true)
-            }
-          }
           
           self.present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
         })

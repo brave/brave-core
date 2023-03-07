@@ -103,10 +103,6 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    if #unavailable(iOS 14.5) {
-      // On iOS 14.4 and below `viewDidLoad` in a `UIHostingController` subclass is not called
-      setUpController()
-    }
     navigationController?.setToolbarHidden(!Preferences.BraveNews.isEnabled.value, animated: animated)
   }
   

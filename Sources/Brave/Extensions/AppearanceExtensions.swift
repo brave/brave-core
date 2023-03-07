@@ -27,11 +27,7 @@ extension UIView {
       }()
       $0.standardAppearance = appearance
       $0.compactAppearance = appearance
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.scrollEdgeAppearance = appearance
-      }
-      #endif
+      $0.scrollEdgeAppearance = appearance
     }
 
     UINavigationBar.appearance().do {

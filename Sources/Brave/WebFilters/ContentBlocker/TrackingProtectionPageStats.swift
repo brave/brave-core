@@ -44,7 +44,6 @@ class TPStatsBlocklistChecker {
   enum BlockedType: Hashable {
     case image
     case ad
-    case http
   }
 
   @MainActor func blockedTypes(requestURL: URL, sourceURL: URL, loadedRuleTypes: Set<ContentBlockerManager.BlocklistRuleType>, resourceType: AdblockEngine.ResourceType) async -> BlockedType? {
@@ -63,17 +62,6 @@ class TPStatsBlocklistChecker {
       }
     }
 
-    // TODO: Downgrade to 14.5 once api becomes available.
-    if #unavailable(iOS 15.0) {
-      let shouldUpgrade = await HttpsEverywhereStats.shared.shouldUpgrade(requestURL)
-      
-      if loadedRuleTypes.contains(.general(.upgradeHTTP)) && shouldUpgrade {
-        return .http
-      } else {
-        return nil
-      }
-    } else {
-      return nil
-    }
+    return nil
   }
 }

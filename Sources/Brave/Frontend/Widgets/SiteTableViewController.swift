@@ -80,11 +80,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
       $0.separatorColor = .braveSeparator
       $0.accessibilityIdentifier = "SiteTable"
       $0.cellLayoutMarginsFollowReadableWidth = false
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 5
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 5
     }
 
     // Set an empty footer to prevent empty cells from appearing in the list.

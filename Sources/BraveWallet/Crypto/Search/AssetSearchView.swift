@@ -69,14 +69,6 @@ struct AssetSearchView: View {
           header: WalletListHeaderView(
             title: Text(Strings.Wallet.assetsTitle)
           )
-          .osAvailabilityModifiers { content in
-            if #available(iOS 15.0, *) {
-              content  // Padding already applied
-            } else {
-              content
-                .padding(.top)
-            }
-          }
         ) {
           Group {
             if filteredTokens.isEmpty {
@@ -158,7 +150,10 @@ struct AssetSearchView: View {
         }
       }
       .animation(nil, value: query)
-      .filterable(text: $query)
+      .searchable(
+        text: $query,
+        placement: .navigationBarDrawer(displayMode: .always)
+      )
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {

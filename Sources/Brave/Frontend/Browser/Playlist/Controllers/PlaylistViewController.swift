@@ -790,10 +790,7 @@ extension PlaylistViewController: VideoViewDelegate {
         pictureInPictureController.delegate = self
         pictureInPictureController.stopPictureInPicture()
       } else {
-        if #available(iOS 14.0, *) {
-          pictureInPictureController.requiresLinearPlayback = false
-        }
-
+        pictureInPictureController.requiresLinearPlayback = false
         // Picture in Picture enabled
         pictureInPictureController.delegate = self
         pictureInPictureController.startPictureInPicture()
@@ -1122,11 +1119,7 @@ extension PlaylistViewController: VideoViewDelegate {
 extension PlaylistFolder {
   var isPersistent: Bool {
     managedObjectContext?.persistentStoreCoordinator?.persistentStores.first(where: {
-      if #available(iOS 15.0, *) {
-        return $0.type == NSPersistentStore.StoreType.inMemory.rawValue
-      } else {
-        return $0.type == "InMemory"
-      }
+      return $0.type == NSPersistentStore.StoreType.inMemory.rawValue
     }) == nil
   }
 }

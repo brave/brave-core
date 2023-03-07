@@ -129,11 +129,7 @@ class LoginInfoViewController: LoginAuthViewController {
       $0.tableFooterView = SettingsTableSectionHeaderFooterView(
         frame: CGRect(width: tableView.bounds.width, height: 1.0))
       $0.estimatedRowHeight = 44.0
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 0
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 0
     }
   }
 }

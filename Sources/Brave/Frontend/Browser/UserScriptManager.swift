@@ -50,7 +50,7 @@ class UserScriptManager {
       if let source = ScriptLoader.loadUserScript(named: name) {
         let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.securityToken)'; \(source) })()"
 
-        return WKUserScript.create(
+        return WKUserScript(
           source: wrappedSource,
           injectionTime: injectionTime,
           forMainFrameOnly: mainFrameOnly,
@@ -71,7 +71,7 @@ class UserScriptManager {
     ].compactMap { (injectionTime, mainFrameOnly, sandboxed) in
       
       if let source = ScriptLoader.loadUserScript(named: "__firefox__") {
-        return WKUserScript.create(
+        return WKUserScript(
           source: source,
           injectionTime: injectionTime,
           forMainFrameOnly: mainFrameOnly,
@@ -128,7 +128,7 @@ class UserScriptManager {
       }
       
       script = ScriptLoader.secureScript(handlerNamesMap: [:], securityToken: "", script: script)
-      return WKUserScript.create(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
+      return WKUserScript(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
     }
   }
   
@@ -248,7 +248,7 @@ class UserScriptManager {
           });
           """
         
-        let wkScript = WKUserScript.create(
+        let wkScript = WKUserScript(
           source: script,
           injectionTime: .atDocumentStart,
           forMainFrameOnly: true,
@@ -269,7 +269,7 @@ class UserScriptManager {
             \(walletSolProviderScript)
           });
           """
-          let wkScript = WKUserScript.create(
+          let wkScript = WKUserScript(
             source: script,
             injectionTime: .atDocumentStart,
             forMainFrameOnly: true,
@@ -283,7 +283,7 @@ class UserScriptManager {
           guard isSolanaKeyringCreated, // don't inject if Solana keyring is not created.
                 let walletStandardScript = tab.walletSolProviderScripts[.walletStandard]
           else { return }
-          let wkScript = WKUserScript.create(
+          let wkScript = WKUserScript(
             source: walletStandardScript,
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: true,

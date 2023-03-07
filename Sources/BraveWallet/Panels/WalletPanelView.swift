@@ -153,10 +153,11 @@ public struct WalletPanelContainerView: View {
       }
     }
     .environment(
-      \.openWalletURLAction,
-      .init(action: { [openWalletURLAction] url in
-        openWalletURLAction?(url)
-      }))
+      \.openURL,
+       .init(handler: { [openWalletURLAction] url in
+         openWalletURLAction?(url)
+         return .handled
+       }))
   }
 }
 
@@ -172,7 +173,7 @@ struct WalletPanelView: View {
   var presentBuySendSwap: () -> Void
   var buySendSwapBackground: InvisibleUIView
   
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   @Environment(\.pixelLength) private var pixelLength
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
@@ -332,7 +333,7 @@ struct WalletPanelView: View {
         Label(Strings.Wallet.settings, braveSystemImage: "brave.gear")
       }
       Divider()
-      Button(action: { openWalletURL?(WalletConstants.braveWalletSupportURL) }) {
+      Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
         Label(Strings.Wallet.helpCenter, braveSystemImage: "brave.info.circle")
       }
     } label: {

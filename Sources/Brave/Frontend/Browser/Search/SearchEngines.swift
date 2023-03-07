@@ -256,7 +256,9 @@ public class SearchEngines {
   fileprivate lazy var customEngines: [OpenSearchEngine] = {
     do {
       let data = try Data(contentsOf: URL(fileURLWithPath: customEngineFilePath()))
-      return (try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [OpenSearchEngine]) ?? []
+      let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+      unarchiver.requiresSecureCoding = true
+      return unarchiver.decodeArrayOfObjects(ofClass: OpenSearchEngine.self, forKey: NSKeyedArchiveRootObjectKey) ?? []
     } catch {
       Logger.module.error("Failed to load custom search engines: \(error.localizedDescription, privacy: .public)")
       return []

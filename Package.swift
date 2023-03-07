@@ -10,10 +10,9 @@ import Foundation
 var package = Package(
   name: "Brave",
   defaultLocalization: "en",
-  platforms: [.iOS(.v14), .macOS(.v11)],
+  platforms: [.iOS(.v15), .macOS(.v12)],
   products: [
     .library(name: "Brave", targets: ["Brave"]),
-    .library(name: "HTTPSE", targets: ["HTTPSE"]),
     .library(name: "Shared", targets: ["Shared"]),
     .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
     .library(name: "BraveShared", targets: ["BraveShared"]),
@@ -51,22 +50,11 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
-    .package(url: "https://github.com/apple/swift-markdown", revision: "4f0c76fcd29fea648915f41e2aa896d47608087a"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.7.2"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(name: "Static", path: "ThirdParty/Static"),
   ],
   targets: [
-    .target(
-      name: "HTTPSE",
-      resources: [.copy("httpse.leveldb.tgz")],
-      cxxSettings: [
-        .headerSearchPath("include"),
-        .headerSearchPath("ThirdParty/**"),
-        .headerSearchPath("Cpp"),
-        .unsafeFlags(["-w"]),
-      ]
-    ),
     .target(
       name: "Shared",
       dependencies: [
@@ -110,7 +98,6 @@ var package = Package(
         "BraveShared",
         "Strings",
         "DesignSystem",
-        .product(name: "Markdown", package: "swift-markdown"),
         "PanModal",
         "SDWebImage",
         "SDWebImageSVGNativeCoder",
@@ -332,7 +319,6 @@ var braveTarget: PackageDescription.Target = .target(
     "Data",
     "Storage",
     "GCDWebServers",
-    "HTTPSE",
     "Fuzi",
     "SnapKit",
     "Static",

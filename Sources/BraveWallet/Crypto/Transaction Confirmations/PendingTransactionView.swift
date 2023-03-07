@@ -19,7 +19,7 @@ struct PendingTransactionView: View {
   var onDismiss: () -> Void
   
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   
   /// Blockie size for ERC 20 Approve transactions
   @ScaledMetric private var blockieSize = 24
@@ -236,7 +236,7 @@ struct PendingTransactionView: View {
             .foregroundColor(Color(.braveErrorLabel))
             .font(.subheadline.weight(.medium))
           Button {
-            openWalletURL?(WalletConstants.splTokenAccountCreationLink)
+            openWalletURL(WalletConstants.splTokenAccountCreationLink)
           } label: {
             Text(Strings.Wallet.learnMoreButton)
               .foregroundColor(Color(.braveBlurpleTint))

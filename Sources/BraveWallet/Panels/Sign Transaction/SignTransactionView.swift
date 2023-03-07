@@ -50,7 +50,7 @@ struct SignTransactionView: View {
   @State private var network: BraveWallet.NetworkInfo?
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.openWalletURLAction) private var openWalletURL
+  @Environment(\.openURL) private var openWalletURL
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
   private let normalizedRequests: [SignTransactionRequestUnion]
@@ -284,7 +284,7 @@ struct SignTransactionView: View {
           .font(.subheadline)
           .foregroundColor(Color(.braveErrorLabel))
         Button(action: {
-          openWalletURL?(WalletConstants.signTransactionRiskLink)
+          openWalletURL(WalletConstants.signTransactionRiskLink)
         }) {
           Text(Strings.Wallet.learnMoreButton)
             .font(.subheadline)

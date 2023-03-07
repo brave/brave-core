@@ -91,9 +91,7 @@ extension TabTrayController {
       ]
 
     arrowCommands.forEach {
-      if #available(iOS 15.0, *) {
-        $0.wantsPriorityOverSystemBehavior = true
-      }
+      $0.wantsPriorityOverSystemBehavior = true
     }
 
     var navigationCommands = [

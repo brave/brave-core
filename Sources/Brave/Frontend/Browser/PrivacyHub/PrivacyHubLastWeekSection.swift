@@ -53,8 +53,8 @@ extension PrivacyReportsView {
               .unredacted()
             if let mostFrequentTracker = mostFrequentTracker {
               Text(
-                markdown: String.localizedStringWithFormat(Strings.PrivacyHub.mostFrequentTrackerAndAdBody,
-                                                           mostFrequentTracker.name, mostFrequentTracker.count)
+                LocalizedStringKey(String.localizedStringWithFormat(Strings.PrivacyHub.mostFrequentTrackerAndAdBody,
+                                                                    mostFrequentTracker.name, mostFrequentTracker.count))
               )
               .font(.callout)
             } else {
@@ -81,8 +81,8 @@ extension PrivacyReportsView {
             
             if let riskiestWebsite = riskiestWebsite {
               Text(
-                markdown: String.localizedStringWithFormat(Strings.PrivacyHub.riskiestWebsiteBody,
-                                                           riskiestWebsite.name, riskiestWebsite.count)
+                LocalizedStringKey(String.localizedStringWithFormat(Strings.PrivacyHub.riskiestWebsiteBody,
+                                                                    riskiestWebsite.name, riskiestWebsite.count))
               )
               .font(.callout)
             } else {

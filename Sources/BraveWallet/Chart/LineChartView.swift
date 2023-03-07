@@ -274,18 +274,12 @@ extension CGPoint {
 
 extension View {
   @ViewBuilder func chartAccessibility(title: String, dataPoints: [DataPoint]) -> some View {
-    Group {
-      if #available(iOS 15.0, *) {
-        self.accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
-      } else {
-        self
-      }
-    }
-    .accessibilityLabel(title)
+    self
+      .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
+      .accessibilityLabel(title)
   }
 }
 
-@available(iOS 15.0, *)
 private struct LineChartDescriptor: AXChartDescriptorRepresentable {
   var title: String
   var values: [DataPoint]

@@ -64,46 +64,16 @@ struct AccountPicker: View {
     UIPasteboard.general.string = keyringStore.selectedAccount.address
   }
 
-  @available(iOS, introduced: 14.0, deprecated: 15.0)
-  @State private var isPresentingCopyAddressActionSheet: Bool = false
-
   @ViewBuilder private var accountPickerView: some View {
-    Group {
-      if #available(iOS 15.0, *) {
-        Menu {
-          Text(keyringStore.selectedAccount.address.zwspOutput)
-          Button(action: copyAddress) {
-            Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
-          }
-        } label: {
-          accountView
-        } primaryAction: {
-          isPresentingPicker = true
-        }
-      } else {
-        Button(action: {
-          isPresentingPicker = true
-        }) {
-          accountView
-        }
-        .buttonStyle(.plain)
-        // Context Menus are not supported inside `List`/`Form` section headers/footers so we must replace
-        // this with a long press gesture + action sheet on iOS 14
-        .simultaneousGesture(
-          LongPressGesture(minimumDuration: 0.3)
-            .onEnded { _ in
-              isPresentingCopyAddressActionSheet = true
-            }
-        )
-        .actionSheet(isPresented: $isPresentingCopyAddressActionSheet) {
-          .init(
-            title: Text(keyringStore.selectedAccount.address), message: nil,
-            buttons: [
-              .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
-              .cancel(),
-            ])
-        }
+    Menu {
+      Text(keyringStore.selectedAccount.address.zwspOutput)
+      Button(action: copyAddress) {
+        Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "brave.clipboard")
       }
+    } label: {
+      accountView
+    } primaryAction: {
+      isPresentingPicker = true
     }
     .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
     .accessibilityValue("\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)")

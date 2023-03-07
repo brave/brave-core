@@ -935,7 +935,7 @@ public class BrowserViewController: UIViewController {
 
     doSyncMigration()
 
-    if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
+    if !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
       scheduleDefaultBrowserNotification()
     }
 
@@ -3117,9 +3117,6 @@ extension BrowserViewController {
     }
     
     let host = UIHostingController(rootView: PrivacyReportsManager.prepareView())
-    host.rootView.onDismiss = { [weak host] in
-      host?.dismiss(animated: true)
-    }
     
     host.rootView.openPrivacyReportsUrl = { [weak self] in
       guard let self = self else { return }

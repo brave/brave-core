@@ -495,10 +495,10 @@ class TabManager: NSObject {
         
         tab.walletEthProvider = provider
         tab.walletEthProvider?.`init`(tab)
-        tab.walletEthProviderScript = WKUserScript.create(source: providerJS,
-                                                          injectionTime: .atDocumentStart,
-                                                          forMainFrameOnly: true,
-                                                          in: EthereumProviderScriptHandler.scriptSandbox)
+        tab.walletEthProviderScript = WKUserScript(source: providerJS,
+                                                   injectionTime: .atDocumentStart,
+                                                   forMainFrameOnly: true,
+                                                   in: EthereumProviderScriptHandler.scriptSandbox)
       }
       if let (provider, jsScripts) = makeWalletSolProvider?(tab) {
         tab.walletSolProvider = provider

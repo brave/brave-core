@@ -14,7 +14,7 @@ import GuardianConnect
 class BraveVPNRegionPickerViewController: UIViewController {
 
   private var overlayView: UIView?
-  private let tableView: UITableView
+  private let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
   private let regionList: [GRDRegion]
 
   private enum Section: Int, CaseIterable {
@@ -63,12 +63,6 @@ class BraveVPNRegionPickerViewController: UIViewController {
   init() {
     self.regionList = BraveVPN.regions
       .sorted { $0.displayName < $1.displayName }
-
-    if #available(iOS 14, *) {
-      tableView = UITableView(frame: .zero, style: .insetGrouped)
-    } else {
-      tableView = UITableView(frame: .zero, style: .grouped)
-    }
 
     super.init(nibName: nil, bundle: nil)
   }

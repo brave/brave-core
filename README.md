@@ -10,7 +10,7 @@ This branch (development)
 
 This branch is for mainline development that will ship in the next release.
 
-This branch currently supports iOS 14+, and is written in Swift 5.
+This branch currently supports iOS 15+, and is written in Swift 5.
 
 Please make sure you aim your pull requests in the right direction.
 
@@ -34,7 +34,7 @@ Building the code
     ```shell
     xcode-select --install
     ```
-1. Make sure `npm` is installed, `node` version 12 is recommended
+1. Make sure `npm` is installed, `node` version 16 is recommended
 1. Install SwiftLint (0.50.0 or higher):
     ```shell
     brew update
@@ -47,7 +47,7 @@ Building the code
 1. Pull in the project dependencies:
     ```shell
     cd brave-ios
-    sh ./bootstrap.sh
+    sh ./bootstrap.sh --ci
     ```
 1. Add a symlink to `npm` (M1 Macs)
     ```shell
@@ -57,10 +57,10 @@ Building the code
 1. Open `App/Client.xcodeproj` in Xcode.
 1. Build the `Debug` scheme in Xcode.
 
-Updating Rewards
+Working with BraveCore
 ----------------
 
-Some Brave Rewards code is precompiled into a framework in the `BraveRewards` directory. It's code can be found in [brave-core](https://github.com/brave/brave-core/), and instructions on building and updating this code can be found [here](https://github.com/brave/brave-ios/blob/development/BraveCore/Updating%20the%20BraveRewards%20framework.md)
+Many features in iOS (sync, ads, wallet, etc.) are powered by shared code in [brave-core](https://github.com/brave/brave-core). Instructions on building and updating this code can be found [here](https://github.com/brave/brave-ios/blob/development/BraveCore/Working%20with%20BraveCore.md)
 
 ## Contributor guidelines
 
@@ -79,7 +79,6 @@ Some Brave Rewards code is precompiled into a framework in the `BraveRewards` di
 
 ### Swift style
 * Swift code should generally follow the conventions listed at https://github.com/raywenderlich/swift-style-guide.
-  * Exception: we use 4-space indentation instead of 2.
 
 ### Whitespace
 * New code should not contain any trailing whitespace.

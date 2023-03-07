@@ -10,6 +10,7 @@ import BraveShared
 import Favicon
 import CoreServices
 import os.log
+import UniformTypeIdentifiers
 
 class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
@@ -840,7 +841,7 @@ extension BookmarksViewController {
       // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
       self.documentInteractionController = UIDocumentInteractionController(url: url)
       guard let vc = self.documentInteractionController else { return }
-      vc.uti = String(kUTTypeHTML)
+      vc.uti = UTType.html.identifier
       vc.name = "Bookmarks.html"
       vc.delegate = self
 

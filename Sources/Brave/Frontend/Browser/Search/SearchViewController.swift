@@ -115,11 +115,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     tableView.do {
       $0.keyboardDismissMode = .interactive
       $0.separatorStyle = .none
-      #if swift(>=5.5)
-      if #available(iOS 15.0, *) {
-        $0.sectionHeaderTopPadding = 5
-      }
-      #endif
+      $0.sectionHeaderTopPadding = 5
       $0.addGestureRecognizer(suggestionLongPressGesture)
       $0.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)
       $0.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)

@@ -67,34 +67,10 @@ extension URLSession: NetworkSession {
   }
 
   func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse {
-    if #available(iOS 15, *) {
-      return try await data(from: url)
-    } else {
-      return try await withCheckedThrowingContinuation { continuation in
-        self.dataTask(with: url) { data, response, error in
-          if let error = error {
-            continuation.resume(throwing: error)
-          } else {
-            continuation.resume(with: .success((data ?? Data(), response ?? self.createResponse(url: url))))
-          }
-        }.resume()
-      }
-    }
+    return try await data(from: url)
   }
 
   func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
-    if #available(iOS 15, *) {
-      return try await data(for: urlRequest)
-    } else {
-      return try await withCheckedThrowingContinuation { continuation in
-        self.dataTask(with: urlRequest) { data, response, error in
-          if let error = error {
-            continuation.resume(throwing: error)
-          } else {
-            continuation.resume(with: .success((data ?? Data(), response ?? self.createResponse(url: urlRequest.url))))
-          }
-        }.resume()
-      }
-    }
+    return try await data(for: urlRequest)
   }
 }

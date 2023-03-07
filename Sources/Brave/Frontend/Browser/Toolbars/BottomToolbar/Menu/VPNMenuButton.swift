@@ -73,15 +73,8 @@ struct VPNMenuButton: View {
   }
 
   private var vpnToggle: some View {
-    Group {
-      let toggle = Toggle("Brave VPN", isOn: isVPNEnabledBinding)
-      if #available(iOS 14.0, *) {
-        toggle
-          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-      } else {
-        toggle
-      }
-    }
+    Toggle("Brave VPN", isOn: isVPNEnabledBinding)
+      .toggleStyle(SwitchToggleStyle(tint: .accentColor))
   }
 
   var body: some View {

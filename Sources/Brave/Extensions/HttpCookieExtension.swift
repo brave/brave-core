@@ -53,7 +53,9 @@ public extension HTTPCookie {
     }
     do {
       let data = try Data(contentsOf: baseDir.appendingPathComponent(filename), options: Data.ReadingOptions.alwaysMapped)
-      if let cookies = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [HTTPCookie] {
+      let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+      unarchiver.requiresSecureCoding = false
+      if let cookies = unarchiver.decodeObject(of: NSArray.self, forKey: NSKeyedArchiveRootObjectKey) as? [HTTPCookie] {
         HTTPCookie.setCookies(cookies) { success in
           completion?(success)
         }

@@ -14,12 +14,10 @@ import BraveCore
 struct RecentlyClosedTabsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  @State var recentlyClosedTabs: [RecentlyClosed] = []
+  @State private var recentlyClosedTabs: [RecentlyClosed] = []
   @State private var recentlyClosedLoading = true
   
   @State private var showClearDataPrompt: Bool = false
-  var onDismiss: ((Bool) -> Void)?
-  var onCleared: (() -> Void)?
   var onRecentlyClosedSelected: ((RecentlyClosed) -> Void)?
   
   private let tabManager: TabManager?
@@ -35,7 +33,7 @@ struct RecentlyClosedTabsView: View {
         buttons: [
           .destructive(Text(Strings.RecentlyClosed.recentlyClosedClearActionTitle), action: {
             RecentlyClosed.removeAll()
-            dismissView(cleared: true)
+            dismissView()
           }),
           .cancel()
         ]
@@ -121,20 +119,12 @@ struct RecentlyClosedTabsView: View {
         .background(Color(.braveGroupedBackground).ignoresSafeArea())
         .navigationTitle(Strings.RecentlyClosed.recentlyClosedTabsScreenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .osAvailabilityModifiers { content in
-          if #available(iOS 15.0, *) {
-            content
-              .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                  doneButton
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                  clearAllDataButton
-                }
-              }
-          } else {
-            content
-              .navigationBarItems(leading: clearAllDataButton, trailing: doneButton)
+        .toolbar {
+          ToolbarItem(placement: .confirmationAction) {
+            doneButton
+          }
+          ToolbarItem(placement: .cancellationAction) {
+            clearAllDataButton
           }
         }
     }
@@ -147,14 +137,7 @@ struct RecentlyClosedTabsView: View {
     }
   }
   
-  private func dismissView(cleared: Bool = false) {
-    // Dismiss on presentation mode does not work on iOS 14
-    // when using the UIHostingController is parent view.
-    // As a workaround a completion handler is used instead.
-    if #available(iOS 15, *) {
-      presentationMode.dismiss()
-    }
-      
-    onDismiss?(cleared)
+  private func dismissView() {
+    presentationMode.dismiss()
   }
 }
