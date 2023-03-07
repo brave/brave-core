@@ -526,23 +526,25 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, LocalStorageIsShared) {
   EXPECT_EQ("name=bcom_simple; from=a.com",
             site_a_tab1_values.iframe_2.cookies);
 
-  // The second tab is loaded on the same domain, so should see the same
-  // storage for the third-party iframes.
-  ValuesFromFrames site_a_tab2_values = GetValuesFromFrames(site_a_tab2);
-  EXPECT_EQ("a.com", site_a_tab2_values.main_frame.local_storage);
-  EXPECT_EQ("a.com", site_a_tab2_values.iframe_1.local_storage);
-  EXPECT_EQ("a.com", site_a_tab2_values.iframe_2.local_storage);
+  {
+    // The second tab is loaded on the same domain, so should see the same
+    // storage for the third-party iframes.
+    ValuesFromFrames site_a_tab2_values = GetValuesFromFrames(site_a_tab2);
+    EXPECT_EQ("a.com", site_a_tab2_values.main_frame.local_storage);
+    EXPECT_EQ("a.com", site_a_tab2_values.iframe_1.local_storage);
+    EXPECT_EQ("a.com", site_a_tab2_values.iframe_2.local_storage);
 
-  EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
-  EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab2_values.main_frame.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab2_values.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, site_a_tab2_values.iframe_2.session_storage);
 
-  EXPECT_EQ("name=acom_simple; from=a.com",
-            site_a_tab2_values.main_frame.cookies);
-  EXPECT_EQ("name=bcom_simple; from=a.com",
-            site_a_tab2_values.iframe_1.cookies);
-  EXPECT_EQ("name=bcom_simple; from=a.com",
-            site_a_tab2_values.iframe_2.cookies);
+    EXPECT_EQ("name=acom_simple; from=a.com",
+              site_a_tab2_values.main_frame.cookies);
+    EXPECT_EQ("name=bcom_simple; from=a.com",
+              site_a_tab2_values.iframe_1.cookies);
+    EXPECT_EQ("name=bcom_simple; from=a.com",
+              site_a_tab2_values.iframe_2.cookies);
+  }
 
   SetValuesInFrames(site_a_tab1, "a.com-modify", "from=a.com-modify");
   {
