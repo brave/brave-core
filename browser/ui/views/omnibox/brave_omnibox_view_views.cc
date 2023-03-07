@@ -80,6 +80,7 @@ bool BraveOmniboxViewViews::AcceleratorPressed(
   CopySanitizedURL(url_to_copy.value());
   return true;
 }
+#endif  // BUILDFLAG(IS_WIN)
 
 bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
     int command_id,
@@ -96,7 +97,6 @@ bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
   }
   return OmniboxViewViews::GetAcceleratorForCommandId(command_id, accelerator);
 }
-#endif  // BUILDFLAG(IS_WIN)
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 void BraveOmniboxViewViews::ExecuteTextEditCommand(
