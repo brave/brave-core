@@ -13,11 +13,14 @@
 #include "base/containers/flat_map.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/accelerators/accelerator.h"
 
 namespace commands {
 
 class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
  public:
+  using Accelerators = base::flat_map<int, std::vector<ui::Accelerator>>;
+
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   explicit AcceleratorPrefManager(PrefService* prefs);
@@ -26,10 +29,12 @@ class COMPONENT_EXPORT(COMMANDS_BROWSER) AcceleratorPrefManager {
   ~AcceleratorPrefManager();
 
   void ClearAccelerators(int command_id);
-  void AddAccelerator(int command_id, const std::string& accelerator);
-  void RemoveAccelerator(int command_id, const std::string& accelerator);
+  void AddAccelerator(int command_id, const ui::Accelerator& accelerator);
+  void RemoveAccelerator(int command_id, const ui::Accelerator& accelerator);
 
-  base::flat_map<int, std::vector<std::string>> GetAccelerators();
+  Accelerators GetAccelerators();
+  Accelerators GetDefaultAccelerators();
+  void SetDefaultAccelerators(const Accelerators& default_accelerators);
 
  private:
   raw_ptr<PrefService> prefs_;

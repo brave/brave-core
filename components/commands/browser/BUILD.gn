@@ -17,6 +17,7 @@ component("browser") {
   deps = [
     "//base",
     "//components/prefs",
+    "//ui/base",
   ]
 
   public_deps = [ "//brave/components/commands/common" ]

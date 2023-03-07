@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
@@ -25,7 +24,7 @@ class PrefService;
 
 namespace commands {
 
-using Accelerators = base::flat_map<int, std::vector<ui::Accelerator>>;
+using Accelerators = AcceleratorPrefManager::Accelerators;
 
 class AcceleratorService : public mojom::CommandsService, public KeyedService {
  public:
@@ -41,6 +40,7 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   ~AcceleratorService() override;
 
   void Initialize();
+  void UpdateDefaultAccelerators();
   void BindInterface(mojo::PendingReceiver<CommandsService> pending_receiver);
 
   void AssignAcceleratorToCommand(int command_id,
@@ -53,6 +53,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  const Accelerators& GetAcceleratorsForTesting();
+
   // KeyedService:
   void Shutdown() override;
 
@@ -60,7 +62,9 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   // Returns all the command_ids whose accelerators were affected by the set and
   // does not notify observers.
   std::vector<int> AssignAccelerator(int command_id,
-                                     const std::string& accelerator);
+                                     const ui::Accelerator& accelerator);
+  // Unassigns an accelerator and does not notify observers.
+  void UnassignAccelerator(int command_id, const ui::Accelerator& accelerator);
   void NotifyCommandsChanged(const std::vector<int>& modified_ids);
 
   AcceleratorPrefManager pref_manager_;
