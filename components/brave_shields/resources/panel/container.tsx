@@ -7,7 +7,7 @@ import * as React from 'react'
 import MainPanel from './components/main-panel'
 import TreeList from './components/tree-list'
 import {
-  MakeResourceInfoList,
+  makeResourceInfoList,
   ResourceInfo,
   ResourceState,
   ResourceType,
@@ -22,24 +22,24 @@ const Box = styled.div`
   position: relative;
 `
 
-function GetResourceListForView (view: ViewType,
+function getResourceListForView (view: ViewType,
                                  state: ResourceState,
                                  siteBlockInfo: SiteBlockInfo): ResourceInfo[] {
   if (view === ViewType.AdsList && state === ResourceState.Blocked) {
-    return MakeResourceInfoList(siteBlockInfo.adsList, ResourceType.Ad, state)
+    return makeResourceInfoList(siteBlockInfo.adsList, ResourceType.Ad, state)
   }
   if (view === ViewType.HttpsList && state === ResourceState.Blocked) {
-    return MakeResourceInfoList(siteBlockInfo.httpRedirectsList,
+    return makeResourceInfoList(siteBlockInfo.httpRedirectsList,
                                 ResourceType.Http,
                                 state)
   }
   if (view === ViewType.ScriptsList && state === ResourceState.Blocked) {
-    return MakeResourceInfoList(siteBlockInfo.blockedJsList,
+    return makeResourceInfoList(siteBlockInfo.blockedJsList,
                                 ResourceType.Http,
                                 state)
   }
   if (view === ViewType.ScriptsList && state === ResourceState.AllowedOnce) {
-    return MakeResourceInfoList(siteBlockInfo.allowedJsList,
+    return makeResourceInfoList(siteBlockInfo.allowedJsList,
                                 ResourceType.Http,
                                 state)
   }
@@ -52,9 +52,9 @@ function Container () {
   const shouldShowDetailView = viewType !== ViewType.Main && siteBlockInfo
 
   const blockedList = siteBlockInfo ?
-    GetResourceListForView(viewType, ResourceState.Blocked, siteBlockInfo) : []
+    getResourceListForView(viewType, ResourceState.Blocked, siteBlockInfo) : []
   const allowedList = siteBlockInfo ?
-    GetResourceListForView(viewType,
+    getResourceListForView(viewType,
                            ResourceState.AllowedOnce,
                            siteBlockInfo) : []
   let treeListElement = null

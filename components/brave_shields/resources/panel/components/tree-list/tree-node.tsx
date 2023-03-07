@@ -6,6 +6,7 @@ import * as React from 'react'
 import * as S from './tree-node-styles'
 import ResourceElement from './resource-element'
 import {
+  PermissionButtonHandler,
   ResourceInfo,
   ResourceState,
   ResourceType
@@ -17,8 +18,8 @@ interface TreeNodeProps {
   type: ResourceType
   state: ResourceState
   resourceList: ResourceInfo[]
-  onPermissionButtonClick?: Function
-  permissionButtonTitle?: string
+  onPermissionButtonClick: PermissionButtonHandler
+  permissionButtonTitle: string
 }
 
 function rectToQuad (rect: DOMRect) {
@@ -82,9 +83,7 @@ function TreeNode (props: TreeNodeProps) {
       })
     }
   }
-  const handlePermissionButtonClick = (name: string, state: ResourceState) => {
-    props.onPermissionButtonClick?.(name, state)
-  }
+
   if (hasResources) {
     treeExpandButtonOrBulletElement = (
       <S.ExpandToggleButton
@@ -113,7 +112,7 @@ function TreeNode (props: TreeNodeProps) {
                 name={resource.url.url}
                 state={resource.state}
                 onTextExpand={measure}
-                onPermissionButtonClick={handlePermissionButtonClick}
+                onPermissionButtonClick={props.onPermissionButtonClick}
               />)
             })
           }
@@ -161,7 +160,7 @@ function TreeNode (props: TreeNodeProps) {
       <S.TreeContents>
         <ResourceElement name={props.host} isHost={true}
           state={props.state}
-          onPermissionButtonClick={handlePermissionButtonClick}
+          onPermissionButtonClick={props.onPermissionButtonClick}
           permissionButtonTitle={props.permissionButtonTitle} />
         {resourcesListElement}
       </S.TreeContents>

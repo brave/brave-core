@@ -241,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
 
   // Block one of allowed scripts.
   brave_shields_web_contents_observer()->BlockAllowedScripts(
-      std::vector<std::string>({blocked_list.back().spec()}));
+      {blocked_list.back().spec()});
   ClearAllResourcesList();
   GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));

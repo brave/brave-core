@@ -42,7 +42,6 @@ provideStrings({
   braveShieldsBlockedScriptsLabel: 'Blocked scripts',
   braveShieldsManaged: 'Settings managed by organization',
   braveShieldsAllowScriptOnce: 'Allow',
-  braveShieldsScriptAllowedOnce: 'Allowed once',
   braveShieldsAllowScriptsAll: 'Allow all',
   braveShieldsBlockScriptsAll: 'Block all',
 })

@@ -6,14 +6,17 @@
 import * as React from 'react'
 import classnames from '$web-common/classnames'
 import style from './resource-element.module.scss'
-import { ResourceState } from '../../state/component_types'
+import {
+  PermissionButtonHandler,
+  ResourceState
+} from '../../state/component_types'
 
 interface UrlElementProps {
   name: string
   state: ResourceState
-  permissionButtonTitle?: string
-  onTextExpand?: Function
-  onPermissionButtonClick?: Function
+  permissionButtonTitle: string
+  onTextExpand?: () => void
+  onPermissionButtonClick: PermissionButtonHandler
   isHost: boolean
 }
 
@@ -48,7 +51,7 @@ function ResourceElement (props: UrlElementProps) {
       <div className={urlTextClass} onClick={handleTextClick}>
         {props.name}
       </div>
-      {handlePermissionButtonClick && (
+      {props.onPermissionButtonClick && (
         <button onClick={handlePermissionButtonClick}
                 className={style.permissionButton}>
           {props.permissionButtonTitle}

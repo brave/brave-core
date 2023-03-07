@@ -29,13 +29,11 @@ export type ResourceInfo = {
   type: ResourceType
 }
 
-export function MakeResourceInfoList (data: Url[],
+export function makeResourceInfoList (data: Url[],
                                       type: ResourceType,
                                       state: ResourceState): ResourceInfo[] {
-  const list: ResourceInfo[] = []
-  data.forEach(entry => {
-    list.push({ url: entry, type: type, state: state })
-  })
-
-  return list
+  return data.map(entry => ({ url: entry, type, state }))
 }
+
+export type PermissionButtonHandler =
+  ((name: string, state: ResourceState) => void) | undefined

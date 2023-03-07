@@ -18,7 +18,7 @@ import {
   ViewType,
   ResourceType,
   ResourceState,
-  MakeResourceInfoList
+  makeResourceInfoList
 } from '../state/component_types'
 import { getLocale } from '../../../../common/locale'
 
@@ -110,12 +110,12 @@ export const _ResourceList = () => {
   }
 
   const allowedList = siteBlockInfo ?
-    MakeResourceInfoList(siteBlockInfo?.allowedJsList,
+    makeResourceInfoList(siteBlockInfo?.allowedJsList,
                          ResourceType.Script,
                          ResourceState.AllowedOnce) : []
 
   const blockedList = siteBlockInfo ?
-    MakeResourceInfoList(siteBlockInfo?.blockedJsList,
+    makeResourceInfoList(siteBlockInfo?.blockedJsList,
                          ResourceType.Script,
                          ResourceState.Blocked) : []
   return (

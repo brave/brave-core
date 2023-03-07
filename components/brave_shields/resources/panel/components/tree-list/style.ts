@@ -17,31 +17,32 @@ export const Box = styled.div`
 
   display: flex;
   flex-direction: column;
+`
 
-  .footer {
-    background-color: ${(p) => p.theme.color.background02};
-    padding: 19px 22px;
-    position: absolute;
-    bottom: 0;
+export const Footer = styled.div`
+  background-color: ${(p) => p.theme.color.background02};
+  padding: 19px 22px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+
+  button {
     width: 100%;
-    z-index: 2;
 
-    button {
-      width: 100%;
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-      div {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      svg {
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-      }
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
     }
   }
+}
 `
 
 export const HeaderBox = styled.section`
@@ -57,8 +58,9 @@ export const Scroller = styled.section`
   height: calc(100% - var(--offset-top) - var(--footer-height));
   position: relative;
   z-index: 2;
+`
 
-  .scripts-info {
+export const ScriptsInfo = styled.div`
     background-color: ${(p) => p.theme.color.background01};
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -69,20 +71,17 @@ export const Scroller = styled.section`
     font-size: 14px;
     font-weight: 600;
     padding: 16px 17px 16px 17px;
-
     span:first-child {
       text-align: center;
       overflow: hidden;
     }
-
     span:nth-child(3) {
       text-align: right;
     }
-  }
+`
 
-  .scripts-list {
+export const ScriptsList = styled.div`
     padding: 10px 17px 10px 17px;
-  }
 `
 
 export const SiteTitleBox = styled.div`

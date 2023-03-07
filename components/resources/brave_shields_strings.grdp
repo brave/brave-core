@@ -61,10 +61,6 @@
     Block
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPT_ALLOWED_ONCE" desc="A text to indicate a script was allowed once in a page.">
-    Allowed once
-  </message>
-
   <message name="IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL" desc="A link to allow all scripts to be executed in a page.">
     Allow all
   </message>
@@ -169,7 +165,7 @@
   <message name="IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked scripts">
     Blocked scripts
   </message>
-  
+
   <message name="IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed scripts">
     Allowed scripts
   </message>

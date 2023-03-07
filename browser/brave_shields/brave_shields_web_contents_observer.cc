@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -257,11 +258,8 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
 
 void BraveShieldsWebContentsObserver::BlockAllowedScripts(
     const std::vector<std::string>& origins) {
-  for (const auto& it : origins) {
-    allowed_script_origins_.erase(
-        std::remove(allowed_script_origins_.begin(),
-                    allowed_script_origins_.end(), it),
-        allowed_script_origins_.end());
+  for (const auto& origin : origins) {
+    base::Erase(allowed_script_origins_, origin);
   }
 }
 

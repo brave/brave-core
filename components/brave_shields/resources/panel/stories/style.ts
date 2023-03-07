@@ -16,3 +16,4 @@ export const PanelFrame = styled.div`
   overflow: hidden;
   position: relative;
 `
+
