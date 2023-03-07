@@ -68,6 +68,10 @@
     Settings
   </message>
 
+  <message name="IDS_BRAVE_VPN_ERROR_PANEL_HEADER" desc="Text shown in header for error panel">
+    Brave VPN
+  </message>
+
   <message name="IDS_BRAVE_VPN_STATUS" desc="Label to show the status of the user's subscription">
     Status
   </message>

@@ -52,6 +52,16 @@ void BraveVPNOSConnectionAPIBase::SetConnectionState(
   UpdateAndNotifyConnectionStateChange(state);
 }
 
+void BraveVPNOSConnectionAPIBase::ResetConnectionState() {
+  // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
+  // and set state directly because we have a logic to ignore disconnected state
+  // when connect failed.
+  connection_state_ = ConnectionState::DISCONNECTED;
+  for (auto& obs : observers_) {
+    obs.OnConnectionStateChanged(connection_state_);
+  }
+}
+
 std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {
   return last_connection_error_;
 }

@@ -17,7 +17,7 @@ export const PanelContent = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px 24px 16px 24px;
+  padding: 28px 24px 16px 24px;
   position: relative;
   z-index: 2;
 `
@@ -52,5 +52,39 @@ export const ActionArea = styled.div`
     &:first-child {
       margin-bottom: 10px;
     }
+  }
+`
+
+export const PanelHeader = styled.section`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+`
+
+export const BackButton = styled.button`
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  span {
+    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-size: 13px;
+    font-weight: 600;
+    color: ${(p) => p.theme.color.interactive05};
+  }
+
+  i {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+
+  svg {
+    fill: ${(p) => p.theme.color.interactive05};
   }
 `
