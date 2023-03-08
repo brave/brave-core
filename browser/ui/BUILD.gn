@@ -424,6 +424,9 @@ source_set("ui") {
     "//brave/components/brave_sync:time_limited_codes",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
@@ -870,6 +873,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
+      "//brave/components/brave_wallet/browser:hd_keyring",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_wallet/common:mojom",
