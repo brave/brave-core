@@ -20,6 +20,7 @@ const signMessageData = {
   coin: BraveWallet.CoinType.ETH,
   isEip712: true,
   domainHash: '',
+  domain: '',
   primaryHash: '',
   messageBytes: undefined
 }
