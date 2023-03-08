@@ -88,6 +88,7 @@ public abstract class BraveVpnParentActivity
                     BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
         } else {
             if (!mIsVerification) {
+                Log.e("NTP", "verifySubscription : queryPurchaseFailed");
                 BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
             } else {
                 BraveVpnUtils.dismissProgressDialog();
@@ -120,6 +121,7 @@ public abstract class BraveVpnParentActivity
                     BraveVpnUtils.dismissProgressDialog();
                 }
             } else {
+                Log.e("NTP", "onVerifyPurchaseToken : queryPurchaseFailed");
                 BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
                 if (mIsVerification) {
                     mIsVerification = false;

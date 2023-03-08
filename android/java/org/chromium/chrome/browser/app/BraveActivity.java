@@ -36,7 +36,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
+import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
+import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -137,7 +139,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
-import org.chromium.chrome.browser.playlist.PlaylistUtils;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
@@ -368,7 +369,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 SharedPreferencesManager.getInstance().writeBoolean(
                         PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
             } else {
-                PlaylistUtils.openPlaylistActivity(BraveActivity.this, "all");
+                openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
             }
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
@@ -1181,6 +1182,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void setDormantUsersPrefs() {
         OnboardingPrefManager.getInstance().setDormantUsersPrefs();
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
+    }
+
+    public void openPlaylistActivity(Context context, String playlistId) {
+        Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
+        playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
+        playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(playlistActivityIntent);
     }
 
     public void showPlaylistWarningDialog(
