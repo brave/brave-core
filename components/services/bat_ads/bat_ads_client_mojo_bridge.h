@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"

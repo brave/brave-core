@@ -1,5 +1,0 @@
-include_rules = [
-  "+absl/types/optional.h",
-  "+bat/ads",
-  "+third_party/boringssl/src/include/openssl/curve25519.h",
-]

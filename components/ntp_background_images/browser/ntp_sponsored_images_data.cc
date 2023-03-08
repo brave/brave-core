@@ -13,8 +13,8 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/new_tab_page_ad_info.h"
 #include "content/public/common/url_constants.h"
 
 /* Sample photo.json.

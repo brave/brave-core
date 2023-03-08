@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "bat/ads/notification_ad_info.h"
-#include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

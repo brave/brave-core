@@ -86,16 +86,13 @@ static_library("bat-native-ledger-standalone") {
 source_set("headers") {
   visibility = [
     ":*",
-    "//chrome/browser:browser",
-
-    # add this only when ads is in the same process
-    # rebase_path("bat-native-ads", dep_base),
     "//brave/browser/extensions:extensions",
     "//brave/browser/ui:ui",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment",
     "//brave/vendor/brave-ios:rewards_db",
+    "//chrome/browser:browser",
   ]
 
   public_configs = [ ":external_config" ]

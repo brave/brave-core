@@ -34,10 +34,10 @@ source_set("ads") {
     ":ads_resources",
     "//base",
     "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_federated/public/interfaces",
     "//brave/components/brave_rewards/common",
     "//brave/ios/browser/api/common",
-    "//brave/vendor/bat-native-ads",
   ]
 
   frameworks = [
@@ -48,11 +48,8 @@ source_set("ads") {
 }
 
 ios_objc_mojom_wrappers("ads_mojom_wrappers") {
-  mojom_target =
-      "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces"
-  sources = [
-    "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom",
-  ]
+  mojom_target = "//brave/components/brave_ads/common/interfaces"
+  sources = [ "//brave/components/brave_ads/common/interfaces/ads.mojom" ]
   exclude_types = [
     "DBCommandInfo",
     "DBCommandBindingInfo",
@@ -65,7 +62,6 @@ ios_objc_mojom_wrappers("ads_mojom_wrappers") {
 }
 
 bundle_data("ads_resources") {
-  sources =
-      [ "//brave/vendor/bat-native-ads/data/resources/catalog-schema.json" ]
+  sources = [ "//brave/components/brave_ads/resources/catalog-schema.json" ]
   outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
 }

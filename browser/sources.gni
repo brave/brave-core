@@ -53,7 +53,6 @@ brave_chrome_browser_visibility = [
   "//brave/test:*",
 
   # these are layering violation and need to be fixed
-  "//brave/components/brave_ads/test:*",
   "//brave/components/ipfs/test:*",
 
   # Chrome does not yet define a visibility list by itself, meaning we can't

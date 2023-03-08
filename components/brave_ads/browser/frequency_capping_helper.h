@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/memory/singleton.h"
-#include "bat/ads/ad_event_history.h"
+#include "brave/components/brave_ads/core/ad_event_history.h"
 
 namespace base {
 class Time;
