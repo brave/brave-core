@@ -20,7 +20,7 @@ namespace p3a {
 Uploader::Uploader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     UploadCompleteCallback upload_callback,
-    P3AConfig* config)
+    const P3AConfig* config)
     : url_loader_factory_(url_loader_factory),
       config_(config),
       upload_callback_(upload_callback) {}

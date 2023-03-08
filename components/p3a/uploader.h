@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/metric_log_type.h"
 
@@ -44,7 +45,7 @@ class Uploader {
 
   Uploader(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
            UploadCompleteCallback upload_callback,
-           P3AConfig* config);
+           const P3AConfig* config);
 
   Uploader(const Uploader&) = delete;
   Uploader& operator=(const Uploader&) = delete;
@@ -66,11 +67,9 @@ class Uploader {
   base::flat_map<MetricLogType, std::unique_ptr<network::SimpleURLLoader>>
       url_loaders_;
 
-  P3AConfig* config_;
+  const raw_ptr<const P3AConfig> config_;
 
   UploadCompleteCallback upload_callback_;
-
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
 };
 
 }  // namespace p3a

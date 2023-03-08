@@ -28,7 +28,7 @@ namespace p3a {
 // the "keep epoch count".
 class StarLogStore : public metrics::LogStore {
  public:
-  explicit StarLogStore(PrefService* local_state, size_t keep_epoch_count);
+  StarLogStore(PrefService* local_state, size_t keep_epoch_count);
   ~StarLogStore() override;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);

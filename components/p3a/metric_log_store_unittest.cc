@@ -35,6 +35,10 @@ class P3AMetricLogStoreTest : public testing::Test,
     return p3a::kCollectedTypicalHistograms.contains(histogram_name);
   }
 
+  bool IsEphemeralMetric(const std::string& histogram_name) const override {
+    return false;
+  }
+
  protected:
   void SetUp() override {
     MetricLogStore::RegisterPrefs(local_state.registry());

@@ -5,7 +5,7 @@
 
 #include "brave/components/p3a/message_manager.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -73,7 +73,7 @@ void MessageManager::Init(
       url_loader_factory,
       base::BindRepeating(&MessageManager::OnLogUploadComplete,
                           base::Unretained(this)),
-      config_);
+      config_.get());
 
   for (MetricLogType log_type : kAllMetricLogTypes) {
     json_upload_schedulers_[log_type] = std::make_unique<Scheduler>(
@@ -95,7 +95,7 @@ void MessageManager::Init(
   star_upload_scheduler_->Start();
 
   rotation_scheduler_ = std::make_unique<RotationScheduler>(
-      local_state_, config_,
+      local_state_, config_.get(),
       base::BindRepeating(&MessageManager::DoJsonRotation,
                           base::Unretained(this)),
       base::BindRepeating(&MessageManager::DoStarRotation,
@@ -107,7 +107,7 @@ void MessageManager::Init(
                           base::Unretained(this)),
       base::BindRepeating(&MessageManager::OnRandomnessServerInfoReady,
                           base::Unretained(this)),
-      config_);
+      config_.get());
   if (IsSTAREnabled()) {
     star_helper_->UpdateRandomnessServerInfo();
   }

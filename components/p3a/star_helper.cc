@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -35,7 +35,7 @@ StarHelper::StarHelper(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     StarMessageCallback message_callback,
     StarRandomnessMeta::RandomnessServerInfoCallback info_callback,
-    P3AConfig* config)
+    const P3AConfig* config)
     : rand_meta_manager_(local_state,
                          url_loader_factory,
                          info_callback,

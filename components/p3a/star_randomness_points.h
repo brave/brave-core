@@ -9,10 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
-#include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 
 namespace network {
@@ -29,7 +29,7 @@ struct P3AConfig;
 class StarRandomnessPoints {
  public:
   using RandomnessDataCallback = base::RepeatingCallback<void(
-      std::string histogram_name,
+      std::string metric_name,
       uint8_t epoch,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
@@ -39,11 +39,13 @@ class StarRandomnessPoints {
   StarRandomnessPoints(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       RandomnessDataCallback data_callback,
-      P3AConfig* config);
+      const P3AConfig* config);
   ~StarRandomnessPoints();
+  StarRandomnessPoints(const StarRandomnessPoints&) = delete;
+  StarRandomnessPoints& operator=(const StarRandomnessPoints&) = delete;
 
   void SendRandomnessRequest(
-      std::string histogram_name,
+      std::string metric_name,
       StarRandomnessMeta* randomness_meta,
       uint8_t epoch,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
@@ -52,7 +54,7 @@ class StarRandomnessPoints {
 
  private:
   void HandleRandomnessResponse(
-      std::string histogram_name,
+      std::string metric_name,
       StarRandomnessMeta* randomness_meta,
       uint8_t epoch,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
@@ -64,7 +66,7 @@ class StarRandomnessPoints {
 
   RandomnessDataCallback data_callback_;
 
-  P3AConfig* config_;
+  const raw_ptr<const P3AConfig> config_;
 };
 
 }  // namespace p3a

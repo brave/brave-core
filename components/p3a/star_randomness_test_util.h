@@ -8,7 +8,9 @@
 
 #include <string>
 
-#include "services/network/public/cpp/resource_request.h"
+namespace network {
+struct ResourceRequest;
+}  // namespace network
 
 namespace p3a {
 

@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "brave/components/p3a/network_annotations.h"
@@ -73,7 +73,7 @@ StarRandomnessMeta::StarRandomnessMeta(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     RandomnessServerInfoCallback info_callback,
-    P3AConfig* config)
+    const P3AConfig* config)
     : url_loader_factory_(url_loader_factory),
       local_state_(local_state),
       info_callback_(info_callback),
