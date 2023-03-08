@@ -15,6 +15,61 @@
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "ui/compositor/layer.h"
+#include "ui/compositor/paint_recorder.h"
+#include "ui/gfx/skia_paint_util.h"
+
+namespace {
+
+#define FILL_SHADOW_LAYER_FOR_DEBUG 0
+
+class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
+ public:
+  static const gfx::ShadowValues& GetShadowValues() {
+    static const base::NoDestructor<gfx::ShadowValues> shadow(([]() {
+      // Shadow matches `box-shadow: 0 1px 4px rgba(0, 0, 0, .0.07)`
+      constexpr int kBlurRadius = 4;
+      constexpr gfx::ShadowValue kShadow{
+          /* offset= */ {0, 1},
+          kBlurRadius * 2 /* correction value used in shadow_value.cc */,
+          SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+      return gfx::ShadowValues{kShadow};
+    })());
+
+    return *shadow;
+  }
+
+  ShadowLayer() { set_delegate(this); }
+  ~ShadowLayer() override = default;
+
+  // LayerDelegate:
+  void OnPaintLayer(const ui::PaintContext& context) override {
+    ui::PaintRecorder recorder(context, size());
+    // Clear out the canvas so that transparency can be applied properly.
+    recorder.canvas()->DrawColor(SK_ColorTRANSPARENT);
+#if FILL_SHADOW_LAYER_FOR_DEBUG
+    recorder.canvas()->DrawColor(gfx::kPlaceholderColor);
+#endif
+
+    cc::PaintFlags flags;
+    flags.setStyle(cc::PaintFlags::kFill_Style);
+    flags.setAntiAlias(true);
+    flags.setColor(SK_ColorTRANSPARENT);
+    flags.setLooper(gfx::CreateShadowDrawLooper(GetShadowValues()));
+
+    gfx::Rect shadow_bounds(size());
+    shadow_bounds.Inset(gfx::ShadowValue::GetBlurRegion(GetShadowValues()));
+    constexpr int kCornerRadius = 4;
+    recorder.canvas()->DrawRoundRect(shadow_bounds, kCornerRadius, flags);
+  }
+
+  void OnDeviceScaleFactorChanged(float old_device_scale_factor,
+                                  float new_device_scale_factor) override {}
+};
+
+}  // namespace
+
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
 
 BraveTab::~BraveTab() = default;
 
@@ -49,6 +104,10 @@ void BraveTab::ActiveStateChanged() {
   // see comment on UpdateEnabledForMuteToggle();
   // https://github.com/brave/brave-browser/issues/23476/
   alert_indicator_button_->UpdateEnabledForMuteToggle();
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    UpdateShadowForActiveTab();
+  }
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
@@ -88,6 +147,47 @@ void BraveTab::Layout() {
       close_button_->SetButtonPadding({});
     }
   }
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  if (shadow_layer_ && shadow_layer_->parent()) {
+    DCHECK(layer());
+    DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
+    auto shadow_bounds = layer()->bounds();
+
+    // Expand shadow layer by the size of blur region
+    shadow_bounds.Inset(
+        -gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues()));
+
+    // Exclude stroke thickness so that shadow could be more natural.
+    shadow_bounds.Inset(controller_->GetStrokeThickness());
+
+    shadow_layer_->SetBounds(shadow_bounds);
+  }
+}
+
+void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
+  Tab::ReorderChildLayers(parent_layer);
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  if (!layer() || layer()->parent() != parent_layer || !shadow_layer_) {
+    return;
+  }
+
+  if (shadow_layer_->parent() != layer()->parent()) {
+    if (shadow_layer_->parent()) {
+      shadow_layer_->parent()->Remove(shadow_layer_.get());
+    }
+    layer()->parent()->Add(shadow_layer_.get());
+  }
+
+  DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
+  layer()->parent()->StackBelow(shadow_layer_.get(), layer());
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
@@ -105,4 +205,36 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
 
   return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
+}
+
+void BraveTab::UpdateShadowForActiveTab() {
+  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  if (IsActive() &&
+      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    shadow_layer_ = CreateShadowLayer();
+    AddLayerToBelowThis(shadow_layer_.get());
+  } else if (shadow_layer_) {
+    if (layer()) {
+      layer()->parent()->Remove(shadow_layer_.get());
+    }
+    shadow_layer_.reset();
+    if (layer()) {
+      DestroyLayer();
+    }
+  }
+}
+
+std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
+  auto layer = std::make_unique<ShadowLayer>();
+  layer->SetFillsBoundsOpaquely(false);
+  return layer;
+}
+
+void BraveTab::AddLayerToBelowThis(ui::Layer* new_layer) {
+  if (!layer()) {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(false);
+  }
+
+  ReorderChildLayers(layer()->parent());
 }

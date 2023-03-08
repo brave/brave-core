@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
 
+#include <memory>
 #include <string>
 
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -13,7 +14,7 @@
 
 class BraveTab : public Tab {
  public:
-  using Tab::Tab;
+  explicit BraveTab(TabSlotController* controller);
   BraveTab(const BraveTab&) = delete;
   BraveTab& operator=(const BraveTab&) = delete;
   ~BraveTab() override;
@@ -33,9 +34,19 @@ class BraveTab : public Tab {
   void UpdateIconVisibility() override;
   bool ShouldRenderAsNormalTab() const override;
   void Layout() override;
+  void ReorderChildLayers(ui::Layer* parent_layer) override;
 
  private:
   bool IsAtMinWidthForVerticalTabStrip() const;
+
+  void UpdateShadowForActiveTab();
+  std::unique_ptr<ui::Layer> CreateShadowLayer();
+
+  // TODO(sko) This method could be hopefully replaced with
+  // views::View::AddLayerRegion in the latest version.
+  void AddLayerToBelowThis(ui::Layer* layer);
+
+  std::unique_ptr<ui::Layer> shadow_layer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_H_
