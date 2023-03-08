@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
+#import "brave/base/mac/conversions.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
@@ -50,6 +51,12 @@
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
   GURL input_gurl = net::GURLWithNSURL(input);
   ipfs::SetDefaultNFTIPFSGateway(prefs, input_gurl);
+}
+
+- (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
+  auto content_hash = brave::ns_to_vector<std::uint8_t>(contentHash);
+  GURL gurl = ipfs::ContentHashToCIDv1URL(content_hash);
+  return net::NSURLWithGURL(gurl);
 }
 
 @end

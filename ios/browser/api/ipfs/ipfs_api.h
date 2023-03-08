@@ -19,6 +19,8 @@ OBJC_EXPORT
 
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
 
+- (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash;
+
 @end
 
 NS_ASSUME_NONNULL_END
