@@ -150,9 +150,9 @@
 <translation id="181905442828471321">الإعدادات الافتراضية لطرق الحماية من Brave</translation>
 <translation id="2675679258824361492">إعدادات الخصوصية الأخرى</translation>
 <translation id="8026334261755873520">محو بيانات التصفُّح</translation>
-<translation id="5965081608816406060">إعادة تشغيل الفيديو في الخلفية</translation>
+<translation id="1690924763769415936">تشغيل في الخلفية</translation>
 <translation id="6332924730165919598">يؤدي إغلاق جميع علامات التبويب إلى إغلاق Brave</translation>
-<translation id="3872768973878059926">يسمح باستمرار تشغيل الصوت عند التبديل إلى علامة تبويب أخرى في منصة Brave، أو التبديل إلى تطبيق آخر، أو عند إطفاء شاشة الجهاز.</translation>
+<translation id="8308305244351876417">يسمح بتشغيل الصوت عند التبديل إلى علامة تبويب أخرى في Brave أو تطبيق آخر أو عند إيقاف تشغيل شاشة جهازك.</translation>
 <translation id="4150201353443180367">عرض</translation>
 <translation id="2433507940547922241">المظهر</translation>
 <translation id="6333347122924254968">إظهار أَيقونة "مكافآت متصفح Brave" في شريط العنواين</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">لم يقم منشئ المحتوى هذا بتسجيل الاشتراك حتى الآن لتلقي مساهمات من مستخدمي Brave. سنستمر في محاولة تقديم المساهمة حتى يقوم بإجراء التحقق وتأكيد بياناته، أو إلى أن يمر 90 يومًا.</translation>
 <translation id="635752162765375187">ملاحظة: لم يجر إعداد هذا المنشئ حاليًا لتلقي إكراميات من خدمة المحفظة المستضافة للمكافآت الخاصة بك. كما تبقى أي إكراميات تقدمها معلقة وتتم إعادة المحاولة تلقائيًا لمدة 90 يومًا.</translation>
 <translation id="1910721550319506122">مرحباً بك!</translation>
+<translation id="2734870894159530879">سجّل الدخول إلى <ph name="WALLET_PROVIDER"/> لمعرفة رصيدك</translation>
 <translation id="5830114181292529917">يمكنك دعم هذا الموقع عن طريق إرسال تلميح. وتمثّل إحدى الطُرق لتقديم الشكر لهم على إنشاء محتوى رائع.</translation>
 <translation id="7658239707568436148">إلغاء</translation>
 <translation id="1201402288615127009">التالي</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">عرض الإعلانات عندما لا يكون Brave قيد الاستخدام</translation>
 <translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
 <translation id="6606319453795180219">سيؤدي ذلك إلى حذف مكافآت Brave الخاصة بك وإعادة تعيين جميع بيانات مكافآت Brave الخاصة بك</translation>
-<translation id="6810078320346589989">إنشاء إشارة مرجعية</translation>
+<translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
+<translation id="340492034650766959">حذف إشارة مرجعية</translation>
+<translation id="2149973817440762519">تعديل إشارة مرجعية</translation>
+<translation id="6819319915092566548">عرض الإشارات المرجعية</translation>
 <translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
 <translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="8985635554450124959">لا يمكن إعداد المزامنة</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="496896260395129787">تم حذف حساب Brave Sync هذا من جهاز آخر. إذا كنت لا تقصد تعطيل المزامنة، <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> إعادة إنشاء الحساب</translation>
-<translation id="8199291899164865593">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف الحساب.</translation>
+<translation id="4094590686212463338">تعذر الانضمام إلى سلسلة المزامنة هذه. تم حذف سلسلة المزامنة.</translation>
 <translation id="5633907266617216186">العناوين ومعلومات الدفع وما إلى ذلك.</translation>
 <translation id="1056898198331236512">تحذير</translation>
 <translation id="1426410128494586442">نعم</translation>
@@ -367,6 +371,7 @@
 <translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
 <translation id="3200197118442451932">لا تقوم شركة Brave Software Inc. بمعالجة المعلومات الشخصية التي تقدمها إلى <ph name="WALLET_PROVIDER"/>أو تخزينها أو الوصول إليها، عندما تقوم بإنشاء حساب بواسطتها.</translation>
 <translation id="1665118090708049096">الانتقال إلى <ph name="WALLET_PROVIDER"/>حسابي</translation>
+<translation id="4858636682078269312">سجّل الدخول إلى حساب <ph name="WALLET_PROVIDER"/> الخاص بك</translation>
 <translation id="8874184842967597500">غير متصل</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">شارك Brave مع أصدقائك!</translation>
@@ -384,10 +389,10 @@
 <translation id="3624048886326677117">حجب المتتبعات &amp; والإعلانات (شديد)</translation>
 <translation id="7151914815476509258">حجب المتتبعات &amp; والإعلانات (قياسي)</translation>
 <translation id="7384778069178817075">السماح بجميع المتتبعات والإعلانات</translation>
-<translation id="4941539331405513605">حجب ملفات تعريف الارتباط عبر المواقع</translation>
 <translation id="3763681089644577874">حجب ملفات تعريف الارتباط</translation>
 <translation id="614747795780742163">يمنع مواقع الويب من تخزين معلومات حول زياراتك السابقة</translation>
 <translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="4941539331405513605">حجب ملفات تعريف الارتباط عبر المواقع</translation>
 <translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="3895527457258986253">حجب مسح البصمة</translation>
 <translation id="7854108565842971747">هذه هي إعدادات طرق الحماية الافتراضية للمواقع الجديدة. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع</translation>
@@ -486,6 +491,8 @@
 <translation id="5705882733397021510">العودة</translation>
 <translation id="3985567919248057638">لنأخذ جولة سريعة</translation>
 <translation id="7889432931837317731">الفتح تلقائياً عندما يكون ذلك ممكناً</translation>
+<translation id="1029304566263314007">عرض إشعارات تقدم التنزيل</translation>
+<translation id="2910433761530295035">اسأل عن مكان حفظ الملفات (إذا تم اكتشاف بطاقة SD)</translation>
 <translation id="8967385052772844086">عرض تقرير الخصوصية الكامل</translation>
 <translation id="6864343534748973390">الأكثر شهرة</translation>
 <translation id="4608192160278975831">خاص وبدون تتبع</translation>
@@ -494,6 +501,7 @@
 <translation id="7320542277711359296">يحتل الترتيب الثاني من حيث الشعبية</translation>
 <translation id="8295049095570748497">محرك بحث رائد في روسيا</translation>
 <translation id="2642661895835126239">نباتات الأشجار، ومقرها برلين</translation>
+<translation id="2422627462367776805">مدخل الويب في كوريا الجنوبية &amp; بحث</translation>
 <translation id="177282784098234156">خاص، مستقل، المستخدم أولاً</translation>
 <translation id="1410130669636877548">تحمي بعض محركات البحث خصوصيتك بشكل أفضل من غيرها عند البحث في الويب.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
@@ -1012,7 +1020,7 @@
 <translation id="9074594632540931067">خطأ: BAT غير متوفر</translation>
 <translation id="5382684862562314222">لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.</translation>
 <translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
-<translation id="842321566508373706">وفقًا لـ Uphold، هناك حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية لإكمالها، ثم حاول مرة أخرى.</translation>
+<translation id="1677961202754619328">وفقًا لـمنصة Uphold، هناك حاليًا بعض القيود على حساب Uphold الخاص بك. يُرجى تسجيل الدخول إلى حساب Uphold الخاص بك والتحقق مما إذا كانت هناك أي إشعارات أو متطلبات حساب متبقية مطلوب إكمالها، ثم حاول مرة أخرى.</translation>
 <translation id="6417420737057016607">إعلانات Brave</translation>
 <translation id="5425006356459378415">مكافآت Brave غير متوفرة</translation>
 <translation id="833643743158564518">تم تعطيل عمليات تسجيل الدخول الجديدة في مكافآت Brave حاليًا في منطقتك. ولكن يمكنك دائمًا إعادة المحاولة لاحقًا. <ph name="LEARN_MORE"/></translation>
@@ -1022,5 +1030,10 @@
 <translation id="4071347720273751665">يبدو أنك أدخلت عنوان ENS. سنحتاج إلى استخدام محلل تابع لجهة خارجية لحل هذا الطلب، والذي قد يكون قادرًا على رؤية عنوان IP والنطاق لديك. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">استخدام نطاق خدمة اسم إيثريوم (ENS) خارج السلسة</translation>
 <translation id="4982630604810554641">جارِ البحث عن النطاق...</translation>
+<translation id="4159738248012488342">يُرجى تحديد مبلغ الإكرامية</translation>
 <translation id="3586775666459823714">الرموز المميزة غير قابلة للاستبدال (NFT)</translation>
+<translation id="707569835145765061">الإجراء المطلوب: قم بربط حساب مُستضاف وإلا ستفقد vBAT الخاصة بك</translation>
+<translation id="1776742005329298234">في <ph name="DUE_DATE"/>، سنتوقف عن دعم أرصدة BAT الافتراضية الحالية. قم بربط حساب مستضاف قبل هذا التاريخ حتى نتمكن من تحويل رصيدك المكتسب إلى الحساب المستضاف الخاص بك، وإلا ستفقد رصيدك.</translation>
+<translation id="5089752671190341407">لا يزال لديك الوقت للمساهمة في vBAT الخاص بك لمنشئي المحتوى المفضلين لديك</translation>
+<translation id="171158953146804144">في <ph name="DUE_DATE"/>، سنتوقف عن دعم أرصدة BAT الافتراضية الحالية. لسوء الحظ، لا يوجد مسؤولون متاحون في منطقتك (<ph name="REGION"/>) لسحب أرباحك. حتى ذلك الحين، لا يزال بإمكانك المساهمة في دعم منشئي المحتوى المفضلين لديك.</translation>
 </translationbundle>

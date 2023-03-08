@@ -11,7 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
-#include "components/schema_org/common/metadata.mojom.h"
+#include "components/schema_org/common/metadata.mojom-forward.h"
 
 namespace brave_ads {
 

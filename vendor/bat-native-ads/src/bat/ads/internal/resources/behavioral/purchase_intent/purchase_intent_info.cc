@@ -66,17 +66,18 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     return {};
   }
 
-  for (const auto item : *incoming_segment_keywords) {
+  for (const auto [keywords, indexes] : *incoming_segment_keywords) {
     PurchaseIntentSegmentKeywordInfo info;
-    info.keywords = item.first;
-    for (const auto& segment_ix : item.second.GetList()) {
-      DCHECK(segment_ix.is_int());
-      if (static_cast<size_t>(segment_ix.GetInt()) >= segments.size()) {
+    info.keywords = keywords;
+
+    for (const auto& index : indexes.GetList()) {
+      DCHECK(index.is_int());
+      if (static_cast<size_t>(index.GetInt()) >= segments.size()) {
         *error_message =
             "Failed to load from JSON, segment keywords are ill-formed";
         return {};
       }
-      info.segments.push_back(segments.at(segment_ix.GetInt()));
+      info.segments.push_back(segments.at(index.GetInt()));
     }
 
     purchase_intent->segment_keywords.push_back(info);
@@ -90,10 +91,10 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     return {};
   }
 
-  for (const auto item : *incoming_funnel_keywords) {
+  for (const auto [keywords, weight] : *incoming_funnel_keywords) {
     PurchaseIntentFunnelKeywordInfo info;
-    info.keywords = item.first;
-    info.weight = item.second.GetInt();
+    info.keywords = keywords;
+    info.weight = weight.GetInt();
     purchase_intent->funnel_keywords.push_back(info);
   }
 

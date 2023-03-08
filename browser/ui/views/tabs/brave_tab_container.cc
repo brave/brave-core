@@ -47,9 +47,17 @@ BraveTabContainer::BraveTabContainer(
     return;
   }
 
+  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(
-      brave_tabs::kVerticalTabsEnabled,
-      browser->profile()->GetOriginalProfile()->GetPrefs(),
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
+                          base::Unretained(this)));
+  vertical_tabs_floating_mode_enabled_.Init(
+      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
+      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
+                          base::Unretained(this)));
+  vertical_tabs_collapsed_.Init(
+      brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
 
@@ -125,6 +133,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize() const {
         !controller_->IsGroupCollapsed(*last_tab->group())) {
       height += BraveTabGroupHeader::kPaddingForGroup;
     }
+
+    // Both containers for pinned tabs and unpinned tabs should have margin
+    height += tabs::kMarginForVerticalTabContainers;
   }
 
   return gfx::Size(TabStyle::GetStandardWidth(), height);
@@ -270,6 +281,9 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 
   layout_helper_->set_use_vertical_tabs(
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()));
+  // When these two prefs are true, vertical tabs could be in floating mode.
+  layout_helper_->set_floating_mode(*vertical_tabs_floating_mode_enabled_ &&
+                                    *vertical_tabs_collapsed_);
   InvalidateLayout();
 }
 

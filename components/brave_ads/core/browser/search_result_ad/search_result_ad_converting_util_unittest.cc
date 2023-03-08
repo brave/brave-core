@@ -5,9 +5,11 @@
 
 #include <utility>
 
+#include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/core/browser/search_result_ad/test_web_page_util.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "components/schema_org/common/metadata.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -52,7 +54,7 @@ void CheckConversionAttributes(
 
 TEST(SearchResultAdConvertingTest, ValidWebPage) {
   std::vector<::schema_org::mojom::EntityPtr> entities =
-      CreateTestWebPageEntities();
+      CreateTestWebPageEntities(/*attributes_to_skip*/ {});
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
   EXPECT_EQ(search_result_ads.size(), 1U);
@@ -75,7 +77,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     entities[0]->type = "Not-Product";
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
@@ -84,7 +86,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     entities[0]->properties.clear();
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
@@ -93,7 +95,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     auto& property = entities[0]->properties[0];
     property->name = "not-creatives";
     const auto search_result_ads =
@@ -103,7 +105,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewEntityValues({});
     const auto search_result_ads =
@@ -113,7 +115,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     auto& property = entities[0]->properties[0];
     property->values = schema_org::mojom::Values::NewStringValues({"creative"});
     const auto search_result_ads =
@@ -124,7 +126,7 @@ TEST(SearchResultAdConvertingTest, NotValidWebPage) {
 
 TEST(SearchResultAdConvertingTest, AdEntityExtraProperty) {
   std::vector<::schema_org::mojom::EntityPtr> entities =
-      CreateTestWebPageEntities();
+      CreateTestWebPageEntities(/*attributes_to_skip*/ {});
   auto& property = entities[0]->properties[0];
   auto& ad_entity = property->values->get_entity_values()[0];
 
@@ -174,7 +176,7 @@ TEST(SearchResultAdConvertingTest, AdEntityPropertySkipped) {
 TEST(SearchResultAdConvertingTest, NotValidAdEntityWrongPropertyType) {
   {
     std::vector<::schema_org::mojom::EntityPtr> entities =
-        CreateTestWebPageEntities();
+        CreateTestWebPageEntities(/*attributes_to_skip*/ {});
     auto& property = entities[0]->properties[0];
     auto& ad_entity = property->values->get_entity_values()[0];
     ad_entity->type = "Not-SearchResultAd";

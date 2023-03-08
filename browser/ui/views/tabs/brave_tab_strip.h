@@ -20,6 +20,8 @@ class BraveTabStrip : public TabStrip {
   BraveTabStrip(const BraveTabStrip&) = delete;
   BraveTabStrip& operator=(const BraveTabStrip&) = delete;
 
+  bool IsVerticalTabsFloating() const;
+
   // TabStrip:
   void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
   void MaybeStartDrag(

@@ -82,8 +82,6 @@
 <translation id="1397381065858030856">பார்த்த தளங்கள்</translation>
 <translation id="2365740070488517695">துணுக்குதவிகள்</translation>
 <translation id="7577100371127227294">மாதாந்திர துணுக்குதவிகள்</translation>
-<translation id="1847863811689960237">நீ விரும்பும் உள்ளடக்கத்திற்கு படைப்பாளர்களுக்கு வெகுமதி.</translation>
-<translation id="4129489167302464118">உம் மாதாந்திர கட்டணம் நீ பார்வையிடும் தளங்களுக்கிடையில் விநியோகிக்கப்பெறுகிறது.</translation>
 <translation id="4898632353264854950">உலாவ உலாவ தளங்கள் தோன்றும்</translation>
 <translation id="3024485967181749006">இம்மாதத்தின் மொத்த துணுக்குதவிகள்</translation>
 <translation id="4153752809523809915">இன்று உன் அபிமான உள்ளடக்கம் படைத்தவரை துணுக்குதவினீரா?</translation>
@@ -176,7 +174,6 @@
 <translation id="923467487918828349">அனைத்தும் காண்பி</translation>
 <translation id="5113531205597573951">பார்த்த தளங்கள்</translation>
 <translation id="4450893287417543264">மீண்டும் காட்டாதே</translation>
-<translation id="6518133107902771759">சரிபார்</translation>
 <translation id="3787061634640932557">அட்டைகளை திருத்து</translation>
 <translation id="2070991379950719711">பிரேவ் வெகுமதிகளை பயன்படுத்த ஆரம்பி</translation>
 <translation id="1544192797660353713">பணப்பை</translation>
@@ -213,7 +210,8 @@
 <translation id="1201402288615127009">அடுத்து</translation>
 <translation id="8712637175834984815">புரிந்தது</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
-<translation id="2704606927547763573">நகலெடுக்கப்பட்டது</translation>
+<translation id="7885157704277298658">நகலெடுக்கப்பட்டது!</translation>
+<translation id="6518133107902771759">சரிபார்</translation>
 <translation id="6042308850641462728">மேலும்</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>
 <translation id="9111102763498581341">பூட்டைத் திற</translation>
@@ -221,7 +219,6 @@
 <translation id="765834632354589737">பணப்பையைப் பிரதியெடு</translation>
 <translation id="8107437138787377150">நகலகத்திலிருந்து மீட்புச் சொற்றொடரை ஒட்டு</translation>
 <translation id="8624315169751085215">நகலகத்திற்கு நகலெடு</translation>
-<translation id="7885157704277298658">நகலெடுக்கப்பட்டது!</translation>
 <translation id="1940465339426637378">சொத்துக்கள்</translation>
 <translation id="7525067979554623046">உருவாக்கு</translation>
 <translation id="8275038454117074363">இறக்குமதி செய்</translation>
@@ -232,6 +229,7 @@
 <translation id="4522570452068850558">விவரங்கள்</translation>
 <translation id="9220525904950070496">கணக்கை நீக்கு</translation>
 <translation id="1366855498335432549">வைப்பு</translation>
+<translation id="7702907602086592255">டொமைன்</translation>
 <translation id="714506544401754321">தகவலை மறைநீக்கு</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
 <translation id="9065203028668620118">திருத்து</translation>

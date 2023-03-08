@@ -329,8 +329,9 @@ bool ConfirmationStateManager::GetFailedConfirmationsFromDictionary(
 
   ConfirmationList new_failed_confirmations;
 
-  for (const auto& value : *failed_confirmations) {
-    const base::Value::Dict* const failed_confirmation_dict = value.GetIfDict();
+  for (const auto& failed_confirmation : *failed_confirmations) {
+    const base::Value::Dict* const failed_confirmation_dict =
+        failed_confirmation.GetIfDict();
     if (!failed_confirmation_dict) {
       BLOG(0, "Confirmation should be a dictionary");
       continue;

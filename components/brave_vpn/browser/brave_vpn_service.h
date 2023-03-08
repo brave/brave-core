@@ -98,6 +98,7 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
+  void ResetConnectionState() override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;

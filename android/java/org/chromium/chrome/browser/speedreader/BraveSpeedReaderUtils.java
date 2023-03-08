@@ -7,16 +7,37 @@ package org.chromium.chrome.browser.speedreader;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.WebContents;
 
 @JNINamespace("speedreader")
 public class BraveSpeedReaderUtils {
-    public static void toggleOnWebContent(WebContents webContents) {
-        BraveSpeedReaderUtilsJni.get().toggleOnWebContent(webContents);
+    public static boolean isEnabledForWebContent(WebContents webContents) {
+        return BraveSpeedReaderUtilsJni.get().isEnabledForWebContent(webContents);
+    }
+
+    public static void toggleEnabledForWebContent(WebContents webContents, boolean enabled) {
+        BraveSpeedReaderUtilsJni.get().toggleEnabledForWebContent(webContents, enabled);
+    }
+
+    public static boolean isTabDistilled(Tab tab) {
+        return BraveSpeedReaderUtilsJni.get().isTabDistilled(tab);
+    }
+
+    public static boolean tabSupportsDistillation(Tab tab) {
+        return BraveSpeedReaderUtilsJni.get().tabSupportsDistillation(tab);
+    }
+
+    public static boolean tabWantsDistill(Tab tab) {
+        return BraveSpeedReaderUtilsJni.get().tabWantsDistill(tab);
     }
 
     @NativeMethods
     interface Natives {
-        void toggleOnWebContent(WebContents webContents);
+        boolean isEnabledForWebContent(WebContents webContents);
+        void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
+        boolean isTabDistilled(Tab tab);
+        boolean tabSupportsDistillation(Tab tab);
+        boolean tabWantsDistill(Tab tab);
     }
 }

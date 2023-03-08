@@ -28,20 +28,21 @@
 #define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
-#define BRAVE_CALCULATE_INSERTION_INDEX                                       \
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&     \
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {        \
-    tabs::UpdateInsertionIndexForVerticalTabs(                                \
-        dragged_bounds, first_dragged_tab_index, num_dragged_tabs,            \
-        dragged_group, candidate_index, tab_strip_->controller_.get(),        \
-        &tab_strip_->tab_container_.get(), min_distance, min_distance_index); \
-    continue;                                                                 \
+#define BRAVE_CALCULATE_INSERTION_INDEX                                      \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&    \
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
+    tabs::UpdateInsertionIndexForVerticalTabs(                               \
+        dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
+        dragged_group, candidate_index, tab_strip_->controller_.get(),       \
+        &tab_strip_->tab_container_.get(), min_distance, min_distance_index, \
+        tab_strip_);                                                         \
+    continue;                                                                \
   }
 
-#define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                          \
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
-      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
-    return tabs::CalculateBoundsForVerticalDraggedViews(views);           \
+#define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                            \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&   \
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {      \
+    return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"

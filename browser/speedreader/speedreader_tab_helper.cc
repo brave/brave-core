@@ -120,11 +120,7 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
-#if BUILDFLAG(IS_ANDROID)
-  return true;  // skip the preference storage for now
-#else
   return SpeedreaderServiceFactory::GetForProfile(GetProfile())->IsEnabled();
-#endif
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite() {

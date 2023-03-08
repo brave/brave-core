@@ -607,6 +607,7 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
       << "If a new state was added, " << __FUNCTION__
       << " should be revisited.";
   return tabs::kVerticalTabMinWidth +
+         tabs::kMarginForVerticalTabContainers * 2 +
          (include_border ? GetInsets().width() : 0);
 }
 

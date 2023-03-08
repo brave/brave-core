@@ -85,7 +85,11 @@ interface BatLedger {
 
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
+  // DEPRECATED
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
+
+  SetMonthlyContribution(string publisher_id, double amount) => (bool success);
+
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
@@ -98,7 +102,7 @@ interface BatLedger {
 
   RefreshPublisher(string publisher_key) => (ledger.mojom.PublisherStatus status);
 
-  StartMonthlyContribution();
+  StartContributionsForTesting();
 
   UpdateMediaDuration(uint64 window_id, string publisher_key, uint64 duration, bool first_visit);
 

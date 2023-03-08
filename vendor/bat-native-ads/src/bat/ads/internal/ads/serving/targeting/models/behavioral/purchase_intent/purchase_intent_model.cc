@@ -46,27 +46,26 @@ uint16_t CalculateScoreForHistory(
 SegmentList PurchaseIntent::GetSegments() const {
   SegmentList segments;
 
-  const PurchaseIntentSignalHistoryMap& history =
+  const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance()->GetPurchaseIntentSignalHistory();
 
-  if (history.empty()) {
+  if (purchase_intent_signal_history.empty()) {
     return segments;
   }
 
   std::multimap<uint16_t, std::string> scores;
-  for (const auto& segment_history : history) {
-    const uint16_t score = CalculateScoreForHistory(segment_history.second);
-    scores.insert(std::make_pair(score, segment_history.first));
+  for (const auto& [segment, history] : purchase_intent_signal_history) {
+    const uint16_t score = CalculateScoreForHistory(history);
+    scores.insert(std::make_pair(score, segment));
   }
 
   const uint16_t threshold = features::GetPurchaseIntentThreshold();
-  for (const auto& item : base::Reversed(scores)) {
-    if (item.first >= threshold) {
-      segments.push_back(item.second);
-    }
-
-    if (segments.size() >= kMaximumSegments) {
-      break;
+  for (const auto& [score, segment] : base::Reversed(scores)) {
+    if (score >= threshold) {
+      segments.push_back(segment);
+      if (segments.size() >= kMaximumSegments) {
+        break;
+      }
     }
   }
 

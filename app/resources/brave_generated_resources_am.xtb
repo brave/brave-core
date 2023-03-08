@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
+<translation id="7561196759112975576">ሁልጊዜ</translation>
+<translation id="7961015016161918242">በፍጹም</translation>
 <translation id="4615489450165434530">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8097438084542431276">ንጹህ አገናኝ ቅዳ</translation>
+<translation id="4678672101289648246">በአዲሱ የትር ገጽ ላይ ብቻ</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
+<translation id="8294286161128352783">በአዲሱ የትር ገጽ ላይ ብቻ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
 <translation id="1544192797660353713">ዋሌት</translation>
 <translation id="2445484935443597917">አዲስ መገለጫ ፍጠር</translation>
@@ -145,9 +149,7 @@
 <translation id="5977931179408079967">አቀማመጥ</translation>
 <translation id="3790384768741064842">ወደ ቀኝ ውሰድ</translation>
 <translation id="7444424316576061724">ወደ ግራ ውሰድ</translation>
-<translation id="7561196759112975576">ሁልጊዜ</translation>
 <translation id="7060352228894039151">በ ማውዝኦቨር</translation>
-<translation id="7961015016161918242">በፍጹም</translation>
 <translation id="8981254605840444865">ቅንብሮችን አሳይ</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
@@ -198,6 +200,10 @@
 <translation id="2058818256505091369">ማውስ ላዩ ላይ ሲያንዣብብ ይንሳፈፍ</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ትር ላይ ድምጸ-ከል አድርግ}one{ትሮች ላይ ድምጸ-ከል አድርግ}other{ትሮች ላይ ድምጸ-ከል አድርግ}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{የትር ድምጸ-ከል አንሳ}one{የትሮች ድምጸ-ከል አንሳ}other{የትሮች ድምጸ-ከል አንሳ}}</translation>
+<translation id="3704707436873245822">ጽሑፍን ከምስል ቅዳ</translation>
+<translation id="5268098808165185458">ጽሑፍን ከምስል በመቅዳት ላይ...</translation>
+<translation id="4046485130884276245">ጽሑፍ ከምስል ተቀድቷል</translation>
+<translation id="3639779775496569782">የጽሑፍ ቅጂ አልተሳካም</translation>
 <translation id="4235920711083356755">የ VPN ቁልፍን ማሳየት</translation>
 <translation id="4070612712151038707">በቱልባር ውስጥ የ VPN ቁልፍን ያሳያል</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -223,6 +229,7 @@
 <translation id="796831669370432378">ዕልባት ለማከል፣ ከአድራሻ አሞሌው አጠገብ ያለውን ቁልፍ ጠቅ ያድርጉ</translation>
 <translation id="8487693399751278191">ዕልባቶችን አሁን አስመጣ...</translation>
 <translation id="2557899542277210112">ለፈጣን ተደራሽነት፣ ዕልባቶችዎን እዚህ የዕልባቶች ትር አሞሌ ላይ ያስቀምጡ።</translation>
+<translation id="2702801445560668637">የንባብ ዝርዝር</translation>
 <translation id="1968543937259008435">በኦንላይን ላይ ያለ ለምርጥ ግላዊነት ዝግጁ ነዎት?</translation>
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
@@ -257,7 +264,10 @@
 <translation id="8820817407110198400">ዕልባቶች</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="2245286910966863912">የ Brave ዜናዎች አዝራርን በአድራሻ አሞሌ ላይ አሳይ</translation>
-<translation id="1811404036171336214">ምንጊዜም በአዲስ የ ትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
+<translation id="383007806262310953">የዕልባቶች አሞሌን አሳይ</translation>
+<translation id="4054323497808446566">የዕልባቶች አሞሌ በሁሉም ገጾች ላይ ይታያል</translation>
+<translation id="8693858092251192712">የዕልባቶች አሞሌ ከአዲሱ ትር ገጽ በስተቀር በሁሉም ገጾች ላይ ተደብቋል</translation>
+<translation id="7158817046543187970">የዕልባቶች አሞሌ በሁሉም ገጾች ላይ ተደብቋል</translation>
 <translation id="3416468988018290825">ሁልጊዜ ሙሉ URLs አሳይ</translation>
 <translation id="5529693968082667490">የትር ፍለጋ አዝራርን አሳይ</translation>
 <translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
@@ -348,7 +358,6 @@
 <translation id="2635094637295383009">ትዊተር</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
-<translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
@@ -375,6 +384,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">አንድ ጣቢያ የ Solana አቅራቢ APIን መድረስ ሲፈልግ ጠይቅ</translation>
 <translation id="2777102601740875941">ጣቢያዎች የ Solana አቅራቢ ኤፒአይ እንዳይደርሱ አግድ</translation>
+<translation id="4206299587103092719">Google መግቢያ</translation>
+<translation id="7458736153596040880">አንድ ጣቢያ የቆየ Google መግቢያን መጠቀም ሲፈልግ ጠይቅ</translation>
+<translation id="459266451581663214">ጣቢያዎች የቆየ Google መግቢያን እንዳይጠቀሙ አግድ</translation>
+<translation id="8098954941070626949">ጣቢያዎች የቆየ Google መግቢያን እንዲጠቀሙ ፍቀድ</translation>
 <translation id="6414370348346025511">መደበኛ ጥበቃ በርቷል።</translation>
 <translation id="5565355416171743213">ማመሳሰል መጠቀም ይጀምሩ</translation>
 <translation id="4332558599726753990">ማዋቀርን አመሳስል</translation>
@@ -437,7 +450,7 @@
 <translation id="7578652532113583362">ግን በእነዚያ መሳሪያዎች ላይ በአካባቢው የተከማቸውን ውሂብ አይሰርዝም።</translation>
 <translation id="2516405584294312544">ይህ ስረዛ ዘላቂ ሲሆን ውሂቡን መልሶ ለማግኘት ምንም መንገድ የለም። ማመሳሰልን እንደገና ለመጠቀም ከወሰኑ አዲስ መለያ መፍጠርና እያንዳንዱን መሳሪያ አንድ በአንድ እንደገና ማከል ያስፈልግዎታል።</translation>
 <translation id="4860996720371753023">መለያ ስረዛ በሂደት ላይ ነው...</translation>
-<translation id="8199291899164865593">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። መለያ ተሰርዟል።</translation>
+<translation id="4094590686212463338">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። የማመሳሰል ሰንሰለት ተሰርዟል።</translation>
 <translation id="5633907266617216186">አድራሻዎች፣ የክፍያ መረጃ፣ ወዘተ.</translation>
 <translation id="294985549514492876">የድር መተግበሪያዎች (PWAs)</translation>
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="7701040980221191251">ምንም</translation>
 <translation id="1274962333945373242">የክሪፕቶ ዋሌቶች (ተቋርጧል)</translation>
-<translation id="3695088618483091287">የ Brave ዋሌት (ቅጥያዎችን ይምረጡ)</translation>
 <translation id="4718664830805652430">በነባሪ ላይ የተመሰረተ የመገበያያ ገንዘብ</translation>
 <translation id="7992507032049865603">በነባሪ ላይ የተመሰረተ cryptocurrency</translation>
 <translation id="1834467296210148203">የመሳሪያ አሞሌ ላይ የብሬቭን ቦርሳ አዶን አሳይ</translation>

@@ -42,6 +42,7 @@ class BraveVPNOSConnectionAPIBase
 
   // BraveVPNOSConnectionAPI
   mojom::ConnectionState GetConnectionState() const override;
+  void ResetConnectionState() override;
   void Connect() override;
   void Disconnect() override;
   void ToggleConnection() override;

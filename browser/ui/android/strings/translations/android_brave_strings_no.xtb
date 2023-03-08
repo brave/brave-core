@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Globale standarder for Brave-skjold</translation>
 <translation id="2675679258824361492">Andre innstillinger for personvern</translation>
 <translation id="8026334261755873520">Slett nettleserdata</translation>
-<translation id="5965081608816406060">Videoavspilling i bakgrunnen</translation>
+<translation id="1690924763769415936">Bakgrunnsavspilling</translation>
 <translation id="6332924730165919598">Hvis du lukker alle fanene, lukkes Brave</translation>
-<translation id="3872768973878059926">Lar lyden fortsatt spilles av når du bytter til en annen fane i Brave, går til en annen app eller skjermen på enheten er av.</translation>
+<translation id="8308305244351876417">Lar lyden fortsatt spilles av når du bytter til en annen fane i Brave, går til en annen app, eller skjermen på enheten er av.</translation>
 <translation id="4150201353443180367">Skjerm</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Denne innholdsskaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Vi fortsetter å prøve å bidra frem til de bekrefter, eller til det har gått 90 dager.</translation>
 <translation id="635752162765375187">MERK: Denne innholdsskaperen har ikke konfigurert kontoen til å motta tips fra Belønninger-lommebøker. Eventuell tips du gir, kommer til å få ventestatus. Vi prøver å overføre tipsen automatisk i 90 dager.</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
+<translation id="2734870894159530879">Logg inn på <ph name="WALLET_PROVIDER"/> for å se saldoen din.</translation>
 <translation id="5830114181292529917">Du kan støtte denne nettsiden ved å sende tips. Det er en måte å takke dem på for å skape flott innhold.</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="1201402288615127009">Neste</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Vis annonser når Brave ikke er i bruk</translation>
 <translation id="3349204812119681938">Tilbakestill Brave Rewards</translation>
 <translation id="6606319453795180219">Dette medfører sletting av Brave Rewards og tilbakestilling av alle Brave Rewards-dataene dine</translation>
-<translation id="6810078320346589989">Opprett et bokmerke</translation>
+<translation id="8293206222192510085">Legg til bokmerke</translation>
+<translation id="340492034650766959">Slett bokmerke</translation>
+<translation id="2149973817440762519">Rediger bokmerke</translation>
+<translation id="6819319915092566548">Vis bokmerker</translation>
 <translation id="3396347744975515056">Brave Sync er oppgradert og må konfigureres</translation>
 <translation id="7473245612074035141">Begynn konfigurering</translation>
 <translation id="8985635554450124959">Synkronisering kunne ikke konfigureres</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Ikke vis igjen</translation>
 <translation id="496896260395129787">Denne Brave Sync-kontoen ble slettet fra en annen enhet. Hvis du deaktiverte Sync ved en feil, kan du <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>opprette kontoen på nytt</translation>
-<translation id="8199291899164865593">Kunne ikke bli med på denne synkroniseringskjeden. Kontoen er slettet.</translation>
+<translation id="4094590686212463338">Kunne ikke bli med på denne synkroniseringskjeden. Kjeden er slettet.</translation>
 <translation id="5633907266617216186">Adresser, betalingsinfo mv.</translation>
 <translation id="1056898198331236512">Advarsel</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -371,6 +375,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
 <translation id="3200197118442451932">Brave Software Inc. verken behandler, lagrer eller bruker noe av den personlige informasjonen du gir til  <ph name="WALLET_PROVIDER"/> når du etablerer en konto hos dem.</translation>
 <translation id="1665118090708049096">Gå til <ph name="WALLET_PROVIDER"/>-kontoen min</translation>
+<translation id="4858636682078269312">Logg på <ph name="WALLET_PROVIDER"/>-kontoen din</translation>
 <translation id="8874184842967597500">Ikke tilkoblet</translation>
 <translation id="2495032782748793764">Standardinnstilling for Brave</translation>
 <translation id="9132378787893584761">Del Brave med dine venner!</translation>
@@ -388,10 +393,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3624048886326677117">Blokker sporere og annonsen (aggressiv)</translation>
 <translation id="7151914815476509258">Blokker sporere og annonsen (standard)</translation>
 <translation id="7384778069178817075">Tillat alle sporere og annonser</translation>
-<translation id="4941539331405513605">Blokker informasjonskapsler på tvers av nettsider</translation>
 <translation id="3763681089644577874">Blokker informasjonskapsler</translation>
 <translation id="614747795780742163">Hindrer nettsteder fra å lagre informasjon om dine tidligere besøk</translation>
 <translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
+<translation id="4941539331405513605">Blokker informasjonskapsler på tvers av nettsider</translation>
 <translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
 <translation id="3895527457258986253">Blokker fingerprinting</translation>
 <translation id="7854108565842971747">Dette er standard Shields-innstillinger for nye nettsteder. Å endre disse påvirker ikke de eksisterende innstillingene per nettsted.</translation>
@@ -490,6 +495,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5705882733397021510">Gå tilbake</translation>
 <translation id="3985567919248057638">La oss ta en kjapp omvisning</translation>
 <translation id="7889432931837317731">Åpne automatisk når mulig</translation>
+<translation id="1029304566263314007">Vis fremdriftsvarsler for nedlastingen</translation>
+<translation id="2910433761530295035">Spør hvor filer skal lagres (hvis SD-kort oppdages)</translation>
 <translation id="8967385052772844086">Se hele Personvernrapporten</translation>
 <translation id="6864343534748973390">Mest populær</translation>
 <translation id="4608192160278975831">Privat og ingen sporing</translation>
@@ -498,6 +505,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7320542277711359296">Nest mest populær</translation>
 <translation id="8295049095570748497">En ledende søkemotor i Russland</translation>
 <translation id="2642661895835126239">Planter trær, basert i Berlin</translation>
+<translation id="2422627462367776805">Sør-koreansk nettportal &amp; søk</translation>
 <translation id="177282784098234156">Privat, uavhengig, brukeren kommer først</translation>
 <translation id="1410130669636877548">Noen søkemotorer beskytter personvernet ditt bedre enn andre når du søker på nettet.</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapene dine om Rewards?</translation>
@@ -1016,7 +1024,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="9074594632540931067">Feil: BAT utilgjengelig</translation>
 <translation id="5382684862562314222">BAT støttes ikke enda i regionen din på Uphold.</translation>
 <translation id="6996157559236886133">Feil: Begrenset Uphold-kontofunksjonalitet</translation>
-<translation id="842321566508373706">Ifølge Uphold er Uphold-kontoen din akkurat nå underlagt visse begrensninger. Logg på Uphold-kontoen og se om det er varsler eller konfigurasjoner som må fullføres, og prøv på nytt.</translation>
+<translation id="1677961202754619328">Ifølge Uphold er det for tiden visse begrensninger på Uphold-kontoen din. Logg på Uphold-kontoen og se om du har fått noen varsler eller om det er flere trinn du må fullføre i kontoen, og prøv på nytt.</translation>
 <translation id="6417420737057016607">Brave-annonser</translation>
 <translation id="5425006356459378415">Brave Rewards er ikke tilgjengelig</translation>
 <translation id="833643743158564518">Nye registreringer for Brave-belønninger er deaktivert for din region for tiden. Du kan alltids prøve igjen senere. <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4071347720273751665">Det ser ut som om du har lagt inn en ENS-adresse. Vi vil måtte bruke en tredjeparts resolver for å resolve denne forespørselen, som kan være i stand til å se IP-adressen din og domenet ditt. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Bruk ENS offchain-domene</translation>
 <translation id="4982630604810554641">Søker etter domene …</translation>
+<translation id="4159738248012488342">Velg tipsbeløp</translation>
 <translation id="3586775666459823714">NFT-er</translation>
+<translation id="707569835145765061">Handling kreves: Tilknytt en partnerkonto, ellers går vBAT-saldoen din tapt</translation>
+<translation id="1776742005329298234"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Tilknytt en partnerkonto før denne datoen, slik at vi kan overføre den opptjente saldoen din til partnerkontoen – hvis ikke går saldoen tapt.</translation>
+<translation id="5089752671190341407">Du har fortsatt tid til å gi vBAT til innholdsskapere du liker</translation>
+<translation id="171158953146804144"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Dessverre er det ingen tilgjengelige partnere i din region (<ph name="REGION"/>) inntektene dine kan overføres til. Frem til da kan du fortsatt gi bidrag til innholdsskapere du liker.</translation>
 </translationbundle>

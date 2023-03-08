@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Vai alle impostazioni di notifica di Brave</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
 <translation id="245693535809364497">Brave deve avere l'autorizzazione di accesso alla fotocamera per creare una mappa 3D dell'ambiente circostante</translation>
+<translation id="5060669762365466104">I siti dovrebbero funzionare come previsto, ma non memorizzeranno le tue informazioni dopo la chiusura di tutte le finestre di Brave</translation>
 <translation id="6676384891291319759">Accesso a Internet</translation>
 <translation id="1363996462118479832">Impossibile sincronizzare i dati in Chrome OS a causa di un errore durante l'accesso.</translation>
 <translation id="1257247502847251159">Brave deve avere l'autorizzazione di accesso al microfono per questo sito</translation>
@@ -246,6 +247,7 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="7870748924073900361">Risparmio memoria ha reso Brave più veloce</translation>
 <translation id="6666624454809779082">Brave è già installato per tutti gli utenti sul computer.</translation>
 <translation id="5360050006043219962">Per accedere ai tuoi contenuti Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione.</translation>
+<translation id="3136039682492230890">Brave consiglia di analizzare questo file perché potrebbe essere pericoloso.</translation>
 <translation id="8291513491595858997">Uno dei tuoi genitori ha disattivato "Autorizzazioni per siti, app ed estensioni" per Brave. L'attivazione di <ph name="EXTENSION_TYPE_PARAMETER"/> non è consentita.</translation>
 <translation id="1547295885616600893">La realizzazione di Chrome OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="8211837073776713955">Brave ti avvisa se le tue password vengono compromesse</translation>
@@ -267,7 +269,6 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="1008530050039597147">Brave deve avere l'autorizzazione di accesso alla fotocamera per questo sito</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
 <translation id="3405035915691517126">Brave non può controllare le tue password. Riprova tra 24 ore.</translation>
-<translation id="5101812148953915496">I siti visitati memorizzano le tue informazioni fino alla chiusura di Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="713191641919118540">I tuoi interessi stimati da Brave</translation>
 <translation id="9068395155143628872">Ad measurement consente ai siti che visiti di chiedere a Brave informazioni che li aiutino a valutare il rendimento dei loro annunci. Ad measurement limita il tracciamento tra siti trasferendo il minor numero possibile di informazioni tra i siti.</translation>
@@ -338,8 +339,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6283840329609797763">Installazione non riuscita a causa di un errore imprecisato. Scarica di nuovo Brave.</translation>
 <translation id="2433912322225810055">Controlla anche la pagina visualizzata all'avvio di Brave o quando esegui ricerche dalla Omnibox.</translation>
 <translation id="4100716194836114130">Questo è il tuo account Brave</translation>
-<translation id="6208136456999964972">Quando chiudi tutte le finestre di Brave, i cookie e i dati dei siti vengono cancellati automaticamente</translation>
-<translation id="6371875426681214174">Quando chiudi Brave, verrà <ph name="BEGIN_BOLD"/>eseguita la disconnessione dalla maggior parte dei siti<ph name="END_BOLD"/>. Se la sincronizzazione è disattivata, verrà anche <ph name="BEGIN_BOLD"/>eseguita la disconnessione dai servizi Brave e da Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera e al microfono</translation>
 <translation id="6933858244219479645">Sistema Chrome OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Quali dati vengono utilizzati:<ph name="END_BOLD"/> la cronologia di navigazione, ossia un record dei siti visitati da Brave sul dispositivo in uso.</translation>
@@ -366,6 +365,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1611678871603620428">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.13 o versioni successive. Su questo computer è installato il sistema operativo X 10.11.</translation>
 <translation id="4484434718272972655">Chi usa Brave?</translation>
 <translation id="7173394303099002355">Usa la funzionalità di sicurezza più efficace di Brave</translation>
+<translation id="5775101967851558962">Cancella sempre i dati dei siti dal dispositivo alla chiusura di Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Se vuoi utilizzare questo account soltanto una volta, puoi usare la modalità Ospite nel browser Brave. Se vuoi aggiungere un account per qualcun altro, <ph name="LINK_BEGIN"/>aggiungi un nuovo profilo<ph name="LINK_END"/> al tuo <ph name="DEVICE_TYPE"/>.
 

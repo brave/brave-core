@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Globale Standardwerte für Brave Schutz</translation>
 <translation id="2675679258824361492">Andere Datenschutzeinstellungen</translation>
 <translation id="8026334261755873520">Browserdaten löschen</translation>
-<translation id="5965081608816406060">Videowiedergabe im Hintergrund</translation>
+<translation id="1690924763769415936">Hintergrundwiedergabe</translation>
 <translation id="6332924730165919598">Das Schließen aller Registerkarten schließt Brave</translation>
-<translation id="3872768973878059926">Erlaubt die Fortsetzung der Wiedergabe, wenn Sie zu einem anderen Brave-Tab oder einer anderen App wechseln oder sich Ihr Gerätebildschirm abschaltet.</translation>
+<translation id="8308305244351876417">Erlaubt die Wiedergabe, wenn Sie zu einem anderen Brave-Tab oder einer anderen App wechseln oder sich Ihr Gerätebildschirm abschaltet.</translation>
 <translation id="4150201353443180367">Ansicht</translation>
 <translation id="2433507940547922241">Darstellung</translation>
 <translation id="6333347122924254968">Brave-Belohnungen-Symbol in der Adressleiste anzeigen</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Dieser Ersteller hat sich noch nicht registriert, um Beiträge von Brave-Nutzern zu erhalten. Wir werden weiter versuchen, Beiträge weiterzugeben, bis der Ersteller sich registriert hat oder bis 90 Tage vergangen sind.</translation>
 <translation id="635752162765375187">HINWEIS: Dieser Ersteller ist derzeit nicht dafür konfiguriert, Trinkgelder von Ihrem Belohnungs-Guthabenservice zu erhalten. Alle Trinkgelder, die Sie abgeben, bleiben ausstehend und der Vorgang wird automatisch 90 Tage lang erneut versucht.</translation>
 <translation id="1910721550319506122">Willkommen!</translation>
+<translation id="2734870894159530879">Anmelden, um <ph name="WALLET_PROVIDER"/> Ihren Kontostand zu sehen</translation>
 <translation id="5830114181292529917">Sie können diese Website mit einem Trinkgeld unterstützen und sich dadurch für die tollen Inhalte erkenntlich zeigen.</translation>
 <translation id="7658239707568436148">Abbrechen</translation>
 <translation id="1201402288615127009">Weiter</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Anzeigen zeigen, wenn Brave nicht verwendet wird</translation>
 <translation id="3349204812119681938">Brave Rewards zurücksetzen</translation>
 <translation id="6606319453795180219">Dadurch werden Ihre Brave-Belohnungen gelöscht und alle Ihre Brave-Belohnungs-Daten zurückgesetzt</translation>
-<translation id="6810078320346589989">Erstellen Sie ein Lesezeichen</translation>
+<translation id="8293206222192510085">Lesezeichen hinzufügen</translation>
+<translation id="340492034650766959">Lesezeichen löschen</translation>
+<translation id="2149973817440762519">Lesezeichen bearbeiten</translation>
+<translation id="6819319915092566548">Lesezeichen anzeigen</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
 <translation id="8985635554450124959">Synchronisierung konnte nicht eingerichtet werden</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Nicht noch einmal anzeigen</translation>
 <translation id="496896260395129787">Dieses Brave-Synchronisierungskonto wurde von einem anderen Gerät aus gelöscht. Wenn Sie die Synchronisierung nicht deaktivieren wollten, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> erstellen Sie das Konto neu</translation>
-<translation id="8199291899164865593">Konnte sich nicht mit dieser Synchronisationskette verbinden. Das Konto wurde gelöscht.</translation>
+<translation id="4094590686212463338">Konnte sich nicht mit dieser Synchronisationskette verbinden. Die Synchronisationskette wurde gelöscht.</translation>
 <translation id="5633907266617216186">Adressen, Zahlungsangaben usw.</translation>
 <translation id="1056898198331236512">Warnung</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -371,6 +375,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
 <translation id="3200197118442451932">Brave Software Inc. verarbeitet, speichert oder greift auf keine der persönlichen Informationen zu, die Sie <ph name="WALLET_PROVIDER"/> zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="1665118090708049096">Zu meinem <ph name="WALLET_PROVIDER"/>-Konto wechseln</translation>
+<translation id="4858636682078269312">Bei Ihrem <ph name="WALLET_PROVIDER"/>-Konto anmelden</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Teilen Sie Brave mit Ihren Freunden!</translation>
@@ -388,10 +393,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3624048886326677117">Tracker und Werbung blockieren (aggressiv)</translation>
 <translation id="7151914815476509258">Tracker und Werbung blockieren (Standard)</translation>
 <translation id="7384778069178817075">Alle Tracker &amp; Werbung zulassen</translation>
-<translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
 <translation id="3763681089644577874">Cookies blockieren</translation>
 <translation id="614747795780742163">Hindert Websites, Informationen über Ihre früheren Besuche zu speichern</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
+<translation id="4941539331405513605">Cross-Site-Cookies blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="3895527457258986253">Fingerprinting blockieren</translation>
 <translation id="7854108565842971747">Dies sind die Standardeinstellungen für Schutz für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben</translation>
@@ -490,6 +495,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5705882733397021510">Zurück</translation>
 <translation id="3985567919248057638">Machen wir eine kurze Tour</translation>
 <translation id="7889432931837317731">Wenn möglich automatisch öffnen</translation>
+<translation id="1029304566263314007">Benachrichtigungen über den Download-Fortschritt anzeigen</translation>
+<translation id="2910433761530295035">Nach Dateispeicherort fragen (wenn SD-Karte erkannt wurde)</translation>
 <translation id="8967385052772844086">Vollen Datenschutzbericht sehen</translation>
 <translation id="6864343534748973390">Beliebteste</translation>
 <translation id="4608192160278975831">Privat und kein Tracking</translation>
@@ -498,6 +505,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7320542277711359296">Zweitbeliebteste</translation>
 <translation id="8295049095570748497">Eine führende Suchmaschine in Russland</translation>
 <translation id="2642661895835126239">Pflanzt Bäume, lebt in Berlin</translation>
+<translation id="2422627462367776805">Südkoreanische Website und Suche</translation>
 <translation id="177282784098234156">Privat, unabhängig und nutzerzentriert</translation>
 <translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
@@ -1016,7 +1024,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="9074594632540931067">Fehler: BAT nicht verfügbar</translation>
 <translation id="5382684862562314222">BAT wird in Ihrer Region auf Uphold noch nicht unterstützt.</translation>
 <translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
-<translation id="842321566508373706">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut.</translation>
+<translation id="1677961202754619328">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut.</translation>
 <translation id="6417420737057016607">Brave-Werbung</translation>
 <translation id="5425006356459378415">Brave-Belohnungen nicht verfügbar</translation>
 <translation id="833643743158564518">Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen.  <ph name="LEARN_MORE"/></translation>
@@ -1026,5 +1034,10 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4071347720273751665">Es sieht so aus, als hätten Sie eine ENS-Adresse eingegeben. Wir müssen einen Auflöser eines Drittanbieters verwenden, um diese Anfrage aufzulösen. Dieser kann möglicherweise Ihre IP-Adresse und Ihre Domain sehen. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">ENS-Offchain-Domain verwenden</translation>
 <translation id="4982630604810554641">Domain wird gesucht …</translation>
+<translation id="4159738248012488342">Trinkgeldbetrag auswählen</translation>
 <translation id="3586775666459823714">NFTs</translation>
+<translation id="707569835145765061">Aktion erforderlich: Verknüpfen Sie ein Depotkonto oder Ihr vBAT geht verloren</translation>
+<translation id="1776742005329298234">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>
+<translation id="5089752671190341407">Sie haben noch Zeit, mit Ihren vBAT Ihre Lieblingsersteller zu unterstützen</translation>
+<translation id="171158953146804144">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Leider gibt es in Ihrer Region (<ph name="REGION"/>) keine Depotbanken, bei denen Sie Ihre Einnahmen abheben könnten. Bis dahin können Sie Ihre Lieblingsersteller weiterhin mit Beiträgen unterstützen.</translation>
 </translationbundle>

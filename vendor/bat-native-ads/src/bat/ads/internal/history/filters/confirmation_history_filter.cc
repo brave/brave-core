@@ -77,8 +77,7 @@ HistoryItemList ConfirmationHistoryFilter::Apply(
   const std::map<std::string, HistoryItemInfo> buckets = BuildBuckets(history);
 
   HistoryItemList filtered_history;
-  for (const auto& bucket : buckets) {
-    const HistoryItemInfo& history_item = bucket.second;
+  for (const auto& [placement_id, history_item] : buckets) {
     filtered_history.push_back(history_item);
   }
 

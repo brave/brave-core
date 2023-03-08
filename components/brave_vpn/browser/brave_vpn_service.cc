@@ -467,6 +467,10 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
                           GetTimeZoneName());
 }
 
+void BraveVpnService::ResetConnectionState() {
+  GetBraveVPNConnectionAPI()->ResetConnectionState();
+}
+
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() const {
   DCHECK(connection_api_);
   return connection_api_;

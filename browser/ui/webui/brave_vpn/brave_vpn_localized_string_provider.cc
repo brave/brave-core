@@ -30,6 +30,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnPurchased", IDS_BRAVE_VPN_HAS_PURCHASED},
       {"braveVpnPoweredBy", IDS_BRAVE_VPN_POWERED_BY},
       {"braveVpnSettingsPanelHeader", IDS_BRAVE_VPN_SETTINGS_PANEL_HEADER},
+      {"braveVpnErrorPanelHeader", IDS_BRAVE_VPN_ERROR_PANEL_HEADER},
       {"braveVpnStatus", IDS_BRAVE_VPN_STATUS},
       {"braveVpnExpires", IDS_BRAVE_VPN_EXPIRES},
       {"braveVpnManageSubscription", IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION},

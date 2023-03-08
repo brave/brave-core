@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 
 namespace brave_ads {
 

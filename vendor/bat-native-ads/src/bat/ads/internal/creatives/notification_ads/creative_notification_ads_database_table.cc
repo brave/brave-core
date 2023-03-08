@@ -140,8 +140,7 @@ CreativeNotificationAdList GetCreativeAdsFromResponse(
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativeNotificationAdList creative_ads;
-  for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativeNotificationAdInfo creative_ad = grouped_creative_ad.second;
+  for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
     creative_ads.push_back(creative_ad);
   }
 

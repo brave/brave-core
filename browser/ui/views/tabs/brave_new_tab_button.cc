@@ -28,7 +28,7 @@
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{24, 24};
 
-constexpr int kInsetForVerticalTab = 14;
+constexpr int kInsetForVerticalTab = 22;
 
 // static
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
@@ -208,10 +208,10 @@ void BraveNewTabButton::Layout() {
   if (!text_->GetVisible())
     return;
 
-  constexpr int kTextLeftMargin = 20;
+  constexpr int kTextLeftMargin = 20 + kInsetForVerticalTab;
   gfx::Rect text_bounds = GetLocalBounds();
-  text_bounds.Inset(gfx::Insets(kInsetForVerticalTab));
-  text_bounds.Inset(gfx::Insets().set_left(kTextLeftMargin));
+  text_bounds.Inset(
+      gfx::Insets().set_left(kTextLeftMargin).set_right(kInsetForVerticalTab));
   text_->SetBoundsRect(text_bounds);
   shortcut_text_->SetBoundsRect(text_bounds);
 }

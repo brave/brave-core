@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
@@ -192,6 +193,18 @@ BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
   }
 
   return GetTabContainerAt(loc_in_local_coords);
+}
+
+void BraveCompoundTabContainer::OnThemeChanged() {
+  CompoundTabContainer::OnThemeChanged();
+
+  if (ShouldShowVerticalTabs()) {
+    pinned_tab_container_->SetBorder(views::CreateSolidSidedBorder(
+        gfx::Insets().set_bottom(1),
+        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
+  } else {
+    pinned_tab_container_->SetBorder(nullptr);
+  }
 }
 
 TabContainer* BraveCompoundTabContainer::GetTabContainerAt(

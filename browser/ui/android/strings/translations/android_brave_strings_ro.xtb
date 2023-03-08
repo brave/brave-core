@@ -21,7 +21,7 @@
 <translation id="1305714751384738456">Nu câștigați recompense Brave</translation>
 <translation id="1483391942610220726">Nu primiți rapoartele de confidențialitate</translation>
 <translation id="4683790942451502796">Activați din nou notificările dacă doriți să continuați să câștigați BAT și să primiți rapoarte de confidențialitate săptămânale.</translation>
-<translation id="8618359751943259593">Activați din nou notificările dacă doriți să continuați să câștigați BAT</translation>
+<translation id="8618359751943259593">Activați din nou notificările dacă doriți să continuați să câștigați BAT.</translation>
 <translation id="760355165169399836">Activați din nou notificările dacă doriți să primiți în continuare rapoarte de confidențialitate săptămânale.</translation>
 <translation id="6268959058971634697">Nu câștigați recompense</translation>
 <translation id="1088637159642753509">Activați notificările de pe dispozitiv pentru a câștiga recompense Brave și pentru a vedea rapoartele de confidențialitate.</translation>
@@ -150,9 +150,9 @@
 <translation id="181905442828471321">Valori implicite globale pentru scuturile Brave</translation>
 <translation id="2675679258824361492">Alte setări de confidențialitate</translation>
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
-<translation id="5965081608816406060">Redare fișier video în fundal</translation>
+<translation id="1690924763769415936">Redare în fundal</translation>
 <translation id="6332924730165919598">Închiderea tuturor paginilor închide și Brave</translation>
-<translation id="3872768973878059926">Permite ca redarea audio să continue atunci când treceți la o altă filă în Brave, când treceți la o altă aplicație sau când ecranul dispozitivului este oprit.</translation>
+<translation id="8308305244351876417">Permite ca redarea audio să se facă atunci când treceți la o altă filă în Brave, când treceți la o altă aplicație sau când ecranul dispozitivului este oprit.</translation>
 <translation id="4150201353443180367">Ecran</translation>
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
@@ -210,6 +210,7 @@
 <translation id="1642952941091001113">Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Vom încerca în continuare să trimitem contribuții până când este confirmat sau până la expirarea termenului de 90 de zile.</translation>
 <translation id="635752162765375187">NOTĂ: Acest creator nu este momentan configurat să primească contribuții din serviciul de portofel pentru recompense. Orice contribuție pe care o faceți va rămâne în așteptare și se va reîncerca automat trimiterea acesteia timp de 90 de zile.</translation>
 <translation id="1910721550319506122">Bun venit!</translation>
+<translation id="2734870894159530879">Conectați-vă la <ph name="WALLET_PROVIDER"/> pentru a vă consulta soldul</translation>
 <translation id="5830114181292529917">Puteți susține acest site trimițându-i cadouri bănești. Este o modalitate de a le mulțumi pentru conținutul creat.</translation>
 <translation id="7658239707568436148">Anulează</translation>
 <translation id="1201402288615127009">Înainte</translation>
@@ -310,7 +311,10 @@
 <translation id="6393502589311632553">Arată reclame când Brave nu este utilizat</translation>
 <translation id="3349204812119681938">Resetați recompensele Brave</translation>
 <translation id="6606319453795180219">Acest lucru vă va șterge Recompensele Brave și va reseta toate datele Recompense Brave</translation>
-<translation id="6810078320346589989">Creați un marcaj</translation>
+<translation id="8293206222192510085">Adăugați un marcaj</translation>
+<translation id="340492034650766959">Ștergeți marcajul</translation>
+<translation id="2149973817440762519">Editați marcajul</translation>
+<translation id="6819319915092566548">Afișați marcajele</translation>
 <translation id="3396347744975515056">S-a făcut o actualizare pentru Brave Sync și necesită configurare</translation>
 <translation id="7473245612074035141">Începeți configurarea</translation>
 <translation id="8985635554450124959">Sincronizarea nu a putut fi realizată</translation>
@@ -320,7 +324,7 @@
 <translation id="4450893287417543264">Nu mai afișa</translation>
 <translation id="496896260395129787">Acest cont Brave Sync a fost șters de pe un alt dispozitiv. Dacă nu ați vrut să dezactivați Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> creați din nou contul</translation>
-<translation id="8199291899164865593">Nu a putut fi accesat lanțul de sincronizare. Contul a fost șters.</translation>
+<translation id="4094590686212463338">Nu a putut fi accesat lanțul de sincronizare. Lanțul de sincronizare a fost șters.</translation>
 <translation id="5633907266617216186">Adrese, informații de plată etc.</translation>
 <translation id="1056898198331236512">Avertisment</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -371,6 +375,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
 <translation id="3200197118442451932">Brave Software Inc. nu prelucrează, nu stochează și nu accesează informațiile personale pentru care le oferiți <ph name="WALLET_PROVIDER"/> atunci când creați un cont la ei.</translation>
 <translation id="1665118090708049096">Accesați contul <ph name="WALLET_PROVIDER"/> meu</translation>
+<translation id="4858636682078269312">Conectați-vă la contul <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Neconectat</translation>
 <translation id="2495032782748793764">Brave implicit</translation>
 <translation id="9132378787893584761">Partajații Brave cu prietenii dvs.!</translation>
@@ -388,10 +393,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3624048886326677117">Blocați șabloanele de urmărire și reclamele (agresiv)</translation>
 <translation id="7151914815476509258">Blocați șabloanele de urmărire și reclamele (standard)</translation>
 <translation id="7384778069178817075">Permiteți toate șabloanele de urmărire &amp; reclamele</translation>
-<translation id="4941539331405513605">Blocare module cookie între site-uri</translation>
 <translation id="3763681089644577874">Blocare module cookie</translation>
 <translation id="614747795780742163">Împiedică site-urile web să stocheze informații despre vizitele dvs. anterioare</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
+<translation id="4941539331405513605">Blocare module cookie între site-uri</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
 <translation id="3895527457258986253">Blocare amprentare</translation>
 <translation id="7854108565842971747">Acestea sunt setările implicite pentru scuturi. Modificarea lor nu va afecta setările existente per site.</translation>
@@ -490,6 +495,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5705882733397021510">Înapoi</translation>
 <translation id="3985567919248057638">Să facem un tur rapid</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
+<translation id="1029304566263314007">Afișați notificările de progres al descărcărilor</translation>
+<translation id="2910433761530295035">Întreabă unde să fie salvate fișierele (dacă este detectat un card SD)</translation>
 <translation id="8967385052772844086">Vizualizare text integral al Raportului de confidențialitate</translation>
 <translation id="6864343534748973390">Cele mai populare</translation>
 <translation id="4608192160278975831">Confidențial și fără monitorizare</translation>
@@ -498,6 +505,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7320542277711359296">Al doilea cel mai popular</translation>
 <translation id="8295049095570748497">Un motor de căutare de top din Rusia</translation>
 <translation id="2642661895835126239">Plantează copaci, cu sediul în Berlin</translation>
+<translation id="2422627462367776805">Portal și căutare web sud-coreeană</translation>
 <translation id="177282784098234156">O soluție confidențială, independentă, cu utilizatorul pe primul plan</translation>
 <translation id="1410130669636877548">Atunci când cauți ceva pe web, unele motoare de căutare îți protejează confidențialitatea datelor mai bine decât altele.</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
@@ -1018,7 +1026,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="9074594632540931067">Eroare: token-ul BAT nu este disponibil</translation>
 <translation id="5382684862562314222">Uphold nu acceptă încă BAT în regiunea dvs.</translation>
 <translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
-<translation id="842321566508373706">Conform Uphold, există unele limitări ale contului Uphold. Conectați-vă la contul de Uphold și verificați dacă există notificări sau cerințe rămase de completat pentru cont, apoi încercați din nou.</translation>
+<translation id="1677961202754619328">Potrivit Uphold, în prezent există anumite limitări în contul dumneavoastră Uphold. Vă rugăm să vă conectați la contul dvs. Uphold și să verificați dacă există notificări sau cerințe rămase de completat pentru cont, apoi încercați din nou.</translation>
 <translation id="6417420737057016607">Reclame Brave</translation>
 <translation id="5425006356459378415">Recompensele Brave nu sunt disponibile</translation>
 <translation id="833643743158564518">Înregistrările noi pentru recompensele Brave sunt în prezent dezactivate în regiunea dvs. Cu toate acestea, puteți încerca din nou mai târziu. <ph name="LEARN_MORE"/></translation>
@@ -1028,5 +1036,10 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4071347720273751665">Se pare că ați introdus o adresă ENS. Va trebui să folosim un gateway terț pentru a rezolva solicitarea, care ar putea să vă vadă adresa IP și domeniul. <ph name="LEARN_MORE"/></translation>
 <translation id="4096049525705855774">Folosiți domeniul ENS offchain</translation>
 <translation id="4982630604810554641">Se caută domeniul...</translation>
+<translation id="4159738248012488342">Selectați suma pentru recompensă</translation>
 <translation id="3586775666459823714">Token-uri nefungibile</translation>
+<translation id="707569835145765061">Acțiune necesară: Conectați un cont de custode sau vBAT-ul va fi pierdut.</translation>
+<translation id="1776742005329298234">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Conectați un cont de custode înainte de această dată pentru a vă putea transfera soldul câștigat în contul de custode, altfel soldul dvs. va fi pierdut.</translation>
+<translation id="5089752671190341407">Încă mai aveți timp să contribuiți cu vBAT-ul la creatorii dvs. favoriți</translation>
+<translation id="171158953146804144">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Din păcate, nu există custozi disponibili în regiunea dvs. (<ph name="REGION"/>) pentru a vă retrage câștigurile. Până atunci, puteți contribui în continuare la creatorii dvs. favoriți.</translation>
 </translationbundle>

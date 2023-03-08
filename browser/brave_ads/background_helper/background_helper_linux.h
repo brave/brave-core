@@ -8,7 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_list_observer.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

@@ -239,6 +239,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
 <translation id="245693535809364497">Kailangan ng Brave ng pahintulot sa camera para makagawa ng 3D na mapa ng iyong kapaligiran</translation>
+<translation id="5060669762365466104">Posibleng gumana ang mga site tulad ng inaasahan mo pero hindi ka matatandaan ng mga ito pagkatapos mong isara ang lahat ng window ng Brave</translation>
 <translation id="6676384891291319759">I-access ang Internet</translation>
 <translation id="1363996462118479832">Hindi ma-sync ng ChromeOS ang iyong data dahil sa isang error sa pag-sign in.</translation>
 <translation id="1257247502847251159">Kailangan ng Brave ng pahintulot sa mikropono para sa site na ito</translation>
@@ -248,6 +249,7 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="7870748924073900361">Pinabilis ng Memory Saver ang Brave</translation>
 <translation id="6666624454809779082">Naka-install na ang Brave para sa lahat ng user sa iyong computer.</translation>
 <translation id="5360050006043219962">Para ma-access ang iyong mga bagay sa Brave sa lahat ng device mo, mag-sign in, at pagkatapos ay i-on ang pag-sync.</translation>
+<translation id="3136039682492230890">Inirerekomenda ng Brave na i-scan ang file na ito dahil posibleng mapanganib ito.</translation>
 <translation id="8291513491595858997">Na-off ng iyong magulang ang "Mga pahintulot para sa mga site, app, at extension" para sa Brave. Hindi pinapayagan ang pag-enable sa <ph name="EXTENSION_TYPE_PARAMETER"/> na ito.</translation>
 <translation id="1547295885616600893">Pinapagana ng karagdagang <ph name="BEGIN_LINK_CROS_OSS"/>open source na software<ph name="END_LINK_CROS_OSS"/> ang ChromeOS.</translation>
 <translation id="8211837073776713955">Ipinapaalam sa iyo ng Brave kung nakompromiso ang mga password mo</translation>
@@ -270,7 +272,6 @@ Maaaring hindi available ang ilang tampok. Mangyaring tumukoy ng ibang direktory
 <translation id="1008530050039597147">Kailangan ng Brave ng pahintulot sa camera para sa site na ito</translation>
 <translation id="1197672524850678392">Hindi mailunsad ang Brave. Subukang muli.</translation>
 <translation id="3405035915691517126">Hindi masuri ng Brave ang iyong mga password. Subukan ulit pagkalipas ng 24 na oras.</translation>
-<translation id="5101812148953915496">Naaalala ng mga site na binibisita mo ang iyong impormasyon hanggang sa isara mo ang Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="713191641919118540">Iyong mga interes tulad ng tinatantya ng Brave</translation>
 <translation id="9068395155143628872">Nagbibigay-daan ang pagsukat ng ad sa mga site na binibisita mo na humiling ng impormasyon mula sa Brave na tumutulong sa site na sukatin ang performance ng mga ad ng mga ito. Pinaghihigpitan ng pagsukat ng ad ang cross-site na pagsubaybay sa pamamagitan ng paglilipat ng kaunting impormasyon hangga't posible sa pagitan ng mga site.</translation>
@@ -341,8 +342,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="6283840329609797763">Nabigo ang pag-install dahil sa hindi natukoy na error. Mangyaring i-download muli ang Brave.</translation>
 <translation id="2433912322225810055">Kinokontrol din nito kung anong pahina ang ipinapakita kapag sinimulan mo ang Brave o naghanap mula sa Omnibox.</translation>
 <translation id="4100716194836114130">Ito ang iyong Brave</translation>
-<translation id="6208136456999964972">Kapag isinara mo ang lahat ng window ng Brave, awtomatikong maki-clear ang cookies at data ng site</translation>
-<translation id="6371875426681214174"><ph name="BEGIN_BOLD"/>Masa-sign out ka sa karamihan ng mga site<ph name="END_BOLD"/> kapag isinara mo ang Brave. Kung naka-off ang pag-sync, <ph name="BEGIN_BOLD"/>masa-sign out ka sa mga serbisyo ng Brave at Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Kailangan ng Brave ng pahintulot na i-access ang iyong camera at mikropono para sa site na ito</translation>
 <translation id="6933858244219479645">ChromeOS System</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Anong data ang ginagamit:<ph name="END_BOLD"/> Iyong history ng pag-browse, record ng mga site na binisita mo gamit ang Brave sa device na ito.</translation>
@@ -369,6 +368,7 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="1611678871603620428">Para makakuha ng mga update sa Brave sa hinaharap, kakailanganin mo ng macOS 10.13 o mas bago. Gumagamit ang computer na ito ng OS X 10.11.</translation>
 <translation id="4484434718272972655">Sino ang gumagamit ng Brave?</translation>
 <translation id="7173394303099002355">Kunin ang pinakamahusay na seguridad ng Brave</translation>
+<translation id="5775101967851558962">Palaging i-clear ang data ng site mula sa iyong device kapag isinara mo ang Brave</translation>
 <translation id="8992261409816268381">Ang Mga May-akda ng Brave</translation>
 <translation id="479793348545936567">Kung gusto mong gamitin ang account na ito nang isang beses lang, pwede kang gumamit ng Guest mode sa Brave browser. Kung gusto mong magdagdag ng account para sa ibang tao, <ph name="LINK_BEGIN"/>magdagdag ng bagong profile<ph name="LINK_END"/> sa iyong <ph name="DEVICE_TYPE"/>.
 

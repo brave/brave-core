@@ -237,6 +237,7 @@
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="245693535809364497">Brave memerlukan kebenaran kamera untuk membuat peta 3D bagi persekitaran anda</translation>
+<translation id="5060669762365466104">Laman mungkin akan berfungsi seperti yang anda jangkakan tetapi tidak akan mengingati anda selepas anda menutup semua tetingkap Brave</translation>
 <translation id="6676384891291319759">Akses Internet</translation>
 <translation id="1363996462118479832">Chrome OS tidak dapat menyegerakkan data anda disebabkan oleh ralat melog masuk.</translation>
 <translation id="1257247502847251159">Brave memerlukan kebenaran mikrofon untuk laman ini</translation>
@@ -246,6 +247,7 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="7870748924073900361">Penjimat Memori menjadikan Brave lebih pantas</translation>
 <translation id="6666624454809779082">Brave telah dipasang untuk semua pengguna pada komputer anda.</translation>
 <translation id="5360050006043219962">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk, kemudian hidupkan penyegerakan.</translation>
+<translation id="3136039682492230890">Brave mengesyorkan pengimbasan fail ini kerana fail ini mungkin berbahaya.</translation>
 <translation id="8291513491595858997">Ibu/bapa anda telah mematikan "Kebenaran untuk laman web, apl dan sambungan" untuk Brave. Tindakan mendayakan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak dibenarkan.</translation>
 <translation id="1547295885616600893">Chrome OS berjaya dilaksanakan dengan adanya <ph name="BEGIN_LINK_CROS_OSS"/>perisian sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan.</translation>
 <translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
@@ -268,7 +270,6 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="1008530050039597147">Brave memerlukan kebenaran kamera untuk laman ini</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat menyemak kata laluan anda. Cuba lagi selepas 24 jam.</translation>
-<translation id="5101812148953915496">Laman yang anda lawati mengingati maklumat anda sehingga anda menutup Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="713191641919118540">Minat anda seperti yang dianggarkan oleh Brave</translation>
 <translation id="9068395155143628872">Pengukuran iklan membolehkan laman yang anda lawati meminta maklumat daripada Brave yang membantu laman tersebut mengukur prestasi iklan mereka. Pengukuran iklan mengehadkan penjejakan rentas laman dengan memindahkan maklumat antara laman sedikit yang mungkin.</translation>
@@ -339,8 +340,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="6283840329609797763">Pemasangan gagal disebabkan ralat yang tidak dinyatakan. Sila muat turun semula Brave.</translation>
 <translation id="2433912322225810055">Sambungan turut mengawal halaman yang ditunjukkan apabila anda memulakan Brave atau membuat carian dari Kotak Omni.</translation>
 <translation id="4100716194836114130">Ini Brave anda</translation>
-<translation id="6208136456999964972">Apabila anda menutup semua tetingkap Brave, kuki dan data laman akan dikosongkan secara automatik</translation>
-<translation id="6371875426681214174">Anda akan <ph name="BEGIN_BOLD"/>dilog keluar daripada kebanyakan laman<ph name="END_BOLD"/> apabila anda menutup Brave. Jika penyegerakan dimatikan, anda juga akan <ph name="BEGIN_BOLD"/>dilog keluar daripada perkhidmatan Brave dan Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Brave memerlukan kebenaran untuk mengakses kamera dan mikrofon anda bagi tapak ini</translation>
 <translation id="6933858244219479645">Sistem Chrome OS</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Jenis data yang digunakan:<ph name="END_BOLD"/> Sejarah penyemakan imbas anda, rekod laman yang anda lawati menggunakan Brave pada peranti ini.</translation>
@@ -367,6 +366,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1611678871603620428">Untuk mendapatkan kemaskinian Brave yang akan datang, anda memerlukan macOS 10.13 atau yang lebih baharu. Komputer ini menggunakan OS X 10.11.</translation>
 <translation id="4484434718272972655">Siapakah yang sedang menggunakan Brave?</translation>
 <translation id="7173394303099002355">Dapatkan keselamatan Brave yang paling kukuh</translation>
+<translation id="5775101967851558962">Sentiasa kosongkan data laman daripada peranti anda apabila anda menutup Brave</translation>
 <translation id="8992261409816268381">Pengarang Brave</translation>
 <translation id="479793348545936567">Jika anda mahu menggunakan akaun ini sekali sahaja, anda boleh menggunakan mod Tetamu dalam pelayar Brave. Jika anda mahu menambah akaun untuk orang lain, <ph name="LINK_BEGIN"/>tambahkan profil baharu<ph name="LINK_END"/> pada <ph name="DEVICE_TYPE"/> anda.
 

@@ -30,7 +30,8 @@ jobs:
 
             for label in "${relevant_pr_labels[@]}"; do
               for issue in "${pr_issues[@]}"; do
-                if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" --json name -q ".[]|select(.name==\"${label:?}\").name")" ]]; then
+                if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" -S "${label:?}" \
+                    --json name -q ".[]|select(.name==\"$label\").name")" ]]; then
                   gh issue edit "$issue" --add-label "$label"
                 fi
               done

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/history/category_content_value_util.h"
 
+#include <string>
+
 #include "bat/ads/category_content_info.h"
 
 namespace ads {
@@ -31,16 +33,16 @@ base::Value::Dict CategoryContentToValue(
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
   CategoryContentInfo category_content;
 
-  if (const auto* value = root.FindString(kCategoryKey)) {
+  if (const std::string* value = root.FindString(kCategoryKey)) {
     category_content.category = *value;
   }
 
   if (const auto value = root.FindInt(kOptActionKey)) {
     category_content.opt_action_type =
         static_cast<CategoryContentOptActionType>(*value);
-  } else if (const auto value = root.FindInt(kLegacyOptActionKey)) {
+  } else if (const auto legacy_value = root.FindInt(kLegacyOptActionKey)) {
     category_content.opt_action_type =
-        static_cast<CategoryContentOptActionType>(*value);
+        static_cast<CategoryContentOptActionType>(*legacy_value);
   }
 
   return category_content;

@@ -256,7 +256,10 @@ if (enable_sparkle) {
 }
 
 if (enable_speedreader) {
-  brave_chrome_browser_deps += [ "//brave/components/speedreader/common:mojom" ]
+  brave_chrome_browser_deps += [
+    "//brave/components/speedreader/common",
+    "//brave/components/speedreader/common:mojom",
+  ]
 }
 
 if (enable_brave_vpn) {

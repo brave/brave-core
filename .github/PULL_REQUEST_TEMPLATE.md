@@ -3,11 +3,10 @@ Resolves
 
 <!-- CI-related labels that can be applied to this PR:
 * CI/run-audit-deps (1) - check for known npm/cargo vulnerabilities (audit_deps)
-* CI/run-draft - run CI builds on a draft PR (otherwise only on non-draft PRs)
 * CI/run-network-audit (1) - run network-audit
 * CI/run-upstream-tests - run Chromium unit and browser tests on Linux and Windows (otherwise only on Linux)
 * CI/skip - do not run CI builds (except noplatform)
-* CI/skip-linux, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows, CI/skip-windows-x86 - skip CI builds for specific platforms
+* CI/skip-linux-arm64, CI/skip-linux-x64, CI/skip-android, CI/skip-macos, CI/skip-ios, CI/skip-windows-arm64, CI/skip-windows-x64, CI/skip-windows-x86 - skip CI builds for specific platforms
 * CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
 * CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
 

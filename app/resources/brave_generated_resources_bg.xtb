@@ -2,10 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
 <translation id="3333887201479867589">Brave награди</translation>
+<translation id="7561196759112975576">Винаги</translation>
+<translation id="7961015016161918242">Никога</translation>
 <translation id="4615489450165434530">Подаване на сигнал за нефункциониращ сайт</translation>
 <translation id="8097438084542431276">Копиране на чиста връзка</translation>
+<translation id="4678672101289648246">Само на страницата на нов раздел</translation>
 <translation id="1209739344687072997">Докладвайте нефункциониращ сайт</translation>
 <translation id="7630214457764713113">Копиране на чиста връзка</translation>
+<translation id="8294286161128352783">Само на страницата на нов раздел</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="1544192797660353713">Портфейл</translation>
 <translation id="2445484935443597917">Създаване на нов потребителски профил</translation>
@@ -142,9 +146,7 @@
 <translation id="5977931179408079967">Позиция</translation>
 <translation id="3790384768741064842">Преместване надясно</translation>
 <translation id="7444424316576061724">Преместване наляво</translation>
-<translation id="7561196759112975576">Винаги</translation>
 <translation id="7060352228894039151">При задържане на курсора</translation>
-<translation id="7961015016161918242">Никога</translation>
 <translation id="8981254605840444865">Показване на настройките</translation>
 <translation id="59174027418879706">Активирано</translation>
 <translation id="4176463684765177261">Деактивирано</translation>
@@ -195,6 +197,10 @@
 <translation id="2058818256505091369">Разширяване при задържане на курсора</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Спиране на звука на раздела}other{Спиране на звука на разделите}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Включване отново на звука на раздела}other{Включване отново на звука на разделите}}</translation>
+<translation id="3704707436873245822">Копиране на текст от изображение</translation>
+<translation id="5268098808165185458">Копиране на текст от изображение...</translation>
+<translation id="4046485130884276245">Копиран е текст от изображение</translation>
+<translation id="3639779775496569782">Неуспешно копиране на текст</translation>
 <translation id="4235920711083356755">Показване на VPN бутона</translation>
 <translation id="4070612712151038707">Показване на VPN бутона в лентата с инструменти</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -220,6 +226,7 @@
 <translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
 <translation id="8487693399751278191">Импортиране на отметките сега...</translation>
 <translation id="2557899542277210112">За бърз достъп поставете отметките си тук на лентата с отметки.</translation>
+<translation id="2702801445560668637">Списък за четене</translation>
 <translation id="1968543937259008435">Готови ли сте за най-добрата поверителност онлайн?</translation>
 <translation id="6817415381278637662">Задайте Brave като браузър по подразбиране, за да получите защитата на поверителността на Brave на всяка уеб страница, която отваряте.</translation>
 <translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
@@ -254,7 +261,10 @@
 <translation id="8820817407110198400">Лента на отметките</translation>
 <translation id="6333347122924254968">Показване на иконата с Brave награди в адресната лента</translation>
 <translation id="2245286910966863912">Показване на бутона Brave News в адресната лента.</translation>
-<translation id="1811404036171336214">Винаги показвайте отметките на страницата с нов раздел</translation>
+<translation id="383007806262310953">Показване на лентата на отметките</translation>
+<translation id="4054323497808446566">Лентата за отметки е видима на всички страници</translation>
+<translation id="8693858092251192712">Лентата за отметки е скрита на всички страници с изключение на страницата на нов раздел</translation>
+<translation id="7158817046543187970">Лентата за отметки е скрита на всички страници</translation>
 <translation id="3416468988018290825">Винаги показвай пълните URL адреси</translation>
 <translation id="5529693968082667490">Показване на бутона за търсене на раздел</translation>
 <translation id="1643029991199044105">Преминете през най-скоро използваните раздели с Ctrl-Tab</translation>
@@ -345,7 +355,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="9185018653595759199">Блокиране на социални медии</translation>
-<translation id="7498695072878479744">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
@@ -372,6 +381,10 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">Питане, когато сайтът иска да осъществи достъп до API на доставчик на Solana</translation>
 <translation id="2777102601740875941">Блокиране на достъп на сайтове до API на доставчик на Solana</translation>
+<translation id="4206299587103092719">Влизане чрез Google</translation>
+<translation id="7458736153596040880">Да се отправи запитване, когато даден сайт иска да използва предишно влизане чрез Google</translation>
+<translation id="459266451581663214">Блокиране на използването от сайтове на предишно влизане чрез Google</translation>
+<translation id="8098954941070626949">Разрешаване на сайтовете да използват предишно влизане чрез Google</translation>
 <translation id="6414370348346025511">Стандартната защита е включена.</translation>
 <translation id="5565355416171743213">Започнете да използвате синхронизирането</translation>
 <translation id="4332558599726753990">Синхронизиране настройка</translation>
@@ -437,7 +450,7 @@
 <translation id="2516405584294312544">Това изтриване е необратимо и няма начин за възстановяване на данните. Ако решите да
 започнете да използвате Синронизиране отново, ще трябва да създадете нов акаунт и да добавите отново всяко устройство едно по едно.</translation>
 <translation id="4860996720371753023">Акаунтът се изтрива...</translation>
-<translation id="8199291899164865593">Не може да се присъедини към тази верига за синхронизиране. Акаунтът беше изтрит.</translation>
+<translation id="4094590686212463338">Не може да се присъедини към тази верига за синхронизиране. Веригата за синхронизиране е изтрита.</translation>
 <translation id="5633907266617216186">Адреси, информация за плащане и др.</translation>
 <translation id="294985549514492876">Уеб приложения (PWA)</translation>
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
@@ -487,7 +500,6 @@
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="7701040980221191251">Няма</translation>
 <translation id="1274962333945373242">Криптопортфейли (отхвърлени)</translation>
-<translation id="3695088618483091287">Портфейл в Brave (предпочитани разширения)</translation>
 <translation id="4718664830805652430">Основна валута по подразбиране</translation>
 <translation id="7992507032049865603">Основна криптовалута по подразбиране</translation>
 <translation id="1834467296210148203">Показване на иконата на Brave портфейла в лентата с инструменти</translation>

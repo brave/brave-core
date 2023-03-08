@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "bat/ads/internal/ads/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ads/serving/choose/ad_predictor_info.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
@@ -88,13 +89,13 @@ AdPredictorInfo<T> ComputePredictorFeatures(
 
   const base::Time now = base::Time::Now();
 
-  if (const auto last_seen_ad_at =
+  if (const absl::optional<base::Time> last_seen_ad_at =
           GetLastSeenAdTime(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_ad_at;
     mutable_ad_predictor.ad_last_seen_hours_ago = time_delta.InHours();
   }
 
-  if (const auto last_seen_advertiser_at =
+  if (const absl::optional<base::Time> last_seen_advertiser_at =
           GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad)) {
     const base::TimeDelta time_delta = now - *last_seen_advertiser_at;
     mutable_ad_predictor.advertiser_last_seen_hours_ago = time_delta.InHours();
@@ -146,11 +147,9 @@ CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
     const AdEventList& ad_events) {
   CreativeAdPredictorMap<T> creative_ad_predictors_with_features;
 
-  for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    AdPredictorInfo<T> ad_predictor = creative_ad_predictor.second;
-
-    ad_predictor =
-        ComputePredictorFeatures(ad_predictor, user_model, ad_events);
+  for (const auto& [segment, creative_ad_predictor] : creative_ad_predictors) {
+    AdPredictorInfo<T> ad_predictor =
+        ComputePredictorFeatures(creative_ad_predictor, user_model, ad_events);
     ad_predictor.score = ComputePredictorScore(ad_predictor);
 
     creative_ad_predictors_with_features.insert(
