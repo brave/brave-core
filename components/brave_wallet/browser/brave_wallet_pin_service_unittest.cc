@@ -607,7 +607,7 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
   }
 }
 
-TEST_F(BraveWalletPinServiceTest, _NonIpfsImage) {
+TEST_F(BraveWalletPinServiceTest, AddPin_NonIpfsImage) {
   {
     ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
         .WillByDefault(::testing::Invoke(

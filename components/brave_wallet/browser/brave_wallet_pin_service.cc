@@ -96,26 +96,18 @@ absl::optional<std::string> ExtractIpfsUrl(const std::string& url) {
     return gurl.spec();
   }
 
-  auto scope = ipfs::ExtractSourceFromGateway(gurl);
-  if (!scope || !scope->SchemeIs(ipfs::kIPFSScheme)) {
+  auto source = ipfs::ExtractSourceFromGateway(gurl);
+  if (!source || !source->SchemeIs(ipfs::kIPFSScheme)) {
     return absl::nullopt;
   }
 
-  return scope.value().spec();
+  return source.value().spec();
 }
 
 absl::optional<std::string> ExtractCID(const std::string& url) {
   GURL gurl = GURL(ExtractIpfsUrl(url).value_or(""));
 
   if (!gurl.is_valid()) {
-    return absl::nullopt;
-  }
-
-  if (!gurl.SchemeIs(ipfs::kIPFSScheme)) {
-    auto scope = ipfs::ExtractSourceFromGateway(gurl);
-    if (!scope || !scope->SchemeIs(ipfs::kIPFSScheme)) {
-      return absl::nullopt;
-    }
     return absl::nullopt;
   }
 
