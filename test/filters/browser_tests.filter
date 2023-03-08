@@ -30,30 +30,22 @@
 #
 # The binder is not instantiated because BraveContentBrowserClient is also not
 # available.
+-All/PromotionalTabsEnabledPolicyWelcomeNoFreTest.RunTest/1
+-InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
+-LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
 -PrivacySandboxPromptHelperTestWithParamInstance/PrivacySandboxPromptHelperTestWithParam.NoPromptNonDefaultNtp/*
 -PermissionRequestChipGestureSensitiveBrowserTest.ShouldUpdateActiverPRMAndObservations
--LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
+-PersistentBackground/ExtensionApiNewTabTest.Tabs/0
+-PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
+-ServiceWorker/ExtensionApiNewTabTest.Tabs/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
 
 # The tests listed below are disabled because sharedStorage is not enabled in
 # Brave
+-All/SharedStorageChromeBrowserTest.*
 -All/SharedStorageFencedFrameChromeBrowserTest.FencedFrameNavigateTop_BudgetWithdrawal/*
 -All/SharedStorageFencedFrameChromeBrowserTest.TwoFencedFrames_DifferentURNs_EachNavigateOnce_BudgetWithdrawalTwice/*
--All/SharedStoragePrefBrowserTest.AddModule/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Append/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Clear/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Delete/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.RunOperation/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.RunURLSelectionOperation/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.Set/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletAppend/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletClear/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletDelete/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletEntries/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletGet/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletKeys/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletLength/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletRemainingBudget/PrivacySandboxEnabled_3PCookiesAllowed
--All/SharedStoragePrefBrowserTest.WorkletSet/PrivacySandboxEnabled_3PCookiesAllowed
+-All/SharedStoragePrefBrowserTest.*
 -BrowsingDataModelBrowserTest.SharedStorageHandledCorrectly
 -BrowsingDataModelBrowserTest.SharedStorageAccessReportedCorrectly
 -SharedStorageChromeBrowserTest.AddModule_EmptyResultError
@@ -129,6 +121,8 @@
 -ExtensionApiTabPrerenderingTest.Prerendering
 -ExtensionWebRequestApiPrerenderingTest.Load
 -FileSystemAccessTabHelperPrerenderingBrowserTest.*
+-ForegroundDurationUKMObserverBrowserTest.PrerenderActivationInBackground
+-ForegroundDurationUKMObserverBrowserTest.PrerenderActivationInForeground
 -ForegroundDurationUKMObserverBrowserTest.PrerenderSimple
 -FramebustBlockPrerenderTest.*
 -GeolocationPrerenderBrowserTest.*
@@ -173,6 +167,7 @@
 -PrerenderBrowserTest.*
 -PrerenderDownloadTest.*
 -PrerenderFileSystemAccessBrowserTest.*
+-PrerenderMainFrameNavigationBrowserTest.*
 -PrerenderOmniboxSearchSuggestionBrowserTest.*
 -PrerenderOmniboxSearchSuggestionExpiryBrowserTest.*
 -PrerenderPageLoadMetricsBrowserTest.*
@@ -213,6 +208,10 @@
 # network::features::kPrivateStateTokens
 -BrowsingDataModelBrowserTest.TrustTokenIssuance
 
+# This test fails because we disable Browsing Topics (and Trust Tokens, and
+# Fledge, and Interest Groups, etc.)
+-BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly
+
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
@@ -220,9 +219,13 @@
 -ChromeDirectSocketsTcpApiTest.TcpReadWrite
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
 -ChromeDirectSocketsUdpApiTest.UdpReadWrite
+-ChromeDirectSocketsUdpApiTest.UdpServerFailsWithoutSocketsSendToPermission
+-ChromeDirectSocketsUdpApiTest.UdpServerReadWrite
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
+-ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerReadWrite
 -InstallIsolatedWebAppFromCommandLineFromFileBrowserTest.AppFromCommandLineIsInstalled
 -InstallIsolatedWebAppFromCommandLineFromUrlBrowserTest.AppFromCommandLineIsInstalled
+-IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
 
@@ -342,6 +345,11 @@
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestCanceled/*
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestCanceledUuidInPackageUrl/*
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestCanceled/*
+-IsolatedWebAppBrowserCookieTest.*
+-IsolatedWebAppBrowserServiceWorkerTest.
+-IsolatedWebAppBrowserTest.*
+-IsolatedWebAppPermissionsPolicyBrowserTest.*
+-IsolatedWebAppUsbBrowserTest.*
 -PersistentBackground/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
 -PersistentBackground/WebRequestPersistentListenersTest.TestListenersArePersistent/0
 -PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.ChangeHeader/0
@@ -352,15 +360,19 @@
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestRedirected/*
 -PersistentBackground/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
 -PersistentBackground/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-PersistentBackground/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestCanceledWithResourceType/0 
 -PersistentBackground/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 -PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
 -PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestCanceledWithResourceType/0 
 -PersistentBackgroundWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 -ServiceWorker/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
 -ServiceWorker/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-ServiceWorker/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestCanceledWithResourceType/0
 -ServiceWorker/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestCanceled/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.RequestRedirected/0
+-ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestCanceledWithResourceType/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 
 # These tests fail because of our fix to WebRequest onHeadersReceived bug. See
@@ -425,6 +437,12 @@
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
 -FirstRunFlowControllerDiceBrowserTest.SignInAndSync
 
+# These tests fail because First Run is disabled and the picker is never shown.
+-FirstRunServiceBrowserTest.*
+-FirstRunServiceCohortBrowserTest.GroupRegisteredAfterFre
+-FirstRunServiceFeatureParamsBrowserTest.*
+-FirstRunServicePolicyBrowserTest.OpenFirstRunIfNeeded/BrowserSignin_1
+
 # Disable crashy upstream tests until they're fixed.
 # https://bugs.chromium.org/p/chromium/issues/detail?id=1414668
 -OriginTrialsBrowserTest.*
@@ -441,10 +459,15 @@
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
+# These tests time out because IdentityManager never loads refresh tokens
+-DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
+
 # This test fails with the following error:
-# Terminating render process for bad Mojo message: Received bad user message:
-# No binder found for interface brave_news.mojom.BraveNewsController for the frame/document scope
--InteractiveBrowserTestBrowsertest.InstrumentTabsAsTestSteps
+#  Terminating render process for bad Mojo message: Received bad user message:
+# No binder found for interface brave_private_new_tab.mojom.PageHandler for the
+# frame/document scope
+# Terminating renderer for bad IPC message, reason 123
+-DevToolsExtensionChromeUrlTest.TestExtensionOnNewTab
 
 # These tests fail because we disable DIPS via dips::kFeature
 -All/DIPSTabHelperBrowserTest.*/*
@@ -477,7 +500,23 @@
 -DownloadExtensionTest.DownloadExtensionTest_SearchPauseResumeCancelGetFileIconIncognito
 -DownloadTestWithFakeSafeBrowsing.NoUncommonDownloadReportIfIncognito
 
+# These tests fail because we null out ClientSideDetectionServiceFactory.
+-All/ClientSideDetectionServiceBrowserTest.ModelUpdatesPropagated/*
+-All/ClientSideDetectionServiceBrowserTest.TfLiteClassification/*
+
+# This test crashes because we have kOptimizationHints feature disabled.
+-PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers 
+
+# These tests fail because we do not show the profile type selection screen in
+# the profile picker.
+-ProfileTypeChoiceUIPixelTest.InvokeUi_default/DarkRtlSmall
+-ProfileTypeChoiceUIPixelTest.InvokeUi_default/DarkRtlSmallTS
+-ProfileTypeChoiceUIPixelTest.InvokeUi_default/Default
+-ProfileTypeChoiceUIPixelTest.InvokeUi_default/TS
+
 # Flaky upstream.
+-ExtensionWindowCreateTest.AcceptState
+-FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.ShowsFullPopupWithFiveCharWeakPasswordTyped
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.ShowsFullPopupWithMoreThanFiveCharWeakPasswordTyped
 -PasswordGenerationPopupViewWithStrengthIndicatorTest.ShowsFullPopupWithWeakPasswordTypedInNonMinimizedExperiment
@@ -890,7 +929,11 @@
 -PasswordManagerBrowserTest.*
 -PasswordManagerCredentiallessIframeTest.DisablePasswordManagerOnCredentiallessIframe
 -PasswordManagerInternalsWebUIBrowserTest.*
+-PasswordManagerVotingBrowserTest.VerifyPasswordGenerationUpload
+-PDFExtensionAccessibilityTest.PdfAccessibilityContextMenuAction
 -PDFExtensionHitTestTest.ContextMenuCoordinates
+-PDFExtensionPrintingTest.ContextMenuPrintCommandExtensionMainFrame
+-PDFExtensionPrintingTest.ContextMenuPrintCommandPluginFrame
 -PDFExtensionTest.ContextMenuPrintCommandEmbeddedExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandExtensionMainFrame
 -PDFExtensionTest.ContextMenuPrintCommandPluginFrame
