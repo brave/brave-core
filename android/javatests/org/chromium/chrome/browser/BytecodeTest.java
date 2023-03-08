@@ -305,8 +305,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/settings/BravePreferenceFragment"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker"));
     }
 
     @Test
@@ -463,9 +461,6 @@ public class BytecodeTest {
                 "isVisibleToUser", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/logo/LogoMediator",
                 "updateVisibility", true, void.class));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker",
-                        "getInstance", false, null));
     }
 
     @Test
