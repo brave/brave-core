@@ -63,11 +63,10 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  if (!web_contents_) {
-    // |web_contents_| is created on demand.
-    content::WebContents::CreateParams create_params(context_, nullptr);
-    web_contents_ = content::WebContents::Create(create_params);
-  }
+  DCHECK(!web_contents_);
+
+  content::WebContents::CreateParams create_params(context_, nullptr);
+  web_contents_ = content::WebContents::Create(create_params);
 
   Observe(web_contents_.get());
 }
@@ -119,7 +118,6 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
     // Start to request on clean slate, so that result won't be affected by
     // previous page.
-    web_contents_.reset();
     CreateWebContents();
 
     GURL url(absl::get<std::string>(request.url_or_contents));
@@ -320,7 +318,10 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
 
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
-  CreateWebContents();
+  if (!web_contents_) {
+    CreateWebContents();
+  }
+
   return web_contents_.get();
 }
 
