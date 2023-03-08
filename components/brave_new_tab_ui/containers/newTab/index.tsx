@@ -123,6 +123,7 @@ class NewTabPage extends React.Component<Props, State> {
     forceToHideWidget: false
   }
 
+  imgCache: HTMLImageElement
   braveNewsPromptTimerId: number
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
@@ -168,6 +169,7 @@ class NewTabPage extends React.Component<Props, State> {
     if (oldImageSource &&
       !newImageSource) {
       // reset loaded state
+      console.debug('reset image loaded state due to removing image source')
       this.setState({ backgroundHasLoaded: false })
     }
     if (!GetShouldShowBrandedWallpaperNotification(prevProps) &&
@@ -216,19 +218,26 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   trackCachedImage () {
+    console.debug('trackCachedImage')
     if (this.state.backgroundHasLoaded) {
+      console.debug('Resetting to new image')
       this.setState({ backgroundHasLoaded: false })
     }
     if (this.imageSource) {
       const imgCache = new Image()
+      // Store Image in class so it doesn't go out of scope
+      this.imgCache = imgCache
       imgCache.src = this.imageSource
-      console.timeStamp('image start loading...')
-      imgCache.onload = () => {
-        console.timeStamp('image loaded')
+      console.debug('image start loading...')
+      imgCache.addEventListener('load', () => {
+        console.debug('image loaded')
         this.setState({
           backgroundHasLoaded: true
         })
-      }
+      })
+      imgCache.addEventListener('error', (e) => {
+        console.debug('image error', e)
+      })
     }
   }
 
