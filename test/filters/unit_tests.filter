@@ -11,6 +11,8 @@
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Disabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_Enabled
 -All/AppLauncherHandlerTest.HandleClosedWhileUninstallingExtension/OSIntegrationSubManagers_SaveStateToDB
+-All/DiceWebSigninInterceptorWithManagedDisclaimerForSyncPromoTest.*
+-All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
 -All/PriceTrackingViewFeatureFlagTest.PriceTrackingViewCreation/*
 -ApcScrimManagerImplTest.DisabledScrimCannotBeShown
 -ApcScrimManagerImplTest.HideDoesNotImmediatelySetOriginalAxMode
@@ -24,10 +26,13 @@
 -ChromeBrowsingDataRemoverDelegateOriginTrialsTest.PersistentOriginTrialsAreDeleted
 -DownloadBubbleRowViewTest.CopyAcceleratorCopiesFile
 -ExtensionActionViewControllerFeatureUnitTest.*
+-ExtensionActionViewControllerFeatureWithPermittedSitesUnitTest.GetHoverCardStatus
 -ExtensionActionViewControllerGrayscaleTest.*
 -ExtensionActionViewControllerUnitTest.*
 -HighEfficiencyChipViewTest.*
+-IbanBubbleControllerImplTest.*
 -PageLiveStateDecoratorHelperTabsTest.IsActiveTab
+-PageLiveStateDecoratorHelperTabsTest.IsPinnedTab
 -PeopleHandlerSignoutTest.RevokeSyncNotAllowed
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOff
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
@@ -88,6 +93,9 @@
 -RenderViewContextMenuPrefsTest.LensImageSearchForProgressiveWebApp
 -RenderViewContextMenuPrefsTest.LensImageSearchNoBrowser
 -RenderViewContextMenuPrefsTest.LensImageSearchNonImage
+-RenderViewContextMenuPrefsTest.LensTranslateImageDisabledFor3pDse
+-RenderViewContextMenuPrefsTest.LensTranslateImageEnabled
+-RenderViewContextMenuPrefsTest.LensTranslateImageEnabledFor3pDse
 -SearchProviderRequestTest.SendRequestWithURL
 -SearchProviderRequestTest.SendRequestWithURL/*
 -SearchProviderRequestTest.SendRequestWithoutURL
@@ -181,12 +189,9 @@
 # safe_browsing::kDownloadBubble, safe_browsing::kDownloadBubbleV2
 -DownloadBubbleUIControllerIncognitoTest.DoesNotShowDetailsIfDone
 -DownloadBubbleUIControllerIncognitoTest.IncludeDownloadsFromMainProfile
--DownloadBubbleUIControllerTest.ListIsRecent
--DownloadBubbleUIControllerTest.ListIsSorted
--DownloadBubbleUIControllerTest.OpeningMainViewRemovesEntryFromPartialView
--DownloadBubbleUIControllerTest.ProcessesUpdatedItems
--DownloadBubbleUIControllerTest.TransientDownloadShouldNotShow
+-DownloadBubbleUIControllerTest.*
 -DownloadBubbleSecurityViewTest.UpdateSecurityView_WillHaveAppropriateDialogButtons
+-DownloadBubbleSecurityViewTest.VerifyLogWarningActions
 
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
@@ -201,12 +206,29 @@
 # performance_manager::features::kHighEfficiencyModeAvailable
 -AppMenuModelTest.DisabledPerformanceItem
 -CLSUkmPageLoadMetricsObserverTest.BeforeInputOrScroll*
+-DownloadBubbleRowViewTest.UpdateTimeFromCompletedDownload
+-ExtensionsSitePermissionsPageViewUnitTest.*
+-ExtensionsToolbarControlsWithPermittedSitesUnitTest.RequestAccessButtonVisibilityOnPermittedSites
 -HighEfficiencyModeTest.*
 -OfflinePreviewsUKMPageLoadMetricsObserverTest.OfflinePreviewReported
 -PageDiscardingHelperTest.*
 -UkmPageLoadMetricsObserverWithMockTimeTest.LargestContentfulPaintRecordOnHidden
 -UrgentPageDiscardingPolicyTest.DiscardOnCriticalPressure
 -UrgentPageDiscardingPolicyTest.NoDiscardOnModeratePressure
+
+# Isolated Web Apps (IWAs) use web bundles which we don't support.
+-All/InstallIsolatedWebAppCommandBundleTest.*
+-All/IsolatedWebAppURLLoaderFactorySignedWebBundleTest.*
+-InstallIsolatedWebAppCommandManifestIconsTest.*
+-InstallIsolatedWebAppCommandManifestTest.*
+-InstallIsolatedWebAppCommandMetricsTest.*
+-InstallIsolatedWebAppCommandTest.*
+-IsolatedWebAppURLLoaderFactoryForServiceWorkerTest.*
+-IsolatedWebAppURLLoaderFactoryTest.*
+
+# These tests fail because IdentityManager's primary account has no kSignin
+# consent level
+-SignoutAllowed/SigninManagerTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
