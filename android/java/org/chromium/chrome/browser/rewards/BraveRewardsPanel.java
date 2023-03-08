@@ -1693,10 +1693,21 @@ public class BraveRewardsPanel
         mRewardsVbatExpireNoticeModal.setVisibility(View.VISIBLE);
         TextView vBatModalTitle = mRewardsVbatExpireNoticeModal.findViewById(R.id.vbat_modal_title);
         TextView vBatModalText = mRewardsVbatExpireNoticeModal.findViewById(R.id.vbat_modal_text);
-        FrameLayout vBatConnectButton =
-                mRewardsVbatExpireNoticeModal.findViewById(R.id.btn_vbat_connect_account);
-        vBatConnectButton.setVisibility(
+        FrameLayout vBatConnectButtonLayout =
+                mRewardsVbatExpireNoticeModal.findViewById(R.id.layout_vbat_connect_account);
+        vBatConnectButtonLayout.setVisibility(
                 mBraveRewardsNativeWorker.canConnectAccount() ? View.VISIBLE : View.GONE);
+        vBatConnectButtonLayout.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TabUtils.openUrlInNewTab(
+                        false, BraveActivity.BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL);
+                dismiss();
+            }
+        }));
+
+        Button vBatConnectButton =
+                mRewardsVbatExpireNoticeModal.findViewById(R.id.btn_vbat_connect_account);
         vBatConnectButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1705,6 +1716,7 @@ public class BraveRewardsPanel
                 dismiss();
             }
         }));
+
         Button vBatLearnMoreButton =
                 mRewardsVbatExpireNoticeModal.findViewById(R.id.btn_vbat_learn_more);
         vBatLearnMoreButton.setOnClickListener((new View.OnClickListener() {
