@@ -306,6 +306,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveTalkPromptAction", IDS_BRAVE_TALK_PROMPT_ACTION },
 
         // Rewards widget
+        { "rewardsAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
         { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
         { "rewardsBraveRewards", IDS_REWARDS_WIDGET_BRAVE_REWARDS },
