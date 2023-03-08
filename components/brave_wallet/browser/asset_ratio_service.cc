@@ -259,9 +259,11 @@ void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
                                              kOffRampEnabledFlows);
     off_ramp_url = net::AppendQueryParameter(off_ramp_url, "defaultFlow",
                                              kOffRampDefaultFlow);
+    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "swapAsset", symbol);
     off_ramp_url =
         net::AppendQueryParameter(off_ramp_url, "offrampAsset", symbol);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "fiatValue", amount);
+    off_ramp_url =
+        net::AppendQueryParameter(off_ramp_url, "swapAmount", amount);
     off_ramp_url =
         net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
     off_ramp_url =

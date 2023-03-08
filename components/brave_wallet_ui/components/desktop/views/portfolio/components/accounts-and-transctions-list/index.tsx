@@ -212,6 +212,7 @@ export const AccountsAndTransactionsList = ({
           setSellAmount={setSellAmount}
           openSellAssetLink={onOpenSellAssetLink}
           showSellModal={showSellModal}
+          account={selectedSellAccount}
           sellAssetBalance={getBalance(selectedSellAccount, selectedAsset)}
         />
       }

@@ -10,6 +10,7 @@ import { getNetworkInfo } from '../../utils/network-utils'
 import {
   getRampAssetSymbol
 } from '../../utils/asset-utils'
+import Amount from '../../utils/amount'
 
 // Types
 import {
@@ -87,7 +88,9 @@ export const useMultiChainSellAssets = () => {
       offRampProvider: BraveWallet.OffRampProvider.kRamp,
       chainId: sellAsset.chainId,
       address: sellAddress,
-      amount: sellAmount,
+      amount: sellAsset.coin === BraveWallet.CoinType.SOL
+        ? new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toNumber().toString()
+        : new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toHex(),
       currencyCode: defaultCurrencies.fiat
     })
       .then(url => {
