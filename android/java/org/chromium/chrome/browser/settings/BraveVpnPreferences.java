@@ -211,6 +211,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         PreferenceCategory preferenceCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
         preferenceCategory.addPreference(mLinkSubscriptionPreference);
+        preferenceCategory.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
     }
 
     @Override
