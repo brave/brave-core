@@ -6,18 +6,13 @@ import * as React from 'react'
 import * as S from './tree-node-styles'
 import ResourceElement from './resource-element'
 import {
-  PermissionButtonHandler,
-  ResourceInfo,
-  ResourceState,
-  ResourceType
+  PermissionButtonHandler
 } from '../../state/component_types'
 
 
 interface TreeNodeProps {
   host: string
-  type: ResourceType
-  state: ResourceState
-  resourceList: ResourceInfo[]
+  resourceList: string[]
   onPermissionButtonClick: PermissionButtonHandler
   permissionButtonTitle: string
 }
@@ -104,13 +99,12 @@ function TreeNode (props: TreeNodeProps) {
       resourcesListElement = (
         <div ref={treeChildrenBoxRef}>
           {
-            props.resourceList.map((resource: ResourceInfo, idx) => {
+            props.resourceList.map((resource: string, idx) => {
               return (<ResourceElement
                 key={idx}
                 isHost={false}
                 permissionButtonTitle={props.permissionButtonTitle}
-                name={resource.url.url}
-                state={resource.state}
+                name={resource}
                 onTextExpand={measure}
                 onPermissionButtonClick={props.onPermissionButtonClick}
               />)
@@ -159,7 +153,6 @@ function TreeNode (props: TreeNodeProps) {
       </S.TreeControlBox>
       <S.TreeContents>
         <ResourceElement name={props.host} isHost={true}
-          state={props.state}
           onPermissionButtonClick={props.onPermissionButtonClick}
           permissionButtonTitle={props.permissionButtonTitle} />
         {resourcesListElement}

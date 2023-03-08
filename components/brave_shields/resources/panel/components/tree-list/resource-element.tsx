@@ -7,13 +7,11 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import style from './resource-element.module.scss'
 import {
-  PermissionButtonHandler,
-  ResourceState
+  PermissionButtonHandler
 } from '../../state/component_types'
 
 interface UrlElementProps {
   name: string
-  state: ResourceState
   permissionButtonTitle: string
   onTextExpand?: () => void
   onPermissionButtonClick: PermissionButtonHandler
@@ -32,7 +30,7 @@ function ResourceElement (props: UrlElementProps) {
   }
 
   const handlePermissionButtonClick = () => {
-    props.onPermissionButtonClick?.(props.name, props.state)
+    props.onPermissionButtonClick?.(props.name)
   }
 
   const urlTextClass = classnames({

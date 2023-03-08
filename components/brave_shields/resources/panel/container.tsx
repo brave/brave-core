@@ -7,63 +7,26 @@ import * as React from 'react'
 import MainPanel from './components/main-panel'
 import TreeList from './components/tree-list'
 import {
-  makeResourceInfoList,
-  ResourceInfo,
-  ResourceState,
-  ResourceType,
   ViewType
 } from './state/component_types'
 import DataContext from './state/context'
 import styled from 'styled-components'
 import { getLocale } from '../../../common/locale'
-import { SiteBlockInfo } from './api/panel_browser_api'
 
 const Box = styled.div`
   position: relative;
 `
 
-function getResourceListForView (view: ViewType,
-                                 state: ResourceState,
-                                 siteBlockInfo: SiteBlockInfo): ResourceInfo[] {
-  if (view === ViewType.AdsList && state === ResourceState.Blocked) {
-    return makeResourceInfoList(siteBlockInfo.adsList, ResourceType.Ad, state)
-  }
-  if (view === ViewType.HttpsList && state === ResourceState.Blocked) {
-    return makeResourceInfoList(siteBlockInfo.httpRedirectsList,
-                                ResourceType.Http,
-                                state)
-  }
-  if (view === ViewType.ScriptsList && state === ResourceState.Blocked) {
-    return makeResourceInfoList(siteBlockInfo.blockedJsList,
-                                ResourceType.Http,
-                                state)
-  }
-  if (view === ViewType.ScriptsList && state === ResourceState.AllowedOnce) {
-    return makeResourceInfoList(siteBlockInfo.allowedJsList,
-                                ResourceType.Http,
-                                state)
-  }
-
-  return []
-}
-
 function Container () {
   const { siteBlockInfo, viewType } = React.useContext(DataContext)
   const shouldShowDetailView = viewType !== ViewType.Main && siteBlockInfo
 
-  const blockedList = siteBlockInfo ?
-    getResourceListForView(viewType, ResourceState.Blocked, siteBlockInfo) : []
-  const allowedList = siteBlockInfo ?
-    getResourceListForView(viewType,
-                           ResourceState.AllowedOnce,
-                           siteBlockInfo) : []
   let treeListElement = null
-
   if (shouldShowDetailView) {
     if (viewType === ViewType.AdsList) {
       treeListElement = <TreeList
-        resourcesList={{ allowedList, blockedList }}
-        type={ResourceType.Ad}
+        blockedList={siteBlockInfo?.adsList}
+        allowedSectionVisible={false}
         totalAllowedTitle=''
         totalBlockedTitle={getLocale('braveShieldsTrackersAndAds')}
       />
@@ -71,8 +34,8 @@ function Container () {
 
     if (viewType === ViewType.HttpsList) {
       treeListElement = <TreeList
-        type={ResourceType.Http}
-        resourcesList={{ allowedList, blockedList }}
+        allowedSectionVisible={false}
+        blockedList={ siteBlockInfo?.httpRedirectsList }
         totalAllowedTitle=''
         totalBlockedTitle={getLocale('braveShieldsConnectionsUpgraded')}
       />
@@ -80,8 +43,9 @@ function Container () {
 
     if (viewType === ViewType.ScriptsList) {
       treeListElement = <TreeList
-          resourcesList={{ allowedList, blockedList }}
-          type={ResourceType.Script}
+          blockedList={ siteBlockInfo?.blockedJsList }
+          allowedList={ siteBlockInfo?.allowedJsList }
+          allowedSectionVisible={true}
           totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
           totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
         />
