@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..72f1296eb4d9c88ae0f6e60967f45d452cdb48c7 100644
+index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..d42ed242a6e69a325d906ef943411420ae92798b 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -47,7 +47,7 @@ public class SiteSettingsCategory {
@@ -7,16 +7,15 @@ index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..72f1296eb4d9c88ae0f6e60967f45d45
              Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE,
              Type.FEDERATED_IDENTITY_API, Type.THIRD_PARTY_COOKIES, Type.SITE_DATA,
 -            Type.NUM_ENTRIES})
-+            Type.NUM_ENTRIES, Type.AUTOPLAY, Type.GOOGLE_SIGN_IN})
++            Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN})
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
          // All updates here must also be reflected in {@link #preferenceKey(int)
-@@ -80,10 +80,12 @@ public class SiteSettingsCategory {
+@@ -80,10 +80,11 @@ public class SiteSettingsCategory {
          int FEDERATED_IDENTITY_API = 25;
          int THIRD_PARTY_COOKIES = 26;
          int SITE_DATA = 27;
-+        int AUTOPLAY = 28;
-+        int GOOGLE_SIGN_IN = 29;
++        int AUTOPLAY = 28; int BRAVE_GOOGLE_SIGN_IN = 29;
          /**
           * Number of handled categories used for calculating array sizes.
           */

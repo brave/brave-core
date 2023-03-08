@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index eb7eb470c46eefbb93a2929bbc46ec81f3813854..ff0645b88cbe65c6373fa9c074650fc3d5badc00 100644
+index eb7eb470c46eefbb93a2929bbc46ec81f3813854..1b808e31a66d82a022b6f415ca78f3dba5ed8666 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -311,6 +311,7 @@ enum class ContentSettingsType : int32_t {
-   // being specific to a frame.
+@@ -312,6 +312,7 @@ enum class ContentSettingsType : int32_t {
    TOP_LEVEL_STORAGE_ACCESS,
  
-+  BRAVE_GOOGLE_SIGN_IN,
    NUM_TYPES,
++  BRAVE_GOOGLE_SIGN_IN,
  };
  
+ struct ContentSettingsTypeHash {
