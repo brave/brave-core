@@ -74,7 +74,7 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
-      "vendor/bat-native-ads/data/test/invalid\\.json",
+      "components/brave_ads/core/test/data/invalid\\.json",
     ],
 
     // Checks to be fixed.
