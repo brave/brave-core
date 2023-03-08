@@ -9,7 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -54,7 +55,7 @@ class StarRandomnessMeta {
       PrefService* local_state,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       RandomnessServerInfoCallback info_callback,
-      P3AConfig* config);
+      const P3AConfig* config);
   ~StarRandomnessMeta();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
@@ -89,7 +90,7 @@ class StarRandomnessMeta {
   base::TimeDelta current_backoff_time_;
   RandomnessServerInfoCallback info_callback_;
 
-  P3AConfig* config_;
+  const raw_ptr<const P3AConfig> config_;
 
   scoped_refptr<net::X509Certificate> approved_cert_;
   bool attestation_pending_ = false;

@@ -15,6 +15,7 @@
 #include "base/time/time_to_iso8601.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "net/http/http_request_headers.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace p3a {

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_P3A_NITRO_UTILS_ATTESTATION_H_
 #define BRAVE_COMPONENTS_P3A_NITRO_UTILS_ATTESTATION_H_
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
@@ -16,6 +16,10 @@ class X509Certificate;
 
 namespace nitro_utils {
 
+// Requests a Nitro Enclave attestation document for a given URL,
+// parses the COSE payload, and verifies the authenticity of the document.
+// An X509 certificate will be provided as a result of successful
+// attestation verification.
 void RequestAndVerifyAttestationDocument(
     const GURL& attestation_url,
     network::mojom::URLLoaderFactory* url_loader_factory,

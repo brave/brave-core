@@ -9,8 +9,9 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/timer/timer.h"
@@ -110,7 +111,7 @@ class MessageManager : public MetricLogStore::Delegate {
 
   MessageMetainfo message_meta_;
 
-  P3AConfig* config_;
+  const raw_ptr<const P3AConfig> config_;
 
   base::flat_map<MetricLogType, std::unique_ptr<MetricLogStore>>
       json_log_stores_;

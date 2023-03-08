@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
@@ -40,7 +40,7 @@ class StarHelper {
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              StarMessageCallback message_callback,
              StarRandomnessMeta::RandomnessServerInfoCallback info_callback,
-             P3AConfig* config);
+             const P3AConfig* config);
   ~StarHelper();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);

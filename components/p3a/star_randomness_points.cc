@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
@@ -56,15 +56,15 @@ std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
 StarRandomnessPoints::StarRandomnessPoints(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     RandomnessDataCallback data_callback,
-    P3AConfig* config)
+    const P3AConfig* config)
     : url_loader_factory_(url_loader_factory),
       data_callback_(data_callback),
       config_(config) {}
 
-StarRandomnessPoints::~StarRandomnessPoints() {}
+StarRandomnessPoints::~StarRandomnessPoints() = default;
 
 void StarRandomnessPoints::SendRandomnessRequest(
-    std::string histogram_name,
+    std::string metric_name,
     StarRandomnessMeta* randomness_meta,
     uint8_t epoch,
     rust::Box<constellation::RandomnessRequestStateWrapper>
@@ -89,8 +89,8 @@ void StarRandomnessPoints::SendRandomnessRequest(
   if (!base::JSONWriter::Write(payload_dict, &payload_str)) {
     LOG(ERROR) << "StarRandomnessPoints: failed to serialize "
                   "randomness req payload";
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     return;
   }
 
@@ -101,13 +101,13 @@ void StarRandomnessPoints::SendRandomnessRequest(
   url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&StarRandomnessPoints::HandleRandomnessResponse,
-                     base::Unretained(this), histogram_name, randomness_meta,
+                     base::Unretained(this), metric_name, randomness_meta,
                      epoch, std::move(randomness_request_state)),
       kMaxRandomnessResponseSize);
 }
 
 void StarRandomnessPoints::HandleRandomnessResponse(
-    std::string histogram_name,
+    std::string metric_name,
     StarRandomnessMeta* randomness_meta,
     uint8_t epoch,
     rust::Box<constellation::RandomnessRequestStateWrapper>
@@ -119,13 +119,13 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     LOG(ERROR) << "StarRandomnessPoints: no response body for "
                   "randomness request, "
                << "net error: " << error_str;
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     return;
   }
   if (!randomness_meta->VerifyRandomnessCert(url_loader_.get())) {
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     url_loader_ = nullptr;
     return;
   }
@@ -136,8 +136,8 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     LOG(ERROR) << "StarRandomnessPoints: failed to parse randomness "
                   "response json: "
                << parsed_body.error().message;
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     return;
   }
   const base::Value* points_value = parsed_body.value().FindListKey("points");
@@ -145,29 +145,29 @@ void StarRandomnessPoints::HandleRandomnessResponse(
   if (points_value == nullptr) {
     LOG(ERROR) << "StarRandomnessPoints: failed to find points list in "
                   "randomness response";
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> points_vec =
       DecodeBase64List(points_value);
   if (points_vec == nullptr) {
-    data_callback_.Run(histogram_name, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
+                       nullptr, nullptr);
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> proofs_vec;
   if (proofs_value != nullptr) {
     proofs_vec = DecodeBase64List(proofs_value);
     if (!proofs_vec) {
-      data_callback_.Run(histogram_name, epoch,
+      data_callback_.Run(metric_name, epoch,
                          std::move(randomness_request_state), nullptr, nullptr);
       return;
     }
   } else {
     proofs_vec = std::make_unique<rust::Vec<constellation::VecU8>>();
   }
-  data_callback_.Run(histogram_name, epoch, std::move(randomness_request_state),
+  data_callback_.Run(metric_name, epoch, std::move(randomness_request_state),
                      std::move(points_vec), std::move(proofs_vec));
 }
 

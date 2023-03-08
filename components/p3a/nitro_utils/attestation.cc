@@ -14,8 +14,9 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/p3a/nitro_utils/cose.h"
 #include "crypto/random.h"
 #include "net/base/url_util.h"
@@ -26,6 +27,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/pool.h"
 
 namespace nitro_utils {
@@ -79,15 +81,16 @@ bool VerifyNonce(const cbor::Value::MapValue& cose_map,
 
 bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
                        const cbor::Value::MapValue& cose_map) {
-  cbor::Value::MapValue::const_iterator user_data_it =
-      cose_map.find(cbor::Value("user_data"));
+  DCHECK(server_cert);
+
+  const auto user_data_it = cose_map.find(cbor::Value("user_data"));
   if (user_data_it == cose_map.end() || !user_data_it->second.is_bytestring() ||
       user_data_it->second.GetBytestring().size() != 32) {
     LOG(ERROR) << "Nitro verification: user data is missing or is not bstr "
                << "or is not 32 bytes";
     return false;
   }
-  net::SHA256HashValue server_cert_fp =
+  const net::SHA256HashValue server_cert_fp =
       net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
   if (memcmp(server_cert_fp.data, user_data_it->second.GetBytestring().data(),
              32) != 0) {
@@ -101,18 +104,16 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
   return true;
 }
 
-std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
+absl::optional<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
     scoped_refptr<net::X509Certificate> server_cert,
     const cbor::Value::MapValue& cose_map) {
-  cbor::Value::MapValue::const_iterator cert_it =
-      cose_map.find(cbor::Value("certificate"));
-  cbor::Value::MapValue::const_iterator cabundle_it =
-      cose_map.find(cbor::Value("cabundle"));
+  const auto cert_it = cose_map.find(cbor::Value("certificate"));
+  const auto cabundle_it = cose_map.find(cbor::Value("cabundle"));
   if (cert_it == cose_map.end() || cabundle_it == cose_map.end() ||
       !cabundle_it->second.is_array()) {
     LOG(ERROR) << "Nitro verification: certificate and/or cabundle are "
                << "missing or not the right type";
-    return nullptr;
+    return absl::nullopt;
   }
 
   const cbor::Value::ArrayValue& cabundle_arr = cabundle_it->second.GetArray();
@@ -123,8 +124,7 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
                  std::back_inserter(cert_vals),
                  [](const cbor::Value& val) { return val.Clone(); });
 
-  std::unique_ptr<net::ParsedCertificateList> cert_chain =
-      std::make_unique<net::ParsedCertificateList>();
+  net::ParsedCertificateList cert_chain;
 
   net::ParseCertificateOptions parse_cert_options;
   // Nitro enclave certs seem to contain serial numbers that Chromium does not
@@ -134,28 +134,28 @@ std::unique_ptr<net::ParsedCertificateList> ParseCertificatesAndCheckRoot(
   for (auto& cert_val : cert_vals) {
     if (!cert_val.is_bytestring()) {
       LOG(ERROR) << "Nitro verification: certificate is not bstr";
-      return nullptr;
+      return absl::nullopt;
     }
     if (!net::ParsedCertificate::CreateAndAddToVector(
             net::X509Certificate::CreateCertBufferFromBytes(
                 cert_val.GetBytestring()),
-            parse_cert_options, cert_chain.get(), &cert_errors)) {
+            parse_cert_options, &cert_chain, &cert_errors)) {
       LOG(ERROR) << "Nitro verification: failed to parse certificate: "
                  << cert_errors.ToDebugString();
-      return nullptr;
+      return absl::nullopt;
     }
   }
 
   net::SHA256HashValue root_cert_fp =
       net::X509Certificate::CalculateFingerprint256(
-          cert_chain->back()->cert_buffer());
+          cert_chain.back()->cert_buffer());
   if (root_cert_fp != kAWSRootCertFP) {
     LOG(ERROR)
         << "Nitro verification: root cert fp does not match AWS root cert fp";
-    return nullptr;
+    return absl::nullopt;
   }
 
-  return cert_chain;
+  return absl::make_optional(cert_chain);
 }
 
 void ParseAndVerifyDocument(
@@ -170,11 +170,7 @@ void ParseAndVerifyDocument(
     return;
   }
 
-  response_body->erase(
-      std::find_if(response_body->rbegin(), response_body->rend(),
-                   [](unsigned char ch) { return !std::isspace(ch); })
-          .base(),
-      response_body->end());
+  base::TrimString(*response_body, " ", response_body.get());
   absl::optional<std::vector<uint8_t>> cose_encoded =
       base::Base64Decode(*response_body);
   if (!cose_encoded.has_value()) {
@@ -185,13 +181,14 @@ void ParseAndVerifyDocument(
 
   CoseSign1 cose_doc;
 
-  if (!cose_doc.DecodeFromBytes(*cose_encoded) || !cose_doc.payload.is_map()) {
+  if (!cose_doc.DecodeFromBytes(*cose_encoded) ||
+      !cose_doc.payload().is_map()) {
     LOG(ERROR) << "Nitro verification: Failed to decode COSE/CBOR document";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
     return;
   }
 
-  const cbor::Value::MapValue& cose_map = cose_doc.payload.GetMap();
+  const cbor::Value::MapValue& cose_map = cose_doc.payload().GetMap();
 
   if (!VerifyNonce(cose_map, nonce)) {
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
@@ -215,9 +212,9 @@ void ParseAndVerifyDocument(
     return;
   }
 
-  std::unique_ptr<net::ParsedCertificateList> cert_chain =
+  absl::optional<net::ParsedCertificateList> cert_chain =
       ParseCertificatesAndCheckRoot(server_cert, cose_map);
-  if (cert_chain == nullptr) {
+  if (!cert_chain.has_value()) {
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
     return;
   }
@@ -243,9 +240,7 @@ void RequestAndVerifyAttestationDocument(
 
   std::unique_ptr<network::ResourceRequest> resource_request =
       std::make_unique<network::ResourceRequest>();
-  std::string nonce_hex = base::HexEncode(nonce);
-  std::transform(nonce_hex.begin(), nonce_hex.end(), nonce_hex.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
+  std::string nonce_hex = base::ToLowerASCII(base::HexEncode(nonce));
   resource_request->url =
       net::AppendQueryParameter(attestation_url, "nonce", nonce_hex);
 

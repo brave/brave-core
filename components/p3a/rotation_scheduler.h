@@ -8,8 +8,9 @@
 
 #include <memory>
 
-#include "base/callback.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/metric_log_type.h"
@@ -29,7 +30,7 @@ class RotationScheduler {
 
  public:
   RotationScheduler(PrefService* local_state,
-                    P3AConfig* config,
+                    const P3AConfig* config,
                     JsonRotationCallback json_rotation_callback,
                     StarRotationCallback star_rotation_callback);
 
@@ -60,7 +61,7 @@ class RotationScheduler {
   base::Time last_star_rotation_time_;
 
   PrefService* local_state_;
-  P3AConfig* config_;
+  const raw_ptr<const P3AConfig> config_;
 };
 
 }  // namespace p3a

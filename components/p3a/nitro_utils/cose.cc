@@ -5,7 +5,6 @@
 
 #include "brave/components/p3a/nitro_utils/cose.h"
 
-#include <algorithm>
 #include <set>
 
 #include "base/logging.h"
@@ -101,15 +100,15 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
 
   const cbor::Value::ArrayValue& cose_arr = decoded_val->GetArray();
 
-  protected_encoded = cose_arr[0].Clone();
+  protected_encoded_ = cose_arr[0].Clone();
 
-  if (!protected_encoded.is_bytestring()) {
+  if (!protected_encoded_.is_bytestring()) {
     LOG(ERROR) << "COSE: protected value is not bstr";
     return false;
   }
 
   absl::optional<cbor::Value> protected_decoded_val =
-      cbor::Reader::Read(protected_encoded.GetBytestring(), cbor_config);
+      cbor::Reader::Read(protected_encoded_.GetBytestring(), cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
           cbor::Reader::DecoderError::CBOR_NO_ERROR) {
@@ -125,9 +124,9 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
 
-  protected_headers = protected_decoded_val->Clone();
+  protected_headers_ = protected_decoded_val->Clone();
   const cbor::Value::MapValue& protected_headers_map =
-      protected_headers.GetMap();
+      protected_headers_.GetMap();
   cbor::Value::MapValue::const_iterator alg_value_it =
       protected_headers_map.find(cbor::Value(1));
 
@@ -147,16 +146,16 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     LOG(ERROR) << "COSE: unprotected value is not map";
     return false;
   }
-  unprotected_headers = unprotected_val.Clone();
+  unprotected_headers_ = unprotected_val.Clone();
 
-  payload_encoded = cose_arr[2].Clone();
-  if (!payload_encoded.is_bytestring()) {
+  payload_encoded_ = cose_arr[2].Clone();
+  if (!payload_encoded_.is_bytestring()) {
     LOG(ERROR) << "COSE: inner payload value is not bstr";
     return false;
   }
 
   absl::optional<cbor::Value> payload_dec_val =
-      cbor::Reader::Read(payload_encoded.GetBytestring(), cbor_config);
+      cbor::Reader::Read(payload_encoded_.GetBytestring(), cbor_config);
   if (cbor_config.error_code_out != nullptr &&
       *cbor_config.error_code_out !=
           cbor::Reader::DecoderError::CBOR_NO_ERROR) {
@@ -165,14 +164,14 @@ bool CoseSign1::DecodeFromBytes(const std::vector<uint8_t>& data) {
     return false;
   }
   DCHECK(payload_dec_val.has_value());
-  payload = payload_dec_val->Clone();
+  payload_ = payload_dec_val->Clone();
 
   const cbor::Value& signature_val = cose_arr[3];
   if (!signature_val.is_bytestring()) {
     LOG(ERROR) << "COSE: signature value is not bstr";
     return false;
   }
-  signature = signature_val.GetBytestring();
+  signature_ = signature_val.GetBytestring();
 
   return true;
 }
@@ -186,10 +185,9 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
   net::CertPathErrors cert_path_errors;
 
   net::VerifyCertificateChain(
-      cert_chain, net::CertificateTrust::ForTrustAnchorEnforcingExpiration(),
-      this, time_now, net::KeyPurpose::ANY_EKU,
-      net::InitialExplicitPolicy::kFalse, std::set<net::der::Input>(),
-      net::InitialPolicyMappingInhibit::kFalse,
+      cert_chain, net::CertificateTrust::ForTrustAnchor(), this, time_now,
+      net::KeyPurpose::ANY_EKU, net::InitialExplicitPolicy::kFalse,
+      std::set<net::der::Input>(), net::InitialPolicyMappingInhibit::kFalse,
       net::InitialAnyPolicyInhibit::kFalse, nullptr, &cert_path_errors);
 
   if (cert_path_errors.ContainsHighSeverityErrors()) {
@@ -200,9 +198,9 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
 
   std::vector<cbor::Value> sig_data_vec;
   sig_data_vec.emplace_back(cbor::Value("Signature1"));
-  sig_data_vec.push_back(protected_encoded.Clone());
+  sig_data_vec.push_back(protected_encoded_.Clone());
   sig_data_vec.emplace_back(cbor::Value(std::vector<uint8_t>()));
-  sig_data_vec.push_back(payload_encoded.Clone());
+  sig_data_vec.push_back(payload_encoded_.Clone());
   cbor::Value sig_data(sig_data_vec);
 
   absl::optional<std::vector<uint8_t>> encoded_sig_data =
@@ -216,13 +214,11 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
     return false;
   }
 
-  std::vector<uint8_t> low_cert_spki_vec;
-  std::transform(low_cert_spki.begin(), low_cert_spki.end(),
-                 std::back_inserter(low_cert_spki_vec),
-                 [](char c) { return static_cast<uint8_t>(c); });
+  std::vector<uint8_t> low_cert_spki_vec(low_cert_spki.begin(),
+                                         low_cert_spki.end());
 
   std::vector<uint8_t> sig_der;
-  if (!ConvertCoseSignatureToDER(signature, &sig_der)) {
+  if (!ConvertCoseSignatureToDER(signature_, &sig_der)) {
     return false;
   }
 
@@ -239,6 +235,18 @@ bool CoseSign1::Verify(const net::ParsedCertificateList& cert_chain) {
   return sig_verifier.VerifyFinal();
 }
 
+const cbor::Value& CoseSign1::protected_headers() {
+  return protected_headers_;
+}
+
+const cbor::Value& CoseSign1::unprotected_headers() {
+  return unprotected_headers_;
+}
+
+const cbor::Value& CoseSign1::payload() {
+  return payload_;
+}
+
 bool CoseSign1::IsSignatureAlgorithmAcceptable(
     net::SignatureAlgorithm signature_algorithm,
     net::CertErrors* errors) {
@@ -248,6 +256,10 @@ bool CoseSign1::IsSignatureAlgorithmAcceptable(
 bool CoseSign1::IsPublicKeyAcceptable(EVP_PKEY* public_key,
                                       net::CertErrors* errors) {
   return true;
+}
+
+net::SignatureVerifyCache* CoseSign1::GetVerifyCache() {
+  return nullptr;
 }
 
 }  // namespace nitro_utils

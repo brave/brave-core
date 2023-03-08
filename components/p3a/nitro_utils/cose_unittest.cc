@@ -137,33 +137,33 @@ class CoseSign1Test : public testing::Test {
 };
 
 TEST_F(CoseSign1Test, DecodeFromExampleBytes) {
-  ASSERT_TRUE(cose_sign1.payload.is_none());
-  ASSERT_TRUE(cose_sign1.protected_headers.is_none());
-  ASSERT_TRUE(cose_sign1.unprotected_headers.is_none());
-  ASSERT_TRUE(cose_sign1.DecodeFromBytes(LoadExampleDocument()));
+  EXPECT_TRUE(cose_sign1.payload().is_none());
+  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
+  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
+  EXPECT_TRUE(cose_sign1.DecodeFromBytes(LoadExampleDocument()));
 
-  ASSERT_TRUE(cose_sign1.protected_headers.is_map());
+  EXPECT_TRUE(cose_sign1.protected_headers().is_map());
 
   const cbor::Value::MapValue& protected_headers_map =
-      cose_sign1.protected_headers.GetMap();
+      cose_sign1.protected_headers().GetMap();
   const cbor::Value::MapValue::const_iterator alg_value_it =
       protected_headers_map.find(cbor::Value(1));
-  ASSERT_NE(alg_value_it, protected_headers_map.end());
-  ASSERT_TRUE(alg_value_it->second.is_integer());
+  EXPECT_NE(alg_value_it, protected_headers_map.end());
+  EXPECT_TRUE(alg_value_it->second.is_integer());
 
-  ASSERT_TRUE(cose_sign1.unprotected_headers.is_map());
+  EXPECT_TRUE(cose_sign1.unprotected_headers().is_map());
 
-  ASSERT_TRUE(cose_sign1.payload.is_map());
-  const cbor::Value::MapValue& payload_map = cose_sign1.payload.GetMap();
+  EXPECT_TRUE(cose_sign1.payload().is_map());
+  const cbor::Value::MapValue& payload_map = cose_sign1.payload().GetMap();
   // Verify a couple fields to ensure decoded payload is being stored.
   const cbor::Value::MapValue::const_iterator nonce_value_it =
       payload_map.find(cbor::Value("nonce"));
   const cbor::Value::MapValue::const_iterator cabundle_value_it =
       payload_map.find(cbor::Value("cabundle"));
-  ASSERT_NE(nonce_value_it, payload_map.end());
-  ASSERT_TRUE(nonce_value_it->second.is_bytestring());
-  ASSERT_NE(cabundle_value_it, payload_map.end());
-  ASSERT_TRUE(cabundle_value_it->second.is_array());
+  EXPECT_NE(nonce_value_it, payload_map.end());
+  EXPECT_TRUE(nonce_value_it->second.is_bytestring());
+  EXPECT_NE(cabundle_value_it, payload_map.end());
+  EXPECT_TRUE(cabundle_value_it->second.is_array());
 }
 
 TEST_F(CoseSign1Test, BadLength) {
@@ -174,12 +174,12 @@ TEST_F(CoseSign1Test, BadLength) {
                  std::back_inserter(doc_arr),
                  [](const cbor::Value& val) { return val.Clone(); });
 
-  ASSERT_FALSE(
+  EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value(doc_arr))));
 
-  ASSERT_TRUE(cose_sign1.payload.is_none());
-  ASSERT_TRUE(cose_sign1.protected_headers.is_none());
-  ASSERT_TRUE(cose_sign1.unprotected_headers.is_none());
+  EXPECT_TRUE(cose_sign1.payload().is_none());
+  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
+  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
 }
 
 TEST_F(CoseSign1Test, BadSignature) {
@@ -191,21 +191,21 @@ TEST_F(CoseSign1Test, BadSignature) {
                  [](const cbor::Value& val) { return val.Clone(); });
   doc_arr.push_back(cbor::Value("bad signature"));
 
-  ASSERT_FALSE(
+  EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value(doc_arr))));
 
-  ASSERT_TRUE(cose_sign1.payload.is_map());
-  ASSERT_TRUE(cose_sign1.protected_headers.is_map());
-  ASSERT_TRUE(cose_sign1.unprotected_headers.is_map());
+  EXPECT_TRUE(cose_sign1.payload().is_map());
+  EXPECT_TRUE(cose_sign1.protected_headers().is_map());
+  EXPECT_TRUE(cose_sign1.unprotected_headers().is_map());
 }
 
 TEST_F(CoseSign1Test, BadRootType) {
-  ASSERT_FALSE(
+  EXPECT_FALSE(
       cose_sign1.DecodeFromBytes(SerializeDocument(cbor::Value("bad doc"))));
 
-  ASSERT_TRUE(cose_sign1.payload.is_none());
-  ASSERT_TRUE(cose_sign1.protected_headers.is_none());
-  ASSERT_TRUE(cose_sign1.unprotected_headers.is_none());
+  EXPECT_TRUE(cose_sign1.payload().is_none());
+  EXPECT_TRUE(cose_sign1.protected_headers().is_none());
+  EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
 }
 
 }  // namespace nitro_utils
