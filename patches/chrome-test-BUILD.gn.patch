@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index faa7b52a0ffa0df0461ea2cdfa3b0e888a571a82..83757a70d2bff971949cbb17dae5826b25cf2420 100644
+index 2f23a386614d89c941cbf430fe637f61ae6f7301..d3053c5b6bbf6f89be07412d09729a250e0b3678 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -392,6 +392,7 @@ static_library("test_support") {
