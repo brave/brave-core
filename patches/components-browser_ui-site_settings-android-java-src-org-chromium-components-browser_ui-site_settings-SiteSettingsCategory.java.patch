@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..d42ed242a6e69a325d906ef943411420ae92798b 100644
+index b283b86002cac0c35e9b855e72d6511ce78ff8eb..c2fb8cd560c27f86d3ab6225bbd1cfe106f82580 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 @@ -47,7 +47,7 @@ public class SiteSettingsCategory {
@@ -14,12 +14,13 @@ index ac5c71ffb62eec1988e820b500cbb78ce6702bc9..d42ed242a6e69a325d906ef943411420
 @@ -81,10 +81,11 @@ public class SiteSettingsCategory {
          int THIRD_PARTY_COOKIES = 26;
          int SITE_DATA = 27;
-+        int AUTOPLAY = 28; int BRAVE_GOOGLE_SIGN_IN = 29;
+         int ANTI_ABUSE = 28;
++        int AUTOPLAY = 29; int BRAVE_GOOGLE_SIGN_IN = 30;
          /**
           * Number of handled categories used for calculating array sizes.
           */
--        int NUM_ENTRIES = 28;
-+        int NUM_ENTRIES = 30;
+-        int NUM_ENTRIES = 29;
++        int NUM_ENTRIES = 31;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

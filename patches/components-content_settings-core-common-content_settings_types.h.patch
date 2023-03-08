@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index eb7eb470c46eefbb93a2929bbc46ec81f3813854..88ccc3a589374950dd5cbac5f4a5ff8c13ef0601 100644
+index 17c5e6aafb7047867306b8a9e9e715effdbb7c5b..89d74c467237ef9d416d2635827c976172b07efe 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -311,6 +311,20 @@ enum class ContentSettingsType : int32_t {
-   // being specific to a frame.
-   TOP_LEVEL_STORAGE_ACCESS,
+@@ -323,6 +323,20 @@ enum class ContentSettingsType : int32_t {
+   // should be enabled.
+   ANTI_ABUSE,
  
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
