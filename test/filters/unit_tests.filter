@@ -608,3 +608,7 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
+
+# This test crashes because AutocompleteClassifier called when TabStripModel
+# was not initialized in test.
+-RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
