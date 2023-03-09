@@ -81,11 +81,13 @@ TEST_F(TimePeriodStorageTest, SubDelta) {
 }
 
 TEST_F(TimePeriodStorageTest, GetSumInCustomPeriod) {
-  InitStorage(14);
   base::TimeDelta start_time_delta = base::Days(9);
   base::TimeDelta end_time_delta = base::Days(4);
   uint64_t saving = 10000;
-  clock_->Advance(base::Hours(1));
+  // Move clock right before midnight daily cutoff
+  clock_->SetNow(base::Time::Now().LocalMidnight() - base::Hours(4));
+
+  InitStorage(14);
   state_->AddDelta(saving);
 
   clock_->Advance(base::Days(1));
