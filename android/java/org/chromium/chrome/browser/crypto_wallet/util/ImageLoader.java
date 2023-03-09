@@ -249,7 +249,7 @@ public class ImageLoader {
 
     /**
      * Returns {@code true} if a given URL is supported for download.
-     * @param url Give URL to check
+     * @param url Given URL to check
      * @return {@code true} if a given URL is supported for download, {@code false} otherwise.
      */
     public static boolean isSupported(String url) {
