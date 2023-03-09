@@ -112,7 +112,7 @@ public class ImageLoader {
 
             WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
-                    webContentsFactory.createWebContentsWithWarmRenderer(profile, false);
+                    webContentsFactory.createWebContentsWithWarmRenderer(profile, true);
             webContents.downloadImage(new GURL(validUrl), // Url
                     true, // isFavIcon - Does not send or accept cookies when `true`.
                     WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
