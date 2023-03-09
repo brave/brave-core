@@ -26,16 +26,28 @@
   return self;
 }
 
-- (NSURL*)resolveGatewayUrlFor:(NSURL*)input isForNFT:(BOOL)isForNFT {
+- (NSURL*)resolveGatewayUrlFor:(NSURL*)input {
   GURL input_gurl = net::GURLWithNSURL(input);
   if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
     return nullptr;
   }
   GURL output;
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway_url = ipfs::GetDefaultIPFSGateway(prefs);
+  if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
+    return net::NSURLWithGURL(output);
+  }
+  return nullptr;
+}
 
-  auto gateway_url = isForNFT ? ipfs::GetDefaultNFTIPFSGateway(prefs)
-                              : ipfs::GetDefaultIPFSGateway(prefs);
+- (NSURL*)resolveGatewayUrlForNFT:(NSURL*)input {
+  GURL input_gurl = net::GURLWithNSURL(input);
+  if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
+    return nullptr;
+  }
+  GURL output;
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
   if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
     return net::NSURLWithGURL(output);
   }
