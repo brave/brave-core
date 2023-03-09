@@ -1345,7 +1345,7 @@ extension Strings {
     public static let reportBrokenSiteBody2 = NSLocalizedString("ReportBrokenSiteBody2", tableName: "BraveShared", bundle: .module, value: "Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).", comment: "")
     public static let reportBrokenSubmitButtonTitle = NSLocalizedString("ReportBrokenSubmitButtonTitle", tableName: "BraveShared", bundle: .module, value: "Submit", comment: "")
     public static let globalControls = NSLocalizedString("BraveShieldsGlobalControls", tableName: "BraveShared", bundle: .module, value: "Global Controls", comment: "")
-    public static let globalChangeButton = NSLocalizedString("BraveShieldsGlobalChangeButton", tableName: "BraveShared", bundle: .module, value: "Change global Shields defaults", comment: "")
+    public static let globalChangeButton = NSLocalizedString("BraveShieldsGlobalChangeButton", tableName: "BraveShared", bundle: .module, value: "Change Shields Global Defaults", comment: "")
     public static let siteReportedTitle = NSLocalizedString("SiteReportedTitle", tableName: "BraveShared", bundle: .module, value: "Thank You", comment: "")
     public static let siteReportedBody = NSLocalizedString("SiteReportedBody", tableName: "BraveShared", bundle: .module, value: "Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!", comment: "")
   }

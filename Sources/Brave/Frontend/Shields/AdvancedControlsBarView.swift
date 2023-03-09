@@ -20,7 +20,7 @@ class AdvancedControlsBarView: UIControl {
   }
 
   private let label = UILabel().then {
-    $0.text = Strings.Shields.advancedControls
+    $0.text = Strings.Shields.advancedControls.capitalized
     $0.font = .systemFont(ofSize: 16)
     $0.textColor = .braveLabel
     $0.numberOfLines = 0
