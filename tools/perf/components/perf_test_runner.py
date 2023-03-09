@@ -49,9 +49,9 @@ class CommonOptions:
     return options
 
 
-def ReportToDashboardImpl(browser_type: BrowserType, dashboard_bot_name: str,
-                          revision: str, output_dir: str, ci_mode: bool
-                          ) -> Tuple[bool, List[str], Optional[str]]:
+def ReportToDashboardImpl(
+    browser_type: BrowserType, dashboard_bot_name: str, revision: str,
+    output_dir: str, ci_mode: bool) -> Tuple[bool, List[str], Optional[str]]:
 
   if browser_type.ReportAsReference():
     # .reference suffix for benchmark folder is used in process_perf_results.py
@@ -143,9 +143,8 @@ class RunableConfiguration:
     logging.info('Rebasing dir %s using binary %s', self.profile_dir,
                  self.binary_path)
     rebase_runner_config = deepcopy(self.config)
-    rebase_runner_config.extra_browser_args = [
-        '--update-source-profile', '--enable-brave-features-for-perf-testing'
-    ]
+    rebase_runner_config.extra_browser_args.extend(
+        ['--update-source-profile', '--enable-brave-features-for-perf-testing'])
 
     rebase_benchmark = BenchmarkConfig()
     rebase_benchmark.name = 'loading.desktop.brave'
