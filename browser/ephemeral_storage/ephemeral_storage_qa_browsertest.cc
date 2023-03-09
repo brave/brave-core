@@ -6,26 +6,41 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/tabs/tab_enums.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "chrome/common/chrome_features.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/common/chrome_content_client.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#else
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_observer.h"
+#include "chrome/test/base/android/android_browser_test.h"
+#endif
 
 namespace {
 
@@ -33,6 +48,7 @@ namespace {
 // Users can wait for the change via WaitForActiveTabChange method.
 // DCHECKs ensure that only one change happens during the lifetime of a
 // TabActivationWaiter instance.
+#if !BUILDFLAG(IS_ANDROID)
 class TabActivationWaiter : public TabStripModelObserver {
  public:
   explicit TabActivationWaiter(TabStripModel* tab_strip_model) {
@@ -59,19 +75,65 @@ class TabActivationWaiter : public TabStripModelObserver {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override {
-    if (tab_strip_model->empty() || !selection.active_tab_changed())
+    if (tab_strip_model->empty() || !selection.active_tab_changed()) {
       return;
+    }
 
     number_of_unconsumed_active_tab_changes_++;
     DCHECK_EQ(1, number_of_unconsumed_active_tab_changes_);
-    if (message_loop_runner_)
+    if (message_loop_runner_) {
       message_loop_runner_->Quit();
+    }
   }
 
  private:
   scoped_refptr<content::MessageLoopRunner> message_loop_runner_;
   int number_of_unconsumed_active_tab_changes_ = 0;
 };
+#else
+class TabActivationWaiter : public TabModelObserver {
+ public:
+  explicit TabActivationWaiter(TabModel* tab_model) : tab_model_(tab_model) {
+    DCHECK(tab_model_);
+    tab_model_->AddObserver(this);
+  }
+
+  ~TabActivationWaiter() override { tab_model_->RemoveObserver(this); }
+
+  TabActivationWaiter(const TabActivationWaiter&) = delete;
+  TabActivationWaiter& operator=(const TabActivationWaiter&) = delete;
+
+  void WaitForActiveTabChange() {
+    if (number_of_unconsumed_active_tab_changes_ == 0) {
+      // Wait until TabStripModelObserver::ActiveTabChanged will get called.
+      message_loop_runner_ = new content::MessageLoopRunner;
+      message_loop_runner_->Run();
+    }
+
+    // "consume" one tab activation event.
+    DCHECK_EQ(1, number_of_unconsumed_active_tab_changes_);
+    number_of_unconsumed_active_tab_changes_--;
+  }
+
+  // TabModelObserver overrides.
+  void DidSelectTab(TabAndroid* tab, TabModel::TabSelectionType type) override {
+    if (type != TabModel::TabSelectionType::FROM_NEW) {
+      return;
+    }
+
+    number_of_unconsumed_active_tab_changes_++;
+    DCHECK_EQ(1, number_of_unconsumed_active_tab_changes_);
+    if (message_loop_runner_) {
+      message_loop_runner_->Quit();
+    }
+  }
+
+ private:
+  TabModel* const tab_model_;
+  scoped_refptr<content::MessageLoopRunner> message_loop_runner_;
+  int number_of_unconsumed_active_tab_changes_ = 0;
+};
+#endif
 
 }  // namespace
 
@@ -140,34 +202,19 @@ std::string AsString(StorageType t) {
 // - local frame
 // - remote frame
 // - nested frame
-class EphemeralStorageTest : public InProcessBrowserTest {
+class EphemeralStorageTest : public PlatformBrowserTest {
  public:
-  EphemeralStorageTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+  EphemeralStorageTest()
+      : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitAndEnableFeature(net::features::kBraveEphemeralStorage);
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-  }
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    mock_cert_verifier_.SetUpCommandLine(command_line);
-  }
-
-  void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
-    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
-  }
-
-  void TearDownInProcessBrowserTestFixture() override {
-    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
-  }
-
-  void SetUp() override {
+    content::SetBrowserClientForTesting(&client_);
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -175,18 +222,84 @@ class EphemeralStorageTest : public InProcessBrowserTest {
         test_data_dir.Append(FILE_PATH_LITERAL("ephemeral-storage")));
     content::SetupCrossSiteRedirector(embedded_test_server());
     ASSERT_TRUE(embedded_test_server()->Start());
+  }
 
-    InProcessBrowserTest::SetUp();
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
+  Profile* profile() { return chrome_test_utils::GetProfile(this); }
+
+  content::WebContents* GetActiveWebContents() {
+    return chrome_test_utils::GetActiveWebContents(this);
   }
 
   HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+    return HostContentSettingsMapFactory::GetForProfile(profile());
   }
 
   net::EmbeddedTestServer* embedded_test_server() { return &https_server_; }
 
+#if BUILDFLAG(IS_ANDROID)
+  TabModel* GetTabModel() {
+    return TabModelList::GetTabModelForWebContents(GetActiveWebContents());
+  }
+#else
+  TabStripModel* GetTabModel() { return browser()->tab_strip_model(); }
+#endif
+
+  int GetTabCount() {
+#if BUILDFLAG(IS_ANDROID)
+    return GetTabModel()->GetTabCount();
+#else
+    return tabs_->count();
+#endif
+  }
+
+  int GetActiveTabIndex() {
+#if BUILDFLAG(IS_ANDROID)
+    return GetTabModel()->GetActiveIndex();
+#else
+    return tabs_->active_index();
+#endif
+  }
+
+  void CreateNewTab() {
+#if !BUILDFLAG(IS_ANDROID)
+    chrome::NewTab(browser());
+#else
+    TabModel* tab_model = GetTabModel();
+    TabAndroid* current_tab =
+        TabAndroid::FromWebContents(GetActiveWebContents());
+    NavigateParams navigate_params(profile(), GURL("about:blank"),
+                                   ui::PAGE_TRANSITION_TYPED);
+    navigate_params.source_contents = GetActiveWebContents();
+    navigate_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    navigate_params.url = GURL("about:blank");
+    TabActivationWaiter tab_activation_waiter(tab_model);
+    tab_model->HandlePopupNavigation(current_tab, &navigate_params);
+    tab_activation_waiter.WaitForActiveTabChange();
+#endif
+  }
+
+  void NavigateToURL(const GURL& url) {
+    content::NavigateToURLBlockUntilNavigationsComplete(GetActiveWebContents(),
+                                                        url, 1);
+  }
+
   void SetThirdPartyCookiePref(bool setting) {
-    browser()->profile()->GetPrefs()->SetInteger(
+    profile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
         static_cast<int>(
             setting ? content_settings::CookieControlsMode::kBlockThirdParty
@@ -194,7 +307,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   }
 
   void SetCookiePref(ContentSetting setting) {
-    browser()->profile()->GetPrefs()->SetInteger(
+    profile()->GetPrefs()->SetInteger(
         "profile.default_content_setting_values.cookies", setting);
   }
 
@@ -224,14 +337,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // clicking the link with the corresponding href attribute.
   void NavigateOtherOrigin(content::WebContents* contents) {
     {
-      TabActivationWaiter tab_activation_waiter(browser()->tab_strip_model());
+      TabActivationWaiter tab_activation_waiter(GetTabModel());
       ExecuteScriptAsync(
           contents,
           "document.querySelector('.other-origin.ephem-storage-test').click()");
       tab_activation_waiter.WaitForActiveTabChange();
     }
-    content::TestNavigationObserver navigation_observer(
-        browser()->tab_strip_model()->GetActiveWebContents());
+    content::TestNavigationObserver navigation_observer(GetActiveWebContents());
     navigation_observer.Wait();
     ASSERT_TRUE(navigation_observer.last_navigation_succeeded());
   }
@@ -240,14 +352,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // clicking the link with the corresponding href attribute.
   void NavigateSameOrigin(content::WebContents* contents) {
     {
-      TabActivationWaiter tab_activation_waiter(browser()->tab_strip_model());
+      TabActivationWaiter tab_activation_waiter(GetTabModel());
       ExecuteScriptAsync(
           contents,
           "document.querySelector('.this-origin.ephem-storage-test').click()");
       tab_activation_waiter.WaitForActiveTabChange();
     }
-    content::TestNavigationObserver navigation_observer(
-        browser()->tab_strip_model()->GetActiveWebContents());
+    content::TestNavigationObserver navigation_observer(GetActiveWebContents());
     navigation_observer.Wait();
     ASSERT_TRUE(navigation_observer.last_navigation_succeeded());
   }
@@ -296,13 +407,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // the same browsing session.
   void TestRemotePageSameSession(const StorageResult expected[4][4]) {
     ASSERT_TRUE(original_tab_);
-    ASSERT_EQ(1, tabs_->count());
+    ASSERT_EQ(1, GetTabCount());
 
     NavigateOtherOrigin(original_tab_);
-    ASSERT_EQ(2, tabs_->count());
-    ASSERT_EQ(1, tabs_->active_index());
+    ASSERT_EQ(2, GetTabCount());
+    ASSERT_EQ(1, GetActiveTabIndex());
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* contents = GetActiveWebContents();
 
     ClickReadValues(contents);
 
@@ -313,19 +424,19 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // new browsing session.
   void TestRemotePageNewSession(const StorageResult expected[4][4]) {
     ASSERT_TRUE(original_tab_);
-    ASSERT_EQ(1, tabs_->count());
+    ASSERT_EQ(1, GetTabCount());
 
-    chrome::NewTab(browser());
-    ASSERT_EQ(2, tabs_->count());
-    ASSERT_EQ(1, tabs_->active_index());
+    CreateNewTab();
+    ASSERT_EQ(2, GetTabCount());
+    ASSERT_EQ(1, GetActiveTabIndex());
 
     std::string target =
         EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
+    NavigateToURL(GURL(target));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* contents = GetActiveWebContents();
 
     ClickReadValues(contents);
 
@@ -336,13 +447,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // new tab from the same browsing session.
   void TestThisPageSameSession(const StorageResult expected[4][4]) {
     ASSERT_TRUE(original_tab_);
-    ASSERT_EQ(1, tabs_->count());
+    ASSERT_EQ(1, GetTabCount());
 
     NavigateSameOrigin(original_tab_);
-    ASSERT_EQ(2, tabs_->count());
-    ASSERT_EQ(1, tabs_->active_index());
+    ASSERT_EQ(2, GetTabCount());
+    ASSERT_EQ(1, GetActiveTabIndex());
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* contents = GetActiveWebContents();
 
     ClickReadValues(contents);
 
@@ -353,19 +464,19 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // new tab from a different browsing session.
   void TestThisPageDifferentSession(const StorageResult expected[4][4]) {
     ASSERT_TRUE(original_tab_);
-    ASSERT_EQ(1, tabs_->count());
+    ASSERT_EQ(1, GetTabCount());
 
-    chrome::NewTab(browser());
-    ASSERT_EQ(2, tabs_->count());
-    ASSERT_EQ(1, tabs_->active_index());
+    CreateNewTab();
+    ASSERT_EQ(2, GetTabCount());
+    ASSERT_EQ(1, GetActiveTabIndex());
 
     std::string target =
         EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-5').value")
             .ExtractString();
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
+    NavigateToURL(GURL(target));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* contents = GetActiveWebContents();
 
     ClickReadValues(contents);
 
@@ -376,24 +487,28 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // after having reset the browsing session.
   void TestNewPageResetSession(const StorageResult expected[4][4]) {
     ASSERT_TRUE(original_tab_);
-    ASSERT_EQ(1, tabs_->count());
+    ASSERT_EQ(1, GetTabCount());
 
-    chrome::NewTab(browser());
-    ASSERT_EQ(2, tabs_->count());
-    ASSERT_EQ(1, tabs_->active_index());
+    CreateNewTab();
+    ASSERT_EQ(2, GetTabCount());
+    ASSERT_EQ(1, GetActiveTabIndex());
 
     std::string target =
         EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
+#if BUILDFLAG(IS_ANDROID)
+    GetTabModel()->CloseTabAt(0);
+#else
     ASSERT_TRUE(
         tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
                                   TabCloseTypes::CLOSE_NONE));
+#endif
 
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
+    NavigateToURL(GURL(target));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* contents = GetActiveWebContents();
 
     ClickReadValues(contents);
 
@@ -401,12 +516,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   }
 
   void SetupTestPage() {
+#if !BUILDFLAG(IS_ANDROID)
     tabs_ = browser()->tab_strip_model();
-
+#endif
     GURL tab_url = embedded_test_server()->GetURL("dev-pages.brave.software",
                                                   kEphemeralStorageTestPage);
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
-    original_tab_ = tabs_->GetActiveWebContents();
+    NavigateToURL(tab_url);
+    original_tab_ = GetActiveWebContents();
 
     ClickStartTest(original_tab_);
   }
@@ -415,10 +531,13 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
+  BraveContentBrowserClient client_;
 
  private:
   raw_ptr<content::WebContents> original_tab_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
   raw_ptr<TabStripModel> tabs_ = nullptr;
+#endif
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {

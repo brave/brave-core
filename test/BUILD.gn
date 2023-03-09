@@ -948,6 +948,8 @@ test("brave_browser_tests") {
     "//ui/views",
   ]
 
+  data = [ "data/" ]
+
   if (is_mac) {
     sources += [
       "//brave/browser/brave_app_controller_mac_browsertest.mm",
@@ -1100,7 +1102,7 @@ test("brave_browser_tests") {
   if (enable_custom_background) {
     sources += [ "//brave/browser/ntp_background/custom_background_file_manager_browsertest.cc" ]
 
-    data = [ "data/ntp_background/background.jpg" ]
+    data += [ "data/ntp_background/background.jpg" ]
   }
 
   # API tests
@@ -1121,7 +1123,7 @@ test("brave_browser_tests") {
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
     android_manifest_dep = ":brave_browser_tests_manifest"
 
-    data = [
+    data += [
       "$root_out_dir/brave_100_percent.pak",
       "$root_out_dir/brave_resources.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
