@@ -241,23 +241,18 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader
-                .createRequest(imageUrl, this, false,
-                        new ImageLoader.Callback() {
-                            @Override
-                            public boolean onLoadFailed() {
-                                setNftImageAsNotAvailable();
-                                return false;
-                            }
-                            @Override
-                            public boolean onResourceReady(
-                                    Drawable resource, Target<Drawable> target) {
-                                target.onResourceReady(
-                                        resource, new DrawableCrossFadeTransition(250, true));
-                                return true;
-                            }
-                        })
-                .into(mNftImageView);
+        ImageLoader.downloadImage(imageUrl, this, false, mNftImageView, new ImageLoader.Callback() {
+            @Override
+            public boolean onLoadFailed() {
+                setNftImageAsNotAvailable();
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
+                target.onResourceReady(resource, new DrawableCrossFadeTransition(250, true));
+                return true;
+            }
+        });
     }
 
     private void setNftImageAsNotAvailable() {
