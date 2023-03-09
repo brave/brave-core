@@ -27,8 +27,6 @@ namespace playlist {
 
 namespace {
 
-constexpr base::TimeDelta kWebContentDestroyDelay = base::Minutes(5);
-
 const int32_t kInvalidWorldID = -1;
 
 int32_t g_playlist_javascript_world_id = kInvalidWorldID;
@@ -65,20 +63,30 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  if (!web_contents_) {
-    // |web_contents_| is created on demand.
-    content::WebContents::CreateParams create_params(context_, nullptr);
-    web_contents_ = content::WebContents::Create(create_params);
-  }
+  DCHECK(!web_contents_);
+
+  content::WebContents::CreateParams create_params(context_, nullptr);
+  web_contents_ = content::WebContents::Create(create_params);
 
   Observe(web_contents_.get());
 }
 
 void PlaylistDownloadRequestManager::GetMediaFilesFromPage(Request request) {
-  web_contents_destroy_timer_.reset();
-
+  DVLOG(2) << __func__;
   if (!ReadyToRunMediaDetectorScript()) {
+    if (!request_start_time_.is_null()) {
+      // See if the last job is stuck.
+#if DCHECK_IS_ON()
+      DCHECK(base::Time::Now() - request_start_time_ <= base::Minutes(1));
+#else
+      if (base::Time::Now() - request_start_time_ > base::Minutes(1)) {
+        LOG(ERROR) << "The previous job is pending longer than 1 min";
+      }
+#endif
+    }
+
     pending_requests_.push_back(std::move(request));
+    DVLOG(2) << "Queued request";
     return;
   }
 
@@ -95,6 +103,7 @@ void PlaylistDownloadRequestManager::FetchPendingRequest() {
 }
 
 void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
+  DVLOG(2) << __func__;
   CHECK(PlaylistJavaScriptWorldIdIsSet());
 
   DCHECK_GE(in_progress_urls_count_, 0);
@@ -102,9 +111,15 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
 
   DCHECK(callback_for_current_request_.is_null());
   callback_for_current_request_ = std::move(request.callback);
+  DCHECK(callback_for_current_request_)
+      << "Empty callback shouldn't be requested";
+  request_start_time_ = base::Time::Now();
 
   if (absl::holds_alternative<std::string>(request.url_or_contents)) {
+    // Start to request on clean slate, so that result won't be affected by
+    // previous page.
     CreateWebContents();
+
     GURL url(absl::get<std::string>(request.url_or_contents));
     DCHECK(url.is_valid());
     DCHECK(web_contents_);
@@ -114,6 +129,10 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
     auto weak_contents =
         absl::get<base::WeakPtr<content::WebContents>>(request.url_or_contents);
     if (!weak_contents) {
+      // While the request was in queue, the tab was deleted. Proceed to the
+      // next request.
+      in_progress_urls_count_--;
+
       FetchPendingRequest();
       return;
     }
@@ -132,9 +151,13 @@ void PlaylistDownloadRequestManager::DidFinishLoad(
   if (render_frame_host != web_contents_->GetPrimaryMainFrame())
     return;
 
-  if (in_progress_urls_count_ == 0 || callback_for_current_request_.is_null())
+  if (in_progress_urls_count_ == 0 || callback_for_current_request_.is_null()) {
+    // As we don't support canceling at this moment, this shouldn't happen.
+    CHECK_IS_TEST();
     return;
+  }
 
+  DVLOG(2) << __func__;
   GetMedia(web_contents_.get());
 }
 
@@ -181,14 +204,17 @@ void PlaylistDownloadRequestManager::OnGetMedia(
 void PlaylistDownloadRequestManager::ProcessFoundMedia(
     base::WeakPtr<content::WebContents> contents,
     base::Value value) {
-  if (!contents)
-    return;
-
   DCHECK(!callback_for_current_request_.is_null()) << " callback already ran";
   auto callback = std::move(callback_for_current_request_);
 
   DCHECK_GT(in_progress_urls_count_, 0);
   in_progress_urls_count_--;
+  Observe(nullptr);
+  if (!contents) {
+    return;
+  }
+
+  web_contents_.reset();
 
   /* Expected output:
     [
@@ -203,10 +229,6 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
       }
     ]
   */
-
-  if (in_progress_urls_count_ == 0)
-    ScheduleWebContentsDestroying();
-  Observe(nullptr);
 
   if (value.is_dict() && value.GetDict().empty()) {
     DVLOG(2) << "No media was detected";
@@ -280,20 +302,6 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
   std::move(callback).Run(std::move(items));
 }
 
-void PlaylistDownloadRequestManager::ScheduleWebContentsDestroying() {
-  if (!web_contents_destroy_timer_) {
-    web_contents_destroy_timer_ = std::make_unique<base::RetainingOneShotTimer>(
-        FROM_HERE, kWebContentDestroyDelay,
-        base::BindRepeating(&PlaylistDownloadRequestManager::DestroyWebContents,
-                            base::Unretained(this)));
-  }
-  web_contents_destroy_timer_->Reset();
-}
-
-void PlaylistDownloadRequestManager::DestroyWebContents() {
-  web_contents_.reset();
-}
-
 void PlaylistDownloadRequestManager::SetRunScriptOnMainWorldForTest() {
   CHECK_IS_TEST();
   run_script_on_main_world_ = true;
@@ -310,7 +318,10 @@ void PlaylistDownloadRequestManager::ConfigureWebPrefsForBackgroundWebContents(
 
 content::WebContents*
 PlaylistDownloadRequestManager::GetBackgroundWebContentsForTesting() {
-  CreateWebContents();
+  if (!web_contents_) {
+    CreateWebContents();
+  }
+
   return web_contents_.get();
 }
 
