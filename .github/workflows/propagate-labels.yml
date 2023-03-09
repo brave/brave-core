@@ -4,7 +4,7 @@ on:
     types: [closed]
 
 env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   LABELS: "feature/web3/wallet feature/web3/wallet/core"
 
 jobs:
