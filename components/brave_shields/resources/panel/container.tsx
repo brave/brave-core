@@ -26,17 +26,13 @@ function Container () {
     if (viewType === ViewType.AdsList) {
       treeListElement = <TreeList
         blockedList={siteBlockInfo?.adsList}
-        allowedSectionVisible={false}
-        totalAllowedTitle=''
         totalBlockedTitle={getLocale('braveShieldsTrackersAndAds')}
       />
     }
 
     if (viewType === ViewType.HttpsList) {
       treeListElement = <TreeList
-        allowedSectionVisible={false}
         blockedList={ siteBlockInfo?.httpRedirectsList }
-        totalAllowedTitle=''
         totalBlockedTitle={getLocale('braveShieldsConnectionsUpgraded')}
       />
     }
@@ -45,7 +41,6 @@ function Container () {
       treeListElement = <TreeList
           blockedList={ siteBlockInfo?.blockedJsList }
           allowedList={ siteBlockInfo?.allowedJsList }
-          allowedSectionVisible={true}
           totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
           totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
         />

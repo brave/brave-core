@@ -20,8 +20,7 @@ import { ScriptsInfo, Footer, ScriptsList } from './style'
 interface Props {
   blockedList: Url[]
   allowedList?: Url[]
-  allowedSectionVisible: boolean
-  totalAllowedTitle: string
+  totalAllowedTitle?: string
   totalBlockedTitle: string
 }
 
@@ -53,9 +52,7 @@ function groupByOrigin (data: Url[]) {
 
 function TreeList (props: Props) {
   const { siteBlockInfo, setViewType } = React.useContext(DataContext)
-  const allowedList = props.allowedList ?
-    props.allowedList : []
-
+  const allowedList = props.allowedList ?? [];
   const allowedScriptsByOrigin = React.useMemo(() =>
     groupByOrigin(allowedList), [allowedList])
 
@@ -77,7 +74,7 @@ function TreeList (props: Props) {
     getPanelBrowserAPI().dataHandler.blockAllowedScripts([new URL(name).origin])
   }
 
-  const handleAllowScript = !props.allowedSectionVisible ? undefined
+  const handleAllowScript = allowedList.length === 0 ? undefined
     : (name: string) => {
       getPanelBrowserAPI().dataHandler.allowScriptsOnce([new URL(name).origin])
     }
@@ -93,8 +90,8 @@ function TreeList (props: Props) {
         </S.SiteTitleBox>
       </S.HeaderBox>
       <S.Scroller>
-        {props.allowedSectionVisible && (
-        <div>
+        {allowedList.length > 0 && (
+        <>
           <ScriptsInfo>
             <span>{allowedList.length}</span>
             <span>{props.totalAllowedTitle}</span>
@@ -114,12 +111,12 @@ function TreeList (props: Props) {
               />)
             })}
           </ScriptsList>
-        </div>
+        </>
         )}
         <ScriptsInfo>
           <span>{props.blockedList.length}</span>
           <span>{props.totalBlockedTitle}</span>
-          {props.allowedSectionVisible && (<span>
+          {allowedList.length > 0 && (<span>
             {<a href="#" onClick={handleAllowAllScripts}>
                 {getLocale('braveShieldsAllowScriptsAll')}
               </a>
@@ -133,7 +130,7 @@ function TreeList (props: Props) {
               host={origin}
               permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
               onPermissionButtonClick={handleAllowScript}
-              resourceList={allowedScriptsByOrigin.get(origin) ?? []}
+              resourceList={blockedScriptsByOrigin.get(origin) ?? []}
             />)
           })}
         </ScriptsList>

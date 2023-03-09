@@ -111,7 +111,6 @@ export const _ResourceList = () => {
       <TreeList
         blockedList={ siteBlockInfo?.blockedJsList }
         allowedList={ siteBlockInfo?.allowedJsList }
-        allowedSectionVisible={true}
         totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
         totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
       />
