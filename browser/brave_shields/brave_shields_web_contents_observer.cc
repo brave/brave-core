@@ -58,9 +58,9 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
       receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
-  if (rfh && allowed_script_origins_.size()) {
+  if (rfh && allowed_scripts_.size()) {
     GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-        allowed_script_origins_);
+        allowed_scripts_);
   }
   if (rfh) {
     if (content::BrowserContext* context = rfh->GetBrowserContext()) {
@@ -233,7 +233,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       !navigation_handle->IsSameDocument()) {
     if (reload_type == content::ReloadType::NONE) {
       // For new loads, we reset the counters for both blocked scripts and URLs.
-      allowed_script_origins_.clear();
+      allowed_scripts_.clear();
       blocked_url_paths_.clear();
     } else if (reload_type == content::ReloadType::NORMAL) {
       // For normal reloads (or loads to the current URL, internally converted
@@ -246,7 +246,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
   navigation_handle->GetWebContents()->ForEachRenderFrameHost(
       [this](content::RenderFrameHost* rfh) {
         GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-            allowed_script_origins_);
+            allowed_scripts_);
         if (content::BrowserContext* context = rfh->GetBrowserContext()) {
           if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
             GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
@@ -257,16 +257,23 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
 }
 
 void BraveShieldsWebContentsObserver::BlockAllowedScripts(
-    const std::vector<std::string>& origins) {
-  for (const auto& origin : origins) {
-    base::Erase(allowed_script_origins_, origin);
+    const std::vector<std::string>& scripts) {
+  for (const auto& script : scripts) {
+    auto origin = url::Origin::Create(GURL(script));
+    bool is_origin = origin.Serialize() == script;
+    base::EraseIf(allowed_scripts_, [is_origin, script,
+                                     origin](const std::string& value) {
+      // scripts array may have both origins or full scripts paths.
+      return is_origin ? url::Origin::Create(GURL(value)) == origin
+                       : value == script;
+    });
   }
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
-  allowed_script_origins_.insert(std::end(allowed_script_origins_),
-                                 std::begin(origins), std::end(origins));
+  allowed_scripts_.insert(std::end(allowed_scripts_), std::begin(origins),
+                          std::end(origins));
 }
 
 // static

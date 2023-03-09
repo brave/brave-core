@@ -98,7 +98,7 @@ class BraveShieldsWebContentsObserver
   mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
   GetBraveShieldsRemote(content::RenderFrameHost* rfh);
 
-  std::vector<std::string> allowed_script_origins_;
+  std::vector<std::string> allowed_scripts_;
   // We keep a set of the current page's blocked URLs in case the page
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;

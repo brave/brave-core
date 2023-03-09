@@ -61,22 +61,22 @@ function TreeList (props: Props) {
                   [props.blockedList])
 
   const handleAllowAllScripts = () => {
-    const origins = props.blockedList.map(entry => new URL(entry.url).origin)
-    getPanelBrowserAPI().dataHandler.allowScriptsOnce(origins)
+    const scripts = props.blockedList.map(entry => entry.url)
+    getPanelBrowserAPI().dataHandler.allowScriptsOnce(scripts)
   }
 
   const handleBlockAllScripts = () => {
-    const origins = allowedList.map(entry => new URL(entry.url).origin)
-    getPanelBrowserAPI().dataHandler.blockAllowedScripts(origins)
+    const scripts = allowedList.map(entry => entry.url)
+    getPanelBrowserAPI().dataHandler.blockAllowedScripts(scripts)
   }
 
-  const handleBlockScript = (name: string) => {
-    getPanelBrowserAPI().dataHandler.blockAllowedScripts([new URL(name).origin])
+  const handleBlockScript = (url: string) => {
+    getPanelBrowserAPI().dataHandler.blockAllowedScripts([url])
   }
 
-  const handleAllowScript = allowedList.length === 0 ? undefined
-    : (name: string) => {
-      getPanelBrowserAPI().dataHandler.allowScriptsOnce([new URL(name).origin])
+  const handleAllowScript = !props.allowedList ? undefined
+    : (url: string) => {
+      getPanelBrowserAPI().dataHandler.allowScriptsOnce([url])
     }
 
   return (
@@ -105,9 +105,9 @@ function TreeList (props: Props) {
               return (<TreeNode
                 key={origin}
                 host={origin}
+                resourceList={allowedScriptsByOrigin.get(origin) ?? []}
                 onPermissionButtonClick={handleBlockScript}
                 permissionButtonTitle={getLocale('braveShieldsBlockScript')}
-                resourceList={allowedScriptsByOrigin.get(origin) ?? []}
               />)
             })}
           </ScriptsList>
@@ -116,7 +116,7 @@ function TreeList (props: Props) {
         <ScriptsInfo>
           <span>{props.blockedList.length}</span>
           <span>{props.totalBlockedTitle}</span>
-          {allowedList.length > 0 && (<span>
+          {props.allowedList && (<span>
             {<a href="#" onClick={handleAllowAllScripts}>
                 {getLocale('braveShieldsAllowScriptsAll')}
               </a>
@@ -126,11 +126,11 @@ function TreeList (props: Props) {
         <ScriptsList>
           {[...blockedScriptsByOrigin.keys()].map((origin, idx) => {
             return (<TreeNode
-              key={idx}
+              key={origin}
               host={origin}
-              permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
-              onPermissionButtonClick={handleAllowScript}
               resourceList={blockedScriptsByOrigin.get(origin) ?? []}
+              onPermissionButtonClick={handleAllowScript}
+              permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
             />)
           })}
         </ScriptsList>

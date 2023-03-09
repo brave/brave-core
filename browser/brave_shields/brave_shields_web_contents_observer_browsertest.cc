@@ -248,6 +248,14 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(GetBlockedJsList().size(), 2u);
   EXPECT_EQ(GetAllowedJsList().size(), 1u);
 
+  brave_shields_web_contents_observer()->BlockAllowedScripts(
+      {url::Origin::Create(blocked_list.back()).Serialize()});
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(GetBlockedJsList().size(), 3u);
+  EXPECT_EQ(GetAllowedJsList().size(), 0u);
+
   // Disable JavaScript blocking again now.
   content_settings()->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),

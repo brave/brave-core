@@ -99,14 +99,14 @@ function TreeNode (props: TreeNodeProps) {
       resourcesListElement = (
         <div ref={treeChildrenBoxRef}>
           {
-            props.resourceList.map((resource: string, idx) => {
+            props.resourceList.map((path: string, idx) => {
               return (<ResourceElement
                 key={idx}
-                isHost={false}
-                permissionButtonTitle={props.permissionButtonTitle}
-                name={resource}
+                path={path}
+                host={props.host}
                 onTextExpand={measure}
                 onPermissionButtonClick={props.onPermissionButtonClick}
+                permissionButtonTitle={props.permissionButtonTitle}
               />)
             })
           }
@@ -152,7 +152,8 @@ function TreeNode (props: TreeNodeProps) {
         {verticalAxisSVGElement}
       </S.TreeControlBox>
       <S.TreeContents>
-        <ResourceElement name={props.host} isHost={true}
+        <ResourceElement
+          host={props.host}
           onPermissionButtonClick={props.onPermissionButtonClick}
           permissionButtonTitle={props.permissionButtonTitle} />
         {resourcesListElement}

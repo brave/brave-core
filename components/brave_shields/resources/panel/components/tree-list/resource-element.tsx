@@ -11,11 +11,11 @@ import {
 } from '../../state/component_types'
 
 interface UrlElementProps {
-  name: string
+  path?: string
+  host: string
   permissionButtonTitle: string
   onTextExpand?: () => void
   onPermissionButtonClick: PermissionButtonHandler
-  isHost: boolean
 }
 
 function ResourceElement (props: UrlElementProps) {
@@ -28,15 +28,16 @@ function ResourceElement (props: UrlElementProps) {
     setExpanded(true)
     props.onTextExpand?.()
   }
-
+  const url = props.path ? props.host + props.path : props.host
   const handlePermissionButtonClick = () => {
-    props.onPermissionButtonClick?.(props.name)
+    props.onPermissionButtonClick?.(url)
+
   }
 
   const urlTextClass = classnames({
     [style.textUrl]: true,
     [style.textMultiline]: isExpanded,
-    [style.textHost]: props.isHost
+    [style.textHost]: props.path === undefined
   })
 
   const containerClass = classnames({
@@ -47,7 +48,7 @@ function ResourceElement (props: UrlElementProps) {
   return (
     <div className={containerClass}>
       <div className={urlTextClass} onClick={handleTextClick}>
-        {props.name}
+        {props.path ? props.path : props.host}
       </div>
       {props.onPermissionButtonClick && (
         <button onClick={handlePermissionButtonClick}
