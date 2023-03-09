@@ -26,7 +26,7 @@ source_set("favicon") {
     "//components/keyed_service/ios",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/favicon",
-    "//ios/chrome/browser/ui/util",
+    "//ios/chrome/browser/shared/ui/util",
     "//ios/chrome/common/ui/favicon",
     "//ios/web/navigation:core",
     "//net",
