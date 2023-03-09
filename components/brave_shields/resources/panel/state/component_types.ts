@@ -10,5 +10,4 @@ export enum ViewType {
   Main
 }
 
-export type PermissionButtonHandler =
-  ((name: string) => void) | undefined
+export type PermissionButtonHandler = ((name: string) => void)

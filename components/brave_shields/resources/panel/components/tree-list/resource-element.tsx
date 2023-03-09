@@ -15,7 +15,7 @@ interface UrlElementProps {
   host: string
   permissionButtonTitle: string
   onTextExpand?: () => void
-  onPermissionButtonClick: PermissionButtonHandler
+  onPermissionButtonClick?: PermissionButtonHandler
 }
 
 function ResourceElement (props: UrlElementProps) {

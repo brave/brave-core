@@ -13,7 +13,7 @@ import {
 interface TreeNodeProps {
   host: string
   resourceList: string[]
-  onPermissionButtonClick: PermissionButtonHandler
+  onPermissionButtonClick?: PermissionButtonHandler
   permissionButtonTitle: string
 }
 
