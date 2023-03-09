@@ -10,12 +10,10 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
-#include "brave/components/brave_federated/task/task_runner.h"
 #include "brave/components/brave_federated/task/typing.h"
 
 namespace network {
@@ -29,7 +27,7 @@ namespace brave_federated {
 class CommunicationAdapter;
 class DataStoreService;
 class EligibilityService;
-class TaskRunner;
+class FederatedTaskRunner;
 
 class LearningService : public Observer {
  public:
@@ -54,7 +52,6 @@ class LearningService : public Observer {
   EligibilityService* eligibility_service_;
   CommunicationAdapter* communication_adapter_;
 
-  std::map<std::string, TaskRunner*> task_runners_;
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_;
 };
