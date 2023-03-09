@@ -19,6 +19,8 @@
 
 namespace speedreader {
 
+class SpeedreaderThrottleDelegate;
+
 class SpeedReaderLocalURLLoader : public network::mojom::URLLoaderClient,
                                   public network::mojom::URLLoader {
  public:
@@ -30,6 +32,7 @@ class SpeedReaderLocalURLLoader : public network::mojom::URLLoaderClient,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     SpeedReaderLocalURLLoader*>
   CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+               base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
                scoped_refptr<base::SequencedTaskRunner> task_runner);
 
   mojo::ScopedDataPipeConsumerHandle* GetDestinationConsumerHandle();
@@ -40,6 +43,7 @@ class SpeedReaderLocalURLLoader : public network::mojom::URLLoaderClient,
  private:
   SpeedReaderLocalURLLoader(
       base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+      base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
       mojo::PendingRemote<network::mojom::URLLoaderClient>
           destination_url_loader_client,
       scoped_refptr<base::SequencedTaskRunner> task_runner);
@@ -78,6 +82,7 @@ class SpeedReaderLocalURLLoader : public network::mojom::URLLoaderClient,
   void Abort();
 
   base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle_;
+  base::WeakPtr<SpeedreaderThrottleDelegate> delegate_;
   mojo::Remote<network::mojom::URLLoaderClient> destination_url_loader_client_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

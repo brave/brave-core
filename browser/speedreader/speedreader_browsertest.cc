@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/functional/bind.h"
 #include "base/command_line.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
@@ -58,7 +59,7 @@ const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
 const char kTestPageReadableOnUnreadablePath[] =
-    "/speedreader/rewriter/pages/news_pages/abcnews.com/original.html";
+    "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/article/rss.xml";
 
@@ -653,11 +654,27 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
                        OnDemandReader) {
   EXPECT_FALSE(speedreader_service()->IsEnabled());
 
-  NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath);
+  struct MockObserver : speedreader::PageDistiller::Observer {
+    MOCK_METHOD(void,
+                OnPageDistillStateChanged,
+                (speedreader::PageDistiller::State),
+                (override));
+  };
 
-  while (!GetReaderButton()->GetVisible()) {
-    NonBlockingDelay(base::Milliseconds(10));
-  }
+  testing::NiceMock<MockObserver> observer;
+  tab_helper()->AddObserver(&observer);
+
+  base::RunLoop run_loop;
+  ON_CALL(observer, OnPageDistillStateChanged(
+                        speedreader::PageDistiller::State::kDistillable))
+      .WillByDefault(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
+                              WindowOpenDisposition::CURRENT_TAB);
+  run_loop.Run();
+  tab_helper()->RemoveObserver(&observer);
+
   EXPECT_TRUE(GetReaderButton()->GetVisible());
 
   EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,

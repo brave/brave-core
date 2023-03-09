@@ -146,7 +146,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
               if (self) {
                 self->distillation_result_ = result;
 
-                if (result == speedreader::DistillationResult::kSucceess) {
+                if (result == speedreader::DistillationResult::kSuccess) {
                   MaybeSaveDistilledDataForDebug(url, original_data, stylesheet,
                                                  transformed);
                   self->BodySnifferURLLoader::CompleteLoading(

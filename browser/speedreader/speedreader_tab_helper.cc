@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
@@ -18,6 +18,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
@@ -73,7 +74,8 @@ constexpr const char* kPropertyPrefNames[] = {
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {
+      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
+      PageDistiller(web_contents) {
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(GetProfile()->GetPrefs());
   pref_change_registrar_->Add(
@@ -119,6 +121,16 @@ void SpeedreaderTabHelper::BindSpeedreaderHost(
   if (!tab_helper)
     return;
   tab_helper->BindReceiver(std::move(receiver));
+}
+
+// static
+PageDistiller* SpeedreaderTabHelper::GetPageDistiller(
+    content::WebContents* contents) {
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(contents);
+  if (!tab_helper) {
+    return nullptr;
+  }
+  return tab_helper;
 }
 
 void SpeedreaderTabHelper::BindReceiver(
@@ -187,16 +199,8 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 }
 
 void SpeedreaderTabHelper::SingleShotSpeedreader() {
-  constexpr const char16_t kGetDocumentSource[] =
-      uR"js(
-    document.documentElement.outerHTML
-  )js";
-
-  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      kGetDocumentSource,
-      base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
-                     weak_factory_.GetWeakPtr()),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  GetDistilledHTML(base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
+                                  weak_factory_.GetWeakPtr()));
 
   SetNextRequestState(DistillState::kReaderModePending);
   single_shot_next_request_ = true;
@@ -244,7 +248,8 @@ void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
     if (rewriter_service->URLLooksReadable(url)) {
       VLOG(2) << __func__ << "URL passed speedreader heuristic: " << url;
       if (!IsSpeedreaderEnabled()) {
-        SetNextRequestState(DistillState::kPageProbablyReadable);
+        // Determine readability on DOMContentLoaded.
+        SetNextRequestState(DistillState::kNone);
       } else if (!IsEnabledForSite(url)) {
         SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
       } else {
@@ -481,6 +486,14 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
 }
 
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
+  if (PageStateIsDistilled(distill_state_)) {
+    UpdateState(State::kDistilled);
+  } else if (PageSupportsDistillation(distill_state_)) {
+    UpdateState(State::kDistillable);
+  } else {
+    UpdateState(State::kNotDistillable);
+  }
+
   if (!is_visible_)
     return;
 #if !BUILDFLAG(IS_ANDROID)
@@ -510,6 +523,17 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
+  if (PageDistillState() == DistillState::kNone) {
+    auto* rewriter_service =
+        g_brave_browser_process->speedreader_rewriter_service();
+    if (rewriter_service && rewriter_service->URLLooksReadable(
+                                web_contents()->GetLastCommittedURL())) {
+      distill_state_ = DistillState::kPageProbablyReadable;
+      UpdateButtonIfNeeded();
+    }
+    return;
+  }
+
   if (!PageWantsDistill(distill_state_)) {
     return;
   }
@@ -537,6 +561,7 @@ void SpeedreaderTabHelper::WebContentsDestroyed() {
   pref_change_registrar_.reset();
   dom_distiller::RemoveObserver(web_contents(), this);
   content_rules_ = nullptr;
+  SetWebContents(nullptr);
   HideBubble();
 }
 
@@ -553,10 +578,8 @@ std::string SpeedreaderTabHelper::TakePageContent() {
 }
 
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
-  if (result != DistillationResult::kSucceess) {
-    // TODO(boocmp): Show error dialog [Distillation failed on this page].
+  if (result != DistillationResult::kSuccess) {
     SetNextRequestState(DistillState::kNone);
-    ReloadContents();
     return;
   }
 
@@ -564,7 +587,7 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
     distill_state_ = DistillState::kSpeedreaderMode;
   } else if (distill_state_ == DistillState::kReaderModePending) {
-    if (result == DistillationResult::kSucceess) {
+    if (result == DistillationResult::kSuccess) {
       distill_state_ = DistillState::kReaderMode;
     } else {
       distill_state_ = DistillState::kPageProbablyReadable;
@@ -582,7 +605,7 @@ void SpeedreaderTabHelper::OnResult(
     const dom_distiller::DistillabilityResult& result) {
   if (PageDistillState() == DistillState::kNone) {
     if (result.is_distillable) {
-      // Page detected as non-readable by URL, but readable by it's content.
+      // Page detected as non-readable by URL, but readable by content.
       distill_state_ = DistillState::kPageProbablyReadable;
       UpdateButtonIfNeeded();
     }
@@ -612,21 +635,15 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-void SpeedreaderTabHelper::OnGetDocumentSource(base::Value result) {
+void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   DCHECK(single_shot_next_request_);
-
-  auto* speedreader_service =
-      SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  auto* speedreader_service_rewriter =
-      g_brave_browser_process->speedreader_rewriter_service();
-  if (!speedreader_service || !speedreader_service_rewriter ||
-      !result.is_string()) {
-    // Failed to get source, fall back to the network request.
-    ReloadContents();
+  if (!success) {
+    // TODO(boocmp): Show error dialog [Distillation failed on this page].
+    SetNextRequestState(DistillState::kPageProbablyReadable);
     return;
   }
 
-  single_show_content_ = std::move(result).TakeString();
+  single_show_content_.swap(html);
   ReloadContents();
 }
 

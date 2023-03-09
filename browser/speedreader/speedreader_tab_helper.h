@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
@@ -42,6 +43,7 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
+      public PageDistiller,
       public SpeedreaderThrottleDelegate,
       public mojom::SpeedreaderHost,
       public dom_distiller::DistillabilityObserver {
@@ -58,6 +60,8 @@ class SpeedreaderTabHelper
       content::RenderFrameHost* rfh);
 
   static void MaybeCreateForWebContents(content::WebContents* contents);
+
+  static PageDistiller* GetPageDistiller(content::WebContents* contents);
 
   base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
@@ -172,7 +176,7 @@ class SpeedreaderTabHelper
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
 
-  void OnGetDocumentSource(base::Value result);
+  void OnGetDocumentSource(bool success, std::string html);
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 

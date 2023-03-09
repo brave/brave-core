@@ -98,7 +98,7 @@ void DistillPage(const GURL& url,
     if (transformed.length() < 1024) {
       return {DistillationResult::kFail, std::move(data), std::string()};
     }
-    return {DistillationResult::kSucceess, std::move(data), transformed};
+    return {DistillationResult::kSuccess, std::move(data), transformed};
   };
 
   auto return_result = [](DistillationResultCallback callback, Result r) {

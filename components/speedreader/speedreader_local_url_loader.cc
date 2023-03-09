@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/speedreader/speedreader_throttle_delegate.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/record_ontransfersizeupdate_utils.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
@@ -24,6 +26,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            SpeedReaderLocalURLLoader*>
 SpeedReaderLocalURLLoader::CreateLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     scoped_refptr<base::SequencedTaskRunner> task_runner) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
@@ -32,7 +35,7 @@ SpeedReaderLocalURLLoader::CreateLoader(
           url_loader_client.InitWithNewPipeAndPassReceiver();
 
   std::unique_ptr<SpeedReaderLocalURLLoader> loader(
-      new SpeedReaderLocalURLLoader(std::move(throttle),
+      new SpeedReaderLocalURLLoader(std::move(throttle), std::move(delegate),
                                     std::move(url_loader_client),
                                     std::move(task_runner)));
   SpeedReaderLocalURLLoader* loader_rawptr = loader.get();
@@ -44,10 +47,12 @@ SpeedReaderLocalURLLoader::CreateLoader(
 
 SpeedReaderLocalURLLoader::SpeedReaderLocalURLLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+    base::WeakPtr<SpeedreaderThrottleDelegate> delegate,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
-    : throttle_(throttle),
+    : throttle_(std::move(throttle)),
+      delegate_(std::move(delegate)),
       destination_url_loader_client_(std::move(destination_url_loader_client)),
       task_runner_(task_runner),
       body_producer_watcher_(FROM_HERE,
@@ -143,6 +148,10 @@ void SpeedReaderLocalURLLoader::CompleteSending() {
 
   body_producer_watcher_.Cancel();
   body_producer_handle_.reset();
+
+  if (delegate_) {
+    delegate_->OnDistillComplete(DistillationResult::kSuccess);
+  }
 }
 
 void SpeedReaderLocalURLLoader::SendBodyToClient() {

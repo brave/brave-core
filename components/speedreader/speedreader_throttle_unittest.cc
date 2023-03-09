@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"

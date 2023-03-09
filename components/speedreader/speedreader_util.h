@@ -61,7 +61,7 @@ enum class DistillState {
 
 enum class DistillationResult : int {
   kNone,
-  kSucceess,
+  kSuccess,
   kFail,
 };
 
