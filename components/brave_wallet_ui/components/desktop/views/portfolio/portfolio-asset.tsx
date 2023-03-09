@@ -127,7 +127,7 @@ export const PortfolioAsset = (props: Props) => {
 
   // routing
   const history = useHistory()
-  const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
+  const { chainIdOrMarketSymbol, contractOrSymbol, tokenId } = useParams<{ chainIdOrMarketSymbol?: string, contractOrSymbol?: string, tokenId?: string }>()
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   // redux
@@ -226,17 +226,13 @@ export const PortfolioAsset = (props: Props) => {
 
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
-    if (!assetId) {
+    if (!chainIdOrMarketSymbol) {
       return undefined
     }
 
-    // If the id length is greater than 15 assumes it's a contractAddress
-    let token = assetId.length > 15
-      ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
-      : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase() && token.contractAddress === '')
-
-    if (!token && assetId.length < 15) {
-      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === assetId?.toLowerCase())
+    if (isShowingMarketData) {
+      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase())
+      let token = undefined as BraveWallet.BlockchainToken | undefined
       if (coinMarket) {
         token = new BraveWallet.BlockchainToken()
         token.coingeckoId = coinMarket.id
@@ -247,12 +243,19 @@ export const PortfolioAsset = (props: Props) => {
       }
       const foundToken = tokensWithCoingeckoId?.find(token => token.coingeckoId.toLowerCase() === coinMarket?.id?.toLowerCase())
       setIsTokenSupported(foundToken !== undefined)
-    } else {
-      setIsTokenSupported(true)
+      return token
     }
-
-    return token
-  }, [assetId, userVisibleTokensInfo, selectedTimeline, tokenId])
+    if (!contractOrSymbol) {
+      return undefined
+    }
+    const userToken = userVisibleTokensInfo.find((token) =>
+      tokenId
+        ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol
+        : token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol ||
+        token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol && token.contractAddress === '')
+    setIsTokenSupported(userToken !== undefined)
+    return userToken
+  }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
 
   const isSelectedAssetBridgeSupported = React.useMemo(() => {
     if (!selectedAssetFromParams) return false
