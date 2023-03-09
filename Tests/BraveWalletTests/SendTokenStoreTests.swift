@@ -23,8 +23,9 @@ class SendTokenStoreTests: XCTestCase {
     erc721Balance: String = "0",
     solanaBalance: UInt64 = 0,
     splTokenBalance: String = "0",
-    snsGetSolAddr: String = ""
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestSolanaTxManagerProxy) {
+    snsGetSolAddr: String = "",
+    ensGetEthAddr: String = ""
+  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestEthTxManagerProxy, BraveWallet.TestSolanaTxManagerProxy) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._selectedAccount = { $1(accountAddress) }
@@ -41,6 +42,9 @@ class SendTokenStoreTests: XCTestCase {
     }
     rpcService._snsGetSolAddr = { address, completion in
       completion(snsGetSolAddr, .success, "")
+    }
+    rpcService._ensGetEthAddr = { _, completion in
+      completion(ensGetEthAddr, false, .success, "")
     }
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
@@ -65,8 +69,12 @@ class SendTokenStoreTests: XCTestCase {
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._selectedCoin = { $0(selectedCoin) }
     walletService._userAssets = { $2(userAssets) }
+    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    ethTxManagerProxy._makeErc20TransferData = { _, _, completion in
+      completion(true, .init())
+    }
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    return (keyringService, rpcService, walletService, solTxManagerProxy)
+    return (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy)
   }
   
   /// Test given a `prefilledToken` will be assigned to `selectedSendToken`
@@ -117,7 +125,7 @@ class SendTokenStoreTests: XCTestCase {
   func testPrefilledTokenSwitchNetwork() {
     var selectedCoin: BraveWallet.CoinType = .eth
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     walletService._selectedCoin = { $0(selectedCoin) }
     rpcService._network = { coin, completion in
       completion(selectedNetwork)
@@ -138,7 +146,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSolToken,
       ipfsApi: nil
@@ -166,14 +174,14 @@ class SendTokenStoreTests: XCTestCase {
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: numDecimals))
     let mockBalanceWei = formatter.weiString(from: mockDecimalBalance, radix: .hex, decimals: numDecimals) ?? ""
     
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices(balance: mockBalanceWei)
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(balance: mockBalanceWei)
     let store = SendTokenStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil,
       ipfsApi: nil
@@ -210,14 +218,14 @@ class SendTokenStoreTests: XCTestCase {
 
   /// Test making an ETH EIP 1559 transaction
   func testMakeSendETHEIP1559Transaction() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken,
       ipfsApi: nil
@@ -235,14 +243,14 @@ class SendTokenStoreTests: XCTestCase {
 
   /// Test making a ETH Send transaction
   func testMakeSendETHTransaction() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken,
       ipfsApi: nil
@@ -260,14 +268,14 @@ class SendTokenStoreTests: XCTestCase {
 
   /// Test making an ERC20 EIP 1559 transaction
   func testMakeSendERC20EIP1559Transaction() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil,
       ipfsApi: nil
@@ -287,14 +295,14 @@ class SendTokenStoreTests: XCTestCase {
 
   /// Test making a Send ERC20 transaction
   func testMakeSendERC20Transaction() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
       rpcService: rpcService,
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .previewToken,
       ipfsApi: nil
@@ -312,8 +320,7 @@ class SendTokenStoreTests: XCTestCase {
   
   /// Test making ERC721 (NFT) Transaction
   func testMakeSendERC721Transaction() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
-    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
@@ -409,13 +416,12 @@ class SendTokenStoreTests: XCTestCase {
   /// Test making Solana System Program Transfer transaction
   func testSolSendSystemProgramTransfer() {
     let mockBalance: UInt64 = 47
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       userAssets: [.mockSolToken],
       selectedCoin: .sol,
       selectedNetwork: .mockSolana,
       solanaBalance: mockBalance
     )
-    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._makeSystemProgramTransferTxData = {_, _, _, completion in
       completion(.init(), .success, "")
     }
@@ -425,7 +431,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: BraveWallet.NetworkInfo.mockSolana.nativeToken,
       ipfsApi: nil
@@ -447,13 +453,12 @@ class SendTokenStoreTests: XCTestCase {
   /// Test making Solana Token Program Transfer transaction
   func testSolSendTokenProgramTransfer() {
     let splTokenBalance = "1000000"
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       userAssets: [.mockSpdToken],
       selectedCoin: .sol,
       selectedNetwork: .mockSolana,
       splTokenBalance: splTokenBalance
     )
-    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, completion in
       completion(.init(), .success, "")
     }
@@ -463,7 +468,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSpdToken,
       ipfsApi: nil
@@ -485,13 +490,12 @@ class SendTokenStoreTests: XCTestCase {
   /// Test Solana System Program transaction is created with correct lamports value for the `mockSolToken` (9 decimals)
   func testSendSolAmount() {
     let mockBalance: UInt64 = 47
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       userAssets: [.mockSolToken, .mockSpdToken],
       selectedCoin: .sol,
       selectedNetwork: .mockSolana,
       solanaBalance: mockBalance
     )
-    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._makeSystemProgramTransferTxData = {_, _, lamports, completion in
       let solValueString = "10000000" // 0.01
       XCTAssertNotNil(UInt64(solValueString))
@@ -504,7 +508,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSolToken,
       ipfsApi: nil
@@ -526,13 +530,12 @@ class SendTokenStoreTests: XCTestCase {
   /// Test Solana SPL Token Program transaction is created with correct amount value for the `mockSpdToken` (6 decimals)
   func testSendSplTokenAmount() {
     let mockBalance: UInt64 = 47
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       userAssets: [.mockSolToken, .mockSpdToken],
       selectedCoin: .sol,
       selectedNetwork: .mockSolana,
       solanaBalance: mockBalance
     )
-    let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, amount, completion in
       let splValueString = "10000" // 0.01 SPD
       XCTAssertNotNil(UInt64(splValueString))
@@ -546,7 +549,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: MockEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: .mockSpdToken,
       ipfsApi: nil
@@ -566,8 +569,7 @@ class SendTokenStoreTests: XCTestCase {
   }
 
   func testFetchSelectedSendNFTMetadataERC721() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
-    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
@@ -609,8 +611,7 @@ class SendTokenStoreTests: XCTestCase {
   }
   
   func testFetchSelectedSendNFTMetadataSolNFT() {
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices()
-    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
@@ -651,11 +652,12 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
   
+  /// Test `resolvedAddress` will be assigned the address returned from `snsGetSolAddr`.
   func testSNSAddressResolution() {
     let domain = "brave.sol"
     let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
     
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       selectedCoin: .sol,
       snsGetSolAddr: expectedAddress
     )
@@ -666,8 +668,8 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil,
       ipfsApi: nil
     )
@@ -675,14 +677,9 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst() // Initial value
-      .collect(2) // 1 - reset to nil in `sendAddress` didSet, 2 - assigned resolved address
+      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
-        guard let resolvedAddress = resolvedAddress.last else {
-          XCTFail("Unexpected test result")
-          return
-        }
         XCTAssertEqual(resolvedAddress, expectedAddress)
       }.store(in: &cancellables)
     
@@ -693,10 +690,11 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
   
+  /// Test `addressError` will be assigned an `ensError` if error is returned from `snsGetSolAddr`.
   func testSNSAddressResolutionFailure() {
     let domain = "brave.sol"
     let expectedAddress = ""
-    let (keyringService, rpcService, walletService, _) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       selectedCoin: .sol,
       snsGetSolAddr: expectedAddress
     )
@@ -707,8 +705,8 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
-      solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil,
       ipfsApi: nil
     )
@@ -738,10 +736,11 @@ class SendTokenStoreTests: XCTestCase {
     }
   }
   
+  /// Test `resolvedAddress` will be used in the ethereum transaction when available.
   func testResolvedAddressUsedInSolTxIfAvailable() {
     let domain = "brave.sol"
     let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
-    let (keyringService, rpcService, walletService, solTxManagerProxy) = setupServices(
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
       selectedCoin: .sol,
       selectedNetwork: .mockSolana,
       snsGetSolAddr: expectedAddress
@@ -757,7 +756,7 @@ class SendTokenStoreTests: XCTestCase {
       walletService: walletService,
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      ethTxManagerProxy: BraveWallet.TestEthTxManagerProxy(),
+      ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       prefilledToken: nil,
       ipfsApi: nil
@@ -767,20 +766,192 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst() // Initial value
-      .collect(2) // 1 - reset to nil in `sendAddress` didSet, 2 - assigned resolved address
+      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
-        guard let resolvedAddress = resolvedAddress.last else {
-          XCTFail("Unexpected test result")
-          return
-        }
         XCTAssertEqual(resolvedAddress, expectedAddress)
       }.store(in: &cancellables)
     store.sendAddress = domain
     // wait for resolved domain to populate
     wait(for: [resolvedAddressExpectation], timeout: 1)
     
+    let ex = expectation(description: "send-transaction")
+    store.sendToken(amount: "0.01") { success, _ in
+      defer { ex.fulfill() }
+      XCTAssertTrue(success)
+      XCTAssertNotNil(createdWithToAddress)
+      XCTAssertEqual(createdWithToAddress, expectedAddress)
+    }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `resolvedAddress` will be assigned the address returned from `ensGetEthAddr`.
+  func testENSAddressResolution() {
+    let domain = "brave.eth"
+    let expectedAddress = "0xxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth,
+      ensGetEthAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil,
+      ipfsApi: nil
+    )
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `isOffchainResolveRequired` will be assigned `true` when `ensGetEthAddr` returns true for offchain consent required, and that `resolvedAddress` remains nil
+  func testENSAddressResolutionOffchain() {
+    let domain = "braveoffchain.eth"
+    let expectedAddress = ""
+    
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth,
+      ensGetEthAddr: expectedAddress
+    )
+    rpcService._ensGetEthAddr = { _, completion in
+      completion(expectedAddress, true, .success, "")
+    }
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil,
+      ipfsApi: nil
+    )
+    
+    let isOffchainResolveRequiredExpectation = expectation(description: "sendTokenStore-isOffchainResolveRequired")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$isOffchainResolveRequired
+      .dropFirst(2) // Initial value, reset to false for `sendAddress` assignment
+      .sink { isOffchainResolveRequired in
+        defer { isOffchainResolveRequiredExpectation.fulfill() }
+        XCTAssertTrue(isOffchainResolveRequired)
+        XCTAssertNil(store.resolvedAddress)
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `addressError` will be assigned an `ensError` if error is returned from `ensGetEthAddr`.
+  func testENSAddressResolutionFailure() {
+    let domain = "brave.eth"
+    let expectedAddress = ""
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth,
+      ensGetEthAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil,
+      ipfsApi: nil
+    )
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst() // Initial value
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertNil(resolvedAddress)
+      }.store(in: &cancellables)
+    
+    let addressErrorExpectation = expectation(description: "sendTokenStore-addressError")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$addressError
+      .dropFirst() // Initial value
+      .sink { addressError in
+        defer { addressErrorExpectation.fulfill() }
+        XCTAssertEqual(addressError, .ensError(domain: domain))
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `resolvedAddress` will be used in the ethereum transaction when available.
+  func testResolvedAddressUsedInEthTxIfAvailable() {
+    let domain = "brave.eth"
+    let expectedAddress = "0xxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth,
+      selectedNetwork: .mockMainnet,
+      ensGetEthAddr: expectedAddress
+    )
+    var createdWithToAddress: String?
+    ethTxManagerProxy._makeErc20TransferData = { toAddress, v2, completion in
+      createdWithToAddress = toAddress
+      completion(true, [])
+    }
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: nil,
+      ipfsApi: nil
+    )
+    store.selectedSendToken = .mockSolToken
+
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    store.sendAddress = domain
+    // wait for resolved domain to populate
+    wait(for: [resolvedAddressExpectation], timeout: 1)
+
     let ex = expectation(description: "send-transaction")
     store.sendToken(amount: "0.01") { success, _ in
       defer { ex.fulfill() }

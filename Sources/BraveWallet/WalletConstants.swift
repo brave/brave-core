@@ -25,6 +25,9 @@ struct WalletConstants {
   
   /// The url to Brave Help Center for Wallet.
   static let braveWalletSupportURL = URL(string: "https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet")!
+  
+  /// The url to learn more about ENS off-chain lookups
+  static let braveWalletENSOffchainURL = URL(string: "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [
