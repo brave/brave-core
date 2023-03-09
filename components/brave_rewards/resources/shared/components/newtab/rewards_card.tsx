@@ -307,6 +307,22 @@ export function RewardsCard (props: Props) {
   function renderLimited () {
     const onConnect = () => { window.open(urls.connectURL, '_blank', 'noreferrer') }
 
+    if (!props.adsEnabled) {
+      return (
+        <style.root>
+          <RewardsCardHeader />
+          <style.adsOptIn>
+            {getString('rewardsAboutRewards')}
+          </style.adsOptIn>
+          <style.primaryAction>
+            <button onClick={props.onEnableAds}>
+              {getString('rewardsStartUsingRewards')}
+            </button>
+          </style.primaryAction>
+        </style.root>
+      )
+    }
+
     return (
       <style.root>
         <RewardsCardHeader />
