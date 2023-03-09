@@ -215,8 +215,8 @@ float Model::ComputeNLL(std::vector<float> true_labels,
   float error = 0.0;
 
   for (size_t i = 0; i < true_labels.size(); i++) {
-    error += (true_labels[i] * log(Activation(predictions[i])) +
-              (1.0 - true_labels[i]) * log(1 - Activation(predictions[i])));
+    error += (true_labels[i] * log(predictions[i]) +
+              (1.0 - true_labels[i]) * log(1 - predictions[i]));
   }
 
   return -error;
