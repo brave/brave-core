@@ -57,6 +57,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -177,6 +178,8 @@ public class ImageLoader {
         try {
             // Convert the input string to an XML document.
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            // Protect from XML EXternal Entity (XXE) attacks.
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(input)));
             doc.getDocumentElement().normalize();
