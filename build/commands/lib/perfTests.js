@@ -8,7 +8,7 @@ const config = require('../lib/config')
 const path = require('path')
 
 
-const runPerfTests = (passthroughArgs, perf_config, targets, options = {}) => {
+const runPerfTests = (passthroughArgs, perf_config, targets) => {
   targets = targets.replace(/brave:nightly:([^:]+):none:/, "$1:")
   args = [
     path.join(
