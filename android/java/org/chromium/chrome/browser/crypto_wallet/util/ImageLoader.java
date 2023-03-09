@@ -71,7 +71,7 @@ public class ImageLoader {
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
 
     /**
-     * Downloads an image from a give URL, including support for GIF and SVG image types.
+     * Downloads an image from a given URL, including support for GIF and SVG image types.
      * @param url URL of the image to download.
      * @param context Android context used by Glide for applying transofrmations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
