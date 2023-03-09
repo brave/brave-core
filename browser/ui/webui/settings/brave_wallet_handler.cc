@@ -325,17 +325,19 @@ BraveWalletHandler::GetBraveWalletPinService() {
 }
 
 void BraveWalletHandler::IsNftPinningEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsNftPinningEnabled()));
 }
 
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
 
   auto* service = GetBraveWalletPinService();
   if (!service) {
-    ResolveJavascriptCallback(args[0], base::Value(-1));
+    ResolveJavascriptCallback(args[0], base::Value());
     return;
   }
   ResolveJavascriptCallback(
@@ -343,6 +345,7 @@ void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
 }
 
 void BraveWalletHandler::ClearPinnedNft(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   auto* service = GetBraveWalletPinService();
   service->Reset(

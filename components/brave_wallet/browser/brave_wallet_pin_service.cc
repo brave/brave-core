@@ -316,6 +316,7 @@ void BraveWalletPinService::Restore() {
 }
 
 void BraveWalletPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
   local_pin_service_->Reset(
       base::BindOnce(&BraveWalletPinService::OnResetLocalPinService,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -980,16 +981,11 @@ std::set<std::string> BraveWalletPinService::GetTokens(
 }
 
 size_t BraveWalletPinService::GetPinnedTokensCount() {
-  auto tokens = GetTokens(absl::nullopt);
-  auto tokens_vector = std::vector(tokens.begin(), tokens.end());
-  auto removed = base::ranges::remove_if(
-      tokens_vector.begin(), tokens_vector.end(), [this](auto& v) -> bool {
-        auto status = this->GetTokenStatus(v);
-        return !status.is_null() &&
-               status->code != mojom::TokenPinStatusCode::STATUS_PINNED;
-      });
-  tokens_vector.erase(removed, tokens_vector.end());
-  return tokens_vector.size();
+  return base::ranges::count_if(GetTokens(absl::nullopt), [this](auto& v) {
+    auto status = this->GetTokenStatus(v);
+    return !status.is_null() &&
+           status->code == mojom::TokenPinStatusCode::STATUS_PINNED;
+  });
 }
 
 }  // namespace brave_wallet

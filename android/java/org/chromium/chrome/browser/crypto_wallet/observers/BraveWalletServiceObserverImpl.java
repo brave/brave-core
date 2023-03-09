@@ -73,6 +73,11 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     }
 
     @Override
+    public void onResetWallet() {
+        if (isActive()) getRef().onResetWallet();
+    }
+
+    @Override
     public void close() {
         mDelegate.clear();
         mDelegate = null;

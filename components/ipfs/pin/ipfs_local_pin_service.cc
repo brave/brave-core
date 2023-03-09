@@ -194,6 +194,7 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
 }
 
 void IpfsLocalPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
   ipfs_service_->LsPinCli(base::BindOnce(&IpfsLocalPinService::OnLsPinCliResult,
                                          weak_ptr_factory_.GetWeakPtr(),
                                          std::move(callback)));

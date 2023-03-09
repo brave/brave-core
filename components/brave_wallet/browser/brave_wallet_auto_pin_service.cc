@@ -45,6 +45,7 @@ void BraveWalletAutoPinService::OnResetWallet() {
 }
 
 void BraveWalletAutoPinService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
   queue_.clear();
   current_.reset();
   SetAutoPinEnabled(false);
