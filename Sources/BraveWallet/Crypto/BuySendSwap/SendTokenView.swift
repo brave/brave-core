@@ -19,6 +19,7 @@ struct SendTokenView: View {
   @ScaledMetric private var length: CGFloat = 16.0
   
   @Environment(\.appRatingRequestAction) private var appRatingRequest
+  @Environment(\.openURL) private var openURL
   
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
@@ -32,6 +33,11 @@ struct SendTokenView: View {
           sendTokenStore.addressError == nil,
           sendTokenStore.sendError == nil else {
       return true
+    }
+    if sendTokenStore.isOffchainResolveRequired {
+      // if offchain resolve is required, the send button will show 'Use ENS Domain'
+      // and will enable ens offchain, instead of attempting to create send tx.
+      return false
     }
     if token.isErc721 || token.isNft {
       return balance < 1
@@ -49,6 +55,8 @@ struct SendTokenView: View {
   private var sendButtonTitle: String {
     if let error = sendTokenStore.sendError {
       return error.localizedDescription
+    } else if sendTokenStore.isOffchainResolveRequired {
+      return Strings.Wallet.ensOffchainGatewayButton
     } else {
       return Strings.Wallet.sendCryptoSendButtonTitle
     }
@@ -190,6 +198,29 @@ struct SendTokenView: View {
               if sendTokenStore.isResolvingAddress {
                 ProgressView()
               }
+              if sendTokenStore.isOffchainResolveRequired {
+                VStack(alignment: .leading, spacing: 8) {
+                  Divider()
+                  Text(Strings.Wallet.ensOffchainGatewayTitle)
+                    .font(.body)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(.braveLabel))
+                    .fixedSize(horizontal: false, vertical: true)
+                  Text(Strings.Wallet.ensOffchainGatewayDesc)
+                    .font(.body)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .fixedSize(horizontal: false, vertical: true)
+                  Button(action: {
+                    openURL(WalletConstants.braveWalletENSOffchainURL)
+                  }) {
+                    Text(Strings.Wallet.learnMoreButton)
+                      .foregroundColor(Color(.braveBlurpleTint))
+                  }
+                }
+                .font(.subheadline)
+                .padding(.top, 8) // padding between sendAddress & divider
+                .frame(maxWidth: .infinity)
+              }
               if let resolvedAddress = sendTokenStore.resolvedAddress {
                 AddressView(address: resolvedAddress) {
                   Text(resolvedAddress)
@@ -207,14 +238,18 @@ struct SendTokenView: View {
             WalletLoadingButton(
               isLoading: sendTokenStore.isLoading || sendTokenStore.isMakingTx,
               action: {
-                sendTokenStore.sendToken(
-                  amount: sendTokenStore.sendAmount
-                ) { success, _ in
-                  isShowingError = !success
-                  if success {
-                    appRatingRequest?()
+                if sendTokenStore.isOffchainResolveRequired {
+                  sendTokenStore.enableENSOffchainLookup()
+                } else {
+                  sendTokenStore.sendToken(
+                    amount: sendTokenStore.sendAmount
+                  ) { success, _ in
+                    isShowingError = !success
+                    if success {
+                      appRatingRequest?()
+                    }
+                    completion?(success)
                   }
-                  completion?(success)
                 }
               },
               label: {

@@ -87,6 +87,15 @@ class SettingsStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     
+    let ensOffchainResolveMethodExpectation = expectation(description: "setup-ensOffchainResolveMethod")
+    sut.$ensOffchainResolveMethod
+      .dropFirst()
+      .sink { ensOffchainResolveMethod in
+        defer { ensOffchainResolveMethodExpectation.fulfill() }
+        XCTAssertEqual(ensOffchainResolveMethod, .disabled)
+      }
+      .store(in: &cancellables)
+    
     let snsResolveMethodExpectation = expectation(description: "setup-snsResolveMethod")
     sut.$snsResolveMethod
       .dropFirst()

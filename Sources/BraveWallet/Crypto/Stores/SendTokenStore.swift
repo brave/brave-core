@@ -30,6 +30,7 @@ public class SendTokenStore: ObservableObject {
     didSet {
       if oldValue != sendAddress {
         resolvedAddress = nil
+        isOffchainResolveRequired = false
       }
       sendAddressUpdatedTimer?.invalidate()
       sendAddressUpdatedTimer = Timer.scheduledTimer(
@@ -62,6 +63,8 @@ public class SendTokenStore: ObservableObject {
   @Published private(set) var isResolvingAddress: Bool = false
   /// The address returned from SNS / ENS
   @Published private(set) var resolvedAddress: String?
+  /// If the current `sendAddress` needs to be resolved offchain
+  @Published private(set) var isOffchainResolveRequired: Bool = false
 
   enum AddressError: LocalizedError, Equatable {
     case sameAsFromAddress
@@ -71,6 +74,7 @@ public class SendTokenStore: ObservableObject {
     case invalidChecksum
     case notSolAddress
     case snsError(domain: String)
+    case ensError(domain: String)
 
     var errorDescription: String? {
       switch self {
@@ -86,8 +90,10 @@ public class SendTokenStore: ObservableObject {
         return Strings.Wallet.sendWarningAddressInvalidChecksum
       case .notSolAddress:
         return Strings.Wallet.sendWarningSolAddressNotValid
-      case .snsError(let domain):
-        return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, domain)
+      case .snsError:
+        return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.sol.localizedTitle)
+      case .ensError:
+        return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
       }
     }
   }
@@ -257,30 +263,62 @@ public class SendTokenStore: ObservableObject {
   @MainActor private func validateEthereumSendAddress(fromAddress: String) async {
     let normalizedFromAddress = fromAddress.lowercased()
     let normalizedToAddress = sendAddress.lowercased()
-    // TODO: Support ENS #5787
-    if !sendAddress.isETHAddress {
-      // 1. check if send address is a valid eth address
-      addressError = .notEthAddress
-    } else if normalizedFromAddress == normalizedToAddress {
-      // 2. check if send address is the same as the from address
-      addressError = .sameAsFromAddress
-    } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil)
-                || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil) {
-      // 3. check if send address is a contract address
-      addressError = .contractAddress
-    } else {
-      let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
-      if sendAddress == checksumAddress {
-        // 4. check if send address is the same as the checksum address from the `KeyringService`
-        addressError = nil
-      } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
-        // 5. check if send address has each of the alphabetic character as uppercase, or has each of
-        // the alphabeic character as lowercase
-        addressError = .missingChecksum
-      } else {
-        // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
-        addressError = .invalidChecksum
+    let isSupportedENSExtension = sendAddress.endsWithSupportedENSExtension
+    if isSupportedENSExtension {
+      self.isResolvingAddress = true
+      defer { self.isResolvingAddress = false }
+      let (address, isOffchainConsentRequired, status, _) = await rpcService.ensGetEthAddr(sendAddress)
+      guard !Task.isCancelled else { return }
+      if isOffchainConsentRequired {
+        self.isOffchainResolveRequired = true
+        self.addressError = nil
+        return // do not continue unless ens is enabled
       }
+      if status != .success || address.isEmpty {
+        addressError = .ensError(domain: sendAddress)
+        return
+      }
+      // If found address is the same as the selectedAccounts Wallet Address
+      if address.lowercased() == normalizedFromAddress {
+        addressError = .sameAsFromAddress
+        return
+      }
+      // store address for sending
+      resolvedAddress = address
+      addressError = nil
+    } else {
+      if !sendAddress.isETHAddress {
+        // 1. check if send address is a valid eth address
+        addressError = .notEthAddress
+      } else if normalizedFromAddress == normalizedToAddress {
+        // 2. check if send address is the same as the from address
+        addressError = .sameAsFromAddress
+      } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil)
+                  || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedToAddress }) != nil) {
+        // 3. check if send address is a contract address
+        addressError = .contractAddress
+      } else {
+        let checksumAddress = await keyringService.checksumEthAddress(sendAddress)
+        if sendAddress == checksumAddress {
+          // 4. check if send address is the same as the checksum address from the `KeyringService`
+          addressError = nil
+        } else if sendAddress.removingHexPrefix.lowercased() == sendAddress.removingHexPrefix || sendAddress.removingHexPrefix.uppercased() == sendAddress.removingHexPrefix {
+          // 5. check if send address has each of the alphabetic character as uppercase, or has each of
+          // the alphabeic character as lowercase
+          addressError = .missingChecksum
+        } else {
+          // 6. send address has mixed with uppercase and lowercase and does not match with the checksum address
+          addressError = .invalidChecksum
+        }
+      }
+    }
+  }
+  
+  public func enableENSOffchainLookup() {
+    Task { @MainActor in
+      rpcService.setEnsOffchainLookupResolveMethod(.enabled)
+      self.isOffchainResolveRequired = false
+      await self.validateEthereumSendAddress(fromAddress: sendAddress)
     }
   }
   
@@ -291,7 +329,6 @@ public class SendTokenStore: ObservableObject {
     if isSupportedSNSExtension {
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
-      // If value ends with a supported SNS extension, will call findSNSAddress.
       let (address, status, _) = await rpcService.snsGetSolAddr(sendAddress)
       guard !Task.isCancelled else { return }
       if status != .success || address.isEmpty {
@@ -521,6 +558,10 @@ extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     selectedSendToken = nil
     selectedSendTokenBalance = nil
+    if coin != .eth { // if changed to ethereum coin network, address is still valid
+      // offchain resolve is for ENS-only, for other coin types the address is invalid
+      isOffchainResolveRequired = false
+    }
     update() // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
     validateSendAddress() // `sendAddress` may no longer be valid if coin type changed
   }

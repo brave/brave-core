@@ -34,6 +34,13 @@ public class SettingsStore: ObservableObject {
       walletService.setDefaultBaseCurrency(currencyCode.code)
     }
   }
+  
+  /// The current ENS Offchain Resolve Method preference (Ask / Enabled / Disabled)
+  @Published var ensOffchainResolveMethod: BraveWallet.ResolveMethod = .ask {
+    didSet {
+      rpcService.setEnsOffchainLookupResolveMethod(ensOffchainResolveMethod)
+    }
+  }
 
   /// The current SNS Resolve Method preference (Ask / Enabled / Disabled)
   @Published var snsResolveMethod: BraveWallet.ResolveMethod = .ask {
@@ -74,6 +81,7 @@ public class SettingsStore: ObservableObject {
       let autoLockMinutes = await keyringService.autoLockMinutes()
       self.autoLockInterval = .init(value: autoLockMinutes)
 
+      self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
       self.snsResolveMethod = await rpcService.snsResolveMethod()
     }
   }

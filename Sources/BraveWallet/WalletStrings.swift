@@ -1797,8 +1797,8 @@ extension Strings {
       "wallet.sendErrorDomainNotRegistered",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "%@ is not registered",
-      comment: "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. Ex. `Stephen.sol`"
+      value: "Domain doesn\'t have a linked %@ address",
+      comment: "An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address`"
     )
     public static let customNetworkChainIdTitle = NSLocalizedString(
       "wallet.customNetworkChainIdTitle",
@@ -3520,21 +3520,42 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Ask",
-      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name."
+      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name."
     )
     public static let web3DomainOptionEnabled = NSLocalizedString(
       "wallet.web3DomainOptionEnabled",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Enabled",
-      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name."
+      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Enabled' means Brave will enable resolving ENS/SNS domain name."
     )
     public static let web3DomainOptionDisabled = NSLocalizedString(
       "wallet.web3DomainOptionDisabled",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Disabled",
-      comment: "One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name."
+      comment: "One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Disabled' means Brave will disable resolving ENS/SNS domain name."
+    )
+    public static let ensResolveMethodTitle = NSLocalizedString(
+      "wallet.ensResolveMethodTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Resolve Ethereum Name Service (ENS) Domain Names",
+      comment: "The title for the options to resolve Ethereum Name service domain names."
+    )
+    public static let ensOffchainResolveMethodTitle = NSLocalizedString(
+      "wallet.ensOffchainResolveMethodTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Allow ENS Offchain Lookup",
+      comment: "The title for the options to allow Ethereum Name service domain names offchain."
+    )
+    public static let ensOffchainResolveMethodDescription = NSLocalizedString(
+      "wallet.ensOffchainResolveMethodTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "[Learn more](%@) about ENS offchain lookup privacy considerations.",
+      comment: "The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup."
     )
     public static let snsResolveMethodTitle = NSLocalizedString(
       "wallet.web3DomainOptionsTitle",
@@ -3689,6 +3710,27 @@ extension Strings {
       bundle: .module,
       value: "Please save the error message for future reference.",
       comment: "A description of the view that will display the error message."
+    )
+    public static let ensOffchainGatewayTitle = NSLocalizedString(
+      "wallet.ensOffchainGatewayTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave supports using offchain gateways to resolve .eth domains.",
+      comment: "Title shown send address / ENS domain when requesting to do an ENS off chain lookup."
+    )
+    public static let ensOffchainGatewayDesc = NSLocalizedString(
+      "wallet.ensOffchainGatewayDesc",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request. This helps ensure your .eth domain isn't leaked, and that your transaction is secure.",
+      comment: "Description shown send address / ENS domain when requesting to do an ENS off chain lookup."
+    )
+    public static let ensOffchainGatewayButton = NSLocalizedString(
+      "wallet.ensOffchainGatewayButton",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Use ENS Domain",
+      comment: "Button title when requesting to do an ENS off chain lookup."
     )
   }
 }
