@@ -151,21 +151,6 @@ void BraveTab::Layout() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return;
   }
-
-  if (shadow_layer_ && shadow_layer_->parent()) {
-    DCHECK(layer());
-    DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
-    auto shadow_bounds = layer()->bounds();
-
-    // Expand shadow layer by the size of blur region
-    shadow_bounds.Inset(
-        -gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues()));
-
-    // Exclude stroke thickness so that shadow could be more natural.
-    shadow_bounds.Inset(controller_->GetStrokeThickness());
-
-    shadow_layer_->SetBounds(shadow_bounds);
-  }
 }
 
 void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
@@ -188,6 +173,14 @@ void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
 
   DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
   layer()->parent()->StackBelow(shadow_layer_.get(), layer());
+}
+
+void BraveTab::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+  Tab::OnBoundsChanged(previous_bounds);
+
+  if (shadow_layer_ && shadow_layer_->parent()) {
+    LayoutShadowLayer();
+  }
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
@@ -228,6 +221,24 @@ std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
   auto layer = std::make_unique<ShadowLayer>();
   layer->SetFillsBoundsOpaquely(false);
   return layer;
+}
+
+void BraveTab::LayoutShadowLayer() {
+  DCHECK(shadow_layer_);
+  DCHECK(shadow_layer_->parent());
+  DCHECK(layer());
+  DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
+
+  auto shadow_bounds = layer()->bounds();
+
+  // Expand shadow layer by the size of blur region
+  shadow_bounds.Inset(
+      -gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues()));
+
+  // Exclude stroke thickness so that shadow could be more natural.
+  shadow_bounds.Inset(controller_->GetStrokeThickness());
+
+  shadow_layer_->SetBounds(shadow_bounds);
 }
 
 void BraveTab::AddLayerToBelowThis(ui::Layer* new_layer) {

@@ -28,6 +28,12 @@
 #define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
+
+// Macros for TabDragContextImpl. TabDragContextImpl is in anonymous namespace
+// and it's used in the tab_strip.cc file at the same time. Because of this,
+// the class is really hard to be extended with inheritance, so using patch file
+// seems to be the most efficient way for now. If we could split this into
+// another file or child class, that'd be great.
 #define BRAVE_CALCULATE_INSERTION_INDEX                                      \
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&    \
       tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
@@ -45,8 +51,19 @@
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
+#define BRAVE_PAINT_CHILDREN                                              \
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
+      tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
+    for (const ZOrderableTabContainerElement& child : orderable_children) \
+      if (!child.view()->layer()) {                                       \
+        child.view()->Paint(paint_info);                                  \
+      }                                                                   \
+    return;                                                               \
+  }
+
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"
 
+#undef BRAVE_PAINT_CHILDREN
 #undef BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController

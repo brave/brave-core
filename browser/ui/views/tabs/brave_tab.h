@@ -35,12 +35,14 @@ class BraveTab : public Tab {
   bool ShouldRenderAsNormalTab() const override;
   void Layout() override;
   void ReorderChildLayers(ui::Layer* parent_layer) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
  private:
   bool IsAtMinWidthForVerticalTabStrip() const;
 
   void UpdateShadowForActiveTab();
   std::unique_ptr<ui::Layer> CreateShadowLayer();
+  void LayoutShadowLayer();
 
   // TODO(sko) This method could be hopefully replaced with
   // views::View::AddLayerRegion in the latest version.
