@@ -10,6 +10,9 @@ import java.util.List;
 public final class WalletConstants {
     public static final long MILLI_SECOND = 1000;
 
+    // The maximum bitmap size used by {@code WebContents#downloadImage}.
+    public static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
+
     // USD currency code used by on-ramp providers.
     public static final String CURRENCY_CODE_USD = "USD";
 
