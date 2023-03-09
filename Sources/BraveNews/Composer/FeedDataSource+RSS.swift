@@ -201,9 +201,20 @@ extension FeedItem.Content {
     )
   }
   init?(from feedItem: AtomFeedEntry, location: RSSFeedLocation) {
+    // Attempts to get the blog post URL from a set of URLs posted in the entry.
+    //
+    // Sometimes link blogs will post multiple <link> entries in their RSS feeds. This is more clear in
+    // JSON RSS which have `url` and `external_url` fields and are more concise.
+    func entryURL(from urls: [URL], feedURL: URL) -> URL? {
+      guard let feedURLDomain = feedURL.baseDomain,
+            let postURL = urls.first(where: { $0.baseDomain == feedURLDomain }) else {
+        return urls.first
+      }
+      return postURL
+    }
     guard let publishTime = feedItem.published,
-      let href = feedItem.links?.first?.attributes?.href,
-      let url = URL(string: href),
+      let urls = feedItem.links?.compactMap({ $0.attributes?.href?.asURL }),
+      let url = entryURL(from: urls, feedURL: location.url),
       let title = feedItem.title,
       url.isWebPage()
     else {
