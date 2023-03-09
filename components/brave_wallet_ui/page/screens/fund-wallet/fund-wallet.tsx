@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useHistory } from 'react-router'
 import {
   useSelector
 } from 'react-redux'
@@ -60,7 +60,6 @@ import { TabHeader } from '../shared-screen-components/tab-header/tab-header'
 export const FundWalletScreen = () => {
   // routing
   const history = useHistory()
-  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -246,15 +245,6 @@ export const FundWalletScreen = () => {
     accountsForSelectedAssetNetwork,
     selectedAccount
   ])
-
-  React.useEffect(() => {
-    if (tokenId !== undefined) {
-      const foundBuyAsset = allBuyAssetOptions.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
-      if (foundBuyAsset) {
-        setSelectedAsset(foundBuyAsset)
-      }
-    }
-  }, [tokenId, allBuyAssetOptions])
 
   // render
   return (

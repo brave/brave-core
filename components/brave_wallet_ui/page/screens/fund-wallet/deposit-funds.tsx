@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useHistory } from 'react-router'
 import {
   useDispatch,
   useSelector
@@ -67,7 +67,6 @@ import { TabHeader } from '../shared-screen-components/tab-header/tab-header'
 export const DepositFundsScreen = () => {
   // routing
   const history = useHistory()
-  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const dispatch = useDispatch()
@@ -174,10 +173,6 @@ export const DepositFundsScreen = () => {
 
     return ''
   }, [selectedAsset])
-
-  const nativeAssets: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return networkList.map((network) => makeNetworkAsset(network))
-  }, [networkList])
 
   // methods
   const openAccountSearch = React.useCallback(() => setShowAccountSearch(true), [])
@@ -289,18 +284,6 @@ export const DepositFundsScreen = () => {
       dispatch(WalletActions.getAllTokensList())
     }
   }, [fullTokenList])
-
-  React.useEffect(() => {
-    if (tokenId !== undefined) {
-      if (nativeAssets.some((asset) => asset.symbol.toLowerCase() === tokenId.toLocaleLowerCase())) {
-        const foundNativeAsset = nativeAssets.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
-        setSelectedAsset(foundNativeAsset)
-        return
-      }
-      const foundDepositableAsset = fullTokenList.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
-      setSelectedAsset(foundDepositableAsset)
-    }
-  }, [tokenId, fullTokenList, nativeAssets])
 
   // render
   return (
