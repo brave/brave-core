@@ -274,7 +274,7 @@ public class ImageLoader {
     }
 
     /**
-     * Checks if the given URL string represents an SVG image file.
+     * Checks if the given URL string represents a GIF image file.
      * @param url a string representing a URL to an image file.
      * @return {@code true} if the URL string represents an SVG image file, {@code false} otherwise.
      */
