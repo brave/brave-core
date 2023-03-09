@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -103,8 +104,9 @@ void BraveWalletPermissionContext::RequestPermission(
   brave_wallet::GetSubRequestOrigin(type, origin, addr_queue.front(),
                                     &sub_request_origin);
   addr_queue.pop();
-  if (addr_queue.empty())
+  if (addr_queue.empty()) {
     request_address_queues_.erase(addr_queue_it);
+  }
   PermissionContextBase::RequestPermission(id, sub_request_origin.GetURL(),
                                            user_gesture, std::move(callback));
 }
@@ -112,6 +114,7 @@ void BraveWalletPermissionContext::RequestPermission(
 // static
 void BraveWalletPermissionContext::AcceptOrCancel(
     const std::vector<std::string>& accounts,
+    brave_wallet::mojom::PermissionLifetimeOption option,
     content::WebContents* web_contents) {
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(web_contents);
@@ -121,6 +124,8 @@ void BraveWalletPermissionContext::AcceptOrCancel(
   std::vector<PermissionRequest*> cancelled_requests;
   for (PermissionRequest* request : manager->Requests()) {
     if (IsAccepted(request, accounts)) {
+      const auto options = CreatePermissionLifetimeOptions();
+      SetRequestLifetime(options, static_cast<size_t>(option), request);
       allowed_requests.push_back(request);
     } else {
       cancelled_requests.push_back(request);
@@ -254,8 +259,9 @@ bool BraveWalletPermissionContext::IsPermissionDenied(
     const url::Origin& origin) {
   content::PermissionControllerDelegate* delegate =
       context->GetPermissionControllerDelegate();
-  if (!delegate)
+  if (!delegate) {
     return false;
+  }
 
   return delegate->GetPermissionStatus(permission, origin.GetURL(),
                                        origin.GetURL()) ==
@@ -269,11 +275,13 @@ bool BraveWalletPermissionContext::AddPermission(
     const url::Origin& origin,
     const std::string& account) {
   bool has_permission;
-  if (!HasPermission(permission, context, origin, account, &has_permission))
+  if (!HasPermission(permission, context, origin, account, &has_permission)) {
     return false;
+  }
 
-  if (has_permission)
+  if (has_permission) {
     return true;
+  }
 
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
@@ -281,8 +289,9 @@ bool BraveWalletPermissionContext::AddPermission(
   url::Origin origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
           ContentSettingsTypeToRequestType(content_settings_type), origin,
-          account, &origin_wallet_address))
+          account, &origin_wallet_address)) {
     return false;
+  }
 
   PermissionsClient::Get()
       ->GetSettingsMap(context)
@@ -304,8 +313,9 @@ bool BraveWalletPermissionContext::HasPermission(
   *has_permission = false;
   content::PermissionControllerDelegate* delegate =
       context->GetPermissionControllerDelegate();
-  if (!delegate)
+  if (!delegate) {
     return false;
+  }
 
   if (IsPermissionDenied(permission, context, origin)) {
     return true;
@@ -337,8 +347,9 @@ bool BraveWalletPermissionContext::ResetPermission(
     const std::string& account) {
   content::PermissionControllerDelegate* delegate =
       context->GetPermissionControllerDelegate();
-  if (!delegate)
+  if (!delegate) {
     return false;
+  }
 
   const ContentSettingsType content_settings_type =
       PermissionUtil::PermissionTypeToContentSettingTypeSafe(permission);
@@ -387,8 +398,9 @@ bool BraveWalletPermissionContext::ResetWebSitePermission(
   content::PermissionControllerDelegate* delegate =
       context->GetPermissionControllerDelegate();
   GURL url(formed_website);
-  if (!delegate || !url.is_valid())
+  if (!delegate || !url.is_valid()) {
     return false;
+  }
 
   delegate->ResetPermission(permission, url, url);
   return true;

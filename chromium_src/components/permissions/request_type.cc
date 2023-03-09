@@ -98,6 +98,10 @@ absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
   switch (request_type) {
     case RequestType::kBraveGoogleSignInPermission:
       return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
+    case RequestType::kBraveEthereum:
+      return ContentSettingsType::BRAVE_ETHEREUM;
+    case RequestType::kBraveSolana:
+      return ContentSettingsType::BRAVE_SOLANA;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -106,6 +110,8 @@ absl::optional<ContentSettingsType> RequestTypeToContentSettingsType(
 bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
   switch (content_settings_type) {
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+    case ContentSettingsType::BRAVE_ETHEREUM:
+    case ContentSettingsType::BRAVE_SOLANA:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);

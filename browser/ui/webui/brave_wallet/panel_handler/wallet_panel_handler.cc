@@ -44,9 +44,10 @@ void WalletPanelHandler::CloseUI() {
 }
 
 void WalletPanelHandler::ConnectToSite(
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    brave_wallet::mojom::PermissionLifetimeOption option) {
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      accounts, active_web_contents_);
+      accounts, option, active_web_contents_);
 }
 
 void WalletPanelHandler::CancelConnectToSite() {
@@ -54,8 +55,9 @@ void WalletPanelHandler::CancelConnectToSite() {
 }
 
 void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
-  if (close_on_deactivation_)
+  if (close_on_deactivation_) {
     close_on_deactivation_.Run(close);
+  }
 }
 
 void WalletPanelHandler::Focus() {

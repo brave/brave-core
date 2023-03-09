@@ -398,7 +398,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void UserGrantPermission(bool granted) {
     if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
-          std::vector<std::string>{kFirstAccount}, web_contents());
+          std::vector<std::string>{kFirstAccount},
+          mojom::PermissionLifetimeOption::kForever, web_contents());
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
@@ -671,7 +672,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
 
   CallSolanaConnect(ChildFrameAt(main_frame, 0), true);
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      std::vector<std::string>{kFirstAccount}, web_contents());
+      std::vector<std::string>{kFirstAccount},
+      mojom::PermissionLifetimeOption::kForever, web_contents());
   // First iframe is now connected.
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
   // Second iframe is still disconnected
@@ -1077,7 +1079,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   CallSolanaRequest(R"({method: "connect"})");
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      std::vector<std::string>{kFirstAccount}, web_contents());
+      std::vector<std::string>{kFirstAccount},
+      mojom::PermissionLifetimeOption::kForever, web_contents());
   WaitForResultReady();
   EXPECT_EQ(GetRequestResult(), kFirstAccount);
   ASSERT_TRUE(IsSolanaConnected(web_contents()));

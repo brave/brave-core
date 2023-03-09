@@ -340,6 +340,14 @@ interface PageHandlerFactory {
                         brave_wallet_auto_pin_service);
 };
 
+// Lifetime option in sync with CreatePermissionLifetimeOptions()
+enum PermissionLifetimeOption {
+  kPageClosed = 0,
+  k24Hours = 1,
+  k7Days = 2,
+  kForever = 3
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PanelHandler {
   // Notify the backend that the UI is ready to be shown.
@@ -348,7 +356,7 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  ConnectToSite(array<string> accounts);
+  ConnectToSite(array<string> accounts, PermissionLifetimeOption option);
   CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
   Focus();
