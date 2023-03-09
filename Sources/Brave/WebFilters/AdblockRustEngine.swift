@@ -30,7 +30,6 @@ extension AdblockEngine {
     }
     
     guard let requestHost = requestURL.host, let sourceHost = sourceURL.host else {
-      assertionFailure("You must provide absolute paths for `requestURL` and `sourceURL`")
       return false
     }
     
