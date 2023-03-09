@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- // This file must be included inside tab_style_views.cc as classes here are
- // depending on what's defined in anonymous namespace of tab_style_views.cc
+// This file must be included inside tab_style_views.cc as classes here are
+// depending on what's defined in anonymous namespace of tab_style_views.cc
 
 namespace {
 
@@ -93,9 +93,10 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
                                       float scale,
                                       bool force_active,
                                       RenderUnits render_units) const {
-  if (!ShouldShowVerticalTabs())
+  if (!ShouldShowVerticalTabs()) {
     return BraveGM2TabStyle::GetPath(path_type, scale, force_active,
                                      render_units);
+  }
 
   const int stroke_thickness = GetStrokeThickness();
   gfx::RectF aligned_bounds =
@@ -132,16 +133,18 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
   path.offset(-origin.x(), -origin.y());
 
   // Possibly convert back to DIPs.
-  if (render_units == RenderUnits::kDips && scale != 1.0f)
+  if (render_units == RenderUnits::kDips && scale != 1.0f) {
     path.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
+  }
 
   return path;
 }
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
     float scale) const {
-  if (ShouldShowVerticalTabs())
+  if (ShouldShowVerticalTabs()) {
     return {};
+  }
 
   return BraveGM2TabStyle::GetSeparatorBounds(scale);
 }
@@ -168,8 +171,9 @@ bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
 }  // namespace
 
 std::unique_ptr<TabStyleViews> TabStyleViews::CreateForTab(Tab* tab) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
     return std::make_unique<BraveVerticalTabStyle>(tab);
+  }
 
   return std::make_unique<BraveGM2TabStyle>(tab);
 }

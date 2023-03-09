@@ -45,8 +45,9 @@ class BraveTab : public Tab {
   void LayoutShadowLayer();
 
   // TODO(sko) This method could be hopefully replaced with
-  // views::View::AddLayerRegion in the latest version.
-  void AddLayerToBelowThis(ui::Layer* layer);
+  // views::View::AddLayerRegion in the latest version. ReorederChildLayers()
+  // override could be removed together.
+  void AddLayerToBelowThis();
 
   std::unique_ptr<ui::Layer> shadow_layer_;
 };

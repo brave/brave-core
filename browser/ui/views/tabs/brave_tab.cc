@@ -205,7 +205,7 @@ void BraveTab::UpdateShadowForActiveTab() {
   if (IsActive() &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     shadow_layer_ = CreateShadowLayer();
-    AddLayerToBelowThis(shadow_layer_.get());
+    AddLayerToBelowThis();
   } else if (shadow_layer_) {
     if (layer()) {
       layer()->parent()->Remove(shadow_layer_.get());
@@ -241,7 +241,7 @@ void BraveTab::LayoutShadowLayer() {
   shadow_layer_->SetBounds(shadow_bounds);
 }
 
-void BraveTab::AddLayerToBelowThis(ui::Layer* new_layer) {
+void BraveTab::AddLayerToBelowThis() {
   if (!layer()) {
     SetPaintToLayer();
     layer()->SetFillsBoundsOpaquely(false);

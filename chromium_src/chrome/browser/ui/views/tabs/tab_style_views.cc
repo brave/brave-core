@@ -18,4 +18,4 @@
 #undef CreateForTab
 #undef BRAVE_GM2_TAB_STYLE_H
 
-#include "brave/browser/ui/views/tabs/brave_tab_style_views.inc"
+#include "brave/browser/ui/views/tabs/brave_tab_style_views.inc.cc"
