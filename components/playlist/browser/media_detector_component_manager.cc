@@ -171,20 +171,22 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     constexpr std::string_view kPlaceholder =
         "const siteSpecificDetector = null";
     auto pos = detector_script.find(kPlaceholder);
-    if (pos == std::string::npos) {
+    if (pos != std::string::npos) {
+      detector_script.replace(pos, kPlaceholder.length(),
+                              site_specific_detectors_.at(site));
+    } else {
       // Reportedly, in some environments(e.g. Android release), the js resource
       // could be minified by removing white spaces.
       constexpr std::string_view kPlaceholderWithoutWhitespace =
           "const siteSpecificDetector=null";
       pos = detector_script.find(kPlaceholderWithoutWhitespace);
-    }
-
-    if (pos != std::string::npos) {
-      detector_script.replace(pos, kPlaceholder.length(),
-                              site_specific_detectors_.at(site));
-    } else {
-      LOG(ERROR) << "Couldn't find `const siteSpecificDetector = null` from "
-                    "base script";
+      if (pos != std::string::npos) {
+        detector_script.replace(pos, kPlaceholderWithoutWhitespace.length(),
+                                site_specific_detectors_.at(site));
+      } else {
+        LOG(ERROR) << "Couldn't find `const siteSpecificDetector = null` from "
+                      "base script";
+      }
     }
   }
 
