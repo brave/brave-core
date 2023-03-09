@@ -73,7 +73,7 @@ public class ImageLoader {
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
      * @param url URL of the image to download.
-     * @param context Android context used by Glide for applying transofrmations.
+     * @param context Android context used by Glide for applying transformations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
      * @param imageView ImageView where the downloaded image will be set.
      * @param callback Callback used to notify if the image has been set correctly. It can be {@code
