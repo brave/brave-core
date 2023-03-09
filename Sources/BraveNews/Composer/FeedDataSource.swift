@@ -513,7 +513,8 @@ public class FeedDataSource: ObservableObject {
 
   /// Whether or not the feed content is currently expired and needs to be reloaded
   public var isFeedContentExpired: Bool {
-    return followedLocales.allSatisfy({ isResourceExpired(.feed, localeIdentifier: $0) })
+    let locales = followedLocales
+    return !locales.isEmpty && locales.allSatisfy({ isResourceExpired(.feed, localeIdentifier: $0) })
   }
 
   /// Whether or not the sources are currently expired and needs to be reloaded
