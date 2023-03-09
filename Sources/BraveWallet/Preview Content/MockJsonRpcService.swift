@@ -198,6 +198,10 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
 
   func setSnsResolveMethod(_ method: BraveWallet.ResolveMethod) {
   }
+  
+  func code(_ address: String, coin: BraveWallet.CoinType, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .internalError, "")
+  }
 }
 
 extension BraveWallet.NetworkInfo {
