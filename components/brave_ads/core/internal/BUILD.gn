@@ -9,7 +9,6 @@ config("internal_config") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
   ]
-  cflags = [ "-Wno-shadow" ]
 }
 
 source_set("internal") {

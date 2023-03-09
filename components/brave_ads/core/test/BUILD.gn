@@ -462,5 +462,8 @@ source_set("brave_ads_unit_tests") {
     "//third_party/re2",
   ]
 
-  data = [ "//brave/components/brave_ads/core/test/data/" ]
+  data = [
+    "//brave/components/brave_ads/core/test/data/",
+    "//brave/components/brave_ads/resources/",
+  ]
 }  # source_set("brave_ads_unit_tests")
