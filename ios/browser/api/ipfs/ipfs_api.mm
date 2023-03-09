@@ -40,7 +40,7 @@
   return nullptr;
 }
 
-- (NSURL*)resolveGatewayUrlForNFT:(NSURL*)input {
+- (NSURL*)resolveGatewayUrlForNft:(NSURL*)input {
   GURL input_gurl = net::GURLWithNSURL(input);
   if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
     return nullptr;

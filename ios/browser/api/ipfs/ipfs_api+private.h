@@ -19,7 +19,7 @@ class ChromeBrowserState;
 @property(nonatomic, nullable) NSURL* ipfsGateway;
 
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
-- (nullable NSURL*)resolveGatewayUrlForNFT:(NSURL*)input;
+- (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;
 - (instancetype)init NS_UNAVAILABLE;
 @end

@@ -21,7 +21,7 @@ OBJC_EXPORT
 /// Resolve input url using the default IPFS public gateway
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
 /// Resolve input url using the default IPFS NFT public gateway
-- (nullable NSURL*)resolveGatewayUrlForNFT:(NSURL*)input;
+- (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
 - (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash;
 
 @end
