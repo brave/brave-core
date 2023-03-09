@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -31,8 +33,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants
-        .MAX_BITMAP_SIZE_FOR_DOWNLOAD;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -76,7 +76,8 @@ public class ImageLoader {
      * @param context Android context used by Glide for applying transofrmations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
      * @param imageView ImageView where the downloaded image will be set.
-     * @param callback Callback used to notify if the image has been set correctly. It can be {@code null}.
+     * @param callback Callback used to notify if the image has been set correctly. It can be {@code
+     *         null}.
      */
     public static void downloadImage(String url, final Context context, final boolean isCircular,
             final ImageView imageView, final Callback callback) {
