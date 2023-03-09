@@ -154,16 +154,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Wyre) {
-  TestGetBuyUrlV1(
-      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC", "99.99", "USD",
-      "https://pay.sendwyre.com/"
-      "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&amount="
-      "99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card",
-      absl::nullopt);
-}
-
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",

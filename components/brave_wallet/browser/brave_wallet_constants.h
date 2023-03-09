@@ -31,8 +31,6 @@ constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
 
 constexpr char kWalletBaseDirectory[] = "BraveWallet";
 constexpr char kImageSourceHost[] = "erc-token-images";
-constexpr char kWyreID[] = "AC_MGNVBGHPA9T";
-constexpr char kWyreBaseUrl[] = "https://pay.sendwyre.com";
 constexpr char kRampBaseUrl[] = "https://buy.ramp.network";
 constexpr char kOffRampEnabledFlows[] = "ONRAMP,OFFRAMP";
 constexpr char kOffRampDefaultFlow[] = "OFFRAMP";
@@ -770,18 +768,15 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSweepstakesCallToAction",
      IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
     {"braveWalletNotValidFilAddress", IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS},
-    {"braveWalletBuyWithWyre", IDS_BRAVE_WALLET_BUY_WITH_WYRE},
     {"braveWalletBuyWithRamp", IDS_BRAVE_WALLET_BUY_WITH_RAMP},
     {"braveWalletSellWithProvider", IDS_BRAVE_WALLET_SELL_WITH_PROVIDER},
     {"braveWalletSellMinimumAmount", IDS_BRAVE_WALLET_SELL_MINIMUM_AMOUNT},
     {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
     {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
-    {"braveWalletBuyWyreName", IDS_BRAVE_WALLET_BUY_WYRE_NAME},
     {"braveWalletBuySardineName", IDS_BRAVE_WALLET_BUY_SARDINE_NAME},
     {"braveWalletBuyTransakName", IDS_BRAVE_WALLET_BUY_TRANSAK_NAME},
     {"braveWalletBuyRampDescription", IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION},
-    {"braveWalletBuyWyreDescription", IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION},
     {"braveWalletBuySardineDescription",
      IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION},
     {"braveWalletBuyTransakDescription",
@@ -1222,7 +1217,6 @@ constexpr char kSolanaPrefKey[] = "solana";
 constexpr char kEthereumBlockTagEarliest[] = "earliest";
 constexpr char kEthereumBlockTagLatest[] = "latest";
 
-const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens();
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens();
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList();
 const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens();

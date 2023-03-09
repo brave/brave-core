@@ -410,30 +410,6 @@ TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
 
-  // Get Wyre buy tokens
-  base::RunLoop run_loop1;
-  registry->GetBuyTokens(
-      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_NE(token_list.size(), 0UL);
-            EXPECT_EQ(token_list[0]->name, "Basic Attention Token");
-            EXPECT_EQ(token_list[1]->name, "Ethereum");
-
-            run_loop1.Quit();
-          }));
-  run_loop1.Run();
-
-  base::RunLoop run_loop2;
-  registry->GetBuyTokens(
-      mojom::OnRampProvider::kWyre, mojom::kPolygonMainnetChainId,
-      base::BindLambdaForTesting(
-          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_EQ(token_list.size(), 2UL);
-            run_loop2.Quit();
-          }));
-  run_loop2.Run();
-
   // Get Ramp buy tokens
   base::RunLoop run_loop3;
   registry->GetBuyTokens(
@@ -463,8 +439,8 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   auto* registry = BlockchainRegistry::GetInstance();
 
   std::vector<mojom::BlockchainToken> buy_tokens;
-  for (const auto& v : {GetWyreBuyTokens(), GetRampBuyTokens(),
-                        GetSardineBuyTokens(), GetTransakBuyTokens()}) {
+  for (const auto& v :
+       {GetRampBuyTokens(), GetSardineBuyTokens(), GetTransakBuyTokens()}) {
     buy_tokens.insert(buy_tokens.end(), v.begin(), v.end());
   }
 
@@ -484,8 +460,8 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
 
     base::RunLoop run_loop;
     registry->GetProvidersBuyTokens(
-        {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp,
-         mojom::OnRampProvider::kSardine, mojom::OnRampProvider::kTransak,
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
+         mojom::OnRampProvider::kTransak,
          mojom::OnRampProvider::kTransak /* test duplicate provider */},
         chain,
         base::BindLambdaForTesting(
