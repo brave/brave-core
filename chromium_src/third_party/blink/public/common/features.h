@@ -20,6 +20,12 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveBlockScreenFingerprinting);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
 
+// Chromium used this function to control Prerender2 feature, but then the
+// feature was permanently enabled and the function was removed. We still want
+// to keep the Prerender2 functionality disabled, so putting back the function
+// to use in various places where Prerender2 needs to be turned off.
+BLINK_COMMON_EXPORT bool IsPrerender2Enabled();
+
 }  // namespace features
 }  // namespace blink
 
