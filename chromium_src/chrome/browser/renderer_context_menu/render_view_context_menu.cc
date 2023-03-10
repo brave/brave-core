@@ -19,6 +19,7 @@
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_match_type.h"
 #include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -46,7 +47,8 @@
 
 namespace {
 
-GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
+AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
+                                              const std::u16string& text) {
   AutocompleteMatch match;
   AutocompleteClassifier classifier(
       std::make_unique<AutocompleteController>(
@@ -56,6 +58,19 @@ GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
   classifier.Classify(text, false, false,
                       metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
   classifier.Shutdown();
+  return match;
+}
+
+GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
+  return GetAutocompleteMatchForText(profile, text).destination_url;
+}
+
+absl::optional<GURL> GetSelectedURL(Profile* profile,
+                                    const std::u16string& text) {
+  auto match = GetAutocompleteMatchForText(profile, text);
+  if (match.type != AutocompleteMatchType::URL_WHAT_YOU_TYPED) {
+    return absl::nullopt;
+  }
   return match.destination_url;
 }
 
@@ -170,8 +185,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_COPY_CLEAN_LINK:
       return params_.link_url.is_valid() ||
-             GetSelectionNavigationURL(GetProfile(), params_.selection_text)
-                 .is_valid();
+             GetSelectedURL(GetProfile(), params_.selection_text).has_value();
     case IDC_CONTENT_CONTEXT_FORCE_PASTE:
       // only enable if there is plain text data to paste - this is what
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
@@ -240,10 +254,16 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_COPY_CLEAN_LINK: {
-      auto link_url =
-          params_.link_url.is_valid()
-              ? params_.link_url
-              : GetSelectionNavigationURL(GetProfile(), params_.selection_text);
+      GURL link_url = params_.link_url;
+      if (!link_url.is_valid()) {
+        auto selected_url =
+            GetSelectedURL(GetProfile(), params_.selection_text);
+        if (selected_url.has_value()) {
+          link_url = selected_url.value();
+        } else {
+          return;
+        }
+      }
       brave::CopyLinkWithStrictCleaning(GetBrowser(), link_url);
     }; break;
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
@@ -459,8 +479,7 @@ void BraveRenderViewContextMenu::InitMenu() {
           link_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
     }
   }
-  if (GetSelectionNavigationURL(GetProfile(), params_.selection_text)
-          .is_valid()) {
+  if (GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
     absl::optional<size_t> copy_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPY);
     if (copy_index.has_value() &&
