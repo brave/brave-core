@@ -114,7 +114,8 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
-  RenamePlaylist(string playlist_id, string playlist_name) => (Playlist updated_playlist);
+  RenamePlaylist(string playlist_id, string playlist_name) 
+  => (Playlist updated_playlist);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
@@ -123,7 +124,7 @@ interface PlaylistService {
 interface PlaylistServiceObserver {
   // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
   // and parameters for client side.
-  OnEvent(PlaylistEvent event, string id);
+  OnEvent(PlaylistEvent event, string playlist_id);
 
   OnMediaFileDownloadProgressed(
       string id,

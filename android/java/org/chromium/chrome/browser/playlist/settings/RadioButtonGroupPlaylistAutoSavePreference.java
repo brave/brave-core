@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.playlist.settings;
 
@@ -21,7 +21,7 @@ import java.util.Collections;
 
 public class RadioButtonGroupPlaylistAutoSavePreference
         extends Preference implements RadioGroup.OnCheckedChangeListener {
-    static final int OPTIONS_SIZE = 4;
+    static final int OPTIONS_SIZE = 3;
 
     private int mSetting;
     private RadioButtonWithDescription mSettingRadioButton;

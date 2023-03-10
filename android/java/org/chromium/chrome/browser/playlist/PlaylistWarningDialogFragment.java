@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.playlist;
 
@@ -52,6 +50,9 @@ public class PlaylistWarningDialogFragment
 
     @Override
     public void onClick(View view) {
+        if (playlistWarningDialogListener == null) {
+            return;
+        }
         if (view.getId() == R.id.btn_add_media) {
             playlistWarningDialogListener.onActionClicked();
         } else if (view.getId() == R.id.btn_settings) {

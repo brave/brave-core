@@ -19,21 +19,6 @@ namespace playlist {
 // TODO(sko) Try removing these types. We can use mojom type directly.
 // https://github.com/brave/brave-browser/issues/27516
 struct PlaylistChangeParams {
-  enum class Type {
-    kNone,
-    kItemAdded,             // a new playlist item added but not ready state
-    kItemThumbnailReady,    // Thumbnail ready to use for playlist
-    kItemThumbnailFailed,   // Failed to fetch thumbnail
-    kItemCached,            // The item is cached in local storage
-    kItemDeleted,           // An item deleted
-    kItemUpdated,           // An item's properties have been changed
-    kItemAborted,           // Aborted during the creation process
-    kItemLocalDataRemoved,  // Local data removed
-
-    kListCreated,  // A list is created
-    kListRemoved,  // A list is removed
-    kAllDeleted,   // All playlist are deleted
-  };
   static std::string GetPlaylistChangeTypeAsString(mojom::PlaylistEvent type);
 
   PlaylistChangeParams();

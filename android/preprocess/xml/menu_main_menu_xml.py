@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import xml.etree.ElementTree as ET
 
 def _ProcessXML(root):
@@ -9,7 +14,8 @@ def _ProcessXML(root):
     for prefix, uri in ns.items():
         ET.register_namespace(prefix, uri)
 
-    node_str = '<item xmlns:android="http://schemas.android.com/apk/res/android" '\
+    node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
       'android:id="@+id/brave_wallet_id" ' \
       'android:title="@string/menu_brave_wallet" ' \
       'android:visibility="gone" />'
@@ -21,7 +27,8 @@ def _ProcessXML(root):
     idx = list(parent).index(child)
     parent.insert(idx + 1, node)
 
-    playlist_node_str = '<item xmlns:android="http://schemas.android.com/apk/res/android" '\
+    playlist_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
       'android:id="@+id/brave_playlist_id" ' \
       'android:title="@string/brave_playlist" />'
     playlist_node = ET.fromstring(playlist_node_str,
@@ -33,7 +40,8 @@ def _ProcessXML(root):
     idx = list(parent).index(child)
     parent.insert(idx + 1, playlist_node)
 
-    set_as_default_node_str = '<item xmlns:android="http://schemas.android.com/apk/res/android" '\
+    set_as_default_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
       'android:id="@+id/set_default_browser" ' \
       'android:title="@string/menu_set_default_browser" />'
     set_as_default_node = ET.fromstring(set_as_default_node_str,
@@ -43,7 +51,8 @@ def _ProcessXML(root):
     set_as_default_idx = list(parent).index(set_as_default_child)
     parent.insert(set_as_default_idx + 1, set_as_default_node)
 
-    vpn_node_str = '<item xmlns:android="http://schemas.android.com/apk/res/android" '\
+    vpn_node_str = '<item xmlns:android='\
+    '"http://schemas.android.com/apk/res/android" '\
             'android:id="@+id/request_brave_vpn_row_menu_id" '\
             'android:title="@null"> '\
             '<menu> '\

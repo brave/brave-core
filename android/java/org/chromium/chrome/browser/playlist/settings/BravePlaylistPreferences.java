@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.playlist.settings;
 
@@ -12,8 +12,6 @@ import androidx.preference.Preference;
 
 import com.brave.playlist.util.PlaylistPreferenceUtils;
 
-import org.chromium.base.BraveFeatureList;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -64,10 +62,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                 SharedPreferencesManager.getInstance().readBoolean(PREF_AUTO_PLAY, true));
         mAutoPlaySwitch.setOnPreferenceChangeListener(this);
 
-        Log.e("BravePlaylist",
-                "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE : "
-                        + SharedPreferencesManager.getInstance().readInt(
-                                PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
         mAutoSaveMediaForOfflinePreference =
                 (Preference) findPreference(PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
         updateAutoSaveMedia();
@@ -153,7 +147,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
             SharedPreferencesManager.getInstance().writeBoolean(
                     PREF_ENABLE_PLAYLIST, (boolean) newValue);
             updatePlaylistSettingsState((boolean) newValue);
-            BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_ADD_TO_PLAYLIST_BUTTON.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     PREF_ADD_TO_PLAYLIST_BUTTON, (boolean) newValue);

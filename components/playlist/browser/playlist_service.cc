@@ -266,9 +266,6 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
     AddItemsToPlaylist(*from, {*item});
     return false;
   }
-
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemDeleted, *from});
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAdded, *to});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemMoved, *from);
   return true;
 }
@@ -312,25 +309,14 @@ void PlaylistService::AddMediaFilesFromItems(
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id, ids);
 }
 
-void PlaylistService::NotifyPlaylistChanged(
-    const PlaylistChangeParams& params) {
-  VLOG(2) << __func__ << ": params="
-          << PlaylistChangeParams::GetPlaylistChangeTypeAsString(
-                 params.change_type);
-
-  for (PlaylistServiceObserver& obs : observers_)
-    obs.OnPlaylistStatusChanged(params);
-
-  // TODO(sko) Send proper events based on |params|
-  // for (auto& service_observer : service_observers_)
-  //   service_observer->OnEvent(mojom::PlaylistEvent::kUpdated);
-}
-
 void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                                             const std::string& playlist_id) {
-  // TODO(sko) Send proper events based on |params|
-  for (auto& service_observer : service_observers_)
+  for (auto& service_observer : service_observers_) {
     service_observer->OnEvent(playlist_event, playlist_id);
+  }
+
+  for (PlaylistServiceObserver& obs : observers_)
+    obs.OnPlaylistStatusChanged({playlist_event, playlist_id});
 }
 
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
@@ -345,9 +331,6 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
   VLOG(2) << __func__;
   DCHECK(item);
 
-  LOG(ERROR) << "BravePlaylist : "
-             << "DownloadMediaFile 2";
-
   auto job = std::make_unique<PlaylistMediaFileDownloadManager::DownloadJob>();
   job->item = item.Clone();
   job->on_progress_callback =
@@ -358,8 +341,6 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
       update_media_src_and_retry_on_fail, std::move(callback));
 
   media_file_download_manager_->DownloadMediaFile(std::move(job));
-  LOG(ERROR) << "BravePlaylist : "
-             << "DownloadMediaFile 3";
 }
 
 base::FilePath PlaylistService::GetPlaylistItemDirPath(
@@ -461,11 +442,7 @@ void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
 
 void PlaylistService::FindMediaFilesFromActiveTab(
     FindMediaFilesFromActiveTabCallback callback) {
-  LOG(ERROR) << "BravePlaylist : "
-             << "FindMediaFilesFromActiveTab 1";
   DCHECK(delegate_);
-  LOG(ERROR) << "BravePlaylist : "
-             << "FindMediaFilesFromActiveTab 2";
 
   auto* contents = delegate_->GetActiveWebContents();
   if (!contents) {
@@ -473,8 +450,6 @@ void PlaylistService::FindMediaFilesFromActiveTab(
     return;
   }
 
-  LOG(ERROR) << "BravePlaylist : "
-             << "FindMediaFilesFromActiveTab 4";
   PlaylistDownloadRequestManager::Request request;
   auto current_url = contents->GetVisibleURL();
   if (ShouldGetMediaFromBackgroundWebContents(contents)) {
@@ -483,8 +458,6 @@ void PlaylistService::FindMediaFilesFromActiveTab(
     request.url_or_contents = contents->GetWeakPtr();
   }
 
-  LOG(ERROR) << "BravePlaylist : "
-             << "FindMediaFilesFromActiveTab 5";
   request.callback = base::BindOnce(std::move(callback), current_url);
   download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
@@ -515,8 +488,6 @@ void PlaylistService::MoveItem(const std::string& from_playlist_id,
 void PlaylistService::UpdateItem(mojom::PlaylistItemPtr item) {
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
-
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemUpdated, item->id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemUpdated, item->id);
 }
 
@@ -529,8 +500,6 @@ void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
   ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
   playlists_update->Set(playlist->id.value(), ConvertPlaylistToValue(playlist));
 
-  NotifyPlaylistChanged(
-      {mojom::PlaylistEvent::kListCreated, playlist->id.value()});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kListCreated,
                         playlist->id.value());
 
@@ -568,8 +537,6 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
 
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
-
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAdded, item->id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAdded, item->id);
 
   GetTaskRunner()->PostTaskAndReplyWithResult(
@@ -599,7 +566,6 @@ void PlaylistService::OnPlaylistItemDirCreated(
     bool directory_ready) {
   VLOG(2) << __func__;
   if (!directory_ready) {
-    NotifyPlaylistChanged({mojom::PlaylistEvent::kItemAborted, item->id});
     NotifyPlaylistChanged(mojom::PlaylistEvent::kItemAborted, item->id);
     if (callback) {
       std::move(callback).Run(item.Clone());
@@ -612,8 +578,6 @@ void PlaylistService::OnPlaylistItemDirCreated(
     DownloadMediaFile(item, update_media_src_and_retry_caching_on_fail,
                       std::move(callback));
   }
-  LOG(ERROR) << "BravePlaylist : "
-             << "DownloadMediaFile 1";
 }
 
 void PlaylistService::DownloadThumbnail(const mojom::PlaylistItemPtr& item) {
@@ -635,7 +599,6 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
 
   if (path.empty()) {
     VLOG(2) << __func__ << ": thumbnail fetching failed for " << id;
-    NotifyPlaylistChanged({mojom::PlaylistEvent::kItemThumbnailFailed, id});
     NotifyPlaylistChanged(mojom::PlaylistEvent::kItemThumbnailFailed, id);
     return;
   }
@@ -646,7 +609,6 @@ void PlaylistService::OnThumbnailDownloaded(const std::string& id,
   playlist_item->thumbnail_path = GURL("file://" + path.AsUTF8Unsafe());
   UpdatePlaylistItemValue(
       id, base::Value(ConvertPlaylistItemToValue(playlist_item)));
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemThumbnailReady, id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemThumbnailReady, id);
 }
 
@@ -655,6 +617,7 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
     return;
 
   DCHECK(!playlist_id.empty());
+
   base::Value::List id_list;
   {
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
@@ -678,7 +641,6 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
   for (const auto& item_id : id_list)
     DeletePlaylistItemData(item_id.GetString());
 
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kListRemoved, playlist_id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kListRemoved, playlist_id);
 }
 
@@ -729,9 +691,6 @@ void PlaylistService::RecoverLocalDataForItem(
     return;
   }
 
-  LOG(ERROR) << "BravePlaylist : "
-             << "RecoverLocalDataForItem 1";
-
   auto item = ConvertValueToPlaylistItem(*item_value);
   DCHECK(item);
 
@@ -741,8 +700,6 @@ void PlaylistService::RecoverLocalDataForItem(
                                 std::move(callback));
     return;
   }
-  LOG(ERROR) << "BravePlaylist : "
-             << "RecoverLocalDataForItem 2";
 
   // Before recovering data, try to update item's media source by visiting the
   // original page first.
@@ -816,8 +773,6 @@ void PlaylistService::DeletePlaylistItemData(const std::string& id) {
   thumbnail_downloader_->CancelDownloadRequest(id);
 
   RemovePlaylistItemValue(id);
-
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kItemDeleted, id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemDeleted, id);
 
   // TODO(simonhong): Delete after getting cancel complete message from all
@@ -843,8 +798,6 @@ void PlaylistService::DeleteAllPlaylistItems() {
   thumbnail_downloader_->CancelAllDownloadRequests();
 
   prefs_->ClearPref(kPlaylistItemsPref);
-
-  NotifyPlaylistChanged({mojom::PlaylistEvent::kAllDeleted, ""});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kAllDeleted, "");
 
   CleanUpOrphanedPlaylistItemDirs();
@@ -892,9 +845,6 @@ void PlaylistService::RemoveLocalDataForItemImpl(
   item->media_path = item->media_source;
   UpdatePlaylistItemValue(item->id,
                           base::Value(ConvertPlaylistItemToValue(item)));
-
-  NotifyPlaylistChanged(
-      {mojom::PlaylistEvent::kItemLocalDataRemoved, item->id});
   NotifyPlaylistChanged(mojom::PlaylistEvent::kItemLocalDataRemoved, item->id);
 
   base::FilePath media_path;
@@ -936,11 +886,6 @@ void PlaylistService::OnMediaFileDownloadFinished(
   }
   UpdatePlaylistItemValue(new_item->id,
                           base::Value(ConvertPlaylistItemToValue(new_item)));
-
-  NotifyPlaylistChanged({new_item->cached ? mojom::PlaylistEvent::kItemCached
-                                          : mojom::PlaylistEvent::kItemAborted,
-                         new_item->id});
-
   NotifyPlaylistChanged(new_item->cached ? mojom::PlaylistEvent::kItemCached
                                          : mojom::PlaylistEvent::kItemAborted,
                         new_item->id);

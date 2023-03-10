@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -10,11 +10,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -57,34 +55,19 @@ public class BravePlaylistSaveMediaFragment
         RadioButtonGroupPlaylistAutoSavePreference radioButtonGroupPlaylistAutoSavePreference =
                 (RadioButtonGroupPlaylistAutoSavePreference) findPreference(
                         BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE);
-        Log.e("BravePlaylist",
-                "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE : "
-                        + SharedPreferencesManager.getInstance().readInt(
-                                BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
 
         radioButtonGroupPlaylistAutoSavePreference.initialize(
                 SharedPreferencesManager.getInstance().readInt(
                         BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0));
 
-        radioButtonGroupPlaylistAutoSavePreference.setOnPreferenceChangeListener((preference,
-                                                                                         newValue)
-                                                                                         -> {
-            int method = (int) newValue;
-            Log.e("BravePlaylist", "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE new value : " + method);
-            if (mPlaylistService != null) {
-                Log.e("BravePlaylist",
-                        "inside condition PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE new value : " + method);
-                // mPlaylistService.setPlaylistCacheByDefault(
-                //         (method == 0 || method == 2) ? true : false);
-                SharedPreferencesManager.getInstance().writeInt(
-                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, method);
-                Log.e("BravePlaylist",
-                        "PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE  after: "
-                                + SharedPreferencesManager.getInstance().readInt(
-                                        BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE,
-                                        0));
-            }
-            return true;
-        });
+        radioButtonGroupPlaylistAutoSavePreference.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    int method = (int) newValue;
+                    if (mPlaylistService != null) {
+                        SharedPreferencesManager.getInstance().writeInt(
+                                BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, method);
+                    }
+                    return true;
+                });
     }
 }

@@ -190,8 +190,6 @@ std::string MediaDetectorComponentManager::GetMediaDetectorScript(
     }
   }
 
-  LOG(ERROR) << "script : " << detector_script;
-
   return detector_script;
 }
 
