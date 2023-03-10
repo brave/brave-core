@@ -1,0 +1,23 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+  assert(is_win || is_linux || is_mac)
+  sources = [ "render_view_context_menu_unittest.cc" ]
+  deps = [
+    "//base",
+    "//brave/app:command_ids",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/custom_handlers",
+    "//components/custom_handlers:test_support",
+    "//components/search_engines",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
