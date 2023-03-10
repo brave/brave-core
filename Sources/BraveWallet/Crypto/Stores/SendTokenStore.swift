@@ -265,9 +265,11 @@ public class SendTokenStore: ObservableObject {
     let normalizedToAddress = sendAddress.lowercased()
     let isSupportedENSExtension = sendAddress.endsWithSupportedENSExtension
     if isSupportedENSExtension {
+      self.resolvedAddress = nil
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
-      let (address, isOffchainConsentRequired, status, _) = await rpcService.ensGetEthAddr(sendAddress)
+      let domain = sendAddress
+      let (address, isOffchainConsentRequired, status, _) = await rpcService.ensGetEthAddr(domain)
       guard !Task.isCancelled else { return }
       if isOffchainConsentRequired {
         self.isOffchainResolveRequired = true
@@ -281,6 +283,10 @@ public class SendTokenStore: ObservableObject {
       // If found address is the same as the selectedAccounts Wallet Address
       if address.lowercased() == normalizedFromAddress {
         addressError = .sameAsFromAddress
+        return
+      }
+      guard domain == sendAddress, !Task.isCancelled else {
+        // address changed while resolving, or validation cancelled.
         return
       }
       // store address for sending
@@ -327,9 +333,11 @@ public class SendTokenStore: ObservableObject {
     let normalizedToAddress = sendAddress.lowercased()
     let isSupportedSNSExtension = sendAddress.endsWithSupportedSNSExtension
     if isSupportedSNSExtension {
+      self.resolvedAddress = nil
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
-      let (address, status, _) = await rpcService.snsGetSolAddr(sendAddress)
+      let domain = sendAddress
+      let (address, status, _) = await rpcService.snsGetSolAddr(domain)
       guard !Task.isCancelled else { return }
       if status != .success || address.isEmpty {
         addressError = .snsError(domain: sendAddress)
@@ -338,6 +346,10 @@ public class SendTokenStore: ObservableObject {
       // If found address is the same as the selectedAccounts Wallet Address
       if address.lowercased() == normalizedFromAddress {
         addressError = .sameAsFromAddress
+        return
+      }
+      guard domain == sendAddress, !Task.isCancelled else {
+        // address changed while resolving, or validation cancelled.
         return
       }
       // store address for sending

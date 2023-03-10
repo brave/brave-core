@@ -677,7 +677,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateSolanaSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertEqual(resolvedAddress, expectedAddress)
@@ -714,7 +714,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst() // Initial value
+      .dropFirst(2) // Initial value, reset to nil in `validateSolanaSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertNil(resolvedAddress)
@@ -766,7 +766,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateSolanaSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertEqual(resolvedAddress, expectedAddress)
@@ -812,7 +812,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateEthereumSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertEqual(resolvedAddress, expectedAddress)
@@ -891,7 +891,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst() // Initial value
+      .dropFirst(2) // Initial value, reset to nil in `validateEthereumSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertNil(resolvedAddress)
@@ -943,7 +943,7 @@ class SendTokenStoreTests: XCTestCase {
     let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
     XCTAssertNil(store.resolvedAddress)  // Initial state
     store.$resolvedAddress
-      .dropFirst(2) // Initial value, reset to nil in `sendAddress` didSet
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateEthereumSendAddress`
       .sink { resolvedAddress in
         defer { resolvedAddressExpectation.fulfill() }
         XCTAssertEqual(resolvedAddress, expectedAddress)
