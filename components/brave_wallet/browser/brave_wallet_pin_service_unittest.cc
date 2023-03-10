@@ -40,6 +40,10 @@ const char kMonkey3Path[] =
     "nft.nftstorage.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2";
 const char kMonkey4Path[] =
     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3";
+const char kMonkey5Path[] =
+    "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4";
+const char kMonkey6Path[] =
+    "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5";
 
 const char kMonkey1Url[] =
     "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413";
@@ -49,6 +53,10 @@ const char kMonkey3Url[] =
     "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2777";
 const char kMonkey4Url[] =
     "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888";
+const char kMonkey5Url[] =
+    "https://ipfs.io/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888";
+const char kMonkey6Url[] =
+    "https://google.com/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888";
 
 const char kMonkey1[] =
     R"({"image":"ipfs://bafy1",
@@ -79,6 +87,24 @@ const char kMonkey3[] =
                         {"trait_type":"Hat","value":"Cowboy Hat"}]})";
 const char kMonkey4[] =
     R"({"image":"https://image.com",
+                        "attributes":[
+                        {"trait_type":"Mouth","value":"Bored Cigarette"},
+                        {"trait_type":"Fur","value":"Zombie"},
+                        {"trait_type":"Background","value":"Purple"},
+                        {"trait_type":"Eyes","value":"Closed"},
+                        {"trait_type":"Clothes","value":"Toga"},
+                        {"trait_type":"Hat","value":"Cowboy Hat"}]})";
+const char kMonkey5[] =
+    R"({"image":"https://ipfs.io/ipfs/bafy3",
+                        "attributes":[
+                        {"trait_type":"Mouth","value":"Bored Cigarette"},
+                        {"trait_type":"Fur","value":"Zombie"},
+                        {"trait_type":"Background","value":"Purple"},
+                        {"trait_type":"Eyes","value":"Closed"},
+                        {"trait_type":"Clothes","value":"Toga"},
+                        {"trait_type":"Hat","value":"Cowboy Hat"}]})";
+const char kMonkey6[] =
+    R"({"image":"https://google.com/bafy3",
                         "attributes":[
                         {"trait_type":"Mouth","value":"Bored Cigarette"},
                         {"trait_type":"Fur","value":"Zombie"},
@@ -295,6 +321,116 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
               *(token_record->FindString("status")));
     EXPECT_EQ(BraveWalletPinService::ErrorCodeToString(
                   mojom::WalletPinServiceErrorCode::ERR_FETCH_METADATA_FAILED),
+              token_record->FindByDottedPath("error.error_code")->GetString());
+  }
+}
+
+TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
+  {
+    ON_CALL(*GetContentTypeChecker(), CheckContentTypeSupported(_, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& cid,
+               base::OnceCallback<void(absl::optional<bool>)> callback) {
+              std::move(callback).Run(true);
+            }));
+  }
+  // Right gateway
+  {
+    ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& contract_address, const std::string& token_id,
+               const std::string& chain_id,
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
+              EXPECT_EQ("0x1", chain_id);
+              EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+                        contract_address);
+              EXPECT_EQ("0x4", token_id);
+              std::move(callback).Run(kMonkey5Url, kMonkey5,
+                                      mojom::ProviderError::kSuccess, "");
+            }));
+    ON_CALL(*GetIpfsLocalPinService(), AddPins(_, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& prefix, const std::vector<std::string>& cids,
+               ipfs::AddPinCallback callback) {
+              EXPECT_EQ(kMonkey5Path, prefix);
+              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+                        cids.at(0));
+              EXPECT_EQ("bafy3", cids.at(1));
+              std::move(callback).Run(true);
+            }));
+
+    auto scoped_override = OverrideWithTimeNow(base::Time::FromTimeT(123u));
+
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(kMonkey5Path);
+    token->is_erc721 = true;
+    absl::optional<bool> call_status;
+    service()->AddPin(
+        std::move(token), absl::nullopt,
+        base::BindLambdaForTesting(
+            [&call_status](bool result, mojom::PinErrorPtr error) {
+              call_status = result;
+              EXPECT_FALSE(error);
+            }));
+    EXPECT_TRUE(call_status.value());
+
+    const base::Value::Dict* token_record =
+        GetPrefs()
+            ->GetDict(kPinnedNFTAssets)
+            .FindDictByDottedPath(kMonkey5Path);
+
+    base::Value::List expected_cids;
+    expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    expected_cids.Append("bafy3");
+
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_PINNED),
+              *(token_record->FindString("status")));
+    EXPECT_EQ(nullptr, token_record->FindDict("error"));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(base::Time::FromTimeT(123u),
+              base::ValueToTime(token_record->Find("validate_timestamp")));
+  }
+
+  // Wrong gateway
+  {
+    ON_CALL(*GetJsonRpcService(), GetERC721Metadata(_, _, _, _))
+        .WillByDefault(::testing::Invoke(
+            [](const std::string& contract_address, const std::string& token_id,
+               const std::string& chain_id,
+               MockJsonRpcService::GetERC721MetadataCallback callback) {
+              EXPECT_EQ("0x1", chain_id);
+              EXPECT_EQ("0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+                        contract_address);
+              EXPECT_EQ("0x5", token_id);
+              std::move(callback).Run(kMonkey6Url, kMonkey6,
+                                      mojom::ProviderError::kSuccess, "");
+            }));
+
+    mojom::BlockchainTokenPtr token =
+        BraveWalletPinService::TokenFromPrefPath(kMonkey6Path);
+    token->is_erc721 = true;
+    absl::optional<bool> call_status;
+    service()->AddPin(
+        std::move(token), absl::nullopt,
+        base::BindLambdaForTesting(
+            [&call_status](bool result, mojom::PinErrorPtr error) {
+              call_status = result;
+              EXPECT_TRUE(error);
+            }));
+
+    EXPECT_FALSE(call_status.value());
+
+    const base::Value::Dict* token_record =
+        GetPrefs()
+            ->GetDict(kPinnedNFTAssets)
+            .FindDictByDottedPath(kMonkey6Path);
+
+    EXPECT_EQ(BraveWalletPinService::StatusToString(
+                  mojom::TokenPinStatusCode::STATUS_PINNING_FAILED),
+              *(token_record->FindString("status")));
+    EXPECT_EQ(BraveWalletPinService::ErrorCodeToString(
+                  mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL),
               token_record->FindByDottedPath("error.error_code")->GetString());
   }
 }

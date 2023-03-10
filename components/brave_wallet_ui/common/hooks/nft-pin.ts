@@ -51,10 +51,22 @@ export function useNftPin () {
     }, 0)
   }, [nftsPinningStatus])
 
+  const inProgressNftCount = React.useMemo(() => {
+    return Object.keys(nftsPinningStatus).reduce((accumulator, currentValue) => {
+      const status = nftsPinningStatus[currentValue]
+      if (status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ||
+          status?.code === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING) {
+        return accumulator += 1
+      }
+
+      return accumulator
+    }, 0)
+  }, [nftsPinningStatus])
+
   const pinningStatusSummary: BraveWallet.TokenPinStatusCode = React.useMemo(() => {
-    if (pinnableNfts.length === pinnedNftsCount) {
+    if (pinnedNftsCount > 0 && inProgressNftCount === 0) {
       return BraveWallet.TokenPinStatusCode.STATUS_PINNED
-    } else if (pinnableNfts.length > pinnedNftsCount) {
+    } else if (inProgressNftCount > 0) {
       return BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
     }
 

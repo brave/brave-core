@@ -44,7 +44,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
 
   // memos
   const bannerStatus: BannerStatus = React.useMemo(() => {
-    if (!isAutoPinEnabled || pinnableNftsCount === 0) return 'start'
+    if (!isAutoPinEnabled) return 'start'
 
     switch (status) {
       case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
@@ -52,7 +52,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
       case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
         return 'uploading'
       default:
-        return 'success'
+        return 'start'
     }
   }, [status, pinnableNftsCount, isAutoPinEnabled])
 
@@ -79,8 +79,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
             </>
           ) : bannerStatus === 'success' ? (
             `${getLocale('braveWalletNftPinningBannerSuccess')
-              .replace('$1', `${pinnedNftsCount}`)
-              .replace('$2', `${pinnableNftsCount}`)}`
+              .replace('$1', `${pinnedNftsCount}`)}`
           ) : (
             `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
