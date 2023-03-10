@@ -509,11 +509,6 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
       return
     }
 
-    var sourceIndexPath = sourceIndexPath
-    var destinationIndexPath = destinationIndexPath
-    sourceIndexPath.section = 0
-    destinationIndexPath.section = 0
-
     reorderItems(from: sourceIndexPath, to: destinationIndexPath) { [weak self] in
       guard let self = self else { return }
 
@@ -536,17 +531,21 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
 
     let item = frc(for: section)?.fetchedObjects?[safe: indexPath.row]
     let dragItem = UIDragItem(itemProvider: NSItemProvider())
-    dragItem.localObject = item
+    dragItem.localObject = (indexPath.section, item)
     return [dragItem]
   }
 
   func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
 
     var dropProposal = UITableViewDropProposal(operation: .cancel)
-    guard session.items.count == 1 else { return dropProposal }
+    guard session.items.count == 1, let dragInfo = session.items.first?.localObject as? (section: Int, item: PlaylistFolder?) else { return dropProposal }
 
     if destinationIndexPath?.section == Section.savedItems.rawValue {
       return dropProposal
+    }
+    
+    if dragInfo.section != destinationIndexPath?.section {
+      return UITableViewDropProposal(operation: .cancel)
     }
 
     if tableView.hasActiveDrag {
@@ -611,7 +610,8 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
   }
 
   func reorderItems(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)?) {
-    guard let section = section(from: sourceIndexPath.section),
+    guard sourceIndexPath.section == destinationIndexPath.section,
+          let section = section(from: sourceIndexPath.section),
           let frc = frc(for: section),
           var objects = frc.fetchedObjects else {
       ensureMainThread {
@@ -628,10 +628,7 @@ extension PlaylistFolderController: UITableViewDragDelegate, UITableViewDropDele
       }
 
       guard let frc = frc else { return }
-
-      let src = frc.object(at: sourceIndexPath)
-      objects.remove(at: sourceIndexPath.row)
-      objects.insert(src, at: destinationIndexPath.row)
+      objects.swapAt(sourceIndexPath.row, destinationIndexPath.row)
 
       for (order, item) in objects.enumerated().reversed() {
         item.order = Int32(order)
