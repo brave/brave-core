@@ -33,8 +33,21 @@
   }
   GURL output;
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
+  auto gateway_url = ipfs::GetDefaultIPFSGateway(prefs);
+  if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
+    return net::NSURLWithGURL(output);
+  }
+  return nullptr;
+}
 
+- (NSURL*)resolveGatewayUrlForNft:(NSURL*)input {
+  GURL input_gurl = net::GURLWithNSURL(input);
+  if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
+    return nullptr;
+  }
+  GURL output;
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
   if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
     return net::NSURLWithGURL(output);
   }
@@ -57,6 +70,18 @@
   auto content_hash = brave::ns_to_vector<std::uint8_t>(contentHash);
   GURL gurl = ipfs::ContentHashToCIDv1URL(content_hash);
   return net::NSURLWithGURL(gurl);
+}
+
+- (NSURL*)ipfsGateway {
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway = ipfs::GetDefaultIPFSGateway(prefs);
+  return net::NSURLWithGURL(gateway);
+}
+
+- (void)setIpfsGateway:(NSURL*)input {
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  GURL input_gurl = net::GURLWithNSURL(input);
+  ipfs::SetDefaultIPFSGateway(prefs, input_gurl);
 }
 
 @end
