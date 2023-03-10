@@ -217,6 +217,8 @@ source_set("ui") {
     }
     if (enable_extensions) {
       sources += [
+        "webui/settings/brave_extensions_manifest_v2_handler.cc",
+        "webui/settings/brave_extensions_manifest_v2_handler.h",
         "webui/settings/brave_tor_snowflake_extension_handler.cc",
         "webui/settings/brave_tor_snowflake_extension_handler.h",
       ]
