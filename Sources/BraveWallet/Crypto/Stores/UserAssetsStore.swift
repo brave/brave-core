@@ -233,7 +233,10 @@ public class UserAssetsStore: ObservableObject {
     let allUserTokens = allUserAssets.flatMap(\.tokens)
     
     // NFT metadata only exists for custom NFT added by users. ERC721 tokens from token registry do not have metadata
-    return await rpcService.fetchNFTMetadata(tokens: allUserTokens.filter { $0.isErc721 || $0.isNft })
+    return await rpcService.fetchNFTMetadata(
+      tokens: allUserTokens.filter { $0.isErc721 || $0.isNft },
+      ipfsApi: ipfsApi
+    )
   }
 }
 

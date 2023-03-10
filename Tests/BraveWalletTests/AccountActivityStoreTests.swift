@@ -155,7 +155,8 @@ class AccountActivityStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: nil
     )
     
     let userVisibleAssetsException = expectation(description: "accountActivityStore-assetStores")
@@ -252,7 +253,8 @@ class AccountActivityStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: nil
     )
     
     let userVisibleAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
