@@ -44,7 +44,8 @@
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
-    "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer"
+    "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
+    "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests"
   },
   "repository": {
     "type": "git",
