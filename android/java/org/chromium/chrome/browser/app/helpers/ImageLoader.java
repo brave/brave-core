@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.util;
-
-import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD;
+package org.chromium.chrome.browser.app.helpers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,12 +17,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -38,7 +34,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import org.chromium.chrome.browser.WebContentsFactory;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.components.image_fetcher.ImageFetcher;
 import org.chromium.components.image_fetcher.ImageFetcher.Params;
 import org.chromium.components.image_fetcher.ImageFetcherConfig;
@@ -70,6 +69,7 @@ public class ImageLoader {
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
+    private static final String ATT_VALUE_1000_PX = "1000px";
 
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
@@ -135,7 +135,8 @@ public class ImageLoader {
                         if (bestSize.width() == 0 || bestSize.height() == 0) {
                             imageFetcherFacade = null;
                         } else {
-                            BitmapDrawable bitmapDrawable = new BitmapDrawable(bestBitmap);
+                            BitmapDrawable bitmapDrawable =
+                                    new BitmapDrawable(context.getResources(), bestBitmap);
                             imageFetcherFacade = new ImageFetcherFacade(bitmapDrawable);
                         }
                         loadImage(imageFetcherFacade, context, isCircular, imageView, callback);
@@ -153,7 +154,8 @@ public class ImageLoader {
             } else {
                 imageFetcher.fetchImage(
                         Params.create(new GURL(url), UNUSED_CLIENT_NAME), bitmap -> {
-                            BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                            BitmapDrawable bitmapDrawable =
+                                    new BitmapDrawable(context.getResources(), bitmap);
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(bitmapDrawable);
                             loadImage(imageFetcherFacade, context, isCircular, imageView, callback);
@@ -192,13 +194,13 @@ public class ImageLoader {
             }
 
             // Check if the SVG tag has width and height attributes.
-            String width = svg.getAttribute("width");
-            String height = svg.getAttribute("height");
+            String width = svg.getAttribute(ConfigurationUtils.WIDTH);
+            String height = svg.getAttribute(ConfigurationUtils.HEIGHT);
             if (width.isEmpty()) {
-                svg.setAttribute("width", "1000px");
+                svg.setAttribute(ConfigurationUtils.WIDTH, ATT_VALUE_1000_PX);
             }
             if (height.isEmpty()) {
-                svg.setAttribute("height", "1000px");
+                svg.setAttribute(ConfigurationUtils.HEIGHT, ATT_VALUE_1000_PX);
             }
 
             // Serialize the XML document to a string and return it.
@@ -265,11 +267,9 @@ public class ImageLoader {
      * @return {@code true} if the URL string represents an SVG image file, {@code false} otherwise.
      */
     public static boolean isSvg(String url) {
-        // Checks if the URL is a valid image URL.
         if (!isValidImgUrl(url)) return false;
         // Converts the URL to lowercase to make the matching case-insensitive.
         url = url.toLowerCase(Locale.ENGLISH);
-        // Checks if the URL starts with "data:image/svg" or ends with ".svg".
         return url.startsWith("data:image/svg") || url.endsWith(".svg");
     }
 
@@ -279,11 +279,9 @@ public class ImageLoader {
      * @return {@code true} if the URL string represents an SVG image file, {@code false} otherwise.
      */
     public static boolean isGif(String url) {
-        // Checks if the URL is a valid image URL.
         if (!isValidImgUrl(url)) return false;
         // Converts the URL to lowercase to make the matching case-insensitive.
         url = url.toLowerCase(Locale.ENGLISH);
-        // Checks if the URL ends with ".gif".
         return url.endsWith(".gif");
     }
 
