@@ -31,16 +31,16 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     private Profile mProfile;
     private boolean needUpdateActiveDSE;
 
-    public BraveSearchEngineAdapter(Context context, boolean isPrivate) {
-        super(context);
+    public BraveSearchEngineAdapter(Context context, Profile profile, boolean isPrivate) {
+        super(context, profile);
         mIsPrivate = isPrivate;
 
         // Only need last used profile because we are in settings
         if (mProfile == null) {
             if (!mIsPrivate) {
-                mProfile = Profile.getLastUsedRegularProfile();
+                mProfile = profile;
             } else {
-                mProfile = Profile.getLastUsedRegularProfile().getPrimaryOTRProfile(
+                mProfile = profile.getPrimaryOTRProfile(
                         /* createIfNeeded= */ true);
             }
         }
