@@ -260,6 +260,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
             GetSelectedURL(GetProfile(), params_.selection_text);
         if (selected_url.has_value()) {
           link_url = selected_url.value();
+        } else {
+          return;
         }
       }
       brave::CopyLinkWithStrictCleaning(GetBrowser(), link_url);
