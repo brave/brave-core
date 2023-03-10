@@ -73,6 +73,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
@@ -709,13 +710,12 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator", View.class,
-                View.class, ObservableSupplier.class,
-                BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
+                View.class, ObservableSupplier.class, PrivacyPreferencesManager.class,
                 LocationBarDataProvider.class, ActionMode.Callback.class, WindowDelegate.class,
                 WindowAndroid.class, Supplier.class, Supplier.class, Supplier.class,
                 IncognitoStateProvider.class, ActivityLifecycleDispatcher.class,
                 OverrideUrlLoadingDelegate.class, BackKeyBehaviorDelegate.class,
-                SearchEngineLogoUtils.class, Runnable.class, PageInfoAction.class, Callback.class,
+                SearchEngineLogoUtils.class, PageInfoAction.class, Callback.class,
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class,
@@ -730,9 +730,10 @@ public class BytecodeTest {
                 OverrideUrlLoadingDelegate.class, BraveLocationBarMediator.getLocaleManagerClass(),
                 OneshotSupplier.class, BackKeyBehaviorDelegate.class, WindowAndroid.class,
                 boolean.class, SearchEngineLogoUtils.class,
-                BraveLocationBarMediator.getLensControllerClass(), Runnable.class,
+                BraveLocationBarMediator.getLensControllerClass(),
                 BraveLocationBarMediator.getSaveOfflineButtonStateClass(),
-                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class));
+                BraveLocationBarMediator.getOmniboxUmaClass(), BooleanSupplier.class,
+                BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass()));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/IntentHandler",
                 "org/chromium/chrome/browser/BraveIntentHandler", Activity.class,
                 IntentHandler.IntentHandlerDelegate.class));

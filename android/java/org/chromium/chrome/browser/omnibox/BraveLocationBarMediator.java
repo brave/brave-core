@@ -84,6 +84,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         return PrivacyPreferencesManager.class;
     }
 
+    public static Class<OmniboxSuggestionsDropdownEmbedderImpl>
+    getOmniboxSuggestionsDropdownEmbedderImplClass() {
+        return OmniboxSuggestionsDropdownEmbedderImpl.class;
+    }
+
     @Override
     void updateButtonVisibility() {
         super.updateButtonVisibility();
