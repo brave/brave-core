@@ -384,6 +384,17 @@ void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
+void BraveShieldsDataController::BlockAllowedScripts(
+    const std::vector<std::string>& origins) {
+  BraveShieldsWebContentsObserver* observer =
+      BraveShieldsWebContentsObserver::FromWebContents(web_contents());
+  if (!observer) {
+    return;
+  }
+  observer->BlockAllowedScripts(origins);
+  ReloadWebContents();
+}
+
 void BraveShieldsDataController::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =

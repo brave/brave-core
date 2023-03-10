@@ -78,6 +78,7 @@ class BraveShieldsDataController
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetIsHTTPSEverywhereEnabled(bool is_enabled);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
+  void BlockAllowedScripts(const std::vector<std::string>& origins);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);

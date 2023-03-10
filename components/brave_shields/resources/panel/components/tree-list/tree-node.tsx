@@ -3,68 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import styled from 'styled-components'
-import UrlElement from './url-element'
+import * as S from './tree-node-styles'
+import ResourceElement from './resource-element'
+import {
+  PermissionButtonHandler
+} from '../../state/component_types'
 
-const Tree = styled.div`
-  display: grid;
-  grid-template-columns: 20px 2fr;
-  grid-gap: 5px;
-  align-items: flex-start;
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  font-size: 12px;
-  font-weight: 600;
-  font-weight: normal;
-  line-height: 1.2;
-  margin-bottom: 12px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`
-
-const TreeControlBox = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`
-
-const SVGBox = styled.i`
-  position: absolute;
-  top: 20px;
-  left: 10px;
-
-  path {
-    stroke: ${(p) => p.theme.color.text03};
-  }
-`
-
-const ExpandToggleButton = styled.button`
-  --border: 2px solid transparent;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  border: var(--border);
-  width: 16px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  &:focus-visible {
-    --border: 2px solid ${(p) => p.theme.color.focusBorder};
-  }
-`
-
-const TreeContents = styled.div`
-  overflow: hidden; /* to wrap contents */
-`
 
 interface TreeNodeProps {
   host: string
   resourceList: string[]
+  onPermissionButtonClick?: PermissionButtonHandler
+  permissionButtonTitle: string
 }
 
 function rectToQuad (rect: DOMRect) {
@@ -94,6 +44,10 @@ function TreeNode (props: TreeNodeProps) {
   const [tickValues, setTickValues] = React.useState<number[]>([])
   const [isExpanded, setIsExpanded] = React.useState(false)
   const hasResources = props.resourceList.length > 0
+
+  let verticalAxisSVGElement = null
+  let treeExpandButtonOrBulletElement = null
+  let resourcesListElement = null
 
   const measure = () => {
     if (treeChildrenBoxRef.current && svgBoxRef.current) {
@@ -125,9 +79,9 @@ function TreeNode (props: TreeNodeProps) {
     }
   }
 
-  const renderTreeExpandToggle = () => {
-    return (
-      <ExpandToggleButton
+  if (hasResources) {
+    treeExpandButtonOrBulletElement = (
+      <S.ExpandToggleButton
         aria-label="Expand to see sub resources"
         role="button"
         onClick={() => setIsExpanded(x => !x)}
@@ -138,23 +92,28 @@ function TreeNode (props: TreeNodeProps) {
         ) : (
           <svg width="12" height="12" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M6 11.25a.75.75 0 0 0 .75-.75V6.75h3.75a.75.75 0 0 0 0-1.5H6.75V1.5a.75.75 0 0 0-1.5 0v3.75H1.5a.75.75 0 0 0 0 1.5h3.75v3.75c0 .414.336.75.75.75Z"/></svg>
         )}
-      </ExpandToggleButton>
+      </S.ExpandToggleButton>
     )
-  }
 
-  const renderBullet = () => {
-    return (
-      <i>
-        <svg width="5" height="5" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="1.5" cy="1.5" r="1.5"/>
-        </svg>
-      </i>
-    )
-  }
+    if (isExpanded) {
+      resourcesListElement = (
+        <div ref={treeChildrenBoxRef}>
+          {
+            props.resourceList.map((path: string, idx) => {
+              return (<ResourceElement
+                key={idx}
+                path={path}
+                host={props.host}
+                onTextExpand={measure}
+                onPermissionButtonClick={props.onPermissionButtonClick}
+                permissionButtonTitle={props.permissionButtonTitle}
+              />)
+            })
+          }
+        </div>
+      )
 
-  const renderLeftAxis = () => {
-    return (
-      <SVGBox ref={svgBoxRef}>
+      verticalAxisSVGElement = (<S.SVGBox ref={svgBoxRef}>
         <svg width="20" height={axisLeftHeight} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <g id="vertical-axis">
             <path
@@ -165,51 +124,41 @@ function TreeNode (props: TreeNodeProps) {
               strokeDasharray="2 4"
             />
           </g>
-          {
-            tickValues.map((value, idx) => {
-              return (
-                <g key={idx} transform={`translate(0,${value})`}>
-                  <path d="M1 .5h12" stroke="currentColor" strokeLinejoin="round" strokeDasharray="2 2" />
-                </g>
-              )
-            })
-          }
+          {tickValues.map((value, idx) => {
+            return (
+              <g key={idx} transform={`translate(0,${value})`}>
+                <path d="M1 .5h12" stroke="currentColor" strokeLinejoin="round"
+                      strokeDasharray="2 2" />
+              </g>
+            )
+          })}
         </svg>
-      </SVGBox>
+      </S.SVGBox>)
+    }
+  }
+
+  if (!hasResources) {
+    treeExpandButtonOrBulletElement = (
+      <i><svg width="5" height="5" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="1.5" cy="1.5" r="1.5"/></svg></i>
     )
   }
 
   // We're using layout effect here so the initial frame doesn't render an empty space for the axis i.e to avoid flash of empty content
-  React.useLayoutEffect(() => {
-    measure()
-  }, [props.resourceList, isExpanded])
-
+  React.useLayoutEffect(measure, [props.resourceList, isExpanded])
   return (
-    <Tree>
-      <TreeControlBox>
-        {hasResources ? renderTreeExpandToggle() : renderBullet()}
-        {hasResources && isExpanded ? renderLeftAxis() : null}
-      </TreeControlBox>
-      <TreeContents>
-        <UrlElement name={props.host} isHost={true} />
-        {hasResources && isExpanded ? (
-          <div ref={treeChildrenBoxRef}>
-            {
-              props.resourceList.map((resourceUrl: string, idx) => {
-                return (
-                  <UrlElement
-                    key={idx}
-                    isHost={false}
-                    name={resourceUrl}
-                    onExpand={() => measure()}
-                  />
-                )
-              })
-            }
-          </div>
-        ) : null}
-      </TreeContents>
-    </Tree>
+    <S.Tree>
+      <S.TreeControlBox>
+        {treeExpandButtonOrBulletElement}
+        {verticalAxisSVGElement}
+      </S.TreeControlBox>
+      <S.TreeContents>
+        <ResourceElement
+          host={props.host}
+          onPermissionButtonClick={props.onPermissionButtonClick}
+          permissionButtonTitle={props.permissionButtonTitle} />
+        {resourcesListElement}
+      </S.TreeContents>
+    </S.Tree>
   )
 }
 
