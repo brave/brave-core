@@ -45,21 +45,21 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
       }
     ]
   )");
-  base::flat_map<std::string, mojom::PublisherPtr> publisher_list;
-  ASSERT_TRUE(
-      ParseCombinedPublisherList(base::test::ParseJson(json), &publisher_list));
-  ASSERT_EQ(publisher_list.size(), 3UL);
+  absl::optional<Publishers> publisher_list =
+      ParseCombinedPublisherList(base::test::ParseJson(json));
+  ASSERT_TRUE(publisher_list);
+  ASSERT_EQ(publisher_list->size(), 3UL);
 
-  ASSERT_TRUE(publisher_list.contains("111"));
-  auto first_opt = publisher_list.find("111");
-  ASSERT_NE(first_opt, publisher_list.end());
+  ASSERT_TRUE(publisher_list->contains("111"));
+  auto first_opt = publisher_list->find("111");
+  ASSERT_NE(first_opt, publisher_list->end());
 
   ASSERT_EQ(first_opt->second->publisher_id, "111");
   ASSERT_EQ(first_opt->second->publisher_name, "Test Publisher 1");
 
-  ASSERT_TRUE(publisher_list.contains("222"));
-  ASSERT_TRUE(publisher_list.contains("333"));
-  ASSERT_FALSE(publisher_list.contains("444"));
+  ASSERT_TRUE(publisher_list->contains("222"));
+  ASSERT_TRUE(publisher_list->contains("333"));
+  ASSERT_FALSE(publisher_list->contains("444"));
 }
 
 }  // namespace brave_news

@@ -6,7 +6,10 @@
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 generated_types("api") {
-  sources = [ "combined_feed.idl" ]
+  sources = [
+    "combined_feed.idl",
+    "publisher.idl",
+  ]
 
   root_namespace = "brave_news::api::%(namespace)s"
 }

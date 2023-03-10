@@ -12,11 +12,11 @@
 #include "base/values.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
-bool ParseCombinedPublisherList(const base::Value& json_value,
-                                Publishers* publishers);
+absl::optional<Publishers> ParseCombinedPublisherList(const base::Value& value);
 
 void ParseDirectPublisherList(const base::Value::Dict& direct_feeds_pref_dict,
                               std::vector<mojom::PublisherPtr>* publishers);
