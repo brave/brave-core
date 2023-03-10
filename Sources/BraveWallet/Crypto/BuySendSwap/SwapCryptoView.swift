@@ -187,10 +187,10 @@ struct SwapCryptoView: View {
       }
     }
     
-    var url: URL? {
+    var url: URL {
       switch self {
-      case .zeroX: return URL(string: "https://0x.org/")
-      case .jupiter: return URL(string: "https://jup.ag")
+      case .zeroX: return WalletConstants.zeroXPrivacyPolicy
+      case .jupiter: return WalletConstants.jupiterPrivacyPolicy
       }
     }
     
@@ -494,8 +494,7 @@ struct SwapCryptoView: View {
           primaryButton: Alert.Button.default(
             Text(Strings.learnMore),
             action: {
-              guard let url = dexAggregator.url else { return }
-              openWalletURL(url)
+              openWalletURL(dexAggregator.url)
             }),
           secondaryButton: Alert.Button.cancel(Text(Strings.OKString))
         )

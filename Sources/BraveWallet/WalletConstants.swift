@@ -28,6 +28,12 @@ struct WalletConstants {
   
   /// The url to learn more about ENS off-chain lookups
   static let braveWalletENSOffchainURL = URL(string: "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup")!
+  
+  /// The url to the privacy policy for 0x swaps
+  static let zeroXPrivacyPolicy = URL(string: "https://www.0x.org/privacy")!
+  
+  /// The url to the privacy policy for Jupiter swaps
+  static let jupiterPrivacyPolicy = URL(string: "https://docs.jup.ag/legal/privacy-policy")!
 
   /// The currently supported test networks.
   static let supportedTestNetworkChainIds = [

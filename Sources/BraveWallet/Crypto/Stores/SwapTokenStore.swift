@@ -566,7 +566,8 @@ public class SwapTokenStore: ObservableObject {
        let newFromAmountWrapped = BDouble(newFromAmount),
        let selectedToToken,
        let newToAmount = formatter.decimalString(for: "\(route.otherAmountThreshold)", radix: .decimal, decimals: Int(selectedToToken.decimals)),
-       let newToAmountWrapped = BDouble(newToAmount) {
+       let newToAmountWrapped = BDouble(newToAmount),
+       newFromAmountWrapped != 0 {
       let rate = newToAmountWrapped / newFromAmountWrapped
       selectedFromTokenPrice = rate.decimalDescription
     }
