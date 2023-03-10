@@ -9,8 +9,21 @@ import os.log
 
 extension FileManager {
   public enum Folder: String {
-    case cookie = "/Cookies"
-    case webSiteData = "/WebKit/WebsiteData"
+    case cookie
+    case webSiteData
+    
+    public var rawValue: String {
+      switch self {
+      case .cookie: return "/Cookies"
+      case .webSiteData:
+        #if targetEnvironment(simulator)
+        if let bundleId = Bundle.main.bundleIdentifier {
+          return "/WebKit/\(bundleId)/WebsiteData"
+        }
+        #endif
+        return "/WebKit/WebsiteData"
+      }
+    }
   }
   public typealias FolderLockObj = (folder: Folder, lock: Bool)
 
