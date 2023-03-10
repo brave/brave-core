@@ -1207,44 +1207,17 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
     return RespondNow(Error("Rewards service is not available"));
   }
 
-  rewards_service->GetExternalWallet(base::BindOnce(
-      &BraveRewardsFetchBalanceFunction::OnGetExternalWallet, this));
+  rewards_service->FetchBalance(
+      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this));
 
   return RespondLater();
 }
 
-void BraveRewardsFetchBalanceFunction::OnGetExternalWallet(
-    base::expected<ledger::mojom::ExternalWalletPtr,
-                   ledger::mojom::GetExternalWalletError> result) {
-  std::string connected_wallet_type;
-  if (auto wallet = std::move(result).value_or(nullptr);
-      wallet && wallet->status == ledger::mojom::WalletStatus::kConnected) {
-    connected_wallet_type = std::move(wallet->type);
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return Release();
-  }
-
-  rewards_service->FetchBalance(
-      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this,
-                     std::move(connected_wallet_type)));
-}
-
 void BraveRewardsFetchBalanceFunction::OnFetchBalance(
-    const std::string& connected_wallet_type,
-    ledger::mojom::Result,
-    ledger::mojom::BalancePtr balance) {
-  if (!balance || !balance->wallets.contains("blinded") ||
-      (!connected_wallet_type.empty() &&
-       !balance->wallets.contains(connected_wallet_type))) {
-    return Respond(NoArguments());
-  }
-
-  Respond(WithArguments(balance->total));
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>
+        result) {
+  const auto balance = std::move(result).value_or(nullptr);
+  Respond(balance ? WithArguments(balance->total) : NoArguments());
 }
 
 BraveRewardsGetExternalWalletProvidersFunction::

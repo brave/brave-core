@@ -37,11 +37,13 @@ export class General extends React.Component<Props, {}> {
           paymentId={this.props.data.info.walletPaymentId}
           logEntries={this.props.data.eventLogs}
         />
-        <BalanceWrapper>
-          <Balance
-            balance={this.props.data.balance}
-            externalWallet={this.props.data.externalWallet} />
-        </BalanceWrapper>
+        {this.props.data.info.bootStamp > 0 &&
+          <BalanceWrapper>
+            <Balance
+              balance={this.props.data.balance}
+              externalWallet={this.props.data.externalWallet} />
+          </BalanceWrapper>
+        }
         <ExternalWallet info={this.props.data.externalWallet} />
       </>
     )

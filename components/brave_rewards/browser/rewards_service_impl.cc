@@ -553,9 +553,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
         auto on_balance = [](base::WeakPtr<RewardsServiceImpl> self,
-                             ledger::mojom::Result result,
-                             ledger::mojom::BalancePtr balance) {
-          if (self && balance && balance->total == 0) {
+                             FetchBalanceResult result) {
+          if (self && result.has_value() && result.value()->total == 0) {
             self->SetAutoContributeEnabled(true);
           }
         };
@@ -2491,8 +2490,9 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(ledger::mojom::FetchBalanceError::kUnexpected));
   }
 
   bat_ledger_->FetchBalance(std::move(callback));

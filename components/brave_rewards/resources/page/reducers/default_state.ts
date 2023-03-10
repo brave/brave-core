@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {
+  optional
+} from '../../../../brave_rewards/resources/shared/lib/optional'
+
 export function defaultState (): Rewards.State {
   return {
     userType: 'unconnected',
@@ -51,10 +55,7 @@ export function defaultState (): Rewards.State {
     pendingContributions: [],
     excludedList: [],
     externalWalletProviderList: [],
-    balance: {
-      total: 0,
-      wallets: {}
-    },
+    balance: optional<number>(),
     monthlyReport: {
       month: -1,
       year: -1

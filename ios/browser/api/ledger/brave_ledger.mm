@@ -25,6 +25,7 @@
 #import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/ledger_client_bridge.h"
 #import "brave/ios/browser/api/ledger/ledger_client_ios.h"
+#import "brave/ios/browser/api/ledger/ledger_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/legacy_database/data_controller.h"
 #import "brave/ios/browser/api/ledger/legacy_database/legacy_ledger_database.h"
 #import "brave/ios/browser/api/ledger/promotion_solution.h"
@@ -532,11 +533,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
   ledger->FetchBalance(base::BindOnce(
-      ^(ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
+      ^(base::expected<ledger::mojom::BalancePtr,
+                       ledger::mojom::FetchBalanceError> result) {
         const auto strongSelf = weakSelf;
-        if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-          strongSelf.balance =
-              [[LedgerBalance alloc] initWithBalancePtr:std::move(balance)];
+        if (result.has_value()) {
+          strongSelf.balance = [[LedgerBalance alloc]
+              initWithBalancePtr:std::move(result.value())];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
           for (BraveLedgerObserver* observer in [self.observers copy]) {

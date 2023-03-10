@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -16,6 +17,7 @@ import Theme from 'brave-ui/theme/brave-default'
 // Utils
 import store from './store'
 import * as rewardsInternalsActions from './actions/rewards_internals_actions'
+import * as mojom from '../shared/lib/mojom'
 
 function getActions () {
   const actions: any = getUtilActions()
@@ -32,7 +34,7 @@ function onGetRewardsInternalsInfo (info: RewardsInternals.State) {
   getActions().onGetRewardsInternalsInfo(info)
 }
 
-function balance (balance: RewardsInternals.Balance) {
+function balance (balance: mojom.Balance) {
   getActions().onBalance(balance)
 }
 

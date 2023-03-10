@@ -7,6 +7,7 @@ import { action } from 'typesafe-actions'
 
 // Constants
 import { types } from '../constants/rewards_internals_types'
+import * as mojom from '../../shared/lib/mojom'
 
 export const getRewardsInternalsInfo = () => action(types.GET_REWARDS_INTERNALS_INFO)
 
@@ -17,7 +18,7 @@ export const onGetRewardsInternalsInfo = (info: RewardsInternals.State) =>
 
 export const getBalance = () => action(types.GET_BALANCE)
 
-export const onBalance = (balance: RewardsInternals.Balance) =>
+export const onBalance = (balance: mojom.Balance) =>
   action(types.ON_BALANCE, {
     balance
   })

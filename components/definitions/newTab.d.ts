@@ -163,7 +163,7 @@ declare namespace NewTab {
     isUnsupportedRegion: boolean
     declaredCountry: string
     adsSupported?: boolean
-    balance: RewardsBalance
+    balance?: number
     externalWallet?: RewardsExtension.ExternalWallet
     externalWalletProviders?: string[]
     report?: RewardsBalanceReport
@@ -219,8 +219,6 @@ declare namespace NewTab {
     expiresAt?: number
     amount: number
   }
-
-  export type RewardsBalance = number | undefined
 
   export interface AdsAccountStatement {
     nextPaymentDate: number

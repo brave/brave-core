@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -6,8 +7,7 @@ import * as React from 'react'
 
 import {
   PaymentKind,
-  RewardsParameters,
-  BalanceInfo
+  RewardsParameters
 } from '../lib/interfaces'
 
 import { HostContext } from '../lib/host_context'
@@ -17,6 +17,7 @@ import { PaymentKindSwitch } from './payment_kind_switch'
 import { ExchangeAmount } from '../../shared/components/exchange_amount'
 
 import * as style from './one_time_tip_form.style'
+import * as mojom from '../../shared/lib/mojom'
 
 function generateTipOptions (rewardsParameters: RewardsParameters) {
   const { tipChoices } = rewardsParameters
@@ -28,7 +29,7 @@ function generateTipOptions (rewardsParameters: RewardsParameters) {
 
 function getDefaultTipAmount (
   rewardsParameters: RewardsParameters | undefined,
-  balanceInfo: BalanceInfo | undefined
+  balanceInfo?: mojom.Balance
 ) {
   if (!rewardsParameters || !balanceInfo) {
     return 0

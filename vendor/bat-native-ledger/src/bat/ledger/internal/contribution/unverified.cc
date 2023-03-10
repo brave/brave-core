@@ -55,18 +55,15 @@ void Unverified::ProcessNext() {
       &Unverified::OnContributeUnverifiedBalance, base::Unretained(this)));
 }
 
-void Unverified::OnContributeUnverifiedBalance(mojom::Result result,
-                                               mojom::BalancePtr properties) {
-  if (result != mojom::Result::LEDGER_OK || !properties) {
-    BLOG(0, "Balance is null");
+void Unverified::OnContributeUnverifiedBalance(FetchBalanceResult result) {
+  if (!result.has_value()) {
+    BLOG(0, "Failed to fetch balance!");
     return ProcessingCompleted();
   }
 
   ledger_->database()->GetPendingContributions(
-      std::bind(&Unverified::OnContributeUnverifiedPublishers,
-                this,
-                properties->total,
-                _1));
+      std::bind(&Unverified::OnContributeUnverifiedPublishers, this,
+                result.value()->total, _1));
 }
 
 void Unverified::OnContributeUnverifiedPublishers(

@@ -129,11 +129,6 @@ struct RewardsParameters {
   bool vbat_expired;
 };
 
-struct Balance {
-  double total;
-  map<string, double> wallets;
-};
-
 struct AutoContributeProperties {
   bool enabled_contribute;
   double amount;

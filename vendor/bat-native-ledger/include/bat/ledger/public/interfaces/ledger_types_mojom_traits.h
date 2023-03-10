@@ -14,27 +14,6 @@
 namespace mojo {
 
 template <>
-struct UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
-                   base::expected<ledger::mojom::ExternalWalletPtr,
-                                  ledger::mojom::GetExternalWalletError>> {
-  static ledger::mojom::GetExternalWalletValuePtr value(
-      const base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>& result);
-
-  static ledger::mojom::GetExternalWalletError error(
-      const base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>& result);
-
-  static ledger::mojom::GetExternalWalletResultDataView::Tag GetTag(
-      const base::expected<ledger::mojom::ExternalWalletPtr,
-                           ledger::mojom::GetExternalWalletError>& result);
-
-  static bool Read(ledger::mojom::GetExternalWalletResultDataView data,
-                   base::expected<ledger::mojom::ExternalWalletPtr,
-                                  ledger::mojom::GetExternalWalletError>* out);
-};
-
-template <>
 struct UnionTraits<
     ledger::mojom::ConnectExternalWalletResultDataView,
     base::expected<void, ledger::mojom::ConnectExternalWalletError>> {
@@ -53,6 +32,48 @@ struct UnionTraits<
   static bool Read(
       ledger::mojom::ConnectExternalWalletResultDataView data,
       base::expected<void, ledger::mojom::ConnectExternalWalletError>* out);
+};
+
+template <>
+struct UnionTraits<ledger::mojom::FetchBalanceResultDataView,
+                   base::expected<ledger::mojom::BalancePtr,
+                                  ledger::mojom::FetchBalanceError>> {
+  static ledger::mojom::FetchBalanceValuePtr value(
+      const base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>& result);
+
+  static ledger::mojom::FetchBalanceError error(
+      const base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>& result);
+
+  static ledger::mojom::FetchBalanceResultDataView::Tag GetTag(
+      const base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>& result);
+
+  static bool Read(ledger::mojom::FetchBalanceResultDataView data,
+                   base::expected<ledger::mojom::BalancePtr,
+                                  ledger::mojom::FetchBalanceError>* out);
+};
+
+template <>
+struct UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
+                   base::expected<ledger::mojom::ExternalWalletPtr,
+                                  ledger::mojom::GetExternalWalletError>> {
+  static ledger::mojom::GetExternalWalletValuePtr value(
+      const base::expected<ledger::mojom::ExternalWalletPtr,
+                           ledger::mojom::GetExternalWalletError>& result);
+
+  static ledger::mojom::GetExternalWalletError error(
+      const base::expected<ledger::mojom::ExternalWalletPtr,
+                           ledger::mojom::GetExternalWalletError>& result);
+
+  static ledger::mojom::GetExternalWalletResultDataView::Tag GetTag(
+      const base::expected<ledger::mojom::ExternalWalletPtr,
+                           ledger::mojom::GetExternalWalletError>& result);
+
+  static bool Read(ledger::mojom::GetExternalWalletResultDataView data,
+                   base::expected<ledger::mojom::ExternalWalletPtr,
+                                  ledger::mojom::GetExternalWalletError>* out);
 };
 
 }  // namespace mojo
