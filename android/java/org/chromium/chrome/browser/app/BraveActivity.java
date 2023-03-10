@@ -9,7 +9,6 @@ import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.D
 import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_MODE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
@@ -265,11 +264,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
 
-    @SuppressLint("VisibleForTests")
-    public BraveActivity() {
-        // Disable key checker to avoid asserts on Brave keys in debug
-        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
-    }
+    public BraveActivity() {}
 
     @Override
     public void onResumeWithNative() {
