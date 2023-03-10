@@ -213,13 +213,14 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
 float Model::ComputeNLL(std::vector<float> true_labels,
                         std::vector<float> predictions) {
   float error = 0.0;
+  size_t batch_size = true_labels.size();
 
-  for (size_t i = 0; i < true_labels.size(); i++) {
+  for (size_t i = 0; i < batch_size; i++) {
     error += (true_labels[i] * log(predictions[i]) +
               (1.0 - true_labels[i]) * log(1 - predictions[i]));
   }
 
-  return -error;
+  return -error/batch_size;
 }
 
 float Model::Activation(float z) {
