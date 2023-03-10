@@ -135,8 +135,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
                     Triple.create(networkInfo.chainId, networkInfo, _mCryptoNetworks.getValue()));
         });
         _mChainNetworkAllNetwork.addSource(_mCryptoNetworks, networkInfos -> {
-            _mChainNetworkAllNetwork.postValue(
-                    Triple.create(_mChainId.getValue(), _mDefaultNetwork.getValue(), networkInfos));
+            String chainId = _mChainId.getValue();
+            NetworkInfo networkInfo = _mDefaultNetwork.getValue();
+            if (networkInfo != null) {
+                chainId = networkInfo.chainId;
+            }
+            _mChainNetworkAllNetwork.postValue(Triple.create(chainId, networkInfo, networkInfos));
         });
         _mCustomNetworkIds.addSource(mSharedData.getCoinTypeLd(), coinType -> {
             mJsonRpcService.getCustomNetworks(
