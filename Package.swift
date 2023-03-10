@@ -113,7 +113,6 @@ var package = Package(
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
     .binaryTarget(name: "sqlcipher", path: "ThirdParty/sqlcipher/sqlcipher.xcframework"),
-    .binaryTarget(name: "GCDWebServers", path: "ThirdParty/GCDWebServers/GCDWebServers.xcframework"),
     .target(
       name: "Storage",
       dependencies: ["Shared", "sqlcipher", "SDWebImage"],
@@ -275,7 +274,6 @@ var package = Package(
     ),
     .testTarget(name: "StorageTests", dependencies: ["Storage", "BraveSharedTestUtils"], resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]),
     .testTarget(name: "DataTests", dependencies: ["Data", "DataTestsUtils"]),
-    .testTarget(name: "SPMLibrariesTests", dependencies: ["GCDWebServers"]),
     .testTarget(
       name: "ClientTests",
       dependencies: ["Brave", "BraveSharedTestUtils"],
@@ -318,7 +316,6 @@ var braveTarget: PackageDescription.Target = .target(
     "DesignSystem",
     "Data",
     "Storage",
-    "GCDWebServers",
     "Fuzi",
     "SnapKit",
     "Static",

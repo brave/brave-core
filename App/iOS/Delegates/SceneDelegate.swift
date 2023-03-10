@@ -181,13 +181,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       return
     }
 
-    appDelegate.shutdownWebServer?.invalidate()
-    appDelegate.shutdownWebServer = nil
-
     Preferences.AppState.backgroundedCleanly.value = false
 
     profile.reopen()
-    appDelegate.setUpWebServer(profile)
+    appDelegate.setupCustomSchemeHandlers(profile)
 
     appDelegate.receivedURLs = nil
     UIApplication.shared.applicationIconBadgeNumber = 0

@@ -158,15 +158,6 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     self.isError = true
   }
 
-  func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-    // If this is a request to our local web server, use our private credentials.
-    if challenge.protectionSpace.host == "localhost" && challenge.protectionSpace.port == Int(WebServer.sharedInstance.server.port) {
-      completionHandler(.useCredential, WebServer.sharedInstance.credentials)
-      return
-    }
-    completionHandler(.performDefaultHandling, nil)
-  }
-
   func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
     didTimeOut()
   }
