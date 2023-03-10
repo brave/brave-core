@@ -4,21 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import {
-  useSelector
-} from 'react-redux'
 
 // Types
-import { WalletState, BraveWallet } from '../../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../../constants/types'
 
 // Utils
+import { formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
-import { computeFiatAmount, computeFiatAmountToAssetValue } from '../../../../utils/pricing-utils'
-import { CurrencySymbols } from '../../../../utils/currency-symbols'
 import Amount from '../../../../utils/amount'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+import { usePreset } from '../../../../common/hooks'
 
 // Components
 import PopupModal from '../../../desktop/popup-modals'
@@ -39,14 +36,13 @@ import {
 
 import { VerticalSpacer, Row } from '../../../shared/style'
 
-const MINIMUM_SELL_THRESHOLD = 50
-
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined
   sellAmount: string
   showSellModal: boolean
   sellAssetBalance: string
+  account?: WalletAccountType
   setSellAmount: (value: string) => void
   openSellAssetLink: () => void
   onClose: () => void
@@ -59,14 +55,20 @@ export const SellAssetModal = (props: Props) => {
     sellAmount,
     showSellModal,
     sellAssetBalance,
+    account,
     setSellAmount,
     openSellAssetLink,
     onClose
   } = props
 
-  // Redux
-  const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+  // Hooks
+  const onSelectPresetAmount = usePreset(
+    {
+      onSetAmount: setSellAmount,
+      asset: selectedAsset,
+      account: account
+    }
+  )
 
   // Refs
   const sellAssetModalRef = React.useRef<HTMLDivElement>(null)
@@ -76,74 +78,12 @@ export const SellAssetModal = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, { size: 'medium', marginLeft: 4, marginRight: 8 })
   }, [])
 
-  const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(
-      spotPrices,
-      {
-        decimals: selectedAsset?.decimals ?? '',
-        symbol: selectedAsset?.symbol ?? '',
-        contractAddress: selectedAsset?.contractAddress ?? '',
-        value: sellAssetBalance,
-        chainId: selectedAsset?.chainId ?? ''
-      })
-  }, [
-    spotPrices,
-    sellAssetBalance,
-    selectedAsset?.symbol,
-    selectedAsset?.decimals,
-    selectedAsset?.contractAddress,
-    selectedAsset.chainId
-  ])
-
-  const estimatedAssetAmount = React.useMemo(() => {
-    if (sellAmount !== '') {
-      return `~${computeFiatAmountToAssetValue(
-        sellAmount,
-        spotPrices,
-        selectedAsset?.symbol ?? '',
-        selectedAsset?.contractAddress ?? '',
-        selectedAsset?.chainId ?? ''
-      )
-        .formatAsAsset(6, selectedAsset.symbol)}`
-    }
-    return `0.00 ${selectedAsset?.symbol}`
-  }, [
-    sellAmount,
-    spotPrices,
-    selectedAsset?.symbol,
-    selectedAsset?.contractAddress,
-    selectedAsset?.chainId
-  ])
-
-  const formattedFiatBalance = React.useMemo(() => {
-    return fiatBalance ? new Amount(fiatBalance.format(2)).formatAsFiat(defaultCurrencies.fiat) : undefined
-  }, [defaultCurrencies.fiat, fiatBalance])
-
-  const hasTooManyDecimals = React.useMemo(() => {
-    if (sellAmount !== '') {
-      return sellAmount.split('.')[1]?.length > 2
-    }
-    return false
-  }, [sellAmount])
-
-  const insufficientBalance = React.useMemo(() => {
-    return Number(sellAmount) > new Amount(fiatBalance.format(2)).toNumber()
-  }, [sellAmount, fiatBalance])
-
   // Computed
-  const meetsMinimumSellThreshold = Number(sellAmount) >= MINIMUM_SELL_THRESHOLD
+  const insufficientBalance = new Amount(sellAmount).multiplyByDecimals(selectedAsset.decimals).gt(sellAssetBalance)
+  const isInvalidAmount = sellAmount.startsWith('0') && !sellAmount.includes('.')
+  const isNotNumeric = new Amount(sellAmount).isNaN()
+  const isSellButtonDisabled = isInvalidAmount || isNotNumeric || sellAmount === '' || Number(sellAmount) <= 0 || insufficientBalance
 
-  const isSellButtonDisabled = sellAmount === '' || insufficientBalance || hasTooManyDecimals || !meetsMinimumSellThreshold
-
-  const errorMessage = React.useMemo(() => {
-    if (!meetsMinimumSellThreshold && sellAmount !== '') {
-      return getLocale('braveWalletSellMinimumAmount').replace('$1', new Amount(MINIMUM_SELL_THRESHOLD).formatAsFiat(defaultCurrencies.fiat))
-    }
-    if (insufficientBalance) {
-      return getLocale('braveWalletNotEnoughBalance').replace('$1', selectedAsset.symbol)
-    }
-    return ''
-  }, [selectedAsset.symbol, meetsMinimumSellThreshold, sellAmount, defaultCurrencies.fiat, insufficientBalance])
 
   // Methods
   const handleInputAmountChange = React.useCallback(
@@ -153,13 +93,9 @@ export const SellAssetModal = (props: Props) => {
     [setSellAmount]
   )
 
-  const onClickPreset = React.useCallback((preset: 'half' | 'max') => {
-    if (preset === 'half') {
-      setSellAmount(fiatBalance.div(2).format(2))
-      return
-    }
-    setSellAmount(fiatBalance.format(2))
-  }, [fiatBalance])
+  const setPresetAmountValue = React.useCallback((percent: number) => {
+    onSelectPresetAmount(percent)
+  }, [onSelectPresetAmount])
 
   const onCloseSellModal = React.useCallback(() => {
     setSellAmount('')
@@ -206,20 +142,20 @@ export const SellAssetModal = (props: Props) => {
                 isBold={true}
                 textColor='text01'
               >
-                {formattedFiatBalance}
+                {formatTokenBalanceWithSymbol(sellAssetBalance, selectedAsset.decimals, selectedAsset.symbol)}
               </Text>
             </Row>
             <Row
               width='unset'
             >
               <PresetButton
-                onClick={() => onClickPreset('half')}
+                onClick={() => setPresetAmountValue(0.5)}
                 marginRight={4}
               >
                 {getLocale('braveWalletSendHalf')}
               </PresetButton>
               <PresetButton
-                onClick={() => onClickPreset('max')}
+                onClick={() => setPresetAmountValue(1)}
               >
                 {getLocale('braveWalletSendMax')}
               </PresetButton>
@@ -233,13 +169,6 @@ export const SellAssetModal = (props: Props) => {
             <Row
               width='unset'
             >
-              <Text
-                textSize='32px'
-                isBold={true}
-                textColor={sellAmount === '' ? 'text03' : 'text01'}
-              >
-                {CurrencySymbols[defaultCurrencies.fiat]}
-              </Text>
               <AmountInput
                 placeholder='0.00'
                 value={sellAmount}
@@ -259,20 +188,8 @@ export const SellAssetModal = (props: Props) => {
               </Text>
             </Row>
           </Row>
-          <Row
-            justifyContent='flex-end'
-            width='100%'
-          >
-            <Text
-              textSize='14px'
-              isBold={false}
-              textColor='text03'
-            >
-              {estimatedAssetAmount}
-            </Text>
-          </Row>
         </InputSection>
-        {errorMessage !== '' &&
+        {insufficientBalance && !isInvalidAmount &&
           <ErrorBox>
             <ErrorIcon />
             <Text
@@ -280,7 +197,7 @@ export const SellAssetModal = (props: Props) => {
               isBold={false}
               textColor='text01'
             >
-              {errorMessage}
+              {getLocale('braveWalletNotEnoughBalance').replace('$1', selectedAsset.symbol)}
             </Text>
           </ErrorBox>
         }
@@ -289,11 +206,10 @@ export const SellAssetModal = (props: Props) => {
           disabled={isSellButtonDisabled}
           buttonType='primary'
           minHeight='52px'
-          text={insufficientBalance
-            ? getLocale('braveWalletSwapInsufficientBalance')
+          text={
             // Ramp is hardcoded for now, but we can update with selectedProvider.name
             // once we add more offramp providers.
-            : getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
+            getLocale('braveWalletSellWithProvider').replace('$1', 'Ramp')
           }
           onSubmit={openSellAssetLink}
         />

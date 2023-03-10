@@ -195,7 +195,8 @@ TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
                  "0xdeadbeef", "ETH_BAT", "250", "USD",
                  "https://buy.ramp.network/"
                  "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
-                 "&defaultFlow=OFFRAMP&offrampAsset=ETH_BAT&fiatValue=250"
+                 "&defaultFlow=OFFRAMP&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
+                 "&swapAmount=250"
                  "&fiatCurrency=USD&hostApiKey="
                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
                  absl::nullopt);

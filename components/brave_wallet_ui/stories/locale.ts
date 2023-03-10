@@ -439,7 +439,6 @@ provideStrings({
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
   braveWalletSellWithProvider: 'Sell with $1',
-  braveWalletSellMinimumAmount: 'The minimum amount must be $1 or more.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',

@@ -368,6 +368,7 @@ export const Account = ({
           setSellAmount={setSellAmount}
           openSellAssetLink={onOpenSellAssetLink}
           showSellModal={showSellModal}
+          account={selectedAccount}
           sellAssetBalance={getBalance(selectedAccount, selectedSellAsset)}
         />
       }
