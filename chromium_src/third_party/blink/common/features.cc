@@ -19,6 +19,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAnonymousIframeOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kBrowsingTopicsXHR, base::FEATURE_DISABLED_BY_DEFAULT},
     {kClientHintsMetaEquivDelegateCH, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -87,6 +88,10 @@ BASE_FEATURE(kRestrictEventSourcePool,
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
 );
+
+bool IsPrerender2Enabled() {
+  return false;
+}
 
 }  // namespace features
 }  // namespace blink
