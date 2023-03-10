@@ -315,8 +315,10 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
     }
   )");
 
-  std::vector<brave_wallet::mojom::CoinMarketPtr> values;
-  ASSERT_TRUE(ParseCoinMarkets(ParseJson(json), &values));
+  auto parsed_values = ParseCoinMarkets(ParseJson(json));
+  ASSERT_TRUE(parsed_values);
+
+  std::vector<brave_wallet::mojom::CoinMarketPtr>& values = *parsed_values;
   ASSERT_EQ(values.size(), 1UL);
   EXPECT_EQ(values[0]->id, "bitcoin");
   EXPECT_EQ(values[0]->symbol, "btc");
@@ -333,11 +335,11 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
 
   // Invalid input
   json = R"({"id": []})";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
   json = "3";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
   json = "[3]";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
 }
 
 }  // namespace brave_wallet

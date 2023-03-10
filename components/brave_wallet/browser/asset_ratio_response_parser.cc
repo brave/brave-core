@@ -201,125 +201,31 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
       "" /* coingecko_id */, chain_id, coin);
 }
 
-bool ParseCoinMarkets(const base::Value& json_value,
-                      std::vector<mojom::CoinMarketPtr>* values) {
-  DCHECK(values);
-  // {
-  //   "payload": [
-  //     {
-  //       "id": "bitcoin",
-  //       "symbol": "btc",
-  //       "name": "Bitcoin",
-  //       "image":
-  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
-  //       "market_cap": 727960800075,
-  //       "market_cap_rank": 1,
-  //       "current_price": 38357,
-  //       "price_change_24h": -1229.64683216549,
-  //       "price_change_percentage_24h": -3.10625,
-  //       "total_volume": 17160995925
-  //     },
-  //     {
-  //       "id": "ethereum",
-  //       "symbol": "eth",
-  //       "name": "Ethereum",
-  //       "image":
-  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-  //       "market_cap": 304535808667,
-  //       "market_cap_rank": 2,
-  //       "current_price": 2539.82,
-  //       "price_change_24h": -136.841895278459,
-  //       "price_change_percentage_24h": -5.11242,
-  //       "total_volume": 9583014937
-  //     }
-  //   ],
-  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
-  // }
+absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
+    const base::Value& json_value) {
+  auto coin_market_data = api::asset_ratio::CoinMarket::FromValue(json_value);
 
-  if (!json_value.is_dict()) {
-    return false;
+  if (!coin_market_data) {
+    return absl::nullopt;
   }
 
-  auto* payload = json_value.GetDict().FindList("payload");
-  if (!payload) {
-    return false;
-  }
-
-  for (const auto& coin_market_list_it : *payload) {
-    if (!coin_market_list_it.is_dict()) {
-      return false;
-    }
+  std::vector<mojom::CoinMarketPtr> values;
+  for (const auto& payload : coin_market_data->payload) {
     auto coin_market = mojom::CoinMarket::New();
-    auto* id = coin_market_list_it.FindStringKey("id");
-    if (!id) {
-      return false;
-    }
-    coin_market->id = *id;
-
-    auto* symbol = coin_market_list_it.FindStringKey("symbol");
-    if (!symbol) {
-      return false;
-    }
-    coin_market->symbol = *symbol;
-
-    auto* name = coin_market_list_it.FindStringKey("name");
-    if (!name) {
-      return false;
-    }
-    coin_market->name = *name;
-
-    auto* image = coin_market_list_it.FindStringKey("image");
-    if (!image) {
-      return false;
-    }
-    coin_market->image = *image;
-
-    absl::optional<double> market_cap =
-        coin_market_list_it.FindDoubleKey("market_cap");
-    if (!market_cap) {
-      return false;
-    }
-    coin_market->market_cap = *market_cap;
-
-    absl::optional<uint32_t> market_cap_rank =
-        coin_market_list_it.FindIntKey("market_cap_rank");
-    if (!market_cap_rank) {
-      return false;
-    }
-    coin_market->market_cap_rank = *market_cap_rank;
-
-    absl::optional<double> current_price =
-        coin_market_list_it.FindDoubleKey("current_price");
-    if (!current_price) {
-      return false;
-    }
-    coin_market->current_price = *current_price;
-
-    absl::optional<double> price_change_24h =
-        coin_market_list_it.FindDoubleKey("price_change_24h");
-    if (!price_change_24h) {
-      return false;
-    }
-    coin_market->price_change_24h = *price_change_24h;
-
-    absl::optional<double> price_change_percentage_24h =
-        coin_market_list_it.FindDoubleKey("price_change_percentage_24h");
-    if (!price_change_percentage_24h) {
-      return false;
-    }
-    coin_market->price_change_percentage_24h = *price_change_percentage_24h;
-
-    absl::optional<double> total_volume =
-        coin_market_list_it.FindDoubleKey("total_volume");
-    if (!total_volume) {
-      return false;
-    }
-    coin_market->total_volume = *total_volume;
-
-    values->push_back(std::move(coin_market));
+    coin_market->id = payload.id;
+    coin_market->symbol = payload.symbol;
+    coin_market->name = payload.name;
+    coin_market->image = payload.image;
+    coin_market->market_cap = payload.market_cap;
+    coin_market->market_cap_rank = payload.market_cap_rank;
+    coin_market->current_price = payload.current_price;
+    coin_market->price_change_24h = payload.price_change_24h;
+    coin_market->price_change_percentage_24h =
+        payload.price_change_percentage_24h;
+    coin_market->total_volume = payload.total_volume;
+    values.push_back(std::move(coin_market));
   }
-
-  return true;
+  return values;
 }
 
 }  // namespace brave_wallet

@@ -108,4 +108,92 @@ namespace asset_ratio {
     // A list with result records.
     TokenInfoPayload payload;
   };
+
+  // A CoinMarket payload record. Sample looks like:
+  //
+  // {
+  //   "id": "bitcoin",
+  //   "symbol": "btc",
+  //   "name": "Bitcoin",
+  //   "image":
+  //   "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //   "market_cap": 727960800075,
+  //   "market_cap_rank": 1,
+  //   "current_price": 38357,
+  //   "price_change_24h": -1229.64683216549,
+  //   "price_change_percentage_24h": -3.10625,
+  //   "total_volume": 17160995925
+  // }
+  //
+  dictionary CoinMarketPayload {
+    // e.g. "bitcoin"
+    DOMString id;
+
+    // e.g. "btc"
+    DOMString symbol;
+
+    // e.g. "Bitcoin"
+    DOMString name;
+
+    // An url for the coin image.
+    DOMString image;
+
+    // e.g. 727960800075
+    double market_cap;
+
+    // e.g. 1
+    long market_cap_rank;
+
+    // e.g 38357
+    double current_price;
+
+    // e.g. -1229.64683216549
+    double price_change_24h;
+
+    // e.g. -3.10625
+    double price_change_percentage_24h;
+
+    // e.g. 17160995925
+    double total_volume;
+  };
+
+  // A dictionary provide with coin market information. Looks like:
+  //
+  // {
+  //   "payload": [
+  //     {
+  //       "id": "bitcoin",
+  //       "symbol": "btc",
+  //       "name": "Bitcoin",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //       "market_cap": 727960800075,
+  //       "market_cap_rank": 1,
+  //       "current_price": 38357,
+  //       "price_change_24h": -1229.64683216549,
+  //       "price_change_percentage_24h": -3.10625,
+  //       "total_volume": 17160995925
+  //     },
+  //     {
+  //       "id": "ethereum",
+  //       "symbol": "eth",
+  //       "name": "Ethereum",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+  //       "market_cap": 304535808667,
+  //       "market_cap_rank": 2,
+  //       "current_price": 2539.82,
+  //       "price_change_24h": -136.841895278459,
+  //       "price_change_percentage_24h": -5.11242,
+  //       "total_volume": 9583014937
+  //     }
+  //   ],
+  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
+  // }
+  //
+  dictionary CoinMarket {
+    // A payload list.
+    CoinMarketPayload[] payload;
+  };
+
 };
