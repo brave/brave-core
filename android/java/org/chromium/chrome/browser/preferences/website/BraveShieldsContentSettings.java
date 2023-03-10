@@ -97,7 +97,9 @@ public class BraveShieldsContentSettings {
             BraveShieldsContentSettingsJni.get().setCosmeticFilteringControlType(
                     DEFAULT.equals(settingOption) ? BLOCK_THIRDPARTY_RESOURCE : settingOption, host,
                     profile);
-            BraveShieldsContentSettingsJni.get().setAdControlType(settingOption, host, profile);
+            BraveShieldsContentSettingsJni.get().setAdControlType(
+                    BLOCK_THIRDPARTY_RESOURCE.equals(settingOption) ? DEFAULT : settingOption, host,
+                    profile);
         }
     }
 

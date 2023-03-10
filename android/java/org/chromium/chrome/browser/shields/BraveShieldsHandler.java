@@ -675,14 +675,25 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, layout);
             if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 mBlockShieldsOption1.setChecked(true);
-            } else if (settingOption.equals(
-                               layout.equals(BraveShieldsContentSettings
-                                                     .RESOURCE_IDENTIFIER_FINGERPRINTING)
-                                       ? BraveShieldsContentSettings.DEFAULT
-                                       : BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
-                mBlockShieldsOption2.setChecked(true);
             } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
                 mBlockShieldsOption3.setChecked(true);
+            } else {
+                boolean checkOption2 = false;
+                switch (layout) {
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
+                        checkOption2 = settingOption.equals(BraveShieldsContentSettings.DEFAULT)
+                                || settingOption.equals(
+                                        BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                        break;
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING:
+                        checkOption2 = settingOption.equals(BraveShieldsContentSettings.DEFAULT);
+                        break;
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES:
+                        checkOption2 = settingOption.equals(
+                                BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                        break;
+                }
+                if (checkOption2) mBlockShieldsOption2.setChecked(true);
             }
 
             RadioGroup mBlockShieldsOptionGroup =
