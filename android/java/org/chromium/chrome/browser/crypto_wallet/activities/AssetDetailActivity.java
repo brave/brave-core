@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
@@ -225,11 +225,10 @@ public class AssetDetailActivity
                     TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA);
                 }
             });
-        } else {
-            mBtnSwap.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                            BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol));
         }
+        mBtnSwap.setOnClickListener(v
+                -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol));
 
         adjustButtonsVisibilities();
 
@@ -491,9 +490,7 @@ public class AssetDetailActivity
     private void adjustButtonsVisibilities() {
         showHideBuyUi();
         if (Utils.allowSwap(mChainId)) {
-            if (!AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
-                mBtnSwap.setVisibility(View.VISIBLE);
-            }
+            mBtnSwap.setVisibility(View.VISIBLE);
         } else {
             mBtnSwap.setVisibility(View.GONE);
         }
