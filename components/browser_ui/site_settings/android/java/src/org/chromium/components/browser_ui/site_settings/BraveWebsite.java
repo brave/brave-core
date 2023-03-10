@@ -35,6 +35,16 @@ public class BraveWebsite {
                 BraveReflectionUtil.InvokeMethod(Website.class, this, "setContentSettingException",
                         int.class, type, ContentSettingException.class, exception);
             }
+        } else if (type == ContentSettingsType.BRAVE_GOOGLE_SIGN_IN) {
+            if (exception == null) {
+                exception = new ContentSettingException(ContentSettingsType.BRAVE_GOOGLE_SIGN_IN,
+                        ((WebsiteAddress) BraveReflectionUtil.InvokeMethod(
+                                 Website.class, this, "getAddress"))
+                                .getHost(),
+                        value, "", false);
+                BraveReflectionUtil.InvokeMethod(Website.class, this, "setContentSettingException",
+                        int.class, type, ContentSettingException.class, exception);
+            }
         }
 
         BraveReflectionUtil.InvokeMethod(Website.class, this, "setContentSetting",

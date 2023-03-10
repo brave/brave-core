@@ -296,8 +296,17 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 (PreferenceCategory) findPreference(PREF_BRAVE_SOCIAL_BLOCKING_SECTION);
         mSocialBlockingCategory.setOnPreferenceChangeListener(this);
 
-        mSocialBlockingGoogle = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_GOOGLE);
-        mSocialBlockingGoogle.setOnPreferenceChangeListener(this);
+        mSocialBlockingGoogle =
+                (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_GOOGLE);
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_GOOGLE_SIGN_IN_PERMISSION)) {
+            mSocialBlockingGoogle.setOnPreferenceChangeListener(this);
+        } else {
+            // Have to remove this preference from the right category
+            if (mSocialBlockingGoogle != null) {
+                mSocialBlockingCategory.removePreference(mSocialBlockingGoogle);
+            }
+        }
 
         mSocialBlockingFacebook = (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_FACEBOOK);
         mSocialBlockingFacebook.setOnPreferenceChangeListener(this);

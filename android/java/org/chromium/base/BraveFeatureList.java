@@ -22,6 +22,7 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI =
             "BraveVPNLinkSubscriptionAndroidUI";
     public static final String DEBOUNCE = "BraveDebounce";
+    public static final String BRAVE_GOOGLE_SIGN_IN_PERMISSION = "BraveGoogleSignInPermission";
     public static final String BRAVE_PLAYLIST = "Playlist";
     public static final String BRAVE_SPEEDREADER = "Speedreader";
 }

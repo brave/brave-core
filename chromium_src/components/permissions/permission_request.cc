@@ -18,17 +18,28 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH                      \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
+  case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
+    NOTREACHED();                   \
+    return std::u16string();        \
+  case RequestType::kWidevine:      \
+    NOTREACHED();                   \
+    return std::u16string();
+
+// For permission strings that we also need on Android, we need to use
+// a string that has a placeholder ($1) in it.
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP              \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH                            \
   case RequestType::kBraveGoogleSignInPermission:        \
     message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT; \
-    break;                                               \
-  case RequestType::kBraveEthereum:                      \
-  case RequestType::kBraveSolana:                        \
-    NOTREACHED();                                        \
-    return std::u16string();                             \
-  case RequestType::kWidevine:                           \
-    NOTREACHED();                                        \
-    return std::u16string();
+    break;
+
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID       \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH                     \
+  case RequestType::kBraveGoogleSignInPermission: \
+    message_id = IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT; \
+    break;
 
 namespace {
 #if BUILDFLAG(IS_ANDROID)
@@ -45,14 +56,14 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #define IDS_VR_INFOBAR_TEXT     \
   IDS_VR_INFOBAR_TEXT_OVERRIDE; \
   break;                        \
-  BRAVE_ENUM_ITEMS_FOR_SWITCH
+  BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID
 #else
 // For PermissionRequest::GetMessageTextFragment
 #undef IDS_VR_PERMISSION_FRAGMENT
 #define IDS_VR_PERMISSION_FRAGMENT     \
   IDS_VR_PERMISSION_FRAGMENT_OVERRIDE; \
   break;                               \
-  BRAVE_ENUM_ITEMS_FOR_SWITCH
+  BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP
 #endif
 
 #include "src/components/permissions/permission_request.cc"
