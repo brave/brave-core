@@ -53,7 +53,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
             BackKeyBehaviorDelegate backKeyBehavior, SearchEngineLogoUtils searchEngineLogoUtils,
-            @NonNull Runnable launchAssistanceSettingsAction,
             @NonNull PageInfoAction pageInfoAction, @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
@@ -71,12 +70,12 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
                 shareDelegateSupplier, incognitoStateProvider, activityLifecycleDispatcher,
-                overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils,
-                launchAssistanceSettingsAction, pageInfoAction, bringTabToFrontCallback,
-                saveOfflineButtonState, omniboxUma, tabWindowManagerSupplier, bookmarkState,
-                isToolbarMicEnabledSupplier, jankTracker, merchantTrustSignalsCoordinatorSupplier,
-                omniboxPedalDelegate, browserControlsVisibilityDelegate, reportExceptionCallback,
-                backPressManager, omniboxSuggestionsDropdownScrollListener);
+                overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils, pageInfoAction,
+                bringTabToFrontCallback, saveOfflineButtonState, omniboxUma,
+                tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier, jankTracker,
+                merchantTrustSignalsCoordinatorSupplier, omniboxPedalDelegate,
+                browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
+                omniboxSuggestionsDropdownScrollListener);
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);

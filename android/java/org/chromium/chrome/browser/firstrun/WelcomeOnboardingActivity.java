@@ -29,6 +29,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -254,7 +255,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 if (mCheckboxCrash != null) {
                     mCheckboxCrash.setChecked(true);
                 }
-                UmaSessionStats.changeMetricsReportingConsent(true);
+                UmaSessionStats.changeMetricsReportingConsent(
+                        true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
                 OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
             } else {
                 boolean isCrashReporting = false;
@@ -277,7 +279,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                             public void onCheckedChanged(
                                     CompoundButton buttonView, boolean isChecked) {
                                 try {
-                                    UmaSessionStats.changeMetricsReportingConsent(isChecked);
+                                    UmaSessionStats.changeMetricsReportingConsent(isChecked,
+                                            ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
                                 } catch (Exception e) {
                                     Log.e("CrashReportingOnboarding", e.getMessage());
                                 }
