@@ -5,7 +5,6 @@
 
 #include <map>
 
-#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
@@ -57,9 +56,7 @@ class RewardsServiceJPTest : public testing::Test {
     ASSERT_TRUE(RewardsServiceFactory::GetInstance());
     ASSERT_TRUE(rewards_service());
 
-    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-    command_line->AppendSwitchASCII("rewards", "countryid=19024");
-    rewards_service_->HandleFlags(RewardsFlags::ForCurrentProcess());
+    profile()->GetPrefs()->SetString(prefs::kDeclaredGeo, "JP");
   }
 
   void TearDown() override {

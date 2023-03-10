@@ -624,21 +624,10 @@ void RewardsServiceImpl::GetUserType(
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  auto* prefs = profile_->GetPrefs();
-  std::string country = prefs->GetString(prefs::kDeclaredGeo);
-  if (!country.empty()) {
-    return country;
-  }
-
-  int32_t country_id = country_id_;
-  if (!country_id) {
-    country_id = country_codes::GetCountryIDFromPrefs(prefs);
-  }
-  if (country_id < 0) {
-    return "";
-  }
-  return {base::ToUpperASCII(static_cast<char>(country_id >> 8)),
-          base::ToUpperASCII(static_cast<char>(0xFF & country_id))};
+  std::string declared_geo =
+      profile_->GetPrefs()->GetString(prefs::kDeclaredGeo);
+  return !declared_geo.empty() ? declared_geo
+                               : country_codes::GetCurrentCountryCode();
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -2193,10 +2182,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   // instead.
   if (flags.persist_logs) {
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
-  }
-
-  if (flags.country_id) {
-    country_id_ = *flags.country_id;
   }
 }
 

@@ -179,11 +179,6 @@ void BraveBrowserMainParts::PreProfileInit() {
 
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
-
-  const auto& flags = brave_rewards::RewardsFlags::ForCurrentProcess();
-  if (flags.country_id) {
-    brave_rewards::SetCountryCodeForOFACTesting(*flags.country_id);
-  }
 }
 
 void BraveBrowserMainParts::PostProfileInit(Profile* profile,
