@@ -20,6 +20,7 @@ class WalletPageApiProxy extends WalletApiProxy {
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),
       this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
+      this.bitcoinRpcService.$.bindNewPipeAndPassReceiver(),
       this.swapService.$.bindNewPipeAndPassReceiver(),
       this.assetRatioService.$.bindNewPipeAndPassReceiver(),
       this.keyringService.$.bindNewPipeAndPassReceiver(),

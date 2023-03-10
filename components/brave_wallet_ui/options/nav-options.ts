@@ -46,6 +46,12 @@ export const NavOptions: NavOption[] = [
     route: WalletRoutes.DepositFundsPageStart
   },
   {
+    id: 'bitcoinSandbox',
+    name: 'braveWalletBitcoinSandboxButton',
+    icon: BuyIconURL,
+    route: WalletRoutes.BitcoinSandbox
+  },
+  {
     id: 'activity',
     name: 'braveWalletActivity',
     icon: HistoryIcon,

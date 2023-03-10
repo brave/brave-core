@@ -16,6 +16,8 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
+#pragma clang optimize off
+
 namespace api_request_helper {
 
 namespace {

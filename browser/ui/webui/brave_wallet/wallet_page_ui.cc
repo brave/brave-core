@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/bitcoin_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -98,6 +99,8 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
         json_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BitcoinRpcService>
+        bitcoin_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
@@ -132,6 +135,8 @@ void WalletPageUI::CreatePageHandler(
 
   brave_wallet::JsonRpcServiceFactory::BindForContext(
       profile, std::move(json_rpc_service_receiver));
+  brave_wallet::BitcoinRpcServiceFactory::BindForContext(
+      profile, std::move(bitcoin_rpc_service_receiver));
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::AssetRatioServiceFactory::BindForContext(

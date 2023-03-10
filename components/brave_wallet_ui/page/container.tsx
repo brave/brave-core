@@ -43,6 +43,7 @@ import { OnboardingSuccess } from './screens/onboarding/onboarding-success/onboa
 import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
+import { BitcoinSandbox } from './screens/bitcoin-sandbox/bitcoin-sandbox'
 import { SendScreen } from './screens/send/send-page/send-screen'
 import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 import { FeatureRequestButton } from '../components/shared/feature-request-button/feature-request-button'
@@ -239,6 +240,12 @@ export const Container = () => {
                       onShowRestore={onToggleShowRestore}
                     />
                   </SimplePageWrapper>
+                </Route>
+              }
+
+              {!isWalletLocked &&
+                <Route path={WalletRoutes.BitcoinSandbox} exact={true}>
+                  <BitcoinSandbox />
                 </Route>
               }
 

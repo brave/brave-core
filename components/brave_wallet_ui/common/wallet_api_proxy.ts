@@ -14,6 +14,7 @@ import { WalletPageActions } from '../page/actions'
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
   jsonRpcService = new BraveWallet.JsonRpcServiceRemote()
+  bitcoinRpcService = new BraveWallet.BitcoinRpcServiceRemote()
   swapService = new BraveWallet.SwapServiceRemote()
   assetRatioService = new BraveWallet.AssetRatioServiceRemote()
 

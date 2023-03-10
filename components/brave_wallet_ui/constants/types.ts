@@ -793,6 +793,9 @@ export enum WalletRoutes {
   // send
   Send = '/send',
 
+  // Test bitcoin sandbox
+  BitcoinSandbox = '/bitcoin-sandbox',
+
   // NFT Pining
   LocalIpfsNode = '/crypto/local-ipfs-node',
   InspectNfts = '/crypto/inspect-nfts'
@@ -988,6 +991,7 @@ export type NavIDTypes =
   | 'deposit'
   | 'activity'
   | 'portfolio'
+  | 'bitcoinSandbox'
 
 export interface NavOption {
   id: NavIDTypes

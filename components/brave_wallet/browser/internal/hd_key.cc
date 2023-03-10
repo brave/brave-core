@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/sys_byteorder.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/bech32.h"
@@ -29,6 +30,8 @@
 
 using crypto::Encryptor;
 using crypto::SymmetricKey;
+
+#pragma clang optimize off
 
 namespace brave_wallet {
 
@@ -60,8 +63,9 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
                           const std::vector<uint8_t>& iv,
                           std::vector<uint8_t>* private_key,
                           size_t dklen) {
-  if (!private_key)
+  if (!private_key) {
     return false;
+  }
   std::unique_ptr<SymmetricKey> decryption_key =
       SymmetricKey::Import(SymmetricKey::AES, derived_key.substr(0, dklen / 2));
   if (!decryption_key) {
@@ -104,6 +108,31 @@ std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input) {
 }
 
 }  // namespace
+
+absl::optional<std::vector<uint8_t>> DecodeBitcoinAddress(
+    const std::string& address,
+    bool testnet) {
+  auto bech_result = bech32::Decode(address);
+
+  if (bech_result.second.empty() ||
+      bech_result.first != (testnet ? "tb" : "bc")) {
+    return absl::nullopt;
+  }
+
+  int version = bech_result.second[0];
+  if (version != 0) {
+    return absl::nullopt;
+  }
+  std::vector<uint8_t> result;
+  result.reserve(((bech_result.second.size() - 1) * 5) / 8);
+  if (!ConvertBits<5, 8, false>([&](unsigned char c) { result.push_back(c); },
+                                bech_result.second.begin() + 1,
+                                bech_result.second.end())) {
+    return absl::nullopt;
+  }
+
+  return result;
+}
 
 HDKey::HDKey()
     : identifier_(20),
@@ -154,8 +183,8 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
 
   SecureVector buf(decoded_key.begin(), decoded_key.end());
   SecureZeroData(decoded_key.data(), decoded_key.size());
-  // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
-  // key(33)
+  // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32)
+  // || key(33)
   const uint8_t* ptr = buf.data();
   auto version = static_cast<ExtendedKeyVersion>(ptr[0] << 24 | ptr[1] << 16 |
                                                  ptr[2] << 8 | ptr[3] << 0);
@@ -196,8 +225,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromPrivateKey(
     const std::vector<uint8_t>& private_key) {
-  if (private_key.size() != 32)
+  if (private_key.size() != 32) {
     return nullptr;
+  }
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   hd_key->SetPrivateKey(private_key);
   return hd_key;
@@ -331,8 +361,9 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   }
 
   if (!UTCPasswordVerification(derived_key->key(), ciphertext_bytes, *mac,
-                               *dklen))
+                               *dklen)) {
     return nullptr;
+  }
 
   const auto* cipher = crypto->FindString("cipher");
   if (!cipher) {
@@ -426,7 +457,7 @@ std::string HDKey::GetPublicExtendedKey(
 }
 
 // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
-std::string HDKey::GetSegwitAddress() const {
+std::string HDKey::GetSegwitAddress(bool testnet) const {
   auto hash160 = Hash160(public_key_);
   std::vector<unsigned char> input;
   input.reserve(33);   // 1 + (160 / 5)
@@ -434,8 +465,7 @@ std::string HDKey::GetSegwitAddress() const {
   ConvertBits<8, 5, true>([&](unsigned char c) { input.push_back(c); },
                           hash160.begin(), hash160.end());
 
-  // TODO(apaymyshev): support testnet
-  return bech32::Encode("bc", input);
+  return bech32::Encode(testnet ? "tb" : "bc", input);
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -462,8 +492,9 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   std::vector<uint8_t> public_key(public_key_len);
   const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
-                                              private_key_ptr) != 0)
+                                              private_key_ptr) != 0) {
     return std::vector<uint8_t>();
+  }
   return public_key;
 }
 
@@ -474,16 +505,20 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext) const {
   // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
-  if (version != "x25519-xsalsa20-poly1305")
+  if (version != "x25519-xsalsa20-poly1305") {
     return absl::nullopt;
-  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES)
+  }
+  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES) {
     return absl::nullopt;
+  }
   if (ephemeral_public_key.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
+      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES) {
     return absl::nullopt;
+  }
   if (private_key_.size() !=
-      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
+      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES) {
     return absl::nullopt;
+  }
 
   std::vector<uint8_t> padded_ciphertext = ciphertext;
   padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
@@ -492,8 +527,9 @@ HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
-                      ephemeral_public_key.data(), private_key_ptr) != 0)
+                      ephemeral_public_key.data(), private_key_ptr) != 0) {
     return absl::nullopt;
+  }
   std::vector<uint8_t> plaintext(
       padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
       padded_plaintext.cend());
@@ -694,13 +730,60 @@ std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
     }
     if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
             secp256k1_ctx_, sig.data(), recid, &ecdsa_sig)) {
-      LOG(ERROR)
-          << __func__
-          << ": secp256k1_ecdsa_recoverable_signature_serialize_compact failed";
+      LOG(ERROR) << __func__
+                 << ": secp256k1_ecdsa_recoverable_signature_serialize_compact "
+                    "failed";
     }
   }
 
   return sig;
+}
+
+std::vector<uint8_t> HDKey::SignBitcoin(const std::vector<uint8_t>& msg) {
+  if (msg.size() != 32) {
+    LOG(ERROR) << __func__ << ": message length should be 32";
+    return {};
+  }
+  unsigned char extra_entropy[32] = {0};
+  secp256k1_ecdsa_signature ecdsa_sig;
+  if (!secp256k1_ecdsa_sign(secp256k1_ctx_, &ecdsa_sig, msg.data(),
+                            private_key_.data(),
+                            secp256k1_nonce_function_rfc6979, nullptr)) {
+    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
+    return {};
+  }
+
+  auto sig_has_low_r = [](const secp256k1_context* ctx,
+                          const secp256k1_ecdsa_signature* sig) {
+    unsigned char compact_sig[64] = {};
+    secp256k1_ecdsa_signature_serialize_compact(ctx, compact_sig, sig);
+
+    return compact_sig[0] < 0x80;
+  };
+
+  // Grind R https://github.com/bitcoin/bitcoin/pull/13666
+  uint32_t extra_entropy_counter = 0;
+  while (!sig_has_low_r(secp256k1_ctx_, &ecdsa_sig)) {
+    (*reinterpret_cast<uint32_t*>(extra_entropy)) =
+        base::ByteSwapToLE32(++extra_entropy_counter);
+
+    if (!secp256k1_ecdsa_sign(
+            secp256k1_ctx_, &ecdsa_sig, msg.data(), private_key_.data(),
+            secp256k1_nonce_function_rfc6979, extra_entropy)) {
+      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
+      return {};
+    }
+  }
+
+  std::vector<uint8_t> sig_der(100);
+  auto sig_der_length = sig_der.size();
+  if (!secp256k1_ecdsa_signature_serialize_der(secp256k1_ctx_, sig_der.data(),
+                                               &sig_der_length, &ecdsa_sig)) {
+    return {};
+  }
+  sig_der.resize(sig_der_length);
+
+  return sig_der;
 }
 
 bool HDKey::Verify(const std::vector<uint8_t>& msg,
@@ -789,8 +872,8 @@ void HDKey::GeneratePublicKey() {
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
 std::string HDKey::Serialize(ExtendedKeyVersion version,
                              base::span<const uint8_t> key) const {
-  // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
-  // key(32 or 33)
+  // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32)
+  // || key(32 or 33)
   SecureVector buf;
 
   buf.reserve(kSerializationLength);

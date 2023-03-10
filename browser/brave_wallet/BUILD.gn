@@ -12,6 +12,8 @@ source_set("brave_wallet") {
   sources = [
     "asset_ratio_service_factory.cc",
     "asset_ratio_service_factory.h",
+    "bitcoin_rpc_service_factory.cc",
+    "bitcoin_rpc_service_factory.h",
     "blockchain_images_source.cc",
     "blockchain_images_source.h",
     "brave_wallet_context_utils.cc",

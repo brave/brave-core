@@ -98,6 +98,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddAccount(const std::string& account_name,
                   mojom::CoinType coin,
                   AddAccountCallback callback) override;
+  void AddAccount(const std::string& account_name,
+                  mojom::CoinType coin,
+                  const std::string& keyring_id,
+                  AddAccountCallback callback);
 
   // Adds an account to the filecoin(keyring is choosed by network).
   void AddFilecoinAccount(const std::string& account_name,
@@ -227,14 +231,17 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
-  absl::optional<std::string> GetBitcoinReceivingAddress(
+  std::vector<mojom::BitcoinAddressPtr> GetBitcoinAddressesSync(
       const std::string& keyring_id,
-      uint32_t account_index,
-      uint32_t receiving_index);
-  absl::optional<std::string> GetBitcoinChangeAddress(
-      const std::string& keyring_id,
-      uint32_t account_index,
-      uint32_t change_index);
+      uint32_t account_index);
+  void GetBitcoinAddresses(const std::string& keyring_id,
+                           uint32_t account_index,
+                           GetBitcoinAddressesCallback callback) override;
+  std::vector<uint8_t> GetBitcoinPubkey(const std::string& keyring_id,
+                                        const mojom::BitcoinAddress& address);
+  std::vector<uint8_t> SignBitcoinMessage(const std::string& keyring_id,
+                                          const mojom::BitcoinAddress& address,
+                                          const std::vector<uint8_t>& message);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);

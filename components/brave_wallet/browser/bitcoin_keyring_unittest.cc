@@ -19,7 +19,7 @@ namespace brave_wallet {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinKeyringUnitTest, TestVectors) {
-  BitcoinKeyring keyring;
+  BitcoinKeyring keyring(false);
 
   auto seed = MnemonicToSeed(
       "abandon abandon abandon abandon abandon abandon abandon abandon abandon "
