@@ -20,6 +20,7 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace brave_wallet {
 
@@ -86,7 +87,11 @@ KeyedService* BraveWalletPinServiceFactory::BuildServiceInstanceFor(
       user_prefs::UserPrefs::Get(context),
       JsonRpcServiceFactory::GetServiceForContext(context),
       ipfs::IpfsLocalPinServiceFactory::GetServiceForContext(context),
-      ipfs::IpfsServiceFactory::GetForContext(context));
+      ipfs::IpfsServiceFactory::GetForContext(context),
+      std::make_unique<ContentTypeChecker>(
+          user_prefs::UserPrefs::Get(context),
+          context->GetDefaultStoragePartition()
+              ->GetURLLoaderFactoryForBrowserProcess()));
 }
 
 content::BrowserContext* BraveWalletPinServiceFactory::GetBrowserContextToUse(
