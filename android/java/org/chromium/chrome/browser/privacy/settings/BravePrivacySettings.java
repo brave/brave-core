@@ -299,7 +299,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSocialBlockingGoogle =
                 (ChromeSwitchPreference) findPreference(PREF_SOCIAL_BLOCKING_GOOGLE);
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.GOOGLE_SIGN_IN)) {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_GOOGLE_SIGN_IN_PERMISSION)) {
             mSocialBlockingGoogle.setOnPreferenceChangeListener(this);
         } else {
             // Have to remove this preference from the right category
