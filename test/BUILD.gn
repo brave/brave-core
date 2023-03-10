@@ -18,6 +18,7 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
+import("//components/captive_portal/core/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
@@ -417,6 +418,9 @@ test("brave_unit_tests") {
       "//brave/components/commands/common:unit_tests",
       "//components/favicon/content",
     ]
+  }
+  if (enable_captive_portal_detection) {
+    deps += [ "//brave/components/captive_portal/content:unit_tests" ]
   }
 
   # On Windows, brave_install_static_unittests covers channel test.
