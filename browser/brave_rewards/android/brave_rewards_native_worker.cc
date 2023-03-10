@@ -168,16 +168,16 @@ void BraveRewardsNativeWorker::FetchBalance(JNIEnv* env) {
   }
 }
 
-void BraveRewardsNativeWorker::OnBalance(const ledger::mojom::Result result,
-                                         ledger::mojom::BalancePtr balance) {
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    balance_ = *balance;
+void BraveRewardsNativeWorker::OnBalance(
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>
+        result) {
+  if (result.has_value()) {
+    balance_ = *result.value();
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onBalance(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      static_cast<int>(result));
+      env, weak_java_brave_rewards_native_worker_.get(env), result.has_value());
 }
 
 void BraveRewardsNativeWorker::GetPublisherInfo(

@@ -34,6 +34,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
 
+using brave_rewards::FetchBalanceResult;
 using brave_rewards::GetExternalWalletResult;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
@@ -97,14 +98,13 @@ class TipMessageHandler : public WebUIMessageHandler,
   void GetRecurringTipsCallback(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
 
-  void OnGetExternalWallet(GetExternalWalletResult);
+  void OnGetExternalWallet(GetExternalWalletResult result);
 
   void GetPublisherBannerCallback(ledger::mojom::PublisherBannerPtr banner);
 
   void GetShareURLCallback(const std::string& url);
 
-  void FetchBalanceCallback(const ledger::mojom::Result result,
-                            ledger::mojom::BalancePtr balance);
+  void FetchBalanceCallback(FetchBalanceResult result);
 
   void GetRewardsParametersCallback(
       ledger::mojom::RewardsParametersPtr parameters);
@@ -486,30 +486,27 @@ void TipMessageHandler::GetShareURLCallback(const std::string& url) {
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 }
 
-void TipMessageHandler::FetchBalanceCallback(
-    const ledger::mojom::Result result,
-    ledger::mojom::BalancePtr balance) {
+void TipMessageHandler::FetchBalanceCallback(FetchBalanceResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
   base::Value::Dict data;
-  data.Set("status", static_cast<int>(result));
+  if (result.has_value()) {
+    const auto balance = std::move(result.value());
 
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    base::Value::Dict wallets;
-    for (const auto& wallet : balance->wallets) {
-      wallets.Set(wallet.first, wallet.second);
-    }
-
-    base::Value::Dict balance_value;
-    balance_value.Set("total", balance->total);
-    balance_value.Set("wallets", std::move(wallets));
-
-    data.Set("balance", std::move(balance_value));
+    base::Value::Dict value_balance;
+    value_balance.Set("total", balance->total);
+    value_balance.Set(
+        "wallets",
+        base::Value::Dict(std::move_iterator(balance->wallets.begin()),
+                          std::move_iterator(balance->wallets.end())));
+    data.SetByDottedPath("value.balance", std::move(value_balance));
+  } else {
+    data.Set("error", static_cast<int>(result.error()));
   }
 
-  FireWebUIListener("balanceUpdated", data);
+  FireWebUIListener("balanceUpdated", std::move(data));
 }
 
 void TipMessageHandler::OnGetExternalWallet(GetExternalWalletResult result) {

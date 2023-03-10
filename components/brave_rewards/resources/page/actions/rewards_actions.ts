@@ -239,10 +239,10 @@ export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
 
 export const getBalance = () => action(types.GET_BALANCE)
 
-export const onBalance = (status: number, balance: Rewards.Balance) => action(types.ON_BALANCE, {
-  status,
-  balance
-})
+export const onBalance = (result: mojom.FetchBalanceResult) =>
+  action(types.ON_BALANCE, {
+    result
+  })
 
 export const getExternalWalletProviders = () => action(types.GET_EXTERNAL_WALLET_PROVIDERS)
 

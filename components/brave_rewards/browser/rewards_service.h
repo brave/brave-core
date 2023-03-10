@@ -67,18 +67,18 @@ using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
-using FetchBalanceCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            ledger::mojom::BalancePtr)>;
+using ConnectExternalWalletResult =
+    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
+using FetchBalanceResult =
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>;
+using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 using GetExternalWalletResult =
     base::expected<ledger::mojom::ExternalWalletPtr,
                    ledger::mojom::GetExternalWalletError>;
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-using ConnectExternalWalletResult =
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
-using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
 using ClaimPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             const std::string&,

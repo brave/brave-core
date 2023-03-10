@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
@@ -19,14 +24,19 @@ mojom("ledger_types") {
     {
       types = [
         {
-          mojom = "ledger.mojom.GetExternalWalletResult"
-          cpp = "base::expected<ledger::mojom::ExternalWalletPtr, ledger::mojom::GetExternalWalletError>"
-          move_only = true
-        },
-        {
           mojom = "ledger.mojom.ConnectExternalWalletResult"
           cpp =
               "base::expected<void, ledger::mojom::ConnectExternalWalletError>"
+          move_only = true
+        },
+        {
+          mojom = "ledger.mojom.FetchBalanceResult"
+          cpp = "base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>"
+          move_only = true
+        },
+        {
+          mojom = "ledger.mojom.GetExternalWalletResult"
+          cpp = "base::expected<ledger::mojom::ExternalWalletPtr, ledger::mojom::GetExternalWalletError>"
           move_only = true
         },
       ]

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -50,7 +51,6 @@ export function ConnectWallet () {
       <WithThemeVariables>
         <LayoutManager layout={narrow ? 'narrow' : 'wide'}>
           <ConnectWalletModal
-            rewardsBalance={1}
             providers={providers}
             onContinue={actionLogger('onContinue')}
             onClose={actionLogger('onClose')}

@@ -145,9 +145,9 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   double FetchBalance() {
     double total = -1.0;
     base::RunLoop run_loop;
-    rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
-          total = balance ? balance->total : -1.0;
+    rewards_service_->FetchBalance(
+        base::BindLambdaForTesting([&](ledger::FetchBalanceResult result) {
+          total = result.has_value() ? result.value()->total : -1.0;
           run_loop.Quit();
         }));
     run_loop.Run();
