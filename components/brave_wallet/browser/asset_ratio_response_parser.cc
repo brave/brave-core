@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/api/asset_ratio.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -171,89 +172,33 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
 mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin) {
-  // {
-  //   "payload": {
-  //     "status": "1",
-  //     "message": "OK",
-  //     "result": [
-  //       {
-  //         "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-  //         "tokenName": "Tether USD",
-  //         "symbol": "USDT",
-  //         "divisor": "6",
-  //         "tokenType": "ERC20",
-  //         "totalSupply": "39828710009874796",
-  //         "blueCheckmark": "true",
-  //         "description": "Tether gives you the joint benefits of open...",
-  //         "website": "https://tether.to/",
-  //         "email": "support@tether.to",
-  //         "blog": "https://tether.to/category/announcements/",
-  //         "reddit": "",
-  //         "slack": "",
-  //         "facebook": "",
-  //         "twitter": "https://twitter.com/Tether_to",
-  //         "bitcointalk": "",
-  //         "github": "",
-  //         "telegram": "",
-  //         "wechat": "",
-  //         "linkedin": "",
-  //         "discord": "",
-  //         "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-  //         "tokenPriceUSD": "1.000000000000000000"
-  //       }
-  //     ]
-  //   },
-  //   "lastUpdated": "2021-12-09T22:02:23.187Z"
-  // }
-
-  if (!json_value.is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
+  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
+  if (!token_info) {
+    LOG(ERROR) << "Invalid response, could not parse JSON. ";
     return nullptr;
   }
 
-  const auto& response_dict = json_value.GetDict();
-  const auto* result = response_dict.FindListByDottedPath("payload.result");
-  if (!result)
+  if (token_info->payload.result.size() != 1) {
     return nullptr;
+  }
+  const api::asset_ratio::TokenInfoResult& result =
+      token_info->payload.result.front();
 
-  if (result->size() != 1)
-    return nullptr;
-  const auto* token = (*result)[0].GetIfDict();
-  if (!token)
-    return nullptr;
-
-  const std::string* contract_address = token->FindString("contractAddress");
-  if (!contract_address)
-    return nullptr;
-  const auto eth_addr = EthAddress::FromHex(*contract_address);
-  if (eth_addr.IsEmpty())
-    return nullptr;
-
-  const std::string* name = token->FindString("tokenName");
-  if (!name || name->empty())
-    return nullptr;
-
-  const std::string* symbol = token->FindString("symbol");
-  if (!symbol || symbol->empty())
-    return nullptr;
-
-  const std::string* decimals_string = token->FindString("divisor");
   int decimals = 0;
-  if (!decimals_string || !base::StringToInt(*decimals_string, &decimals))
+  const auto eth_addr = EthAddress::FromHex(result.contract_address);
+  if (!base::StringToInt(result.divisor, &decimals) ||
+      result.token_name.empty() || result.symbol.empty() ||
+      eth_addr.IsEmpty()) {
     return nullptr;
-
-  const std::string* token_type = token->FindString("tokenType");
-  if (!token_type)
-    return nullptr;
-
-  bool is_erc20 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC20");
-  bool is_erc721 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC721");
-  if (!is_erc20 && !is_erc721)  // unsupported token
-    return nullptr;
+  }
 
   return mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), *name, "" /* logo */, is_erc20, is_erc721,
-      is_erc721 /* is_nft */, *symbol, decimals, true, "", "", chain_id, coin);
+      eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC20 /* is_erc20 */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_erc721 */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_nft */,
+      result.symbol, decimals, true /* visible */, "" /* token_id */,
+      "" /* coingecko_id */, chain_id, coin);
 }
 
 bool ParseCoinMarkets(const base::Value& json_value,
