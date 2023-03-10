@@ -54,14 +54,14 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @NonNull BackKeyBehaviorDelegate backKeyBehavior, @NonNull WindowAndroid windowAndroid,
             boolean isTablet, @NonNull SearchEngineLogoUtils searchEngineLogoUtils,
             @NonNull LensController lensController,
-            @NonNull Runnable launchAssistanceSettingsAction,
             @NonNull SaveOfflineButtonState saveOfflineButtonState, @NonNull OmniboxUma omniboxUma,
-            @NonNull BooleanSupplier isToolbarMicEnabledSupplier) {
+            @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
+            @NonNull OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder) {
         super(context, locationBarLayout, locationBarDataProvider, profileSupplier,
                 privacyPreferencesManager, overrideUrlLoadingDelegate, localeManager,
                 templateUrlServiceSupplier, backKeyBehavior, windowAndroid, isTablet,
-                searchEngineLogoUtils, lensController, launchAssistanceSettingsAction,
-                saveOfflineButtonState, omniboxUma, isToolbarMicEnabledSupplier);
+                searchEngineLogoUtils, lensController, saveOfflineButtonState, omniboxUma,
+                isToolbarMicEnabledSupplier, dropdownEmbedder);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
