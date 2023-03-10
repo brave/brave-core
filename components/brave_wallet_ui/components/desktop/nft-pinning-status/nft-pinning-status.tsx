@@ -30,6 +30,7 @@ export const NftPinningStatus = (props: Props) => {
   React.useEffect(() => {
     switch (pinningStatusCode) {
       case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
+      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING:
         setmessage(getLocale('braveWalletNftPinningStatusPinning'))
         setIcon(<UploadIcon />)
         break

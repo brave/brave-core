@@ -85,14 +85,29 @@ absl::optional<mojom::WalletPinServiceErrorCode> StringToErrorCode(
   return absl::nullopt;
 }
 
-absl::optional<std::string> ExtractCID(const std::string& ipfs_url) {
-  GURL gurl = GURL(ipfs_url);
+absl::optional<std::string> ExtractIpfsUrl(const std::string& url) {
+  GURL gurl = GURL(url);
 
   if (!gurl.is_valid()) {
     return absl::nullopt;
   }
 
-  if (!gurl.SchemeIs(ipfs::kIPFSScheme)) {
+  if (gurl.SchemeIs(ipfs::kIPFSScheme)) {
+    return gurl.spec();
+  }
+
+  auto source = ipfs::ExtractSourceFromGateway(gurl);
+  if (!source || !source->SchemeIs(ipfs::kIPFSScheme)) {
+    return absl::nullopt;
+  }
+
+  return source.value().spec();
+}
+
+absl::optional<std::string> ExtractCID(const std::string& url) {
+  GURL gurl = GURL(ExtractIpfsUrl(url).value_or(""));
+
+  if (!gurl.is_valid()) {
     return absl::nullopt;
   }
 
@@ -617,8 +632,19 @@ void BraveWalletPinService::OnTokenMetaDataReceived(
   cids.push_back(metadata_cid.value());
   cids.push_back(image_cid.value());
 
+  auto ipfs_image_url = ExtractIpfsUrl(*image_url);
+  if (!ipfs_image_url) {
+    auto pin_error = mojom::PinError::New(
+        mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
+        "Can't find proper image field");
+    SetTokenStatus(service, token,
+                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, pin_error);
+    std::move(callback).Run(false, std::move(pin_error));
+    return;
+  }
+
   content_type_checker_->CheckContentTypeSupported(
-      *image_url,
+      ipfs_image_url.value(),
       base::BindOnce(&BraveWalletPinService::OnContentTypeChecked,
                      weak_ptr_factory_.GetWeakPtr(), std::move(service),
                      std::move(token), std::move(cids), std::move(callback)));
