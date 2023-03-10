@@ -69,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
 
   var receivedURLs: [URL]?
-  var shutdownWebServer: Timer?
 
   /// Object used to handle server pings
   private(set) lazy var dau = DAU(braveCoreStats: braveCore.braveStats)
@@ -207,8 +206,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let profilePrefix = profile.prefs.getBranchPrefix()
     migration?.launchMigrations(keyPrefix: profilePrefix, profile: profile)
 
-    // Setup GCD-WebServer
-    setUpWebServer(profile)
+    // Setup Custom WKWebView Scheme Handlers
+    setupCustomSchemeHandlers(profile)
 
     // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
     if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
@@ -397,7 +396,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func syncOnDidEnterBackground(application: UIApplication) {
     // BRAVE TODO: Decide whether or not we want to use this for our own sync down the road
 
-    var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
+    var taskId = UIBackgroundTaskIdentifier(rawValue: 0)
     taskId = application.beginBackgroundTask {
       print("Running out of background time, but we have a profile shutdown pending.")
       self.shutdownProfileWhenNotActive(application)
@@ -405,14 +404,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     sceneInfo?.profile.shutdown()
-
     application.endBackgroundTask(taskId)
-
-    shutdownWebServer?.invalidate()
-    shutdownWebServer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
-      WebServer.sharedInstance.server.stop()
-      self?.shutdownWebServer = nil
-    }
   }
 
   fileprivate func shutdownProfileWhenNotActive(_ application: UIApplication) {
@@ -424,10 +416,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     sceneInfo?.profile.shutdown()
   }
 
-  func setUpWebServer(_ profile: Profile) {
-    let server = WebServer.sharedInstance
-    guard !server.server.isRunning else { return }
-
+  func setupCustomSchemeHandlers(_ profile: Profile) {
     let responders: [(String, InternalSchemeResponse)] = [
       (AboutHomeHandler.path, AboutHomeHandler()),
       (AboutLicenseHandler.path, AboutLicenseHandler()),
@@ -436,18 +425,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
       (SNSDomainHandler.path, SNSDomainHandler())
     ]
+    
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
-    }
-
-    // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task
-    // catching and handling the error seemed to fix things, but we're not sure why.
-    // Either way, not implicitly unwrapping a try is not a great way of doing things
-    // so this is better anyway.
-    do {
-      try server.start()
-    } catch let err as NSError {
-      print("Error: Unable to start WebServer \(err)")
     }
   }
 
