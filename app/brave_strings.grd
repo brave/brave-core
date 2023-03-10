@@ -373,12 +373,24 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
         <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Canary
       </message>
-      <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
-        Brave Software Inc
-      </message>
-      <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
-        Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.
-      </message>
+      <if expr="_is_chrome_for_testing_branded">
+        <then>
+          <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
+            Brave LLC
+          </message>
+          <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
+            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.
+          </message>
+        </then>
+        <else>
+          <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
+            Brave Software Inc
+          </message>
+          <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="Copyright information on the about pages">
+            Copyright © <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Brave Authors. All rights reserved.
+          </message>
+        </else>
+      </if>
       <if expr="chromeos_ash">
         <message name="IDS_ABOUT_CROS_VERSION_LICENSE" desc="Additional text displayed beneath the Brave open source URLs for ChromeOS.">
           ChromeOS is made possible by additional <ph name="BEGIN_LINK_CROS_OSS">&lt;a target="_blank" href="$1"&gt;</ph>open source software<ph name="END_LINK_CROS_OSS">&lt;/a&gt;</ph>.
@@ -538,17 +550,8 @@ Permissions you've already given to websites and apps may apply to this account.
         In Password Manager on this device
       </message>
       <if expr="is_macosx">
-        <message name="IDS_PASSWORDS_PAGE_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before revealing plaintext passwords on the password page.">
-          Brave is trying to show passwords.
-        </message>
-        <message name="IDS_PASSWORDS_PAGE_COPY_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before copying plaintext passwords into the clipboard.">
-          Brave is trying to copy passwords.
-        </message>
-        <message name="IDS_PASSWORDS_PAGE_EDIT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before editing plaintext passwords on the password page.">
-          Brave is trying to edit passwords.
-        </message>
-        <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
-          Brave wants to export your passwords.
+      <message name="IDS_PASSWORDS_AUTHENTICATION_PROMPT_PREFIX" desc="Text shown in the beginning of the OS-level user authentication prompt before performing a seneitive operation such as show passwords in plain text.">
+          Brave is trying to <ph name="AUTHENTICATION_PURPOSE">$1<ex>show passwords</ex></ph>
         </message>
       </if>
       <if expr="is_win">
@@ -1185,10 +1188,8 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
 
       <!-- Critical Notification bubble -->
-      <message name="IDS_CRITICAL_NOTIFICATION_TITLE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. It counts down from # seconds and then Brave automatically restarts.">
-        {SECONDS, plural,
-         =1 {Brave will restart in 1 second}
-         other {Brave will restart in # seconds}}
+      <message name="IDS_CRITICAL_NOTIFICATION_TITLE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. It counts down a timer and then Brave automatically restarts.">
+        Brave will restart in <ph name="REMAINING_TIME">$1<ex>1 minute, 7 seconds</ex></ph>
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
         Please restart Brave now

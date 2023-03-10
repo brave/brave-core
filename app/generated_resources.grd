@@ -6970,6 +6970,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_RESUME_YOUR_JOURNEY" desc="A label for the title in NTP Quests Module.">
         Resume your journey for <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph>
       </message>
+      <message name="IDS_NTP_MODULES_SHOW_ALL" desc="A label for the show all button in NTP Quests Module.">
+        Show all
+      </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -7118,7 +7121,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Compact view
       </message>
       <message name="IDS_BOOKMARKS_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the bookmarks side panel.">
-        View List Options
+        Sorting and list options
       </message>
       <message name="IDS_BOOKMARKS_CREATE_NEW_FOLDER_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which creates a new folder in the bookmarks side panel.">
         Create New Folder
@@ -7141,13 +7144,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark} other {# bookmarks}}
       </message>
+      <message name="IDS_BOOKMARKS_EDIT_BOOKMARK" desc="Title for the bookmarks side panel edit dialog when full editing is available">
+        Edit Bookmark
+      </message>
       <message name="IDS_BOOKMARKS_EDIT_MOVE_TO_ANOTHER_FOLDER" desc="Tooltip for the button in the bookmarks side panel bulk edit mode that allows the user to move the selected bookmarks to a different folder.">
         Move to another folder
       </message>
       <message name="IDS_BOOKMARKS_EDIT_MORE" desc="Tooltip for the menu button in the bookmarks side panel bulk edit mode that shows more actions the user can take on selected bookmarks.">
         More
       </message>
-      <message name="IDS_BOOKMARKS_EDIT_MOVE_TO" desc="Title for the bookmarks side panel edit dialog when there are multiple selected bookmarks">
+      <message name="IDS_BOOKMARKS_EDIT_MOVE_TO" desc="Title for the bookmarks side panel edit dialog when move-only editing is available">
         Move to…
       </message>
       <message name="IDS_BOOKMARKS_EDIT_NEW_FOLDER" desc="Label for the button to add a new folder in the bookmarks side panel edit dialog">
@@ -7158,6 +7164,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BOOKMARKS_EDIT_SAVE" desc="Label for the button to save changes from the bookmarks side panel edit dialog">
         Save
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_NAME" desc="Label for the name text field in the bookmarks side panel edit dialog">
+        Name
+      </message>
+      <message name="IDS_BOOKMARKS_EDIT_URL" desc="Label for the url text field in the bookmarks side panel edit dialog">
+        URL
       </message>
       <message name="IDS_BOOKMARK_DELETION_COUNT" desc="Text description for the number of deleted bookmarks">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark deleted} other {# bookmarks deleted}}
@@ -7171,6 +7183,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARKS_MOVE_TO_ALL_BOOKMARKS" desc="Label for the move to all bookmarks menu option">
         Move to All Bookmarks
       </message>
+      <message name="IDS_BOOKMARKS_EDIT" desc="Label for the edit bookmarks menu option">
+        Edit…
+      </message>
       <message name="IDS_BOOKMARKS_RENAME" desc="Label for the rename bookmarks menu option">
         Rename
       </message>
@@ -7180,9 +7195,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARKS_DISABLED_FEATURE" desc="Body text for the dialog displayed when the user attempts to use a feature that is disabled by policy">
         Your administrator has disabled this feature.
       </message>
+      <message name="IDS_BOOKMARKS_BACK_BUTTON_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the bookmarks side panel folder header back button">
+        Back to <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph>
+      </message>
+      <message name="IDS_BOOKMARKS_FORWARD_BUTTON_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the bookmarks side panel edit dialog button to view a folder's children">
+        <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph> folder
+      </message>
+      <message name="IDS_BOOKMARK_OPTIONS_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the bookmarks side panel context menu button">
+        Bookmark options
+      </message>
+      <message name="IDS_BOOKMARKS_OPEN_FOLDER_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for a bookmarks side panel folder list item">
+        Open folder <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph>
+      </message>
+      <message name="IDS_BOOKMARKS_OPEN_BOOKMARK_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for a bookmarks side panel folder list item">
+        Open <ph name="BOOKMARK_TITLE">$1<ex>New York Times</ex></ph>
+      </message>
+      <message name="IDS_BOOKMARK_ACCESSIBLE_DESCRIPTION_PRICE_TRACKING" is_accessibility_with_no_ui="true" desc="Accessible description for price tracking data on a bookmarks side panel list item">
+        Price tracking is enabled. Price is <ph name="CURRENT_PRICE">$1<ex>400</ex></ph>.
+      </message>
+      <message name="IDS_BOOKMARK_ACCESSIBLE_DESCRIPTION_PRICE_CHANGE" is_accessibility_with_no_ui="true" desc="Accessible description for price change data on a bookmarks side panel list item">
+        Price has changed from <ph name="PREVIOUS_PRICE">$1<ex>500</ex></ph> to <ph name="CURRENT_PRICE">$2<ex>400</ex></ph>.
+      </message>
+      <message name="IDS_BOOKMARKS_CHECKBOX_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the checkbox in the bookmarks side panel bulk edit mode">
+        Select
+      </message>
 
       <!-- Reading mode strings -->
-      <!-- TODO(crbug.com/1266555): Add final strings and make them translateable. -->
       <if expr="use_titlecase">
         <message name="IDS_READING_MODE_TITLE" desc="Title of the reading mode feature, which gives users an accessible reading experience.">
           Reading Mode
@@ -7193,6 +7231,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Reading mode
         </message>
       </if>
+      <message name="IDS_READING_MODE_EMPTY_STATE_HEADER" desc="Header for reading mode when the current webpage cannot be opened in reading mode.">
+        Highlight the text you want to show in reading mode
+      </message>
+      <message name="IDS_READING_MODE_EMPTY_STATE_SUBHEADER" desc="Subheader for reading mode when the current webpage cannot be opened in reading mode.">
+        Reading mode can't find the main content on this page
+      </message>
       <message name="IDS_READING_MODE_TOOLBAR_LABEL" desc="Accessibility label for the text formatting toolbar of the reading mode feature. Spoken by screen readers.">
         Text formatting
       </message>
@@ -7250,7 +7294,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Notes
       </message>
       <message name="IDS_ADD_NEW_USER_NOTE_PLACEHOLDER_TEXT" desc="Placeholder for textarea, where users can add a new user note.">
-        Add note...
+        Add a note
       </message>
       <message name="IDS_USER_NOTES_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the user notes side panel.">
         Order
@@ -7261,8 +7305,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ALL_NOTES" desc="The text label of a button in the side panel user notes UI, when clicked, takes the user to the notes overviews UI.">
         All Notes
       </message>
+      <message name="IDS_USER_NOTES_CURRENT_TAB_HEADER" desc="A header label in the list of all pages with notes for the current tab if it has notes.">
+        Current Tab
+      </message>
       <message name="IDS_NOTES_COUNT" desc="Text description for the number of notes for a note overview item showing the number of notes on a page">
         {NUM_NOTES, plural, =1 {1 Note} other {# Notes}}
+      </message>
+      <message name="IDS_USER_NOTES_MENU_OPEN_IN_NEW_TAB" desc="Menu description for opening a page with notes in a new tab.">
+        Open in New Tab
+      </message>
+      <message name="IDS_USER_NOTES_MENU_OPEN_IN_NEW_WINDOW" desc="Menu description for opening a page with notes in a new window.">
+        Open in New Window
+      </message>
+      <message name="IDS_USER_NOTES_MENU_OPEN_IN_INCOGNITO" desc="Menu description for opening a page with notes in a private window.">
+        Open in Private Window
+      </message>
+      <message name="IDS_USER_NOTES_EMPTY_STATE_TITLE" desc="Title for the user notes side panel empty state">
+        Add Notes About This Page
+      </message>
+      <message name="IDS_USER_NOTES_EMPTY_STATE_BODY" desc="Body text for the user notes side panel empty state">
+        Add a note or thought about this page to revisit later.
+      </message>
+      <message name="IDS_USER_NOTES_EMPTY_STATE_TITLE_GUEST" desc="Title for the user notes side panel empty state in guest mode">
+        Not Available in Guest Mode
+      </message>
+      <message name="IDS_USER_NOTES_EMPTY_STATE_BODY_GUEST" desc="Body text for the user notes side panel empty state in guest mode">
+        Log in as another user to view and take notes on this page.
       </message>
 
       <!-- Feed button and menu -->
@@ -7666,6 +7734,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NEWTAB_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab to browse two sites at once
+      </message>
+      <message name="IDS_POWER_BOOKMARKS_SIDE_PANEL_PROMO" desc="Text shown on promotional UI appearing next to the side panel button, which encourages users to view their bookmarks there.">
+        See all your bookmarks here
       </message>
       <message name="IDS_READING_LIST_DISCOVERY_PROMO" desc="Text shown on promotional UI appearing next to the reading list button">
         When you're ready, find your reading list here
@@ -8311,6 +8382,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_FEEDBACK_SEND_REPORT" desc="Text for OK button of the send feedback dialog">
           Send
+        </message>
+        <message name="IDS_FEEDBACK_AUTOFILL_METADATA_PAGE_TITLE" desc="The title of the autofill metadata preview page">
+          Autofill Metadata Preview
         </message>
         <message name="IDS_FEEDBACK_SYSINFO_PAGE_TITLE" desc="The title of the system information preview page">
           System Information Preview
@@ -12954,6 +13028,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_ERROR_INTERNAL_UNRECOGNIZED_DESCRIPTION" desc="Description in the dialog shown when the user's could not sign in to a web site using a hardware-based authentication mechanism built in to the computer (e.g. a fingerprint reader), because they never registered the device with this website before.">
         Your identity couldn't be verified
       </message>
+      <message name="IDS_WEBAUTHN_WINDOWS_HELLO_NOT_ENABLED_TITLE" desc="Title of the dialog shown when a website requires Windows Hello to sign in with a passkey, but Windows Hello is not enabled for the user's device.">
+        Turn on Windows Hello
+      </message>
+      <message name="IDS_WEBAUTHN_WINDOWS_HELLO_NOT_ENABLED_DESCRIPTION" desc="Description of the dialog shown when a website requires Windows Hello to sign in with a passkey, but Windows Hello is not enabled for the user's device.">
+        To sign into this site with a passkey, you need to turn on Windows Hello in settings. Then return to this site and try again.
+      </message>
       <message name="IDS_WEBAUTHN_ERROR_NO_TRANSPORTS_TITLE" desc="Title of the dialog shown when the user could not sign in to a web site, because their computer did not support any of the hardware-based authentication mechanisms desired by the web site.">
         Your identity couldn't be verified
       </message>
@@ -13041,13 +13121,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
         Unlock your phone and confirm it's you
       </message>
-      <message name="IDS_WEBAUTHN_CABLE_V2_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
-        Use your Android phone as a security key
-      </message>
-      <message name="IDS_WEBAUTHN_CABLE_V2_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know how they can use Brave on their Android phone as a security key. The substring 'Use phone as a security key' refers to the string IDS_PHONE_AS_SECURITY_KEY_TEXT in Brave on Android.">
-        Open Brave on your Android phone, and go to "Settings &gt; Passwords &gt; Use phone as a security key", and follow the instructions there.
-      </message>
-
       <!-- WebAuthn authenticator PIN entry/setup -->
       <message name="IDS_WEBAUTHN_PIN_ENTRY_TITLE" desc="Title of the dialog shown when instructing the user to enter the PIN code to use a security key (an external physical device for user authentication) with their computer.">
         PIN required
@@ -13248,7 +13321,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Submit Feedback
       </message>
       <message name="IDS_SIDE_SEARCH_PROMO" desc="Promo UI shown next to the side search button to encourage its use.">
-        See more search results in side panel
+        Compare search results faster from the new side panel
+      </message>
+      <message name="IDS_SIDE_SEARCH_TUTORIAL_OPEN_SIDE_PANEL" desc="Tutorial bubble shown next to the side search button to instruct users to open side panel">
+        Click the "G" button to see more search results in a side panel
+      </message>
+      <message name="IDS_SIDE_SEARCH_TUTORIAL_OPEN_A_LINK_TO_TAB" desc="Tutorial bubble shown next to the side panel to instruct users to open a link to main tab">
+        Click on a result and the page will open in your current tab
+      </message>
+      <message name="IDS_SIDE_SEARCH_TUTORIAL_CLOSE_SIDE_PANEL" desc="Tutorial bubble shown next to the side panel close button to instruct users to close side panel">
+        Click the "X" button to close the side panel
       </message>
       <message name="IDS_SIDE_SEARCH_ENTRYPOINT_LABEL" desc="The label text that is animated-in when the omnibox entrypoint is first shown.">
         See more search results
@@ -13772,6 +13854,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue-to sheet. Sheet is shown to prompt user to continue using their identity from an identity provider on a website.">
       Continue to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.example</ex></ph>
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_SUBTITLE" desc="Message shown when the user is shown the federated identity login prompt. This message is the subtitle for the sign in sheet, which contains the top-level domain of the page the user is visiting when the user is receiving a prompt from an iframe embedded on such page.">
+      on <ph name="MAIN_FRAME_ETLD_PLUS_ONE">$1<ex>main-frame.example</ex></ph>
     </message>
     <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
       Continue as <ph name="NAME">$1<ex>Albus (or Albus Dumbledore)</ex></ph>
