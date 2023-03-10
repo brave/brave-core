@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.ListFragment;
 
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 
 public class BraveSearchEnginePreference extends SearchEngineSettings {
@@ -33,6 +34,7 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
 
     public void createAdapterIfNecessary() {
         if (mSearchEngineAdapter != null) return;
-        mSearchEngineAdapter = new BraveSearchEngineAdapter(getActivity(), mPrivate);
+        mSearchEngineAdapter = new BraveSearchEngineAdapter(
+                getActivity(), Profile.getLastUsedRegularProfile(), mPrivate);
     }
 }
