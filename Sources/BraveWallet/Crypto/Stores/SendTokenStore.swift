@@ -514,7 +514,7 @@ public class SendTokenStore: ObservableObject {
   }
   
   @MainActor func fetchNFTMetadata(tokens: [BraveWallet.BlockchainToken]) async -> [String: NFTMetadata] {
-    return await rpcService.fetchNFTMetadata(tokens: tokens)
+    return await rpcService.fetchNFTMetadata(tokens: tokens, ipfsApi: ipfsApi)
   }
 }
 

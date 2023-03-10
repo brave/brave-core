@@ -262,7 +262,7 @@ public class PortfolioStore: ObservableObject {
       
       // fetch nft metadata for all NFTs
       let allNFTs = allTokens.filter { $0.isNft || $0.isErc721 }
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs)
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: allNFTs, ipfsApi: ipfsApi)
       for (key, value) in allMetadata { // update cached values
         metadataCache[key] = value
       }

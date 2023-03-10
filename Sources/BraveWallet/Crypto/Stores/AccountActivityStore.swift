@@ -32,6 +32,7 @@ class AccountActivityStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+  private let ipfsApi: IpfsAPI?
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
@@ -45,7 +46,8 @@ class AccountActivityStore: ObservableObject {
     assetRatioService: BraveWalletAssetRatioService,
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    solTxManagerProxy: BraveWalletSolanaTxManagerProxy
+    solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
+    ipfsApi: IpfsAPI?
   ) {
     self.account = account
     self.observeAccountUpdates = observeAccountUpdates
@@ -56,6 +58,7 @@ class AccountActivityStore: ObservableObject {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.solTxManagerProxy = solTxManagerProxy
+    self.ipfsApi = ipfsApi
     
     self.keyringService.add(self)
     self.rpcService.add(self)
@@ -150,7 +153,8 @@ class AccountActivityStore: ObservableObject {
       let allNFTMetadata = await rpcService.fetchNFTMetadata(
         tokens: userVisibleNFTs
           .map(\.token)
-          .filter({ $0.isErc721 || $0.isNft })
+          .filter({ $0.isErc721 || $0.isNft }),
+        ipfsApi: ipfsApi
       )
       
       guard !Task.isCancelled else { return }

@@ -236,7 +236,8 @@ public class CryptoStore: ObservableObject {
       assetRatioService: assetRatioService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
-      solTxManagerProxy: solTxManagerProxy
+      solTxManagerProxy: solTxManagerProxy,
+      ipfsApi: ipfsApi
     )
     accountActivityStore = store
     return store
