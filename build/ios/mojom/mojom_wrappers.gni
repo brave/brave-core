@@ -45,24 +45,7 @@ template("ios_objc_mojom_wrappers") {
     inputs = [
       "//brave/build/ios/mojom/cpp_transformations.h",
       "//brave/build/ios/mojom/mojom_objc_generator.py",
-      "//brave/build/ios/mojom/objc_templates/enum.tmpl",
-      "//brave/build/ios/mojom/objc_templates/interface_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/interface_macros.tmpl",
-      "//brave/build/ios/mojom/objc_templates/module.h.tmpl",
-      "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
-      "//brave/build/ios/mojom/objc_templates/module.mm.tmpl",
-      "//brave/build/ios/mojom/objc_templates/struct_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/test_interface_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/test_interface_implementation.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_interface_bridge_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_interface_bridge_implementation.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_interface_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_interface_implementation.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_struct_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_struct_implementation.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_union_declaration.tmpl",
-      "//brave/build/ios/mojom/objc_templates/private_union_implementation.tmpl",
-      "//brave/build/ios/mojom/objc_templates/union_declaration.tmpl",
+      "$root_gen_dir/brave/build/ios/mojom/objc_templates.zip",
     ]
     sources = invoker.sources
     outputs = [
@@ -71,15 +54,18 @@ template("ios_objc_mojom_wrappers") {
       "$target_gen_dir/{{source_file_part}}.objc.mm",
     ]
     _module_path = rebase_path("$dep_target_gen/{{source_file_part}}-module")
+    bytecode_path = rebase_path("$root_gen_dir/brave/build/ios/mojom")
     args = [
       "--mojom-module=$_module_path",
       "--output-dir=$mojom_output_dir",
+      "--bytecode-path=$bytecode_path",
     ]
     if (defined(invoker.exclude_types)) {
       _excluded_types = string_join(",", invoker.exclude_types)
       args += [ "--exclude=$_excluded_types" ]
     }
     deps = [
+      "//brave/build/ios/mojom:precompile_templates",
       "//mojo/public/cpp/bindings",
       mojom_target,
       mojom_target_parser,
@@ -111,6 +97,7 @@ template("ios_objc_mojom_wrappers") {
     public_deps += [
       ":$generate_wrappers_target",
       "//base",
+      "//brave/build/ios/mojom:precompile_templates",
       "//brave/build/ios/mojom/public/base",
       "//net",
       mojom_target,
