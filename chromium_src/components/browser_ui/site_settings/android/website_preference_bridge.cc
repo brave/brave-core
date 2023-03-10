@@ -9,5 +9,11 @@
 #define BACKGROUND_SYNC \
   AUTOPLAY:             \
   case ContentSettingsType::BACKGROUND_SYNC
+
+#define CLIPBOARD_READ_WRITE \
+  BRAVE_GOOGLE_SIGN_IN:      \
+  case ContentSettingsType::CLIPBOARD_READ_WRITE
+
 #include "src/components/browser_ui/site_settings/android/website_preference_bridge.cc"
 #undef BACKGROUND_SYNC
+#undef CLIPBOARD_READ_WRITE

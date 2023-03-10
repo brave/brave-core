@@ -22,18 +22,18 @@ constexpr int brave_value(int incr) {
 
 // clang-format off
 #define BRAVE_HISTOGRAM_VALUE_LIST                                        \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(0)},           \
-  {ContentSettingsType::BRAVE_ADS, brave_value(1)},                       \
-  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, brave_value(2)},        \
-  {ContentSettingsType::BRAVE_TRACKERS, brave_value(3)},                  \
-  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, brave_value(4)}, \
-  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, brave_value(5)},         \
-  {ContentSettingsType::BRAVE_SHIELDS, brave_value(6)},                   \
-  {ContentSettingsType::BRAVE_REFERRERS, brave_value(7)},                 \
-  {ContentSettingsType::BRAVE_COOKIES, brave_value(8)},                   \
-  {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(9)},               \
-  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(10)},                  \
-  {ContentSettingsType::BRAVE_SOLANA, brave_value(11)},                   \
+  {ContentSettingsType::BRAVE_ADS, brave_value(0)},                       \
+  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, brave_value(1)},        \
+  {ContentSettingsType::BRAVE_TRACKERS, brave_value(2)},                  \
+  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, brave_value(3)}, \
+  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, brave_value(4)},         \
+  {ContentSettingsType::BRAVE_SHIELDS, brave_value(5)},                   \
+  {ContentSettingsType::BRAVE_REFERRERS, brave_value(6)},                 \
+  {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},                   \
+  {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
+  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},                  \
+  {ContentSettingsType::BRAVE_SOLANA, brave_value(10)},                   \
+  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)},           \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, brave_value(12)}
 // clang-format on
 
