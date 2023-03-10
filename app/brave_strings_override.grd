@@ -113,6 +113,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_macosx">
         </if>
+      <if expr="_is_chrome_for_testing_branded">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
       <if expr="chromeos_ash">
         </if>
       <if expr="is_macosx">
@@ -152,7 +158,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_win">
         </if>
       <if expr="is_macosx">
-        </if>
+      </if>
       <if expr="is_win">
         </if>
       <if expr="is_win">

@@ -895,13 +895,16 @@
     Select where to import your passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_SUCCESS_TIP" desc="Message is shown on the dialog for importing passwords, after a successful import. It is an advice for the user, that they should consider deleting the file, which they used for importing passwords from.">
-    Consider deleting <ph name="FILENAME">&lt;b&gt;&lt;/b&gt;<ex>&lt;b&gt;filename.csv&lt;/b&gt;</ex></ph>, so others who use this device can't see your passwords
+    Consider deleting <ph name="FILENAME">&lt;span class="file-name"&gt;$1&lt;/span&gt;<ex>&lt;span class="file-name"&gt;filename.csv&lt;/span&gt;</ex></ph>, so others who use this device can't see your passwords
+  </message>
+  <message name="IDS_SETTINGS_PASSWORDS_IMPORT_DELETE_FILE_OPTION" desc="Message is shown on the dialog for importing passwords, after a successful import. It offers a user to delete the file, which they used for importing passwords from, by clicking at the checkbox and 'Done' button afterwards.">
+    Delete <ph name="FILENAME">&lt;span class="file-name"&gt;$1&lt;/span&gt;<ex>&lt;span class="file-name"&gt;filename.csv&lt;/span&gt;</ex></ph>, so others who use this device can't see your passwords
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_UNKNOWN" desc="Message is shown on the dialog for importing passwords if no passwords were imported and we don't know the cause of error. Probably error in the backend or in our systems.">
     Something went wrong and your passwords weren't imported
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ERROR_BAD_FORMAT" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file is not formated correctly">
-    Can't import passwords. Check <ph name="FILENAME">&lt;b&gt;&lt;/b&gt;<ex>&lt;b&gt;filename.csv&lt;/b&gt;</ex></ph> and make sure it's formatted correctly. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    Can't import passwords. Check <ph name="FILENAME">&lt;span class="file-name"&gt;$1&lt;/span&gt;<ex>&lt;span class="file-name"&gt;filename.csv&lt;/span&gt;</ex></ph> and make sure it's formatted correctly. <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_FILE_SIZE_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file size exceeds 150 KB.">
     Can't import passwords. The file size should be less than 150 KB.
@@ -945,7 +948,9 @@
     A password for this account is already saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_FAILURES_SUMMARY" desc="Message is shown on the dialog for importing passwords if some passwords weren't imported.">
-    Passwords not imported (<ph name="COUNT"><ex>42</ex>$1</ph>)
+    {NUM_PASSWORDS, plural,
+     =1 {1 password not imported}
+     other {{NUM_PASSWORDS} passwords not imported}}
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_IMPORT_ALREADY_ACTIVE" desc="Message is shown on the dialog for importing passwords if there is the import process is already running in another tab.">
     You're already importing passwords in another tab
@@ -1472,6 +1477,9 @@
   </message>
   <message name="IDS_SETTINGS_PERFORMANCE_TAB_DISCARDING_EXCEPTIONS_HEADER" desc="Heading for the exceptions list for tab discarding in the performance settings. Tabs will not be discarded by memory saver mode if on a site matching a rule in this list.">
     Always keep these sites active
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_TAB_DISCARDING_EXCEPTIONS_ADDITIONAL_SITES" desc="Label for button that expands the tab discarding exceptions list to show all entries. Sites added to the list will not be discarded by memory saver.">
+    Additional sites
   </message>
   <message name="IDS_SETTINGS_BATTERY_PAGE_TITLE" desc="Title of the power section of the performance settings page">
     Power
